@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2012 The Android Money Manager Ex Project
+  
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<resources>
+
+    <!-- application -->
+    <string name="application_name">Money Manager Ex</string>
+    <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
+    <string name="application_definition">That\'s a simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
+	<string name="application_credits">Android Money Manager Ex Project use ActionBarSherlock and ViewPagerIndicator libraries</string>
+	<string name="application_license">Open source licenses</string>
+	
+    <!-- database -->
+    <string name="db_insert_failed">Insert data failed</string>
+    <string name="db_delete_failed">Delete data failed</string>
+    <string name="db_update_failed">Update data failed</string>
+
+    <!-- menu -->
+    <string name="menu">Menu</string>
+    <string name="menu_exit">Exit</string>
+    <string name="menu_import_export">Import/Export</string>
+    <string name="menu_sync">Synchronize</string>
+    <string name="menu_import_from_storage">Import from storage</string>
+    <string name="menu_export_to_storage">Export to storage</string>
+    <string name="menu_manage">Manage</string>
+    <string name="menu_sync_dropbox">Sync Dropbox</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_use_external_db">Use External Database</string>
+
+    <!-- import / export database -->
+    <string name="emptyFolder">Empty folder</string>
+    <string name="upLevel">Up level</string>
+    <string name="import_export">Import / Export</string>
+    <string name="import_export_database_progress">Import/Export database in progress</string>
+    <string name="import_export_success">Import / Export completed successfully</string>
+    <string name="import_export_failed">Import / Export failed</string>
+
+    <!-- dropbox -->
+    <string name="dropbox_link">Link with Dropbox</string>
+    <string name="dropbox_unlink">Unlink from Dropbox</string>
+    <string name="dropbox_listFileProgress">List files in progress…</string>
+    <string name="dropbox_syncProgress">Sync Dropbox in progress…</string>
+    <string name="dropbox_downloadProgress">Download file from Dropbox…</string>
+    <string name="dropbox_uploadProgress">Upload file to Dropbox…</string>
+    <string name="dropbox_account">Dropbox Account</string>
+    <string name="dropbox_linkedFile">Dropbox linked file</string>
+    <string name="dropbox_method">Dropbox Synchornization Method</string>
+
+    <!-- preferences -->
+    <string name="preferences_general">General</string>
+    <string name="preferences_dispaly">Display</string>
+    <string name="base_currency">Base Currency</string>
+    <string name="accounts_visible">Accounts Visible</string>
+    <string name="view_accounts_opened">View accounts opened</string>
+    <string name="if_not_selected_willShowAllAccounts">If not selected will show all accounts</string>
+    <string name="view_accounts_favorites">View accounts favorites</string>
+    <string name="preferences_version">Android Money Manager Ex</string>
+    <string name="version">Version</string>
+    <string name="preferences_dropbox">Settings Dropbox</string>
+    <string name="preferences_database_path">Database path</string>
+
+    <!-- account -->
+    <string name="account">Account</string>
+    <string name="account_list">Account List</string>
+    <string name="account_empty_list">No accounts found</string>
+    <string name="account_balance">Account Balance</string>
+    <string name="account_reconciled_balance">Account Reconciled</string>
+    <string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>
+    <string name="select_to_account">Select To Acct</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="account_name">Account Name</string>
+    <string name="account_type">Account Type</string>
+    <string name="account_number">Account Number</string>
+    <string name="account_held_at">Held at</string>
+    <string name="account_status">Account Status</string>
+    <string name="favourite_account">Favourite Account</string>
+    <string name="select_currency">Select Currency</string>
+    <string name="checking">Checking</string>
+    <string name="investment">Investment</string>
+    <string name="term">Term</string>
+    <string name="db_account_insert_failed">Error inserting Account</string>
+    <string name="db_account_update_failed">Error updating Account</string>
+    <string name="error_currency_not_selected">Attention: Account currency not selected</string>
+    <string name="error_initialbal_empty">Attention: please, insert account initial balance</string>
+    <string name="error_accountname_empty">Attention: please, insert account name</string>
+    <string name="error_accounttype_empty">Attention: please, insert account type</string>
+    <string name="error_status_empty">Attention: please, insert account status</string>
+
+    <!-- payee -->
+    <string name="payee_name">Payee Name</string>
+    <string name="edit_payeeName">Edit Payee Name</string>
+    <string name="delete_payee">Delete Payee</string>
+    <string name="payee">Payee</string>
+    <string name="select_payee">Select Payee</string>
+    <string name="select_from">Select From</string>
+    <string name="payee_empty_list">No payee found</string>
+    <string name="from">From</string>
+    <string name="db_payee_update_failed">Update payee failed</string>
+    
+    <!-- category / subcategory -->
+    <string name="category">Category</string>
+    <string name="subcategory">Sub Category</string>
+	<string name="category_empty_list">No category found</string>
+	<string name="select_category">Select Category</string>
+	<string name="add_category">Add Category</string>
+	<string name="add_subcategory">Add SubCategory</string>
+	<string name="category_name">Category Name</string>
+	<string name="edit_categoryName">Edit Category Name</string>
+	<string name="delete_category">Delete Category</string>
+	
+	<!-- currency -->
+	<string name="currency">Currency</string>
+	<string name="currency_name">Currency Name</string>
+	<string name="currency_symbol">Currency Symbol</string>
+	<string name="delete_currency">Delete Currency</string>
+	<string name="unit_name">Unit Name</string>
+	<string name="cents_name">Cents Name</string>
+	<string name="prefix_symbol">Prefix Symbol</string>
+	<string name="suffix_symbol">Suffix Symbol</string>
+	<string name="decimal_char">Decimal Char</string>
+	<string name="group_char">Group Char</string>
+	<string name="scale">Scale</string>
+	<string name="conversion_to_base_rate">Conversion</string>
+	<string name="new_edit_currency">New / Edit Currency</string>
+	<string name="currency_name_empty">Input of the currency name is required</string>
+	
+    <!-- transaction -->
+    <string name="amount">Amount</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="deposit">Deposit</string>
+    <string name="status">Status</string>
+    <string name="status_reconciled">Reconciled</string>
+    <string name="status_void">Void</string>
+    <string name="status_follow_up">Follow up</string>
+    <string name="status_duplicate">Duplicate</string>
+    <string name="status_none">None</string>
+    <string name="transfer">Transfer</string>
+    <string name="transaction_type">Transaction Type</string>
+    <string name="transaction_status">Status</string>
+    <string name="withdrawal">Withdrawal</string>
+    <string name="db_checking_insert_failed">Insert Transaction failed</string>
+    <string name="db_checking_update_failed">Update Transaction failed</string>
+    <string name="delete_transaction">Delete Transaction</string>
+    <string name="new_transaction">New Transaction</string>
+    <string name="error_payee_not_selected">Attention: Payee is not selected</string>
+    <string name="error_toaccount_not_selected">Attention: To Account is not selected</string>
+    <string name="error_category_not_selected">Attention: Category of transaction is not selected</string>
+    <string name="error_totamount_empty">Attention: please, insert total amount of transaction</string>
+
+    <!-- application sting -->
+    <string name="about">About</string>
+    <string name="abort">Abort</string>
+    <string name="add">Add</string>
+    <string name="all">All</string>
+    <string name="confirmDelete">Confirm delete?</string>
+    <string name="date">Date</string>
+    <string name="delete">Delete</string>
+    <string name="download">Download</string>
+    <string name="edit">Edit</string>
+    <string name="favorites">Favorites</string>
+    <string name="home">Home</string>
+    <string name="link">Link</string>
+    <string name="logo">Logo</string>
+    <string name="New">New</string>
+    <string name="new_edit_transaction">New/Edit Transaction</string>
+    <string name="refresh">Refresh</string>
+    <string name="report_problem">Report a problem</string>
+    <string name="search">Search</string>
+    <string name="select">Select</string>
+    <string name="settings">Settings</string>
+    <string name="summary">Summary</string>
+    <string name="sync">Sync</string>
+    <string name="synchronize">Synchronize</string>
+    <string name="synchronize_success">Synchronization completed successfully</string>
+    <string name="open">Open</string>
+    <string name="user">User</string>
+    <string name="unlink">Unlink</string>
+    <string name="upload">Upload</string>
+    <string name="username">User Name</string>
+    <string name="tell_us_a_problem">Tell us a bug or a problem</string>
+    <string name="to">To</string>
+    <string name="website">Website</string>
+    <string name="contact">Contact</string>
+    <string name="access_info">Access Info</string>
+    <string name="initial_balance">Initial Balance</string>
+    <string name="currency">Currency</string>
+    <string name="notes">Notes</string>
+    <string name="new_edit_account">New/Edit Account</string>
+    <string name="closed">Closed</string>
+    <string name="new_edit_currency">New/Edit Currency</string>
+    <string name="path">Path</string>
+
+</resources>

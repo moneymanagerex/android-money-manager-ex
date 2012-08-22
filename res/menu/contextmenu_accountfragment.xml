@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_edit"
+        android:title="@string/edit">
+    </item>
+    <item
+        android:id="@+id/menu_delete"
+        android:title="@string/delete">
+    </item>
+    <item
+        android:id="@+id/menu_reconciled"
+        android:title="@string/status_reconciled">
+    </item>
+    <item
+        android:id="@+id/menu_none"
+        android:title="@string/status_none">
+    </item>
+    <item
+        android:id="@+id/menu_follow_up"
+        android:title="@string/status_follow_up">
+    </item>
+    <item
+        android:id="@+id/menu_duplicate"
+        android:title="@string/status_duplicate">
+    </item>
+    <item
+        android:id="@+id/menu_void"
+        android:title="@string/status_void">
+    </item>
+</menu>

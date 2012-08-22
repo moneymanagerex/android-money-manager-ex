@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2012 The Android Money Manager Ex Project
+  
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/preferences_general" >
+        <EditTextPreference
+            android:key="username"
+            android:summary="@string/username"
+            android:title="@string/user" />
+
+        <ListPreference
+            android:key="basecurrency"
+            android:title="@string/base_currency" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preferences_dispaly" >
+        <CheckBoxPreference
+            android:key="accountsopenvisible"
+            android:summary="@string/if_not_selected_willShowAllAccounts"
+            android:title="@string/view_accounts_opened" />
+        <CheckBoxPreference
+            android:key="accountsfavoritevisible"
+            android:summary="@string/if_not_selected_willShowAllAccounts"
+            android:title="@string/view_accounts_favorites" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preferences_dropbox" >
+        <Preference
+            android:key="dropboxlinkedfile"
+            android:title="@string/dropbox_linkedFile" />
+
+        <ListPreference
+            android:entries="@array/dropbox_sync_item"
+            android:entryValues="@array/dropbox_sync_item"
+            android:key="dropboxmodesync"
+            android:title="@string/dropbox_method" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/preferences_database_path" >
+        <Preference
+            android:key="databasepath"
+            android:title="@string/path" />
+    </PreferenceCategory>
+</PreferenceScreen>

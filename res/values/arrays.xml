@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2012 The Android Money Manager Ex Project
+  
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<resources>
+
+    <!-- Define transcode items and values -->
+    <string-array name="transcode_values">
+        <item>Withdrawal</item>
+        <item>Deposit</item>
+        <item>Transfer</item>
+    </string-array>
+    <string-array name="transcode_items">
+        <item>@string/withdrawal</item>
+        <item>@string/deposit</item>
+        <item>@string/transfer</item>
+    </string-array>
+
+    <!-- Define status items and values -->
+    <string-array name="status_values">
+        <item></item>
+        <item>R</item>
+        <item>V</item>
+        <item>F</item>
+        <item>D</item>
+    </string-array>
+    <string-array name="status_items">
+        <item>@string/status_none</item>
+        <item>@string/status_reconciled</item>
+        <item>@string/status_void</item>
+        <item>@string/status_follow_up</item>
+        <item>@string/status_duplicate</item>
+    </string-array>
+    
+    <!-- Accounttype items and values -->
+    <string-array name="accounttype_values">
+        <item>Checking</item>
+        <item>Investment</item>
+        <item>Term</item>
+    </string-array>
+    <string-array name="accounttype_items">
+        <item>@string/checking</item>
+        <item>@string/investment</item>
+        <item>@string/term</item>
+    </string-array>
+    
+    <!-- Accountstatus items and values -->
+    <string-array name="accountstatus_values">
+        <item>Open</item>
+        <item>Closed</item>
+    </string-array>
+    <string-array name="accountstatus_items">
+        <item>@string/open</item>
+        <item>@string/closed</item>
+    </string-array>
+    
+    <!-- String array per il context menu di gestione standard -->
+    <string-array name="context_menu">
+        <item>@string/edit</item>
+        <item>@string/delete</item>
+    </string-array>
+    
+    <!-- Define method of syncronization of dropbox -->
+    <string-array name="dropbox_sync_item">
+        <item>@string/synchronize</item>
+        <item>@string/download</item>
+        <item>@string/upload</item>
+    </string-array>
+    
+    <!-- Define currency value -->
+    <string-array name="currency_values">
+        <item>EUR</item>
+        <item>USD</item>
+        <item>JPY</item>
+        <item>BGN</item>
+        <item>CZK</item>
+        <item>DKK</item>
+        <item>EEK</item>
+        <item>GBP</item>
+        <item>HUF</item>
+        <item>LTL</item>
+        <item>LVL</item>
+        <item>PLN</item>
+        <item>RON</item>
+        <item>SEK</item>
+        <item>SKK</item>
+        <item>CHF</item>
+        <item>ISK</item>
+        <item>NOK</item>
+        <item>HRK</item>
+        <item>RUB</item>
+        <item>UAH</item>
+        <item>TRY</item>
+        <item>AUD</item>
+        <item>BRL</item>
+        <item>CAD</item>
+        <item>CNY</item>
+        <item>HKD</item>
+        <item>IDR</item>
+        <item>KRW</item>
+        <item>MXN</item>
+        <item>MYR</item>
+        <item>NZD</item>
+        <item>PHP</item>
+        <item>SGD</item>
+        <item>THB</item>
+        <item>ZAR</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2012 The Android Money Manager Ex Project
+  
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/holo_green_light" />
+        
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account_name" />
+
+            <EditText
+                android:id="@+id/editTextAccountName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/account_name"
+                android:inputType="text"
+                android:maxLength="100"
+                android:singleLine="true" >
+            </EditText>
+            
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account_type" />
+            
+            <Spinner
+                android:id="@+id/spinnerAccountType"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:prompt="@string/account_type" >
+            </Spinner>
+            
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account_number" />
+
+            <EditText
+                android:id="@+id/editTextAccountNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/account_number"
+                android:inputType="text"
+                android:maxLength="100"
+                android:singleLine="true" >
+            </EditText>
+            
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account_held_at" />
+
+            <EditText
+                android:id="@+id/editTextAccountHeldAt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/account_held_at"
+                android:inputType="text"
+                android:maxLength="100"
+                android:singleLine="true" >
+            </EditText>
+            
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/website" />
+
+            <EditText
+                android:id="@+id/editTextWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/website"
+                android:inputType="text"
+                android:maxLength="100"
+                android:singleLine="true" >
+            </EditText>
+            
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/contact" />
+
+            <EditText
+                android:id="@+id/editTextContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/contact"
+                android:inputType="text"
+                android:maxLength="100"
+                android:singleLine="true" >
+            </EditText>
+            
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/access_info" />
+
+            <EditText
+                android:id="@+id/editTextAccessInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/access_info"
+                android:inputType="text"
+                android:maxLength="100"
+                android:singleLine="true" >
+            </EditText>
+            
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account_status" />
+            
+            <Spinner
+                android:id="@+id/spinnerAccountStatus"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:prompt="@string/account_status" >
+            </Spinner>
+            
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/initial_balance" />
+
+            <EditText
+                android:id="@+id/editTextInitialBalance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/initial_balance"
+                android:inputType="numberDecimal|numberSigned"
+                android:maxLength="100"
+                android:singleLine="true" >
+            </EditText>
+            
+            <LinearLayout
+                android:id="@+id/linearLayoutCurrency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textViewCurrency"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/currency" />
+
+                <Button
+                    android:id="@+id/buttonSelectCurrency"
+                    style="@style/Money.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:text="@string/select_currency" />
+            </LinearLayout>
+            
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notes" />
+
+            <EditText
+                android:id="@+id/editTextNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/notes"
+                android:inputType="textMultiLine"
+                android:maxLength="1000"
+                android:lines="5" 
+                android:gravity="top|left"
+				android:scrollHorizontally="false" >
+            </EditText>
+            
+            <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:orientation="horizontal" >
+                
+	            <TextView
+	                style="?android:attr/listSeparatorTextViewStyle"
+	                android:layout_weight="1"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:text="@string/favourite_account" />
+	            
+	             <CheckBox 
+			        android:id="@+id/checkboxFavouriteAccount"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content" />
+	             
+           	</LinearLayout>
+            
+       </LinearLayout>
+        
+    </ScrollView>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/buttonCancel"
+            style="@style/Money.Button"
+            android:layout_width="0dip"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:text="@android:string/cancel" />
+
+        <Button
+            android:id="@+id/buttonOk"
+            style="@style/Money.Button"
+            android:layout_width="0dip"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:text="@android:string/ok" />
+        
+    </LinearLayout>
+    
+</LinearLayout>
