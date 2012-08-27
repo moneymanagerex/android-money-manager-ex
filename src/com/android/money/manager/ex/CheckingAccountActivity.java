@@ -50,13 +50,15 @@ import android.widget.Toast;
 import com.android.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.android.money.manager.ex.database.QueryCategorySubCategory;
 import com.android.money.manager.ex.database.TableAccountList;
+import com.android.money.manager.ex.database.TableCategory;
 import com.android.money.manager.ex.database.TableCheckingAccount;
 import com.android.money.manager.ex.database.TablePayee;
+import com.android.money.manager.ex.database.TableSubCategory;
 import com.android.money.manager.ex.database.ViewAllData;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class CheckingAccountActivity extends FragmentActivity {
 	private static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
@@ -108,7 +110,7 @@ public class CheckingAccountActivity extends FragmentActivity {
 	private ArrayList<String> mAccountNameList = new ArrayList<String>();
 	private ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
 	// amount
-	private String mTotAmount = "", mAmount = "";
+	private float mTotAmount = 0, mAmount = 0;
 	// notes
 	private String mNotes = "";
 	// application
@@ -141,10 +143,10 @@ public class CheckingAccountActivity extends FragmentActivity {
 			mTransCode = savedInstanceState.getString(KEY_TRANS_CODE);
 			mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
 			if (TextUtils.isEmpty(savedInstanceState.getString(KEY_TRANS_AMOUNT)) == false) {
-				mAmount = savedInstanceState.getString(KEY_TRANS_AMOUNT);
+				mAmount = savedInstanceState.getFloat(KEY_TRANS_AMOUNT);
 			}
 			if (TextUtils.isEmpty(savedInstanceState.getString(KEY_TRANS_TOTAMOUNT)) == false) {
-				mTotAmount = savedInstanceState.getString(KEY_TRANS_TOTAMOUNT);
+				mTotAmount = savedInstanceState.getFloat(KEY_TRANS_TOTAMOUNT);
 			}
 			mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
 			mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
@@ -186,12 +188,12 @@ public class CheckingAccountActivity extends FragmentActivity {
 		spinStatus = (Spinner)findViewById(R.id.spinnerStatus);
 
 		edtTotAmount = (EditText)findViewById(R.id.editTextTotAmount);
-		if (TextUtils.isEmpty(mTotAmount) == false) {
-			edtTotAmount.setText(mTotAmount);
+		if (!(mTotAmount == 0)) {
+			edtTotAmount.setText(Float.toString(mTotAmount));
 		}
 		edtAmount = (EditText)findViewById(R.id.editTextAmount);
-		if (TextUtils.isEmpty(mAmount) == false) {
-			edtAmount.setText(mAmount);
+		if (!(mAmount == 0)) {
+			edtAmount.setText(Float.toString(mAmount));
 		}
 		
 		// accountlist <> to populate the spin
@@ -563,20 +565,25 @@ public class CheckingAccountActivity extends FragmentActivity {
 	 * @return
 	 */
 	private boolean selectCategSubName(int categoryId, int subCategoryId) {
-		QueryCategorySubCategory payee = new QueryCategorySubCategory();
-		Cursor cursor = getContentResolver().query(payee.getUri(),
-				payee.getAllColumns(),
-				QueryCategorySubCategory.CATEGID + "=?" + (subCategoryId > 0 ? " AND " + QueryCategorySubCategory.SUBCATEGID + "=?" : ""),
-				(subCategoryId > 0 ? new String[] { Integer.toString(categoryId), Integer.toString(subCategoryId) } : new String[] { Integer.toString(categoryId) }) , null);
-		// check if cursor is valid and open
-		if ((cursor == null) || (cursor.moveToFirst() == false)) {
-			return false;
+		TableCategory category = new TableCategory();
+		TableSubCategory subCategory  = new TableSubCategory();
+		Cursor cursor;
+		// category
+		cursor = getContentResolver().query(category.getUri(), category.getAllColumns(), TableCategory.CATEGID + "=?", new String[] {Integer.toString(categoryId)}, null);
+		if ((cursor != null) && (cursor.moveToFirst())) {
+			// set category name and sub category name
+			mCategoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
+		} else {
+			mCategoryName =  null;
 		}
-		
-		// set category name
-		// set subcategory name
-		mCategoryName = cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-		mSubCategoryName = cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
+		// sub-category
+		cursor = getContentResolver().query(subCategory.getUri(), subCategory.getAllColumns(), TableSubCategory.SUBCATEGID + "=?", new String[] {Integer.toString(subCategoryId)}, null);
+		if ((cursor != null) && (cursor.moveToFirst())) {
+			// set category name and sub category name
+			mSubCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
+		} else {
+			mSubCategoryName =  null;
+		}
 		
 		return true;
 	}
@@ -602,8 +609,8 @@ public class CheckingAccountActivity extends FragmentActivity {
 		mToAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TOACCOUNTID));
 		mTransCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
 		mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
-		mAmount = mApplication.getBaseNumericFormatted((float) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT)));
-		mTotAmount = mApplication.getBaseNumericFormatted((float) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT)));
+		mAmount = (float) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+		mTotAmount = (float) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
 		mPayeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
 		mCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
 		mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
@@ -611,12 +618,6 @@ public class CheckingAccountActivity extends FragmentActivity {
 		datepart = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE)).split("-");
 		// set date
 		setDate(Integer.parseInt(datepart[YEAR]), Integer.parseInt(datepart[MONTH]), Integer.parseInt(datepart[DAY]));
-		
-		// format value decimal
-		DecimalFormatSymbols symbols = ((DecimalFormat)DecimalFormat.getInstance()).getDecimalFormatSymbols();
-		
-		mAmount = mAmount.replace(Character.toString(symbols.getDecimalSeparator()), ".");
-		mTotAmount = mTotAmount.replace(Character.toString(symbols.getDecimalSeparator()), ".");
 		
 		selectAccountName(mToAccountId);
 		selectPayeeName(mPayeeId);

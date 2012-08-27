@@ -243,7 +243,7 @@ public class CategoryActivity extends FragmentActivity {
 							 " OR" +
 							 " EXISTS (select * from SUBCATEGORY_V1 t where CATEGORY_V1.CATEGID=t.CATEGID AND " + TableSubCategory.SUBCATEGNAME  + " LIKE '" + mCurFilter + "%')"; 
 				}
-				return new CursorLoader(getActivity(), mCategory.getUri(), mCategory.getAllColumns(), select, null, TableCategory.CATEGNAME);
+				return new CursorLoader(getActivity(), mCategory.getUri(), mCategory.getAllColumns(), select, null, "upper( " + TableCategory.CATEGNAME + ")");
 			}
 			return null;
 		}

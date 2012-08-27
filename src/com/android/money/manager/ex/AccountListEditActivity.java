@@ -22,12 +22,6 @@ package com.android.money.manager.ex;
 
 import java.util.Arrays;
 
-import com.android.money.manager.ex.database.QueryCategorySubCategory;
-import com.android.money.manager.ex.database.TableAccountList;
-import com.android.money.manager.ex.database.TableCheckingAccount;
-import com.android.money.manager.ex.database.TableCurrencyFormats;
-import com.android.money.manager.ex.database.TablePayee;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -39,17 +33,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
+
+import com.android.money.manager.ex.database.TableAccountList;
+import com.android.money.manager.ex.database.TableCurrencyFormats;
 
 /**
  * @author Francesco Berton
@@ -93,7 +88,7 @@ public class AccountListEditActivity extends FragmentActivity {
 	private String mContactInfo;
 	private String mAccessInfo;
 	private String mStatus;
-	private String mInitialBal;
+	private float mInitialBal;
 	private String mNotes;
 	private String mFavoriteAcct;
 	private int mCurrencyId = -1;
@@ -139,7 +134,7 @@ public class AccountListEditActivity extends FragmentActivity {
 			mAccessInfo = savedInstanceState.getString(KEY_ACCESS_INFO);
 			mStatus = savedInstanceState.getString(KEY_STATUS);
 			if (!(TextUtils.isEmpty(savedInstanceState.getString(KEY_INITIAL_BAL)))) {
-				mInitialBal = savedInstanceState.getString(KEY_INITIAL_BAL);
+				mInitialBal = savedInstanceState.getFloat(KEY_INITIAL_BAL);
 			}
 			mNotes = savedInstanceState.getString(KEY_NOTES);
 			mFavoriteAcct = savedInstanceState.getString(KEY_FAVORITE_ACCT);
@@ -195,8 +190,8 @@ public class AccountListEditActivity extends FragmentActivity {
 		if (!(TextUtils.isEmpty(mAccessInfo))) {
 			edtAccessInfo.setText(mAccessInfo);
 		}
-		if (!(TextUtils.isEmpty(mInitialBal))) {
-			edtInitialBalance.setText(mInitialBal);
+		if (!(mInitialBal == 0)) {
+			edtInitialBalance.setText(Float.toString(mInitialBal));
 		}
 		if (!(TextUtils.isEmpty(mNotes))) {
 			edtNotes.setText(mNotes);
@@ -335,7 +330,7 @@ public class AccountListEditActivity extends FragmentActivity {
 		outState.putString(KEY_CONTACT_INFO, mContactInfo);
 		outState.putString(KEY_ACCESS_INFO, mAccessInfo);
 		outState.putString(KEY_STATUS, mStatus);
-		outState.putString(KEY_INITIAL_BAL, mInitialBal);
+		outState.putFloat(KEY_INITIAL_BAL, mInitialBal);
 		outState.putString(KEY_NOTES, mNotes);
 		outState.putString(KEY_FAVORITE_ACCT, mFavoriteAcct);
 		outState.putInt(KEY_CURRENCY_ID, mCurrencyId);
@@ -354,7 +349,11 @@ public class AccountListEditActivity extends FragmentActivity {
 		mWebsite = edtWebsite.getText().toString();
 		mContactInfo = edtContact.getText().toString();
 		mAccessInfo = edtAccessInfo.getText().toString();
-		mInitialBal = edtInitialBalance.getText().toString();
+		if (!(TextUtils.isEmpty(edtInitialBalance.getText().toString()))) {
+			mInitialBal = Float.valueOf(edtInitialBalance.getText().toString().trim()).floatValue();
+		} else {
+			mInitialBal = 0;
+		}
 		mNotes = edtNotes.getText().toString();
 		mFavoriteAcct = (chkbFavouriteAccount.isChecked() ? "TRUE" : "FALSE");
 		
@@ -363,7 +362,7 @@ public class AccountListEditActivity extends FragmentActivity {
 				Toast.makeText(this, R.string.error_currency_not_selected, Toast.LENGTH_LONG).show();
 				return false;
 			}
-			if (TextUtils.isEmpty(mInitialBal)) {
+			if (mInitialBal == 0) {
 				Toast.makeText(this, R.string.error_initialbal_empty, Toast.LENGTH_LONG).show();
 				return false;
 			}
@@ -455,12 +454,12 @@ public class AccountListEditActivity extends FragmentActivity {
 		mWebsite = cursor.getString(cursor.getColumnIndex(TableAccountList.WEBSITE));
 		mContactInfo = cursor.getString(cursor.getColumnIndex(TableAccountList.CONTACTINFO));
 		mAccessInfo = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCESSINFO));
-		mInitialBal = mApplication.getBaseNumericFormatted((float) cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL)));
+		mInitialBal = (float) cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
 		mFavoriteAcct = cursor.getString(cursor.getColumnIndex(TableAccountList.FAVORITEACCT));		
 		mCurrencyId = cursor.getInt(cursor.getColumnIndex(TableAccountList.CURRENCYID));
 		// TODO Find a better way to format according to system settings 
 		// Format Decimal Value 
-		mInitialBal = mInitialBal.replace(",", ".");
+		//mInitialBal = mInitialBal.replace(",", ".");
 		// TODO Select currency name: could be improved for better usage of members
 		selectCurrencyName(mCurrencyId);
 		// return

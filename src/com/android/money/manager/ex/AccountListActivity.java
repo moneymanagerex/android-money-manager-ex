@@ -47,14 +47,12 @@ import com.android.money.manager.ex.fragment.MoneyListFragment;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 0.1.0
+ * @version 1.0.0
  * 
  */
 public class AccountListActivity extends FragmentActivity {
-	//TODO insert account
-	//TODO delete account
-	//TODO edit account
 	private static final String LOGCAT = AccountListActivity.class.getSimpleName();
+	private static final String FRAGMENTTAG = AccountListActivity.class.getSimpleName() + "_Fragment";
 	public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
 	public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
 	// ID degli loader
@@ -78,15 +76,17 @@ public class AccountListActivity extends FragmentActivity {
 		FragmentManager fm = getSupportFragmentManager();
 		// attach del fragment all'activity
         if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment).commit();
+            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
         }
 	}
 	
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			//imposto il risultato ed esco
-			listFragment.setResultAndFinish();
+			AccountLoaderListFragment fragment = (AccountLoaderListFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+			if (fragment != null) {
+				fragment.setResultAndFinish();
+			}
 		}
 		//processo classico del tasto
 		return super.onKeyUp(keyCode, event);
@@ -202,7 +202,7 @@ public class AccountListActivity extends FragmentActivity {
 				if (!TextUtils.isEmpty(mCurFilter)) {
 					select = TableAccountList.ACCOUNTNAME + " LIKE '" + mCurFilter + "%'"; 
 				}
-				return new CursorLoader(getActivity(), mAccount.getUri(), mAccount.getAllColumns(), select, null, TableAccountList.ACCOUNTNAME);
+				return new CursorLoader(getActivity(), mAccount.getUri(), mAccount.getAllColumns(), select, null, "upper(" + TableAccountList.ACCOUNTNAME + ")");
 			}
 
 			return null;

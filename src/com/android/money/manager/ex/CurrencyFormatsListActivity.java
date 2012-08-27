@@ -53,6 +53,7 @@ import com.android.money.manager.ex.fragment.MoneyListFragment;
  */
 public class CurrencyFormatsListActivity extends FragmentActivity {
 	private static final String LOGCAT = CurrencyFormatsListActivity.class.getSimpleName();
+	private static final String FRAGMENTTAG = CurrencyFormatsListActivity.class.getSimpleName() + "_Fragment";
 	public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
 	public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
 	// ID loader
@@ -75,7 +76,7 @@ public class CurrencyFormatsListActivity extends FragmentActivity {
 		
 		FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment).commit();
+            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
         }
 	}
 	
@@ -83,7 +84,10 @@ public class CurrencyFormatsListActivity extends FragmentActivity {
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		// intercept key back
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			listFragment.setResultAndFinish();
+			CurrencyFormatsLoaderListFragment fragment = (CurrencyFormatsLoaderListFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+			if (fragment != null) {
+				fragment.setResultAndFinish();
+			}
 		}
 		return super.onKeyUp(keyCode, event);
 	}
@@ -194,7 +198,7 @@ public class CurrencyFormatsListActivity extends FragmentActivity {
 				if (!TextUtils.isEmpty(mCurFilter)) {
 					select = TableCurrencyFormats.CURRENCYNAME + " LIKE '" + mCurFilter + "%'"; 
 				}
-				return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(), select, null, TableCurrencyFormats.CURRENCYNAME);
+				return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(), select, null, "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
 			}
 
 			return null;

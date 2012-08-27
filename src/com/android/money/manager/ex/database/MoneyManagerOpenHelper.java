@@ -52,7 +52,11 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		// verbose open file
 		Log.v(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
 	}
-	
+	/**
+	 * 
+	 * @param db SQLite database to execute raw SQL
+	 * @param rawId id raw resource
+	 */
 	private void executeRawSql(SQLiteDatabase db, int rawId) {
 		String sqlCreate = new MoneyManagerApplication().getRawAsString(mContext, rawId);
 		String sqlStatment[] = sqlCreate.split(";");
@@ -77,6 +81,11 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
+	public void onOpen(SQLiteDatabase db) {
+		super.onOpen(db);
+	}
+	
+	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.i(LOGCAT, "execute onUpgrade(" + Integer.toString(oldVersion) + ", " + Integer.toString(newVersion) + " method");
 		// update databases
@@ -93,7 +102,62 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 			}
 		}
 	}
-	
+	/**
+	 * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
+	 * It has no means to return any data (such as the number of affected rows). Instead, you're encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
+	 * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
+	 * 
+	 * @param sql the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
+	 * @since versionCode = 12 Version = 0.5.2
+	 * 	 
+	 */
+	public void execSQL(String sql) throws SQLException {
+		execSQL(this.getWritableDatabase(), sql);
+	}
+	/**
+	 * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
+	 * It has no means to return any data (such as the number of affected rows). Instead, you're encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
+	 * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
+	 * 
+	 * @param sql the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
+	 * @param bingArgs only byte[], String, Long and Double are supported in bindArgs.
+	 * @since versionCode = 12 Version = 0.5.2
+	 * 	 
+	 */
+	public void execSQL(String sql, Object[] bindArgs) throws SQLException {
+		execSQL(this.getWritableDatabase(), sql, bindArgs);
+	}
+	/**
+	 * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
+	 * It has no means to return any data (such as the number of affected rows). Instead, you're encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
+	 * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
+	 * 
+	 * @param db the database
+	 * @param sql the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
+	 * @since versionCode = 12 Version = 0.5.2
+	 * 	 
+	 */
+	public void execSQL(SQLiteDatabase db, String sql) throws SQLException{
+		db.execSQL(sql);
+	}
+	/**
+	 * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
+	 * It has no means to return any data (such as the number of affected rows). Instead, you're encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
+	 * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
+	 * 
+	 * @param db the database
+	 * @param sql the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
+	 * @param bingArgs only byte[], String, Long and Double are supported in bindArgs.
+	 * @since versionCode = 12 Version = 0.5.2
+	 * 	 
+	 */	
+	public void execSQL(SQLiteDatabase db, String sql, Object[] bindArgs) throws SQLException {
+		db.execSQL(sql, bindArgs);
+	}
+	/**
+	 * 
+	 * @return List all accounts
+	 */
 	public List<TableAccountList> getListAccounts() {
 		return getListAccounts(false, false);
 	}
@@ -113,7 +177,9 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		if (open) { where = "LOWER(STATUS)='open'"; }
 		if (favorite) { where = "LOWER(FAVORITEACCT)='true'"; }
 		// data cursor
-		Cursor cursor = mContext.getContentResolver().query(new TableAccountList().getUri(), null, where, null, "ACCOUNTNAME ASC");
+		Cursor cursor = mContext.getContentResolver().query(
+				new TableAccountList().getUri(), null, where, null,
+				"upper(" + TableAccountList.ACCOUNTNAME + ")");
 		// populate list from data cursor
 		if (cursor != null && cursor.moveToFirst()) {
 			while (cursor.isAfterLast() == false) {

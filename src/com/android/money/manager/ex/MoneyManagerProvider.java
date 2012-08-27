@@ -114,13 +114,23 @@ public class MoneyManagerProvider extends ContentProvider {
 				// compose log verbose
 				if (TextUtils.isEmpty(selection) == false) { log += " WHERE " + selection; }
 				if (selectionArgs != null) { log += "; ARGS=" + Arrays.asList(selectionArgs).toString(); }
-				Log.i(LOGCAT, log);
+				// open transaction
+				database.beginTransaction();
+				Log.v(LOGCAT, "database begin transaction");
 				try {
+					Log.v(LOGCAT, log);
 					rowsDelete = database.delete(dataset.getSource(), selection, selectionArgs);
+					// committed
+					Log.v(LOGCAT, "database set transaction successful");
+					database.setTransactionSuccessful();
 				} catch (SQLiteException sqlLiteExc) {
 					Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
 				} catch (Exception exc) {
 					Log.e(LOGCAT, exc.getMessage());
+				} finally {
+					// close transaction
+					database.endTransaction();
+					Log.v(LOGCAT, "database end transaction");
 				}
 				break;
 			default:
@@ -157,13 +167,23 @@ public class MoneyManagerProvider extends ContentProvider {
 				String log = "INSERT INTO " + dataset.getSource();
 				// compose log verbose
 				if (values != null) { log += " VALUES ( " + values.toString() + ")"; }
-				Log.i(LOGCAT, log);
+				// open transaction
+				database.beginTransaction();
+				Log.v(LOGCAT, "database begin transaction");
 				try {
+					Log.v(LOGCAT, log);
 					id = database.insert(dataset.getSource(), null, values);
+					// committed
+					Log.v(LOGCAT, "database set transaction successful");
+					database.setTransactionSuccessful();
 				} catch (SQLiteException sqlLiteExc) {
 					Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
 				} catch (Exception exc) {
 					Log.e(LOGCAT, exc.getMessage());
+				} finally {
+					// close transaction
+					database.endTransaction();
+					Log.v(LOGCAT, "database end transaction");
 				}
 				parse = dataset.getBasepath() + "/" + id;
 				break;
@@ -184,7 +204,8 @@ public class MoneyManagerProvider extends ContentProvider {
 		// open connection to database
 		databaseHelper = new MoneyManagerOpenHelper(getContext());
 		// This statement serves to force the creation of the database
-		SQLiteDatabase database = databaseHelper.getReadableDatabase();
+		SQLiteDatabase database = databaseHelper.getWritableDatabase();
+		
 		return false;
 	}
 
@@ -227,6 +248,7 @@ public class MoneyManagerProvider extends ContentProvider {
 		}
 		// notify listeners waiting for the data is ready
 		cursorRet.setNotificationUri(getContext().getContentResolver(), uri);
+		Log.v(LOGCAT, "Rows number returned: " + cursorRet.getCount());
 		return cursorRet;
 	}
 
@@ -248,14 +270,24 @@ public class MoneyManagerProvider extends ContentProvider {
 				if (values != null) { log += " SET " + values.toString(); }
 				if (TextUtils.isEmpty(whereClause) == false) { log += " WHERE " + whereClause; }
 				if (whereArgs != null) { log += "; ARGS=" + Arrays.asList(whereArgs).toString(); }
-				Log.i(LOGCAT, log);
+				// open transaction
+				database.beginTransaction();
+				Log.v(LOGCAT, "database begin transaction");
 				// update
 				try {
+					Log.v(LOGCAT, log);
 					rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
+					// committed
+					Log.v(LOGCAT, "database set transaction successful");
+					database.setTransactionSuccessful();
 				} catch (SQLiteException sqlLiteExc) {
 					Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
 				} catch (Exception exc) {
 					Log.e(LOGCAT, exc.getMessage());
+				} finally {
+					// close transaction
+					database.endTransaction();
+					Log.v(LOGCAT, "database end transaction");
 				}
 				break;
 			default:
@@ -272,36 +304,36 @@ public class MoneyManagerProvider extends ContentProvider {
 	
 	private String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
 		String selectList = "", from = "", where = "", sort = "";
-		// composizione della selectlist
+		// compose select list
 		if (projection == null) {
 			selectList = "SELECT *";
 		} else {
 			
 			selectList = "SELECT ";
-			// ciclo i campi
+
 			for(int i = 0; i < projection.length; i ++) {
 				if (i > 0) { selectList += ", "; }
 				selectList += projection[i];
 			}
 		}
-		// composizione del from
+		// compose from
 		from = "FROM (" + query + ") T";
-		// composzione del where
+		// compose where
 		if (TextUtils.isEmpty(selection) == false) {
 			if (selection.contains("WHERE") == false) { where += "WHERE"; }
 			where += " " + selection;
 		}
-		// composizione del sort
+		// compose sort
 		if (TextUtils.isEmpty(sortOrder) == false) {
 			if (sortOrder.contains("ORDER BY") == false) { sort += "ORDER BY " ; }
 			sort += " " + sortOrder;
 		}
-		// composizione della query da ritornare
+		// compose statment to return
 		query = selectList + " " + from;
-		// controllo se ho where e sort
+		// check where or sort not empty
 		if (TextUtils.isEmpty(where) == false) { query += " " + where; }
 		if (TextUtils.isEmpty(sort) == false) { query += " " + sort; }
-		// restituisco la query
+		
 		return query;
 	}
 	

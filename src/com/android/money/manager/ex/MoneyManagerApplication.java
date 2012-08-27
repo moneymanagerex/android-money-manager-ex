@@ -101,6 +101,13 @@ public class MoneyManagerApplication extends Application {
 		Log.v(LOGCAT, "Application terminated");
 	}
 	/**
+	 * close process application
+	 */
+	public static void killApplication() {
+		// close application
+		android.os.Process.killProcess(android.os.Process.myPid());
+	}
+	/**
 	 * 
 	 * @return la currency di base utilizzata dalla app
 	 */

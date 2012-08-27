@@ -33,7 +33,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.text.AlteredCharSequence;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -48,6 +47,7 @@ import android.widget.Toast;
 
 import com.android.money.manager.ex.database.SQLTypeTransacion;
 import com.android.money.manager.ex.database.TablePayee;
+import com.android.money.manager.ex.fragment.BaseListFragment;
 import com.android.money.manager.ex.fragment.MoneyListFragment;
 /**
  * 
@@ -57,6 +57,7 @@ import com.android.money.manager.ex.fragment.MoneyListFragment;
 public class PayeeActivity extends FragmentActivity {
 	//TODO issue nr. 8: delete payee
 	private static final String LOGCAT = PayeeActivity.class.getSimpleName();
+	private static final String FRAGMENTTAG = PayeeActivity.class.getSimpleName() + "_Fragment";
 	public static final String INTENT_RESULT_PAYEEID = "PayeeActivity:PayeeId";
 	public static final String INTENT_RESULT_PAYEENAME = "PayeeActivity:PayeeName";
 	// definizione del listFragment
@@ -80,7 +81,7 @@ public class PayeeActivity extends FragmentActivity {
 		FragmentManager fm = getSupportFragmentManager();
 		// attach del fragment all'activity
         if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment).commit();
+            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
         }
 	}
 	
@@ -88,7 +89,10 @@ public class PayeeActivity extends FragmentActivity {
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			//imposto il risultato ed esco
-			listFragment.setResultAndFinish();
+			BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+			if (fragment != null) {
+				fragment.setResultAndFinish();
+			}
 		}
 		//processo classico del tasto
 		return super.onKeyUp(keyCode, event);
@@ -204,7 +208,7 @@ public class PayeeActivity extends FragmentActivity {
 				if (!TextUtils.isEmpty(mCurFilter)) {
 					select = TablePayee.PAYEENAME + " LIKE '" + mCurFilter + "%'"; 
 				}
-				return new CursorLoader(getActivity(), mPayee.getUri(), mPayee.getAllColumns(), select, null, TablePayee.PAYEENAME);
+				return new CursorLoader(getActivity(), mPayee.getUri(), mPayee.getAllColumns(), select, null, "upper(" + TablePayee.PAYEENAME + ")");
 			}
 
 			return null;

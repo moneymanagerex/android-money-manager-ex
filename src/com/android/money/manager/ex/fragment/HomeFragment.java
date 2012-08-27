@@ -112,7 +112,7 @@ public class HomeFragment extends Fragment implements
 				where = "LOWER(FAVORITEACCT)='true'";
 			}
 			return new CursorLoader(getActivity(), accountBills.getUri(),
-					accountBills.getAllColumns(), where, null, "ACCOUNTNAME ASC");
+					accountBills.getAllColumns(), where, null, "upper(" + accountBills.ACCOUNTNAME + ")");
 		default:
 			return null;
 		}

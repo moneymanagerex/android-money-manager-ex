@@ -68,8 +68,9 @@ import com.android.money.manager.ex.fragment.MoneyListFragment;
  * @version 1.0.0
  */
 public class CategorySubCategoryActivity extends FragmentActivity {
-	//TODO Adapter
+
 	private static final String LOGCAT = CategorySubCategoryActivity.class.getSimpleName();
+	private static final String FRAGMENTTAG = CategorySubCategoryActivity.class.getSimpleName() + "_Fragment";
 	public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";
 	public static final String INTENT_RESULT_CATEGNAME = "CategorySubCategory:CategName";
 	public static final String INTENT_RESULT_SUBCATEGID = "CategorySubCategory:SubCategId";
@@ -96,7 +97,7 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 		// management fargment
 		FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment).commit();
+            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
         }
 	}
 	
@@ -104,7 +105,10 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			// set result and terminate activity
-			listFragment.setResultAndFinish();
+			CategorySubLoaderListFragment fragment = (CategorySubLoaderListFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+			if (fragment != null) {
+				fragment.setResultAndFinish();
+			}
 		}
 		return super.onKeyUp(keyCode, event);
 	}
