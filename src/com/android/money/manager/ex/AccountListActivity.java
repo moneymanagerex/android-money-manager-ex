@@ -96,9 +96,9 @@ public class AccountListActivity extends FragmentActivity {
 		implements LoaderManager.LoaderCallbacks<Cursor> {
 		// ID menu item
 		private static final int MENU_ITEM_ADD = 1;
-		//definizione dell'adapter
-		private SimpleCursorAdapter mAdapter;
+		// filter
 		private String mCurFilter;
+		private int mLayout;
 
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
@@ -109,14 +109,7 @@ public class AccountListActivity extends FragmentActivity {
 			setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
 			// ha menu item
 			setHasOptionsMenu(true);
-			int layout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1; 
-			// creo l'adapter
-			mAdapter = new SimpleCursorAdapter(getActivity(),
-                    layout, null,
-                    new String[] { TableAccountList.ACCOUNTNAME  },
-                    new int[] { android.R.id.text1 }, 0);
-			// imposto l'adapter sulla listview
-			setListAdapter(mAdapter);
+			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1; 
 			// registro la listview per il contextmenu
 			registerForContextMenu(getListView());
 			// imposto la modalita di scelta
@@ -141,7 +134,7 @@ public class AccountListActivity extends FragmentActivity {
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			// prendo il cursore per prendere la posizione
-			Cursor cursor = mAdapter.getCursor();
+			Cursor cursor = ((SimpleCursorAdapter)getListView().getAdapter()).getCursor();
 			// mi posiziono dove è stato selezionato
 			cursor.moveToPosition(info.position);
 			// imposto il titolo della del benificiario
@@ -169,7 +162,7 @@ public class AccountListActivity extends FragmentActivity {
 		public boolean onContextItemSelected(MenuItem item) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 			// prendo il cursore
-			Cursor cursor = mAdapter.getCursor();
+			Cursor cursor = ((SimpleCursorAdapter)getListView().getAdapter()).getCursor();
 			// posiziono sull'item selezionato
 			cursor.moveToPosition(info.position);
 			// gestione della selzione dell'item
@@ -212,7 +205,11 @@ public class AccountListActivity extends FragmentActivity {
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			switch (loader.getId()) {
 			case ID_LOADER_ACCOUNT:
-				mAdapter.swapCursor(data);
+				SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(),
+	                    mLayout, data,
+	                    new String[] { TableAccountList.ACCOUNTNAME  },
+	                    new int[] { android.R.id.text1 }, 0);
+				getListView().setAdapter(adapter);
 	            if (isResumed()) {
 	                setListShown(true);
 	            } else {
@@ -225,7 +222,7 @@ public class AccountListActivity extends FragmentActivity {
 		public void onLoaderReset(Loader<Cursor> loader) {
 			switch (loader.getId()) {
 			case ID_LOADER_ACCOUNT:
-				mAdapter.swapCursor(null);
+				// ((SimpleCursorAdapter)getListView().getAdapter()).swapCursor(null);
 			}
 		}
 		
@@ -291,7 +288,7 @@ public class AccountListActivity extends FragmentActivity {
 				// creazione dell'intent di restituzione dei dati
 				Intent result = new Intent();
 				// prendo il cursore
-				Cursor cursor = mAdapter.getCursor();
+				Cursor cursor = ((SimpleCursorAdapter)getListView().getAdapter()).getCursor();
 				// ciclo per vedere l'item selezionato
 				for(int i = 0; i < getListView().getCount(); i ++) {
 					if (getListView().isItemChecked(i)) {

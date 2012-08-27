@@ -119,8 +119,7 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 		private static final int MENU_ITEM_ADD = 1;
 		private static final int SUBMENU_ITEM_ADD_CATEGORY = 2;
 		private static final int SUBMENU_ITEM_ADD_SUBCATEGORY = 3;
-		// instance adapter
-		private CategorySubCategoryAdapter mAdapter;
+
 		private int mLayout;
 		private String mCurFilter;
 
@@ -133,21 +132,33 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 			setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
 			setHasOptionsMenu(true);
 			// define layout
-			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_2; 
+			mLayout = mAction.equals(Intent.ACTION_PICK) ? R.layout.simple_list_item_multiple_choice_2 : android.R.layout.simple_list_item_2; 
 
 			/*mAdapter = new SimpleCursorAdapter(getActivity(),
                     mLayout, null,
                     new String[] { QueryCategorySubCategory.CATEGSUBNAME  },
                     new int[] { android.R.id.text1 }, 0);*/
-			mAdapter = new CategorySubCategoryAdapter(getActivity(), null);
+			/*mAdapter = new CategorySubCategoryAdapter(getActivity(), null);
             // set adapter for listview
-			setListAdapter(mAdapter);
+			setListAdapter(mAdapter);*/
 			// manage contextmenu
 			registerForContextMenu(getListView());
 
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 			setListShown(false);
 
+			getListView().setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					CheckedTextView text1 = (CheckedTextView)view.findViewById(android.R.id.text1);
+					text1.toggle(); // change status
+					// save state position
+					getListView().setItemChecked(position, text1.isChecked());
+				}
+			});
+			
 			// start loader
 			getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
 		}
@@ -170,7 +181,7 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			// take instance of cursor and move to position
-			Cursor cursor = mAdapter.getCursor();
+			Cursor cursor = ((CategorySubCategoryAdapter)getListView().getAdapter()).getCursor();
 			cursor.moveToPosition(info.position);
 			// define menu
 			menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGSUBNAME)));
@@ -199,7 +210,7 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 		public boolean onContextItemSelected(MenuItem item) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 			// instance of cursor and move to position
-			Cursor cursor = mAdapter.getCursor();
+			Cursor cursor = ((CategorySubCategoryAdapter)getListView().getAdapter()).getCursor();
 			cursor.moveToPosition(info.position);
 			// manage select menu
 			switch (item.getItemId()) {
@@ -266,7 +277,9 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			switch (loader.getId()) {
 			case ID_LOADER_CATEGORYSUB:
-				mAdapter.swapCursor(data);
+				CategorySubCategoryAdapter adapter = new CategorySubCategoryAdapter(getActivity(), data);
+	            // set adapter for listview
+				setListAdapter(adapter);
 	            if (isResumed()) {
 	                setListShown(true);
 	            } else {
@@ -279,7 +292,7 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 		public void onLoaderReset(Loader<Cursor> loader) {
 			switch (loader.getId()) {
 			case ID_LOADER_CATEGORYSUB:
-				mAdapter.swapCursor(null);
+				//mAdapter.swapCursor(null);
 			}
 		}
 		
@@ -289,7 +302,7 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 				// intent for data result
 				Intent result = new Intent();
 				
-				Cursor cursor = mAdapter.getCursor();
+				Cursor cursor = ((CategorySubCategoryAdapter)getListView().getAdapter()).getCursor();
 				// cycle the cursor to see the selected item
 				for(int i = 0; i < getListView().getCount(); i ++) {
 					if (getListView().isItemChecked(i)) {
@@ -506,23 +519,18 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 				if ((view == null) || (cursor == null)) { return; }
 				TextView text1 = (TextView)view.findViewById(android.R.id.text1);
 				TextView text2 = (TextView)view.findViewById(android.R.id.text2);
-				if (mLayout != android.R.layout.simple_list_item_multiple_choice) {
-					if (TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)))) {
-						text1.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME)));
-						text2.setText("");
-					} else {
-						text1.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)));
-						text2.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME)));
-					}
+			
+				if (TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)))) {
+					text1.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME)));
+					text2.setText("");
 				} else {
-					String text = "";
-					if (TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)))) {
-						text = cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-					} else {
-						text = cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)) + "<br><small>" +
-								cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME)) + "</small>";
-					}
-					text1.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+					text1.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)));
+					text2.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME)));
+				}
+				
+				if (mLayout == R.layout.simple_list_item_multiple_choice_2) {
+					CheckedTextView chekedtext = (CheckedTextView)view.findViewById(android.R.id.text1);
+					chekedtext.setChecked(getListView().isItemChecked(cursor.getPosition()));
 				}
 			}
 		}
