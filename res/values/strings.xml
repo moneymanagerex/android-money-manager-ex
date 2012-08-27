@@ -21,8 +21,8 @@
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
     <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
-    <string name="application_definition">That\'s a simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
-	<string name="application_credits">Android Money Manager Ex Project use ActionBarSherlock and ViewPagerIndicator libraries</string>
+    <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
+	<string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock and ViewPagerIndicator libraries</string>
 	<string name="application_license">Open source licenses</string>
 	
     <!-- database -->
@@ -38,7 +38,7 @@
     <string name="menu_import_from_storage">Import from storage</string>
     <string name="menu_export_to_storage">Export to storage</string>
     <string name="menu_manage">Manage</string>
-    <string name="menu_sync_dropbox">Sync Dropbox</string>
+    <string name="menu_sync_dropbox">Dropbox Sync</string>
     <string name="menu_tools">Tools</string>
     <string name="menu_use_external_db">Use External Database</string>
 
@@ -46,32 +46,32 @@
     <string name="emptyFolder">Empty folder</string>
     <string name="upLevel">Up level</string>
     <string name="import_export">Import / Export</string>
-    <string name="import_export_database_progress">Import/Export database in progress</string>
+    <string name="import_export_database_progress">Database import/export in progress</string>
     <string name="import_export_success">Import / Export completed successfully</string>
     <string name="import_export_failed">Import / Export failed</string>
 
     <!-- dropbox -->
-    <string name="dropbox_link">Link with Dropbox</string>
+    <string name="dropbox_link">Link to Dropbox</string>
     <string name="dropbox_unlink">Unlink from Dropbox</string>
-    <string name="dropbox_listFileProgress">List files in progress…</string>
-    <string name="dropbox_syncProgress">Sync Dropbox in progress…</string>
-    <string name="dropbox_downloadProgress">Download file from Dropbox…</string>
-    <string name="dropbox_uploadProgress">Upload file to Dropbox…</string>
+    <string name="dropbox_listFileProgress">File list in progress…</string>
+    <string name="dropbox_syncProgress">Dropbox Sync in progress…</string>
+    <string name="dropbox_downloadProgress">Downloading file from Dropbox…</string>
+    <string name="dropbox_uploadProgress">Uploading file to Dropbox…</string>
     <string name="dropbox_account">Dropbox Account</string>
     <string name="dropbox_linkedFile">Dropbox linked file</string>
-    <string name="dropbox_method">Dropbox Synchornization Method</string>
+    <string name="dropbox_method">Dropbox Synchronization Method</string>
 
     <!-- preferences -->
     <string name="preferences_general">General</string>
     <string name="preferences_dispaly">Display</string>
-    <string name="base_currency">Base Currency</string>
-    <string name="accounts_visible">Accounts Visible</string>
-    <string name="view_accounts_opened">View accounts opened</string>
+    <string name="base_currency">Base currency</string>
+    <string name="accounts_visible">Visible accounts</string>
+    <string name="view_accounts_opened">View open accounts</string>
     <string name="if_not_selected_willShowAllAccounts">If not selected will show all accounts</string>
-    <string name="view_accounts_favorites">View accounts favorites</string>
+    <string name="view_accounts_favorites">View favourite accounts</string>
     <string name="preferences_version">Android Money Manager Ex</string>
     <string name="version">Version</string>
-    <string name="preferences_dropbox">Settings Dropbox</string>
+    <string name="preferences_dropbox">Dropbox settings</string>
     <string name="preferences_database_path">Database path</string>
 
     <!-- account -->
@@ -192,7 +192,7 @@
     <string name="unlink">Unlink</string>
     <string name="upload">Upload</string>
     <string name="username">User Name</string>
-    <string name="tell_us_a_problem">Tell us a bug or a problem</string>
+    <string name="tell_us_a_problem">Please report any bugs or problems</string>
     <string name="to">To</string>
     <string name="website">Website</string>
     <string name="contact">Contact</string>
