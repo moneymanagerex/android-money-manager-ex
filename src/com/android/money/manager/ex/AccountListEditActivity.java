@@ -190,9 +190,10 @@ public class AccountListEditActivity extends FragmentActivity {
 		if (!(TextUtils.isEmpty(mAccessInfo))) {
 			edtAccessInfo.setText(mAccessInfo);
 		}
-		if (!(mInitialBal == 0)) {
+		/*if (!(mInitialBal == 0)) {
 			edtInitialBalance.setText(Float.toString(mInitialBal));
-		}
+		}*/
+		edtInitialBalance.setText(Float.toString(mInitialBal));
 		if (!(TextUtils.isEmpty(mNotes))) {
 			edtNotes.setText(mNotes);
 		}
@@ -362,7 +363,7 @@ public class AccountListEditActivity extends FragmentActivity {
 				Toast.makeText(this, R.string.error_currency_not_selected, Toast.LENGTH_LONG).show();
 				return false;
 			}
-			if (mInitialBal == 0) {
+			if (TextUtils.isEmpty(edtInitialBalance.getText().toString())) {
 				Toast.makeText(this, R.string.error_initialbal_empty, Toast.LENGTH_LONG).show();
 				return false;
 			}

@@ -18,8 +18,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.money.manager.ex"
-    android:versionCode="13"
-    android:versionName="0.5.3" >
+    android:versionCode="14"
+    android:versionName="0.5.4" >
 
     <uses-sdk
         android:minSdkVersion="4"
