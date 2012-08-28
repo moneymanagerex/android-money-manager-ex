@@ -670,10 +670,10 @@ public class CheckingAccountActivity extends FragmentActivity {
 			values.put(TableCheckingAccount.PAYEEID, mPayeeId);
 		}
 		values.put(TableCheckingAccount.TRANSCODE, mTransCode);
-		if (TextUtils.isEmpty(edtAmount.getText().toString()) == false) {
-			values.put(TableCheckingAccount.TRANSAMOUNT, Float.valueOf(edtAmount.getText().toString()));
-		} else {
+		if (TextUtils.isEmpty(edtAmount.getText().toString()) || (!(mTransCode.equalsIgnoreCase("Transfer")))) {
 			values.put(TableCheckingAccount.TRANSAMOUNT, Float.valueOf(edtTotAmount.getText().toString()));
+		} else {
+			values.put(TableCheckingAccount.TRANSAMOUNT, Float.valueOf(edtAmount.getText().toString()));
 		}
 		values.put(TableCheckingAccount.STATUS, mStatus);
 		values.put(TableCheckingAccount.CATEGID, mCategoryId);
@@ -700,7 +700,7 @@ public class CheckingAccountActivity extends FragmentActivity {
 			}
 		}
 		// update category and subcategory payee
-		if (mPayeeId > 0) {
+		if ((!(mTransCode.equalsIgnoreCase("Transfer"))) && (mPayeeId > 0)) {
 			// clear content value for update categoryId, subCategoryId 
 			values.clear();
 			// set categoryId and subCategoryId
