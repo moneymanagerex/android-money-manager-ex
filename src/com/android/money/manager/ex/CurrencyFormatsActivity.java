@@ -108,7 +108,7 @@ public class CurrencyFormatsActivity extends FragmentActivity {
 			edtScale.setText(savedInstanceState.getString(KEY_SCALE));
 			edtConversion.setText(savedInstanceState.getString(KEY_CONVERSION_TO_BASE));
 			// action
-			mIntentAction = savedInstanceState.getString(KEY_CONVERSION_TO_BASE);
+			mIntentAction = savedInstanceState.getString(KEY_ACTION);
 		}
 		// manage intent
 		if (getIntent() != null) {

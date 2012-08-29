@@ -94,9 +94,9 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 
 	private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
 		for(int i = oldVersion + 1; i <= newVersion; i++) {
-			if (databaseVersions[i] == "0000") {
+			if (databaseVersions[i].equals("0000")) {
 				// nothing
-			} else if (databaseVersions[i] == "0990") {
+			} else if (databaseVersions[i].equals("0990")) {
 				// update version to 0.9.9.0 di money manager
 				executeRawSql(db, R.raw.database_0990);
 			}

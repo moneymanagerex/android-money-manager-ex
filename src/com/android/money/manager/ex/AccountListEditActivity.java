@@ -48,7 +48,7 @@ import com.android.money.manager.ex.database.TableCurrencyFormats;
 
 /**
  * @author Francesco Berton
- * @version 0.1.0
+ * @version 0.1.1
  *
  */
 public class AccountListEditActivity extends FragmentActivity {
@@ -56,6 +56,9 @@ public class AccountListEditActivity extends FragmentActivity {
 	private static final String LOGCAT = AccountListEditActivity.class.getSimpleName();
 	// ID REQUEST Data
 	private static final int REQUEST_PICK_CURRENCY = 1;
+	// action
+	public static final String INTENT_ACTION_EDIT = "android.intent.action.EDIT";
+	public static final String INTENT_ACTION_INSERT = "android.intent.action.INSERT";
 	// KEY INTENT for data exchange
 	public static final String KEY_INTENT_ACTION = "AccountListEditActivity:IntentAction";
 	public static final String KEY_ACCOUNT_ID = "AccountListEditActivity:AccountId";
@@ -72,8 +75,9 @@ public class AccountListEditActivity extends FragmentActivity {
 	public static final String KEY_FAVORITE_ACCT = "AccountListEditActivity:FavoriteAcct";
 	public static final String KEY_CURRENCY_ID = "AccountListEditActivity:CurrencyId";
 	public static final String KEY_CURRENCY_NAME = "AccountListEditActivity:CurrencyName";
+	private static final String KEY_ACTION = "AccountListEditActivity:Action";
 	// Action type
-	private String mIntentAction; // Add? Edit?
+	private String mIntentAction = ""; // Insert? Edit?
 	// Table object instance
 	TableAccountList mAccountList = new TableAccountList();
 	// Application
@@ -140,6 +144,7 @@ public class AccountListEditActivity extends FragmentActivity {
 			mFavoriteAcct = savedInstanceState.getString(KEY_FAVORITE_ACCT);
 			mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
 			mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
+			mIntentAction = savedInstanceState.getString(KEY_ACTION);
 		}
 		
 		// Get Intent extras
@@ -199,7 +204,7 @@ public class AccountListEditActivity extends FragmentActivity {
 		}
 		if (!(TextUtils.isEmpty(mFavoriteAcct))) {
 			// TODO should be done better with enumeration for TRUE and FALSE
-			chkbFavouriteAccount.setChecked((mFavoriteAcct == "TRUE") ? true : false);
+			chkbFavouriteAccount.setChecked((mFavoriteAcct.equalsIgnoreCase("TRUE")) ? true : false);
 		} else {
 			mFavoriteAcct = (chkbFavouriteAccount.isChecked() ? "TRUE" : "FALSE");
 		}
@@ -210,7 +215,7 @@ public class AccountListEditActivity extends FragmentActivity {
 		ArrayAdapter<String> adapterAccountType = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountTypeItems);
 		adapterAccountType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinAccountType.setAdapter(adapterAccountType);
-		if (TextUtils.isEmpty(mAccountType) == false) {
+		if (!(TextUtils.isEmpty(mAccountType))) {
 			if (Arrays.asList(mAccountTypeValues).indexOf(mAccountType) >= 0) {
 				spinAccountType.setSelection(Arrays.asList(mAccountTypeValues).indexOf(mAccountType), true);
 			}
@@ -224,7 +229,7 @@ public class AccountListEditActivity extends FragmentActivity {
 		ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
 		adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinAccountStatus.setAdapter(adapterAccountStatus);
-		if (TextUtils.isEmpty(mStatus) == false) {
+		if (!(TextUtils.isEmpty(mStatus))) {
 			if (Arrays.asList(mAccountStatusValues).indexOf(mStatus) >= 0) {
 				spinAccountStatus.setSelection(Arrays.asList(mAccountStatusValues).indexOf(mStatus), true);
 			}
@@ -301,6 +306,9 @@ public class AccountListEditActivity extends FragmentActivity {
 				AccountListEditActivity.this.finish();
 			}
 		});
+		
+		// Refresh data on the other controls
+		refreshCurrencyName();
 	}
 	
 	@Override
@@ -408,8 +416,8 @@ public class AccountListEditActivity extends FragmentActivity {
 		values.put(TableAccountList.INITIALBAL, Float.valueOf(mInitialBal));
 		values.put(TableAccountList.FAVORITEACCT, mFavoriteAcct);
 		values.put(TableAccountList.CURRENCYID, mCurrencyId);
-		// check whether the application should do the update or insert
-		if (mAccountId == -1) {
+		// check whether the application should update or insert
+		if (mIntentAction.equals(INTENT_ACTION_INSERT)) {
 			// insert
 			if (getContentResolver().insert(mAccountList.getUri(), values) == null) {
 				Toast.makeText(this, R.string.db_account_insert_failed, Toast.LENGTH_SHORT).show();
@@ -473,7 +481,7 @@ public class AccountListEditActivity extends FragmentActivity {
 	 */
 	public void refreshCurrencyName() {
 		// write currency into text button
-		if (TextUtils.isEmpty(mCurrencyName) == false)  {
+		if (!(TextUtils.isEmpty(mCurrencyName)))  {
 			btnSelectCurrency.setText(mCurrencyName);
 		} else {
 			btnSelectCurrency.setText(getResources().getString(R.string.select_currency));
@@ -492,7 +500,7 @@ public class AccountListEditActivity extends FragmentActivity {
 				TableCurrencyFormats.CURRENCYID + "=?",
 				(new String[] { Integer.toString(currencyId) }) , null);
 		// check if cursor is valid and open
-		if ((cursor == null) || (cursor.moveToFirst() == false)) {
+		if ((cursor == null) || (!(cursor.moveToFirst()))) {
 			return false;
 		}
 		// set category name
