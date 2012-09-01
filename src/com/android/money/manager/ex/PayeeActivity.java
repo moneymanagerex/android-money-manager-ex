@@ -48,14 +48,13 @@ import android.widget.Toast;
 import com.android.money.manager.ex.database.SQLTypeTransacion;
 import com.android.money.manager.ex.database.TablePayee;
 import com.android.money.manager.ex.fragment.BaseListFragment;
-import com.android.money.manager.ex.fragment.MoneyListFragment;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 0.9.0
  */
 public class PayeeActivity extends FragmentActivity {
-	//TODO issue nr. 8: delete payee
+	@SuppressWarnings("unused")
 	private static final String LOGCAT = PayeeActivity.class.getSimpleName();
 	private static final String FRAGMENTTAG = PayeeActivity.class.getSimpleName() + "_Fragment";
 	public static final String INTENT_RESULT_PAYEEID = "PayeeActivity:PayeeId";
@@ -98,7 +97,7 @@ public class PayeeActivity extends FragmentActivity {
 		return super.onKeyUp(keyCode, event);
 	}
 	
-	public static class PayeeLoaderListFragment extends MoneyListFragment
+	public static class PayeeLoaderListFragment extends BaseListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor> {
 		// ID menu item
 		private static final int MENU_ITEM_ADD = 1;
@@ -116,7 +115,14 @@ public class PayeeActivity extends FragmentActivity {
 			setEmptyText(getActivity().getResources().getString(R.string.payee_empty_list));
 			// ha menu item
 			setHasOptionsMenu(true);
-			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1; 
+			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
+			// associate adapter
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(),
+                    mLayout, null,
+                    new String[] { TablePayee.PAYEENAME  },
+                    new int[] { android.R.id.text1 }, 0);
+			// set adapter
+			setListAdapter(adapter);
 			// registro la listview per il contextmenu
 			registerForContextMenu(getListView());
 			// imposto la modalita di scelta
@@ -141,7 +147,7 @@ public class PayeeActivity extends FragmentActivity {
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			// prendo il cursore per prendere la posizione
-			Cursor cursor = ((SimpleCursorAdapter)getListView().getAdapter()).getCursor();
+			Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
 			// mi posiziono dove è stato selezionato
 			cursor.moveToPosition(info.position);
 			// imposto il titolo della del benificiario
@@ -169,7 +175,7 @@ public class PayeeActivity extends FragmentActivity {
 		public boolean onContextItemSelected(MenuItem item) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 			// prendo il cursore
-			Cursor cursor = ((SimpleCursorAdapter)getListView().getAdapter()).getCursor();
+			Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
 			// posiziono sull'item selezionato
 			cursor.moveToPosition(info.position);
 			// gestione della selzione dell'item
@@ -212,14 +218,8 @@ public class PayeeActivity extends FragmentActivity {
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			switch (loader.getId()) {
 			case ID_LOADER_PAYEE:
-				SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(),
-	                    mLayout, data,
-	                    new String[] { TablePayee.PAYEENAME  },
-	                    new int[] { android.R.id.text1 }, 0);
-				// set adapter
-				getListView().setAdapter(adapter);
-				
-	            if (isResumed()) {
+				((SimpleCursorAdapter)getListAdapter()).swapCursor(data);
+				if (isResumed()) {
 	                setListShown(true);
 	            } else {
 	                setListShownNoAnimation(true);
@@ -329,7 +329,7 @@ public class PayeeActivity extends FragmentActivity {
 				// creazione dell'intent di restituzione dei dati
 				Intent result = new Intent();
 				// prendo il cursore
-				Cursor cursor = ((SimpleCursorAdapter)getListView().getAdapter()).getCursor();
+				Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
 				// ciclo per vedere l'item selezionato
 				for(int i = 0; i < getListView().getCount(); i ++) {
 					if (getListView().isItemChecked(i)) {

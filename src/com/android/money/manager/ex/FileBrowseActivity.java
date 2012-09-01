@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.android.money.manager.ex.fragment.MoneyListFragment;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,6 +44,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.android.money.manager.ex.fragment.BaseListFragment;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -71,7 +71,7 @@ public class FileBrowseActivity extends FragmentActivity {
 	private static File mCurDir;
 	// fragment visualizzato
 	private BrowseFileListFragment listFragment = new BrowseFileListFragment();
-	// modalità di visualizzazione scelta
+	// modalitï¿½ di visualizzazione scelta
 	private static ACTION_VIEW actionView = ACTION_VIEW.NO_MATCH;
 
 	@Override
@@ -143,7 +143,7 @@ public class FileBrowseActivity extends FragmentActivity {
 		return true;
 	}
 
-	public static class BrowseFileListFragment extends MoneyListFragment implements
+	public static class BrowseFileListFragment extends BaseListFragment implements
 			LoaderManager.LoaderCallbacks<List<File>> {
 	
 		// Long Item selected
@@ -179,7 +179,7 @@ public class FileBrowseActivity extends FragmentActivity {
 			// prendo l'informazione sull'item selezione
 			AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
 			final File fileSelect = (File)getListView().getAdapter().getItem(info.position);
-			// controllo se sono nelle modalità giuste
+			// controllo se sono nelle modalitï¿½ giuste
 			if (actionView.equals(ACTION_VIEW.VIEW_FILE) && fileSelect.isDirectory()) { return; }
 			if (actionView.equals(ACTION_VIEW.VIEW_FOLDER) && fileSelect.isFile()) { return; }
 			// imposto il titolo

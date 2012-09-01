@@ -42,9 +42,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.money.manager.ex.database.TableAccountList;
 import com.android.money.manager.ex.database.TableCurrencyFormats;
-import com.android.money.manager.ex.fragment.MoneyListFragment;
+import com.android.money.manager.ex.fragment.BaseListFragment;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -52,6 +51,7 @@ import com.android.money.manager.ex.fragment.MoneyListFragment;
  * 
  */
 public class CurrencyFormatsListActivity extends FragmentActivity {
+	@SuppressWarnings("unused")
 	private static final String LOGCAT = CurrencyFormatsListActivity.class.getSimpleName();
 	private static final String FRAGMENTTAG = CurrencyFormatsListActivity.class.getSimpleName() + "_Fragment";
 	public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
@@ -92,7 +92,7 @@ public class CurrencyFormatsListActivity extends FragmentActivity {
 		return super.onKeyUp(keyCode, event);
 	}
 	
-	public static class CurrencyFormatsLoaderListFragment extends MoneyListFragment
+	public static class CurrencyFormatsLoaderListFragment extends BaseListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor> {
 		// ID menu item
 		private static final int MENU_ITEM_ADD = 1;
@@ -110,6 +110,12 @@ public class CurrencyFormatsListActivity extends FragmentActivity {
 			setHasOptionsMenu(true);
 			
 			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1; 
+			// associate adapter
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(),
+                    mLayout, null,
+                    new String[] { TableCurrencyFormats.CURRENCYNAME  },
+                    new int[] { android.R.id.text1 }, 0);
+			setListAdapter(adapter);
 			
 			registerForContextMenu(getListView());
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -131,7 +137,7 @@ public class CurrencyFormatsListActivity extends FragmentActivity {
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			// take cursor and move into position
-			Cursor cursor = ((SimpleCursorAdapter)getListView().getAdapter()).getCursor();
+			Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
 			cursor.moveToPosition(info.position);
 			// set currency name
 			menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
@@ -158,7 +164,7 @@ public class CurrencyFormatsListActivity extends FragmentActivity {
 		public boolean onContextItemSelected(MenuItem item) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 			// take cursor and move to position
-			Cursor cursor = ((SimpleCursorAdapter)getListView().getAdapter()).getCursor();
+			Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
 			cursor.moveToPosition(info.position);
 			
 			// check item selected
@@ -201,12 +207,7 @@ public class CurrencyFormatsListActivity extends FragmentActivity {
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			switch (loader.getId()) {
 			case ID_LOADER_CURRENCY:
-				SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(),
-	                    mLayout, data,
-	                    new String[] { TableCurrencyFormats.CURRENCYNAME  },
-	                    new int[] { android.R.id.text1 }, 0);
-				// set adapter
-				getListView().setAdapter(adapter);
+				((SimpleCursorAdapter)getListAdapter()).swapCursor(data);
 	            if (isResumed()) {
 	                setListShown(true);
 	            } else {
@@ -219,7 +220,7 @@ public class CurrencyFormatsListActivity extends FragmentActivity {
 		public void onLoaderReset(Loader<Cursor> loader) {
 			switch (loader.getId()) {
 			case ID_LOADER_CURRENCY:
-				// ((SimpleCursorAdapter)getListView().getAdapter()).swapCursor(null);
+				// ((SimpleCursorAdapter)getListAdapter()).swapCursor(null);
 			}
 		}
 
@@ -256,7 +257,7 @@ public class CurrencyFormatsListActivity extends FragmentActivity {
 			if (mAction.equals(Intent.ACTION_PICK)) {
 				// create intent
 				Intent result = new Intent();
-				Cursor cursor = ((SimpleCursorAdapter)getListView().getAdapter()).getCursor();
+				Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
 				
 				for(int i = 0; i < getListView().getCount(); i ++) {
 					if (getListView().isItemChecked(i)) {

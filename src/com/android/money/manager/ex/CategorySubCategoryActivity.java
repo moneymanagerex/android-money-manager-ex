@@ -37,7 +37,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.support.v4.widget.CursorAdapter;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -61,14 +60,14 @@ import com.android.money.manager.ex.database.QueryCategorySubCategory;
 import com.android.money.manager.ex.database.SQLTypeTransacion;
 import com.android.money.manager.ex.database.TableCategory;
 import com.android.money.manager.ex.database.TableSubCategory;
-import com.android.money.manager.ex.fragment.MoneyListFragment;
+import com.android.money.manager.ex.fragment.BaseListFragment;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.0
  */
 public class CategorySubCategoryActivity extends FragmentActivity {
-
+	@SuppressWarnings("unused")
 	private static final String LOGCAT = CategorySubCategoryActivity.class.getSimpleName();
 	private static final String FRAGMENTTAG = CategorySubCategoryActivity.class.getSimpleName() + "_Fragment";
 	public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";
@@ -113,10 +112,8 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 		return super.onKeyUp(keyCode, event);
 	}
 	
-	public static class CategorySubLoaderListFragment extends MoneyListFragment
+	public static class CategorySubLoaderListFragment extends BaseListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor> {
-		// ID menu item
-		private static final int MENU_ITEM_ADD = 1;
 		private static final int SUBMENU_ITEM_ADD_CATEGORY = 2;
 		private static final int SUBMENU_ITEM_ADD_SUBCATEGORY = 3;
 
@@ -132,32 +129,28 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 			setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
 			setHasOptionsMenu(true);
 			// define layout
-			mLayout = mAction.equals(Intent.ACTION_PICK) ? R.layout.simple_list_item_multiple_choice_2 : android.R.layout.simple_list_item_2; 
-
-			/*mAdapter = new SimpleCursorAdapter(getActivity(),
-                    mLayout, null,
-                    new String[] { QueryCategorySubCategory.CATEGSUBNAME  },
-                    new int[] { android.R.id.text1 }, 0);*/
-			/*mAdapter = new CategorySubCategoryAdapter(getActivity(), null);
-            // set adapter for listview
-			setListAdapter(mAdapter);*/
-			// manage contextmenu
+			mLayout = mAction.equals(Intent.ACTION_PICK) ? R.layout.simple_list_item_multiple_choice_2 : android.R.layout.simple_list_item_2;
+			// associate adapter
+			CategorySubCategoryAdapter adapter = new CategorySubCategoryAdapter(getActivity(), null);
+			setListAdapter(adapter);
+			// manage context menu
 			registerForContextMenu(getListView());
 
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 			setListShown(false);
 
-			getListView().setOnItemClickListener(new OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					CheckedTextView text1 = (CheckedTextView)view.findViewById(android.R.id.text1);
-					text1.toggle(); // change status
-					// save state position
-					getListView().setItemChecked(position, text1.isChecked());
-				}
-			});
+			if (mLayout == R.layout.simple_list_item_multiple_choice_2) {
+				getListView().setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						CheckedTextView text1 = (CheckedTextView)view.findViewById(android.R.id.text1);
+						text1.toggle(); // change status
+						// save state position
+						getListView().setItemChecked(position, text1.isChecked());
+					}
+				});
+			}
 			
 			// start loader
 			getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
@@ -277,9 +270,7 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			switch (loader.getId()) {
 			case ID_LOADER_CATEGORYSUB:
-				CategorySubCategoryAdapter adapter = new CategorySubCategoryAdapter(getActivity(), data);
-	            // set adapter for listview
-				setListAdapter(adapter);
+				((CategorySubCategoryAdapter)getListAdapter()).swapCursor(data);
 	            if (isResumed()) {
 	                setListShown(true);
 	            } else {
@@ -504,6 +495,7 @@ public class CategorySubCategoryActivity extends FragmentActivity {
 		public class CategorySubCategoryAdapter extends CursorAdapter {
 			private LayoutInflater mInflater;
 			
+			@SuppressWarnings("deprecation")
 			public CategorySubCategoryAdapter(Context context, Cursor c) {
 				super(context, c);
 				mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

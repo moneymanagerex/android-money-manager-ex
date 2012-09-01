@@ -21,8 +21,8 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.support.v4.widget.SearchViewCompat;
@@ -40,7 +40,7 @@ import android.widget.EditText;
 
 import com.android.money.manager.ex.R;
 
-public class BaseListFragment extends Fragment {
+public class BaseListFragment extends ListFragment {
 	// ID MENU
 	private static final int MENU_ITEM_SEARCH = 1000;
 	// stato della visualizzazione menu
