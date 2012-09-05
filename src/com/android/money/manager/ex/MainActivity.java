@@ -219,7 +219,11 @@ public class MainActivity extends BaseFragmentActivity {
 			break;
 		case R.id.menu_settings:
 			// open pref activity
-			startActivity(new Intent(this, MoneyManagerPrefsActivity.class));
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				startActivity(new Intent(this, MoneyManagerPrefsActivity.class));
+			} else {
+				startActivity(new Intent(this, MoneyManagerPrefsActivity_v10.class));
+			}
 			break;
 		case R.id.menu_about:
 			// open about activity

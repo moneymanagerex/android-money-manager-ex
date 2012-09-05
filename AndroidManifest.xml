@@ -83,6 +83,10 @@
             android:label="Settings" >
         </activity>
         <activity
+            android:name=".MoneyManagerPrefsActivity_v10"
+            android:label="Settings" >
+        </activity>
+        <activity
             android:name=".CheckingAccountActivity"
             android:label="New/Modify Transaction AllData" >
             <action android:name="android.intent.action.EDIT" />
