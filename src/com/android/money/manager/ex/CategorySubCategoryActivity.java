@@ -29,7 +29,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -60,13 +59,14 @@ import com.android.money.manager.ex.database.QueryCategorySubCategory;
 import com.android.money.manager.ex.database.SQLTypeTransacion;
 import com.android.money.manager.ex.database.TableCategory;
 import com.android.money.manager.ex.database.TableSubCategory;
+import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 import com.android.money.manager.ex.fragment.BaseListFragment;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.0
  */
-public class CategorySubCategoryActivity extends FragmentActivity {
+public class CategorySubCategoryActivity extends BaseFragmentActivity {
 	@SuppressWarnings("unused")
 	private static final String LOGCAT = CategorySubCategoryActivity.class.getSimpleName();
 	private static final String FRAGMENTTAG = CategorySubCategoryActivity.class.getSimpleName() + "_Fragment";

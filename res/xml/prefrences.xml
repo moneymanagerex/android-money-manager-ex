@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
@@ -49,10 +49,18 @@
             android:key="dropboxmodesync"
             android:title="@string/dropbox_method" />
     </PreferenceCategory>
-    
     <PreferenceCategory android:title="@string/preferences_database_path" >
         <Preference
             android:key="databasepath"
             android:title="@string/path" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/theme_application" >
+        <ListPreference
+            android:entries="@array/theme_application_items"
+            android:entryValues="@array/theme_application_items"
+            android:defaultValue="@string/theme_holo"
+            android:key="themeapplication"
+            android:title="@string/theme_application" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

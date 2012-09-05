@@ -37,7 +37,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.support.v4.view.Window;
@@ -54,6 +53,7 @@ import com.android.money.manager.ex.MoneyManagerApplication;
 import com.android.money.manager.ex.R;
 import com.android.money.manager.ex.SimpleCrypto;
 import com.android.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.DropboxAPI.DropboxFileInfo;
 import com.dropbox.client2.DropboxAPI.Entry;
@@ -67,7 +67,7 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.TokenPair;
 
-public class DropboxActivity extends FragmentActivity {
+public class DropboxActivity extends BaseFragmentActivity {
 	private static final String LOGCAT = DropboxActivity.class.getSimpleName();
 	// type operation
 	private enum TypeOperation {SYNC, DONWLOAD, UPLOAD};

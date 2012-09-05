@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
@@ -69,6 +70,7 @@ public class MoneyManagerApplication extends Application {
     public static final String PREF_ACCOUNT_OPEN_VISIBLE = "accountsopenvisible";
     public static final String PREF_ACCOUNT_FAV_VISIBLE = "accountsfavoritevisible";
     public static final String PREF_DROPBOX_MODE = "dropboxmodesync";
+    public static final String PREF_THEME = "themeapplication";
     
 	// application preferences
 	private static final String APP_PREFERENCES = "MoneyManagerPreferences";
@@ -101,6 +103,17 @@ public class MoneyManagerApplication extends Application {
 		Log.v(LOGCAT, "Application terminated");
 	}
 	/**
+	 * 
+	 * @param activity to apply the theme
+	 */
+	public void setThemeApplication(Activity activity) {
+		if (getApplicationTheme().equalsIgnoreCase(getResources().getString(R.string.theme_holo))) {
+			activity.setTheme(R.style.Theme_Money_Manager);
+		} else {
+			activity.setTheme(R.style.Theme_Money_Manager_Light);
+		}
+	}
+	/**
 	 * close process application
 	 */
 	public static void killApplication() {
@@ -109,7 +122,23 @@ public class MoneyManagerApplication extends Application {
 	}
 	/**
 	 * 
-	 * @return la currency di base utilizzata dalla app
+	 * @return application theme
+	 */
+	public String getApplicationTheme() {
+		return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_THEME, getResources().getString(R.string.theme_holo));
+	}
+	/**
+	 * 
+	 * @param theme to save into preferences
+	 */
+	public void setApplicationTheme(String theme) {
+		Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+		editor.putString(PREF_THEME, theme);
+		editor.commit();
+	}
+	/**
+	 * 
+	 * @return the base currency used from application
 	 */
 	public int getBaseCurrencyId() {
 		return MoneyManagerApplication.mBaseCurrencyId;

@@ -24,7 +24,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -43,6 +42,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.money.manager.ex.database.TableAccountList;
+import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 import com.android.money.manager.ex.fragment.BaseListFragment;
 /**
  * 
@@ -50,7 +50,7 @@ import com.android.money.manager.ex.fragment.BaseListFragment;
  * @version 1.0.0
  * 
  */
-public class AccountListActivity extends FragmentActivity {
+public class AccountListActivity extends BaseFragmentActivity {
 	@SuppressWarnings("unused")
 	private static final String LOGCAT = AccountListActivity.class.getSimpleName();
 	private static final String FRAGMENTTAG = AccountListActivity.class.getSimpleName() + "_Fragment";

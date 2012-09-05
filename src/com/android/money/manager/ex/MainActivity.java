@@ -52,6 +52,7 @@ import com.android.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.android.money.manager.ex.database.TableAccountList;
 import com.android.money.manager.ex.dropbox.DropboxActivity;
 import com.android.money.manager.ex.fragment.AccountFragment;
+import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 import com.android.money.manager.ex.fragment.HomeFragment;
 import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TitleProvider;
@@ -60,7 +61,7 @@ import com.viewpagerindicator.TitleProvider;
  * @version 1.0.0
  * 
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseFragmentActivity {
 	private static final String LOGCAT = MainActivity.class.getSimpleName();
 	private static final String KEY_CONTENT = "MainActivity:CurrentPos";
 	// definizione dei requestcode da passare alle activity

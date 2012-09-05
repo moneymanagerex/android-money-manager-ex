@@ -16,16 +16,20 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
-        <item name="abBackground">@drawable/drawable_ab_background</item>
+       <item name="abBackground">@drawable/drawable_ab_background</item>
     </style>
 
+    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light">
+        <!-- <item name="abBackground">@drawable/drawable_ab_background</item>  -->
+    </style>
+    
     <!-- <item name="abBackground">@color/abBackground</item> -->
 
     <style name="Money.TextView" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@color/textview_textcolor</item>
+       <!-- <item name="android:textColor">@color/textview_textcolor</item>  -->
     </style>
 
     <style name="Money.TextView.Medium" parent="Money.TextView">

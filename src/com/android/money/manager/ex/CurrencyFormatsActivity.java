@@ -25,7 +25,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -35,15 +34,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.money.manager.ex.database.TableCheckingAccount;
 import com.android.money.manager.ex.database.TableCurrencyFormats;
+import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.0
  * 
  */
-public class CurrencyFormatsActivity extends FragmentActivity {
+public class CurrencyFormatsActivity extends BaseFragmentActivity {
 	private static final String LOGCAT = CurrencyFormatsActivity.class.getSimpleName();
 	// key intent
 	public static final String KEY_CURRENCY_ID = "CurrencyFormatsActivity:CurrencyId";

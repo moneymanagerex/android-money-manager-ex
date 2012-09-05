@@ -81,6 +81,16 @@
         <item>@string/upload</item>
     </string-array>
     
+    <!-- Define array of theme -->
+    <integer-array name="theme_application_values">
+        <item>@style/Theme.Money.Manager</item>
+        <item>@style/Theme.Money.Manager.Light</item>
+    </integer-array>
+    <string-array name="theme_application_items">
+        <item>@string/theme_holo</item>
+        <item>@string/theme_light</item>
+    </string-array>
+    
     <!-- Define currency value -->
     <string-array name="currency_values">
         <item>EUR</item>

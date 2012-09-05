@@ -204,5 +204,8 @@
     <string name="closed">Closed</string>
     <string name="new_edit_currency">New/Edit Currency</string>
     <string name="path">Path</string>
+    <string name="theme_application">Theme Application</string>
+    <string name="theme_holo">Holo</string>
+    <string name="theme_light">Light</string>
 
 </resources>

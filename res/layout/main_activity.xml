@@ -21,12 +21,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/divider_ice_cream_sandwich" />
-    <!-- android:background="@color/holo_green_light" -->
-
     <com.viewpagerindicator.TitlePageIndicator
         android:id="@+id/indicator"
         android:layout_width="fill_parent"

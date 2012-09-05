@@ -17,8 +17,6 @@
  ******************************************************************************/
 package com.android.money.manager.ex;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +28,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItem;
 import android.text.TextUtils;
 import android.util.Log;
@@ -54,13 +51,13 @@ import com.android.money.manager.ex.database.TableCategory;
 import com.android.money.manager.ex.database.TableCheckingAccount;
 import com.android.money.manager.ex.database.TablePayee;
 import com.android.money.manager.ex.database.TableSubCategory;
-import com.android.money.manager.ex.database.ViewAllData;
+import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.1
  */
-public class CheckingAccountActivity extends FragmentActivity {
+public class CheckingAccountActivity extends BaseFragmentActivity {
 	private static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
 	// ID REQUEST Data
 	private static final int REQUEST_PICK_PAYEE = 1;

@@ -27,7 +27,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -45,13 +44,14 @@ import android.widget.Toast;
 
 import com.android.money.manager.ex.database.TableAccountList;
 import com.android.money.manager.ex.database.TableCurrencyFormats;
+import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 
 /**
  * @author Francesco Berton
  * @version 0.1.1
  *
  */
-public class AccountListEditActivity extends FragmentActivity {
+public class AccountListEditActivity extends BaseFragmentActivity {
 	// LOGCAT
 	private static final String LOGCAT = AccountListEditActivity.class.getSimpleName();
 	// ID REQUEST Data

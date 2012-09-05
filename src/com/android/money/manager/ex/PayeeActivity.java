@@ -25,7 +25,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -47,13 +46,14 @@ import android.widget.Toast;
 
 import com.android.money.manager.ex.database.SQLTypeTransacion;
 import com.android.money.manager.ex.database.TablePayee;
+import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 import com.android.money.manager.ex.fragment.BaseListFragment;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 0.9.0
  */
-public class PayeeActivity extends FragmentActivity {
+public class PayeeActivity extends BaseFragmentActivity {
 	@SuppressWarnings("unused")
 	private static final String LOGCAT = PayeeActivity.class.getSimpleName();
 	private static final String FRAGMENTTAG = PayeeActivity.class.getSimpleName() + "_Fragment";

@@ -25,7 +25,6 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -45,6 +44,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 import com.android.money.manager.ex.fragment.BaseListFragment;
 /**
  * 
@@ -52,7 +52,7 @@ import com.android.money.manager.ex.fragment.BaseListFragment;
  * @version 1.0.0
  * 
  */
-public class FileBrowseActivity extends FragmentActivity {
+public class FileBrowseActivity extends BaseFragmentActivity {
 	private static final String LOGCAT = "FileBrowseActivity";
 	// definizione delle azioni custom possibili
 	public static final String INTENT_VIEW_FILE = "com.android.money.manager.ex.custom.intent.action.VIEW_FILE";

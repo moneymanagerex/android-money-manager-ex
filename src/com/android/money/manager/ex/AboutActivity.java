@@ -21,19 +21,20 @@ import java.util.Formatter;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItem;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.android.money.manager.ex.fragment.BaseFragmentActivity;
+
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 0.0.1
  * 
  */
-public class AboutActivity extends FragmentActivity {
+public class AboutActivity extends BaseFragmentActivity {
 	private static final String LOGCAT = AboutActivity.class.getSimpleName();
 	
 	@Override
