@@ -207,5 +207,7 @@
     <string name="theme_application">Theme Application</string>
     <string name="theme_holo">Holo</string>
     <string name="theme_light">Light</string>
+    
+    <!-- 20120906 -->
 
 </resources>
