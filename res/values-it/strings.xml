@@ -209,5 +209,15 @@
     <string name="theme_light">Light</string>
     
     <!-- 20120906 -->
-
+	<string name="close_application">Chiudere l\'Applicazione</string>
+	<string name="question_close_application">Vuoi chiudere l\'applicazione?</string>
+	<string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string> <!-- do not translate -->
+	<string name="payee_can_not_deleted">Il beneficiario selezionato non può essere cancellato perchè referenziato</string>
+	<string name="attention">Attenzione</string>
+	<string name="account_can_not_deleted">Il conto selezionato non può essere cancellato perchè referenziato</string>
+	<string name="currency_can_not_deleted">La valuta selezionata non può essere cancellata perchè referenziata</string>
+	<string name="category_can_not_deleted">La categoria selezionata non può essere cancellata perchè referenziata</string>
+	<!-- 20120909 -->
+	
+	
 </resources>

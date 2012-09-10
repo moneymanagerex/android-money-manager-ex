@@ -27,10 +27,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +50,8 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.view.Window;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.widget.Toast;
 
@@ -67,6 +74,7 @@ public class MainActivity extends BaseFragmentActivity {
 	// definizione dei requestcode da passare alle activity
 	private static final int REQUESTCODE_IMPORT = 1001;
 	private static final int REQUESTCODE_USE_EXTERNAL_DB = 1010;
+	private static final int PICK_FILE_RESULT_CODE = 1;
 	// flag che indica se devo effettuare il refresh grafico
 	private static boolean mRefreshUserInterface = false;
 	// referenza all'applicazione
@@ -208,11 +216,11 @@ public class MainActivity extends BaseFragmentActivity {
 			startActivity(intent);
 			break;
 		case R.id.menu_sync_dropbox:
-			// activity sync dropbox
+			// activity sync dropboxgets
 			startActivity(new Intent(this, DropboxActivity.class));
 			break;
 		case R.id.menu_use_external_db:
-			startFileBrowseActivity(REQUESTCODE_USE_EXTERNAL_DB);
+			pickFile(Environment.getExternalStorageDirectory());
 			break;
 		case R.id.menu_import_storage:
 			startFileBrowseActivity(REQUESTCODE_IMPORT);
@@ -231,7 +239,7 @@ public class MainActivity extends BaseFragmentActivity {
 			break;
 		case R.id.menu_exit:
 			// close application
-			android.os.Process.killProcess(android.os.Process.myPid());
+			exitApplication();
 			break;
 		}
 		return false;
@@ -270,7 +278,24 @@ public class MainActivity extends BaseFragmentActivity {
 			restartActivity();
 			
 			break;
+		case PICK_FILE_RESULT_CODE:
+			if (resultCode==RESULT_OK && data!=null && data.getData()!=null) {
+				// save the database file
+				MoneyManagerApplication.setDatabasePath(getApplicationContext(), data.getData().getPath());
+				// set to restart activity
+				setRestartActivity(true);
+				restartActivity();
+			}
 		}
+	}
+	
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			exitApplication();
+			return true;
+		}
+		return super.onKeyUp(keyCode, event);
 	}
 	
 	/**
@@ -365,6 +390,67 @@ public class MainActivity extends BaseFragmentActivity {
         	}
         }
         mTabsAdapter.notifyDataSetChanged();
+	}
+	/**
+	 * Dialog to choose exit from application
+	 */
+	private void exitApplication() {
+		AlertDialog.Builder exitDialog = new AlertDialog.Builder(this);
+		exitDialog.setTitle(R.string.close_application);
+		exitDialog.setMessage(R.string.question_close_application);
+		exitDialog.setIcon(android.R.drawable.ic_dialog_info);
+		exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				MoneyManagerApplication.killApplication();
+			}
+		});
+		exitDialog.setNegativeButton(android.R.string.no, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		// show dialog
+		exitDialog.create().show();
+	}
+	/**
+	 * pick a file to use
+	 * @param file start folder
+	 */
+	private void pickFile(File file) {
+	    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+	    intent.setDataAndType(Uri.fromFile(file), "vnd.android.cursor.dir/*");
+	    intent.setType("file/*");
+	    if (((MoneyManagerApplication)getApplication()).isUriAvailable(getApplicationContext(), intent)) { 
+		    try {
+		        startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+		    } catch (Exception e) {
+		        Log.e(LOGCAT, e.getMessage());
+		        Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+		    }
+	    } else {
+	    	Toast.makeText(this, R.string.error_intent_pick_file, Toast.LENGTH_LONG).show();
+	    }
+	}
+	/**
+	 * pick a folder to use
+	 * @param file start directory
+	 */
+	private void pickFolder(File file) {
+	    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+	    intent.setDataAndType(Uri.parse("folder://" + file.getPath()), "vnd.android.cursor.dir/*");
+	    intent.setType("folder/*");
+	    if (((MoneyManagerApplication)getApplication()).isUriAvailable(getApplicationContext(), intent)) { 
+		    try {
+		        startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+		    } catch (Exception e) {
+		        Log.e(LOGCAT, e.getMessage());
+		        Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+		    }
+	    } else {
+	    	Toast.makeText(this, R.string.error_intent_pick_file, Toast.LENGTH_LONG).show();
+	    }
 	}
 	/**
 	 * classe per l'importazione/esportazione del database dall'applicazione

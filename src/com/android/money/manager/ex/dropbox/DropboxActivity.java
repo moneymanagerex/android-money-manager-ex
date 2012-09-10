@@ -293,14 +293,15 @@ public class DropboxActivity extends BaseFragmentActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		requestWindowFeature(Window.FEATURE_PROGRESS);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		Log.i(LOGCAT, "activity create");
 		// actionbar
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setProgressBarIndeterminateVisibility(false);
+			setProgressBarIndeterminateVisibility(Boolean.FALSE);
+		    setProgressBarVisibility(Boolean.FALSE);
 		}
 		// create session of dropbox
         AndroidAuthSession session = buildSession();
@@ -427,7 +428,8 @@ public class DropboxActivity extends BaseFragmentActivity {
 			// set orientation
 			forceCurrentOrientation();
 			// show inderteminate progress
-			setProgressBarIndeterminateVisibility(true);
+			setProgressBarIndeterminateVisibility(Boolean.TRUE);
+		    setProgressBarVisibility(Boolean.TRUE);
 		}
 		
 		@Override
@@ -482,7 +484,8 @@ public class DropboxActivity extends BaseFragmentActivity {
 			} else {
 				Toast.makeText(mContext, mError, Toast.LENGTH_LONG).show();
 			}
-			setProgressBarIndeterminateVisibility(false);
+			setProgressBarIndeterminateVisibility(Boolean.FALSE);
+		    setProgressBarVisibility(Boolean.FALSE);
 			// restore dell'orientazione
 			restoreOrietation(mPrevOrientation);
 		}

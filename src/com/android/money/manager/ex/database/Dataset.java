@@ -17,10 +17,18 @@
  ******************************************************************************/
 package com.android.money.manager.ex.database;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.money.manager.ex.MoneyManagerProvider;
 /**
@@ -29,6 +37,8 @@ import com.android.money.manager.ex.MoneyManagerProvider;
  * @version 1.0.0
  */
 public abstract class Dataset implements BaseColumns {
+	private static final String LOGCAT = Dataset.class.getSimpleName();
+	// member private of class
 	private String source = "";
 	private DatasetType type;
 	private String basepath = "";
@@ -143,10 +153,63 @@ public abstract class Dataset implements BaseColumns {
 		return;
 	}
 	/**
-	 * check if record of dataset can be delete
-	 * @return true if record can delete
+	 * The default check in CheckingAccount. If checked to another table use canDelete(Context context, ContentValues values, String className)
+	 * @param context context from call
+	 * @param values to compose filter
+	 * @return true if can delete
 	 */
-	public boolean canDelete() {
-		return true;
+	public boolean canDelete(Context context, ContentValues values) {
+		return canDelete(context, values, TableCheckingAccount.class.getName());
+	}
+	/**
+	 * 
+	 * @param context context from call
+	 * @param values to compose filter
+	 * @param className name dataset to check
+	 * @return true if can delete
+	 */
+	public boolean canDelete(Context context, ContentValues values, String className) {
+		// check if content values is populate
+		if (values.size() < 0) {
+			return true;
+		}
+		// compose filter
+		Iterator<String> iter = values.keySet().iterator();
+		String selection = "";
+		List<String> selectionArgs = new ArrayList<String>();
+		while(iter.hasNext()) {
+			Object key = iter.next();
+			Object value = values.get((String)key);
+			if (!(TextUtils.isEmpty(selection))) {
+				selection += " AND ";
+			}
+			selection += key.toString() + "=?";
+			selectionArgs.add(value.toString());
+		}
+		// create dynamic dataset
+		@SuppressWarnings("rawtypes")
+		Class[] classParm = null;
+		Object[] objectParm = null;
+		Dataset dataset = null;
+		try {
+			Class<?> cls = Class.forName(className);
+			Constructor<?> cnt = cls.getConstructor(classParm);
+			dataset = (Dataset) cnt.newInstance(objectParm);
+		} catch (Exception e) {
+			Log.e(LOGCAT, e.getMessage());
+			return false;
+		}
+		// check if dataset is created
+		if (dataset == null) {
+			Log.v(LOGCAT, "Dataset is not created dynamic. Force return false");
+			return false;
+		}
+		// check if referenced
+		Cursor cursor = context.getContentResolver().query(dataset.getUri(), null, selection, selectionArgs.toArray(new String[selectionArgs.size()]), null);
+		if (cursor != null && cursor.getCount() <= 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

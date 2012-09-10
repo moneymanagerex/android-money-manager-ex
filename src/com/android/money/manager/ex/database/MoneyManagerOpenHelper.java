@@ -182,7 +182,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 				"upper(" + TableAccountList.ACCOUNTNAME + ")");
 		// populate list from data cursor
 		if (cursor != null && cursor.moveToFirst()) {
-			while (cursor.isAfterLast() == false) {
+			while (!(cursor.isAfterLast())) {
 				TableAccountList account = new TableAccountList();
 				account.setValueFromCursor(cursor);
 				listAccount.add(account);
@@ -218,7 +218,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(), null, null, null, TableCategory.CATEGNAME);
 		// populate list from data cursor
 		if ((cursor != null) && (cursor.moveToFirst())) {
-			while (cursor.isAfterLast() == false) {
+			while (!(cursor.isAfterLast())) {
 				TableCategory category = new TableCategory();
 				category.setValueFromCursor(cursor);
 				listCategories.add(category);

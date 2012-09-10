@@ -46,6 +46,7 @@ import android.widget.Toast;
 
 import com.android.money.manager.ex.database.SQLTypeTransacion;
 import com.android.money.manager.ex.database.TablePayee;
+import com.android.money.manager.ex.database.ViewAllData;
 import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 import com.android.money.manager.ex.fragment.BaseListFragment;
 /**
@@ -184,7 +185,26 @@ public class PayeeActivity extends BaseFragmentActivity {
 				showDialogEditPayeeName(SQLTypeTransacion.UPDATE, cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)), cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
 				break;
 			case 1: //DELETE
-				showDialogDeletePayee(cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
+				//if (new TablePayee().canDelete(getActivity(), cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)))) {
+				ContentValues contentValues = new ContentValues();
+				contentValues.put(TablePayee.PAYEEID, cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
+				if (new TablePayee().canDelete(getActivity(), contentValues)) {
+					showDialogDeletePayee(cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
+				} else {
+					new AlertDialog.Builder(getActivity())
+							.setTitle(R.string.attention)
+							.setMessage(R.string.payee_can_not_deleted)
+							.setIcon(android.R.drawable.ic_dialog_alert)
+							.setPositiveButton(android.R.string.ok,
+									new OnClickListener() {
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											dialog.dismiss();
+										}
+									}).create().show();
+				}
 				break;
 			}
 			return false;

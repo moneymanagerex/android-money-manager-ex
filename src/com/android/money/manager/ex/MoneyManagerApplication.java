@@ -30,8 +30,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.preference.PreferenceManager;
@@ -135,6 +138,10 @@ public class MoneyManagerApplication extends Application {
 		Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		editor.putString(PREF_THEME, theme);
 		editor.commit();
+	}
+
+	public boolean isUriAvailable(Context context, Intent intent) {
+		return context.getPackageManager().resolveActivity(intent, 0) != null;
 	}
 	/**
 	 * 

@@ -58,6 +58,7 @@ import com.android.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.android.money.manager.ex.database.QueryCategorySubCategory;
 import com.android.money.manager.ex.database.SQLTypeTransacion;
 import com.android.money.manager.ex.database.TableCategory;
+import com.android.money.manager.ex.database.TablePayee;
 import com.android.money.manager.ex.database.TableSubCategory;
 import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 import com.android.money.manager.ex.fragment.BaseListFragment;
@@ -227,7 +228,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 				}
 				break;
 			case 1: //DELETE
-				showDialogDeletePayee(
+				showDialogDeleteCategorySub(
 						cursor.getInt(cursor
 								.getColumnIndex(QueryCategorySubCategory.CATEGID)),
 						cursor.getInt(cursor
@@ -457,7 +458,32 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 		 * @param categId id of category
 		 * @param subCategId id of subcategory. 0 if not sub category
 		 */
-		private void showDialogDeletePayee(final int categId, final int subCategId) {
+		private void showDialogDeleteCategorySub(final int categId, final int subCategId) {
+			boolean canDelete = false;
+			ContentValues values = new ContentValues();
+			if (subCategId <= 0) {
+				values.put(TableCategory.CATEGID, categId);
+				canDelete = new TableCategory().canDelete(getActivity(), values);
+			} else {
+				values.put(TableSubCategory.SUBCATEGID, subCategId);
+				canDelete = new TableSubCategory().canDelete(getActivity(), values);
+			}
+			if (!(canDelete)) {
+				new AlertDialog.Builder(getActivity())
+				.setTitle(R.string.attention)
+				.setMessage(R.string.category_can_not_deleted)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setPositiveButton(android.R.string.ok,
+						new OnClickListener() {
+							@Override
+							public void onClick(
+									DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						}).create().show();
+				return;
+			}
 			// create and set alert dialog
 			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 			alertDialog.setTitle(R.string.delete_category);

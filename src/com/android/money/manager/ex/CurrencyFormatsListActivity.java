@@ -19,6 +19,7 @@ package com.android.money.manager.ex;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -41,7 +42,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.money.manager.ex.database.TableAccountList;
 import com.android.money.manager.ex.database.TableCurrencyFormats;
+import com.android.money.manager.ex.database.TablePayee;
 import com.android.money.manager.ex.fragment.BaseFragmentActivity;
 import com.android.money.manager.ex.fragment.BaseListFragment;
 /**
@@ -173,7 +176,23 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 				startCurrencyFormatActivity(cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
 				break;
 			case 1: //DELETE
-				showDialogDeleteCurrency(cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
+				ContentValues contentValues = new ContentValues();
+				contentValues.put(TableAccountList.CURRENCYID, cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
+				if (new TablePayee().canDelete(getActivity(), contentValues, TableAccountList.class.getName())) {
+					showDialogDeleteCurrency(cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
+				} else {
+					new AlertDialog.Builder(getActivity())
+							.setTitle(R.string.attention)
+							.setMessage(R.string.currency_can_not_deleted)
+							.setIcon(android.R.drawable.ic_dialog_alert)
+							.setPositiveButton(android.R.string.ok, new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							})
+							.create().show();
+				}
 				break;
 			}
 			return false;

@@ -209,5 +209,13 @@
     <string name="theme_light">Light</string>
     
     <!-- 20120906 -->
-
+	<string name="close_application">Close Application</string>
+	<string name="question_close_application">Do you want close application?</string>
+	<string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string> <!-- do not translate -->
+	<string name="attention">Attention</string>
+	<string name="payee_can_not_deleted">The payee selected can not be deleted because it referenced</string>
+	<string name="account_can_not_deleted">The account selected can not be deleted because it referenced</string>
+	<string name="currency_can_not_deleted">The currency selected can not be deleted because it referenced</string>
+	<string name="category_can_not_deleted">The category selected can not be deleted because it referenced</string>
+	<!-- 20120909 -->
 </resources>

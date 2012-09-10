@@ -442,16 +442,16 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	
 	public void updateTransCode() {
  	   // check type of transaction
- 	   if (mTransCode.equals(getString(R.string.transfer))) {
+ 	   if (mTransCode.equalsIgnoreCase("Transfer")) {
  		  linearPayee.setVisibility(View.GONE);
  		  linearToAccount.setVisibility(View.VISIBLE);
  		  txtAmount.setVisibility(View.VISIBLE);
  		  edtAmount.setVisibility(View.VISIBLE);
  	   } else {
- 		   linearPayee.setVisibility(View.VISIBLE);
- 		   linearToAccount.setVisibility(View.GONE);
-  		  txtAmount.setVisibility(View.GONE);
- 		  edtAmount.setVisibility(View.GONE);
+			linearPayee.setVisibility(View.VISIBLE);
+			linearToAccount.setVisibility(View.GONE);
+			txtAmount.setVisibility(View.GONE);
+			edtAmount.setVisibility(View.GONE);
  		  
  		   txtPayee.setText(mTransCode.equals(getString(R.string.withdrawal)) ? R.string.payee : R.string.from);
  		   mTextDefaultPayee = getResources().getString(mTransCode.equals(getString(R.string.withdrawal)) ? R.string.payee : R.string.from);
