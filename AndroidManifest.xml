@@ -17,7 +17,7 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.money.manager.ex"
+    package="com.money.manager.ex"
     android:versionCode="16"
     android:versionName="0.5.6" >
 
@@ -35,7 +35,7 @@
         android:theme="@style/Theme.Money.Manager" >
         <provider
             android:name=".MoneyManagerProvider"
-            android:authorities="com.android.money.manager.ex.provider" 
+            android:authorities="com.money.manager.ex.provider" 
             android:exported="false">
         </provider>
 
@@ -74,8 +74,8 @@
         </activity>
         <activity android:name="FileBrowseActivity" >
             <intent-filter>
-                <action android:name="com.android.money.manager.ex.custom.intent.action.VIEW_FILE" />
-                <action android:name="com.android.money.manager.ex.custom.intent.action.VIEW_FOLDER" />
+                <action android:name="com.money.manager.ex.custom.intent.action.VIEW_FILE" />
+                <action android:name="com.money.manager.ex.custom.intent.action.VIEW_FOLDER" />
             </intent-filter>
         </activity>
         <activity
