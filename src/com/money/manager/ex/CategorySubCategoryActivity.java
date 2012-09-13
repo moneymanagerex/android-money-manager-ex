@@ -496,7 +496,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							int rowsDelete = 0;
-							if (subCategId == 0) {
+							if (subCategId <= 0) {
 								rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(), TableCategory.CATEGID + "=" + categId, null);
 							} else {
 								rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(), TableSubCategory.CATEGID + "=" + categId + " AND " + TableSubCategory.SUBCATEGID + "=" + subCategId, null);

@@ -21,6 +21,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -174,9 +175,9 @@ public abstract class Dataset implements BaseColumns {
 			return true;
 		}
 		// compose filter
-		Iterator<String> iter = values.keySet().iterator();
 		String selection = "";
 		List<String> selectionArgs = new ArrayList<String>();
+		/*Iterator<String> iter = values.keySet().iterator();
 		while(iter.hasNext()) {
 			Object key = iter.next();
 			Object value = values.get((String)key);
@@ -185,6 +186,13 @@ public abstract class Dataset implements BaseColumns {
 			}
 			selection += key.toString() + "=?";
 			selectionArgs.add(value.toString());
+		}*/
+		for(Entry<String, Object> entry : values.valueSet()) {
+			if (!(TextUtils.isEmpty(selection))) {
+				selection += " AND ";
+			}
+			selection += entry.getKey() + "=?";
+			selectionArgs.add(entry.getValue().toString());
 		}
 		// create dynamic dataset
 		@SuppressWarnings("rawtypes")

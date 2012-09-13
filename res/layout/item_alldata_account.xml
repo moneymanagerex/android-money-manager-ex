@@ -44,7 +44,8 @@
                 android:layout_column="1"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+                android:singleLine="true"/>
             
             <TextView
                 android:id="@+id/textViewDeposit"
