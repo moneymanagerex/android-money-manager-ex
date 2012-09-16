@@ -236,8 +236,12 @@ public class TableCurrencyFormats extends Dataset {
 	public String getValueFormatted(float value, boolean showSymbols) {
 		// set format
 		DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
-		formatSymbols.setDecimalSeparator(this.getDecimalPoint().charAt(0));
-		formatSymbols.setGroupingSeparator(this.getGroupSeparator().charAt(0));
+		if (!(TextUtils.isEmpty(getDecimalPoint()))) {
+			formatSymbols.setDecimalSeparator(getDecimalPoint().charAt(0));
+		}
+		if (!(TextUtils.isEmpty(getGroupSeparator()))) {
+			formatSymbols.setGroupingSeparator(getGroupSeparator().charAt(0));
+		}
 
 		DecimalFormat formatter = new DecimalFormat();
 		// set which symbols to use

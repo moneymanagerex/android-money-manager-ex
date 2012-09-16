@@ -47,19 +47,6 @@
             android:title="@string/menu_tools">
             <menu>
                 <item
-                    android:id="@+id/menu_import_export"
-                    android:title="@string/import_export" android:visible="false">
-                    <menu>
-                        <item
-                            android:id="@+id/menu_import_storage"
-                            android:title="@string/menu_import_from_storage"/>
-                        <item
-                            android:id="@+id/menu_export_storage"
-                            android:enabled="false"
-                            android:title="@string/menu_export_to_storage"/>
-                    </menu>
-                </item>
-                <item
                     android:id="@+id/menu_sync_dropbox"
                     android:title="@string/menu_sync_dropbox"/>
                 <item

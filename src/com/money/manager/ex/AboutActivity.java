@@ -47,7 +47,7 @@ public class AboutActivity extends BaseFragmentActivity {
 		String text;
 		// report set link
 		TextView txtReport = (TextView)findViewById(R.id.textViewLinkProblem);
-		text = "<a href=\"http://code.google.com/p/android-money-manager-ex/issues/list\">" + (String) txtReport.getText() + "</a>";
+		text = "<a href=\"mailto:android.money.manager.ex@gmail.com\">" + (String) txtReport.getText() + "</a>";
 		txtReport.setText(Html.fromHtml(text));
 		txtReport.setMovementMethod(LinkMovementMethod.getInstance());
 		// GPLv2 license

@@ -178,7 +178,7 @@ public class HomeFragment extends Fragment implements
 			lstAccountBills.setVisibility(View.VISIBLE);
 			prgAccountBills.setVisibility(View.GONE);
 		} else {
-			prgAccountBills.setVisibility(View.GONE);
+			lstAccountBills.setVisibility(View.GONE);
 			prgAccountBills.setVisibility(View.VISIBLE);
 		}
 	}

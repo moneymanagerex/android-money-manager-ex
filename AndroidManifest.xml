@@ -18,11 +18,11 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="17"
-    android:versionName="0.5.7" >
+    android:versionCode="18"
+    android:versionName="0.5.8" >
 
     <uses-sdk
-        android:minSdkVersion="4"
+        android:minSdkVersion="8"
         android:targetSdkVersion="14" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -32,7 +32,7 @@
         android:name=".MoneyManagerApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_name"
-        android:theme="@style/Theme.Money.Manager" >
+        android:theme="@style/Theme.Money.Manager" android:logo="@drawable/ic_logo_money_manager_ex">
         <provider
             android:name=".MoneyManagerProvider"
             android:authorities="com.money.manager.ex.provider" 

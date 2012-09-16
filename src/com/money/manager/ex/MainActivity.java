@@ -223,9 +223,6 @@ public class MainActivity extends BaseFragmentActivity {
 		case R.id.menu_use_external_db:
 			pickFile(Environment.getExternalStorageDirectory());
 			break;
-		case R.id.menu_import_storage:
-			startFileBrowseActivity(REQUESTCODE_IMPORT);
-			break;
 		case R.id.menu_settings:
 			// open pref activity
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
