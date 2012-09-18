@@ -91,6 +91,15 @@
         <item>@string/theme_light</item>
     </string-array>
     
+    <!-- Define array to show transaction -->
+	<string-array name="show_transaction_values">
+	    <item>@string/all_transaction</item>
+	    <item>@string/last7days</item>
+	    <item>@string/last15days</item>
+	    <item>@string/current_month</item>
+	    <item>@string/current_year</item>
+	</string-array>
+    
     <!-- Define currency value -->
     <string-array name="currency_values">
         <item>EUR</item>

@@ -19,7 +19,6 @@ package com.money.manager.ex.fragment;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -28,14 +27,17 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.money.manager.ex.R;
+import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.R;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
 /**
@@ -76,6 +78,13 @@ public class HomeFragment extends Fragment implements
 		txtUserName = (TextView)view.findViewById(R.id.textViewUserName);
 		txtTotalAccounts = (TextView)view.findViewById(R.id.textViewTotalAccounts);
 		lstAccountBills = (ListView)view.findViewById(R.id.listViewAccountBills);
+		lstAccountBills.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				((MainActivity)getActivity()).scrollToPage(position + 1);
+			}
+		});
 		prgAccountBills = (ProgressBar)view.findViewById(R.id.progressAccountBills);
 		
 		return view;

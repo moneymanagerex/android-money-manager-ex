@@ -218,6 +218,11 @@
 	<string name="currency_can_not_deleted">La valuta selezionata non può essere cancellata perchè referenziata</string>
 	<string name="category_can_not_deleted">La categoria selezionata non può essere cancellata perchè referenziata</string>
 	<!-- 20120909 -->
-	
-	
+	<string name="all_transaction">Tutte le transazioni</string>
+   	<string name="last7days">Ultima settimana</string>
+   	<string name="last15days">Ultime 2 settimane</string>
+   	<string name="current_month">Mese corrente</string>
+   	<string name="current_year">Anno corrente</string>
+   	<string name="show_transaction">Visualizzazione Transazioni</string>
+   	<!-- 20120917 -->
 </resources>

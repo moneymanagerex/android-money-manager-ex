@@ -75,12 +75,39 @@ public class MoneyManagerApplication extends Application {
     public static final String PREF_ACCOUNT_FAV_VISIBLE = "accountsfavoritevisible";
     public static final String PREF_DROPBOX_MODE = "dropboxmodesync";
     public static final String PREF_THEME = "themeapplication";
+    public static final String PREF_SHOW_TRANSACTION = "showtransaction";
     
 	// application preferences
 	private static final String APP_PREFERENCES = "MoneyManagerPreferences";
 	private static SharedPreferences appPreferences;
+	/***
+	 * 
+	 * @param context
+	 * @return path database file
+	 */
+	public static String getDatabasePath(Context context) {
+		String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_DATABASE_PATH, MoneyManagerOpenHelper.databasePath);
+		File f = new File(dbFile);
+		// check if database exists
+		if (f.getAbsoluteFile().exists()) {
+			return dbFile;
+		} else {
+			return MoneyManagerOpenHelper.databasePath;
+		}
+	}
+    /**
+	 * 
+	 * @param context
+	 * @param dbpath path of database file to save
+	 */
+	public static void setDatabasePath(Context context, String dbpath) {
+		// save a reference dbpath
+		Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+		editor.putString(PREF_DATABASE_PATH, dbpath);
+		editor.commit();
+	}
 	private Editor editPreferences;
-    ///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
     // definition of the hashmap for the management of the currency
@@ -89,143 +116,16 @@ public class MoneyManagerApplication extends Application {
 	private static int mBaseCurrencyId = 0;
 	// user name application
 	private static String userName = "";
+	
 	private static String dropboxSyncMode = "";
 	// application context
 	private static Context applicationContext;
-	
-	@Override
-	public void onCreate() {
-		Log.v(LOGCAT, "Application created");
-
-		if (appPreferences == null) { 
-			appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-		}
-		applicationContext = this;
-	}
-	@Override
-	public void onTerminate() {
-		Log.v(LOGCAT, "Application terminated");
-	}
-	/**
-	 * 
-	 * @param activity to apply the theme
-	 */
-	public void setThemeApplication(Activity activity) {
-		if (getApplicationTheme().equalsIgnoreCase(getResources().getString(R.string.theme_holo))) {
-			activity.setTheme(R.style.Theme_Money_Manager);
-		} else {
-			activity.setTheme(R.style.Theme_Money_Manager_Light);
-		}
-	}
 	/**
 	 * close process application
 	 */
 	public static void killApplication() {
 		// close application
 		android.os.Process.killProcess(android.os.Process.myPid());
-	}
-	/**
-	 * 
-	 * @return application theme
-	 */
-	public String getApplicationTheme() {
-		return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_THEME, getResources().getString(R.string.theme_holo));
-	}
-	/**
-	 * 
-	 * @param theme to save into preferences
-	 */
-	public void setApplicationTheme(String theme) {
-		Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-		editor.putString(PREF_THEME, theme);
-		editor.commit();
-	}
-
-	public boolean isUriAvailable(Context context, Intent intent) {
-		return context.getPackageManager().resolveActivity(intent, 0) != null;
-	}
-	/**
-	 * 
-	 * @return the base currency used from application
-	 */
-	public int getBaseCurrencyId() {
-		return MoneyManagerApplication.mBaseCurrencyId;
-	}
-	/**
-	 * set il valore della valuta di base
-	 * @param value
-	 * @return
-	 */
-	public boolean setBaseCurrencyId(int value) {
-		return this.setBaseCurrencyId(value, false);
-	}
-	/**
-	 * set il valore della valuta di base
-	 * @param value
-	 * @param save save value into database
-	 */
-	public boolean setBaseCurrencyId(int value, boolean save) {
-		if (save) {
-			TableInfoTable infoTable = new TableInfoTable();
-			// update data into database
-			ContentValues values = new ContentValues();
-			values.put(TableInfoTable.INFOVALUE, value);
-
-			if (getContentResolver().update(infoTable.getUri(), values, TableInfoTable.INFONAME + "='BASECURRENCYID'", null) != 1) {
-				return false;
-			}
-		}
-		// edit preferences
-		editPreferences = appPreferences.edit();
-		editPreferences.putString(PREF_BASE_CURRENCY, ((Integer)value).toString());
-		// commit
-		editPreferences.commit();
-		// imposto il valore
-		MoneyManagerApplication.mBaseCurrencyId = value;
-		
-		return true;
-	}
-
-	/**
-	 * @return the userName
-	 */
-	public String getUserName() {
-		return userName;
-	}
-
-	public boolean setUserName(String userName) {
-		return this.setUserName(userName, false);
-	}
-	/**
-	 * @param userName the userName to set
-	 * @param save save into database
-	 */
-	public boolean setUserName(String userName, boolean save) {
-		if (save) {
-			TableInfoTable infoTable = new TableInfoTable();
-			// update data into database
-			ContentValues values = new ContentValues();
-			values.put(TableInfoTable.INFOVALUE, userName);
-			// passo all'aggiornamento
-			if (getContentResolver().update(infoTable.getUri(), values, TableInfoTable.INFONAME + "='USERNAME'", null) != 1) {
-				return false;
-			}
-		}
-		// edit preferences
-		editPreferences = appPreferences.edit();
-		editPreferences.putString(PREF_USER_NAME, userName);
-		// commit
-		editPreferences.commit();
-		// set the value 
-		MoneyManagerApplication.userName = userName;
-		return true;
-	}
-	/**
-	 * 
-	 * @return preferences accounts visible
-	 */
-	public boolean getAccountsOpenVisible() {
-		return appPreferences.getBoolean(PREF_ACCOUNT_OPEN_VISIBLE, false);
 	}
 	/**
 	 * 
@@ -236,90 +136,54 @@ public class MoneyManagerApplication extends Application {
 	}
 	/**
 	 * 
-	 * @param value mode of syncronization to apply
+	 * @return preferences accounts visible
 	 */
-	public void setDropboxSyncMode(String value) {
-		// open edit preferences
-		editPreferences = appPreferences.edit();
-		editPreferences.putString(PREF_DROPBOX_MODE, value);
-		// commit
-		editPreferences.commit();
-		// set the value 
-		MoneyManagerApplication.dropboxSyncMode = value;
+	public boolean getAccountsOpenVisible() {
+		return appPreferences.getBoolean(PREF_ACCOUNT_OPEN_VISIBLE, false);
 	}
 	/**
 	 * 
-	 * @return the dropbox mode synchronization
+	 * @return List di tutte le CurrencyFormats
 	 */
-	public String getDropboxSyncMode() {
-		return appPreferences.getString(PREF_DROPBOX_MODE, applicationContext.getString(R.string.synchronize));
+	public List<TableCurrencyFormats> getAllCurrencyFormats() {
+		List<TableCurrencyFormats> ret = new ArrayList<TableCurrencyFormats>(mMapCurrency.values());
+		return ret;
 	}
+
 	/**
-	 * populate the hashmap Currency
+	 * 
+	 * @return application theme
 	 */
-	public void loadHashMapCurrency(Context context) {
-		MoneyManagerOpenHelper openHelper = new MoneyManagerOpenHelper(context);
-		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
-		
-		// set table name
-		queryBuilder.setTables(tableCurrency.getSource());
-		
-		// get cursor
-		Cursor cursorCurrency = queryBuilder.query(
-				openHelper.getReadableDatabase(),
-				tableCurrency.getAllColumns(), null, null, null, null, null);
-		
-		// clear hashmap for new populate
-		mMapCurrency.clear();
-		
-		// load data into hashmap
-		if (cursorCurrency != null && cursorCurrency.moveToFirst()) {
-			while (cursorCurrency.isAfterLast() == false) {
-				TableCurrencyFormats mapCur = new TableCurrencyFormats();
-				mapCur.setValueFromCursor(cursorCurrency);
-
-				int currencyId = cursorCurrency.getInt(cursorCurrency.getColumnIndex(TableCurrencyFormats.CURRENCYID));
-				// put object into hashmap
-				mMapCurrency.put(currencyId, mapCur);
-
-				cursorCurrency.moveToNext();
-			}
-			cursorCurrency.close();
-		}
-		openHelper.close();
+	public String getApplicationTheme() {
+		return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_THEME, getResources().getString(R.string.theme_holo));
 	}
-	/**
-	 * method that loads the base currency
-	 * @param context contesto della chiamata
-	 */
-	public void loadBaseCurrencyId(Context context) {
-		MoneyManagerOpenHelper openHelper = new MoneyManagerOpenHelper(context);
-		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		TableInfoTable tableInfo = new TableInfoTable();
-		
-		// set table
-		queryBuilder.setTables(tableInfo.getSource());
-		
-		// get cursor from query builder
-		Cursor cursorInfo = queryBuilder.query(
-				openHelper.getReadableDatabase(),
-				tableInfo.getAllColumns(), TableInfoTable.INFONAME + "='BASECURRENCYID'", null, null, null, null);
-		
-		// set BaseCurrencyId
-		if (cursorInfo != null && cursorInfo.moveToFirst()) {
-			mBaseCurrencyId = cursorInfo.getInt(cursorInfo.getColumnIndex(TableInfoTable.INFOVALUE)); 
-			cursorInfo.close();
-		} else {
-			mBaseCurrencyId = 0;
-		}
-		// chiudo la connessione
-		openHelper.close();
-	}
-
 	public String getBaseCurrencyFormatted(float value) {
 		return this.getCurrencyFormatted(mBaseCurrencyId, value);
 	}
+	/**
+	 * 
+	 * @return the base currency used from application
+	 */
+	public int getBaseCurrencyId() {
+		return MoneyManagerApplication.mBaseCurrencyId;
+	}
+	/**
+	 * this method convert a float value to base numeric string
+	 * @param value to format
+	 * @return value formatted
+	 */
+	public String getBaseNumericFormatted(float value) {
+		return getNumericFormatted(mBaseCurrencyId, value);
+	}
+
+	/**
+	 * @param currency
+	 * @return CurrencyFormats
+	 */
+	public TableCurrencyFormats getCurrencyFormats(int currency) {
+		return mMapCurrency.get(currency);
+	}
+
 	/**
 	 * 
 	 * @param currency id della valuta
@@ -337,12 +201,11 @@ public class MoneyManagerApplication extends Application {
 		return tableCurrency.getValueFormatted(value);
 	}
 	/**
-	 * this method convert a float value to base numeric string
-	 * @param value to format
-	 * @return value formatted
+	 * 
+	 * @return the dropbox mode synchronization
 	 */
-	public String getBaseNumericFormatted(float value) {
-		return getNumericFormatted(mBaseCurrencyId, value);
+	public String getDropboxSyncMode() {
+		return appPreferences.getString(PREF_DROPBOX_MODE, applicationContext.getString(R.string.synchronize));
 	}
 	/**
 	 * this method convert a float value to numeric string
@@ -360,75 +223,6 @@ public class MoneyManagerApplication extends Application {
 		// adesso richiamo la funzione che mi restituice il valore formattato
 		return tableCurrency.getValueFormatted(value, false);		
 	}
-	/**
-	 * @param currency
-	 * @return CurrencyFormats
-	 */
-	public TableCurrencyFormats getCurrencyFormats(int currency) {
-		return mMapCurrency.get(currency);
-	}
-	/**
-	 * 
-	 * @return List di tutte le CurrencyFormats
-	 */
-	public List<TableCurrencyFormats> getAllCurrencyFormats() {
-		List<TableCurrencyFormats> ret = new ArrayList<TableCurrencyFormats>(mMapCurrency.values());
-		return ret;
-	}
-	/**
-	 * 
-	 * @param status stato della transazione
-	 * @return stringa decodificata della transazione
-	 */
-	public String getStatusAsString(String status) {
-		if (TextUtils.isEmpty(status)) {
-			return this.getResources().getString(R.string.status_none);
-		} else if (status.toUpperCase().equals("R")) {
-			return this.getResources().getString(R.string.status_reconciled);
-		} else if (status.toUpperCase().equals("V")) {
-			return this.getResources().getString(R.string.status_void);
-		} else if (status.toUpperCase().equals("F")) {
-			return this.getResources().getString(R.string.status_follow_up);
-		} else if (status.toUpperCase().equals("D")) {
-			return this.getResources().getString(R.string.status_follow_up);
-		}
-		return "";
-	}
-	/***
-	 * 
-	 * @param context
-	 * @return path database file
-	 */
-	public static String getDatabasePath(Context context) {
-		String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_DATABASE_PATH, MoneyManagerOpenHelper.databasePath);
-		File f = new File(dbFile);
-		// check if database exists
-		if (f.getAbsoluteFile().exists()) {
-			return dbFile;
-		} else {
-			return MoneyManagerOpenHelper.databasePath;
-		}
-	}
-	/**
-	 * 
-	 * @param context
-	 * @param dbpath path of database file to save
-	 */
-	public static void setDatabasePath(Context context, String dbpath) {
-		// save a reference dbpath
-		Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-		editor.putString(PREF_DATABASE_PATH, dbpath);
-		editor.commit();
-	}
-	/**
-	 * 
-	 * @param resId: ID della risorsa da ricercare nel raw
-	 * @return
-	 */
-	public String getRawAsString(int resId) {
-		return getRawAsString(getApplicationContext(), resId);
-	}
-
 	/**
 	 * 
 	 * @param Context context della chiamata 
@@ -467,5 +261,219 @@ public class MoneyManagerApplication extends Application {
 		}
 		// Ritorniamo il risultato
 		return result;
+	}
+	/**
+	 * 
+	 * @param resId: ID della risorsa da ricercare nel raw
+	 * @return
+	 */
+	public String getRawAsString(int resId) {
+		return getRawAsString(getApplicationContext(), resId);
+	}
+	/**
+	 * 
+	 * @param status stato della transazione
+	 * @return stringa decodificata della transazione
+	 */
+	public String getStatusAsString(String status) {
+		if (TextUtils.isEmpty(status)) {
+			return this.getResources().getString(R.string.status_none);
+		} else if (status.toUpperCase().equals("R")) {
+			return this.getResources().getString(R.string.status_reconciled);
+		} else if (status.toUpperCase().equals("V")) {
+			return this.getResources().getString(R.string.status_void);
+		} else if (status.toUpperCase().equals("F")) {
+			return this.getResources().getString(R.string.status_follow_up);
+		} else if (status.toUpperCase().equals("D")) {
+			return this.getResources().getString(R.string.status_follow_up);
+		}
+		return "";
+	}
+	/**
+	 * @return the userName
+	 */
+	public String getUserName() {
+		return userName;
+	}
+	public boolean isUriAvailable(Context context, Intent intent) {
+		return context.getPackageManager().resolveActivity(intent, 0) != null;
+	}
+
+	/**
+	 * method that loads the base currency
+	 * @param context contesto della chiamata
+	 */
+	public void loadBaseCurrencyId(Context context) {
+		MoneyManagerOpenHelper openHelper = new MoneyManagerOpenHelper(context);
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		TableInfoTable tableInfo = new TableInfoTable();
+		
+		// set table
+		queryBuilder.setTables(tableInfo.getSource());
+		
+		// get cursor from query builder
+		Cursor cursorInfo = queryBuilder.query(
+				openHelper.getReadableDatabase(),
+				tableInfo.getAllColumns(), TableInfoTable.INFONAME + "='BASECURRENCYID'", null, null, null, null);
+		
+		// set BaseCurrencyId
+		if (cursorInfo != null && cursorInfo.moveToFirst()) {
+			mBaseCurrencyId = cursorInfo.getInt(cursorInfo.getColumnIndex(TableInfoTable.INFOVALUE)); 
+			cursorInfo.close();
+		} else {
+			mBaseCurrencyId = 0;
+		}
+		// chiudo la connessione
+		openHelper.close();
+	}
+	/**
+	 * populate the hashmap Currency
+	 */
+	public void loadHashMapCurrency(Context context) {
+		MoneyManagerOpenHelper openHelper = new MoneyManagerOpenHelper(context);
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
+		
+		// set table name
+		queryBuilder.setTables(tableCurrency.getSource());
+		
+		// get cursor
+		Cursor cursorCurrency = queryBuilder.query(
+				openHelper.getReadableDatabase(),
+				tableCurrency.getAllColumns(), null, null, null, null, null);
+		
+		// clear hashmap for new populate
+		mMapCurrency.clear();
+		
+		// load data into hashmap
+		if (cursorCurrency != null && cursorCurrency.moveToFirst()) {
+			while (cursorCurrency.isAfterLast() == false) {
+				TableCurrencyFormats mapCur = new TableCurrencyFormats();
+				mapCur.setValueFromCursor(cursorCurrency);
+
+				int currencyId = cursorCurrency.getInt(cursorCurrency.getColumnIndex(TableCurrencyFormats.CURRENCYID));
+				// put object into hashmap
+				mMapCurrency.put(currencyId, mapCur);
+
+				cursorCurrency.moveToNext();
+			}
+			cursorCurrency.close();
+		}
+		openHelper.close();
+	}
+	@Override
+	public void onCreate() {
+		Log.v(LOGCAT, "Application created");
+
+		if (appPreferences == null) { 
+			appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		}
+		applicationContext = this;
+	}
+	@Override
+	public void onTerminate() {
+		Log.v(LOGCAT, "Application terminated");
+	}
+	/**
+	 * 
+	 * @param theme to save into preferences
+	 */
+	public void setApplicationTheme(String theme) {
+		Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+		editor.putString(PREF_THEME, theme);
+		editor.commit();
+	}
+	/**
+	 * set il valore della valuta di base
+	 * @param value
+	 * @return
+	 */
+	public boolean setBaseCurrencyId(int value) {
+		return this.setBaseCurrencyId(value, false);
+	}
+	/**
+	 * set il valore della valuta di base
+	 * @param value
+	 * @param save save value into database
+	 */
+	public boolean setBaseCurrencyId(int value, boolean save) {
+		if (save) {
+			TableInfoTable infoTable = new TableInfoTable();
+			// update data into database
+			ContentValues values = new ContentValues();
+			values.put(TableInfoTable.INFOVALUE, value);
+
+			if (getContentResolver().update(infoTable.getUri(), values, TableInfoTable.INFONAME + "='BASECURRENCYID'", null) != 1) {
+				return false;
+			}
+		}
+		// edit preferences
+		editPreferences = appPreferences.edit();
+		editPreferences.putString(PREF_BASE_CURRENCY, ((Integer)value).toString());
+		// commit
+		editPreferences.commit();
+		// imposto il valore
+		MoneyManagerApplication.mBaseCurrencyId = value;
+		
+		return true;
+	}
+	/**
+	 * 
+	 * @param value mode of syncronization to apply
+	 */
+	public void setDropboxSyncMode(String value) {
+		// open edit preferences
+		editPreferences = appPreferences.edit();
+		editPreferences.putString(PREF_DROPBOX_MODE, value);
+		// commit
+		editPreferences.commit();
+		// set the value 
+		MoneyManagerApplication.dropboxSyncMode = value;
+	}
+	/**
+	 * 
+	 * @param activity to apply the theme
+	 */
+	public void setThemeApplication(Activity activity) {
+		if (getApplicationTheme().equalsIgnoreCase(getResources().getString(R.string.theme_holo))) {
+			activity.setTheme(R.style.Theme_Money_Manager);
+		} else {
+			activity.setTheme(R.style.Theme_Money_Manager_Light);
+		}
+	}
+	public boolean setUserName(String userName) {
+		return this.setUserName(userName, false);
+	}
+
+	/**
+	 * @param userName the userName to set
+	 * @param save save into database
+	 */
+	public boolean setUserName(String userName, boolean save) {
+		if (save) {
+			TableInfoTable infoTable = new TableInfoTable();
+			// update data into database
+			ContentValues values = new ContentValues();
+			values.put(TableInfoTable.INFOVALUE, userName);
+			// passo all'aggiornamento
+			if (getContentResolver().update(infoTable.getUri(), values, TableInfoTable.INFONAME + "='USERNAME'", null) != 1) {
+				return false;
+			}
+		}
+		// edit preferences
+		editPreferences = appPreferences.edit();
+		editPreferences.putString(PREF_USER_NAME, userName);
+		// commit
+		editPreferences.commit();
+		// set the value 
+		MoneyManagerApplication.userName = userName;
+		return true;
+	}
+	/**
+	 * 
+	 * @return the show transaction
+	 */
+	public String getShowTransaction() {
+		return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_SHOW_TRANSACTION, getResources().getString(R.string.last7days));
 	}
 }

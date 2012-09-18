@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,14 +47,12 @@ import android.support.v4.view.MenuItem;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.view.Window;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.widget.Toast;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxActivity;
@@ -66,35 +63,197 @@ import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TitleProvider;
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.0.0
+ * @version 1.1.0
  * 
  */
 public class MainActivity extends BaseFragmentActivity {
+	private static class MainActivityTab {
+    	private Class<?> mClss;
+    	private String mTitle;
+    	private TableAccountList mAccountList;
+    	
+    	public MainActivityTab(Class<?> clss, String title) {
+    		this(clss, title, null);
+    	}
+    	
+    	public MainActivityTab(Class<?> clss, String title, TableAccountList account) {
+    		this.mClss = clss;
+    		this.mTitle = title;
+    		this.mAccountList = account;
+    	}
+    	
+    	public TableAccountList getAccountList() {
+    		return this.mAccountList;
+    	}
+    	
+    	public Class<?> getClss() {
+    		return this.mClss;
+    	}
+    	
+    	public String getTitle() {
+    		return this.mTitle;
+    	}
+    }
+	public static class TabsAdapter extends FragmentPagerAdapter implements TitleProvider {
+        private Context mContext;
+        private ArrayList<MainActivityTab> mFrags = new ArrayList<MainActivityTab>();
+        private Map<Integer, Fragment> mMapFragment = new HashMap<Integer, Fragment>();
+        private Map<Integer, Integer> mMapAccountPos = new HashMap<Integer, Integer>();
+        
+        public TabsAdapter(FragmentActivity activity) {
+            super(activity.getSupportFragmentManager());
+            mContext = activity;
+        }
+        
+        public void addTab(MainActivityTab tab) {
+            mFrags.add(tab);
+            notifyDataSetChanged();
+        }
+        
+        @Override
+        public int getCount() {
+        	return mFrags.size();
+        }
+
+        public Fragment getFragment(int position) {
+			return mMapFragment.get(position);
+		}
+
+        public Fragment getFragmentAccountId(int accountId) {
+        	Integer position = mMapAccountPos.get(accountId);
+        	if (position != null) {
+        		return getFragment(position);
+        	} else {
+        		return null;
+        	}
+        }
+        
+        @Override
+        public Fragment getItem(int position) {
+        	Fragment fragment;// = Fragment.instantiate(mContext, mFrags.get(position).getClss().getName(), null);
+        	String getName = mFrags.get(position).getClss().getName();
+        	if (getName.equals(AccountFragment.class.getName())) {
+        		fragment = AccountFragment.newIstance(mFrags.get(position).getAccountList().getAccountId());
+        		// save account id and position
+        		mMapAccountPos.put(mFrags.get(position).getAccountList().getAccountId(), position);
+        	} else {
+        		fragment = Fragment.instantiate(mContext, mFrags.get(position).getClss().getName(), null);
+        	}
+        	mMapFragment.put(position, fragment);
+            return fragment;
+        }
+
+		@Override
+		public String getTitle(int position) {
+			return mFrags.get(position).getTitle();
+		}
+        
+		public void removeAllTab() {
+        	mFrags.clear();
+        	mMapFragment.clear();
+        	notifyDataSetChanged();
+        }
+    }
 	private static final String LOGCAT = MainActivity.class.getSimpleName();
 	private static final String KEY_CONTENT = "MainActivity:CurrentPos";
 	// definizione dei requestcode da passare alle activity
-	private static final int REQUESTCODE_IMPORT = 1001;
-	private static final int REQUESTCODE_USE_EXTERNAL_DB = 1010;
-	private static final int PICK_FILE_RESULT_CODE = 1;
+	private static final int REQUEST_PICKFILE_CODE = 1;
 	// flag che indica se devo effettuare il refresh grafico
 	private static boolean mRefreshUserInterface = false;
+    /**
+	 * @return the mRefreshUserInterface
+	 */
+	public static boolean isRefreshUserInterface() {
+		return mRefreshUserInterface;
+	}
+    /**
+	 * @return the mRestart
+	 */
+	public static boolean isRestartActivitySet() {
+		return mRestartActivity;
+	}
+    /**
+	 * @param mRefreshUserInterface the mRefreshUserInterface to set
+	 */
+	public static void setRefreshUserInterface(boolean mRefreshUserInterface) {
+		MainActivity.mRefreshUserInterface = mRefreshUserInterface;
+	}
+    /**
+	 * @param mRestart the mRestart to set
+	 */
+	public static void setRestartActivity(boolean mRestart) {
+		MainActivity.mRestartActivity = mRestart;
+	}
+    
 	// referenza all'applicazione
 	MoneyManagerApplication mApp;
+	
 	// definizione dei conti correnti visibili
 	List<TableAccountList> mAccountList;
+	
 	// definizione degli oggetti all'interno dell'activity
 	private ViewPager  mViewPager;
-    private TabsAdapter mTabsAdapter;
-    private TitlePageIndicator mTitlePageIndicator;
-    // posizione corrente nel TabsAdapter
+	
+	private TabsAdapter mTabsAdapter;
+	
+	private TitlePageIndicator mTitlePageIndicator;
+
+	// posizione corrente nel TabsAdapter
     private int mCurrentPosition = 0;
-    // flag per la gestione se del riavvio activity
+	
+	// flag per la gestione se del riavvio activity
     private static boolean mRestartActivity = false;
-    
+	
+	/**
+	 * Dialog to choose exit from application
+	 */
+	private void exitApplication() {
+		AlertDialog.Builder exitDialog = new AlertDialog.Builder(this);
+		exitDialog.setTitle(R.string.close_application);
+		exitDialog.setMessage(R.string.question_close_application);
+		exitDialog.setIcon(android.R.drawable.ic_dialog_info);
+		exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				MoneyManagerApplication.killApplication();
+			}
+		});
+		exitDialog.setNegativeButton(android.R.string.no, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		// show dialog
+		exitDialog.create().show();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		// check request code
+		switch (requestCode) {
+		case REQUEST_PICKFILE_CODE:
+			if (resultCode==RESULT_OK && data!=null && data.getData()!=null) {
+				// save the database file
+				MoneyManagerApplication.setDatabasePath(getApplicationContext(), data.getData().getPath());
+				// set to restart activity
+				setRestartActivity(true);
+				restartActivity();
+			}
+		}
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setRestartActivity(true);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		requestWindowFeature(Window.FEATURE_PROGRESS);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity);
 		if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
@@ -109,7 +268,7 @@ public class MainActivity extends BaseFragmentActivity {
 		// creo l'adapter tabs
         mTabsAdapter = new TabsAdapter(this);
         mViewPager.setAdapter(mTabsAdapter);
-        mViewPager.setOffscreenPageLimit(0);
+        mViewPager.setOffscreenPageLimit(1);
         // impostazione dell'indicator
         mTitlePageIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mTitlePageIndicator.setViewPager(mViewPager);
@@ -123,10 +282,6 @@ public class MainActivity extends BaseFragmentActivity {
 		// imposto il listener
 		mTitlePageIndicator.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
-			public void onPageSelected(int position) {
-				//mCurrentPosition = position;
-			}
-			@Override
 			public void onPageScrolled(int position, float positionOffset,
 					int positionOffsetPixels) {
 				return;
@@ -135,54 +290,29 @@ public class MainActivity extends BaseFragmentActivity {
 			public void onPageScrollStateChanged(int state) {
 				return;
 			}
+			@Override
+			public void onPageSelected(int position) {
+				//mCurrentPosition = position;
+			}
 		});
 		// set che devo effettuare il refresh grafico
 		setRefreshUserInterface(true);
 	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		// controllo se devo riavviare l'activity
-		if (isRestartActivitySet()) {
-			restartActivity(); // restart and exit
-			return;
-		}
-		// controllo se devo effettuare il refresh grafico dell'interfaccia
-		if (isRefreshUserInterface()) {
-			refreshUserInterface();
-			// controllo se avevo una posizione memorizzata
-			if (mCurrentPosition > 0) {
-				mViewPager.setCurrentItem(mCurrentPosition);
-				mCurrentPosition = 0;
-			}
-		}
-	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putInt(KEY_CONTENT, mViewPager.getCurrentItem());
-	}
-	
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		setRestartActivity(true);
-	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		return super.onPrepareOptionsMenu(menu);
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			exitApplication();
+			return true;
+		}
+		return super.onKeyUp(keyCode, event);
 	}
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
@@ -242,118 +372,51 @@ public class MainActivity extends BaseFragmentActivity {
 		}
 		return false;
 	}
-	
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		String pathImport;
-		// controllo se ritorna con esito positivo
-		if (resultCode == RESULT_CANCELED) { return; }
-		// controllo il ritorno dell'esito
-		switch (requestCode) {
-		case REQUESTCODE_IMPORT:
-			// controllo se l'intent di ritorno � valido
-			if (data == null) { return; }
-			// prendo il nome del file
-			pathImport = data.getStringExtra(getPackageName() + ".result");
-			if (TextUtils.isEmpty(pathImport)) { return; }
-			// referenzio i due file da importare
-			File fileSource = new File(pathImport);
-			File fileDest = new File(MoneyManagerOpenHelper.databasePath);
-			// avvio l'importazione
-			new ImportExportDatabase().execute(fileSource, fileDest);
-			// esco
-			break;
-		case REQUESTCODE_USE_EXTERNAL_DB:
-			// check data
-			if (data == null) { return; }
-			// take database name file
-			pathImport = data.getStringExtra(getPackageName() + ".result");
-			if (TextUtils.isEmpty(pathImport)) { return; }
-			// save the database file
-			MoneyManagerApplication.setDatabasePath(getApplicationContext(), pathImport);
-			// set to restart activity
-			setRestartActivity(true);
-			restartActivity();
-			
-			break;
-		case PICK_FILE_RESULT_CODE:
-			if (resultCode==RESULT_OK && data!=null && data.getData()!=null) {
-				// save the database file
-				MoneyManagerApplication.setDatabasePath(getApplicationContext(), data.getData().getPath());
-				// set to restart activity
-				setRestartActivity(true);
-				restartActivity();
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return super.onPrepareOptionsMenu(menu);
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// controllo se devo riavviare l'activity
+		if (isRestartActivitySet()) {
+			restartActivity(); // restart and exit
+			return;
+		}
+		// controllo se devo effettuare il refresh grafico dell'interfaccia
+		if (isRefreshUserInterface()) {
+			refreshUserInterface();
+			// controllo se avevo una posizione memorizzata
+			if (mCurrentPosition > 0) {
+				mViewPager.setCurrentItem(mCurrentPosition);
+				mCurrentPosition = 0;
 			}
 		}
 	}
-	
 	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			exitApplication();
-			return true;
-		}
-		return super.onKeyUp(keyCode, event);
-	}
-	
-	/**
-	 * @return the mRefreshUserInterface
-	 */
-	public static boolean isRefreshUserInterface() {
-		return mRefreshUserInterface;
-	}
-
-	/**
-	 * @param mRefreshUserInterface the mRefreshUserInterface to set
-	 */
-	public static void setRefreshUserInterface(boolean mRefreshUserInterface) {
-		MainActivity.mRefreshUserInterface = mRefreshUserInterface;
-	}
-
-	/**
-	 * metodo per l'avvio dell'activity di browsing del file
-	 * @param mode
-	 */
-	public void startFileBrowseActivity(int mode) {
-		// prendo il file di partenza
-		File fileIntent = Environment.getExternalStorageDirectory();
-		// controllo il null se non montata
-		if (fileIntent == null) {
-			fileIntent = new File("/");
-		}
-		Intent intent = new Intent(this, FileBrowseActivity.class);
-		intent.putExtra(getPackageName() + ".init", fileIntent.getPath());
-		intent.setAction(FileBrowseActivity.INTENT_VIEW_FILE);
-		// avvio la finestra per il result
-		startActivityForResult(intent, mode);
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(KEY_CONTENT, mViewPager.getCurrentItem());
 	}
 	/**
-	 * @return the mRestart
+	 * pick a file to use
+	 * @param file start folder
 	 */
-	public static boolean isRestartActivitySet() {
-		return mRestartActivity;
-	}
-	/**
-	 * @param mRestart the mRestart to set
-	 */
-	public static void setRestartActivity(boolean mRestart) {
-		MainActivity.mRestartActivity = mRestart;
-	}
-	/**
-	 * riavvio la Activity main per il cambio di alcune impostazioni principali
-	 */
-	protected void restartActivity() {
-		if (mRestartActivity) {
-			Intent intent = getIntent();
-			// chiudo l'activity corrente
-			finish();
-			// la riavvio
-			startActivity(intent);
-			// close application
-			android.os.Process.killProcess(android.os.Process.myPid());
-		}
-		// set state a false
-		setRestartActivity(false);
+	private void pickFile(File file) {
+	    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+	    intent.setDataAndType(Uri.fromFile(file), "vnd.android.cursor.dir/*");
+	    intent.setType("file/*");
+	    if (((MoneyManagerApplication)getApplication()).isUriAvailable(getApplicationContext(), intent)) { 
+		    try {
+		        startActivityForResult(intent, REQUEST_PICKFILE_CODE);
+		    } catch (Exception e) {
+		        Log.e(LOGCAT, e.getMessage());
+		        Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+		    }
+	    } else {
+	    	Toast.makeText(this, R.string.error_intent_pick_file, Toast.LENGTH_LONG).show();
+	    }
 	}
 	/**
 	 * refresh grafico dell'activity
@@ -389,199 +452,54 @@ public class MainActivity extends BaseFragmentActivity {
         }
         mTabsAdapter.notifyDataSetChanged();
 	}
-	/**
-	 * Dialog to choose exit from application
-	 */
-	private void exitApplication() {
-		AlertDialog.Builder exitDialog = new AlertDialog.Builder(this);
-		exitDialog.setTitle(R.string.close_application);
-		exitDialog.setMessage(R.string.question_close_application);
-		exitDialog.setIcon(android.R.drawable.ic_dialog_info);
-		exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				MoneyManagerApplication.killApplication();
-			}
-		});
-		exitDialog.setNegativeButton(android.R.string.no, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-		// show dialog
-		exitDialog.create().show();
-	}
-	/**
-	 * pick a file to use
-	 * @param file start folder
-	 */
-	private void pickFile(File file) {
-	    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-	    intent.setDataAndType(Uri.fromFile(file), "vnd.android.cursor.dir/*");
-	    intent.setType("file/*");
-	    if (((MoneyManagerApplication)getApplication()).isUriAvailable(getApplicationContext(), intent)) { 
-		    try {
-		        startActivityForResult(intent, PICK_FILE_RESULT_CODE);
-		    } catch (Exception e) {
-		        Log.e(LOGCAT, e.getMessage());
-		        Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-		    }
-	    } else {
-	    	Toast.makeText(this, R.string.error_intent_pick_file, Toast.LENGTH_LONG).show();
-	    }
-	}
-	/**
-	 * pick a folder to use
-	 * @param file start directory
-	 */
-	private void pickFolder(File file) {
-	    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-	    intent.setDataAndType(Uri.parse("folder://" + file.getPath()), "vnd.android.cursor.dir/*");
-	    intent.setType("folder/*");
-	    if (((MoneyManagerApplication)getApplication()).isUriAvailable(getApplicationContext(), intent)) { 
-		    try {
-		        startActivityForResult(intent, PICK_FILE_RESULT_CODE);
-		    } catch (Exception e) {
-		        Log.e(LOGCAT, e.getMessage());
-		        Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-		    }
-	    } else {
-	    	Toast.makeText(this, R.string.error_intent_pick_file, Toast.LENGTH_LONG).show();
-	    }
-	}
-	/**
-	 * classe per l'importazione/esportazione del database dall'applicazione
-	 * @see ASyncTask
-	 * @author a.lazzari
-	 *
-	 */
-	private class ImportExportDatabase extends AsyncTask<File, Long, Boolean> {
-		private ProgressDialog progress;
-		
-		@Override
-		protected void onPreExecute() {
-			// creo il progress bar da importare
-			progress = ProgressDialog.show(MainActivity.this, getResources().getString(R.string.import_export), getResources().getString(R.string.import_export_database_progress), true);
-		}
-		@Override
-		protected Boolean doInBackground(File... files) {
-			try {
-				if (!files[1].exists()) {
-					// controllo se il file di destinazione esiste se no creo
-					files[1].createNewFile();
-				}
-				// passo alla copia dei file
-				copyFile(files[0], files[1]);
-			} catch (IOException e) {
-				return false;
-			}
-			return true;
-		}
-		@Override
-		protected void onPostExecute(Boolean result) {
-			// se ancora attiva chiudo la finestra di progesso
-			if (progress.isShowing()) {
-				progress.dismiss();
-			}
-			// in funzione del risultato mostro un toast
-			Toast.makeText(MainActivity.this, getResources().getString(result ? R.string.import_export_success : R.string.import_export_failed), Toast.LENGTH_LONG).show();	
-		}
-		
-		protected void copyFile(File source, File destination) throws IOException {
-			FileChannel sourceChannel = new FileInputStream(source).getChannel();
-			FileChannel destinationChannel = new FileOutputStream(destination).getChannel();
-			try {
-				sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
-			} finally {
-				if (sourceChannel != null)
-					sourceChannel.close();
-				if (destinationChannel != null)
-					destinationChannel.close();
-			}
-		}
-	}
 	
-    public static class TabsAdapter extends FragmentPagerAdapter implements TitleProvider {
-        private Context mContext;
-        private ArrayList<MainActivityTab> mFrags = new ArrayList<MainActivityTab>();
-        private Map<Integer, Fragment> mMapFragment = new HashMap<Integer, Fragment>();
-        
-        public TabsAdapter(FragmentActivity activity) {
-            super(activity.getSupportFragmentManager());
-            mContext = activity;
-        }
-        
-        public void addTab(MainActivityTab tab) {
-            mFrags.add(tab);
-            notifyDataSetChanged();
-        }
-        
-        public void removeAllTab() {
-        	mFrags.clear();
-        	mMapFragment.clear();
-        	notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-        	return mFrags.size();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-        	Fragment fragment;// = Fragment.instantiate(mContext, mFrags.get(position).getClss().getName(), null);
-        	String getName = mFrags.get(position).getClss().getName();
-        	if (getName.equals(AccountFragment.class.getName())) {
-        		fragment = AccountFragment.newIstance(mFrags.get(position).getAccountList().getAccountId());
-        	} else {
-        		fragment = Fragment.instantiate(mContext, mFrags.get(position).getClss().getName(), null);
-        	}
-        	mMapFragment.put(position, fragment);
-            return fragment;
-        }
-
-		@Override
-		public String getTitle(int position) {
-			final int LENMAX = 15;
-			String title = (String) mFrags.get(position).getTitle();
-			// ellipse del testo
-			/*if (title.length() > LENMAX) {
-				title = title.substring(0, LENMAX - 1) + " ...";
-			}*/
-			return title;
+    /**
+	 * riavvio la Activity main per il cambio di alcune impostazioni principali
+	 */
+	protected void restartActivity() {
+		if (mRestartActivity) {
+			Intent intent = getIntent();
+			// chiudo l'activity corrente
+			finish();
+			// la riavvio
+			startActivity(intent);
+			// close application
+			android.os.Process.killProcess(android.os.Process.myPid());
 		}
-        
-		public Fragment getFragment(int position) {
-			return mMapFragment.get(position);
-		}
-    }
+		// set state a false
+		setRestartActivity(false);
+	}
     
-    private static class MainActivityTab {
-    	private Class<?> mClss;
-    	private String mTitle;
-    	private TableAccountList mAccountList;
-    	
-    	public MainActivityTab(Class<?> clss, String title) {
-    		this(clss, title, null);
-    	}
-    	
-    	public MainActivityTab(Class<?> clss, String title, TableAccountList account) {
-    		this.mClss = clss;
-    		this.mTitle = title;
-    		this.mAccountList = account;
-    	}
-    	
-    	public Class<?> getClss() {
-    		return this.mClss;
-    	}
-    	
-    	public String getTitle() {
-    		return this.mTitle;
-    	}
-    	
-    	public TableAccountList getAccountList() {
-    		return this.mAccountList;
-    	}
-    }
+    /**
+	 * metodo per l'avvio dell'activity di browsing del file
+	 * @param mode
+	 */
+	public void startFileBrowseActivity(int mode) {
+		// prendo il file di partenza
+		File fileIntent = Environment.getExternalStorageDirectory();
+		// controllo il null se non montata
+		if (fileIntent == null) {
+			fileIntent = new File("/");
+		}
+		Intent intent = new Intent(this, FileBrowseActivity.class);
+		intent.putExtra(getPackageName() + ".init", fileIntent.getPath());
+		intent.setAction(FileBrowseActivity.INTENT_VIEW_FILE);
+		// avvio la finestra per il result
+		startActivityForResult(intent, mode);
+	}
+	/**
+	 * return fragment with accountId
+	 * @param accountId 
+	 * @return
+	 */
+	public Fragment getFragmentAccount(int accountId) {
+		return mTabsAdapter.getFragmentAccountId(accountId);
+	}
+	/**
+	 * Scroll view pager
+	 * @param position to scroll
+	 */
+	public void scrollToPage(int position) {
+		mViewPager.setCurrentItem(position);
+	}
 }

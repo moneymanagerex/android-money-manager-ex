@@ -17,6 +17,8 @@
  ******************************************************************************/
 package com.money.manager.ex.fragment;
 
+import java.util.Calendar;
+
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -242,12 +244,25 @@ public class AccountFragment extends Fragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		String selection = "";
+		String sort = null;
 		switch (id) {
 		case ID_LOADER_ALLDATA:
 			setListViewAllDataVisible(false);
-			selection = "(" + ViewAllData.ACCOUNTID + "=? OR " + ViewAllData.ToAccountID + "=?)";
-			//selection += " AND (julianday(date('now')) - julianday(" + ViewAllData.Date + ") <= 7)";
-			return new CursorLoader(getActivity(), mAllData.getUri(), mAllData.getAllColumns(), selection, new String[] {Integer.toString(mAccountId), Integer.toString(mAccountId)}, "DATE DESC, ID DESC");
+			// compose selection and sort
+			selection = "(" + ViewAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + ViewAllData.ToAccountID + "=" + Integer.toString(mAccountId) + ")";
+			if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
+				selection += " AND (julianday(date('now')) - julianday(" + ViewAllData.Date + ") <= 7)";
+			} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
+				selection += " AND (julianday(date('now')) - julianday(" + ViewAllData.Date + ") <= 14)";
+			} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
+				selection += " AND " + ViewAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1);
+			} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
+				selection += " AND " + ViewAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+			}
+			// set sort
+			sort = ViewAllData.Date + " DESC, " + ViewAllData.ID + " DESC";
+			// create loader
+			return new CursorLoader(getActivity(), mAllData.getUri(), mAllData.getAllColumns(), selection, null, sort);
 		/*case ID_LOADER_TEST:
 			selection = "(" + TableCheckingAccount.ACCOUNTID + "=? OR " + TableCheckingAccount.TOACCOUNTID + "=?)";
 			return new CursorLoader(getActivity(), new TableCheckingAccount().getUri(), new TableCheckingAccount().getAllColumns(), selection, new String[] {Integer.toString(mAccountId), Integer.toString(mAccountId)}, "TRANSDATE DESC, TRANSID DESC");*/
@@ -275,7 +290,9 @@ public class AccountFragment extends Fragment implements
 		// inflate layout
 		View view = (LinearLayout)inflater.inflate(R.layout.fragment_account, container, false);
 		// take object AccountList
-		mAccountList = new MoneyManagerOpenHelper(getActivity()).getTableAccountList(mAccountId);
+		if (mAccountList == null) {
+			mAccountList = new MoneyManagerOpenHelper(getActivity()).getTableAccountList(mAccountId);
+		}
 		// take reference textview from layout
 		txtAccountName = (TextView)view.findViewById(R.id.textViewAccountName);
 		txtAccountBalance = (TextView)view.findViewById(R.id.textViewAccountBalance);
@@ -312,8 +329,10 @@ public class AccountFragment extends Fragment implements
 			}
 		});
 		// refresh user interface
-		txtAccountName.setText(mAccountList.getAccountName());
-		setImageViewFavorite();
+		if (mAccountList != null) {
+			txtAccountName.setText(mAccountList.getAccountName());
+			setImageViewFavorite();
+		}
 		// hide button deprecated
 		btnNewOperation.setVisibility(View.GONE);
 		// set listview register for context men�
@@ -345,7 +364,6 @@ public class AccountFragment extends Fragment implements
 				lstAllData.setSelectionFromTop(mCurrentPosition, 0);
 				mCurrentPosition = null;
 			}
-			getActivity().setProgressBarIndeterminateVisibility(false);
 			break;
 		case ID_LOADER_SUMMARY:
 			if (data != null && data.moveToFirst()) {
@@ -373,11 +391,8 @@ public class AccountFragment extends Fragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		if (mAccountList != null) {
-			// start loader manager
-			startLoader();
-		}
+		// restart loader
+		restartLoader();
 	}
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -421,7 +436,7 @@ public class AccountFragment extends Fragment implements
 			// save current position
 			mCurrentPosition = position;
 			// reload data
-			startLoader();
+			restartLoader();
 			return true;
 		}
 	}
@@ -430,11 +445,13 @@ public class AccountFragment extends Fragment implements
 	 */
 	private void setTextViewBalance() {
 		// write account balance
-		Spanned balance = Html.fromHtml("<b>" + mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance) + "</b>"); 
-		txtAccountBalance.setText(balance);
-		// write account reconciled
-		Spanned reconciled = Html.fromHtml("<b>" + mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled) + "</b>");
-		txtAccountReconciled.setText(reconciled);
+		if (mAccountList != null && mApplication != null) {
+			Spanned balance = Html.fromHtml("<b>" + mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance) + "</b>"); 
+			txtAccountBalance.setText(balance);
+			// write account reconciled
+			Spanned reconciled = Html.fromHtml("<b>" + mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled) + "</b>");
+			txtAccountReconciled.setText(reconciled);
+		}
 	}
 	/**
 	 * 
@@ -461,7 +478,7 @@ public class AccountFragment extends Fragment implements
 							Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 						}
 						// restart loader
-						startLoader();
+						restartLoader();
 					}
 				});
 		// set listener negative button
@@ -505,7 +522,7 @@ public class AccountFragment extends Fragment implements
 	/**
 	 * start loader of fragment
 	 */
-	public void startLoader() {
+	public void restartLoader() {
 		getLoaderManager().restartLoader(ID_LOADER_ALLDATA, null, this);
 		//getLoaderManager().initLoader(ID_LOADER_TEST, null, this);
 		getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);

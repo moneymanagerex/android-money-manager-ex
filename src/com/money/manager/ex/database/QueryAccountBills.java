@@ -27,7 +27,7 @@ public class QueryAccountBills extends Dataset {
 			"SELECT ACCOUNTLIST_V1.ACCOUNTID AS _id, ACCOUNTLIST_V1.ACCOUNTID, ACCOUNTNAME, STATUS, FAVORITEACCT, CURRENCYID, " +
 			"(INITIALBAL + T1.TOTAL) AS TOTAL, " +
 			"(INITIALBAL + T1.reconciled) AS RECONCILED " +
-			"FROM ACCOUNTLIST_V1, ( " +
+			"FROM ACCOUNTLIST_V1 LEFT OUTER JOIN ( " +
 			"select accountid, ROUND(SUM(total), 2) as total, ROUND(SUM(reconciled), 2) as reconciled " +
 			"from ( " +
 			"select accountid, transcode, sum(case when status in ('R', 'F', '') then -transamount else 0 end) as total, sum(case when status = 'R' then -transamount else 0 end) as reconciled " +
@@ -57,8 +57,8 @@ public class QueryAccountBills extends Dataset {
 			"group by toaccountid, transcode " +
 			")  t " +
 			"group by accountid " +
-			") T1 " +
-			"WHERE ACCOUNTLIST_V1.ACCOUNTID=T1.ACCOUNTID AND ACCOUNTLIST_V1.ACCOUNTTYPE='Checking'"; 
+			") T1 ON ACCOUNTLIST_V1.ACCOUNTID=T1.ACCOUNTID " +
+			"WHERE ACCOUNTLIST_V1.ACCOUNTTYPE='Checking'"; 
 	//definizione dei nomi dei campi
 	public static final String ACCOUNTID = "ACCOUNTID";
 	public static final String ACCOUNTNAME = "ACCOUNTNAME";

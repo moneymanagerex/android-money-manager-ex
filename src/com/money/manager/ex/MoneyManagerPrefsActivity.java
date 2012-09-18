@@ -64,6 +64,7 @@ public class MoneyManagerPrefsActivity extends FragmentActivity {
 		private ListPreference lstBaseCurrency;
 		private ListPreference lstDropboxMode;
 		private ListPreference lstTheme;
+		private ListPreference lstShow;
 		private CheckBoxPreference chkAccountOpen;
 		private CheckBoxPreference chkAccountFav;
 		@SuppressWarnings("deprecation")
@@ -173,6 +174,17 @@ public class MoneyManagerPrefsActivity extends FragmentActivity {
 					public boolean onPreferenceChange(Preference preference, Object newValue) {
 						lstTheme.setSummary((CharSequence) newValue);
 						MainActivity.setRestartActivity(true);
+						return true;
+					}
+				});
+			}
+			lstShow = (ListPreference) findPreference(MoneyManagerApplication.PREF_SHOW_TRANSACTION);
+			if (lstShow != null) {
+				lstShow.setSummary(application.getShowTransaction());
+				lstShow.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+					@Override
+					public boolean onPreferenceChange(Preference preference, Object newValue) {
+						lstShow.setSummary((CharSequence) newValue);
 						return true;
 					}
 				});

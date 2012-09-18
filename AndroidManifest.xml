@@ -18,8 +18,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="18"
-    android:versionName="0.5.8" >
+    android:versionCode="59"
+    android:versionName="0.5.9" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -80,15 +80,15 @@
         </activity>
         <activity
             android:name=".MoneyManagerPrefsActivity"
-            android:label="Settings" >
+            android:label="@string/settings" >
         </activity>
         <activity
             android:name=".MoneyManagerPrefsActivity_v10"
-            android:label="Settings" >
+            android:label="@string/settings" >
         </activity>
         <activity
             android:name=".CheckingAccountActivity"
-            android:label="New/Modify Transaction AllData" >
+            android:label="@string/new_edit_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>

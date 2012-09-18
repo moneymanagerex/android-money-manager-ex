@@ -37,6 +37,12 @@
             android:key="accountsfavoritevisible"
             android:summary="@string/if_not_selected_willShowAllAccounts"
             android:title="@string/view_accounts_favorites" />
+        <ListPreference
+            android:entries="@array/show_transaction_values"
+            android:entryValues="@array/show_transaction_values"
+            android:defaultValue="@string/last7days"
+            android:key="showtransaction"
+            android:title="@string/show_transaction" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/preferences_dropbox" >
         <Preference

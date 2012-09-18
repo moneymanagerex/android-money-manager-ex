@@ -198,10 +198,13 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	 * @return TableAccountList, return null if account id not find
 	 */
 	public TableAccountList getTableAccountList(int id) {
-		List<TableAccountList> list = this.getListAccounts();
-		// cycle elements and find the key
-		for(TableAccountList item : list) {
-			if (item.getAccountId() == id) { return item; }
+		String selection = TableAccountList.ACCOUNTID + "=?";
+		Cursor cursor = mContext.getContentResolver().query(new TableAccountList().getUri(), null, selection, new String[] {Integer.toString(id)}, null);
+		// check if cursor is valid
+		if (cursor != null && cursor.moveToFirst()) {
+			TableAccountList account = new TableAccountList();
+			account.setValueFromCursor(cursor);
+			return account;
 		}
 		// find is false then return null
 		return null;

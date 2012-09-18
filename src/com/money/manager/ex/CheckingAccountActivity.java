@@ -44,7 +44,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -52,6 +51,7 @@ import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 /**
  * 
@@ -316,8 +316,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				if (updateData() == true) {
-					// se tutto ok chiudo l'interfaccia
-					CheckingAccountActivity.this.finish();
+					// set result ok and finish
+					setResult(RESULT_OK);
+					finish();
 				}
 			}
 		});
@@ -329,7 +330,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 				// force refresh UI MainActivity
 				MainActivity.setRefreshUserInterface(true);
 				// finish CheckingAccountActivity
-				CheckingAccountActivity.this.finish();
+				setResult(RESULT_CANCELED);
+				finish();
 			}
 		});
 		
