@@ -133,7 +133,7 @@
 	<string name="prefix_symbol">Simbolo Prefisso</string>
 	<string name="suffix_symbol">Simbolo Suffisso</string>
 	<string name="decimal_char">Separatore Parte Decimale</string>
-	<string name="group_char">Sepratore Migliaia</string>
+	<string name="group_char">Separatore Migliaia</string>
 	<string name="scale">Scala</string>
 	<string name="conversion_to_base_rate">Tasso Base di Conversione</string>
 	<string name="new_edit_currency">Nuova / Modifica Valuta</string>
@@ -212,11 +212,11 @@
 	<string name="close_application">Chiudere l\'Applicazione</string>
 	<string name="question_close_application">Vuoi chiudere l\'applicazione?</string>
 	<string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string> <!-- do not translate -->
-	<string name="payee_can_not_deleted">Il beneficiario selezionato non può essere cancellato perchè referenziato</string>
+	<string name="payee_can_not_deleted">Il beneficiario selezionato non può essere cancellato perché referenziato</string>
 	<string name="attention">Attenzione</string>
-	<string name="account_can_not_deleted">Il conto selezionato non può essere cancellato perchè referenziato</string>
-	<string name="currency_can_not_deleted">La valuta selezionata non può essere cancellata perchè referenziata</string>
-	<string name="category_can_not_deleted">La categoria selezionata non può essere cancellata perchè referenziata</string>
+	<string name="account_can_not_deleted">Il conto selezionato non può essere cancellato perché referenziato</string>
+	<string name="currency_can_not_deleted">La valuta selezionata non può essere cancellata perché referenziata</string>
+	<string name="category_can_not_deleted">La categoria selezionata non può essere cancellata perché referenziata</string>
 	<!-- 20120909 -->
 	<string name="all_transaction">Tutte le transazioni</string>
    	<string name="last7days">Ultima settimana</string>
