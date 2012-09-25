@@ -99,6 +99,12 @@
 	    <item>@string/current_month</item>
 	    <item>@string/current_year</item>
 	</string-array>
+	
+    <!-- Define array to type home -->
+	<string-array name="type_home_values">
+	    <item>@string/classic</item>
+	    <item>@string/advance</item>
+	</string-array>
     
     <!-- Define currency value -->
     <string-array name="currency_values">

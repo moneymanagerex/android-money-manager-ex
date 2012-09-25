@@ -18,36 +18,27 @@
 package com.money.manager.ex;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v4.view.Window;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuInflater;
@@ -94,11 +85,10 @@ public class MainActivity extends BaseFragmentActivity {
     		return this.mTitle;
     	}
     }
+	
 	public static class TabsAdapter extends FragmentPagerAdapter implements TitleProvider {
         private Context mContext;
         private ArrayList<MainActivityTab> mFrags = new ArrayList<MainActivityTab>();
-        private Map<Integer, Fragment> mMapFragment = new HashMap<Integer, Fragment>();
-        private Map<Integer, Integer> mMapAccountPos = new HashMap<Integer, Integer>();
         
         public TabsAdapter(FragmentActivity activity) {
             super(activity.getSupportFragmentManager());
@@ -114,19 +104,6 @@ public class MainActivity extends BaseFragmentActivity {
         public int getCount() {
         	return mFrags.size();
         }
-
-        public Fragment getFragment(int position) {
-			return mMapFragment.get(position);
-		}
-
-        public Fragment getFragmentAccountId(int accountId) {
-        	Integer position = mMapAccountPos.get(accountId);
-        	if (position != null) {
-        		return getFragment(position);
-        	} else {
-        		return null;
-        	}
-        }
         
         @Override
         public Fragment getItem(int position) {
@@ -134,12 +111,9 @@ public class MainActivity extends BaseFragmentActivity {
         	String getName = mFrags.get(position).getClss().getName();
         	if (getName.equals(AccountFragment.class.getName())) {
         		fragment = AccountFragment.newIstance(mFrags.get(position).getAccountList().getAccountId());
-        		// save account id and position
-        		mMapAccountPos.put(mFrags.get(position).getAccountList().getAccountId(), position);
         	} else {
         		fragment = Fragment.instantiate(mContext, mFrags.get(position).getClss().getName(), null);
         	}
-        	mMapFragment.put(position, fragment);
             return fragment;
         }
 
@@ -150,7 +124,6 @@ public class MainActivity extends BaseFragmentActivity {
         
 		public void removeAllTab() {
         	mFrags.clear();
-        	mMapFragment.clear();
         	notifyDataSetChanged();
         }
     }
@@ -184,25 +157,41 @@ public class MainActivity extends BaseFragmentActivity {
 	public static void setRestartActivity(boolean mRestart) {
 		MainActivity.mRestartActivity = mRestart;
 	}
-    
-	// referenza all'applicazione
-	MoneyManagerApplication mApp;
 	
-	// definizione dei conti correnti visibili
+	// list of account visible
 	List<TableAccountList> mAccountList;
 	
-	// definizione degli oggetti all'interno dell'activity
+	// object int layout
 	private ViewPager  mViewPager;
-	
 	private TabsAdapter mTabsAdapter;
-	
 	private TitlePageIndicator mTitlePageIndicator;
 
-	// posizione corrente nel TabsAdapter
+	// current position
     private int mCurrentPosition = 0;
 	
-	// flag per la gestione se del riavvio activity
+    // Advance mode
+    private boolean mAdvanceShow = false;
+    
+	// state if restart activity
     private static boolean mRestartActivity = false;
+	
+	private void changeFragment(int accountId) {
+		String nameFragment = AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+		AccountFragment fragment;
+		fragment = (AccountFragment) getSupportFragmentManager().findFragmentByTag(nameFragment);
+		if (fragment == null) {
+			fragment = AccountFragment.newIstance(accountId);
+		}
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		//animation
+		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack
+		transaction.replace(R.id.fragmentContent, fragment, nameFragment);
+		transaction.addToBackStack(null);
+		// Commit the transaction
+		transaction.commit();
+	}
 	
 	/**
 	 * Dialog to choose exit from application
@@ -243,73 +232,87 @@ public class MainActivity extends BaseFragmentActivity {
 			}
 		}
 	}
-	
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		setRestartActivity(true);
 	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		requestWindowFeature(Window.FEATURE_PROGRESS);
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_activity);
-		if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-			mCurrentPosition = savedInstanceState.getInt(KEY_CONTENT);
+		MoneyManagerApplication application = (MoneyManagerApplication)getApplication();
+		// load base currency and compose hash currencies
+		application.loadBaseCurrencyId(this);
+		application.loadHashMapCurrency(this);
+		// set advance mode
+		mAdvanceShow = application.getTypeHome() == MoneyManagerApplication.TYPE_HOME_ADVANCE;
+		// check type mode
+		if (mAdvanceShow) {
+			onCreatePager(savedInstanceState);
+		} else {
+			onCreateFragments(savedInstanceState);
 		}
-		// prendo la referenza all'applicazione
-		mApp = (MoneyManagerApplication)getApplication();
-		// Imposto la navigazione
-		//getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		// prendo il riferimento a ViewPager
-		mViewPager = (ViewPager)findViewById(R.id.pager);
-		// creo l'adapter tabs
-        mTabsAdapter = new TabsAdapter(this);
-        mViewPager.setAdapter(mTabsAdapter);
-        mViewPager.setOffscreenPageLimit(1);
-        // impostazione dell'indicator
-        mTitlePageIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
-        mTitlePageIndicator.setViewPager(mViewPager);
-        // imposto il colore del title indicator
-		mTitlePageIndicator.setTextColor(getResources().getColor(R.color.color_ice_cream_sandiwich));
-		mTitlePageIndicator.setSelectedColor(getResources().getColor(R.color.color_ice_cream_sandiwich));
-		// imposto la grandezza del testo nell'indicator
-		mTitlePageIndicator.setTextSize(20 * new DisplayMetrics().scaledDensity);
-		// imposto che il selezionato deve diventare grassetto
-		mTitlePageIndicator.setSelectedBold(true);
-		// imposto il listener
-		mTitlePageIndicator.setOnPageChangeListener(new OnPageChangeListener() {
-			@Override
-			public void onPageScrolled(int position, float positionOffset,
-					int positionOffsetPixels) {
-				return;
-			}
-			@Override
-			public void onPageScrollStateChanged(int state) {
-				return;
-			}
-			@Override
-			public void onPageSelected(int position) {
-				//mCurrentPosition = position;
-			}
-		});
-		// set che devo effettuare il refresh grafico
 		setRefreshUserInterface(true);
+		//show change log and
+		MoneyManagerApplication.showStartupChangeLog(this, false);
 	}
-
+	/**
+	 * this method call for classic method (show fragments)
+	 * @param savedInstanceState
+	 */
+	private void onCreateFragments(Bundle savedInstanceState) {
+		setContentView(R.layout.main_fragments_activity);
+		// check if fragment into stack
+		HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
+		if (fragment == null) {
+			// fragment create
+			fragment = new HomeFragment();
+			// add to stack
+			getSupportFragmentManager().beginTransaction().add(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
+		} 
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
+	
+	/**
+	 * this method call for advance method (show viewpagerindicator)
+	 * @param savedInstanceState
+	 */
+	private void onCreatePager(Bundle savedInstanceState) {
+		setContentView(R.layout.main_pager_activity);
+		if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
+			mCurrentPosition = savedInstanceState.getInt(KEY_CONTENT);
+		}
+		// create tabs adapter
+        mTabsAdapter = new TabsAdapter(this);
+		// pointer to view pager
+		mViewPager = (ViewPager)findViewById(R.id.pager);
+        mViewPager.setAdapter(mTabsAdapter);
+        mViewPager.setOffscreenPageLimit(1);
+        // set title indicator
+        mTitlePageIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
+        mTitlePageIndicator.setViewPager(mViewPager);
+		
+        mTitlePageIndicator.setTextColor(getResources().getColor(R.color.color_ice_cream_sandiwich));
+		mTitlePageIndicator.setSelectedColor(getResources().getColor(R.color.color_ice_cream_sandiwich));
+		mTitlePageIndicator.setSelectedBold(true);
+
+	}
+	
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			exitApplication();
-			return true;
+			Fragment fragment = getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
+			// check if show home fragment
+			if ((fragment != null && fragment.isVisible()) || mAdvanceShow) {
+				exitApplication(); // question if user would exit
+				return true;
+			}
 		}
 		return super.onKeyUp(keyCode, event);
 	}
@@ -379,16 +382,16 @@ public class MainActivity extends BaseFragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// controllo se devo riavviare l'activity
+		// check if restart activity
 		if (isRestartActivitySet()) {
 			restartActivity(); // restart and exit
 			return;
 		}
-		// controllo se devo effettuare il refresh grafico dell'interfaccia
+		// check if refresh user interface
 		if (isRefreshUserInterface()) {
 			refreshUserInterface();
-			// controllo se avevo una posizione memorizzata
-			if (mCurrentPosition > 0) {
+			// reposition view
+			if (mViewPager != null && mCurrentPosition > 0) {
 				mViewPager.setCurrentItem(mCurrentPosition);
 				mCurrentPosition = 0;
 			}
@@ -397,7 +400,11 @@ public class MainActivity extends BaseFragmentActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt(KEY_CONTENT, mViewPager.getCurrentItem());
+		if (mViewPager != null) {
+			outState.putInt(KEY_CONTENT, mViewPager.getCurrentItem());
+		} else {
+			outState.putInt(KEY_CONTENT, 0);
+		}
 	}
 	/**
 	 * pick a file to use
@@ -418,88 +425,67 @@ public class MainActivity extends BaseFragmentActivity {
 	    	Toast.makeText(this, R.string.error_intent_pick_file, Toast.LENGTH_LONG).show();
 	    }
 	}
-	/**
-	 * refresh grafico dell'activity
-	 * ricostruisce i tab dell'interfaccia
+	
+    /**
+	 * refresh user interface advance
+	 * 
 	 */
 	public void refreshUserInterface() {
-		// indeterminate
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setProgressBarIndeterminateVisibility(false);
-		}
-		// lettura della valuta di base
-		mApp.loadBaseCurrencyId(this);
-		// richiamo il metodo per la composizione delle valute
-		mApp.loadHashMapCurrency(this);
-		if (isRefreshUserInterface() == false) { return; }
-
-		// rimuovo tutti i tab inseriti
+		if (!(isRefreshUserInterface())) { return; }
+		if (!mAdvanceShow) { return; }
+		
 		mTabsAdapter.removeAllTab();
-		// creo i tab necessari alla visualizzazione
-        // aggiungo il tab home
-        //mTabsAdapter.addTab(mTabHome, HomeFragment.class);
+		// add tab home
 		mTabsAdapter.addTab(new MainActivityTab(HomeFragment.class, getResources().getString(R.string.home)));
-        // definizione dell'helper per l'accesso ai dati
+		
+		// take list account
         MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(this);
-        // prendo la lista dei conti correnti da visualizzare nei tab
-        mAccountList = helper.getListAccounts(mApp.getAccountsOpenVisible(), mApp.getAccountFavoriteVisible());
-        //ciclo gli account e li inserisco
+        mAccountList = helper.getListAccounts(((MoneyManagerApplication)getApplication()).getAccountsOpenVisible(), ((MoneyManagerApplication)getApplication()).getAccountFavoriteVisible());
+
+        // add tab for account
         for(int i = 0; i < mAccountList.size(); i ++) {
-        	// aggiungo il tab dell'account
         	if (mAccountList.get(i).getAccountType().toUpperCase().equals("CHECKING")) {
         		mTabsAdapter.addTab(new MainActivityTab(AccountFragment.class, mAccountList.get(i).getAccountName(), mAccountList.get(i)));
         	}
         }
+        
         mTabsAdapter.notifyDataSetChanged();
 	}
-	
-    /**
-	 * riavvio la Activity main per il cambio di alcune impostazioni principali
+	/**
+	 *  for the change setting restart process application
 	 */
 	protected void restartActivity() {
 		if (mRestartActivity) {
 			Intent intent = getIntent();
-			// chiudo l'activity corrente
+			// finish this activity
 			finish();
-			// la riavvio
+			// restart
 			startActivity(intent);
-			// close application
+			// kill process
 			android.os.Process.killProcess(android.os.Process.myPid());
 		}
 		// set state a false
 		setRestartActivity(false);
 	}
-    
-    /**
-	 * metodo per l'avvio dell'activity di browsing del file
-	 * @param mode
-	 */
-	public void startFileBrowseActivity(int mode) {
-		// prendo il file di partenza
-		File fileIntent = Environment.getExternalStorageDirectory();
-		// controllo il null se non montata
-		if (fileIntent == null) {
-			fileIntent = new File("/");
-		}
-		Intent intent = new Intent(this, FileBrowseActivity.class);
-		intent.putExtra(getPackageName() + ".init", fileIntent.getPath());
-		intent.setAction(FileBrowseActivity.INTENT_VIEW_FILE);
-		// avvio la finestra per il result
-		startActivityForResult(intent, mode);
-	}
 	/**
-	 * return fragment with accountId
-	 * @param accountId 
-	 * @return
-	 */
-	public Fragment getFragmentAccount(int accountId) {
-		return mTabsAdapter.getFragmentAccountId(accountId);
-	}
-	/**
-	 * Scroll view pager
+	 * scroll view pager
 	 * @param position to scroll
 	 */
-	public void scrollToPage(int position) {
-		mViewPager.setCurrentItem(position);
+	private void scrollToPage(int position) {
+		if (mViewPager != null) {
+			mViewPager.setCurrentItem(position + 1); // add 1 because 0 is home
+		}
+	}
+	/**
+	 * show a fragment select with position or account id
+	 * @param position to page
+	 * @param accountId account id of the fragment to be loaded
+	 */
+	public void showFragment(int position, int accountId) {
+		if (mAdvanceShow) {
+			scrollToPage(position);
+		} else {
+			changeFragment(accountId);
+		}
 	}
 }

@@ -25,14 +25,15 @@ import android.support.v4.view.MenuItem;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 0.0.1
+ * @version 1.0.0
  * 
  */
 public class AboutActivity extends BaseFragmentActivity {
@@ -64,6 +65,15 @@ public class AboutActivity extends BaseFragmentActivity {
 			Log.e(LOGCAT, e.getMessage());
 		}
 		txtVersion.setText(txtVersion.getText() + " " + text);
+		// text changelog
+		TextView txtChangeLog = (TextView)findViewById(R.id.textViewChangeLog);
+		txtChangeLog.setText(Html.fromHtml("<u>" + getString(R.string.changelog) + "</u>"));
+		txtChangeLog.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MoneyManagerApplication.showStartupChangeLog(AboutActivity.this, true);
+			}
+		});
 	}
 	
 	@Override

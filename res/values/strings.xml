@@ -225,4 +225,9 @@
    	<string name="current_year">Current year</string>
    	<string name="show_transaction">Show Transaction</string>
    	<!-- 20120917 -->
+   	<string name="type_home">Type Home</string>
+   	<string name="classic">Classic</string>
+   	<string name="advance">Advance</string>
+   	<string name="changelog">Change log</string>
+   	<!-- 20120925 -->
 </resources>

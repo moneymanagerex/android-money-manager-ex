@@ -27,21 +27,25 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
-import com.money.manager.ex.R;
 import com.dropbox.client2.session.Session.AccessType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -68,6 +72,7 @@ public class MoneyManagerApplication extends Application {
     ///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
+    public static final String PREF_LAST_VERSION_KEY = "preflastversionkey";
     public static final String PREF_DATABASE_PATH = "databasepath";
     public static final String PREF_USER_NAME = "username";
     public static final String PREF_BASE_CURRENCY = "basecurrency";
@@ -76,11 +81,27 @@ public class MoneyManagerApplication extends Application {
     public static final String PREF_DROPBOX_MODE = "dropboxmodesync";
     public static final String PREF_THEME = "themeapplication";
     public static final String PREF_SHOW_TRANSACTION = "showtransaction";
-    
-	// application preferences
-	private static final String APP_PREFERENCES = "MoneyManagerPreferences";
+    public static final String PREF_TYPE_HOME = "typehome";
+    ///////////////////////////////////////////////////////////////////////////
+    //                         CONSTANTS VALUES                              //
+    ///////////////////////////////////////////////////////////////////////////
+    public static final int TYPE_HOME_CLASSIC = R.layout.main_fragments_activity;
+    public static final int TYPE_HOME_ADVANCE = R.layout.main_pager_activity;
 	private static SharedPreferences appPreferences;
-	/***
+	/**
+	 * Take a versioncode of this application
+	 * @param context
+	 * @return application version code
+	 */
+    public static String getCurrentVersion(Context context) {
+		try {
+			PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+			return packageInfo.versionName;
+		} catch (NameNotFoundException e) {
+			return "";
+		}
+    }
+    /***
 	 * 
 	 * @param context
 	 * @return path database file
@@ -95,6 +116,42 @@ public class MoneyManagerApplication extends Application {
 			return MoneyManagerOpenHelper.databasePath;
 		}
 	}
+	/**
+	 * 
+	 * @param Context context from call
+	 * int resId: rawid
+	 * @return String: String file
+	 */
+	public static String getRawAsString(Context context, int resId) {
+		final int BUFFER_DIMENSION = 128;
+		String result = null;
+		// take input stream
+		InputStream is = context.getResources().openRawResource(resId);
+		if (is != null) {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			byte[] buffer = new byte[BUFFER_DIMENSION];
+			int numRead = 0;
+			try {
+				while ((numRead = is.read(buffer)) >= 0) {
+					baos.write(buffer, 0, numRead);
+				}
+				// convert to string
+				result = new String(baos.toByteArray());
+			} catch (IOException e) {
+				Log.e(LOGCAT, e.getMessage());
+				e.printStackTrace();
+			} finally {
+				if (baos != null) {
+					try {
+						baos.close();
+					} catch (IOException e) {
+						Log.e(LOGCAT, e.getMessage());
+					}
+				}
+			}
+		}
+		return result;
+	}
     /**
 	 * 
 	 * @param context
@@ -106,6 +163,36 @@ public class MoneyManagerApplication extends Application {
 		editor.putString(PREF_DATABASE_PATH, dbpath);
 		editor.commit();
 	}
+
+	/**
+     * 
+     * @param context
+     * @param forceShow force show changelog alert dialog
+     * @return
+     */
+	public static boolean showStartupChangeLog(Context context, boolean forceShow) {
+		String currentVersion = getCurrentVersion(context);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String lastVersion = preferences.getString(PREF_LAST_VERSION_KEY, "0.0.0");
+		if (!lastVersion.equals(currentVersion) || forceShow) {
+			preferences.edit().putString(PREF_LAST_VERSION_KEY, currentVersion).commit();
+			String changelog = getRawAsString(context, R.raw.changelog);
+			AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
+			showDialog.setCancelable(false);
+			showDialog.setTitle(R.string.changelog);
+			showDialog.setMessage(Html.fromHtml(changelog));
+			showDialog.setNeutralButton(android.R.string.ok,
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+			showDialog.create().show();
+			return false;
+		} else
+			return true;
+	}
 	private Editor editPreferences;
 	///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //
@@ -114,10 +201,9 @@ public class MoneyManagerApplication extends Application {
 	private static Map<Integer, TableCurrencyFormats> mMapCurrency = new HashMap<Integer, TableCurrencyFormats>();
 	// Id of BaseCurrency
 	private static int mBaseCurrencyId = 0;
+	
 	// user name application
 	private static String userName = "";
-	
-	private static String dropboxSyncMode = "";
 	// application context
 	private static Context applicationContext;
 	/**
@@ -141,6 +227,7 @@ public class MoneyManagerApplication extends Application {
 	public boolean getAccountsOpenVisible() {
 		return appPreferences.getBoolean(PREF_ACCOUNT_OPEN_VISIBLE, false);
 	}
+
 	/**
 	 * 
 	 * @return List di tutte le CurrencyFormats
@@ -149,7 +236,6 @@ public class MoneyManagerApplication extends Application {
 		List<TableCurrencyFormats> ret = new ArrayList<TableCurrencyFormats>(mMapCurrency.values());
 		return ret;
 	}
-
 	/**
 	 * 
 	 * @return application theme
@@ -167,6 +253,7 @@ public class MoneyManagerApplication extends Application {
 	public int getBaseCurrencyId() {
 		return MoneyManagerApplication.mBaseCurrencyId;
 	}
+
 	/**
 	 * this method convert a float value to base numeric string
 	 * @param value to format
@@ -183,7 +270,6 @@ public class MoneyManagerApplication extends Application {
 	public TableCurrencyFormats getCurrencyFormats(int currency) {
 		return mMapCurrency.get(currency);
 	}
-
 	/**
 	 * 
 	 * @param currency id della valuta
@@ -191,14 +277,21 @@ public class MoneyManagerApplication extends Application {
 	 * @return valore formattato
 	 */
 	public String getCurrencyFormatted(int currency, float value) {
-		// ricerco il currency per id
+		// find currencyid
 		TableCurrencyFormats tableCurrency = mMapCurrency.get(currency);
-		// controllo se l'ho trovato mediante il null
+
 		if (tableCurrency == null) {
 			return Float.toString(value);
 		}
-		// adesso richiamo la funzione che mi restituice il valore formattato
+		// formatted value
 		return tableCurrency.getValueFormatted(value);
+	}
+	/**
+	 * 
+	 * @return default home type
+	 */
+	public int getDefaultTypeHome() {
+		return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB ? TYPE_HOME_CLASSIC : TYPE_HOME_ADVANCE;
 	}
 	/**
 	 * 
@@ -214,61 +307,21 @@ public class MoneyManagerApplication extends Application {
 	 * @return value formatted
 	 */
 	public String getNumericFormatted(int currency, float value) {
-		// ricerco il currency per id
+		// find currency
 		TableCurrencyFormats tableCurrency = mMapCurrency.get(currency);
-		// controllo se l'ho trovato mediante il null
+		
 		if (tableCurrency == null) {
 			return Float.toString(value);
 		}
-		// adesso richiamo la funzione che mi restituice il valore formattato
+		// formatted value
 		return tableCurrency.getValueFormatted(value, false);		
 	}
 	/**
 	 * 
-	 * @param Context context della chiamata 
-	 * int resId: ID della risorsa da ricercare nel raw
-	 * @return String: valore di ritorno del Raw come stringa
+	 * @return the show transaction
 	 */
-	public String getRawAsString(Context context, int resId) {
-		final int BUFFER_DIMENSION = 128;
-		// Risultato
-		String result = null;
-		// Otteniamo il riferimento all'inputStream
-		InputStream is = context.getResources().openRawResource(resId);
-		if (is != null) {
-			// Leggiamo i byte
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			byte[] buffer = new byte[BUFFER_DIMENSION];
-			int numRead = 0;
-			try {
-				while ((numRead = is.read(buffer)) >= 0) {
-					baos.write(buffer, 0, numRead);
-				}
-				// Alla fine otteniamo la corrispondente String
-				result = new String(baos.toByteArray());
-			} catch (IOException e) {
-				Log.e(LOGCAT, e.getMessage());
-				e.printStackTrace();
-			} finally {
-				if (baos != null) {
-					try {
-						baos.close();
-					} catch (IOException e) {
-						Log.e(LOGCAT, e.getMessage());
-					}
-				}
-			}
-		}
-		// Ritorniamo il risultato
-		return result;
-	}
-	/**
-	 * 
-	 * @param resId: ID della risorsa da ricercare nel raw
-	 * @return
-	 */
-	public String getRawAsString(int resId) {
-		return getRawAsString(getApplicationContext(), resId);
+	public String getShowTransaction() {
+		return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_SHOW_TRANSACTION, getResources().getString(R.string.last7days));
 	}
 	/**
 	 * 
@@ -290,15 +343,28 @@ public class MoneyManagerApplication extends Application {
 		return "";
 	}
 	/**
+	 * 
+	 * @return resource id layout to apply
+	 */
+	public int getTypeHome() {
+		String typeHome = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_TYPE_HOME, "");
+		if (typeHome.equalsIgnoreCase(getString(R.string.classic))) {
+			return TYPE_HOME_CLASSIC;
+		} else if (typeHome.equalsIgnoreCase(getString(R.string.advance))){
+			return TYPE_HOME_ADVANCE;
+		}
+		return getDefaultTypeHome();
+	}
+	/**
 	 * @return the userName
 	 */
 	public String getUserName() {
 		return userName;
 	}
+	
 	public boolean isUriAvailable(Context context, Intent intent) {
 		return context.getPackageManager().resolveActivity(intent, 0) != null;
 	}
-
 	/**
 	 * method that loads the base currency
 	 * @param context contesto della chiamata
@@ -427,8 +493,6 @@ public class MoneyManagerApplication extends Application {
 		editPreferences.putString(PREF_DROPBOX_MODE, value);
 		// commit
 		editPreferences.commit();
-		// set the value 
-		MoneyManagerApplication.dropboxSyncMode = value;
 	}
 	/**
 	 * 
@@ -441,10 +505,10 @@ public class MoneyManagerApplication extends Application {
 			activity.setTheme(R.style.Theme_Money_Manager_Light);
 		}
 	}
+
 	public boolean setUserName(String userName) {
 		return this.setUserName(userName, false);
 	}
-
 	/**
 	 * @param userName the userName to set
 	 * @param save save into database
@@ -455,7 +519,7 @@ public class MoneyManagerApplication extends Application {
 			// update data into database
 			ContentValues values = new ContentValues();
 			values.put(TableInfoTable.INFOVALUE, userName);
-			// passo all'aggiornamento
+
 			if (getContentResolver().update(infoTable.getUri(), values, TableInfoTable.INFONAME + "='USERNAME'", null) != 1) {
 				return false;
 			}
@@ -468,12 +532,5 @@ public class MoneyManagerApplication extends Application {
 		// set the value 
 		MoneyManagerApplication.userName = userName;
 		return true;
-	}
-	/**
-	 * 
-	 * @return the show transaction
-	 */
-	public String getShowTransaction() {
-		return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_SHOW_TRANSACTION, getResources().getString(R.string.last7days));
 	}
 }

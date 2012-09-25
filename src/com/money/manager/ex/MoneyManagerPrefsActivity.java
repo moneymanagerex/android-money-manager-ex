@@ -20,21 +20,15 @@ package com.money.manager.ex;
 import java.util.List;
 
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.dropbox.DropboxActivity;
 /**
@@ -43,49 +37,28 @@ import com.money.manager.ex.dropbox.DropboxActivity;
  * @version 1.0.0
  */
 public class MoneyManagerPrefsActivity extends FragmentActivity {
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		// theme
-		((MoneyManagerApplication)getApplication()).setThemeApplication(this);
-		// Display the fragment as the main content.
-        getFragmentManager().beginTransaction().replace(android.R.id.content,
-                new PrefsFragment()).commit();
-	}
-	
 	public static class PrefsFragment extends PreferenceFragment {
-		// prendo la referenza all'applicazione
+		// application
 		private MoneyManagerApplication application;
-		// ID delle preferenze
-		private Preference pUserName;
-		private Preference pDatabasePath;
-		private Preference pDropboxFile;
-		private ListPreference lstBaseCurrency;
-		private ListPreference lstDropboxMode;
-		private ListPreference lstTheme;
-		private ListPreference lstShow;
-		private CheckBoxPreference chkAccountOpen;
-		private CheckBoxPreference chkAccountFav;
-		@SuppressWarnings("deprecation")
+		// id preference
+		private Preference pUserName, pDatabasePath, pDropboxFile;
+		private ListPreference lstBaseCurrency, lstDropboxMode, lstTheme, lstShow, lstTypeHome;
+		private CheckBoxPreference chkAccountOpen, chkAccountFav;
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			// prendo la referenza all'applicazione
+			
 			application = (MoneyManagerApplication)getActivity().getApplication();
-			// set thmee
 			application.setThemeApplication(getActivity());
+			
 			// set layout
 			addPreferencesFromResource(R.xml.prefrences);
-			/*if (application.getApplicationTheme().equalsIgnoreCase(getResources().getString(R.string.theme_light))) {
-				getListView().setBackgroundResource(android.R.color.white);
-			}*/
 			PreferenceManager.getDefaultSharedPreferences(getActivity());
-			// prendo la preferenza della username e imposto la summery
+			
+			// preference username
 			pUserName = findPreference(MoneyManagerApplication.PREF_USER_NAME);
 			if (pUserName != null) {
 				pUserName.setSummary(application.getUserName());
-				// imposto il listener per la modifica al database
 				pUserName.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 					@Override
 					public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -95,7 +68,8 @@ public class MoneyManagerPrefsActivity extends FragmentActivity {
 					}
 				});
 			}
-			// prendo la ListPreference della BaseCurrency
+			
+			// list preference base currency
 			lstBaseCurrency = (ListPreference) findPreference(MoneyManagerApplication.PREF_BASE_CURRENCY);
 			if (lstBaseCurrency != null) {
 				List<TableCurrencyFormats> currencies = application.getAllCurrencyFormats();
@@ -106,15 +80,13 @@ public class MoneyManagerPrefsActivity extends FragmentActivity {
 					entries[i] = currencies.get(i).getCurrencyName();
 					entryValues[i] = ((Integer)currencies.get(i).getCurrencyId()).toString();
 				}
-				// imposto i valori
+				// set value
 				lstBaseCurrency.setEntries(entries);
 				lstBaseCurrency.setEntryValues(entryValues);
-				// imposto il summary
 				TableCurrencyFormats tableCurrency = application.getCurrencyFormats(application.getBaseCurrencyId());
 				if (tableCurrency != null) {
 					lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
 				}
-				// imposto un listener sulla modifica
 				lstBaseCurrency.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 					@Override
 					public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -128,28 +100,29 @@ public class MoneyManagerPrefsActivity extends FragmentActivity {
 					}
 				});
 			}
-			// prendo il check open per la gestione se devo riavviare l'interfaccia
+
+			//checkbox on open and favorite account
 			chkAccountOpen = (CheckBoxPreference)findPreference(MoneyManagerApplication.PREF_ACCOUNT_OPEN_VISIBLE);
 			chkAccountFav = (CheckBoxPreference)findPreference(MoneyManagerApplication.PREF_ACCOUNT_FAV_VISIBLE);
-			// definizione del listener di mod
+			
 			OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					// imposto che la MainActivity va riavviata
 					MainActivity.setRestartActivity(true);
 					return true;
 				}
 			};
-			// linster sul cambiamento
+			// set listener on the checkbox
 			chkAccountOpen.setOnPreferenceChangeListener(listener);
 			chkAccountFav.setOnPreferenceChangeListener(listener);
-			// sezione dropbox account e file
+			
+			// dropbox account and file
 			pDropboxFile = findPreference("dropboxlinkedfile");
 			SharedPreferences prefs = getActivity().getSharedPreferences(DropboxActivity.ACCOUNT_PREFS_NAME, 0);
 			pDropboxFile.setSummary(prefs.getString(DropboxActivity.REMOTE_FILE, null));
-			// set che non sono selezionabili
 			pDropboxFile.setSelectable(false);
-			// gestione della listview sulle modalit� di sincronizzazione
+			
+			// dropbox sync mode
 			lstDropboxMode = (ListPreference) findPreference(MoneyManagerApplication.PREF_DROPBOX_MODE);
 			if (lstDropboxMode != null) {
 				lstDropboxMode.setSummary(application.getDropboxSyncMode());
@@ -165,10 +138,11 @@ public class MoneyManagerPrefsActivity extends FragmentActivity {
 			pDatabasePath = findPreference(MoneyManagerApplication.PREF_DATABASE_PATH);
 			pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
 			}
+			
+			// list theme
 			lstTheme = (ListPreference) findPreference(MoneyManagerApplication.PREF_THEME);
 			if (lstTheme != null) {
 				lstTheme.setSummary(application.getApplicationTheme());
-				// imposto un listener sulla modifica
 				lstTheme.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 					@Override
 					public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -178,6 +152,8 @@ public class MoneyManagerPrefsActivity extends FragmentActivity {
 					}
 				});
 			}
+			
+			// show transaction
 			lstShow = (ListPreference) findPreference(MoneyManagerApplication.PREF_SHOW_TRANSACTION);
 			if (lstShow != null) {
 				lstShow.setSummary(application.getShowTransaction());
@@ -189,7 +165,37 @@ public class MoneyManagerPrefsActivity extends FragmentActivity {
 					}
 				});
 			}
+			
+			// type of home
+			lstTypeHome = (ListPreference) findPreference(MoneyManagerApplication.PREF_TYPE_HOME);
+			if (lstTypeHome != null) {
+				if (application.getTypeHome() == MoneyManagerApplication.TYPE_HOME_CLASSIC) {
+					lstTypeHome.setSummary(getString(R.string.classic));
+				} else {
+					lstTypeHome.setSummary(getString(R.string.advance));
+				}
+				// set default value
+				lstTypeHome.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+					@Override
+					public boolean onPreferenceChange(Preference preference, Object newValue) {
+						lstTypeHome.setSummary(newValue.toString());
+						MainActivity.setRestartActivity(true);
+						return true;
+					}
+				});
+			}
 		}
+	}
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		// theme
+		((MoneyManagerApplication)getApplication()).setThemeApplication(this);
+		// Display the fragment as the main content.
+        getFragmentManager().beginTransaction().replace(android.R.id.content,
+                new PrefsFragment()).commit();
 	}
 	
 }

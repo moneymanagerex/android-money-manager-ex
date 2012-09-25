@@ -82,7 +82,16 @@ public class HomeFragment extends Fragment implements
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				((MainActivity)getActivity()).scrollToPage(position + 1);
+				MainActivity activity = (MainActivity)getActivity();
+				Cursor cursor = ((CursorAdapter)lstAccountBills.getAdapter()).getCursor();
+				int accountId = -1;
+				if (cursor != null && cursor.moveToPosition(position)) {
+					accountId = cursor.getInt(cursor.getColumnIndex(QueryAccountBills.ACCOUNTID));
+				}
+				// show account clicked
+				if (activity != null) {
+					activity.showFragment(position, accountId);
+				}
 			}
 		});
 		prgAccountBills = (ProgressBar)view.findViewById(R.id.progressAccountBills);
@@ -195,6 +204,7 @@ public class HomeFragment extends Fragment implements
 	public class AccountBillsAdapter extends CursorAdapter {
 		private LayoutInflater inflater;
 		
+		@SuppressWarnings("deprecation")
 		public AccountBillsAdapter(Context context, Cursor c) {
 			super(context, c);
 			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

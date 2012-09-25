@@ -37,38 +37,28 @@ import com.money.manager.ex.dropbox.DropboxActivity;
  * @version 1.0.0
  */
 public class MoneyManagerPrefsActivity_v10 extends PreferenceActivity {
-
-	// prendo la referenza all'applicazione
+	// application
 	private MoneyManagerApplication application;
-	// ID delle preferenze
-	private Preference pUserName;
-	private Preference pDatabasePath;
-	private Preference pDropboxFile;
-	private ListPreference lstBaseCurrency;
-	private ListPreference lstDropboxMode;
-	private ListPreference lstTheme;
-	private ListPreference lstShow;
-	private CheckBoxPreference chkAccountOpen;
-	private CheckBoxPreference chkAccountFav;
+	// id preference
+	private Preference pUserName, pDatabasePath, pDropboxFile;
+	private ListPreference lstBaseCurrency, lstDropboxMode, lstTheme, lstShow, lstTypeHome;
+	private CheckBoxPreference chkAccountOpen, chkAccountFav;
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// prendo la referenza all'applicazione
+		
 		application = (MoneyManagerApplication)this.getApplication();
-		// set thmee
 		application.setThemeApplication(this);
+		
 		// set layout
 		addPreferencesFromResource(R.xml.prefrences);
-		/*if (application.getApplicationTheme().equalsIgnoreCase(getResources().getString(R.string.theme_light))) {
-			getListView().setBackgroundResource(android.R.color.white);
-		}*/
 		PreferenceManager.getDefaultSharedPreferences(this);
-		// prendo la preferenza della username e imposto la summery
+		
+		// preference username
 		pUserName = findPreference(MoneyManagerApplication.PREF_USER_NAME);
 		if (pUserName != null) {
 			pUserName.setSummary(application.getUserName());
-			// imposto il listener per la modifica al database
 			pUserName.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -78,7 +68,8 @@ public class MoneyManagerPrefsActivity_v10 extends PreferenceActivity {
 				}
 			});
 		}
-		// prendo la ListPreference della BaseCurrency
+		
+		// list preference base currency
 		lstBaseCurrency = (ListPreference) findPreference(MoneyManagerApplication.PREF_BASE_CURRENCY);
 		if (lstBaseCurrency != null) {
 			List<TableCurrencyFormats> currencies = application.getAllCurrencyFormats();
@@ -89,15 +80,13 @@ public class MoneyManagerPrefsActivity_v10 extends PreferenceActivity {
 				entries[i] = currencies.get(i).getCurrencyName();
 				entryValues[i] = ((Integer)currencies.get(i).getCurrencyId()).toString();
 			}
-			// imposto i valori
+			// set value
 			lstBaseCurrency.setEntries(entries);
 			lstBaseCurrency.setEntryValues(entryValues);
-			// imposto il summary
 			TableCurrencyFormats tableCurrency = application.getCurrencyFormats(application.getBaseCurrencyId());
 			if (tableCurrency != null) {
 				lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
 			}
-			// imposto un listener sulla modifica
 			lstBaseCurrency.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -111,28 +100,29 @@ public class MoneyManagerPrefsActivity_v10 extends PreferenceActivity {
 				}
 			});
 		}
-		// prendo il check open per la gestione se devo riavviare l'interfaccia
+
+		//checkbox on open and favorite account
 		chkAccountOpen = (CheckBoxPreference)findPreference(MoneyManagerApplication.PREF_ACCOUNT_OPEN_VISIBLE);
 		chkAccountFav = (CheckBoxPreference)findPreference(MoneyManagerApplication.PREF_ACCOUNT_FAV_VISIBLE);
-		// definizione del listener di mod
+		
 		OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
-				// imposto che la MainActivity va riavviata
 				MainActivity.setRestartActivity(true);
 				return true;
 			}
 		};
-		// linster sul cambiamento
+		// set listener on the checkbox
 		chkAccountOpen.setOnPreferenceChangeListener(listener);
 		chkAccountFav.setOnPreferenceChangeListener(listener);
-		// sezione dropbox account e file
+		
+		// dropbox account and file
 		pDropboxFile = findPreference("dropboxlinkedfile");
 		SharedPreferences prefs = this.getSharedPreferences(DropboxActivity.ACCOUNT_PREFS_NAME, 0);
 		pDropboxFile.setSummary(prefs.getString(DropboxActivity.REMOTE_FILE, null));
-		// set che non sono selezionabili
 		pDropboxFile.setSelectable(false);
-		// gestione della listview sulle modalit� di sincronizzazione
+		
+		// dropbox sync mode
 		lstDropboxMode = (ListPreference) findPreference(MoneyManagerApplication.PREF_DROPBOX_MODE);
 		if (lstDropboxMode != null) {
 			lstDropboxMode.setSummary(application.getDropboxSyncMode());
@@ -148,11 +138,11 @@ public class MoneyManagerPrefsActivity_v10 extends PreferenceActivity {
 		pDatabasePath = findPreference(MoneyManagerApplication.PREF_DATABASE_PATH);
 		pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(this.getApplicationContext()));
 		}
+		
+		// list theme
 		lstTheme = (ListPreference) findPreference(MoneyManagerApplication.PREF_THEME);
-		lstTheme.setEnabled(false);
 		if (lstTheme != null) {
 			lstTheme.setSummary(application.getApplicationTheme());
-			// imposto un listener sulla modifica
 			lstTheme.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -162,6 +152,8 @@ public class MoneyManagerPrefsActivity_v10 extends PreferenceActivity {
 				}
 			});
 		}
+		
+		// show transaction
 		lstShow = (ListPreference) findPreference(MoneyManagerApplication.PREF_SHOW_TRANSACTION);
 		if (lstShow != null) {
 			lstShow.setSummary(application.getShowTransaction());
@@ -169,6 +161,25 @@ public class MoneyManagerPrefsActivity_v10 extends PreferenceActivity {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
 					lstShow.setSummary((CharSequence) newValue);
+					return true;
+				}
+			});
+		}
+		
+		// type of home
+		lstTypeHome = (ListPreference) findPreference(MoneyManagerApplication.PREF_TYPE_HOME);
+		if (lstTypeHome != null) {
+			if (application.getTypeHome() == MoneyManagerApplication.TYPE_HOME_CLASSIC) {
+				lstTypeHome.setSummary(getString(R.string.classic));
+			} else {
+				lstTypeHome.setSummary(getString(R.string.advance));
+			}
+			// set default value
+			lstTypeHome.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					lstTypeHome.setSummary(newValue.toString());
+					MainActivity.setRestartActivity(true);
 					return true;
 				}
 			});

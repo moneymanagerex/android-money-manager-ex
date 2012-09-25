@@ -58,7 +58,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	 * @param rawId id raw resource
 	 */
 	private void executeRawSql(SQLiteDatabase db, int rawId) {
-		String sqlCreate = new MoneyManagerApplication().getRawAsString(mContext, rawId);
+		String sqlCreate = MoneyManagerApplication.getRawAsString(mContext, rawId);
 		String sqlStatment[] = sqlCreate.split(";");
 		// process all statment
 		for(int i = 0; i < sqlStatment.length; i ++) {

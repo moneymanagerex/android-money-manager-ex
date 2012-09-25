@@ -225,4 +225,9 @@
    	<string name="current_year">Anno corrente</string>
    	<string name="show_transaction">Visualizzazione Transazioni</string>
    	<!-- 20120917 -->
+   	<string name="type_home">Tipo di Home</string>
+   	<string name="classic">Classica</string>
+   	<string name="advance">Avanzata</string>
+   	<string name="changelog">Modifiche di Versione</string>
+   	<!-- 20120925 -->
 </resources>

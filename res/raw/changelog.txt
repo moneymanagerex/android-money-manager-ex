@@ -1,0 +1,20 @@
+<small>
+<b>Version 0.6.0</b><br>
+- New settings for the visualization of the home. Were added to two visualization modes (Classic: quick and easy; Advanced: with display pages requires more resources). <i>Default for pre-honeycomb devices (Android version 3.0) set to Classic, for post-honeycomb devices set to Advance.</i><u> If in advanced mode the application crashes and force close application, try setting the classic mode.</u><br>
+- Added display of the changelog<br>
+- Added language: Spanish<br>
+<br>
+<b>Version 0.5.9</b><br>
+- New setting added to customize the transactions diplayed in the home. <i>Default is "Display transations in the last 7 days"</i>. It may be modified in the settings page.<br>
+- From this version clicking on an account in the account list view will take you directly to the transaction view for that particular account.<br>
+<br>
+<b>Version 0.5.8</b><br>
+- minor bugfix<br>
+<br>
+<b>Version 0.5.7</b><br>
+- <b>release on Google Play</b><br>
+- management: accounts, categories, payees and sub-categories<br>
+- transaction: insert, edit and delete<br>
+- use database to memory card<br>
+- use dropbox to synchronize the database between the Android device and the PC (Linux, Mac and Windows)
+</small>
