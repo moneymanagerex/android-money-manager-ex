@@ -256,6 +256,8 @@ public class MainActivity extends BaseFragmentActivity {
 		setRefreshUserInterface(true);
 		//show change log and
 		MoneyManagerApplication.showStartupChangeLog(this, false);
+		//introducion
+		
 	}
 	/**
 	 * this method call for classic method (show fragments)

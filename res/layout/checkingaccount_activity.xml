@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-            
+
             <TextView
                 style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
@@ -198,6 +198,35 @@
                     android:ems="10"
                     android:hint="@string/amount"
                     android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transaction_number" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/editTextTransNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/transaction_number"
+                    android:inputType="number" />
+
+                <Button
+                    android:id="@+id/buttonTransNumber"
+                    style="@style/Money.Button"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:text="..." 
+                    android:layout_gravity="center_vertical"/>
             </LinearLayout>
 
             <TextView

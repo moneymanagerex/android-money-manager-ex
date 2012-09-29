@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <resources>
 
@@ -22,9 +22,9 @@
     <string name="application_name">Money Manager Ex</string>
     <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
     <string name="application_definition">Una applicazione semplice e facile da usare per gestire finanze personali, conti bancari, budget familiare, etc.</string>
-	<string name="application_credits">Il Progetto Android Money Manager Ex usa le librerie ActionBarSherlock e ViewPagerIndicator</string>
-	<string name="application_license">Licenze open source</string>
-	
+    <string name="application_credits">Il Progetto Android Money Manager Ex usa le librerie ActionBarSherlock e ViewPagerIndicator</string>
+    <string name="application_license">Licenze open source</string>
+
     <!-- database -->
     <string name="db_insert_failed">Inserimento dei dati fallito</string>
     <string name="db_delete_failed">Cancellazione dei dati fallita</string>
@@ -111,34 +111,34 @@
     <string name="payee_empty_list">Nessun Beneficiario Trovato</string>
     <string name="from">Da</string>
     <string name="db_payee_update_failed">Aggiornamento Beneficiario Fallito</string>
-    
+
     <!-- category / subcategory -->
     <string name="category">Categoria</string>
     <string name="subcategory">Sottocategoria</string>
-	<string name="category_empty_list">Nessuna Categoria Trovata</string>
-	<string name="select_category">Seleziona Categoria</string>
-	<string name="add_category">Aggiungi Categoria</string>
-	<string name="add_subcategory">Aggiungi Sottocategoria</string>
-	<string name="category_name">Nome Categoria</string>
-	<string name="edit_categoryName">Modifica Nome Categoria</string>
-	<string name="delete_category">Elimina Categoria</string>
-	
-	<!-- currency -->
-	<string name="currency">Valuta</string>
-	<string name="currency_name">Nome Valuta</string>
-	<string name="currency_symbol">Simbolo Valuta</string>
-	<string name="delete_currency">Elimina Valuta</string>
-	<string name="unit_name">Nome Unità</string>
-	<string name="cents_name">Nome Centesimi</string>
-	<string name="prefix_symbol">Simbolo Prefisso</string>
-	<string name="suffix_symbol">Simbolo Suffisso</string>
-	<string name="decimal_char">Separatore Parte Decimale</string>
-	<string name="group_char">Separatore Migliaia</string>
-	<string name="scale">Scala</string>
-	<string name="conversion_to_base_rate">Tasso Base di Conversione</string>
-	<string name="new_edit_currency">Nuova / Modifica Valuta</string>
-	<string name="currency_name_empty">Il nome della valuta è obbligatorio</string>
-	
+    <string name="category_empty_list">Nessuna Categoria Trovata</string>
+    <string name="select_category">Seleziona Categoria</string>
+    <string name="add_category">Aggiungi Categoria</string>
+    <string name="add_subcategory">Aggiungi Sottocategoria</string>
+    <string name="category_name">Nome Categoria</string>
+    <string name="edit_categoryName">Modifica Nome Categoria</string>
+    <string name="delete_category">Elimina Categoria</string>
+
+    <!-- currency -->
+    <string name="currency">Valuta</string>
+    <string name="currency_name">Nome Valuta</string>
+    <string name="currency_symbol">Simbolo Valuta</string>
+    <string name="delete_currency">Elimina Valuta</string>
+    <string name="unit_name">Nome Unità</string>
+    <string name="cents_name">Nome Centesimi</string>
+    <string name="prefix_symbol">Simbolo Prefisso</string>
+    <string name="suffix_symbol">Simbolo Suffisso</string>
+    <string name="decimal_char">Separatore Parte Decimale</string>
+    <string name="group_char">Separatore Migliaia</string>
+    <string name="scale">Scala</string>
+    <string name="conversion_to_base_rate">Tasso Base di Conversione</string>
+    <string name="new_edit_currency">Nuova / Modifica Valuta</string>
+    <string name="currency_name_empty">Il nome della valuta è obbligatorio</string>
+
     <!-- transaction -->
     <string name="amount">Importo</string>
     <string name="total_amount">Importo Totale</string>
@@ -207,27 +207,31 @@
     <string name="theme_application">Tema dell\'Applicazione</string>
     <string name="theme_holo">Holo</string>
     <string name="theme_light">Light</string>
-    
+
     <!-- 20120906 -->
-	<string name="close_application">Chiudere l\'Applicazione</string>
-	<string name="question_close_application">Vuoi chiudere l\'applicazione?</string>
-	<string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string> <!-- do not translate -->
-	<string name="payee_can_not_deleted">Il beneficiario selezionato non può essere cancellato perché referenziato</string>
-	<string name="attention">Attenzione</string>
-	<string name="account_can_not_deleted">Il conto selezionato non può essere cancellato perché referenziato</string>
-	<string name="currency_can_not_deleted">La valuta selezionata non può essere cancellata perché referenziata</string>
-	<string name="category_can_not_deleted">La categoria selezionata non può essere cancellata perché referenziata</string>
-	<!-- 20120909 -->
-	<string name="all_transaction">Tutte le transazioni</string>
-   	<string name="last7days">Ultima settimana</string>
-   	<string name="last15days">Ultime 2 settimane</string>
-   	<string name="current_month">Mese corrente</string>
-   	<string name="current_year">Anno corrente</string>
-   	<string name="show_transaction">Visualizzazione Transazioni</string>
-   	<!-- 20120917 -->
-   	<string name="type_home">Tipo di Home</string>
-   	<string name="classic">Classica</string>
-   	<string name="advance">Avanzata</string>
-   	<string name="changelog">Modifiche di Versione</string>
-   	<!-- 20120925 -->
+    <string name="close_application">Chiudere l\'Applicazione</string>
+    <string name="question_close_application">Vuoi chiudere l\'applicazione?</string>
+    <string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string>
+ <!-- do not translate -->
+    <string name="payee_can_not_deleted">Il beneficiario selezionato non può essere cancellato perché referenziato</string>
+    <string name="attention">Attenzione</string>
+    <string name="account_can_not_deleted">Il conto selezionato non può essere cancellato perché referenziato</string>
+    <string name="currency_can_not_deleted">La valuta selezionata non può essere cancellata perché referenziata</string>
+    <string name="category_can_not_deleted">La categoria selezionata non può essere cancellata perché referenziata</string>
+    <!-- 20120909 -->
+    <string name="all_transaction">Tutte le transazioni</string>
+    <string name="last7days">Ultima settimana</string>
+    <string name="last15days">Ultime 2 settimane</string>
+    <string name="current_month">Mese corrente</string>
+    <string name="current_year">Anno corrente</string>
+    <string name="show_transaction">Visualizzazione Transazioni</string>
+    <!-- 20120917 -->
+    <string name="type_home">Tipo di Home</string>
+    <string name="classic">Classica</string>
+    <string name="advance">Avanzata</string>
+    <string name="changelog">Modifiche di Versione</string>
+    <!-- 20120925 -->
+    <string name="transaction_number">Numero Transazione</string>
+    <!-- 20120927 -->
+
 </resources>

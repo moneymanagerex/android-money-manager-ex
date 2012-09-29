@@ -228,6 +228,8 @@
    	<string name="type_home">Type Home</string>
    	<string name="classic">Classic</string>
    	<string name="advance">Advance</string>
-   	<string name="changelog">Change log</string>
+   	<string name="changelog">Changelog</string>
    	<!-- 20120925 -->
+   	<string name="transaction_number">Transaction Number</string>
+   	<!-- 20120927 -->
 </resources>

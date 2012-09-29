@@ -41,6 +41,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.sax.StartElementListener;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -73,6 +74,7 @@ public class MoneyManagerApplication extends Application {
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
     public static final String PREF_LAST_VERSION_KEY = "preflastversionkey";
+    public static final String PREF_SHOW_INTRODUCTION = "prefshowintroduction";
     public static final String PREF_DATABASE_PATH = "databasepath";
     public static final String PREF_USER_NAME = "username";
     public static final String PREF_BASE_CURRENCY = "basecurrency";
@@ -116,7 +118,7 @@ public class MoneyManagerApplication extends Application {
 			return MoneyManagerOpenHelper.databasePath;
 		}
 	}
-	/**
+    /**
 	 * 
 	 * @param Context context from call
 	 * int resId: rawid
@@ -152,7 +154,7 @@ public class MoneyManagerApplication extends Application {
 		}
 		return result;
 	}
-    /**
+	/**
 	 * 
 	 * @param context
 	 * @param dbpath path of database file to save
@@ -163,6 +165,21 @@ public class MoneyManagerApplication extends Application {
 		editor.putString(PREF_DATABASE_PATH, dbpath);
 		editor.commit();
 	}
+    /**
+     * This method show introduction activity
+     * @param context activity called
+     * @param force true show
+     */
+    public static boolean showIntroduction(Context context, boolean forceShow) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		Boolean isShowed = preferences.getBoolean(PREF_SHOW_INTRODUCTION, false);
+		if ((!isShowed) || forceShow) {
+			preferences.edit().putBoolean(PREF_SHOW_INTRODUCTION, true).commit();
+			context.startActivity(new Intent(context, IntroductionActivity.class));
+			return false;
+		} else
+			return true;
+    }
 
 	/**
      * 

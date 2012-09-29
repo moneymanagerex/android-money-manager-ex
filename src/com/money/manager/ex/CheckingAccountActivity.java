@@ -84,6 +84,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	public static final String KEY_SUBCATEGORY_ID = "AllDataActivity:SubCategoryId";
 	public static final String KEY_SUBCATEGORY_NAME = "AllDataActivity:SubCategoryName";
 	public static final String KEY_NOTES = "AllDataActivity:Notes";
+	public static final String KEY_TRANS_NUMBER = "AllDataActivity:TransNumber";
 	public static final String KEY_ACTION = "AllDataActivity:Action";
 	// object of the table
 	TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
@@ -111,6 +112,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	private float mTotAmount = 0, mAmount = 0;
 	// notes
 	private String mNotes = "";
+	// transaction numbers
+	private String mTransNumber = "";
 	// application
 	private MoneyManagerApplication mApplication = new MoneyManagerApplication();
 	// datepicker value
@@ -121,11 +124,96 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	// reference view into layout
 	private LinearLayout linearPayee, linearToAccount;
 	private Spinner spinAccount, spinTransCode, spinStatus;
-	private Button btnSelectPayee, btnSelectToAccount, btnSelectCategory, btnCancel, btnOk;
-	private EditText edtTotAmount, edtAmount, edtNotes;
+	private Button btnSelectPayee, btnSelectToAccount, btnSelectCategory, btnTransNumber, btnCancel, btnOk;
+	private EditText edtTotAmount, edtAmount, edtTransNumber, edtNotes;
 	private TextView txtPayee, txtAmount;
 	private DatePicker dtpDate;	
 
+	/**
+	 * getCategoryFromPayee set last category used from payee
+	 * @param payeeId Identify of payee
+	 * @return true if category set
+	 */
+	private boolean getCategoryFromPayee(int payeeId) {
+		boolean ret = false;
+		// take data of payee
+		TablePayee payee = new TablePayee();
+		Cursor curPayee = getContentResolver().query(payee.getUri(), payee.getAllColumns(), "PAYEEID=" + Integer.toString(payeeId), null, null);
+		// check cursor is valid
+		if ((curPayee != null) && (curPayee.moveToFirst())) {
+			// chek if category is valid
+			if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != -1) {
+				// prendo la categoria e la subcategorie
+				mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
+				mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
+				// create instance of query
+				QueryCategorySubCategory category = new QueryCategorySubCategory();
+				// compose selection
+				String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId); 
+				Cursor curCategory = getContentResolver().query(category.getUri(), category.getAllColumns(), where, null, null);
+				// check cursor is valid
+				if ((curCategory != null) && (curCategory.moveToFirst())) {
+					// take names of category and subcategory
+					mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
+					mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
+					// return true
+					ret = true;
+				}
+			}
+		}
+
+		return ret;
+	}
+	
+	/**
+	 * populate the variabile of date 
+	 */
+	private String getDate() {
+		// clear arraylist
+		mDate.clear();
+		// populate arraylist with part of date
+		mDate.add(YEAR, dtpDate.getYear());
+		mDate.add(MONTH, dtpDate.getMonth());
+		mDate.add(DAY, dtpDate.getDayOfMonth());
+		// return date formatted
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(dtpDate.getYear() - 1900, dtpDate.getMonth(), dtpDate.getDayOfMonth()));
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch(requestCode) {
+		case REQUEST_PICK_PAYEE:
+			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+				mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
+				mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
+				// select last category used from payee
+				if (getCategoryFromPayee(mPayeeId)) {
+					updateCategoryName(); // refresh UI
+				}
+				// refresh UI
+				updatePayeeName();
+			}
+			break;
+		case REQUEST_PICK_ACCOUNT:
+			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+				mToAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
+				mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
+				// refresh UI account name
+				updateAccountName();
+			}
+			break;
+		case REQUEST_PICK_CATEGORY:
+			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+				mCategoryId = data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGID, -1);
+				mCategoryName = data.getStringExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGNAME);
+				mSubCategoryId = data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGID, -1);
+				mSubCategoryName = data.getStringExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGNAME);
+				// refresh UI category
+				updateCategoryName();
+			}
+		}
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -153,6 +241,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
 			mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
 			mNotes = savedInstanceState.getString(KEY_NOTES);
+			mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
 			// action
 			mIntentAction = savedInstanceState.getString(KEY_ACTION);
 		}
@@ -334,7 +423,34 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 				finish();
 			}
 		});
-		
+		// transaction number
+		edtTransNumber = (EditText)findViewById(R.id.editTextTransNumber);
+		if (!TextUtils.isEmpty(mTransNumber)) {
+			edtTransNumber.setText(mTransNumber);
+		}
+		btnTransNumber = (Button)findViewById(R.id.buttonTransNumber);
+		btnTransNumber.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(CheckingAccountActivity.this);
+				String query = "SELECT MAX(" + TableCheckingAccount.TRANSACTIONNUMBER + ") FROM " + 
+								new TableCheckingAccount().getSource() + " WHERE " + 
+								TableCheckingAccount.ACCOUNTID + "=?";
+				Cursor cursor = helper.getReadableDatabase().rawQuery(query, new String[] {Integer.toString(mAccountId)});
+				if (cursor != null && cursor.moveToFirst()) {
+					String transNumber = cursor.getString(0);
+					if (TextUtils.isEmpty(transNumber)) {
+						transNumber = "0";
+					}
+					if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
+						edtTransNumber.setText(Integer.toString(Integer.parseInt(transNumber) + 1));
+					}
+					cursor.close();
+				}
+				helper.close();
+			}
+		});
+				
 		edtNotes = (EditText)findViewById(R.id.editTextNotes);
 		if (!(TextUtils.isEmpty(mNotes))) {
 			edtNotes.setText(mNotes);
@@ -345,7 +461,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		updateAccountName();
 		updateCategoryName();
 	}
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -356,41 +471,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	        break;
 		}
 		return false;
-	}
-	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch(requestCode) {
-		case REQUEST_PICK_PAYEE:
-			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-				mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
-				mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
-				// select last category used from payee
-				if (getCategoryFromPayee(mPayeeId)) {
-					updateCategoryName(); // refresh UI
-				}
-				// refresh UI
-				updatePayeeName();
-			}
-			break;
-		case REQUEST_PICK_ACCOUNT:
-			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-				mToAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
-				mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
-				// refresh UI account name
-				updateAccountName();
-			}
-			break;
-		case REQUEST_PICK_CATEGORY:
-			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-				mCategoryId = data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGID, -1);
-				mCategoryName = data.getStringExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGNAME);
-				mSubCategoryId = data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGID, -1);
-				mSubCategoryName = data.getStringExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGNAME);
-				// refresh UI category
-				updateCategoryName();
-			}
-		}
 	}
 	
 	@Override
@@ -414,129 +494,11 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		outState.putString(KEY_CATEGORY_NAME, mCategoryName);
 		outState.putInt(KEY_SUBCATEGORY_ID, mSubCategoryId);
 		outState.putString(KEY_SUBCATEGORY_NAME, mSubCategoryName);
+		outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
 		outState.putString(KEY_NOTES, edtNotes.getText().toString());
 		outState.putString(KEY_ACTION, mIntentAction);
 	}
-	/**
-	 * update UI interface with PayeeName
-	 */
-	public void updatePayeeName() {
-		// write into text button payee name
-		btnSelectPayee.setText(TextUtils.isEmpty(mPayeeName) == false ? mPayeeName : mTextDefaultPayee);
-	}
 	
-	public void updateAccountName() {
-		// write into text button account name
-		btnSelectToAccount.setText(TextUtils.isEmpty(mToAccountName) == false ? mToAccountName : getResources().getString(R.string.select_to_account));
-	}
-	
-	public void updateCategoryName() {
-		String category = ""; 
-		if (TextUtils.isEmpty(mCategoryName) == false) {
-			category = mCategoryName + (TextUtils.isEmpty(mSubCategoryName) == false ? " : " + mSubCategoryName : "");
-		}
-		// write into text button category/subcategory
-		if (TextUtils.isEmpty(category) == false)  {
-			btnSelectCategory.setText(category);
-		} else {
-			btnSelectCategory.setText(getResources().getString(R.string.select_category));
-		}
-	}
-	
-	public void updateTransCode() {
- 	   // check type of transaction
- 	   if (mTransCode.equalsIgnoreCase("Transfer")) {
- 		  linearPayee.setVisibility(View.GONE);
- 		  linearToAccount.setVisibility(View.VISIBLE);
- 		  txtAmount.setVisibility(View.VISIBLE);
- 		  edtAmount.setVisibility(View.VISIBLE);
- 	   } else {
-			linearPayee.setVisibility(View.VISIBLE);
-			linearToAccount.setVisibility(View.GONE);
-			txtAmount.setVisibility(View.GONE);
-			edtAmount.setVisibility(View.GONE);
- 		  
- 		   txtPayee.setText(mTransCode.equals(getString(R.string.withdrawal)) ? R.string.payee : R.string.from);
- 		   mTextDefaultPayee = getResources().getString(mTransCode.equals(getString(R.string.withdrawal)) ? R.string.payee : R.string.from);
- 	   }
-	}
-	/**
-	 * populate the variabile of date 
-	 */
-	private String getDate() {
-		// clear arraylist
-		mDate.clear();
-		// populate arraylist with part of date
-		mDate.add(YEAR, dtpDate.getYear());
-		mDate.add(MONTH, dtpDate.getMonth());
-		mDate.add(DAY, dtpDate.getDayOfMonth());
-		// return date formatted
-		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(dtpDate.getYear() - 1900, dtpDate.getMonth(), dtpDate.getDayOfMonth()));
-	}
-	private void setDate(int year, int month, int day) {
-		// clear arraylist
-		mDate.clear();
-		// populate arraylist with part of date
-		mDate.add(YEAR, year);
-		mDate.add(MONTH, month);
-		mDate.add(DAY, day);
-	}
-	/**
-	 * getCategoryFromPayee set last category used from payee
-	 * @param payeeId Identify of payee
-	 * @return true if category set
-	 */
-	private boolean getCategoryFromPayee(int payeeId) {
-		boolean ret = false;
-		// take data of payee
-		TablePayee payee = new TablePayee();
-		Cursor curPayee = getContentResolver().query(payee.getUri(), payee.getAllColumns(), "PAYEEID=" + Integer.toString(payeeId), null, null);
-		// check cursor is valid
-		if ((curPayee != null) && (curPayee.moveToFirst())) {
-			// chek if category is valid
-			if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != -1) {
-				// prendo la categoria e la subcategorie
-				mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
-				mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
-				// create instance of query
-				QueryCategorySubCategory category = new QueryCategorySubCategory();
-				// compose selection
-				String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId); 
-				Cursor curCategory = getContentResolver().query(category.getUri(), category.getAllColumns(), where, null, null);
-				// check cursor is valid
-				if ((curCategory != null) && (curCategory.moveToFirst())) {
-					// take names of category and subcategory
-					mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-					mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
-					// return true
-					ret = true;
-				}
-			}
-		}
-
-		return ret;
-	}
-	/**
-	 * query info payee
-	 * @param payeeId id payee
-	 * @return true if the data selected
-	 */
-	private boolean selectPayeeName(int payeeId) {
-		TablePayee payee = new TablePayee();
-		Cursor cursor = getContentResolver().query(payee.getUri(),
-				payee.getAllColumns(),
-				TablePayee.PAYEEID + "=?",
-				new String[] { Integer.toString(payeeId) }, null);
-		// check if cursor is valid and open
-		if ((cursor == null) || (cursor.moveToFirst() == false)) {
-			return false;
-		}
-		
-		// set payeename
-		mPayeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
-		
-		return true;
-	}
 	/**
 	 * query info payee
 	 * @param payeeId id payee
@@ -558,6 +520,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		
 		return true;
 	}
+	
 	/**
 	 * Query info of Category and Subcategory
 	 * @param categoryId
@@ -614,6 +577,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		mPayeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
 		mCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
 		mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
+		mTransNumber = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSACTIONNUMBER));
 		mNotes = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.NOTES));
 		datepart = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE)).split("-");
 		// set date
@@ -626,30 +590,49 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		return true;
 	}
 	/**
-	 * validate data insert in activity
-	 * @return
+	 * query info payee
+	 * @param payeeId id payee
+	 * @return true if the data selected
 	 */
-	private boolean validateData() {
-		if ((mTransCode.equals("Transfer")) && (mToAccountId == -1)) {
-			Toast.makeText(this, R.string.error_toaccount_not_selected, Toast.LENGTH_LONG).show();
-			return false;
-		} else if ((mTransCode.equals("Transfer") == false) && (mPayeeId == -1)) {
-			Toast.makeText(this, R.string.error_payee_not_selected, Toast.LENGTH_LONG).show();
-			return false;
-		}
-		if (mCategoryId == -1) {
-			Toast.makeText(this, R.string.error_category_not_selected, Toast.LENGTH_LONG).show();
+	private boolean selectPayeeName(int payeeId) {
+		TablePayee payee = new TablePayee();
+		Cursor cursor = getContentResolver().query(payee.getUri(),
+				payee.getAllColumns(),
+				TablePayee.PAYEEID + "=?",
+				new String[] { Integer.toString(payeeId) }, null);
+		// check if cursor is valid and open
+		if ((cursor == null) || (cursor.moveToFirst() == false)) {
 			return false;
 		}
-		if (TextUtils.isEmpty(edtTotAmount.getText())) {
-			if (TextUtils.isEmpty(edtAmount.getText())) {
-				Toast.makeText(this, R.string.error_totamount_empty, Toast.LENGTH_LONG).show();
-				return false;
-			} else {
-				edtTotAmount.setText(edtAmount.getText());
-			}
-		}
+		
+		// set payeename
+		mPayeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
+		
 		return true;
+	}
+	private void setDate(int year, int month, int day) {
+		// clear arraylist
+		mDate.clear();
+		// populate arraylist with part of date
+		mDate.add(YEAR, year);
+		mDate.add(MONTH, month);
+		mDate.add(DAY, day);
+	}
+	public void updateAccountName() {
+		// write into text button account name
+		btnSelectToAccount.setText(TextUtils.isEmpty(mToAccountName) == false ? mToAccountName : getResources().getString(R.string.select_to_account));
+	}
+	public void updateCategoryName() {
+		String category = ""; 
+		if (TextUtils.isEmpty(mCategoryName) == false) {
+			category = mCategoryName + (TextUtils.isEmpty(mSubCategoryName) == false ? " : " + mSubCategoryName : "");
+		}
+		// write into text button category/subcategory
+		if (TextUtils.isEmpty(category) == false)  {
+			btnSelectCategory.setText(category);
+		} else {
+			btnSelectCategory.setText(getResources().getString(R.string.select_category));
+		}
 	}
 	/**
 	 * update data into database
@@ -681,6 +664,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		values.put(TableCheckingAccount.TRANSDATE, this.getDate());
 		values.put(TableCheckingAccount.FOLLOWUPID, -1);
 		values.put(TableCheckingAccount.TOTRANSAMOUNT, Float.valueOf(edtTotAmount.getText().toString()));
+		values.put(TableCheckingAccount.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
 		values.put(TableCheckingAccount.NOTES, edtNotes.getText().toString());
 		
 		// check whether the application should do the update or insert
@@ -715,6 +699,56 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			}
 		}
 		
+		return true;
+	}
+	/**
+	 * update UI interface with PayeeName
+	 */
+	public void updatePayeeName() {
+		// write into text button payee name
+		btnSelectPayee.setText(TextUtils.isEmpty(mPayeeName) == false ? mPayeeName : mTextDefaultPayee);
+	}
+	public void updateTransCode() {
+ 	   // check type of transaction
+ 	   if (mTransCode.equalsIgnoreCase("Transfer")) {
+ 		  linearPayee.setVisibility(View.GONE);
+ 		  linearToAccount.setVisibility(View.VISIBLE);
+ 		  txtAmount.setVisibility(View.VISIBLE);
+ 		  edtAmount.setVisibility(View.VISIBLE);
+ 	   } else {
+			linearPayee.setVisibility(View.VISIBLE);
+			linearToAccount.setVisibility(View.GONE);
+			txtAmount.setVisibility(View.GONE);
+			edtAmount.setVisibility(View.GONE);
+ 		  
+ 		   txtPayee.setText(mTransCode.equals(getString(R.string.withdrawal)) ? R.string.payee : R.string.from);
+ 		   mTextDefaultPayee = getResources().getString(mTransCode.equals(getString(R.string.withdrawal)) ? R.string.payee : R.string.from);
+ 	   }
+	}
+	/**
+	 * validate data insert in activity
+	 * @return
+	 */
+	private boolean validateData() {
+		if ((mTransCode.equals("Transfer")) && (mToAccountId == -1)) {
+			Toast.makeText(this, R.string.error_toaccount_not_selected, Toast.LENGTH_LONG).show();
+			return false;
+		} else if ((mTransCode.equals("Transfer") == false) && (mPayeeId == -1)) {
+			Toast.makeText(this, R.string.error_payee_not_selected, Toast.LENGTH_LONG).show();
+			return false;
+		}
+		if (mCategoryId == -1) {
+			Toast.makeText(this, R.string.error_category_not_selected, Toast.LENGTH_LONG).show();
+			return false;
+		}
+		if (TextUtils.isEmpty(edtTotAmount.getText())) {
+			if (TextUtils.isEmpty(edtAmount.getText())) {
+				Toast.makeText(this, R.string.error_totamount_empty, Toast.LENGTH_LONG).show();
+				return false;
+			} else {
+				edtTotAmount.setText(edtAmount.getText());
+			}
+		}
 		return true;
 	}
 }

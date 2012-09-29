@@ -25,8 +25,8 @@ import com.money.manager.ex.MoneyManagerApplication;
 public class QueryAccountBills extends Dataset {
 	private static final String SQL = 
 			"SELECT ACCOUNTLIST_V1.ACCOUNTID AS _id, ACCOUNTLIST_V1.ACCOUNTID, ACCOUNTNAME, STATUS, FAVORITEACCT, CURRENCYID, " +
-			"(INITIALBAL + T1.TOTAL) AS TOTAL, " +
-			"(INITIALBAL + T1.reconciled) AS RECONCILED " +
+			"(INITIALBAL + ifnull(T1.TOTAL, 0)) AS TOTAL, " +
+			"(INITIALBAL + ifnull(T1.reconciled, 0)) AS RECONCILED " +
 			"FROM ACCOUNTLIST_V1 LEFT OUTER JOIN ( " +
 			"select accountid, ROUND(SUM(total), 2) as total, ROUND(SUM(reconciled), 2) as reconciled " +
 			"from ( " +
