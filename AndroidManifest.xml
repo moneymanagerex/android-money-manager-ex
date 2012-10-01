@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
@@ -32,11 +32,11 @@
         android:name=".MoneyManagerApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_name"
-        android:theme="@style/Theme.Money.Manager">
+        android:theme="@style/Theme.Money.Manager" >
         <provider
             android:name=".MoneyManagerProvider"
-            android:authorities="com.money.manager.ex.provider" 
-            android:exported="false">
+            android:authorities="com.money.manager.ex.provider"
+            android:exported="false" >
         </provider>
 
         <activity
@@ -51,6 +51,33 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+				<action android:name="android.intent.action.EDIT"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.mmb"
+                    android:scheme="http" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.mmb"
+                    android:scheme="https" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.mmb"
+                    android:scheme="content" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.mmb"
+                    android:scheme="file" />
             </intent-filter>
         </activity>
         <activity
@@ -132,7 +159,7 @@
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity android:name=".IntroductionActivity"/>
+        <activity android:name=".IntroductionActivity" />
     </application>
 
 </manifest>

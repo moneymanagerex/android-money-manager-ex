@@ -18,6 +18,7 @@
 package com.money.manager.ex;
 
 import java.io.File;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -241,6 +242,22 @@ public class MainActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//check intent is valid
+		if (getIntent() != null && getIntent().getData() != null) {
+			String pathFile = getIntent().getData().getEncodedPath();
+			// decode
+			try {
+				pathFile = URLDecoder.decode(pathFile, "UTF-8"); //decode file path
+				Log.i(LOGCAT, "Path intent file to open:" + pathFile);
+				if (new File(pathFile).exists()) {
+					MoneyManagerApplication.setDatabasePath(this, pathFile);
+				} else {
+					Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not exists!!!");
+				}
+			} catch (Exception e) {
+				Log.e(LOGCAT, e.getMessage());
+			}
+		}
 		MoneyManagerApplication application = (MoneyManagerApplication)getApplication();
 		// load base currency and compose hash currencies
 		application.loadBaseCurrencyId(this);

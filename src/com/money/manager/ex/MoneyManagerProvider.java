@@ -57,14 +57,12 @@ import com.money.manager.ex.database.ViewAllData;
  * application data
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.0.0
+ * @version 1.1.0
  * 
  */
 public class MoneyManagerProvider extends ContentProvider {
 	// tag LOGCAT
 	private static final String LOGCAT = MoneyManagerProvider.class.getSimpleName();
-	// helper to access database	
-	private MoneyManagerOpenHelper databaseHelper;
 	// object definition for the call to check the content
 	private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH); 
 	// object map for the definition of the objects referenced in the URI
@@ -103,6 +101,7 @@ public class MoneyManagerProvider extends ContentProvider {
 			return 0;
 		}
 		// take a database reference 
+		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		int rowsDelete = 0;
 		// check type of istance dataset
@@ -145,6 +144,19 @@ public class MoneyManagerProvider extends ContentProvider {
 		return rowsDelete;
 	}
 
+	private Object getObjectFromUri(Uri uri) {
+		// match dell'uri
+		int uriMatch = sUriMatcher.match(uri);
+		Log.v(LOGCAT, "Uri Match Result: "  + Integer.toString(uriMatch));
+		// find key into hash map
+		Object objectRet = mapContent.get(uriMatch);
+		if (objectRet == null) {
+			throw new IllegalArgumentException("Unknown URI for Update: " + uri);
+		}
+		
+		return objectRet; 
+	}
+
 	@Override
 	public String getType(Uri uri) {
 		return null;
@@ -156,6 +168,7 @@ public class MoneyManagerProvider extends ContentProvider {
 		// find object from uri
 		Object ret = getObjectFromUri(uri);
 		// database reference
+		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		long id = 0;
 		String parse;
@@ -202,19 +215,55 @@ public class MoneyManagerProvider extends ContentProvider {
 	@Override
 	public boolean onCreate() {
 		// open connection to database
-		databaseHelper = new MoneyManagerOpenHelper(getContext());
+		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
 		// This statement serves to force the creation of the database
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		
 		return false;
 	}
 
+	private String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
+		String selectList = "", from = "", where = "", sort = "";
+		// compose select list
+		if (projection == null) {
+			selectList = "SELECT *";
+		} else {
+			
+			selectList = "SELECT ";
+
+			for(int i = 0; i < projection.length; i ++) {
+				if (i > 0) { selectList += ", "; }
+				selectList += projection[i];
+			}
+		}
+		// compose from
+		from = "FROM (" + query + ") T";
+		// compose where
+		if (TextUtils.isEmpty(selection) == false) {
+			if (selection.contains("WHERE") == false) { where += "WHERE"; }
+			where += " " + selection;
+		}
+		// compose sort
+		if (TextUtils.isEmpty(sortOrder) == false) {
+			if (sortOrder.contains("ORDER BY") == false) { sort += "ORDER BY " ; }
+			sort += " " + sortOrder;
+		}
+		// compose statment to return
+		query = selectList + " " + from;
+		// check where or sort not empty
+		if (TextUtils.isEmpty(where) == false) { query += " " + where; }
+		if (TextUtils.isEmpty(sort) == false) { query += " " + sort; }
+		
+		return query;
+	}
+	
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 		Log.v(LOGCAT, "Query URI: " + uri);
 		// find object from uri
 		Object ret = getObjectFromUri(uri);
-		// take a database reference  
+		// take a database reference
+		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
 		SQLiteDatabase database = databaseHelper.getReadableDatabase();
 		Cursor cursorRet;
 		// compose log verbose instruction
@@ -251,13 +300,14 @@ public class MoneyManagerProvider extends ContentProvider {
 		Log.v(LOGCAT, "Rows number returned: " + cursorRet.getCount());
 		return cursorRet;
 	}
-
+	
 	@Override
 	public int update(Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
 		Log.v(LOGCAT, "Update Uri: " + uri);
 		// find object from uri
 		Object ret = getObjectFromUri(uri);
-		// instace of database 
+		// instace of database
+		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		int rowsUpdate = 0;
 		// check ret what type of class 
@@ -300,53 +350,5 @@ public class MoneyManagerProvider extends ContentProvider {
 		getContext().getContentResolver().notifyChange(uri, null);
 		// return rows modified
 		return rowsUpdate;
-	}
-	
-	private String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
-		String selectList = "", from = "", where = "", sort = "";
-		// compose select list
-		if (projection == null) {
-			selectList = "SELECT *";
-		} else {
-			
-			selectList = "SELECT ";
-
-			for(int i = 0; i < projection.length; i ++) {
-				if (i > 0) { selectList += ", "; }
-				selectList += projection[i];
-			}
-		}
-		// compose from
-		from = "FROM (" + query + ") T";
-		// compose where
-		if (TextUtils.isEmpty(selection) == false) {
-			if (selection.contains("WHERE") == false) { where += "WHERE"; }
-			where += " " + selection;
-		}
-		// compose sort
-		if (TextUtils.isEmpty(sortOrder) == false) {
-			if (sortOrder.contains("ORDER BY") == false) { sort += "ORDER BY " ; }
-			sort += " " + sortOrder;
-		}
-		// compose statment to return
-		query = selectList + " " + from;
-		// check where or sort not empty
-		if (TextUtils.isEmpty(where) == false) { query += " " + where; }
-		if (TextUtils.isEmpty(sort) == false) { query += " " + sort; }
-		
-		return query;
-	}
-	
-	private Object getObjectFromUri(Uri uri) {
-		// match dell'uri
-		int uriMatch = sUriMatcher.match(uri);
-		Log.v(LOGCAT, "Uri Match Result: "  + Integer.toString(uriMatch));
-		// find key into hash map
-		Object objectRet = mapContent.get(uriMatch);
-		if (objectRet == null) {
-			throw new IllegalArgumentException("Unknown URI for Update: " + uri);
-		}
-		
-		return objectRet; 
 	}
 }

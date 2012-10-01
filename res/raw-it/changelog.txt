@@ -1,4 +1,8 @@
 <small>
+<b>Version 0.6.1</b><br>
+- Aggiunta la possibilità di aprire un database con estensione mmb da un file  manager (come Astro File Manager, OI File Manager, ES File Manager, etc...)<br>
+- bugfix minori<br>
+<br>
 <b>Versione 0.6.0</b><br>
 - Nuova impostazione per la visualizzazione della home. Sono state aggiunte due tipologie (Classica: semplice e veloce, Avanzata: con visualizzazione a pagine richiede più risorse). <i>Di default per dispositivi pre-honeycomb (versione android 3.0) settata a Classic, per dispositivi post-honeycomb settata ad avanzata.</i><u> Se in modalità avanzata l'applicazione si blocca e si deve forzare la chiusura provare a settare la modalità classica.</u><br>
 - Aggiunta visualizzazione del changelog<br>
