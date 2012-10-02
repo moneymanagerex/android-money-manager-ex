@@ -342,8 +342,8 @@ public class MoneyManagerApplication extends Application {
 	}
 	/**
 	 * 
-	 * @param status stato della transazione
-	 * @return stringa decodificata della transazione
+	 * @param status char of status
+	 * @return decode status char
 	 */
 	public String getStatusAsString(String status) {
 		if (TextUtils.isEmpty(status)) {
@@ -355,7 +355,7 @@ public class MoneyManagerApplication extends Application {
 		} else if (status.toUpperCase().equals("F")) {
 			return this.getResources().getString(R.string.status_follow_up);
 		} else if (status.toUpperCase().equals("D")) {
-			return this.getResources().getString(R.string.status_follow_up);
+			return this.getResources().getString(R.string.status_duplicate);
 		}
 		return "";
 	}
