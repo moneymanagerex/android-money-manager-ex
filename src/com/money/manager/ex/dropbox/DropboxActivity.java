@@ -48,9 +48,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.money.manager.ex.R;
 import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.DropboxAPI.DropboxFileInfo;
 import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.DropboxAPI.UploadRequest;
 import com.dropbox.client2.ProgressListener;
@@ -63,38 +61,336 @@ import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.TokenPair;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.R;
 import com.money.manager.ex.SimpleCrypto;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 public class DropboxActivity extends BaseFragmentActivity {
-	private static final String LOGCAT = DropboxActivity.class.getSimpleName();
-	// type operation
-	private enum TypeOperation {SYNC, DONWLOAD, UPLOAD};
+	public class DirListDropBox extends AsyncTask<Void, Long, Boolean> {
+		private static final int FILE_LIMIT = 1000;
+		// context and api and versio
+		private Context mContext;
+		private DropboxAPI<?> mApi;
+		// path to find
+		private String mPath;
+		// error text
+		private String mError;
+		// file list
+		ArrayList<Entry> mFiles = new ArrayList<Entry>();
+		
+		public DirListDropBox(Context context, DropboxAPI<?> api, String dropboxPath) {
+			this.mContext = context;
+			this.mApi = api;
+			this.mPath = dropboxPath;
+		}
+		
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			try {
+				Entry dirent = mApi.metadata(mPath, FILE_LIMIT, null, true, null);
+				// check if path is dri
+				if (!dirent.isDir) {
+					mError = "Root is file!";
+					return false;
+				}
+
+				mFiles.clear();
+				// compose l'array list
+				for(Entry file : dirent.contents) {
+					if (file.isDir || file.isDeleted) {
+						continue;
+					} else {
+						mFiles.add(file);
+					}	
+				}
+			} catch (DropboxException e) {
+				mError = e.getMessage();
+				return false;
+			}
+			return true;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+			lstFileDropbox.setAdapter(null);
+			if (result) {
+				// array list of file
+				ArrayList<String> nameFiles = new ArrayList<String>();
+
+				for(Entry file : mFiles) {
+					nameFiles.add(mPath + file.fileName());
+				}
+ 
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_multiple_choice, nameFiles);
+				lstFileDropbox.setAdapter(adapter);
+				// check into adapter file select
+				String fileDropbox = getDropboxFile();
+				if (!(fileDropbox == null)) {
+					for(int i = 0; i < nameFiles.size(); i ++) {
+						if (nameFiles.get(i).equals(fileDropbox)) {
+							lstFileDropbox.setItemChecked(i, true);
+							break;
+						}
+					}
+				}
+			} else {
+				Toast.makeText(mContext, mError, Toast.LENGTH_LONG).show();
+			}
+			setProgressBarIndeterminateVisibility(Boolean.FALSE);
+		    setProgressBarVisibility(Boolean.FALSE);
+			// restore dell'orientazione
+			restoreOrietation(mPrevOrientation);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			// set orientation
+			forceCurrentOrientation();
+			// show inderteminate progress
+			setProgressBarIndeterminateVisibility(Boolean.TRUE);
+		    setProgressBarVisibility(Boolean.TRUE);
+		}
+	}
+	public class SyncDropBox extends AsyncTask<Void, Long, Boolean> {
+		/**
+		 * 
+		 * @author a.lazzari
+		 *
+		 */
+		private class SyncProgressListener extends ProgressListener {
+			@Override
+			public void onProgress(long bytes, long total) {
+				mDialog.setProgress((int) bytes / 1000);
+			}	
+		}
+		private static final int FILE_LIMIT = 1000;
+		// type of sync
+		private static final int NONE = 0;
+		private static final int DOWNLOAD = 1;
+		private static final int UPLOAD = 2;
+		private static final int SYNCHRONIZE = 3;
+		// context and api
+		private Context mContext;
+		private DropboxAPI<?> mApi;
+		// remote path
+		private String mPath;
+		// sync
+		private int mSync = NONE;
+		// stream download or upload
+		private FileOutputStream mOutputStream;
+		private FileInputStream mInputStream;
+		// length file
+		private long mFileLen;
+		// instance of UploadRequest
+		UploadRequest mRequest;
+		// error
+		private String mVerbose;
+		// 
+		private boolean showToast = false;
+		private boolean mRemoteFileExists = true;
+		/**
+		 *
+		 * @param context
+		 * @param api
+		 * @param dropboxFile
+		 */
+		public SyncDropBox(Context context, DropboxAPI<?> api, String dropboxFile) {
+			this.mContext = context;
+			this.mApi = api;
+			this.mPath = dropboxFile;
+		}
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			try {
+				File fileDatabase = new File(MoneyManagerOpenHelper.databasePath);
+				Entry fileEntry = null;
+	            if (mRemoteFileExists) {
+					fileEntry = mApi.metadata(mPath, FILE_LIMIT, null, true, null);
+		            // check if entry is folder
+		            if (fileEntry.isDir) {
+		            	mVerbose = "Files to sync incorrect";
+		            	return false;
+		            }
+	            }
+	            // check if sync
+	            if (mSync == SYNCHRONIZE) {
+		            Date dropModified = RESTUtility.parseDate(fileEntry.modified);
+		            Date fileModified = new Date(fileDatabase.lastModified());
+		            // check last modified
+		            if (dropModified.after(fileModified)) {
+		            	mSync = DOWNLOAD;
+		            } else if (dropModified.equals(fileModified)) {
+		            	mSync = NONE;
+		            } else {
+		            	mSync = UPLOAD;
+		            }
+	            }
+
+	            if (mSync == NONE) { return true; }
+	            
+	            switch (mSync) {
+	            case DOWNLOAD:
+	            	mFileLen = fileEntry.bytes;
+	            	break;
+	            case UPLOAD:
+	            	mFileLen = fileDatabase.length();
+	            	break;
+	            }
+
+	            mDialog.setMax((int) mFileLen / 1000);
+				// open stream
+				try {
+					switch (mSync) {
+					case DOWNLOAD:						
+						mOutputStream = new FileOutputStream(MoneyManagerOpenHelper.databasePath);
+						mApi.getFile(mPath, null, mOutputStream, new SyncProgressListener());
+						break;
+					case UPLOAD:
+						mInputStream = new FileInputStream(MoneyManagerOpenHelper.databasePath);
+						mRequest = mApi.putFileOverwriteRequest(mPath, mInputStream, fileDatabase.length(), new SyncProgressListener());
+			            if (mRequest != null) {
+			                mRequest.upload();
+			                return true;
+			            }
+					default:
+						break;
+					}	
+	            } catch (FileNotFoundException e) {
+	                mVerbose = e.getMessage();
+	                return false;
+	            }	            
+			} catch (DropboxException e) {
+				mVerbose = e.getMessage();
+				return false;
+			}
+			return true;
+		}
+		/**
+		 * download from dropbox
+		 * @param params
+		 * @return
+		 */
+		public AsyncTask<Void, Long, Boolean> download(Void...params) {
+			mSync = DOWNLOAD;
+			return this.execute(params);
+		}
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if (result) {
+				// set into settings last remote file
+				setDropboxFile(mPath);
+				mVerbose = getResources().getString(R.string.synchronize_success);
+			}
+			Toast.makeText(mContext, mVerbose, Toast.LENGTH_LONG).show();
+			// close stream
+			try {
+				if (mOutputStream != null) {
+					mOutputStream.close();
+				}
+				if (mInputStream != null) {
+					mInputStream.close();
+				}
+			} catch (IOException e) {
+				Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
+			}
+
+			mDialog.dismiss();
+			restoreOrietation(mPrevOrientation);
+			// set finished synchronization
+			mSyncInProgress = false;
+			// refresh
+			if (!mRemoteFileExists) {
+				refresh();
+			}
+			// set null preferences sdcard
+			MoneyManagerApplication.setDatabasePath(getApplicationContext(), null);
+			MainActivity.setRestartActivity(true);
+		}
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			// lock change orientation
+			forceCurrentOrientation();
+
+			mDialog = new ProgressDialog(this.mContext);
+			mDialog.setMessage(this.mContext.getResources().getString(R.string.dropbox_syncProgress));
+			mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			mDialog.setProgressNumberFormat("%1dKB/%2dKB");
+			mDialog.setCancelable(false);
+			mDialog.setCanceledOnTouchOutside(false);
+			mDialog.setMax(0);
+
+		    mDialog.show();
+		    mSyncInProgress = true;
+		}
+		@Override
+		protected void onProgressUpdate(Long... values) {
+			super.onProgressUpdate(values);
+            if (showToast == false) {
+				switch (mSync) {
+	            case DOWNLOAD:
+	            	Toast.makeText(mContext, getResources().getString(R.string.dropbox_downloadProgress), Toast.LENGTH_SHORT).show();
+	            	break;
+	            case UPLOAD:
+	            	Toast.makeText(mContext.getApplicationContext(), getResources().getString(R.string.dropbox_uploadProgress), Toast.LENGTH_SHORT).show();
+	            	break;
+	            }
+				showToast = true;
+            }
+            if (mDialog != null) {
+            	if (mDialog.isShowing() == false) { mDialog.show(); }
+            }
+		}
+		
+		/**
+		 * sync local file and remote file with modified datetime
+		 * @param params
+		 * @return
+		 */
+		public AsyncTask<Void, Long, Boolean> sync(Void...params) {
+			mSync = SYNCHRONIZE;
+			return this.execute(params);
+		}
+		/**
+		 * upload file to dropbox
+		 * @param params
+		 * @return
+		 */
+		public AsyncTask<Void, Long, Boolean> upload(boolean createFile, Void...params) {
+			mSync = UPLOAD;
+			mRemoteFileExists = !createFile;
+			return this.execute(params);
+		}
+	};
+    // type operation
+	private enum TypeOperation {SYNC, DONWLOAD, UPLOAD}
+    private static final String LOGCAT = DropboxActivity.class.getSimpleName();
     // info to access sharedpref
     public static final String ACCOUNT_PREFS_NAME = "MONEY_MANAGER_EX_DROPBOX";
-    public static final String ACCESS_KEY_NAME = "ACCESS_KEY";
-    public static final String ACCESS_SECRET_NAME = "ACCESS_SECRET";
+	public static final String ACCESS_KEY_NAME = "ACCESS_KEY";
+	public static final String ACCESS_SECRET_NAME = "ACCESS_SECRET";
 	public static final String REMOTE_FILE = "DROPBOX_REMOTE_FILE";
-	// id menu
-	private static final int MENU_REFRESH = 1;
-	// Dropbox root
+    // Dropbox root
 	private static final String DROPBOX_ROOT = "/";
-	// Application
+    // Application
 	MoneyManagerApplication application = new MoneyManagerApplication();
     // Dropbox Api
     DropboxAPI<AndroidAuthSession> mApi;
-    // Check for logged in
+	// Check for logged in
     private boolean mLoggedIn;
     // orientation of layout and state of sync
 	private int mPrevOrientation;
-	private static boolean mSyncInProgress = false;
+    private static boolean mSyncInProgress = false;
+    
     // ref object in layout
     private TextView txtLinkDropbox;
-    private ListView lstFileDropbox;
     
-    private static ProgressDialog mDialog;
-    
+	private ListView lstFileDropbox;
+
+	private static ProgressDialog mDialog;
+
 	private AndroidAuthSession buildSession() {
 		String secret = "";
 		try {
@@ -139,12 +435,69 @@ public class DropboxActivity extends BaseFragmentActivity {
 	        finish();
 	    }
 	}
-
+	
 	private void clearKeys() {
 	    SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 	    Editor edit = prefs.edit();
 	    edit.clear();
 	    edit.commit();
+	}
+	
+	private boolean execute(TypeOperation operation) {
+		String fileDropbox = null; 
+		if (!mLoggedIn) { return false; }
+		// check if an item selected
+		if (lstFileDropbox.getCheckedItemPosition() == ListView.INVALID_POSITION) { 
+			if (operation != TypeOperation.UPLOAD) { return false; }
+			fileDropbox = "/" + android.os.Build.MODEL + ".mmb"; // force name database to upload
+		} else {
+			// set filename
+			fileDropbox = (String) lstFileDropbox.getItemAtPosition(lstFileDropbox.getCheckedItemPosition());
+		}
+		// close database
+		MoneyManagerOpenHelper database = new MoneyManagerOpenHelper(DropboxActivity.this);
+		database.getWritableDatabase().close();
+		database.close();
+		// create object of synchronization
+		SyncDropBox syncDB = new SyncDropBox(DropboxActivity.this, mApi, fileDropbox);
+		// check operation
+		switch (operation) {
+		case SYNC:
+			syncDB.sync();
+			break;
+		case DONWLOAD:
+			syncDB.download();
+			break;
+		case UPLOAD:
+			syncDB.upload(lstFileDropbox.getCheckedItemPosition() == ListView.INVALID_POSITION);
+			break;
+		}
+		
+		return true;
+	}
+
+	/**
+	 * Force when progress dialog open the activity not change orientation
+	 */
+	@SuppressWarnings("deprecation")
+	private void forceCurrentOrientation() {
+		mPrevOrientation = getRequestedOrientation(); // save current position
+	    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+	    	if (getWindowManager().getDefaultDisplay().getOrientation() == Surface.ROTATION_0 || getWindowManager().getDefaultDisplay().getOrientation() == Surface.ROTATION_90) {
+	    		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+	    	} else {
+	    		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+	    	}
+	    } else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+	        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	    } else {
+	        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+	    }
+	}
+	
+	private String getDropboxFile() {
+		SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+	    return prefs.getString(REMOTE_FILE, null);
 	}
 
 	/**
@@ -168,19 +521,6 @@ public class DropboxActivity extends BaseFragmentActivity {
 	    }
 	}
 	
-	private String getDropboxFile() {
-		SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-	    return prefs.getString(REMOTE_FILE, null);
-	}
-	
-	private void setDropboxFile(String file) {
-	    // Save the access key for later
-	    SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-	    Editor edit = prefs.edit();
-	    edit.putString(REMOTE_FILE, file);
-	    edit.commit();
-	}
-
 	private void logIn() {
 		Log.i(LOGCAT, "start authentication");
         // Start the remote authentication
@@ -197,100 +537,6 @@ public class DropboxActivity extends BaseFragmentActivity {
 	    setLoggedIn(false);
 	}
 
-	private void refresh() {
-    	if (mLoggedIn) {
-    		// refersh user interface
-    		new DirListDropBox(this, mApi, DROPBOX_ROOT).execute();
-    	}
-	}
-	
-	private boolean execute(TypeOperation operation) {
-		String fileDropbox = null; 
-		if (!mLoggedIn) { return false; }
-		// check if an item selected
-		if (lstFileDropbox.getCheckedItemPosition() == ListView.INVALID_POSITION) { 
-			if (operation != TypeOperation.UPLOAD) { return false; }
-			fileDropbox = "data_android.mmb"; // force name database to upload
-		} else {
-			// set filename
-			fileDropbox = (String) lstFileDropbox.getItemAtPosition(lstFileDropbox.getCheckedItemPosition());
-		}
-		// close database
-		MoneyManagerOpenHelper database = new MoneyManagerOpenHelper(DropboxActivity.this);
-		database.getWritableDatabase().close();
-		database.close();
-		// create object of syncronization
-		SyncDropBox syncDB = new SyncDropBox(DropboxActivity.this, mApi, fileDropbox);
-		// check operation
-		switch (operation) {
-		case SYNC:
-			syncDB.sync();
-			break;
-		case DONWLOAD:
-			syncDB.download();
-			break;
-		case UPLOAD:
-			syncDB.upload();
-			break;
-		}
-		
-		return true;
-	}
-	
-	private void setLoggedIn(boolean loggedIn) {
-		mLoggedIn = loggedIn;
-		if (loggedIn) {
-			txtLinkDropbox.setVisibility(View.GONE);
-			lstFileDropbox.setVisibility(View.VISIBLE);
-			if (mSyncInProgress == false) {
-				refresh();
-			}
-		} else {
-			txtLinkDropbox.setVisibility(View.VISIBLE);
-			lstFileDropbox.setVisibility(View.GONE);
-		}
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			invalidateOptionsMenu();
-		}
-		Log.i(LOGCAT, "drop account loggedin = " + Boolean.toString(mLoggedIn));
-	}
-
-	/**
-	 * Shows keeping the access keys returned from Trusted Authenticator in a local
-	 * store, rather than storing user name & password, and re-authenticating each
-	 * time (which is not to be done, ever).
-	 */
-	private void storeKeys(String key, String secret) {
-	    // Save the access key for later
-	    SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-	    Editor edit = prefs.edit();
-	    edit.putString(ACCESS_KEY_NAME, key);
-	    edit.putString(ACCESS_SECRET_NAME, secret);
-	    edit.commit();
-	}
-	/**
-	 * Force when progress dialog open the activity not change orientation
-	 */
-	private void forceCurrentOrientation() {
-		mPrevOrientation = getRequestedOrientation(); // save current position
-	    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-	    	if (getWindowManager().getDefaultDisplay().getOrientation() == Surface.ROTATION_0 || getWindowManager().getDefaultDisplay().getOrientation() == Surface.ROTATION_90) {
-	    		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-	    	} else {
-	    		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-	    	}
-	    } else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-	        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	    } else {
-	        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-	    }
-	}
-	
-	private void restoreOrietation(int prevOrietation) {
-		setRequestedOrientation(prevOrietation);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-	}
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -306,7 +552,7 @@ public class DropboxActivity extends BaseFragmentActivity {
 		// create session of dropbox
         AndroidAuthSession session = buildSession();
         mApi = new DropboxAPI<AndroidAuthSession>(session);
-        // contentview activity
+        // content view activity
         setContentView(R.layout.dropbox_activity);
 
         checkAppKeySetup();
@@ -318,13 +564,6 @@ public class DropboxActivity extends BaseFragmentActivity {
         setLoggedIn(mApi.getSession().isLinked());
 
 	}
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		Log.i(LOGCAT, "activity destroy");
-	}
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_dropbox, menu);
@@ -340,17 +579,11 @@ public class DropboxActivity extends BaseFragmentActivity {
 	}
 	
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		String prefSync = application.getDropboxSyncMode();
-		menu.findItem(R.id.menu_link).setVisible((mLoggedIn == false));
-		menu.findItem(R.id.menu_unlink).setVisible(mLoggedIn == true);
-		menu.findItem(R.id.menu_refresh).setVisible(mLoggedIn == true);
-		menu.findItem(R.id.menu_sync).setVisible(mLoggedIn == true && prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)));
-		menu.findItem(R.id.menu_download).setVisible(mLoggedIn == true && (prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)) || prefSync.equalsIgnoreCase(getResources().getString(R.string.download))));
-		menu.findItem(R.id.menu_upload).setVisible(mLoggedIn == true && (prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)) || prefSync.equalsIgnoreCase(getResources().getString(R.string.upload))));
-		
-		return super.onPrepareOptionsMenu(menu);
+	protected void onDestroy() {
+		super.onDestroy();
+		Log.i(LOGCAT, "activity destroy");
 	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -382,6 +615,19 @@ public class DropboxActivity extends BaseFragmentActivity {
 	}
 	
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		String prefSync = application.getDropboxSyncMode();
+		menu.findItem(R.id.menu_link).setVisible((mLoggedIn == false));
+		menu.findItem(R.id.menu_unlink).setVisible(mLoggedIn == true);
+		menu.findItem(R.id.menu_refresh).setVisible(mLoggedIn == true);
+		menu.findItem(R.id.menu_sync).setVisible(mLoggedIn == true && prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)));
+		menu.findItem(R.id.menu_download).setVisible(mLoggedIn == true && (prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)) || prefSync.equalsIgnoreCase(getResources().getString(R.string.download))));
+		menu.findItem(R.id.menu_upload).setVisible(mLoggedIn == true && (prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)) || prefSync.equalsIgnoreCase(getResources().getString(R.string.upload))));
+		
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
 	protected void onResume() {
         super.onResume();
         AndroidAuthSession session = mApi.getSession();
@@ -404,307 +650,54 @@ public class DropboxActivity extends BaseFragmentActivity {
         }
 	}
 	
-	public class DirListDropBox extends AsyncTask<Void, Long, Boolean> {
-		private static final int FILE_LIMIT = 1000;
-		// context and api and versio
-		private Context mContext;
-		private DropboxAPI<?> mApi;
-		// path to find
-		private String mPath;
-		// error text
-		private String mError;
-		// file list
-		ArrayList<Entry> mFiles = new ArrayList<Entry>();
-		
-		public DirListDropBox(Context context, DropboxAPI<?> api, String dropboxPath) {
-			this.mContext = context;
-			this.mApi = api;
-			this.mPath = dropboxPath;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			// set orientation
-			forceCurrentOrientation();
-			// show inderteminate progress
-			setProgressBarIndeterminateVisibility(Boolean.TRUE);
-		    setProgressBarVisibility(Boolean.TRUE);
-		}
-		
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			try {
-				Entry dirent = mApi.metadata(mPath, FILE_LIMIT, null, true, null);
-				// check if path is dri
-				if (!dirent.isDir) {
-					mError = "Root is file!";
-					return false;
-				}
-
-				mFiles.clear();
-				// compose l'array list
-				for(Entry file : dirent.contents) {
-					if (file.isDir || file.isDeleted) {
-						continue;
-					} else {
-						mFiles.add(file);
-					}	
-				}
-			} catch (DropboxException e) {
-				mError = e.getMessage();
-				return false;
-			}
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			lstFileDropbox.setAdapter(null);
-			if (result) {
-				// array list of file
-				ArrayList<String> nameFiles = new ArrayList<String>();
-
-				for(Entry file : mFiles) {
-					nameFiles.add(mPath + file.fileName());
-				}
- 
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_multiple_choice, nameFiles);
-				lstFileDropbox.setAdapter(adapter);
-				// check into adapter file select
-				String fileDropbox = getDropboxFile();
-				if (!(fileDropbox == null)) {
-					for(int i = 0; i < nameFiles.size(); i ++) {
-						if (nameFiles.get(i).equals(fileDropbox)) {
-							lstFileDropbox.setItemChecked(i, true);
-							break;
-						}
-					}
-				}
-			} else {
-				Toast.makeText(mContext, mError, Toast.LENGTH_LONG).show();
-			}
-			setProgressBarIndeterminateVisibility(Boolean.FALSE);
-		    setProgressBarVisibility(Boolean.FALSE);
-			// restore dell'orientazione
-			restoreOrietation(mPrevOrientation);
-		}
+	private void refresh() {
+    	if (mLoggedIn) {
+    		// refresh user interface
+    		new DirListDropBox(this, mApi, DROPBOX_ROOT).execute();
+    	}
+	}
+	private void restoreOrietation(int prevOrietation) {
+		setRequestedOrientation(prevOrietation);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 	}
 	
-	public class SyncDropBox extends AsyncTask<Void, Long, Boolean> {
-		private static final int FILE_LIMIT = 1000;
-		// gestione del tipo di sincronizzaizone
-		private static final int NONE = 0;
-		private static final int DOWNLOAD = 1;
-		private static final int UPLOAD = 2;
-		private static final int SYNCHRONIZE = 3;
-		// referenza al contesto e alle API usate
-		private Context mContext;
-		private DropboxAPI<?> mApi;
-		// percorso del file remoto
-		private String mPath;
-		// metodo di sincronizzazione
-		private int mSync = NONE;
-		// canale per lo download e upload del file
-		private FileOutputStream mOutputStream;
-		private FileInputStream mInputStream;
-		// memorizzo la grandezza bytes del files
-		private long mFileLen;
-		// istanza request per l'upload
-		UploadRequest mRequest;
-		// messaggio di errore
-		private String mVerbose;
-		// flag che indica se ho visualizzato l'operazione che vado a fare
-		private boolean showToast = false;
-		/**
-		 * ProgressListener per il download/upload dei file
-		 * 
-		 * @author a.lazzari
-		 *
-		 */
-		private class SyncProgressListener extends ProgressListener {
-			@Override
-			public void onProgress(long bytes, long total) {
-				mDialog.setProgress((int) bytes / 1000);
-			}	
-		}
-		/**
-		 * Costuttore dell'AsyncTask
-		 * @param context
-		 * @param api
-		 * @param dropboxFile
-		 */
-		public SyncDropBox(Context context, DropboxAPI<?> api, String dropboxFile) {
-			this.mContext = context;
-			this.mApi = api;
-			this.mPath = dropboxFile;
-		}
-		/**
-		 * metodo di download del file remoto di dropbox
-		 * @param params
-		 * @return
-		 */
-		public AsyncTask<Void, Long, Boolean> download(Void...params) {
-			// impsosto la modalit� solo download
-			mSync = DOWNLOAD;
-			// avvio la sincronizzazione
-			return this.execute(params);
-		}
-		/**
-		 * metodo di upload del file remoto di dropbox
-		 * @param params
-		 * @return
-		 */
-		public AsyncTask<Void, Long, Boolean> upload(Void...params) {
-			// impsosto la modalit� solo download
-			mSync = UPLOAD;
-			// avvio la sincronizzazione
-			return this.execute(params);
-		}
-		/**
-		 * metodo di sincronizzazione del file remoto di dropbox con il locale
-		 * @param params
-		 * @return
-		 */
-		public AsyncTask<Void, Long, Boolean> sync(Void...params) {
-			// impsosto la modalit� solo download
-			mSync = SYNCHRONIZE;
-			// avvio la sincronizzazione
-			return this.execute(params);
-		}
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			// Forzo il mancato orientamento
-			forceCurrentOrientation();
-			// Creo il dialog
-			mDialog = new ProgressDialog(this.mContext);
-			mDialog.setMessage(this.mContext.getResources().getString(R.string.dropbox_syncProgress));
-			mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-			mDialog.setProgressNumberFormat("%1dKB/%2dKB");
-			mDialog.setCancelable(false);
-			mDialog.setCanceledOnTouchOutside(false);
-			mDialog.setMax(0);
-		    // show del progress dialog
-		    mDialog.show();
-		    // imposto che facendo l'aggiornamento
-		    mSyncInProgress = true;
-		}
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			try {
-				File fileDatabase = new File(MoneyManagerOpenHelper.databasePath);
-	            // prendo le info del file
-	            Entry fileEntry = mApi.metadata(mPath, FILE_LIMIT, null, true, null);
-	            // controllo che sia un file
-	            if (fileEntry.isDir) {
-	            	mVerbose = "Files to sync incorrect";
-	            	return false;
-	            }
-	            //String hash = fileEntry.hash;
-	            // controllo se devo fare la sincronizzazione
-	            if (mSync == SYNCHRONIZE) {
-	            	// prendo l'hash del file di download
-		            Date dropModified = RESTUtility.parseDate(fileEntry.modified);
-		            Date fileModified = new Date(fileDatabase.lastModified());
-		            // controllo le date
-		            if (dropModified.after(fileModified)) {
-		            	mSync = DOWNLOAD;
-		            } else if (dropModified.equals(fileModified)) {
-		            	mSync = NONE;
-		            } else {
-		            	mSync = UPLOAD;
-		            }
-	            }
-	            // se non devo fare niente perch� uguali esco
-	            if (mSync == NONE) { return true; }
-	            // memorizzo la grandezza in bytes
-	            switch (mSync) {
-	            case DOWNLOAD:
-	            	mFileLen = fileEntry.bytes;
-	            	break;
-	            case UPLOAD:
-	            	mFileLen = fileDatabase.length();
-	            	break;
-	            }
-	            // imposto il massimo nella barra
-	            mDialog.setMax((int) mFileLen / 1000);
-	            publishProgress(null);
-				// apro il canale sul database
-				try {
-					switch (mSync) {
-					case DOWNLOAD:						
-						mOutputStream = new FileOutputStream(MoneyManagerOpenHelper.databasePath);
-						DropboxFileInfo info = mApi.getFile(mPath, null, mOutputStream, new SyncProgressListener());
-						break;
-					case UPLOAD:
-						mInputStream = new FileInputStream(MoneyManagerOpenHelper.databasePath);
-						mRequest = mApi.putFileOverwriteRequest(mPath, mInputStream, fileDatabase.length(), new SyncProgressListener());
-			            if (mRequest != null) {
-			                mRequest.upload();
-			                return true;
-			            }
-					default:
-						break;
-					}	
-	            } catch (FileNotFoundException e) {
-	                mVerbose = e.getMessage();
-	                return false;
-	            }	            
-			} catch (DropboxException e) {
-				mVerbose = e.getMessage();
-				return false;
+	private void setDropboxFile(String file) {
+	    // Save the access key for later
+	    SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+	    Editor edit = prefs.edit();
+	    edit.putString(REMOTE_FILE, file);
+	    edit.commit();
+	}
+	
+	private void setLoggedIn(boolean loggedIn) {
+		mLoggedIn = loggedIn;
+		if (loggedIn) {
+			txtLinkDropbox.setVisibility(View.GONE);
+			lstFileDropbox.setVisibility(View.VISIBLE);
+			if (mSyncInProgress == false) {
+				refresh();
 			}
-			return true;
+		} else {
+			txtLinkDropbox.setVisibility(View.VISIBLE);
+			lstFileDropbox.setVisibility(View.GONE);
 		}
-		
-		@Override
-		protected void onPostExecute(Boolean result) {
-			if (result) {
-				// imposto il file selezionato per la sincronizzazione
-				setDropboxFile(mPath);
-				mVerbose = getResources().getString(R.string.synchronize_success);
-			}
-			Toast.makeText(mContext, mVerbose, Toast.LENGTH_LONG).show();
-			// chiudo i canali
-			try {
-				if (mOutputStream != null) {
-					mOutputStream.close();
-				}
-				if (mInputStream != null) {
-					mInputStream.close();
-				}
-			} catch (IOException e) {
-				Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
-			}
-			// chiudo la progress bar
-			mDialog.dismiss();
-			// restore la l'orientamento
-			restoreOrietation(mPrevOrientation);
-			// set finished syncronizzation
-			mSyncInProgress = false;
-			// set null preferences sdcard
-			MoneyManagerApplication.setDatabasePath(getApplicationContext(), null);
-			MainActivity.setRestartActivity(true);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			invalidateOptionsMenu();
 		}
-		@Override
-		protected void onProgressUpdate(Long... values) {
-			super.onProgressUpdate(values);
-            if (showToast == false) {
-				switch (mSync) {
-	            case DOWNLOAD:
-	            	Toast.makeText(mContext, getResources().getString(R.string.dropbox_downloadProgress), Toast.LENGTH_SHORT).show();
-	            	break;
-	            case UPLOAD:
-	            	Toast.makeText(mContext.getApplicationContext(), getResources().getString(R.string.dropbox_uploadProgress), Toast.LENGTH_SHORT).show();
-	            	break;
-	            }
-				// setto che ho visualizzato il toast
-				showToast = true;
-            }
-            if (mDialog != null) {
-            	if (mDialog.isShowing() == false) { mDialog.show(); }
-            }
-		}
+		Log.i(LOGCAT, "drop account loggedin = " + Boolean.toString(mLoggedIn));
+	}
+	
+	/**
+	 * Shows keeping the access keys returned from Trusted Authenticator in a local
+	 * store, rather than storing user name & password, and re-authenticating each
+	 * time (which is not to be done, ever).
+	 */
+	private void storeKeys(String key, String secret) {
+	    // Save the access key for later
+	    SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+	    Editor edit = prefs.edit();
+	    edit.putString(ACCESS_KEY_NAME, key);
+	    edit.putString(ACCESS_SECRET_NAME, secret);
+	    edit.commit();
 	}
 }
