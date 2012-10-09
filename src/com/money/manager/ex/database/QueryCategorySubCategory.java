@@ -19,9 +19,6 @@ package com.money.manager.ex.database;
 
 import android.database.Cursor;
 
-import com.money.manager.ex.MoneyManagerApplication;
-
-
 public class QueryCategorySubCategory extends Dataset {
 	private static final String SQL = 
 		"SELECT CATEGORY_V1.CATEGID, " +
@@ -60,32 +57,32 @@ public class QueryCategorySubCategory extends Dataset {
 	public int getCategId() {
 		return categId;
 	}
-	public void setCategId(int categId) {
-		this.categId = categId;
-	}
 	public String getCategName() {
 		return categName;
-	}
-	public void setCategName(String categName) {
-		this.categName = categName;
-	}
-	public int getSubCategId() {
-		return subCategId;
-	}
-	public void setSubCategId(int subCategId) {
-		this.subCategId = subCategId;
-	}
-	public String getSubCategName() {
-		return subCategName;
-	}
-	public void setSubCategName(String subCategName) {
-		this.subCategName = subCategName;
 	}
 	public String getCategSubName() {
 		return categSubName;
 	}
+	public int getSubCategId() {
+		return subCategId;
+	}
+	public String getSubCategName() {
+		return subCategName;
+	}
+	public void setCategId(int categId) {
+		this.categId = categId;
+	}
+	public void setCategName(String categName) {
+		this.categName = categName;
+	}
 	public void setCategSubName(String categSubName) {
 		this.categSubName = categSubName;
+	}
+	public void setSubCategId(int subCategId) {
+		this.subCategId = subCategId;
+	}
+	public void setSubCategName(String subCategName) {
+		this.subCategName = subCategName;
 	}
 	@Override
 	public void setValueFromCursor(Cursor c) {

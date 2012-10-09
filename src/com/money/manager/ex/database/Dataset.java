@@ -19,7 +19,6 @@ package com.money.manager.ex.database;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -37,6 +36,7 @@ import com.money.manager.ex.MoneyManagerProvider;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.0
  */
+@SuppressWarnings("unused")
 public abstract class Dataset implements BaseColumns {
 	private static final String LOGCAT = Dataset.class.getSimpleName();
 	// member private of class
@@ -64,96 +64,6 @@ public abstract class Dataset implements BaseColumns {
 		this.basepath = basepath;
 	};
 	/**
-	 * 
-	 * @param source table/view/query
-	 */
-	public void setSource(String source) {
-		this.source = source;
-	}	
-	/**
-	 * 
-	 * @param basepath to use into contentprovider
-	 */
-	public void setBasePath(String basepath) {
-		this.basepath = basepath;
-	};
-
-	/**
-	 * 
-	 * @param id colonna chiave del dataset
-	 */
-	public void setID(String id) {
-		this._ID = id;
-	}
-	/**
-	 * @return the source
-	 */
-	public String getSource() {
-		return source;
-	}
-	/**
-	 * @return the type
-	 */
-	public DatasetType getType() {
-		return type;
-	}
-	/**
-	 * @return the basepath
-	 */
-	public String getBasepath() {
-		return basepath;
-	}
-	/**
-	 * 
-	 * @return the Uri for the content provider
-	 */
-	public Uri getUri() {
-		String parse = "content://" + MoneyManagerProvider.AUTHORITY + "/";
-		// check if set basepath
-		if (!TextUtils.isEmpty(this.basepath)) {
-			//che tye of dataset
-			switch (this.type) {
-			case TABLE:
-				parse.concat("tables/");
-				break;
-			case QUERY:
-				parse.concat("queries/");
-				break;
-			}
-			return Uri.parse(parse.concat(this.basepath));
-		} else {
-			throw new AssertionError("Internal Error. BasePath is not defined for the dataset");
-		}
-	}
-	/**
-	 * 
-	 * @return the all columns of the dataset
-	 */
-	public String[] getAllColumns() {
-		return new String[] {""};
-	}
-	/**
-	 * 
-	 * @return SQL statment
-	 */
-	public String getSQL() {
-		switch (type) {
-		case TABLE: case VIEW:
-			return "SELECT " + getAllColumns() + " FROM " + source;
-		case QUERY:
-			return source;
-		default:
-			return null;
-		}
-	}
-	/**
-	 * Populates the instance of the class to current record the cursor
-	 * @param c
-	 */
-	protected void setValueFromCursor(Cursor c) {
-		return;
-	}
-	/**
 	 * The default check in CheckingAccount. If checked to another table use canDelete(Context context, ContentValues values, String className)
 	 * @param context context from call
 	 * @param values to compose filter
@@ -161,7 +71,7 @@ public abstract class Dataset implements BaseColumns {
 	 */
 	public boolean canDelete(Context context, ContentValues values) {
 		return canDelete(context, values, TableCheckingAccount.class.getName());
-	}
+	}	
 	/**
 	 * 
 	 * @param context context from call
@@ -219,5 +129,95 @@ public abstract class Dataset implements BaseColumns {
 		} else {
 			return false;
 		}
+	};
+
+	/**
+	 * 
+	 * @return the all columns of the dataset
+	 */
+	public String[] getAllColumns() {
+		return new String[] {""};
+	}
+	/**
+	 * @return the basepath
+	 */
+	public String getBasepath() {
+		return basepath;
+	}
+	/**
+	 * @return the source
+	 */
+	public String getSource() {
+		return source;
+	}
+	/**
+	 * 
+	 * @return SQL statment
+	 */
+	public String getSQL() {
+		switch (type) {
+		case TABLE: case VIEW:
+			return "SELECT " + getAllColumns() + " FROM " + source;
+		case QUERY:
+			return source;
+		default:
+			return null;
+		}
+	}
+	/**
+	 * @return the type
+	 */
+	public DatasetType getType() {
+		return type;
+	}
+	/**
+	 * 
+	 * @return the Uri for the content provider
+	 */
+	public Uri getUri() {
+		String parse = "content://" + MoneyManagerProvider.AUTHORITY + "/";
+		// check if set basepath
+		if (!TextUtils.isEmpty(this.basepath)) {
+			//che tye of dataset
+			switch (this.type) {
+			case TABLE:
+				parse.concat("tables/");
+				break;
+			case QUERY:
+				parse.concat("queries/");
+				break;
+			}
+			return Uri.parse(parse.concat(this.basepath));
+		} else {
+			throw new AssertionError("Internal Error. BasePath is not defined for the dataset");
+		}
+	}
+	/**
+	 * 
+	 * @param basepath to use into contentprovider
+	 */
+	public void setBasePath(String basepath) {
+		this.basepath = basepath;
+	}
+	/**
+	 * 
+	 * @param id colonna chiave del dataset
+	 */
+	public void setID(String id) {
+		this._ID = id;
+	}
+	/**
+	 * 
+	 * @param source table/view/query
+	 */
+	public void setSource(String source) {
+		this.source = source;
+	}
+	/**
+	 * Populates the instance of the class to current record the cursor
+	 * @param c
+	 */
+	protected void setValueFromCursor(Cursor c) {
+		return;
 	}
 }

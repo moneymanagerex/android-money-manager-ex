@@ -48,24 +48,79 @@ import com.money.manager.ex.database.TableInfoTable;
 @SuppressWarnings("static-access")
 public class HomeFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
+	public class AccountBillsAdapter extends CursorAdapter {
+		private LayoutInflater inflater;
+		
+		@SuppressWarnings("deprecation")
+		public AccountBillsAdapter(Context context, Cursor c) {
+			super(context, c);
+			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+		@Override
+		public void bindView(View view, Context context, Cursor cursor) {
+			TextView txtAccountName = (TextView)view.findViewById(R.id.textVievItemAccountName);
+			TextView txtAccountTotal = (TextView)view.findViewById(R.id.textVievItemAccountTotal);
+			// set account name
+			txtAccountName.setText(cursor.getString(cursor.getColumnIndex(accountBills.ACCOUNTNAME)));
+			// import formatted
+			String value = application.getCurrencyFormatted(cursor
+					.getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
+					cursor.getFloat(cursor.getColumnIndex(accountBills.TOTAL)));
+			// set amount value
+			txtAccountTotal.setText(value);
+		}
+
+		@Override
+		public View newView(Context context, Cursor cursor, ViewGroup parent) {
+			return inflater.inflate(R.layout.item_account_bills, parent, false);
+		}
+		
+	}
 	// ID Loader Manager
 	private static final int ID_LOADER_USER_NAME = 1;
 	private static final int ID_LOADER_ACCOUNT_BILLS = 2;
 	// application
 	private MoneyManagerApplication application;
 	// dataset table/view/query manage into class
-	private TableInfoTable infoTable = new TableInfoTable();
-	private QueryAccountBills accountBills = new QueryAccountBills(); 
+	private TableInfoTable infoTable = new TableInfoTable(); 
+	private QueryAccountBills accountBills = new QueryAccountBills();
 	// view show in layout
 	private TextView txtUserName;
 	private TextView txtTotalAccounts;
 	private ListView lstAccountBills;
+	
 	private ProgressBar prgAccountBills;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		application = (MoneyManagerApplication)getActivity().getApplication();
+	}
+	
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		switch (id) {
+		case ID_LOADER_USER_NAME:
+			return new CursorLoader(getActivity(), infoTable.getUri(),
+					new String[] {infoTable.INFONAME, infoTable.INFOVALUE}, null, null, null);
+		case ID_LOADER_ACCOUNT_BILLS:
+			setListViewAccountBillsVisible(false);
+			// compose whereClause
+			String where = "";
+			// check if show only open accounts
+			if (application.getAccountsOpenVisible()) {
+				where = "LOWER(STATUS)='open'";
+			}
+			// check if show fav accounts
+			if (application.getAccountFavoriteVisible()) {
+				where = "LOWER(FAVORITEACCT)='true'";
+			}
+			return new CursorLoader(getActivity(), accountBills.getUri(),
+					accountBills.getAllColumns(), where, null, "upper(" + accountBills.ACCOUNTNAME + ")");
+		default:
+			return null;
+		}
 	}
 	
 	@Override
@@ -100,39 +155,15 @@ public class HomeFragment extends Fragment implements
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-		// start loader data
-		startLoader();
-	}
-	
-	public void startLoader() {	
-		getLoaderManager().restartLoader(ID_LOADER_USER_NAME, null, this);
-		getLoaderManager().restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
-	}
-	
-	@Override
-	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		switch (id) {
+	public void onLoaderReset(Loader<Cursor> loader) {
+		switch (loader.getId()) {
 		case ID_LOADER_USER_NAME:
-			return new CursorLoader(getActivity(), infoTable.getUri(),
-					new String[] {infoTable.INFONAME, infoTable.INFOVALUE}, null, null, null);
+			txtUserName.setText("");
+			break;
 		case ID_LOADER_ACCOUNT_BILLS:
+			txtTotalAccounts.setText(application.getBaseCurrencyFormatted(0));
+			lstAccountBills.setAdapter(null);
 			setListViewAccountBillsVisible(false);
-			// compose whereClause
-			String where = "";
-			// check if show only open accounts
-			if (application.getAccountsOpenVisible()) {
-				where = "LOWER(STATUS)='open'";
-			}
-			// check if show fav accounts
-			if (application.getAccountFavoriteVisible()) {
-				where = "LOWER(FAVORITEACCT)='true'";
-			}
-			return new CursorLoader(getActivity(), accountBills.getUri(),
-					accountBills.getAllColumns(), where, null, "upper(" + accountBills.ACCOUNTNAME + ")");
-		default:
-			return null;
 		}
 	}
 	
@@ -160,7 +191,7 @@ public class HomeFragment extends Fragment implements
 				float curTotal = 0;
 				// calculate 
 				while (data.isAfterLast() == false) {
-					curTotal = curTotal + data.getFloat(data.getColumnIndex("TOTAL"));
+					curTotal = curTotal + data.getFloat(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
 					data.moveToNext();
 				}
 				// write accounts total
@@ -177,16 +208,10 @@ public class HomeFragment extends Fragment implements
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
-		switch (loader.getId()) {
-		case ID_LOADER_USER_NAME:
-			txtUserName.setText("");
-			break;
-		case ID_LOADER_ACCOUNT_BILLS:
-			txtTotalAccounts.setText(application.getBaseCurrencyFormatted(0));
-			lstAccountBills.setAdapter(null);
-			setListViewAccountBillsVisible(false);
-		}
+	public void onResume() {
+		super.onResume();
+		// start loader data
+		startLoader();
 	}
 	/**
 	 * @param if visible set true show the listview; false show progressbar
@@ -201,33 +226,8 @@ public class HomeFragment extends Fragment implements
 		}
 	}
 	
-	public class AccountBillsAdapter extends CursorAdapter {
-		private LayoutInflater inflater;
-		
-		@SuppressWarnings("deprecation")
-		public AccountBillsAdapter(Context context, Cursor c) {
-			super(context, c);
-			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		}
-
-		@Override
-		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			return inflater.inflate(R.layout.item_account_bills, parent, false);
-		}
-
-		@Override
-		public void bindView(View view, Context context, Cursor cursor) {
-			TextView txtAccountName = (TextView)view.findViewById(R.id.textVievItemAccountName);
-			TextView txtAccountTotal = (TextView)view.findViewById(R.id.textVievItemAccountTotal);
-			// set account name
-			txtAccountName.setText(cursor.getString(cursor.getColumnIndex(accountBills.ACCOUNTNAME)));
-			// import formatted
-			String value = application.getCurrencyFormatted(cursor
-					.getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
-					cursor.getFloat(cursor.getColumnIndex(accountBills.TOTAL)));
-			// set amount value
-			txtAccountTotal.setText(value);
-		}
-		
+	public void startLoader() {	
+		getLoaderManager().restartLoader(ID_LOADER_USER_NAME, null, this);
+		getLoaderManager().restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
 	}
 }
