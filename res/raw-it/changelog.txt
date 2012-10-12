@@ -1,5 +1,7 @@
 <small>
-
+<b>Version 0.6.3</b><br>
+- Risoluzione bug minori<br>
+<br>
 <b>Versione 0.6.2</b><br>
 - Risolto bug della visualizzazione della data con un giorno indietro<br>
 - Risolto bug del totale a riepilogo nella Home non convertito correttamente<br>

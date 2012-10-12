@@ -1,4 +1,7 @@
 <small>
+<b>Version 0.6.3</b><br>
+- Minor bugfix<br>
+<br>
 <b>Version 0.6.2</b><br>
 - Fixed bug of displaying the date one day behind<br>
 - Fixed bug of the total summary in the Home does not correctly convert<br>
