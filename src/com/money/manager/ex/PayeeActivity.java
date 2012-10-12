@@ -44,10 +44,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.database.SQLTypeTransacion;
 import com.money.manager.ex.database.TablePayee;
-import com.money.manager.ex.database.ViewAllData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 /**

@@ -41,11 +41,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.sax.StartElementListener;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 import com.dropbox.client2.session.Session.AccessType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;

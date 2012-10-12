@@ -54,12 +54,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SQLTypeTransacion;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
@@ -81,7 +79,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 	// ID loader
 	private static final int ID_LOADER_CATEGORYSUB = 0;
 	// table or query
-	private static QueryCategorySubCategory mCategorySub = new QueryCategorySubCategory();
+	private static QueryCategorySubCategory mCategorySub;
 	private static String mAction = Intent.ACTION_EDIT;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +92,8 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 		if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
 			mAction = intent.getAction();
 		}
+		
+		mCategorySub = new QueryCategorySubCategory(this);
 		
 		// management fargment
 		FragmentManager fm = getSupportFragmentManager();

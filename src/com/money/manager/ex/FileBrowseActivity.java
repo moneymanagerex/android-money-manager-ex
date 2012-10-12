@@ -54,7 +54,7 @@ import com.money.manager.ex.fragment.BaseListFragment;
  * 
  */
 public class FileBrowseActivity extends BaseFragmentActivity {
-	private static final String LOGCAT = "FileBrowseActivity";
+	
 	// definizione delle azioni custom possibili
 	public static final String INTENT_VIEW_FILE = "com.money.manager.ex.custom.intent.action.VIEW_FILE";
 	public static final String INTENT_VIEW_FOLDER = "com.money.manager.ex.custom.intent.action.VIEW_FOLDER";
@@ -64,7 +64,6 @@ public class FileBrowseActivity extends BaseFragmentActivity {
 	// definizione degli id menu e context
 	private static final int MENU_UPLEVEL = 0;
 	private static final int CONTEXT_MENU_SELECT = 1;
-	private static final int CONTEXT_MENU_ABORT = 2;
 	// definizione della referenze quando salva istanza
 	private static final String SAVE_INSTANCE_FILE = "SAVE_ISTANCE_FILE";
 	private static final String SAVE_INSTANCE_ACTION = "SAVE_ISTANCE_ACTION";
@@ -147,14 +146,8 @@ public class FileBrowseActivity extends BaseFragmentActivity {
 	public static class BrowseFileListFragment extends BaseListFragment implements
 			LoaderManager.LoaderCallbacks<List<File>> {
 	
-		// Long Item selected
-		private View longItemView;
 		// Addattore per la visualizzazione dei dati
 		FileItemAdapter mAdapter;
-		
-		private void restartLoader() {
-			getLoaderManager().restartLoader(0, null, this);
-		}
 		
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {

@@ -51,7 +51,6 @@ import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
-import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 /**
  * 
@@ -147,7 +146,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 				mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
 				mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
 				// create instance of query
-				QueryCategorySubCategory category = new QueryCategorySubCategory();
+				QueryCategorySubCategory category = new QueryCategorySubCategory(this);
 				// compose selection
 				String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId); 
 				Cursor curCategory = getContentResolver().query(category.getUri(), category.getAllColumns(), where, null, null);
@@ -168,6 +167,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	/**
 	 * populate the variabile of date 
 	 */
+	@SuppressWarnings("deprecation")
 	private String getDate() {
 		// clear arraylist
 		mDate.clear();

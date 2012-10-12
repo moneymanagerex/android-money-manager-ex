@@ -17,23 +17,13 @@
  ******************************************************************************/
 package com.money.manager.ex.database;
 
+import android.content.Context;
 import android.database.Cursor;
 
-public class QueryCategorySubCategory extends Dataset {
-	private static final String SQL = 
-		"SELECT CATEGORY_V1.CATEGID, " +
-		"CATEGORY_V1.CATEGNAME, " +
-		"-1 AS SUBCATEGID, " +
-		"NULL AS SUBCATEGNAME, " +
-		"CATEGORY_V1.CATEGNAME AS CATEGSUBNAME " +
-		"FROM CATEGORY_V1" +
-		" UNION " +
-		"SELECT CATEGORY_V1.CATEGID, " +
-		"CATEGORY_V1.CATEGNAME, " +
-		"SUBCATEGORY_V1.SUBCATEGID, " +
-		"SUBCATEGORY_V1.SUBCATEGNAME, " +
-		"CATEGORY_V1.CATEGNAME || CASE WHEN SUBCATEGORY_V1.SUBCATEGNAME IS NOT NULL THEN ' : ' || SUBCATEGORY_V1.SUBCATEGNAME ELSE '' END AS CATEGSUBNAME " +
-		"FROM CATEGORY_V1 INNER JOIN SUBCATEGORY_V1 ON CATEGORY_V1.CATEGID = SUBCATEGORY_V1.CATEGID"; 
+import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.R;
+
+public class QueryCategorySubCategory extends Dataset { 
 	//definizione dei nomi dei campi
 	public static final String CATEGID = "CATEGID";
 	public static final String CATEGNAME = "CATEGNAME";
@@ -47,8 +37,8 @@ public class QueryCategorySubCategory extends Dataset {
 	private String subCategName;
 	private String categSubName;
 	// definizione del costruttore
-	public QueryCategorySubCategory() {
-		super(SQL, DatasetType.QUERY, "categorysubcategory");
+	public QueryCategorySubCategory(Context context) {
+		super(MoneyManagerApplication.getRawAsString(context, R.raw.categorysubcategory), DatasetType.QUERY, "categorysubcategory");
 	}
 	@Override
 	public String[] getAllColumns() {

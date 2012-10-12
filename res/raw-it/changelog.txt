@@ -1,4 +1,13 @@
 <small>
+
+<b>Versione 0.6.2</b><br>
+- Risolto bug della visualizzazione della data con un giorno indietro<br>
+- Risolto bug del totale a riepilogo nella Home non convertito correttamente<br>
+- Risolto bug sincronizzazione con dropbox, primo upload database se non esisteva il file nella cartella remota, non veniva caricato niente<br>
+- Aggiornati "currency code" di tutte le valute del mondo<br>
+- Risoluzione bug minori<br>
+- Aggiunta lingua: Francese (grazie Xavier)<br>
+<br>
 <b>Version 0.6.1</b><br>
 - Aggiunta la possibilità di aprire un database con estensione mmb da un file  manager (come Astro File Manager, OI File Manager, ES File Manager, etc...)<br>
 - risoluzione bug minori<br>

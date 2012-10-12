@@ -57,9 +57,9 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
-import com.money.manager.ex.database.ViewAllData;
 /**
  * 
  * @author a.lazzari
@@ -171,7 +171,7 @@ public class AccountFragment extends Fragment implements
 	private Integer mCurrentPosition = null;
 	// Dataset: accountlist e alldata
 	private TableAccountList mAccountList; 
-	private ViewAllData mAllData = new ViewAllData();
+	private QueryAllData mAllData;
 	// view into layout
 	private TextView txtAccountName, txtAccountBalance, txtAccountReconciled;
 	private ImageView imgAccountFav;
@@ -192,25 +192,25 @@ public class AccountFragment extends Fragment implements
 		}
 		switch (item.getItemId()) {
 		case R.id.menu_edit:
-			startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(ViewAllData.ID)));
+			startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
 			break;
 		case R.id.menu_delete:
-			showDialogDeleteCheckingAccount(cursor.getInt(cursor.getColumnIndex(ViewAllData.ID)));
+			showDialogDeleteCheckingAccount(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
 			break;
 		case R.id.menu_reconciled:
-			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(ViewAllData.ID)), "R");
+			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "R");
 			break;
 		case R.id.menu_none:
-			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(ViewAllData.ID)), "");
+			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "");
 			break;
 		case R.id.menu_duplicate:
-			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(ViewAllData.ID)), "D");
+			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "D");
 			break;
 		case R.id.menu_follow_up:
-			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(ViewAllData.ID)), "F");
+			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "F");
 			break;
 		case R.id.menu_void:
-			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(ViewAllData.ID)), "V");
+			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "V");
 			break;
 		}
 		return false;
@@ -219,6 +219,7 @@ public class AccountFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mApplication = (MoneyManagerApplication)getActivity().getApplication();
+		mAllData = new QueryAllData(getActivity());
 	}
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -234,11 +235,11 @@ public class AccountFragment extends Fragment implements
 		// create a context menu
 		menu.setHeaderTitle(mAccountList.getAccountName());
 		// hide current status
-		menu.findItem(R.id.menu_reconciled).setVisible(cursor.getString(cursor.getColumnIndex(ViewAllData.Status)).equalsIgnoreCase("R") == false);
-		menu.findItem(R.id.menu_none).setVisible(TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewAllData.Status))) == false);
-		menu.findItem(R.id.menu_duplicate).setVisible(cursor.getString(cursor.getColumnIndex(ViewAllData.Status)).equalsIgnoreCase("D") == false);
-		menu.findItem(R.id.menu_follow_up).setVisible(cursor.getString(cursor.getColumnIndex(ViewAllData.Status)).equalsIgnoreCase("F") == false);
-		menu.findItem(R.id.menu_void).setVisible(cursor.getString(cursor.getColumnIndex(ViewAllData.Status)).equalsIgnoreCase("V") == false);
+		menu.findItem(R.id.menu_reconciled).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("R") == false);
+		menu.findItem(R.id.menu_none).setVisible(TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))) == false);
+		menu.findItem(R.id.menu_duplicate).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("D") == false);
+		menu.findItem(R.id.menu_follow_up).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("F") == false);
+		menu.findItem(R.id.menu_void).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("V") == false);
 		
 	}
 	@Override
@@ -249,18 +250,19 @@ public class AccountFragment extends Fragment implements
 		case ID_LOADER_ALLDATA:
 			setListViewAllDataVisible(false);
 			// compose selection and sort
-			selection = "(" + ViewAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + ViewAllData.ToAccountID + "=" + Integer.toString(mAccountId) + ")";
+			selection = "(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountID + "=" + Integer.toString(mAccountId) + ")";
 			if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
-				selection += " AND (julianday(date('now')) - julianday(" + ViewAllData.Date + ") <= 7)";
+				selection += " AND (julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)";
 			} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
-				selection += " AND (julianday(date('now')) - julianday(" + ViewAllData.Date + ") <= 14)";
+				selection += " AND (julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)";
 			} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
-				selection += " AND " + ViewAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1);
+				selection += " AND " + QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1);
+				selection += " AND " + QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
 			} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
-				selection += " AND " + ViewAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+				selection += " AND " + QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
 			}
 			// set sort
-			sort = ViewAllData.Date + " DESC, " + ViewAllData.ID + " DESC";
+			sort = QueryAllData.Date + " DESC, " + QueryAllData.ID + " DESC";
 			// create loader
 			return new CursorLoader(getActivity(), mAllData.getUri(), mAllData.getAllColumns(), selection, null, sort);
 		/*case ID_LOADER_TEST:
@@ -268,7 +270,7 @@ public class AccountFragment extends Fragment implements
 			return new CursorLoader(getActivity(), new TableCheckingAccount().getUri(), new TableCheckingAccount().getAllColumns(), selection, new String[] {Integer.toString(mAccountId), Integer.toString(mAccountId)}, "TRANSDATE DESC, TRANSID DESC");*/
 		case ID_LOADER_SUMMARY:
 			selection= QueryAccountBills.ACCOUNTID + "=?";
-			return new CursorLoader(getActivity(), new QueryAccountBills().getUri(), null, selection, new String[] {Integer.toString(mAccountId)}, null);
+			return new CursorLoader(getActivity(), new QueryAccountBills(getActivity()).getUri(), null, selection, new String[] {Integer.toString(mAccountId)}, null);
 		}
 		return null;
 	}

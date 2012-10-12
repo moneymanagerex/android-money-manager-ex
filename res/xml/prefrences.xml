@@ -46,7 +46,6 @@
         <ListPreference
             android:entries="@array/type_home_values"
             android:entryValues="@array/type_home_values"
-            android:defaultValue="@string/classic"
             android:key="typehome"
             android:title="@string/type_home" />
     </PreferenceCategory>

@@ -175,6 +175,12 @@ public class MoneyManagerPrefsActivity_v10 extends PreferenceActivity {
 				lstTypeHome.setSummary(getString(R.string.advance));
 			}
 			// set default value
+			if (application.getDefaultTypeHome() == MoneyManagerApplication.TYPE_HOME_CLASSIC) {
+				lstTypeHome.setDefaultValue(getString(R.string.classic));
+			} else {
+				lstTypeHome.setDefaultValue(getString(R.string.advance));
+			}
+			// set summary on change
 			lstTypeHome.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {

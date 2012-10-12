@@ -19,6 +19,7 @@ package com.money.manager.ex;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.content.ContentProvider;
@@ -35,6 +36,7 @@ import android.util.Log;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableAssets;
@@ -68,26 +70,13 @@ public class MoneyManagerProvider extends ContentProvider {
 	// object map for the definition of the objects referenced in the URI
 	private static Map<Integer, Object> mapContent = new HashMap<Integer, Object>();
 	
-	private Dataset[] objMoneyManager = new Dataset[] { new TableAccountList(),
-			new TableAssets(), new TableBillsDeposits(),
-			new TableBudgetTable(), new TableBudgetYear(), new TableCategory(),
-			new TableCheckingAccount(), new TableCurrencyFormats(),
-			new TableInfoTable(), new TablePayee(),
-			new TableSplitTransactions(), new TableStock(),
-			new TableSubCategory(), new ViewAllData(),
-			new QueryAccountBills(), new QueryCategorySubCategory()};
+	private List<Dataset> objMoneyManager;
 	
 	public static final String AUTHORITY = "com.money.manager.ex.provider";
 	
 	public MoneyManagerProvider() {
 		super();
-		// Cycle all datasets for the composition of UriMatcher
-		for(int i = 0; i < objMoneyManager.length; i ++) {
-			// add URI
-			sUriMatcher.addURI(AUTHORITY, objMoneyManager[i].getBasepath(), i);
-			// put map in the object being added in UriMatcher
-			mapContent.put(i, objMoneyManager[i]);
-		}
+
 	}
 	
 	@Override
@@ -215,10 +204,26 @@ public class MoneyManagerProvider extends ContentProvider {
 	@Override
 	public boolean onCreate() {
 		// open connection to database
-		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
+		/*MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
 		// This statement serves to force the creation of the database
-		SQLiteDatabase database = databaseHelper.getWritableDatabase();
-		
+		databaseHelper.getWritableDatabase();*/
+		// create object provider
+		objMoneyManager = Arrays.asList(new Dataset[] { new TableAccountList(),
+			new TableAssets(), new TableBillsDeposits(),
+			new TableBudgetTable(), new TableBudgetYear(), new TableCategory(),
+			new TableCheckingAccount(), new TableCurrencyFormats(),
+			new TableInfoTable(), new TablePayee(),
+			new TableSplitTransactions(), new TableStock(),
+			new TableSubCategory(), new ViewAllData(),
+			new QueryAccountBills(getContext()), new QueryCategorySubCategory(getContext()),
+			new QueryAllData(getContext())});
+		// Cycle all datasets for the composition of UriMatcher
+		for(int i = 0; i < objMoneyManager.size(); i ++) {
+			// add URI
+			sUriMatcher.addURI(AUTHORITY, objMoneyManager.get(i).getBasepath(), i);
+			// put map in the object being added in UriMatcher
+			mapContent.put(i, objMoneyManager.get(i));
+		}
 		return false;
 	}
 

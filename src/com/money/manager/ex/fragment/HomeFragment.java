@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment implements
 	private MoneyManagerApplication application;
 	// dataset table/view/query manage into class
 	private TableInfoTable infoTable = new TableInfoTable(); 
-	private QueryAccountBills accountBills = new QueryAccountBills();
+	private QueryAccountBills accountBills;
 	// view show in layout
 	private TextView txtUserName;
 	private TextView txtTotalAccounts;
@@ -96,6 +96,7 @@ public class HomeFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		application = (MoneyManagerApplication)getActivity().getApplication();
+		accountBills = new QueryAccountBills(getActivity());
 	}
 	
 	@Override
