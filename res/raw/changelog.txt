@@ -3,7 +3,7 @@
 - Fixed bug of displaying the date one day behind<br>
 - Fixed bug of the total summary in the Home does not correctly convert<br>
 - Fixed bug with synchronization dropbox, first upload the database if there was no file in the remote folder, did not upload anything<br>
-- Updated "currency code" of all world currencies
+- Updated "currency code" of all world currencies<br>
 - Minor bugfix<br>
 - Added language: French (thanks Xavier)<br>
 <br>
