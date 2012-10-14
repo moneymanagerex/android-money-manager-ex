@@ -18,7 +18,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="63"
+    android:versionCode="64"
     android:versionName="0.6.3" >
 
     <uses-sdk

@@ -49,7 +49,7 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 /**
  * @author Francesco Berton
- * @version 0.1.1
+ * @version 0.6.4
  *
  */
 public class AccountListEditActivity extends BaseFragmentActivity {
@@ -345,6 +345,7 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		outState.putString(KEY_FAVORITE_ACCT, mFavoriteAcct);
 		outState.putInt(KEY_CURRENCY_ID, mCurrencyId);
 		outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
+		outState.putString(KEY_ACTION, mIntentAction);
 	}
 	
 	/**
