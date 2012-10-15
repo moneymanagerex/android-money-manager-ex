@@ -617,13 +617,24 @@ public class DropboxActivity extends BaseFragmentActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		String prefSync = application.getDropboxSyncMode();
-		menu.findItem(R.id.menu_link).setVisible((mLoggedIn == false));
-		menu.findItem(R.id.menu_unlink).setVisible(mLoggedIn == true);
-		menu.findItem(R.id.menu_refresh).setVisible(mLoggedIn == true);
+		if (menu.findItem(R.id.menu_link) != null) {
+			menu.findItem(R.id.menu_link).setVisible((mLoggedIn == false));
+		}
+		if (menu.findItem(R.id.menu_unlink) != null) {
+			menu.findItem(R.id.menu_unlink).setVisible(mLoggedIn == true);
+		}
+		if (menu.findItem(R.id.menu_refresh) != null) {
+			menu.findItem(R.id.menu_refresh).setVisible(mLoggedIn == true);
+		}
+		if (menu.findItem(R.id.menu_sync) != null) {
 		menu.findItem(R.id.menu_sync).setVisible(mLoggedIn == true && prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)));
-		menu.findItem(R.id.menu_download).setVisible(mLoggedIn == true && (prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)) || prefSync.equalsIgnoreCase(getResources().getString(R.string.download))));
-		menu.findItem(R.id.menu_upload).setVisible(mLoggedIn == true && (prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)) || prefSync.equalsIgnoreCase(getResources().getString(R.string.upload))));
-		
+		}
+		if (menu.findItem(R.id.menu_download) != null) {
+			menu.findItem(R.id.menu_download).setVisible(mLoggedIn == true && (prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)) || prefSync.equalsIgnoreCase(getResources().getString(R.string.download))));
+		}
+		if (menu.findItem(R.id.menu_upload) != null) {
+			menu.findItem(R.id.menu_upload).setVisible(mLoggedIn == true && (prefSync.equalsIgnoreCase(getResources().getString(R.string.synchronize)) || prefSync.equalsIgnoreCase(getResources().getString(R.string.upload))));
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 	
