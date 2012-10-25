@@ -29,6 +29,8 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -47,8 +49,11 @@ import android.util.Log;
 
 import com.dropbox.client2.session.Session.AccessType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.widget.AccountBillsWidgetProvider;
+import com.money.manager.ex.widget.SummaryWidgetProvider;
 
 /**
  * This class extends Application and implements all the methods common in the
@@ -191,7 +196,12 @@ public class MoneyManagerApplication extends Application {
 		String lastVersion = preferences.getString(PREF_LAST_VERSION_KEY, "0.0.0");
 		if (!lastVersion.equals(currentVersion) || forceShow) {
 			preferences.edit().putString(PREF_LAST_VERSION_KEY, currentVersion).commit();
+			//get text changelog
 			String changelog = getRawAsString(context, R.raw.changelog);
+			changelog = changelog.replace("\n", "<br>");
+			//add small tag to changelog
+			changelog = "<small>" + changelog;
+			//create dialog
 			AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
 			showDialog.setCancelable(false);
 			showDialog.setTitle(R.string.changelog);
@@ -203,6 +213,7 @@ public class MoneyManagerApplication extends Application {
 							dialog.dismiss();
 						}
 					});
+			// show dialog
 			showDialog.create().show();
 			return false;
 		} else
@@ -316,6 +327,19 @@ public class MoneyManagerApplication extends Application {
 		return appPreferences.getString(PREF_DROPBOX_MODE, applicationContext.getString(R.string.synchronize));
 	}
 	/**
+	 * 
+	 * @param context
+	 * @return the username
+	 */
+	public String getFromDatabaseUserName(Context context) {
+		TableInfoTable infoTable = new TableInfoTable();
+		Cursor data = context.getContentResolver().query(infoTable.getUri(), null, TableInfoTable.INFONAME + "=?", new String[] {"USERNAME"}, null);
+		if (data != null && data.moveToFirst()) {
+			return data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
+		}
+		return "";
+	}
+	/**
 	 * this method convert a float value to numeric string
 	 * @param currency id of currency to format
 	 * @param value value to format
@@ -357,6 +381,32 @@ public class MoneyManagerApplication extends Application {
 		}
 		return "";
 	}
+	public float getSummaryAccounts(Context context) {
+		// compose whereClause
+		String where = "";
+		// check if show only open accounts
+		if (this.getAccountsOpenVisible()) {
+			where = "LOWER(STATUS)='open'";
+		}
+		// check if show fav accounts
+		if (this.getAccountFavoriteVisible()) {
+			where = "LOWER(FAVORITEACCT)='true'";
+		}
+		QueryAccountBills accountBills = new QueryAccountBills(context);
+		Cursor data = context.getContentResolver().query(accountBills.getUri(), null, where, null, null);
+		float curTotal = 0;
+		
+		if (data != null && data.moveToFirst()) {
+			// calculate summary
+			while (data.isAfterLast() == false) {
+				curTotal = curTotal + data.getFloat(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+				data.moveToNext();
+			}
+		}
+		data.close();
+		
+		return curTotal;
+	}
 	/**
 	 * 
 	 * @return resource id layout to apply
@@ -370,13 +420,13 @@ public class MoneyManagerApplication extends Application {
 		}
 		return getDefaultTypeHome();
 	}
+	
 	/**
 	 * @return the userName
 	 */
 	public String getUserName() {
 		return userName;
 	}
-	
 	public boolean isUriAvailable(Context context, Intent intent) {
 		return context.getPackageManager().resolveActivity(intent, 0) != null;
 	}
@@ -509,6 +559,7 @@ public class MoneyManagerApplication extends Application {
 		// commit
 		editPreferences.commit();
 	}
+
 	/**
 	 * 
 	 * @param activity to apply the theme
@@ -520,7 +571,6 @@ public class MoneyManagerApplication extends Application {
 			activity.setTheme(R.style.Theme_Money_Manager_Light);
 		}
 	}
-
 	public boolean setUserName(String userName) {
 		return this.setUserName(userName, false);
 	}
@@ -547,5 +597,22 @@ public class MoneyManagerApplication extends Application {
 		// set the value 
 		MoneyManagerApplication.userName = userName;
 		return true;
+	}
+	
+	public void updateAllWidget() {
+		Class<?>[] classes = {AccountBillsWidgetProvider.class, SummaryWidgetProvider.class };
+		for (Class<?> cls : classes) {
+			try {
+				AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+				ComponentName componentName = new ComponentName(getApplicationContext(), cls);
+				int[] ids = appWidgetManager.getAppWidgetIds(componentName);
+				Intent update_widget = new Intent();
+				update_widget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+				update_widget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+				getApplicationContext().sendBroadcast(update_widget);
+			} catch (Exception e) {
+				Log.e(LOGCAT, "update All Widget:" + e.getMessage());
+			}
+		}
 	}
 }

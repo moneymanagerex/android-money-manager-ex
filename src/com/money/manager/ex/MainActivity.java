@@ -324,6 +324,7 @@ public class MainActivity extends BaseFragmentActivity {
 	
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		/*
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			Fragment fragment = getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
 			// check if show home fragment
@@ -332,6 +333,7 @@ public class MainActivity extends BaseFragmentActivity {
 				return true;
 			}
 		}
+		*/
 		return super.onKeyUp(keyCode, event);
 	}
 	@Override

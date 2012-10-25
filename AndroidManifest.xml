@@ -14,12 +14,12 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="64"
-    android:versionName="0.6.3" >
+    android:versionCode="66"
+    android:versionName="0.7.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -33,20 +33,55 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_name"
         android:theme="@style/Theme.Money.Manager" >
+        <receiver
+            android:name=".widget.ButtonAddTransactionWidgetProvider"
+            android:label="@string/widget_add_transaction" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_button_add_transaction" >
+            </meta-data>
+        </receiver>
+        <receiver
+            android:name=".widget.SummaryWidgetProvider"
+            android:label="@string/widget_summary" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_summary" >
+            </meta-data>
+        </receiver>
+        <receiver
+            android:name=".widget.AccountBillsWidgetProvider"
+            android:label="@string/widget_all_accounts" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_account_bills" >
+            </meta-data>
+        </receiver>
+
+        <service
+            android:name=".widget.AccountBillsWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
         <provider
             android:name=".MoneyManagerProvider"
-            android:authorities="com.money.manager.ex.provider"
-            android:exported="false" >
+            android:authorities="com.money.manager.ex.provider" >
         </provider>
 
         <activity
             android:name="MainActivity"
             android:label="@string/application_name" >
-
-            <!-- android:screenOrientation="portrait" -->
-
-
-            <!-- android:configChanges="orientation|screenLayout" -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -54,7 +89,8 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-				<action android:name="android.intent.action.EDIT"/>
+                <action android:name="android.intent.action.EDIT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 

@@ -405,8 +405,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				if (updateData() == true) {
-					// set result ok and finish
+					// set result ok, send broadcat to update widgets and finish activity
 					setResult(RESULT_OK);
+					//((MoneyManagerApplication)getApplication()).updateAllWidget();
 					finish();
 				}
 			}

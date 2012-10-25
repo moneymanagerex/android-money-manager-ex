@@ -233,5 +233,8 @@
     <!-- 20120925 -->
     <string name="transaction_number">Numero Transazione</string>
     <!-- 20120927 -->
-
+   	<string name="widget_summary">Money Manager Ex Saldo</string>
+   	<string name="widget_all_accounts">Money Manager Ex Conti Correnti</string>
+   	<string name="widget_add_transaction">Money Manager Ex Nuova Transazione</string>
+   	<!-- 20121023 -->
 </resources>

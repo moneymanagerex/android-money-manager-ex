@@ -232,4 +232,8 @@
    	<!-- 20120925 -->
    	<string name="transaction_number">Transaction Number</string>
    	<!-- 20120927 -->
+   	<string name="widget_summary">Money Manager Ex Summary</string>
+   	<string name="widget_all_accounts">Money Manager Ex All Accounts</string>
+   	<string name="widget_add_transaction">Money Manager Ex Add Transaction</string>
+   	<!-- 20121023 -->
 </resources>

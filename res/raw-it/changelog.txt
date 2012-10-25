@@ -1,36 +1,42 @@
-<small>
-<b>Version 0.6.3</b><br>
-- Risoluzione bug minori<br>
-<br>
-<b>Versione 0.6.2</b><br>
-- Risolto bug della visualizzazione della data con un giorno indietro<br>
-- Risolto bug del totale a riepilogo nella Home non convertito correttamente<br>
-- Risolto bug sincronizzazione con dropbox, primo upload database se non esisteva il file nella cartella remota, non veniva caricato niente<br>
-- Aggiornati "currency code" di tutte le valute del mondo<br>
-- Risoluzione bug minori<br>
-- Aggiunta lingua: Francese (grazie Xavier)<br>
-<br>
-<b>Version 0.6.1</b><br>
-- Aggiunta la possibilità di aprire un database con estensione mmb da un file  manager (come Astro File Manager, OI File Manager, ES File Manager, etc...)<br>
-- risoluzione bug minori<br>
-<br>
-<b>Versione 0.6.0</b><br>
-- Nuova impostazione per la visualizzazione della home. Sono state aggiunte due tipologie (Classica: semplice e veloce, Avanzata: con visualizzazione a pagine richiede più risorse). <i>Di default per dispositivi pre-honeycomb (versione android 3.0) settata a Classic, per dispositivi post-honeycomb settata ad avanzata.</i><u> Se in modalità avanzata l'applicazione si blocca e si deve forzare la chiusura provare a settare la modalità classica.</u><br>
-- Aggiunta visualizzazione del changelog<br>
-- Aggiunta lingua: Spagnolo<br>
-<br>
-<b>Versione 0.5.9</b><br>
-- Nuova impostazione personalizzata aggiunta per la visualizzazione delle operazioni nella home. <i>Default è "Display, affari negli ultimi 7 giorni"</i>. L'impostazione può essere modificata nella pagina delle impostazioni.<br>
-- Cliccando su un conto nella vista elenco conto vi porterà direttamente alla visualizzazione delle transazioni per il conto specifico.<br>
-<br>
-<b>Versione 0.5.8</b><br>
-- bugfix: valuta senza separatore delle migliaia<br>
-- bugfix minori<br>
-<br>
-<b>Versione 0.5.7</b><br>
-- <b>pubblicazione su Google Play</b><br>
-- gestione: conti, beneficiari, categorie e sotto-categorie<br>
-- inserimento, modifica, cancellazione transazioni<br>
-- utilizzo database su scheda di memoria<br>
-- utilizzo dropbox per sincronizzare il database tra il dispositivo Android e il PC (Linux, Mac e Windows)<br>
+<b>Version 0.7.0</b>
+- Aggiunto Widget Saldo
+- Aggiunto Widget Riepilogo Conti
+- Aggiunto Widget Nuova Transazione
+- Nella Home il tasto Indietro non chiede più di chiudere l'applicazione
+- Risoluzione bug minori
+
+<b>Version 0.6.3</b>
+- Risoluzione bug minori
+
+<b>Versione 0.6.2</b>
+- Risolto bug della visualizzazione della data con un giorno indietro
+- Risolto bug del totale a riepilogo nella Home non convertito correttamente
+- Risolto bug sincronizzazione con dropbox, primo upload database se non esisteva il file nella cartella remota, non veniva caricato niente
+- Aggiornati "currency code" di tutte le valute del mondo
+- Risoluzione bug minori
+- Aggiunta lingua: Francese (grazie Xavier)
+
+<b>Version 0.6.1</b>
+- Aggiunta la possibilità di aprire un database con estensione mmb da un file  manager (come Astro File Manager, OI File Manager, ES File Manager, etc...)
+- risoluzione bug minori
+
+<b>Versione 0.6.0</b>
+- Nuova impostazione per la visualizzazione della home. Sono state aggiunte due tipologie (Classica: semplice e veloce, Avanzata: con visualizzazione a pagine richiede più risorse). <i>Di default per dispositivi pre-honeycomb (versione android 3.0) settata a Classic, per dispositivi post-honeycomb settata ad avanzata.</i><u> Se in modalità avanzata l'applicazione si blocca e si deve forzare la chiusura provare a settare la modalità classica.</u>
+- Aggiunta visualizzazione del changelog
+- Aggiunta lingua: Spagnolo
+
+<b>Versione 0.5.9</b>
+- Nuova impostazione personalizzata aggiunta per la visualizzazione delle operazioni nella home. <i>Default è "Display, affari negli ultimi 7 giorni"</i>. L'impostazione può essere modificata nella pagina delle impostazioni.
+- Cliccando su un conto nella vista elenco conto vi porterà direttamente alla visualizzazione delle transazioni per il conto specifico.
+
+<b>Versione 0.5.8</b>
+- bugfix: valuta senza separatore delle migliaia
+- bugfix minori
+
+<b>Versione 0.5.7</b>
+- <b>pubblicazione su Google Play</b>
+- gestione: conti, beneficiari, categorie e sotto-categorie
+- inserimento, modifica, cancellazione transazioni
+- utilizzo database su scheda di memoria
+- utilizzo dropbox per sincronizzare il database tra il dispositivo Android e il PC (Linux, Mac e Windows)
 </small>

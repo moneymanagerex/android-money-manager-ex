@@ -1,4 +1,20 @@
-
+#-------------------------------------------------------------------------------
+# Copyright (C) 2012 The Android Money Manager Ex Project
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#-------------------------------------------------------------------------------
 <b>Version 0.6.0</b><br>
 - New settings for the visualization of the home. Were added to two visualization modes (Classic: quick and easy; Advanced: with display pages requires more resources). <i>Default for pre-honeycomb devices (Android version 3.0) set to Classic, for post-honeycomb devices set to Advance.</i><u> If in advanced mode the application crashes and force close application, try setting the classic mode.</u><br>
 - Added display of the changelog<br>

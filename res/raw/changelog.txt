@@ -1,35 +1,41 @@
-<small>
-<b>Version 0.6.3</b><br>
-- Minor bugfix<br>
-<br>
-<b>Version 0.6.2</b><br>
-- Fixed bug of displaying the date one day behind<br>
-- Fixed bug of the total summary in the Home does not correctly convert<br>
-- Fixed bug with synchronization dropbox, first upload the database if there was no file in the remote folder, did not upload anything<br>
-- Updated "currency code" of all world currencies<br>
-- Minor bugfix<br>
-- Added language: French (thanks Xavier)<br>
-<br>
-<b>Version 0.6.1</b><br>
+<b>Version 0.7.0</b>
+- Added Widget Summary
+- Added Widget Account Bills
+- Addes Widget New Transaction
+- in Home the Back key no longer asks for to exit the application
+- Minor bugfix
+
+<b>Version 0.6.3</b>
+- Minor bugfix
+
+<b>Version 0.6.2</b>
+- Fixed bug of displaying the date one day behind
+- Fixed bug of the total summary in the Home does not correctly convert
+- Fixed bug with synchronization dropbox, first upload the database if there was no file in the remote folder, did not upload anything
+- Updated "currency code" of all world currencies
+- Minor bugfix
+- Added language: French (thanks Xavier)
+
+<b>Version 0.6.1</b>
 - Added possibility to open a database with mmb extension from a file manager (like Astro File Manager, OI File Manager, ES File Manager, etc ...)
-- Minor bugfix<br>
-<br>
-<b>Version 0.6.0</b><br>
-- New settings for the visualization of the home. Were added to two visualization modes (Classic: quick and easy; Advanced: with display pages requires more resources). <i>Default for pre-honeycomb devices (Android version 3.0) set to Classic, for post-honeycomb devices set to Advance.</i><u> If in advanced mode the application crashes and force close application, try setting the classic mode.</u><br>
-- Added display of the changelog<br>
-- Added language: Spanish<br>
-<br>
-<b>Version 0.5.9</b><br>
-- New setting added to customize the transactions diplayed in the home. <i>Default is "Display transations in the last 7 days"</i>. It may be modified in the settings page.<br>
-- From this version clicking on an account in the account list view will take you directly to the transaction view for that particular account.<br>
-<br>
-<b>Version 0.5.8</b><br>
-- minor bugfix<br>
-<br>
-<b>Version 0.5.7</b><br>
-- <b>release on Google Play</b><br>
-- management: accounts, categories, payees and sub-categories<br>
-- transaction: insert, edit and delete<br>
-- use database to memory card<br>
+- Minor bugfix
+
+<b>Version 0.6.0</b>
+- New settings for the visualization of the home. Were added to two visualization modes (Classic: quick and easy; Advanced: with display pages requires more resources). <i>Default for pre-honeycomb devices (Android version 3.0) set to Classic, for post-honeycomb devices set to Advance.</i><u> If in advanced mode the application crashes and force close application, try setting the classic mode.</u>
+- Added display of the changelog
+- Added language: Spanish
+
+<b>Version 0.5.9</b>
+- New setting added to customize the transactions diplayed in the home. <i>Default is "Display transations in the last 7 days"</i>. It may be modified in the settings page.
+- From this version clicking on an account in the account list view will take you directly to the transaction view for that particular account.
+
+<b>Version 0.5.8</b>
+- minor bugfix
+
+<b>Version 0.5.7</b>
+- <b>release on Google Play</b>
+- management: accounts, categories, payees and sub-categories
+- transaction: insert, edit and delete
+- use database to memory card
 - use dropbox to synchronize the database between the Android device and the PC (Linux, Mac and Windows)
 </small>

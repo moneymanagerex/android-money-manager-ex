@@ -22,6 +22,7 @@ import com.money.manager.ex.R;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 
 public class QueryAccountBills extends Dataset {
 	//definizione dei nomi dei campi
@@ -72,6 +73,19 @@ public class QueryAccountBills extends Dataset {
 	 */
 	public String getFavoriteAcct() {
 		return favoriteAcct;
+	}
+	/**
+	 * 
+	 * @return selection made ​​if it appears only accounts opened and / or favorites
+	 */
+	public String getFilterAccountSelection() {
+		MoneyManagerApplication application = new MoneyManagerApplication();
+		// check if show only open accounts
+		String where = application.getAccountsOpenVisible() ? "LOWER(" + STATUS + ")='open'" : null;
+		// check if show fav accounts
+		where = application.getAccountFavoriteVisible() ? "LOWER(" + FAVORITEACCT + ")='true'" : where;
+		
+		return !(TextUtils.isEmpty(where)) ? where : null;
 	}
 	/**
 	 * @return the status
