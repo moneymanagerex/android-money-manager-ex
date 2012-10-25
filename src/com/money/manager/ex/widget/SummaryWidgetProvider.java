@@ -40,7 +40,7 @@ public class SummaryWidgetProvider extends AppWidgetProvider {
 		app.loadBaseCurrencyId(context);
 		app.loadHashMapCurrency(context);
 		
-		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, AccountBillsWidgetProvider.class));
+		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, SummaryWidgetProvider.class));
 		
 		for (int i = 0; i < allWidgetIds.length; ++i) {
 			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_summary);
