@@ -1,8 +1,8 @@
 <b>Version 0.7.0</b>
 - Added Widget Summary
-- Added Widget Account Bills
+- Added Widget Account Bills <i>(only since the Honeycomb)</i>
 - Addes Widget New Transaction
-- in Home the Back key no longer asks for to exit the application
+- in Home the Key Back no longer asks for to exit the application
 - Minor bugfix
 
 <b>Version 0.6.3</b>
@@ -38,4 +38,3 @@
 - transaction: insert, edit and delete
 - use database to memory card
 - use dropbox to synchronize the database between the Android device and the PC (Linux, Mac and Windows)
-</small>

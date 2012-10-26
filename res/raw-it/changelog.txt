@@ -1,6 +1,6 @@
 <b>Version 0.7.0</b>
 - Aggiunto Widget Saldo
-- Aggiunto Widget Riepilogo Conti
+- Aggiunto Widget Riepilogo Conti <i>(solo dalla versione Honeycomb)</i>
 - Aggiunto Widget Nuova Transazione
 - Nella Home il tasto Indietro non chiede più di chiudere l'applicazione
 - Risoluzione bug minori
@@ -39,4 +39,3 @@
 - inserimento, modifica, cancellazione transazioni
 - utilizzo database su scheda di memoria
 - utilizzo dropbox per sincronizzare il database tra il dispositivo Android e il PC (Linux, Mac e Windows)
-</small>

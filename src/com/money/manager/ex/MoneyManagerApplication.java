@@ -198,9 +198,7 @@ public class MoneyManagerApplication extends Application {
 			preferences.edit().putString(PREF_LAST_VERSION_KEY, currentVersion).commit();
 			//get text changelog
 			String changelog = getRawAsString(context, R.raw.changelog);
-			changelog = changelog.replace("\n", "<br>");
-			//add small tag to changelog
-			changelog = "<small>" + changelog;
+			changelog = "<small>" + changelog.replace("\n", "<br>") + "</small>";
 			//create dialog
 			AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
 			showDialog.setCancelable(false);
