@@ -37,6 +37,7 @@ import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableAssets;
@@ -216,7 +217,7 @@ public class MoneyManagerProvider extends ContentProvider {
 			new TableSplitTransactions(), new TableStock(),
 			new TableSubCategory(), new ViewAllData(),
 			new QueryAccountBills(getContext()), new QueryCategorySubCategory(getContext()),
-			new QueryAllData(getContext())});
+			new QueryAllData(getContext()), new QueryBillDeposits(getContext())});
 		// Cycle all datasets for the composition of UriMatcher
 		for(int i = 0; i < objMoneyManager.size(); i ++) {
 			// add URI

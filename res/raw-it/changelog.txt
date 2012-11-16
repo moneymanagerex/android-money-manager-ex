@@ -1,3 +1,7 @@
+<b>Version x.x.x</b>
+- Aggiunte le Operazioni Ricorrenti
+- Aggiunta Notifica per le Operazioni Ricorrenti Scadute
+
 <b>Version 0.7.0</b>
 - Aggiunto Widget Saldo
 - Aggiunto Widget Riepilogo Conti <i>(solo dalla versione Honeycomb)</i>

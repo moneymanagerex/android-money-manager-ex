@@ -23,10 +23,7 @@
     </style>
 
     <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light">
-        <!-- <item name="abBackground">@drawable/drawable_ab_background</item>  -->
     </style>
-    
-    <!-- <item name="abBackground">@color/abBackground</item> -->
 
     <style name="Money.TextView" parent="@android:style/Widget.TextView">
        <!-- <item name="android:textColor">@color/textview_textcolor</item>  -->

@@ -106,7 +106,42 @@
         <item>@string/classic</item>
         <item>@string/advance</item>
     </string-array>
-
+    
+    <!-- Define frequencies items and values -->
+    <integer-array name="frequencies_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+    </integer-array>
+    <string-array name="frequencies_items">
+        <item>@string/none</item>
+        <item>@string/weekly</item>
+        <item>@string/bi_weekly</item>
+        <item>@string/monthly</item>
+        <item>@string/bi_monthly</item>
+        <item>@string/quaterly</item>
+        <item>@string/half_year</item>
+        <item>@string/yearly</item>
+        <item>@string/four_months</item>
+        <item>@string/four_weeks</item>
+        <item>@string/daily</item>
+        <item>@string/in_x_days</item>
+        <item>@string/in_x_months</item>
+        <item>@string/every_x_days</item>
+        <item>@string/every_x_months</item>
+    </string-array>
     <!-- Define currency value -->
     <string-array name="currency_values">
         <item>EUR</item>

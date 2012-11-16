@@ -36,8 +36,15 @@ public class TableBillsDeposits extends Dataset {
 	public static final String REPEATS = "REPEATS";
 	public static final String NEXTOCCURRENCEDATE = "NEXTOCCURRENCEDATE";
 	public static final String NUMOCCURRENCES = "NUMOCCURRENCES";
-	// CONSTRUCTOR
+	// constructor
 	public TableBillsDeposits() {
 		super("billsdeposits_v1", DatasetType.TABLE, "billsdeposits");
+	}
+	
+	@Override
+	public String[] getAllColumns() {
+		return new String [] {BDID + " AS _id", BDID, ACCOUNTID, TOACCOUNTID, PAYEEID, TRANSCODE, TRANSAMOUNT, STATUS,
+							  TRANSACTIONNUMBER, NOTES, CATEGID, SUBCATEGID, TRANSDATE, FOLLOWUPID, TOTRANSAMOUNT, REPEATS,
+							  NEXTOCCURRENCEDATE, NUMOCCURRENCES};
 	}
 }

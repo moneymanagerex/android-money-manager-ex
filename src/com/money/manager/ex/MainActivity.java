@@ -50,11 +50,11 @@ import com.money.manager.ex.dropbox.DropboxActivity;
 import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.HomeFragment;
+import com.money.manager.ex.notifications.MoneyManagerNotifications;
 import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TitleProvider;
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.1.0
  * 
  */
 public class MainActivity extends BaseFragmentActivity {
@@ -174,6 +174,9 @@ public class MainActivity extends BaseFragmentActivity {
     
 	// state if restart activity
     private static boolean mRestartActivity = false;
+    
+    // notification
+    private static MoneyManagerNotifications notifications;
 	
 	private void changeFragment(int accountId) {
 		String nameFragment = AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
@@ -273,7 +276,12 @@ public class MainActivity extends BaseFragmentActivity {
 		//show change log and
 		MoneyManagerApplication.showStartupChangeLog(this, false);
 		//introducion
-		
+		//TODO introduction activity
+		//notification
+		if (notifications == null) {
+			notifications = new MoneyManagerNotifications(this);
+			notifications.notifyRepeatingTransaction();
+		}
 	}
 	/**
 	 * this method call for classic method (show fragments)
@@ -363,6 +371,9 @@ public class MainActivity extends BaseFragmentActivity {
 			intent = new Intent(this, PayeeActivity.class);
 			intent.setAction(Intent.ACTION_EDIT);
 			startActivity(intent);
+			break;
+		case R.id.menu_repeating_transaction:
+			startActivity(new Intent(this, RepeatingTransactionListActivity.class));
 			break;
 		case R.id.menu_currency:
 			intent = new Intent(this, CurrencyFormatsListActivity.class);

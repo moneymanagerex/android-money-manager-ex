@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <resources>
 
@@ -22,9 +22,9 @@
     <string name="application_name">Money Manager Ex</string>
     <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
-	<string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock and ViewPagerIndicator libraries</string>
-	<string name="application_license">Open source licenses</string>
-	
+    <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock and ViewPagerIndicator libraries</string>
+    <string name="application_license">Open source licenses</string>
+
     <!-- database -->
     <string name="db_insert_failed">Insert data failed</string>
     <string name="db_delete_failed">Delete data failed</string>
@@ -111,34 +111,34 @@
     <string name="payee_empty_list">No payee found</string>
     <string name="from">From</string>
     <string name="db_payee_update_failed">Update payee failed</string>
-    
+
     <!-- category / subcategory -->
     <string name="category">Category</string>
     <string name="subcategory">Sub Category</string>
-	<string name="category_empty_list">No category found</string>
-	<string name="select_category">Select Category</string>
-	<string name="add_category">Add Category</string>
-	<string name="add_subcategory">Add SubCategory</string>
-	<string name="category_name">Category Name</string>
-	<string name="edit_categoryName">Edit Category Name</string>
-	<string name="delete_category">Delete Category</string>
-	
-	<!-- currency -->
-	<string name="currency">Currency</string>
-	<string name="currency_name">Currency Name</string>
-	<string name="currency_symbol">Currency Symbol</string>
-	<string name="delete_currency">Delete Currency</string>
-	<string name="unit_name">Unit Name</string>
-	<string name="cents_name">Cents Name</string>
-	<string name="prefix_symbol">Prefix Symbol</string>
-	<string name="suffix_symbol">Suffix Symbol</string>
-	<string name="decimal_char">Decimal Char</string>
-	<string name="group_char">Group Char</string>
-	<string name="scale">Scale</string>
-	<string name="conversion_to_base_rate">Conversion</string>
-	<string name="new_edit_currency">New / Edit Currency</string>
-	<string name="currency_name_empty">Input of the currency name is required</string>
-	
+    <string name="category_empty_list">No category found</string>
+    <string name="select_category">Select Category</string>
+    <string name="add_category">Add Category</string>
+    <string name="add_subcategory">Add SubCategory</string>
+    <string name="category_name">Category Name</string>
+    <string name="edit_categoryName">Edit Category Name</string>
+    <string name="delete_category">Delete Category</string>
+
+    <!-- currency -->
+    <string name="currency">Currency</string>
+    <string name="currency_name">Currency Name</string>
+    <string name="currency_symbol">Currency Symbol</string>
+    <string name="delete_currency">Delete Currency</string>
+    <string name="unit_name">Unit Name</string>
+    <string name="cents_name">Cents Name</string>
+    <string name="prefix_symbol">Prefix Symbol</string>
+    <string name="suffix_symbol">Suffix Symbol</string>
+    <string name="decimal_char">Decimal Char</string>
+    <string name="group_char">Group Char</string>
+    <string name="scale">Scale</string>
+    <string name="conversion_to_base_rate">Conversion</string>
+    <string name="new_edit_currency">New / Edit Currency</string>
+    <string name="currency_name_empty">Input of the currency name is required</string>
+
     <!-- transaction -->
     <string name="amount">Amount</string>
     <string name="total_amount">Total Amount</string>
@@ -207,33 +207,66 @@
     <string name="theme_application">Theme Application</string>
     <string name="theme_holo">Holo</string>
     <string name="theme_light">Light</string>
-    
+
     <!-- 20120906 -->
-	<string name="close_application">Close Application</string>
-	<string name="question_close_application">Do you want close application?</string>
-	<string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string> <!-- do not translate -->
-	<string name="attention">Attention</string>
-	<string name="payee_can_not_deleted">The payee selected can not be deleted because it referenced</string>
-	<string name="account_can_not_deleted">The account selected can not be deleted because it referenced</string>
-	<string name="currency_can_not_deleted">The currency selected can not be deleted because it referenced</string>
-	<string name="category_can_not_deleted">The category selected can not be deleted because it referenced</string>
-	<!-- 20120909 -->
-	<string name="all_transaction">All transaction</string>
-   	<string name="last7days">Last 7 days</string>
-   	<string name="last15days">Last 2 weeks</string>
-   	<string name="current_month">Current month</string>
-   	<string name="current_year">Current year</string>
-   	<string name="show_transaction">Show Transaction</string>
-   	<!-- 20120917 -->
-   	<string name="type_home">Type Home</string>
-   	<string name="classic">Classic</string>
-   	<string name="advance">Advance</string>
-   	<string name="changelog">Changelog</string>
-   	<!-- 20120925 -->
-   	<string name="transaction_number">Transaction Number</string>
-   	<!-- 20120927 -->
-   	<string name="widget_summary">Money Manager Ex Summary</string>
-   	<string name="widget_all_accounts">Money Manager Ex All Accounts</string>
-   	<string name="widget_add_transaction">Money Manager Ex Add Transaction</string>
-   	<!-- 20121023 -->
+    <string name="close_application">Close Application</string>
+    <string name="question_close_application">Do you want close application?</string>
+    <string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string>
+ 	<!-- do not translate -->
+    <string name="attention">Attention</string>
+    <string name="payee_can_not_deleted">The payee selected can not be deleted because it referenced</string>
+    <string name="account_can_not_deleted">The account selected can not be deleted because it referenced</string>
+    <string name="currency_can_not_deleted">The currency selected can not be deleted because it referenced</string>
+    <string name="category_can_not_deleted">The category selected can not be deleted because it referenced</string>
+    <!-- 20120909 -->
+    <string name="all_transaction">All transaction</string>
+    <string name="last7days">Last 7 days</string>
+    <string name="last15days">Last 2 weeks</string>
+    <string name="current_month">Current month</string>
+    <string name="current_year">Current year</string>
+    <string name="show_transaction">Show Transaction</string>
+    <!-- 20120917 -->
+    <string name="type_home">Type Home</string>
+    <string name="classic">Classic</string>
+    <string name="advance">Advance</string>
+    <string name="changelog">Changelog</string>
+    <!-- 20120925 -->
+    <string name="transaction_number">Transaction Number</string>
+    <!-- 20120927 -->
+    <string name="widget_summary">Money Manager Ex Summary</string>
+    <string name="widget_all_accounts">Money Manager Ex All Accounts</string>
+    <string name="widget_add_transaction">Money Manager Ex Add Transaction</string>
+    <!-- 20121023 -->
+    <string name="repeating_empty_transaction">Empty Repeating Transaction</string>
+    <string name="repeating_transaction">Repeating Transaction</string>
+    <string name="none">None</string>
+    <string name="weekly">Weekly</string>
+    <string name="bi_weekly">Bi-Weekly</string>
+    <string name="monthly">Montly</string>
+    <string name="bi_monthly">Bi-Monthly</string>
+    <string name="quaterly">Quaterly</string>
+    <string name="half_year">Half-Yearly</string>
+    <string name="yearly">Yearly</string>
+    <string name="four_months">Four-Months</string>
+    <string name="four_weeks">Four-Weeks</string>
+    <string name="daily">Daily</string>
+    <string name="in_x_days">In (x) Days</string>
+    <string name="in_x_months">In (x) Months</string>
+    <string name="every_x_days">Every (x) Days</string>
+    <string name="every_x_months">Every (x) Months</string>
+	<string name="inactive">Inactive</string>
+	<string name="days_overdue">days overdue!</string>
+	<string name="days_remaining">days remaining</string>
+	<string name="new_edit_repeating_transaction">New/Edit Repeating Transaction</string>
+	<string name="next_occurrence">Next Occurrence</string>
+	<string name="repeats">Repeats</string>
+	<string name="times_repeated">Times Repeated</string>
+	<string name="error_next_occurrence_not_populate">Attention: Date next occurrence is not populate</string>
+	<string name="activates">Activates</string>
+	<string name="period_days">Period: days</string>
+	<string name="enter_next_occurrence">Enter Next Occurrence</string>
+	<string name="skip_next_occurrence">Skip Next Occurrence</string>
+	<string name="notification_repeating_transaction_expired">There are repeating transaction expired</string>
+	<string name="notification_click_to_check_repeating_transaction">Click to check the transaction overdue</string>
+	<!-- 20121115 -->
 </resources>

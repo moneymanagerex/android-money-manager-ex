@@ -237,4 +237,36 @@
    	<string name="widget_all_accounts">Money Manager Ex Conti Correnti</string>
    	<string name="widget_add_transaction">Money Manager Ex Nuova Transazione</string>
    	<!-- 20121023 -->
+   	<string name="repeating_empty_transaction">Nessuna Operazione Ricorrente</string>
+    <string name="repeating_transaction">Operazioni Ricorrenti</string>
+    <string name="none">Nessuna</string>
+    <string name="weekly">Settimanale</string>
+    <string name="bi_weekly">Quindicinale</string>
+    <string name="monthly">Mensile</string>
+    <string name="bi_monthly">Bimestrale</string>
+    <string name="quaterly">Trimestrale</string>
+    <string name="half_year">Semestrale</string>
+    <string name="yearly">Annuale</string>
+    <string name="four_months">Quattro Mesi</string>
+    <string name="four_weeks">Quattro Settimane</string>
+    <string name="daily">Quotidiane</string>
+    <string name="in_x_days">In (x) Giorni</string>
+    <string name="in_x_months">In (x) Mesi</string>
+    <string name="every_x_days">Ogni (x) Giorni</string>
+    <string name="every_x_months">Ogni (x) Mese</string>
+	<string name="inactive">Inattivo</string>
+	<string name="days_overdue">giorni scaduti!</string>
+	<string name="days_remaining">giorni rimanenti</string>
+	<string name="new_edit_repeating_transaction">Nuovo/Modifica Operazione Ricorrente</string>
+	<string name="next_occurrence">Prossima Scadenza</string>
+	<string name="repeats">Cadenza</string>
+	<string name="times_repeated">Numero di Operazione</string>
+	<string name="error_next_occurrence_not_populate">Attenzione: la data della prossima scadenza non popolata</string>
+	<string name="activates">Attiva</string>
+	<string name="period_days">Periodo:</string>
+	<string name="enter_next_occurrence">Inserire Scadenza Successiva</string>
+	<string name="skip_next_occurrence">Ignora Successiva Scadenza</string>
+	<string name="notification_repeating_transaction_expired">Ci sono delle operazioni ricorrenti scadute</string>
+	<string name="notification_click_to_check_repeating_transaction">Seleziona per visualizzare le operazioni scadute</string>
+	<!-- 20121115 -->
 </resources>

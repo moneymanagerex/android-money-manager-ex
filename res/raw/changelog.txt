@@ -1,3 +1,7 @@
+<b>Version x.x.x</b>
+- Added Repeating Transaction
+- Added Notification for Repeated Transactions Expired
+
 <b>Version 0.7.0</b>
 - Added Widget Summary
 - Added Widget Account Bills <i>(only since the Honeycomb)</i>

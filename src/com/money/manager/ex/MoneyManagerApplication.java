@@ -21,7 +21,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +96,11 @@ public class MoneyManagerApplication extends Application {
     ///////////////////////////////////////////////////////////////////////////
     public static final int TYPE_HOME_CLASSIC = R.layout.main_fragments_activity;
     public static final int TYPE_HOME_ADVANCE = R.layout.main_pager_activity;
+	///////////////////////////////////////////////////////////////////////////
+	//                         CONSTANTS VALUES                              //
+	///////////////////////////////////////////////////////////////////////////
+    public static String PATTERN_DB_DATE = "yyyy-MM-dd";
+    
 	private static SharedPreferences appPreferences;
 	/**
 	 * Take a versioncode of this application
@@ -311,6 +320,91 @@ public class MoneyManagerApplication extends Application {
 		return tableCurrency.getValueFormatted(value);
 	}
 	/**
+	 * Convert string date into date object using pattern define to user
+	 * @param date string to convert
+	 * @return date converted
+	 */
+	public Date getDateFromString(String date) {
+		return getDateFromString(date, getUserDatePattern());
+	}
+	/**
+	 * Convert string date into date object using pattern params
+	 * @param date string to convert
+	 * @param pattern to use for convert
+	 * @return date object converted
+	 */
+	public Date getDateFromString(String date, String pattern) {
+		try {
+			return new SimpleDateFormat(pattern).parse(date);
+		} catch (ParseException e) {
+			Log.e(LOGCAT, e.getMessage());
+		}
+		return null;		
+	}
+	public Date getDateNextOccurence(Date date, int repeats) {
+		if (repeats >= 200) { repeats = repeats - 200; } // set auto execute without user acknowlegement
+		if (repeats >= 100) { repeats = repeats - 100; } // set auto execute on the next occurrence
+		// create object calendar
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		switch (repeats) {
+        case 0: //none
+        	break;
+        case 1: //weekly
+        	calendar.add(Calendar.DATE, 7);
+        	break;
+        case 2: //bi_weekly
+        	calendar.add(Calendar.DATE, 14);
+        	break;
+        case 3: //monthly
+        	calendar.add(Calendar.MONTH, 1);
+        	break;
+        case 4: //bi_monthly
+        	calendar.add(Calendar.MONTH, 2);
+        	break;
+        case 5: //quaterly
+        	calendar.add(Calendar.MONTH, 3);
+        	break;
+        case 6: //half_year
+        	calendar.add(Calendar.MONTH, 6);
+        	break;
+        case 7: //yearly
+        	calendar.add(Calendar.YEAR, 1);
+        	break;
+        case 8: //four_months
+        	calendar.add(Calendar.MONTH, 4);
+        	break;
+        case 9: //four_weeks
+        	calendar.add(Calendar.DATE, 28);
+        	break;
+        case 10: //daily
+        	calendar.add(Calendar.DATE, 1);
+        	break;
+        case 11: //in_x_days
+        case 12: //in_x_months
+        case 13: //every_x_days
+        case 14: //every_x_months
+		}
+		return calendar.getTime();
+	}
+	/**
+	 * Get pattern define from user
+	 * @return pattern user define
+	 */
+	public String getUserDatePattern() {
+		TableInfoTable infoTable = new TableInfoTable();
+		Cursor cursor = getApplicationContext().getContentResolver().query(infoTable.getUri(), null, TableInfoTable.INFONAME + "=?", new String[] {"DATEFORMAT"}, null);
+		String pattern = null;
+		if (cursor != null && cursor.moveToFirst()) {
+			pattern = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
+			//replace part of pattern
+			pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy");
+			//close cursor
+			cursor.close();
+		}
+		return pattern;
+	}
+	/**
 	 * 
 	 * @return default home type
 	 */
@@ -355,11 +449,34 @@ public class MoneyManagerApplication extends Application {
 	}
 	/**
 	 * 
+	 * @param repeat frequency repeats
+	 * @return frequency
+	 */
+	public String getRepeatAsString(int repeat) {
+		if (repeat >= 200) { repeat = repeat - 200; } // set auto execute without user acknowlegement
+		if (repeat >= 100) { repeat = repeat - 100; } // set auto execute on the next occurrence
+		String[] arrays = getResources().getStringArray(R.array.frequencies_items);
+		if (arrays != null && repeat >= 0 && repeat <= arrays.length) {
+			return arrays[repeat];
+		}
+		return "";
+	}
+	/**
+	 * 
 	 * @return the show transaction
 	 */
 	public String getShowTransaction() {
 		return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_SHOW_TRANSACTION, getResources().getString(R.string.last7days));
 	}
+	/**
+	 * Convert date object in string SQLite date format
+	 * @param date to convert
+	 * @return string formatted date SQLite
+	 */
+	public String getSQLiteStringDate(Date date) {
+		return getStringFromDate(date, PATTERN_DB_DATE);
+	}
+	
 	/**
 	 * 
 	 * @param status char of status
@@ -379,6 +496,28 @@ public class MoneyManagerApplication extends Application {
 		}
 		return "";
 	}
+	/**
+	 * Convert date object to string from user pattern
+	 * @param date
+	 * @return
+	 */
+	public String getStringFromDate(Date date) {
+		return getStringFromDate(date, getUserDatePattern());
+	}
+	/**
+	 * 
+	 * @param date object to convert in string
+	 * @param pattern pattern to use to convert
+	 * @return
+	 */
+	public String getStringFromDate(Date date, String pattern) {
+		return new SimpleDateFormat(pattern).format(date);
+	}
+	/**
+	 * Compute account balance and returns balance
+	 * @param context
+	 * @return
+	 */
 	public float getSummaryAccounts(Context context) {
 		// compose whereClause
 		String where = "";
@@ -418,7 +557,6 @@ public class MoneyManagerApplication extends Application {
 		}
 		return getDefaultTypeHome();
 	}
-	
 	/**
 	 * @return the userName
 	 */
@@ -503,6 +641,7 @@ public class MoneyManagerApplication extends Application {
 	public void onTerminate() {
 		Log.v(LOGCAT, "Application terminated");
 	}
+
 	/**
 	 * 
 	 * @param theme to save into preferences
@@ -557,7 +696,6 @@ public class MoneyManagerApplication extends Application {
 		// commit
 		editPreferences.commit();
 	}
-
 	/**
 	 * 
 	 * @param activity to apply the theme
@@ -597,6 +735,9 @@ public class MoneyManagerApplication extends Application {
 		return true;
 	}
 	
+	/**
+	 * update all widget of application
+	 */
 	public void updateAllWidget() {
 		Class<?>[] classes = {AccountBillsWidgetProvider.class, SummaryWidgetProvider.class };
 		for (Class<?> cls : classes) {
