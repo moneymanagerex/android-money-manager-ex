@@ -67,61 +67,49 @@ import com.money.manager.ex.fragment.BaseListFragment;
  * @version 1.0.0
  */
 public class CategorySubCategoryActivity extends BaseFragmentActivity {
-	@SuppressWarnings("unused")
-	private static final String LOGCAT = CategorySubCategoryActivity.class.getSimpleName();
-	private static final String FRAGMENTTAG = CategorySubCategoryActivity.class.getSimpleName() + "_Fragment";
-	public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";
-	public static final String INTENT_RESULT_CATEGNAME = "CategorySubCategory:CategName";
-	public static final String INTENT_RESULT_SUBCATEGID = "CategorySubCategory:SubCategId";
-	public static final String INTENT_RESULT_SUBCATEGNAME = "CategorySubCategory:SubCategName";
-	// define listFragment into FragmentActivity
-	CategorySubLoaderListFragment listFragment = new CategorySubLoaderListFragment();
-	// ID loader
-	private static final int ID_LOADER_CATEGORYSUB = 0;
-	// table or query
-	private static QueryCategorySubCategory mCategorySub;
-	private static String mAction = Intent.ACTION_EDIT;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		// enable home button into actionbar
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		// get intent
-		Intent intent = getIntent();
-
-		if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-			mAction = intent.getAction();
-		}
-		
-		mCategorySub = new QueryCategorySubCategory(this);
-		
-		// management fargment
-		FragmentManager fm = getSupportFragmentManager();
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
-        }
-	}
-	
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// set result and terminate activity
-			CategorySubLoaderListFragment fragment = (CategorySubLoaderListFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
-			if (fragment != null) {
-				fragment.setResultAndFinish();
-			}
-		}
-		return super.onKeyUp(keyCode, event);
-	}
-	
 	public static class CategorySubLoaderListFragment extends BaseListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor> {
+		public class CategorySubCategoryAdapter extends CursorAdapter {
+			private LayoutInflater mInflater;
+			
+			@SuppressWarnings("deprecation")
+			public CategorySubCategoryAdapter(Context context, Cursor c) {
+				super(context, c);
+				mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			}
+
+			@Override
+			public void bindView(View view, Context context, Cursor cursor) {
+				if ((view == null) || (cursor == null)) { return; }
+				TextView text1 = (TextView)view.findViewById(android.R.id.text1);
+				TextView text2 = (TextView)view.findViewById(android.R.id.text2);
+			
+				if (TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)))) {
+					text1.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME)));
+					text2.setText("");
+				} else {
+					text1.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)));
+					text2.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME)));
+				}
+				
+				if (mLayout == R.layout.simple_list_item_multiple_choice_2) {
+					CheckedTextView chekedtext = (CheckedTextView)view.findViewById(android.R.id.text1);
+					chekedtext.setChecked(getListView().isItemChecked(cursor.getPosition()));
+				}
+			}
+
+			@Override
+			public View newView(Context context, Cursor cursor, ViewGroup parent) {
+				return mInflater.inflate(mLayout, parent, false);
+			}
+		}
 		private static final int SUBMENU_ITEM_ADD_CATEGORY = 2;
+
 		private static final int SUBMENU_ITEM_ADD_SUBCATEGORY = 3;
-
 		private int mLayout;
-		private String mCurFilter;
 
+		private String mCurFilter;
+		
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
@@ -139,6 +127,8 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			registerForContextMenu(getListView());
 
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			getListView().setDivider(getResources().getDrawable(R.drawable.divider_ice_cream_sandwich));
+			getListView().setDividerHeight(1);
 			setListShown(false);
 
 			if (mLayout == R.layout.simple_list_item_multiple_choice_2) {
@@ -157,50 +147,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			// start loader
 			getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
 		}
-		
-		@Override
-		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-			super.onCreateOptionsMenu(menu, inflater);
-			// item add
-            /*MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
-            itemadd.setIcon(android.R.drawable.ic_menu_add);
-            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);*/
-            
-            // create submenu from item add
-            menu.addSubMenu(0, SUBMENU_ITEM_ADD_CATEGORY, SUBMENU_ITEM_ADD_CATEGORY, R.string.add_category);
-            menu.addSubMenu(0, SUBMENU_ITEM_ADD_SUBCATEGORY, SUBMENU_ITEM_ADD_SUBCATEGORY, R.string.add_subcategory);
-            
-        }
         
-		@Override
-		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-			// take instance of cursor and move to position
-			Cursor cursor = ((CategorySubCategoryAdapter)getListView().getAdapter()).getCursor();
-			cursor.moveToPosition(info.position);
-			// define menu
-			menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGSUBNAME)));
-			// context menu from resource
-			String[] menuItems = getResources().getStringArray(R.array.context_menu);
-			for (int i = 0; i < menuItems.length; i ++) {
-				menu.add(Menu.NONE, i, i, menuItems[i]);
-			}
-		}
-		
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			switch (item.getItemId()) {
-			case android.R.id.home:
-				break;
-			case SUBMENU_ITEM_ADD_CATEGORY:
-				showDialogEditCategName(SQLTypeTransacion.INSERT, -1, null);
-				break;
-			case SUBMENU_ITEM_ADD_SUBCATEGORY:
-				showDialogEditSubCategName(SQLTypeTransacion.INSERT, -1, -1, null);
-			}
-			return super.onOptionsItemSelected(item);
-		}
-		
 		@Override
 		public boolean onContextItemSelected(MenuItem item) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
@@ -239,16 +186,21 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			return false;
 		}
 		
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            // Called when the action bar search text has changed.  Update
-            // the search filter, and restart the loader to do a new query
-            // with this filter.
-            mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
-            restartLoader();
-            return true;
-        }
-
+		@Override
+		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+			// take instance of cursor and move to position
+			Cursor cursor = ((CategorySubCategoryAdapter)getListView().getAdapter()).getCursor();
+			cursor.moveToPosition(info.position);
+			// define menu
+			menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGSUBNAME)));
+			// context menu from resource
+			String[] menuItems = getResources().getStringArray(R.array.context_menu);
+			for (int i = 0; i < menuItems.length; i ++) {
+				menu.add(Menu.NONE, i, i, menuItems[i]);
+			}
+		}
+		
 		@Override
 		public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 			switch (id) {
@@ -267,6 +219,28 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			}
 			return null;
 		}
+		
+        @Override
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+			super.onCreateOptionsMenu(menu, inflater);
+			// item add
+            /*MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
+            itemadd.setIcon(android.R.drawable.ic_menu_add);
+            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);*/
+            
+            // create submenu from item add
+            menu.addSubMenu(0, SUBMENU_ITEM_ADD_CATEGORY, SUBMENU_ITEM_ADD_CATEGORY, R.string.add_category);
+            menu.addSubMenu(0, SUBMENU_ITEM_ADD_SUBCATEGORY, SUBMENU_ITEM_ADD_SUBCATEGORY, R.string.add_subcategory);
+            
+        }
+
+		@Override
+		public void onLoaderReset(Loader<Cursor> loader) {
+			switch (loader.getId()) {
+			case ID_LOADER_CATEGORYSUB:
+				//mAdapter.swapCursor(null);
+			}
+		}
 
 		@Override
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -282,13 +256,34 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 		}
 
 		@Override
-		public void onLoaderReset(Loader<Cursor> loader) {
-			switch (loader.getId()) {
-			case ID_LOADER_CATEGORYSUB:
-				//mAdapter.swapCursor(null);
+		public boolean onOptionsItemSelected(MenuItem item) {
+			switch (item.getItemId()) {
+			case android.R.id.home:
+				break;
+			case SUBMENU_ITEM_ADD_CATEGORY:
+				showDialogEditCategName(SQLTypeTransacion.INSERT, -1, null);
+				break;
+			case SUBMENU_ITEM_ADD_SUBCATEGORY:
+				showDialogEditSubCategName(SQLTypeTransacion.INSERT, -1, -1, null);
 			}
+			return super.onOptionsItemSelected(item);
 		}
 		
+		@Override
+        public boolean onQueryTextChange(String newText) {
+            // Called when the action bar search text has changed.  Update
+            // the search filter, and restart the loader to do a new query
+            // with this filter.
+            mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
+            restartLoader();
+            return true;
+        }
+		/**
+		 * Restart loader to view data
+		 */
+		private void restartLoader() {
+			getLoaderManager().restartLoader(ID_LOADER_CATEGORYSUB, null, this);
+		}
 		@Override
 		protected void setResult() {
 			if (mAction.equals(Intent.ACTION_PICK)) {
@@ -316,10 +311,68 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			return;
 		}
 		/**
-		 * Restart loader to view data
+		 * Show alter dialog confirm delete category or sub category
+		 * @param categId id of category
+		 * @param subCategId id of subcategory. 0 if not sub category
 		 */
-		private void restartLoader() {
-			getLoaderManager().restartLoader(ID_LOADER_CATEGORYSUB, null, this);
+		private void showDialogDeleteCategorySub(final int categId, final int subCategId) {
+			boolean canDelete = false;
+			ContentValues values = new ContentValues();
+			if (subCategId <= 0) {
+				values.put(TableCategory.CATEGID, categId);
+				canDelete = new TableCategory().canDelete(getActivity(), values);
+			} else {
+				values.put(TableSubCategory.SUBCATEGID, subCategId);
+				canDelete = new TableSubCategory().canDelete(getActivity(), values);
+			}
+			if (!(canDelete)) {
+				new AlertDialog.Builder(getActivity())
+				.setTitle(R.string.attention)
+				.setMessage(R.string.category_can_not_deleted)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setPositiveButton(android.R.string.ok,
+						new OnClickListener() {
+							@Override
+							public void onClick(
+									DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						}).create().show();
+				return;
+			}
+			// create and set alert dialog
+			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+			alertDialog.setTitle(R.string.delete_category);
+			alertDialog.setMessage(R.string.confirmDelete);
+			alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+			// listener on positive button
+			alertDialog.setPositiveButton(android.R.string.ok,
+					new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							int rowsDelete = 0;
+							if (subCategId <= 0) {
+								rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(), TableCategory.CATEGID + "=" + categId, null);
+							} else {
+								rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(), TableSubCategory.CATEGID + "=" + categId + " AND " + TableSubCategory.SUBCATEGID + "=" + subCategId, null);
+							}
+							if (rowsDelete == 0) {
+								Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+							}
+							// restart loader
+							restartLoader();
+						}
+					});
+			// listener on negative button
+			alertDialog.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+			// show dialog
+			alertDialog.create().show();
 		}
 		/**
 		 * Show alter dialog, for create or edit new category
@@ -374,6 +427,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			// create dialog and show
 			alertDialog.create().show();
 		}
+		
 		/**
 		 * Show alter dialog, for create or edit new category
 		 */
@@ -454,104 +508,52 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			// create dialog and show
 			alertDialog.create().show();
 		}
-		/**
-		 * Show alter dialog confirm delete category or sub category
-		 * @param categId id of category
-		 * @param subCategId id of subcategory. 0 if not sub category
-		 */
-		private void showDialogDeleteCategorySub(final int categId, final int subCategId) {
-			boolean canDelete = false;
-			ContentValues values = new ContentValues();
-			if (subCategId <= 0) {
-				values.put(TableCategory.CATEGID, categId);
-				canDelete = new TableCategory().canDelete(getActivity(), values);
-			} else {
-				values.put(TableSubCategory.SUBCATEGID, subCategId);
-				canDelete = new TableSubCategory().canDelete(getActivity(), values);
-			}
-			if (!(canDelete)) {
-				new AlertDialog.Builder(getActivity())
-				.setTitle(R.string.attention)
-				.setMessage(R.string.category_can_not_deleted)
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setPositiveButton(android.R.string.ok,
-						new OnClickListener() {
-							@Override
-							public void onClick(
-									DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-							}
-						}).create().show();
-				return;
-			}
-			// create and set alert dialog
-			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-			alertDialog.setTitle(R.string.delete_category);
-			alertDialog.setMessage(R.string.confirmDelete);
-			alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
-			// listener on positive button
-			alertDialog.setPositiveButton(android.R.string.ok,
-					new OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							int rowsDelete = 0;
-							if (subCategId <= 0) {
-								rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(), TableCategory.CATEGID + "=" + categId, null);
-							} else {
-								rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(), TableSubCategory.CATEGID + "=" + categId + " AND " + TableSubCategory.SUBCATEGID + "=" + subCategId, null);
-							}
-							if (rowsDelete == 0) {
-								Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-							}
-							// restart loader
-							restartLoader();
-						}
-					});
-			// listener on negative button
-			alertDialog.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.cancel();
-				}
-			});
-			// show dialog
-			alertDialog.create().show();
+	}
+	@SuppressWarnings("unused")
+	private static final String LOGCAT = CategorySubCategoryActivity.class.getSimpleName();
+	private static final String FRAGMENTTAG = CategorySubCategoryActivity.class.getSimpleName() + "_Fragment";
+	public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";
+	public static final String INTENT_RESULT_CATEGNAME = "CategorySubCategory:CategName";
+	public static final String INTENT_RESULT_SUBCATEGID = "CategorySubCategory:SubCategId";
+	public static final String INTENT_RESULT_SUBCATEGNAME = "CategorySubCategory:SubCategName";
+	// define listFragment into FragmentActivity
+	CategorySubLoaderListFragment listFragment = new CategorySubLoaderListFragment();
+	// ID loader
+	private static final int ID_LOADER_CATEGORYSUB = 0;
+	// table or query
+	private static QueryCategorySubCategory mCategorySub;
+	private static String mAction = Intent.ACTION_EDIT;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// enable home button into actionbar
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		// get intent
+		Intent intent = getIntent();
+
+		if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
+			mAction = intent.getAction();
 		}
 		
-		public class CategorySubCategoryAdapter extends CursorAdapter {
-			private LayoutInflater mInflater;
-			
-			@SuppressWarnings("deprecation")
-			public CategorySubCategoryAdapter(Context context, Cursor c) {
-				super(context, c);
-				mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			}
-
-			@Override
-			public View newView(Context context, Cursor cursor, ViewGroup parent) {
-				return mInflater.inflate(mLayout, parent, false);
-			}
-
-			@Override
-			public void bindView(View view, Context context, Cursor cursor) {
-				if ((view == null) || (cursor == null)) { return; }
-				TextView text1 = (TextView)view.findViewById(android.R.id.text1);
-				TextView text2 = (TextView)view.findViewById(android.R.id.text2);
-			
-				if (TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)))) {
-					text1.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME)));
-					text2.setText("");
-				} else {
-					text1.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)));
-					text2.setText(cursor.getString(cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME)));
-				}
-				
-				if (mLayout == R.layout.simple_list_item_multiple_choice_2) {
-					CheckedTextView chekedtext = (CheckedTextView)view.findViewById(android.R.id.text1);
-					chekedtext.setChecked(getListView().isItemChecked(cursor.getPosition()));
-				}
+		mCategorySub = new QueryCategorySubCategory(this);
+		
+		// management fargment
+		FragmentManager fm = getSupportFragmentManager();
+        if (fm.findFragmentById(android.R.id.content) == null) {
+            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
+        }
+	}
+	
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// set result and terminate activity
+			CategorySubLoaderListFragment fragment = (CategorySubLoaderListFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+			if (fragment != null) {
+				fragment.setResultAndFinish();
 			}
 		}
+		return super.onKeyUp(keyCode, event);
 	}
 }

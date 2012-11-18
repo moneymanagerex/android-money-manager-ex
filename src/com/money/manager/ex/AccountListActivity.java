@@ -54,51 +54,9 @@ import com.money.manager.ex.fragment.BaseListFragment;
  * 
  */
 public class AccountListActivity extends BaseFragmentActivity {
-	@SuppressWarnings("unused")
-	private static final String LOGCAT = AccountListActivity.class.getSimpleName();
-	private static final String FRAGMENTTAG = AccountListActivity.class.getSimpleName() + "_Fragment";
-	public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
-	public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
-	// ID degli loader
-	private static final int ID_LOADER_ACCOUNT = 0;
-	// definizione dell'oggetto fragmentlist
-	private AccountLoaderListFragment listFragment = new AccountLoaderListFragment();
-	// Interfaccia alla tabella
-	private static TableAccountList mAccount = new TableAccountList();
-	private static String mAction = Intent.ACTION_EDIT;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		// abilito il tasto Home
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		// prendo l'intent inviato
-		Intent intent = getIntent();
-		// se ho l'intent controllo l'azione
-		if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-			mAction = intent.getAction();
-		}
-		FragmentManager fm = getSupportFragmentManager();
-		// attach del fragment all'activity
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
-        }
-	}
-	
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			AccountLoaderListFragment fragment = (AccountLoaderListFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
-			if (fragment != null) {
-				fragment.setResultAndFinish();
-			}
-		}
-		//processo classico del tasto
-		return super.onKeyUp(keyCode, event);
-	}
-	
 	public static class AccountLoaderListFragment extends BaseListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor> {
-		// ID menu item
+		// id menu item add
 		private static final int MENU_ITEM_ADD = 1;
 		// filter
 		private String mCurFilter;
@@ -107,11 +65,10 @@ public class AccountListActivity extends BaseFragmentActivity {
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
-			// imposto che voglio il menu search
+			// set show search
 			setShowMenuItemSearch(true);
-			// imposto il testo se vuoto
+			// set default value
 			setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
-			// ha menu item
 			setHasOptionsMenu(true);
 			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
 			// create adapter
@@ -121,62 +78,25 @@ public class AccountListActivity extends BaseFragmentActivity {
                     new int[] { android.R.id.text1 }, 0);
 			// set adapter
 			setListAdapter(adapter);
-			// registro la listview per il contextmenu
+			// set listview
 			registerForContextMenu(getListView());
-			// imposto la modalita di scelta
+
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			// imposto di non visualizzare la lista
+			getListView().setDivider(getResources().getDrawable(R.drawable.divider_ice_cream_sandwich));
+			getListView().setDividerHeight(1);
+
 			setListShown(false);
-			// avvio il loader
+			// start loader
 			getLoaderManager().initLoader(ID_LOADER_ACCOUNT, null, this);
-		}
-		
-		@Override
-		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        	// richiamo l'evento base
-			super.onCreateOptionsMenu(menu, inflater);
-			// item add
-            MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
-            itemadd.setIcon(android.R.drawable.ic_menu_add);
-            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        }
-        
-		@Override
-		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-			// prendo il cursore per prendere la posizione
-			Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
-			// mi posiziono dove è stato selezionato
-			cursor.moveToPosition(info.position);
-			// imposto il titolo della del benificiario
-			menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME)));
-			// prendo gli item da visualizzare nel menù
-			String[] menuItems = getResources().getStringArray(R.array.context_menu);
-			for (int i = 0; i < menuItems.length; i ++) {
-				menu.add(Menu.NONE, i, i, menuItems[i]);
-			}
-		}
-		
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			switch (item.getItemId()) {
-			case android.R.id.home:
-				break;
-			case MENU_ITEM_ADD:
-				startAccountListEditActivity();
-				break;
-			}
-			return super.onOptionsItemSelected(item);
 		}
 		
 		@Override
 		public boolean onContextItemSelected(MenuItem item) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-			// prendo il cursore
+			// take cursor
 			Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
-			// posiziono sull'item selezionato
 			cursor.moveToPosition(info.position);
-			// gestione della selzione dell'item
+
 			switch (item.getItemId()) {
 			case 0: //EDIT
 				startAccountListEditActivity(cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
@@ -205,17 +125,22 @@ public class AccountListActivity extends BaseFragmentActivity {
 			}
 			return false;
 		}
-		
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            // Called when the action bar search text has changed.  Update
-            // the search filter, and restart the loader to do a new query
-            // with this filter.
-            mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
-            getLoaderManager().restartLoader(ID_LOADER_ACCOUNT, null, this);
-            return true;
-        }
+        
+		@Override
+		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+			// take cursor
+			Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
+			cursor.moveToPosition(info.position);
 
+			menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME)));
+
+			String[] menuItems = getResources().getStringArray(R.array.context_menu);
+			for (int i = 0; i < menuItems.length; i ++) {
+				menu.add(Menu.NONE, i, i, menuItems[i]);
+			}
+		}
+		
 		@Override
 		public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 			switch (id) {
@@ -228,6 +153,23 @@ public class AccountListActivity extends BaseFragmentActivity {
 			}
 
 			return null;
+		}
+		
+		@Override
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+			super.onCreateOptionsMenu(menu, inflater);
+			// item add
+            MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
+            itemadd.setIcon(android.R.drawable.ic_menu_add);
+            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        }
+		
+        @Override
+		public void onLoaderReset(Loader<Cursor> loader) {
+			switch (loader.getId()) {
+			case ID_LOADER_ACCOUNT:
+				// ((SimpleCursorAdapter)getListAdapter()).swapCursor(null);
+			}
 		}
 
 		@Override
@@ -245,11 +187,75 @@ public class AccountListActivity extends BaseFragmentActivity {
 		}
 
 		@Override
-		public void onLoaderReset(Loader<Cursor> loader) {
-			switch (loader.getId()) {
-			case ID_LOADER_ACCOUNT:
-				// ((SimpleCursorAdapter)getListAdapter()).swapCursor(null);
+		public boolean onOptionsItemSelected(MenuItem item) {
+			switch (item.getItemId()) {
+			case android.R.id.home:
+				break;
+			case MENU_ITEM_ADD:
+				startAccountListEditActivity();
+				break;
 			}
+			return super.onOptionsItemSelected(item);
+		}
+
+		@Override
+        public boolean onQueryTextChange(String newText) {
+            // Called when the action bar search text has changed.  Update
+            // the search filter, and restart the loader to do a new query
+            // with this filter.
+            mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
+            getLoaderManager().restartLoader(ID_LOADER_ACCOUNT, null, this);
+            return true;
+        }
+		
+		@Override
+		protected void setResult() {
+			if (mAction.equals(Intent.ACTION_PICK)) {
+				Intent result = new Intent();
+				// take cursor
+				Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
+
+				for(int i = 0; i < getListView().getCount(); i ++) {
+					if (getListView().isItemChecked(i)) {
+						cursor.moveToPosition(i);
+						result.putExtra(INTENT_RESULT_ACCOUNTID, cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
+						result.putExtra(INTENT_RESULT_ACCOUNTNAME, cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME)));
+						break;
+					}
+				}
+				// set result
+				getActivity().setResult(Activity.RESULT_OK, result);
+			}
+			return;
+		}
+		private void showDialogDeleteAccount(final int ACCOUNTID) {
+			// create dialog
+			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+			alertDialog.setTitle(R.string.delete_account);
+			alertDialog.setMessage(R.string.confirmDelete);
+
+			alertDialog.setPositiveButton(android.R.string.ok,
+					new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							if (getActivity().getContentResolver().delete(mAccount.getUri(), "ACCOUNTID=" + ACCOUNTID, null) == 0) {
+								Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+							}
+							// restart loader
+							getLoaderManager().restartLoader(ID_LOADER_ACCOUNT, null, AccountLoaderListFragment.this);
+						}
+					});
+
+			alertDialog.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// close dialog
+					dialog.cancel();
+				}
+			});
+			// show dialog
+			alertDialog.create().show();
 		}
 		
 		/**
@@ -258,6 +264,7 @@ public class AccountListActivity extends BaseFragmentActivity {
 		private void startAccountListEditActivity() {
 			this.startAccountListEditActivity(null);
 		}
+		
 		/**
 		 * Start the account management Activity
 		 * @param accountId is null for a new account, not null for editing accountId account
@@ -275,62 +282,42 @@ public class AccountListActivity extends BaseFragmentActivity {
 			// launch activity
 			startActivity(intent);
 		}
-		
-		private void showDialogDeleteAccount(final int ACCOUNTID) {
-			// crezione dell'alter
-			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-			// imposto il titolo
-			alertDialog.setTitle(R.string.delete_account);
-			// imposto il testo
-			alertDialog.setMessage(R.string.confirmDelete);
-			// set il listener del button Ok
-			alertDialog.setPositiveButton(android.R.string.ok,
-					new OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							if (getActivity().getContentResolver().delete(mAccount.getUri(), "ACCOUNTID=" + ACCOUNTID, null) == 0) {
-								Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-							}
-							// riavvio il loader
-							getLoaderManager().restartLoader(ID_LOADER_ACCOUNT, null, AccountLoaderListFragment.this);
-						}
-					});
-			// set il listener del button Cancel
-			alertDialog.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// chiudo l'interfaccia
-					dialog.cancel();
-				}
-			});
-			// creo il dialog e lo rendo visibile
-			alertDialog.create();
-			alertDialog.show();
+	}
+	@SuppressWarnings("unused")
+	private static final String LOGCAT = AccountListActivity.class.getSimpleName();
+	private static final String FRAGMENTTAG = AccountListActivity.class.getSimpleName() + "_Fragment";
+	public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
+	public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
+	// ID loader
+	private static final int ID_LOADER_ACCOUNT = 0;
+	private AccountLoaderListFragment listFragment = new AccountLoaderListFragment();
+	private static TableAccountList mAccount = new TableAccountList();
+	private static String mAction = Intent.ACTION_EDIT;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		// take intent send
+		Intent intent = getIntent();
+		if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
+			mAction = intent.getAction();
 		}
-		
-		@Override
-		protected void setResult() {
-			if (mAction.equals(Intent.ACTION_PICK)) {
-				// creazione dell'intent di restituzione dei dati
-				Intent result = new Intent();
-				// prendo il cursore
-				Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
-				// ciclo per vedere l'item selezionato
-				for(int i = 0; i < getListView().getCount(); i ++) {
-					if (getListView().isItemChecked(i)) {
-						// posiziono il cursore
-						cursor.moveToPosition(i);
-						// prendo le informazioni che mi interessano
-						result.putExtra(INTENT_RESULT_ACCOUNTID, cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
-						result.putExtra(INTENT_RESULT_ACCOUNTNAME, cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME)));
-						// esco dal ciclo
-						break;
-					}
-				}
-				// imposto il risultato
-				getActivity().setResult(Activity.RESULT_OK, result);
+		FragmentManager fm = getSupportFragmentManager();
+		// attach fragment to activity
+        if (fm.findFragmentById(android.R.id.content) == null) {
+            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
+        }
+	}
+	
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			AccountLoaderListFragment fragment = (AccountLoaderListFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+			if (fragment != null) {
+				fragment.setResultAndFinish();
 			}
-			return;
 		}
+		return super.onKeyUp(keyCode, event);
 	}
 }

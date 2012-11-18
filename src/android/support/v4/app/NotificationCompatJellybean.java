@@ -25,7 +25,8 @@ import java.util.ArrayList;
 
 class NotificationCompatJellybean {
     private Notification.Builder b;
-    public NotificationCompatJellybean(Context context, Notification n,
+    @SuppressWarnings("deprecation")
+	public NotificationCompatJellybean(Context context, Notification n,
             CharSequence contentTitle, CharSequence contentText, CharSequence contentInfo,
             RemoteViews tickerView, int number,
             PendingIntent contentIntent, PendingIntent fullScreenIntent, Bitmap largeIcon,

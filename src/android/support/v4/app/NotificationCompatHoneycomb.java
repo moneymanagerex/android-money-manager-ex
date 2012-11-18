@@ -23,7 +23,8 @@ import android.graphics.Bitmap;
 import android.widget.RemoteViews;
 
 class NotificationCompatHoneycomb {
-    static Notification add(Context context, Notification n,
+    @SuppressWarnings("deprecation")
+	static Notification add(Context context, Notification n,
             CharSequence contentTitle, CharSequence contentText, CharSequence contentInfo,
             RemoteViews tickerView, int number,
             PendingIntent contentIntent, PendingIntent fullScreenIntent, Bitmap largeIcon) {

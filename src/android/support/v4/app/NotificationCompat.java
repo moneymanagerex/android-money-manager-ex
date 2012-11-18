@@ -83,7 +83,8 @@ public class NotificationCompat {
     }
 
     static class NotificationCompatImplBase implements NotificationCompatImpl {
-        public Notification build(Builder b) {
+        @SuppressWarnings("deprecation")
+		public Notification build(Builder b) {
             Notification result = (Notification) b.mNotification;
             result.setLatestEventInfo(b.mContext, b.mContentTitle,
                     b.mContentText, b.mContentIntent);

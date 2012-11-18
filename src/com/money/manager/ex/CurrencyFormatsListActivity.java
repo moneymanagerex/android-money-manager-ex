@@ -55,47 +55,6 @@ import com.money.manager.ex.fragment.BaseListFragment;
  * 
  */
 public class CurrencyFormatsListActivity extends BaseFragmentActivity {
-	@SuppressWarnings("unused")
-	private static final String LOGCAT = CurrencyFormatsListActivity.class.getSimpleName();
-	private static final String FRAGMENTTAG = CurrencyFormatsListActivity.class.getSimpleName() + "_Fragment";
-	public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
-	public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
-	// ID loader
-	private static final int ID_LOADER_CURRENCY = 0;
-	// istance fragment list
-	private CurrencyFormatsLoaderListFragment listFragment = new CurrencyFormatsLoaderListFragment();
-	// database table
-	private static TableCurrencyFormats mCurrency = new TableCurrencyFormats();
-	private static String mAction = Intent.ACTION_EDIT;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		// enabled home to come back
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		// take intent
-		Intent intent = getIntent();
-		if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-			mAction = intent.getAction();
-		}
-		
-		FragmentManager fm = getSupportFragmentManager();
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
-        }
-	}
-	
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		// intercept key back
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			CurrencyFormatsLoaderListFragment fragment = (CurrencyFormatsLoaderListFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
-			if (fragment != null) {
-				fragment.setResultAndFinish();
-			}
-		}
-		return super.onKeyUp(keyCode, event);
-	}
-	
 	public static class CurrencyFormatsLoaderListFragment extends BaseListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor> {
 		// ID menu item
@@ -124,44 +83,11 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 			registerForContextMenu(getListView());
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 			
+			getListView().setDivider(getResources().getDrawable(R.drawable.divider_ice_cream_sandwich));
+			getListView().setDividerHeight(1);
+			
 			setListShown(false);
 			getLoaderManager().initLoader(ID_LOADER_CURRENCY, null, this);
-		}
-		
-		@Override
-		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-			super.onCreateOptionsMenu(menu, inflater);
-			// item add
-            MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
-            itemadd.setIcon(android.R.drawable.ic_menu_add);
-            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        }
-        
-		@Override
-		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-			// take cursor and move into position
-			Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
-			cursor.moveToPosition(info.position);
-			// set currency name
-			menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
-			// compose menu
-			String[] menuItems = getResources().getStringArray(R.array.context_menu);
-			for (int i = 0; i < menuItems.length; i ++) {
-				menu.add(Menu.NONE, i, i, menuItems[i]);
-			}
-		}
-		
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			switch (item.getItemId()) {
-			case android.R.id.home:
-				break;
-			case MENU_ITEM_ADD:
-				startCurrencyFormatActivity(null);
-				break;
-			}
-			return super.onOptionsItemSelected(item);
 		}
 		
 		@Override
@@ -198,17 +124,22 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 			}
 			return false;
 		}
+        
+		@Override
+		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+			// take cursor and move into position
+			Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
+			cursor.moveToPosition(info.position);
+			// set currency name
+			menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
+			// compose menu
+			String[] menuItems = getResources().getStringArray(R.array.context_menu);
+			for (int i = 0; i < menuItems.length; i ++) {
+				menu.add(Menu.NONE, i, i, menuItems[i]);
+			}
+		}
 		
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            // Called when the action bar search text has changed.  Update
-            // the search filter, and restart the loader to do a new query
-            // with this filter.
-            mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
-            getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, this);
-            return true;
-        }
-
 		@Override
 		public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 			switch (id) {
@@ -221,6 +152,23 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 			}
 
 			return null;
+		}
+		
+		@Override
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+			super.onCreateOptionsMenu(menu, inflater);
+			// item add
+            MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
+            itemadd.setIcon(android.R.drawable.ic_menu_add);
+            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        }
+		
+        @Override
+		public void onLoaderReset(Loader<Cursor> loader) {
+			switch (loader.getId()) {
+			case ID_LOADER_CURRENCY:
+				// ((SimpleCursorAdapter)getListAdapter()).swapCursor(null);
+			}
 		}
 
 		@Override
@@ -237,13 +185,49 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 		}
 
 		@Override
-		public void onLoaderReset(Loader<Cursor> loader) {
-			switch (loader.getId()) {
-			case ID_LOADER_CURRENCY:
-				// ((SimpleCursorAdapter)getListAdapter()).swapCursor(null);
+		public boolean onOptionsItemSelected(MenuItem item) {
+			switch (item.getItemId()) {
+			case android.R.id.home:
+				break;
+			case MENU_ITEM_ADD:
+				startCurrencyFormatActivity(null);
+				break;
 			}
+			return super.onOptionsItemSelected(item);
 		}
 
+		@Override
+        public boolean onQueryTextChange(String newText) {
+            // Called when the action bar search text has changed.  Update
+            // the search filter, and restart the loader to do a new query
+            // with this filter.
+            mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
+            getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, this);
+            return true;
+        }
+
+		@Override
+		protected void setResult() {
+			if (mAction.equals(Intent.ACTION_PICK)) {
+				// create intent
+				Intent result = new Intent();
+				Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
+				
+				for(int i = 0; i < getListView().getCount(); i ++) {
+					if (getListView().isItemChecked(i)) {
+						cursor.moveToPosition(i);
+						result.putExtra(INTENT_RESULT_CURRENCYID, cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
+						result.putExtra(INTENT_RESULT_CURRENCYNAME, cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
+
+						break;
+					}
+				}
+				// set result and exit
+				getActivity().setResult(Activity.RESULT_OK, result);
+			}
+			return;
+		}
+		
 		private void showDialogDeleteCurrency(final int currencyId) {
 			// config alert dialog
 			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
@@ -272,28 +256,6 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 			alertDialog.create().show();
 		}
 		
-		@Override
-		protected void setResult() {
-			if (mAction.equals(Intent.ACTION_PICK)) {
-				// create intent
-				Intent result = new Intent();
-				Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
-				
-				for(int i = 0; i < getListView().getCount(); i ++) {
-					if (getListView().isItemChecked(i)) {
-						cursor.moveToPosition(i);
-						result.putExtra(INTENT_RESULT_CURRENCYID, cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
-						result.putExtra(INTENT_RESULT_CURRENCYNAME, cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
-
-						break;
-					}
-				}
-				// set result and exit
-				getActivity().setResult(Activity.RESULT_OK, result);
-			}
-			return;
-		}
-		
 		private void startCurrencyFormatActivity(Integer currencyId) {
 			// create intent, set Account ID
 			Intent intent = new Intent(getActivity(), CurrencyFormatsActivity.class);
@@ -307,5 +269,46 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 			// launch activity
 			startActivity(intent);
 		}
+	}
+	@SuppressWarnings("unused")
+	private static final String LOGCAT = CurrencyFormatsListActivity.class.getSimpleName();
+	private static final String FRAGMENTTAG = CurrencyFormatsListActivity.class.getSimpleName() + "_Fragment";
+	public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
+	public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
+	// ID loader
+	private static final int ID_LOADER_CURRENCY = 0;
+	// Instance fragment list
+	private CurrencyFormatsLoaderListFragment listFragment = new CurrencyFormatsLoaderListFragment();
+	// database table
+	private static TableCurrencyFormats mCurrency = new TableCurrencyFormats();
+	private static String mAction = Intent.ACTION_EDIT;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// enabled home to come back
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		// take intent
+		Intent intent = getIntent();
+		if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
+			mAction = intent.getAction();
+		}
+		
+		FragmentManager fm = getSupportFragmentManager();
+        if (fm.findFragmentById(android.R.id.content) == null) {
+            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
+        }
+	}
+	
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		// intercept key back
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			CurrencyFormatsLoaderListFragment fragment = (CurrencyFormatsLoaderListFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+			if (fragment != null) {
+				fragment.setResultAndFinish();
+			}
+		}
+		return super.onKeyUp(keyCode, event);
 	}
 }

@@ -405,6 +405,7 @@ public class AccountFragment extends Fragment implements
 	/**
 	 * refresh UI, show favorite icome
 	 */
+	@SuppressWarnings("deprecation")
 	private void setImageViewFavorite() {
 		if (mAccountList.isFavoriteAcct()) {
 			imgAccountFav.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.star_on));
