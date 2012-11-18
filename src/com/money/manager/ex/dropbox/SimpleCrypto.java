@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
-package com.money.manager.ex;
+package com.money.manager.ex.dropbox;
 
 import java.security.SecureRandom;
 
@@ -23,6 +23,8 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
+import android.os.Build;
 
 /**
  * {@link http://www.androidsnippets.com/encryptdecrypt-strings}
@@ -45,7 +47,12 @@ public class SimpleCrypto {
 
 	private static byte[] getRawKey(byte[] seed) throws Exception {
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
-		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+		SecureRandom sr;
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
+			sr = SecureRandom.getInstance("SHA1PRNG");
+		} else {
+			sr = SecureRandom.getInstance( "SHA1PRNG", "Crypto" );
+		}
 		sr.setSeed(seed);
 	    kgen.init(128, sr); // 192 and 256 bits may not be available
 	    SecretKey skey = kgen.generateKey();

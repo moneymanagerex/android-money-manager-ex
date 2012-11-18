@@ -62,7 +62,6 @@ import com.dropbox.client2.session.TokenPair;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.SimpleCrypto;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
