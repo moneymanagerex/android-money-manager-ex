@@ -17,8 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import java.util.Formatter;
-
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.support.v4.view.MenuItem;
@@ -58,13 +56,17 @@ public class AboutActivity extends BaseFragmentActivity {
 		txtLicense.setMovementMethod(LinkMovementMethod.getInstance());
 		// Version application
 		TextView txtVersion = (TextView)findViewById(R.id.textViewVersion);
+		TextView txtBuild = (TextView)findViewById(R.id.textViewBuild);
 		try {
-			text = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-			text += " (build " + new Formatter().format("%05d", getPackageManager().getPackageInfo(getPackageName(), 0).versionCode) + ")";
+			String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+			txtVersion.setText(txtVersion.getText() + " " + version);
+			String build = getString(R.string.application_build) + "." + 
+					 	   getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+			
+			txtBuild.setText(txtBuild.getText() + " " + build);
 		} catch (NameNotFoundException e) {
 			Log.e(LOGCAT, e.getMessage());
 		}
-		txtVersion.setText(txtVersion.getText() + " " + text);
 		// text changelog
 		TextView txtChangeLog = (TextView)findViewById(R.id.textViewChangeLog);
 		txtChangeLog.setText(Html.fromHtml("<u>" + getString(R.string.changelog) + "</u>"));

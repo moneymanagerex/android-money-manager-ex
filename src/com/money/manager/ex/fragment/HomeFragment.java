@@ -61,6 +61,7 @@ public class HomeFragment extends Fragment implements
 		public void bindView(View view, Context context, Cursor cursor) {
 			TextView txtAccountName = (TextView)view.findViewById(R.id.textVievItemAccountName);
 			TextView txtAccountTotal = (TextView)view.findViewById(R.id.textVievItemAccountTotal);
+			TextView txtAccountReconciled = (TextView)view.findViewById(R.id.textVievItemAccountTotalReconciled);
 			// set account name
 			txtAccountName.setText(cursor.getString(cursor.getColumnIndex(accountBills.ACCOUNTNAME)));
 			// import formatted
@@ -69,6 +70,11 @@ public class HomeFragment extends Fragment implements
 					cursor.getFloat(cursor.getColumnIndex(accountBills.TOTAL)));
 			// set amount value
 			txtAccountTotal.setText(value);
+			// reconciled
+			value = application.getCurrencyFormatted(cursor
+					.getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
+					cursor.getFloat(cursor.getColumnIndex(accountBills.RECONCILED)));
+			txtAccountReconciled.setText(value);
 		}
 
 		@Override

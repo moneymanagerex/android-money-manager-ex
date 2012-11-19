@@ -30,7 +30,7 @@
     </style>
 
     <style name="Money.TextView.Medium" parent="Money.TextView">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/money_text_view_medium</item>
     </style>
 
     <style name="Money.Button" parent="android:Widget.Button">

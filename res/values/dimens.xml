@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="money_text_view_micro">12sp</dimen>
+    <dimen name="money_text_view_small">14sp</dimen>
+    <dimen name="money_text_view_normal">16sp</dimen>
+    <dimen name="money_text_view_medium">18sp</dimen>
+	<dimen name="money_text_view_large">22sp</dimen>
+</resources>

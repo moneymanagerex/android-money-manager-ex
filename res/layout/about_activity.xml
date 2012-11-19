@@ -28,8 +28,8 @@
 
         <ImageView
             android:id="@+id/imgLogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:contentDescription="@string/logo"
@@ -42,7 +42,15 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:text="@string/version" />
-
+        
+        <TextView
+            android:id="@+id/textViewBuild"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:text="@string/build" />
+        
         <TextView
             android:id="@+id/textViewCopyright"
             android:layout_width="wrap_content"
