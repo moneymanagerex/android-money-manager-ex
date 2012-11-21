@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -54,7 +54,8 @@
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:text="@string/summary"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textStyle="bold|italic" />
+    <!-- android:textAppearance="?android:attr/textAppearanceMedium" -->
 
     <View
         android:layout_width="match_parent"
@@ -89,5 +90,30 @@
             android:layout_gravity="center"
             android:visibility="visible" />
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRepeatingTransaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/imageViewClock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@android:drawable/stat_sys_warning" />
+
+        <TextView
+            android:id="@+id/textViewOverdue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical" />
+    </LinearLayout>
 
 </LinearLayout>

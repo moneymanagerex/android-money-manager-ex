@@ -14,23 +14,23 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
-       <item name="abBackground">@drawable/drawable_ab_background</item>
+        <item name="abBackground">@drawable/drawable_ab_background</item>
+       
     </style>
-
-    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light">
-    </style>
+    <!--  <item name="android:textSize">@dimen/money_text_view_size</item> -->
+    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light"></style>
 
     <style name="Money.TextView" parent="@android:style/Widget.TextView">
-       <!-- <item name="android:textColor">@color/textview_textcolor</item>  -->
+        <!-- <item name="android:textColor">@color/textview_textcolor</item> -->
     </style>
 
     <style name="Money.TextView.Medium" parent="Money.TextView">
-        <item name="android:textSize">@dimen/money_text_view_medium</item>
+        <item name="android:textSize">@dimen/money_text_view_size_medium</item>
     </style>
 
     <style name="Money.Button" parent="android:Widget.Button">

@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.RepeatingTransactionListActivity;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
 
 public class MoneyManagerNotifications {
@@ -29,44 +30,51 @@ public class MoneyManagerNotifications {
 	public void notifyRepeatingTransaction() {
 		// select data
 		QueryBillDeposits billDeposits = new QueryBillDeposits(context);
-		Cursor cursor = context.getContentResolver().query(billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
-		if (cursor != null && cursor.getCount() > 0) {
-			cursor.close();
-			
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);			
-			// create pendig intent
-			Intent intent = new Intent(context, RepeatingTransactionListActivity.class);			
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);			
-			// create notification
-			Notification notification = null;
-			try {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					notification = new NotificationCompat.Builder(context)
-								   .setAutoCancel(true)
-								   .setContentIntent(pendingIntent)
-								   .setContentTitle(context.getString(R.string.application_name))
-								   .setContentText(context.getString(R.string.notification_repeating_transaction_expired))
-								   .setSubText(context.getString(R.string.notification_click_to_check_repeating_transaction))
-								   .setSmallIcon(SMALLICON)
-								   .build();
-								   
-				} else {
-					notification = new Notification();
-					notification.setLatestEventInfo(context, context.getString(R.string.application_name), context.getString(R.string.notification_repeating_transaction_expired), pendingIntent);
-					notification.icon = SMALLICON;
+		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(context);
+		if (databaseHelper != null) {
+			Cursor cursor = databaseHelper.getReadableDatabase().rawQuery(billDeposits.getSource() + " AND " + QueryBillDeposits.DAYSLEFT + "<=0", null);
+			if (cursor != null) {
+				if (cursor.getCount() > 0) {
+					NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);			
+					// create pendig intent
+					Intent intent = new Intent(context, RepeatingTransactionListActivity.class);			
+					PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);			
+					// create notification
+					Notification notification = null;
+					try {
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+							notification = new NotificationCompat.Builder(context)
+										   .setAutoCancel(true)
+										   .setContentIntent(pendingIntent)
+										   .setContentTitle(context.getString(R.string.application_name))
+										   .setContentText(context.getString(R.string.notification_repeating_transaction_expired))
+										   .setSubText(context.getString(R.string.notification_click_to_check_repeating_transaction))
+										   .setSmallIcon(SMALLICON)
+										   .build();
+										   
+						} else {
+							notification = new Notification();
+							notification.setLatestEventInfo(context, context.getString(R.string.application_name), context.getString(R.string.notification_repeating_transaction_expired), pendingIntent);
+							notification.icon = SMALLICON;
+						}
+						// notify 
+						if (notification != null) {
+							notification.tickerText = context.getString(R.string.notification_repeating_transaction_expired);
+							notification.vibrate = new long[] {0,100,200,300};
+							notification.defaults |= Notification.DEFAULT_VIBRATE;
+							notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+							//notification.icon = android.R.drawable.stat_sys_warning;
+							notificationManager.notify(0, notification);
+						}
+					} catch (Exception e) {
+						Log.e(LOGCAT, e.getMessage());
+					}
 				}
-				// notify 
-				if (notification != null) {
-					notification.tickerText = context.getString(R.string.notification_repeating_transaction_expired);
-					notification.vibrate = new long[] {0,100,200,300};
-					notification.defaults |= Notification.DEFAULT_VIBRATE;
-					notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-					//notification.icon = android.R.drawable.stat_sys_warning;
-					notificationManager.notify(0, notification);
-				}
-			} catch (Exception e) {
-				Log.e(LOGCAT, e.getMessage());
+				// close cursor
+				cursor.close();
 			}
+			// close database helper
+			databaseHelper.close();
 		}
 	}
 }

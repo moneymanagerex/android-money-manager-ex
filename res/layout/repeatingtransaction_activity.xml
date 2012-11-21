@@ -71,8 +71,8 @@
                 <Button
                     android:id="@+id/buttonNextOccurrence"
                     style="@style/Money.Button"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/money_button_height"
+                    android:layout_height="@dimen/money_button_height"
                     android:layout_gravity="center_vertical"
                     android:text="..." />
             </LinearLayout>
@@ -181,7 +181,7 @@
                     android:id="@+id/buttonSelectPayee"
                     style="@style/Money.Button"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="@dimen/money_button_height"
                     android:text="@string/select_payee" />
             </LinearLayout>
 
@@ -202,7 +202,7 @@
                     android:id="@+id/buttonSelectToAccount"
                     style="@style/Money.Button"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="@dimen/money_button_height"
                     android:text="@string/select_to_account" />
             </LinearLayout>
 
@@ -216,7 +216,7 @@
                 android:id="@+id/buttonSelectCategory"
                 style="@style/Money.Button"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="@dimen/money_button_height"
                 android:text="@string/select_category" />
 
             <LinearLayout
@@ -288,8 +288,8 @@
                 <Button
                     android:id="@+id/buttonTransNumber"
                     style="@style/Money.Button"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/money_button_height"
+                    android:layout_height="@dimen/money_button_height"
                     android:layout_gravity="center_vertical"
                     android:text="..." />
             </LinearLayout>
@@ -323,7 +323,7 @@
             android:id="@+id/buttonCancel"
             style="@style/Money.Button"
             android:layout_width="0dip"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/money_button_height"
             android:layout_weight="1"
             android:text="@android:string/cancel" />
 
@@ -331,7 +331,7 @@
             android:id="@+id/buttonOk"
             style="@style/Money.Button"
             android:layout_width="0dip"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/money_button_height"
             android:layout_weight="1"
             android:text="@android:string/ok" />
     </LinearLayout>

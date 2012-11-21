@@ -39,6 +39,7 @@ import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.QueryAccountBills;
+import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableInfoTable;
 /**
  * 
@@ -86,15 +87,16 @@ public class HomeFragment extends Fragment implements
 	// ID Loader Manager
 	private static final int ID_LOADER_USER_NAME = 1;
 	private static final int ID_LOADER_ACCOUNT_BILLS = 2;
+	private static final int ID_LOADER_BILL_DEPOSITS = 3;
 	// application
 	private MoneyManagerApplication application;
 	// dataset table/view/query manage into class
 	private TableInfoTable infoTable = new TableInfoTable(); 
 	private QueryAccountBills accountBills;
 	// view show in layout
-	private TextView txtUserName;
-	private TextView txtTotalAccounts;
+	private TextView txtUserName, txtTotalAccounts, txtOverdue;
 	private ListView lstAccountBills;
+	private LinearLayout linearRepeating;
 	
 	private ProgressBar prgAccountBills;
 	
@@ -125,6 +127,9 @@ public class HomeFragment extends Fragment implements
 			}
 			return new CursorLoader(getActivity(), accountBills.getUri(),
 					accountBills.getAllColumns(), where, null, "upper(" + accountBills.ACCOUNTNAME + ")");
+		case ID_LOADER_BILL_DEPOSITS:
+			QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
+			return new CursorLoader(getActivity(), billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
 		default:
 			return null;
 		}
@@ -137,6 +142,8 @@ public class HomeFragment extends Fragment implements
 		// inflate layout
 		View view = (LinearLayout)inflater.inflate(R.layout.fragment_main, container, false);
 		// reference view into layout
+		linearRepeating = (LinearLayout)view.findViewById(R.id.linearLayoutRepeatingTransaction);
+		txtOverdue = (TextView)view.findViewById(R.id.textViewOverdue);
 		txtUserName = (TextView)view.findViewById(R.id.textViewUserName);
 		txtTotalAccounts = (TextView)view.findViewById(R.id.textViewTotalAccounts);
 		lstAccountBills = (ListView)view.findViewById(R.id.listViewAccountBills);
@@ -211,6 +218,16 @@ public class HomeFragment extends Fragment implements
 				lstAccountBills.setAdapter(null);
 			}
 			setListViewAccountBillsVisible(true);
+			break;
+		case ID_LOADER_BILL_DEPOSITS:
+			if (data != null) {
+				if (data.getCount() > 0) {
+					linearRepeating.setVisibility(View.VISIBLE);
+					txtOverdue.setText(getString(R.string.num_repeating_transaction_expired).replace("num", Integer.toString(data.getCount())));
+				} else {
+					linearRepeating.setVisibility(View.GONE);
+				}
+			}
 		}
 	}
 
@@ -236,5 +253,6 @@ public class HomeFragment extends Fragment implements
 	public void startLoader() {	
 		getLoaderManager().restartLoader(ID_LOADER_USER_NAME, null, this);
 		getLoaderManager().restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
+		getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);
 	}
 }

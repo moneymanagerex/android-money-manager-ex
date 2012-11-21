@@ -199,11 +199,13 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	 */
 	public TableAccountList getTableAccountList(int id) {
 		String selection = TableAccountList.ACCOUNTID + "=?";
-		Cursor cursor = mContext.getContentResolver().query(new TableAccountList().getUri(), null, selection, new String[] {Integer.toString(id)}, null);
+		//Cursor cursor = mContext.getContentResolver().query(new TableAccountList().getUri(), null, selection, new String[] {Integer.toString(id)}, null);
+		Cursor cursor = this.getReadableDatabase().query(new TableAccountList().getSource(), null, selection, new String[] {Integer.toString(id)}, null, null, null);
 		// check if cursor is valid
 		if (cursor != null && cursor.moveToFirst()) {
 			TableAccountList account = new TableAccountList();
 			account.setValueFromCursor(cursor);
+			cursor.close();
 			return account;
 		}
 		// find is false then return null
@@ -218,7 +220,8 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		// create a return list
 		List<TableCategory> listCategories = new ArrayList<TableCategory>();
 		// data cursor
-		Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(), null, null, null, TableCategory.CATEGNAME);
+		//Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(), null, null, null, TableCategory.CATEGNAME);
+		Cursor cursor = this.getReadableDatabase().query(new TableCategory().getSource(), null, null, null, null, null, TableCategory.CATEGNAME);
 		// populate list from data cursor
 		if ((cursor != null) && (cursor.moveToFirst())) {
 			while (!(cursor.isAfterLast())) {

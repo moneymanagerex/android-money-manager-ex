@@ -17,10 +17,6 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <resources>
-
-    <dimen name="money_text_view_size">16sp</dimen>
-    <dimen name="money_text_view_size_micro">12sp</dimen>
-    <dimen name="money_text_view_size_medium">18sp</dimen>
-    <dimen name="money_button_height">36dp</dimen>
-
+    <dimen name="money_text_view_size">18sp</dimen>
+	<dimen name="money_button_height">42dp</dimen>
 </resources>

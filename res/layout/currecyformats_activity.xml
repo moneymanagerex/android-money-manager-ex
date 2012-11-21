@@ -240,7 +240,7 @@
             android:id="@+id/buttonCancel"
             style="@style/Money.Button"
             android:layout_width="0dip"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/money_button_height"
             android:layout_weight="1"
             android:text="@android:string/cancel" />
 
@@ -248,7 +248,7 @@
             android:id="@+id/buttonOk"
             style="@style/Money.Button"
             android:layout_width="0dip"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/money_button_height"
             android:layout_weight="1"
             android:text="@android:string/ok" />
     </LinearLayout>
