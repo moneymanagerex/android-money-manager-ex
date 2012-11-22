@@ -44,9 +44,13 @@ public class AboutActivity extends BaseFragmentActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		// take a object into layout
 		String text;
+		TextView txtFeedback = (TextView)findViewById(R.id.textViewLinkFeedback);
+		text = "<a href=\"mailto:android.money.manager.ex@gmail.com\">" + (String) txtFeedback.getText() + "</a>";
+		txtFeedback.setText(Html.fromHtml(text));
+		txtFeedback.setMovementMethod(LinkMovementMethod.getInstance());
 		// report set link
 		TextView txtReport = (TextView)findViewById(R.id.textViewLinkProblem);
-		text = "<a href=\"mailto:android.money.manager.ex@gmail.com\">" + (String) txtReport.getText() + "</a>";
+		text = "<a href=\"http://code.google.com/p/android-money-manager-ex/issues/entry\">" + (String) txtReport.getText() + "</a>";
 		txtReport.setText(Html.fromHtml(text));
 		txtReport.setMovementMethod(LinkMovementMethod.getInstance());
 		// GPLv2 license

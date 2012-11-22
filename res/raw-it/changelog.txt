@@ -1,6 +1,10 @@
-<b>Version x.x.x</b>
+<b>Version 0.8.0</b>
 - Aggiunte le Operazioni Ricorrenti
 - Aggiunta Notifica per le Operazioni Ricorrenti Scadute
+- Ottimizzata la dimensione dei caratteri in funzione dello schermo
+- Nella home di riepilogo, aggiunto in piccolo il saldo riconciliato
+- Sistemato problema di autenticazione con Dropbox su Android 4.2
+- Risoluzioni bug minori
 
 <b>Version 0.7.0</b>
 - Aggiunto Widget Saldo
@@ -28,18 +32,3 @@
 - Nuova impostazione per la visualizzazione della home. Sono state aggiunte due tipologie (Classica: semplice e veloce, Avanzata: con visualizzazione a pagine richiede più risorse). <i>Di default per dispositivi pre-honeycomb (versione android 3.0) settata a Classic, per dispositivi post-honeycomb settata ad avanzata.</i><u> Se in modalità avanzata l'applicazione si blocca e si deve forzare la chiusura provare a settare la modalità classica.</u>
 - Aggiunta visualizzazione del changelog
 - Aggiunta lingua: Spagnolo
-
-<b>Versione 0.5.9</b>
-- Nuova impostazione personalizzata aggiunta per la visualizzazione delle operazioni nella home. <i>Default è "Display, affari negli ultimi 7 giorni"</i>. L'impostazione può essere modificata nella pagina delle impostazioni.
-- Cliccando su un conto nella vista elenco conto vi porterà direttamente alla visualizzazione delle transazioni per il conto specifico.
-
-<b>Versione 0.5.8</b>
-- bugfix: valuta senza separatore delle migliaia
-- bugfix minori
-
-<b>Versione 0.5.7</b>
-- <b>pubblicazione su Google Play</b>
-- gestione: conti, beneficiari, categorie e sotto-categorie
-- inserimento, modifica, cancellazione transazioni
-- utilizzo database su scheda di memoria
-- utilizzo dropbox per sincronizzare il database tra il dispositivo Android e il PC (Linux, Mac e Windows)

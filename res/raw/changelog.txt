@@ -1,6 +1,10 @@
-<b>Version x.x.x</b>
+<b>Version 0.8.0</b>
 - Added Repeating Transaction
 - Added Notification for Repeated Transactions Expired
+- Optimize the font size for the device with large screen
+- On the home, added in small font the balance reconciled
+- Fixed authentication problem with Dropbox on Android 4.2
+- Minor bugfix
 
 <b>Version 0.7.0</b>
 - Added Widget Summary
@@ -28,17 +32,3 @@
 - New settings for the visualization of the home. Were added to two visualization modes (Classic: quick and easy; Advanced: with display pages requires more resources). <i>Default for pre-honeycomb devices (Android version 3.0) set to Classic, for post-honeycomb devices set to Advance.</i><u> If in advanced mode the application crashes and force close application, try setting the classic mode.</u>
 - Added display of the changelog
 - Added language: Spanish
-
-<b>Version 0.5.9</b>
-- New setting added to customize the transactions diplayed in the home. <i>Default is "Display transations in the last 7 days"</i>. It may be modified in the settings page.
-- From this version clicking on an account in the account list view will take you directly to the transaction view for that particular account.
-
-<b>Version 0.5.8</b>
-- minor bugfix
-
-<b>Version 0.5.7</b>
-- <b>release on Google Play</b>
-- management: accounts, categories, payees and sub-categories
-- transaction: insert, edit and delete
-- use database to memory card
-- use dropbox to synchronize the database between the Android device and the PC (Linux, Mac and Windows)

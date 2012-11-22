@@ -43,7 +43,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:text="AccountTotal"
             android:textStyle="bold" 
             android:layout_gravity="right"/>
 
@@ -53,7 +52,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:text="AccountTotal"
             android:textSize="@dimen/money_text_view_size_micro"
             android:layout_gravity="right"/>
     </LinearLayout>

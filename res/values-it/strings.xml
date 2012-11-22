@@ -271,4 +271,7 @@
 	<!-- 20121115 -->
 	<string name="num_repeating_transaction_expired">Ci sono num operazioni ricorrenti scadute</string>
 	<!-- 20121121 -->
+	<string name="send_feedback">Invia commenti</string>
+	<string name="send_us_your_feedback">Inviaci i tuoi commenti</string>
+	<!-- 20121122 -->
 </resources>
