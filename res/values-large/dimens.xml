@@ -18,5 +18,6 @@
 -->
 <resources>
     <dimen name="money_text_view_size">18sp</dimen>
+    <dimen name="money_text_view_size_header">22sp</dimen>
 	<dimen name="money_button_height">42dp</dimen>
 </resources>
