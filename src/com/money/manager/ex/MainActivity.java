@@ -29,7 +29,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -44,6 +43,7 @@ import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.widget.Toast;
 
+import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxActivity;
@@ -51,6 +51,7 @@ import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.notifications.MoneyManagerNotifications;
+import com.money.manager.ex.settings.PreferencesActivity;
 import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TitleProvider;
 /**
@@ -129,10 +130,17 @@ public class MainActivity extends BaseFragmentActivity {
     }
 	private static final String LOGCAT = MainActivity.class.getSimpleName();
 	private static final String KEY_CONTENT = "MainActivity:CurrentPos";
+	private static final String KEY_IS_AUTHENTICATED = "MainActivity:isAuthenticated";
+	private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
+
 	// definizione dei requestcode da passare alle activity
 	private static final int REQUEST_PICKFILE_CODE = 1;
+	private static final int REQUEST_PASSCODE = 2;
 	// flag che indica se devo effettuare il refresh grafico
 	private static boolean mRefreshUserInterface = false;
+	// state if restart activity
+    private static boolean mRestartActivity = false;
+    
     /**
 	 * @return the mRefreshUserInterface
 	 */
@@ -158,22 +166,22 @@ public class MainActivity extends BaseFragmentActivity {
 		MainActivity.mRestartActivity = mRestart;
 	}
 	
+	private boolean isAuthenticated = false;
+	private boolean isInAuthentication = false;
+	
 	// list of account visible
 	List<TableAccountList> mAccountList;
-	
 	// object int layout
 	private ViewPager  mViewPager;
 	private TabsAdapter mTabsAdapter;
-	private TitlePageIndicator mTitlePageIndicator;
 
-	// current position
-    private int mCurrentPosition = 0;
+	private TitlePageIndicator mTitlePageIndicator;
 	
-    // Advance mode
-    private boolean mAdvanceShow = false;
+    // current position
+    private int mCurrentPosition = 0;
     
-	// state if restart activity
-    private static boolean mRestartActivity = false;
+	// Advance mode
+    private boolean mAdvanceShow = false;
     
     // notification
     private static MoneyManagerNotifications notifications;
@@ -233,14 +241,33 @@ public class MainActivity extends BaseFragmentActivity {
 				setRestartActivity(true);
 				restartActivity();
 			}
+			break;
+		case REQUEST_PASSCODE:
+			isAuthenticated = false; isInAuthentication = false;
+			if (resultCode == RESULT_OK && data != null) {
+				Passcode passcode = new Passcode(this);
+				String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
+				String passDb = passcode.getPasscode();
+				if (passIntent != null && passDb != null) {
+					isAuthenticated = passIntent.equals(passDb);
+					if (!isAuthenticated) {
+						Toast.makeText(this, R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+					}
+				}
+			}
+			// close if not authenticated
+			if (!isAuthenticated) {
+				this.finish();
+			}
 		}
 	}
-
+	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		setRestartActivity(true);
 	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -259,6 +286,13 @@ public class MainActivity extends BaseFragmentActivity {
 			} catch (Exception e) {
 				Log.e(LOGCAT, e.getMessage());
 			}
+		}
+		// check authentication
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
+				isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
+			if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
+				isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
 		}
 		MoneyManagerApplication application = (MoneyManagerApplication)getApplication();
 		// load base currency and compose hash currencies
@@ -282,6 +316,8 @@ public class MainActivity extends BaseFragmentActivity {
 			notifications = new MoneyManagerNotifications(this);
 			notifications.notifyRepeatingTransaction();
 		}
+		//TODO Test
+		//startActivity(new Intent(this, PasscodeActivity.class));
 	}
 	/**
 	 * this method call for classic method (show fragments)
@@ -304,7 +340,6 @@ public class MainActivity extends BaseFragmentActivity {
 		inflater.inflate(R.menu.menu_main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
 	/**
 	 * this method call for advance method (show viewpagerindicator)
 	 * @param savedInstanceState
@@ -344,6 +379,7 @@ public class MainActivity extends BaseFragmentActivity {
 		*/
 		return super.onKeyUp(keyCode, event);
 	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
@@ -389,11 +425,12 @@ public class MainActivity extends BaseFragmentActivity {
 			break;
 		case R.id.menu_settings:
 			// open pref activity
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				startActivity(new Intent(this, MoneyManagerPrefsActivity.class));
 			} else {
 				startActivity(new Intent(this, MoneyManagerPrefsActivity_v10.class));
-			}
+			}*/
+			startActivity(new Intent(this, PreferencesActivity.class));
 			break;
 		case R.id.menu_about:
 			// open about activity
@@ -435,6 +472,26 @@ public class MainActivity extends BaseFragmentActivity {
 			outState.putInt(KEY_CONTENT, mViewPager.getCurrentItem());
 		} else {
 			outState.putInt(KEY_CONTENT, 0);
+		}
+		outState.putBoolean(KEY_IS_AUTHENTICATED, isAuthenticated);
+		outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
+	}
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// check if has passcode and authenticate
+		if (!isAuthenticated) {
+			Passcode passcode = new Passcode(this);
+			if (passcode.hasPasscode() && !isInAuthentication) {
+				Intent intent = new Intent(this, PasscodeActivity.class);
+				// set action and data
+				intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
+				intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
+				// start activity
+				startActivityForResult(intent, REQUEST_PASSCODE);
+				// set in authentication
+				isInAuthentication = true;
+			}
 		}
 	}
 	/**

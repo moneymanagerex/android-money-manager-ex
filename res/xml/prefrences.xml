@@ -14,11 +14,11 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/preferences_general" >
+    <PreferenceScreen android:title="@string/preferences_general" >
         <EditTextPreference
             android:key="username"
             android:summary="@string/username"
@@ -27,8 +27,8 @@
         <ListPreference
             android:key="basecurrency"
             android:title="@string/base_currency" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/preferences_dispaly" >
+    </PreferenceScreen>
+    <PreferenceScreen android:title="@string/preferences_dispaly" >
         <CheckBoxPreference
             android:key="accountsopenvisible"
             android:summary="@string/if_not_selected_willShowAllAccounts"
@@ -37,10 +37,11 @@
             android:key="accountsfavoritevisible"
             android:summary="@string/if_not_selected_willShowAllAccounts"
             android:title="@string/view_accounts_favorites" />
+
         <ListPreference
+            android:defaultValue="@string/last7days"
             android:entries="@array/show_transaction_values"
             android:entryValues="@array/show_transaction_values"
-            android:defaultValue="@string/last7days"
             android:key="showtransaction"
             android:title="@string/show_transaction" />
         <ListPreference
@@ -48,8 +49,25 @@
             android:entryValues="@array/type_home_values"
             android:key="typehome"
             android:title="@string/type_home" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/preferences_dropbox" >
+        <ListPreference
+            android:defaultValue="@string/theme_holo"
+            android:entries="@array/theme_application_items"
+            android:entryValues="@array/theme_application_items"
+            android:key="themeapplication"
+            android:title="@string/theme_application" />
+    </PreferenceScreen>
+    <PreferenceScreen android:title="@string/preferences_security" >
+        <PreferenceScreen
+            android:key="activepasscode"
+            android:title="@string/preferences_active_passcode" />
+        <PreferenceScreen
+            android:key="editpasscode"
+            android:title="@string/preferences_edit_passcode" />
+                <PreferenceScreen
+            android:key="disablepasscode"
+            android:title="@string/preferences_disable_passcode" />
+    </PreferenceScreen>
+    <PreferenceScreen android:title="@string/preferences_dropbox" >
         <Preference
             android:key="dropboxlinkedfile"
             android:title="@string/dropbox_linkedFile" />
@@ -59,19 +77,11 @@
             android:entryValues="@array/dropbox_sync_item"
             android:key="dropboxmodesync"
             android:title="@string/dropbox_method" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/preferences_database_path" >
+    </PreferenceScreen>
+    <PreferenceScreen android:title="@string/preferences_info_application" >
         <Preference
             android:key="databasepath"
             android:title="@string/path" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/theme_application" >
-        <ListPreference
-            android:entries="@array/theme_application_items"
-            android:entryValues="@array/theme_application_items"
-            android:defaultValue="@string/theme_holo"
-            android:key="themeapplication"
-            android:title="@string/theme_application" />
-    </PreferenceCategory>
+    </PreferenceScreen>
 
 </PreferenceScreen>

@@ -14,7 +14,8 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.-->
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
@@ -27,7 +28,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".MoneyManagerApplication"
@@ -205,6 +206,15 @@
             android:label="@string/new_edit_repeating_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
+        </activity>
+        <activity
+            android:name=".settings.PreferencesActivity"
+            android:label="@string/settings" >
+        </activity>
+        <activity android:name=".PasscodeActivity" >
+            <intent-filter>
+                <action android:name="com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD" />
+            </intent-filter>
         </activity>
     </application>
 

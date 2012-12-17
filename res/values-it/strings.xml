@@ -274,4 +274,16 @@
 	<string name="send_feedback">Invia commenti</string>
 	<string name="send_us_your_feedback">Inviaci i tuoi commenti</string>
 	<!-- 20121122 -->
+	<string name="preferences_info_application">Info</string>
+	<string name="preferences_security">Sicurezza</string>
+	<string name="preferences_active_passcode">Attiva Passcode</string>
+	<string name="enter_your_passcode">Inserisci il tuo passcode</string>
+	<string name="reinsert_your_passcode">Reinserisci il tuo nuovo passcode</string>
+	<string name="passocde_no_macth">Passcode non coincidente</string>
+	<string name="preferences_edit_passcode">Modifica Passcode</string>
+	<string name="preferences_disable_passcode">Disattiva Passcode</string>
+	<string name="enter_your_previous_passcode">Inserisci il tuo precedente passcode</string>
+	<string name="passcode_update">passcode aggiornato</string>
+	<string name="passcode_not_update">passcode non aggiornato</string>
+	<!-- 20121217 -->
 </resources>
