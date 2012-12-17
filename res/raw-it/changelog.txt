@@ -1,3 +1,9 @@
+<b>Version 0.9.0</b>
+- In attesa della versione con database criptato (emb), aggiunta la possibilità di inserire un pin in apertura dell'applicazione
+- Riorganizzato le impostazioni dell'applicazione
+- Aggiunta lingua: Russo (grazie Evgeniy)
+- Risoluzione bug minori
+
 <b>Version 0.8.0</b>
 - Aggiunte le Operazioni Ricorrenti
 - Aggiunta Notifica per le Operazioni Ricorrenti Scadute
@@ -27,8 +33,3 @@
 <b>Version 0.6.1</b>
 - Aggiunta la possibilità di aprire un database con estensione mmb da un file  manager (come Astro File Manager, OI File Manager, ES File Manager, etc...)
 - risoluzione bug minori
-
-<b>Versione 0.6.0</b>
-- Nuova impostazione per la visualizzazione della home. Sono state aggiunte due tipologie (Classica: semplice e veloce, Avanzata: con visualizzazione a pagine richiede più risorse). <i>Di default per dispositivi pre-honeycomb (versione android 3.0) settata a Classic, per dispositivi post-honeycomb settata ad avanzata.</i><u> Se in modalità avanzata l'applicazione si blocca e si deve forzare la chiusura provare a settare la modalità classica.</u>
-- Aggiunta visualizzazione del changelog
-- Aggiunta lingua: Spagnolo

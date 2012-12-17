@@ -1,3 +1,9 @@
+<b> Version 0.9.0 </ b>
+- Waiting for version with encrypted database (emb), added option to insert a pin in the opening the application
+- Reorganized the settings
+- Added language: Russian (thanks to Evgeniy)
+- Minor bugfix
+
 <b>Version 0.8.0</b>
 - Added Repeating Transaction
 - Added Notification for Repeated Transactions Expired
@@ -27,8 +33,3 @@
 <b>Version 0.6.1</b>
 - Added possibility to open a database with mmb extension from a file manager (like Astro File Manager, OI File Manager, ES File Manager, etc ...)
 - Minor bugfix
-
-<b>Version 0.6.0</b>
-- New settings for the visualization of the home. Were added to two visualization modes (Classic: quick and easy; Advanced: with display pages requires more resources). <i>Default for pre-honeycomb devices (Android version 3.0) set to Classic, for post-honeycomb devices set to Advance.</i><u> If in advanced mode the application crashes and force close application, try setting the classic mode.</u>
-- Added display of the changelog
-- Added language: Spanish

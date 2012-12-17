@@ -393,15 +393,18 @@ public class MoneyManagerApplication extends Application {
 	 */
 	public String getUserDatePattern() {
 		TableInfoTable infoTable = new TableInfoTable();
-		Cursor cursor = getApplicationContext().getContentResolver().query(infoTable.getUri(), null, TableInfoTable.INFONAME + "=?", new String[] {"DATEFORMAT"}, null);
+		MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(getApplicationContext());
+		Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[] {"DATEFORMAT"}, null, null, null);
 		String pattern = null;
 		if (cursor != null && cursor.moveToFirst()) {
 			pattern = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
 			//replace part of pattern
 			pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy");
-			//close cursor
-			cursor.close();
 		}
+		//close cursor and helper
+		cursor.close();
+		helper.close();
+		
 		return pattern;
 	}
 	/**
@@ -425,11 +428,16 @@ public class MoneyManagerApplication extends Application {
 	 */
 	public String getFromDatabaseUserName(Context context) {
 		TableInfoTable infoTable = new TableInfoTable();
-		Cursor data = context.getContentResolver().query(infoTable.getUri(), null, TableInfoTable.INFONAME + "=?", new String[] {"USERNAME"}, null);
+		MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(context);
+		Cursor data = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[] {"USERNAME"}, null, null, null);
+		String ret = "";
 		if (data != null && data.moveToFirst()) {
-			return data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
+			ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
 		}
-		return "";
+		data.close();
+		helper.close();
+		
+		return ret;
 	}
 	/**
 	 * this method convert a float value to numeric string
