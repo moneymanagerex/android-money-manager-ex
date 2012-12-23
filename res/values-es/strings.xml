@@ -85,7 +85,7 @@
     <string name="delete_account">Borrar la cuenta</string>
     <string name="account_name">Nombre de la cuenta</string>
     <string name="account_type">Tipo de cuenta</string>
-    <string name="account_number">Numero de cuenta</string>
+    <string name="account_number">Número de cuenta</string>
     <string name="account_held_at">Mantenida en</string>
     <string name="account_status">Estado de la cuenta</string>
     <string name="favourite_account">Cuenta favorita</string>
@@ -230,4 +230,59 @@
    	<string name="advance">Avance</string>
    	<string name="changelog">Changelog</string>
    	<!-- 20120925 -->
+    <string name="transaction_number">Número de transacción</string>
+    <!-- 20120927 -->
+    <string name="widget_summary">Resumen de Money Manager Ex</string>
+    <string name="widget_all_accounts">Todas las cuentas de Money Manager Ex</string>
+    <string name="widget_add_transaction">Agregar transacción en Money Manager Ex</string>
+    <!-- 20121023 -->
+    <string name="repeating_empty_transaction">Transacción Periódica Vacía</string>
+    <string name="repeating_transaction">Transacción Periódica</string>
+    <string name="none">Ningúno</string>
+    <string name="weekly">Semanal</string>
+    <string name="bi_weekly">Bisemanal</string>
+    <string name="monthly">Mensual</string>
+    <string name="bi_monthly">Bimensual</string>
+    <string name="quaterly">Trimestral</string>
+    <string name="half_year">Semestral</string>
+    <string name="yearly">Anual</string>
+    <string name="four_months">Cuatro Meses</string>
+    <string name="four_weeks">Cuatro Semanas</string>
+    <string name="daily">Diaria</string>
+    <string name="in_x_days">En (x) Días</string>
+    <string name="in_x_months">En (x) Meses</string>
+    <string name="every_x_days">Cada (x) Días</string>
+    <string name="every_x_months">Cada (x) Meses</string>
+	<string name="inactive">Inactiva</string>
+	<string name="days_overdue">días atrasados!</string>
+	<string name="days_remaining">días restantes</string>
+	<string name="new_edit_repeating_transaction">Nueva/Modificar Transacción Periódica</string>
+	<string name="next_occurrence">Siguiente Ocurrencia</string>
+	<string name="repeats">Frecuencia</string>
+	<string name="times_repeated">Ocurrencias Repetidas</string>
+	<string name="error_next_occurrence_not_populate">Atención: la fecha del próximo vencimiento no está seleccionada</string>
+	<string name="activates">Se Activa</string>
+	<string name="period_days">Frecuencia: días</string>
+	<string name="enter_next_occurrence">Efectuar Siguiente Ocurrencia</string>
+	<string name="skip_next_occurrence">Omitir Siguiente Ocurrencia</string>
+	<string name="notification_repeating_transaction_expired">Hay Transacciónes Periódicas vencidas</string>
+	<string name="notification_click_to_check_repeating_transaction">Haga clic para verificar la transacción atrasada</string>
+	<!-- 20121115 -->
+	<string name="num_repeating_transaction_expired">Hay num Transacciónes Periódicas vencidas</string>
+	<!-- 20121121 -->
+	<string name="send_feedback">Enviar comentarios</string>
+	<string name="send_us_your_feedback">Envíenos sus comentarios</string>
+	<!-- 20121122 -->
+	<string name="preferences_info_application">Info</string>
+	<string name="preferences_security">Securidad</string>
+	<string name="preferences_active_passcode">Activar Passcode</string>
+	<string name="enter_your_passcode">Escribe tu passcode</string>
+	<string name="reinsert_your_passcode">Vuelve a escribir tu nuevo passcode</string>
+	<string name="passocde_no_macth">Los Passcode no son iguales</string>
+	<string name="preferences_edit_passcode">Modificar Passcode</string>
+	<string name="preferences_disable_passcode">Descactivar Passcode</string>
+	<string name="enter_your_previous_passcode">Escribe tu passcode anterior</string>
+	<string name="passcode_update">passcode se ha actualizado</string>
+	<string name="passcode_not_update">passcode no se ha actualizado</string>
+	<!-- 20121217 -->
 </resources>
