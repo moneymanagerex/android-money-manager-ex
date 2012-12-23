@@ -19,7 +19,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="105"
+    android:versionCode="107"
     android:versionName="0.9.0" >
 
     <uses-sdk
