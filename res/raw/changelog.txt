@@ -1,4 +1,7 @@
-<b> Version 0.9.0 </ b>
+<b> Version 0.9.2 </b>
+- Updated translation of languages: Russian and Spanish 
+
+<b> Version 0.9.0 </b>
 - Waiting for version with encrypted database (emb), added option to insert a pin in the opening the application
 - Reorganized the settings
 - Added language: Russian (thanks to Evgeniy)

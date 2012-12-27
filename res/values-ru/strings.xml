@@ -171,9 +171,9 @@
     <string name="all">Все</string>
     <string name="confirmDelete">Подтвердите удаление?</string>
     <string name="date">Дата</string>
-    <string name="delete">Удаление</string>
+    <string name="delete">Удалить</string>
     <string name="download">Скачать</string>
-    <string name="edit">Редактирование</string>
+    <string name="edit">Редактировать</string>
     <string name="favorites">Избранные</string>
     <string name="home">Главная</string>
     <string name="link">Связь</string>
@@ -276,4 +276,16 @@
 	<string name="send_feedback">Отправить отзыв</string>
 	<string name="send_us_your_feedback">Отправьте нам ваш отзыв</string>
 	<!-- 20121122 -->
+	<string name="preferences_info_application">Информмация</string>
+	<string name="preferences_security">Безопасность</string>
+	<string name="preferences_active_passcode">Действующий пароль</string>
+	<string name="enter_your_passcode">Введите ваш пароль</string>
+	<string name="reinsert_your_passcode">Повторите ваш новый пароль</string>
+	<string name="passocde_no_macth">Неверный пароль</string>
+	<string name="preferences_edit_passcode">Изменить пароль</string>
+	<string name="preferences_disable_passcode">Отключить пароль</string>
+	<string name="enter_your_previous_passcode">Введите ваш старый пароль</string>
+	<string name="passcode_update">Пароль обновлен</string>
+	<string name="passcode_not_update">Пароль не обновлен</string>
+	<!-- 20121217 -->
 </resources>
