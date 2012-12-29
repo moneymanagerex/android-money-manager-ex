@@ -186,31 +186,30 @@ public class AccountFragment extends SherlockFragment implements
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
 		Cursor cursor = (Cursor)lstAllData.getAdapter().getItem(info.position);
 		// check if cursor is valid
-		if (cursor == null) {
-			return false;
-		}
-		switch (item.getItemId()) {
-		case R.id.menu_edit:
-			startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-			break;
-		case R.id.menu_delete:
-			showDialogDeleteCheckingAccount(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-			break;
-		case R.id.menu_reconciled:
-			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "R");
-			break;
-		case R.id.menu_none:
-			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "");
-			break;
-		case R.id.menu_duplicate:
-			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "D");
-			break;
-		case R.id.menu_follow_up:
-			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "F");
-			break;
-		case R.id.menu_void:
-			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "V");
-			break;
+		if (cursor != null) {
+			switch (item.getItemId()) {
+			case R.id.menu_edit:
+				startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+				break;
+			case R.id.menu_delete:
+				showDialogDeleteCheckingAccount(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+				break;
+			case R.id.menu_reconciled:
+				setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "R");
+				break;
+			case R.id.menu_none:
+				setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "");
+				break;
+			case R.id.menu_duplicate:
+				setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "D");
+				break;
+			case R.id.menu_follow_up:
+				setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "F");
+				break;
+			case R.id.menu_void:
+				setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "V");
+				break;
+			}
 		}
 		return true;
 	}

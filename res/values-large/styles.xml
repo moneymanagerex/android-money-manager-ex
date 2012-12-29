@@ -22,7 +22,7 @@
         <item name="android:textSize">@dimen/money_text_view_size</item>
     </style>
     
-    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light">
+    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="android:textSize">@dimen/money_text_view_size</item>
     </style>
 

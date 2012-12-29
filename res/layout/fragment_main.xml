@@ -82,7 +82,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:choiceMode="none"
-            android:divider="@drawable/divider_ice_cream_sandwich"
             android:dividerHeight="1dp"
             android:visibility="gone" />
 

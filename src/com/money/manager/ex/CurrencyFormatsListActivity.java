@@ -81,9 +81,6 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 			registerForContextMenu(getListView());
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 			
-			getListView().setDivider(getResources().getDrawable(R.drawable.divider_ice_cream_sandwich));
-			getListView().setDividerHeight(1);
-			
 			setListShown(false);
 			getLoaderManager().initLoader(ID_LOADER_CURRENCY, null, this);
 		}

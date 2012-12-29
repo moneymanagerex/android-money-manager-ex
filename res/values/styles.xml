@@ -19,8 +19,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock"></style>
-    <!-- <item name="android:textSize">@dimen/money_text_view_size</item> -->
-    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light"></style>
+    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light.DarkActionBar"></style>
 
     <style name="Money.TextView" parent="@android:style/Widget.TextView">
         <!-- <item name="android:textColor">@color/textview_textcolor</item> -->

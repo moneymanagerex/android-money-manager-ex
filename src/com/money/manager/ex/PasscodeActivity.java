@@ -17,7 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,13 +26,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class PasscodeActivity extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+
+public class PasscodeActivity extends SherlockActivity {
 	public static final String INTENT_REQUEST_PASSWORD = "com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD";
 	public static final String INTENT_MESSAGE_TEXT = "INTENT_MESSAGE_TEXT";
 	public static final String INTENT_RESULT_PASSCODE = "INTENT_RESULT_PASSCODE";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// apply theme application
+		((MoneyManagerApplication)getApplication()).setThemeApplication(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.passcode_activity);
 		// create a listener for button

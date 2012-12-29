@@ -25,8 +25,9 @@ import com.money.manager.ex.MoneyManagerApplication;
 public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		// apply theme application
 		((MoneyManagerApplication)getApplication()).setThemeApplication(this);
+		// call super event
+		super.onCreate(savedInstanceState);
 	}
 }

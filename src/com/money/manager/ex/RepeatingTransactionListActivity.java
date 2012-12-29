@@ -173,8 +173,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 			setHasOptionsMenu(true);
 			registerForContextMenu(getListView());
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			getListView().setDivider(getResources().getDrawable(R.drawable.divider_ice_cream_sandwich));
-			getListView().setDividerHeight(1);
+
 			setListShown(false);
 			// start loaderapplication.getSQLiteStringDate(date)
 			getLoaderManager().initLoader(ID_LOADER_REPEATING, null, this);

@@ -125,8 +125,6 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			registerForContextMenu(getListView());
 
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			getListView().setDivider(getResources().getDrawable(R.drawable.divider_ice_cream_sandwich));
-			getListView().setDividerHeight(1);
 			setListShown(false);
 
 			if (mLayout == R.layout.simple_list_item_multiple_choice_2) {
