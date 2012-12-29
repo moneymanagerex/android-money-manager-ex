@@ -37,9 +37,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
-import android.support.v4.view.Window;
 import android.util.Log;
 import android.view.Surface;
 import android.view.View;
@@ -48,6 +45,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.DropboxAPI.UploadRequest;
@@ -563,9 +563,10 @@ public class DropboxActivity extends BaseFragmentActivity {
         setLoggedIn(mApi.getSession().isLinked());
 
 	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_dropbox, menu);
+		getSherlock().getMenuInflater().inflate(R.menu.menu_dropbox, menu);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			menu.findItem(R.id.menu_link).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 			menu.findItem(R.id.menu_unlink).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);

@@ -31,7 +31,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.view.MenuItem;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +46,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -691,7 +691,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 	 * @return true if update data successful 
 	 */
 	private boolean updateData() {
-		//TODO updatedata
 		if (validateData() == false) {
 			return false;
 		}

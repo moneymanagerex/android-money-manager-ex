@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.money.manager.ex.R;

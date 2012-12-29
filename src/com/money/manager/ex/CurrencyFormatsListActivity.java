@@ -29,20 +29,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.money.manager.ex.R;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
@@ -91,7 +89,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 		}
 		
 		@Override
-		public boolean onContextItemSelected(MenuItem item) {
+		public boolean onContextItemSelected(android.view.MenuItem item) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 			// take cursor and move to position
 			Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
@@ -155,7 +153,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 		}
 		
 		@Override
-		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
 			// item add
             MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);

@@ -31,14 +31,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -49,6 +46,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
@@ -180,9 +179,9 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 			// start loaderapplication.getSQLiteStringDate(date)
 			getLoaderManager().initLoader(ID_LOADER_REPEATING, null, this);
 		}
-
+		
 		@Override
-		public boolean onContextItemSelected(MenuItem item) {
+		public boolean onContextItemSelected(android.view.MenuItem item) {
 			String nextOccurrence;
 			int repeats, bdId;
 			Date date;
@@ -289,9 +288,9 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 
 			return null;
 		}
-
+		
 		@Override
-		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		public void onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu, MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
 			// add menu item add
 			MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);

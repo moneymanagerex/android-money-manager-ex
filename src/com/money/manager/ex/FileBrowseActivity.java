@@ -29,8 +29,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -44,7 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.money.manager.ex.R;
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 /**
@@ -107,14 +105,15 @@ public class FileBrowseActivity extends BaseFragmentActivity {
 		}
 	}
 	
-	public boolean onCreateOptionsMenu(Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
 		menu.add(0, MENU_UPLEVEL, MENU_UPLEVEL,
 				getResources().getString(R.string.upLevel))
 				.setIcon(
 						getResources().getDrawable(
 								android.R.drawable.ic_menu_revert))
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	@Override
@@ -200,7 +199,7 @@ public class FileBrowseActivity extends BaseFragmentActivity {
 		}
 		
 		@Override
-		public boolean onContextItemSelected(MenuItem item) {
+		public boolean onContextItemSelected(android.view.MenuItem item) {
 			switch (item.getItemId()) {
 			case CONTEXT_MENU_SELECT:
 				Intent intentResult = new Intent();

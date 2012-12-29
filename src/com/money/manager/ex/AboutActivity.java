@@ -19,7 +19,6 @@ package com.money.manager.ex;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.support.v4.view.MenuItem;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -27,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 /**

@@ -33,15 +33,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -54,6 +51,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SQLTypeTransacion;
@@ -147,9 +145,9 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			// start loader
 			getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
 		}
-        
+		
 		@Override
-		public boolean onContextItemSelected(MenuItem item) {
+		public boolean onContextItemSelected(android.view.MenuItem item) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 			// instance of cursor and move to position
 			Cursor cursor = ((CategorySubCategoryAdapter)getListView().getAdapter()).getCursor();
@@ -221,7 +219,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 		}
 		
         @Override
-		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
 			// item add
             /*MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
@@ -256,7 +254,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 		}
 
 		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
+		public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 			switch (item.getItemId()) {
 			case android.R.id.home:
 				break;

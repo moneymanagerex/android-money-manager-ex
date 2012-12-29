@@ -26,19 +26,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -52,6 +48,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -65,7 +64,7 @@ import com.money.manager.ex.database.TableCheckingAccount;
  * @author a.lazzari
  *
  */
-public class AccountFragment extends Fragment implements
+public class AccountFragment extends SherlockFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 	private class AllDataAdapter extends CursorAdapter {
 		private LayoutInflater inflater;
@@ -182,7 +181,7 @@ public class AccountFragment extends Fragment implements
 	private Button btnNewOperation;
 	
 	@Override
-	public boolean onContextItemSelected(MenuItem item) {
+	public boolean onContextItemSelected(android.view.MenuItem item) {
 		// take a info of the selected menu, and cursor at position 
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
 		Cursor cursor = (Cursor)lstAllData.getAdapter().getItem(info.position);
@@ -213,8 +212,9 @@ public class AccountFragment extends Fragment implements
 			setStatusCheckingAccount(lstAllData.getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "V");
 			break;
 		}
-		return false;
+		return true;
 	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -274,8 +274,9 @@ public class AccountFragment extends Fragment implements
 		}
 		return null;
 	}
+	
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		// item add
         MenuItem itemadd = menu.add(MENU_ADD_TRANSACTION, MENU_ADD_TRANSACTION, MENU_ADD_TRANSACTION, R.string.new_transaction);

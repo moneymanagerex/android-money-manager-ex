@@ -35,14 +35,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MenuInflater;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
@@ -52,8 +51,8 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.notifications.MoneyManagerNotifications;
 import com.money.manager.ex.settings.PreferencesActivity;
+import com.viewpagerindicator.IconPagerAdapter;
 import com.viewpagerindicator.TitlePageIndicator;
-import com.viewpagerindicator.TitleProvider;
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * 
@@ -87,7 +86,7 @@ public class MainActivity extends BaseFragmentActivity {
     	}
     }
 	
-	public static class TabsAdapter extends FragmentPagerAdapter implements TitleProvider {
+	public static class TabsAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
         private Context mContext;
         private ArrayList<MainActivityTab> mFrags = new ArrayList<MainActivityTab>();
         
@@ -118,7 +117,6 @@ public class MainActivity extends BaseFragmentActivity {
             return fragment;
         }
 
-		@Override
 		public String getTitle(int position) {
 			return mFrags.get(position).getTitle();
 		}
@@ -127,6 +125,17 @@ public class MainActivity extends BaseFragmentActivity {
         	mFrags.clear();
         	notifyDataSetChanged();
         }
+
+		@Override
+		public int getIconResId(int index) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+		
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return getTitle(position);
+		}
     }
 	private static final String LOGCAT = MainActivity.class.getSimpleName();
 	private static final String KEY_CONTENT = "MainActivity:CurrentPos";
@@ -334,10 +343,10 @@ public class MainActivity extends BaseFragmentActivity {
 			getSupportFragmentManager().beginTransaction().add(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
 		} 
 	}
+	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_main, menu);
+	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		getSherlock().getMenuInflater().inflate(R.menu.menu_main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	/**

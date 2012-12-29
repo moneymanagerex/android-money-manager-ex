@@ -18,11 +18,11 @@
 package com.money.manager.ex.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 
-public abstract class BaseFragmentActivity extends FragmentActivity {
+public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

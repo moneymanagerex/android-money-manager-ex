@@ -22,9 +22,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.ListFragment;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.support.v4.widget.SearchViewCompat;
 import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 import android.text.TextUtils;
@@ -38,9 +35,13 @@ import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.R;
 
-public class BaseListFragment extends ListFragment {
+public class BaseListFragment extends SherlockListFragment {
 	// ID MENU
 	private static final int MENU_ITEM_SEARCH = 1000;
 	// stato della visualizzazione menu
@@ -49,7 +50,7 @@ public class BaseListFragment extends ListFragment {
 	private boolean mShowMenuItemSearch = false;
 	
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 		if (isShowMenuItemSearch()) {
 	        // Place an action bar item for searching.
 	        final MenuItem itemSearch = menu.add(0, MENU_ITEM_SEARCH, MENU_ITEM_SEARCH, R.string.search);
@@ -101,7 +102,7 @@ public class BaseListFragment extends ListFragment {
 						return false;
 					}
 				});
-	        	((FragmentActivity)getActivity()).getSupportActionBar().setCustomView(searchView);
+	        	((SherlockFragmentActivity)getActivity()).getSupportActionBar().setCustomView(searchView);
 	        	//((FragmentActivity)getActivity()).getSupportActionBar().setDisplayShowCustomEnabled(mDisplayShowCustomEnabled);
 	        }	
 		}
@@ -129,7 +130,7 @@ public class BaseListFragment extends ListFragment {
 	}
 	
     protected void onMenuItemSearchClick(MenuItem item) {
-		View searchView = ((FragmentActivity)getActivity()).getSupportActionBar().getCustomView();
+		View searchView = ((SherlockFragmentActivity)getActivity()).getSupportActionBar().getCustomView();
 		final EditText edtSearch = (EditText)searchView.findViewById(R.id.editTextSearchView);
 		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		// se in visualizzazione prendo l'edittext

@@ -28,7 +28,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.view.MenuItem;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -476,8 +475,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		updateAccountName();
 		updateCategoryName();
 	}
+	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 		switch (item.getItemId()) {
 	    case android.R.id.home:
 	        // close this activity and return to home
@@ -487,6 +487,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		}
 		return false;
 	}
+	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
