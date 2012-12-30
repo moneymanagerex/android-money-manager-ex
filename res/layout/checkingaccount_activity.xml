@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -87,6 +87,36 @@
                     android:prompt="@string/status" />
             </LinearLayout>
 
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/date" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/editDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/next_occurrence"
+                    android:inputType="date" />
+
+                <ImageButton
+                    android:id="@+id/buttonDate"
+                    style="@style/Money.Button"
+                    android:layout_width="@dimen/money_button_height"
+                    android:layout_height="@dimen/money_button_height"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_menu_today"
+                    android:text="..." />
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/linearLayoutPayee"
                 android:layout_width="match_parent"
@@ -141,18 +171,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/money_button_height"
                 android:text="@string/select_category" />
-
-            <TextView
-                style="?android:attr/listSeparatorTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/date" />
-
-            <DatePicker
-                android:id="@+id/selectDate"
-                android:layout_width="match_parent"
-                android:layout_height="125dp"
-                android:calendarViewShown="false" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -220,13 +238,13 @@
                     android:hint="@string/transaction_number"
                     android:inputType="number" />
 
-                <Button
+                <ImageButton
+                    android:src="@android:drawable/ic_menu_add"
                     android:id="@+id/buttonTransNumber"
                     style="@style/Money.Button"
                     android:layout_width="@dimen/money_button_height"
                     android:layout_height="@dimen/money_button_height"
-                    android:text="..." 
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical" />
             </LinearLayout>
 
             <TextView

@@ -82,7 +82,7 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 	// Table object instance
 	TableAccountList mAccountList = new TableAccountList();
 	// Application
-	MoneyManagerApplication mApplication = new MoneyManagerApplication();
+	MoneyManagerApplication mApplication;
 	// Activity members
 	private int mAccountId = -1;
 	private String mAccountName;
@@ -126,6 +126,9 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		// Set ActionBar properties
 		getSupportActionBar().setTitle(getResources().getString(R.string.new_edit_account));
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		//application
+		mApplication = (MoneyManagerApplication)getApplication();
 		
 		// Restore saved instance state
 		if ((savedInstanceState != null)) {

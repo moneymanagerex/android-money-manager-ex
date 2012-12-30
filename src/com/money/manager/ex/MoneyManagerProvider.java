@@ -39,6 +39,7 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryCategorySubCategory;
+import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableAssets;
 import com.money.manager.ex.database.TableBillsDeposits;
@@ -217,7 +218,9 @@ public class MoneyManagerProvider extends ContentProvider {
 			new TableSplitTransactions(), new TableStock(),
 			new TableSubCategory(), new ViewAllData(),
 			new QueryAccountBills(getContext()), new QueryCategorySubCategory(getContext()),
-			new QueryAllData(getContext()), new QueryBillDeposits(getContext())});
+			new QueryAllData(getContext()), new QueryBillDeposits(getContext()),
+			new QueryReportIncomeVsExpenses(getContext())});
+		
 		// Cycle all datasets for the composition of UriMatcher
 		for(int i = 0; i < objMoneyManager.size(); i ++) {
 			// add URI
@@ -227,7 +230,14 @@ public class MoneyManagerProvider extends ContentProvider {
 		}
 		return false;
 	}
-
+	/**
+	 * Prepare statment SQL from dataset object
+	 * @param query
+	 * @param projection
+	 * @param selection
+	 * @param sortOrder
+	 * @return statment
+	 */
 	private String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
 		String selectList = "", from = "", where = "", sort = "";
 		// compose select list

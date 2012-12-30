@@ -237,8 +237,6 @@ public class MoneyManagerApplication extends Application {
 	
 	// user name application
 	private static String userName = "";
-	// application context
-	private static Context applicationContext;
 	/**
 	 * close process application
 	 */
@@ -419,7 +417,7 @@ public class MoneyManagerApplication extends Application {
 	 * @return the dropbox mode synchronization
 	 */
 	public String getDropboxSyncMode() {
-		return appPreferences.getString(PREF_DROPBOX_MODE, applicationContext.getString(R.string.synchronize));
+		return appPreferences.getString(PREF_DROPBOX_MODE, getString(R.string.synchronize));
 	}
 	/**
 	 * 
@@ -643,7 +641,6 @@ public class MoneyManagerApplication extends Application {
 		if (appPreferences == null) { 
 			appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		}
-		applicationContext = this;
 	}
 	@Override
 	public void onTerminate() {

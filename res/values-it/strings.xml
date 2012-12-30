@@ -286,4 +286,6 @@
 	<string name="passcode_update">passcode aggiornato</string>
 	<string name="passcode_not_update">passcode non aggiornato</string>
 	<!-- 20121217 -->
+	<string name="lookups_wildcard">Per le ricerche si può utilizzare il carattere jolly \'%\'</string>
+	<!-- 20121230 --> 
 </resources>

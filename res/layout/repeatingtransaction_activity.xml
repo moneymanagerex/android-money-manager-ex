@@ -14,8 +14,9 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  
+  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -68,13 +69,13 @@
                     android:hint="@string/next_occurrence"
                     android:inputType="date" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/buttonNextOccurrence"
                     style="@style/Money.Button"
                     android:layout_width="@dimen/money_button_height"
                     android:layout_height="@dimen/money_button_height"
                     android:layout_gravity="center_vertical"
-                    android:text="..." />
+                    android:src="@drawable/ic_menu_today" />
             </LinearLayout>
 
             <LinearLayout
@@ -285,13 +286,13 @@
                     android:hint="@string/transaction_number"
                     android:inputType="number" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/buttonTransNumber"
                     style="@style/Money.Button"
                     android:layout_width="@dimen/money_button_height"
                     android:layout_height="@dimen/money_button_height"
                     android:layout_gravity="center_vertical"
-                    android:text="..." />
+                    android:src="@android:drawable/ic_menu_add" />
             </LinearLayout>
 
             <TextView

@@ -528,7 +528,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			alertDialog.create().show();
 		}
 	}
-	@SuppressWarnings("unused")
+	
 	private static final String LOGCAT = CategorySubCategoryActivity.class.getSimpleName();
 	private static final String FRAGMENTTAG = CategorySubCategoryActivity.class.getSimpleName() + "_Fragment";
 	public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";

@@ -373,8 +373,6 @@ public class DropboxActivity extends BaseFragmentActivity {
 	public static final String REMOTE_FILE = "DROPBOX_REMOTE_FILE";
     // Dropbox root
 	private static final String DROPBOX_ROOT = "/";
-    // Application
-	MoneyManagerApplication application = new MoneyManagerApplication();
     // Dropbox Api
     DropboxAPI<AndroidAuthSession> mApi;
 	// Check for logged in
@@ -616,7 +614,7 @@ public class DropboxActivity extends BaseFragmentActivity {
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		String prefSync = application.getDropboxSyncMode();
+		String prefSync = ((MoneyManagerApplication)getApplication()).getDropboxSyncMode();
 		if (menu.findItem(R.id.menu_link) != null) {
 			menu.findItem(R.id.menu_link).setVisible((mLoggedIn == false));
 		}

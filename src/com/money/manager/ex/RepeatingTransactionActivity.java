@@ -41,6 +41,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -128,8 +129,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 	// reference view into layout
 	private LinearLayout linearPayee, linearToAccount;
 	private Spinner spinAccount, spinTransCode, spinStatus, spinFrequencies;
-	private Button btnSelectPayee, btnSelectToAccount, btnSelectCategory, btnTransNumber, btnNextOccurrence,  
+	private Button btnSelectPayee, btnSelectToAccount, btnSelectCategory,  
 				   btnCancel, btnOk;
+	private ImageButton btnTransNumber, btnNextOccurrence;
 	private EditText edtTotAmount, edtAmount, edtTransNumber, edtNotes, edtNextOccurrence, edtTimesRepeated;
 	private TextView txtPayee, txtAmount, txtRepeats, txtTimesRepeated;
 
@@ -415,7 +417,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 		if (!TextUtils.isEmpty(mTransNumber)) {
 			edtTransNumber.setText(mTransNumber);
 		}
-		btnTransNumber = (Button)findViewById(R.id.buttonTransNumber);
+		btnTransNumber = (ImageButton)findViewById(R.id.buttonTransNumber);
 		btnTransNumber.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -444,6 +446,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 		}
 		// next occurrence
 		edtNextOccurrence = (EditText)findViewById(R.id.editTextNextOccurrence);
+		edtNextOccurrence.setKeyListener(null);
+		
 		if (!(TextUtils.isEmpty(mNextOccurrence))) {
 			try {
 				edtNextOccurrence.setText(mApplication.getStringFromDate(new SimpleDateFormat("yyyy-MM-dd").parse(mNextOccurrence)));
@@ -454,7 +458,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 			edtNextOccurrence.setText(mApplication.getStringFromDate((Date)Calendar.getInstance().getTime()));
 		}
 			
-		btnNextOccurrence = (Button)findViewById(R.id.buttonNextOccurrence);
+		btnNextOccurrence = (ImageButton)findViewById(R.id.buttonNextOccurrence);
 		btnNextOccurrence.setOnClickListener(new OnClickListener() {
 			private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 

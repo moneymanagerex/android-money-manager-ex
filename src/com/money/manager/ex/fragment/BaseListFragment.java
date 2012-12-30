@@ -32,6 +32,7 @@ import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -101,8 +102,8 @@ public class BaseListFragment extends SherlockListFragment {
 					}
 				});
 	        	((SherlockFragmentActivity)getActivity()).getSupportActionBar().setCustomView(searchView);
-	        	//((FragmentActivity)getActivity()).getSupportActionBar().setDisplayShowCustomEnabled(mDisplayShowCustomEnabled);
-	        }	
+	        }
+	        Toast.makeText(getActivity(), R.string.lookups_wildcard, Toast.LENGTH_SHORT).show();
 		}
 	}
 	

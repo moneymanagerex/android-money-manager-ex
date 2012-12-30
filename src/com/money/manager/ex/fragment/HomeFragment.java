@@ -17,6 +17,8 @@
  ******************************************************************************/
 package com.money.manager.ex.fragment;
 
+import java.util.Calendar;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -40,6 +42,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
 /**
  * 
@@ -88,6 +91,7 @@ public class HomeFragment extends Fragment implements
 	private static final int ID_LOADER_USER_NAME = 1;
 	private static final int ID_LOADER_ACCOUNT_BILLS = 2;
 	private static final int ID_LOADER_BILL_DEPOSITS = 3;
+	private static final int ID_LOADER_INCOME_EXPENSES = 4;
 	// application
 	private MoneyManagerApplication application;
 	// dataset table/view/query manage into class
@@ -130,6 +134,11 @@ public class HomeFragment extends Fragment implements
 		case ID_LOADER_BILL_DEPOSITS:
 			QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
 			return new CursorLoader(getActivity(), billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
+		case ID_LOADER_INCOME_EXPENSES:
+			QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
+			return new CursorLoader(getActivity(), report.getUri(), null, QueryReportIncomeVsExpenses.Month + "="
+					+ Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
+					+ Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), null, null);
 		default:
 			return null;
 		}
@@ -228,6 +237,29 @@ public class HomeFragment extends Fragment implements
 					linearRepeating.setVisibility(View.GONE);
 				}
 			}
+			break;
+		case ID_LOADER_INCOME_EXPENSES:
+			float income = 0, expenses = 0;
+			if (data != null && data.moveToFirst()) {
+				while (!data.isAfterLast()) {
+					if ("Withdrawal".equals(data.getString(data.getColumnIndex(QueryReportIncomeVsExpenses.TransactionType)))) {
+						expenses = data.getFloat(data.getColumnIndex(QueryReportIncomeVsExpenses.Total));
+					} else if ("Deposit".equals(data.getString(data.getColumnIndex(QueryReportIncomeVsExpenses.TransactionType)))) {
+						income = data.getFloat(data.getColumnIndex(QueryReportIncomeVsExpenses.Total));
+					}
+					//move to next record
+					data.moveToNext();
+				}
+			}
+			TextView txtIncome = (TextView)getActivity().findViewById(R.id.textViewIncome);
+			TextView txtExpenses = (TextView)getActivity().findViewById(R.id.textViewExpenses);
+			TextView txtDifference = (TextView)getActivity().findViewById(R.id.textViewDifference);
+			// take application
+			MoneyManagerApplication application = ((MoneyManagerApplication)getActivity().getApplication());
+			// set value
+			txtIncome.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income));
+			txtExpenses.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), Math.abs(expenses)));
+			txtDifference.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income - Math.abs(expenses)));
 		}
 	}
 
@@ -254,5 +286,6 @@ public class HomeFragment extends Fragment implements
 		getLoaderManager().restartLoader(ID_LOADER_USER_NAME, null, this);
 		getLoaderManager().restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
 		getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);
+		getLoaderManager().restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
 	}
 }

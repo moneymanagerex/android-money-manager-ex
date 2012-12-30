@@ -288,4 +288,10 @@
 	<string name="passcode_update">passcode is updated</string>
 	<string name="passcode_not_update">passcode is not updated</string>
 	<!-- 20121217 -->
+	<string name="lookups_wildcard">For lookups you can use the \'%\' wildcard character</string>
+	<string name="income_vs_expenses_current_month">Income vs Expenses: Current Month</string>
+	<string name="income">Income</string>
+	<string name="expenses">Expenses</string>
+	<string name="difference">Difference</string>
+	<!-- 20121230 --> 
 </resources>

@@ -17,13 +17,16 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -38,6 +41,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -119,19 +123,16 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	private int mBdId = -1;
 	private String mNextOccurrence = null;
 	// application
-	private MoneyManagerApplication mApplication = new MoneyManagerApplication();
+	private MoneyManagerApplication mApplication;
 	// datepicker value
-	private ArrayList<Integer> mDate = new ArrayList<Integer>(); //YEAR#MONTH#DAY
-	private static final int YEAR = 0;
-	private static final int MONTH = 1;
-	private static final int DAY = 2;
+	private String mDate = "";
 	// reference view into layout
 	private LinearLayout linearPayee, linearToAccount;
 	private Spinner spinAccount, spinTransCode, spinStatus;
-	private Button btnSelectPayee, btnSelectToAccount, btnSelectCategory, btnTransNumber, btnCancel, btnOk;
-	private EditText edtTotAmount, edtAmount, edtTransNumber, edtNotes;
+	private Button btnSelectPayee, btnSelectToAccount, btnSelectCategory, btnCancel, btnOk;
+	private ImageButton btnTransNumber, btnSelectDate;
+	private EditText edtTotAmount, edtAmount, edtTransNumber, edtNotes, edtDate;
 	private TextView txtPayee, txtAmount;
-	private DatePicker dtpDate;	
 
 	/**
 	 * getCategoryFromPayee set last category used from payee
@@ -167,21 +168,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		}
 
 		return ret;
-	}
-	
-	/**
-	 * populate the variabile of date 
-	 */
-	@SuppressWarnings("deprecation")
-	private String getDate() {
-		// clear arraylist
-		mDate.clear();
-		// populate arraylist with part of date
-		mDate.add(YEAR, dtpDate.getYear());
-		mDate.add(MONTH, dtpDate.getMonth());
-		mDate.add(DAY, dtpDate.getDayOfMonth());
-		// return date formatted
-		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(dtpDate.getYear() - 1900, dtpDate.getMonth(), dtpDate.getDayOfMonth()));
 	}
 	
 	@Override
@@ -224,13 +210,15 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setTitle(getResources().getString(R.string.new_edit_transaction));
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		mApplication = (MoneyManagerApplication)getApplication();
 		// manage save instance
 		if ((savedInstanceState != null)) {
 			mTransId = savedInstanceState.getInt(KEY_TRANS_ID);
 			mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
 			mToAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
 			mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
-			mDate = savedInstanceState.getIntegerArrayList(KEY_TRANS_DATE);
+			mDate = savedInstanceState.getString(KEY_TRANS_DATE);
 			mTransCode = savedInstanceState.getString(KEY_TRANS_CODE);
 			mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
 			if (TextUtils.isEmpty(savedInstanceState.getString(KEY_TRANS_AMOUNT)) == false) {
@@ -405,14 +393,43 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
                }
 		});
 		
-		dtpDate = (DatePicker)findViewById(R.id.selectDate);
-		// set current data
-		if (mDate.isEmpty() == false) {
-			dtpDate.updateDate(mDate.get(YEAR), mDate.get(MONTH) - 1, mDate.get(DAY));
+		// next occurrence
+		edtDate = (EditText)findViewById(R.id.editDate);
+		edtDate.setKeyListener(null);
+		if (!(TextUtils.isEmpty(mDate))) {
+			try {
+				edtDate.setText(mApplication.getStringFromDate(new SimpleDateFormat("yyyy-MM-dd").parse(mDate)));
+			} catch (ParseException e) {
+				Log.e(LOGCAT, e.getMessage());
+			}
 		} else {
-			getDate();
+			edtDate.setText(mApplication.getStringFromDate((Date)Calendar.getInstance().getTime()));
 		}
+			
+		btnSelectDate = (ImageButton)findViewById(R.id.buttonDate);
+		btnSelectDate.setOnClickListener(new OnClickListener() {
+			private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
+				@Override
+				public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+					try {
+						Date date = new SimpleDateFormat("yyyy-MM-dd").parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
+						edtDate.setText(mApplication.getStringFromDate(date));
+					} catch (Exception e) {
+						Log.e(LOGCAT, e.getMessage());
+					}
+					
+				}
+			};
+			@Override
+			public void onClick(View v) {
+				Calendar date = Calendar.getInstance();
+				date.setTime(mApplication.getDateFromString(edtDate.getText().toString()));
+				DatePickerDialog dialog = new DatePickerDialog(CheckingAccountActivity.this, mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+				dialog.show();
+			}
+		});
+		
 		btnOk = (Button)findViewById(R.id.buttonOk);
 		btnOk.setOnClickListener(new OnClickListener() {
 			@Override
@@ -442,7 +459,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		if (!TextUtils.isEmpty(mTransNumber)) {
 			edtTransNumber.setText(mTransNumber);
 		}
-		btnTransNumber = (Button)findViewById(R.id.buttonTransNumber);
+		btnTransNumber = (ImageButton)findViewById(R.id.buttonTransNumber);
 		btnTransNumber.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -491,14 +508,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		// save the date set in datepicker
-		this.getDate();
 		// save the state interface
 		outState.putInt(KEY_TRANS_ID, mTransId);
 		outState.putInt(KEY_ACCOUNT_ID, mAccountId);
 		outState.putInt(KEY_TO_ACCOUNT_ID, mToAccountId);
 		outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
-		outState.putIntegerArrayList(KEY_TRANS_DATE, mDate);
+		outState.putString(KEY_TRANS_DATE, edtDate.getText().toString());
 		outState.putString(KEY_TRANS_CODE, mTransCode);
 		outState.putString(KEY_TRANS_STATUS, mStatus);
 		outState.putString(KEY_TRANS_TOTAMOUNT, edtTotAmount.getText().toString());
@@ -525,18 +540,16 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	 */
 	private boolean selectAccountName(int accountId) {
 		TableAccountList account = new TableAccountList();
-		Cursor cursor = getContentResolver().query(account.getUri(),
-				account.getAllColumns(),
-				TableAccountList.ACCOUNTID + "=?",
+		Cursor cursor = getContentResolver().query(account.getUri(), account.getAllColumns(), TableAccountList.ACCOUNTID + "=?",
 				new String[] { Integer.toString(accountId) }, null);
 		// check if cursor is valid and open
 		if ((cursor == null) || (cursor.moveToFirst() == false)) {
 			return false;
 		}
-		
+
 		// set payeename
 		mToAccountName = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
-		
+
 		return true;
 	}
 	
@@ -584,8 +597,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		if ((cursor == null) || (cursor.moveToFirst() == false)) {
 			return false;
 		}
-		
-		String[] datepart;
+
 		// take a data
 		mTransId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TRANSID));
 		mAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.ACCOUNTID));
@@ -599,9 +611,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
 		mTransNumber = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSACTIONNUMBER));
 		mNotes = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.NOTES));
-		datepart = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE)).split("-");
-		// set date
-		setDate(Integer.parseInt(datepart[YEAR]), Integer.parseInt(datepart[MONTH]), Integer.parseInt(datepart[DAY]));
+		mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
 		
 		selectAccountName(mToAccountId);
 		selectPayeeName(mPayeeId);
@@ -653,8 +663,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
 		mTransNumber = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
 		mNotes = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NOTES));
-		String[] datepart = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE)).split("-");
-		setDate(Integer.parseInt(datepart[YEAR]), Integer.parseInt(datepart[MONTH]), Integer.parseInt(datepart[DAY]));
+		mDate = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
 		
 		selectAccountName(mToAccountId);
 		selectPayeeName(mPayeeId);
@@ -662,18 +671,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		
 		return true;
 	}
-	private void setDate(int year, int month, int day) {
-		// clear arraylist
-		mDate.clear();
-		// populate arraylist with part of date
-		mDate.add(YEAR, year);
-		mDate.add(MONTH, month);
-		mDate.add(DAY, day);
-	}
+
 	public void updateAccountName() {
 		// write into text button account name
 		btnSelectToAccount.setText(TextUtils.isEmpty(mToAccountName) == false ? mToAccountName : getResources().getString(R.string.select_to_account));
 	}
+	
 	public void updateCategoryName() {
 		String category = ""; 
 		if (TextUtils.isEmpty(mCategoryName) == false) {
@@ -713,7 +716,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		values.put(TableCheckingAccount.STATUS, mStatus);
 		values.put(TableCheckingAccount.CATEGID, mCategoryId);
 		values.put(TableCheckingAccount.SUBCATEGID, mSubCategoryId);
-		values.put(TableCheckingAccount.TRANSDATE, this.getDate());
+		values.put(TableCheckingAccount.TRANSDATE, mApplication.getSQLiteStringDate(mApplication.getDateFromString(edtDate.getText().toString())));
 		values.put(TableCheckingAccount.FOLLOWUPID, -1);
 		values.put(TableCheckingAccount.TOTRANSAMOUNT, Float.valueOf(edtTotAmount.getText().toString()));
 		values.put(TableCheckingAccount.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
