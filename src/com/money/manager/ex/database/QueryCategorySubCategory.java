@@ -25,6 +25,7 @@ import com.money.manager.ex.R;
 
 public class QueryCategorySubCategory extends Dataset { 
 	//definizione dei nomi dei campi
+	public static final String ID = "_id";
 	public static final String CATEGID = "CATEGID";
 	public static final String CATEGNAME = "CATEGNAME";
 	public static final String SUBCATEGID = "SUBCATEGID";
@@ -42,7 +43,7 @@ public class QueryCategorySubCategory extends Dataset {
 	}
 	@Override
 	public String[] getAllColumns() {
-		return new String[] {"0 AS _id", CATEGID, CATEGNAME, SUBCATEGID, SUBCATEGNAME, CATEGSUBNAME};
+		return new String[] {ID, CATEGID, CATEGNAME, SUBCATEGID, SUBCATEGNAME, CATEGSUBNAME};
 	}
 	public int getCategId() {
 		return categId;

@@ -35,6 +35,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -92,7 +93,8 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 				
 				if (mLayout == R.layout.simple_list_item_multiple_choice_2) {
 					CheckedTextView chekedtext = (CheckedTextView)view.findViewById(android.R.id.text1);
-					chekedtext.setChecked(getListView().isItemChecked(cursor.getPosition()));
+					//chekedtext.setChecked(getListView().isItemChecked(cursor.getPosition()));
+					chekedtext.setChecked(cursor.getInt(cursor.getColumnIndex(QueryCategorySubCategory.ID)) == idChecked);
 				}
 			}
 
@@ -102,15 +104,25 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			}
 		}
 		private static final int SUBMENU_ITEM_ADD_CATEGORY = 2;
-
+		private static final String KEY_ID_SELECTED = "CategorySubCategory:idChecked";
 		private static final int SUBMENU_ITEM_ADD_SUBCATEGORY = 3;
 		private int mLayout;
+		private int idChecked = -1;
 
 		private String mCurFilter;
 		
 		@Override
+		public void onSaveInstanceState(Bundle outState) {
+			super.onSaveInstanceState(outState);
+			outState.putInt(KEY_ID_SELECTED, idChecked);
+		}
+		
+		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
+			if (savedInstanceState != null && savedInstanceState.containsKey(KEY_ID_SELECTED)) {
+				idChecked = savedInstanceState.getInt(KEY_ID_SELECTED);
+			}
 			// set visibile search menu
 			setShowMenuItemSearch(true);
 
@@ -132,10 +144,21 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
+						// set id checked egual -1
+						idChecked = -1;
+						
 						CheckedTextView text1 = (CheckedTextView)view.findViewById(android.R.id.text1);
 						text1.toggle(); // change status
 						// save state position
 						getListView().setItemChecked(position, text1.isChecked());
+						if (text1.isChecked()) {
+							Cursor cursor = ((CategorySubCategoryAdapter)getListView().getAdapter()).getCursor();
+							if (cursor != null) {
+								cursor.moveToPosition(position);
+								idChecked = cursor.getInt(cursor.getColumnIndex(QueryCategorySubCategory.ID));
+							}
+						}
+						Log.i(LOGCAT, "Checked Id=" + Integer.toString(idChecked));
 					}
 				});
 			}
