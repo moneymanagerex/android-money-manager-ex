@@ -111,8 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:stretchColumns="1"
-        >
+        android:stretchColumns="1" >
 
         <TableRow>
 
@@ -159,13 +158,13 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/holo_red_light" />
         </TableRow>
-
+		<!-- 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_gravity="center_horizontal"
             android:background="?android:attr/dividerHorizontal" />
-
+		 -->
         <TableRow>
 
             <TextView

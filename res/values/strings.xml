@@ -293,5 +293,13 @@
 	<string name="income">Income</string>
 	<string name="expenses">Expenses</string>
 	<string name="difference">Difference</string>
+	<string name="no_data">No data to display</string>
+	<string name="month">Month</string>
+	<string name="year">Year</string>
+	<string name="menu_reports">Reports</string>
+	<string name="menu_report_income_vs_expenses">Income Vs Expenses</string>
+	<string name="total">Total</string>
+	<string name="option">Option</string>
+	<string name="all_time">All Time</string>
 	<!-- 20121230 --> 
 </resources>

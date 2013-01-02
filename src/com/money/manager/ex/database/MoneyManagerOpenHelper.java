@@ -39,8 +39,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
 	// database name, database version
 	private static final String databaseName = "data.mmb";
-	private static final String databaseVersions[] = new String[] {"0000", "0990"};
-	private static final int databaseCurrentVersion = 1;
+	private static final int databaseCurrentVersion = 120;
 	// context of creation
 	private Context mContext;
 	// path database
@@ -77,7 +76,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		Log.i(LOGCAT, "execute onCreate method");
 		executeRawSql(db, R.raw.database_create);
 		// force update database
-		updateDatabase(db, 0, databaseVersions.length - 1);
+		updateDatabase(db, 0, databaseCurrentVersion);
 	}
 
 	@Override
@@ -94,11 +93,10 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 
 	private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
 		for(int i = oldVersion + 1; i <= newVersion; i++) {
-			if (databaseVersions[i].equals("0000")) {
-				// nothing
-			} else if (databaseVersions[i].equals("0990")) {
-				// update version to 0.9.9.0 di money manager
-				executeRawSql(db, R.raw.database_0990);
+			// take a id of instance
+			int idResource = mContext.getResources().getIdentifier("database_version_" + Integer.toString(newVersion), "raw", mContext.getPackageName());
+			if (idResource > 0) {
+				executeRawSql(db, idResource);
 			}
 		}
 	}

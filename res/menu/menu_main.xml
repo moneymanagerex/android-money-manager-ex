@@ -14,13 +14,14 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <item
         android:id="@+id/menu_new_transaction"
         android:title="@string/new_transaction"/>
-    
+
     <group android:id="@+id/menu_group_main" >
         <item
             android:id="@+id/menu_action_main"
@@ -58,6 +59,17 @@
             </menu>
         </item>
     </group>
+    <group android:id="@+id/menu_group_reports" >
+        <item
+            android:id="@+id/menu_reports"
+            android:title="@string/menu_reports">
+            <menu>
+                <item
+                    android:id="@+id/menu_report_income_vs_expenses"
+                    android:title="@string/menu_report_income_vs_expenses" />
+            </menu>
+        </item>
+    </group>
 
     <item
         android:id="@+id/menu_settings"
@@ -67,6 +79,6 @@
         android:title="@string/about"/>
     <item
         android:id="@+id/menu_exit"
-        android:title="@string/menu_exit" />
+        android:title="@string/menu_exit"/>
 
 </menu>

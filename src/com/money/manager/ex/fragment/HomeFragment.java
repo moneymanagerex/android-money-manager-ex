@@ -136,7 +136,7 @@ public class HomeFragment extends Fragment implements
 			return new CursorLoader(getActivity(), billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
 		case ID_LOADER_INCOME_EXPENSES:
 			QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-			return new CursorLoader(getActivity(), report.getUri(), null, QueryReportIncomeVsExpenses.Month + "="
+			return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), QueryReportIncomeVsExpenses.Month + "="
 					+ Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
 					+ Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), null, null);
 		default:
@@ -242,11 +242,8 @@ public class HomeFragment extends Fragment implements
 			float income = 0, expenses = 0;
 			if (data != null && data.moveToFirst()) {
 				while (!data.isAfterLast()) {
-					if ("Withdrawal".equals(data.getString(data.getColumnIndex(QueryReportIncomeVsExpenses.TransactionType)))) {
-						expenses = data.getFloat(data.getColumnIndex(QueryReportIncomeVsExpenses.Total));
-					} else if ("Deposit".equals(data.getString(data.getColumnIndex(QueryReportIncomeVsExpenses.TransactionType)))) {
-						income = data.getFloat(data.getColumnIndex(QueryReportIncomeVsExpenses.Total));
-					}
+					expenses = data.getFloat(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+					income = data.getFloat(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
 					//move to next record
 					data.moveToNext();
 				}
