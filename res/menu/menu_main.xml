@@ -65,6 +65,9 @@
             android:title="@string/menu_reports">
             <menu>
                 <item
+                    android:id="@+id/menu_report_payees"
+                    android:title="@string/payee" />
+                <item
                     android:id="@+id/menu_report_income_vs_expenses"
                     android:title="@string/menu_report_income_vs_expenses" />
             </menu>

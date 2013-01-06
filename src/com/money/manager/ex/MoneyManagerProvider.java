@@ -34,12 +34,14 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.database.Dataset;
+import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
+import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableAssets;
 import com.money.manager.ex.database.TableBillsDeposits;
@@ -54,6 +56,7 @@ import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.database.ViewAllData;
+import com.money.manager.ex.database.ViewMobileData;
 
 /**
  * MoneyManagerProvider is the extension of the base class of Android
@@ -219,7 +222,8 @@ public class MoneyManagerProvider extends ContentProvider {
 			new TableSubCategory(), new ViewAllData(),
 			new QueryAccountBills(getContext()), new QueryCategorySubCategory(getContext()),
 			new QueryAllData(getContext()), new QueryBillDeposits(getContext()),
-			new QueryReportIncomeVsExpenses(getContext())});
+			new QueryReportIncomeVsExpenses(getContext()), new ViewMobileData(),
+			new SQLDataSet()});
 		
 		// Cycle all datasets for the composition of UriMatcher
 		for(int i = 0; i < objMoneyManager.size(); i ++) {
@@ -284,21 +288,28 @@ public class MoneyManagerProvider extends ContentProvider {
 		Cursor cursorRet;
 		// compose log verbose instruction
 		String log;
-		if (projection != null) { log = "SELECT " + Arrays.asList(projection).toString(); } else {log = "SELECT *"; }
 		// check type of instance dataset
 		if (Dataset.class.isInstance(ret)) {
 			Dataset dataset = ((Dataset)ret);
 			// compose log
-			log += " FROM " + dataset.getSource();
-			if (TextUtils.isEmpty(selection) == false) { log += " WHERE " + selection; }
-			if (TextUtils.isEmpty(sortOrder) == false) { log += " OREDER BY " + sortOrder; }
-			if (selectionArgs != null) { log += "; ARGS=" + Arrays.asList(selectionArgs).toString(); }
+			if (dataset.getType() == DatasetType.SQL) {
+				log = selection;
+			} else {
+				if (projection != null) { log = "SELECT " + Arrays.asList(projection).toString(); } else {log = "SELECT *"; }
+				log += " FROM " + dataset.getSource();
+				if (TextUtils.isEmpty(selection) == false) { log += " WHERE " + selection; }
+				if (TextUtils.isEmpty(sortOrder) == false) { log += " OREDER BY " + sortOrder; }
+				if (selectionArgs != null) { log += "; ARGS=" + Arrays.asList(selectionArgs).toString(); }
+			}
 			// log
 			Log.i(LOGCAT, log);
 			switch (dataset.getType()) {
 			case QUERY:
 				String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
 				cursorRet = database.rawQuery(query, selectionArgs);
+				break;
+			case SQL:
+				cursorRet = database.rawQuery(selection, selectionArgs);
 				break;
 			case TABLE: case VIEW:
 				SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();

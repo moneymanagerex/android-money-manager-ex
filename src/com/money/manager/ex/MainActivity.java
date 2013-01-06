@@ -51,6 +51,7 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.notifications.MoneyManagerNotifications;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
+import com.money.manager.ex.reports.PayeeReportActivity;
 import com.money.manager.ex.settings.PreferencesActivity;
 import com.viewpagerindicator.IconPagerAdapter;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -441,6 +442,9 @@ public class MainActivity extends BaseFragmentActivity {
 				startActivity(new Intent(this, MoneyManagerPrefsActivity_v10.class));
 			}*/
 			startActivity(new Intent(this, PreferencesActivity.class));
+			break;
+		case R.id.menu_report_payees:
+			startActivity(new Intent(this, PayeeReportActivity.class));
 			break;
 		case R.id.menu_report_income_vs_expenses:
 			startActivity(new Intent(this, IncomeVsExpensesActivity.class));

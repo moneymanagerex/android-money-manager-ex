@@ -27,5 +27,5 @@ package com.money.manager.ex.database;
  */
 
 public enum DatasetType {
-	QUERY, TABLE, VIEW
+	QUERY, SQL, TABLE, VIEW
 }

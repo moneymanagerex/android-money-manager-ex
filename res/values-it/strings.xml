@@ -287,5 +287,20 @@
 	<string name="passcode_not_update">passcode non aggiornato</string>
 	<!-- 20121217 -->
 	<string name="lookups_wildcard">Per le ricerche si può utilizzare il carattere jolly \'%\'</string>
-	<!-- 20121230 --> 
+	<string name="income_vs_expenses_current_month">Entrate / Uscite: Mese Corrente</string>
+	<string name="income">Entrate</string>
+	<string name="expenses">Uscite</string>
+	<string name="difference">Differenze</string>
+	<string name="no_data">Nessun dato da visualizzare</string>
+	<string name="month">Mese</string>
+	<string name="year">Anno</string>
+	<string name="menu_reports">Resoconti</string>
+	<string name="menu_report_income_vs_expenses">Entrate Vs Uscite</string>
+	<string name="total">Totale</string>
+	<string name="option">Opzioni</string>
+	<string name="all_time">Dall\'inizio</string>
+	<string name="last_month">Scorso Mese</string>
+	<string name="last30days">Ultimi 30 Giorni</string>
+	<string name="last_year">Scorso Anno</string>
+	<!-- 20130106 -->
 </resources>

@@ -237,7 +237,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			if (income - Math.abs(expenses) < 0) {
 				txtDifference.setTextColor(getResources().getColor(R.color.holo_red_light));
 			} else {
-				txtDifference.setTextColor(getResources().getColor(R.color.holo_green_dark));
+				txtDifference.setTextColor(getResources().getColor(R.color.holo_green_light));
 			}
 		}
 		/**

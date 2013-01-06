@@ -301,5 +301,8 @@
 	<string name="total">Total</string>
 	<string name="option">Option</string>
 	<string name="all_time">All Time</string>
-	<!-- 20121230 --> 
+	<string name="last_month">Last Month</string>
+	<string name="last30days">Last 30 Days</string>
+	<string name="last_year">Last Year</string>
+	<!-- 20130106 --> 
 </resources>

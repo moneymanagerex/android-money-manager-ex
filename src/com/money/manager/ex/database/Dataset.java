@@ -48,14 +48,6 @@ public abstract class Dataset implements BaseColumns {
 	 * 
 	 * @param source table/view/query
 	 * @param type of dataset
-	 */
-	public Dataset(String source, DatasetType type) {
-		this(source, type, "");
-	}	
-	/**
-	 * 
-	 * @param source table/view/query
-	 * @param type of dataset
 	 * @param basepath for match uri
 	 */
 	public Dataset(String source, DatasetType type, String basepath) {
@@ -87,16 +79,7 @@ public abstract class Dataset implements BaseColumns {
 		// compose filter
 		String selection = "";
 		List<String> selectionArgs = new ArrayList<String>();
-		/*Iterator<String> iter = values.keySet().iterator();
-		while(iter.hasNext()) {
-			Object key = iter.next();
-			Object value = values.get((String)key);
-			if (!(TextUtils.isEmpty(selection))) {
-				selection += " AND ";
-			}
-			selection += key.toString() + "=?";
-			selectionArgs.add(value.toString());
-		}*/
+		
 		for(Entry<String, Object> entry : values.valueSet()) {
 			if (!(TextUtils.isEmpty(selection))) {
 				selection += " AND ";
