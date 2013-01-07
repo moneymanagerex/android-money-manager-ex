@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/menu_period"
         android:icon="@drawable/ic_menu_today"
         android:showAsAction="ifRoom">
         <menu>
@@ -25,6 +26,12 @@
                     android:id="@+id/menu_all_time"
                     android:title="@string/all_time"/>
             </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menu_option1"
+        android:visible="false">
+        <menu>
         </menu>
     </item>
 

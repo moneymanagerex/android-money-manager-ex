@@ -50,8 +50,9 @@ import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.notifications.MoneyManagerNotifications;
+import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
-import com.money.manager.ex.reports.PayeeReportActivity;
+import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.settings.PreferencesActivity;
 import com.viewpagerindicator.IconPagerAdapter;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -435,16 +436,13 @@ public class MainActivity extends BaseFragmentActivity {
 			pickFile(Environment.getExternalStorageDirectory());
 			break;
 		case R.id.menu_settings:
-			// open pref activity
-			/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				startActivity(new Intent(this, MoneyManagerPrefsActivity.class));
-			} else {
-				startActivity(new Intent(this, MoneyManagerPrefsActivity_v10.class));
-			}*/
 			startActivity(new Intent(this, PreferencesActivity.class));
 			break;
+		case R.id.menu_report_categories:
+			startActivity(new Intent(this, CategoriesReportActivity.class));
+			break;			
 		case R.id.menu_report_payees:
-			startActivity(new Intent(this, PayeeReportActivity.class));
+			startActivity(new Intent(this, PayeesReportActivity.class));
 			break;
 		case R.id.menu_report_income_vs_expenses:
 			startActivity(new Intent(this, IncomeVsExpensesActivity.class));
