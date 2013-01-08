@@ -18,8 +18,12 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock"></style>
-    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light.DarkActionBar"></style>
+    <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
+        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
+    </style>
+    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_light</item>
+    </style>
 
     <style name="Money.TextView" parent="@android:style/Widget.TextView">
         <!-- <item name="android:textColor">@color/textview_textcolor</item> -->

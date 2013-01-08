@@ -29,6 +29,11 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
@@ -231,6 +236,7 @@ public class HomeFragment extends Fragment implements
 		case ID_LOADER_BILL_DEPOSITS:
 			if (data != null) {
 				if (data.getCount() > 0) {
+					/*linearRepeating.setLayoutAnimation(setAnimationView(linearRepeating));*/
 					linearRepeating.setVisibility(View.VISIBLE);
 					txtOverdue.setText(getString(R.string.num_repeating_transaction_expired).replace("num", Integer.toString(data.getCount())));
 				} else {
@@ -259,12 +265,31 @@ public class HomeFragment extends Fragment implements
 			txtDifference.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income - Math.abs(expenses)));
 		}
 	}
-
+	
 	@Override
 	public void onResume() {
 		super.onResume();
 		// start loader data
 		startLoader();
+	}
+
+	public LayoutAnimationController setAnimationView(View view) {
+		AnimationSet set = new AnimationSet(true);
+
+		Animation animation = new AlphaAnimation(0.0f, 1.0f);
+		animation.setDuration(250);
+		set.addAnimation(animation);
+
+		animation = new TranslateAnimation(
+				Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+				Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f
+		);
+		animation.setDuration(150);
+		set.addAnimation(animation);
+
+		LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
+		
+		return controller;
 	}
 	/**
 	 * @param if visible set true show the listview; false show progressbar

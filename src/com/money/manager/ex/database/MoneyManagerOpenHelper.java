@@ -39,7 +39,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
 	// database name, database version
 	private static final String databaseName = "data.mmb";
-	private static final int databaseCurrentVersion = 120;
+	private static final int databaseCurrentVersion = 1;
 	// context of creation
 	private Context mContext;
 	// path database

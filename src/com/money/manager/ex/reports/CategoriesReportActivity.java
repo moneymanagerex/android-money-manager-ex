@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.Loader;
@@ -159,6 +160,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			return super.onOptionsItemSelected(item);
 		}
 		
+		@SuppressWarnings("deprecation")
 		@Override
 		protected String prepareQuery(String whereClause) {
 			SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
@@ -176,7 +178,11 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			//compose builder
 			builder.setTables(mobileData.getSource());
 			//return query
-			return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+				return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
+			} else {
+				return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
+			}
 		}
 		
 	}

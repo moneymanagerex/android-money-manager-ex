@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.Loader;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dropbox.client2.SdkVersion;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.ViewMobileData;
@@ -57,6 +59,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 			super.onActivityCreated(savedInstanceState);
 		}
 		
+		@SuppressWarnings("deprecation")
 		@Override
 		protected String prepareQuery(String whereClause) {
 			SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
@@ -74,7 +77,11 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 			//compose builder
 			builder.setTables(mobileData.getSource());
 			//return query
-			return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+				return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
+			} else {
+				return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
+			}
 		}
 		
 		@Override

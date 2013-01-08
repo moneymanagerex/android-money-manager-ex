@@ -113,7 +113,7 @@
                     android:layout_width="@dimen/money_button_height"
                     android:layout_height="@dimen/money_button_height"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_menu_today"
+                    android:src="?attr/ic_action_calendar_day"
                     android:text="..." />
             </LinearLayout>
 

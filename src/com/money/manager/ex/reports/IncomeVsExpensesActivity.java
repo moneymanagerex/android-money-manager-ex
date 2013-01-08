@@ -31,6 +31,8 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
+import com.money.manager.ex.database.SQLDataSet;
+import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 public class IncomeVsExpensesActivity extends BaseFragmentActivity {
@@ -122,7 +124,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			//Create a cursor for select year
 			MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(getActivity());
 			SQLiteDatabase database = helper.getReadableDatabase();
-			Cursor cursor = database.rawQuery("SELECT DISTINCT Year FROM mobiledata ORDER BY Year DESC", null);
+			Cursor cursor = database.rawQuery("SELECT DISTINCT Year FROM " + ViewMobileData.mobiledata + " ORDER BY Year DESC", null);
 			if (cursor != null && cursor.moveToFirst()) {
 				int order = 0;
 				while (!cursor.isAfterLast()) {
@@ -260,6 +262,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 	private static class IncomeVsExpensesAdapter extends CursorAdapter {
 		private LayoutInflater mInflater;
 		
+		@SuppressWarnings("deprecation")
 		public IncomeVsExpensesAdapter(Context context, Cursor c) {
 			super(context, c);
 			mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
