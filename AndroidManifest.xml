@@ -220,6 +220,10 @@
             android:name=".reports.CategoriesReportActivity"
             android:label="@string/category" >
         </activity>
+        <activity
+            android:name=".SearchActivity"
+            android:label="@string/search" >
+        </activity>
     </application>
 
 </manifest>

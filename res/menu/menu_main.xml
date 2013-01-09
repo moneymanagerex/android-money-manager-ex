@@ -21,7 +21,12 @@
     <item
         android:id="@+id/menu_new_transaction"
         android:title="@string/new_transaction"/>
-
+    <item
+        android:id="@+id/menu_search_transaction"
+        android:title="@string/search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:showAsAction="always"
+        />
     <group android:id="@+id/menu_group_main" >
         <item
             android:id="@+id/menu_action_main"

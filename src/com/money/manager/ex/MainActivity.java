@@ -402,6 +402,9 @@ public class MainActivity extends BaseFragmentActivity {
 			// start for insert new transaction
 			startActivity(intent);
 			break;
+		case R.id.menu_search_transaction:
+			startActivity(new Intent(this, SearchActivity.class));
+			break;
 		case R.id.menu_account:
 			// manage accounts
 			intent = new Intent(this, AccountListActivity.class);

@@ -304,5 +304,7 @@
 	<string name="last_month">Last Month</string>
 	<string name="last30days">Last 30 Days</string>
 	<string name="last_year">Last Year</string>
-	<!-- 20130106 --> 
+	<!-- 20130106 -->
+	<string name="to">To</string>
+	<!-- 20130108 --> 
 </resources>

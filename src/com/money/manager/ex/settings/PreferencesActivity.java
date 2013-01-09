@@ -285,6 +285,19 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		});
 	}
 
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+		super.onPreferenceTreeClick(preferenceScreen, preference);
+		if (preference != null)
+			if (preference instanceof PreferenceScreen)
+				if (((PreferenceScreen) preference).getDialog() != null)
+					((PreferenceScreen) preference).getDialog().getWindow().getDecorView()
+							.setBackgroundDrawable(this.getWindow().getDecorView().getBackground().getConstantState().newDrawable());
+		return false;
+	}
+
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -295,8 +308,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		psEditPasscode.setEnabled(passcode.hasPasscode());
 		psDisablePasscode.setEnabled(passcode.hasPasscode());
 	}
-
-
+	
 	private void startActivityPasscode(CharSequence message, int request) {
 		Intent intent = new Intent(this, PasscodeActivity.class);
 		// set action and data
