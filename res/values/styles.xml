@@ -21,7 +21,7 @@
     <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
     </style>
-    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light">
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_light</item>
     </style>
 

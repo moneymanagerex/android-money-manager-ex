@@ -21,7 +21,6 @@ import java.util.Calendar;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -40,7 +39,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -54,6 +52,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.AllDataAdapter;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
@@ -66,84 +65,7 @@ import com.money.manager.ex.database.TableCheckingAccount;
  */
 public class AccountFragment extends SherlockFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
-	private class AllDataAdapter extends CursorAdapter {
-		private LayoutInflater inflater;
-		
-		@SuppressWarnings("deprecation")
-		public AllDataAdapter(Context context, Cursor c) {
-			super(context, c);
-			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		}
-		
-		@SuppressWarnings({ "static-access" })
-		@Override
-		public void bindView(View view, Context context, Cursor cursor) {
-			// take a pointer of object UI
-			TextView txtDate = (TextView)view.findViewById(R.id.textViewDate);
-			TextView txtStatus = (TextView)view.findViewById(R.id.textViewStatus);
-			TextView txtDeposit = (TextView)view.findViewById(R.id.textViewDeposit);
-			TextView txtTransfer = (TextView)view.findViewById(R.id.textViewTransfer);
-			TextView txtPayee = (TextView)view.findViewById(R.id.textViewPayee);
-			LinearLayout linearToAccount = (LinearLayout)view.findViewById(R.id.linearLayoutToAccount);
-			TextView txtToAccountName = (TextView)view.findViewById(R.id.textViewToAccountName);
-			TextView txtCategorySub = (TextView)view.findViewById(R.id.textViewCategorySub);
-			// write status and date
-			txtDate.setText(cursor.getString(cursor.getColumnIndex(mAllData.UserDate)));
-			txtStatus.setText(mApplication.getStatusAsString(cursor.getString(cursor.getColumnIndex(mAllData.Status))));
-			// take transaction amount
-			float amount = cursor.getFloat(cursor.getColumnIndex(mAllData.Amount));
-			// manage transfer and change amount sign
-			if ((cursor.getString(cursor.getColumnIndex(mAllData.TransactionType)) != null) &&
-				(cursor.getString(cursor.getColumnIndex(mAllData.TransactionType)).equals("Transfer")))  {
-				if (mAccountList.getAccountId() != cursor.getInt(cursor.getColumnIndex(mAllData.ToAccountID))) {
-					amount = -(amount); // -total
-				} else if (mAccountList.getAccountId() == cursor.getInt(cursor.getColumnIndex(mAllData.ToAccountID))) {
-					amount = cursor.getFloat(cursor.getColumnIndex(mAllData.TOTRANSAMOUNT)); // to account = account
-				}
-			}
-			// check amount sign
-			if (amount > 0) {
-				txtDeposit.setText(mApplication.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(mAllData.CURRENCYID)), amount));
-				txtTransfer.setText(null);
-			} else {
-				txtTransfer.setText(mApplication.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(mAllData.CURRENCYID)), amount));
-				txtDeposit.setText(null);
-			}
-			// compose payee description
-			String payee = cursor.getString(cursor.getColumnIndex(mAllData.Payee));
-			// write payee
-			if ((!TextUtils.isEmpty(payee))) {
-				txtPayee.setText(payee);
-				txtPayee.setVisibility(View.VISIBLE);
-			} else {
-				txtPayee.setVisibility(View.GONE);
-			}
-			// write ToAccountName
-			if ((!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(mAllData.ToAccountName))))) {
-				txtToAccountName.setText(cursor.getString(cursor.getColumnIndex(mAllData.ToAccountName)));
-				linearToAccount.setVisibility(View.VISIBLE);
-			} else {
-				linearToAccount.setVisibility(View.GONE);
-			}
-			// compose category description
-			String categorySub = cursor.getString(cursor.getColumnIndex(mAllData.Category));
-			// controllo se ho anche la subcategory
-			if (!(TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(mAllData.Subcategory))))) {
-				categorySub += " : <i>" + cursor.getString(cursor.getColumnIndex(mAllData.Subcategory)) + "</i>";
-			}
-			// write category/subcategory format html
-			if (TextUtils.isEmpty(categorySub) == false) {
-				txtCategorySub.setText(Html.fromHtml(categorySub));
-			} else {
-				txtCategorySub.setText("");
-			}
-		}
-		
-		@Override
-		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			return inflater.inflate(R.layout.item_alldata_account, parent, false);
-		}
-	}
+
 	private static final String KEY_CONTENT = "AccountFragment:AccountId";
 	private static final int ID_LOADER_ALLDATA = 1;
 	private static final int ID_LOADER_SUMMARY = 2;

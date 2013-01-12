@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +27,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -39,6 +38,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.ViewAllData;
 
@@ -206,6 +206,12 @@ public class SearchFragment extends SherlockFragment {
 	}
 	
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		getSherlockActivity().getSupportActionBar().setSubtitle(null);
+	}
+	
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch(requestCode) {
 		case REQUEST_PICK_PAYEE:
@@ -250,7 +256,7 @@ public class SearchFragment extends SherlockFragment {
 	 * Compose arguments and execute search
 	 */
 	private void executeSearch() {
-		List<String> whereClause = new ArrayList<String>();
+		ArrayList<String> whereClause = new ArrayList<String>();
 		//account
 		if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
 			whereClause.add(ViewAllData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
@@ -266,11 +272,11 @@ public class SearchFragment extends SherlockFragment {
 		}
 		//from date
 		if (!TextUtils.isEmpty(edtFromDate.getText())) {
-			whereClause.add(ViewAllData.Date + ">='" + edtFromDate.getText() + "'");
+			whereClause.add(ViewAllData.Date + ">='" + mApplication.getSQLiteStringDate(mApplication.getDateFromString(edtFromDate.getText().toString())) + "'");
 		}
 		//to date
 		if (!TextUtils.isEmpty(edtToDate.getText())) {
-			whereClause.add(ViewAllData.Date + "<='" + edtToDate.getText() + "'");
+			whereClause.add(ViewAllData.Date + "<='" + mApplication.getSQLiteStringDate(mApplication.getDateFromString(edtToDate.getText().toString())) + "'");
 		}
 		//payee
 		if (btnSelectPayee.getTag() != null) {
@@ -282,7 +288,7 @@ public class SearchFragment extends SherlockFragment {
 			whereClause.add(ViewAllData.CategID + "=" + categorySub.categId + " AND " + ViewAllData.SubcategID + "=" + categorySub.subCategId);
 		}
 		//from amount
-		if (!TextUtils.isEmpty(edtToAmount.getText())) {
+		if (!TextUtils.isEmpty(edtFromAmount.getText())) {
 			whereClause.add(ViewAllData.Amount + ">=" + edtFromAmount.getText());
 		}
 		//to amount
@@ -297,5 +303,28 @@ public class SearchFragment extends SherlockFragment {
 		if (!TextUtils.isEmpty(edtNotes.getText())) {
 			whereClause.add(ViewAllData.Notes + " LIKE '" + edtNotes.getText() + "'");
 		}
+		//create a fragment search
+		SearchResultFragment fragment;
+		fragment = (SearchResultFragment) getActivity().getSupportFragmentManager().findFragmentByTag(SearchResultFragment.class.getSimpleName());
+		if (fragment == null) {
+			fragment = new SearchResultFragment();
+		}
+		//create bundle
+		Bundle args = new Bundle();
+		args.putStringArrayList(SearchResultFragment.KEY_ARGUMENTS_WHERE, whereClause);
+		args.putString(SearchResultFragment.KEY_ARGUMENTS_SORT, QueryAllData.ID);
+		args.putString(SearchResultFragment.KEY_SUBTITLE, getString(R.string.result));
+		//set arguments
+		fragment.setArguments(args);
+		//add fragment
+		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+		//animation
+		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack
+		transaction.replace(android.R.id.content, fragment, SearchResultFragment.class.getSimpleName());
+		transaction.addToBackStack(null);
+		// Commit the transaction
+		transaction.commit();
 	}
 }

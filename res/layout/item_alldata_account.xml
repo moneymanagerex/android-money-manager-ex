@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -44,9 +44,9 @@
                 android:layout_column="1"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textStyle="bold" 
-                android:singleLine="true"/>
-            
+                android:singleLine="true"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/textViewDeposit"
                 android:layout_width="0dip"
@@ -68,6 +68,13 @@
                 android:textStyle="bold" />
         </TableRow>
     </TableLayout>
+
+    <TextView
+        android:id="@+id/textViewAccountName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textViewPayee"
