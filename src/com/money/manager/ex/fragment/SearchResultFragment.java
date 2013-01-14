@@ -57,36 +57,40 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
-		// take a info of the selected menu, and cursor at position 
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
-		Cursor cursor = (Cursor)getListAdapter().getItem(info.position);
-		// check if cursor is valid
-		if (cursor != null) {
-			switch (item.getItemId()) {
-			case R.id.menu_edit:
-				startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-				return true;
-			case R.id.menu_delete:
-				showDialogDeleteCheckingAccount(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-				return true;
-			case R.id.menu_reconciled:
-				setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "R");
-				return true;
-			case R.id.menu_none:
-				setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "");
-				return true;
-			case R.id.menu_duplicate:
-				setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "D");
-				return true;
-			case R.id.menu_follow_up:
-				setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "F");
-				return true;
-			case R.id.menu_void:
-				setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "V");
-				return true;
+		if (getUserVisibleHint()) {
+			// take a info of the selected menu, and cursor at position 
+			AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
+			Cursor cursor = (Cursor)getListAdapter().getItem(info.position);
+			// check if cursor is valid
+			if (cursor != null) {
+				switch (item.getItemId()) {
+				case R.id.menu_edit:
+					startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+					break;
+				case R.id.menu_delete:
+					showDialogDeleteCheckingAccount(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+					break;
+				case R.id.menu_reconciled:
+					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "R");
+					break;
+				case R.id.menu_none:
+					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "");
+					break;
+				case R.id.menu_duplicate:
+					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "D");
+					break;
+				case R.id.menu_follow_up:
+					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "F");
+					break;
+				case R.id.menu_void:
+					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "V");
+					break;
+				}
 			}
+			return true;
+		} else {
+			return false;
 		}
-		return super.onContextItemSelected(item);
 	}
 
 	@Override
