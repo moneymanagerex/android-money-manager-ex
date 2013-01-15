@@ -17,6 +17,8 @@
  ******************************************************************************/
 package com.money.manager.ex.core;
 
+import java.util.HashMap;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
@@ -25,6 +27,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,6 +39,7 @@ public class AllDataAdapter extends CursorAdapter {
 	private LayoutInflater inflater;
 	private MoneyManagerApplication application;
 	private boolean showAccountName = false;
+	private HashMap<Integer, Integer> headersIndex;
 	
 	public AllDataAdapter(Context context, Cursor c) {
 		this(context, c, false);
@@ -44,9 +48,10 @@ public class AllDataAdapter extends CursorAdapter {
 	@SuppressWarnings("deprecation")
 	public AllDataAdapter(Context context, Cursor c, boolean showAccountName) {
 		super(context, c);
-		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		application = (MoneyManagerApplication) context.getApplicationContext();
+		this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.application = (MoneyManagerApplication) context.getApplicationContext();
 		this.showAccountName = showAccountName;
+		this.headersIndex = new HashMap<Integer, Integer>();
 	}
 	
 	@SuppressWarnings({ })
@@ -62,9 +67,21 @@ public class AllDataAdapter extends CursorAdapter {
 		LinearLayout linearToAccount = (LinearLayout)view.findViewById(R.id.linearLayoutToAccount);
 		TextView txtToAccountName = (TextView)view.findViewById(R.id.textViewToAccountName);
 		TextView txtCategorySub = (TextView)view.findViewById(R.id.textViewCategorySub);
+		ImageView imgFollowUp = (ImageView)view.findViewById(R.id.imageViewFollowUp);
+		TextView txtNotes = (TextView)view.findViewById(R.id.textViewNotes);
+		// header index
+		if (!headersIndex.containsKey(cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID)))) {
+			headersIndex.put(cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID)), cursor.getPosition());
+		}
 		// write status and date
 		txtDate.setText(cursor.getString(cursor.getColumnIndex(QueryAllData.UserDate)));
 		txtStatus.setText(application.getStatusAsString(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
+		// show follow up icon
+		if ("F".equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)))) {
+			imgFollowUp.setVisibility(View.VISIBLE);
+		} else {
+			imgFollowUp.setVisibility(View.GONE);
+		}
 		// take transaction amount
 		float amount = cursor.getFloat(cursor.getColumnIndex(QueryAllData.Amount));
 		// manage transfer and change amount sign
@@ -95,8 +112,14 @@ public class AllDataAdapter extends CursorAdapter {
 		}
 		// compose account name
 		if (showAccountName) {
-			txtAccountName.setText(cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName)));
-			txtAccountName.setVisibility(View.VISIBLE);
+			if (headersIndex.containsValue(cursor.getPosition())) {
+				txtAccountName.setText(cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName)));
+				txtAccountName.setVisibility(View.VISIBLE);
+			} else {
+				txtAccountName.setVisibility(View.GONE);
+			}
+		} else {
+			txtAccountName.setVisibility(View.GONE);
 		}
 		// write ToAccountName
 		if ((!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName))))) {
@@ -116,6 +139,13 @@ public class AllDataAdapter extends CursorAdapter {
 			txtCategorySub.setText(Html.fromHtml(categorySub));
 		} else {
 			txtCategorySub.setText("");
+		}
+		// notes
+		if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryAllData.Notes)))) {
+			txtNotes.setText(Html.fromHtml("<small>" + cursor.getString(cursor.getColumnIndex(QueryAllData.Notes)) + "</small>"));
+			txtNotes.setVisibility(View.VISIBLE);
+		} else {
+			txtNotes.setVisibility(View.GONE);
 		}
 	}
 	

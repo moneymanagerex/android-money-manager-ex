@@ -21,6 +21,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/textViewAccountName"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,18 +77,25 @@
         </TableRow>
     </TableLayout>
 
-    <TextView
-        android:id="@+id/textViewAccountName"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textStyle="bold"
-        android:visibility="gone" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/textViewPayee"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        <ImageView
+            android:id="@+id/imageViewFollowUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/light_bulb"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textViewPayee"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayoutToAccount"
@@ -92,7 +107,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="ToAccountName"
             android:src="@drawable/arrows_reload_icon" />
 
         <TextView
@@ -108,5 +122,13 @@
         android:id="@+id/textViewCategorySub"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/textViewNotes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:singleLine="true"
+        android:textStyle="italic"
+        android:visibility="gone" />
 
 </LinearLayout>
