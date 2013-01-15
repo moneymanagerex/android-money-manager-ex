@@ -54,12 +54,12 @@ implements SearResultFragmentLoaderCallbacks {
 	}
 
 	@Override
-	public void onCreateLoader(int id, Bundle args) {
+	public void onCallbackCreateLoader(int id, Bundle args) {
 		return;
 	}
 
 	@Override
-	public void onLoaderFinished(Loader<Cursor> loader, Cursor data) {
+	public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data) {
 		if (loader != null && loader.getId() == SearchResultFragment.ID_LOADER_ALL_DATA_DETAIL && data != null) {
 			getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
 		}
@@ -67,7 +67,7 @@ implements SearResultFragmentLoaderCallbacks {
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
+	public void onCallbackLoaderReset(Loader<Cursor> loader) {
 		return;
 	}
 }

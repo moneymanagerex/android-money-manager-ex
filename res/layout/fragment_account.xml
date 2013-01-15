@@ -115,34 +115,12 @@
         android:background="@color/holo_green_light" />
 
     <FrameLayout
+        android:id="@+id/fragmentContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:layout_weight="1" >
-
-        <ListView
-            android:id="@+id/listViewAllData"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:choiceMode="none"
-            android:dividerHeight="1dp"
-            android:visibility="gone" />
-
-        <ProgressBar
-            android:id="@+id/progressBarAllData"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="visible" />
     </FrameLayout>
-
-    <Button
-        android:id="@+id/buttonNewOperation"
-        style="@style/Money.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/New" />
 
 </LinearLayout>

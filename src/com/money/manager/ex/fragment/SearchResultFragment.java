@@ -52,13 +52,14 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 	public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 	//Interface for callback fragment
 	public interface SearResultFragmentLoaderCallbacks {
-		public void onCreateLoader(int id, Bundle args);
-		public void onLoaderFinished(Loader<Cursor> loader, Cursor data);
-		public void onLoaderReset(Loader<Cursor> loader);
+		public void onCallbackCreateLoader(int id, Bundle args);
+		public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data);
+		public void onCallbackLoaderReset(Loader<Cursor> loader);
 	}
 	private SearResultFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
 	private boolean mAutoStarLoader = true;
-	
+	private boolean mShownHeader = false;
+	private int mGroupId = 0;
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -66,7 +67,7 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 		setEmptyText(getString(R.string.no_data));
 		setListShown(false);
 		//create adapter
-		AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, true);
+		AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, isShownHeader());
 		setListAdapter(adapter);
 		//register context menu
 		registerForContextMenu(getListView());
@@ -80,7 +81,7 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
-		if (getUserVisibleHint()) {
+		if (item.getGroupId() == getContextMenuGroupId()) {
 			// take a info of the selected menu, and cursor at position 
 			AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
 			Cursor cursor = (Cursor)getListAdapter().getItem(info.position);
@@ -126,22 +127,33 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 		if (cursor == null) {
 			return;
 		}
-		getActivity().getMenuInflater().inflate(R.menu.contextmenu_accountfragment, menu);
+		/*getActivity().getMenuInflater().inflate(R.menu.contextmenu_accountfragment, menu);*/
+		// add manually
+		int[] menuItem = new int[] {R.id.menu_edit, R.id.menu_delete, R.id.menu_reconciled, R.id.menu_none, R.id.menu_follow_up, R.id.menu_duplicate, R.id.menu_void};
+		int[] menuText = new int[] {R.string.edit, R.string.delete, R.string.status_reconciled, R.string.status_none, R.string.status_follow_up, R.string.status_duplicate, R.string.status_void};
+		for (int i = 0; i < menuItem.length; i ++) {
+			menu.add(getContextMenuGroupId(), menuItem[i], i, menuText[i]);
+		}
 		// create a context menu
 		menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName)));
 		// hide current status
-		menu.findItem(R.id.menu_reconciled).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("R") == false);
-		menu.findItem(R.id.menu_none).setVisible(TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))) == false);
-		menu.findItem(R.id.menu_duplicate).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("D") == false);
-		menu.findItem(R.id.menu_follow_up).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("F") == false);
-		menu.findItem(R.id.menu_void).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("V") == false);
+		if (menu.findItem(R.id.menu_reconciled) != null)
+			menu.findItem(R.id.menu_reconciled).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("R") == false);
+		if (menu.findItem(R.id.menu_none) != null)
+			menu.findItem(R.id.menu_none).setVisible(TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))) == false);
+		if (menu.findItem(R.id.menu_duplicate) != null)
+			menu.findItem(R.id.menu_duplicate).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("D") == false);
+		if (menu.findItem(R.id.menu_follow_up) != null)
+			menu.findItem(R.id.menu_follow_up).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("F") == false);
+		if (menu.findItem(R.id.menu_void) != null)
+			menu.findItem(R.id.menu_void).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("V") == false);
 		
 	}
 	
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		if (getSearResultFragmentLoaderCallbacks() != null)
-			getSearResultFragmentLoaderCallbacks().onCreateLoader(id, args);
+			getSearResultFragmentLoaderCallbacks().onCallbackCreateLoader(id, args);
 		
 		switch (id) {
 		case ID_LOADER_ALL_DATA_DETAIL:
@@ -174,15 +186,16 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		if (getSearResultFragmentLoaderCallbacks() != null)
-			getSearResultFragmentLoaderCallbacks().onLoaderReset(loader);
+			getSearResultFragmentLoaderCallbacks().onCallbackLoaderReset(loader);
 		
 		((CursorAdapter)getListAdapter()).swapCursor(null);
 	}
 	
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		if (getSearResultFragmentLoaderCallbacks() != null)
-			getSearResultFragmentLoaderCallbacks().onLoaderFinished(loader, data);
+		if (getSearResultFragmentLoaderCallbacks() != null) {
+			getSearResultFragmentLoaderCallbacks().onCallbackLoaderFinished(loader, data);
+		}
 		switch (loader.getId()) {
 		case ID_LOADER_ALL_DATA_DETAIL:
 			((CursorAdapter) getListAdapter()).swapCursor(data);
@@ -309,5 +322,33 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 	 */
 	public boolean isAutoStarLoader() {
 		return mAutoStarLoader;
+	}
+
+	/**
+	 * @param mGroupId the mGroupId to set
+	 */
+	public void setContextMenuGroupId(int mGroupId) {
+		this.mGroupId = mGroupId;
+	}
+
+	/**
+	 * @return the mGroupId
+	 */
+	public int getContextMenuGroupId() {
+		return mGroupId;
+	}
+
+	/**
+	 * @param mShownHeader the mShownHeader to set
+	 */
+	public void setShownHeader(boolean mShownHeader) {
+		this.mShownHeader = mShownHeader;
+	}
+
+	/**
+	 * @return the mShownHeader
+	 */
+	public boolean isShownHeader() {
+		return mShownHeader;
 	}
 }

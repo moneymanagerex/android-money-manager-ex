@@ -338,10 +338,11 @@ public class SearchFragment extends SherlockFragment {
 		//create bundle
 		Bundle args = new Bundle();
 		args.putStringArrayList(SearchResultFragment.KEY_ARGUMENTS_WHERE, whereClause);
-		args.putString(SearchResultFragment.KEY_ARGUMENTS_SORT, QueryAllData.ID);
+		args.putString(SearchResultFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
 		//set arguments
 		fragment.setArguments(args);
 		fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getActivity());
+		fragment.setShownHeader(true);
 		//add fragment
 		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 		//animation
