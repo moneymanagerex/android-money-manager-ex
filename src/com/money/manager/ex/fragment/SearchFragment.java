@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * Copyright (C) 2013 The Android Money Manager Ex Project
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ ******************************************************************************/
 package com.money.manager.ex.fragment;
 
 import java.text.SimpleDateFormat;
@@ -37,6 +54,7 @@ import com.money.manager.ex.CategorySubCategoryActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.SearchActivity;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
@@ -113,6 +131,11 @@ public class SearchFragment extends SherlockFragment {
 		super.onCreate(savedInstanceState);
 		mApplication = (MoneyManagerApplication)getActivity().getApplication();
 		setHasOptionsMenu(true);
+		SearchResultFragment fragment;
+		fragment = (SearchResultFragment) getActivity().getSupportFragmentManager().findFragmentByTag(SearchResultFragment.class.getSimpleName());
+		if (fragment != null) {
+			fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getActivity());
+		}
 	}
 	
 	@Override
@@ -126,15 +149,17 @@ public class SearchFragment extends SherlockFragment {
 		edtFromAmount = (EditText)view.findViewById(R.id.editTextFromAmount);
 		// accountlist <> to populate the spin
 		spinAccount = (Spinner)view.findViewById(R.id.spinnerAccount);
-		mAccountList = new MoneyManagerOpenHelper(getActivity()).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
-		mAccountList.add(0, null);
-		for(int i = 0; i <= mAccountList.size() - 1; i ++) {
-			if (mAccountList.get(i) != null) {
-				mAccountNameList.add(mAccountList.get(i).getAccountName());
-				mAccountIdList.add(mAccountList.get(i).getAccountId());
-			} else {
-				mAccountNameList.add("");
-				mAccountIdList.add(AdapterView.INVALID_POSITION);
+		if (mAccountList == null) {
+			mAccountList = new MoneyManagerOpenHelper(getActivity()).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
+			mAccountList.add(0, null);
+			for(int i = 0; i <= mAccountList.size() - 1; i ++) {
+				if (mAccountList.get(i) != null) {
+					mAccountNameList.add(mAccountList.get(i).getAccountName());
+					mAccountIdList.add(mAccountList.get(i).getAccountId());
+				} else {
+					mAccountNameList.add("");
+					mAccountIdList.add(AdapterView.INVALID_POSITION);
+				}
 			}
 		}
 		// checkbox
@@ -175,16 +200,17 @@ public class SearchFragment extends SherlockFragment {
 				startActivityForResult(intent, REQUEST_PICK_CATEGORY);
 			}
 		});
-		// arrays to manage Status
-		mStatusItems.add(""); mStatusValues.add("");
-		mStatusItems.addAll(Arrays.asList(getResources().getStringArray(R.array.status_items)));
-		mStatusValues.addAll(Arrays.asList(getResources().getStringArray(R.array.status_values)));
+		if (mStatusItems.size() <= 0) {
+			// arrays to manage Status
+			mStatusItems.add(""); mStatusValues.add("");
+			mStatusItems.addAll(Arrays.asList(getResources().getStringArray(R.array.status_items)));
+			mStatusValues.addAll(Arrays.asList(getResources().getStringArray(R.array.status_values)));
+		}
 		// create adapter for spinnerStatus
 		spinStatus = (Spinner)view.findViewById(R.id.spinnerStatus);
 		ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mStatusItems);
 		adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinStatus.setAdapter(adapterStatus);
-		spinStatus.setSelection(AdapterView.INVALID_POSITION);
 		// from date
 		edtFromDate = (EditText)view.findViewById(R.id.editFromDate);
 		edtFromDate.setKeyListener(null);
@@ -268,7 +294,7 @@ public class SearchFragment extends SherlockFragment {
 		}
 		//status
 		if (spinStatus.getSelectedItemPosition() != AdapterView.INVALID_POSITION && (!TextUtils.isEmpty(mStatusValues.get(spinStatus.getSelectedItemPosition())))) {
-			whereClause.add(ViewAllData.Status + "=" + mStatusValues.get(spinStatus.getSelectedItemPosition()));
+			whereClause.add(ViewAllData.Status + "='" + mStatusValues.get(spinStatus.getSelectedItemPosition()) + "'");
 		}
 		//from date
 		if (!TextUtils.isEmpty(edtFromDate.getText())) {
@@ -313,9 +339,9 @@ public class SearchFragment extends SherlockFragment {
 		Bundle args = new Bundle();
 		args.putStringArrayList(SearchResultFragment.KEY_ARGUMENTS_WHERE, whereClause);
 		args.putString(SearchResultFragment.KEY_ARGUMENTS_SORT, QueryAllData.ID);
-		args.putString(SearchResultFragment.KEY_SUBTITLE, getString(R.string.result));
 		//set arguments
 		fragment.setArguments(args);
+		fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getActivity());
 		//add fragment
 		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 		//animation

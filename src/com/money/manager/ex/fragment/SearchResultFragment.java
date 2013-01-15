@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * Copyright (C) 2013 The Android Money Manager Ex Project
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ ******************************************************************************/
 package com.money.manager.ex.fragment;
 
 import java.util.ArrayList;
@@ -14,13 +31,12 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Toast;
 
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
@@ -29,10 +45,19 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
 
 public class SearchResultFragment extends BaseListFragment implements LoaderCallbacks<Cursor> {
-	private static final int ID_LOADER = 1;
+	//ID Loader
+	public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
+	//KEY Arguments
 	public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
 	public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
-	public static final String KEY_SUBTITLE = "SearchResultFragment:ActionBarSubTitle";
+	//Interface for callback fragment
+	public interface SearResultFragmentLoaderCallbacks {
+		public void onCreateLoader(int id, Bundle args);
+		public void onLoaderFinished(Loader<Cursor> loader, Cursor data);
+		public void onLoaderReset(Loader<Cursor> loader);
+	}
+	private SearResultFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
+	private boolean mAutoStarLoader = true;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -45,14 +70,12 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 		setListAdapter(adapter);
 		//register context menu
 		registerForContextMenu(getListView());
-		//subtitle
-		if (getArguments() != null && getArguments().containsKey(KEY_SUBTITLE)) {
-			getSherlockActivity().getSupportActionBar().setSubtitle(getArguments().getString(KEY_SUBTITLE));
-		}
 		//set animation
 		setListShown(false);
 		//start loader
-		startLoader();
+		if (isAutoStarLoader()) {
+			startLoaderData();
+		}
 	}
 
 	@Override
@@ -117,8 +140,11 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 	
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		if (getSearResultFragmentLoaderCallbacks() != null)
+			getSearResultFragmentLoaderCallbacks().onCreateLoader(id, args);
+		
 		switch (id) {
-		case ID_LOADER:
+		case ID_LOADER_ALL_DATA_DETAIL:
 			QueryAllData allData = new QueryAllData(getActivity());
 			// compose selection and sort
 			String selection = "", sort = "";
@@ -147,25 +173,31 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 	
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
+		if (getSearResultFragmentLoaderCallbacks() != null)
+			getSearResultFragmentLoaderCallbacks().onLoaderReset(loader);
+		
 		((CursorAdapter)getListAdapter()).swapCursor(null);
 	}
 	
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		((CursorAdapter)getListAdapter()).swapCursor(data);
-
-        if (isResumed()) {
-            setListShown(true);
-        } else {
-            setListShownNoAnimation(true);
-        }
+		if (getSearResultFragmentLoaderCallbacks() != null)
+			getSearResultFragmentLoaderCallbacks().onLoaderFinished(loader, data);
+		switch (loader.getId()) {
+		case ID_LOADER_ALL_DATA_DETAIL:
+			((CursorAdapter) getListAdapter()).swapCursor(data);
+			if (isResumed()) {
+				setListShown(true);
+			} else {
+				setListShownNoAnimation(true);
+			}
+		}
 	}
 	/**
 	 * Start loader into fragment
 	 */
-	private void startLoader() {
-		//start loader
-		getLoaderManager().restartLoader(ID_LOADER, getArguments(), this);
+	public void startLoaderData() {
+		getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getArguments(), this);
 	}
 	
 	/**
@@ -188,7 +220,7 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 			return false;
 		} else {
 			// reload data
-			startLoader();
+			startLoaderData();
 			return true;
 		}
 	}
@@ -218,7 +250,7 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 							Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 						}
 						// restart loader
-						startLoader();
+						startLoaderData();
 					}
 				});
 		// set listener negative button
@@ -249,5 +281,33 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 		}
 		// launch activity
 		startActivity(intent);
+	}
+
+	/**
+	 * @param mSearResultFragmentLoaderCallbacks the mSearResultFragmentLoaderCallbacks to set
+	 */
+	public void setSearResultFragmentLoaderCallbacks(SearResultFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks) {
+		this.mSearResultFragmentLoaderCallbacks = mSearResultFragmentLoaderCallbacks;
+	}
+
+	/**
+	 * @return the mSearResultFragmentLoaderCallbacks
+	 */
+	public SearResultFragmentLoaderCallbacks getSearResultFragmentLoaderCallbacks() {
+		return mSearResultFragmentLoaderCallbacks;
+	}
+
+	/**
+	 * @param mAutoStarLoader the mAutoStarLoader to set
+	 */
+	public void setAutoStarLoader(boolean mAutoStarLoader) {
+		this.mAutoStarLoader = mAutoStarLoader;
+	}
+
+	/**
+	 * @return the mAutoStarLoader
+	 */
+	public boolean isAutoStarLoader() {
+		return mAutoStarLoader;
 	}
 }

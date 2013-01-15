@@ -307,5 +307,6 @@
 	<!-- 20130106 -->
 	<string name="to">To</string>
 	<string name="result">Result</string>
+	<string name="number_transaction_found">Number of transactions found: %1$d</string>
 	<!-- 20130108 --> 
 </resources>
