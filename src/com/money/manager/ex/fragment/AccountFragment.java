@@ -49,14 +49,14 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.fragment.SearchResultFragment.SearResultFragmentLoaderCallbacks;
+import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 
 /**
  * 
  * @author a.lazzari
  * 
  */
-public class AccountFragment extends SherlockFragment implements LoaderManager.LoaderCallbacks<Cursor>, SearResultFragmentLoaderCallbacks {
+public class AccountFragment extends SherlockFragment implements LoaderManager.LoaderCallbacks<Cursor>, AllDataFragmentLoaderCallbacks {
 
 	private static final String KEY_CONTENT = "AccountFragment:AccountId";
 	private static final int ID_LOADER_SUMMARY = 2;
@@ -73,7 +73,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		AccountFragment fragment = new AccountFragment();
 		fragment.mAccountId = accountid;
 		// set name of child fragment
-		fragment.mNameFragment = SearchResultFragment.class.getSimpleName() + "_" + Integer.toString(accountid);
+		fragment.mNameFragment = AllDataFragment.class.getSimpleName() + "_" + Integer.toString(accountid);
 
 		return fragment;
 	}
@@ -93,7 +93,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	private TextView txtAccountName, txtAccountBalance, txtAccountReconciled;
 	private ImageView imgAccountFav;
 	//
-	SearchResultFragment fragment;
+	AllDataFragment fragment;
 	@Override
 	public void onCallbackCreateLoader(int id, Bundle args) {
 		return;
@@ -175,7 +175,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		});
 		// manage fragment
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		fragment = new SearchResultFragment();
+		fragment = new AllDataFragment();
 		// set arguments and settings of fragment
 		fragment.setArguments(prepareArgsForChildFragment());
 		fragment.setAutoStarLoader(false);
@@ -257,8 +257,8 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		}
 		// create a bundle to returns
 		Bundle args = new Bundle();
-		args.putStringArrayList(SearchResultFragment.KEY_ARGUMENTS_WHERE, selection);
-		args.putString(SearchResultFragment.KEY_ARGUMENTS_SORT, QueryAllData.Date + " DESC, " + QueryAllData.ID + " DESC");
+		args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
+		args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.Date + " DESC, " + QueryAllData.ID + " DESC");
 
 		return args;
 	}

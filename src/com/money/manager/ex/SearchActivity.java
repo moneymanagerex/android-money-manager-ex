@@ -24,11 +24,11 @@ import android.support.v4.content.Loader;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.SearchFragment;
-import com.money.manager.ex.fragment.SearchResultFragment;
-import com.money.manager.ex.fragment.SearchResultFragment.SearResultFragmentLoaderCallbacks;
+import com.money.manager.ex.fragment.AllDataFragment;
+import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 
 public class SearchActivity extends BaseFragmentActivity 
-implements SearResultFragmentLoaderCallbacks {
+implements AllDataFragmentLoaderCallbacks {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,7 +60,7 @@ implements SearResultFragmentLoaderCallbacks {
 
 	@Override
 	public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data) {
-		if (loader != null && loader.getId() == SearchResultFragment.ID_LOADER_ALL_DATA_DETAIL && data != null) {
+		if (loader != null && loader.getId() == AllDataFragment.ID_LOADER_ALL_DATA_DETAIL && data != null) {
 			getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
 		}
 		return;

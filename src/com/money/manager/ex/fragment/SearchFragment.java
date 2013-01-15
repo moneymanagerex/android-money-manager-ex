@@ -131,8 +131,8 @@ public class SearchFragment extends SherlockFragment {
 		super.onCreate(savedInstanceState);
 		mApplication = (MoneyManagerApplication)getActivity().getApplication();
 		setHasOptionsMenu(true);
-		SearchResultFragment fragment;
-		fragment = (SearchResultFragment) getActivity().getSupportFragmentManager().findFragmentByTag(SearchResultFragment.class.getSimpleName());
+		AllDataFragment fragment;
+		fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
 		if (fragment != null) {
 			fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getActivity());
 		}
@@ -330,15 +330,15 @@ public class SearchFragment extends SherlockFragment {
 			whereClause.add(ViewAllData.Notes + " LIKE '" + edtNotes.getText() + "'");
 		}
 		//create a fragment search
-		SearchResultFragment fragment;
-		fragment = (SearchResultFragment) getActivity().getSupportFragmentManager().findFragmentByTag(SearchResultFragment.class.getSimpleName());
+		AllDataFragment fragment;
+		fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
 		if (fragment == null) {
-			fragment = new SearchResultFragment();
+			fragment = new AllDataFragment();
 		}
 		//create bundle
 		Bundle args = new Bundle();
-		args.putStringArrayList(SearchResultFragment.KEY_ARGUMENTS_WHERE, whereClause);
-		args.putString(SearchResultFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
+		args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, whereClause);
+		args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
 		//set arguments
 		fragment.setArguments(args);
 		fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getActivity());
@@ -349,7 +349,7 @@ public class SearchFragment extends SherlockFragment {
 		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
 		// Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack
-		transaction.replace(android.R.id.content, fragment, SearchResultFragment.class.getSimpleName());
+		transaction.replace(android.R.id.content, fragment, AllDataFragment.class.getSimpleName());
 		transaction.addToBackStack(null);
 		// Commit the transaction
 		transaction.commit();

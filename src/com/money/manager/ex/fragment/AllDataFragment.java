@@ -44,36 +44,69 @@ import com.money.manager.ex.core.AllDataAdapter;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
 
-public class SearchResultFragment extends BaseListFragment implements LoaderCallbacks<Cursor> {
-	//ID Loader
-	public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
-	//KEY Arguments
-	public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
-	public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
-	//Interface for callback fragment
-	public interface SearResultFragmentLoaderCallbacks {
+public class AllDataFragment extends BaseListFragment implements LoaderCallbacks<Cursor> {
+	// Interface for callback fragment
+	public interface AllDataFragmentLoaderCallbacks {
 		public void onCallbackCreateLoader(int id, Bundle args);
+
 		public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data);
+
 		public void onCallbackLoaderReset(Loader<Cursor> loader);
 	}
-	private SearResultFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
+	// ID Loader
+	public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
+	// KEY Arguments
+	public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
+
+	public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
+
+	private AllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
 	private boolean mAutoStarLoader = true;
 	private boolean mShownHeader = false;
 	private int mGroupId = 0;
+
+	/**
+	 * @return the mGroupId
+	 */
+	public int getContextMenuGroupId() {
+		return mGroupId;
+	}
+
+	/**
+	 * @return the mSearResultFragmentLoaderCallbacks
+	 */
+	public AllDataFragmentLoaderCallbacks getSearResultFragmentLoaderCallbacks() {
+		return mSearResultFragmentLoaderCallbacks;
+	}
+
+	/**
+	 * @return the mAutoStarLoader
+	 */
+	public boolean isAutoStarLoader() {
+		return mAutoStarLoader;
+	}
+
+	/**
+	 * @return the mShownHeader
+	 */
+	public boolean isShownHeader() {
+		return mShownHeader;
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		//set fragment
+		// set fragment
 		setEmptyText(getString(R.string.no_data));
 		setListShown(false);
-		//create adapter
+		// create adapter
 		AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, isShownHeader());
 		setListAdapter(adapter);
-		//register context menu
+		// register context menu
 		registerForContextMenu(getListView());
-		//set animation
+		// set animation
 		setListShown(false);
-		//start loader
+		// start loader
 		if (isAutoStarLoader()) {
 			startLoaderData();
 		}
@@ -82,9 +115,9 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
 		if (item.getGroupId() == getContextMenuGroupId()) {
-			// take a info of the selected menu, and cursor at position 
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
-			Cursor cursor = (Cursor)getListAdapter().getItem(info.position);
+			// take a info of the selected menu, and cursor at position
+			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+			Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
 			// check if cursor is valid
 			if (cursor != null) {
 				switch (item.getItemId()) {
@@ -118,20 +151,21 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		// take info and cursor from listview adapter 
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
-		Cursor cursor = (Cursor)getListAdapter().getItem(info.position);
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		// take info and cursor from listview adapter
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+		Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
 		// check if cursor is valid
 		if (cursor == null) {
 			return;
 		}
-		/*getActivity().getMenuInflater().inflate(R.menu.contextmenu_accountfragment, menu);*/
+		/* getActivity().getMenuInflater().inflate(R.menu.contextmenu_accountfragment, menu); */
 		// add manually
-		int[] menuItem = new int[] {R.id.menu_edit, R.id.menu_delete, R.id.menu_reconciled, R.id.menu_none, R.id.menu_follow_up, R.id.menu_duplicate, R.id.menu_void};
-		int[] menuText = new int[] {R.string.edit, R.string.delete, R.string.status_reconciled, R.string.status_none, R.string.status_follow_up, R.string.status_duplicate, R.string.status_void};
-		for (int i = 0; i < menuItem.length; i ++) {
+		int[] menuItem = new int[] { R.id.menu_edit, R.id.menu_delete, R.id.menu_reconciled, R.id.menu_none, R.id.menu_follow_up, R.id.menu_duplicate,
+				R.id.menu_void };
+		int[] menuText = new int[] { R.string.edit, R.string.delete, R.string.status_reconciled, R.string.status_none, R.string.status_follow_up,
+				R.string.status_duplicate, R.string.status_void };
+		for (int i = 0; i < menuItem.length; i++) {
 			menu.add(getContextMenuGroupId(), menuItem[i], i, menuText[i]);
 		}
 		// create a context menu
@@ -147,23 +181,24 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 			menu.findItem(R.id.menu_follow_up).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("F") == false);
 		if (menu.findItem(R.id.menu_void) != null)
 			menu.findItem(R.id.menu_void).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("V") == false);
-		
+
 	}
-	
+
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		if (getSearResultFragmentLoaderCallbacks() != null)
 			getSearResultFragmentLoaderCallbacks().onCallbackCreateLoader(id, args);
-		
+
 		switch (id) {
 		case ID_LOADER_ALL_DATA_DETAIL:
 			QueryAllData allData = new QueryAllData(getActivity());
 			// compose selection and sort
-			String selection = "", sort = "";
+			String selection = "",
+			sort = "";
 			if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
 				ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
 				if (whereClause != null) {
-					for (int i = 0; i < whereClause.size(); i ++) {
+					for (int i = 0; i < whereClause.size(); i++) {
 						selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
 					}
 				}
@@ -177,20 +212,20 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 		}
 		return null;
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
-	
+
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		if (getSearResultFragmentLoaderCallbacks() != null)
 			getSearResultFragmentLoaderCallbacks().onCallbackLoaderReset(loader);
-		
-		((CursorAdapter)getListAdapter()).swapCursor(null);
+
+		((CursorAdapter) getListAdapter()).swapCursor(null);
 	}
-	
+
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		if (getSearResultFragmentLoaderCallbacks() != null) {
@@ -206,17 +241,43 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 			}
 		}
 	}
+
 	/**
-	 * Start loader into fragment
+	 * @param mAutoStarLoader
+	 *            the mAutoStarLoader to set
 	 */
-	public void startLoaderData() {
-		getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getArguments(), this);
+	public void setAutoStarLoader(boolean mAutoStarLoader) {
+		this.mAutoStarLoader = mAutoStarLoader;
 	}
-	
+
+	/**
+	 * @param mGroupId
+	 *            the mGroupId to set
+	 */
+	public void setContextMenuGroupId(int mGroupId) {
+		this.mGroupId = mGroupId;
+	}
+
+	/**
+	 * @param mSearResultFragmentLoaderCallbacks
+	 *            the mSearResultFragmentLoaderCallbacks to set
+	 */
+	public void setSearResultFragmentLoaderCallbacks(AllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks) {
+		this.mSearResultFragmentLoaderCallbacks = mSearResultFragmentLoaderCallbacks;
+	}
+
+	/**
+	 * @param mShownHeader
+	 *            the mShownHeader to set
+	 */
+	public void setShownHeader(boolean mShownHeader) {
+		this.mShownHeader = mShownHeader;
+	}
+
 	/**
 	 * set status to transaction
 	 * 
-	 * @param position 
+	 * @param position
 	 * @param transId
 	 * @param status
 	 * @return
@@ -226,9 +287,10 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 		ContentValues values = new ContentValues();
 		// set new state
 		values.put(TableCheckingAccount.STATUS, status);
-		
+
 		// update
-		if (getActivity().getContentResolver().update(new TableCheckingAccount().getUri(), values, TableCheckingAccount.TRANSID + "=?", new String[] {Integer.toString(transId)}) <= 0) {
+		if (getActivity().getContentResolver().update(new TableCheckingAccount().getUri(), values, TableCheckingAccount.TRANSID + "=?",
+				new String[] { Integer.toString(transId) }) <= 0) {
 			Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
 			return false;
 		} else {
@@ -237,10 +299,11 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 			return true;
 		}
 	}
-	
+
 	/**
 	 * 
-	 * @param transId primary key of transation
+	 * @param transId
+	 *            primary key of transation
 	 */
 	private void showDialogDeleteCheckingAccount(final int transId) {
 		// create alert dialog and set title and message
@@ -249,23 +312,19 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 		alertDialog.setTitle(R.string.delete_transaction);
 		alertDialog.setMessage(R.string.confirmDelete);
 		alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
-		
+
 		// set listener button positive
-		alertDialog.setPositiveButton(android.R.string.ok,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						TableCheckingAccount trans = new TableCheckingAccount();
-						if (getActivity().getContentResolver().delete(
-								trans.getUri(),
-								TableCheckingAccount.TRANSID + "=?",
-								new String[] {Integer.toString(transId)}) == 0) {
-							Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-						}
-						// restart loader
-						startLoaderData();
-					}
-				});
+		alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				TableCheckingAccount trans = new TableCheckingAccount();
+				if (getActivity().getContentResolver().delete(trans.getUri(), TableCheckingAccount.TRANSID + "=?", new String[] { Integer.toString(transId) }) == 0) {
+					Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+				}
+				// restart loader
+				startLoaderData();
+			}
+		});
 		// set listener negative button
 		alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 			@Override
@@ -278,9 +337,12 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 		alertDialog.create();
 		alertDialog.show();
 	}
+
 	/**
 	 * start the activity of transaction management
-	 * @param transId null set if you want to do a new transaction, or transaction id
+	 * 
+	 * @param transId
+	 *            null set if you want to do a new transaction, or transaction id
 	 */
 	private void startCheckingAccountActivity(Integer transId) {
 		// create intent, set Account ID
@@ -297,58 +359,9 @@ public class SearchResultFragment extends BaseListFragment implements LoaderCall
 	}
 
 	/**
-	 * @param mSearResultFragmentLoaderCallbacks the mSearResultFragmentLoaderCallbacks to set
+	 * Start loader into fragment
 	 */
-	public void setSearResultFragmentLoaderCallbacks(SearResultFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks) {
-		this.mSearResultFragmentLoaderCallbacks = mSearResultFragmentLoaderCallbacks;
-	}
-
-	/**
-	 * @return the mSearResultFragmentLoaderCallbacks
-	 */
-	public SearResultFragmentLoaderCallbacks getSearResultFragmentLoaderCallbacks() {
-		return mSearResultFragmentLoaderCallbacks;
-	}
-
-	/**
-	 * @param mAutoStarLoader the mAutoStarLoader to set
-	 */
-	public void setAutoStarLoader(boolean mAutoStarLoader) {
-		this.mAutoStarLoader = mAutoStarLoader;
-	}
-
-	/**
-	 * @return the mAutoStarLoader
-	 */
-	public boolean isAutoStarLoader() {
-		return mAutoStarLoader;
-	}
-
-	/**
-	 * @param mGroupId the mGroupId to set
-	 */
-	public void setContextMenuGroupId(int mGroupId) {
-		this.mGroupId = mGroupId;
-	}
-
-	/**
-	 * @return the mGroupId
-	 */
-	public int getContextMenuGroupId() {
-		return mGroupId;
-	}
-
-	/**
-	 * @param mShownHeader the mShownHeader to set
-	 */
-	public void setShownHeader(boolean mShownHeader) {
-		this.mShownHeader = mShownHeader;
-	}
-
-	/**
-	 * @return the mShownHeader
-	 */
-	public boolean isShownHeader() {
-		return mShownHeader;
+	public void startLoaderData() {
+		getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getArguments(), this);
 	}
 }
