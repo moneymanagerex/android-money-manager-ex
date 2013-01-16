@@ -17,10 +17,12 @@
  ******************************************************************************/
 package com.money.manager.ex.fragment;
 
+import android.animation.LayoutTransition;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.widget.SearchViewCompat;
 import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 import android.text.TextUtils;
@@ -183,6 +185,14 @@ public class BaseListFragment extends SherlockListFragment {
 		this.setResult();
 		//chiudo l'activity dove sono collegato
 		getActivity().finish();
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		// set animation
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			getListView().setLayoutTransition(new LayoutTransition());
 	}
 }
 	

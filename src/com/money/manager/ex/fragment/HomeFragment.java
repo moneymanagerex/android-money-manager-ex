@@ -156,7 +156,6 @@ public class HomeFragment extends Fragment implements
 		// inflate layout
 		View view = (LinearLayout)inflater.inflate(R.layout.fragment_main, container, false);
 		// reference view into layout
-		linearRepeating = (LinearLayout)view.findViewById(R.id.linearLayoutRepeatingTransaction);
 		txtOverdue = (TextView)view.findViewById(R.id.textViewOverdue);
 		txtUserName = (TextView)view.findViewById(R.id.textViewUserName);
 		txtTotalAccounts = (TextView)view.findViewById(R.id.textViewTotalAccounts);
@@ -234,13 +233,20 @@ public class HomeFragment extends Fragment implements
 			setListViewAccountBillsVisible(true);
 			break;
 		case ID_LOADER_BILL_DEPOSITS:
-			if (data != null) {
-				if (data.getCount() > 0) {
-					/*linearRepeating.setLayoutAnimation(setAnimationView(linearRepeating));*/
-					linearRepeating.setVisibility(View.VISIBLE);
-					txtOverdue.setText(getString(R.string.num_repeating_transaction_expired).replace("num", Integer.toString(data.getCount())));
-				} else {
-					linearRepeating.setVisibility(View.GONE);
+			LinearLayout content = (LinearLayout)getView().findViewById(R.id.content);
+			if (content != null) {
+				// remove view if exists
+				if (linearRepeating != null)
+					content.removeView(linearRepeating);
+				// add view
+				if (data != null && data.getCount() > 0) {
+					LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+					linearRepeating = (LinearLayout)inflater.inflate(R.layout.merge_main_footer_billdeposits, null);
+					if (linearRepeating != null) {
+						txtOverdue = (TextView)linearRepeating.findViewById(R.id.textViewOverdue);
+						txtOverdue.setText(getString(R.string.num_repeating_transaction_expired, data.getCount()));
+						content.addView(linearRepeating);
+					}
 				}
 			}
 			break;

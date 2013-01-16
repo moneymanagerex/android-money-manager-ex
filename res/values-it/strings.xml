@@ -269,7 +269,7 @@
 	<string name="notification_repeating_transaction_expired">Ci sono delle operazioni ricorrenti scadute</string>
 	<string name="notification_click_to_check_repeating_transaction">Seleziona per visualizzare le operazioni scadute</string>
 	<!-- 20121115 -->
-	<string name="num_repeating_transaction_expired">Ci sono num operazioni ricorrenti scadute</string>
+	<string name="num_repeating_transaction_expired">Ci sono %1$d operazioni ricorrenti scadute</string>
 	<!-- 20121121 -->
 	<string name="send_feedback">Invia commenti</string>
 	<string name="send_us_your_feedback">Inviaci i tuoi commenti</string>

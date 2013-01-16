@@ -268,7 +268,7 @@
 	<string name="notification_repeating_transaction_expired">Hay Transacciónes Periódicas vencidas</string>
 	<string name="notification_click_to_check_repeating_transaction">Haga clic para verificar la transacción atrasada</string>
 	<!-- 20121115 -->
-	<string name="num_repeating_transaction_expired">Hay num Transacciónes Periódicas vencidas</string>
+	<string name="num_repeating_transaction_expired">Hay %1$d Transacciónes Periódicas vencidas</string>
 	<!-- 20121121 -->
 	<string name="send_feedback">Enviar comentarios</string>
 	<string name="send_us_your_feedback">Envíenos sus comentarios</string>

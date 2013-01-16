@@ -271,7 +271,7 @@
 	<string name="notification_repeating_transaction_expired">Запланированная проводка просрочена</string>
 	<string name="notification_click_to_check_repeating_transaction">Щелкните, чтобы проверить просроченную проводку</string>
 	<!-- 20121115 -->
-	<string name="num_repeating_transaction_expired">Количество просроченных проводок</string>
+	<string name="num_repeating_transaction_expired">Количество просроченных проводок %1$d</string>
 	<!-- 20121121 -->
 	<string name="send_feedback">Отправить отзыв</string>
 	<string name="send_us_your_feedback">Отправьте нам ваш отзыв</string>

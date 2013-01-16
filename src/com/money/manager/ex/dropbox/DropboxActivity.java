@@ -47,7 +47,6 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.DropboxAPI.UploadRequest;
@@ -136,8 +135,6 @@ public class DropboxActivity extends BaseFragmentActivity {
 			} else {
 				Toast.makeText(mContext, mError, Toast.LENGTH_LONG).show();
 			}
-			setProgressBarIndeterminateVisibility(Boolean.FALSE);
-		    setProgressBarVisibility(Boolean.FALSE);
 			// restore dell'orientazione
 			restoreOrietation(mPrevOrientation);
 		}
@@ -147,9 +144,6 @@ public class DropboxActivity extends BaseFragmentActivity {
 			super.onPreExecute();
 			// set orientation
 			forceCurrentOrientation();
-			// show inderteminate progress
-			setProgressBarIndeterminateVisibility(Boolean.TRUE);
-		    setProgressBarVisibility(Boolean.TRUE);
 		}
 	}
 	public class SyncDropBox extends AsyncTask<Void, Long, Boolean> {
@@ -536,15 +530,15 @@ public class DropboxActivity extends BaseFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		requestWindowFeature(Window.FEATURE_PROGRESS);
+		//requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		//requestWindowFeature(Window.FEATURE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		Log.i(LOGCAT, "activity create");
 		// actionbar
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setProgressBarIndeterminateVisibility(Boolean.FALSE);
-		    setProgressBarVisibility(Boolean.FALSE);
+			//setProgressBarIndeterminateVisibility(Boolean.FALSE);
+		    //setProgressBarVisibility(Boolean.FALSE);
 		}
 		// create session of dropbox
         AndroidAuthSession session = buildSession();
