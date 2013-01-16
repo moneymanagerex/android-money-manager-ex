@@ -41,6 +41,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.ViewMobileData;
@@ -60,6 +61,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 		public void bindView(View view, Context context, Cursor cursor) {
 			TextView txtColumn1 = (TextView)view.findViewById(R.id.textViewColumn1);
 			TextView txtColumn2 = (TextView)view.findViewById(R.id.textViewColumn2);
+			Core core = new Core(context);
 			float total = cursor.getFloat(cursor.getColumnIndex("TOTAL")); 
 			String column1 = "<b>" + cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)) + "</b>";
 			if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
@@ -68,9 +70,9 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			txtColumn1.setText(Html.fromHtml(column1));
 			txtColumn2.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
 			if (total < 0) {
-				txtColumn2.setTextColor(context.getResources().getColor(R.color.holo_red_light));
+				txtColumn2.setTextColor(context.getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_red_color_theme)));
 			} else {
-				txtColumn2.setTextColor(context.getResources().getColor(R.color.holo_green_light));
+				txtColumn2.setTextColor(context.getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_green_color_theme)));
 			}
 		}
 

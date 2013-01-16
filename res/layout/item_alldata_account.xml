@@ -62,7 +62,7 @@
                 android:layout_column="2"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="@color/holo_green_light"
+                android:textColor="?attr/holo_green_color_theme"
                 android:textStyle="bold" />
 
             <TextView
@@ -72,7 +72,7 @@
                 android:layout_column="3"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="@color/holo_red_light"
+                android:textColor="?attr/holo_red_color_theme"
                 android:textStyle="bold" />
         </TableRow>
     </TableLayout>

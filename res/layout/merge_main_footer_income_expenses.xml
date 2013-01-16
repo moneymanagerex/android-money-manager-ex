@@ -18,7 +18,7 @@
                 android:layout_weight="1"
                 android:text="@string/income"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/holo_green_light" 
+                android:textColor="?attr/holo_green_color_theme" 
                 android:singleLine="true"/>
 
             <TextView
@@ -30,7 +30,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/holo_green_light" 
+                android:textColor="?attr/holo_green_color_theme" 
                 android:singleLine="true"/>
         </TableRow>
 
@@ -45,7 +45,7 @@
                 android:layout_weight="1"
                 android:text="@string/expenses"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/holo_red_light" 
+                android:textColor="?attr/holo_red_color_theme" 
                 android:singleLine="true"/>
 
             <TextView
@@ -57,7 +57,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/holo_red_light" 
+                android:textColor="?attr/holo_red_color_theme" 
                 android:singleLine="true"/>
         </TableRow>
         <!--

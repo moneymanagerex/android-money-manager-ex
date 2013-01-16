@@ -46,6 +46,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.ViewMobileData;
@@ -252,10 +253,11 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			txtDifference.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income - Math.abs(expenses)));
 			txtDifference.setTypeface(null, Typeface.BOLD_ITALIC);
 			//change colors
+			Core core = new Core(getActivity());
 			if (income - Math.abs(expenses) < 0) {
-				txtDifference.setTextColor(getResources().getColor(R.color.holo_red_light));
+				txtDifference.setTextColor(getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_red_color_theme)));
 			} else {
-				txtDifference.setTextColor(getResources().getColor(R.color.holo_green_light));
+				txtDifference.setTextColor(getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_green_color_theme)));
 			}
 		}
 		/**
@@ -309,10 +311,11 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			txtIncome.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income));
 			txtExpenses.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), Math.abs(expenses)));
 			txtDifference.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income - Math.abs(expenses)));
+			Core core = new Core(context);
 			if (income - Math.abs(expenses) < 0) {
-				txtDifference.setTextColor(context.getResources().getColor(R.color.holo_red_light));
+				txtDifference.setTextColor(context.getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_red_color_theme)));
 			} else {
-				txtDifference.setTextColor(context.getResources().getColor(R.color.holo_green_dark));
+				txtDifference.setTextColor(context.getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_green_color_theme)));
 			}
 		}
 		

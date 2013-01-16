@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
@@ -135,10 +136,11 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 			float total = cursor.getFloat(cursor.getColumnIndex("TOTAL")); 
 			txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
 			txtColumn2.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
+			Core core = new Core(context);
 			if (total < 0) {
-				txtColumn2.setTextColor(context.getResources().getColor(R.color.holo_red_light));
+				txtColumn2.setTextColor(context.getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_red_color_theme)));
 			} else {
-				txtColumn2.setTextColor(context.getResources().getColor(R.color.holo_green_light));
+				txtColumn2.setTextColor(context.getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_green_color_theme)));
 			}
 		}
 

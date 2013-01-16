@@ -4,7 +4,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:baselineAligned="false" >
 
         <LinearLayout
             android:layout_width="0dp"
@@ -21,7 +22,7 @@
                 android:singleLine="true"
                 android:text="@string/income"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/holo_green_light" />
+                android:textColor="?attr/holo_green_color_theme" />
 
             <TextView
                 android:id="@+id/textViewIncome"
@@ -31,7 +32,7 @@
                 android:layout_marginRight="2dp"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/holo_green_light" />
+                android:textColor="?attr/holo_green_color_theme" />
         </LinearLayout>
 
         <LinearLayout
@@ -49,7 +50,7 @@
                 android:singleLine="true"
                 android:text="@string/expenses"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/holo_red_light" />
+                android:textColor="?attr/holo_red_color_theme" />
 
             <TextView
                 android:id="@+id/textViewExpenses"
@@ -59,7 +60,7 @@
                 android:layout_marginRight="2dp"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/holo_red_light" />
+                android:textColor="?attr/holo_red_color_theme" />
         </LinearLayout>
 
         <LinearLayout

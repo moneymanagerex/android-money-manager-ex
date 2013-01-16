@@ -20,6 +20,8 @@
 
     <declare-styleable name="Theme.Money.Manager">
         <attr name="ic_action_calendar_day" format="reference" />
+        <attr name="holo_green_color_theme" format="color|reference" />
+        <attr name="holo_red_color_theme" format="color|reference" />
     </declare-styleable>
 
 </resources>
