@@ -20,8 +20,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="126"
-    android:versionName="0.9.5" >
+    android:versionCode="133"
+    android:versionName="0.9.9.133" >
 
     <uses-sdk
         android:minSdkVersion="8"

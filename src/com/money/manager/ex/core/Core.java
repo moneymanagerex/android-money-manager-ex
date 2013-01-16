@@ -36,4 +36,12 @@ public class Core {
 		else 
 			return -1;
 	}
+	
+	public int resolveIdAttribute(int attr) {
+		TypedValue tv = new TypedValue();
+		if (context.getTheme().resolveAttribute(attr, tv, true))
+			return tv.resourceId;
+		else 
+			return -1;
+	}
 }

@@ -14,15 +14,16 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
-<resources>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <declare-styleable name="Theme.Money.Manager">
-        <attr name="ic_action_calendar_day" format="reference" />
-        <attr name="ic_action_list" format="reference" />
-        <attr name="holo_green_color_theme" format="color|reference" />
-        <attr name="holo_red_color_theme" format="color|reference" />
-    </declare-styleable>
+    <item
+        android:id="@+id/menu_period"
+        android:icon="?attr/ic_action_calendar_day"
+        android:showAsAction="ifRoom">
+        <menu android:id="@+id/submenu_year" >
+        </menu>
+    </item>
 
-</resources>
+</menu>

@@ -20,11 +20,13 @@
 
     <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
+        <item name="ic_action_list">@drawable/ic_action_list_dark</item>
         <item name="holo_green_color_theme">@color/holo_green_light</item>
         <item name="holo_red_color_theme">@color/holo_red_light</item>
     </style>
     <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light">
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_light</item>
+        <item name="ic_action_list">@drawable/ic_action_list_light</item>
         <item name="holo_green_color_theme">@color/holo_green_dark</item>
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
     </style>

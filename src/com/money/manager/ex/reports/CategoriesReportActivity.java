@@ -121,10 +121,11 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
 			MenuItem itemOption = menu.findItem(R.id.menu_option1);
+			Core core = new Core(getActivity());
 			if (itemOption != null) {
 				itemOption.setVisible(true);
 				itemOption.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-				itemOption.setIcon(getActivity().getResources().getDrawable(android.R.drawable.ic_menu_info_details));
+				itemOption.setIcon(getActivity().getResources().getDrawable(core.resolveIdAttribute(R.attr.ic_action_list)));
 				//take a submenu
 				SubMenu subMenu = itemOption.getSubMenu();
 				if (subMenu != null) {

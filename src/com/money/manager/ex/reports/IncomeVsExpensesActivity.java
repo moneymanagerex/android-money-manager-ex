@@ -44,6 +44,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -138,6 +139,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 		@Override
 		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
+			inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
 			//Create a cursor for select year
 			MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(getActivity());
 			SQLiteDatabase database = helper.getReadableDatabase();
@@ -146,7 +148,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 				int order = 0;
 				while (!cursor.isAfterLast()) {
 					int year = cursor.getInt(cursor.getColumnIndex("Year"));
-					menu.add(0, year, order ++, Integer.toString(year)).setCheckable(true);
+					menu.findItem(R.id.menu_period).getSubMenu().add(0, year, order ++, Integer.toString(year)).setCheckable(true);
 					//move to next
 					cursor.moveToNext();
 				}
@@ -157,9 +159,12 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 		
 		@Override
 		public void onPrepareOptionsMenu(Menu menu) {
-			for(int i = 0; i < menu.size(); i ++) {
-				MenuItem item = menu.getItem(i);
-				item.setChecked(mCheckedItem.containsKey(item.getItemId()));
+			SubMenu subMenu = menu.findItem(R.id.menu_period).getSubMenu();
+			if (subMenu != null) {
+				for(int i = 0; i < subMenu.size(); i ++) {
+					MenuItem item = subMenu.getItem(i);
+					item.setChecked(mCheckedItem.containsKey(item.getItemId()));
+				}
 			}
 			super.onPrepareOptionsMenu(menu);
 		}
@@ -212,7 +217,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			for(int id : ids) {
 				TextView textView = (TextView)row.findViewById(id);
 				textView.setTypeface(null, Typeface.BOLD);
-				//textView.setText(textView.getText().toString().toUpperCase());
+				textView.setSingleLine(true);
 			}
 			getListView().addHeaderView(row);
 		}
