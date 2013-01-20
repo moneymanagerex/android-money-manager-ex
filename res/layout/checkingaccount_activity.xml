@@ -113,7 +113,7 @@
                     android:layout_width="@dimen/money_button_height"
                     android:layout_height="@dimen/money_button_height"
                     android:layout_gravity="center_vertical"
-                    android:src="?attr/ic_action_calendar_day"
+                    android:src="@drawable/ic_action_calendar_day_dark"
                     android:text="..." />
             </LinearLayout>
 
@@ -239,7 +239,7 @@
                     android:inputType="number" />
 
                 <ImageButton
-                    android:src="@android:drawable/ic_menu_add"
+                    android:src="@drawable/ic_action_plusone_dark"
                     android:id="@+id/buttonTransNumber"
                     style="@style/Money.Button"
                     android:layout_width="@dimen/money_button_height"

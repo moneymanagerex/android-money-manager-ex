@@ -18,6 +18,7 @@
 package com.money.manager.ex.database;
 
 import android.content.Context;
+
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 /**

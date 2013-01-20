@@ -22,10 +22,10 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 
 import com.actionbarsherlock.view.MenuItem;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.SearchFragment;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
+import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.SearchFragment;
 
 public class SearchActivity extends BaseFragmentActivity 
 implements AllDataFragmentLoaderCallbacks {

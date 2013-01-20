@@ -17,12 +17,12 @@
  ******************************************************************************/
 package com.money.manager.ex.database;
 
-import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.R;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
+
+import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.R;
 
 public class QueryAccountBills extends Dataset {
 	//definizione dei nomi dei campi

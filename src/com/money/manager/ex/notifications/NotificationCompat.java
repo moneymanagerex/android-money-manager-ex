@@ -16,6 +16,8 @@
 
 package com.money.manager.ex.notifications;
 
+import java.util.ArrayList;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -25,7 +27,6 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.widget.RemoteViews;
-import java.util.ArrayList;
 
 /**
  * Helper for accessing features in {@link android.app.Notification}

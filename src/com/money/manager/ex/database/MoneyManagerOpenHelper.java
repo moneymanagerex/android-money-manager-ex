@@ -27,8 +27,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.R;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)

@@ -70,10 +70,11 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			txtColumn1.setText(Html.fromHtml(column1));
 			txtColumn2.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
 			if (total < 0) {
-				txtColumn2.setTextColor(context.getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_red_color_theme)));
+				txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
 			} else {
-				txtColumn2.setTextColor(context.getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_green_color_theme)));
+				txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_green_color_theme)));
 			}
+			view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
 		}
 
 		@Override

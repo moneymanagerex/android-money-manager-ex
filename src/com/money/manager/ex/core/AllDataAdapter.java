@@ -147,6 +147,8 @@ public class AllDataAdapter extends CursorAdapter {
 		} else {
 			txtNotes.setVisibility(View.GONE);
 		}
+		// do not use, don't like ui
+		//view.setBackgroundColor(new Core(context).resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
 	}
 	
 	@Override

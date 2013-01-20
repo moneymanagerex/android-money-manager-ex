@@ -45,6 +45,7 @@ import android.widget.TextView;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
@@ -84,6 +85,8 @@ public class HomeFragment extends Fragment implements
 					.getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
 					cursor.getFloat(cursor.getColumnIndex(accountBills.RECONCILED)));
 			txtAccountReconciled.setText(value);
+			// do not use, don't like ui
+			//view.setBackgroundColor(new Core(context).resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
 		}
 
 		@Override

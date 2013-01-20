@@ -244,7 +244,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			super.onCreateOptionsMenu(menu, inflater);
 			// item add
             /*MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
-            itemadd.setIcon(android.R.drawable.ic_menu_add);
+            itemadd.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_add));
             itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);*/
             
             // create submenu from item add

@@ -55,6 +55,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SearchActivity;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
@@ -265,7 +266,7 @@ public class SearchFragment extends SherlockFragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		MenuItem item = menu.add(0, ID_MENU_SEARCH, 0, R.string.search);
-		item.setIcon(getActivity().getResources().getDrawable(android.R.drawable.ic_menu_search));
+		item.setIcon(getActivity().getResources().getDrawable(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search)));
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 	}
 	

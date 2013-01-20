@@ -76,7 +76,7 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
 		txtAmount.setText(application.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), amount));
 		// check amount sign
 		Core core = new Core(context);
-		txtAmount.setTextColor(context.getResources().getColor( amount > 0 ? core.resolveColorIdAttribute(R.attr.holo_green_color_theme) : core.resolveColorIdAttribute(R.attr.holo_red_color_theme) ));
+		txtAmount.setTextColor(context.getResources().getColor( amount > 0 ? core.resolveIdAttribute(R.attr.holo_green_color_theme) : core.resolveIdAttribute(R.attr.holo_red_color_theme) ));
 		// compose payee description
 		String payee = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
 		// write payee

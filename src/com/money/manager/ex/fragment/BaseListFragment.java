@@ -25,6 +25,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SearchViewCompat;
 import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 
 public class BaseListFragment extends SherlockListFragment {
 	// ID MENU
@@ -55,7 +57,7 @@ public class BaseListFragment extends SherlockListFragment {
 		if (isShowMenuItemSearch()) {
 	        // Place an action bar item for searching.
 	        final MenuItem itemSearch = menu.add(0, MENU_ITEM_SEARCH, MENU_ITEM_SEARCH, R.string.search);
-	        itemSearch.setIcon(android.R.drawable.ic_menu_search);
+	        itemSearch.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search));
 	        itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 	        // uso il Compat per avere l'oggetto
 	        View searchView = SearchViewCompat.newSearchView(getActivity());
@@ -105,7 +107,8 @@ public class BaseListFragment extends SherlockListFragment {
 				});
 	        	((SherlockFragmentActivity)getActivity()).getSupportActionBar().setCustomView(searchView);
 	        }
-	        Toast.makeText(getActivity(), R.string.lookups_wildcard, Toast.LENGTH_SHORT).show();
+	        String textToast = "<small><b>" + getString(R.string.lookups_wildcard) + "</b></small>";
+	        Toast.makeText(getActivity(), Html.fromHtml(textToast), Toast.LENGTH_LONG).show();
 		}
 	}
 	

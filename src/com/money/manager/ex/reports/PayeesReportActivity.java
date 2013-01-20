@@ -40,6 +40,38 @@ import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 public class PayeesReportActivity extends BaseFragmentActivity {
+	private static class PayeeReportAdapter extends CursorAdapter {
+		private LayoutInflater mInflater;
+		
+		@SuppressWarnings("deprecation")
+		public PayeeReportAdapter(Context context, Cursor c) {
+			super(context, c);
+			mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+		@Override
+		public void bindView(View view, Context context, Cursor cursor) {
+			TextView txtColumn1 = (TextView)view.findViewById(R.id.textViewColumn1);
+			TextView txtColumn2 = (TextView)view.findViewById(R.id.textViewColumn2);
+			float total = cursor.getFloat(cursor.getColumnIndex("TOTAL")); 
+			txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
+			txtColumn2.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
+			Core core = new Core(context);
+			if (total < 0) {
+				txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
+			} else {
+				txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_green_color_theme)));
+			}
+
+			view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
+		}
+
+		@Override
+		public View newView(Context context, Cursor cursor, ViewGroup root) {
+			return mInflater.inflate(R.layout.item_generic_report_2_columns, root, false);
+		}
+	}
+	
 	public static class PayeeReportFragment extends BaseReportFragment {
 		private LinearLayout mHeaderListView, mFooterListView;
 		
@@ -75,6 +107,24 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 			super.onActivityCreated(savedInstanceState);
 		}
 		
+		@Override
+		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+			super.onLoadFinished(loader, data);
+			switch (loader.getId()) {
+			case ID_LOADER:
+				//parse cursor for calculate total
+				if (data != null && data.moveToFirst()) {
+					float totalAmount = 0;
+					while (!data.isAfterLast()) {
+						totalAmount += data.getFloat(data.getColumnIndex("TOTAL"));
+						data.moveToNext();
+					}
+					TextView txtColumn2 = (TextView)mFooterListView.findViewById(R.id.textViewColumn2);
+					txtColumn2.setText(application.getBaseCurrencyFormatted(totalAmount));
+				}
+			}
+		}
+		
 		@SuppressWarnings("deprecation")
 		@Override
 		protected String prepareQuery(String whereClause) {
@@ -100,54 +150,6 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 			}
 		}
 		
-		@Override
-		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-			super.onLoadFinished(loader, data);
-			switch (loader.getId()) {
-			case ID_LOADER:
-				//parse cursor for calculate total
-				if (data != null && data.moveToFirst()) {
-					float totalAmount = 0;
-					while (!data.isAfterLast()) {
-						totalAmount += data.getFloat(data.getColumnIndex("TOTAL"));
-						data.moveToNext();
-					}
-					TextView txtColumn2 = (TextView)mFooterListView.findViewById(R.id.textViewColumn2);
-					txtColumn2.setText(application.getBaseCurrencyFormatted(totalAmount));
-				}
-			}
-		}
-		
-	}
-	
-	private static class PayeeReportAdapter extends CursorAdapter {
-		private LayoutInflater mInflater;
-		
-		@SuppressWarnings("deprecation")
-		public PayeeReportAdapter(Context context, Cursor c) {
-			super(context, c);
-			mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		}
-
-		@Override
-		public void bindView(View view, Context context, Cursor cursor) {
-			TextView txtColumn1 = (TextView)view.findViewById(R.id.textViewColumn1);
-			TextView txtColumn2 = (TextView)view.findViewById(R.id.textViewColumn2);
-			float total = cursor.getFloat(cursor.getColumnIndex("TOTAL")); 
-			txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
-			txtColumn2.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
-			Core core = new Core(context);
-			if (total < 0) {
-				txtColumn2.setTextColor(context.getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_red_color_theme)));
-			} else {
-				txtColumn2.setTextColor(context.getResources().getColor(core.resolveColorIdAttribute(R.attr.holo_green_color_theme)));
-			}
-		}
-
-		@Override
-		public View newView(Context context, Cursor cursor, ViewGroup root) {
-			return mInflater.inflate(R.layout.item_generic_report_2_columns, root, false);
-		}
 	}
 	
 	static MoneyManagerApplication application;
