@@ -30,6 +30,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
@@ -37,11 +38,14 @@ import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.dropbox.DropboxActivity;
 
 public class PreferencesActivity extends SherlockPreferenceActivity {
+	private static final String LOGCAT = PreferencesActivity.class.getSimpleName();
+	
 	private static final int REQUEST_INSERT_PASSCODE = 1;
 	private static final int REQUEST_EDIT_PASSCODE = 2;
 	private static final int REQUEST_DELETE_PASSCODE = 3;
@@ -49,9 +53,9 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 	// application
 	private MoneyManagerApplication application;
 	// id preference
-	private Preference pUserName, pDatabasePath, pDropboxFile;
+	private Preference pUserName, pDatabasePath, pDropboxFile, pFinancialDay;
 	private PreferenceScreen psActivePasscode, psEditPasscode, psDisablePasscode;
-	private ListPreference lstBaseCurrency, lstDropboxMode, lstTheme, lstShow, lstTypeHome;
+	private ListPreference lstDateFormat, lstBaseCurrency, lstFinancialMonth, lstDropboxMode, lstTheme, lstShow, lstTypeHome;
 	private CheckBoxPreference chkAccountOpen, chkAccountFav;
 
 	private static String passcode = null;
@@ -101,12 +105,22 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			}
 		}
 	}
-
+	
+	private String getDateFormatFromMask(String mask) {
+		for (int i = 0; i < getResources().getStringArray(R.array.date_format_mask).length; i ++) {
+			if (mask.equals(getResources().getStringArray(R.array.date_format_mask)[i])) {
+				return getResources().getStringArray(R.array.date_format)[i];
+			}
+		}
+		return null;
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		application = (MoneyManagerApplication) this.getApplication();
 		application.setThemeApplication(this);
+		final Core core = new Core(this);
 		
 		super.onCreate(savedInstanceState);
 
@@ -127,7 +141,29 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				}
 			});
 		}
-
+		// list date format
+		lstDateFormat = (ListPreference) findPreference(MoneyManagerApplication.PREF_DATE_FORMAT);
+		if (lstDateFormat != null) {
+			lstDateFormat.setEntries(getResources().getStringArray(R.array.date_format));
+			lstDateFormat.setEntryValues(getResources().getStringArray(R.array.date_format_mask));
+			//set summary
+			String value = core.getInfoValue(Core.INFO_NAME_DATEFORMAT);
+			lstDateFormat.setSummary(getDateFormatFromMask(value));
+			lstDateFormat.setValue(value);
+			//on change
+			lstDateFormat.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					if (core.setInfoValue(Core.INFO_NAME_DATEFORMAT, (String)newValue)) {
+						lstDateFormat.setSummary(getDateFormatFromMask((String)newValue));
+						return true;
+					} else {
+						return false;
+					}
+				}
+			});
+		}
 		// list preference base currency
 		lstBaseCurrency = (ListPreference) findPreference(MoneyManagerApplication.PREF_BASE_CURRENCY);
 		if (lstBaseCurrency != null) {
@@ -159,7 +195,33 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				}
 			});
 		}
-
+		// financial day and month
+		pFinancialDay = (Preference)findPreference(MoneyManagerApplication.PREF_FINANCIAL_YEAR_STARTDATE);
+		if (pFinancialDay != null) {
+			pFinancialDay.setSummary(core.getInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_DAY));
+			pFinancialDay.setDefaultValue(pFinancialDay.getSummary().toString());
+			pFinancialDay.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					int day = 0;
+					try { 
+						day = Integer.parseInt((String)newValue);
+						if (!(day >= 1 && day <= 31)) {
+							return false;
+						}
+						if (core.setInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
+							pFinancialDay.setSummary(Integer.toString(day));
+						}
+						return true;
+					} catch (Exception e){
+						Log.e(LOGCAT, e.getMessage());
+					}
+					return false;
+				}
+			});
+		}
+		//TODO Month
+		
 		// checkbox on open and favorite account
 		chkAccountOpen = (CheckBoxPreference) findPreference(MoneyManagerApplication.PREF_ACCOUNT_OPEN_VISIBLE);
 		chkAccountFav = (CheckBoxPreference) findPreference(MoneyManagerApplication.PREF_ACCOUNT_FAV_VISIBLE);

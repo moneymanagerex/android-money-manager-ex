@@ -308,5 +308,8 @@
 	<string name="to">To</string>
 	<string name="result">Result</string>
 	<string name="number_transaction_found">Number of transactions found: %1$d</string>
-	<!-- 20130108 --> 
+	<!-- 20130108 -->
+	<string name="date_format">Date Format</string>
+	<string name="financial_year_start_day">Financial Year: Start Day</string>
+	<string name="financial_year_start_month">Financial Year: Start Month</string>
 </resources>

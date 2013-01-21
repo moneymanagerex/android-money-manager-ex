@@ -23,10 +23,18 @@
             android:key="username"
             android:summary="@string/username"
             android:title="@string/user" />
-
+        <ListPreference
+            android:key="dateformat"
+            android:title="@string/date_format" />
         <ListPreference
             android:key="basecurrency"
             android:title="@string/base_currency" />
+        <EditTextPreference
+            android:key="financial_year_startday"
+            android:title="@string/financial_year_start_day" />
+        <ListPreference
+            android:key="financial_year_startmonth"
+            android:title="@string/financial_year_start_day" />
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/preferences_dispaly" >
         <CheckBoxPreference

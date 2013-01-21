@@ -84,6 +84,9 @@ public class MoneyManagerApplication extends Application {
     public static final String PREF_SHOW_INTRODUCTION = "prefshowintroduction";
     public static final String PREF_DATABASE_PATH = "databasepath";
     public static final String PREF_USER_NAME = "username";
+    public static final String PREF_DATE_FORMAT = "dateformat";
+    public static final String PREF_FINANCIAL_YEAR_STARTDATE = "financial_year_startday";
+    public static final String PREF_FINANCIAL_YEAR_STARTMONTH = "financial_year_startmonth";
     public static final String PREF_BASE_CURRENCY = "basecurrency";
     public static final String PREF_ACCOUNT_OPEN_VISIBLE = "accountsopenvisible";
     public static final String PREF_ACCOUNT_FAV_VISIBLE = "accountsfavoritevisible";

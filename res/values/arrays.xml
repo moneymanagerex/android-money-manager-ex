@@ -261,5 +261,50 @@
         <item>YER</item>
         <item>ZWD</item>
     </string-array>
+    <!-- Date format -->
+    <string-array name="date_format">
+        <item>DD/MM/YY</item>
+        <item>DD/MM/YYYY</item>
+        <item>DD-MM-YY</item>
+        <item>DD-MM-YYYY</item>
+        <item>DD.MM.YY</item>
+        <item>DD.MM.YYYY</item>
+        <item>DD,MM,YY</item>
+        <item>DD/MM\'YYYY</item>
+        <item>DD/MM YYYY</item>
+        <item>MM/DD/YY</item>
+        <item>MM/DD/YYYY</item>
+        <item>MM-DD-YY</item>
+        <item>MM-DD-YYYY</item>
+        <item>MM/DD\'YYYY</item>
+        <item>YY/MM/DD</item>
+        <item>YY-MM-DD</item>
+        <item>YYYY/MM/DD</item>
+        <item>YYYY-MM-DD</item>
+        <item>YYYY.MM.DD</item>
+        <item>YYYYMMDD</item>
+    </string-array>
+    <string-array name="date_format_mask">
+        <item>%d/%m/%y</item>
+        <item>%d/%m/%Y</item>
+        <item>%d-%m-%y</item>
+        <item>%d-%m-%Y</item>
+        <item>%d.%m.%y</item>
+        <item>%d.%m.%Y</item>
+        <item>%d,%m,%y</item>
+        <item>%d/%m\'%Y</item>
+        <item>%d/%m %Y</item>
+        <item>%m/%d/%y</item>
+        <item>%m/%d/%Y</item>
+        <item>%m-%d-%y</item>
+        <item>%m-%d-%Y</item>
+        <item>%m/%d\'%Y</item>
+        <item>%y/%m/%d</item>
+        <item>%y-%m-%d</item>
+        <item>%Y/%m/%d</item>
+        <item>%Y-%m-%d</item>
+        <item>%Y.%m.%d</item>
+        <item>%Y%m%d</item>
 
+    </string-array>
 </resources>
