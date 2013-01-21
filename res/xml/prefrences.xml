@@ -34,7 +34,7 @@
             android:title="@string/financial_year_start_day" />
         <ListPreference
             android:key="financial_year_startmonth"
-            android:title="@string/financial_year_start_day" />
+            android:title="@string/financial_year_start_month" />
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/preferences_dispaly" >
         <CheckBoxPreference
@@ -90,6 +90,18 @@
         <Preference
             android:key="databasepath"
             android:title="@string/path" />
+        <Preference 
+            android:key="versionname"
+            android:title="@string/version"
+            android:selectable="false" />
+        <Preference 
+            android:key="versioncode"
+            android:title="@string/build"
+            android:selectable="false" />
+        <Preference 
+            android:key="versiondate"
+            android:title="@string/release_date"
+            android:selectable="false" />
     </PreferenceScreen>
 
 </PreferenceScreen>

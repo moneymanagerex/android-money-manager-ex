@@ -19,11 +19,33 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
+       	<!-- Colors -->
+        <item name="holo_green_color_theme">@color/holo_green_light</item>
+        <item name="holo_red_color_theme">@color/holo_red_light</item>
+        <item name="row_dark_theme">@android:color/transparent</item>
+        <item name="row_light_theme">@color/holo_dark_row_light</item>
+        <!-- Drawables -->
+        <item name="ic_action_add">@drawable/ic_action_add_dark</item>
+        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
+        <item name="ic_action_list">@drawable/ic_action_list_dark</item>
+        <item name="ic_action_search">@drawable/ic_action_search_dark</item>
+        <item name="ic_action_warning">@drawable/ic_action_warning_dark</item>
         <item name="android:textSize">@dimen/money_text_view_size</item>
     </style>
     
     <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="android:textSize">@dimen/money_text_view_size</item>
+        <!-- Colors -->
+        <item name="holo_green_color_theme">@color/holo_green_dark</item>
+        <item name="holo_red_color_theme">@color/holo_red_dark</item>
+        <item name="row_dark_theme">@android:color/transparent</item>
+        <item name="row_light_theme">@color/holo_light_row_light</item>
+        <!-- Drawables -->
+        <item name="ic_action_add">@drawable/ic_action_add_light</item>
+        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_light</item>
+        <item name="ic_action_list">@drawable/ic_action_list_light</item>
+        <item name="ic_action_search">@drawable/ic_action_search_light</item>
+        <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
     </style>
 
 </resources>

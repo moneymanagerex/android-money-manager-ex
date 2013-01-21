@@ -268,9 +268,12 @@ public class HomeFragment extends Fragment implements
 			// take application
 			MoneyManagerApplication application = ((MoneyManagerApplication)getActivity().getApplication());
 			// set value
-			txtIncome.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income));
-			txtExpenses.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), Math.abs(expenses)));
-			txtDifference.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income - Math.abs(expenses)));
+			if (txtIncome != null)
+				txtIncome.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income));
+			if (txtExpenses != null) 
+				txtExpenses.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), Math.abs(expenses)));
+			if (txtDifference != null)
+				txtDifference.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income - Math.abs(expenses)));
 		}
 	}
 	

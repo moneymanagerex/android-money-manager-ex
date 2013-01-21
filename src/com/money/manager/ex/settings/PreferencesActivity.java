@@ -22,6 +22,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -30,6 +31,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -53,7 +55,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 	// application
 	private MoneyManagerApplication application;
 	// id preference
-	private Preference pUserName, pDatabasePath, pDropboxFile, pFinancialDay;
+	private Preference pUserName, pDatabasePath, pDropboxFile, pFinancialDay, pVersionName;
 	private PreferenceScreen psActivePasscode, psEditPasscode, psDisablePasscode;
 	private ListPreference lstDateFormat, lstBaseCurrency, lstFinancialMonth, lstDropboxMode, lstTheme, lstShow, lstTypeHome;
 	private CheckBoxPreference chkAccountOpen, chkAccountFav;
@@ -199,7 +201,9 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		pFinancialDay = (Preference)findPreference(MoneyManagerApplication.PREF_FINANCIAL_YEAR_STARTDATE);
 		if (pFinancialDay != null) {
 			pFinancialDay.setSummary(core.getInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_DAY));
-			pFinancialDay.setDefaultValue(pFinancialDay.getSummary().toString());
+			if (pFinancialDay.getSummary() != null) {
+				pFinancialDay.setDefaultValue(pFinancialDay.getSummary().toString());
+			}
 			pFinancialDay.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -221,7 +225,28 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			});
 		}
 		//TODO Month
-		
+		lstFinancialMonth = (ListPreference) findPreference(MoneyManagerApplication.PREF_FINANCIAL_YEAR_STARTMONTH);
+		if (lstFinancialMonth != null) {
+			lstFinancialMonth.setEntries(core.getListMonths());
+			lstFinancialMonth.setEntryValues(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"});
+			// get current month
+			String currentMonth = core.getInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH);
+			if (!TextUtils.isEmpty(currentMonth)) {
+				lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[Integer.parseInt(currentMonth)]);
+				lstFinancialMonth.setValue(currentMonth);
+			}
+			lstFinancialMonth.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					if (core.setInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH, (String)newValue)) {
+						lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[Integer.parseInt((String)newValue)]);
+						return true;
+					}
+					return false;
+				}
+			});
+		}
 		// checkbox on open and favorite account
 		chkAccountOpen = (CheckBoxPreference) findPreference(MoneyManagerApplication.PREF_ACCOUNT_OPEN_VISIBLE);
 		chkAccountFav = (CheckBoxPreference) findPreference(MoneyManagerApplication.PREF_ACCOUNT_FAV_VISIBLE);
@@ -345,6 +370,22 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				return false;
 			}
 		});
+		
+		//version name code etc...
+		try {
+			PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+			if ((Preference)findPreference("versionname") != null) {
+				((Preference)findPreference("versionname")).setSummary(info.versionName);
+			}
+			if ((Preference)findPreference("versioncode") != null) {
+				((Preference)findPreference("versioncode")).setSummary(Integer.toString(info.versionCode));
+			}
+			if ((Preference)findPreference("versiondate") != null) {
+				((Preference)findPreference("versiondate")).setSummary(getString(R.string.application_build));
+			}
+		} catch (Exception e) {
+			Log.e(LOGCAT, e.getMessage());
+		}
 	}
 
 	@SuppressWarnings("deprecation")

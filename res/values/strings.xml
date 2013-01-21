@@ -24,7 +24,7 @@
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
     <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock and ViewPagerIndicator libraries</string>
     <string name="application_license">Open source licenses</string>
-	<string name="application_build">20130116</string>
+	<string name="application_build">20130121</string>
 	
     <!-- database -->
     <string name="db_insert_failed">Insert data failed</string>
@@ -312,4 +312,6 @@
 	<string name="date_format">Date Format</string>
 	<string name="financial_year_start_day">Financial Year: Start Day</string>
 	<string name="financial_year_start_month">Financial Year: Start Month</string>
+	<string name="release_date">Release Date</string>
+	<!-- 20130121 -->
 </resources>

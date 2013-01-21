@@ -1,7 +1,6 @@
 package com.money.manager.ex.core;
 
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.TableInfoTable;
+import java.text.DateFormatSymbols;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,12 +8,16 @@ import android.database.Cursor;
 import android.util.Log;
 import android.util.TypedValue;
 
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.TableInfoTable;
+
 public class Core {
 	private static final String LOGCAT = Core.class.getSimpleName();
 	public static final int INVALID_ATTRIBUTE = -1;
 	public static final String INFO_NAME_USERNAME = "USERNAME";
 	public static final String INFO_NAME_DATEFORMAT = "DATEFORMAT";
 	public static final String INFO_NAME_FINANCIAL_YEAR_START_DAY = "FINANCIAL_YEAR_START_DAY";
+	public static final String INFO_NAME_FINANCIAL_YEAR_START_MONTH = "FINANCIAL_YEAR_START_MONTH";
 	
 	
 	private Context context;
@@ -100,5 +103,12 @@ public class Core {
 		}
 		
 		return ret;
+	}
+	/**
+	 * Return arrays of month formatted and localizated
+	 * @return arrays of months
+	 */
+	public String[] getListMonths() {
+		return new DateFormatSymbols().getMonths();
 	}
 }
