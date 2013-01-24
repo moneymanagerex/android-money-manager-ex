@@ -56,6 +56,9 @@
             android:title="@string/menu_tools">
             <menu>
                 <item
+                    android:id="@+id/menu_move_database_external"
+                    android:title="@string/menu_move_database_to_external_storage"/>
+                <item
                     android:id="@+id/menu_sync_dropbox"
                     android:title="@string/menu_sync_dropbox"/>
                 <item

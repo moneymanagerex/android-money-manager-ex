@@ -463,8 +463,13 @@ public class MainActivity extends BaseFragmentActivity {
 	}
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem item = menu.findItem(R.id.menu_move_database_external);
+		if (item != null) {
+			item.setVisible(MoneyManagerApplication.getDatabasePath(this).startsWith("/data/data/com.money.manager"));
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
