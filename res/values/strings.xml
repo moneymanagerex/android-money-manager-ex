@@ -314,4 +314,5 @@
 	<string name="financial_year_start_month">Financial Year: Start Month</string>
 	<string name="release_date">Release Date</string>
 	<!-- 20130121 -->
+	<string name="menu_move_database_to_external_storage">Move Database to External Storage</string>
 </resources>
