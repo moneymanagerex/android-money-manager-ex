@@ -1,13 +1,22 @@
 package com.money.manager.ex.core;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableInfoTable;
 
@@ -104,11 +113,67 @@ public class Core {
 		
 		return ret;
 	}
+	
 	/**
 	 * Return arrays of month formatted and localizated
 	 * @return arrays of months
 	 */
 	public String[] getListMonths() {
 		return new DateFormatSymbols().getMonths();
+	}
+	
+	public File backupDatabase() {
+		File database = new File(MoneyManagerApplication.getDatabasePath(context));
+		if (database == null || !database.exists())
+			return null;
+		//get external storage
+		File externalStorage = Environment.getExternalStorageDirectory();
+		if (!(externalStorage != null && externalStorage.exists() && externalStorage.isDirectory()))
+			return null;
+		//create folder to copy database
+		File folderOutput = new File(externalStorage + "/" + context.getPackageName());
+		//make a directory
+		if (!folderOutput.exists()) {
+			if (!folderOutput.mkdirs())
+				return null;
+		}
+		//take a folder of database
+		ArrayList<File> filesFromCopy = new ArrayList<File>();
+		//add current database
+		filesFromCopy.add(database);
+		//get file journal
+		File folder = database.getParentFile();
+		if (folder != null) {
+			for(File file : folder.listFiles()) {
+				if (file.getName().startsWith(database.getName()) && !database.getName().equals(file.getName())) {
+					filesFromCopy.add(file);
+				}
+			}
+		}
+		//copy all files
+		for (int i = 0; i < filesFromCopy.size(); i ++) {
+			try {
+				copy(filesFromCopy.get(i), new File(folderOutput + "/" + filesFromCopy.get(i).getName()));
+			} catch (Exception e) {
+				Log.e(LOGCAT, e.getMessage());
+				return null;
+			}
+		}
+		
+		return new File(folderOutput + "/" + filesFromCopy.get(0).getName());
+	}
+	
+	public void copy(File src, File dst) throws IOException {
+	    InputStream in = new FileInputStream(src);
+	    OutputStream out = new FileOutputStream(dst);
+
+	    // Transfer bytes from in to out
+	    byte[] buf = new byte[1024];
+	    int len;
+	    while ((len = in.read(buf)) > 0) {
+	        out.write(buf, 0, len);
+	    }
+	    in.close();
+	    out.close();
 	}
 }

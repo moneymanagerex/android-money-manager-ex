@@ -22,6 +22,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,8 +41,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
@@ -60,6 +61,7 @@ import com.viewpagerindicator.TitlePageIndicator;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * 
  */
+@SuppressLint("DefaultLocale")
 public class MainActivity extends BaseFragmentActivity {
 	private static class MainActivityTab {
     	private Class<?> mClss;
@@ -109,6 +111,12 @@ public class MainActivity extends BaseFragmentActivity {
         }
         
         @Override
+		public int getIconResId(int index) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
         public Fragment getItem(int position) {
         	Fragment fragment;// = Fragment.instantiate(mContext, mFrags.get(position).getClss().getName(), null);
         	String getName = mFrags.get(position).getClss().getName();
@@ -119,26 +127,20 @@ public class MainActivity extends BaseFragmentActivity {
         	}
             return fragment;
         }
-
-		public String getTitle(int position) {
-			return mFrags.get(position).getTitle();
-		}
         
-		public void removeAllTab() {
-        	mFrags.clear();
-        	notifyDataSetChanged();
-        }
-
-		@Override
-		public int getIconResId(int index) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-		
 		@Override
 		public CharSequence getPageTitle(int position) {
 			return getTitle(position);
 		}
+
+		public String getTitle(int position) {
+			return mFrags.get(position).getTitle();
+		}
+		
+		public void removeAllTab() {
+        	mFrags.clear();
+        	notifyDataSetChanged();
+        }
     }
 	private static final String LOGCAT = MainActivity.class.getSimpleName();
 	private static final String KEY_CONTENT = "MainActivity:CurrentPos";
@@ -198,6 +200,18 @@ public class MainActivity extends BaseFragmentActivity {
     // notification
     private static MoneyManagerNotifications notifications;
 	
+	/**
+	 * Change database applications
+	 * @param pathDatabase new path of databases
+	 */
+	private void changeDatabase(String pathDatabase) {
+		// save the database file
+		MoneyManagerApplication.setDatabasePath(getApplicationContext(), pathDatabase);
+		// set to restart activity
+		setRestartActivity(true);
+		restartActivity();
+	}
+	
 	private void changeFragment(int accountId) {
 		String nameFragment = AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
 		AccountFragment fragment;
@@ -239,7 +253,6 @@ public class MainActivity extends BaseFragmentActivity {
 		// show dialog
 		exitDialog.create().show();
 	}
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -247,11 +260,7 @@ public class MainActivity extends BaseFragmentActivity {
 		switch (requestCode) {
 		case REQUEST_PICKFILE_CODE:
 			if (resultCode==RESULT_OK && data!=null && data.getData()!=null) {
-				// save the database file
-				MoneyManagerApplication.setDatabasePath(getApplicationContext(), data.getData().getPath());
-				// set to restart activity
-				setRestartActivity(true);
-				restartActivity();
+				changeDatabase(data.getData().getPath());
 			}
 			break;
 		case REQUEST_PASSCODE:
@@ -321,6 +330,7 @@ public class MainActivity extends BaseFragmentActivity {
 		setRefreshUserInterface(true);
 		//show change log and
 		MoneyManagerApplication.showStartupChangeLog(this, false);
+		MoneyManagerApplication.showDatabasePathWork(this);
 		//introducion
 		//TODO introduction activity
 		//notification
@@ -350,6 +360,13 @@ public class MainActivity extends BaseFragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
 		getSherlock().getMenuInflater().inflate(R.menu.menu_main, menu);
+		//check if render visible move to external storage
+		MenuItem item = menu.findItem(R.id.menu_move_database_external);
+		if (item != null) {
+			item.setVisible(MoneyManagerApplication.getDatabasePath(this).startsWith("/data/data/com.money.manager") && 
+					Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED));
+		}
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 	/**
@@ -435,6 +452,17 @@ public class MainActivity extends BaseFragmentActivity {
 			// activity sync dropboxgets
 			startActivity(new Intent(this, DropboxActivity.class));
 			break;
+		case R.id.menu_move_database_external:
+			// copy files
+			Core core = new Core(this);
+			File newDatabases = core.backupDatabase();
+			if (newDatabases != null) {
+				//Toast.makeText(this, Html.fromHtml(getString(R.string.database_has_been_moved, "<b>" + newDatabases.getAbsolutePath() + "</b>")), Toast.LENGTH_LONG).show();
+				changeDatabase(newDatabases.getAbsolutePath());
+			} else {
+				Toast.makeText(this, R.string.copy_database_on_external_storage_failed, Toast.LENGTH_LONG).show();
+			}
+			break;
 		case R.id.menu_use_external_db:
 			pickFile(Environment.getExternalStorageDirectory());
 			break;
@@ -460,14 +488,6 @@ public class MainActivity extends BaseFragmentActivity {
 			break;
 		}
 		return false;
-	}
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		MenuItem item = menu.findItem(R.id.menu_move_database_external);
-		if (item != null) {
-			item.setVisible(MoneyManagerApplication.getDatabasePath(this).startsWith("/data/data/com.money.manager"));
-		}
-		return super.onPrepareOptionsMenu(menu);
 	}
 	
 	@Override
@@ -541,6 +561,7 @@ public class MainActivity extends BaseFragmentActivity {
 	 * refresh user interface advance
 	 * 
 	 */
+	@SuppressLint("DefaultLocale")
 	public void refreshUserInterface() {
 		if (!(isRefreshUserInterface())) { return; }
 		if (!mAdvanceShow) { return; }

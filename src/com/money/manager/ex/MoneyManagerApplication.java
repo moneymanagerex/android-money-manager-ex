@@ -50,6 +50,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.dropbox.client2.session.Session.AccessType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -81,6 +82,7 @@ public class MoneyManagerApplication extends Application {
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
     public static final String PREF_LAST_VERSION_KEY = "preflastversionkey";
+    public static final String PREF_LAST_DB_PATH_SHOWN = "preflastdbpathshown";
     public static final String PREF_SHOW_INTRODUCTION = "prefshowintroduction";
     public static final String PREF_DATABASE_PATH = "databasepath";
     public static final String PREF_USER_NAME = "username";
@@ -181,6 +183,20 @@ public class MoneyManagerApplication extends Application {
 		editor.commit();
 	}
     /**
+	 * Shown database path with toast message
+	 * @param context
+	 */
+	public static void showDatabasePathWork(Context context) {
+		String currentPath = getDatabasePath(context);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String lastPath = preferences.getString(PREF_LAST_DB_PATH_SHOWN, "");
+		if (!lastPath.equals(currentPath)) {
+			Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG).show();
+			preferences.edit().putString(PREF_LAST_DB_PATH_SHOWN, currentPath).commit();
+		}
+	}
+
+	/**
      * This method show introduction activity
      * @param context activity called
      * @param force true show
@@ -195,7 +211,6 @@ public class MoneyManagerApplication extends Application {
 		} else
 			return true;
     }
-
 	/**
      * 
      * @param context
@@ -389,26 +404,6 @@ public class MoneyManagerApplication extends Application {
 		return calendar.getTime();
 	}
 	/**
-	 * Get pattern define from user
-	 * @return pattern user define
-	 */
-	public String getUserDatePattern() {
-		TableInfoTable infoTable = new TableInfoTable();
-		MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(getApplicationContext());
-		Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[] {"DATEFORMAT"}, null, null, null);
-		String pattern = null;
-		if (cursor != null && cursor.moveToFirst()) {
-			pattern = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
-			//replace part of pattern
-			pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy");
-		}
-		//close cursor and helper
-		cursor.close();
-		helper.close();
-		
-		return pattern;
-	}
-	/**
 	 * 
 	 * @return default home type
 	 */
@@ -485,7 +480,6 @@ public class MoneyManagerApplication extends Application {
 	public String getSQLiteStringDate(Date date) {
 		return getStringFromDate(date, PATTERN_DB_DATE);
 	}
-	
 	/**
 	 * 
 	 * @param status char of status
@@ -505,6 +499,7 @@ public class MoneyManagerApplication extends Application {
 		}
 		return "";
 	}
+	
 	/**
 	 * Convert date object to string from user pattern
 	 * @param date
@@ -565,6 +560,26 @@ public class MoneyManagerApplication extends Application {
 			return TYPE_HOME_ADVANCE;
 		}
 		return getDefaultTypeHome();
+	}
+	/**
+	 * Get pattern define from user
+	 * @return pattern user define
+	 */
+	public String getUserDatePattern() {
+		TableInfoTable infoTable = new TableInfoTable();
+		MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(getApplicationContext());
+		Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[] {"DATEFORMAT"}, null, null, null);
+		String pattern = null;
+		if (cursor != null && cursor.moveToFirst()) {
+			pattern = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
+			//replace part of pattern
+			pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy");
+		}
+		//close cursor and helper
+		cursor.close();
+		helper.close();
+		
+		return pattern;
 	}
 	/**
 	 * @return the userName

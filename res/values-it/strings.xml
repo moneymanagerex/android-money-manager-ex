@@ -303,4 +303,18 @@
 	<string name="last30days">Ultimi 30 Giorni</string>
 	<string name="last_year">Scorso Anno</string>
 	<!-- 20130106 -->
+	<string name="to">Da</string>
+	<string name="result">Risultato</string>
+	<string name="number_transaction_found">Numero di transazioni trovate: %1$d</string>
+	<!-- 20130108 -->
+	<string name="date_format">Formato data</string>
+	<string name="financial_year_start_day">Anno Finanziario: Giorno Inizio</string>
+	<string name="financial_year_start_month">Anno Finanziario: Mese Inizio</string>
+	<string name="release_date">Release Date</string>
+	<!-- 20130121 -->
+	<string name="menu_move_database_to_external_storage">Sposta Database su Scheda di Memoria</string>
+	<string name="database_has_been_moved">Il database è stato spostati: %1$s</string>
+	<string name="copy_database_on_external_storage_failed">Copia del database su scheda di memoria fallita</string>
+	<string name="path_database_using">Stai utilizzando il database salvato in: %1$s</string>
+	<!-- 20130129 -->
 </resources>

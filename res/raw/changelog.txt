@@ -1,3 +1,15 @@
+<b> Version 1.0.0 </b>
+- Added the function to <b>search transaction </b>
+- Added <b>report Income vs. Expenses </b> with the option to filter by year
+- Added <b>report Categories</b> with the option to filter by category
+- Added <b>report Payees</b>
+- Added option to move the database from internal application folder to external storage
+- In the settings addes: date format and financial calendar
+- Added in the home, a summary of the income and expenses of the current month
+- Graphical improvements
+- Various optimizations
+- Minor bugfix
+
 <b> Version 0.9.2 </b>
 - Updated translation of languages: Russian and Spanish 
 

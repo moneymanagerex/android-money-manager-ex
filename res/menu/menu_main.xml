@@ -50,40 +50,30 @@
             </menu>
         </item>
     </group>
-    <group android:id="@+id/menu_group_tools" >
+    <group android:id="@+id/menu_group_reports">
+        <item android:id="@+id/menu_reports" android:title="@string/menu_reports">
+            <menu>
+                <item android:id="@+id/menu_report_categories" android:title="@string/category" />
+                <item android:id="@+id/menu_report_payees" android:title="@string/payee" />
+                <item android:id="@+id/menu_report_income_vs_expenses" android:title="@string/menu_report_income_vs_expenses" />
+            </menu>
+        </item>
+    </group><group android:id="@+id/menu_group_tools" >
         <item
             android:id="@+id/menu_tools"
             android:title="@string/menu_tools">
             <menu>
-                <item
-                    android:id="@+id/menu_move_database_external"
-                    android:title="@string/menu_move_database_to_external_storage"/>
+                
                 <item
                     android:id="@+id/menu_sync_dropbox"
                     android:title="@string/menu_sync_dropbox"/>
-                <item
+                <item android:id="@+id/menu_move_database_external" android:title="@string/menu_move_database_to_external_storage" /><item
                     android:id="@+id/menu_use_external_db"
                     android:title="@string/menu_use_external_db"/>
             </menu>
         </item>
     </group>
-    <group android:id="@+id/menu_group_reports" >
-        <item
-            android:id="@+id/menu_reports"
-            android:title="@string/menu_reports">
-            <menu>
-                <item
-                    android:id="@+id/menu_report_categories"
-                    android:title="@string/category"/>
-                <item
-                    android:id="@+id/menu_report_payees"
-                    android:title="@string/payee"/>
-                <item
-                    android:id="@+id/menu_report_income_vs_expenses"
-                    android:title="@string/menu_report_income_vs_expenses"/>
-            </menu>
-        </item>
-    </group>
+    
 
     <item
         android:id="@+id/menu_settings"

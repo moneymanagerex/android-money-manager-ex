@@ -99,7 +99,9 @@ public class DropboxActivity extends BaseFragmentActivity {
 					if (file.isDir || file.isDeleted) {
 						continue;
 					} else {
-						mFiles.add(file);
+						if (file.fileName().toLowerCase().endsWith(".mmb")) {
+							mFiles.add(file);
+						}
 					}	
 				}
 			} catch (DropboxException e) {
@@ -298,7 +300,7 @@ public class DropboxActivity extends BaseFragmentActivity {
 				refresh();
 			}
 			// set null preferences sdcard
-			MoneyManagerApplication.setDatabasePath(getApplicationContext(), null);
+			// MoneyManagerApplication.setDatabasePath(getApplicationContext(), null);
 			MainActivity.setRestartActivity(true);
 		}
 		@Override
