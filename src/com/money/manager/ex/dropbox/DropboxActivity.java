@@ -199,7 +199,7 @@ public class DropboxActivity extends BaseFragmentActivity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			try {
-				File fileDatabase = new File(MoneyManagerOpenHelper.databasePath);
+				File fileDatabase = new File(MoneyManagerApplication.getDatabasePath(mContext));
 				Entry fileEntry = null;
 	            if (mRemoteFileExists) {
 					fileEntry = mApi.metadata(mPath, FILE_LIMIT, null, true, null);
@@ -239,11 +239,11 @@ public class DropboxActivity extends BaseFragmentActivity {
 				try {
 					switch (mSync) {
 					case DOWNLOAD:						
-						mOutputStream = new FileOutputStream(MoneyManagerOpenHelper.databasePath);
+						mOutputStream = new FileOutputStream(MoneyManagerApplication.getDatabasePath(mContext));
 						mApi.getFile(mPath, null, mOutputStream, new SyncProgressListener());
 						break;
 					case UPLOAD:
-						mInputStream = new FileInputStream(MoneyManagerOpenHelper.databasePath);
+						mInputStream = new FileInputStream(MoneyManagerApplication.getDatabasePath(mContext));
 						mRequest = mApi.putFileOverwriteRequest(mPath, mInputStream, fileDatabase.length(), new SyncProgressListener());
 			            if (mRequest != null) {
 			                mRequest.upload();
