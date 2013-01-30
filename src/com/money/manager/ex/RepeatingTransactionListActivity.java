@@ -89,9 +89,8 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 			Cursor cursor = ((RepeatingTransactionAdapter) getListAdapter()).getCursor();
 			if (cursor != null) {
 				cursor.moveToPosition(info.position);
-				// check item select
-				switch (item.getItemId()) {
-				case R.id.menu_enter_next_occurrence:
+				//quick-fix convert 'switch' to 'if-else'
+				if (item.getItemId() == R.id.menu_enter_next_occurrence) {
 					nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
 					repeats = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
 					bdId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
@@ -105,8 +104,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 						// start for insert new transaction
 						startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
 					}
-					break;
-				case R.id.menu_skip_next_occurrence:
+				} else if (item.getItemId() == R.id.menu_skip_next_occurrence) {
 					nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
 					repeats = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
 					bdId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
@@ -122,13 +120,10 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 							Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT);
 						}	
 					}
-					break;
-				case R.id.menu_edit: // EDIT
+				} else if (item.getItemId() == R.id.menu_edit) {
 					startRepeatingTransactionActivity(cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID)));
-					break;
-				case R.id.menu_delete: // DELETE
+				} else if (item.getItemId() == R.id.menu_delete) {
 					showDialogDeleteRepeatingTransaction(cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID)));
-					break;
 				}
 			}
 			return false;

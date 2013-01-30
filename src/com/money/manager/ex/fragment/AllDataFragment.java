@@ -120,28 +120,21 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 			Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
 			// check if cursor is valid
 			if (cursor != null) {
-				switch (item.getItemId()) {
-				case R.id.menu_edit:
+				//quick-fix convert 'switch' to 'if-else'
+				if (item.getItemId() == R.id.menu_edit) {
 					startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-					break;
-				case R.id.menu_delete:
+				} else if (item.getItemId() == R.id.menu_delete) {
 					showDialogDeleteCheckingAccount(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-					break;
-				case R.id.menu_reconciled:
+				} else if (item.getItemId() == R.id.menu_reconciled) {
 					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "R");
-					break;
-				case R.id.menu_none:
+				} else if (item.getItemId() == R.id.menu_none) {
 					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "");
-					break;
-				case R.id.menu_duplicate:
+				} else if (item.getItemId() == R.id.menu_duplicate) {
 					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "D");
-					break;
-				case R.id.menu_follow_up:
+				} else if (item.getItemId() == R.id.menu_follow_up) {
 					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "F");
-					break;
-				case R.id.menu_void:
+				} else if (item.getItemId() == R.id.menu_void) {
 					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "V");
-					break;
 				}
 			}
 			return true;

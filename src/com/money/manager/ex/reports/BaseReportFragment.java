@@ -115,29 +115,23 @@ public abstract class BaseReportFragment extends BaseListFragment implements Loa
 		String whereClause = null;
 		int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-		switch (item.getItemId()) {
-		case R.id.menu_current_month:
+		//quick-fix convert 'switch' to 'if-else'
+		if (item.getItemId() == R.id.menu_current_month) {
 			whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
-			break;
-		case R.id.menu_last_month:
+		} else if (item.getItemId() == R.id.menu_last_month) {
 			if (currentMonth == 1) {
 				whereClause = ViewMobileData.Month + "=" + Integer.toString(12) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
 			} else {
 				whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);;
 			}
-			break;
-		case R.id.menu_last_30_days:
+		} else if (item.getItemId() == R.id.menu_last_30_days) {
 			whereClause = "(julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
-			break;
-		case R.id.menu_current_year:
+		} else if (item.getItemId() == R.id.menu_current_year) {
 			whereClause = ViewMobileData.Year + "=" + Integer.toString(currentYear);
-			break;
-		case R.id.menu_last_year:
+		} else if (item.getItemId() == R.id.menu_last_year) {
 			whereClause = ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
-			break;
-		case R.id.menu_all_time:
-			break;
-		default:
+		} else if (item.getItemId() == R.id.menu_all_time) {
+		} else {
 			return super.onOptionsItemSelected(item);
 		}
 		//check item

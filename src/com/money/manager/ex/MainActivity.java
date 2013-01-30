@@ -412,47 +412,39 @@ public class MainActivity extends BaseFragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
-		switch(item.getItemId()) {
-		case R.id.menu_new_transaction:
+		//quick-fix convert 'switch' to 'if-else'
+		if (item.getItemId() == R.id.menu_new_transaction) {
 			intent = new Intent(this, CheckingAccountActivity.class);
 			intent.setAction(CheckingAccountActivity.INTENT_ACTION_INSERT);
 			// start for insert new transaction
 			startActivity(intent);
-			break;
-		case R.id.menu_search_transaction:
+		} else if (item.getItemId() == R.id.menu_search_transaction) {
 			startActivity(new Intent(this, SearchActivity.class));
-			break;
-		case R.id.menu_account:
+		} else if (item.getItemId() == R.id.menu_account) {
 			// manage accounts
 			intent = new Intent(this, AccountListActivity.class);
 			intent.setAction(Intent.ACTION_EDIT);
 			startActivity(intent);
-			break;
-		case R.id.menu_category:
+		} else if (item.getItemId() == R.id.menu_category) {
 			// manage category
 			intent = new Intent(this, CategorySubCategoryActivity.class);
 			intent.setAction(Intent.ACTION_EDIT);
 			startActivity(intent);
-			break;			
-		case R.id.menu_payee:
+		} else if (item.getItemId() == R.id.menu_payee) {
 			// manage payee
 			intent = new Intent(this, PayeeActivity.class);
 			intent.setAction(Intent.ACTION_EDIT);
 			startActivity(intent);
-			break;
-		case R.id.menu_repeating_transaction:
+		} else if (item.getItemId() == R.id.menu_repeating_transaction) {
 			startActivity(new Intent(this, RepeatingTransactionListActivity.class));
-			break;
-		case R.id.menu_currency:
+		} else if (item.getItemId() == R.id.menu_currency) {
 			intent = new Intent(this, CurrencyFormatsListActivity.class);
 			intent.setAction(Intent.ACTION_EDIT);
 			startActivity(intent);
-			break;
-		case R.id.menu_sync_dropbox:
+		} else if (item.getItemId() == R.id.menu_sync_dropbox) {
 			// activity sync dropboxgets
 			startActivity(new Intent(this, DropboxActivity.class));
-			break;
-		case R.id.menu_move_database_external:
+		} else if (item.getItemId() == R.id.menu_move_database_external) {
 			// copy files
 			Core core = new Core(this);
 			File newDatabases = core.backupDatabase();
@@ -462,30 +454,22 @@ public class MainActivity extends BaseFragmentActivity {
 			} else {
 				Toast.makeText(this, R.string.copy_database_on_external_storage_failed, Toast.LENGTH_LONG).show();
 			}
-			break;
-		case R.id.menu_use_external_db:
+		} else if (item.getItemId() == R.id.menu_use_external_db) {
 			pickFile(Environment.getExternalStorageDirectory());
-			break;
-		case R.id.menu_settings:
+		} else if (item.getItemId() == R.id.menu_settings) {
 			startActivity(new Intent(this, PreferencesActivity.class));
-			break;
-		case R.id.menu_report_categories:
+		} else if (item.getItemId() == R.id.menu_report_categories) {
 			startActivity(new Intent(this, CategoriesReportActivity.class));
-			break;			
-		case R.id.menu_report_payees:
+		} else if (item.getItemId() == R.id.menu_report_payees) {
 			startActivity(new Intent(this, PayeesReportActivity.class));
-			break;
-		case R.id.menu_report_income_vs_expenses:
+		} else if (item.getItemId() == R.id.menu_report_income_vs_expenses) {
 			startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-			break;
-		case R.id.menu_about:
+		} else if (item.getItemId() == R.id.menu_about) {
 			// open about activity
 			startActivity(new Intent(this, AboutActivity.class));
-			break;
-		case R.id.menu_exit:
+		} else if (item.getItemId() == R.id.menu_exit) {
 			// close application
 			exitApplication();
-			break;
 		}
 		return false;
 	}

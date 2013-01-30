@@ -580,30 +580,23 @@ public class DropboxActivity extends BaseFragmentActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-	    case android.R.id.home:
-	        // close this activity and come back main activity
+		//quick-fix convert 'switch' to 'if-else'
+		if (item.getItemId() == android.R.id.home) {
+			// close this activity and come back main activity
 	        startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-	        this.finish();
-	        break;
-	    case R.id.menu_link:
-	    	logIn();
-	    	break;
-	    case R.id.menu_unlink:
-	    	logOut();
-	    	break;
-	    case R.id.menu_refresh:
-	    	refresh();
-	    	break;
-	    case R.id.menu_sync:
-	    	execute(getDropboxFile() != null ? TypeOperation.SYNC : TypeOperation.DONWLOAD);
-	    	break;
-	    case R.id.menu_download:
-	    	execute(TypeOperation.DONWLOAD);
-	    	break;
-	    case R.id.menu_upload:
-	    	execute(TypeOperation.UPLOAD);
-	    	break;
+			this.finish();
+		} else if (item.getItemId() == R.id.menu_link) {
+			logIn();
+		} else if (item.getItemId() == R.id.menu_unlink) {
+			logOut();
+		} else if (item.getItemId() == R.id.menu_refresh) {
+			refresh();
+		} else if (item.getItemId() == R.id.menu_sync) {
+			execute(getDropboxFile() != null ? TypeOperation.SYNC : TypeOperation.DONWLOAD);
+		} else if (item.getItemId() == R.id.menu_download) {
+			execute(TypeOperation.DONWLOAD);
+		} else if (item.getItemId() == R.id.menu_upload) {
+			execute(TypeOperation.UPLOAD);
 		}
 		return false;
 	}

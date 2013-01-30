@@ -47,20 +47,16 @@ public class PasscodeActivity extends SherlockActivity {
 				EditText getFocus = (EditText) getWindow().getCurrentFocus();
 				if (getFocus != null && click.getTag() != null) {
 					getFocus.setText(click.getTag().toString());
-					switch (getFocus.getId()) {
-					case R.id.editTextPasscode1:
+					//quick-fix convert 'switch' to 'if-else'
+					if (getFocus.getId() == R.id.editTextPasscode1) {
 						((EditText) findViewById(R.id.editTextPasscode2)).requestFocus();
-						break;
-					case R.id.editTextPasscode2:
+					} else if (getFocus.getId() == R.id.editTextPasscode2) {
 						((EditText) findViewById(R.id.editTextPasscode3)).requestFocus();
-						break;
-					case R.id.editTextPasscode3:
+					} else if (getFocus.getId() == R.id.editTextPasscode3) {
 						((EditText) findViewById(R.id.editTextPasscode4)).requestFocus();
-						break;
-					case R.id.editTextPasscode4:
+					} else if (getFocus.getId() == R.id.editTextPasscode4) {
 						((EditText) findViewById(R.id.editTextPasscode5)).requestFocus();
-						break;
-					case R.id.editTextPasscode5:
+					} else if (getFocus.getId() == R.id.editTextPasscode5) {
 						Intent result = new Intent();
 						// set result
 						result.putExtra(INTENT_RESULT_PASSCODE, ((EditText) findViewById(R.id.editTextPasscode1)).getText().toString()
@@ -71,7 +67,6 @@ public class PasscodeActivity extends SherlockActivity {
 						// return result
 						setResult(RESULT_OK, result);
 						finish();
-						break;
 					}
 				}
 			}
@@ -94,33 +89,28 @@ public class PasscodeActivity extends SherlockActivity {
 					if (!TextUtils.isEmpty(getFocus.getText())) {
 						getFocus.setText(null);
 					} else nullRequestFocus = true;
-					switch (getFocus.getId()) {
-					case R.id.editTextPasscode1:
-						break;
-					case R.id.editTextPasscode2:
+					//quick-fix convert 'switch' to 'if-else'
+					if (getFocus.getId() == R.id.editTextPasscode1) {
+					} else if (getFocus.getId() == R.id.editTextPasscode2) {
 						((EditText) findViewById(R.id.editTextPasscode1)).requestFocus();
 						if (nullRequestFocus) {
 							((EditText) findViewById(R.id.editTextPasscode1)).setText(null);
 						}
-						break;
-					case R.id.editTextPasscode3:
+					} else if (getFocus.getId() == R.id.editTextPasscode3) {
 						((EditText) findViewById(R.id.editTextPasscode2)).requestFocus();
 						if (nullRequestFocus) {
 							((EditText) findViewById(R.id.editTextPasscode2)).setText(null);
 						}
-						break;
-					case R.id.editTextPasscode4:
+					} else if (getFocus.getId() == R.id.editTextPasscode4) {
 						((EditText) findViewById(R.id.editTextPasscode3)).requestFocus();
 						if (nullRequestFocus) {
 							((EditText) findViewById(R.id.editTextPasscode3)).setText(null);
 						}
-						break;
-					case R.id.editTextPasscode5:
+					} else if (getFocus.getId() == R.id.editTextPasscode5) {
 						((EditText) findViewById(R.id.editTextPasscode4)).requestFocus();
 						if (nullRequestFocus) {
 							((EditText) findViewById(R.id.editTextPasscode4)).setText(null);
 						}
-						break;
 					}
 				}
 			}
