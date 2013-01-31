@@ -158,7 +158,7 @@ public abstract class Dataset implements BaseColumns {
 	 * @return the Uri for the content provider
 	 */
 	public Uri getUri() {
-		String parse = "content://" + MoneyManagerProvider.AUTHORITY + "/";
+		String parse = "content://" + MoneyManagerProvider.getAuthority() + "/";
 		// check if set basepath
 		if (!TextUtils.isEmpty(this.basepath)) {
 			//che tye of dataset

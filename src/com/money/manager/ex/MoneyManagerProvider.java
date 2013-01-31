@@ -74,10 +74,12 @@ public class MoneyManagerProvider extends ContentProvider {
 	private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH); 
 	// object map for the definition of the objects referenced in the URI
 	private static Map<Integer, Object> mapContent = new HashMap<Integer, Object>();
+	// authority of application
+	private static String mAuthority;
 	
 	private List<Dataset> objMoneyManager;
 	
-	public static final String AUTHORITY = "com.money.manager.ex.provider";
+	//public static final String AUTHORITY = "com.money.manager.ex.provider";
 	
 	public MoneyManagerProvider() {
 		super();
@@ -208,10 +210,8 @@ public class MoneyManagerProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-		// open connection to database
-		/*MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
-		// This statement serves to force the creation of the database
-		databaseHelper.getWritableDatabase();*/
+		// create authority
+		setAuthority(getContext().getApplicationContext().getPackageName() + ".provider");
 		// create object provider
 		objMoneyManager = Arrays.asList(new Dataset[] { new TableAccountList(),
 			new TableAssets(), new TableBillsDeposits(),
@@ -228,7 +228,7 @@ public class MoneyManagerProvider extends ContentProvider {
 		// Cycle all datasets for the composition of UriMatcher
 		for(int i = 0; i < objMoneyManager.size(); i ++) {
 			// add URI
-			sUriMatcher.addURI(AUTHORITY, objMoneyManager.get(i).getBasepath(), i);
+			sUriMatcher.addURI(getAuthority(), objMoneyManager.get(i).getBasepath(), i);
 			// put map in the object being added in UriMatcher
 			mapContent.put(i, objMoneyManager.get(i));
 		}
@@ -377,5 +377,13 @@ public class MoneyManagerProvider extends ContentProvider {
 		getContext().getContentResolver().notifyChange(uri, null);
 		// return rows modified
 		return rowsUpdate;
+	}
+
+	public static String getAuthority() {
+		return mAuthority;
+	}
+
+	private static void setAuthority(String mAuthority) {
+		MoneyManagerProvider.mAuthority = mAuthority;
 	}
 }

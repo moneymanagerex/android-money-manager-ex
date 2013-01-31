@@ -126,13 +126,14 @@ public class MoneyManagerApplication extends Application {
 	 * @return path database file
 	 */
 	public static String getDatabasePath(Context context) {
-		String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_DATABASE_PATH, MoneyManagerOpenHelper.databasePath);
+		String defaultPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/data.mmb";
+		String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_DATABASE_PATH, defaultPath);
 		File f = new File(dbFile);
 		// check if database exists
 		if (f.getAbsoluteFile().exists()) {
 			return dbFile;
 		} else {
-			return MoneyManagerOpenHelper.databasePath;
+			return defaultPath;
 		}
 	}
     /**
