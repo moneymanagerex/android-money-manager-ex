@@ -1,0 +1,5 @@
+2012.11.19
+how to build:
+- Check the latest version number of commits
+- Set the value incremented by one
+- Execute the build.xml with ant

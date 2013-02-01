@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2012 The Android Money Manager Ex Project
+  
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
+        <!-- Colors -->
+        <item name="holo_green_color_theme">@color/holo_green_light</item>
+        <item name="holo_red_color_theme">@color/holo_red_light</item>
+        <item name="row_dark_theme">@android:color/transparent</item>
+        <item name="row_light_theme">@color/holo_dark_row_light</item>
+        <!-- Drawables -->
+        <item name="ic_action_add">@drawable/ic_action_add_dark</item>
+        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
+        <item name="ic_action_list">@drawable/ic_action_list_dark</item>
+        <item name="ic_action_search">@drawable/ic_action_search_dark</item>
+        <item name="ic_action_warning">@drawable/ic_action_warning_dark</item>
+    </style>
+
+    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light">
+        <!-- Colors -->
+        <item name="holo_green_color_theme">@color/holo_green_dark</item>
+        <item name="holo_red_color_theme">@color/holo_red_dark</item>
+        <item name="row_dark_theme">@android:color/transparent</item>
+        <item name="row_light_theme">@color/holo_light_row_light</item>
+        <!-- Drawables -->
+        <item name="ic_action_add">@drawable/ic_action_add_light</item>
+        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_light</item>
+        <item name="ic_action_list">@drawable/ic_action_list_light</item>
+        <item name="ic_action_search">@drawable/ic_action_search_light</item>
+        <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
+    </style>
+
+    <style name="Money.TextView" parent="@android:style/Widget.TextView">
+        <!-- <item name="android:textColor">@color/textview_textcolor</item> -->
+    </style>
+
+    <style name="Money.TextView.Medium" parent="Money.TextView">
+        <item name="android:textSize">@dimen/money_text_view_size_medium</item>
+    </style>
+
+    <style name="Money.Button" parent="android:Widget.Button">
+        <item name="android:background">@drawable/button_green</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Money.Button.Medium" parent="Money.Button">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Money.Button.Medium.Bold" parent="Money.Button.Medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

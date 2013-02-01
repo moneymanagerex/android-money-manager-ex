@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2013 The Android Money Manager Ex Project
+  
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<resources>
+
+    <!-- application -->
+    <string name="application_name">Money Manager Ex</string>
+    <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
+    <string name="application_definition">Une application simple et facile pour utiliser pour gérer ses finances personnelles, comptes bancaires, budget familial…</string>
+    <string name="application_credits">Android Money Manager Ex Project utilise les librairies de ActionBarSherlock et ViewPagerIndicator</string>
+    <string name="application_license">License open source</string>
+
+    <!-- database -->
+    <string name="db_insert_failed">Echec d\'insertion en base de données</string>
+    <string name="db_delete_failed">Echec de suppresion en base de données</string>
+    <string name="db_update_failed">Echec de mise à jour en base données</string>
+
+    <!-- menu -->
+    <string name="menu">Menu</string>
+    <string name="menu_exit">Quitter</string>
+    <string name="menu_import_export">Importer/Exporter</string>
+    <string name="menu_sync">Synchronisation</string>
+    <string name="menu_import_from_storage">Importer depuis un espace de stockage</string>
+    <string name="menu_export_to_storage">Exporter depuis un espace de stockage</string>
+    <string name="menu_manage">Gérer</string>
+    <string name="menu_sync_dropbox">Synchronisation avec Dropbox</string>
+    <string name="menu_tools">Outils</string>
+    <string name="menu_use_external_db">Utiliser une base externe</string>
+
+    <!-- import / export database -->
+    <string name="emptyFolder">Répertoir vide</string>
+    <string name="upLevel">Niveau supérieur</string>
+    <string name="import_export">Importer/Exporter</string>
+    <string name="import_export_database_progress">Importation/exportation de la base en cour</string>
+    <string name="import_export_success">Importation/exportation de la base réussi</string>
+    <string name="import_export_failed">Echec de l\'importation/exportation de la base</string>
+
+    <!-- dropbox -->
+    <string name="dropbox_link">Associer à Dropbox</string>
+    <string name="dropbox_unlink">Désassocier de Dropbox</string>
+    <string name="dropbox_listFileProgress">Listage des fichiers en cour…</string>
+    <string name="dropbox_syncProgress">Synchronisation avec Dropbox en cour…</string>
+    <string name="dropbox_downloadProgress">Téléchagement depuis Dropbox en cour…</string>
+    <string name="dropbox_uploadProgress">Téléchagement vers Dropbox en cour…</string>
+    <string name="dropbox_account">Compte Dropbox</string>
+    <string name="dropbox_linkedFile">Fichier Dropbox associé</string>
+    <string name="dropbox_method">Méthode de synchronisation avec Dropbox</string>
+
+    <!-- preferences -->
+    <string name="preferences_general">Général</string>
+    <string name="preferences_dispaly">Affichage</string>
+    <string name="base_currency">Monnaie de référence</string>
+    <string name="accounts_visible">Comptes visibles</string>
+    <string name="view_accounts_opened">Voir les comptes ouverts</string>
+    <string name="if_not_selected_willShowAllAccounts">Si pas selectionné, tous les comptes seront affichés</string>
+    <string name="view_accounts_favorites">Voir les comptes préférés</string>
+    <string name="preferences_version">Android Money Manager Ex</string>
+    <string name="version">Version</string>
+    <string name="preferences_dropbox">Paramètres Dropbox</string>
+    <string name="preferences_database_path">Chemin de la base de données</string>
+
+    <!-- account -->
+    <string name="account">Compte</string>
+    <string name="account_list">Liste des comptes</string>
+    <string name="account_empty_list">Pas de comptes trouvés</string>
+    <string name="account_balance">Balance du comptes</string>
+    <string name="account_reconciled_balance">Balance réconciliée</string>
+    <string name="account_balance_reconciled" formatted="false">Balance du compte: %s Balance Réconciliée: %s</string>
+    <string name="select_to_account">Selectionner le compte</string>
+    <string name="delete_account">Supprimer le compte</string>
+    <string name="account_name">Nom du compte</string>
+    <string name="account_type">Type de compte</string>
+    <string name="account_number">Numéro de compte</string>
+    <string name="account_held_at">Tenue au</string>
+    <string name="account_status">Etat du compte</string>
+    <string name="favourite_account">Compte préféré</string>
+    <string name="select_currency">Selectionner une devise</string>
+    <string name="checking">Chèque/Epargne</string>
+    <string name="investment">Titres</string>
+    <string name="term">Terme</string>
+    <string name="db_account_insert_failed">Erreur de crèation du compte</string>
+    <string name="db_account_update_failed">Erreur de modification du compte</string>
+    <string name="error_currency_not_selected">Attention: Pas de compte selectionné</string>
+    <string name="error_initialbal_empty">Attention: Merci d\'insérer un solde initial</string>
+    <string name="error_accountname_empty">Attention: Merci de nommer le compte</string>
+    <string name="error_accounttype_empty">Attention: Merci d\'identifier le type du compte</string>
+    <string name="error_status_empty">Attention: Merci de donner un état au compte</string>
+
+    <!-- payee -->
+    <string name="payee_name">Nom du bénéficiaire</string>
+    <string name="edit_payeeName">Editer le nom du bénéficiaire</string>
+    <string name="delete_payee">Supprimer le bénéficiaire</string>
+    <string name="payee">Bénéficiaire</string>
+    <string name="select_payee">Selectionner le bénéficiaire</string>
+    <string name="select_from">Selectionner à partir de</string>
+    <string name="payee_empty_list">Pas de bénéficiaires trouvés</string>
+    <string name="from">A partir de</string>
+    <string name="db_payee_update_failed">Echec de modification du bénéficiaire</string>
+
+    <!-- category / subcategory -->
+    <string name="category">Catégorie</string>
+    <string name="subcategory">Sous-catégorie</string>
+    <string name="category_empty_list">Pas de catégories trouvées</string>
+    <string name="select_category">Selectionner une catégorie</string>
+    <string name="add_category">Ajouter une catégorie</string>
+    <string name="add_subcategory">Ajouter une  sous-catégorie</string>
+    <string name="category_name">Nom de la catégorie</string>
+    <string name="edit_categoryName">Editer le nom de la catégorie</string>
+    <string name="delete_category">Supprimer la catégorie</string>
+
+    <!-- currency -->
+    <string name="currency">Devise</string>
+    <string name="currency_name">Nom de la devise</string>
+    <string name="currency_symbol">Symbole monétaire</string>
+    <string name="delete_currency">Supprimer la devise</string>
+    <string name="unit_name">Nom de l\'unité</string>
+    <string name="cents_name">Nom des centimes</string>
+    <string name="prefix_symbol">Symbole : Préfix</string>
+    <string name="suffix_symbol">Symbole : Suffix</string>
+    <string name="decimal_char">Caractère des décimales</string>
+    <string name="group_char">Caractère de groupement</string>
+    <string name="scale">Echelle</string>
+    <string name="conversion_to_base_rate">Taux de conversion de base</string>
+    <string name="new_edit_currency">Créer/Modifier une devise</string>
+    <string name="currency_name_empty">Merci de nommer la devise</string>
+
+    <!-- transaction -->
+    <string name="amount">Montant</string>
+    <string name="total_amount">Montant total</string>
+    <string name="deposit">Crédit</string>
+    <string name="status">Etat</string>
+    <string name="status_reconciled">Rapproché</string>
+    <string name="status_void">Nul</string>
+    <string name="status_follow_up">A suivre</string>
+    <string name="status_duplicate">Duplicata</string>
+    <string name="status_none">Stable</string>
+    <string name="transfer">Virement</string>
+    <string name="transaction_type">Type d\'opération</string>
+    <string name="transaction_status">Etat</string>
+    <string name="withdrawal">Débit</string>
+    <string name="db_checking_insert_failed">Echec de création de l\'opération</string>
+    <string name="db_checking_update_failed">Echec de mise à jour de l\'opération</string>
+    <string name="delete_transaction">Suppresion de l\'opération</string>
+    <string name="new_transaction">Nouvelle opération</string>
+    <string name="error_payee_not_selected">Attention: Pas de bénéficiare sélectionné</string>
+    <string name="error_toaccount_not_selected">Attention: Pas de compte selectionné</string>
+    <string name="error_category_not_selected">Attention: Pas de catégorie selectionnée</string>
+    <string name="error_totamount_empty">Attention: Pas de montant d\'opération indiqué</string>
+
+    <!-- application sting -->
+    <string name="about">A propos de</string>
+    <string name="abort">Abandonner</string>
+    <string name="add">Ajouter</string>
+    <string name="all">Tout</string>
+    <string name="confirmDelete">Confirmer la suppression?</string>
+    <string name="date">Date</string>
+    <string name="delete">Supprimer</string>
+    <string name="download">Télécharger</string>
+    <string name="edit">Modifier</string>
+    <string name="favorites">Favoris</string>
+    <string name="home">Accueil</string>
+    <string name="link">Lien</string>
+    <string name="logo">Logo</string>
+    <string name="New">Nouveau</string>
+    <string name="new_edit_transaction">Créer/Modifier une opération</string>
+    <string name="refresh">Rafraéchir</string>
+    <string name="report_problem">Remonter un probléme</string>
+    <string name="search">Rechercher</string>
+    <string name="select">Selectionner</string>
+    <string name="settings">Paramétres</string>
+    <string name="summary">Résumé</string>
+    <string name="sync">Sync</string>
+    <string name="synchronize">Synchroniser</string>
+    <string name="synchronize_success">Synchronisation réussie</string>
+    <string name="open">Ouvrir</string>
+    <string name="user">Utilisateur</string>
+    <string name="unlink">Délier</string>
+    <string name="upload">Téléchager vers</string>
+    <string name="username">Nom de l\'utilisateur</string>
+    <string name="tell_us_a_problem">Merci de rapporter tous les bugs ou problèmes</string>
+    <string name="to">De</string>
+    <string name="website">Site web</string>
+    <string name="contact">Contact</string>
+    <string name="access_info">Information d\'accés</string>
+    <string name="initial_balance">Solde initial</string>
+    <string name="currency">Devise</string>
+    <string name="notes">Notes</string>
+    <string name="new_edit_account">Créer/Editer un compte</string>
+    <string name="closed">Fermer</string>
+    <string name="new_edit_currency">Créer/Editer une devise</string>
+    <string name="path">Chemin</string>
+    <string name="theme_application">Théme de l\'application</string>
+    <string name="theme_holo">Holo</string>
+    <string name="theme_light">Light</string>
+
+    <!-- 20120906 -->
+    <string name="close_application">Fermer l\'application</string>
+    <string name="question_close_application">Voulez-vous fermer l\'application?</string>
+    <string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string>
+    
+ 	<!-- do not translate -->
+    <string name="attention">Attention</string>
+    <string name="payee_can_not_deleted">Le bénéficiaire sélectionné ne peut pas être supprimé car il fait référence</string>
+    <string name="account_can_not_deleted">Le compte sélectionné ne peut pas être supprimé car il fait référence</string>
+    <string name="currency_can_not_deleted">La devise choisie ne peut pas être supprimé car il fait référence</string>
+    <string name="category_can_not_deleted">La catégorie choisie ne peut pas être supprimé car il fait référence</string>
+    <!-- 20120909 -->
+    <string name="all_transaction">Toutes les opérations</string>
+    <string name="last7days">Des 7 derniers jours</string>
+    <string name="last15days">Des 2 dernieres semaines</string>
+    <string name="current_month">Du mois en cours</string>
+    <string name="current_year">De l\'année en cours</string>
+    <string name="show_transaction">Voir opérations</string>
+    <!-- 20120917 -->
+    <string name="type_home">Type d\'accueil</string>
+    <string name="classic">Classique</string>
+    <string name="advance">Avancée</string>
+    <string name="changelog">Des modification</string>
+    <!-- 20120925 -->
+    <string name="transaction_number">Numéro de l\'opération</string>
+    <!-- 20120927 -->
+
+</resources>

@@ -1,0 +1,50 @@
+<b> Version 1.0.0 </b>
+- Aggiunta la funzionalità di <b>ricerca delle transazioni</b>
+- Aggiunto <b>report Ingressi / Uscite</b> con la possibilità di filtrare per anno
+- Aggiunto <b>report Categorie</b> con la possibilità di filtrare per catgoria
+- Aggiunto <b>report Beneficiario</b>
+- Possibilità di spostare il database dalla memoria interna dell'applicazione alla scheda di memoria
+- Aggiunte nelle impostazioni: formato data, calendario finanziario (giorno e mese di inizio)
+- Aggiunto nella home, riepilogo ingressi e uscite del mese corrente
+- Miglioramenti grafici
+- Ottimizazioni varie
+- Risoluzione bug minori
+
+<b> Version 0.9.2 </b>
+- Aggiornamento traduzioni: Russo e Spagnolo
+
+<b>Version 0.9.0</b>
+- In attesa della versione con database criptato (emb), aggiunta la possibilità di inserire un pin in apertura dell'applicazione
+- Riorganizzato le impostazioni dell'applicazione
+- Aggiunta lingua: Russo (grazie Evgeniy)
+- Risoluzione bug minori
+
+<b>Version 0.8.0</b>
+- Aggiunte le Operazioni Ricorrenti
+- Aggiunta Notifica per le Operazioni Ricorrenti Scadute
+- Ottimizzata la dimensione dei caratteri in funzione dello schermo
+- Nella home di riepilogo, aggiunto in piccolo il saldo riconciliato
+- Sistemato problema di autenticazione con Dropbox su Android 4.2
+- Risoluzioni bug minori
+
+<b>Version 0.7.0</b>
+- Aggiunto Widget Saldo
+- Aggiunto Widget Riepilogo Conti <i>(solo dalla versione Honeycomb)</i>
+- Aggiunto Widget Nuova Transazione
+- Nella Home il tasto Indietro non chiede più di chiudere l'applicazione
+- Risoluzione bug minori
+
+<b>Version 0.6.3</b>
+- Risoluzione bug minori
+
+<b>Versione 0.6.2</b>
+- Risolto bug della visualizzazione della data con un giorno indietro
+- Risolto bug del totale a riepilogo nella Home non convertito correttamente
+- Risolto bug sincronizzazione con dropbox, primo upload database se non esisteva il file nella cartella remota, non veniva caricato niente
+- Aggiornati "currency code" di tutte le valute del mondo
+- Risoluzione bug minori
+- Aggiunta lingua: Francese (grazie Xavier)
+
+<b>Version 0.6.1</b>
+- Aggiunta la possibilità di aprire un database con estensione mmb da un file  manager (come Astro File Manager, OI File Manager, ES File Manager, etc...)
+- risoluzione bug minori

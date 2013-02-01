@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2012 The Android Money Manager Ex Project
+  
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  
+-->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.money.manager.ex"
+    android:versionCode="145"
+    android:versionName="1.0.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="14" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name="com.money.manager.ex.MoneyManagerApplication"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/application_name"
+        android:theme="@style/Theme.Money.Manager" >
+        <receiver
+            android:name="com.money.manager.ex.widget.ButtonAddTransactionWidgetProvider"
+            android:label="@string/widget_add_transaction" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_button_add_transaction" >
+            </meta-data>
+        </receiver>
+        <receiver
+            android:name="com.money.manager.ex.widget.SummaryWidgetProvider"
+            android:label="@string/widget_summary" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_summary" >
+            </meta-data>
+        </receiver>
+        <receiver
+            android:name="com.money.manager.ex.widget.AccountBillsWidgetProvider"
+            android:label="@string/widget_all_accounts" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_account_bills" >
+            </meta-data>
+        </receiver>
+
+        <service
+            android:name="com.money.manager.ex.widget.AccountBillsWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <provider
+            android:name="com.money.manager.ex.MoneyManagerProvider"
+            android:authorities="com.money.manager.ex.provider" >
+        </provider>
+
+        <activity
+            android:name="com.money.manager.ex.MainActivity"
+            android:label="@string/application_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.mmb"
+                    android:scheme="http" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.mmb"
+                    android:scheme="https" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.mmb"
+                    android:scheme="content" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.mmb"
+                    android:scheme="file" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:configChanges="orientation|keyboard|screenSize"
+            android:launchMode="singleTask" >
+            <intent-filter>
+
+                <!-- Change this to be db- followed by your app key -->
+                <data android:scheme="db-cakbv9zh9l083ep" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.dropbox.DropboxActivity"
+            android:label="Sync Dropbox" >
+        </activity>
+        <activity android:name="com.money.manager.ex.FileBrowseActivity" >
+            <intent-filter>
+                <action android:name="com.money.manager.ex.custom.intent.action.VIEW_FILE" />
+                <action android:name="com.money.manager.ex.custom.intent.action.VIEW_FOLDER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.CheckingAccountActivity"
+            android:label="@string/new_edit_transaction" >
+            <action android:name="android.intent.action.EDIT" />
+            <action android:name="android.intent.action.INSERT" />
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.PayeeActivity"
+            android:label="@string/payee" >
+            <action android:name="android.intent.action.PICK" />
+            <action android:name="android.intent.action.EDIT" />
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.AccountListActivity"
+            android:label="@string/account_list" >
+            <action android:name="android.intent.action.PICK" />
+            <action android:name="android.intent.action.EDIT" />
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.CategorySubCategoryActivity"
+            android:label="@string/category" >
+            <action android:name="android.intent.action.PICK" />
+            <action android:name="android.intent.action.EDIT" />
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.CurrencyFormatsListActivity"
+            android:label="@string/currency" >
+            <action android:name="android.intent.action.PICK" />
+            <action android:name="android.intent.action.EDIT" />
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.AboutActivity"
+            android:label="@string/about" >
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.CurrencyFormatsActivity"
+            android:label="@string/new_edit_currency" >
+            <action android:name="android.intent.action.EDIT" />
+            <action android:name="android.intent.action.INSERT" />
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.AccountListEditActivity"
+            android:label="@string/account_list" >
+            <action android:name="android.intent.action.EDIT" />
+            <action android:name="android.intent.action.INSERT" />
+        </activity>
+        <activity android:name="com.money.manager.ex.IntroductionActivity" />
+        <activity
+            android:name=".RepeatingTransactionListActivity"
+            android:label="@string/repeating_transaction" />
+        <activity
+            android:name="com.money.manager.ex.RepeatingTransactionActivity"
+            android:label="@string/new_edit_repeating_transaction" >
+            <action android:name="android.intent.action.EDIT" />
+            <action android:name="android.intent.action.INSERT" />
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.settings.PreferencesActivity"
+            android:label="@string/settings" >
+        </activity>
+        <activity android:name="com.money.manager.ex.PasscodeActivity" >
+            <intent-filter>
+                <action android:name="com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.reports.IncomeVsExpensesActivity"
+            android:label="@string/menu_report_income_vs_expenses" />
+        <activity
+            android:name="com.money.manager.ex.reports.PayeesReportActivity"
+            android:label="@string/payee" >
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.reports.CategoriesReportActivity"
+            android:label="@string/category" >
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.SearchActivity"
+            android:label="@string/search" >
+        </activity>
+    </application>
+
+</manifest>
