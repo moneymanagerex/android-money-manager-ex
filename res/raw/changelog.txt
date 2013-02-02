@@ -1,5 +1,6 @@
-<b> Version 1.0.1 </b>
-- Solving bug in the settings: month financial year
+<b> Version 1.0.2 </b>
+- <i>Bugfix:</i> display the amount and the account name in the transfer transactions
+- <i>Bugfix:</i> in the settings month financial year
 
 <b> Version 1.0.0 </b>
 - Added the function to <b>search transaction </b>

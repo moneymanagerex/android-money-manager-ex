@@ -334,7 +334,7 @@ public class SearchFragment extends SherlockFragment {
 		AllDataFragment fragment;
 		fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
 		if (fragment == null) {
-			fragment = new AllDataFragment();
+			fragment = AllDataFragment.newInstance(-1);
 		}
 		//create bundle
 		Bundle args = new Bundle();

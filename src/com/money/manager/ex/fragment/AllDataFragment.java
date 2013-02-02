@@ -59,12 +59,25 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
 
 	public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
-
+	
+	/**
+	 * Create a new instance of AllDataFragment with accountId params
+	 * @param accountId Id of account to display. If generic shown set -1
+	 * @return new instance AllDataFragment
+	 */
+	public static AllDataFragment newInstance(int accountId) {
+		AllDataFragment fragment = new AllDataFragment();
+		fragment.mAccountId = accountId;
+		return fragment;
+	}
+	
 	private AllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
 	private boolean mAutoStarLoader = true;
 	private boolean mShownHeader = false;
 	private int mGroupId = 0;
 
+	private int mAccountId = -1;
+	
 	/**
 	 * @return the mGroupId
 	 */
@@ -100,7 +113,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		setEmptyText(getString(R.string.no_data));
 		setListShown(false);
 		// create adapter
-		AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, isShownHeader());
+		AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, mAccountId, isShownHeader());
 		setListAdapter(adapter);
 		// register context menu
 		registerForContextMenu(getListView());

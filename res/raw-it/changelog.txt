@@ -1,5 +1,6 @@
-<b> Version 1.0.1 </b>
-- Risoluzione bug nelle impostazioni: mese anno finanziario
+<b> Version 1.0.2 </b>
+- <i>Bugfix:</i> nella visualizzazione dell'importo e del nome conto nelle transazioni di trasferimento
+- <i>Bugfix:</i> nelle impostazioni mese anno finanziario
 
 <b> Version 1.0.0 </b>
 - Aggiunta la funzionalità di <b>ricerca delle transazioni</b>

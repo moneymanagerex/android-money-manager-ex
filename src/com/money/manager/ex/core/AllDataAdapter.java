@@ -40,17 +40,23 @@ public class AllDataAdapter extends CursorAdapter {
 	private MoneyManagerApplication application;
 	private boolean showAccountName = false;
 	private HashMap<Integer, Integer> headersIndex;
+	private int accountId = -1;
 	
 	public AllDataAdapter(Context context, Cursor c) {
-		this(context, c, false);
+		this(context, c, -1);
+	}
+	
+	public AllDataAdapter(Context context, Cursor c, int accountId) {
+		this(context, c, accountId, false);
 	}
 	
 	@SuppressWarnings("deprecation")
-	public AllDataAdapter(Context context, Cursor c, boolean showAccountName) {
+	public AllDataAdapter(Context context, Cursor c, int accountId, boolean showAccountName) {
 		super(context, c);
 		this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.application = (MoneyManagerApplication) context.getApplicationContext();
 		this.showAccountName = showAccountName;
+		this.accountId = accountId;
 		this.headersIndex = new HashMap<Integer, Integer>();
 	}
 	
@@ -87,9 +93,9 @@ public class AllDataAdapter extends CursorAdapter {
 		// manage transfer and change amount sign
 		if ((cursor.getString(cursor.getColumnIndex(QueryAllData.TransactionType)) != null) &&
 			(cursor.getString(cursor.getColumnIndex(QueryAllData.TransactionType)).equals("Transfer")))  {
-			if (cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID)) != cursor.getInt(cursor.getColumnIndex(QueryAllData.ToAccountID))) {
+			if (accountId != cursor.getInt(cursor.getColumnIndex(QueryAllData.ToAccountID))) {
 				amount = -(amount); // -total
-			} else if (cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID)) == cursor.getInt(cursor.getColumnIndex(QueryAllData.ToAccountID))) {
+			} else if (accountId == cursor.getInt(cursor.getColumnIndex(QueryAllData.ToAccountID))) {
 				amount = cursor.getFloat(cursor.getColumnIndex(QueryAllData.TOTRANSAMOUNT)); // to account = account
 			}
 		}
@@ -123,7 +129,10 @@ public class AllDataAdapter extends CursorAdapter {
 		}
 		// write ToAccountName
 		if ((!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName))))) {
-			txtToAccountName.setText(cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName)));
+			if (accountId != cursor.getInt(cursor.getColumnIndex(QueryAllData.ToAccountID)))
+				txtToAccountName.setText(cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName)));
+			else
+				txtToAccountName.setText(cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName)));
 			linearToAccount.setVisibility(View.VISIBLE);
 		} else {
 			linearToAccount.setVisibility(View.GONE);

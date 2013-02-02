@@ -176,7 +176,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		});
 		// manage fragment
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		fragment = new AllDataFragment();
+		fragment = AllDataFragment.newInstance(mAccountId);
 		// set arguments and settings of fragment
 		fragment.setArguments(prepareArgsForChildFragment());
 		fragment.setAutoStarLoader(false);
