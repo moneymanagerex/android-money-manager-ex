@@ -18,12 +18,25 @@
 	<tstamp>
 		<format property="TODAY" pattern="yyyyMMdd" />
 	</tstamp>
-
-	<target name="default" description="replace date build into strings.xml">
+	
+	<target name="default" description="Compose version build">
+	    <!-- Date of build  -->
 		<property name="match.start" value="&lt;string name=&quot;application_build&quot;&gt;" />
 		<property name="match.end" value="&lt;/string&gt;" />
 		<property name="today" value="${TODAY}" />
 		<replaceregexp file="res/values/strings.xml" match="${match.start}.*${match.end}" replace="${match.start}${today}${match.end}">
+		</replaceregexp>
+		<!-- Version code  -->
+		<input message="Which version code you give this build?" addproperty="versioncode" />
+		<property name="code.match.start" value="android:versionCode=&quot;" />
+		<property name="code.match.end" value="&quot;" />
+		<replaceregexp file="AndroidManifest.xml" match="${code.match.start}.*${code.match.end}" replace="${code.match.start}${versioncode}${code.match.end}">
+		</replaceregexp>
+		<!-- Version name  -->
+		<input message="Which version name you give this build?" addproperty="versionname" />
+		<property name="name.match.start" value="android:versionName=&quot;" />
+		<property name="name.match.end" value="&quot;" />
+		<replaceregexp file="AndroidManifest.xml" match="${name.match.start}.*${name.match.end}" replace="${name.match.start}${versionname}${name.match.end}">
 		</replaceregexp>
 	</target>
 
