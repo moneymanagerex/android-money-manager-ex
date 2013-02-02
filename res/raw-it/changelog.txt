@@ -1,3 +1,6 @@
+<b> Version 1.0.1 </b>
+- Risoluzione bug nelle impostazioni: mese anno finanziario
+
 <b> Version 1.0.0 </b>
 - Aggiunta la funzionalità di <b>ricerca delle transazioni</b>
 - Aggiunto <b>report Ingressi / Uscite</b> con la possibilità di filtrare per anno

@@ -1,3 +1,6 @@
+<b> Version 1.0.1 </b>
+- Solving bug in the settings: month financial year
+
 <b> Version 1.0.0 </b>
 - Added the function to <b>search transaction </b>
 - Added <b>report Income vs. Expenses </b> with the option to filter by year

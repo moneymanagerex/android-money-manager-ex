@@ -239,11 +239,17 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					if (core.setInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH, Integer.toString((Integer)newValue + 1))) {
-						lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[Integer.parseInt((String)newValue) - 1]);
-						return true;
+					try {
+						int value = Integer.parseInt(newValue.toString());
+						if (core.setInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
+							lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
+							return true;
+						}
+					} catch (Exception e) {
+						Log.e(LOGCAT, e.getMessage());
+						return false;
 					}
-					return false;
+					return true;
 				}
 			});
 		}
