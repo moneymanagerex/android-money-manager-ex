@@ -276,7 +276,7 @@
 	<string name="send_feedback">Отправить отзыв</string>
 	<string name="send_us_your_feedback">Отправьте нам ваш отзыв</string>
 	<!-- 20121122 -->
-	<string name="preferences_info_application">Информмация</string>
+	<string name="preferences_info_application">Информация</string>
 	<string name="preferences_security">Безопасность</string>
 	<string name="preferences_active_passcode">Действующий пароль</string>
 	<string name="enter_your_passcode">Введите ваш пароль</string>
@@ -288,4 +288,35 @@
 	<string name="passcode_update">Пароль обновлен</string>
 	<string name="passcode_not_update">Пароль не обновлен</string>
 	<!-- 20121217 -->
+	<string name="lookups_wildcard">Для поиска можно использовать подстановочный символ \'%\'</string>
+	<string name="income_vs_expenses_current_month">Доход/Расход: Текущий месяц</string>
+	<string name="income">Доход</string>
+	<string name="expenses">Расход</string>
+	<string name="difference">Разница</string>
+	<string name="no_data">Нет данных для отображения</string>
+	<string name="month">Месяц</string>
+	<string name="year">Год</string>
+	<string name="menu_reports">Отчеты</string>
+	<string name="menu_report_income_vs_expenses">Доход/Расход</string>
+	<string name="total">Итого</string>
+	<string name="option">Опции</string>
+	<string name="all_time">Все время</string>
+	<string name="last_month">Последний месяц</string>
+	<string name="last30days">Последние 30 дней</string>
+	<string name="last_year">Последний год</string>
+	<!-- 20130106 -->
+	<string name="to">В</string>
+	<string name="result">Результат</string>
+	<string name="number_transaction_found">Найдено проводок: %1$d</string>
+	<!-- 20130108 -->
+	<string name="date_format">Формат даты</string>
+	<string name="financial_year_start_day">Финансовый год: День начала</string>
+	<string name="financial_year_start_month">Финансовый год: Месяц начала</string>
+	<string name="release_date">Дата выпуска</string>
+	<!-- 20130121 -->
+	<string name="menu_move_database_to_external_storage">Переместить БД во внешнее хранилище</string>
+	<string name="database_has_been_moved">База данных была перемещена: %1$s</string>
+	<string name="copy_database_on_external_storage_failed">Копирование базы данных на внешнее хранилище не удалось</string>
+	<string name="path_database_using">Путь до используемой базы данных: %1$s</string>
+	<!-- 20130129 -->
 </resources>
