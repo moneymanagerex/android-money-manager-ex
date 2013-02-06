@@ -1,3 +1,7 @@
+<b> Version 1.0.3 </b>
+- Aggiornamento traduzione: Russo
+- <i>Bugfix:</i> la ricerca per filtrare i benefeciari, categorie, etc... non visualizzava la tastiera
+
 <b> Version 1.0.2 </b>
 - <i>Bugfix:</i> nella visualizzazione dell'importo e del nome conto nelle transazioni di trasferimento
 - <i>Bugfix:</i> nelle impostazioni mese anno finanziario

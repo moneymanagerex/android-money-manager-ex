@@ -41,6 +41,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
+import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 
@@ -72,7 +74,7 @@ public class BaseListFragment extends SherlockListFragment {
 	            itemSearch.setActionView(searchView);
 	        } else {
 	        	// prendo il layout
-	        	searchView = LayoutInflater.from(getActivity()).inflate(R.layout.actionbar_searchview, null);
+	        	/*searchView = LayoutInflater.from(getActivity()).inflate(R.layout.actionbar_searchview, null);
 	        	// prendo l'edit text
 	        	final EditText edtSearch = (EditText)searchView.findViewById(R.id.editTextSearchView);
 	        	// prendo il menu
@@ -105,7 +107,21 @@ public class BaseListFragment extends SherlockListFragment {
 						return false;
 					}
 				});
-	        	((SherlockFragmentActivity)getActivity()).getSupportActionBar().setCustomView(searchView);
+	        	((SherlockFragmentActivity)getActivity()).getSupportActionBar().setCustomView(searchView);*/
+	        	SearchView actionSearchView = new SearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
+	        	actionSearchView.setOnQueryTextListener(new OnQueryTextListener() {
+					
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return false;
+					}
+					
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						return BaseListFragment.this.onQueryTextChange(newText);
+					}
+				});
+	        	itemSearch.setActionView(actionSearchView);
 	        }
 	        String textToast = "<small><b>" + getString(R.string.lookups_wildcard) + "</b></small>";
 	        Toast.makeText(getActivity(), Html.fromHtml(textToast), Toast.LENGTH_LONG).show();

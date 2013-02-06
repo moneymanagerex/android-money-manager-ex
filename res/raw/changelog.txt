@@ -1,3 +1,7 @@
+<b> Version 1.0.3 </b>
+- Updated translation of languages: Russian
+- <i>Bugfix:</i> search doesn't display keyboard on manage activity such as Payee, Categories, Account, etc...
+
 <b> Version 1.0.2 </b>
 - <i>Bugfix:</i> display the amount and the account name in the transfer transactions
 - <i>Bugfix:</i> in the settings month financial year
