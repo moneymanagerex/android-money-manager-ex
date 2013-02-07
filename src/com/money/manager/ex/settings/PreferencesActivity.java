@@ -232,8 +232,10 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			// get current month
 			String currentMonth = core.getInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH);
 			if (!TextUtils.isEmpty(currentMonth)) {
-				lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[Integer.parseInt(currentMonth) - 1]);
-				lstFinancialMonth.setValue(currentMonth);
+				if (Integer.parseInt(currentMonth) > -1 && Integer.parseInt(currentMonth) < lstFinancialMonth.getEntries().length) {
+					lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[Integer.parseInt(currentMonth) - 1]);
+					lstFinancialMonth.setValue(currentMonth);
+				}
 			}
 			lstFinancialMonth.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				
@@ -241,9 +243,11 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
 					try {
 						int value = Integer.parseInt(newValue.toString());
-						if (core.setInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
-							lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
-							return true;
+						if (value > -1 && value < lstFinancialMonth.getEntries().length) {
+							if (core.setInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
+								lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
+								return true;
+							}
 						}
 					} catch (Exception e) {
 						Log.e(LOGCAT, e.getMessage());
