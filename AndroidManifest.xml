@@ -20,8 +20,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="167"
-    android:versionName="1.0.3" >
+    android:versionCode="174"
+    android:versionName="1.0.6" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -30,6 +30,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:name="com.money.manager.ex.MoneyManagerApplication"

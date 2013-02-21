@@ -1,3 +1,7 @@
+<b> Version 1.0.6 </b>
+- <i>Bugfix:</i> Reconciled total for account does not consider duplicate transactions
+- <i>Bugfix:</i> Reports: categories and payees incorrect display in the last month
+
 <b> Version 1.0.3 </b>
 - Updated translation of languages: Russian
 - <i>Bugfix:</i> search doesn't display keyboard on manage activity such as Payee, Categories, Account, etc...

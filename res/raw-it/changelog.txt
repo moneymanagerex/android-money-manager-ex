@@ -1,3 +1,8 @@
+<b> Version 1.0.6 </b>
+- <i>Bugfix:</i> Il totale riconciliato nei conti correnti non considerava le operazioni duplicate
+- <i>Bugfix:</i> Reports per categorie e beneficiario visualizzava dati sbagliata nel mese scorso
+
+
 <b> Version 1.0.3 </b>
 - Aggiornamento traduzione: Russo
 - <i>Bugfix:</i> la ricerca per filtrare i benefeciari, categorie, etc... non visualizzava la tastiera

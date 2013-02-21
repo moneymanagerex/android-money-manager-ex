@@ -122,7 +122,7 @@ public abstract class BaseReportFragment extends BaseListFragment implements Loa
 			if (currentMonth == 1) {
 				whereClause = ViewMobileData.Month + "=" + Integer.toString(12) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
 			} else {
-				whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);;
+				whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
 			}
 		} else if (item.getItemId() == R.id.menu_last_30_days) {
 			whereClause = "(julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
