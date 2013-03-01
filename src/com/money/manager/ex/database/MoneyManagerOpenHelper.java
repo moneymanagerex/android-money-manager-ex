@@ -193,13 +193,21 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	 */
 	public String getSQLiteVersion() {
 		String sqliteVersion = null;
+		Cursor cursor = null;
+		SQLiteDatabase database = null;
 		try {
-			Cursor cursor = getReadableDatabase().rawQuery("select sqlite_version() AS sqlite_version", null);
-			if (cursor != null && cursor.moveToFirst()) {
-				sqliteVersion = cursor.getString(0);
+			database = getReadableDatabase();
+			if (database != null) {
+				cursor = database.rawQuery("select sqlite_version() AS sqlite_version", null);
+				if (cursor != null && cursor.moveToFirst()) {
+					sqliteVersion = cursor.getString(0);
+				}
 			}
 		} catch (Exception e) {
 			Log.e(LOGCAT, e.getMessage());
+		} finally {
+			if (cursor != null) cursor.close();
+			if (database != null) database.close();
 		}
 		return sqliteVersion;
 	}
@@ -210,14 +218,18 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	 */
 	public TableAccountList getTableAccountList(int id) {
 		String selection = TableAccountList.ACCOUNTID + "=?";
-		//Cursor cursor = mContext.getContentResolver().query(new TableAccountList().getUri(), null, selection, new String[] {Integer.toString(id)}, null);
-		Cursor cursor = this.getReadableDatabase().query(new TableAccountList().getSource(), null, selection, new String[] {Integer.toString(id)}, null, null, null);
-		// check if cursor is valid
-		if (cursor != null && cursor.moveToFirst()) {
-			TableAccountList account = new TableAccountList();
-			account.setValueFromCursor(cursor);
-			cursor.close();
-			return account;
+		SQLiteDatabase database = getReadableDatabase();
+		if (database != null) {
+			Cursor cursor = database.query(new TableAccountList().getSource(), null, selection, new String[] {Integer.toString(id)}, null, null, null);
+			// check if cursor is valid
+			if (cursor != null && cursor.moveToFirst()) {
+				TableAccountList account = new TableAccountList();
+				account.setValueFromCursor(cursor);
+				cursor.close();
+				return account;
+			}
+			database.close();
+			close();
 		}
 		// find is false then return null
 		return null;

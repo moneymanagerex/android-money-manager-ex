@@ -358,7 +358,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		MenuItem item = menu.add(0, R.id.menu_export_csv, 0, R.string.export_data_to_csv);
 		if (getSherlockActivity() != null) {
 	 		item.setIcon(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.ic_action_upload));
-			item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		}
 	}
 

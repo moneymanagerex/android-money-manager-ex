@@ -9,8 +9,11 @@ import java.io.OutputStream;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -18,6 +21,7 @@ import android.util.Log;
 import android.util.TypedValue;
 
 import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableCategory;
@@ -47,6 +51,35 @@ public class Core {
 		this.context = context;
 	}
 
+	/**
+	 * Shown alert dialog
+	 * @param resId id of string 
+	 * @return
+	 */
+	public AlertDialog alertDialog(int resId) {
+		return alertDialog(context.getString(resId));
+	}
+	
+	/**
+	 * Shown alert dialog
+	 * @param text to display
+	 * @return
+	 */
+	public AlertDialog alertDialog(String text) {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+		// setting alert dialog
+		dialog.setIcon(android.R.drawable.ic_dialog_alert);
+		dialog.setTitle(R.string.attention);
+		dialog.setMessage(text);
+		dialog.setNeutralButton(android.R.string.ok, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		// show dialog
+		return dialog.create();
+	}
 	public File backupDatabase() {
 		File database = new File(MoneyManagerApplication.getDatabasePath(context));
 		if (database == null || !database.exists())
@@ -87,7 +120,6 @@ public class Core {
 		
 		return new File(folderOutput + "/" + filesFromCopy.get(0).getName());
 	}
-	
 	public void copy(File src, File dst) throws IOException {
 	    InputStream in = new FileInputStream(src);
 	    OutputStream out = new FileOutputStream(dst);
@@ -101,6 +133,7 @@ public class Core {
 	    in.close();
 	    out.close();
 	}
+	
 	public String getAppBase64() {
 		try {
 			return SimpleCrypto.decrypt(MoneyManagerApplication.KEY, getTokenApp()); 
@@ -109,6 +142,7 @@ public class Core {
 		}
 		return null;
 	}
+	
 	/**
 	 * Returns category and sub-category formatted
 	 * @param categoryId
@@ -229,7 +263,6 @@ public class Core {
 	public int resolveColorAttribute(int attr) {
 		return context.getResources().getColor(resolveIdAttribute(attr));
 	}
-	
 	/**
 	 * Resolve the id attribute into int value
 	 * @param attr id attribute

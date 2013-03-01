@@ -132,7 +132,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		// item add
 		MenuItem item = menu.add(10001, R.id.menu_add_transaction, 10001, R.string.new_transaction);
 		item.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_add));
-		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		// find item
 		MenuItem itemNew = menu.findItem(R.id.menu_new_transaction);
 		if (itemNew != null) itemNew.setVisible(false);

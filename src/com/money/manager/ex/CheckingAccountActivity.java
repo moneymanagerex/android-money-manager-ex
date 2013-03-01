@@ -51,6 +51,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -923,24 +924,25 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	 * @return
 	 */
 	private boolean validateData() {
+		Core core = new Core(this);
 		if ((mTransCode.equals("Transfer")) && (mToAccountId == -1)) {
-			Toast.makeText(this, R.string.error_toaccount_not_selected, Toast.LENGTH_LONG).show();
+			core.alertDialog(R.string.error_toaccount_not_selected).show();
 			return false;
 		} else if ((mTransCode.equals("Transfer") == false) && (mPayeeId == -1)) {
-			Toast.makeText(this, R.string.error_payee_not_selected, Toast.LENGTH_LONG).show();
+			core.alertDialog(R.string.error_payee_not_selected).show();
 			return false;
 		}
 		if (mCategoryId == -1 && (!chbSplitTransaction.isChecked())) {
-			Toast.makeText(this, R.string.error_category_not_selected, Toast.LENGTH_LONG).show();
+			core.alertDialog(R.string.error_category_not_selected).show();
 			return false;
 		}
 		if (chbSplitTransaction.isChecked() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
-			Toast.makeText(this, R.string.error_split_transaction_empty, Toast.LENGTH_LONG).show();
+			core.alertDialog(R.string.error_split_transaction_empty).show();
 			return false;
 		}
 		if (TextUtils.isEmpty(edtTotAmount.getText())) {
 			if (TextUtils.isEmpty(edtAmount.getText())) {
-				Toast.makeText(this, R.string.error_totamount_empty, Toast.LENGTH_LONG).show();
+				core.alertDialog(R.string.error_totamount_empty).show();
 				return false;
 			} else {
 				edtTotAmount.setText(edtAmount.getText());
