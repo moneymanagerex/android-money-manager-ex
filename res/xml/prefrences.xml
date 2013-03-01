@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
@@ -23,15 +23,18 @@
             android:key="username"
             android:summary="@string/username"
             android:title="@string/user" />
+
         <ListPreference
             android:key="dateformat"
             android:title="@string/date_format" />
         <ListPreference
             android:key="basecurrency"
             android:title="@string/base_currency" />
+
         <EditTextPreference
             android:key="financial_year_startday"
             android:title="@string/financial_year_start_day" />
+
         <ListPreference
             android:key="financial_year_startmonth"
             android:title="@string/financial_year_start_month" />
@@ -71,7 +74,7 @@
         <PreferenceScreen
             android:key="editpasscode"
             android:title="@string/preferences_edit_passcode" />
-                <PreferenceScreen
+        <PreferenceScreen
             android:key="disablepasscode"
             android:title="@string/preferences_disable_passcode" />
     </PreferenceScreen>
@@ -86,22 +89,32 @@
             android:key="dropboxmodesync"
             android:title="@string/dropbox_method" />
     </PreferenceScreen>
+
+    <Preference
+        android:key="donate"
+        android:title="@string/donate" />
+
     <PreferenceScreen android:title="@string/preferences_info_application" >
         <Preference
             android:key="databasepath"
-            android:title="@string/path" />
-        <Preference 
+            android:title="@string/path" 
+            android:selectable="false" />
+        <Preference
+            android:key="sqliteversion"
+            android:title="@string/android_sqlite_vesion" 
+            android:selectable="false" />
+        <Preference
             android:key="versionname"
-            android:title="@string/version"
-            android:selectable="false" />
-        <Preference 
+            android:selectable="false"
+            android:title="@string/version" />
+        <Preference
             android:key="versioncode"
-            android:title="@string/build"
-            android:selectable="false" />
-        <Preference 
+            android:selectable="false"
+            android:title="@string/build" />
+        <Preference
             android:key="versiondate"
-            android:title="@string/release_date"
-            android:selectable="false" />
+            android:selectable="false"
+            android:title="@string/release_date" />
     </PreferenceScreen>
 
 </PreferenceScreen>

@@ -23,6 +23,10 @@ public class TableSubCategory extends Dataset {
 	public static final String SUBCATEGNAME = "SUBCATEGNAME";
 	public static final String CATEGID = "CATEGID";
 
+	private int subCategId;
+	private String subCategName;
+	private int categId;
+	
 	// CONSTRUCTOR
 	public TableSubCategory() {
 		super("subcategory_v1", DatasetType.TABLE, "subcategory");
@@ -31,5 +35,47 @@ public class TableSubCategory extends Dataset {
 	@Override
 	public String[] getAllColumns() {
 		return new String[] {"SUBCATEGID AS _id", SUBCATEGID, SUBCATEGNAME, CATEGID };
+	}
+
+	/**
+	 * @return the categId
+	 */
+	public int getCategId() {
+		return categId;
+	}
+
+	/**
+	 * @return the subCategId
+	 */
+	public int getSubCategId() {
+		return subCategId;
+	}
+
+	/**
+	 * @return the subCategName
+	 */
+	public String getSubCategName() {
+		return subCategName;
+	}
+
+	/**
+	 * @param categId the categId to set
+	 */
+	public void setCategId(int categId) {
+		this.categId = categId;
+	}
+
+	/**
+	 * @param subCategId the subCategId to set
+	 */
+	public void setSubCategId(int subCategId) {
+		this.subCategId = subCategId;
+	}
+
+	/**
+	 * @param subCategName the subCategName to set
+	 */
+	public void setSubCategName(String subCategName) {
+		this.subCategName = subCategName;
 	}
 }

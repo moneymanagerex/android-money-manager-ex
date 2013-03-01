@@ -42,7 +42,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:text="@string/version" />
-        
+
         <TextView
             android:id="@+id/textViewBuild"
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:text="@string/build" />
-        
+
         <TextView
             android:id="@+id/textViewCopyright"
             android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/application_copyright" />
-        
+
         <TextView
             android:id="@+id/textViewLinkFeedback"
             android:layout_width="wrap_content"
@@ -141,7 +141,35 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/application_license" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/divider_ice_cream_sandwich" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/donate_header" />
+
+        <TextView
+            android:id="@+id/textViewDonate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/donate"
+            android:textColor="@android:color/holo_blue_light" />
     </LinearLayout>
 
 </ScrollView>

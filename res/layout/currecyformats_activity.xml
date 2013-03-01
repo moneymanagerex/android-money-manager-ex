@@ -27,7 +27,7 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-       	<LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -36,6 +36,7 @@
                 style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="@string/currency_name" />
 
             <EditText
@@ -50,6 +51,7 @@
                 style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="@string/currency_symbol" />
 
             <Spinner
@@ -69,6 +71,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="@string/unit_name" />
 
                 <TextView
@@ -76,6 +79,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="@string/cents_name" />
             </LinearLayout>
 
@@ -100,7 +104,7 @@
                     android:ems="10"
                     android:hint="@string/cents_name" />
             </LinearLayout>
-            
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -111,6 +115,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="@string/prefix_symbol" />
 
                 <TextView
@@ -118,6 +123,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="@string/suffix_symbol" />
             </LinearLayout>
 
@@ -142,7 +148,7 @@
                     android:ems="10"
                     android:hint="@string/suffix_symbol" />
             </LinearLayout>
-            
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -153,6 +159,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="@string/decimal_char" />
 
                 <TextView
@@ -160,6 +167,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="@string/group_char" />
             </LinearLayout>
 
@@ -184,7 +192,7 @@
                     android:ems="10"
                     android:hint="@string/group_char" />
             </LinearLayout>
-            
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -195,6 +203,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="@string/scale" />
 
                 <TextView
@@ -202,6 +211,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="@string/conversion_to_base_rate" />
             </LinearLayout>
 
@@ -216,7 +226,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="@string/scale" 
+                    android:gravity="right"
+                    android:hint="@string/scale"
                     android:inputType="number" />
 
                 <EditText
@@ -225,8 +236,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="@string/conversion_to_base_rate" 
-                    android:inputType="number"/>
+                    android:gravity="right"
+                    android:hint="@string/conversion_to_base_rate"
+                    android:inputType="numberDecimal" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

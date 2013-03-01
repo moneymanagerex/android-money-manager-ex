@@ -53,6 +53,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.dropbox.client2.session.Session.AccessType;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -81,7 +82,8 @@ public class MoneyManagerApplication extends Application {
     ///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
-    public static final String PREF_LAST_VERSION_KEY = "preflastversionkey";
+    public static final String PREF_LAST_VERSION_KEY = "preflastversioncodekey";
+    public static final String PREF_DONATE_LAST_VERSION_KEY = "prefdonatelastversioncodekey";
     public static final String PREF_LAST_DB_PATH_SHOWN = "preflastdbpathshown";
     public static final String PREF_SHOW_INTRODUCTION = "prefshowintroduction";
     public static final String PREF_DATABASE_PATH = "databasepath";
@@ -110,9 +112,22 @@ public class MoneyManagerApplication extends Application {
 	/**
 	 * Take a versioncode of this application
 	 * @param context
-	 * @return application version code
+	 * @return application version name
 	 */
-    public static String getCurrentVersion(Context context) {
+    public static int getCurrentVersionCode(Context context) {
+		try {
+			PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+			return packageInfo.versionCode;
+		} catch (NameNotFoundException e) {
+			return 0;
+		}
+    }
+	/**
+	 * Take a versioncode of this application
+	 * @param context
+	 * @return application version name
+	 */
+    public static String getCurrentVersionName(Context context) {
 		try {
 			PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 			return packageInfo.versionName;
@@ -184,46 +199,17 @@ public class MoneyManagerApplication extends Application {
 		editor.commit();
 	}
     /**
-	 * Shown database path with toast message
-	 * @param context
-	 */
-	public static void showDatabasePathWork(Context context) {
-		String currentPath = getDatabasePath(context);
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		String lastPath = preferences.getString(PREF_LAST_DB_PATH_SHOWN, "");
-		if (!lastPath.equals(currentPath)) {
-			Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG).show();
-			preferences.edit().putString(PREF_LAST_DB_PATH_SHOWN, currentPath).commit();
-		}
-	}
-
-	/**
-     * This method show introduction activity
-     * @param context activity called
-     * @param force true show
-     */
-    public static boolean showIntroduction(Context context, boolean forceShow) {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		Boolean isShowed = preferences.getBoolean(PREF_SHOW_INTRODUCTION, false);
-		if ((!isShowed) || forceShow) {
-			preferences.edit().putBoolean(PREF_SHOW_INTRODUCTION, true).commit();
-			context.startActivity(new Intent(context, IntroductionActivity.class));
-			return false;
-		} else
-			return true;
-    }
-	/**
-     * 
+     * Show changelog dialog
      * @param context
      * @param forceShow force show changelog alert dialog
      * @return
      */
-	public static boolean showStartupChangeLog(Context context, boolean forceShow) {
-		String currentVersion = getCurrentVersion(context);
+	public static boolean showChangeLog(Context context, boolean forceShow) {
+		int currentVersionCode = getCurrentVersionCode(context);
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		String lastVersion = preferences.getString(PREF_LAST_VERSION_KEY, "0.0.0");
-		if (!lastVersion.equals(currentVersion) || forceShow) {
-			preferences.edit().putString(PREF_LAST_VERSION_KEY, currentVersion).commit();
+		int lastVersionCode = preferences.getInt(PREF_LAST_VERSION_KEY, -1);
+		if (!(lastVersionCode == currentVersionCode) || forceShow) {
+			preferences.edit().putInt(PREF_LAST_VERSION_KEY, currentVersionCode).commit();
 			//get text changelog
 			String changelog = getRawAsString(context, R.raw.changelog);
 			changelog = "<small>" + changelog.replace("\n", "<br>") + "</small>";
@@ -241,10 +227,81 @@ public class MoneyManagerApplication extends Application {
 					});
 			// show dialog
 			showDialog.create().show();
-			return false;
-		} else
 			return true;
+		} else
+			return false;
 	}
+
+	/**
+	 * Shown database path with toast message
+	 * @param context
+	 */
+	public static void showDatabasePathWork(Context context) {
+		String currentPath = getDatabasePath(context);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String lastPath = preferences.getString(PREF_LAST_DB_PATH_SHOWN, "");
+		if (!lastPath.equals(currentPath)) {
+			Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG).show();
+			preferences.edit().putString(PREF_LAST_DB_PATH_SHOWN, currentPath).commit();
+		}
+	}
+	/**
+	 * Show donate dialog
+	 * @param context
+	 * @param forceShow
+	 * @return
+	 */
+	public static boolean showDonateDialog(final Context context, boolean forceShow) {
+		int currentVersionCode = getCurrentVersionCode(context);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		int lastVersionCode = preferences.getInt(PREF_DONATE_LAST_VERSION_KEY, -1);
+		if (!(lastVersionCode == currentVersionCode) || forceShow) {
+			preferences.edit().putInt(PREF_DONATE_LAST_VERSION_KEY, currentVersionCode).commit();
+			Core core = new Core(context);
+			if (TextUtils.isEmpty(core.getInfoValue(Core.INFO_SKU_ORDER_ID))) {
+				//get text donate
+				String donateText = context.getString(R.string.donate_header);
+				//create dialog
+				AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
+				showDialog.setCancelable(false);
+				showDialog.setTitle(R.string.donate);
+				showDialog.setMessage(Html.fromHtml(donateText));
+				showDialog.setNegativeButton(R.string.no_thanks, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				showDialog.setPositiveButton(R.string.donate_exlamation, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						context.startActivity(new Intent(context, DonateActivity.class));
+						dialog.dismiss();
+					}
+				});
+				// show dialog
+				showDialog.create().show();
+			}
+			return true;
+		} else
+			return false;
+	}
+	/**
+     * This method show introduction activity
+     * @param context activity called
+     * @param force true show
+     */
+    public static boolean showIntroduction(Context context, boolean forceShow) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		Boolean isShowed = preferences.getBoolean(PREF_SHOW_INTRODUCTION, false);
+		if ((!isShowed) || forceShow) {
+			preferences.edit().putBoolean(PREF_SHOW_INTRODUCTION, true).commit();
+			context.startActivity(new Intent(context, IntroductionActivity.class));
+			return true;
+		} else
+			return false;
+    }
+	
 	private Editor editPreferences;
 	///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //

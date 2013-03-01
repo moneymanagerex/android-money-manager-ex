@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <resources>
 
@@ -24,8 +24,8 @@
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
     <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock and ViewPagerIndicator libraries</string>
     <string name="application_license">Open source licenses</string>
-	<string name="application_build">20130221</string>
-	
+    <string name="application_build">20130227</string>
+
     <!-- database -->
     <string name="db_insert_failed">Insert data failed</string>
     <string name="db_delete_failed">Delete data failed</string>
@@ -214,7 +214,7 @@
     <string name="close_application">Close Application</string>
     <string name="question_close_application">Do you want close application?</string>
     <string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string>
- 	<!-- do not translate -->
+    <!-- do not translate -->
     <string name="attention">Attention</string>
     <string name="payee_can_not_deleted">The payee selected can not be deleted because it referenced</string>
     <string name="account_can_not_deleted">The account selected can not be deleted because it referenced</string>
@@ -256,67 +256,88 @@
     <string name="in_x_months">In (x) Months</string>
     <string name="every_x_days">Every (x) Days</string>
     <string name="every_x_months">Every (x) Months</string>
-	<string name="inactive">Inactive</string>
-	<string name="days_overdue">days overdue!</string>
-	<string name="days_remaining">days remaining</string>
-	<string name="new_edit_repeating_transaction">New/Edit Repeating Transaction</string>
-	<string name="next_occurrence">Next Occurrence</string>
-	<string name="repeats">Repeats</string>
-	<string name="times_repeated">Times Repeated</string>
-	<string name="error_next_occurrence_not_populate">Attention: Date next occurrence is not populate</string>
-	<string name="activates">Activates</string>
-	<string name="period_days">Period: days</string>
-	<string name="enter_next_occurrence">Enter Next Occurrence</string>
-	<string name="skip_next_occurrence">Skip Next Occurrence</string>
-	<string name="notification_repeating_transaction_expired">There are repeating transaction expired</string>
-	<string name="notification_click_to_check_repeating_transaction">Click to check the transaction overdue</string>
-	<!-- 20121115 -->
-	<string name="num_repeating_transaction_expired">There are %1$d repeating transaction expired</string>
-	<!-- 20121121 -->
-	<string name="send_feedback">Send Feedback</string>
-	<string name="send_us_your_feedback">Send us your feedback</string>
-	<!-- 20121122 -->
-	<string name="preferences_info_application">Info</string>
-	<string name="preferences_security">Security</string>
-	<string name="preferences_active_passcode">Active Passcode</string>
-	<string name="enter_your_passcode">Enter your passcode</string>
-	<string name="reinsert_your_passcode">Reinsert your new passcode</string>
-	<string name="passocde_no_macth">Passcode no match</string>
-	<string name="preferences_edit_passcode">Edit Passcode</string>
-	<string name="preferences_disable_passcode">Disable Passcode</string>
-	<string name="enter_your_previous_passcode">Enter your previous passcode</string>
-	<string name="passcode_update">passcode is updated</string>
-	<string name="passcode_not_update">passcode is not updated</string>
-	<!-- 20121217 -->
-	<string name="lookups_wildcard">For lookups you can use the % wildcard character</string>
-	<string name="income_vs_expenses_current_month">Income vs Expenses: Current Month</string>
-	<string name="income">Income</string>
-	<string name="expenses">Expenses</string>
-	<string name="difference">Difference</string>
-	<string name="no_data">No data to display</string>
-	<string name="month">Month</string>
-	<string name="year">Year</string>
-	<string name="menu_reports">Reports</string>
-	<string name="menu_report_income_vs_expenses">Income Vs Expenses</string>
-	<string name="total">Total</string>
-	<string name="option">Option</string>
-	<string name="all_time">All Time</string>
-	<string name="last_month">Last Month</string>
-	<string name="last30days">Last 30 Days</string>
-	<string name="last_year">Last Year</string>
-	<!-- 20130106 -->
-	<string name="to">To</string>
-	<string name="result">Result</string>
-	<string name="number_transaction_found">Number of transactions found: %1$d</string>
-	<!-- 20130108 -->
-	<string name="date_format">Date Format</string>
-	<string name="financial_year_start_day">Financial Year: Start Day</string>
-	<string name="financial_year_start_month">Financial Year: Start Month</string>
-	<string name="release_date">Release Date</string>
-	<!-- 20130121 -->
-	<string name="menu_move_database_to_external_storage">Move Database to External Storage</string>
-	<string name="database_has_been_moved">The database has been moved: %1$s</string>
-	<string name="copy_database_on_external_storage_failed">Copy database on external storage failed</string>
-	<string name="path_database_using">You\'re using the database saved in: %1$s</string>
-	<!-- 20130129 -->
+    <string name="inactive">Inactive</string>
+    <string name="days_overdue">days overdue!</string>
+    <string name="days_remaining">days remaining</string>
+    <string name="new_edit_repeating_transaction">New/Edit Repeating Transaction</string>
+    <string name="next_occurrence">Next Occurrence</string>
+    <string name="repeats">Repeats</string>
+    <string name="times_repeated">Times Repeated</string>
+    <string name="error_next_occurrence_not_populate">Attention: Date next occurrence is not populate</string>
+    <string name="activates">Activates</string>
+    <string name="period_days">Period: days</string>
+    <string name="enter_next_occurrence">Enter Next Occurrence</string>
+    <string name="skip_next_occurrence">Skip Next Occurrence</string>
+    <string name="notification_repeating_transaction_expired">There are repeating transaction expired</string>
+    <string name="notification_click_to_check_repeating_transaction">Click to check the transaction overdue</string>
+    <!-- 20121115 -->
+    <string name="num_repeating_transaction_expired">There are %1$d repeating transaction expired</string>
+    <!-- 20121121 -->
+    <string name="send_feedback">Send Feedback</string>
+    <string name="send_us_your_feedback">Send us your feedback</string>
+    <!-- 20121122 -->
+    <string name="preferences_info_application">Info</string>
+    <string name="preferences_security">Security</string>
+    <string name="preferences_active_passcode">Active Passcode</string>
+    <string name="enter_your_passcode">Enter your passcode</string>
+    <string name="reinsert_your_passcode">Reinsert your new passcode</string>
+    <string name="passocde_no_macth">Passcode no match</string>
+    <string name="preferences_edit_passcode">Edit Passcode</string>
+    <string name="preferences_disable_passcode">Disable Passcode</string>
+    <string name="enter_your_previous_passcode">Enter your previous passcode</string>
+    <string name="passcode_update">passcode is updated</string>
+    <string name="passcode_not_update">passcode is not updated</string>
+    <!-- 20121217 -->
+    <string name="lookups_wildcard">For lookups you can use the % wildcard character</string>
+    <string name="income_vs_expenses_current_month">Income vs Expenses: Current Month</string>
+    <string name="income">Income</string>
+    <string name="expenses">Expenses</string>
+    <string name="difference">Difference</string>
+    <string name="no_data">No data to display</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="menu_reports">Reports</string>
+    <string name="menu_report_income_vs_expenses">Income Vs Expenses</string>
+    <string name="total">Total</string>
+    <string name="option">Option</string>
+    <string name="all_time">All Time</string>
+    <string name="last_month">Last Month</string>
+    <string name="last30days">Last 30 Days</string>
+    <string name="last_year">Last Year</string>
+    <!-- 20130106 -->
+    <string name="to">To</string>
+    <string name="result">Result</string>
+    <string name="number_transaction_found">Number of transactions found: %1$d</string>
+    <!-- 20130108 -->
+    <string name="date_format">Date Format</string>
+    <string name="financial_year_start_day">Financial Year: Start Day</string>
+    <string name="financial_year_start_month">Financial Year: Start Month</string>
+    <string name="release_date">Release Date</string>
+    <!-- 20130121 -->
+    <string name="menu_move_database_to_external_storage">Move Database to External Storage</string>
+    <string name="database_has_been_moved">The database has been moved: %1$s</string>
+    <string name="copy_database_on_external_storage_failed">Copy database on external storage failed</string>
+    <string name="path_database_using">You\'re using the database saved in: %1$s</string>
+    <!-- 20130129 -->
+    <string name="split_transaction">Split Transaction</string>
+    <string name="split_category">Split Category</string>
+    <string name="split">Split</string>
+    <string name="error_split_transaction_empty">Attention: please, insert at least one of split transaction</string>
+    <string name="export_data_to_csv">Export data to CSV file</string>
+    <string name="export_data_in_progress">Export data in progress …</string>
+    <string name="export_file_complete">Export file %1$s completed</string>
+    <string name="export_file_failed">Export file %1$s failed</string>
+    <!-- 20130220 -->
+    <string name="donate_header">Android Money Manager Ex is provided free. If this application is to your liking, you can support the development team with a donation.</string>
+    <string name="donate_in_app_title">Google Play In-App Billing</string>
+    <string name="donate_in_app_description">Donate via Google Play In-App Billing.</string>
+    <string name="donate_in_app_spinner_text">Select a donation amount</string>
+    <string name="donate_in_app_button">Donate</string>
+    <string name="donate_thank_you">Thank you for your donation!</string>
+    <string name="donate">Donate</string>
+    <string name="no_thanks">No, thanks</string>
+    <string name="donate_exlamation">Donate!</string>
+    <!-- 20130225 -->
+	<string name="android_sqlite_vesion">SQLite Version</string>
+	<!-- 20130301 -->
 </resources>

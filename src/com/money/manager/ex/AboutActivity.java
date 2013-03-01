@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
+import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.Html;
@@ -39,7 +40,7 @@ public class AboutActivity extends BaseFragmentActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState); 
 		setContentView(R.layout.about_activity);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		// take a object into layout
@@ -77,7 +78,16 @@ public class AboutActivity extends BaseFragmentActivity {
 		txtChangeLog.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MoneyManagerApplication.showStartupChangeLog(AboutActivity.this, true);
+				MoneyManagerApplication.showChangeLog(AboutActivity.this, true);
+			}
+		});
+		// donate
+		TextView txtDonate = (TextView)findViewById(R.id.textViewDonate);
+		txtDonate.setText(Html.fromHtml("<u>" + getString(R.string.donate) + "</u>"));
+		txtDonate.setOnClickListener(new OnClickListener() {		
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(AboutActivity.this, DonateActivity.class));
 			}
 		});
 	}

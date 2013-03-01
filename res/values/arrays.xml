@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <resources>
 
@@ -28,6 +28,16 @@
         <item>@string/withdrawal</item>
         <item>@string/deposit</item>
         <item>@string/transfer</item>
+    </string-array>
+
+    <!-- Define transcode items and values for split transactions -->
+    <string-array name="split_transcode_values">
+        <item>Withdrawal</item>
+        <item>Deposit</item>
+    </string-array>
+    <string-array name="split_transcode_items">
+        <item>@string/withdrawal</item>
+        <item>@string/deposit</item>
     </string-array>
 
     <!-- Define status items and values -->
@@ -106,7 +116,7 @@
         <item>@string/classic</item>
         <item>@string/advance</item>
     </string-array>
-    
+
     <!-- Define frequencies items and values -->
     <integer-array name="frequencies_values">
         <item>0</item>
@@ -125,6 +135,7 @@
         <item>13</item>
         <item>14</item>
     </integer-array>
+
     <string-array name="frequencies_items">
         <item>@string/none</item>
         <item>@string/weekly</item>
@@ -141,6 +152,12 @@
         <item>@string/in_x_months</item>
         <item>@string/every_x_days</item>
         <item>@string/every_x_months</item>
+    </string-array>
+    <!-- donate -->
+    <string-array name="donate_in_app_sku_array">
+        <item>android.money.manager.ex.donations.small</item>
+        <item>android.money.manager.ex.donations.medium</item>
+        <item>android.money.manager.ex.donations.large</item>
     </string-array>
     <!-- Define currency value -->
     <string-array name="currency_values">
@@ -305,6 +322,6 @@
         <item>%Y-%m-%d</item>
         <item>%Y.%m.%d</item>
         <item>%Y%m%d</item>
-
     </string-array>
+
 </resources>

@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -159,11 +159,27 @@
                     android:text="@string/select_to_account" />
             </LinearLayout>
 
-            <TextView
-                style="?android:attr/listSeparatorTextViewStyle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/category" />
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/category" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxSplitTransaction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/split" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/buttonSelectCategory"
@@ -205,6 +221,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:gravity="right"
                     android:hint="@string/total_amount"
                     android:inputType="numberDecimal" />
 
@@ -214,6 +231,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:gravity="right"
                     android:hint="@string/amount"
                     android:inputType="numberDecimal" />
             </LinearLayout>
@@ -235,16 +253,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:gravity="right"
                     android:hint="@string/transaction_number"
                     android:inputType="number" />
 
                 <ImageButton
-                    android:src="@drawable/ic_action_plusone_dark"
                     android:id="@+id/buttonTransNumber"
                     style="@style/Money.Button"
                     android:layout_width="@dimen/money_button_height"
                     android:layout_height="@dimen/money_button_height"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_action_plusone_dark" />
             </LinearLayout>
 
             <TextView

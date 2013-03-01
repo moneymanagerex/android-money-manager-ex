@@ -1,3 +1,9 @@
+<b> Version 1.1.0 </b>
+- Added split transaction
+- Export transaction to CSV file
+- The widgets can be placed in lockscreen (Android 4.2)
+- <i>Minor bugfix</i>
+
 <b> Version 1.0.6 </b>
 - <i>Bugfix:</i> Reconciled total for account does not consider duplicate transactions
 - <i>Bugfix:</i> Reports: categories and payees incorrect display in the last month

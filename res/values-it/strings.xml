@@ -317,4 +317,25 @@
 	<string name="copy_database_on_external_storage_failed">Copia del database su scheda di memoria fallita</string>
 	<string name="path_database_using">Stai utilizzando il database salvato in: %1$s</string>
 	<!-- 20130129 -->
+	<string name="split_transaction">Transazioni Suddivise</string>
+	<string name="split_category">Categoria Suddivisa</string>
+	<string name="split">Suddividi</string>
+	<string name="error_split_transaction_empty">Attenzione: inserire almeno una categoria suddivisa</string>
+	<string name="export_data_to_csv">Esportazione dati su file CSV</string>
+	<string name="export_data_in_progress">Esportazione dati in corso …</string>
+	<string name="export_file_complete">Esportazione file %1$s completata</string>
+	<string name="export_file_failed">Esportazione file %1$s fallita</string>
+	<!-- 20130220 -->
+	<string name="donate_header">Android Money Manager Ex viene fornito gratuitamente. Se questa applicazione è di vostro gradimento, potete sostenere il team di sviluppo con una donazione.</string>
+    <string name="donate_in_app_title">Google Play In-App Billing</string>
+    <string name="donate_in_app_description">Donate via Google Play In-App Billing.</string>
+    <string name="donate_in_app_spinner_text">Seleziona l\'importo della donazione</string>
+    <string name="donate_in_app_button">Donate</string>
+    <string name="donate_thank_you">Grazie per la vostra donazione!</string>
+    <string name="donate">Donate</string>
+    <string name="no_thanks">No, grazie</string>
+    <string name="donate_exlamation">Donate!</string>
+    <!-- 20130225 -->
+	<string name="android_sqlite_vesion">Versione SQLite</string>
+	<!-- 20130301 -->
 </resources>

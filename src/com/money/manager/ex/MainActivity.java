@@ -37,6 +37,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -328,18 +329,17 @@ public class MainActivity extends BaseFragmentActivity {
 			onCreateFragments(savedInstanceState);
 		}
 		setRefreshUserInterface(true);
-		//show change log and
-		MoneyManagerApplication.showStartupChangeLog(this, false);
+		//show donate dialog
+		MoneyManagerApplication.showDonateDialog(this, false);
+		//show change log and path
+		MoneyManagerApplication.showChangeLog(this, false);
 		MoneyManagerApplication.showDatabasePathWork(this);
-		//introducion
-		//TODO introduction activity
+
 		//notification
 		if (notifications == null) {
 			notifications = new MoneyManagerNotifications(this);
 			notifications.notifyRepeatingTransaction();
 		}
-		//TODO Test
-		//startActivity(new Intent(this, PasscodeActivity.class));
 	}
 	/**
 	 * this method call for classic method (show fragments)
@@ -366,7 +366,12 @@ public class MainActivity extends BaseFragmentActivity {
 			item.setVisible(MoneyManagerApplication.getDatabasePath(this).startsWith("/data/data/com.money.manager") && 
 					Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED));
 		}
-		
+		//check if it has already made ​​a donation
+		item = menu.findItem(R.id.menu_donate);
+		if (item != null) {
+			Core core = new Core(this);
+			item.setVisible(TextUtils.isEmpty(core.getInfoValue(Core.INFO_SKU_ORDER_ID)));
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 	/**
@@ -467,6 +472,8 @@ public class MainActivity extends BaseFragmentActivity {
 		} else if (item.getItemId() == R.id.menu_about) {
 			// open about activity
 			startActivity(new Intent(this, AboutActivity.class));
+		} else if (item.getItemId() == R.id.menu_donate) {
+			startActivity(new Intent(this, DonateActivity.class));
 		} else if (item.getItemId() == R.id.menu_exit) {
 			// close application
 			exitApplication();

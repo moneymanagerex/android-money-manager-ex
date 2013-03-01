@@ -61,8 +61,6 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 
 	private static final String KEY_CONTENT = "AccountFragment:AccountId";
 	private static final int ID_LOADER_SUMMARY = 2;
-	// option menu
-	private static final int MENU_ADD_TRANSACTION = 1000;
 
 	/**
 	 * 
@@ -132,9 +130,14 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		// item add
-		MenuItem itemadd = menu.add(MENU_ADD_TRANSACTION, MENU_ADD_TRANSACTION, MENU_ADD_TRANSACTION, R.string.new_transaction);
-		itemadd.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_add));
-		itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+		MenuItem item = menu.add(10001, R.id.menu_add_transaction, 10001, R.string.new_transaction);
+		item.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_add));
+		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		// find item
+		MenuItem itemNew = menu.findItem(R.id.menu_new_transaction);
+		if (itemNew != null) itemNew.setVisible(false);
+		// call create option menu of fragment
+		fragment.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
@@ -221,11 +224,14 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case MENU_ADD_TRANSACTION:
+		if (item.getItemId() == R.id.menu_add_transaction) {
 			startCheckingAccountActivity();
+			return true;
+		} else if (item.getItemId() == R.id.menu_export_csv){
+			fragment.exportDataToCSVFile(mAccountList.getAccountName());
+			return true;
 		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

@@ -21,6 +21,7 @@
     android:minHeight="72dp"
     android:minWidth="294dp"
     android:updatePeriodMillis="180000" 
-    android:previewImage="@drawable/drawable_widget_summary">
+    android:previewImage="@drawable/drawable_widget_summary"
+    android:widgetCategory="keyguard|home_screen">
 
 </appwidget-provider>

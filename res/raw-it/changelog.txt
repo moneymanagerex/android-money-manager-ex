@@ -1,7 +1,12 @@
+<b> Version 1.1.0 </b>
+- Aggiunta la possibilità di splittare le transazioni
+- Esportazione transazioni su file CSV
+- I widget possono essere posizionati nel lockscreen  (Android 4.2)
+- <i>Risoluzione bug minori</i>
+
 <b> Version 1.0.6 </b>
 - <i>Bugfix:</i> Il totale riconciliato nei conti correnti non considerava le operazioni duplicate
 - <i>Bugfix:</i> Reports per categorie e beneficiario visualizzava dati sbagliata nel mese scorso
-
 
 <b> Version 1.0.3 </b>
 - Aggiornamento traduzione: Russo

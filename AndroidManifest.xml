@@ -20,8 +20,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="174"
-    android:versionName="1.0.6" >
+    android:versionCode="177"
+    android:versionName="1.0.9" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -224,6 +224,14 @@
         <activity
             android:name="com.money.manager.ex.SearchActivity"
             android:label="@string/search" >
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.SplitTransactionsActivity"
+            android:label="@string/split_transaction" >
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.DonateActivity"
+            android:label="@string/donate" >
         </activity>
     </application>
 

@@ -27,9 +27,11 @@
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
+        <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
         <item name="ic_action_list">@drawable/ic_action_list_dark</item>
         <item name="ic_action_search">@drawable/ic_action_search_dark</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_dark</item>
+        <item name="ic_action_upload">@drawable/ic_action_upload_dark</item>
     </style>
 
     <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light">
@@ -41,9 +43,11 @@
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_light</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_light</item>
+        <item name="ic_action_cancel">@drawable/ic_action_cancel_light</item>
         <item name="ic_action_list">@drawable/ic_action_list_light</item>
         <item name="ic_action_search">@drawable/ic_action_search_light</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
+        <item name="ic_action_upload">@drawable/ic_action_upload_light</item>
     </style>
 
     <style name="Money.TextView" parent="@android:style/Widget.TextView">

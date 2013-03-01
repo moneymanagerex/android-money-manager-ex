@@ -36,12 +36,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Passcode;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.dropbox.DropboxActivity;
 
@@ -395,6 +397,26 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			}
 		} catch (Exception e) {
 			Log.e(LOGCAT, e.getMessage());
+		}
+		
+		//donate
+		Preference pDonate = (Preference)findPreference("donate");
+		if (pDonate != null) {
+			pDonate.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				@Override
+				public boolean onPreferenceClick(Preference preference) {
+					startActivity(new Intent(PreferencesActivity.this, DonateActivity.class));
+					return false;
+				}
+			});
+		}
+		
+		//sqlite version
+		Preference pSQLiteVersion = (Preference)findPreference("sqliteversion");
+		if (pSQLiteVersion != null) {
+			MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(this);
+			String sqliteVersion = helper.getSQLiteVersion();
+			if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
 		}
 	}
 

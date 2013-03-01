@@ -17,19 +17,27 @@
  ******************************************************************************/
 package com.money.manager.ex.fragment;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -37,10 +45,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Toast;
+import au.com.bytecode.opencsv.CSVWriter;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AllDataAdapter;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
 
@@ -53,11 +66,112 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
 		public void onCallbackLoaderReset(Loader<Cursor> loader);
 	}
+	/**
+	 * Export data to CSV file
+	 *
+	 */
+	private class ExportDataToCSV extends AsyncTask<Void, Void, Boolean> {
+		private final String LOGCAT = AllDataFragment.ExportDataToCSV.class.getSimpleName();
+		private String mFileName = null;
+		private ProgressDialog dialog;
+		private String mPrefix = "";
+		
+		public ExportDataToCSV() {
+			// create progress dialog
+			dialog = new ProgressDialog(getActivity());
+		}
+		
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			AllDataAdapter allDataAdapter = (AllDataAdapter)getListAdapter();
+			if (allDataAdapter == null || allDataAdapter.getCursor() == null) 
+				return false;
+			//take cursor
+			Cursor data = allDataAdapter.getCursor();
+			//create object to write csv file
+			try {
+				CSVWriter csvWriter = new CSVWriter(new FileWriter(mFileName), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
+				data.moveToFirst();
+				while (!data.isAfterLast()) {
+					String[] record = new String[7];
+					// compose a records
+					record[0] = data.getString(data.getColumnIndex(QueryAllData.UserDate));
+					record[1] = data.getString(data.getColumnIndex(QueryAllData.Payee));
+					record[2] = Float.toString(data.getFloat(data.getColumnIndex(QueryAllData.UserDate)));
+					record[3] = data.getString(data.getColumnIndex(QueryAllData.Category));
+					record[4] = data.getString(data.getColumnIndex(QueryAllData.Subcategory));
+					record[5] = Integer.toString(data.getInt(data.getColumnIndex(QueryAllData.TransactionNumber)));
+					record[6] = data.getString(data.getColumnIndex(QueryAllData.Notes));
+					// writer record
+					csvWriter.writeNext(record);
+					// move to next row
+					data.moveToNext();
+				}
+				csvWriter.close();
+			} catch (Exception e) {
+				Log.e(LOGCAT, e.getMessage());
+				return false;
+			}			
+			return true;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			if (dialog != null && dialog.isShowing()) {
+				dialog.dismiss();
+			}
+			// prompt
+			Toast.makeText(getActivity(), getString(result ? R.string.export_file_complete : R.string.export_file_failed, mFileName), Toast.LENGTH_LONG).show();
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			//file
+			File externalStorage = Environment.getExternalStorageDirectory();
+			if (!(externalStorage != null && externalStorage.exists() && externalStorage.isDirectory()))
+				return;
+			//create folder to copy database
+			File folderOutput = new File(externalStorage + "/" + getActivity().getPackageName());
+			//make a directory
+			if (!folderOutput.exists()) {
+				if (!folderOutput.mkdirs())
+					return;
+			}
+			String prefix = getPrefixName();
+			if (!TextUtils.isEmpty(prefix))
+				prefix = prefix + "_";
+			//compose file name
+			mFileName = folderOutput + "/" + prefix + new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".csv";
+			//dialog
+			dialog.setIndeterminate(true);
+			dialog.setMessage(getString(R.string.export_data_in_progress));
+			dialog.show();
+		}
+
+		/**
+		 * @return the mPrefix
+		 */
+		public String getPrefixName() {
+			if (TextUtils.isEmpty(mPrefix)) {
+				return "";
+			} else {
+				return mPrefix;
+			}
+		}
+
+		/**
+		 * @param mPrefix the mPrefix to set
+		 */
+		public void setPrefixName(String mPrefix) {
+			this.mPrefix = mPrefix;
+		}
+	}
 	// ID Loader
 	public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
 	// KEY Arguments
 	public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
-
 	public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 	
 	/**
@@ -70,14 +184,31 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		fragment.mAccountId = accountId;
 		return fragment;
 	}
-	
 	private AllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
 	private boolean mAutoStarLoader = true;
 	private boolean mShownHeader = false;
-	private int mGroupId = 0;
 
-	private int mAccountId = -1;
+	private int mGroupId = 0;
 	
+	private int mAccountId = -1;
+
+	/**
+	 * Export data to CSV file
+	 */
+	public void exportDataToCSVFile() {
+		exportDataToCSVFile("");
+	}
+	
+	/**
+	 * Export data to CSV file
+	 * @param accountName
+	 */
+	public void exportDataToCSVFile(String prefixName) {
+		ExportDataToCSV csv = new ExportDataToCSV();
+		csv.setPrefixName(prefixName);
+		csv.execute();
+	}
+
 	/**
 	 * @return the mGroupId
 	 */
@@ -112,6 +243,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		// set fragment
 		setEmptyText(getString(R.string.no_data));
 		setListShown(false);
+		// option menu
+		setHasOptionsMenu(true);
 		// create adapter
 		AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, mAccountId, isShownHeader());
 		setListAdapter(adapter);
@@ -220,6 +353,16 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	}
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		MenuItem item = menu.add(0, R.id.menu_export_csv, 0, R.string.export_data_to_csv);
+		if (getSherlockActivity() != null) {
+	 		item.setIcon(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.ic_action_upload));
+			item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		}
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
@@ -246,6 +389,15 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 				setListShownNoAnimation(true);
 			}
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_export_csv) {
+			exportDataToCSVFile();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**
@@ -279,7 +431,6 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	public void setShownHeader(boolean mShownHeader) {
 		this.mShownHeader = mShownHeader;
 	}
-
 	/**
 	 * set status to transaction
 	 * 
@@ -305,7 +456,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 			return true;
 		}
 	}
-
+	
 	/**
 	 * 
 	 * @param transId
@@ -343,7 +494,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		alertDialog.create();
 		alertDialog.show();
 	}
-
+	
 	/**
 	 * start the activity of transaction management
 	 * 
@@ -363,7 +514,6 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		// launch activity
 		startActivity(intent);
 	}
-
 	/**
 	 * Start loader into fragment
 	 */
