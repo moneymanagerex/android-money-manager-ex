@@ -83,8 +83,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 				for (int i = 0; i < items.size(); i ++) {
 					TableSplitTransactions item = items.get(i);
 					if (item.getCategId() == -1 && item.getCategId() == -1) {
-						Core core = new Core(SplitTransactionsActivity.this);
-						core.alertDialog(R.string.error_category_not_selected).show();
+						Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected).show();
 						return;
 					}
 				}

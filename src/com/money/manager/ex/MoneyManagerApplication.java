@@ -214,6 +214,16 @@ public class MoneyManagerApplication extends Application {
      * @return
      */
 	public static boolean showChangeLog(Context context, boolean forceShow) {
+		return showChangeLog(context, forceShow, true);
+	}
+	/**
+     * Show changelog dialog
+     * @param context
+     * @param forceShow force show changelog alert dialog
+     * @param complete to show all changelog
+     * @return
+     */
+	public static boolean showChangeLog(Context context, boolean forceShow, boolean complete) {
 		int currentVersionCode = getCurrentVersionCode(context);
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		int lastVersionCode = preferences.getInt(PREF_LAST_VERSION_KEY, -1);
@@ -221,7 +231,17 @@ public class MoneyManagerApplication extends Application {
 			preferences.edit().putInt(PREF_LAST_VERSION_KEY, currentVersionCode).commit();
 			//get text changelog
 			String changelog = getRawAsString(context, R.raw.changelog);
+			//check complete changelog
+			if (!complete) {
+				final String ESCAPE = "<b> Version";
+				int end = changelog.indexOf(ESCAPE, changelog.indexOf(ESCAPE) + ESCAPE.length());
+				changelog = changelog.substring(0, end);
+			}
 			changelog = "<small>" + changelog.replace("\n", "<br>") + "</small>";
+			while (changelog.indexOf("<br></small>") >= 0) {
+				changelog = changelog.replace("<br></small>", "</small>");
+			}
+				
 			//create dialog
 			AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
 			showDialog.setCancelable(false);

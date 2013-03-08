@@ -1,3 +1,8 @@
+<b> Version 1.1.2 </b>
+- Aggiunto nel Report Entrate / Uscite la possibilià di ordinare in modo crescente o decrescente i mesi.
+- Quando si effettua una ricerca, e si modifica una delle transazioni selezionate, quando si ritorna l'applicazione riesegua la ricerca in automatico
+- <i>Risoluzione bug minori</i>
+
 <b> Version 1.1.0 </b>
 - Aggiunta la possibilità di splittare le transazioni
 - Esportazione transazioni su file CSV

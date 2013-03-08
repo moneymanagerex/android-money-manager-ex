@@ -40,8 +40,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -372,23 +372,23 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		
 		if (bCheck) {
 			if (mCurrencyId == -1) {
-				Toast.makeText(this, R.string.error_currency_not_selected, Toast.LENGTH_LONG).show();
+				Core.alertDialog(this, R.string.error_currency_not_selected).show();
 				return false;
 			}
 			if (TextUtils.isEmpty(edtInitialBalance.getText().toString())) {
-				Toast.makeText(this, R.string.error_initialbal_empty, Toast.LENGTH_LONG).show();
+				Core.alertDialog(this, R.string.error_initialbal_empty).show();
 				return false;
 			}
 			if (TextUtils.isEmpty(mAccountName)) {
-				Toast.makeText(this, R.string.error_accountname_empty, Toast.LENGTH_LONG).show();
+				Core.alertDialog(this, R.string.error_accountname_empty).show();
 				return false;
 			}
 			if (TextUtils.isEmpty(mAccountType)) {
-				Toast.makeText(this, R.string.error_accounttype_empty, Toast.LENGTH_LONG).show();
+				Core.alertDialog(this, R.string.error_accounttype_empty).show();
 				return false;
 			}
 			if (TextUtils.isEmpty(mStatus)) {
-				Toast.makeText(this, R.string.error_status_empty, Toast.LENGTH_LONG).show();
+				Core.alertDialog(this, R.string.error_status_empty).show();
 				return false;
 			}
 		}
@@ -424,14 +424,14 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		if (mIntentAction.equals(INTENT_ACTION_INSERT)) {
 			// insert
 			if (getContentResolver().insert(mAccountList.getUri(), values) == null) {
-				Toast.makeText(this, R.string.db_account_insert_failed, Toast.LENGTH_SHORT).show();
+				Core.alertDialog(this, R.string.db_account_insert_failed).show();
 				Log.w(LOGCAT, "Error inserting account!");
 				return false;
 			}
 		} else {
 			// update
 			if (getContentResolver().update(mAccountList.getUri(), values, TableAccountList.ACCOUNTID + "=?", new String[] {Integer.toString(mAccountId)}) <= 0) {
-				Toast.makeText(this, R.string.db_account_update_failed, Toast.LENGTH_SHORT).show();
+				Core.alertDialog(this, R.string.db_account_update_failed).show();
 				Log.w(LOGCAT, "Error updating account!");
 				return false;
 			}

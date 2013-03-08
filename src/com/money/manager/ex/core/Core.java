@@ -73,16 +73,16 @@ public class Core {
 	 * @param resId id of string 
 	 * @return
 	 */
-	public AlertDialog alertDialog(int resId) {
-		return alertDialog(context.getString(resId));
+	public static AlertDialog alertDialog(Context ctx, int resId) {
+		return alertDialog(ctx, ctx.getString(resId));
 	}
 	/**
 	 * Shown alert dialog
 	 * @param text to display
 	 * @return
 	 */
-	public AlertDialog alertDialog(String text) {
-		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+	public static AlertDialog alertDialog(Context ctx, String text) {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
 		// setting alert dialog
 		dialog.setIcon(android.R.drawable.ic_dialog_alert);
 		dialog.setTitle(R.string.attention);

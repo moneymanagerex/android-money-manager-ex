@@ -924,25 +924,24 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	 * @return
 	 */
 	private boolean validateData() {
-		Core core = new Core(this);
 		if ((mTransCode.equals("Transfer")) && (mToAccountId == -1)) {
-			core.alertDialog(R.string.error_toaccount_not_selected).show();
+			Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
 			return false;
 		} else if ((mTransCode.equals("Transfer") == false) && (mPayeeId == -1)) {
-			core.alertDialog(R.string.error_payee_not_selected).show();
+			Core.alertDialog(this, R.string.error_payee_not_selected).show();
 			return false;
 		}
 		if (mCategoryId == -1 && (!chbSplitTransaction.isChecked())) {
-			core.alertDialog(R.string.error_category_not_selected).show();
+			Core.alertDialog(this, R.string.error_category_not_selected).show();
 			return false;
 		}
 		if (chbSplitTransaction.isChecked() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
-			core.alertDialog(R.string.error_split_transaction_empty).show();
+			Core.alertDialog(this, R.string.error_split_transaction_empty).show();
 			return false;
 		}
 		if (TextUtils.isEmpty(edtTotAmount.getText())) {
 			if (TextUtils.isEmpty(edtAmount.getText())) {
-				core.alertDialog(R.string.error_totamount_empty).show();
+				Core.alertDialog(this, R.string.error_totamount_empty).show();
 				return false;
 			} else {
 				edtTotAmount.setText(edtAmount.getText());

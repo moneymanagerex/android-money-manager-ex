@@ -1,3 +1,8 @@
+<b> Version 1.1.2 </b>
+- Added option month sorting in the report vs income. expenses
+- When you perform a search, and edit any of the transactions selected, automatically re-runs the search when come back
+- <i>Minor bugfix</i>
+
 <b> Version 1.1.0 </b>
 - Added split transaction
 - Export transaction to CSV file

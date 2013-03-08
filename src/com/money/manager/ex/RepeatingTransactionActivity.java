@@ -45,9 +45,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.MenuItem;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -730,14 +730,14 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 		if (mIntentAction.equals(INTENT_ACTION_INSERT)) {
 			// insert
 			if (getContentResolver().insert(mRepeatingTransaction.getUri(), values) == null) {
-				Toast.makeText(this, R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
+				Core.alertDialog(this, R.string.db_checking_insert_failed).show();
 				Log.w(LOGCAT, "Insert new repeating transaction failed!");
 				return false;
 			}
 		} else {
 			// update
 			if (getContentResolver().update(mRepeatingTransaction.getUri(), values, TableBillsDeposits.BDID + "=?", new String[] {Integer.toString(mBillDepositsId)}) <= 0) {
-				Toast.makeText(this, R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+				Core.alertDialog(this, R.string.db_checking_update_failed).show();
 				Log.w(LOGCAT, "Update repeating  transaction failed!");
 				return false;
 			}
@@ -775,26 +775,26 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 	 */
 	private boolean validateData() {
 		if ((mTransCode.equals("Transfer")) && (mToAccountId == -1)) {
-			Toast.makeText(this, R.string.error_toaccount_not_selected, Toast.LENGTH_LONG).show();
+			Core.alertDialog(this, R.string.error_toaccount_not_selected).show();;
 			return false;
 		} else if ((mTransCode.equals("Transfer") == false) && (mPayeeId == -1)) {
-			Toast.makeText(this, R.string.error_payee_not_selected, Toast.LENGTH_LONG).show();
+			Core.alertDialog(this, R.string.error_payee_not_selected).show();;
 			return false;
 		}
 		if (mCategoryId == -1) {
-			Toast.makeText(this, R.string.error_category_not_selected, Toast.LENGTH_LONG).show();
+			Core.alertDialog(this, R.string.error_category_not_selected).show();;
 			return false;
 		}
 		if (TextUtils.isEmpty(edtTotAmount.getText())) {
 			if (TextUtils.isEmpty(edtAmount.getText())) {
-				Toast.makeText(this, R.string.error_totamount_empty, Toast.LENGTH_LONG).show();
+				Core.alertDialog(this, R.string.error_totamount_empty).show();;
 				return false;
 			} else {
 				edtTotAmount.setText(edtAmount.getText());
 			}
 		}
 		if (TextUtils.isEmpty(edtNextOccurrence.getText().toString())) {
-			Toast.makeText(this, R.string.error_next_occurrence_not_populate, Toast.LENGTH_LONG).show();
+			Core.alertDialog(this, R.string.error_next_occurrence_not_populate).show();;
 			return false;
 		}
 		return true;
