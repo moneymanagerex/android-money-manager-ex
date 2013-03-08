@@ -1,11 +1,12 @@
 package com.money.manager.ex;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
-import android.content.Intent;
+import net.robotmedia.billing.BillingController;
+import net.robotmedia.billing.BillingRequest.ResponseCode;
+import net.robotmedia.billing.helper.AbstractBillingObserver;
+import net.robotmedia.billing.model.Transaction.PurchaseState;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,50 +15,28 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.money.manager.ex.billing.IabHelper;
-import com.money.manager.ex.billing.IabHelper.OnConsumeFinishedListener;
-import com.money.manager.ex.billing.IabHelper.OnIabPurchaseFinishedListener;
-import com.money.manager.ex.billing.IabHelper.OnIabSetupFinishedListener;
-import com.money.manager.ex.billing.IabHelper.QueryInventoryFinishedListener;
-import com.money.manager.ex.billing.IabResult;
-import com.money.manager.ex.billing.Inventory;
-import com.money.manager.ex.billing.Purchase;
-import com.money.manager.ex.billing.SkuDetails;
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.InAppBilling;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
-public class DonateActivity extends BaseFragmentActivity implements QueryInventoryFinishedListener, OnIabSetupFinishedListener, OnIabPurchaseFinishedListener,
-		OnConsumeFinishedListener {
+public class DonateActivity extends BaseFragmentActivity  {
 	
-	private final int RC_REQUEST = 1;
 	private final String PURCHASED_SKU = "DonateActivity:Purchased_Sku";
 	private String purchasedSku = "";
 	// Helper In-app Billing
-	private IabHelper iabHelper;
-	/**
-	 * Product Names
-	 */
-	HashMap<String, String> skuNames = new HashMap<String, String>();
+	private AbstractBillingObserver billingObserver;
 	/**
 	 * List of valid SKUs
 	 */
 	ArrayList<String> skus = new ArrayList<String>();
 
-	@Override
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-		Log.d(getClass().getSimpleName(), "onActivityResult(" + requestCode + "," + resultCode + "," + data + ")");
-		if (!iabHelper.handleActivityResult(requestCode, resultCode, data))
-			super.onActivityResult(requestCode, resultCode, data);
-	}
-
-	@Override
-	public void onConsumeFinished(Purchase purchase, IabResult result) {
-		Log.d(getClass().getSimpleName(), "Consume Completed: " + result.getMessage());
-		if (result.isSuccess()) {
+	public void onPurchaseStateChanged(String itemId, PurchaseState state){
+		if(state == PurchaseState.PURCHASED){
 			Toast.makeText(this, R.string.donate_thank_you, Toast.LENGTH_LONG).show();
 			Core core = new Core(this);
 			// update the info value
-			core.setInfoValue(Core.INFO_SKU_ORDER_ID, purchase.getOrderId());
+			core.setInfoValue(Core.INFO_SKU_ORDER_ID, itemId);
 			finish();
 		}
 	}
@@ -72,8 +51,8 @@ public class DonateActivity extends BaseFragmentActivity implements QueryInvento
 			skus.add("android.test.refunded");
 			skus.add("android.test.item_unavailable");
 		}
-		final String[] skuArray = getResources().getStringArray(R.array.donate_in_app_sku_array);
-		skus.addAll(Arrays.asList(skuArray));
+		// add SKU application
+		skus.add("android.money.manager.ex.donations.small");
 		// Set up the UI
 		setContentView(R.layout.donate_activity);
 		final Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
@@ -86,80 +65,79 @@ public class DonateActivity extends BaseFragmentActivity implements QueryInvento
 				purchasedSku = skus.get(selectedInAppAmount);
 				Log.d(DonateActivity.this.getClass().getSimpleName(), "Clicked " + purchasedSku);
 
-				iabHelper.launchPurchaseFlow(DonateActivity.this, purchasedSku, RC_REQUEST, DonateActivity.this);
+				BillingController.requestPurchase(DonateActivity.this, purchasedSku, true, null);
 			}
 		});
 		// Disabilito il tasto fin che non è pronto
 		inAppButton.setEnabled(false);
 		// Start the In-App Billing process
-		iabHelper = new IabHelper(this, new Core(this).getAppBase64());
-		iabHelper.enableDebugLogging(BuildConfig.DEBUG);
-		iabHelper.startSetup(this);
+		BillingController.setConfiguration(InAppBilling.getConfiguaration());
+		billingObserver = new AbstractBillingObserver(this) {
+
+			public void onBillingChecked(boolean supported) {
+				DonateActivity.this.onBillingChecked(supported);
+			}
+
+			public void onPurchaseStateChanged(String itemId, PurchaseState state) {
+				DonateActivity.this.onPurchaseStateChanged(itemId, state);
+			}
+
+			public void onRequestPurchaseResponse(String itemId, ResponseCode response) {
+				DonateActivity.this.onRequestPurchaseResponse(itemId, response);
+			}
+
+			@Override
+			public void onSubscriptionChecked(boolean supported) {	}
+
+		};
+		BillingController.registerObserver(billingObserver);
+		BillingController.checkBillingSupported(getApplicationContext());
+		// set enable return
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 	@Override
 	protected void onDestroy() {
+		BillingController.unregisterObserver(billingObserver);
 		super.onDestroy();
-		if (iabHelper != null)
-			iabHelper.dispose();
-		iabHelper = null;
 	}
+	
+	public void onRequestPurchaseResponse(String itemId, ResponseCode response) {}
 
-	@Override
-	public void onIabPurchaseFinished(IabResult result, Purchase info) {
-		Log.d(getClass().getSimpleName(), "Purchase Completed: " + result.getMessage());
-		if (result.isSuccess())
-			iabHelper.consumeAsync(info, this);
-	}
-
-	@Override
-	public void onIabSetupFinished(IabResult result) {
-		Log.d(getClass().getSimpleName(), "Billing supported: " + result.getMessage());
-		if (result.isSuccess() && iabHelper != null)
-			iabHelper.queryInventoryAsync(true, skus, this);
-	}
-
-	@Override
-	public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-		Log.d(getClass().getSimpleName(), "Inventory Returned: " + result.getMessage() + ": " + inventory);
-		// If we failed to get the inventory, then leave the in-app billing UI hidden
-		if (result.isFailure())
-			return;
-		// Make sure we've consumed any previous purchases
-		final List<Purchase> purchases = inventory.getAllPurchases();
-
-		if (!purchases.isEmpty())
-			iabHelper.consumeAsync(purchases, null);
-
-		final List<String> inAppName = new ArrayList<String>();
-		
-		for (int i = 0; i < skus.size(); i++) {
-			final String currentSku = skus.get(i);
-			final SkuDetails sku = inventory.getSkuDetails(currentSku);
-			final Purchase purchase = inventory.getPurchase(currentSku);
-			if (sku != null && purchase == null) {
-				inventory.hasPurchase(currentSku);
-				skuNames.put(currentSku, sku.getTitle());
-				inAppName.add(sku.getDescription() + " (" + sku.getPrice() + ")");
+	public void onBillingChecked(boolean supported) {
+		if(supported){
+			final List<String> inAppName = new ArrayList<String>();
+			
+			for (int i = 0; i < skus.size(); i++) {
+				inAppName.add(skus.get(i));
 			}
-		}
-		
-		Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, inAppName);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-		inAppSpinner.setAdapter(adapter);
-		// enable button
-		final Button inAppButton = (Button) findViewById(R.id.buttonDonateInApp);
-		inAppButton.setEnabled(inAppName.size() > 0);
-		// hide spinner if release version
-		inAppSpinner.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
-		// if has 1 item set button text
-		if (!BuildConfig.DEBUG) {
-			if (inAppName.size() == 1) {
-				inAppButton.setText(inAppName.get(0));
-			}
+			
+			Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
+			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, inAppName);
+			// Specify the layout to use when the list of choices appears
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			// Apply the adapter to the spinner
+			inAppSpinner.setAdapter(adapter);
+			// enable button
+			final Button inAppButton = (Button) findViewById(R.id.buttonDonateInApp);
+			inAppButton.setEnabled(inAppName.size() > 0);
+			// hide spinner if release version
+			inAppSpinner.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
+			// if has 1 item set button text
+			/*if (!BuildConfig.DEBUG) {
+				if (inAppName.size() == 1) {
+					inAppButton.setText(inAppName.get(0));
+				}
+			}*/
 		}
 	}
 

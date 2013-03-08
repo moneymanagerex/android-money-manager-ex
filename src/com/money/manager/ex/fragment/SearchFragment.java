@@ -267,7 +267,7 @@ public class SearchFragment extends SherlockFragment {
 		super.onCreateOptionsMenu(menu, inflater);
 		MenuItem item = menu.add(0, ID_MENU_SEARCH, 0, R.string.search);
 		item.setIcon(getActivity().getResources().getDrawable(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search)));
-		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 	}
 	
 	@Override

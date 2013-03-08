@@ -188,6 +188,14 @@ public class MoneyManagerApplication extends Application {
 		return result;
 	}
 	/**
+	 * Reset to force show donate dialog
+	 * @param context
+	 */
+	public static void resetDonateDialog(final Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		preferences.edit().putInt(PREF_DONATE_LAST_VERSION_KEY, -1).commit();
+	}
+    /**
 	 * 
 	 * @param context
 	 * @param dbpath path of database file to save
@@ -198,7 +206,8 @@ public class MoneyManagerApplication extends Application {
 		editor.putString(PREF_DATABASE_PATH, dbpath);
 		editor.commit();
 	}
-    /**
+
+	/**
      * Show changelog dialog
      * @param context
      * @param forceShow force show changelog alert dialog
@@ -231,20 +240,7 @@ public class MoneyManagerApplication extends Application {
 		} else
 			return false;
 	}
-
-	/**
-	 * Shown database path with toast message
-	 * @param context
-	 */
-	public static void showDatabasePathWork(Context context) {
-		String currentPath = getDatabasePath(context);
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		String lastPath = preferences.getString(PREF_LAST_DB_PATH_SHOWN, "");
-		if (!lastPath.equals(currentPath)) {
-			Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG).show();
-			preferences.edit().putString(PREF_LAST_DB_PATH_SHOWN, currentPath).commit();
-		}
-	}
+	
 	/**
 	 * Show donate dialog
 	 * @param context
@@ -265,6 +261,7 @@ public class MoneyManagerApplication extends Application {
 				AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
 				showDialog.setCancelable(false);
 				showDialog.setTitle(R.string.donate);
+				showDialog.setIcon(R.drawable.ic_launcher);
 				showDialog.setMessage(Html.fromHtml(donateText));
 				showDialog.setNegativeButton(R.string.no_thanks, new DialogInterface.OnClickListener() {
 					@Override
@@ -286,6 +283,7 @@ public class MoneyManagerApplication extends Application {
 		} else
 			return false;
 	}
+	
 	/**
      * This method show introduction activity
      * @param context activity called
@@ -301,8 +299,8 @@ public class MoneyManagerApplication extends Application {
 		} else
 			return false;
     }
-	
 	private Editor editPreferences;
+	
 	///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
@@ -310,15 +308,28 @@ public class MoneyManagerApplication extends Application {
 	private static Map<Integer, TableCurrencyFormats> mMapCurrency = new HashMap<Integer, TableCurrencyFormats>();
 	// Id of BaseCurrency
 	private static int mBaseCurrencyId = 0;
-	
 	// user name application
 	private static String userName = "";
+	
 	/**
 	 * close process application
 	 */
 	public static void killApplication() {
 		// close application
 		android.os.Process.killProcess(android.os.Process.myPid());
+	}
+	/**
+	 * Shown database path with toast message
+	 * @param context
+	 */
+	public static void showDatabasePathWork(Context context) {
+		String currentPath = getDatabasePath(context);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String lastPath = preferences.getString(PREF_LAST_DB_PATH_SHOWN, "");
+		if (!lastPath.equals(currentPath)) {
+			Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG).show();
+			preferences.edit().putString(PREF_LAST_DB_PATH_SHOWN, currentPath).commit();
+		}
 	}
 	/**
 	 * 

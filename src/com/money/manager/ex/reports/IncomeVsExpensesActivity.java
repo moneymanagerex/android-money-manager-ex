@@ -22,7 +22,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -37,6 +40,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -105,9 +113,13 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 	
 	public static class IncomeVsExpensesListFragment extends SherlockListFragment implements LoaderManager.LoaderCallbacks<Cursor> { 
 		private static final int ID_LOADER = 1;
+		private static final String SORT_ASCENDING = "ASC";
+		private static final String SORT_DESCENDING = "DESC";
 		private static final String KEY_BUNDLE_YEAR = "IncomeVsExpensesListFragment:Years";
 		private View mFooterListView;
-		private Map<Integer, Boolean> mCheckedItem = new HashMap<Integer, Boolean>(); 
+		private Map<Integer, Boolean> mCheckedItem = new HashMap<Integer, Boolean>();
+		private String mSort = SORT_ASCENDING;
+		
 		/**
 		 * Add footer to ListView
 		 * @return View of footer
@@ -208,7 +220,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			if (TextUtils.isEmpty(selection)) {
 				selection = "1=2";
 			}
-			return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " DESC, " + QueryReportIncomeVsExpenses.Month);
+			return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " DESC, " + QueryReportIncomeVsExpenses.Month  + " " + mSort);
 		}
 		
 		@Override
@@ -261,18 +273,71 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 		}
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
-			item.setChecked(!item.isChecked());
-			// put or remove map key
-			if (item.isChecked()) {
-				mCheckedItem.put(item.getItemId(), Boolean.TRUE);
+			if (item.getItemId() == R.id.menu_sort) {
+				showDialogSortMonth();
 			} else {
-				mCheckedItem.remove(item.getItemId());
+				item.setChecked(!item.isChecked());
+				// put or remove map key
+				if (item.isChecked()) {
+					mCheckedItem.put(item.getItemId(), Boolean.TRUE);
+				} else {
+					mCheckedItem.remove(item.getItemId());
+				}
+				// start loader
+				startLoader(hashMap2IntArray(mCheckedItem));
 			}
-			// start loader
-			startLoader(hashMap2IntArray(mCheckedItem));
 			
 			return super.onOptionsItemSelected(item);
 		}
+		
+		private void showDialogSortMonth() {
+			AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+			final LinearLayout layout = new LinearLayout(getActivity());
+			layout.setOrientation(LinearLayout.VERTICAL);
+			layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			//create radio group
+			//create checkbox ascending
+			final RadioButton rbtAscending = new RadioButton(getActivity());
+			rbtAscending.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			rbtAscending.setText(R.string.ascending);
+			//create checkbox descending
+			final RadioButton rbtDescending = new RadioButton(getActivity());
+			rbtDescending.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			rbtDescending.setText(R.string.descending);
+			//check actual value
+			rbtAscending.setChecked(SORT_ASCENDING.equals(mSort));
+			rbtDescending.setChecked(SORT_DESCENDING.equals(mSort));
+			OnCheckedChangeListener changeListener = new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					if (buttonView.equals(rbtAscending)) {
+						rbtDescending.setChecked(!isChecked);
+					} else if (buttonView.equals(rbtDescending)) {
+						rbtAscending.setChecked(!isChecked);
+					}
+				}
+			};
+			rbtAscending.setOnCheckedChangeListener(changeListener);
+			rbtDescending.setOnCheckedChangeListener(changeListener);
+			//add checkbox
+			layout.addView(rbtAscending);
+			layout.addView(rbtDescending);
+			//set layuout
+			dialog.setView(layout);
+			//title
+			dialog.setTitle(getString(R.string.sorting_month));
+			dialog.setNeutralButton(android.R.string.ok, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mSort = rbtAscending.isChecked() ? SORT_ASCENDING : SORT_DESCENDING;
+					startLoader(hashMap2IntArray(mCheckedItem));
+				}
+			});
+			//show dialog
+			dialog.create().show();
+		}
+		
 		@Override
 		public void onPrepareOptionsMenu(Menu menu) {
 			SubMenu subMenu = menu.findItem(R.id.menu_period).getSubMenu();

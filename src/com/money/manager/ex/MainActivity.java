@@ -208,6 +208,7 @@ public class MainActivity extends BaseFragmentActivity {
 	private void changeDatabase(String pathDatabase) {
 		// save the database file
 		MoneyManagerApplication.setDatabasePath(getApplicationContext(), pathDatabase);
+		MoneyManagerApplication.resetDonateDialog(getApplicationContext());
 		// set to restart activity
 		setRestartActivity(true);
 		restartActivity();
@@ -330,7 +331,9 @@ public class MainActivity extends BaseFragmentActivity {
 		}
 		setRefreshUserInterface(true);
 		//show donate dialog
-		MoneyManagerApplication.showDonateDialog(this, false);
+		Core core = new Core(this);
+		if (TextUtils.isEmpty(core.getInfoValue(Core.INFO_SKU_ORDER_ID)))
+			MoneyManagerApplication.showDonateDialog(this, false);
 		//show change log and path
 		MoneyManagerApplication.showChangeLog(this, false);
 		MoneyManagerApplication.showDatabasePathWork(this);

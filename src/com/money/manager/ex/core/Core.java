@@ -44,13 +44,30 @@ public class Core {
 	private static final String token = "1E1380731503B92242AB2A5D8A41F8AE761A9ECD8BC7BBC9C229C5B49F8A032C59467A21872756BF85B7CB781DDB1DE6C1D1D77C9D5E7EBCA07CD01E2525CE4B186128463FAC8C99956BF102DC28A56647F15248624DF792B7D437699024102D24B48B5FAFDE18E690F29224A6C233493D60696A1CF018F002C9CC4A057548665829B552B2F42F2CAACC5F47F5EC6A01B4F525AC2E0E07AEF2D18B871E1145066D5AF20F32D69B0CEDE9D0B0CEC313E34DF0B55F2A7D66A7CEBF481F877BDF04C9E7CEF1BC1F230342EF07C952D8C9A584B2D4D572D470075F2F2306D3F07785340BB49D6FED77E7A1F0CC30F79F21C774B0C298637E23C2A9FD4ECAB9E74A53B074A25B6566D3995DF2D25998A818B439273761E9A911EF73A118C3FE22CCBA4E5FA461501EE9E0E5A6E99942758BC9D9A9D12672A70E388437F2374C48314D13E9205973B7A452EA9FE97CFFCF3A966F02931EFBB5CE3AB70D5AEF2E9670A8B1C3CFF91889D4CAA4A176495954F0F95D4B71562527AB9E596D1F8A7147E221FD6E6C434740CED20D9422AC6ED96A48";
 	
 	
-	private Context context;
+	public static String getAppBase64() {
+		try {
+			return SimpleCrypto.decrypt(MoneyManagerApplication.KEY, getTokenApp()); 
+		} catch (Exception e) {
+			Log.e(LOGCAT, e.getMessage());
+		}
+		return null;
+	}
 
+	private static String getTokenApp() {
+		try {
+			return SimpleCrypto.decrypt(MoneyManagerApplication.DROPBOX_APP_KEY, base64); 
+		} catch (Exception e) {
+			Log.e(LOGCAT, e.getMessage());
+		}
+		return null;
+	}
+
+	private Context context;
+	
 	public Core(Context context) {
 		super();
 		this.context = context;
 	}
-
 	/**
 	 * Shown alert dialog
 	 * @param resId id of string 
@@ -59,7 +76,6 @@ public class Core {
 	public AlertDialog alertDialog(int resId) {
 		return alertDialog(context.getString(resId));
 	}
-	
 	/**
 	 * Shown alert dialog
 	 * @param text to display
@@ -80,6 +96,7 @@ public class Core {
 		// show dialog
 		return dialog.create();
 	}
+	
 	public File backupDatabase() {
 		File database = new File(MoneyManagerApplication.getDatabasePath(context));
 		if (database == null || !database.exists())
@@ -120,6 +137,7 @@ public class Core {
 		
 		return new File(folderOutput + "/" + filesFromCopy.get(0).getName());
 	}
+	
 	public void copy(File src, File dst) throws IOException {
 	    InputStream in = new FileInputStream(src);
 	    OutputStream out = new FileOutputStream(dst);
@@ -132,15 +150,6 @@ public class Core {
 	    }
 	    in.close();
 	    out.close();
-	}
-	
-	public String getAppBase64() {
-		try {
-			return SimpleCrypto.decrypt(MoneyManagerApplication.KEY, getTokenApp()); 
-		} catch (Exception e) {
-			Log.e(LOGCAT, e.getMessage());
-		}
-		return null;
 	}
 	
 	/**
@@ -243,15 +252,6 @@ public class Core {
 	 */
 	public String[] getListMonths() {
 		return new DateFormatSymbols().getMonths();
-	}
-	
-	private String getTokenApp() {
-		try {
-			return SimpleCrypto.decrypt(MoneyManagerApplication.DROPBOX_APP_KEY, base64); 
-		} catch (Exception e) {
-			Log.e(LOGCAT, e.getMessage());
-		}
-		return null;
 	}
 	
 	/**

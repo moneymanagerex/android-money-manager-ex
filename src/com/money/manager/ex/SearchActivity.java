@@ -70,4 +70,14 @@ implements AllDataFragmentLoaderCallbacks {
 	public void onCallbackLoaderReset(Loader<Cursor> loader) {
 		return;
 	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		AllDataFragment fragment;
+		fragment = (AllDataFragment)getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
+		if (fragment != null && fragment.isVisible()) {
+			fragment.startLoaderData();
+		}
+	}
 }

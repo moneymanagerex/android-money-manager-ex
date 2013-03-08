@@ -153,12 +153,7 @@
         <item>@string/every_x_days</item>
         <item>@string/every_x_months</item>
     </string-array>
-    <!-- donate -->
-    <string-array name="donate_in_app_sku_array">
-        <item>android.money.manager.ex.donations.small</item>
-        <item>android.money.manager.ex.donations.medium</item>
-        <item>android.money.manager.ex.donations.large</item>
-    </string-array>
+
     <!-- Define currency value -->
     <string-array name="currency_values">
         <item>EUR</item>

@@ -340,4 +340,9 @@
     <!-- 20130225 -->
 	<string name="android_sqlite_vesion">SQLite Version</string>
 	<!-- 20130301 -->
+	<string name="sort">Sort</string>
+	<string name="ascending">Ascending</string>
+	<string name="descending">Descending</string>
+	<string name="sorting_month">Sorting Month</string>
+	<!-- 20130305 -->
 </resources>

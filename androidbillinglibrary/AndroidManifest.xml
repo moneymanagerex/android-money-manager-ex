@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="net.robotmedia.billing"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="13"/>
+    <!-- Add this permission to your manifest -->
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <application>
+    	<!-- Add this service and receiver to your application -->
+        <service android:name="net.robotmedia.billing.BillingService" />
+        <receiver android:name="net.robotmedia.billing.BillingReceiver">
+            <intent-filter>
+                <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
+                <action android:name="com.android.vending.billing.RESPONSE_CODE" />
+                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>
