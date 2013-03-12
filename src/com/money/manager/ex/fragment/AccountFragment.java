@@ -228,7 +228,8 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 			startCheckingAccountActivity();
 			return true;
 		} else if (item.getItemId() == R.id.menu_export_csv){
-			fragment.exportDataToCSVFile(mAccountList.getAccountName());
+			if (fragment != null && mAccountList != null)
+				fragment.exportDataToCSVFile(mAccountList.getAccountName());
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

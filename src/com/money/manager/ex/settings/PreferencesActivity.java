@@ -233,7 +233,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			lstFinancialMonth.setEntryValues(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"});
 			// get current month
 			String currentMonth = core.getInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH);
-			if (!TextUtils.isEmpty(currentMonth)) {
+			if ((!TextUtils.isEmpty(currentMonth)) && Core.StringUtils.isNumeric(currentMonth)) {
 				if (Integer.parseInt(currentMonth) > -1 && Integer.parseInt(currentMonth) < lstFinancialMonth.getEntries().length) {
 					lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[Integer.parseInt(currentMonth) - 1]);
 					lstFinancialMonth.setValue(currentMonth);

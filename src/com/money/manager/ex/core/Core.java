@@ -30,6 +30,19 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 
 public class Core {
+	
+	public static class StringUtils {
+
+		public static boolean isNumeric(String s) {
+			try {
+				Float.parseFloat(s);
+			} catch (Exception e) {
+				return false;
+			}
+			return true;
+		}
+	}
+	
 	private static final String LOGCAT = Core.class.getSimpleName();
 	
 	public static final int INVALID_ATTRIBUTE = -1;
