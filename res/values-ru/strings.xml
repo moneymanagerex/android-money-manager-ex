@@ -319,4 +319,31 @@
 	<string name="copy_database_on_external_storage_failed">Копирование базы данных на внешнее хранилище не удалось</string>
 	<string name="path_database_using">Путь до используемой базы данных: %1$s</string>
 	<!-- 20130129 -->
+        <string name="split_transaction">Расщепление проводки</string>
+    	<string name="split_category">Расщепление категории</string>
+    	<string name="split">Расщепление</string>
+    	<string name="error_split_transaction_empty">Внимание: пожалйста, внесите хотя бы одну расщепленную проводку</string>
+    	<string name="export_data_to_csv">Экспорт данных в CSV файл</string>
+    	<string name="export_data_in_progress">Экспорт данных в процессе вЂ¦</string>
+	<string name="export_file_complete">Экспорт файла %1$s завершен</string>
+    	<string name="export_file_failed">Экспорт файла %1$s не удался</string>
+    	<!-- 20130220 -->
+    	<string name="donate_header">Android Money Manager Ex предоставляется бесплатно. Если вам нравиться это приложение, вы можете поддержать команду разработчиков .</string>
+    	<string name="donate_in_app_title">Google Play In-App Billing</string>
+    	<string name="donate_in_app_description">Пожертвовать через Google Play In-App Billing.</string>
+    	<string name="donate_in_app_spinner_text">Выбрать размер пожертвования</string>
+    	<string name="donate_in_app_button">Пожертвовать</string>
+    	<string name="donate_thank_you">Благодарим за пожертвование!</string>
+    	<string name="donate">Пожертвовать</string>
+    	<string name="no_thanks">Нет, спасибо</string>
+    	<string name="donate_exlamation">Пожертвование!</string>
+    	<!-- 20130225 -->
+		<string name="android_sqlite_vesion">Версия SQLite</string>
+		<!-- 20130301 -->
+		<string name="sort">Сортировка</string>
+		<string name="ascending">По возрастанию</string>
+		<string name="descending">По убыванию</string>
+		<string name="sorting_month">Сортировка колонки "Месяц"</string>
+	<!-- 20130305 -->
+
 </resources>
