@@ -343,7 +343,7 @@
 		<string name="sort">Сортировка</string>
 		<string name="ascending">По возрастанию</string>
 		<string name="descending">По убыванию</string>
-		<string name="sorting_month">Сортировка колонки "Месяц"</string>
+		<string name="sorting_month">Сортировка "Месяц"</string>
 	<!-- 20130305 -->
 
 </resources>
