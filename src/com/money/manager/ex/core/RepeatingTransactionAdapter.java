@@ -37,6 +37,7 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
 		TextView txtAmount = (TextView) view.findViewById(R.id.textViewAmount);
 		TextView txtAccountName = (TextView) view.findViewById(R.id.textViewAccountName);
 		TextView txtPayee = (TextView) view.findViewById(R.id.textViewPayee);
+		LinearLayout linearPayee = (LinearLayout) view.findViewById(R.id.linearLayoutPayee);
 		LinearLayout linearToAccount = (LinearLayout) view.findViewById(R.id.linearLayoutToAccount);
 		TextView txtToAccountName = (TextView) view.findViewById(R.id.textViewToAccountName);
 		TextView txtCategorySub = (TextView) view.findViewById(R.id.textViewCategorySub);
@@ -83,8 +84,10 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
 		if ((!TextUtils.isEmpty(payee))) {
 			txtPayee.setText(payee);
 			txtPayee.setVisibility(View.VISIBLE);
+			linearPayee.setVisibility(View.VISIBLE);
 		} else {
 			txtPayee.setVisibility(View.GONE);
+			linearPayee.setVisibility(View.GONE);
 		}
 		// write ToAccountName
 		if ((!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME))))) {

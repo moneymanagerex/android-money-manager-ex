@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <resources>
 
@@ -24,7 +24,7 @@
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
     <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock and ViewPagerIndicator libraries</string>
     <string name="application_license">Open source licenses</string>
-    <string name="application_build">20130316</string>
+    <string name="application_build">20130407</string>
 
     <!-- database -->
     <string name="db_insert_failed">Insert data failed</string>
@@ -244,7 +244,7 @@
     <string name="none">None</string>
     <string name="weekly">Weekly</string>
     <string name="bi_weekly">Bi-Weekly</string>
-    <string name="monthly">Montly</string>
+    <string name="monthly">Monthly</string>
     <string name="bi_monthly">Bi-Monthly</string>
     <string name="quaterly">Quaterly</string>
     <string name="half_year">Half-Yearly</string>
