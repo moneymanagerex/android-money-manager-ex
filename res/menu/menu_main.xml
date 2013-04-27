@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
@@ -74,7 +74,8 @@
             <menu>
                 <item
                     android:id="@+id/menu_sync_dropbox"
-                    android:title="@string/menu_sync_dropbox"/>
+                    android:title="@string/menu_sync_dropbox"
+                    android:visible="false"/>
                 <item
                     android:id="@+id/menu_move_database_external"
                     android:title="@string/menu_move_database_to_external_storage"/>

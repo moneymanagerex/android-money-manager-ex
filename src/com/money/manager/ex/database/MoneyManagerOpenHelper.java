@@ -36,19 +36,18 @@ import com.money.manager.ex.R;
  * 
  */
 public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
+	
 	private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
 	// database name, database version
 	//private static final String databaseName = "data.mmb";
 	private static final int databaseCurrentVersion = 1;
 	// context of creation
 	private Context mContext;
-	// path database
-	//public static final String databasePath = "/data/data/com.money.manager.ex/databases/"  + databaseName;
 		
 	public MoneyManagerOpenHelper(Context context) {
 		super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseCurrentVersion);
 		this.mContext = context;
-		// verbose open file
+		
 		Log.v(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
 	}
 	/**
@@ -126,6 +125,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 			}
 		}
 	}
+	
 	/**
 	 * 
 	 * @return List all accounts
@@ -133,6 +133,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	public List<TableAccountList> getListAccounts() {
 		return getListAccounts(false, false);
 	}
+	
 	/**
 	 * 
 	 * @param open show open accounts
@@ -164,6 +165,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		}
 		return listAccount;
 	}
+	
 	/**
 	 * Return a list of all categories
 	 * @return List of all categories
@@ -187,6 +189,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		}
 		return listCategories;
 	}
+	
 	/**
 	 * Get SQLite Version installed
 	 * @return
@@ -211,6 +214,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		}
 		return sqliteVersion;
 	}
+	
 	/**
 	 * 
 	 * @param id account id to be search
@@ -234,6 +238,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		// find is false then return null
 		return null;
 	}
+	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.i(LOGCAT, "execute onCreate method");
@@ -241,16 +246,19 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		// force update database
 		updateDatabase(db, 0, databaseCurrentVersion);
 	}
+	
 	@Override
 	public void onOpen(SQLiteDatabase db) {
 		super.onOpen(db);
 	}
+	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.i(LOGCAT, "execute onUpgrade(" + Integer.toString(oldVersion) + ", " + Integer.toString(newVersion) + " method");
 		// update databases
 		updateDatabase(db, oldVersion, newVersion);
 	}
+	
 	private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
 		for(int i = oldVersion + 1; i <= newVersion; i++) {
 			// take a id of instance

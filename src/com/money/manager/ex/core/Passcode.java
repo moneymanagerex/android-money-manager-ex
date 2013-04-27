@@ -107,7 +107,7 @@ public class Passcode {
 
 		TableInfoTable infoTable = new TableInfoTable();
 		MoneyManagerOpenHelper helper =  new MoneyManagerOpenHelper(mContext);
-		Cursor cursor = helper.getWritableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[] { INFONAME }, null, null, null);
+		Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[] { INFONAME }, null, null, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			ret = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
 		}

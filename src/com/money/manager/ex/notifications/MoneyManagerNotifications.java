@@ -24,7 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.RingtoneManager;
-import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.money.manager.ex.R;
@@ -42,7 +42,6 @@ public class MoneyManagerNotifications {
 		this.context = context;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void notifyRepeatingTransaction() {
 		// select data
 		QueryBillDeposits billDeposits = new QueryBillDeposits(context);
@@ -58,21 +57,10 @@ public class MoneyManagerNotifications {
 					// create notification
 					Notification notification = null;
 					try {
-						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-							notification = new NotificationCompat.Builder(context)
-										   .setAutoCancel(true)
-										   .setContentIntent(pendingIntent)
-										   .setContentTitle(context.getString(R.string.application_name))
-										   .setContentText(context.getString(R.string.notification_repeating_transaction_expired))
-										   .setSubText(context.getString(R.string.notification_click_to_check_repeating_transaction))
-										   .setSmallIcon(SMALLICON)
-										   .build();
-										   
-						} else {
-							notification = new Notification();
-							notification.setLatestEventInfo(context, context.getString(R.string.application_name), context.getString(R.string.notification_repeating_transaction_expired), pendingIntent);
-							notification.icon = SMALLICON;
-						}
+						notification = new NotificationCompat.Builder(context).setAutoCancel(true).setContentIntent(pendingIntent)
+								.setContentTitle(context.getString(R.string.application_name))
+								.setContentText(context.getString(R.string.notification_repeating_transaction_expired))
+								.setSubText(context.getString(R.string.notification_click_to_check_repeating_transaction)).setSmallIcon(SMALLICON).build();
 						// notify 
 						if (notification != null) {
 							notification.tickerText = context.getString(R.string.notification_repeating_transaction_expired);

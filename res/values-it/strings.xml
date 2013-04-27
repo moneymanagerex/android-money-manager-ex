@@ -55,8 +55,8 @@
     <string name="dropbox_unlink">Scollega da Dropbox</string>
     <string name="dropbox_listFileProgress">Elenco dei file in corso…</string>
     <string name="dropbox_syncProgress">Sincronizzazione con Dropbox in corso…</string>
-    <string name="dropbox_downloadProgress">Scaricando i file da Dropbox…</string>
-    <string name="dropbox_uploadProgress">Caricando i file verso Dropbox…</string>
+    <string name="dropbox_downloadProgress">Scarico file da Dropbox in corso…</string>
+    <string name="dropbox_uploadProgress">Carico file su Dropbox in corso…</string>
     <string name="dropbox_account">Account Dropbox</string>
     <string name="dropbox_linkedFile">File collegato con Dropbox</string>
     <string name="dropbox_method">Metodo di Sincronizzazione con Dropbox</string>

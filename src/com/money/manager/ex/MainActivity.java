@@ -24,6 +24,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -37,6 +38,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -45,23 +47,26 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Passcode;
+import com.money.manager.ex.core.TipsDialogFragment;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxActivity;
+import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.notifications.MoneyManagerNotifications;
+import com.money.manager.ex.preferences.PreferencesActivity;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
-import com.money.manager.ex.settings.PreferencesActivity;
 import com.viewpagerindicator.IconPagerAdapter;
 import com.viewpagerindicator.TitlePageIndicator;
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * 
- */
+ */ 
 @SuppressLint("DefaultLocale")
 public class MainActivity extends BaseFragmentActivity {
 	private static class MainActivityTab {
@@ -147,10 +152,11 @@ public class MainActivity extends BaseFragmentActivity {
 	private static final String KEY_CONTENT = "MainActivity:CurrentPos";
 	private static final String KEY_IS_AUTHENTICATED = "MainActivity:isAuthenticated";
 	private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
+	private static final String KEY_IS_SHOW_TIPS_DROPBOX2 = "MainActivity:isShowTipsDropbox2"; 
 
 	// definizione dei requestcode da passare alle activity
-	private static final int REQUEST_PICKFILE_CODE = 1;
-	private static final int REQUEST_PASSCODE = 2;
+	public static final int REQUEST_PICKFILE_CODE = 1;
+	public static final int REQUEST_PASSCODE = 2;
 	// flag che indica se devo effettuare il refresh grafico
 	private static boolean mRefreshUserInterface = false;
 	// state if restart activity
@@ -183,6 +189,7 @@ public class MainActivity extends BaseFragmentActivity {
 	
 	private boolean isAuthenticated = false;
 	private boolean isInAuthentication = false;
+	private boolean isShowTipsDropbox2 = false;
 	
 	// list of account visible
 	List<TableAccountList> mAccountList;
@@ -200,6 +207,10 @@ public class MainActivity extends BaseFragmentActivity {
     
     // notification
     private static MoneyManagerNotifications notifications;
+    
+    // dropbox object
+    @SuppressWarnings("unused")
+	private DropboxHelper mDropboxHelper;
 	
 	/**
 	 * Change database applications
@@ -294,6 +305,9 @@ public class MainActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//close notification
+		NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
 		//check intent is valid
 		if (getIntent() != null && getIntent().getData() != null) {
 			String pathFile = getIntent().getData().getEncodedPath();
@@ -317,6 +331,7 @@ public class MainActivity extends BaseFragmentActivity {
 			if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
 				isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
 		}
+		
 		MoneyManagerApplication application = (MoneyManagerApplication)getApplication();
 		// load base currency and compose hash currencies
 		application.loadBaseCurrencyId(this);
@@ -330,6 +345,8 @@ public class MainActivity extends BaseFragmentActivity {
 			onCreateFragments(savedInstanceState);
 		}
 		setRefreshUserInterface(true);
+		//show tips dialog
+		showTipsDialog(savedInstanceState);
 		//show donate dialog
 		Core core = new Core(this);
 		if (TextUtils.isEmpty(core.getInfoValue(Core.INFO_SKU_ORDER_ID)))
@@ -343,7 +360,11 @@ public class MainActivity extends BaseFragmentActivity {
 			notifications = new MoneyManagerNotifications(this);
 			notifications.notifyRepeatingTransaction();
 		}
+		
+		//create a connection to dropbox
+		mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
 	}
+	
 	/**
 	 * this method call for classic method (show fragments)
 	 * @param savedInstanceState
@@ -400,6 +421,14 @@ public class MainActivity extends BaseFragmentActivity {
 		mTitlePageIndicator.setSelectedColor(getResources().getColor(R.color.color_ice_cream_sandiwich));
 		mTitlePageIndicator.setSelectedBold(true);
 
+	}
+	
+	@Override
+	protected void onDestroy() {
+		NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		if(notificationManager != null) 
+			notificationManager.cancelAll();
+		super.onDestroy();
 	}
 	
 	@Override
@@ -512,6 +541,7 @@ public class MainActivity extends BaseFragmentActivity {
 		}
 		outState.putBoolean(KEY_IS_AUTHENTICATED, isAuthenticated);
 		outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
+		outState.putBoolean(KEY_IS_SHOW_TIPS_DROPBOX2, isShowTipsDropbox2);
 	}
 	@Override
 	protected void onStart() {
@@ -602,6 +632,22 @@ public class MainActivity extends BaseFragmentActivity {
 			mViewPager.setCurrentItem(position + 1); // add 1 because 0 is home
 		}
 	}
+	
+	public void showTipsDialog(Bundle savedInstanceState) {
+		if (savedInstanceState == null || (savedInstanceState != null && !savedInstanceState.getBoolean(KEY_IS_SHOW_TIPS_DROPBOX2))) {
+			//show tooltip for dropbox
+			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getApplicationContext(), "passtodropbox2");
+			if (tipsDropbox != null) {
+				tipsDropbox.setTitle(Html.fromHtml("<small>" + getString(R.string.tips_title_new_version_dropbox) + "</small>"));
+				tipsDropbox.setTips(getString(R.string.tips_new_version_dropbox));
+				//tipsDropbox.setCheckDontShowAgain(true);
+				tipsDropbox.show(getSupportFragmentManager(), "passtodropbox2");
+				isShowTipsDropbox2 = true; // set shown
+			}
+		}
+	}
+	
+	
 	/**
 	 * show a fragment select with position or account id
 	 * @param position to page

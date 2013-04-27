@@ -15,6 +15,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -110,10 +112,11 @@ public class Core {
 		return dialog.create();
 	}
 	
-	public File backupDatabase() {
-		File database = new File(MoneyManagerApplication.getDatabasePath(context));
-		if (database == null || !database.exists())
-			return null;
+	/**
+	 * Get application directory on external storage 
+	 * @return directory created if not exists
+	 */
+	public File getExternalStorageDirectoryApplication() {
 		//get external storage
 		File externalStorage = Environment.getExternalStorageDirectory();
 		if (!(externalStorage != null && externalStorage.exists() && externalStorage.isDirectory()))
@@ -125,6 +128,34 @@ public class Core {
 			if (!folderOutput.mkdirs())
 				return null;
 		}
+		return folderOutput;
+	}
+	
+	/**
+	 * Get dropbox application directory on external storage
+	 * @return directory created if not exists
+	 */
+	public File getExternalStorageDirectoryDropboxApplication() {
+		File folder = getExternalStorageDirectoryApplication();
+		if (folder != null) {
+			folder = new File(folder + "/dropbox");
+			if (!folder.exists()) {
+				if (!folder.mkdirs()) return null;
+			}
+		}
+		return folder; 
+	}
+	
+	/**
+	 * Backup current database
+	 * @return new File database backup
+	 */
+	public File backupDatabase() {
+		File database = new File(MoneyManagerApplication.getDatabasePath(context));
+		if (database == null || !database.exists())
+			return null;
+		//create folder to copy database
+		File folderOutput = getExternalStorageDirectoryApplication();
 		//take a folder of database
 		ArrayList<File> filesFromCopy = new ArrayList<File>();
 		//add current database
@@ -265,6 +296,19 @@ public class Core {
 	 */
 	public String[] getListMonths() {
 		return new DateFormatSymbols().getMonths();
+	}
+	
+	/**
+	 * Check if device has connection
+	 * @return true if is online otherwise false
+	 */
+	public boolean isOnline() {
+		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**

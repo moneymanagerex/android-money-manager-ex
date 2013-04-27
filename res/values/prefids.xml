@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pref_last_version_key">preflastversioncodekey</string>
+    <string name="pref_donate_last_version_key">prefdonatelastversioncodekey</string>
+    <string name="pref_last_db_path_shown">preflastdbpathshown</string>
+    <string name="pref_show_introduction">prefshowintroduction</string>
+    <string name="pref_database_path">databasepath</string>
+    <string name="pref_user_name">username</string>
+    <string name="pref_date_format">dateformat</string>
+    <string name="pref_financial_year_startdate">financial_year_startday</string>
+    <string name="pref_financial_year_startmonth">financial_year_startmonth</string>
+    <string name="pref_base_currency">basecurrency</string>
+    <string name="pref_account_open_visible">accountsopenvisible</string>
+    <string name="pref_account_fav_visible">accountsfavoritevisible</string>
+    <string name="pref_dropbox_mode">dropbox2modesync</string>
+    <string name="pref_theme">themeapplication</string>
+    <string name="pref_show_transaction">showtransaction</string>
+    <string name="pref_type_home">typehome</string>
+    <string name="pref_edit_passcode">editpasscode</string>
+    <string name="pref_disable_passcode">disablepasscode</string>
+    <string name="pref_active_passcode">activepasscode</string>
+    <string name="pref_dropbox_link">dropbox2link</string>
+    <string name="pref_dropbox_unlink">dropbox2unlink</string>
+    <string name="pref_dropbox_linked_file">dropbox2linkedfile</string>
+    <string name="pref_donate">donate</string>
+    <string name="pref_version_name">versionname</string>
+    <string name="pref_version_code">versioncode</string>
+    <string name="pref_version_date">versiondate</string>
+    <string name="pref_sqlite_version">sqliteversion</string>
+    <string name="pref_dropbox_download">dropbox2download</string>
+	<string name="pref_dropbox_upload">dropbox2upload</string>
+	<string name="pref_dropbox_how_it_works">dropbox2howitworks</string>
+	<string name="pref_dropbox_times_repeat_service">dropbox2servicetimesrepeat</string>
+	<string name="pref_dropbox_upload_immediate">dropbox2uploadimmediate</string>
+</resources>

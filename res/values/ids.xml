@@ -16,9 +16,10 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item name="menu_export_csv" type="id"/>
     <item name="menu_add_transaction" type="id"/>
-
+	<item name="menu_ok" type="id"/>
+	<item name="menu_cancel" type="id"/>
 </resources>

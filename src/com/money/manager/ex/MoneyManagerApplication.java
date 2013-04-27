@@ -58,6 +58,7 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.widget.AccountBillsWidgetProvider;
 import com.money.manager.ex.widget.SummaryWidgetProvider;
 
@@ -82,22 +83,22 @@ public class MoneyManagerApplication extends Application {
     ///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
-    public static final String PREF_LAST_VERSION_KEY = "preflastversioncodekey";
-    public static final String PREF_DONATE_LAST_VERSION_KEY = "prefdonatelastversioncodekey";
-    public static final String PREF_LAST_DB_PATH_SHOWN = "preflastdbpathshown";
-    public static final String PREF_SHOW_INTRODUCTION = "prefshowintroduction";
-    public static final String PREF_DATABASE_PATH = "databasepath";
-    public static final String PREF_USER_NAME = "username";
-    public static final String PREF_DATE_FORMAT = "dateformat";
-    public static final String PREF_FINANCIAL_YEAR_STARTDATE = "financial_year_startday";
-    public static final String PREF_FINANCIAL_YEAR_STARTMONTH = "financial_year_startmonth";
-    public static final String PREF_BASE_CURRENCY = "basecurrency";
-    public static final String PREF_ACCOUNT_OPEN_VISIBLE = "accountsopenvisible";
-    public static final String PREF_ACCOUNT_FAV_VISIBLE = "accountsfavoritevisible";
-    public static final String PREF_DROPBOX_MODE = "dropboxmodesync";
-    public static final String PREF_THEME = "themeapplication";
-    public static final String PREF_SHOW_TRANSACTION = "showtransaction";
-    public static final String PREF_TYPE_HOME = "typehome";
+    /*public static final String PreferenceKey.PREF_LAST_VERSION_KEY = "preflastversioncodekey";
+    public static final String PreferenceKey.PREF_DONATE_LAST_VERSION_KEY = "prefdonatelastversioncodekey";
+    public static final String PreferenceKey.PREF_LAST_DB_PATH_SHOWN = "preflastdbpathshown";
+    public static final String PreferenceKey.PREF_SHOW_INTRODUCTION = "prefshowintroduction";
+    public static final String PreferenceKey.PREF_DATABASE_PATH = "databasepath";
+    public static final String PreferenceKey.PREF_USER_NAME = "username";
+    public static final String PreferenceKey.PREF_DATE_FORMAT = "dateformat";
+    public static final String PreferenceKey.PREF_FINANCIAL_YEAR_STARTDATE = "financial_year_startday";
+    public static final String PreferenceKey.PREF_FINANCIAL_YEAR_STARTMONTH = "financial_year_startmonth";
+    public static final String PreferenceKey.PREF_BASE_CURRENCY = "basecurrency";
+    public static final String PreferenceKey.PREF_ACCOUNT_OPEN_VISIBLE = "accountsopenvisible";
+    public static final String PreferenceKey.PREF_ACCOUNT_FAV_VISIBLE = "accountsfavoritevisible";
+    public static final String PreferenceKey.PREF_DROPBOX_MODE = "dropboxmodesync";
+    public static final String PreferenceKey.PREF_THEME = "themeapplication";
+    public static final String PreferenceKey.PREF_SHOW_TRANSACTION = "showtransaction";
+    public static final String PreferenceKey.PREF_TYPE_HOME = "typehome";*/
     ///////////////////////////////////////////////////////////////////////////
     //                         CONSTANTS VALUES                              //
     ///////////////////////////////////////////////////////////////////////////
@@ -142,7 +143,7 @@ public class MoneyManagerApplication extends Application {
 	 */
 	public static String getDatabasePath(Context context) {
 		String defaultPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/data.mmb";
-		String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_DATABASE_PATH, defaultPath);
+		String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(PreferencesConstant.PREF_DATABASE_PATH, defaultPath);
 		File f = new File(dbFile);
 		// check if database exists
 		if (f.getAbsoluteFile().exists()) {
@@ -193,7 +194,7 @@ public class MoneyManagerApplication extends Application {
 	 */
 	public static void resetDonateDialog(final Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		preferences.edit().putInt(PREF_DONATE_LAST_VERSION_KEY, -1).commit();
+		preferences.edit().putInt(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY, -1).commit();
 	}
     /**
 	 * 
@@ -203,7 +204,7 @@ public class MoneyManagerApplication extends Application {
 	public static void setDatabasePath(Context context, String dbpath) {
 		// save a reference dbpath
 		Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-		editor.putString(PREF_DATABASE_PATH, dbpath);
+		editor.putString(PreferencesConstant.PREF_DATABASE_PATH, dbpath);
 		editor.commit();
 	}
 
@@ -226,9 +227,9 @@ public class MoneyManagerApplication extends Application {
 	public static boolean showChangeLog(Context context, boolean forceShow, boolean complete) {
 		int currentVersionCode = getCurrentVersionCode(context);
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		int lastVersionCode = preferences.getInt(PREF_LAST_VERSION_KEY, -1);
+		int lastVersionCode = preferences.getInt(PreferencesConstant.PREF_LAST_VERSION_KEY, -1);
 		if (!(lastVersionCode == currentVersionCode) || forceShow) {
-			preferences.edit().putInt(PREF_LAST_VERSION_KEY, currentVersionCode).commit();
+			preferences.edit().putInt(PreferencesConstant.PREF_LAST_VERSION_KEY, currentVersionCode).commit();
 			//get text changelog
 			String changelog = getRawAsString(context, R.raw.changelog);
 			//check complete changelog
@@ -270,9 +271,9 @@ public class MoneyManagerApplication extends Application {
 	public static boolean showDonateDialog(final Context context, boolean forceShow) {
 		int currentVersionCode = getCurrentVersionCode(context);
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		int lastVersionCode = preferences.getInt(PREF_DONATE_LAST_VERSION_KEY, -1);
+		int lastVersionCode = preferences.getInt(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY, -1);
 		if (!(lastVersionCode == currentVersionCode) || forceShow) {
-			preferences.edit().putInt(PREF_DONATE_LAST_VERSION_KEY, currentVersionCode).commit();
+			preferences.edit().putInt(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY, currentVersionCode).commit();
 			Core core = new Core(context);
 			if (TextUtils.isEmpty(core.getInfoValue(Core.INFO_SKU_ORDER_ID))) {
 				//get text donate
@@ -311,9 +312,9 @@ public class MoneyManagerApplication extends Application {
      */
     public static boolean showIntroduction(Context context, boolean forceShow) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		Boolean isShowed = preferences.getBoolean(PREF_SHOW_INTRODUCTION, false);
+		Boolean isShowed = preferences.getBoolean(PreferencesConstant.PREF_SHOW_INTRODUCTION, false);
 		if ((!isShowed) || forceShow) {
-			preferences.edit().putBoolean(PREF_SHOW_INTRODUCTION, true).commit();
+			preferences.edit().putBoolean(PreferencesConstant.PREF_SHOW_INTRODUCTION, true).commit();
 			context.startActivity(new Intent(context, IntroductionActivity.class));
 			return true;
 		} else
@@ -345,10 +346,10 @@ public class MoneyManagerApplication extends Application {
 	public static void showDatabasePathWork(Context context) {
 		String currentPath = getDatabasePath(context);
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		String lastPath = preferences.getString(PREF_LAST_DB_PATH_SHOWN, "");
+		String lastPath = preferences.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN, "");
 		if (!lastPath.equals(currentPath)) {
 			Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG).show();
-			preferences.edit().putString(PREF_LAST_DB_PATH_SHOWN, currentPath).commit();
+			preferences.edit().putString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN, currentPath).commit();
 		}
 	}
 	/**
@@ -356,14 +357,14 @@ public class MoneyManagerApplication extends Application {
 	 * @return preferences account fav visible
 	 */
 	public boolean getAccountFavoriteVisible() {
-		return appPreferences.getBoolean(PREF_ACCOUNT_FAV_VISIBLE, false);
+		return appPreferences.getBoolean(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE, false);
 	}
 	/**
 	 * 
 	 * @return preferences accounts visible
 	 */
 	public boolean getAccountsOpenVisible() {
-		return appPreferences.getBoolean(PREF_ACCOUNT_OPEN_VISIBLE, false);
+		return appPreferences.getBoolean(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE, false);
 	}
 
 	/**
@@ -379,7 +380,7 @@ public class MoneyManagerApplication extends Application {
 	 * @return application theme
 	 */
 	public String getApplicationTheme() {
-		return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_THEME, getResources().getString(R.string.theme_holo));
+		return PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_THEME, getResources().getString(R.string.theme_holo));
 	}
 	public String getBaseCurrencyFormatted(float value) {
 		return this.getCurrencyFormatted(mBaseCurrencyId, value);
@@ -504,7 +505,7 @@ public class MoneyManagerApplication extends Application {
 	 * @return the dropbox mode synchronization
 	 */
 	public String getDropboxSyncMode() {
-		return appPreferences.getString(PREF_DROPBOX_MODE, getString(R.string.synchronize));
+		return appPreferences.getString(PreferencesConstant.PREF_DROPBOX_MODE, getString(R.string.synchronize));
 	}
 	/**
 	 * 
@@ -559,7 +560,7 @@ public class MoneyManagerApplication extends Application {
 	 * @return the show transaction
 	 */
 	public String getShowTransaction() {
-		return PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_SHOW_TRANSACTION, getResources().getString(R.string.last7days));
+		return PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_SHOW_TRANSACTION, getResources().getString(R.string.last7days));
 	}
 	/**
 	 * Convert date object in string SQLite date format
@@ -642,7 +643,7 @@ public class MoneyManagerApplication extends Application {
 	 * @return resource id layout to apply
 	 */
 	public int getTypeHome() {
-		String typeHome = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_TYPE_HOME, "");
+		String typeHome = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_TYPE_HOME, "");
 		if (typeHome.equalsIgnoreCase(getString(R.string.classic))) {
 			return TYPE_HOME_CLASSIC;
 		} else if (typeHome.equalsIgnoreCase(getString(R.string.advance))){
@@ -760,7 +761,7 @@ public class MoneyManagerApplication extends Application {
 	 */
 	public void setApplicationTheme(String theme) {
 		Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-		editor.putString(PREF_THEME, theme);
+		editor.putString(PreferencesConstant.PREF_THEME, theme);
 		editor.commit();
 	}
 	/**
@@ -789,7 +790,7 @@ public class MoneyManagerApplication extends Application {
 		}
 		// edit preferences
 		editPreferences = appPreferences.edit();
-		editPreferences.putString(PREF_BASE_CURRENCY, ((Integer)value).toString());
+		editPreferences.putString(PreferencesConstant.PREF_BASE_CURRENCY, ((Integer)value).toString());
 		// commit
 		editPreferences.commit();
 		// imposto il valore
@@ -804,7 +805,7 @@ public class MoneyManagerApplication extends Application {
 	public void setDropboxSyncMode(String value) {
 		// open edit preferences
 		editPreferences = appPreferences.edit();
-		editPreferences.putString(PREF_DROPBOX_MODE, value);
+		editPreferences.putString(PreferencesConstant.PREF_DROPBOX_MODE, value);
 		// commit
 		editPreferences.commit();
 	}
@@ -839,7 +840,7 @@ public class MoneyManagerApplication extends Application {
 		}
 		// edit preferences
 		editPreferences = appPreferences.edit();
-		editPreferences.putString(PREF_USER_NAME, userName);
+		editPreferences.putString(PreferencesConstant.PREF_USER_NAME, userName);
 		// commit
 		editPreferences.commit();
 		// set the value 

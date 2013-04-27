@@ -20,8 +20,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="212"
-    android:versionName="1.1.4" >
+    android:versionCode="223"
+    android:versionName="1.2.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -31,6 +31,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="com.money.manager.ex.MoneyManagerApplication"
@@ -73,11 +75,31 @@
                 android:resource="@xml/widget_account_bills" >
             </meta-data>
         </receiver>
-
+        
+		<receiver android:name="com.money.manager.ex.dropbox.DropboxReceiver">
+		    <intent-filter>
+		        <action android:name="android.intent.action.BOOT_COMPLETED" />
+		       	<action android:name="com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX" />
+				<action android:name="com.money.manager.ex.custom.intent.action.CANCEL_SERVICE_DROPBOX" />
+            </intent-filter>
+		</receiver>
+		
+		<receiver android:name="com.money.manager.ex.dropbox.DropboxStartServiceReceiver"/>
+		
         <service
             android:name="com.money.manager.ex.widget.AccountBillsWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
+        <service android:name="com.money.manager.ex.dropbox.DropboxServiceIntent" >
+            <intent-filter>
+                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_SYNC" />
+                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_DOWNLOAD" />
+	            <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_UPLOAD" />
+            </intent-filter>
+        </service>
+        
+        <service android:name="com.money.manager.ex.dropbox.DropboxServiceIntent" />
+        
         <provider
             android:name="com.money.manager.ex.MoneyManagerProvider"
             android:authorities="com.money.manager.ex.provider" >
@@ -212,7 +234,7 @@
             <action android:name="android.intent.action.INSERT" />
         </activity>
         <activity
-            android:name="com.money.manager.ex.settings.PreferencesActivity"
+            android:name="com.money.manager.ex.preferences.PreferencesActivity"
             android:label="@string/settings" >
         </activity>
         <activity android:name="com.money.manager.ex.PasscodeActivity" >
@@ -242,6 +264,10 @@
         <activity
             android:name="com.money.manager.ex.DonateActivity"
             android:label="@string/donate" >
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.dropbox.DropboxBrowserActivity"
+            android:label="@string/dropbox_select_file" >
         </activity>
     </application>
 

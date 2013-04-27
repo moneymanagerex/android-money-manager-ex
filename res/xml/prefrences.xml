@@ -14,38 +14,38 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceScreen android:title="@string/preferences_general" >
         <EditTextPreference
-            android:key="username"
+            android:key="@string/pref_user_name"
             android:summary="@string/username"
             android:title="@string/user" />
 
         <ListPreference
-            android:key="dateformat"
+            android:key="@string/pref_date_format"
             android:title="@string/date_format" />
         <ListPreference
-            android:key="basecurrency"
+            android:key="@string/pref_base_currency"
             android:title="@string/base_currency" />
 
         <EditTextPreference
-            android:key="financial_year_startday"
+            android:key="@string/pref_financial_year_startdate"
             android:title="@string/financial_year_start_day" />
 
         <ListPreference
-            android:key="financial_year_startmonth"
+            android:key="@string/pref_financial_year_startmonth"
             android:title="@string/financial_year_start_month" />
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/preferences_dispaly" >
         <CheckBoxPreference
-            android:key="accountsopenvisible"
+            android:key="@string/pref_account_open_visible"
             android:summary="@string/if_not_selected_willShowAllAccounts"
             android:title="@string/view_accounts_opened" />
         <CheckBoxPreference
-            android:key="accountsfavoritevisible"
+            android:key="@string/pref_account_fav_visible"
             android:summary="@string/if_not_selected_willShowAllAccounts"
             android:title="@string/view_accounts_favorites" />
 
@@ -53,66 +53,91 @@
             android:defaultValue="@string/last7days"
             android:entries="@array/show_transaction_values"
             android:entryValues="@array/show_transaction_values"
-            android:key="showtransaction"
+            android:key="@string/pref_show_transaction"
             android:title="@string/show_transaction" />
         <ListPreference
             android:entries="@array/type_home_values"
             android:entryValues="@array/type_home_values"
-            android:key="typehome"
+            android:key="@string/pref_type_home"
             android:title="@string/type_home" />
         <ListPreference
             android:defaultValue="@string/theme_holo"
             android:entries="@array/theme_application_items"
             android:entryValues="@array/theme_application_items"
-            android:key="themeapplication"
+            android:key="@string/pref_theme"
             android:title="@string/theme_application" />
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/preferences_security" >
         <PreferenceScreen
-            android:key="activepasscode"
+            android:key="@string/pref_active_passcode"
             android:title="@string/preferences_active_passcode" />
         <PreferenceScreen
-            android:key="editpasscode"
+            android:key="@string/pref_edit_passcode"
             android:title="@string/preferences_edit_passcode" />
         <PreferenceScreen
-            android:key="disablepasscode"
+            android:key="@string/pref_disable_passcode"
             android:title="@string/preferences_disable_passcode" />
     </PreferenceScreen>
-    <PreferenceScreen android:title="@string/preferences_dropbox" >
+    <PreferenceScreen
+        android:key="@string/pref_dropbox_how_it_works"
+        android:title="@string/dropbox" >
         <Preference
-            android:key="dropboxlinkedfile"
+            android:key="@string/pref_dropbox_link"
+            android:selectable="false"
+            android:title="@string/dropbox_link" />
+        <Preference
+            android:dependency="@string/pref_dropbox_unlink"
+            android:key="@string/pref_dropbox_linked_file"
             android:title="@string/dropbox_linkedFile" />
-
-        <ListPreference
-            android:entries="@array/dropbox_sync_item"
-            android:entryValues="@array/dropbox_sync_item"
-            android:key="dropboxmodesync"
-            android:title="@string/dropbox_method" />
+		<EditTextPreference 
+		    android:key="@string/pref_dropbox_times_repeat_service"
+		    android:title="@string/synchronization_interval"
+		    android:summary="@string/summary_synchronization_interval"
+		    android:defaultValue="30"
+		    android:dependency="@string/pref_dropbox_unlink" />
+		<CheckBoxPreference 
+		    android:key="@string/pref_dropbox_upload_immediate"
+		    android:title="@string/title_dropbox_upload_immediate"
+		    android:summary="@string/summary_dropbox_upload_immediate" 
+		    android:defaultValue="false"
+			android:dependency="@string/pref_dropbox_unlink" />	
+        <PreferenceScreen
+            android:dependency="@string/pref_dropbox_unlink"
+            android:key="@string/pref_dropbox_download"
+            android:summary="@string/summary_download_from_drobpox"
+            android:title="@string/download_from_drobpox" />
+        <PreferenceScreen
+            android:dependency="@string/pref_dropbox_unlink"
+            android:key="@string/pref_dropbox_upload"
+            android:summary="@string/summary_upload_to_drobpox"
+            android:title="@string/upload_to_drobpox" />
+        <Preference
+            android:key="@string/pref_dropbox_unlink"
+            android:selectable="false"
+            android:title="@string/dropbox_unlink" />
     </PreferenceScreen>
-
-    <Preference
-        android:key="donate"
+    <PreferenceScreen
+        android:key="@string/pref_donate"
         android:title="@string/donate" />
-
     <PreferenceScreen android:title="@string/preferences_info_application" >
         <Preference
-            android:key="databasepath"
-            android:title="@string/path" 
-            android:selectable="false" />
+            android:key="@string/pref_database_path"
+            android:selectable="false"
+            android:title="@string/path" />
         <Preference
-            android:key="sqliteversion"
-            android:title="@string/android_sqlite_vesion" 
-            android:selectable="false" />
+            android:key="@string/pref_sqlite_version"
+            android:selectable="false"
+            android:title="@string/android_sqlite_vesion" />
         <Preference
-            android:key="versionname"
+            android:key="@string/pref_version_name"
             android:selectable="false"
             android:title="@string/version" />
         <Preference
-            android:key="versioncode"
+            android:key="@string/pref_version_code"
             android:selectable="false"
             android:title="@string/build" />
         <Preference
-            android:key="versiondate"
+            android:key="@string/pref_version_date"
             android:selectable="false"
             android:title="@string/release_date" />
     </PreferenceScreen>

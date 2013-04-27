@@ -57,6 +57,7 @@ import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.database.ViewAllData;
 import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.dropbox.DropboxHelper;
 
 /**
  * MoneyManagerProvider is the extension of the base class of Android
@@ -136,6 +137,8 @@ public class MoneyManagerProvider extends ContentProvider {
 		}
 		// delete notify
 		getContext().getContentResolver().notifyChange(uri, null);
+		// notify dropbox data changed
+		DropboxHelper.notifyDataChanged();
 		// return rows delete
 		return rowsDelete;
 	}
@@ -204,6 +207,8 @@ public class MoneyManagerProvider extends ContentProvider {
 		}
 		// notify the data inserted
 		getContext().getContentResolver().notifyChange(uri, null);
+		// notify dropbox data changed
+		DropboxHelper.notifyDataChanged();
 		// return Uri with primarykey inserted
 		return Uri.parse(parse);
 	}
@@ -375,6 +380,8 @@ public class MoneyManagerProvider extends ContentProvider {
 		}
 		// notify update
 		getContext().getContentResolver().notifyChange(uri, null);
+		// notify dropbox data changed
+		DropboxHelper.notifyDataChanged();
 		// return rows modified
 		return rowsUpdate;
 	}
