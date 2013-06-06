@@ -22,9 +22,9 @@
     <string name="application_name">Money Manager Ex</string>
     <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
-    <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock and ViewPagerIndicator libraries</string>
+    <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock, ViewPagerIndicator and RobotMediaBilling libraries</string>
     <string name="application_license">Open source licenses</string>
-    <string name="application_build">20130407</string>
+    <string name="application_build">20130605</string>
 
     <!-- database -->
     <string name="db_insert_failed">Insert data failed</string>
@@ -323,7 +323,7 @@
     <string name="split_category">Split Category</string>
     <string name="split">Split</string>
     <string name="error_split_transaction_empty">Attention: please, insert at least one of split transaction</string>
-    <string name="export_data_to_csv">Export data to CSV file</string>
+    <string name="export_data_to_csv">Export to CSV</string>
     <string name="export_data_in_progress">Export data in progress …</string>
     <string name="export_file_complete">Export file %1$s completed</string>
     <string name="export_file_failed">Export file %1$s failed</string>
@@ -345,14 +345,14 @@
 	<string name="descending">Descending</string>
 	<string name="sorting_month">Sorting Month</string>
 	<!-- 20130305 -->
-	<string name="dropbox_empty_folder">The folder in </string>
+	<string name="dropbox_empty_folder">The folder in Dropbox/Apps/Money Manager Ex Mobile is empty</string>
 	<string name="dropbox_select_file">Dropbox Select File</string>
 	<string name="last_modified">Last modified</string>
 	<string name="select_dropbox_file">Select Dropbox Remote File</string>
 	<string name="dropbox">Dropbox</string>
 	<string name="dropbox_file_ready_for_use">The database downloaded from Dropbox is ready for use</string>
 	<string name="dropbox_open_database_downloaded">Click to open the database downloaded</string>
-	<string name="click_to_select_file_dropbox">Click to select the file to link to dropbox</string>
+	<string name="click_to_select_file_dropbox">Click to select the file to link to Dropbox</string>
 	<string name="download_from_drobpox">Download database from Dropbox</string>
 	<string name="summary_download_from_drobpox">Click here to manually download the linked file from Dropbox folder</string>
 	<string name="upload_to_drobpox">Upload database to Dropbox</string>
@@ -363,10 +363,28 @@
 	<string name="dont_show_again">Don\'t show again</string>
 	<string name="open_database">Open Database</string>
 	<string name="synchronization_interval">Synchronization Interval</string>
-	<string name="summary_synchronization_interval">Indicate the synchronization interval in minutes with Dropbox. Set not 0 minute for automatic synchronization.</string>
+	<string name="summary_synchronization_interval">Indicate the synchronization interval in minutes with Dropbox. Set it to 0 minutes for no automatic synchronization</string>
 	<string name="tips_title_new_version_dropbox">New version of Dropbox</string>
-	<string name="tips_new_version_dropbox">From version 1.2.0 of Money Manager Ex for Android has changed the management of synchronization with Dropbox. For users who are already using the sync with Dropbox, you must redoing the configuration with Dropbox. The configuration of Dropbox, the selection of the database on Dropbox, is located in the Setting.\nFrom version 1.2.0 of Money Manager Ex for Android can automatically synchronize the database with Dropbox</string>
+	<string name="tips_new_version_dropbox">From version 1.2.0 of Money Manager Ex for Android has changed the management of synchronization with Dropbox. For users who are already using the sync with Dropbox, you must redoing the configuration.\nThe configuration of sync with Dropbox and the selection of the database, is located in the settings.\nFrom version 1.2.0 of Money Manager Ex for Android can automatically synchronize the database with Dropbox</string>
 	<string name="title_dropbox_upload_immediate">Upload immediate database on the change</string>
 	<string name="summary_dropbox_upload_immediate">This option allows to automatically upload as soon as you change the database</string>
 	<!-- 20130426 -->
+	<string name="title_transaction_shown_balance">Shows the balance for each transaction</string>
+	<string name="summary_transaction_shown_balance">Shows the balance for each transaction. The display of balance could make the application slower</string>
+	<string name="menu_open_database">Open database</string>
+	<string name="database">Database</string>
+	<string name="tips">Tips</string>
+	<string name="title_application_font">Application Font</string>
+	<string name="summary_application_font">Select the font you want to give the application</string>
+	<string name="title_application_font_size">Application Font Size</string>
+	<string name="summary_application_font_size">Select the font size you want to give the application</string>
+	<string name="micro">Micro</string>
+	<string name="small">Small</string>
+	<string name="Default">Default</string>
+	<string name="medium">Medium</string>
+	<string name="large">Large</string>
+	<!-- 20130528 -->
+	<string name="dropbox_download_is_starting">Download from Dropbox is starting. Wait please…</string>
+	<string name="dropbox_upload_is_starting">Upload to Dropbox is starting. Wait please…</string>
+	<!-- 20130606 -->
 </resources>

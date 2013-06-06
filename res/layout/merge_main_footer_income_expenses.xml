@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -9,7 +9,8 @@
 
         <TableRow>
 
-            <TextView
+            <com.money.manager.ex.view.RobotoTextView
+                
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
@@ -21,7 +22,8 @@
                 android:textColor="?attr/holo_green_color_theme" 
                 android:singleLine="true"/>
 
-            <TextView
+            <com.money.manager.ex.view.RobotoTextView
+                
                 android:id="@+id/textViewIncome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,7 +38,8 @@
 
         <TableRow>
 
-            <TextView
+            <com.money.manager.ex.view.RobotoTextView
+                
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
@@ -48,7 +51,8 @@
                 android:textColor="?attr/holo_red_color_theme" 
                 android:singleLine="true"/>
 
-            <TextView
+            <com.money.manager.ex.view.RobotoTextView
+                
                 android:id="@+id/textViewExpenses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,17 +64,11 @@
                 android:textColor="?attr/holo_red_color_theme" 
                 android:singleLine="true"/>
         </TableRow>
-        <!--
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_gravity="center_horizontal"
-            android:background="?android:attr/dividerHorizontal" />
-        -->
 
         <TableRow>
 
-            <TextView
+            <com.money.manager.ex.view.RobotoTextView
+                
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
@@ -82,7 +80,8 @@
                 android:textStyle="bold" 
                 android:singleLine="true"/>
 
-            <TextView
+            <com.money.manager.ex.view.RobotoTextView
+                
                 android:id="@+id/textViewDifference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

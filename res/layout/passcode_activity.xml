@@ -19,15 +19,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/money_background"
     android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/linearLayoutInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/money_margin"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:padding="@dimen/money_padding" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +38,7 @@
             android:layout_gravity="center"
             android:orientation="vertical" >
 
-            <TextView
+            <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,66 +55,70 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                <EditText
+                <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:layout_weight="1"
                     android:editable="false"
                     android:gravity="center"
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:textSize="@dimen/money_text_view_size_medium"
-                    android:textStyle="bold" 
-                    android:layout_weight="1"/>
+                    android:textStyle="bold" />
 
-                <EditText
+                <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:layout_weight="1"
                     android:editable="false"
                     android:gravity="center"
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:textSize="@dimen/money_text_view_size_medium"
-                    android:textStyle="bold" android:layout_weight="1"/>
+                    android:textStyle="bold" />
 
-                <EditText
+                <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:layout_weight="1"
                     android:editable="false"
                     android:gravity="center"
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:textSize="@dimen/money_text_view_size_medium"
-                    android:textStyle="bold" android:layout_weight="1"/>
+                    android:textStyle="bold" />
 
-                <EditText
+                <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:layout_weight="1"
                     android:editable="false"
                     android:gravity="center"
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:textSize="@dimen/money_text_view_size_medium"
-                    android:textStyle="bold" android:layout_weight="1"/>
+                    android:textStyle="bold" />
 
-                <EditText
+                <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:layout_weight="1"
                     android:editable="false"
                     android:gravity="center"
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:textSize="@dimen/money_text_view_size_medium"
-                    android:textStyle="bold" android:layout_weight="1"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -119,7 +126,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_margin="@dimen/money_margin"
+        android:orientation="vertical"
+        android:padding="@dimen/money_padding" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -243,7 +252,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <Button
+            <com.money.manager.ex.view.RobotoButton
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"

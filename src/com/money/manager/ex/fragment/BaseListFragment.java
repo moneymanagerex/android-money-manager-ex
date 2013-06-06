@@ -23,12 +23,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SearchViewCompat;
 import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -42,10 +40,14 @@ import com.money.manager.ex.core.Core;
 public class BaseListFragment extends SherlockListFragment {
 	// ID MENU
 	private static final int MENU_ITEM_SEARCH = 1000;
+	// saved instance
+	private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
 	// stato della visualizzazione menu
 	private boolean mDisplayShowCustomEnabled = false;
 	// flag che per la visualizzazione del menu'
 	private boolean mShowMenuItemSearch = false;
+	// flag for tips wildcard
+	private boolean isShowTipsWildcard = false;
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
@@ -55,7 +57,7 @@ public class BaseListFragment extends SherlockListFragment {
 	        itemSearch.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search));
 	        itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 	        // uso il Compat per avere l'oggetto
-	        View searchView = SearchViewCompat.newSearchView(getActivity());
+	        View searchView = SearchViewCompat.newSearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
 	        if (searchView != null) {
 	            SearchViewCompat.setOnQueryTextListener(searchView,
 	                    new OnQueryTextListenerCompat() {
@@ -66,41 +68,6 @@ public class BaseListFragment extends SherlockListFragment {
 	            });
 	            itemSearch.setActionView(searchView);
 	        } else {
-	        	// prendo il layout
-	        	/*searchView = LayoutInflater.from(getActivity()).inflate(R.layout.actionbar_searchview, null);
-	        	// prendo l'edit text
-	        	final EditText edtSearch = (EditText)searchView.findViewById(R.id.editTextSearchView);
-	        	// prendo il menu
-	        	Drawable drawable = getResources().getDrawable(R.drawable.ic_clear_search_api_holo_light); 
-	        	drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-	        	// lo imposto nell'edit
-	        	edtSearch.setCompoundDrawables(null, null, drawable, null);
-	        	// imposto l'hint
-	        	edtSearch.setHint(R.string.search);
-	        	edtSearch.setOnKeyListener(new OnKeyListener() {
-					@Override
-					public boolean onKey(View v, int keyCode, KeyEvent event) {
-						BaseListFragment.this.onQueryTextChange(edtSearch.getText().toString());
-						return false;
-					}
-				});
-	        	edtSearch.setOnTouchListener(new OnTouchListener() {
-					@Override
-					public boolean onTouch(View v, MotionEvent event) {
-						if (event.getAction() == MotionEvent.ACTION_UP && edtSearch.getCompoundDrawables()[2] != null) {
-							Rect rectangleBounds = edtSearch.getCompoundDrawables()[2].getBounds();
-							final int x = (int) event.getX();
-							final int y = (int) event.getY();
-
-							if (x >= (edtSearch.getRight() - rectangleBounds.width()) && x <= (edtSearch.getRight() - edtSearch.getPaddingRight()) &&
-								y >= edtSearch.getPaddingTop() && y <= (edtSearch.getHeight() - edtSearch.getPaddingBottom())) {
-								BaseListFragment.this.onMenuItemSearchClick(itemSearch);
-							}
-						}
-						return false;
-					}
-				});
-	        	((SherlockFragmentActivity)getActivity()).getSupportActionBar().setCustomView(searchView);*/
 	        	SearchView actionSearchView = new SearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
 	        	actionSearchView.setOnQueryTextListener(new OnQueryTextListener() {
 					
@@ -116,8 +83,6 @@ public class BaseListFragment extends SherlockListFragment {
 				});
 	        	itemSearch.setActionView(actionSearchView);
 	        }
-	        String textToast = "<small><b>" + getString(R.string.lookups_wildcard) + "</b></small>";
-	        Toast.makeText(getActivity(), Html.fromHtml(textToast), Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -125,7 +90,7 @@ public class BaseListFragment extends SherlockListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
     	case android.R.id.home:
-    		//imposto il risultato ed esco
+    		// set result and exit
     		this.setResultAndFinish();
     		
     		break;
@@ -140,6 +105,21 @@ public class BaseListFragment extends SherlockListFragment {
 	
 	protected boolean onQueryTextChange(String newText) {
 		return true;
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (isShowMenuItemSearch() && !isShowTipsWildcard) {
+			//show tooltip for wildcard
+			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getSherlockActivity().getApplicationContext(), "passtodropbox2");
+			if (tipsDropbox != null) {
+				tipsDropbox.setTips(getString(R.string.lookups_wildcard));
+				//tipsDropbox.setCheckDontShowAgain(true);
+				tipsDropbox.show(getSherlockActivity().getSupportFragmentManager(), "lookupswildcard");
+				isShowTipsWildcard = true; // set shown
+			}
+		}
 	}
 	
     protected void onMenuItemSearchClick(MenuItem item) {
@@ -205,6 +185,16 @@ public class BaseListFragment extends SherlockListFragment {
 		// set animation
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			getListView().setLayoutTransition(new LayoutTransition());
+		// saved instance
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putBoolean(KEY_SHOWN_TIPS_WILDCARD, isShowTipsWildcard);
+		super.onSaveInstanceState(outState);
 	}
 }
 	

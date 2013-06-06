@@ -517,7 +517,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				// force refresh UI MainActivity
-				MainActivity.setRefreshUserInterface(true);
+				// MainActivity.setRefreshUserInterface(true);
 				// finish CheckingAccountActivity
 				setResult(RESULT_CANCELED);
 				finish();

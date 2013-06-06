@@ -4,12 +4,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.dropbox.client2.ProgressListener;
-import com.dropbox.client2.DropboxAPI.Entry;
-import com.money.manager.ex.MainActivity;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.dropbox.DropboxHelper.OnDownloadUploadEntry;
-
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,6 +13,13 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.dropbox.client2.DropboxAPI.Entry;
+import com.dropbox.client2.ProgressListener;
+import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.MainActivity;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.dropbox.DropboxHelper.OnDownloadUploadEntry;
 
 public class DropboxServiceIntent extends IntentService {
 	private static final String LOGCAT = DropboxServiceIntent.class.getSimpleName();
@@ -41,11 +42,11 @@ public class DropboxServiceIntent extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		Log.d(LOGCAT, intent.toString());
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, intent.toString());
 		// check if device is online
 		Core core = new Core(getApplicationContext());
 		if (!core.isOnline()) {
-			Log.d(LOGCAT, "The device is not connected to internet");
+			if (BuildConfig.DEBUG) Log.d(LOGCAT, "The device is not connected to internet");
 			return;
 		}
 		// take instance dropbox
@@ -60,6 +61,12 @@ public class DropboxServiceIntent extends IntentService {
 		// take a file and entries
 		File localFile = new File(local);
 		Entry remoteFile = mDropboxHelper.getEntry(remote);
+		// check if local file or remote file is null, then exit
+		if (localFile == null || remoteFile == null) {
+			Log.e(LOGCAT, "localFile is " + (localFile == null ? "null" : "not null") + " and remoteFile is " + (remoteFile == null ? "null" : "not null.")
+					+ ". Dont execute DropboxServiceIntent.onHandleIntent");
+			return;
+		}
 		// check if name is same
 		if (!localFile.getName().toUpperCase().equals(remoteFile.fileName().toUpperCase())) return;
 		// check action
@@ -83,19 +90,19 @@ public class DropboxServiceIntent extends IntentService {
 		if (localLastModified == null)
 			localLastModified = new Date(localFile.lastModified());
 		remoteLastModified = mDropboxHelper.getLastModifiedEntry(remoteFile);
-		Log.d(LOGCAT, "Date last modified local file: " + new SimpleDateFormat().format(localLastModified));
-		Log.d(LOGCAT, "Date last modified remote file: " + new SimpleDateFormat().format(remoteLastModified));
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified local file: " + new SimpleDateFormat().format(localLastModified));
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified remote file: " + new SimpleDateFormat().format(remoteLastModified));
 		// check date
 		if (remoteLastModified.after(localLastModified)) {
-			Log.d(LOGCAT, "Download " + remoteFile.path + " from Dropox");
+			if (BuildConfig.DEBUG) Log.d(LOGCAT, "Download " + remoteFile.path + " from Dropox");
 			// download file
 			downloadFile(localFile, remoteFile);
 		} else if (remoteLastModified.before(localLastModified)) {
-			Log.d(LOGCAT, "Upload " + localFile.getPath() + " to Dropox");
+			if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload " + localFile.getPath() + " to Dropox");
 			// upload file
 			uploadFile(localFile, remoteFile);
 		} else {
-			Log.d(LOGCAT, "The local and remote files are the same");
+			if (BuildConfig.DEBUG) Log.d(LOGCAT, "The local and remote files are the same");
 		}
 	}
 
@@ -136,7 +143,7 @@ public class DropboxServiceIntent extends IntentService {
 				notificationManager.notify(NOTIFICATION_DROPBOX_PROGRESS, mDropboxHelper.getNotificationBuilderProgress(notification, (int)total, (int)bytes).build());
 			}
 		};
-		Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.path);
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.path);
 		//mDropboxHelper.downloadFile(remoteFile, localFile, onDownloadUpload, listener);
 		onDownloadUpload.onPreExecute();
 		boolean ret = mDropboxHelper.download(remoteFile, localFile, listener);
@@ -180,7 +187,7 @@ public class DropboxServiceIntent extends IntentService {
 				notificationManager.notify(NOTIFICATION_DROPBOX_PROGRESS, mDropboxHelper.getNotificationBuilderProgress(notification, (int)total, (int)bytes).build());
 			}
 		};
-		Log.d(LOGCAT, "Upload file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.path);
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.path);
 		//mDropboxHelper.uploadFile(remoteFile.path, localFile, onDownloadUpload, listener);
 		onDownloadUpload.onPreExecute();
 		boolean ret = mDropboxHelper.upload(remoteFile.path, localFile, listener);

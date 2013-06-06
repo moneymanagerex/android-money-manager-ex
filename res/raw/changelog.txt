@@ -1,3 +1,10 @@
+<b> Version 1.2.0 </b>
+- New sync with Dropbox. From this version you can automatically synchronize the database of Money Manager Ex. The configuration and management with Dropbox (download and upload) is in the settings.<i> For those already using the sync with Dropbox will have to redo the configuration.</i>
+- New look for the application
+- Major bugfix: application crash when you try create a new transaction with date format contains quote character (')
+- Major bugfix: application crashes when you open the setting with the financial first month of the year is not set correctly
+- Possibility of displaying the partial budget for each transaction. The visualization is activated in the display settings.
+
 <b> Version 1.1.4 </b>
 - Updated localization: Russian
 - <i>Minor bugfix</i>

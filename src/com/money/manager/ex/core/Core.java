@@ -99,7 +99,7 @@ public class Core {
 	public static AlertDialog alertDialog(Context ctx, String text) {
 		AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
 		// setting alert dialog
-		dialog.setIcon(android.R.drawable.ic_dialog_alert);
+		dialog.setIcon(R.drawable.ic_action_warning_light);
 		dialog.setTitle(R.string.attention);
 		dialog.setMessage(text);
 		dialog.setNeutralButton(android.R.string.ok, new OnClickListener() {
@@ -118,17 +118,21 @@ public class Core {
 	 */
 	public File getExternalStorageDirectoryApplication() {
 		//get external storage
-		File externalStorage = Environment.getExternalStorageDirectory();
-		if (!(externalStorage != null && externalStorage.exists() && externalStorage.isDirectory()))
-			return null;
-		//create folder to copy database
-		File folderOutput = new File(externalStorage + "/" + context.getPackageName());
-		//make a directory
-		if (!folderOutput.exists()) {
-			if (!folderOutput.mkdirs())
-				return null;
+		File externalStorage = null;
+		File folderOutput = null;
+		externalStorage  = Environment.getExternalStorageDirectory();
+		if (externalStorage != null && externalStorage.exists() && externalStorage.isDirectory() && externalStorage.canWrite()) {
+			//create folder to copy database
+			folderOutput = new File(externalStorage + "/" + context.getPackageName());
+			//make a directory
+			if (!folderOutput.exists()) {
+				if (!folderOutput.mkdirs()) return context.getFilesDir();
+			}
+			//folder create
+			return folderOutput;
+		} else {
+			return context.getFilesDir();
 		}
-		return folderOutput;
 	}
 	
 	/**
@@ -137,13 +141,18 @@ public class Core {
 	 */
 	public File getExternalStorageDirectoryDropboxApplication() {
 		File folder = getExternalStorageDirectoryApplication();
-		if (folder != null) {
-			folder = new File(folder + "/dropbox");
-			if (!folder.exists()) {
-				if (!folder.mkdirs()) return null;
+		// manage folder
+		if (folder != null && folder.exists() && folder.isDirectory() && folder.canWrite()) {
+			// create a folder for dropbox
+			File folderDropbox = new File(folder + "/dropbox");
+			// check if folder exists otherwise create
+			if (!folderDropbox.exists()) {
+				if (!folderDropbox.mkdirs()) return context.getFilesDir();
 			}
+			return folderDropbox;
+		} else {
+			return context.getFilesDir();
 		}
-		return folder; 
 	}
 	
 	/**

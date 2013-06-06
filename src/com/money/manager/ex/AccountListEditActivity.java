@@ -304,7 +304,7 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				// force refresh UI MainActivity
-				MainActivity.setRefreshUserInterface(true);
+				// MainActivity.setRefreshUserInterface(true);
 				// finish the activity
 				AccountListEditActivity.this.finish();
 			}

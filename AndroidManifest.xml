@@ -14,13 +14,12 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="223"
+    android:versionCode="247"
     android:versionName="1.2.0" >
 
     <uses-sdk
@@ -38,7 +37,7 @@
         android:name="com.money.manager.ex.MoneyManagerApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_name"
-        android:theme="@style/Theme.Money.Manager" >
+        android:theme="@style/Theme.Money.Manager.Light.DarkActionBar" >
         <receiver
             android:name="com.money.manager.ex.widget.ButtonAddTransactionWidgetProvider"
             android:label="@string/widget_add_transaction" >
@@ -75,46 +74,42 @@
                 android:resource="@xml/widget_account_bills" >
             </meta-data>
         </receiver>
-        
-		<receiver android:name="com.money.manager.ex.dropbox.DropboxReceiver">
-		    <intent-filter>
-		        <action android:name="android.intent.action.BOOT_COMPLETED" />
-		       	<action android:name="com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX" />
-				<action android:name="com.money.manager.ex.custom.intent.action.CANCEL_SERVICE_DROPBOX" />
+        <receiver android:name="com.money.manager.ex.dropbox.DropboxReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX" />
+                <action android:name="com.money.manager.ex.custom.intent.action.CANCEL_SERVICE_DROPBOX" />
             </intent-filter>
-		</receiver>
-		
-		<receiver android:name="com.money.manager.ex.dropbox.DropboxStartServiceReceiver"/>
-		
+        </receiver>
+        <receiver android:name="com.money.manager.ex.dropbox.DropboxStartServiceReceiver" />
+
         <service
             android:name="com.money.manager.ex.widget.AccountBillsWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-
         <service android:name="com.money.manager.ex.dropbox.DropboxServiceIntent" >
             <intent-filter>
                 <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_SYNC" />
                 <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_DOWNLOAD" />
-	            <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_UPLOAD" />
+                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_UPLOAD" />
             </intent-filter>
         </service>
-        
         <service android:name="com.money.manager.ex.dropbox.DropboxServiceIntent" />
-        
+
         <provider
             android:name="com.money.manager.ex.MoneyManagerProvider"
             android:authorities="com.money.manager.ex.provider" >
         </provider>
-        
+
         <service android:name="net.robotmedia.billing.BillingService" />
-        
-		<receiver android:name="net.robotmedia.billing.BillingReceiver">
-    		<intent-filter>
-        	<action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
-        	<action android:name="com.android.vending.billing.RESPONSE_CODE" />
-        	<action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
-    		</intent-filter>
-		</receiver>
-		
+
+        <receiver android:name="net.robotmedia.billing.BillingReceiver" >
+            <intent-filter>
+                <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
+                <action android:name="com.android.vending.billing.RESPONSE_CODE" />
+                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="com.money.manager.ex.MainActivity"
             android:label="@string/application_name" >
@@ -125,31 +120,14 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.EDIT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="*"
-                    android:mimeType="*/*"
-                    android:pathPattern=".*\\.mmb"
-                    android:scheme="http" />
-                <data
-                    android:host="*"
-                    android:mimeType="*/*"
-                    android:pathPattern=".*\\.mmb"
-                    android:scheme="https" />
-                <data
-                    android:host="*"
-                    android:mimeType="*/*"
-                    android:pathPattern=".*\\.mmb"
-                    android:scheme="content" />
-                <data
-                    android:host="*"
-                    android:mimeType="*/*"
-                    android:pathPattern=".*\\.mmb"
-                    android:scheme="file" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\\.mmb" />
+                <data android:host="*" />
             </intent-filter>
         </activity>
         <activity

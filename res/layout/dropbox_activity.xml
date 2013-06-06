@@ -30,7 +30,7 @@
         android:visibility="gone">
     </ListView>
 
-    <TextView android:id="@+id/textViewLinkDropBox" 
+    <com.money.manager.ex.view.RobotoTextView android:id="@+id/textViewLinkDropBox" 
         android:layout_height="match_parent" 
         android:layout_width="match_parent"
         android:text="@string/dropbox_link"

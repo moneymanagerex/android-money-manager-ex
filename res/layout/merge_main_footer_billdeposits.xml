@@ -4,36 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:orientation="vertical" >
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/divider_ice_cream_sandwich" />
+    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:orientation="horizontal" >
+        android:layout_marginLeft="@dimen/money_margin"
+        android:layout_marginRight="@dimen/money_margin"
+        android:layout_marginBottom="@dimen/money_margin"
+        android:background="@drawable/shape_white_background_shadow"
+        android:orientation="vertical"
+        android:padding="4dp" >
 
-        <ImageView
-            android:id="@+id/imageViewClock"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="?attr/ic_action_warning" />
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/textViewOverdue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1" />
+            <ImageView
+                android:id="@+id/imageViewClock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_action_warning_light" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                
+                android:id="@+id/textViewOverdue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

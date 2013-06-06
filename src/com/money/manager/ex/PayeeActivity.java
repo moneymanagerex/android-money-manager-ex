@@ -44,6 +44,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.MoneySimpleCursorAdapter;
 import com.money.manager.ex.database.SQLTypeTransacion;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -71,10 +72,8 @@ public class PayeeActivity extends BaseFragmentActivity {
 			
 			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
 			// associate adapter
-			SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(),
-                    mLayout, null,
-                    new String[] { TablePayee.PAYEENAME  },
-                    new int[] { android.R.id.text1 }, 0);
+			MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(), mLayout, null, new String[] { TablePayee.PAYEENAME },
+					new int[] { android.R.id.text1 }, 0);
 			// set adapter
 			setListAdapter(adapter);
 			
@@ -107,7 +106,7 @@ public class PayeeActivity extends BaseFragmentActivity {
 					new AlertDialog.Builder(getActivity())
 							.setTitle(R.string.attention)
 							.setMessage(R.string.payee_can_not_deleted)
-							.setIcon(android.R.drawable.ic_dialog_alert)
+							.setIcon(R.drawable.ic_action_warning_light)
 							.setPositiveButton(android.R.string.ok,
 									new OnClickListener() {
 										@Override
@@ -233,7 +232,7 @@ public class PayeeActivity extends BaseFragmentActivity {
 
 			alertDialog.setTitle(R.string.delete_payee);
 			alertDialog.setMessage(R.string.confirmDelete);
-			alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+			alertDialog.setIcon(R.drawable.ic_action_warning_light);
 
 			alertDialog.setPositiveButton(android.R.string.ok,
 					new OnClickListener() {

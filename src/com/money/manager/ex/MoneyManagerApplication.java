@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.appwidget.AppWidgetManager;
@@ -50,6 +49,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropbox.client2.session.Session.AccessType;
@@ -59,6 +59,7 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.view.RobotoView;
 import com.money.manager.ex.widget.AccountBillsWidgetProvider;
 import com.money.manager.ex.widget.SummaryWidgetProvider;
 
@@ -110,6 +111,8 @@ public class MoneyManagerApplication extends Application {
     public static String PATTERN_DB_DATE = "yyyy-MM-dd";
     
 	private static SharedPreferences appPreferences;
+	private static float mTextSize;
+	
 	/**
 	 * Take a versioncode of this application
 	 * @param context
@@ -122,6 +125,7 @@ public class MoneyManagerApplication extends Application {
 		} catch (NameNotFoundException e) {
 			return 0;
 		}
+		
     }
 	/**
 	 * Take a versioncode of this application
@@ -136,6 +140,7 @@ public class MoneyManagerApplication extends Application {
 			return "";
 		}
     }
+    
     /***
 	 * 
 	 * @param context
@@ -152,6 +157,7 @@ public class MoneyManagerApplication extends Application {
 			return defaultPath;
 		}
 	}
+	
     /**
 	 * 
 	 * @param Context context from call
@@ -188,6 +194,7 @@ public class MoneyManagerApplication extends Application {
 		}
 		return result;
 	}
+	
 	/**
 	 * Reset to force show donate dialog
 	 * @param context
@@ -217,6 +224,7 @@ public class MoneyManagerApplication extends Application {
 	public static boolean showChangeLog(Context context, boolean forceShow) {
 		return showChangeLog(context, forceShow, true);
 	}
+	
 	/**
      * Show changelog dialog
      * @param context
@@ -320,17 +328,26 @@ public class MoneyManagerApplication extends Application {
 		} else
 			return false;
     }
-	private Editor editPreferences;
+    
+    public static void setTextSize(float textSize) {
+    	MoneyManagerApplication.mTextSize = textSize;
+    }
+    
+    public static float getTextSize() {
+    	return MoneyManagerApplication.mTextSize;
+    }
 	
 	///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
+    private Editor editPreferences;
     // definition of the hashmap for the management of the currency
 	private static Map<Integer, TableCurrencyFormats> mMapCurrency = new HashMap<Integer, TableCurrencyFormats>();
 	// Id of BaseCurrency
 	private static int mBaseCurrencyId = 0;
 	// user name application
 	private static String userName = "";
+	
 	
 	/**
 	 * close process application
@@ -374,13 +391,6 @@ public class MoneyManagerApplication extends Application {
 	public List<TableCurrencyFormats> getAllCurrencyFormats() {
 		List<TableCurrencyFormats> ret = new ArrayList<TableCurrencyFormats>(mMapCurrency.values());
 		return ret;
-	}
-	/**
-	 * 
-	 * @return application theme
-	 */
-	public String getApplicationTheme() {
-		return PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_THEME, getResources().getString(R.string.theme_holo));
 	}
 	public String getBaseCurrencyFormatted(float value) {
 		return this.getCurrencyFormatted(mBaseCurrencyId, value);
@@ -639,19 +649,6 @@ public class MoneyManagerApplication extends Application {
 		return curTotal;
 	}
 	/**
-	 * 
-	 * @return resource id layout to apply
-	 */
-	public int getTypeHome() {
-		String typeHome = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_TYPE_HOME, "");
-		if (typeHome.equalsIgnoreCase(getString(R.string.classic))) {
-			return TYPE_HOME_CLASSIC;
-		} else if (typeHome.equalsIgnoreCase(getString(R.string.advance))){
-			return TYPE_HOME_ADVANCE;
-		}
-		return getDefaultTypeHome();
-	}
-	/**
 	 * Get pattern define from user
 	 * @return pattern user define
 	 */
@@ -663,7 +660,7 @@ public class MoneyManagerApplication extends Application {
 		if (cursor != null && cursor.moveToFirst()) {
 			pattern = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
 			//replace part of pattern
-			pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy");
+			pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy").replace("'", "''");
 		}
 		//close cursor and helper
 		cursor.close();
@@ -742,17 +739,25 @@ public class MoneyManagerApplication extends Application {
 		}
 		openHelper.close();
 	}
+	
 	@Override
 	public void onCreate() {
-		Log.v(LOGCAT, "Application created");
-
+		super.onCreate();
+		
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
+		// set default value
+		setTextSize(new TextView(getApplicationContext()).getTextSize());
+		// preference
 		if (appPreferences == null) { 
 			appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+			RobotoView.setUserFont(Integer.parseInt(appPreferences.getString(PreferencesConstant.PREF_APPLICATION_FONT, "12")));
+			RobotoView.setUserFontSize(getApplicationContext(), appPreferences.getString(PreferencesConstant.PREF_APPLICATION_FONT_SIZE, ""));
 		}
 	}
+	
 	@Override
 	public void onTerminate() {
-		Log.v(LOGCAT, "Application terminated");
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
 	}
 
 	/**
@@ -765,7 +770,7 @@ public class MoneyManagerApplication extends Application {
 		editor.commit();
 	}
 	/**
-	 * set il valore della valuta di base
+	 * set value of base currency
 	 * @param value
 	 * @return
 	 */
@@ -773,7 +778,7 @@ public class MoneyManagerApplication extends Application {
 		return this.setBaseCurrencyId(value, false);
 	}
 	/**
-	 * set il valore della valuta di base
+	 * set value of base currency
 	 * @param value
 	 * @param save save value into database
 	 */
@@ -798,6 +803,7 @@ public class MoneyManagerApplication extends Application {
 		
 		return true;
 	}
+	
 	/**
 	 * 
 	 * @param value mode of syncronization to apply
@@ -809,20 +815,11 @@ public class MoneyManagerApplication extends Application {
 		// commit
 		editPreferences.commit();
 	}
-	/**
-	 * 
-	 * @param activity to apply the theme
-	 */
-	public void setThemeApplication(Activity activity) {
-		if (getApplicationTheme().equalsIgnoreCase(getResources().getString(R.string.theme_holo))) {
-			activity.setTheme(R.style.Theme_Money_Manager);
-		} else {
-			activity.setTheme(R.style.Theme_Money_Manager_Light);
-		}
-	}
+	
 	public boolean setUserName(String userName) {
 		return this.setUserName(userName, false);
 	}
+	
 	/**
 	 * @param userName the userName to set
 	 * @param save save into database

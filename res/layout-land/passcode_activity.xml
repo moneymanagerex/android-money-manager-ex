@@ -35,7 +35,7 @@
             android:layout_gravity="center"
             android:orientation="vertical" >
 
-            <TextView
+            <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                <EditText
+                <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                     android:textStyle="bold" 
                     android:layout_weight="1"/>
 
-                <EditText
+                <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                     android:textSize="@dimen/money_text_view_size_medium"
                     android:textStyle="bold" android:layout_weight="1"/>
 
-                <EditText
+                <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                     android:textSize="@dimen/money_text_view_size_medium"
                     android:textStyle="bold" android:layout_weight="1"/>
 
-                <EditText
+                <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                     android:textSize="@dimen/money_text_view_size_medium"
                     android:textStyle="bold" android:layout_weight="1"/>
 
-                <EditText
+                <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -245,7 +245,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <Button
+            <com.money.manager.ex.view.RobotoButton
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"

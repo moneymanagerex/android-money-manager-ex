@@ -1,5 +1,6 @@
 First you need to login on Dropbox from Money Manager Ex for Android. 
-If this is the first time you must give authorization for the application to access the folder /apps/Money Manager Mobile on Dropbox. If the folder does not exist, Dropbox creates. 
-If you already use a database (file mmb) copy from PC in this folder, otherwise load your database with upload.
-Link the database (file mmb) with the application. The first time will be downloaded automatically.
-After linking the database, a service in background will verify the changes in the database.
+If this is the first time you sign into Dropbox from Money Manager Ex for Android you need to give authorization for the application to access the folder /apps/Money Manager Mobile on Dropbox. If the folder does not exist, Dropbox automatically creates it. 
+If you already use a database (file mmb) copy from the PC to the application folder on Dropbox (/apps/money manager ex mobile), otherwise load your database with upload.
+Link the database (file mmb) with the application. Immediately after linking the file, the application will download it into your device. After the download you can use the database by clicking on the notification.
+After the configuration, a background service monitor changes between the local database and the database on Dropbox. If the service finds changes to the database, it will download or upload the most updated database.
+The service starts automatically when the device boot.

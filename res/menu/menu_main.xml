@@ -14,19 +14,35 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_new_transaction"
-        android:title="@string/new_transaction"/>
+        android:id="@+id/menu_open_database"
+        android:icon="?attr/ic_action_folder_open"
+        android:showAsAction="always|withText"
+        android:title="@string/menu_open_database"/>
+    
+    <item
+        android:id="@+id/menu_add_transaction_account"
+        android:title="@string/new_transaction"
+        android:icon="?attr/ic_action_add"
+        android:showAsAction="ifRoom|withText" 
+        android:visible="false" />
+    
     <item
         android:id="@+id/menu_search_transaction"
         android:icon="?attr/ic_action_search"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom|withText"
         android:title="@string/search"/>
 
+    <item
+        android:id="@+id/menu_export_to_csv"
+        android:title="@string/export_data_to_csv"
+        android:icon="?attr/ic_action_upload"
+        android:visible="false" />
+    
     <group android:id="@+id/menu_group_main" >
         <item
             android:id="@+id/menu_action_main"
@@ -64,24 +80,6 @@
                 <item
                     android:id="@+id/menu_report_income_vs_expenses"
                     android:title="@string/menu_report_income_vs_expenses"/>
-            </menu>
-        </item>
-    </group>
-    <group android:id="@+id/menu_group_tools" >
-        <item
-            android:id="@+id/menu_tools"
-            android:title="@string/menu_tools">
-            <menu>
-                <item
-                    android:id="@+id/menu_sync_dropbox"
-                    android:title="@string/menu_sync_dropbox"
-                    android:visible="false"/>
-                <item
-                    android:id="@+id/menu_move_database_external"
-                    android:title="@string/menu_move_database_to_external_storage"/>
-                <item
-                    android:id="@+id/menu_use_external_db"
-                    android:title="@string/menu_use_external_db"/>
             </menu>
         </item>
     </group>

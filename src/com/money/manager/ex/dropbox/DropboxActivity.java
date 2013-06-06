@@ -58,6 +58,7 @@ import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.TokenPair;
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -515,7 +516,7 @@ public class DropboxActivity extends BaseFragmentActivity {
 	}
 	
 	private void logIn() {
-		Log.i(LOGCAT, "start authentication");
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "start authentication");
         // Start the remote authentication
         mApi.getSession().startAuthentication(DropboxActivity.this);
 	}
@@ -523,7 +524,7 @@ public class DropboxActivity extends BaseFragmentActivity {
 	private void logOut() {
 	    // remove info to access
 	    mApi.getSession().unlink();
-	    Log.i(LOGCAT, "unlink from dropbox account");
+	    if (BuildConfig.DEBUG) Log.d(LOGCAT, "unlink from dropbox account");
 
 	    clearKeys();
 	    // set UI not logged in
@@ -535,7 +536,7 @@ public class DropboxActivity extends BaseFragmentActivity {
 		//requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		//requestWindowFeature(Window.FEATURE_PROGRESS);
 		super.onCreate(savedInstanceState);
-		Log.i(LOGCAT, "activity create");
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "activity create");
 		// actionbar
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -575,7 +576,7 @@ public class DropboxActivity extends BaseFragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		Log.i(LOGCAT, "activity destroy");
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "activity destroy");
 	}
 	
 	@Override
@@ -643,7 +644,7 @@ public class DropboxActivity extends BaseFragmentActivity {
                 setLoggedIn(true);
             } catch (IllegalStateException e) {
                 Toast.makeText(this, "Couldn't authenticate with Dropbox:" + e.getMessage(), Toast.LENGTH_LONG).show();
-                Log.i(LOGCAT, "Error authenticating", e);
+                if (BuildConfig.DEBUG) Log.d(LOGCAT, "Error authenticating", e);
             }
         }
 	}
@@ -682,7 +683,7 @@ public class DropboxActivity extends BaseFragmentActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			invalidateOptionsMenu();
 		}
-		Log.i(LOGCAT, "drop account loggedin = " + Boolean.toString(mLoggedIn));
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "drop account loggedin = " + Boolean.toString(mLoggedIn));
 	}
 	
 	/**

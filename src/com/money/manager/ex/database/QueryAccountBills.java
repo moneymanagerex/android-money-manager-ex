@@ -30,7 +30,8 @@ public class QueryAccountBills extends Dataset {
 	public static final String ACCOUNTNAME = "ACCOUNTNAME";
 	public static final String STATUS = "STATUS";
 	public static final String FAVORITEACCT = "FAVORITEACCT"; 
-	public static final String CURRENCYID = "CURRENCYID"; 
+	public static final String CURRENCYID = "CURRENCYID";
+	public static final String ACCOUNTTYPE = "ACCOUNTTYPE";
 	public static final String TOTAL = "TOTAL";
 	public static final String RECONCILED = "RECONCILED";
 	public static final String TOTALBASECONVRATE = "TOTALBASECONVRATE";
@@ -40,11 +41,12 @@ public class QueryAccountBills extends Dataset {
 	private String accountName;
 	private String status;
 	private String favoriteAcct;
+	private String accountType;
 	private int currencyId;
 	private double total;
 	// definizione del costruttore
 	public QueryAccountBills(Context context) {
-		super(MoneyManagerApplication.getRawAsString(context, R.raw.accountbills), DatasetType.QUERY, "accountbills");
+		super(MoneyManagerApplication.getRawAsString(context, R.raw.query_account_bills), DatasetType.QUERY, "accountbills");
 	}
 	/**
 	 * @return the accountId
@@ -60,7 +62,7 @@ public class QueryAccountBills extends Dataset {
 	}
 	@Override
 	public String[] getAllColumns() {
-		return new String[] {"ACCOUNTID AS _id", ACCOUNTID, ACCOUNTNAME, STATUS, FAVORITEACCT, CURRENCYID, TOTAL, RECONCILED, TOTALBASECONVRATE, RECONCILEDBASECONVRATE};
+		return new String[] {"ACCOUNTID AS _id", ACCOUNTID, ACCOUNTNAME, STATUS, FAVORITEACCT, CURRENCYID, ACCOUNTTYPE, TOTAL, RECONCILED, TOTALBASECONVRATE, RECONCILEDBASECONVRATE};
 	}
 	/**
 	 * @return the currencyId
@@ -124,6 +126,18 @@ public class QueryAccountBills extends Dataset {
 		this.favoriteAcct = favoriteAcct;
 	}
 	/**
+	 * @return the accountType
+	 */
+	public String getAccountType() {
+		return accountType;
+	}
+	/**
+	 * @param accountType the accountType to set
+	 */
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
+	/**
 	 * @param status the status to set
 	 */
 	public void setStatus(String status) {
@@ -145,6 +159,7 @@ public class QueryAccountBills extends Dataset {
 		this.setAccountId(c.getInt(c.getColumnIndex(ACCOUNTID)));
 		this.setAccountName(c.getString(c.getColumnIndex(ACCOUNTNAME)));
 		this.setCurrencyId(c.getInt(c.getColumnIndex(CURRENCYID)));
+		this.setAccountType(c.getString(c.getColumnIndex(ACCOUNTTYPE)));
 		this.setFavoriteAcct(c.getString(c.getColumnIndex(FAVORITEACCT)));
 		this.setStatus(c.getString(c.getColumnIndex(STATUS)));
 		this.setTotal(c.getDouble(c.getColumnIndex(TOTAL)));

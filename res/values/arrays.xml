@@ -91,17 +91,6 @@
         <item>@string/upload</item>
     </string-array>
 
-    <!-- Define array of theme -->
-    <integer-array name="theme_application_values">
-        <item>@style/Theme.Money.Manager</item>
-        <item>@style/Theme.Money.Manager.Light</item>
-    </integer-array>
-
-    <string-array name="theme_application_items">
-        <item>@string/theme_holo</item>
-        <item>@string/theme_light</item>
-    </string-array>
-
     <!-- Define array to show transaction -->
     <string-array name="show_transaction_values">
         <item>@string/all_transaction</item>
@@ -154,6 +143,40 @@
         <item>@string/every_x_months</item>
     </string-array>
 
+    <!-- Define font entries and values -->
+    <string-array name="application_font_entries">
+        <item>Default</item>
+        <item>Roboto Light</item>
+        <item>Roboto Regular</item>
+        <item>Roboto Medium</item>
+        <item>Roboto Black</item>
+        <item>Roboto Condensed</item>
+    </string-array>
+    <string-array name="application_font_values">
+        <item>-1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>10</item>
+        <item>12</item>
+    </string-array>
+    
+    <!-- Define font sizeentries and values -->
+    <string-array name="application_font_size_entries">
+        <item>@string/micro</item>
+        <item>@string/small</item>
+        <item>@string/Default</item>
+        <item>@string/medium</item>
+        <item>@string/large</item>
+    </string-array>
+    <string-array name="application_font_size_values">
+        <item>micro</item>
+        <item>small</item>
+        <item>default</item>
+        <item>medium</item>
+        <item>large</item>
+    </string-array>
+    
     <!-- Define currency value -->
     <string-array name="currency_values">
         <item>EUR</item>

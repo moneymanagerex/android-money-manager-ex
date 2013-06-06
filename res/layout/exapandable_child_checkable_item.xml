@@ -21,7 +21,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
     
-    <TextView
+    <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -19,7 +19,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@color/money_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +36,7 @@
             android:contentDescription="@string/logo"
             android:src="@drawable/ic_logo_money_manager_ex" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewVersion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +44,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/version" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewBuild"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,7 +52,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/build" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewCopyright"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +61,7 @@
             android:layout_marginRight="5dp"
             android:text="@string/application_copyright" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewLinkFeedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,7 +71,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/send_feedback" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -79,7 +80,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/send_us_your_feedback" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewLinkProblem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,7 +90,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/report_problem" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -98,7 +99,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/tell_us_a_problem" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewChangeLog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,7 +118,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/divider_ice_cream_sandwich" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -125,7 +126,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/application_definition" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -133,7 +134,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/application_credits" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewLicense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -151,7 +152,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/divider_ice_cream_sandwich" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -160,7 +161,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/donate_header" />
 
-        <TextView
+        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewDonate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

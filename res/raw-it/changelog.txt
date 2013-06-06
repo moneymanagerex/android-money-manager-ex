@@ -1,3 +1,10 @@
+<b> Version 1.2.0 </b>
+- Nuova sincronizzazione con Dropox. Da questa versione è possibile sincronizzare in automatico il database di Money Manager Ex. La configurazione e la gestione della sincronizzazione con Dropbox (download and upload) si trova nelle Impostazioni, Dropbox.<i> Per chi utilizzava già la sincronizzazione con dropbox, va rifata la configurazione</i>
+- Nuova grafica per tutta l'applicazione
+- Major bugfix: crash dell'applicazione quando si tenta creare una nuova transazione con il formato della data contenente il carattere apice (')
+- Major bugfix: crash dell'applicazione quando si aprono le impostazione con il primo mese dell'anno non impostato correttamente
+- Possibilità di visualizzare il saldo parziale per ogni transazione. La visualizzazione si attiva dalle impostazioni Display.
+
 <b> Version 1.1.4 </b>
 - Aggiornamento traduzione: Russo
 - <i>Risoluzione bug minori</i>

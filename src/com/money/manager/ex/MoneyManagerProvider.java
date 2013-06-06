@@ -88,132 +88,6 @@ public class MoneyManagerProvider extends ContentProvider {
 	}
 	
 	@Override
-	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		Log.v(LOGCAT, "Delete URI: " + uri);
-		// find object from uri
-		Object ret = getObjectFromUri(uri);
-		// safety control of having the where if not clean the table
-		if (TextUtils.isEmpty(selection)) {
-			Log.e(LOGCAT, "Delete not permitted because not define where clausole");
-			return 0;
-		}
-		// take a database reference 
-		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
-		SQLiteDatabase database = databaseHelper.getWritableDatabase();
-		int rowsDelete = 0;
-		// check type of istance dataset
-		if (Dataset.class.isInstance(ret)) {
-			Dataset dataset = ((Dataset)ret);
-			switch (dataset.getType()) {
-			case TABLE:
-				String log = "DELETE FROM " + dataset.getSource();
-				// compose log verbose
-				if (TextUtils.isEmpty(selection) == false) { log += " WHERE " + selection; }
-				if (selectionArgs != null) { log += "; ARGS=" + Arrays.asList(selectionArgs).toString(); }
-				// open transaction
-				database.beginTransaction();
-				Log.v(LOGCAT, "database begin transaction");
-				try {
-					Log.v(LOGCAT, log);
-					rowsDelete = database.delete(dataset.getSource(), selection, selectionArgs);
-					// committed
-					Log.v(LOGCAT, "database set transaction successful");
-					database.setTransactionSuccessful();
-				} catch (SQLiteException sqlLiteExc) {
-					Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
-				} catch (Exception exc) {
-					Log.e(LOGCAT, exc.getMessage());
-				} finally {
-					// close transaction
-					database.endTransaction();
-					Log.v(LOGCAT, "database end transaction");
-				}
-				break;
-			default:
-				throw new IllegalArgumentException("Type of dataset not supported for delete");
-			}		
-		} else {
-			throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
-		}
-		// delete notify
-		getContext().getContentResolver().notifyChange(uri, null);
-		// notify dropbox data changed
-		DropboxHelper.notifyDataChanged();
-		// return rows delete
-		return rowsDelete;
-	}
-
-	private Object getObjectFromUri(Uri uri) {
-		// match dell'uri
-		int uriMatch = sUriMatcher.match(uri);
-		Log.v(LOGCAT, "Uri Match Result: "  + Integer.toString(uriMatch));
-		// find key into hash map
-		Object objectRet = mapContent.get(uriMatch);
-		if (objectRet == null) {
-			throw new IllegalArgumentException("Unknown URI for Update: " + uri);
-		}
-		
-		return objectRet; 
-	}
-
-	@Override
-	public String getType(Uri uri) {
-		return null;
-	}
-
-	@Override
-	public Uri insert(Uri uri, ContentValues values) {
-		Log.v(LOGCAT, "Insert Uri: " + uri);
-		// find object from uri
-		Object ret = getObjectFromUri(uri);
-		// database reference
-		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
-		SQLiteDatabase database = databaseHelper.getWritableDatabase();
-		long id = 0;
-		String parse;
-		// check instance type object
-		if (Dataset.class.isInstance(ret)) {
-			Dataset dataset = ((Dataset)ret);
-			switch (dataset.getType()) {
-			case TABLE:
-				String log = "INSERT INTO " + dataset.getSource();
-				// compose log verbose
-				if (values != null) { log += " VALUES ( " + values.toString() + ")"; }
-				// open transaction
-				database.beginTransaction();
-				Log.v(LOGCAT, "database begin transaction");
-				try {
-					Log.v(LOGCAT, log);
-					id = database.insert(dataset.getSource(), null, values);
-					// committed
-					Log.v(LOGCAT, "database set transaction successful");
-					database.setTransactionSuccessful();
-				} catch (SQLiteException sqlLiteExc) {
-					Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
-				} catch (Exception exc) {
-					Log.e(LOGCAT, exc.getMessage());
-				} finally {
-					// close transaction
-					database.endTransaction();
-					Log.v(LOGCAT, "database end transaction");
-				}
-				parse = dataset.getBasepath() + "/" + id;
-				break;
-			default:
-				throw new IllegalArgumentException("Type of dataset not supported for update");
-			}		
-		} else {
-			throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
-		}
-		// notify the data inserted
-		getContext().getContentResolver().notifyChange(uri, null);
-		// notify dropbox data changed
-		DropboxHelper.notifyDataChanged();
-		// return Uri with primarykey inserted
-		return Uri.parse(parse);
-	}
-
-	@Override
 	public boolean onCreate() {
 		// create authority
 		setAuthority(getContext().getApplicationContext().getPackageName() + ".provider");
@@ -239,6 +113,228 @@ public class MoneyManagerProvider extends ContentProvider {
 		}
 		return false;
 	}
+
+	@Override
+	public Uri insert(Uri uri, ContentValues values) {
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Insert Uri: " + uri);
+		// find object from uri
+		Object ret = getObjectFromUri(uri);
+		// database reference
+		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
+		SQLiteDatabase database = databaseHelper.getWritableDatabase();
+		long id = 0;
+		String parse;
+		// check instance type object
+		if (Dataset.class.isInstance(ret)) {
+			Dataset dataset = ((Dataset)ret);
+			switch (dataset.getType()) {
+			case TABLE:
+				String log = "INSERT INTO " + dataset.getSource();
+				// compose log verbose
+				if (values != null) { log += " VALUES ( " + values.toString() + ")"; }
+				// open transaction
+				database.beginTransaction();
+				if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
+				try {
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+					id = database.insert(dataset.getSource(), null, values);
+					// committed
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
+					database.setTransactionSuccessful();
+				} catch (SQLiteException sqlLiteExc) {
+					Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
+				} catch (Exception exc) {
+					Log.e(LOGCAT, exc.getMessage());
+				} finally {
+					// close transaction
+					database.endTransaction();
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
+				}
+				parse = dataset.getBasepath() + "/" + id;
+				break;
+			default:
+				throw new IllegalArgumentException("Type of dataset not supported for update");
+			}		
+		} else {
+			throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
+		}
+		// notify the data inserted
+		getContext().getContentResolver().notifyChange(uri, null);
+		// notify dropbox data changed
+		DropboxHelper.notifyDataChanged();
+		// close connection to the database
+		databaseHelper.close();
+		// return Uri with primary key inserted
+		return Uri.parse(parse);
+	}
+
+	@Override
+	public int update(Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Update Uri: " + uri);
+		// find object from uri
+		Object ret = getObjectFromUri(uri);
+		// Instance of database
+		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
+		SQLiteDatabase database = databaseHelper.getWritableDatabase();
+		
+		int rowsUpdate = 0;
+		// check ret what type of class 
+		if (Dataset.class.isInstance(ret)) {
+			Dataset dataset = ((Dataset)ret);
+			switch (dataset.getType()) {
+			case TABLE:
+				String log = "UPDATE " + dataset.getSource();
+				// compose log verbose
+				if (values != null) { log += " SET " + values.toString(); }
+				if (TextUtils.isEmpty(whereClause) == false) { log += " WHERE " + whereClause; }
+				if (whereArgs != null) { log += "; ARGS=" + Arrays.asList(whereArgs).toString(); }
+				// open transaction
+				database.beginTransaction();
+				if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
+				// update
+				try {
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+					rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
+					// committed
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
+					database.setTransactionSuccessful();
+				} catch (SQLiteException sqlLiteExc) {
+					Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
+				} catch (Exception exc) {
+					Log.e(LOGCAT, exc.getMessage());
+				} finally {
+					// close transaction
+					database.endTransaction();
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
+				}
+				break;
+			default:
+				throw new IllegalArgumentException("Type of dataset not supported for update");
+			}		
+		} else {
+			throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
+		}
+		// notify update
+		getContext().getContentResolver().notifyChange(uri, null);
+		// notify dropbox data changed
+		DropboxHelper.notifyDataChanged();
+		// close connection to the database
+		databaseHelper.close();
+		// return rows modified
+		return rowsUpdate;
+	}
+
+	@Override
+	public int delete(Uri uri, String selection, String[] selectionArgs) {
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Delete URI: " + uri);
+		// find object from uri
+		Object ret = getObjectFromUri(uri);
+		// safety control of having the where if not clean the table
+		if (TextUtils.isEmpty(selection)) {
+			Log.e(LOGCAT, "Delete not permitted because not define where clausole");
+			return 0;
+		}
+		// take a database reference 
+		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
+		SQLiteDatabase database = databaseHelper.getWritableDatabase();
+		int rowsDelete = 0;
+		// check type of istance dataset
+		if (Dataset.class.isInstance(ret)) {
+			Dataset dataset = ((Dataset)ret);
+			switch (dataset.getType()) {
+			case TABLE:
+				String log = "DELETE FROM " + dataset.getSource();
+				// compose log verbose
+				if (TextUtils.isEmpty(selection) == false) { log += " WHERE " + selection; }
+				if (selectionArgs != null) { log += "; ARGS=" + Arrays.asList(selectionArgs).toString(); }
+				// open transaction
+				database.beginTransaction();
+				if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
+				try {
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+					rowsDelete = database.delete(dataset.getSource(), selection, selectionArgs);
+					// committed
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
+					database.setTransactionSuccessful();
+				} catch (SQLiteException sqlLiteExc) {
+					Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
+				} catch (Exception exc) {
+					Log.e(LOGCAT, exc.getMessage());
+				} finally {
+					// close transaction
+					database.endTransaction();
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
+				}
+				break;
+			default:
+				throw new IllegalArgumentException("Type of dataset not supported for delete");
+			}		
+		} else {
+			throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
+		}
+		// delete notify
+		getContext().getContentResolver().notifyChange(uri, null);
+		// notify dropbox data changed
+		DropboxHelper.notifyDataChanged();
+		// close connection to the database
+		databaseHelper.close();
+		// return rows delete
+		return rowsDelete;
+	}
+
+	@Override
+	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Query URI: " + uri);
+		// find object from uri
+		Object ret = getObjectFromUri(uri);
+		// take a database reference
+		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
+		SQLiteDatabase database = databaseHelper.getReadableDatabase();
+		Cursor cursorRet;
+		// compose log verbose instruction
+		String log;
+		// check type of instance dataset
+		if (Dataset.class.isInstance(ret)) {
+			Dataset dataset = ((Dataset)ret);
+			// compose log
+			if (dataset.getType() == DatasetType.SQL) {
+				log = selection;
+			} else {
+				if (projection != null) { log = "SELECT " + Arrays.asList(projection).toString(); } else {log = "SELECT *"; }
+				log += " FROM " + dataset.getSource();
+				if (TextUtils.isEmpty(selection) == false) { log += " WHERE " + selection; }
+				if (TextUtils.isEmpty(sortOrder) == false) { log += " OREDER BY " + sortOrder; }
+				if (selectionArgs != null) { log += "; ARGS=" + Arrays.asList(selectionArgs).toString(); }
+			}
+			// log
+			if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+			switch (dataset.getType()) {
+			case QUERY:
+				String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
+				cursorRet = database.rawQuery(query, selectionArgs);
+				break;
+			case SQL:
+				cursorRet = database.rawQuery(selection, selectionArgs);
+				break;
+			case TABLE: case VIEW:
+				SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+				queryBuilder.setTables(dataset.getSource());
+				cursorRet = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
+				break;
+			default:
+				throw new IllegalArgumentException("Type of dataset not definied");
+			}		
+		} else {
+			throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
+		}
+		// notify listeners waiting for the data is ready
+		cursorRet.setNotificationUri(getContext().getContentResolver(), uri);
+		
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Rows number returned: " + cursorRet.getCount());
+		
+		return cursorRet;
+	}
+
 	/**
 	 * Prepare statment SQL from dataset object
 	 * @param query
@@ -247,7 +343,7 @@ public class MoneyManagerProvider extends ContentProvider {
 	 * @param sortOrder
 	 * @return statment
 	 */
-	private String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
+	public String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
 		String selectList = "", from = "", where = "", sort = "";
 		// compose select list
 		if (projection == null) {
@@ -255,7 +351,7 @@ public class MoneyManagerProvider extends ContentProvider {
 		} else {
 			
 			selectList = "SELECT ";
-
+	
 			for(int i = 0; i < projection.length; i ++) {
 				if (i > 0) { selectList += ", "; }
 				selectList += projection[i];
@@ -281,116 +377,30 @@ public class MoneyManagerProvider extends ContentProvider {
 		
 		return query;
 	}
-	
-	@Override
-	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-		Log.v(LOGCAT, "Query URI: " + uri);
-		// find object from uri
-		Object ret = getObjectFromUri(uri);
-		// take a database reference
-		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
-		SQLiteDatabase database = databaseHelper.getReadableDatabase();
-		Cursor cursorRet;
-		// compose log verbose instruction
-		String log;
-		// check type of instance dataset
-		if (Dataset.class.isInstance(ret)) {
-			Dataset dataset = ((Dataset)ret);
-			// compose log
-			if (dataset.getType() == DatasetType.SQL) {
-				log = selection;
-			} else {
-				if (projection != null) { log = "SELECT " + Arrays.asList(projection).toString(); } else {log = "SELECT *"; }
-				log += " FROM " + dataset.getSource();
-				if (TextUtils.isEmpty(selection) == false) { log += " WHERE " + selection; }
-				if (TextUtils.isEmpty(sortOrder) == false) { log += " OREDER BY " + sortOrder; }
-				if (selectionArgs != null) { log += "; ARGS=" + Arrays.asList(selectionArgs).toString(); }
-			}
-			// log
-			Log.i(LOGCAT, log);
-			switch (dataset.getType()) {
-			case QUERY:
-				String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
-				cursorRet = database.rawQuery(query, selectionArgs);
-				break;
-			case SQL:
-				cursorRet = database.rawQuery(selection, selectionArgs);
-				break;
-			case TABLE: case VIEW:
-				SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-				queryBuilder.setTables(dataset.getSource());
-				cursorRet = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
-				break;
-			default:
-				throw new IllegalArgumentException("Type of dataset not definied");
-			}		
-		} else {
-			throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
+
+	public Object getObjectFromUri(Uri uri) {
+		// match dell'uri
+		int uriMatch = sUriMatcher.match(uri);
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Uri Match Result: "  + Integer.toString(uriMatch));
+		// find key into hash map
+		Object objectRet = mapContent.get(uriMatch);
+		if (objectRet == null) {
+			throw new IllegalArgumentException("Unknown URI for Update: " + uri);
 		}
-		// notify listeners waiting for the data is ready
-		cursorRet.setNotificationUri(getContext().getContentResolver(), uri);
-		Log.v(LOGCAT, "Rows number returned: " + cursorRet.getCount());
-		return cursorRet;
+		
+		return objectRet; 
 	}
-	
+
 	@Override
-	public int update(Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
-		Log.v(LOGCAT, "Update Uri: " + uri);
-		// find object from uri
-		Object ret = getObjectFromUri(uri);
-		// instace of database
-		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(getContext());
-		SQLiteDatabase database = databaseHelper.getWritableDatabase();
-		int rowsUpdate = 0;
-		// check ret what type of class 
-		if (Dataset.class.isInstance(ret)) {
-			Dataset dataset = ((Dataset)ret);
-			switch (dataset.getType()) {
-			case TABLE:
-				String log = "UPDATE " + dataset.getSource();
-				// compose log verbose
-				if (values != null) { log += " SET " + values.toString(); }
-				if (TextUtils.isEmpty(whereClause) == false) { log += " WHERE " + whereClause; }
-				if (whereArgs != null) { log += "; ARGS=" + Arrays.asList(whereArgs).toString(); }
-				// open transaction
-				database.beginTransaction();
-				Log.v(LOGCAT, "database begin transaction");
-				// update
-				try {
-					Log.v(LOGCAT, log);
-					rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
-					// committed
-					Log.v(LOGCAT, "database set transaction successful");
-					database.setTransactionSuccessful();
-				} catch (SQLiteException sqlLiteExc) {
-					Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
-				} catch (Exception exc) {
-					Log.e(LOGCAT, exc.getMessage());
-				} finally {
-					// close transaction
-					database.endTransaction();
-					Log.v(LOGCAT, "database end transaction");
-				}
-				break;
-			default:
-				throw new IllegalArgumentException("Type of dataset not supported for update");
-			}		
-		} else {
-			throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
-		}
-		// notify update
-		getContext().getContentResolver().notifyChange(uri, null);
-		// notify dropbox data changed
-		DropboxHelper.notifyDataChanged();
-		// return rows modified
-		return rowsUpdate;
+	public String getType(Uri uri) {
+		return null;
 	}
 
 	public static String getAuthority() {
 		return mAuthority;
 	}
 
-	private static void setAuthority(String mAuthority) {
+	public static void setAuthority(String mAuthority) {
 		MoneyManagerProvider.mAuthority = mAuthority;
 	}
 }

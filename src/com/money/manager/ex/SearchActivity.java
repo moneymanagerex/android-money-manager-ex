@@ -17,30 +17,51 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.view.View;
+import android.widget.LinearLayout;
 
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.SearchFragment;
 
-public class SearchActivity extends BaseFragmentActivity 
-implements AllDataFragmentLoaderCallbacks {
+public class SearchActivity extends BaseFragmentActivity implements AllDataFragmentLoaderCallbacks {
+	private boolean mIsDualPanel = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// if large screen set orietation landscape 
+		if ((getResources().getConfiguration().screenLayout &  Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE) {     
+			 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		}
+		setContentView(R.layout.main_fragments_activity);
 		SearchFragment fragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
 		if (fragment == null) {
 			// fragment create
 			fragment = new SearchFragment();
+			// set dual panle
+			LinearLayout fragmentDetail = (LinearLayout)findViewById(R.id.fragmentDetail); 
+			mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
+			fragment.setDualPanel(mIsDualPanel);
 			// add to stack
-			getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment, SearchFragment.class.getSimpleName()).commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.fragmentContent, fragment, SearchFragment.class.getSimpleName()).commit();
 		}
 		// home
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSherlock().getMenuInflater().inflate(R.menu.menu_search_transaction, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	@Override

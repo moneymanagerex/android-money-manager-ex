@@ -1,4 +1,4 @@
-package com.money.manager.ex.core;
+package com.money.manager.ex.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -59,29 +60,6 @@ public class TipsDialogFragment extends DialogFragment {
 		super.onCreate(savedInstanceState);
 	}
 	
-	/*@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.dialog_tips, container);
-		// set tips
-		TextView textTips = (TextView)view.findViewById(R.id.textViewTips);
-		textTips.setText(getTips());
-		// check box
-		CheckBox checkDont = (CheckBox)view.findViewById(R.id.checkBoxDontShow);
-		checkDont.setVisibility(isVisibleDontShowAgain() ? View.VISIBLE : View.GONE);
-		checkDont.setChecked(isCheckDontShowAgain());
-		checkDont.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				setCheckDontShowAgain(isChecked);
-			}
-		});
-		// set title
-		getDialog().setTitle(getTitle());
-
-		return view;
-	}*/
-	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		View view = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.dialog_tips, null);
@@ -100,7 +78,7 @@ public class TipsDialogFragment extends DialogFragment {
 			}
 		});
 		// bug CheckBox object of Android
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
 			final float scale = this.getResources().getDisplayMetrics().density;
 			checkDont.setPadding(checkDont.getPaddingLeft() + (int) (40.0f * scale + 0.5f),
 								 checkDont.getPaddingTop(),
@@ -168,7 +146,7 @@ public class TipsDialogFragment extends DialogFragment {
 	 * @return the mTitle
 	 */
 	public CharSequence getTitle() {
-		return mTitle;
+		return !TextUtils.isEmpty(mTitle) ? mTitle: getString(R.string.tips);
 	}
 
 	/**

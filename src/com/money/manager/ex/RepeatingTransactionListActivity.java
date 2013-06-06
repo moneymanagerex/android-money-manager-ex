@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -72,7 +73,14 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 			setHasOptionsMenu(true);
 			registerForContextMenu(getListView());
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
+			getListView().setDivider(new ColorDrawable(getResources().getColor(R.color.money_background)));
+			
+			//set margin
+			/*FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)getListView().getLayoutParams();
+			int margin = (int)getResources().getDimension(R.dimen.money_margin);
+			params.setMargins(margin, margin, margin, margin);
+			getListView().setLayoutParams(params);*/
+			
 			setListShown(false);
 			// start loaderapplication.getSQLiteStringDate(date)
 			getLoaderManager().initLoader(ID_LOADER_REPEATING, null, this);

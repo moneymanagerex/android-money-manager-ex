@@ -14,42 +14,27 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
+    <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+
         <!-- Colors -->
-        <item name="holo_green_color_theme">@color/holo_green_light</item>
-        <item name="holo_red_color_theme">@color/holo_red_light</item>
-        <item name="row_dark_theme">@android:color/transparent</item>
-        <item name="row_light_theme">@color/holo_dark_row_light</item>
+        <item name="holo_green_color_theme">@color/holo_green_dark</item>
+        <item name="holo_red_color_theme">@color/holo_red_dark</item>
+		<item name="row_dark_theme">@android:color/transparent</item>
+        <item name="row_light_theme">@color/holo_light_row_light</item>
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
         <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
+        <item name="ic_action_folder_open">@drawable/ic_action_folder_open_dark</item>
         <item name="ic_action_list">@drawable/ic_action_list_dark</item>
         <item name="ic_action_search">@drawable/ic_action_search_dark</item>
         <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_dark</item>
         <item name="ic_action_upload">@drawable/ic_action_upload_dark</item>
-    </style>
-
-    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light">
-        <!-- Colors -->
-        <item name="holo_green_color_theme">@color/holo_green_dark</item>
-        <item name="holo_red_color_theme">@color/holo_red_dark</item>
-        <item name="row_dark_theme">@android:color/transparent</item>
-        <item name="row_light_theme">@color/holo_light_row_light</item>
-        <!-- Drawables -->
-        <item name="ic_action_add">@drawable/ic_action_add_light</item>
-        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_light</item>
-        <item name="ic_action_cancel">@drawable/ic_action_cancel_light</item>
-        <item name="ic_action_list">@drawable/ic_action_list_light</item>
-        <item name="ic_action_search">@drawable/ic_action_search_light</item>
-        <item name="ic_action_sort_1">@drawable/ic_action_sort_1_light</item>
-        <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
-        <item name="ic_action_upload">@drawable/ic_action_upload_light</item>
     </style>
 
     <style name="Money.TextView" parent="@android:style/Widget.TextView">
@@ -75,6 +60,18 @@
     </style>
 
     <style name="Money.Button.Medium.Bold" parent="Money.Button.Medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+
+    <style name="listSeparatorTextViewStyle" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:drawableBottom">@drawable/list_separator_text_view_style_drawable</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/emphasis</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 

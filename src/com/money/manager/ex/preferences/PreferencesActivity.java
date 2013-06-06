@@ -36,6 +36,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,13 +56,14 @@ import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Passcode;
-import com.money.manager.ex.core.TipsDialogFragment;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.dropbox.DropboxBrowserActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxReceiver;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
+import com.money.manager.ex.fragment.TipsDialogFragment;
+import com.money.manager.ex.view.RobotoView;
 
 @SuppressWarnings("deprecation")
 public class PreferencesActivity extends SherlockPreferenceActivity {
@@ -139,6 +141,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		service.setAction(DropboxServiceIntent.INTENT_ACTION_DOWNLOAD);
 		service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, core.getExternalStorageDirectoryDropboxApplication().getPath() + fileDropbox);
 		service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, fileDropbox);
+		// toast to show 
+		Toast.makeText(getApplicationContext(), R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
 		// start service
 		startService(service);
 	}
@@ -149,6 +153,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		service.setAction(DropboxServiceIntent.INTENT_ACTION_UPLOAD);
 		service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(getApplicationContext()));
 		service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, dropboxFile);
+		// toast to show 
+		Toast.makeText(getApplicationContext(), R.string.dropbox_upload_is_starting, Toast.LENGTH_LONG).show();
 		// start service
 		startService(service);
 	}
@@ -210,7 +216,6 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		application = (MoneyManagerApplication) this.getApplication();
-		application.setThemeApplication(this);
 		mCore = new Core(this);
 		
 		super.onCreate(savedInstanceState);
@@ -223,7 +228,10 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		onCreateScreenPreferenceGeneral();
 		// display screen preference
 		onCreateScreenPreferenceDisplay();
-
+		
+		// database preference
+		onCreateScreenPreferenceDatabase();
+		
 		// dropbox preference screen
 		mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
 		onCreateScreenPreferenceDropbox();
@@ -352,13 +360,19 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		if (lstFinancialMonth != null) {
 			lstFinancialMonth.setEntries(mCore.getListMonths());
 			lstFinancialMonth.setEntryValues(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"});
+			lstFinancialMonth.setDefaultValue("0");
 			// get current month
-			String currentMonth = mCore.getInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH);
-			if ((!TextUtils.isEmpty(currentMonth)) && Core.StringUtils.isNumeric(currentMonth)) {
-				if (Integer.parseInt(currentMonth) > -1 && Integer.parseInt(currentMonth) < lstFinancialMonth.getEntries().length) {
-					lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[Integer.parseInt(currentMonth) - 1]);
-					lstFinancialMonth.setValue(currentMonth);
+			try {
+				String currentMonth = mCore.getInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH);
+				if ((!TextUtils.isEmpty(currentMonth)) && Core.StringUtils.isNumeric(currentMonth)) {
+					int month = Integer.parseInt(currentMonth) - 1;
+					if (month > -1 && month < lstFinancialMonth.getEntries().length) {
+						lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[month]);
+						lstFinancialMonth.setValue(Integer.toString(month));
+					}
 				}
+			} catch (Exception e) {
+				Log.e(LOGCAT, e.getMessage());
 			}
 			lstFinancialMonth.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				
@@ -397,20 +411,6 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		// set listener on the checkbox
 		chkAccountOpen.setOnPreferenceChangeListener(listener);
 		chkAccountFav.setOnPreferenceChangeListener(listener);
-		
-		// list theme
-		final ListPreference lstTheme = (ListPreference) findPreference(PreferencesConstant.PREF_THEME);
-		if (lstTheme != null) {
-			lstTheme.setSummary(application.getApplicationTheme());
-			lstTheme.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-				@Override
-				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					lstTheme.setSummary((CharSequence) newValue);
-					MainActivity.setRestartActivity(true);
-					return true;
-				}
-			});
-		}
 
 		// show transaction
 		final ListPreference lstShow = (ListPreference) findPreference(PreferencesConstant.PREF_SHOW_TRANSACTION);
@@ -424,27 +424,30 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				}
 			});
 		}
-
-		// type of home
-		final ListPreference lstTypeHome = (ListPreference) findPreference(PreferencesConstant.PREF_TYPE_HOME);
-		if (lstTypeHome != null) {
-			if (application.getTypeHome() == MoneyManagerApplication.TYPE_HOME_CLASSIC) {
-				lstTypeHome.setSummary(getString(R.string.classic));
-			} else {
-				lstTypeHome.setSummary(getString(R.string.advance));
-			}
-			// set default value
-			if (application.getDefaultTypeHome() == MoneyManagerApplication.TYPE_HOME_CLASSIC) {
-				lstTypeHome.setDefaultValue(getString(R.string.classic));
-			} else {
-				lstTypeHome.setDefaultValue(getString(R.string.advance));
-			}
-			// set summary on change
-			lstTypeHome.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+		
+		// font type
+		final ListPreference lstFont = (ListPreference)findPreference(PreferencesConstant.PREF_APPLICATION_FONT);
+		if (lstFont != null) {
+			lstFont.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					lstTypeHome.setSummary(newValue.toString());
-					MainActivity.setRestartActivity(true);
+					if (newValue instanceof String && Core.StringUtils.isNumeric(newValue.toString())) {
+						RobotoView.setUserFont(Integer.parseInt(newValue.toString()));
+						return true;
+					}
+					return false;
+				}
+			});
+		}
+		
+		//font size
+		final ListPreference lstFontSize = (ListPreference)findPreference(PreferencesConstant.PREF_APPLICATION_FONT_SIZE);
+		if (lstFontSize != null) {
+			lstFontSize.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					RobotoView.setUserFontSize(getApplicationContext(), newValue.toString());
 					return true;
 				}
 			});
@@ -487,6 +490,41 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		});
 	}
 	
+	public void onCreateScreenPreferenceDatabase() {
+		final PreferenceScreen pMoveDatabase = (PreferenceScreen) findPreference(PreferencesConstant.PREF_DATABASE_BACKUP);
+		if (pMoveDatabase != null) {
+			pMoveDatabase.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				
+				@Override
+				public boolean onPreferenceClick(Preference preference) {
+					// copy files
+					Core core = new Core(PreferencesActivity.this);
+					File newDatabases = core.backupDatabase();
+					if (newDatabases != null) {
+						Toast.makeText(PreferencesActivity.this, Html.fromHtml(getString(R.string.database_has_been_moved, "<b>" + newDatabases.getAbsolutePath() + "</b>")), Toast.LENGTH_LONG).show();
+						//MainActivity.changeDatabase(newDatabases.getAbsolutePath());
+						// save the database file
+						MoneyManagerApplication.setDatabasePath(getApplicationContext(), newDatabases.getAbsolutePath());
+						MoneyManagerApplication.resetDonateDialog(getApplicationContext());
+						// set to restart activity
+						MainActivity.setRestartActivity(true);
+					} else {
+						Toast.makeText(PreferencesActivity.this, R.string.copy_database_on_external_storage_failed, Toast.LENGTH_LONG).show();
+					}
+					return false;
+				}
+			});
+		}
+		final PreferenceScreen pDatabasePath = (PreferenceScreen) findPreference(PreferencesConstant.PREF_DATABASE_PATH);
+		pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(this.getApplicationContext()));
+		//sqlite version
+		PreferenceScreen pSQLiteVersion = (PreferenceScreen)findPreference(PreferencesConstant.PREF_SQLITE_VERSION);
+		if (pSQLiteVersion != null) {
+			MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(this);
+			String sqliteVersion = helper.getSQLiteVersion();
+			if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
+		}
+	}
 	
 	public void onCreateScreenPreferenceDropbox() {
 		final PreferenceScreen pDropbox = (PreferenceScreen) findPreference(PreferencesConstant.PREF_DROPBOX_HOWITWORKS);
@@ -641,16 +679,6 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 					return true;
 				}
 			});
-			final Preference pDatabasePath = findPreference(PreferencesConstant.PREF_DATABASE_PATH);
-			pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(this.getApplicationContext()));
-		}
-		
-		//sqlite version
-		Preference pSQLiteVersion = (Preference)findPreference(PreferencesConstant.PREF_SQLITE_VERSION);
-		if (pSQLiteVersion != null) {
-			MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(this);
-			String sqliteVersion = helper.getSQLiteVersion();
-			if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
 		}
 	}
 	
@@ -720,7 +748,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			}
 		});
 		// bug CheckBox object of Android
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
 			final float scale = this.getResources().getDisplayMetrics().density;
 			checkDont.setPadding(checkDont.getPaddingLeft() + (int) (40.0f * scale + 0.5f),
 								 checkDont.getPaddingTop(),

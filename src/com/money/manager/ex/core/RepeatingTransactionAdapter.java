@@ -1,5 +1,10 @@
 package com.money.manager.ex.core;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
@@ -19,12 +24,15 @@ import com.money.manager.ex.database.QueryBillDeposits;
 public class RepeatingTransactionAdapter extends CursorAdapter {
 	private LayoutInflater inflater;
 	private MoneyManagerApplication application;
-
+	private HashMap<String, Integer> mHeadersIndexAccountDate;
+	
 	@SuppressWarnings("deprecation")
 	public RepeatingTransactionAdapter(Context context, Cursor c) {
 		super(context, c);
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		application = (MoneyManagerApplication) context.getApplicationContext();
+		
+		mHeadersIndexAccountDate = new HashMap<String, Integer>();
 	}
 
 	@Override
@@ -43,10 +51,19 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
 		TextView txtCategorySub = (TextView) view.findViewById(R.id.textViewCategorySub);
 		TextView txtNotes = (TextView) view.findViewById(R.id.textViewNotes);
 		ImageView imgFollowUp = (ImageView)view.findViewById(R.id.imageViewFollowUp);
+		// compose group
+		if (!mHeadersIndexAccountDate.containsKey(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)))) {
+			mHeadersIndexAccountDate.put(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)), cursor.getPosition());
+		}
 		// account name
 		txtAccountName.setText(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.ACCOUNTNAME)));
 		// write data
-		txtDate.setText(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)));
+		try {
+			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
+			txtDate.setText(new SimpleDateFormat("EEEE dd MMMM yyyy").format(date));
+		} catch (ParseException e) {
+			txtDate.setText(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)));
+		}
 		// take daysleft
 		int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
 		if (daysLeft == 0) {
@@ -55,6 +72,9 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
 			txtNextDueDate.setText(Integer.toString(Math.abs(daysLeft)) + " " + context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
 			imgClock.setVisibility(daysLeft < 0 ? View.VISIBLE : View.INVISIBLE);
 		}
+		// show group
+		txtDate.setVisibility(mHeadersIndexAccountDate.containsValue(cursor.getPosition()) ? View.VISIBLE : View.GONE);
+		txtNextDueDate.setVisibility(txtDate.getVisibility());
 		// show follow up icon
 		if ("F".equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)))) {
 			imgFollowUp.setVisibility(View.VISIBLE);

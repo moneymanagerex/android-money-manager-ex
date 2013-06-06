@@ -39,7 +39,7 @@ public class QueryCategorySubCategory extends Dataset {
 	private String categSubName;
 	// definizione del costruttore
 	public QueryCategorySubCategory(Context context) {
-		super(MoneyManagerApplication.getRawAsString(context, R.raw.categorysubcategory), DatasetType.QUERY, "categorysubcategory");
+		super(MoneyManagerApplication.getRawAsString(context, R.raw.query_categorysubcategory), DatasetType.QUERY, "categorysubcategory");
 	}
 	@Override
 	public String[] getAllColumns() {

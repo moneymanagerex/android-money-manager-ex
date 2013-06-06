@@ -30,6 +30,7 @@ import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerProvider;
 /**
  * 
@@ -102,7 +103,7 @@ public abstract class Dataset implements BaseColumns {
 		}
 		// check if dataset is created
 		if (dataset == null) {
-			Log.v(LOGCAT, "Dataset is not created dynamic. Force return false");
+			if (BuildConfig.DEBUG) Log.d(LOGCAT, "Dataset is not created dynamic. Force return false");
 			return false;
 		}
 		// check if referenced

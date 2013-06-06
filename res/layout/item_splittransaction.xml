@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <Button
+            <com.money.manager.ex.view.RobotoButton
                 android:id="@+id/buttonSelectCategory"
                 style="@style/Money.Button"
                 android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
-                    <TextView
+                    <com.money.manager.ex.view.RobotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
-                    <TextView
+                    <com.money.manager.ex.view.RobotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
@@ -78,7 +78,7 @@
                         android:layout_marginRight="5dp"
                         android:text="@string/total_amount" />
 
-                    <EditText
+                    <com.money.manager.ex.view.RobotoEditText
                         android:id="@+id/editTextTotAmount"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

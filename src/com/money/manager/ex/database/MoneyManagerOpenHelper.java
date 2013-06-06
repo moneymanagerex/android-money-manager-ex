@@ -27,6 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 /**
@@ -48,7 +49,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseCurrentVersion);
 		this.mContext = context;
 		
-		Log.v(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
 	}
 	/**
 	 * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
@@ -116,7 +117,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		String sqlStatment[] = sqlCreate.split(";");
 		// process all statment
 		for(int i = 0; i < sqlStatment.length; i ++) {
-			Log.v(LOGCAT, sqlStatment[i]);
+			if (BuildConfig.DEBUG) Log.d(LOGCAT, sqlStatment[i]);
 
 			try {
 				db.execSQL(sqlStatment[i]);
@@ -241,7 +242,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Log.i(LOGCAT, "execute onCreate method");
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onCreate method");
 		executeRawSql(db, R.raw.database_create);
 		// force update database
 		updateDatabase(db, 0, databaseCurrentVersion);
@@ -254,7 +255,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.i(LOGCAT, "execute onUpgrade(" + Integer.toString(oldVersion) + ", " + Integer.toString(newVersion) + " method");
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onUpgrade(" + Integer.toString(oldVersion) + ", " + Integer.toString(newVersion) + " method");
 		// update databases
 		updateDatabase(db, oldVersion, newVersion);
 	}

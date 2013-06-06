@@ -36,7 +36,7 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <TextView
+    <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewEmptyCategory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

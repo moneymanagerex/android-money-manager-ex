@@ -21,15 +21,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <EditText
+    <com.money.manager.ex.view.RobotoEditText
         android:id="@+id/editTextSearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" 
         android:singleLine="true"
-        android:imeOptions="normal">
-
-        <requestFocus />
-    </EditText>
+        android:imeOptions="normal" />
 
 </LinearLayout>

@@ -158,7 +158,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 								idChecked = cursor.getInt(cursor.getColumnIndex(QueryCategorySubCategory.ID));
 							}
 						}
-						Log.i(LOGCAT, "Checked Id=" + Integer.toString(idChecked));
+						if (BuildConfig.DEBUG) Log.d(LOGCAT, "Checked Id=" + Integer.toString(idChecked));
 					}
 				});
 			}
@@ -348,7 +348,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 				new AlertDialog.Builder(getActivity())
 				.setTitle(R.string.attention)
 				.setMessage(R.string.category_can_not_deleted)
-				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setIcon(R.drawable.ic_action_warning_light)
 				.setPositiveButton(android.R.string.ok,
 						new OnClickListener() {
 							@Override
@@ -364,7 +364,7 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 			alertDialog.setTitle(R.string.delete_category);
 			alertDialog.setMessage(R.string.confirmDelete);
-			alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+			alertDialog.setIcon(R.drawable.ic_action_warning_light);
 			// listener on positive button
 			alertDialog.setPositiveButton(android.R.string.ok,
 					new OnClickListener() {
@@ -490,6 +490,9 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 						public void onClick(DialogInterface dialog, int which) {
 							// get description category
 							String name = edtSubCategName.getText().toString();
+							// check position
+							if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION) return;
+							// get categid
 							int categId = categories.get(spnCategory.getSelectedItemPosition()).getCategId();
 							ContentValues values = new ContentValues();
 							values.put(TableSubCategory.CATEGID, categId);

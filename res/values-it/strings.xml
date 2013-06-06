@@ -22,7 +22,7 @@
     <string name="application_name">Money Manager Ex</string>
     <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
     <string name="application_definition">Una applicazione semplice e facile da usare per gestire finanze personali, conti bancari, budget familiare, etc.</string>
-    <string name="application_credits">Il Progetto Android Money Manager Ex usa le librerie ActionBarSherlock e ViewPagerIndicator</string>
+    <string name="application_credits">Il Progetto Android Money Manager Ex usa le librerie ActionBarSherlock, ViewPagerIndicator e RobotoMedia Billing</string>
     <string name="application_license">Licenze open source</string>
 
     <!-- database -->
@@ -321,7 +321,7 @@
 	<string name="split_category">Categoria Suddivisa</string>
 	<string name="split">Suddividi</string>
 	<string name="error_split_transaction_empty">Attenzione: inserire almeno una categoria suddivisa</string>
-	<string name="export_data_to_csv">Esportazione dati su file CSV</string>
+	<string name="export_data_to_csv">Esporta su CSV</string>
 	<string name="export_data_in_progress">Esportazione dati in corso …</string>
 	<string name="export_file_complete">Esportazione file %1$s completata</string>
 	<string name="export_file_failed">Esportazione file %1$s fallita</string>
@@ -338,4 +338,50 @@
     <!-- 20130225 -->
 	<string name="android_sqlite_vesion">Versione SQLite</string>
 	<!-- 20130301 -->
+	<string name="sort">Ordinamento</string>
+	<string name="ascending">Crescente</string>
+	<string name="descending">Decrescente</string>
+	<string name="sorting_month">Ordinamento per Mese</string>
+	<!-- 20130305 -->
+	<string name="dropbox_empty_folder">La cartella in Dropbox/Apps/Money Manager Ex Mobile vuota </string>
+	<string name="dropbox_select_file">Seleziona File Dropbox</string>
+	<string name="last_modified">Ultima modifica</string>
+	<string name="select_dropbox_file">Seleziona File su Dropbox (Remote)</string>
+	<string name="dropbox">Dropbox</string>
+	<string name="dropbox_file_ready_for_use">Il database scaricato da Dropbox è pronto per essere utilizzato</string>
+	<string name="dropbox_open_database_downloaded">Premi per aprire il database scaricato</string>
+	<string name="click_to_select_file_dropbox">Premi per selezionare il file da collegare con Dropbox</string>
+	<string name="download_from_drobpox">Download database da Dropbox</string>
+	<string name="summary_download_from_drobpox">Premi per fare il download manuale del file collegato con Dropbox</string>
+	<string name="upload_to_drobpox">Upload database a Dropbox</string>
+	<string name="summary_upload_to_drobpox">Premi per fare l\'upload manuale del file collegato con Dropbox</string>
+	<string name="upload_file_to_dropbox_complete">Upload database su Dropbox completato con successo</string>
+	<string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
+	<string name="dropbox_how_it_works">Come funziona Dropbox con Money Manager Ex\?</string>
+	<string name="dont_show_again">Non visualizzare ancora</string>
+	<string name="open_database">Apri Database</string>
+	<string name="synchronization_interval">Intervallo di Sincronizzazione</string>
+	<string name="summary_synchronization_interval">Indicare l\'intervallo di sincronizzazione con Dropbox in minute. Settare a 0 minuti per non effettuare la sincronizzazione automatica</string>
+	<string name="tips_title_new_version_dropbox">Nuova versione di Dropbox</string>
+	<string name="tips_new_version_dropbox">Dalla versione 1.2.0 di Money Manager Ex for Android è cambiata la gestione della sincronizzazione con Dropbox. Per gli utenti che stanno già utilizzando la sincronizzazione con Dropbox, è necessario rifare la configurazione.\nLa configurazione della sincronizzazione con Dropbox e la selezione del database, si trova nelle impostazioni.\nDalla versione 1.2.0 di Money Manager Ex for Android, l\'applicazione è in grado di sincronizzare automaticamente il database con Dropbox.</string>
+	<string name="title_dropbox_upload_immediate">Upload database immediatamente dopo una modifica</string>
+	<string name="summary_dropbox_upload_immediate">Questa opzione consente di caricare (upload) automaticamente su Dropbox non appena si modifica il database</string>
+	<!-- 20130426 -->
+	<string name="title_transaction_shown_balance">Visualizza il saldo per ogni transazasione</string>
+	<string name="summary_transaction_shown_balance">Visualizza il saldo per ogni transazasione. La visualizzazione del bilancio per transazione potrebbe rendere l\'applicazione più lenta</string>
+	<string name="menu_open_database">Apri Database</string>
+	<string name="database">Database</string>
+	<string name="tips">Suggerimenti</string>
+	<string name="title_application_font">Font Applicazione</string>
+	<string name="summary_application_font">Seleziona il font che vuoi dare all\'applicazione</string>
+	<string name="title_application_font_size">Dimensione Font Applicazione</string>
+	<string name="summary_application_font_size">Seleziona la dimensione del font che vuoi dare all\'applicazione</string>
+	<string name="micro">Micro</string>
+	<string name="small">Piccolo</string>
+	<string name="Default">Default</string>
+	<string name="medium">Medio</string>
+	<string name="large">Grande</string>
+	<!-- 20130528 -->
+	<string name="dropbox_download_is_starting">Download da Dropbox è iniziato. Attendere prego…</string>
+	<string name="dropbox_upload_is_starting">Upload su Dropbox è iniziato. Attendere prego…</string>
 </resources>

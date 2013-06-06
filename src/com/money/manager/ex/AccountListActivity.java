@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.MoneySimpleCursorAdapter;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -71,7 +72,7 @@ public class AccountListActivity extends BaseFragmentActivity {
 			setHasOptionsMenu(true);
 			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
 			// create adapter
-			SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(),
+			MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                     mLayout, null,
                     new String[] { TableAccountList.ACCOUNTNAME  },
                     new int[] { android.R.id.text1 }, 0);
@@ -107,7 +108,7 @@ public class AccountListActivity extends BaseFragmentActivity {
 					new AlertDialog.Builder(getActivity())
 							.setTitle(R.string.attention)
 							.setMessage(R.string.account_can_not_deleted)
-							.setIcon(android.R.drawable.ic_dialog_alert)
+							.setIcon(R.drawable.ic_action_warning_light)
 							.setPositiveButton(android.R.string.ok,
 									new OnClickListener() {
 										@Override

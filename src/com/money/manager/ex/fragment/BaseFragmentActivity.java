@@ -17,17 +17,58 @@
  ******************************************************************************/
 package com.money.manager.ex.fragment;
 
-import android.os.Bundle;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.R;
 
 public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
+	private boolean mShownRotateInDebugMode = false;
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// apply theme application
-		((MoneyManagerApplication)getApplication()).setThemeApplication(this);
-		// call super event
-		super.onCreate(savedInstanceState);
+	public boolean onCreateOptionsMenu(Menu menu) {
+		//check if debug mode
+		if (BuildConfig.DEBUG) {
+			if (isShownRotateInDebugMode()) {
+				MenuItem item = menu.add(0, R.id.menu_debug_rotate, 0, null);
+				item.setIcon(android.R.drawable.ic_menu_always_landscape_portrait);
+				item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			}
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_debug_rotate) {
+			forceRotateScreenActivity();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	public void forceRotateScreenActivity() {
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		} else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)  {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		}
+	}
+
+	/**
+	 * @param mShownRotateInDebugMode the mShownRotateInDebugMode to set
+	 */
+	public void setShownRotateInDebugMode(boolean mShownRotateInDebugMode) {
+		this.mShownRotateInDebugMode = mShownRotateInDebugMode;
+	}
+
+	/**
+	 * @return the mShownRotateInDebugMode
+	 */
+	public boolean isShownRotateInDebugMode() {
+		return mShownRotateInDebugMode;
 	}
 }

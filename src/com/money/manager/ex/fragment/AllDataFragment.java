@@ -29,6 +29,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -52,8 +53,9 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.SearchActivity;
 import com.money.manager.ex.core.AllDataAdapter;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
 
@@ -187,6 +189,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	private AllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
 	private boolean mAutoStarLoader = true;
 	private boolean mShownHeader = false;
+	private boolean mShownBalance = false;
 
 	private int mGroupId = 0;
 	
@@ -246,10 +249,19 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		// option menu
 		setHasOptionsMenu(true);
 		// create adapter
-		AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, mAccountId, isShownHeader());
+		AllDataAdapter adapter = new AllDataAdapter(getActivity(), null);
+		adapter.setAccountId(mAccountId);
+		adapter.setShowAccountName(isShownHeader());
+		adapter.setShowBalanceAmount(isShownBalance());
+		if (isShownBalance()) {
+			adapter.setDatabase(new MoneyManagerOpenHelper(getActivity()).getReadableDatabase());
+		}
 		setListAdapter(adapter);
 		// register context menu
 		registerForContextMenu(getListView());
+		// set divider
+		getListView().setDivider(new ColorDrawable(getResources().getColor(R.color.money_background)));
+		//getListView().setSelector(new ColorDrawable(getResources().getColor(R.color.money_background)));
 		// set animation
 		setListShown(false);
 		// start loader
@@ -327,7 +339,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		if (getSearResultFragmentLoaderCallbacks() != null)
 			getSearResultFragmentLoaderCallbacks().onCallbackCreateLoader(id, args);
-
+		//animation
+		setListShown(false);
+		
 		switch (id) {
 		case ID_LOADER_ALL_DATA_DETAIL:
 			QueryAllData allData = new QueryAllData(getActivity());
@@ -355,10 +369,11 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		MenuItem item = menu.add(0, R.id.menu_export_csv, 0, R.string.export_data_to_csv);
 		if (getSherlockActivity() != null) {
-	 		item.setIcon(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.ic_action_upload));
-			item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			MenuItem itemExportToCsv = menu.findItem(R.id.menu_export_to_csv);
+			if (itemExportToCsv != null) itemExportToCsv.setVisible(true);
+			MenuItem itemSearch = menu.findItem(R.id.menu_search_transaction);
+			if (itemSearch != null) itemSearch.setVisible(!getSherlockActivity().getClass().getSimpleName().equals(SearchActivity.class.getSimpleName()));
 		}
 	}
 
@@ -393,7 +408,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.menu_export_csv) {
+		if (item.getItemId() == R.id.menu_export_to_csv) {
 			exportDataToCSVFile();
 			return true;
 		}
@@ -468,7 +483,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
 		alertDialog.setTitle(R.string.delete_transaction);
 		alertDialog.setMessage(R.string.confirmDelete);
-		alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+		alertDialog.setIcon(R.drawable.ic_action_warning_light);
 
 		// set listener button positive
 		alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -519,5 +534,19 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	 */
 	public void startLoaderData() {
 		getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getArguments(), this);
+	}
+
+	/**
+	 * @return the mShownBalance
+	 */
+	public boolean isShownBalance() {
+		return mShownBalance;
+	}
+
+	/**
+	 * @param mShownBalance the mShownBalance to set
+	 */
+	public void setShownBalance(boolean mShownBalance) {
+		this.mShownBalance = mShownBalance;
 	}
 }

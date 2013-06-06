@@ -36,6 +36,7 @@ import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.TokenPair;
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -71,7 +72,6 @@ public class DropboxHelper {
 	// Dropbox API
 	DropboxAPI<AndroidAuthSession> mDropboxApi;
 	// flag status upload immediatle
-	@SuppressWarnings("unused")
 	private static boolean mDelayedUploadImmediate = false;
 	
 	/**
@@ -99,27 +99,19 @@ public class DropboxHelper {
 		File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
 		mHelper.setDateLastModified(database.getName(), Calendar.getInstance().getTime());
 		//check if upload as immediate
-		if (mHelper.isActiveAutoUpload()) {
+		if (mHelper.isActiveAutoUpload() && !mDelayedUploadImmediate) {
 			final Runnable runnableDropboxUpload = new Runnable() {
 				@Override
 				public void run() {
-					/*try {
-						Thread.sleep(30 * 1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
-					Log.d(LOGCAT, "Start postDelayed Runnanble to upload database");
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, "Start postDelayed Runnanble to upload database");
 					mHelper.sendBroadcastStartService(DropboxServiceIntent.INTENT_ACTION_UPLOAD);
 					mDelayedUploadImmediate = false;
 				}
 			};
-			/*final Thread thread = new Thread(runnableDropboxUpload);
-			// execute upload
-			thread.run();*/
-			Log.d(LOGCAT, "Launch Handler postDelayed");
+			if (BuildConfig.DEBUG) Log.d(LOGCAT, "Launch Handler postDelayed");
 			Handler handler = new Handler();
 			handler.postDelayed(runnableDropboxUpload, 30 * 1000);
+			mDelayedUploadImmediate = true;
 		}
 	}
 	
@@ -214,7 +206,7 @@ public class DropboxHelper {
 	            storeKeysToken(tokens.key, tokens.secret);
 	        } catch (IllegalStateException e) {
 	            Toast.makeText(mContext, "Couldn't authenticate with Dropbox:" + e.getMessage(), Toast.LENGTH_LONG).show();
-	            Log.i(LOGCAT, "Error authenticating", e);
+	            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Error authenticating", e);
 	        }
 	    }
 	}
@@ -231,7 +223,7 @@ public class DropboxHelper {
 	 * Login in dropbox service
 	 */
 	public void logIn() {
-		Log.i(LOGCAT, "Login dropbox service");
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Login dropbox service");
         // Start the remote authentication
         mDropboxApi.getSession().startAuthentication(mContext);
 	}
@@ -240,7 +232,7 @@ public class DropboxHelper {
 	 * Logout from dropbox service
 	 */
 	public void logOut() {
-		Log.i(LOGCAT, "Logout from dropbox account");
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Logout from dropbox account");
 	    // remove info to access
 	    mDropboxApi.getSession().unlink();
 	    clearKeysToken();
@@ -265,7 +257,7 @@ public class DropboxHelper {
 	 * @param date
 	 */
 	public void setDateLastModified(String file, Date date) {
-		Log.d(LOGCAT, "Set Dropbox file: " + file + " last modification date " + new SimpleDateFormat().format(date));
+		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Set Dropbox file: " + file + " last modification date " + new SimpleDateFormat().format(date));
 		
 		SharedPreferences prefs = mContext.getSharedPreferences(PreferencesConstant.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
 		if (!prefs.edit().putString(file.toUpperCase(), new SimpleDateFormat(DATE_FORMAT).format(date)).commit()) {
@@ -452,7 +444,7 @@ public class DropboxHelper {
 			StrictMode.setThreadPolicy(policy);
 			return mDropboxApi.metadata(entry, DROPBOX_FILE_LIMIT, null, false, null);
 		} catch (DropboxException e) {
-			Log.e(LOGCAT, e.getMessage());
+			if (BuildConfig.DEBUG) Log.e(LOGCAT, e.getMessage());
 			return null;
 		}
 	}

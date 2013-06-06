@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
@@ -28,7 +29,7 @@ public class DropboxReceiver extends BroadcastReceiver {
 		//Log actions
 		if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
 			action = intent.getAction();
-			Log.d(LOGCAT, "Action request: " + action);
+			if (BuildConfig.DEBUG) Log.d(LOGCAT, "Action request: " + action);
 		}
 		AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		// compose intent
@@ -53,7 +54,7 @@ public class DropboxReceiver extends BroadcastReceiver {
 					Calendar cal = Calendar.getInstance();
 					// cal.add(Calendar.MINUTE, minute);
 					// log
-					Log.d(LOGCAT, "Start at: " + new SimpleDateFormat().format(cal.getTime()) + " and repeats every: " + preferenceMinute + " minutes");
+					if (BuildConfig.DEBUG) Log.d(LOGCAT, "Start at: " + new SimpleDateFormat().format(cal.getTime()) + " and repeats every: " + preferenceMinute + " minutes");
 					// start service
 					alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), minute * 60 * 1000, pending);
 				}

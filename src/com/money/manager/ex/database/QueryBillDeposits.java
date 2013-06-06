@@ -55,7 +55,7 @@ public class QueryBillDeposits extends Dataset {
 
 	// constructor
 	public QueryBillDeposits(Context context) {
-		super(MoneyManagerApplication.getRawAsString(context, R.raw.billdeposits), DatasetType.QUERY, QueryBillDeposits.class.getSimpleName());
+		super(MoneyManagerApplication.getRawAsString(context, R.raw.query_billdeposits), DatasetType.QUERY, QueryBillDeposits.class.getSimpleName());
 	}
 
 	// get all columns

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item
+        android:id="@+id/menu_search_transaction"
+        android:icon="?attr/ic_action_search"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/search"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/menu_export_to_csv"
+        android:title="@string/export_data_to_csv"
+        android:icon="?attr/ic_action_upload"
+        android:showAsAction="ifRoom|withText" 
+        android:visible="false" />
+    
+</menu>

@@ -63,7 +63,7 @@ public class DonateActivity extends BaseFragmentActivity  {
 			public void onClick(final View v) {
 				final int selectedInAppAmount = inAppSpinner.getSelectedItemPosition();
 				purchasedSku = skus.get(selectedInAppAmount);
-				Log.d(DonateActivity.this.getClass().getSimpleName(), "Clicked " + purchasedSku);
+				if (BuildConfig.DEBUG) Log.d(DonateActivity.this.getClass().getSimpleName(), "Clicked " + purchasedSku);
 
 				BillingController.requestPurchase(DonateActivity.this, purchasedSku, true, null);
 			}

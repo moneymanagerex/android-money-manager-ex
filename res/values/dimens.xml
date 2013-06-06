@@ -18,7 +18,7 @@
 -->
 <resources>
 
-    <dimen name="money_text_view_size">16sp</dimen>
+    <dimen name="money_text_view_size">14sp</dimen>
     <dimen name="money_text_view_size_micro">12sp</dimen>
     <dimen name="money_text_view_size_small">14sp</dimen>
     <dimen name="money_text_view_size_medium">18sp</dimen>
@@ -26,4 +26,7 @@
     <dimen name="money_text_view_size_header">18sp</dimen>
     <dimen name="money_button_height">36dp</dimen>
 
+    <dimen name="money_padding">4dp</dimen>
+    <dimen name="money_margin">6dp</dimen>
+    <dimen name="money_margin_middle">3dp</dimen> 
 </resources>

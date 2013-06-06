@@ -31,7 +31,7 @@
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
+    <com.money.manager.ex.view.RobotoTextView
         android:id="@android:id/text2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

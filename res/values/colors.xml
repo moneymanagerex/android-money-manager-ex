@@ -58,7 +58,13 @@
     <color name="mint">#C0DCC0</color>
     <color name="green">#008000</color>
     <color name="red">#FF0000</color>
-    <!-- <color name="row_light">#F7FBF5</color> -->
+    <color name="emphasis">#31b6e7</color>
+    <!-- Colors row -->
     <color name="holo_dark_row_light">#ff111111</color>
     <color name="holo_light_row_light">#F3F4F5</color>
+    <!-- Color background and border -->
+    <color name="money_border">#CFD2DA</color>
+    <color name="money_background">#EDEEF1</color>
+    <color name="money_background_dark">#F3F4F5</color>
+    <color name="money_background_button">#EEEEEE</color>
 </resources>

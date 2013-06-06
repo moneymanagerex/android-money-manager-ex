@@ -26,6 +26,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,11 +38,13 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -84,8 +87,14 @@ public class HomeFragment extends Fragment implements
 					.getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
 					cursor.getFloat(cursor.getColumnIndex(accountBills.RECONCILED)));
 			txtAccountReconciled.setText(value);
-			// do not use, don't like ui
-			//view.setBackgroundColor(new Core(context).resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
+			// set imageview account type
+			ImageView imgAccountType = (ImageView)view.findViewById(R.id.imageViewAccountType);
+			String accountType = cursor.getString(cursor.getColumnIndex(accountBills.ACCOUNTTYPE));
+			if (!TextUtils.isEmpty(accountType)) {
+				if ("term".equalsIgnoreCase(accountType)) {
+					imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
+				}
+			}
 		}
 
 		@Override
@@ -173,11 +182,21 @@ public class HomeFragment extends Fragment implements
 					accountId = cursor.getInt(cursor.getColumnIndex(QueryAccountBills.ACCOUNTID));
 				}
 				// show account clicked
-				if (activity != null) {
+				if (activity != null && activity instanceof MainActivity) {
 					activity.showFragment(position, accountId);
 				}
 			}
 		});
+		// set highlight item
+		if (getActivity() != null && getActivity() instanceof MainActivity) {
+			MainActivity mainActivity = (MainActivity)getActivity();
+			if (mainActivity.isDualPanel()) {
+				lstAccountBills.setSelector(R.color.holo_blue_light);
+				lstAccountBills.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+				lstAccountBills.setSelection(ListView.INVALID_POSITION);
+			}
+		}
+		
 		prgAccountBills = (ProgressBar)view.findViewById(R.id.progressAccountBills);
 		
 		return view;
@@ -214,6 +233,8 @@ public class HomeFragment extends Fragment implements
 			}
 			// show username
 			txtUserName.setText(application.getUserName());
+			if (!TextUtils.isEmpty(application.getUserName())) 
+				((SherlockFragmentActivity)getActivity()).getSupportActionBar().setSubtitle(application.getUserName());
 			break;
 		case ID_LOADER_ACCOUNT_BILLS:
 			if (data != null && data.moveToFirst()) {
@@ -235,7 +256,7 @@ public class HomeFragment extends Fragment implements
 			setListViewAccountBillsVisible(true);
 			break;
 		case ID_LOADER_BILL_DEPOSITS:
-			LinearLayout content = (LinearLayout)getView().findViewById(R.id.content);
+			LinearLayout content = (LinearLayout)getView().findViewById(android.R.id.content);
 			if (content != null) {
 				// remove view if exists
 				if (linearRepeating != null)

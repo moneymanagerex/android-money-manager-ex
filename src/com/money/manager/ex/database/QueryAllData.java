@@ -55,7 +55,7 @@ public class QueryAllData extends Dataset {
 	public static final String finyear = "finyear";
 	// CONSTRUCTOR
 	public QueryAllData(Context context) {
-		super(MoneyManagerApplication.getRawAsString(context, R.raw.alldata), DatasetType.QUERY, "queryalldata");
+		super(MoneyManagerApplication.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
 	}
 	
 	@Override

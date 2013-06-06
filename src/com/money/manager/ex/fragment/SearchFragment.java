@@ -46,8 +46,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.AccountListActivity;
 import com.money.manager.ex.CategorySubCategoryActivity;
@@ -55,7 +53,6 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SearchActivity;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
@@ -68,10 +65,9 @@ public class SearchFragment extends SherlockFragment {
 	private static final int REQUEST_PICK_PAYEE = 1;
 	private static final int REQUEST_PICK_ACCOUNT = 2;
 	private static final int REQUEST_PICK_CATEGORY = 3;
-	// ID menu
-	private static final int ID_MENU_SEARCH = 10;
 	// reference view into layout
 	private Spinner spinAccount, spinStatus;
+	private Button btnOk, btnCancel;
 	private Button btnSelectPayee, btnSelectToAccount, btnSelectCategory;
 	private ImageButton btnFromDate, btnToDate;
 	private EditText edtToAmount, edtFromAmount, edtTransNumber, edtNotes, edtFromDate, edtToDate;
@@ -84,6 +80,8 @@ public class SearchFragment extends SherlockFragment {
 	private List<TableAccountList> mAccountList;
 	// status item and values
 	private ArrayList<String> mStatusItems = new ArrayList<String>(), mStatusValues = new ArrayList<String>();
+	// dual panel
+	private boolean mDualPanel = false;
 	
 	private class CategorySub {
 		public int categId;
@@ -229,6 +227,23 @@ public class SearchFragment extends SherlockFragment {
 		// notes
 		edtNotes = (EditText)view.findViewById(R.id.editTextNotes);
 		
+		//button ok and cancel
+		btnCancel = (Button)view.findViewById(R.id.buttonCancel);
+		btnCancel.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				getSherlockActivity().finish();
+			}
+		});
+		btnOk = (Button)view.findViewById(R.id.buttonOk);
+		btnOk.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				executeSearch();
+			}
+		});
 		return view;
 	}
 	
@@ -263,17 +278,9 @@ public class SearchFragment extends SherlockFragment {
 	}
 	
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		MenuItem item = menu.add(0, ID_MENU_SEARCH, 0, R.string.search);
-		item.setIcon(getActivity().getResources().getDrawable(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search)));
-		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-	}
-	
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case ID_MENU_SEARCH:
+		case R.id.menu_search_transaction:
 			executeSearch();
 			return true;
 		}
@@ -350,9 +357,27 @@ public class SearchFragment extends SherlockFragment {
 		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
 		// Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack
-		transaction.replace(android.R.id.content, fragment, AllDataFragment.class.getSimpleName());
+		if (isDualPanel()) {
+			transaction.replace(R.id.fragmentDetail, fragment, AllDataFragment.class.getSimpleName());
+		} else {
+			transaction.replace(R.id.fragmentContent, fragment, AllDataFragment.class.getSimpleName());
+		}
 		transaction.addToBackStack(null);
 		// Commit the transaction
 		transaction.commit();
+	}
+
+	/**
+	 * @param mDualPanel the mDualPanel to set
+	 */
+	public void setDualPanel(boolean mDualPanel) {
+		this.mDualPanel = mDualPanel;
+	}
+
+	/**
+	 * @return the mDualPanel
+	 */
+	public boolean isDualPanel() {
+		return mDualPanel;
 	}
 }

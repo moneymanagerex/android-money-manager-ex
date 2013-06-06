@@ -14,7 +14,7 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
@@ -55,17 +55,26 @@
             android:entryValues="@array/show_transaction_values"
             android:key="@string/pref_show_transaction"
             android:title="@string/show_transaction" />
+
+        <CheckBoxPreference
+            android:key="@string/pref_transaction_shown_balance"
+            android:summary="@string/summary_transaction_shown_balance"
+            android:title="@string/title_transaction_shown_balance" 
+            android:defaultValue="false"/>
         <ListPreference
-            android:entries="@array/type_home_values"
-            android:entryValues="@array/type_home_values"
-            android:key="@string/pref_type_home"
-            android:title="@string/type_home" />
+            android:key="@string/pref_application_font"
+            android:title="@string/title_application_font"
+            android:summary="@string/summary_application_font"
+            android:entries="@array/application_font_entries"
+            android:entryValues="@array/application_font_values" 
+            android:defaultValue="12" />
         <ListPreference
-            android:defaultValue="@string/theme_holo"
-            android:entries="@array/theme_application_items"
-            android:entryValues="@array/theme_application_items"
-            android:key="@string/pref_theme"
-            android:title="@string/theme_application" />
+            android:key="@string/pref_application_font_size"
+            android:title="@string/title_application_font_size"
+            android:summary="@string/summary_application_font_size"
+            android:entries="@array/application_font_size_entries"
+            android:entryValues="@array/application_font_size_values" 
+            android:defaultValue="@string/Default" />
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/preferences_security" >
         <PreferenceScreen
@@ -78,6 +87,19 @@
             android:key="@string/pref_disable_passcode"
             android:title="@string/preferences_disable_passcode" />
     </PreferenceScreen>
+    <PreferenceScreen android:title="@string/database">
+        <PreferenceScreen
+            android:key="@string/pref_database_path"
+            android:selectable="false"
+            android:title="@string/path" />
+        <PreferenceScreen
+            android:key="@string/pref_sqlite_version"
+            android:selectable="false"
+            android:title="@string/android_sqlite_vesion" />
+        <PreferenceScreen
+            android:key="@string/pref_database_backup"
+            android:title="@string/menu_move_database_to_external_storage" />
+    </PreferenceScreen>
     <PreferenceScreen
         android:key="@string/pref_dropbox_how_it_works"
         android:title="@string/dropbox" >
@@ -89,18 +111,21 @@
             android:dependency="@string/pref_dropbox_unlink"
             android:key="@string/pref_dropbox_linked_file"
             android:title="@string/dropbox_linkedFile" />
-		<EditTextPreference 
-		    android:key="@string/pref_dropbox_times_repeat_service"
-		    android:title="@string/synchronization_interval"
-		    android:summary="@string/summary_synchronization_interval"
-		    android:defaultValue="30"
-		    android:dependency="@string/pref_dropbox_unlink" />
-		<CheckBoxPreference 
-		    android:key="@string/pref_dropbox_upload_immediate"
-		    android:title="@string/title_dropbox_upload_immediate"
-		    android:summary="@string/summary_dropbox_upload_immediate" 
-		    android:defaultValue="false"
-			android:dependency="@string/pref_dropbox_unlink" />	
+
+        <EditTextPreference
+            android:defaultValue="30"
+            android:dependency="@string/pref_dropbox_unlink"
+            android:key="@string/pref_dropbox_times_repeat_service"
+            android:summary="@string/summary_synchronization_interval"
+            android:title="@string/synchronization_interval" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="@string/pref_dropbox_unlink"
+            android:key="@string/pref_dropbox_upload_immediate"
+            android:summary="@string/summary_dropbox_upload_immediate"
+            android:title="@string/title_dropbox_upload_immediate" />
+
         <PreferenceScreen
             android:dependency="@string/pref_dropbox_unlink"
             android:key="@string/pref_dropbox_download"
@@ -111,6 +136,7 @@
             android:key="@string/pref_dropbox_upload"
             android:summary="@string/summary_upload_to_drobpox"
             android:title="@string/upload_to_drobpox" />
+
         <Preference
             android:key="@string/pref_dropbox_unlink"
             android:selectable="false"
@@ -120,14 +146,6 @@
         android:key="@string/pref_donate"
         android:title="@string/donate" />
     <PreferenceScreen android:title="@string/preferences_info_application" >
-        <Preference
-            android:key="@string/pref_database_path"
-            android:selectable="false"
-            android:title="@string/path" />
-        <Preference
-            android:key="@string/pref_sqlite_version"
-            android:selectable="false"
-            android:title="@string/android_sqlite_vesion" />
         <Preference
             android:key="@string/pref_version_name"
             android:selectable="false"

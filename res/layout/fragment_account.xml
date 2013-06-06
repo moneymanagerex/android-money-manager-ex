@@ -14,9 +14,10 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -24,18 +25,71 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_margin="@dimen/money_margin"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/shape_white_background_shadow"
+        android:orientation="horizontal"
+        android:padding="@dimen/money_padding" >
 
-        <TextView
-            android:id="@+id/textViewAccountName"
-            style="@style/Money.TextView"
+        <TableLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
             android:layout_weight="1"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:stretchColumns="1" >
+
+            <!-- android:background="@color/abBackground" -->
+
+            <TableRow>
+
+                <com.money.manager.ex.view.RobotoTextView
+                    style="@style/Money.TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:text="@string/account_balance"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                     />
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewAccountBalance"
+                    style="@style/Money.TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                     />
+            </TableRow>
+
+            <TableRow>
+
+                <com.money.manager.ex.view.RobotoTextView
+                    style="@style/Money.TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:text="@string/account_reconciled_balance"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                     />
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewAccountReconciled"
+                    style="@style/Money.TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                     />
+            </TableRow>
+        </TableLayout>
 
         <ImageView
             android:id="@+id/imageViewAccountFav"
@@ -46,73 +100,11 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:background="@color/holo_green_light" />
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:stretchColumns="1" >
-		<!-- android:background="@color/abBackground" -->
-        <TableRow>
-
-            <TextView
-                style="@style/Money.TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:text="@string/account_balance"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <TextView
-                android:id="@+id/textViewAccountBalance"
-                style="@style/Money.TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                style="@style/Money.TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:text="@string/account_reconciled_balance"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <TextView
-                android:id="@+id/textViewAccountReconciled"
-                style="@style/Money.TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </TableRow>
-    </TableLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:background="@color/holo_green_light" />
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/money_margin"
+        android:layout_marginRight="@dimen/money_margin"
+        android:background="@android:color/darker_gray" />
 
     <FrameLayout
         android:id="@+id/fragmentContent"

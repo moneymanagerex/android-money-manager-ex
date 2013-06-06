@@ -36,6 +36,10 @@ public class PreferencesConstant {
     public static final String PREF_DROPBOX_HOWITWORKS = "dropbox2howitworks";
     public static final String PREF_DROPBOX_TIMES_REPEAT = "dropbox2servicetimesrepeat";
     public static final String PREF_DROPBOX_UPLOAD_IMMEDIATE = "dropbox2uploadimmediate";
+    public static final String PREF_TRANSACTION_SHOWN_BALANCE = "transactionshownbalance";
+    public static final String PREF_DATABASE_BACKUP = "prefdatabasebackup";
+    public static final String PREF_APPLICATION_FONT = "prefapplicationfont";
+    public static final String PREF_APPLICATION_FONT_SIZE = "prefapplicationfontsize";
     // others preference setting don't display
     public static final String PREF_DROPBOX_ACCOUNT_PREFS_NAME = "com.money.manager.ex_dropbox_preferences";
 	public static final String PREF_DROPBOX_ACCESS_KEY_NAME = "ACCESS_KEY";

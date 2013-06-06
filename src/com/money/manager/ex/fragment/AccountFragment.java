@@ -24,6 +24,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -45,12 +46,12 @@ import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
+import com.money.manager.ex.preferences.PreferencesConstant;
 
 /**
  * 
@@ -89,10 +90,15 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	// Dataset: accountlist e alldata
 	private TableAccountList mAccountList;
 	// view into layout
-	private TextView txtAccountName, txtAccountBalance, txtAccountReconciled;
+	private TextView txtAccountBalance, txtAccountReconciled;
 	private ImageView imgAccountFav;
-	//
-	AllDataFragment fragment;
+	// all data fragment
+	AllDataFragment mAllDataFragment;
+	// name account
+	private String mAccountName; 
+	// setting for shown open database item menu
+	private boolean mShownOpenDatabaseItemMenu = false;
+	
 	@Override
 	public void onCallbackCreateLoader(int id, Bundle args) {
 		return;
@@ -129,15 +135,14 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	@Override
 	public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		// item add
-		MenuItem item = menu.add(10001, R.id.menu_add_transaction, 10001, R.string.new_transaction);
-		item.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_add));
-		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		// find item
-		MenuItem itemNew = menu.findItem(R.id.menu_new_transaction);
-		if (itemNew != null) itemNew.setVisible(false);
+		// hide menu open database
+		MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
+		if (itemOpenDatabase != null) itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
+		// add transaction
+		MenuItem itemAddTransaction = menu.findItem(R.id.menu_add_transaction_account);
+		if (itemAddTransaction != null) itemAddTransaction.setVisible(true);
 		// call create option menu of fragment
-		fragment.onCreateOptionsMenu(menu, inflater);
+		mAllDataFragment.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
@@ -155,7 +160,6 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 			mAccountList = new MoneyManagerOpenHelper(getActivity()).getTableAccountList(mAccountId);
 		}
 		// take reference textview from layout
-		txtAccountName = (TextView) view.findViewById(R.id.textViewAccountName);
 		txtAccountBalance = (TextView) view.findViewById(R.id.textViewAccountBalance);
 		txtAccountReconciled = (TextView) view.findViewById(R.id.textViewAccountReconciled);
 		// favorite icon
@@ -179,19 +183,20 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		});
 		// manage fragment
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		fragment = AllDataFragment.newInstance(mAccountId);
+		mAllDataFragment = AllDataFragment.newInstance(mAccountId);
 		// set arguments and settings of fragment
-		fragment.setArguments(prepareArgsForChildFragment());
-		fragment.setAutoStarLoader(false);
-		fragment.setContextMenuGroupId(mAccountId);
-		fragment.setSearResultFragmentLoaderCallbacks(this);
+		mAllDataFragment.setArguments(prepareArgsForChildFragment());
+		mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getSherlockActivity()).getBoolean(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE, false));
+		mAllDataFragment.setAutoStarLoader(false);
+		mAllDataFragment.setContextMenuGroupId(mAccountId);
+		mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
 		// add fragment
-		transaction.replace(R.id.fragmentContent, fragment, mNameFragment);
+		transaction.replace(R.id.fragmentContent, mAllDataFragment, mNameFragment);
 		transaction.commit();
 
 		// refresh user interface
 		if (mAccountList != null) {
-			txtAccountName.setText(mAccountList.getAccountName());
+			mAccountName = mAccountList.getAccountName();
 			setImageViewFavorite();
 		}
 		// set has optionmenu
@@ -218,18 +223,21 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 			}
 			// show balance values
 			setTextViewBalance();
+			// set titles
+			getSherlockActivity().getSupportActionBar().setSubtitle(mAccountName);
+			
 			break;
 		}
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.menu_add_transaction) {
+		if (item.getItemId() == R.id.menu_add_transaction_account) {
 			startCheckingAccountActivity();
 			return true;
-		} else if (item.getItemId() == R.id.menu_export_csv){
-			if (fragment != null && mAccountList != null)
-				fragment.exportDataToCSVFile(mAccountList.getAccountName());
+		} else if (item.getItemId() == R.id.menu_export_to_csv){
+			if (mAllDataFragment != null && mAccountList != null)
+				mAllDataFragment.exportDataToCSVFile(mAccountList.getAccountName());
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -240,6 +248,8 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		super.onResume();
 		// restart loader
 		startLoaderData();
+		// set subtitle account name
+		getSherlockActivity().getSupportActionBar().setSubtitle(mAccountName);
 	}
 
 	@Override
@@ -274,12 +284,11 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	/**
 	 * refresh UI, show favorite icome
 	 */
-	@SuppressWarnings("deprecation")
 	private void setImageViewFavorite() {
 		if (mAccountList.isFavoriteAcct()) {
-			imgAccountFav.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.star_on));
+			imgAccountFav.setBackgroundResource(R.drawable.ic_rate_star_on);
 		} else {
-			imgAccountFav.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.star_off));
+			imgAccountFav.setBackgroundResource(R.drawable.ic_rate_star_off);
 		}
 	}
 
@@ -329,8 +338,22 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	 * Start Loader to retrive data
 	 */
 	public void startLoaderData() {
-		if (fragment != null) {
-			fragment.startLoaderData();
+		if (mAllDataFragment != null) {
+			mAllDataFragment.startLoaderData();
 		}
+	}
+
+	/**
+	 * @param mShownOpenDatabaseItemMenu the mShownOpenDatabaseItemMenu to set
+	 */
+	public void setShownOpenDatabaseItemMenu(boolean mShownOpenDatabaseItemMenu) {
+		this.mShownOpenDatabaseItemMenu = mShownOpenDatabaseItemMenu;
+	}
+
+	/**
+	 * @return the mShownOpenDatabaseItemMenu
+	 */
+	public boolean isShownOpenDatabaseItemMenu() {
+		return mShownOpenDatabaseItemMenu;
 	}
 }

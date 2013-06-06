@@ -35,8 +35,6 @@ public class PasscodeActivity extends SherlockActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// apply theme application
-		((MoneyManagerApplication)getApplication()).setThemeApplication(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.passcode_activity);
 		// create a listener for button

@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
+    <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/itemfiletext"
         android:layout_width="0dip"
         android:layout_height="wrap_content"

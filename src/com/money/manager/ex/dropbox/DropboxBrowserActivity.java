@@ -20,6 +20,7 @@ import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.RESTUtility;
 import com.money.manager.ex.R;
@@ -106,6 +107,19 @@ public class DropboxBrowserActivity extends BaseFragmentActivity {
 		}
 		
 		public boolean onKeyUp(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_BACK) setResultAndFinish();
+			return false;
+		}
+		
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			if (item.getItemId() == android.R.id.home) {
+				setResultAndFinish();
+			}
+			return super.onOptionsItemSelected(item);
+		}
+		
+		public void setResultAndFinish() {
 			Intent result = new Intent();
 			if (getListView().getCheckedItemPosition() == ListView.INVALID_POSITION) {
 				result.putExtra(INTENT_DROBPOXFILE_PATH, (String)null);
@@ -116,8 +130,6 @@ public class DropboxBrowserActivity extends BaseFragmentActivity {
 			getSherlockActivity().setResult(RESULT_OK, result);
 			// exit
 			getSherlockActivity().finish();
-
-			return false;
 		}
 		
 		private void refreshEntries() {
