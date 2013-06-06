@@ -17,8 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -37,11 +35,7 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// if large screen set orietation landscape 
-		if ((getResources().getConfiguration().screenLayout &  Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE) {     
-			 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-		}
+		
 		setContentView(R.layout.main_fragments_activity);
 		SearchFragment fragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
 		if (fragment == null) {

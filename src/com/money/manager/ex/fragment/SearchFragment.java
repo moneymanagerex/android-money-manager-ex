@@ -340,9 +340,10 @@ public class SearchFragment extends SherlockFragment {
 		//create a fragment search
 		AllDataFragment fragment;
 		fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
-		if (fragment == null) {
-			fragment = AllDataFragment.newInstance(-1);
+		if (fragment != null) {
+			getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 		}
+		fragment = AllDataFragment.newInstance(-1);
 		//create bundle
 		Bundle args = new Bundle();
 		args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, whereClause);
@@ -358,11 +359,11 @@ public class SearchFragment extends SherlockFragment {
 		// Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack
 		if (isDualPanel()) {
-			transaction.replace(R.id.fragmentDetail, fragment, AllDataFragment.class.getSimpleName());
+			transaction.add(R.id.fragmentDetail, fragment, AllDataFragment.class.getSimpleName());
 		} else {
 			transaction.replace(R.id.fragmentContent, fragment, AllDataFragment.class.getSimpleName());
+			transaction.addToBackStack(null);
 		}
-		transaction.addToBackStack(null);
 		// Commit the transaction
 		transaction.commit();
 	}
