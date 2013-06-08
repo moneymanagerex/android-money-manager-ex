@@ -143,12 +143,14 @@ public class DropboxBrowserActivity extends BaseFragmentActivity {
 				
 				public void onFinished(List<Entry> result) {
 					if (isVisible()) {
-						for(int i = 0; i < result.size(); i ++) {
-							if (result.get(i).path.toLowerCase().endsWith(".mmb")) {
-								mAdapter.add(result.get(i));
-								//check if file is same pass from intent
-								if (getListView().getCheckedItemPosition() == ListView.INVALID_POSITION && result.get(i).path.equals(mDropboxFile)) {
-									getListView().setItemChecked(mAdapter.getCount() - 1, true);
+						if (result != null) {
+							for(int i = 0; i < result.size(); i ++) {
+								if (result.get(i).path.toLowerCase().endsWith(".mmb")) {
+									mAdapter.add(result.get(i));
+									//check if file is same pass from intent
+									if (getListView().getCheckedItemPosition() == ListView.INVALID_POSITION && result.get(i).path.equals(mDropboxFile)) {
+										getListView().setItemChecked(mAdapter.getCount() - 1, true);
+									}
 								}
 							}
 						}

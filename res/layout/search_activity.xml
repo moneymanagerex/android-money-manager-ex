@@ -301,15 +301,6 @@
             android:textSize="@dimen/money_text_view_size_small"
             android:textStyle="bold" />
 
-        <View
-            android:id="@+id/ViewColorPickerHelper"
-            android:layout_width="1dip"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dip"
-            android:layout_marginTop="10dip"
-            android:background="?android:attr/dividerVertical" />
-
         <com.money.manager.ex.view.RobotoButton
             android:id="@+id/buttonOk"
             style="@style/Money.Button"

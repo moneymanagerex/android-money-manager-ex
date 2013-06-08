@@ -4,6 +4,9 @@
 - Major bugfix: application crash when you try create a new transaction with date format contains quote character (')
 - Major bugfix: application crashes when you open the setting with the financial first month of the year is not set correctly
 - Possibility of displaying the partial budget for each transaction. The visualization is activated in the display settings.
+- <i>1.2.1.Bugfix: solved crash application when opening search activity</i>
+- <i>1.2.1.Bugfix: solved crash application when opening payee, currency and account list with font default set</i>
+- <i>1.2.1.Others Minor Bugfix</i>
 
 <b> Version 1.1.4 </b>
 - Updated localization: Russian

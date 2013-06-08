@@ -4,6 +4,9 @@
 - Major bugfix: crash dell'applicazione quando si tenta creare una nuova transazione con il formato della data contenente il carattere apice (')
 - Major bugfix: crash dell'applicazione quando si aprono le impostazione con il primo mese dell'anno non impostato correttamente
 - Possibilità di visualizzare il saldo parziale per ogni transazione. La visualizzazione si attiva dalle impostazioni Display.
+- <i>1.2.1.Bugfix: risolto crash applicazione quando si apre la ricerca</i>
+- <i>1.2.1.Bugfix: risolto crash applicazione quando si apre Beneficiario, Valute e Conti con il font default settato</i>
+- <i>1.2.1.Altri Bugfix minor</i>
 
 <b> Version 1.1.4 </b>
 - Aggiornamento traduzione: Russo

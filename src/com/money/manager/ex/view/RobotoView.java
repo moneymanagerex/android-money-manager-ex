@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.widget.TextView;
@@ -35,10 +36,11 @@ import com.money.manager.ex.R;
  * @author a.lazzari
  */
 public class RobotoView {
-
+	private static final String LOGCAT = RobotoView.class.getSimpleName();
     /*
      * Permissible values ​​for the "typeface" attribute.
      */
+	private final static int DEFAULT_FONT = -1;
     private final static int ROBOTO_THIN = 0;
     private final static int ROBOTO_THIN_ITALIC = 1;
     private final static int ROBOTO_LIGHT = 2;
@@ -164,8 +166,13 @@ public class RobotoView {
 				}
     		}
     	}
-    	// if typefaceValue <= 0 default font 
-    	if (typefaceValue > 0) view.setTypeface(RobotoView.obtainTypeface(context, typefaceValue));
+    	// if typefaceValue = -1 default font 
+    	try {
+			if (!(typefaceValue == DEFAULT_FONT))
+				view.setTypeface(RobotoView.obtainTypeface(context, typefaceValue));
+    	} catch (Exception e) {
+			Log.e(LOGCAT, e.getMessage());
+		}
     	
     	// set textsize
     	if (view.getTextSize() == MoneyManagerApplication.getTextSize())
@@ -202,6 +209,9 @@ public class RobotoView {
     private static Typeface createTypeface(Context context, int typefaceValue) throws IllegalArgumentException {
         Typeface typeface;
         switch (typefaceValue) {
+        	case DEFAULT_FONT:
+        		typeface = null;
+        		break;
             case ROBOTO_THIN:
                 typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Thin.ttf");
                 break;
