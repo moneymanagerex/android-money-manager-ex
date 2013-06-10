@@ -218,6 +218,13 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		application = (MoneyManagerApplication) this.getApplication();
 		mCore = new Core(this);
 		
+		// set theme application
+		try {
+			setTheme(mCore.getThemeApplication());
+		} catch (Exception e) {
+			Log.e(LOGCAT, e.getMessage());
+		}
+		
 		super.onCreate(savedInstanceState);
 		PreferenceManager.setDefaultValues(this, R.xml.prefrences, false);
 		// set layout
@@ -448,6 +455,19 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
 					RobotoView.setUserFontSize(getApplicationContext(), newValue.toString());
+					return true;
+				}
+			});
+		}
+		
+		//theme
+		final ListPreference lstTheme = (ListPreference)findPreference(PreferencesConstant.PREF_THEME);
+		if (lstTheme != null) {
+			lstTheme.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					MainActivity.setRestartActivity(true);
 					return true;
 				}
 			});

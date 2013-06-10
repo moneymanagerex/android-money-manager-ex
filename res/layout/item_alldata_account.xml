@@ -7,7 +7,7 @@
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewAccountName"
-        style="@style/listSeparatorTextViewStyle"
+        style="?attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -31,13 +31,13 @@
         android:layout_marginLeft="@dimen/money_margin"
         android:layout_marginRight="@dimen/money_margin"
         android:layout_marginTop="@dimen/money_margin_middle"
-        android:background="@drawable/shape_white_background_shadow"
+        android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical" >
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_rectangle_backgroud_dark"
+            android:background="?attr/shape_rectangle_backgroud_dark"
             android:orientation="horizontal"
             android:stretchColumns="1" >
 

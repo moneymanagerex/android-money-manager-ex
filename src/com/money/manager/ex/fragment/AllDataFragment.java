@@ -55,6 +55,7 @@ import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SearchActivity;
 import com.money.manager.ex.core.AllDataAdapter;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
@@ -260,7 +261,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		// register context menu
 		registerForContextMenu(getListView());
 		// set divider
-		getListView().setDivider(new ColorDrawable(getResources().getColor(R.color.money_background)));
+		Core core = new Core(getSherlockActivity());
+		if (core.getThemeApplication() == R.style.Theme_Money_Manager_Light_DarkActionBar)
+			getListView().setDivider(new ColorDrawable(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.theme_background_color)));
 		//getListView().setSelector(new ColorDrawable(getResources().getColor(R.color.money_background)));
 		// set animation
 		setListShown(false);

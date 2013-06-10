@@ -14,7 +14,7 @@
     <string name="pref_account_open_visible">accountsopenvisible</string>
     <string name="pref_account_fav_visible">accountsfavoritevisible</string>
     <string name="pref_dropbox_mode">dropbox2modesync</string>
-    <string name="pref_theme">themeapplication</string>
+    <string name="pref_theme">applicationtheme</string>
     <string name="pref_show_transaction">showtransaction</string>
     <string name="pref_type_home">typehome</string>
     <string name="pref_edit_passcode">editpasscode</string>

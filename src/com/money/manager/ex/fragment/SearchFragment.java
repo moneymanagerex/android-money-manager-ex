@@ -301,7 +301,7 @@ public class SearchFragment extends SherlockFragment {
 					 + "," + (cbxWithdrawal.isChecked() ? "'Withdrawal'" : "''") + ")"); 
 		}
 		//status
-		if (spinStatus.getSelectedItemPosition() != AdapterView.INVALID_POSITION) {
+		if (spinStatus.getSelectedItemPosition() > 0) {
 			whereClause.add(ViewAllData.Status + "='" + mStatusValues.get(spinStatus.getSelectedItemPosition()) + "'");
 		}
 		//from date

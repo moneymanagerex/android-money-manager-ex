@@ -73,7 +73,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 			setHasOptionsMenu(true);
 			registerForContextMenu(getListView());
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			getListView().setDivider(new ColorDrawable(getResources().getColor(R.color.money_background)));
+			getListView().setDivider(new ColorDrawable(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.theme_background_color)));
 			
 			//set margin
 			/*FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)getListView().getLayoutParams();

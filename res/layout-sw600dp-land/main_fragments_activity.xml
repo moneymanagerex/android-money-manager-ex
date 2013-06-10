@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/money_background"
+    android:background="?attr/theme_background_color"
     android:orientation="horizontal" >
 
     <LinearLayout
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/money_margin"
-        android:background="@drawable/shape_background_shadow"
+        android:background="?attr/shape_background_shadow"
         android:padding="@dimen/money_padding" />
 
 </LinearLayout>

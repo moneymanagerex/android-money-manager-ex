@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SearchViewCompat;
 import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -48,84 +49,95 @@ public class BaseListFragment extends SherlockListFragment {
 	private boolean mShowMenuItemSearch = false;
 	// flag for tips wildcard
 	private boolean isShowTipsWildcard = false;
-	
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// set theme
+		Core core = new Core(getSherlockActivity());
+		try {
+			getSherlockActivity().setTheme(core.getThemeApplication());
+		} catch (Exception e) {
+			Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
+		}
+		super.onCreate(savedInstanceState);
+	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 		if (isShowMenuItemSearch()) {
-	        // Place an action bar item for searching.
-	        final MenuItem itemSearch = menu.add(0, MENU_ITEM_SEARCH, MENU_ITEM_SEARCH, R.string.search);
-	        itemSearch.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search));
-	        itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-	        // uso il Compat per avere l'oggetto
-	        View searchView = SearchViewCompat.newSearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
-	        if (searchView != null) {
-	            SearchViewCompat.setOnQueryTextListener(searchView,
-	                    new OnQueryTextListenerCompat() {
-	                @Override
-	                public boolean onQueryTextChange(String newText) {
-	                    return BaseListFragment.this.onQueryTextChange(newText);
-	                }
-	            });
-	            itemSearch.setActionView(searchView);
-	        } else {
-	        	SearchView actionSearchView = new SearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
-	        	actionSearchView.setOnQueryTextListener(new OnQueryTextListener() {
-					
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
-					}
-					
+			// Place an action bar item for searching.
+			final MenuItem itemSearch = menu.add(0, MENU_ITEM_SEARCH, MENU_ITEM_SEARCH, R.string.search);
+			itemSearch.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search));
+			itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			// uso il Compat per avere l'oggetto
+			View searchView = SearchViewCompat.newSearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
+			if (searchView != null) {
+				SearchViewCompat.setOnQueryTextListener(searchView, new OnQueryTextListenerCompat() {
 					@Override
 					public boolean onQueryTextChange(String newText) {
 						return BaseListFragment.this.onQueryTextChange(newText);
 					}
 				});
-	        	itemSearch.setActionView(actionSearchView);
-	        }
+				itemSearch.setActionView(searchView);
+			} else {
+				SearchView actionSearchView = new SearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
+				actionSearchView.setOnQueryTextListener(new OnQueryTextListener() {
+
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return false;
+					}
+
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						return BaseListFragment.this.onQueryTextChange(newText);
+					}
+				});
+				itemSearch.setActionView(actionSearchView);
+			}
 		}
 	}
-	
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
-    	case android.R.id.home:
-    		// set result and exit
-    		this.setResultAndFinish();
-    		
-    		break;
-    	case MENU_ITEM_SEARCH:
-    		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-    			onMenuItemSearchClick(item);
-    		}
-    		break;
-    	}
-    	return false;
-    }
-	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// set result and exit
+			this.setResultAndFinish();
+
+			break;
+		case MENU_ITEM_SEARCH:
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+				onMenuItemSearchClick(item);
+			}
+			break;
+		}
+		return false;
+	}
+
 	protected boolean onQueryTextChange(String newText) {
 		return true;
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
 		if (isShowMenuItemSearch() && !isShowTipsWildcard) {
-			//show tooltip for wildcard
-			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getSherlockActivity().getApplicationContext(), "passtodropbox2");
+			// show tooltip for wildcard
+			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getSherlockActivity().getApplicationContext(), "lookupswildcard");
 			if (tipsDropbox != null) {
 				tipsDropbox.setTips(getString(R.string.lookups_wildcard));
-				//tipsDropbox.setCheckDontShowAgain(true);
+				// tipsDropbox.setCheckDontShowAgain(true);
 				tipsDropbox.show(getSherlockActivity().getSupportFragmentManager(), "lookupswildcard");
 				isShowTipsWildcard = true; // set shown
 			}
 		}
 	}
-	
-    protected void onMenuItemSearchClick(MenuItem item) {
-		View searchView = ((SherlockFragmentActivity)getActivity()).getSupportActionBar().getCustomView();
-		final EditText edtSearch = (EditText)searchView.findViewById(R.id.editTextSearchView);
-		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+	protected void onMenuItemSearchClick(MenuItem item) {
+		View searchView = ((SherlockFragmentActivity) getActivity()).getSupportActionBar().getCustomView();
+		final EditText edtSearch = (EditText) searchView.findViewById(R.id.editTextSearchView);
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		// se in visualizzazione prendo l'edittext
 		if (mDisplayShowCustomEnabled == false) {
 			// rendo visibile l'edittext di ricerca
@@ -150,8 +162,8 @@ public class BaseListFragment extends SherlockListFragment {
 				edtSearch.setText(null);
 				onQueryTextChange("");
 			}
-		}	
-    }
+		}
+	}
 
 	/**
 	 * @return the mShowMenuItemSearch
@@ -161,24 +173,26 @@ public class BaseListFragment extends SherlockListFragment {
 	}
 
 	/**
-	 * @param mShowMenuItemSearch the mShowMenuItemSearch to set
+	 * @param mShowMenuItemSearch
+	 *            the mShowMenuItemSearch to set
 	 */
 	public void setShowMenuItemSearch(boolean mShowMenuItemSearch) {
 		this.mShowMenuItemSearch = mShowMenuItemSearch;
 	}
-	
+
 	/**
 	 * metodo per l'implementazione del ritorno dei dati
 	 */
-	protected void setResult() {}
-	
+	protected void setResult() {
+	}
+
 	public void setResultAndFinish() {
-		//chiamo l'impostazione dei dati e chiudo l'activity
+		// chiamo l'impostazione dei dati e chiudo l'activity
 		this.setResult();
-		//chiudo l'activity dove sono collegato
+		// chiudo l'activity dove sono collegato
 		getActivity().finish();
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -187,14 +201,14 @@ public class BaseListFragment extends SherlockListFragment {
 			getListView().setLayoutTransition(new LayoutTransition());
 		// saved instance
 		if (savedInstanceState != null) {
-			if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
+			if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD))
+				isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
 		}
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		outState.putBoolean(KEY_SHOWN_TIPS_WILDCARD, isShowTipsWildcard);
 		super.onSaveInstanceState(outState);
 	}
 }
-	

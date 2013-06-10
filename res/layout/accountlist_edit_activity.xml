@@ -26,7 +26,7 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/money_margin"
         android:layout_weight="1"
-        android:background="@drawable/shape_white_background_shadow"
+        android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
         android:padding="@dimen/money_padding" >
 
@@ -36,7 +36,7 @@
             android:orientation="vertical" >
 
             <com.money.manager.ex.view.RobotoTextView
-                style="@style/listSeparatorTextViewStyle"
+                style="?attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/account_name" />
@@ -51,7 +51,7 @@
                 android:singleLine="true" />
 
             <com.money.manager.ex.view.RobotoTextView
-                style="@style/listSeparatorTextViewStyle"
+                style="?attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/account_type" />
@@ -65,7 +65,7 @@
             </Spinner>
 
             <com.money.manager.ex.view.RobotoTextView
-                style="@style/listSeparatorTextViewStyle"
+                style="?attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/account_number" />
@@ -80,7 +80,7 @@
                 android:singleLine="true" />
 
             <com.money.manager.ex.view.RobotoTextView
-                style="@style/listSeparatorTextViewStyle"
+                style="?attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/account_held_at" />
@@ -95,7 +95,7 @@
                 android:singleLine="true" />
 
             <com.money.manager.ex.view.RobotoTextView
-                style="@style/listSeparatorTextViewStyle"
+                style="?attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/website" />
@@ -110,7 +110,7 @@
                 android:singleLine="true" />
 
             <com.money.manager.ex.view.RobotoTextView
-                style="@style/listSeparatorTextViewStyle"
+                style="?attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/contact" />
@@ -125,7 +125,7 @@
                 android:singleLine="true" />
 
             <com.money.manager.ex.view.RobotoTextView
-                style="@style/listSeparatorTextViewStyle"
+                style="?attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/access_info" />
@@ -140,7 +140,7 @@
                 android:singleLine="true" />
 
             <com.money.manager.ex.view.RobotoTextView
-                style="@style/listSeparatorTextViewStyle"
+                style="?attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/account_status" />
@@ -154,7 +154,7 @@
             </Spinner>
 
             <com.money.manager.ex.view.RobotoTextView
-                style="@style/listSeparatorTextViewStyle"
+                style="?attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/initial_balance" />
@@ -176,7 +176,7 @@
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewCurrency"
-                    style="@style/listSeparatorTextViewStyle"
+                    style="?attr/listSeparatorTextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/currency" />
@@ -193,7 +193,7 @@
             </LinearLayout>
 
             <com.money.manager.ex.view.RobotoTextView
-                style="@style/listSeparatorTextViewStyle"
+                style="?attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/notes" />

@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/money_margin"
         android:animateLayoutChanges="true"
-        android:background="@drawable/shape_white_background_shadow"
+        android:background="?attr/shape_white_background_shadow"
         android:orientation="horizontal"
         android:padding="@dimen/money_padding" >
 

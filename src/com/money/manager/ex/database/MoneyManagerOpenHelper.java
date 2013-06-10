@@ -151,18 +151,24 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		if (open) { where = "LOWER(STATUS)='open'"; }
 		if (favorite) { where = "LOWER(FAVORITEACCT)='true'"; }
 		// data cursor
-		Cursor cursor = mContext.getContentResolver().query(
+		/*Cursor cursor = mContext.getContentResolver().query(
 				new TableAccountList().getUri(), null, where, null,
-				"upper(" + TableAccountList.ACCOUNTNAME + ")");
-		// populate list from data cursor
-		if (cursor != null && cursor.moveToFirst()) {
-			while (!(cursor.isAfterLast())) {
-				TableAccountList account = new TableAccountList();
-				account.setValueFromCursor(cursor);
-				listAccount.add(account);
-				cursor.moveToNext();
+				"upper(" + TableAccountList.ACCOUNTNAME + ")");*/
+		TableAccountList tAccountList = new TableAccountList();
+		SQLiteDatabase db = getReadableDatabase();
+		if (db != null) {
+			Cursor cursor = db.query(tAccountList.getSource(), tAccountList.getAllColumns(), where, null, null, null, TableAccountList.ACCOUNTNAME); 
+			// populate list from data cursor
+			if (cursor != null && cursor.moveToFirst()) {
+				while (!(cursor.isAfterLast())) {
+					TableAccountList account = new TableAccountList();
+					account.setValueFromCursor(cursor);
+					listAccount.add(account);
+					cursor.moveToNext();
+				}
+				cursor.close();
 			}
-			cursor.close();
+			db.close();
 		}
 		return listAccount;
 	}

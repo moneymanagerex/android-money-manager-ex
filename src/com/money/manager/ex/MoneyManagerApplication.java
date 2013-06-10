@@ -82,25 +82,6 @@ public class MoneyManagerApplication extends Application {
     public static final String DROPBOX_APP_SECRET = "5E01FC70A055AE4A6C9DB346343CE822";
     public static final AccessType DROPBOX_ACCESS_TYPE = AccessType.APP_FOLDER;
     ///////////////////////////////////////////////////////////////////////////
-    //                           PREFERENCES                                 //
-    ///////////////////////////////////////////////////////////////////////////
-    /*public static final String PreferenceKey.PREF_LAST_VERSION_KEY = "preflastversioncodekey";
-    public static final String PreferenceKey.PREF_DONATE_LAST_VERSION_KEY = "prefdonatelastversioncodekey";
-    public static final String PreferenceKey.PREF_LAST_DB_PATH_SHOWN = "preflastdbpathshown";
-    public static final String PreferenceKey.PREF_SHOW_INTRODUCTION = "prefshowintroduction";
-    public static final String PreferenceKey.PREF_DATABASE_PATH = "databasepath";
-    public static final String PreferenceKey.PREF_USER_NAME = "username";
-    public static final String PreferenceKey.PREF_DATE_FORMAT = "dateformat";
-    public static final String PreferenceKey.PREF_FINANCIAL_YEAR_STARTDATE = "financial_year_startday";
-    public static final String PreferenceKey.PREF_FINANCIAL_YEAR_STARTMONTH = "financial_year_startmonth";
-    public static final String PreferenceKey.PREF_BASE_CURRENCY = "basecurrency";
-    public static final String PreferenceKey.PREF_ACCOUNT_OPEN_VISIBLE = "accountsopenvisible";
-    public static final String PreferenceKey.PREF_ACCOUNT_FAV_VISIBLE = "accountsfavoritevisible";
-    public static final String PreferenceKey.PREF_DROPBOX_MODE = "dropboxmodesync";
-    public static final String PreferenceKey.PREF_THEME = "themeapplication";
-    public static final String PreferenceKey.PREF_SHOW_TRANSACTION = "showtransaction";
-    public static final String PreferenceKey.PREF_TYPE_HOME = "typehome";*/
-    ///////////////////////////////////////////////////////////////////////////
     //                         CONSTANTS VALUES                              //
     ///////////////////////////////////////////////////////////////////////////
     public static final int TYPE_HOME_CLASSIC = R.layout.main_fragments_activity;

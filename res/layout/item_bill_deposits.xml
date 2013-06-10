@@ -43,7 +43,7 @@
         android:layout_marginLeft="@dimen/money_margin"
         android:layout_marginRight="@dimen/money_margin"
         android:layout_marginTop="@dimen/money_margin_middle"
-        android:background="@drawable/shape_white_background_shadow"
+        android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical" >
 
         <LinearLayout

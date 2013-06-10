@@ -18,6 +18,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -30,6 +31,7 @@ import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
+import com.money.manager.ex.preferences.PreferencesConstant;
 
 public class Core {
 	
@@ -110,6 +112,24 @@ public class Core {
 		});
 		// show dialog
 		return dialog.create();
+	}
+	
+	/**
+	 * Return application theme choice from user
+	 * @return
+	 */
+	public int getThemeApplication() {
+		try {
+			String currentTheme = PreferenceManager.getDefaultSharedPreferences(context).getString(PreferencesConstant.PREF_THEME, context.getString(R.string.theme_light));
+			if (currentTheme.endsWith(context.getString(R.string.theme_holo))) {
+				return R.style.Theme_Money_Manager;
+			} else {
+				return R.style.Theme_Money_Manager_Light_DarkActionBar;
+			}
+		} catch (Exception e) {
+			Log.e("", e.getMessage());
+			return R.style.Theme_Money_Manager_Light_DarkActionBar;
+		}
 	}
 	
 	/**

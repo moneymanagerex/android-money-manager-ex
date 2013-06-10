@@ -1,3 +1,7 @@
+<b> Version 1.2.2 </b>
+- reintroduced the theme Holo
+- solved the problem of search of transactions with state none
+
 <b> Version 1.2.0 </b>
 - New sync with Dropbox. From this version you can automatically synchronize the database of Money Manager Ex. The configuration and management with Dropbox (download and upload) is in the settings.<i> For those already using the sync with Dropbox will have to redo the configuration.</i>
 - New look for the application

@@ -17,7 +17,7 @@ public class PreferencesConstant {
     public static final String PREF_ACCOUNT_OPEN_VISIBLE = "accountsopenvisible";
     public static final String PREF_ACCOUNT_FAV_VISIBLE = "accountsfavoritevisible";
     public static final String PREF_DROPBOX_MODE = "dropbox2modesync";
-    public static final String PREF_THEME = "themeapplication";
+    public static final String PREF_THEME = "applicationtheme";
     public static final String PREF_SHOW_TRANSACTION = "showtransaction";
     public static final String PREF_TYPE_HOME = "typehome";
     public static final String PREF_EDIT_PASSCODE = "editpasscode";

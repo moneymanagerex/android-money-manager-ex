@@ -75,6 +75,12 @@
             android:entries="@array/application_font_size_entries"
             android:entryValues="@array/application_font_size_values" 
             android:defaultValue="@string/Default" />
+        <ListPreference 
+            android:key="@string/pref_theme"
+            android:title="@string/theme_application"
+            android:entries="@array/themes_values"
+            android:entryValues="@array/themes_values"
+            android:defaultValue="@string/theme_light"/>
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/preferences_security" >
         <PreferenceScreen

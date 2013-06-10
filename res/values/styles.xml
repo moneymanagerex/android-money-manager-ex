@@ -21,10 +21,37 @@
     <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/Theme.Sherlock.Light.DarkActionBar">
 
         <!-- Colors -->
+        <item name="theme_background_color">@color/holo_light_darkaction_money_background</item>
+        <item name="holo_green_color_theme">@color/holo_green_dark</item>
+        <item name="holo_red_color_theme">@color/holo_red_dark</item>
+        <item name="row_dark_theme">@android:color/transparent</item>
+        <item name="row_light_theme">@color/holo_light_row_light</item>
+        <!-- Drawables -->
+        <item name="ic_action_add">@drawable/ic_action_add_dark</item>
+        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
+        <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
+        <item name="ic_action_folder_open">@drawable/ic_action_folder_open_dark</item>
+        <item name="ic_action_list">@drawable/ic_action_list_dark</item>
+        <item name="ic_action_search">@drawable/ic_action_search_dark</item>
+        <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
+        <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
+        <item name="ic_action_upload">@drawable/ic_action_upload_dark</item>
+        <!-- Shape -->
+        <item name="shape_background_shadow">@drawable/shape_background_shadow</item>
+        <item name="shape_white_background_shadow">@drawable/shape_white_background_shadow</item>
+        <item name="shape_rectangle_backgroud_dark">@drawable/shape_rectangle_backgroud_dark</item>
+        <!-- TextView -->
+        <item name="listSeparatorTextViewStyle">@style/listSeparatorTextViewStyle</item>
+    </style>
+
+    <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
+
+        <!-- Colors -->
+        <item name="theme_background_color">@null</item>
         <item name="holo_green_color_theme">@color/holo_green_dark</item>
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
 		<item name="row_dark_theme">@android:color/transparent</item>
-        <item name="row_light_theme">@color/holo_light_row_light</item>
+        <item name="row_light_theme">@color/holo_dark_row_light</item>
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
@@ -35,8 +62,14 @@
         <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_dark</item>
         <item name="ic_action_upload">@drawable/ic_action_upload_dark</item>
+        <!-- Shape -->
+        <item name="shape_background_shadow">@null</item>
+        <item name="shape_white_background_shadow">@null</item>
+        <item name="shape_rectangle_backgroud_dark">@null</item>
+        <!-- TextView -->
+        <item name="listSeparatorTextViewStyle">?android:attr/listSeparatorTextViewStyle</item>
     </style>
-
+    
     <style name="Money.TextView" parent="@android:style/Widget.TextView">
         <!-- <item name="android:textColor">@color/textview_textcolor</item> -->
     </style>

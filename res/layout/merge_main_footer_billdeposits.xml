@@ -12,7 +12,7 @@
         android:layout_marginLeft="@dimen/money_margin"
         android:layout_marginRight="@dimen/money_margin"
         android:layout_marginBottom="@dimen/money_margin"
-        android:background="@drawable/shape_white_background_shadow"
+        android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
         android:padding="4dp" >
 
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_action_warning_light" />
+                android:src="?attr/ic_action_warning" />
 
             <com.money.manager.ex.view.RobotoTextView
                 

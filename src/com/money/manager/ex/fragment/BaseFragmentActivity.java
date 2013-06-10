@@ -19,15 +19,30 @@ package com.money.manager.ex.fragment;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Bundle;
+import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 
 public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
 	private boolean mShownRotateInDebugMode = false;
+	
+	@Override
+	protected void onCreate(Bundle savedInstance) {
+		// set theme
+		Core core =  new Core(getApplicationContext());
+		try {
+			this.setTheme(core.getThemeApplication());
+		} catch (Exception e) {
+			Log.e(BaseFragmentActivity.class.getSimpleName(), e.getMessage());
+		}
+		super.onCreate(savedInstance);
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
