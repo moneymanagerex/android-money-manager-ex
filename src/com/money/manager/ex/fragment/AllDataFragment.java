@@ -61,6 +61,8 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
 
 public class AllDataFragment extends BaseListFragment implements LoaderCallbacks<Cursor> {
+	private static final String LOGCAT = AllDataFragment.class.getSimpleName();
+	
 	// Interface for callback fragment
 	public interface AllDataFragmentLoaderCallbacks {
 		public void onCallbackCreateLoader(int id, Bundle args);
@@ -409,6 +411,17 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		}
 	}
 
+	@Override
+	public void onStop() {
+		super.onStop();
+		try {
+			if (getSherlockActivity().getSupportActionBar().getCustomView() != null)
+				getSherlockActivity().getSupportActionBar().setCustomView(null);
+		} catch (Exception e) {
+			Log.e(LOGCAT, e.getMessage());
+		}
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.menu_export_to_csv) {

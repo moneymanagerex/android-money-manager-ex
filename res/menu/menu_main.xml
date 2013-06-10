@@ -40,7 +40,6 @@
     <item
         android:id="@+id/menu_export_to_csv"
         android:title="@string/export_data_to_csv"
-        android:icon="?attr/ic_action_upload"
         android:visible="false" />
     
     <group android:id="@+id/menu_group_main" >

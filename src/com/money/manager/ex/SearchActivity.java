@@ -17,12 +17,18 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.LayoutParams;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.fragment.AllDataFragment;
@@ -74,9 +80,20 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 	}
 
 	@Override
-	public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data) {
+	public void onCallbackLoaderFinished(Loader<Cursor> loader, final Cursor data) {
 		if (loader != null && loader.getId() == AllDataFragment.ID_LOADER_ALL_DATA_DETAIL && data != null) {
-			getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
+			// getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
+			// custom view count
+			LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			final TextView txtCount = (TextView) inflater.inflate(R.layout.actionbar_textview_count, null);
+			
+			txtCount.setText(Integer.toString(data.getCount()));
+			// set the actionbar to use the custom view (can also be done with a style)
+			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_TITLE);
+
+			// set the custom view to use
+			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+			getSupportActionBar().setCustomView(txtCount, lp);
 		}
 		return;
 	}
