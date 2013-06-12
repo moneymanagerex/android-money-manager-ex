@@ -48,7 +48,8 @@ public class ViewMobileData extends Dataset {
 		"	d.year AS Year, " + 
 		"	d.month AS Month, " + 
 		"	d.day AS Day, " + 
-		"	d.finyear AS FinYear " + 
+		"	d.finyear AS FinYear, " + 
+		"	ROUND( ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  ( CASE CANS.CATEGID WHEN -1 THEN st.splittransamount ELSE CANS.TRANSAMOUNT END) , 2 ) * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate " + 
 		"FROM 	CHECKINGACCOUNT_V1 CANS LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = CANS.CATEGID " + 
 		"	LEFT JOIN SUBCATEGORY_V1 SUBCAT ON SUBCAT.SUBCATEGID = CANS.SUBCATEGID AND SUBCAT.CATEGID = CANS.CATEGID " + 
 		"	LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = CANS.PAYEEID  " + 
@@ -100,6 +101,7 @@ public class ViewMobileData extends Dataset {
 	public static final String Notes = "Notes";
 	public static final String currency = "currency";
 	public static final String finyear = "finyear";
+	public static final String AmountBaseConvRate = "AmountBaseConvRate";
 	
 	// CONSTRUCTOR
 	public ViewMobileData() {
@@ -108,6 +110,6 @@ public class ViewMobileData extends Dataset {
 	
 	@Override
 	public String[] getAllColumns() {
-		return new String[] {"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day, Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID, ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CategID, SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes, currency, finyear};
+		return new String[] {"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day, Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID, ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CategID, SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes, currency, finyear, AmountBaseConvRate};
 	}
 }

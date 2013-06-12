@@ -131,7 +131,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 			SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
 			ViewMobileData mobileData = new ViewMobileData();
 			//data to compose builder
-			String[] projectionIn = new String[] {ViewMobileData.PayeeID + " AS _id", ViewMobileData.PayeeID, ViewMobileData.Payee, "SUM(" + ViewMobileData.Amount + ") AS TOTAL"};
+			String[] projectionIn = new String[] {ViewMobileData.PayeeID + " AS _id", ViewMobileData.PayeeID, ViewMobileData.Payee, "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"};
 			String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
 			if (!TextUtils.isEmpty(whereClause)) {
 				selection += " AND " + whereClause;

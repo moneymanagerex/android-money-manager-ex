@@ -5,7 +5,7 @@ case when lower(sub1.transactiontype)='deposit' then sub1.total else 0 end as i,
 case when lower(sub1.transactiontype)='withdrawal' then sub1.total else 0 end as e,
 case when lower(sub1.transactiontype)='transfer' then sub1.total else 0 end as t
 from (
-select mobiledata.month, mobiledata.year, mobiledata.transactiontype, sum(mobiledata.amount) as total
+select mobiledata.month, mobiledata.year, mobiledata.transactiontype, sum(mobiledata.AmountBaseConvRate) as total
 from (
 SELECT 	CANS.TransID AS ID,
 	CANS.TransCode AS TransactionType,
@@ -34,7 +34,8 @@ SELECT 	CANS.TransID AS ID,
 	d.year AS Year,
 	d.month AS Month,
 	d.day AS Day,
-	d.finyear AS FinYear
+	d.finyear AS FinYear,
+	ROUND( ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  ( CASE CANS.CATEGID WHEN -1 THEN st.splittransamount ELSE CANS.TRANSAMOUNT END) , 2 ) * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate
 FROM 	CHECKINGACCOUNT_V1 CANS LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = CANS.CATEGID
 	LEFT JOIN SUBCATEGORY_V1 SUBCAT ON SUBCAT.SUBCATEGID = CANS.SUBCATEGID AND SUBCAT.CATEGID = CANS.CATEGID
 	LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = CANS.PAYEEID 
