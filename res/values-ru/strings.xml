@@ -345,5 +345,46 @@
 		<string name="descending">По убыванию</string>
 		<string name="sorting_month">Сортировка "Месяц"</string>
 	<!-- 20130305 -->
-
+	<string name="dropbox_empty_folder">Папка Dropbox </string>
+	<string name="dropbox_select_file">Выбор файла Dropbox</string>
+	<string name="last_modified">Последнее изменение</string>
+	<string name="select_dropbox_file">Выбор удаленного файла Dropbox</string>
+	<string name="dropbox">Dropbox</string>
+	<string name="dropbox_file_ready_for_use">Заруженная БД готова для использования</string>
+	<string name="dropbox_open_database_downloaded">Нажмите, чтобы открыть загруженную БД</string>
+	<string name="click_to_select_file_dropbox">Нажмите, чтобы выбрать файл для соединения с dropbox</string>
+	<string name="download_from_drobpox">Загрузить БД из Dropbox</string>
+	<string name="summary_download_from_drobpox">Нажмите для ручной загрузки файла из папки Dropbox</string>
+	<string name="upload_to_drobpox">Закачать БД в Dropbox</string>
+	<string name="summary_upload_to_drobpox">Нажмите для ручной загрузки на сервер файла в папку Dropbox</string>
+	<string name="upload_file_to_dropbox_complete">Загрузка БД в Dropbox успешна успешна.</string>
+	<string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
+	<string name="dropbox_how_it_works">Как работает Dropbox для Money Manager Ex\?</string>
+	<string name="dont_show_again">Не показывать снова</string>
+	<string name="open_database">Открыть БД</string>
+	<string name="synchronization_interval">Интервал синхронизации</string>
+	<string name="summary_synchronization_interval">Укажите интервал синхронизации в минутах с Dropbox. Установите в 0 минут для автоматической синхронизации</string>
+	<string name="tips_title_new_version_dropbox">Новая версия Dropbox</string>
+	<string name="tips_new_version_dropbox">В версии 1.2.0 Money Manager Ex для Android изменено управление синхронизацией с Dropbox. Пользователи, которые уже используют синхронизацию с Dropbox, должны переконфигурировать Dropbox. Конфигурация Dropbox, выбор файла БД Dropbox, расположен в настройках.\nВ версии 1.2.0  Money Manager Ex для Android может автоматически синхронизировать БД с Dropbox</string>
+	<string name="title_dropbox_upload_immediate">Загрузка сразу после изменений</string>
+	<string name="summary_dropbox_upload_immediate">Эта опция позволяет автоматически загружать БД вскоре после ваших изменений</string>
+	<!-- 20130426 -->
+	<string name="title_transaction_shown_balance">Показывать баланс для каждой проводки</string>
+	<string name="summary_transaction_shown_balance">Показывать баланс для каждой проводки. Отображение баланса может замедлить работу приложения.</string>
+	<string name="menu_open_database">Открыть Базу данных</string>
+	<string name="database">База данных</string>
+	<string name="tips">Советы</string>
+	<string name="title_application_font">Шрифт приложения</string>
+	<string name="summary_application_font">Выберите шрифт</string>
+	<string name="title_application_font_size">Размер шрифта приложения</string>
+	<string name="summary_application_font_size">Выберите размер шрифта для приложения</string>
+	<string name="micro">Крошечный</string>
+	<string name="small">Маленький</string>
+	<string name="Default">По умолчанию</string>
+	<string name="medium">Средний</string>
+	<string name="large">Большой</string>
+	<!-- 20130528 -->
+	<string name="dropbox_download_is_starting">Началась загрузка из Dropbox. Подождите пожалуйста.</string>
+	<string name="dropbox_upload_is_starting">Началась загрузка в Dropbox. Подождите пожалуйста.</string>
+	<!-- 20130606 -->
 </resources>
