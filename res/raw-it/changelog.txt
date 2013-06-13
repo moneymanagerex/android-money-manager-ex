@@ -1,3 +1,8 @@
+<b> Version 1.2.4 </b>
+- Risolto: upload database su dropbox con la cartella remota vuota
+- Aggiornata traduzione lingua: Russo
+- <i>Risoluzione bug minori</i>
+
 <b> Version 1.2.3 </b>
 - Reintrodotto il tema Holo
 - Risolto il problema della ricerca delle transazioni non riconciliate

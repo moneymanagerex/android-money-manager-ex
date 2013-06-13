@@ -62,9 +62,12 @@ public class DropboxServiceIntent extends IntentService {
 		File localFile = new File(local);
 		Entry remoteFile = mDropboxHelper.getEntry(remote);
 		// check if local file or remote file is null, then exit
-		if (localFile == null || remoteFile == null) {
-			Log.e(LOGCAT, "localFile is " + (localFile == null ? "null" : "not null") + " and remoteFile is " + (remoteFile == null ? "null" : "not null.")
-					+ ". Dont execute DropboxServiceIntent.onHandleIntent");
+		if (remoteFile == null && INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
+			Log.w(LOGCAT, "remoteFile is null. DropboxServiceIntent.onHandleIntent force create remote file auto");
+			remoteFile = new Entry();
+			remoteFile.path = remote;
+		} else if (remoteFile == null) {
+			Log.e(LOGCAT, "remoteFile is null. DropboxServiceIntent.onHandleIntent don't execute");
 			return;
 		}
 		// check if name is same
@@ -123,16 +126,18 @@ public class DropboxServiceIntent extends IntentService {
 			public void onPostExecute(boolean result) {
 				if (notification != null && notificationManager != null) {
 					notificationManager.cancel(NOTIFICATION_DROPBOX_PROGRESS);
-					// create notification for open file
-					// pending intent
-					Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-					intent.setData(Uri.fromFile(localFile));
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
-					// create builder
-					final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderDownloadComplete(pendingIntent);
-					// notify
-					notificationManager.notify(NOTIFICATION_DROPBOX_OPEN_FILE, notification.build());
+					if (result) {
+						// create notification for open file
+						// pending intent
+						Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+						intent.setData(Uri.fromFile(localFile));
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
+						// create builder
+						final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderDownloadComplete(pendingIntent);
+						// notify
+						notificationManager.notify(NOTIFICATION_DROPBOX_OPEN_FILE, notification.build());
+					}
 				}
 			}
 		};
@@ -167,16 +172,18 @@ public class DropboxServiceIntent extends IntentService {
 			public void onPostExecute(boolean result) {
 				if (notification != null && notificationManager != null) {
 					notificationManager.cancel(NOTIFICATION_DROPBOX_PROGRESS);
-					// create notification for open file
-					// pending intent
-					Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-					intent.setData(Uri.fromFile(localFile));
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
-					// notification
-					final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderUploadComplete(pendingIntent);
-					// notify
-					notificationManager.notify(NOTIFICATION_DROPBOX_OPEN_FILE, notification.build());
+					if (result) {
+						// create notification for open file
+						// pending intent
+						Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+						intent.setData(Uri.fromFile(localFile));
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
+						// notification
+						final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderUploadComplete(pendingIntent);
+						// notify
+						notificationManager.notify(NOTIFICATION_DROPBOX_OPEN_FILE, notification.build());
+					}
 				}
 			}
 		};

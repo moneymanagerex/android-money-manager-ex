@@ -235,7 +235,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 				int order = 0;
 				while (!cursor.isAfterLast()) {
 					int year = cursor.getInt(cursor.getColumnIndex("Year"));
-					menu.findItem(R.id.menu_period).getSubMenu().add(0, year, order ++, Integer.toString(year)).setCheckable(true);
+					menu.findItem(R.id.menu_period).getSubMenu().add(0, year, order ++, Integer.toString(year)).setCheckable(true).setChecked(year == Calendar.getInstance().get(Calendar.YEAR));
 					//move to next
 					cursor.moveToNext();
 				}

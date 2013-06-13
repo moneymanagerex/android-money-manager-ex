@@ -444,7 +444,7 @@ public class DropboxHelper {
 			StrictMode.setThreadPolicy(policy);
 			return mDropboxApi.metadata(entry, DROPBOX_FILE_LIMIT, null, false, null);
 		} catch (DropboxException e) {
-			if (BuildConfig.DEBUG) Log.e(LOGCAT, e.getMessage());
+			if (BuildConfig.DEBUG) Log.e(LOGCAT, !TextUtils.isEmpty(e.getMessage()) ? e.getMessage() : "getEntry failed!");
 			return null;
 		}
 	}
@@ -498,7 +498,7 @@ public class DropboxHelper {
 			FileOutputStream fos = new FileOutputStream(localFile);
 			mDropboxApi.getFile(dropboxFile.path, null, fos, progressListener);
 		} catch (Exception e) {
-			Log.e(LOGCAT, e.getMessage());
+			Log.e(LOGCAT, !TextUtils.isEmpty(e.getMessage()) ? e.getMessage() : "Download from dropbox failed!");
 			return false;
 		}
 		setDateLastModified(dropboxFile.fileName(), RESTUtility.parseDate(dropboxFile.modified));
@@ -513,6 +513,11 @@ public class DropboxHelper {
 				Entry entry = uploadRequest.upload();
 				if (entry != null) {
 					setDateLastModified(entry.fileName(), RESTUtility.parseDate(entry.modified));
+					// link file if not linked
+					if (TextUtils.isEmpty(getLinkedRemoteFile())) {
+						setLinkedRemoteFile(entry.path);
+						//Toast.makeText(mContext, mContext.getString(R.string.dropbox_linkedFile) + ": " + entry.path, Toast.LENGTH_LONG).show();
+					}			
 				}
 			}
 		} catch (Exception e) {
