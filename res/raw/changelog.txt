@@ -1,12 +1,20 @@
+<b> Version 1.2.5 </b>
+- Solved: fixed the amount of the export CSV file
+
 <b> Version 1.2.4 </b>
 - Solved: upload database on dropbox with empty remote folder
 - Updated the Russian translation
-- <i>Minor bugfix</i>
+- Minor bugfix
 
 <b> Version 1.2.3 </b>
 - Reintroduced the theme Holo
 - Solved the problem of search of transactions with state none
 - Solved the issue of base currency conversion in the reports
+
+<b> Version 1.2.1 </b>
+- Bugfix: solved crash application when opening search activity
+- Bugfix: solved crash application when opening payee, currency and account list with font default set
+- Others Minor Bugfix
 
 <b> Version 1.2.0 </b>
 - New sync with Dropbox. From this version you can automatically synchronize the database of Money Manager Ex. The configuration and management with Dropbox (download and upload) is in the settings.<i> For those already using the sync with Dropbox will have to redo the configuration.</i>
@@ -14,9 +22,6 @@
 - Major bugfix: application crash when you try create a new transaction with date format contains quote character (')
 - Major bugfix: application crashes when you open the setting with the financial first month of the year is not set correctly
 - Possibility of displaying the partial budget for each transaction. The visualization is activated in the display settings.
-- <i>1.2.1.Bugfix: solved crash application when opening search activity</i>
-- <i>1.2.1.Bugfix: solved crash application when opening payee, currency and account list with font default set</i>
-- <i>1.2.1.Others Minor Bugfix</i>
 
 <b> Version 1.1.4 </b>
 - Updated localization: Russian

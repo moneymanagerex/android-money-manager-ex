@@ -24,7 +24,7 @@
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
     <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock, ViewPagerIndicator and RobotMediaBilling libraries</string>
     <string name="application_license">Open source licenses</string>
-    <string name="application_build">20130613</string>
+    <string name="application_build">20130614</string>
 
     <!-- database -->
     <string name="db_insert_failed">Insert data failed</string>

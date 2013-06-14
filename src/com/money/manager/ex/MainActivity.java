@@ -253,7 +253,8 @@ public class MainActivity extends BaseFragmentActivity {
 		if (TextUtils.isEmpty(core.getInfoValue(Core.INFO_SKU_ORDER_ID)))
 			MoneyManagerApplication.showDonateDialog(this, false);
 		//show change log and path
-		MoneyManagerApplication.showChangeLog(this, false, false);
+		//MoneyManagerApplication.showChangeLog(this, false, false);
+		MoneyManagerApplication.showChangeLog(this, false);
 		MoneyManagerApplication.showDatabasePathWork(this);
 
 		//notification
