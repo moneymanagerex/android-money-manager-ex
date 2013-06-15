@@ -173,7 +173,7 @@ public class DropboxHelper {
 		try {
 			secret = SimpleCrypto.decrypt(MoneyManagerApplication.KEY, "A313D7447960230A802C9A55EDFE281E");
 		} catch (Exception e) {
-			Log.e(LOGCAT, e.getMessage());
+			Log.e(LOGCAT, log(e.getMessage(), "buildSession Exception"));
 		}
 		AppKeyPair appKeyPair = new AppKeyPair(MoneyManagerApplication.DROPBOX_APP_KEY, secret);
 	    AndroidAuthSession session;
@@ -444,7 +444,7 @@ public class DropboxHelper {
 			StrictMode.setThreadPolicy(policy);
 			return mDropboxApi.metadata(entry, DROPBOX_FILE_LIMIT, null, false, null);
 		} catch (DropboxException e) {
-			if (BuildConfig.DEBUG) Log.e(LOGCAT, !TextUtils.isEmpty(e.getMessage()) ? e.getMessage() : "getEntry failed!");
+			if (BuildConfig.DEBUG) Log.e(LOGCAT, log(e.getMessage(), "getEntry failed!"));
 			return null;
 		}
 	}
@@ -477,7 +477,7 @@ public class DropboxHelper {
 					if (!folder.isDir) return null;
 					return folder.contents;
 				} catch (DropboxException e) {
-					Log.e(LOGCAT, e.getMessage());
+					Log.e(LOGCAT, log(e.getMessage(), "getEntries exxception"));
 				}
 				
 				return null;
@@ -498,7 +498,7 @@ public class DropboxHelper {
 			FileOutputStream fos = new FileOutputStream(localFile);
 			mDropboxApi.getFile(dropboxFile.path, null, fos, progressListener);
 		} catch (Exception e) {
-			Log.e(LOGCAT, !TextUtils.isEmpty(e.getMessage()) ? e.getMessage() : "Download from dropbox failed!");
+			Log.e(LOGCAT, log(e.getMessage(), "download exception"));
 			return false;
 		}
 		setDateLastModified(dropboxFile.fileName(), RESTUtility.parseDate(dropboxFile.modified));
@@ -521,7 +521,7 @@ public class DropboxHelper {
 				}
 			}
 		} catch (Exception e) {
-			Log.e(LOGCAT, e.getMessage());
+			Log.e(LOGCAT, log(e.getMessage(), "Upload exception"));
 			return false;
 		}
 		return true;
@@ -549,7 +549,7 @@ public class DropboxHelper {
 					mFileOutputStream = new FileOutputStream(localFile);
 					mDropboxApi.getFile(dropboxFile.path, null, mFileOutputStream, progressListener);
 				} catch (Exception e) {
-					Log.e(LOGCAT, e.getMessage());
+					Log.e(LOGCAT, log(e.getMessage(), "downloadFileASync exception"));
 					return false;
 				}
 				return true;
@@ -587,7 +587,7 @@ public class DropboxHelper {
 					if (uploadRequest != null)
 						mEntryDropboxFile = uploadRequest.upload();
 				} catch (Exception e) {
-					Log.e(LOGCAT, e.getMessage());
+					Log.e(LOGCAT, log(e.getMessage(), "uploadFileASync exception"));
 					return false;
 				}
 				return true;
@@ -604,5 +604,9 @@ public class DropboxHelper {
 			}
 		};
 		asyncTask.execute();
+	}
+	
+	private String log(String message, String messageIfNull) {
+		return !TextUtils.isEmpty(message) ? message : messageIfNull;
 	}
 }
