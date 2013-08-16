@@ -32,11 +32,23 @@
         android:visible="false" />
     
     <item
+        android:id="@+id/menu_sync_dropbox"
+        android:icon="@drawable/ic_action_dropbox"
+        android:showAsAction="always|withText"
+        android:title="@string/synchronize"/>
+    
+    <item
         android:id="@+id/menu_search_transaction"
         android:icon="?attr/ic_action_search"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="always|withText"
         android:title="@string/search"/>
-
+    
+    <item
+        android:id="@+id/menu_dashboard"
+        android:icon="?attr/ic_action_business"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/dashboard"/>
+    
     <item
         android:id="@+id/menu_export_to_csv"
         android:title="@string/export_data_to_csv"
@@ -70,6 +82,12 @@
             android:id="@+id/menu_reports"
             android:title="@string/menu_reports">
             <menu>
+                <item
+                    android:id="@+id/menu_report_where_money_goes"
+                    android:title="@string/menu_report_where_money_goes"/>
+                <item
+                    android:id="@+id/menu_report_where_money_comes_from"
+                    android:title="@string/menu_report_where_money_comes_from"/>
                 <item
                     android:id="@+id/menu_report_categories"
                     android:title="@string/category"/>

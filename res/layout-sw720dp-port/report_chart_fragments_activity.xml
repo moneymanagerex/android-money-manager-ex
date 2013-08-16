@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/theme_background_color"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/fragmentContent"
+        android:layout_width="336dp"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/fragmentChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/money_margin"
+        android:background="?attr/shape_background_shadow"
+        android:padding="@dimen/money_padding" />
+
+</LinearLayout>

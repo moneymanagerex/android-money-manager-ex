@@ -23,33 +23,52 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
+import android.text.Html;
 import android.util.Log;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.RepeatingTransactionListActivity;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
 
-public class MoneyManagerNotifications {
-	private static final String LOGCAT = MoneyManagerNotifications.class.getSimpleName();
-	private static final int SMALLICON = R.drawable.ic_stat_notification;
+public class RepeatingTransactionNotifications {
+	private static final String LOGCAT = RepeatingTransactionNotifications.class.getSimpleName();
+	private static final int ID_NOTIFICATION = 0x000A;
 	private Context context;
 	
-	public MoneyManagerNotifications(Context context) {
+	public RepeatingTransactionNotifications(Context context) {
 		super();
 		this.context = context;
 	}
 	
 	public void notifyRepeatingTransaction() {
+		// create application
+		MoneyManagerApplication application = new MoneyManagerApplication();
+		application.loadBaseCurrencyId(context);
+		application.loadHashMapCurrency(context);
+		
 		// select data
 		QueryBillDeposits billDeposits = new QueryBillDeposits(context);
 		MoneyManagerOpenHelper databaseHelper = new MoneyManagerOpenHelper(context);
+		
 		if (databaseHelper != null) {
-			Cursor cursor = databaseHelper.getReadableDatabase().rawQuery(billDeposits.getSource() + " AND " + QueryBillDeposits.DAYSLEFT + "<=0", null);
+			Cursor cursor = databaseHelper.getReadableDatabase().rawQuery(billDeposits.getSource() + " AND " + QueryBillDeposits.DAYSLEFT + "<=0 ORDER BY " + QueryBillDeposits.NEXTOCCURRENCEDATE, null);
 			if (cursor != null) {
 				if (cursor.getCount() > 0) {
+					cursor.moveToFirst();
+					NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+					while (!cursor.isAfterLast()) {
+						String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
+						" " + cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)) +
+						": <b>" + application.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getFloat(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
+						// add line
+						inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
+						// move to next row
+						cursor.moveToNext();
+					}
+					
 					NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);			
 					// create pendig intent
 					Intent intent = new Intent(context, RepeatingTransactionListActivity.class);			
@@ -57,19 +76,21 @@ public class MoneyManagerNotifications {
 					// create notification
 					Notification notification = null;
 					try {
-						notification = new NotificationCompat.Builder(context).setAutoCancel(true).setContentIntent(pendingIntent)
-								.setContentTitle(context.getString(R.string.application_name))
-								.setContentText(context.getString(R.string.notification_repeating_transaction_expired))
-								.setSubText(context.getString(R.string.notification_click_to_check_repeating_transaction)).setSmallIcon(SMALLICON).build();
+						notification = new NotificationCompat.Builder(context)
+										   .setAutoCancel(true)
+										   .setContentIntent(pendingIntent)
+										   .setContentTitle(context.getString(R.string.application_name))
+										   .setContentText(context.getString(R.string.notification_repeating_transaction_expired))
+										   .setSubText(context.getString(R.string.notification_click_to_check_repeating_transaction))
+										   .setSmallIcon(R.drawable.ic_stat_notification)
+										   .setTicker(context.getString(R.string.notification_repeating_transaction_expired))
+										   .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+										   .setNumber(cursor.getCount())
+										   .setStyle(inboxStyle)
+										   .build();
 						// notify 
-						if (notification != null) {
-							notification.tickerText = context.getString(R.string.notification_repeating_transaction_expired);
-							notification.vibrate = new long[] {0,100,200,300};
-							notification.defaults |= Notification.DEFAULT_VIBRATE;
-							notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-							//notification.icon = android.R.drawable.stat_sys_warning;
-							notificationManager.notify(0, notification);
-						}
+						notificationManager.cancel(ID_NOTIFICATION);
+						notificationManager.notify(ID_NOTIFICATION, notification);
 					} catch (Exception e) {
 						Log.e(LOGCAT, e.getMessage());
 					}

@@ -22,16 +22,24 @@
 
         <!-- Colors -->
         <item name="theme_background_color">@color/holo_light_darkaction_money_background</item>
+        <item name="holo_blue_color_theme">@color/holo_blue_dark</item>
         <item name="holo_green_color_theme">@color/holo_green_dark</item>
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_light_row_light</item>
+        <!-- AChartEngine Colors -->
+        <item name="theme_axes_color">@color/theme_chart_labels_color</item>
+        <item name="theme_labels_color">@android:color/black</item>
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
+        <item name="ic_action_bargraph">@drawable/ic_action_bargraph_dark</item>
+        <item name="ic_action_business">@drawable/ic_action_business_dark</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
         <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
         <item name="ic_action_folder_open">@drawable/ic_action_folder_open_dark</item>
         <item name="ic_action_list">@drawable/ic_action_list_dark</item>
+        <item name="ic_action_pie_chart">@drawable/ic_action_pie_chart_dark</item>
+        <item name="ic_action_reload">@drawable/ic_action_reload_dark</item>
         <item name="ic_action_search">@drawable/ic_action_search_dark</item>
         <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
@@ -47,17 +55,25 @@
     <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
 
         <!-- Colors -->
-        <item name="theme_background_color">@null</item>
+        <item name="theme_background_color">@android:color/transparent</item>
+        <item name="holo_blue_color_theme">@color/holo_blue_dark</item>
         <item name="holo_green_color_theme">@color/holo_green_dark</item>
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
 		<item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_dark_row_light</item>
+        <!-- AChartEngine Colors -->
+        <item name="theme_axes_color">@android:color/black</item>
+        <item name="theme_labels_color">@color/theme_chart_labels_color</item>
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
+        <item name="ic_action_bargraph">@drawable/ic_action_bargraph_dark</item>
+        <item name="ic_action_business">@drawable/ic_action_business_dark</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
         <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
         <item name="ic_action_folder_open">@drawable/ic_action_folder_open_dark</item>
         <item name="ic_action_list">@drawable/ic_action_list_dark</item>
+        <item name="ic_action_pie_chart">@drawable/ic_action_pie_chart_dark</item>
+        <item name="ic_action_reload">@drawable/ic_action_reload_dark</item>
         <item name="ic_action_search">@drawable/ic_action_search_dark</item>
         <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_dark</item>

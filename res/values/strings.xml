@@ -24,7 +24,7 @@
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
     <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock, ViewPagerIndicator and RobotMediaBilling libraries</string>
     <string name="application_license">Open source licenses</string>
-    <string name="application_build">20130614</string>
+    <string name="application_build">20130816</string>
 
     <!-- database -->
     <string name="db_insert_failed">Insert data failed</string>
@@ -387,4 +387,28 @@
 	<string name="dropbox_download_is_starting">Download from Dropbox is starting. Wait please…</string>
 	<string name="dropbox_upload_is_starting">Upload to Dropbox is starting. Wait please…</string>
 	<!-- 20130606 -->
+	<string name="menu_report_where_money_goes">Where the Money Goes</string>
+	<string name="menu_report_where_money_comes_from">Where the Money Comes From</string>
+	<!-- 20130722 -->
+	<string name="dashclock_extension_summary">Displays the summary of Money Manager Ex for Android</string>
+	<string name="dashclock_extension_summary_all_account">View the summary of each account Money Manager Ex for Android</string>
+	<!-- 20130728 -->
+	<string name="title_check_repeating_transaction">Schedule Check Repeating Transaction Overdue</string>
+	<string name="summary_check_repeating_transaction">Indicate what time of day the application should check if there are repeating transaction overdue (default 08:00)</string>
+	<!-- 20130730 -->
+	<string name="credits">Credits</string>
+	<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>
+	<!-- 20130801 -->
+	<string name="top_withdrawals_last_30_days">Top Withdrawals: Last 30 Days</string>
+	<string name="top_payees_last_30_days">Top Payees: Last 30 Days</string>
+	<string name="transaction_statistics">Transaction Statistics</string>
+	<string name="upcoming_transactions">Upcoming Transactions</string>
+	<string name="quantity">Quantity</string>
+	<string name="dashboard">Dashboard</string>
+	<!-- 20130808 -->
+	<string name="dropbox_database_is_synchronized">The database is synchronized</string>
+	<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>
+	<string name="last3months">Last 3 months</string>
+	<string name="last6months">Last 6 months</string>
+	<!-- 20130816 -->
 </resources>

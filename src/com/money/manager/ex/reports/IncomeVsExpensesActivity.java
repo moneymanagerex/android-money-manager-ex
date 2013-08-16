@@ -31,12 +31,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,8 +63,11 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
 
 public class IncomeVsExpensesActivity extends BaseFragmentActivity {
+	private static final String LOGCAT = IncomeVsExpensesActivity.class.getSimpleName();
+	
 	private static class IncomeVsExpensesAdapter extends CursorAdapter {
 		private LayoutInflater mInflater;
 		
@@ -131,14 +137,13 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			txtYear.setTypeface(null, Typeface.BOLD_ITALIC);
 			TextView txtMonth = (TextView)row.findViewById(R.id.textViewMonth);
 			txtMonth.setText(null);
-			getListView().addFooterView(row);
 			return row;
 		}
 
 		/**
 		 * Add header to ListView
 		 */
-		private void addListViewHeader() {
+		private View addListViewHeader() {
 			TableRow row = (TableRow)View.inflate(getActivity(), R.layout.tablerow_income_vs_expenses, null);
 			int[] ids = new int[] {R.id.textViewYear, R.id.textViewMonth, R.id.textViewIncome, R.id.textViewExpenses, R.id.textViewDifference};
 			for(int id : ids) {
@@ -147,6 +152,8 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 				textView.setSingleLine(true);
 			}
 			getListView().addHeaderView(row);
+			
+			return row;
 		}
 
 		/**
@@ -187,11 +194,18 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			} else {
 				mCheckedItem.put(Calendar.getInstance().get(Calendar.YEAR), true);
 			}
+			// set home button fase
+			getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			// set listview
 			setEmptyText(getString(R.string.no_data));
 			// add header and footer
-			addListViewHeader();
-			mFooterListView = addListViewFooter();
+			try { 
+				setListAdapter(null);
+				addListViewHeader();
+				mFooterListView = addListViewFooter();
+			} catch (Exception e) {
+				Log.e(LOGCAT, e.getMessage());
+			}
 			// create adapter
 			IncomeVsExpensesAdapter adapter = new IncomeVsExpensesAdapter(getActivity(), null);
 			setListAdapter(adapter);
@@ -242,11 +256,18 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 				cursor.close();
 			}
 			helper.close();
+			// chart item
+			MenuItem itemChart = menu.findItem(R.id.menu_chart);
+			if (itemChart != null) {
+				itemChart.setVisible(!((IncomeVsExpensesActivity)getActivity()).mIsDualPanel);
+			}
 		}
+		
 		@Override
 		public void onLoaderReset(Loader<Cursor> loader) {
 			((IncomeVsExpensesAdapter)getListAdapter()).swapCursor(null);
 		}
+		
 		@Override
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			switch (loader.getId()) {
@@ -267,14 +288,32 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 						data.moveToNext();
 					}
 					updateListViewFooter(mFooterListView, income, expenses);
+					if (data.getCount() > 0) {
+						getListView().removeFooterView(mFooterListView);
+						getListView().addFooterView(mFooterListView);
+					}
+						
+				}
+				if (((IncomeVsExpensesActivity)getActivity()).mIsDualPanel) {
+					Handler handler = new Handler();
+					handler.postDelayed(new Runnable() {
+						
+						@Override
+						public void run() {
+							showChart();
+						}
+					}, 1 * 1000);
 				}
 				break;
 			}
 		}
+		
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 			if (item.getItemId() == R.id.menu_sort) {
 				showDialogSortMonth();
+			} else if (item.getItemId() == R.id.menu_chart) {
+				showChart();
 			} else {
 				item.setChecked(!item.isChecked());
 				// put or remove map key
@@ -349,11 +388,13 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			}
 			super.onPrepareOptionsMenu(menu);
 		}
+		
 		@Override
 		public void onSaveInstanceState(Bundle outState) {
 			super.onSaveInstanceState(outState);
 			outState.putIntArray(KEY_BUNDLE_YEAR, hashMap2IntArray(mCheckedItem));
 		}
+		
 		/**
 		 * Start loader with arrays year
 		 * @param years
@@ -394,20 +435,86 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 				txtDifference.setTextColor(getResources().getColor(core.resolveIdAttribute(R.attr.holo_green_color_theme)));
 			}
 		}
+		
+		private void showChart() {
+			// take a adapter and cursor
+			IncomeVsExpensesAdapter adapter = ((IncomeVsExpensesAdapter)getListAdapter());
+			if (adapter == null) return;
+			Cursor cursor = adapter.getCursor();
+			if (cursor == null) return;
+			// move to first
+			if (!cursor.moveToFirst()) return;
+			// arrays
+			double[] incomes = new double[cursor.getCount()];
+			double[] expenses = new double[cursor.getCount()];
+			String[] titles = new String[cursor.getCount()];
+			// cycle cursor
+			while (!cursor.isAfterLast()) {
+				// incomes and expenses
+				incomes[cursor.getPosition()] = cursor.getFloat(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+				expenses[cursor.getPosition()] = Math.abs(cursor.getFloat(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses)));
+				// titles
+				int year = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Year));
+				int month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));
+				// format month
+				Calendar calendar = Calendar.getInstance();
+				calendar.set(year, month - 1, 1);
+				// titles
+				titles[cursor.getPosition()] = Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime());
+				// move to next
+				cursor.moveToNext();
+			}
+			//compose bundle for arguments
+			Bundle args = new Bundle();
+			args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES, expenses);
+			args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES, incomes);
+			args.putStringArray(IncomeVsExpensesChartFragment.KEY_XTITLES, titles);
+			//get fragment manager
+			FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+			if (fragmentManager != null) {
+				IncomeVsExpensesChartFragment fragment;
+				fragment = (IncomeVsExpensesChartFragment)fragmentManager.findFragmentByTag(IncomeVsExpensesChartFragment.class.getSimpleName());
+				if (fragment == null) {
+					fragment = new IncomeVsExpensesChartFragment();
+				}
+				fragment.setChartArguments(args);
+				fragment.setDisplayHomeAsUpEnabled(true);
+				
+				if (fragment.isVisible()) fragment.onResume();
+				
+				FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+				if (((IncomeVsExpensesActivity)getActivity()).mIsDualPanel) {
+					fragmentTransaction.replace(R.id.fragmentChart, fragment, IncomeVsExpensesChartFragment.class.getSimpleName());
+				} else {
+					fragmentTransaction.replace(R.id.fragmentContent, fragment, IncomeVsExpensesChartFragment.class.getSimpleName());
+					fragmentTransaction.addToBackStack(null);
+				}
+				fragmentTransaction.commit();
+			}
+		}
 	}
+	
 	private IncomeVsExpensesListFragment listFragment = new IncomeVsExpensesListFragment();
 	private static MoneyManagerApplication application;
+	public boolean mIsDualPanel = false;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		setContentView(R.layout.report_chart_fragments_activity);
 		// set actionbar
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
+		// check if is dual panel
+		mIsDualPanel = findViewById(R.id.fragmentChart) != null;
+		
 		FragmentManager fm = getSupportFragmentManager();
 		// get application
 		application = (MoneyManagerApplication)getApplication();
 		// attach fragment activity
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment, IncomeVsExpensesListFragment.class.getSimpleName()).commit();
+        if (fm.findFragmentById(R.id.fragmentContent) == null) {
+            fm.beginTransaction().replace(R.id.fragmentContent, listFragment, IncomeVsExpensesListFragment.class.getSimpleName()).commit();
         }
 	}
 }

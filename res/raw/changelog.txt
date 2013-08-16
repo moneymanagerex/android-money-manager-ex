@@ -1,3 +1,15 @@
+<b> Version 1.3.0b3 </b>
+- New Report: Where the money goes
+- New Report: Where the money comes from
+- All reports adding a chart
+- Added in the home, Dashboard such as MoneyManagerEx for PC
+- Fixed: solved the problem of opening files mmb from file browser
+- Added two extensions that can be used in the application DashClock of Roman Nurik
+- Added MultiWindow support for Samsung devices 
+- Added language: Portoguese (thanks Ricardo!) 
+- From this version, the notification of repeating transactions overdue will no longer be displayed when you open the application, but at a specific time that you have set
+- Resolution minor bugs
+
 <b> Version 1.2.5 </b>
 - Solved: fixed the amount of the export CSV file
 

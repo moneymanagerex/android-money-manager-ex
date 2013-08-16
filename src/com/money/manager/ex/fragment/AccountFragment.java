@@ -270,6 +270,10 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
 			selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
 			selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+		} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
+			selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
+		} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
+			selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
 		} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
 			selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
 		}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex">
+    
+	<com.money.manager.ex.view.RobotoTextView
+	    android:id="@+id/textViewTitle"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center" />
+	
+	<TableLayout 
+	    android:id="@+id/tableLayoutSummary"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:padding="4dp">
+	    
+	</TableLayout>
+</LinearLayout>

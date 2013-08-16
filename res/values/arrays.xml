@@ -105,6 +105,8 @@
         <item>@string/last7days</item>
         <item>@string/last15days</item>
         <item>@string/current_month</item>
+        <item>@string/last3months</item>
+        <item>@string/last6months</item>
         <item>@string/current_year</item>
     </string-array>
 
@@ -183,6 +185,14 @@
         <item>default</item>
         <item>medium</item>
         <item>large</item>
+    </string-array>
+    
+    <!-- Navigation mode DashboardFragment -->
+    <string-array name="navigation_mode_dashboard">
+        <item>@string/income_vs_expenses_current_month</item>
+        <item>@string/top_withdrawals_last_30_days</item>
+        <item>@string/top_payees_last_30_days</item>
+        <item>@string/upcoming_transactions</item>
     </string-array>
     
     <!-- Define currency value -->

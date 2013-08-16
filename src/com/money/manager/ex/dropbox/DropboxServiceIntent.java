@@ -10,6 +10,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Message;
+import android.os.Messenger;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,11 +32,20 @@ public class DropboxServiceIntent extends IntentService {
 	// intent extra
 	public static final String INTENT_EXTRA_LOCAL_FILE = "DropboxServiceIntent:LocalFile";
 	public static final String INTENT_EXTRA_REMOTE_FILE = "DropboxServiceIntent:RemoteFile";
+	// messenger
+	public static final String INTENT_EXTRA_MESSENGER = "com.money.manager.ex.dropbox.DropboxServiceIntent.MESSENGER";
+	public static final Integer INTENT_EXTRA_MESSENGER_NOT_CHANGE = 0x000;
+	public static final Integer INTENT_EXTRA_MESSENGER_DOWNLOAD = 0x000A;
+	public static final Integer INTENT_EXTRA_MESSENGER_UPLOAD = 0x000B;
+	public static final Integer INTENT_EXTRA_MESSENGER_START_DOWNLOAD = 0x000C;
+	public static final Integer INTENT_EXTRA_MESSENGER_START_UPLOAD = 0x000D;
 	// id notification
 	public static final int NOTIFICATION_DROPBOX_PROGRESS = 0xCCCC;
 	public static final int NOTIFICATION_DROPBOX_OPEN_FILE = 0xDDDD;
 	// instance dropbox
 	private DropboxHelper mDropboxHelper; 
+	// messenger
+	private Messenger mOutMessenger;
 	
 	public DropboxServiceIntent() {
 		super("com.money.manager.ex.dropbox.DropboxServiceIntent");
@@ -43,6 +54,10 @@ public class DropboxServiceIntent extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		if (BuildConfig.DEBUG) Log.d(LOGCAT, intent.toString());
+		// check if exist a messenger
+		if (intent.getExtras().containsKey(INTENT_EXTRA_MESSENGER)) {
+			mOutMessenger = intent.getParcelableExtra(INTENT_EXTRA_MESSENGER);
+		}
 		// check if device is online
 		Core core = new Core(getApplicationContext());
 		if (!core.isOnline()) {
@@ -106,6 +121,9 @@ public class DropboxServiceIntent extends IntentService {
 			uploadFile(localFile, remoteFile);
 		} else {
 			if (BuildConfig.DEBUG) Log.d(LOGCAT, "The local and remote files are the same");
+			Message message = new Message();
+			message.what = INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+			sendMessenger(message);
 		}
 	}
 
@@ -149,10 +167,21 @@ public class DropboxServiceIntent extends IntentService {
 			}
 		};
 		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.path);
-		//mDropboxHelper.downloadFile(remoteFile, localFile, onDownloadUpload, listener);
+		
+		//start
 		onDownloadUpload.onPreExecute();
+		//send message to the database download staring
+		Message messageStart = new Message();
+		messageStart.what = INTENT_EXTRA_MESSENGER_START_DOWNLOAD;
+		sendMessenger(messageStart);
+		//execute
 		boolean ret = mDropboxHelper.download(remoteFile, localFile, listener);
+		//complete
 		onDownloadUpload.onPostExecute(ret);
+		//send message to the database download complete
+		Message messageComplete = new Message();
+		messageComplete.what = INTENT_EXTRA_MESSENGER_DOWNLOAD;
+		sendMessenger(messageComplete);
 	}
 	
 	public void uploadFile(final File localFile, final Entry remoteFile) {
@@ -195,10 +224,32 @@ public class DropboxServiceIntent extends IntentService {
 			}
 		};
 		if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.path);
-		//mDropboxHelper.uploadFile(remoteFile.path, localFile, onDownloadUpload, listener);
+		//start
 		onDownloadUpload.onPreExecute();
+		//send message to the database upload staring
+		Message messageStart = new Message();
+		messageStart.what = INTENT_EXTRA_MESSENGER_START_UPLOAD;
+		sendMessenger(messageStart);
+		//execute
 		boolean ret = mDropboxHelper.upload(remoteFile.path, localFile, listener);
+		//complete
 		onDownloadUpload.onPostExecute(ret);
+		///send message to the database upload complete
+		Message messageComplete = new Message();
+		messageComplete.what = INTENT_EXTRA_MESSENGER_UPLOAD;
+		sendMessenger(messageComplete);
 	}
 	
+	
+	public boolean sendMessenger(Message msg) {
+		if (mOutMessenger != null) {
+			try {
+				mOutMessenger.send(msg);
+			} catch (Exception e) {
+				Log.e(LOGCAT, e.getMessage());
+				return false;
+			}
+		}
+		return true;
+	}
 }

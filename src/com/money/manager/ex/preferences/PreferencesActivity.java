@@ -25,7 +25,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -54,6 +53,7 @@ import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -670,32 +670,12 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 	}
 	
 	public void onCreateScreenPreferenceInfo() { 
-		//version name code etc...
-		try {
-			PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
-			if ((Preference)findPreference(PreferencesConstant.PREF_VERSION_NAME) != null) {
-				((Preference)findPreference(PreferencesConstant.PREF_VERSION_NAME)).setSummary(info.versionName);
-			}
-			if ((Preference)findPreference(PreferencesConstant.PREF_VERSION_CODE) != null) {
-				((Preference)findPreference(PreferencesConstant.PREF_VERSION_CODE)).setSummary(Integer.toString(info.versionCode));
-			}
-			if ((Preference)findPreference(PreferencesConstant.PREF_VERSION_DATE) != null) {
-				((Preference)findPreference(PreferencesConstant.PREF_VERSION_DATE)).setSummary(getString(R.string.application_build));
-			}
-		} catch (Exception e) {
-			Log.e(LOGCAT, e.getMessage());
-		}
-		
-		// dropbox sync mode
-		final Preference lstDropboxMode = (ListPreference) findPreference(PreferencesConstant.PREF_DROPBOX_MODE);
-		if (lstDropboxMode != null) {
-			lstDropboxMode.setSummary(application.getDropboxSyncMode());
-			lstDropboxMode.setDefaultValue(getResources().getStringArray(R.array.dropbox_sync_item)[0]);
-			// imposto un listener sulla modifica
-			lstDropboxMode.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+		if (findPreference(PreferencesConstant.PREF_VERSION_NAME) != null) {
+			findPreference(PreferencesConstant.PREF_VERSION_NAME).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				
 				@Override
-				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					lstDropboxMode.setSummary((CharSequence) newValue);
+				public boolean onPreferenceClick(Preference preference) {
+					startActivity(new Intent(PreferencesActivity.this, AboutActivity.class));
 					return true;
 				}
 			});

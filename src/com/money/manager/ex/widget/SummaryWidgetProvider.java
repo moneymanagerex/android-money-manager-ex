@@ -23,6 +23,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.money.manager.ex.MainActivity;
@@ -63,7 +64,11 @@ public class SummaryWidgetProvider extends AppWidgetProvider {
 		    remoteViews.setOnClickPendingIntent(R.id.imageButtonRefresh, pendingRefresh);
 		    
 			// update widget
-			appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+			try {
+				appWidgetManager.updateAppWidget(allWidgetIds[i], remoteViews);
+			} catch (Exception e) {
+				Log.e(SummaryWidgetProvider.class.getSimpleName(), e.getMessage());
+			}
 		}
 	}
 }

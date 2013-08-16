@@ -697,9 +697,7 @@ public class MoneyManagerApplication extends Application {
 		queryBuilder.setTables(tableCurrency.getSource());
 		
 		// get cursor
-		Cursor cursorCurrency = queryBuilder.query(
-				openHelper.getReadableDatabase(),
-				tableCurrency.getAllColumns(), null, null, null, null, null);
+		Cursor cursorCurrency = queryBuilder.query(openHelper.getReadableDatabase(), tableCurrency.getAllColumns(), null, null, null, null, null);
 		
 		// clear hashmap for new populate
 		mMapCurrency.clear();

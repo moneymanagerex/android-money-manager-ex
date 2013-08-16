@@ -183,7 +183,7 @@ public class HomeFragment extends Fragment implements
 				}
 				// show account clicked
 				if (activity != null && activity instanceof MainActivity) {
-					activity.showFragment(position, accountId);
+					activity.showFragmentAccount(position, accountId);
 				}
 			}
 		});

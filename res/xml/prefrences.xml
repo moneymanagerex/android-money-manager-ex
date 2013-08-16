@@ -30,7 +30,7 @@
         <ListPreference
             android:key="@string/pref_base_currency"
             android:title="@string/base_currency" />
-
+ 
         <EditTextPreference
             android:key="@string/pref_financial_year_startdate"
             android:title="@string/financial_year_start_day" />
@@ -38,6 +38,13 @@
         <ListPreference
             android:key="@string/pref_financial_year_startmonth"
             android:title="@string/financial_year_start_month" />
+        
+        <com.money.manager.ex.preferences.TimePreference
+            android:key="@string/pref_repeating_transaction_check_time"
+            android:title="@string/title_check_repeating_transaction" 
+            android:summary="@string/summary_check_repeating_transaction" 
+            android:defaultValue="08:00" />
+        
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/preferences_dispaly" >
         <CheckBoxPreference
@@ -96,11 +103,9 @@
     <PreferenceScreen android:title="@string/database">
         <PreferenceScreen
             android:key="@string/pref_database_path"
-            android:selectable="false"
             android:title="@string/path" />
         <PreferenceScreen
             android:key="@string/pref_sqlite_version"
-            android:selectable="false"
             android:title="@string/android_sqlite_vesion" />
         <PreferenceScreen
             android:key="@string/pref_database_backup"
@@ -111,7 +116,6 @@
         android:title="@string/dropbox" >
         <Preference
             android:key="@string/pref_dropbox_link"
-            android:selectable="false"
             android:title="@string/dropbox_link" />
         <Preference
             android:dependency="@string/pref_dropbox_unlink"
@@ -145,25 +149,12 @@
 
         <Preference
             android:key="@string/pref_dropbox_unlink"
-            android:selectable="false"
             android:title="@string/dropbox_unlink" />
     </PreferenceScreen>
     <PreferenceScreen
         android:key="@string/pref_donate"
         android:title="@string/donate" />
-    <PreferenceScreen android:title="@string/preferences_info_application" >
-        <Preference
-            android:key="@string/pref_version_name"
-            android:selectable="false"
-            android:title="@string/version" />
-        <Preference
-            android:key="@string/pref_version_code"
-            android:selectable="false"
-            android:title="@string/build" />
-        <Preference
-            android:key="@string/pref_version_date"
-            android:selectable="false"
-            android:title="@string/release_date" />
-    </PreferenceScreen>
+    <PreferenceScreen android:title="@string/preferences_info_application" 
+        android:key="@string/pref_version_name"/>
 
 </PreferenceScreen>

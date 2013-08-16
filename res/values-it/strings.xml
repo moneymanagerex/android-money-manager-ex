@@ -384,4 +384,29 @@
 	<!-- 20130528 -->
 	<string name="dropbox_download_is_starting">Download da Dropbox è iniziato. Attendere prego…</string>
 	<string name="dropbox_upload_is_starting">Upload su Dropbox è iniziato. Attendere prego…</string>
+	<!-- 20130606 -->
+	<string name="menu_report_where_money_goes">Dove va il denaro</string>
+	<string name="menu_report_where_money_comes_from">Da dove arriva il denaro</string>
+	<!-- 20130722 -->
+	<string name="dashclock_extension_summary">Visualizza il saldo di Money Manager Ex for Android</string>
+	<string name="dashclock_extension_summary_all_account">Visualizza il saldo per ogni conto di Money Manager Ex for Android</string>
+	<!-- 20130728 -->
+	<string name="title_check_repeating_transaction">Pianifica il Controllo delle Operazioni Riccorenti scadute</string>
+	<string name="summary_check_repeating_transaction">Indicare l\'orario del giorno nel quale l\'applicazione controlla se ci sono operazioni ricorrenti scadute (default 08:00)</string>
+	<!-- 20130730 -->
+	<string name="credits">Ringraziamento</string>
+	<string name="about_thirdsparty_credits_title">Ringraziamenti speciali alle librerie di 3rd parti utilizzate</string>
+	<!-- 20130801 -->
+	<string name="top_withdrawals_last_30_days">Top Prelievi: Ultimi 30 giorni</string>
+	<string name="top_payees_last_30_days">Top Beneficiari: Ultimi 30 giorni</string>
+	<string name="transaction_statistics">Statistiche Operazioni</string>
+	<string name="upcoming_transactions">Operazioni Imminenti</string>
+	<string name="quantity">Quantità</string>
+	<string name="dashboard">Dashboard</string>
+	<!-- 20130808 -->
+	<string name="dropbox_database_is_synchronized">Il database è sincronizzato</string>
+	<string name="dropbox_application_restart_between_seconds">Si è scaricato una versione più recente del database da Dropbox. Tra il %1$d secondi, l\'applicazione ricaricherà i nuovi dati</string>
+	<string name="last3months">Ultimi 3 mesi</string>
+	<string name="last6months">Ultimi 6 mesi</string>
+	<!-- 20130816 -->
 </resources>

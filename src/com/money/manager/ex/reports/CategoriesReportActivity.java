@@ -17,6 +17,8 @@
  ******************************************************************************/
 package com.money.manager.ex.reports;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,7 +26,9 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
@@ -41,11 +45,14 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.chart.ValuePieChart;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
+import com.money.manager.ex.fragment.PieChartFragment;
 
 public class CategoriesReportActivity extends BaseFragmentActivity {
 	private static class CategoriesReportAdapter extends CursorAdapter {
@@ -83,12 +90,13 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 		}
 	}
 	
-	public static class PayeeReportFragment extends BaseReportFragment {
+	public static class CategoriesReportFragment extends BaseReportFragment {
 		private LinearLayout mHeaderListView, mFooterListView;
 		private static final int GROUP_ID_CATEGORY = 0xFFFF;
+		
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
-			
+			setListAdapter(null);
 			//create header view
 			mHeaderListView = (LinearLayout)addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
 			TextView txtColumn1 = (TextView)mHeaderListView.findViewById(R.id.textViewColumn1);
@@ -109,8 +117,8 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			txtColumn1.setTypeface(null, Typeface.BOLD_ITALIC);
 			txtColumn2.setText(R.string.total);
 			txtColumn2.setTypeface(null, Typeface.BOLD_ITALIC);
-			//add to listview
-			getListView().addFooterView(mFooterListView);
+			//add to listview --> move to load finished
+			//getListView().addFooterView(mFooterListView);
 			//set adapter
 			CategoriesReportAdapter adapter = new CategoriesReportAdapter(getActivity(), null);
 			setListAdapter(adapter);
@@ -121,8 +129,10 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 		@Override
 		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
-			MenuItem itemOption = menu.findItem(R.id.menu_option1);
+			
 			Core core = new Core(getActivity());
+			
+			MenuItem itemOption = menu.findItem(R.id.menu_option1);
 			if (itemOption != null) {
 				itemOption.setVisible(true);
 				itemOption.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
@@ -143,6 +153,12 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 					}
 				}
 			}
+			// pie chart
+			MenuItem itemChart = menu.findItem(R.id.menu_chart);
+			if (itemChart != null) {
+				itemChart.setVisible(!(((CategoriesReportActivity)getActivity()).mIsDualPanel));
+				itemChart.setIcon(core.resolveIdAttribute(R.attr.ic_action_pie_chart));
+			}
 		}
 		
 		@Override
@@ -159,13 +175,31 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 					}
 					TextView txtColumn2 = (TextView)mFooterListView.findViewById(R.id.textViewColumn2);
 					txtColumn2.setText(application.getBaseCurrencyFormatted(totalAmount));
+					// soved bug chart
+					if (data.getCount() > 0) {
+						getListView().removeFooterView(mFooterListView);
+						getListView().addFooterView(mFooterListView);
+					}
+				}
+				if (((CategoriesReportActivity)getActivity()).mIsDualPanel) {
+					Handler handler = new Handler();
+					handler.postDelayed(new Runnable() {
+						
+						@Override
+						public void run() {
+							showChart();
+							
+						}
+					}, 1000);
 				}
 			}
 		}
 		
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
-			if (item.getItemId() < 0) { // category
+			if (item.getItemId() == R.id.menu_chart) {
+				showChart();
+			} else if (item.getItemId() < 0) { // category
 				String whereClause = getWhereClause();
 				if (!TextUtils.isEmpty(whereClause))
 					whereClause += " AND ";
@@ -194,6 +228,13 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			}
 			String groupBy = ViewMobileData.CategID + ", " + ViewMobileData.Category + ", " + ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
 			String having = null;
+			if (!TextUtils.isEmpty(((CategoriesReportActivity)getActivity()).mFilter)) {
+				if ("Withdrawal".equalsIgnoreCase(((CategoriesReportActivity)getActivity()).mFilter)) {
+					having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") < 0";
+				} else {
+					having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") > 0";
+				}	
+			}
 			String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
 			String limit = null;
 			//compose builder
@@ -206,22 +247,89 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			}
 		}
 		
+		public void showChart() {
+			CategoriesReportAdapter adapter = (CategoriesReportAdapter)getListAdapter();
+			if (adapter == null) return;
+			Cursor cursor = adapter.getCursor();
+			if (cursor == null) return;
+			// move first record
+			if (!cursor.moveToFirst()) return;
+			// create arraylist
+			ArrayList<ValuePieChart> arrayList = new ArrayList<ValuePieChart>();
+			// process cursor
+			while (!cursor.isAfterLast()) {
+				ValuePieChart item = new ValuePieChart();
+				String category = cursor.getString(cursor.getColumnIndex(ViewMobileData.Category));
+				if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
+					category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
+				}
+				// total
+				float total = Math.abs(cursor.getFloat(cursor.getColumnIndex("TOTAL"))); 
+				item.setCategory(category);
+				item.setValue(total);
+				item.setValueFormatted(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
+				// add element
+				arrayList.add(item);
+				// move to next recordd
+				cursor.moveToNext();
+			}
+			Bundle args = new Bundle();
+			args.putSerializable(PieChartFragment.KEY_CATEGORIES_VALUES, arrayList);
+			//get fragment manager
+			FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+			if (fragmentManager != null) {
+				PieChartFragment fragment;
+				fragment = (PieChartFragment)fragmentManager.findFragmentByTag(IncomeVsExpensesChartFragment.class.getSimpleName());
+				if (fragment == null) {
+					fragment = new PieChartFragment();
+				}
+				fragment.setChartArguments(args);
+				fragment.setDisplayHomeAsUpEnabled(true);
+				
+				if (fragment.isVisible()) fragment.onResume();
+				
+				FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+				if (((CategoriesReportActivity)getActivity()).mIsDualPanel) {
+					fragmentTransaction.replace(R.id.fragmentChart, fragment, PieChartFragment.class.getSimpleName());
+				} else {
+					fragmentTransaction.replace(R.id.fragmentContent, fragment, PieChartFragment.class.getSimpleName());
+					fragmentTransaction.addToBackStack(null);
+				}
+				fragmentTransaction.commit();
+			}
+		}	
 	}
 	
-	static MoneyManagerApplication application;
+	public static final String REPORT_FILTERS = "CategoriesReportActivity:Filter";
+	public static final String REPORT_TITLE = "CategoriesReportActivity:Title";
+	
+	private static MoneyManagerApplication application;
+	public boolean mIsDualPanel = false;
+	public String mFilter = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if (getIntent() != null) {
+			if (!TextUtils.isEmpty(getIntent().getStringExtra(REPORT_FILTERS)))
+				mFilter = getIntent().getStringExtra(REPORT_FILTERS);
+			if (!TextUtils.isEmpty(getIntent().getStringExtra(REPORT_TITLE)))
+				setTitle(getIntent().getStringExtra(REPORT_TITLE));
+		}
+		
+		setContentView(R.layout.report_chart_fragments_activity);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		//check if is dual panel
+		mIsDualPanel = findViewById(R.id.fragmentChart) != null;
 		//reference to application
 		application = (MoneyManagerApplication)getApplication();
 		//create a fragment
-		PayeeReportFragment fragment = new PayeeReportFragment();
+		CategoriesReportFragment fragment = new CategoriesReportFragment();
 		FragmentManager fm = getSupportFragmentManager();
 		//insert fragment
-		if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, fragment, PayeeReportFragment.class.getSimpleName()).commit();
+		if (fm.findFragmentById(R.id.fragmentContent) == null) {
+            fm.beginTransaction().add(R.id.fragmentContent, fragment, CategoriesReportFragment.class.getSimpleName()).commit();
         }
 	}
 }

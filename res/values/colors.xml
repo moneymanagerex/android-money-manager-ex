@@ -67,4 +67,6 @@
     <color name="holo_light_darkaction_money_background">#EDEEF1</color>
     <color name="money_background_dark">#F3F4F5</color>
     <color name="money_background_button">#EEEEEE</color>
+    <!-- AChartEngine Colors -->
+    <color name="theme_chart_labels_color">#CCCCCC</color>
 </resources>
