@@ -1,9 +1,10 @@
-<b> Version 1.3.0b3 </b>
+<b> Version 1.3.0 </b>
 - Nuovo report: Dove va il denaro
 - Nuovo report: Da dove arriva il denaro
 - Per tutti i report aggiunta la visualizzazione grafica
 - Aggiunta nella home, Dashboard come MoneyManagerEx per PC
 - Risolto il problema di apertura dei file da mmb da file browser
+- Aggiunta una nuova voce di menù per la sincronizzazione con Dropbox
 - Aggiunte due estensioni utilizzabili nell'applicazione DashClock di Roman Nurik
 - Aggiunto il supporto MultiWindow per i dispositivi Samsung
 - Da questa versione la notifica delle operazioni riccorenti scadute non verrà più visualizzata all'apertura dell'applicazione, ma ad un specifico orario da te specificato

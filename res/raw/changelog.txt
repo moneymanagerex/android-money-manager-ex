@@ -1,9 +1,10 @@
-<b> Version 1.3.0b3 </b>
+<b> Version 1.3.0 </b>
 - New Report: Where the money goes
 - New Report: Where the money comes from
 - All reports adding a chart
 - Added in the home, Dashboard such as MoneyManagerEx for PC
 - Fixed: solved the problem of opening files mmb from file browser
+- Added a new item in the main menu to sync with Dropbox
 - Added two extensions that can be used in the application DashClock of Roman Nurik
 - Added MultiWindow support for Samsung devices 
 - Added language: Portoguese (thanks Ricardo!) 
