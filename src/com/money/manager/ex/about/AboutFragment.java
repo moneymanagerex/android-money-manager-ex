@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.money.manager.ex.DonateActivity;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 
 public class AboutFragment extends SherlockFragment {
@@ -47,7 +46,7 @@ public class AboutFragment extends SherlockFragment {
 		try {
 			String version = getSherlockActivity().getPackageManager().getPackageInfo(getSherlockActivity().getPackageName(), 0).versionName;
 			txtVersion.setText(txtVersion.getText() + " " + version);
-			String build = getString(R.string.application_build) + "." + 
+			String build = getString(R.string.application_build) + "r" + 
 					 	   getSherlockActivity().getPackageManager().getPackageInfo(getSherlockActivity().getPackageName(), 0).versionCode;
 			
 			txtBuild.setText(txtBuild.getText() + " " + build);
@@ -55,14 +54,14 @@ public class AboutFragment extends SherlockFragment {
 			Log.e(LOGCAT, e.getMessage());
 		}
 		// text changelog
-		TextView txtChangeLog = (TextView)view.findViewById(R.id.textViewChangeLog);
+		/*TextView txtChangeLog = (TextView)view.findViewById(R.id.textViewChangeLog);
 		txtChangeLog.setText(Html.fromHtml("<u>" + getString(R.string.changelog) + "</u>"));
 		txtChangeLog.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				MoneyManagerApplication.showChangeLog(getSherlockActivity(), true);
 			}
-		});
+		});*/
 		// donate
 		Button buttonDonate = (Button)view.findViewById(R.id.buttonDonateInApp);
 		buttonDonate.setOnClickListener(new OnClickListener() {		

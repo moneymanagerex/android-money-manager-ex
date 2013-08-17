@@ -531,7 +531,7 @@ public class MainActivity extends BaseFragmentActivity {
 		// dropbox sync
 		MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
 		if (itemDropbox != null) {
-			itemDropbox.setVisible(mDropboxHelper.isLinked());
+			itemDropbox.setVisible(mDropboxHelper != null && mDropboxHelper.isLinked());
 		}
 		// check if it has already made ​​a donation
 		MenuItem itemDonate = menu.findItem(R.id.menu_donate);

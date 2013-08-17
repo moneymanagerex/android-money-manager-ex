@@ -49,6 +49,9 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -222,7 +225,7 @@ public class MoneyManagerApplication extends Application {
 			//get text changelog
 			String changelog = getRawAsString(context, R.raw.changelog);
 			//check complete changelog
-			if (!complete) {
+			/*if (!complete) {
 				final String ESCAPE = "<b> Version";
 				int end = changelog.indexOf(ESCAPE, changelog.indexOf(ESCAPE) + ESCAPE.length());
 				changelog = changelog.substring(0, end);
@@ -230,13 +233,17 @@ public class MoneyManagerApplication extends Application {
 			changelog = "<small>" + changelog.replace("\n", "<br>") + "</small>";
 			while (changelog.indexOf("<br></small>") >= 0) {
 				changelog = changelog.replace("<br></small>", "</small>");
-			}
-				
+			}*/
+			//layout
+			View view = LayoutInflater.from(context).inflate(R.layout.changelog, null);
+			WebView webView = (WebView) view.findViewById(R.id.changelogcontent);
+			webView.loadData(changelog, "text/html", "UTF-8");
 			//create dialog
 			AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
 			showDialog.setCancelable(false);
 			showDialog.setTitle(R.string.changelog);
-			showDialog.setMessage(Html.fromHtml(changelog));
+			//showDialog.setMessage(Html.fromHtml(changelog));
+			showDialog.setView(view);
 			showDialog.setNeutralButton(android.R.string.ok,
 					new DialogInterface.OnClickListener() {
 						@Override

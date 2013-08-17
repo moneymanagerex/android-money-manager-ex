@@ -100,18 +100,6 @@
             android:layout_marginTop="5dp"
             android:text="@string/tell_us_a_problem" />
 
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewChangeLog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/changelog"
-            android:textColor="@android:color/holo_blue_light" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -133,6 +121,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/application_credits"
             android:visibility="gone" />
 

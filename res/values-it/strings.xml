@@ -394,7 +394,7 @@
 	<string name="title_check_repeating_transaction">Pianifica il Controllo delle Operazioni Riccorenti scadute</string>
 	<string name="summary_check_repeating_transaction">Indicare l\'orario del giorno nel quale l\'applicazione controlla se ci sono operazioni ricorrenti scadute (default 08:00)</string>
 	<!-- 20130730 -->
-	<string name="credits">Ringraziamento</string>
+	<string name="credits">Ringraziamenti</string>
 	<string name="about_thirdsparty_credits_title">Ringraziamenti speciali alle librerie di 3rd parti utilizzate</string>
 	<!-- 20130801 -->
 	<string name="top_withdrawals_last_30_days">Top Prelievi: Ultimi 30 giorni</string>

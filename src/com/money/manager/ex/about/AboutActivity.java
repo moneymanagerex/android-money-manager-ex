@@ -48,11 +48,16 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
 		tab1.setTabListener(this);
 
 		ActionBar.Tab tab2 = getSupportActionBar().newTab();
-		tab2.setText(R.string.credits);
+		tab2.setText(R.string.changelog);
 		tab2.setTabListener(this);
+		
+		ActionBar.Tab tab3 = getSupportActionBar().newTab();
+		tab3.setText(R.string.credits);
+		tab3.setTabListener(this);
 
 		getSupportActionBar().addTab(tab1);
 		getSupportActionBar().addTab(tab2);
+		getSupportActionBar().addTab(tab3);
 	}
 	
 	@Override
@@ -83,10 +88,13 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		SherlockFragment fragment = null;
 		switch (tab.getPosition()) {
-		case 0:
+		case 0: //about
 			fragment = new AboutFragment();
 			break;
-		case 1:
+		case 1: //changelog
+			fragment = new AboutChangelogFragment();
+			break;
+		case 2: //credits
 			fragment = new AboutCreditsFragment();
 			break;
 		default:
