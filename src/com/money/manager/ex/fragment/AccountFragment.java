@@ -146,6 +146,14 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	}
 
 	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
+		if (itemDropbox != null && itemDropbox.isVisible())
+			itemDropbox.setVisible(false);
+	}
+	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
 			mAccountId = savedInstanceState.getInt(KEY_CONTENT);
