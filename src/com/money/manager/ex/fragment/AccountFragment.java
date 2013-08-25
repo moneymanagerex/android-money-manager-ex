@@ -44,6 +44,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.CheckingAccountActivity;
+import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -135,12 +136,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	@Override
 	public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		// hide menu open database
-		MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
-		if (itemOpenDatabase != null) itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
-		// add transaction
-		MenuItem itemAddTransaction = menu.findItem(R.id.menu_add_transaction_account);
-		if (itemAddTransaction != null) itemAddTransaction.setVisible(true);
+		
 		// call create option menu of fragment
 		mAllDataFragment.onCreateOptionsMenu(menu, inflater);
 	}
@@ -148,9 +144,32 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
-		if (itemDropbox != null && itemDropbox.isVisible())
-			itemDropbox.setVisible(false);
+		//force show add transaction
+		MenuItem itemAddTransaction = menu.findItem(R.id.menu_add_transaction_account);
+		if (itemAddTransaction != null)
+			itemAddTransaction.setVisible(true);
+		//manage dual panel
+		if (getActivity() != null && getActivity() instanceof MainActivity) {
+			MainActivity activity = (MainActivity)getActivity();
+			if (!activity.isDualPanel()) {
+				//hide dropbox toolbar
+				MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
+				if (itemDropbox != null)
+					itemDropbox.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+				// hide menu open database
+				MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
+				if (itemOpenDatabase != null) {
+					//itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
+					itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible() ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+				}
+				
+				//hide dash board
+				MenuItem itemDashboard = menu.findItem(R.id.menu_dashboard);
+				if (itemDashboard != null)
+					itemDashboard.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+			}
+		}
+		
 	}
 	
 	@Override
