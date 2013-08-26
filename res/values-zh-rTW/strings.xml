@@ -67,7 +67,7 @@
     <string name="preferences_dispaly">顯示</string>
     <string name="base_currency">預設貨幣</string>
     <string name="accounts_visible">可顯示帳戶</string>
-    <string name="view_accounts_opened">顯示已開啟帳戶</string>
+    <string name="view_accounts_opened">顯示已啟用帳戶</string>
     <string name="if_not_selected_willShowAllAccounts">未勾選將顯示全部帳戶</string>
     <string name="view_accounts_favorites">顯示常用帳戶</string>
     <string name="preferences_version">Android Money Manager Ex</string>
@@ -83,11 +83,11 @@
     <string name="account_balance">結餘</string>
     <string name="account_reconciled_balance">已核實</string>
     <string name="account_balance_reconciled" formatted="false">結餘: %s 已核實: %s</string>
-    <string name="select_to_account">選擇To Acct</string>
+    <string name="select_to_account">選擇存入帳戶</string>
     <string name="delete_account">刪除帳戶</string>
     <string name="account_name">帳戶名稱</string>
     <string name="account_type">帳戶類型</string>
-    <string name="account_number">帳戶編號</string>
+    <string name="account_number">帳戶號碼</string>
     <string name="account_held_at">商戶名稱</string>
     <string name="account_status">帳戶狀態</string>
     <string name="favourite_account">常用帳戶</string>
@@ -150,7 +150,7 @@
     <string name="status_void">作廢</string>
     <string name="status_follow_up">需要追蹤</string>
     <string name="status_duplicate">重複</string>
-    <string name="status_none">無</string>
+    <string name="status_none">未核實</string>
     <string name="transfer">轉帳</string>
     <string name="transaction_type">交易種類</string>
     <string name="transaction_status">狀態</string>
@@ -189,13 +189,13 @@
     <string name="sync">同步</string>
     <string name="synchronize">同步</string>
     <string name="synchronize_success">同步成功</string>
-    <string name="open">開啟</string>
+    <string name="open">啟用</string>
     <string name="user">使用者</string>
     <string name="unlink">解除連結</string>
     <string name="upload">上傳</string>
     <string name="username">使用者姓名</string>
     <string name="tell_us_a_problem">回報問題給我們</string>
-    <string name="to">給</string>
+    <string name="to">至</string>
     <string name="website">網站</string>
     <string name="contact">聯絡</string>
     <string name="access_info">登入資訊</string>
@@ -203,9 +203,9 @@
     <string name="currency">貨幣</string>
     <string name="notes">註釋</string>
     <string name="new_edit_account">新增/編輯帳戶</string>
-    <string name="closed">已關閉</string>
+    <string name="closed">關閉</string>
     <string name="new_edit_currency">新增/編輯貨幣</string>
-    <string name="path">位置</string>
+    <string name="path">資料庫位置</string>
     <string name="theme_application">布景主題</string>
     <string name="theme_holo">Holo</string>
     <string name="theme_light">Light</string>
@@ -213,7 +213,7 @@
     <!-- 20120906 -->
     <string name="close_application">離開</string>
     <string name="question_close_application">你確定要離開？</string>
-    <string name="error_intent_pick_file">無法選取檔案</string>
+    <string name="error_intent_pick_file">無檔案管理程式</string>
     <!-- do not translate -->
     <string name="attention">注意</string>
     <string name="payee_can_not_deleted">受帳人不能被刪除，因為它已被使用</string>
@@ -250,10 +250,10 @@
     <string name="half_year">每半年</string>
     <string name="yearly">每年</string>
     <string name="four_months">每四個月</string>
-    <string name="four_weeks">四個星期</string>
+    <string name="four_weeks">每四週</string>
     <string name="daily">每日</string>
-    <string name="in_x_days"> (x) 日</string>
-    <string name="in_x_months"> (x) 月</string>
+    <string name="in_x_days">再 (x) 日</string>
+    <string name="in_x_months">再 (x) 月</string>
     <string name="every_x_days">每 (x) 日</string>
     <string name="every_x_months">每 (x) 月</string>
     <string name="inactive">Inactive</string>
@@ -261,10 +261,10 @@
     <string name="days_remaining">日 - 到期</string>
     <string name="new_edit_repeating_transaction">新增/編輯循環交易</string>
     <string name="next_occurrence">下次到期日</string>
-    <string name="repeats">重複</string>
+    <string name="repeats">重複類型</string>
     <string name="times_repeated">重複次數</string>
     <string name="error_next_occurrence_not_populate">注意: 下次到期日未設定</string>
-    <string name="activates">增值</string>
+    <string name="activates">啟動</string>
     <string name="period_days">每天</string>
     <string name="enter_next_occurrence">確認下次交易</string>
     <string name="skip_next_occurrence">跳過下次交易</string>
@@ -305,13 +305,13 @@
     <string name="last30days">最近30天</string>
     <string name="last_year">去年</string>
     <!-- 20130106 -->
-    <string name="to">給</string>
+    <string name="to">至</string>
     <string name="result">結果</string>
     <string name="number_transaction_found">交易次數: %1$d</string>
     <!-- 20130108 -->
     <string name="date_format">日期格式</string>
-    <string name="financial_year_start_day">財政年度: 啟始日</string>
-    <string name="financial_year_start_month">財政年度: 啟始月</string>
+    <string name="financial_year_start_day">會計年度：起日</string>
+    <string name="financial_year_start_month">會計年度：起月</string>
     <string name="release_date">釋出日期</string>
     <!-- 20130121 -->
     <string name="menu_move_database_to_external_storage">移動資料庫到外部儲存空間</string>
@@ -328,7 +328,7 @@
     <string name="export_file_complete">匯出檔案 %1$s 完成</string>
     <string name="export_file_failed">匯出檔案 %1$s 失敗</string>
     <!-- 20130220 -->
-    <string name="donate_header">Android Money Manager Ex 是免費的。假如你喜歡本程式，你可以捐款以支援開發團隊。</string>
+    <string name="donate_header">Android Money Manager Ex 是免費軟體。假如你喜歡本程式，你可以捐款以支援開發團隊。</string>
     <string name="donate_in_app_title">Google Play In-App Billing</string>
     <string name="donate_in_app_description">透過 Google Play In-App Billing 捐款</string>
     <string name="donate_in_app_spinner_text">選擇捐款金額</string>
@@ -399,8 +399,8 @@
 	<string name="credits">Credits</string>
 	<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>
 	<!-- 20130801 -->
-	<string name="top_withdrawals_last_30_days">最大支出: 最近30天</string>
-	<string name="top_payees_last_30_days">最大受帳人: 最近30天</string>
+	<string name="top_withdrawals_last_30_days">支出最多之類型: 最近30天</string>
+	<string name="top_payees_last_30_days">交易金額最多之受帳人: 最近30天</string>
 	<string name="transaction_statistics">交易明細表</string>
 	<string name="upcoming_transactions">到期交易項目</string>
 	<string name="quantity">次數</string>
