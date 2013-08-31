@@ -64,7 +64,12 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 			TextView txtColumn1 = (TextView)view.findViewById(R.id.textViewColumn1);
 			TextView txtColumn2 = (TextView)view.findViewById(R.id.textViewColumn2);
 			float total = cursor.getFloat(cursor.getColumnIndex("TOTAL")); 
-			txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
+			if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
+				txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
+			} else {
+				txtColumn1.setText(context.getString(R.string.empty_payee));
+			}
+			
 			txtColumn2.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
 			Core core = new Core(context);
 			if (total < 0) {
@@ -209,8 +214,12 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 			while (!cursor.isAfterLast()) {
 				ValuePieChart item = new ValuePieChart();
 				// total
-				float total = Math.abs(cursor.getFloat(cursor.getColumnIndex("TOTAL"))); 
-				item.setCategory(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
+				float total = Math.abs(cursor.getFloat(cursor.getColumnIndex("TOTAL")));
+				if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
+					item.setCategory(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
+				} else {
+					item.setCategory(getString(R.string.empty_payee));
+				}
 				item.setValue(total);
 				item.setValueFormatted(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
 				// add element

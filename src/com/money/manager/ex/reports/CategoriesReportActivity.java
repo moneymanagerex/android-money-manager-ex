@@ -69,10 +69,15 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			TextView txtColumn1 = (TextView)view.findViewById(R.id.textViewColumn1);
 			TextView txtColumn2 = (TextView)view.findViewById(R.id.textViewColumn2);
 			Core core = new Core(context);
-			float total = cursor.getFloat(cursor.getColumnIndex("TOTAL")); 
-			String column1 = "<b>" + cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)) + "</b>";
-			if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
-				column1 += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
+			float total = cursor.getFloat(cursor.getColumnIndex("TOTAL"));
+			String column1;
+			if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)))) {
+				column1 = "<b>" + cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)) + "</b>";
+				if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
+					column1 += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
+				}
+			} else {
+				column1 = "<i>" + context.getString(R.string.empty_category);
 			}
 			txtColumn1.setText(Html.fromHtml(column1));
 			txtColumn2.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
@@ -264,12 +269,17 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 					category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
 				}
 				// total
-				float total = Math.abs(cursor.getFloat(cursor.getColumnIndex("TOTAL"))); 
+				float total = Math.abs(cursor.getFloat(cursor.getColumnIndex("TOTAL")));
+				// check if category is empty
+				if (TextUtils.isEmpty(category))
+					category = getString(R.string.empty_category);
+				
 				item.setCategory(category);
 				item.setValue(total);
 				item.setValueFormatted(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
 				// add element
-				arrayList.add(item);
+				arrayList.add(item);	
+				
 				// move to next recordd
 				cursor.moveToNext();
 			}

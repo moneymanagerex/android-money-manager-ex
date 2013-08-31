@@ -411,4 +411,7 @@
 	<string name="last3months">Last 3 months</string>
 	<string name="last6months">Last 6 months</string>
 	<!-- 20130816 -->
+	<string name="empty_category">Empty Category</string>
+	<string name="empty_payee">Empty Payee</string>
+	<!-- 20130831 -->
 </resources>
