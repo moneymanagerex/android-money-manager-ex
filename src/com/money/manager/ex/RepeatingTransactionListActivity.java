@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.RepeatingTransactionAdapter;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
@@ -55,10 +56,15 @@ import com.money.manager.ex.fragment.BaseListFragment;
  * 
  */
 public class RepeatingTransactionListActivity extends BaseFragmentActivity {
+	public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RepeatingTransactionListActivity:LaunchNotification";
+	public static final int INTENT_REQUEST_PASSCODE = 2;
+	
 	public static class RepeatingTransactionListFragment extends BaseListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 		// ID request to add repeating transaction
 		private static final int REQUEST_ADD_REPEATING_TRANSACTION = 1001;
 		private static final int REQUEST_ADD_TRANSACTION = 1002;
+		// Intent
+		
 		// ID item menu add
 		private static final int MENU_ITEM_ADD = 1;
 
@@ -244,7 +250,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 		}
 		/**
 		 * start RepeatingTransaction Activity for insert
-		 */
+		 */public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RepeatingTransactionListActivity:LaunchNotification";
 		private void startRepeatingTransactionActivity() {
 			startRepeatingTransactionActivity(null);
 		}
@@ -289,10 +295,22 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 
 	// query
 	private static QueryBillDeposits mBillDeposits;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// check if launch from notification
+		if (getIntent() != null && getIntent().getBooleanExtra(INTENT_EXTRA_LAUNCH_NOTIFICATION, false)) {
+			Passcode passcode = new Passcode(this);
+			if (passcode.hasPasscode()) {
+				Intent intent = new Intent(this, PasscodeActivity.class);
+				// set action and data
+				intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
+				intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
+				// start activity
+				startActivityForResult(intent, INTENT_REQUEST_PASSCODE);
+			}
+		}
 		// create a object query
 		mBillDeposits = new QueryBillDeposits(this);
 		// set actionbar
@@ -303,6 +321,31 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 		// attach fragment on activity
 		if (fm.findFragmentById(android.R.id.content) == null) {
 			fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		// check request code
+		switch (requestCode) {
+		case INTENT_REQUEST_PASSCODE:
+			boolean isAuthenticated = false;
+			if (resultCode == RESULT_OK && data != null) {
+				Passcode passcode = new Passcode(this);
+				String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
+				String passDb = passcode.getPasscode();
+				if (passIntent != null && passDb != null) {
+					isAuthenticated = passIntent.equals(passDb);
+					if (!isAuthenticated) {
+						Toast.makeText(this, R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+					}
+				}
+			}
+			// close if not authenticated
+			if (!isAuthenticated) {
+				this.finish();
+			}
 		}
 	}
 }

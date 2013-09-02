@@ -71,7 +71,10 @@ public class RepeatingTransactionNotifications {
 					
 					NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);			
 					// create pendig intent
-					Intent intent = new Intent(context, RepeatingTransactionListActivity.class);			
+					Intent intent = new Intent(context, RepeatingTransactionListActivity.class);
+					// set launch from notification // check pin code
+					intent.putExtra(RepeatingTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
+					
 					PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);			
 					// create notification
 					Notification notification = null;
