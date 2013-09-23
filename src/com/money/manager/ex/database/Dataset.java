@@ -170,6 +170,8 @@ public abstract class Dataset implements BaseColumns {
 			case QUERY:
 				parse.concat("queries/");
 				break;
+			default:
+				break;
 			}
 			return Uri.parse(parse.concat(this.basepath));
 		} else {
