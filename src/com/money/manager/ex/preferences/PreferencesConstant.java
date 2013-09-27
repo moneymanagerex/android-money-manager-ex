@@ -47,4 +47,6 @@ public class PreferencesConstant {
     public static final String PREF_DROPBOX_REMOTE_FILE = "DROPBOX_REMOTE_FILE";
     // check repeating transacion
     public static final String PREF_REPEATING_TRANSACTION_CHECK = "prefrepeatingtransactionchecktime";
+    // Wiki dropbox
+    public static final String PREF_DROPBOX_WIKI = "prefdropboxwiki";
 }

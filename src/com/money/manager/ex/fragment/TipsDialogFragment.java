@@ -12,11 +12,13 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 
 public class TipsDialogFragment extends DialogFragment {
@@ -27,13 +29,17 @@ public class TipsDialogFragment extends DialogFragment {
 	private static final String KEY_TIPS = "TipsDialogFragment:Tips";
 	private static final String KEY_VISIBLE = "TipsDialogFragment:Visible";
 	private static final String KEY_CHECK = "TipsDialogFragment:Check";
+	private static final String KEY_RAW_WEB = "TipsDialogFragment:RawWeb";
+	private static final String KEY_VIEW_AS_WEB = "TipsDialogFragment:ViewAsWeb";
 	//member of TipsDialogFragment
 	private String mKey;
 	private CharSequence mTitle = "";
 	private CharSequence mTips = "";
+	private int mRawWeb = 0;
 	private boolean mVisibleDontShowAgain = true;
 	private boolean mCheckDontShowAgain = false;
 	private boolean mCanShow = true;
+	private boolean mViewAsWeb = false;
 	
 	public static TipsDialogFragment getInstance(Context context, String key) {
 		return getInstance(context, key, false);
@@ -53,8 +59,10 @@ public class TipsDialogFragment extends DialogFragment {
 			setKey(savedInstanceState.getString(KEY_KEY));
 			setTitle(savedInstanceState.getString(KEY_TITLE));
 			setTips(savedInstanceState.getString(KEY_TIPS));
+			setRawWeb(savedInstanceState.getInt(KEY_RAW_WEB));
 			setVisibleDontShowAgain(savedInstanceState.getBoolean(KEY_VISIBLE));
 			setCheckDontShowAgain(savedInstanceState.getBoolean(KEY_CHECK));
+			setViewAsWeb(savedInstanceState.getBoolean(KEY_VIEW_AS_WEB));
 		}
 
 		super.onCreate(savedInstanceState);
@@ -66,6 +74,13 @@ public class TipsDialogFragment extends DialogFragment {
 		// set tips
 		TextView textTips = (TextView) view.findViewById(R.id.textViewTips);
 		textTips.setText(getTips());
+		textTips.setVisibility(!isViewAsWeb() ? View.VISIBLE : View.GONE );
+		// webView
+		WebView webView = (WebView) view.findViewById(R.id.webViewTips);
+		webView.setVisibility(isViewAsWeb() ? View.VISIBLE : View.GONE);
+		if (getRawWeb() != 0) {
+			webView.loadData(MoneyManagerApplication.getRawAsString(getActivity(), getRawWeb()), "text/html", "UTF-8");
+		}
 		// check box
 		CheckBox checkDont = (CheckBox) view.findViewById(R.id.checkBoxDontShow);
 		checkDont.setVisibility(isVisibleDontShowAgain() ? View.VISIBLE : View.GONE);
@@ -196,5 +211,21 @@ public class TipsDialogFragment extends DialogFragment {
 	 */
 	public void setCheckDontShowAgain(boolean mCheckShowAgain) {
 		this.mCheckDontShowAgain = mCheckShowAgain;
+	}
+
+	public boolean isViewAsWeb() {
+		return mViewAsWeb;
+	}
+
+	public void setViewAsWeb(boolean mViewAsWeb) {
+		this.mViewAsWeb = mViewAsWeb;
+	}
+
+	public int getRawWeb() {
+		return mRawWeb;
+	}
+
+	public void setRawWeb(int mRawWeb) {
+		this.mRawWeb = mRawWeb;
 	}
 }

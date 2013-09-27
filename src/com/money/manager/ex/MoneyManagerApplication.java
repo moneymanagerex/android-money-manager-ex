@@ -222,22 +222,10 @@ public class MoneyManagerApplication extends Application {
 		int lastVersionCode = preferences.getInt(PreferencesConstant.PREF_LAST_VERSION_KEY, -1);
 		if (!(lastVersionCode == currentVersionCode) || forceShow) {
 			preferences.edit().putInt(PreferencesConstant.PREF_LAST_VERSION_KEY, currentVersionCode).commit();
-			//get text changelog
-			String changelog = getRawAsString(context, R.raw.changelog);
-			//check complete changelog
-			/*if (!complete) {
-				final String ESCAPE = "<b> Version";
-				int end = changelog.indexOf(ESCAPE, changelog.indexOf(ESCAPE) + ESCAPE.length());
-				changelog = changelog.substring(0, end);
-			}
-			changelog = "<small>" + changelog.replace("\n", "<br>") + "</small>";
-			while (changelog.indexOf("<br></small>") >= 0) {
-				changelog = changelog.replace("<br></small>", "</small>");
-			}*/
 			//layout
 			View view = LayoutInflater.from(context).inflate(R.layout.changelog, null);
 			WebView webView = (WebView) view.findViewById(R.id.changelogcontent);
-			webView.loadData(changelog, "text/html", "UTF-8");
+			webView.loadData(getRawAsString(context, R.raw.changelog), "text/html", "UTF-8");
 			//create dialog
 			AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
 			showDialog.setCancelable(false);

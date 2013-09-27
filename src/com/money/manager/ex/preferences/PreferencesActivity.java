@@ -25,6 +25,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -40,6 +41,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -553,7 +555,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				
 				@Override
 				public boolean onPreferenceClick(Preference preference) {
-					showTipsDialog(PreferencesConstant.PREF_DROPBOX_HOWITWORKS, getString(R.string.dropbox_how_it_works), MoneyManagerApplication.getRawAsString(getApplicationContext(), R.raw.dropbox_how_it_works), false);
+					showWebTipsDialog(PreferencesConstant.PREF_DROPBOX_HOWITWORKS, getString(R.string.dropbox_how_it_works), R.raw.help_online_dropbox, false);
 					return false;
 				}
 			});
@@ -586,6 +588,19 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				return false;
 			}
 		});
+		
+		//wiki
+		Preference pWiki = findPreference(PreferencesConstant.PREF_DROPBOX_WIKI);
+		if (pWiki != null) {
+			pWiki.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				
+				@Override
+				public boolean onPreferenceClick(Preference preference) {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://code.google.com/p/android-money-manager-ex/wiki/DropboxSync")));
+					return false;
+				}
+			});
+		}
 		
 		//link file
 		final Preference pDropboxFile = findPreference(PreferencesConstant.PREF_DROPBOX_LINKED_FILE);
@@ -725,9 +740,9 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 	}
 	
 	/*
-	 * This method is implemented was warkaround of SherlockPreference
+	 * This method is implemented was workaround of SherlockPreference
 	 */
-	private void showTipsDialog(final String key, final CharSequence title, final CharSequence tips, boolean force) {
+	private void showWebTipsDialog(final String key, final CharSequence title, final int rawResources, boolean force) {
 		if (!force) {
 			if (getSharedPreferences(TipsDialogFragment.PREF_DIALOG, 0).getBoolean(key, false)) return;
 		}
@@ -736,9 +751,13 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		alertDialog.setTitle(title);
 		// view body
 		final View view = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.dialog_tips, null);
-		// set tips
+		// set invisible tips
 		final TextView textTips = (TextView)view.findViewById(R.id.textViewTips);
-		textTips.setText(tips);
+		textTips.setVisibility(View.GONE);
+		// set webView
+		final WebView webTips = (WebView)view.findViewById(R.id.webViewTips);
+		webTips.loadData(MoneyManagerApplication.getRawAsString(getApplicationContext(), rawResources), "text/html", "UTF-8");
+		webTips.setVisibility(View.VISIBLE);
 		
 		final CheckBox checkDont = (CheckBox)view.findViewById(R.id.checkBoxDontShow);
 		checkDont.setOnCheckedChangeListener(new OnCheckedChangeListener() {

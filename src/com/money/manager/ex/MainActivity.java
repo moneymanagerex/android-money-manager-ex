@@ -39,7 +39,6 @@ import android.os.Messenger;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -60,7 +59,6 @@ import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
-import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.preferences.PreferencesActivity;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
@@ -120,8 +118,7 @@ public class MainActivity extends BaseFragmentActivity {
 	}
 
 	/**
-	 * @param mIsDualPanel
-	 *            the mIsDualPanel to set
+	 * @param mIsDualPanel the mIsDualPanel to set
 	 */
 	public void setDualPanel(boolean mIsDualPanel) {
 		this.mIsDualPanel = mIsDualPanel;
@@ -130,8 +127,7 @@ public class MainActivity extends BaseFragmentActivity {
 	/**
 	 * Change database applications
 	 * 
-	 * @param pathDatabase
-	 *            new path of databases
+	 * @param pathDatabase new path of databases
 	 */
 	public void changeDatabase(String pathDatabase) {
 		// save the database file
@@ -182,17 +178,11 @@ public class MainActivity extends BaseFragmentActivity {
 	public Fragment getFragmentDisplay() {
 		return getSupportFragmentManager().findFragmentById(isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent);
 	}
-
-	/**
-	 * refresh user interface advance
-	 * 
-	 */
 	
 	/**
 	 * pick a file to use
 	 * 
-	 * @param file
-	 *            start folder
+	 * @param file start folder
 	 */
 	public void pickFile(File file) {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -277,17 +267,19 @@ public class MainActivity extends BaseFragmentActivity {
 	/**
 	 * show a fragment select with position or account id
 	 * 
-	 * @param position
-	 *            to page
-	 * @param accountId
-	 *            account id of the fragment to be loaded
+	 * @param position to page
+	 * @param accountId account id of the fragment to be loaded
 	 */
 	public void showFragmentAccount(int position, int accountId) {
 		changeFragment(accountId);
 	}
 
+	/**
+	 * Show tips dialog on startup
+	 * @param savedInstanceState
+	 */
 	public void showTipsDialog(Bundle savedInstanceState) {
-		if (savedInstanceState == null || (savedInstanceState != null && !savedInstanceState.getBoolean(KEY_IS_SHOW_TIPS_DROPBOX2))) {
+		/*if (savedInstanceState == null || (savedInstanceState != null && !savedInstanceState.getBoolean(KEY_IS_SHOW_TIPS_DROPBOX2))) {
 			// show tooltip for dropbox
 			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getApplicationContext(), "passtodropbox2");
 			if (tipsDropbox != null) {
@@ -297,7 +289,7 @@ public class MainActivity extends BaseFragmentActivity {
 				tipsDropbox.show(getSupportFragmentManager(), "passtodropbox2");
 				isShowTipsDropbox2 = true; // set shown
 			}
-		}
+		}*/
 	}
 	
 	public void startServiceSyncDropbox() {

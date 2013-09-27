@@ -150,6 +150,11 @@
         <Preference
             android:key="@string/pref_dropbox_unlink"
             android:title="@string/dropbox_unlink" />
+        
+        <Preference
+            android:key="@string/pref_dropbox_wiki"
+            android:title="@string/help" 
+            android:summary="@string/go_to_wiki_dropbox"/>
     </PreferenceScreen>
     <PreferenceScreen
         android:key="@string/pref_donate"
