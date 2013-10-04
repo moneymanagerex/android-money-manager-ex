@@ -51,6 +51,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.money.manager.ex.DonateActivity;
+import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
@@ -555,7 +556,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				
 				@Override
 				public boolean onPreferenceClick(Preference preference) {
-					showWebTipsDialog(PreferencesConstant.PREF_DROPBOX_HOWITWORKS, getString(R.string.dropbox_how_it_works), R.raw.help_online_dropbox, false);
+					showWebTipsDialog(PreferencesConstant.PREF_DROPBOX_HOWITWORKS, getString(R.string.dropbox_how_it_works), R.raw.help_dropbox, false);
 					return false;
 				}
 			});
@@ -596,7 +597,11 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				
 				@Override
 				public boolean onPreferenceClick(Preference preference) {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://code.google.com/p/android-money-manager-ex/wiki/DropboxSync")));
+					//startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://code.google.com/p/android-money-manager-ex/wiki/DropboxSync")));
+					Intent intent = new Intent(PreferencesActivity.this, HelpActivity.class);
+					intent.setData(Uri.parse("android.resource://com.money.manager.ex/" + R.raw.help_dropbox));
+					//intent.setData(Uri.parse("http://code.google.com/p/android-money-manager-ex/wiki/DropboxSync"));
+					startActivity(intent);
 					return false;
 				}
 			});

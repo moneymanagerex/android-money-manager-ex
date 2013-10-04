@@ -183,8 +183,6 @@ public class PayeeActivity extends BaseFragmentActivity {
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 			switch (item.getItemId()) {
-			case android.R.id.home:
-				break;
 			case MENU_ITEM_ADD:
 				showDialogEditPayeeName(SQLTypeTransacion.INSERT, 0, null);
 				break;
@@ -289,6 +287,10 @@ public class PayeeActivity extends BaseFragmentActivity {
 								if (getActivity().getContentResolver().update(mPayee.getUri(), values, "PAYEEID=" + payeeId, null) == 0) {
 									Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
 								}
+								break;
+							case DELETE:
+								break;
+							default:
 								break;
 							}
 							// restart loader

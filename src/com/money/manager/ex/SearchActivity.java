@@ -63,16 +63,6 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 		getSherlock().getMenuInflater().inflate(R.menu.menu_search_transaction, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 
 	@Override
 	public void onCallbackCreateLoader(int id, Bundle args) {

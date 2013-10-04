@@ -308,7 +308,18 @@
             android:name="com.money.manager.ex.dropbox.DropboxBrowserActivity"
             android:label="@string/dropbox_select_file" >
         </activity>
-
+        <activity
+			android:name="com.money.manager.ex.HelpActivity" 
+            android:label="@string/help">
+            <intent-filter>
+                <action android:name="com.money.manager.ex.custom.intent.action.WEB_VIEW_RAW_FILE" />
+                <action android:name="com.money.manager.ex.custom.intent.action.WEB_VIEW_URL" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </activity>
+        
         <!-- Samsung MultiWindow Function -->
         <uses-library
             android:name="com.sec.android.app.multiwindow"

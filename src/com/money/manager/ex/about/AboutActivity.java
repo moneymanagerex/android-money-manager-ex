@@ -61,16 +61,6 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			this.finish();
-			return false;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
-	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
 		savedInstanceState.putInt(BUNDLE_KEY_TABINDEX, getSupportActionBar()

@@ -277,8 +277,6 @@ public class CategorySubCategoryActivity extends BaseFragmentActivity {
 		@Override
 		public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 			switch (item.getItemId()) {
-			case android.R.id.home:
-				break;
 			case SUBMENU_ITEM_ADD_CATEGORY:
 				showDialogEditCategName(SQLTypeTransacion.INSERT, -1, null);
 				break;

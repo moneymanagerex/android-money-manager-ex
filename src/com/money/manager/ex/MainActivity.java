@@ -585,6 +585,10 @@ public class MainActivity extends BaseFragmentActivity {
 			startActivity(new Intent(this, PayeesReportActivity.class));
 		} else if (item.getItemId() == R.id.menu_report_income_vs_expenses) {
 			startActivity(new Intent(this, IncomeVsExpensesActivity.class));
+		} else if (item.getItemId() == R.id.menu_help) {
+			intent = new Intent(getApplicationContext(), HelpActivity.class);
+			intent.setData(Uri.parse("android.resource://com.money.manager.ex/" + R.raw.help));
+			startActivity(intent);
 		} else if (item.getItemId() == R.id.menu_about) {
 			// open about activity
 			startActivity(new Intent(this, AboutActivity.class));

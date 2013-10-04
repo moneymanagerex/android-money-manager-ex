@@ -115,7 +115,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// item add
-		MenuItem itemadd = menu.add(MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, R.string.New);
+		MenuItem itemadd = menu.add(MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, R.string.add);
 		itemadd.setIcon(new Core(this).resolveIdAttribute(R.attr.ic_action_add));
 		itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 

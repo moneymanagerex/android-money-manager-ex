@@ -230,8 +230,6 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 			switch (item.getItemId()) {
-			case android.R.id.home:
-				break;
 			case MENU_ITEM_ADD:
 				startRepeatingTransactionActivity();
 				break;
