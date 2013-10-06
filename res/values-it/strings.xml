@@ -409,4 +409,9 @@
 	<string name="last3months">Ultimi 3 mesi</string>
 	<string name="last6months">Ultimi 6 mesi</string>
 	<!-- 20130816 -->
+	<string name="empty_category">Categoria Vuota</string>
+	<string name="empty_payee">Beneficiario Vuoto</string>
+	<!-- 20130831 -->
+	<string name="help">Guida</string>
+	<!-- 20130927 -->
 </resources>

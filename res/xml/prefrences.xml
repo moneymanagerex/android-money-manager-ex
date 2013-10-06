@@ -153,8 +153,7 @@
         
         <Preference
             android:key="@string/pref_dropbox_wiki"
-            android:title="@string/help" 
-            android:summary="@string/go_to_wiki_dropbox"/>
+            android:title="@string/help" />
     </PreferenceScreen>
     <PreferenceScreen
         android:key="@string/pref_donate"

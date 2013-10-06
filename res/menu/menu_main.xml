@@ -108,11 +108,11 @@
         android:id="@+id/menu_donate"
         android:title="@string/donate"/>
     <item
-        android:id="@+id/menu_help"
-        android:title="@string/help"/>
-    <item
         android:id="@+id/menu_about"
         android:title="@string/about"/>
+    <item
+        android:id="@+id/menu_help"
+        android:title="@string/help"/>
     <item
         android:id="@+id/menu_exit"
         android:title="@string/menu_exit"/>
