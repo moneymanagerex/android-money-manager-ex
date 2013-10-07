@@ -146,7 +146,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 		private void showDialogDeleteRepeatingTransaction(final int BDID) {
 			// create alert dialog
 			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-			alertDialog.setTitle(R.string.delete_account);
+			alertDialog.setTitle(R.string.delete_repeating_transaction);
 			alertDialog.setMessage(R.string.confirmDelete);
 			// set listener
 			alertDialog.setPositiveButton(android.R.string.ok,

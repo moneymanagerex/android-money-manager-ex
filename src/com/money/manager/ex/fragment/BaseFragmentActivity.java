@@ -59,9 +59,10 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
+		/*if (item.getItemId() == android.R.id.home) {
 			this.finish();
-		} else if (item.getItemId() == R.id.menu_debug_rotate) {
+		} else */
+		if (item.getItemId() == R.id.menu_debug_rotate) {
 			forceRotateScreenActivity();
 		}
 		return super.onOptionsItemSelected(item);

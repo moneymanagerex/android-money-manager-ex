@@ -237,6 +237,9 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 				return false;
 			}
 		}
+		//reload currency
+		((MoneyManagerApplication)getApplication()).loadHashMapCurrency(getApplicationContext());
+		
 		return true;
 	}
 }

@@ -362,7 +362,7 @@ public class MoneyManagerApplication extends Application {
 
 	/**
 	 * 
-	 * @return List di tutte le CurrencyFormats
+	 * @return List of all CurrencyFormats
 	 */
 	public List<TableCurrencyFormats> getAllCurrencyFormats() {
 		List<TableCurrencyFormats> ret = new ArrayList<TableCurrencyFormats>(mMapCurrency.values());

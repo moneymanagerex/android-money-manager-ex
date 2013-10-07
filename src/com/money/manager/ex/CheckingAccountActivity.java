@@ -533,7 +533,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(CheckingAccountActivity.this);
-				String query = "SELECT MAX(" + TableCheckingAccount.TRANSACTIONNUMBER + ") FROM " + 
+				String query = "SELECT MAX(CAST(" + TableCheckingAccount.TRANSACTIONNUMBER + " AS INTEGER)) FROM " + 
 								new TableCheckingAccount().getSource() + " WHERE " + 
 								TableCheckingAccount.ACCOUNTID + "=?";
 				Cursor cursor = helper.getReadableDatabase().rawQuery(query, new String[] {Integer.toString(mAccountId)});

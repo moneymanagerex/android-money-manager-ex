@@ -253,7 +253,7 @@ public class TableCurrencyFormats extends Dataset {
 		String ret = formatter.format(value);
 		// check suffix
 		if ((showSymbols) && (TextUtils.isEmpty(this.getSfxSymbol()) == false)) {
-			ret = this.getSfxSymbol() + " " + ret;
+			ret = ret + " " + this.getSfxSymbol();
 		}
 		// check prefix
 		if (((showSymbols) && TextUtils.isEmpty(this.getPfxSymbol()) == false)) {
