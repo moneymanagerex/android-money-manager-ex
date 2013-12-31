@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.appwidget.AppWidgetManager;
@@ -43,6 +44,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -130,6 +132,7 @@ public class MoneyManagerApplication extends Application {
 	 * @param context
 	 * @return path database file
 	 */
+	@SuppressLint("SdCardPath")
 	public static String getDatabasePath(Context context) {
 		String defaultPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/data.mmb";
 		String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(PreferencesConstant.PREF_DATABASE_PATH, defaultPath);
@@ -259,7 +262,7 @@ public class MoneyManagerApplication extends Application {
 		if (!(lastVersionCode == currentVersionCode) || forceShow) {
 			preferences.edit().putInt(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY, currentVersionCode).commit();
 			Core core = new Core(context);
-			if (TextUtils.isEmpty(core.getInfoValue(Core.INFO_SKU_ORDER_ID))) {
+			if (TextUtils.isEmpty(core.getInfoValue(Constants.INFOTABLE_SKU_ORDER_ID))) {
 				//get text donate
 				String donateText = context.getString(R.string.donate_header);
 				//create dialog
@@ -318,6 +321,7 @@ public class MoneyManagerApplication extends Application {
     ///////////////////////////////////////////////////////////////////////////
     private Editor editPreferences;
     // definition of the hashmap for the management of the currency
+	@SuppressLint("UseSparseArrays")
 	private static Map<Integer, TableCurrencyFormats> mMapCurrency = new HashMap<Integer, TableCurrencyFormats>();
 	// Id of BaseCurrency
 	private static int mBaseCurrencyId = 0;
@@ -393,6 +397,10 @@ public class MoneyManagerApplication extends Application {
 	 * @return CurrencyFormats
 	 */
 	public TableCurrencyFormats getCurrencyFormats(int currency) {
+		if (mMapCurrency.size() == 0) {
+			loadHashMapCurrency(this);
+			loadBaseCurrencyId(this);
+		}
 		return mMapCurrency.get(currency);
 	}
 	/**
@@ -403,7 +411,7 @@ public class MoneyManagerApplication extends Application {
 	 */
 	public String getCurrencyFormatted(int currency, float value) {
 		// find currencyid
-		TableCurrencyFormats tableCurrency = mMapCurrency.get(currency);
+		TableCurrencyFormats tableCurrency = getCurrencyFormats(currency);
 
 		if (tableCurrency == null) {
 			return Float.toString(value);
@@ -411,6 +419,7 @@ public class MoneyManagerApplication extends Application {
 		// formatted value
 		return tableCurrency.getValueFormatted(value);
 	}
+	
 	/**
 	 * Convert string date into date object using pattern define to user
 	 * @param date string to convert
@@ -519,7 +528,7 @@ public class MoneyManagerApplication extends Application {
 	 */
 	public String getNumericFormatted(int currency, float value) {
 		// find currency
-		TableCurrencyFormats tableCurrency = mMapCurrency.get(currency);
+		TableCurrencyFormats tableCurrency = getCurrencyFormats(currency);
 		
 		if (tableCurrency == null) {
 			return Float.toString(value);
@@ -564,13 +573,13 @@ public class MoneyManagerApplication extends Application {
 	public String getStatusAsString(String status) {
 		if (TextUtils.isEmpty(status)) {
 			return this.getResources().getString(R.string.status_none);
-		} else if (status.toUpperCase().equals("R")) {
+		} else if (Constants.TRANSACTION_STATUS_RECONCILED.equalsIgnoreCase(status)) {
 			return this.getResources().getString(R.string.status_reconciled);
-		} else if (status.toUpperCase().equals("V")) {
+		} else if (Constants.TRANSACTION_STATUS_VOID.equalsIgnoreCase(status)) {
 			return this.getResources().getString(R.string.status_void);
-		} else if (status.toUpperCase().equals("F")) {
+		} else if (Constants.TRANSACTION_STATUS_FOLLOWUP.equalsIgnoreCase(status)) {
 			return this.getResources().getString(R.string.status_follow_up);
-		} else if (status.toUpperCase().equals("D")) {
+		} else if (Constants.TRANSACTION_STATUS_DUPLICATE.equalsIgnoreCase(status)) {
 			return this.getResources().getString(R.string.status_duplicate);
 		}
 		return "";
@@ -644,21 +653,27 @@ public class MoneyManagerApplication extends Application {
 		
 		return pattern;
 	}
+	
 	/**
 	 * @return the userName
 	 */
 	public String getUserName() {
 		return userName;
 	}
+	
 	public boolean isUriAvailable(Context context, Intent intent) {
 		return context.getPackageManager().resolveActivity(intent, 0) != null;
 	}
+	
 	/**
 	 * method that loads the base currency
 	 * @param context contesto della chiamata
 	 */
 	public void loadBaseCurrencyId(Context context) {
-		MoneyManagerOpenHelper openHelper = new MoneyManagerOpenHelper(context);
+		// get database connection
+		MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(context);
+		SQLiteDatabase database = helper.getReadableDatabase();
+		
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		TableInfoTable tableInfo = new TableInfoTable();
 		
@@ -666,9 +681,9 @@ public class MoneyManagerApplication extends Application {
 		queryBuilder.setTables(tableInfo.getSource());
 		
 		// get cursor from query builder
-		Cursor cursorInfo = queryBuilder.query(
-				openHelper.getReadableDatabase(),
-				tableInfo.getAllColumns(), TableInfoTable.INFONAME + "='BASECURRENCYID'", null, null, null, null);
+		Cursor cursorInfo = queryBuilder.query(database,
+				tableInfo.getAllColumns(), TableInfoTable.INFONAME
+						+ "='BASECURRENCYID'", null, null, null, null);
 		
 		// set BaseCurrencyId
 		if (cursorInfo != null && cursorInfo.moveToFirst()) {
@@ -677,8 +692,9 @@ public class MoneyManagerApplication extends Application {
 		} else {
 			mBaseCurrencyId = 0;
 		}
-		// chiudo la connessione
-		openHelper.close();
+		
+		// close database
+		helper.close();
 	}
 	/**
 	 * populate the hashmap Currency
@@ -724,8 +740,8 @@ public class MoneyManagerApplication extends Application {
 		// preference
 		if (appPreferences == null) { 
 			appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-			RobotoView.setUserFont(Integer.parseInt(appPreferences.getString(PreferencesConstant.PREF_APPLICATION_FONT, "12")));
-			RobotoView.setUserFontSize(getApplicationContext(), appPreferences.getString(PreferencesConstant.PREF_APPLICATION_FONT_SIZE, ""));
+			RobotoView.setUserFont(Integer.parseInt(appPreferences.getString(PreferencesConstant.PREF_APPLICATION_FONT, "-1")));
+			RobotoView.setUserFontSize(getApplicationContext(), appPreferences.getString(PreferencesConstant.PREF_APPLICATION_FONT_SIZE, "default"));
 		}
 	}
 	

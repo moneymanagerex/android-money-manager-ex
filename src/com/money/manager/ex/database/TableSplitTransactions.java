@@ -174,21 +174,4 @@ public class TableSplitTransactions extends Dataset implements Parcelable {
 			return new TableSplitTransactions[size];
 		};
 	};
-	
-	/* public boolean load(Cursor cursor) {
-		if (cursor == null)
-			return false;
-		for(Field field : TableSplitTransactions.class.getDeclaredFields()) {
-			if (field.getAnnotation(DatabaseField.class) != null) {
-				Class type = field.getType();
-				if (type.getSimpleName().equals("int")) {
-					if (cursor.getColumnIndex(field.getAnnotation(DatabaseField.class).columnName()) >= 0) {
-						String fieldName = field.getName().substring(0, 1).toUpperCase() + field.getName().substring(0, 1);
-						
-					}
-				}
-			}
-		}
-		return true;
-	} */
 }

@@ -27,13 +27,18 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 /**
@@ -47,8 +52,8 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 	// key intent
 	public static final String KEY_CURRENCY_ID = "CurrencyFormatsActivity:CurrencyId";
 	// action
-	public static final String INTENT_ACTION_EDIT = "android.intent.action.EDIT";
-	public static final String INTENT_ACTION_INSERT = "android.intent.action.INSERT";
+	
+	
 	// saveinstance key
 	private static final String KEY_CURRENCY_NAME = "CurrencyFormatsActivity:CurrencyName";
 	private static final String KEY_CURRENCY_SYMBOL = "CurrencyFormatsActivity:CurrencySymbol";
@@ -70,14 +75,21 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 	private EditText edtCurrencyName, edtUnitName, edtCentsName, edtPrefix, edtSuffix, 
 					 edtDecimal, edtGroup, edtScale, edtConversion;
 	private Spinner spinCurrencySymbol;
-	private Button btnCancel, btnOk;
+	
+	public void onCancelClick() {
+		finish();
+	}
+	
+	public void onDoneClick() {
+		if (updateData()) {
+			finish();
+		}
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// set action bar
-		getSupportActionBar().setTitle(getResources().getString(R.string.new_edit_currency));
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 		// view
 		setContentView(R.layout.currecyformats_activity);
 		// take object
@@ -91,13 +103,12 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 		edtGroup = (EditText)findViewById(R.id.editTextGroupChar);
 		edtScale = (EditText)findViewById(R.id.editTextScale);
 		edtConversion = (EditText)findViewById(R.id.editTextConversion);
-		btnCancel = (Button)findViewById(R.id.buttonCancel);
-		btnOk = (Button)findViewById(R.id.buttonOk);
+
 		// save instance
 		if (savedInstanceState != null) {
 			mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
 			edtCurrencyName.setText(savedInstanceState.getString(KEY_CURRENCY_NAME));
-			spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currency_values)).indexOf(savedInstanceState.getString(KEY_CURRENCY_SYMBOL)), true);
+			spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code)).indexOf(savedInstanceState.getString(KEY_CURRENCY_SYMBOL)), true);
 			edtUnitName.setText(savedInstanceState.getString(KEY_UNIT_NAME));
 			edtCentsName.setText(savedInstanceState.getString(KEY_CENTS_NAME));
 			edtPrefix.setText(savedInstanceState.getString(KEY_PREFIX_SYMBOL));
@@ -113,7 +124,7 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 		if (getIntent() != null) {
 			if (savedInstanceState == null) {
 				mCurrencyId = getIntent().getIntExtra(KEY_CURRENCY_ID, -1);
-				if (getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_EDIT)) {
+				if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
 					mCurrencyId = getIntent().getIntExtra(KEY_CURRENCY_ID, -1);
 					// load existing data
 					loadData(mCurrencyId);
@@ -121,23 +132,39 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 			}
 			mIntentAction = getIntent().getAction();
 		}
-		// create a listener on button
-		// negative button
-		btnCancel.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
-		//positive button
-		btnOk.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (updateData()) {
-					finish();
+		
+		Core core = new Core(getApplicationContext());
+		// ****** action bar *****
+		if (!core.isTablet()) {
+			getSupportActionBar().setDisplayOptions(
+					ActionBar.DISPLAY_SHOW_CUSTOM,
+					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+							| ActionBar.DISPLAY_SHOW_CUSTOM);
+			
+			LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+			
+	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
+	        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
+	        cancelActionView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					onCancelClick();
 				}
-			}
-		});
+			});
+	        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
+	        doneActionView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onDoneClick();
+				}
+			});
+	        getSupportActionBar().setCustomView(actionBarButtons);
+	        
+	        getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_currency : R.string.edit_currency);
+		}
+		// ****** action bar *****
+		
 		// check default values for scale and baseconvrate
 		if (TextUtils.isEmpty(edtScale.getText())) { edtScale.setText("100"); }
 		if (TextUtils.isEmpty(edtConversion.getText())) { edtConversion.setText("1"); }
@@ -150,13 +177,36 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
  	}
 	
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		Core core = new Core(this);
+		if (core.isTablet()) {
+			getSherlock().getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_done:
+			onDoneClick();
+			return true;
+		case android.R.id.home:
+		case R.id.menu_cancel:
+			onCancelClick();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// save the state of object
 		outState.putInt(KEY_CURRENCY_ID, mCurrencyId);
 		outState.putString(KEY_CURRENCY_NAME, edtCurrencyName.getText().toString());
 		if (spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
-			outState.putString(KEY_CURRENCY_SYMBOL, getResources().getStringArray(R.array.currency_values)[spinCurrencySymbol.getSelectedItemPosition()]);
+			outState.putString(KEY_CURRENCY_SYMBOL, getResources().getStringArray(R.array.currencies_code)[spinCurrencySymbol.getSelectedItemPosition()]);
 		}
 		outState.putString(KEY_UNIT_NAME, edtCurrencyName.getText().toString());
 		outState.putString(KEY_CENTS_NAME, edtCentsName.getText().toString());
@@ -179,7 +229,7 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 		}
 		// populate values
 		edtCurrencyName.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
-		spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currency_values)).indexOf(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCY_SYMBOL))), true);
+		spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code)).indexOf(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCY_SYMBOL))), true);
 		edtUnitName.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.UNIT_NAME)));
 		edtCentsName.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CENT_NAME)));
 		edtPrefix.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.PFX_SYMBOL)));
@@ -213,7 +263,7 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 		// set values
 		values.put(TableCurrencyFormats.CURRENCYNAME, edtCurrencyName.getText().toString());
 		if (spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
-			values.put(TableCurrencyFormats.CURRENCY_SYMBOL, getResources().getStringArray(R.array.currency_values)[spinCurrencySymbol.getSelectedItemPosition()]);
+			values.put(TableCurrencyFormats.CURRENCY_SYMBOL, getResources().getStringArray(R.array.currencies_code)[spinCurrencySymbol.getSelectedItemPosition()]);
 		}
 		values.put(TableCurrencyFormats.UNIT_NAME, edtCurrencyName.getText().toString());
 		values.put(TableCurrencyFormats.CENT_NAME, edtCentsName.getText().toString());
@@ -224,7 +274,7 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 		values.put(TableCurrencyFormats.SCALE, edtScale.getText().toString());
 		values.put(TableCurrencyFormats.BASECONVRATE, edtConversion.getText().toString());
 		// update data
-		if (mIntentAction.equals(INTENT_ACTION_INSERT)) {
+		if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
 			if (getContentResolver().insert(mCurrency.getUri(), values) == null) {
 				Toast.makeText(this, R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
 				Log.w(LOGCAT, "Insert new currency failed!");

@@ -160,6 +160,11 @@ public class DropboxBrowserActivity extends BaseFragmentActivity {
 				}
 			});
 		}
+
+		@Override
+		public String getSubTitle() {
+			return null;
+		}
 	}
 	
 	public static final String INTENT_DROBPOXFILE_PATH = "DropboxBrowserActivity:DropboxFile";

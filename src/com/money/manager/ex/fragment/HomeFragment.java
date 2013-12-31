@@ -19,8 +19,10 @@ package com.money.manager.ex.fragment;
 
 import java.util.Calendar;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -33,11 +35,13 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -45,6 +49,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -114,9 +119,11 @@ public class HomeFragment extends Fragment implements
 	private TableInfoTable infoTable = new TableInfoTable(); 
 	private QueryAccountBills accountBills;
 	// view show in layout
-	private TextView txtUserName, txtTotalAccounts, txtOverdue;
+	private TextView txtTotalAccounts;
 	private ListView lstAccountBills;
-	private LinearLayout linearRepeating;
+	private LinearLayout linearFooter;
+	private TextView txtFooterSummary;
+	private TextView txtFooterSummaryReconciled;
 	
 	private ProgressBar prgAccountBills;
 	
@@ -167,8 +174,7 @@ public class HomeFragment extends Fragment implements
 		// inflate layout
 		View view = (LinearLayout)inflater.inflate(R.layout.fragment_main, container, false);
 		// reference view into layout
-		txtOverdue = (TextView)view.findViewById(R.id.textViewOverdue);
-		txtUserName = (TextView)view.findViewById(R.id.textViewUserName);
+		
 		txtTotalAccounts = (TextView)view.findViewById(R.id.textViewTotalAccounts);
 		lstAccountBills = (ListView)view.findViewById(R.id.listViewAccountBills);
 		lstAccountBills.setOnItemClickListener(new OnItemClickListener() {
@@ -176,7 +182,10 @@ public class HomeFragment extends Fragment implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				MainActivity activity = (MainActivity)getActivity();
-				Cursor cursor = ((CursorAdapter)lstAccountBills.getAdapter()).getCursor();
+				//Cursor cursor = ((CursorAdapter)lstAccountBills.getAdapter()).getCursor();
+				HeaderViewListAdapter headerViewListAdapter = (HeaderViewListAdapter)lstAccountBills.getAdapter();
+				AccountBillsAdapter accountBillsAdapter = (AccountBillsAdapter)headerViewListAdapter.getWrappedAdapter();
+				Cursor cursor = accountBillsAdapter.getCursor();
 				int accountId = -1;
 				if (cursor != null && cursor.moveToPosition(position)) {
 					accountId = cursor.getInt(cursor.getColumnIndex(QueryAccountBills.ACCOUNTID));
@@ -189,12 +198,9 @@ public class HomeFragment extends Fragment implements
 		});
 		// set highlight item
 		if (getActivity() != null && getActivity() instanceof MainActivity) {
-			MainActivity mainActivity = (MainActivity)getActivity();
-			if (mainActivity.isDualPanel()) {
-				lstAccountBills.setSelector(R.color.holo_blue_light);
-				lstAccountBills.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-				lstAccountBills.setSelection(ListView.INVALID_POSITION);
-			}
+			lstAccountBills.setSelector(R.color.holo_blue_light);
+			lstAccountBills.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			//lstAccountBills.setSelection(ListView.INVALID_POSITION);
 		}
 		
 		prgAccountBills = (ProgressBar)view.findViewById(R.id.progressAccountBills);
@@ -205,9 +211,6 @@ public class HomeFragment extends Fragment implements
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		switch (loader.getId()) {
-		case ID_LOADER_USER_NAME:
-			txtUserName.setText("");
-			break;
 		case ID_LOADER_ACCOUNT_BILLS:
 			txtTotalAccounts.setText(application.getBaseCurrencyFormatted(0));
 			lstAccountBills.setAdapter(null);
@@ -217,62 +220,85 @@ public class HomeFragment extends Fragment implements
 	
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		MainActivity mainActivity = null;
+		if (getActivity() != null && getActivity() instanceof MainActivity) 
+			mainActivity = (MainActivity)getActivity();
+		
 		switch (loader.getId()) {
 		case ID_LOADER_USER_NAME:
 			if (data != null && data.moveToFirst()) {
 				while (data.isAfterLast() == false) {
 					String infoValue = data.getString(data.getColumnIndex(infoTable.INFONAME));
 					// save into preferences username and basecurrency id
-					if (infoValue.equals("USERNAME")) {
+					if (Constants.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
 						application.setUserName(data.getString(data.getColumnIndex(infoTable.INFOVALUE)));
-					} else if (infoValue.equals("BASECURRENCYID")) {
+					} else if (Constants.INFOTABLE_BASECURRENCYID.equalsIgnoreCase(infoValue)) {
 						application.setBaseCurrencyId(data.getInt(data.getColumnIndex(infoTable.INFOVALUE)));
 					}
 					data.moveToNext();
 				}
 			}
 			// show username
-			txtUserName.setText(application.getUserName());
 			if (!TextUtils.isEmpty(application.getUserName())) 
 				((SherlockFragmentActivity)getActivity()).getSupportActionBar().setSubtitle(application.getUserName());
+			// set user name on drawer
+			if (mainActivity != null) 
+				mainActivity.setDrawableUserName(application.getUserName());
+			
 			break;
+			
 		case ID_LOADER_ACCOUNT_BILLS:
+			float curTotal = 0, curReconciled = 0;
+			AccountBillsAdapter adapter = null;
+			// cycle cursor
 			if (data != null && data.moveToFirst()) {
-				float curTotal = 0;
-				// calculate 
 				while (data.isAfterLast() == false) {
-					curTotal = curTotal + data.getFloat(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+					curTotal += data.getFloat(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+					curReconciled += data.getFloat(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
 					data.moveToNext();
 				}
-				// write accounts total
-				txtTotalAccounts.setText(application.getBaseCurrencyFormatted(curTotal));
-				// adapter show data
-				AccountBillsAdapter adapter = new AccountBillsAdapter(getActivity(), data);
-				lstAccountBills.setAdapter(adapter);
-			} else {
-				txtTotalAccounts.setText(application.getBaseCurrencyFormatted(0));
-				lstAccountBills.setAdapter(null);
+				// create adapter
+				adapter = new AccountBillsAdapter(getActivity(), data);
 			}
+			// write accounts total
+			txtTotalAccounts.setText(application.getBaseCurrencyFormatted(curTotal));
+			// manage footer listview
+			if (linearFooter == null) {
+				linearFooter = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.item_account_bills, null);
+				// textview into layout
+				txtFooterSummary = (TextView)linearFooter.findViewById(R.id.textVievItemAccountTotal);
+				txtFooterSummaryReconciled = (TextView)linearFooter.findViewById(R.id.textVievItemAccountTotalReconciled);
+				// set text
+				TextView txtTextSummary = (TextView)linearFooter.findViewById(R.id.textVievItemAccountName);
+				txtTextSummary.setText(R.string.summary);
+				// invisibile image
+				ImageView imgSummary = (ImageView)linearFooter.findViewById(R.id.imageViewAccountType);
+				imgSummary.setVisibility(View.INVISIBLE);
+				// set color textview
+				txtTextSummary.setTextColor(Color.GRAY);
+				txtFooterSummary.setTextColor(Color.GRAY);
+				txtFooterSummaryReconciled.setTextColor(Color.GRAY);
+			}
+			// remove footer
+			lstAccountBills.removeFooterView(linearFooter);
+			// set text
+			txtFooterSummary.setText(txtTotalAccounts.getText());
+			txtFooterSummaryReconciled.setText(application.getBaseCurrencyFormatted(curReconciled));
+			// add footer
+			lstAccountBills.addFooterView(linearFooter, null, false);
+			// set adapter and shown
+			lstAccountBills.setAdapter(adapter);
 			setListViewAccountBillsVisible(true);
-			break;
-		case ID_LOADER_BILL_DEPOSITS:
-			LinearLayout content = (LinearLayout)getView().findViewById(android.R.id.content);
-			if (content != null) {
-				// remove view if exists
-				if (linearRepeating != null)
-					content.removeView(linearRepeating);
-				// add view
-				if (data != null && data.getCount() > 0) {
-					LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					linearRepeating = (LinearLayout)inflater.inflate(R.layout.merge_main_footer_billdeposits, null);
-					if (linearRepeating != null) {
-						txtOverdue = (TextView)linearRepeating.findViewById(R.id.textViewOverdue);
-						txtOverdue.setText(getString(R.string.num_repeating_transaction_expired, data.getCount()));
-						content.addView(linearRepeating);
-					}
-				}
+			// set total accounts in drawer
+			if (mainActivity != null) {
+				mainActivity.setDrawableTotalAccounts(txtTotalAccounts.getText().toString());
 			}
 			break;
+			
+		case ID_LOADER_BILL_DEPOSITS:
+			mainActivity.setDrawableRepeatingTransactions(data != null ? data.getCount() : 0);
+			break;
+			
 		case ID_LOADER_INCOME_EXPENSES:
 			float income = 0, expenses = 0;
 			if (data != null && data.moveToFirst()) {
@@ -295,6 +321,29 @@ public class HomeFragment extends Fragment implements
 				txtExpenses.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), Math.abs(expenses)));
 			if (txtDifference != null)
 				txtDifference.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income - Math.abs(expenses)));
+			// manage progressbar
+			final ProgressBar barIncome = (ProgressBar)getActivity().findViewById(R.id.progressBarIncome);
+			final ProgressBar barExpenses = (ProgressBar)getActivity().findViewById(R.id.progressBarExpenses);
+			
+			if (barIncome != null && barExpenses != null) {				
+				barIncome.setMax((int) (Math.abs(income) + Math.abs(expenses)));
+				barExpenses.setMax((int) (Math.abs(income) + Math.abs(expenses)));
+
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB){
+					ObjectAnimator animationIncome = ObjectAnimator.ofInt(barIncome, "progress", (int)Math.abs(income)); 
+				    animationIncome.setDuration(1000); // 0.5 second
+				    animationIncome.setInterpolator(new DecelerateInterpolator());
+				    animationIncome.start();
+				    
+				    ObjectAnimator animationExpenses = ObjectAnimator.ofInt(barExpenses, "progress", (int)Math.abs(expenses)); 
+				    animationExpenses.setDuration(1000); // 0.5 second
+				    animationExpenses.setInterpolator(new DecelerateInterpolator());
+				    animationExpenses.start();
+				} else {
+					barIncome.setProgress((int)Math.abs(income));
+					barExpenses.setProgress((int)Math.abs(expenses));
+				}
+			}
 		}
 	}
 	

@@ -19,8 +19,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="371"
-    android:versionName="1.3.6" >
+    android:versionCode="397"
+    android:versionName="1.4.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -231,6 +231,12 @@
         <activity
             android:name="com.money.manager.ex.AccountListActivity"
             android:label="@string/account_list" >
+            <action android:name="android.intent.action.PICK" />
+            <action android:name="android.intent.action.EDIT" />
+        </activity>
+        <activity
+            android:name="com.money.manager.ex.CategorySubCategoryExpandableListActivity"
+            android:label="@string/category" >
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>

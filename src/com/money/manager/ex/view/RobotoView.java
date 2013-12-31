@@ -61,6 +61,8 @@ public class RobotoView {
     private final static int ROBOTOSLAB_LIGHT = 17;
     private final static int ROBOTOSLAB_REGULAR = 18;
     private final static int ROBOTOSLAB_BOLD = 19;
+    private final static int ROBOTO_CONDENSED_LIGHT = 20;
+    private final static int ROBOTO_CONDENSED_LIGHT_ITALIC = 21;
     
     /**
      * List of created typefaces for later reused.
@@ -70,7 +72,7 @@ public class RobotoView {
     /*
      * Font user
      */
-    private static int mUserFont = ROBOTO_CONDENSED;
+    private static int mUserFont = ROBOTO_CONDENSED_LIGHT;
     private static float mUserFontSize;
     
     public static void setUserFont(int font) {
@@ -118,8 +120,8 @@ public class RobotoView {
     	values.recycle();
     	
     	// user-fonts
-    	if (typefaceValue == 0) {
-    		typefaceValue = mUserFont;
+    	if (typefaceValue == 0 && getUserFont() != DEFAULT_FONT) {
+    		typefaceValue = getUserFont();
     		// manage bold or italic
     		Typeface typeface = view.getTypeface();
     		if (typeface != null) {
@@ -161,22 +163,32 @@ public class RobotoView {
 						typefaceValue = ROBOTO_CONDENSED_BOLD;
 					}
 					break;
+				case ROBOTO_CONDENSED_LIGHT:
+					if (typeface.isItalic()) {
+						typefaceValue = ROBOTO_CONDENSED_ITALIC;
+					}
+					break;
 				default:
 					break;
 				}
     		}
-    	}
-    	// if typefaceValue = -1 default font 
-    	try {
-			if (!(typefaceValue == DEFAULT_FONT))
-				view.setTypeface(RobotoView.obtainTypeface(context, typefaceValue));
-    	} catch (Exception e) {
-			Log.e(LOGCAT, e.getMessage());
+    		// if typefaceValue = -1 default font
+    		if (!(typefaceValue == DEFAULT_FONT)) {
+    			try {
+    				view.setTypeface(RobotoView.obtainTypeface(context, typefaceValue));
+    			} catch (Exception e) {
+    				Log.e(LOGCAT, e.getMessage());
+    			}
+    		}
 		}
     	
-    	// set textsize
-    	if (view.getTextSize() == MoneyManagerApplication.getTextSize())
-    		view.setTextSize(TypedValue.COMPLEX_UNIT_PX, getUserFontSize());
+
+		// set text size
+		if (view.getTextSize() == MoneyManagerApplication.getTextSize()) {
+			if (view.getTextSize() != getUserFontSize()) {
+				view.setTextSize(TypedValue.COMPLEX_UNIT_PX, getUserFontSize());
+			}
+		}
     }
     
     /**
@@ -271,6 +283,12 @@ public class RobotoView {
                 break;
             case ROBOTOSLAB_BOLD:
                 typeface = Typeface.createFromAsset(context.getAssets(), "fonts/RobotoSlab-Bold.ttf");
+                break;
+            case ROBOTO_CONDENSED_LIGHT:
+                typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-CondensedLight.ttf");
+                break;
+            case ROBOTO_CONDENSED_LIGHT_ITALIC:
+                typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-CondensedLightItalic.ttf");
                 break;
             default:
                 throw new IllegalArgumentException("Unknown `typeface` attribute value " + typefaceValue);

@@ -39,10 +39,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/money_margin_middle"
+        android:layout_marginBottom="@dimen/money_margin_bottom_top"
         android:layout_marginLeft="@dimen/money_margin"
         android:layout_marginRight="@dimen/money_margin"
-        android:layout_marginTop="@dimen/money_margin_middle"
+        android:layout_marginTop="@dimen/money_margin_bottom_top"
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical" >
 
@@ -64,14 +64,14 @@
                 android:id="@+id/textViewRepeat"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/money_margin_middle"
+                android:layout_marginLeft="@dimen/money_margin_bottom_top"
                 android:textStyle="bold" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/money_margin_middle"
+                android:layout_marginLeft="@dimen/money_margin_bottom_top"
                 android:gravity="right"
                 android:textColor="?attr/holo_red_color_theme"
                 android:textStyle="bold" />

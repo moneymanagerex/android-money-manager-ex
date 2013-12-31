@@ -70,7 +70,7 @@ public class AccountListActivity extends BaseFragmentActivity {
 			// set default value
 			setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
 			setHasOptionsMenu(true);
-			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
+			mLayout = Intent.ACTION_PICK.equals(mAction) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
 			// create adapter
 			MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                     mLayout, null,
@@ -206,22 +206,25 @@ public class AccountListActivity extends BaseFragmentActivity {
 		
 		@Override
 		protected void setResult() {
-			if (mAction.equals(Intent.ACTION_PICK)) {
-				Intent result = new Intent();
+			Intent result = null;
+			if (Intent.ACTION_PICK.equals(mAction)) {
 				// take cursor
 				Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
 
 				for(int i = 0; i < getListView().getCount(); i ++) {
 					if (getListView().isItemChecked(i)) {
 						cursor.moveToPosition(i);
+						result = new Intent();
 						result.putExtra(INTENT_RESULT_ACCOUNTID, cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
 						result.putExtra(INTENT_RESULT_ACCOUNTNAME, cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME)));
-						break;
+						getActivity().setResult(Activity.RESULT_OK, result);
+						return;
 					}
 				}
-				// set result
-				getActivity().setResult(Activity.RESULT_OK, result);
 			}
+			// return cancel
+			getActivity().setResult(RESULT_CANCELED);
+			
 			return;
 		}
 		private void showDialogDeleteAccount(final int ACCOUNTID) {
@@ -277,6 +280,11 @@ public class AccountListActivity extends BaseFragmentActivity {
 			}
 			// launch activity
 			startActivity(intent);
+		}
+
+		@Override
+		public String getSubTitle() {
+			return getString(R.string.account_list);
 		}
 	}
 	@SuppressWarnings("unused")

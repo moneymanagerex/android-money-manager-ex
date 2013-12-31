@@ -252,6 +252,8 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 		executeRawSql(db, R.raw.database_create);
 		// force update database
 		updateDatabase(db, 0, databaseCurrentVersion);
+		// initial database
+		executeRawSql(db, R.raw.database_init);
 	}
 	
 	@Override

@@ -26,6 +26,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -37,40 +38,41 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.money.manager.ex.AccountListActivity;
-import com.money.manager.ex.CategorySubCategoryActivity;
+import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SearchActivity;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.ViewAllData;
+import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 
-public class SearchFragment extends SherlockFragment {
+public class SearchFragment extends SherlockFragment implements InputAmountDialogListener {
 	// LOGCAT
 	private static final String LOGCAT = SearchFragment.class.getSimpleName(); 
 	// ID REQUEST code
 	private static final int REQUEST_PICK_PAYEE = 1;
-	private static final int REQUEST_PICK_ACCOUNT = 2;
 	private static final int REQUEST_PICK_CATEGORY = 3;
 	// reference view into layout
 	private Spinner spinAccount, spinStatus;
-	private Button btnOk, btnCancel;
-	private Button btnSelectPayee, btnSelectToAccount, btnSelectCategory;
-	private ImageButton btnFromDate, btnToDate;
-	private EditText edtToAmount, edtFromAmount, edtTransNumber, edtNotes, edtFromDate, edtToDate;
+	private EditText edtTransNumber, edtNotes;
+	private TextView txtToAmount, txtFromAmount, txtSelectCategory, txtSelectPayee, txtFromDate, txtToDate;
 	private CheckBox cbxWithdrawal, cbxDeposit, cbxTransfer;
 	// application
 	private MoneyManagerApplication mApplication;
@@ -92,11 +94,11 @@ public class SearchFragment extends SherlockFragment {
 	
 	
 	private class OnDateButtonClickListener implements OnClickListener {
-		private EditText mEditText;
+		private TextView mTextView;
 		
-		public OnDateButtonClickListener(EditText editText) {
+		public OnDateButtonClickListener(TextView txtFromDate) {
 			super();
-			mEditText = editText;
+			mTextView = txtFromDate;
 		}
 		
 		private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -105,7 +107,7 @@ public class SearchFragment extends SherlockFragment {
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				try {
 					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-					mEditText.setText(mApplication.getStringFromDate(date));
+					mTextView.setText(mApplication.getStringFromDate(date));
 				} catch (Exception e) {
 					Log.e(LOGCAT, e.getMessage());
 				}
@@ -116,10 +118,10 @@ public class SearchFragment extends SherlockFragment {
 		@Override
 		public void onClick(View v) {
 			Calendar date = Calendar.getInstance();
-			if (!TextUtils.isEmpty(mEditText.getText())) {
-				date.setTime(mApplication.getDateFromString(mEditText.getText().toString()));
+			if (!TextUtils.isEmpty(mTextView.getText())) {
+				date.setTime(mApplication.getDateFromString(mTextView.getText().toString()));
 			}
-			DatePickerDialog dialog = new DatePickerDialog(getActivity(), mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+			DatePickerDialog dialog = new DatePickerDialog(getSherlockActivity(), mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
 			dialog.show();
 		}
 	}		
@@ -128,28 +130,44 @@ public class SearchFragment extends SherlockFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mApplication = (MoneyManagerApplication)getActivity().getApplication();
+		mApplication = (MoneyManagerApplication)getSherlockActivity().getApplication();
 		setHasOptionsMenu(true);
 		AllDataFragment fragment;
-		fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
+		fragment = (AllDataFragment) getSherlockActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
 		if (fragment != null) {
-			fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getActivity());
+			fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getSherlockActivity());
 		}
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (container == null) { return null; }
+		if (container == null) return null;	
 		//create view
 		View view = (LinearLayout)inflater.inflate(R.layout.search_activity, container, false);
+		//create listener amount
+		OnClickListener onClickAmount = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				float amount = 0;
+				if (v.getTag() != null && v.getTag() instanceof Float) {
+					amount = (Float)((TextView) v).getTag();
+				}
+				InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+				dialog.show(getSherlockActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+			}
+		};
 		//To Amount
-		edtToAmount = (EditText)view.findViewById(R.id.editTextToAmount);
+		txtToAmount = (TextView)view.findViewById(R.id.textViewFromAmount);
+		txtToAmount.setOnClickListener(onClickAmount);
 		//From Amount
-		edtFromAmount = (EditText)view.findViewById(R.id.editTextFromAmount);
+		txtFromAmount = (TextView)view.findViewById(R.id.textViewToAmount);
+		txtFromAmount.setOnClickListener(onClickAmount);
+		
 		// accountlist <> to populate the spin
 		spinAccount = (Spinner)view.findViewById(R.id.spinnerAccount);
 		if (mAccountList == null) {
-			mAccountList = new MoneyManagerOpenHelper(getActivity()).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
+			mAccountList = new MoneyManagerOpenHelper(getSherlockActivity()).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
 			mAccountList.add(0, null);
 			for(int i = 0; i <= mAccountList.size() - 1; i ++) {
 				if (mAccountList.get(i) != null) {
@@ -166,35 +184,25 @@ public class SearchFragment extends SherlockFragment {
 		cbxTransfer = (CheckBox)view.findViewById(R.id.checkBoxTransfer);
 		cbxWithdrawal = (CheckBox)view.findViewById(R.id.checkBoxWithdrawal);
 		// create adapter for spinAccount
-		ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mAccountNameList);
+		ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(getSherlockActivity(), android.R.layout.simple_spinner_item, mAccountNameList);
 		adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinAccount.setAdapter(adapterAccount);
-		//To Account
-		btnSelectToAccount = (Button)view.findViewById(R.id.buttonSelectToAccount);
-		btnSelectToAccount.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), AccountListActivity.class);
-				intent.setAction(Intent.ACTION_PICK);
-				startActivityForResult(intent, REQUEST_PICK_ACCOUNT);
-			}
-		});
 		//Payee
-		btnSelectPayee = (Button)view.findViewById(R.id.buttonSelectPayee);
-		btnSelectPayee.setOnClickListener(new OnClickListener() {
+		txtSelectPayee = (TextView)view.findViewById(R.id.textViewSelectPayee);
+		txtSelectPayee.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), PayeeActivity.class);
+				Intent intent = new Intent(getSherlockActivity(), PayeeActivity.class);
 				intent.setAction(Intent.ACTION_PICK);
 				startActivityForResult(intent, REQUEST_PICK_PAYEE);
 			}
 		});
 		//Category
-		btnSelectCategory = (Button)view.findViewById(R.id.buttonSelectCategory);
-		btnSelectCategory.setOnClickListener(new OnClickListener() {
+		txtSelectCategory = (TextView) view.findViewById(R.id.textViewSelectCategory);
+		txtSelectCategory.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), CategorySubCategoryActivity.class);
+				Intent intent = new Intent(getSherlockActivity(), CategorySubCategoryExpandableListActivity.class);
 				intent.setAction(Intent.ACTION_PICK);
 				startActivityForResult(intent, REQUEST_PICK_CATEGORY);
 			}
@@ -207,50 +215,63 @@ public class SearchFragment extends SherlockFragment {
 		}
 		// create adapter for spinnerStatus
 		spinStatus = (Spinner)view.findViewById(R.id.spinnerStatus);
-		ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mStatusItems);
+		ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(getSherlockActivity(), android.R.layout.simple_spinner_item, mStatusItems);
 		adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinStatus.setAdapter(adapterStatus);
 		// from date
-		edtFromDate = (EditText)view.findViewById(R.id.editFromDate);
-		edtFromDate.setKeyListener(null);
-		
-		btnFromDate = (ImageButton)view.findViewById(R.id.buttonFromDate);
-		btnFromDate.setOnClickListener(new OnDateButtonClickListener(edtFromDate));
+		txtFromDate = (TextView)view.findViewById(R.id.textViewFromDate);
+		txtFromDate.setKeyListener(null);
+		txtFromDate.setOnClickListener(new OnDateButtonClickListener(txtFromDate));
 		// to date
-		edtToDate = (EditText)view.findViewById(R.id.editToDate);
-		edtToDate.setKeyListener(null);
-
-		btnToDate = (ImageButton)view.findViewById(R.id.buttonToDate);
-		btnToDate.setOnClickListener(new OnDateButtonClickListener(edtToDate));
+		txtToDate = (TextView)view.findViewById(R.id.textViewToDate);
+		txtToDate.setKeyListener(null);
+		txtToDate.setOnClickListener(new OnDateButtonClickListener(txtToDate));
 		// transaction number
 		edtTransNumber = (EditText)view.findViewById(R.id.editTextTransNumber);
 		// notes
 		edtNotes = (EditText)view.findViewById(R.id.editTextNotes);
-		
-		//button ok and cancel
-		btnCancel = (Button)view.findViewById(R.id.buttonCancel);
-		btnCancel.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				getSherlockActivity().finish();
-			}
-		});
-		btnOk = (Button)view.findViewById(R.id.buttonOk);
-		btnOk.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				executeSearch();
-			}
-		});
+
 		return view;
 	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		Core core = new Core(getSherlockActivity());
+		// ****** action bar *****
 		getSherlockActivity().getSupportActionBar().setSubtitle(null);
+		if (!core.isTablet()) {
+			getSherlockActivity().getSupportActionBar().setDisplayOptions(
+					ActionBar.DISPLAY_SHOW_CUSTOM,
+					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+							| ActionBar.DISPLAY_SHOW_CUSTOM);
+			
+			LayoutInflater inflater = (LayoutInflater)getSherlockActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(getSherlockActivity()), false);
+	        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
+	        cancelActionView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					onDoneClick();
+				}
+			});
+	        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
+	        ImageView doneImageView = (ImageView) doneActionView.findViewById(R.id.image_done);
+	        doneImageView.setImageDrawable(getSherlockActivity().getResources().getDrawable(core.resolveIdAttribute(R.attr.ic_action_search)));
+	        TextView doneTextView = (TextView) doneActionView.findViewById(R.id.text_done);
+	        doneTextView.setText(R.string.search);
+	        
+	        doneActionView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onSearchClick();
+				}
+			});
+	        getSherlockActivity().getSupportActionBar().setCustomView(actionBarButtons);
+		}
+		// ****** action bar *****
 	}
 	
 	@Override
@@ -258,21 +279,44 @@ public class SearchFragment extends SherlockFragment {
 		switch(requestCode) {
 		case REQUEST_PICK_PAYEE:
 			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-				btnSelectPayee.setTag(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1));
-				btnSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
+				txtSelectPayee.setTag(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1));
+				txtSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
 			}
 			break;
 		case REQUEST_PICK_CATEGORY:
 			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
 				//create class for store data
 				CategorySub categorySub = new CategorySub();
-				categorySub.categId = data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGID, -1);
-				categorySub.categName = data.getStringExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGNAME);
-				categorySub.subCategId = data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGID, -1);
-				categorySub.subCategName = data.getStringExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGNAME);
+				categorySub.categId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
+				categorySub.categName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
+				categorySub.subCategId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
+				categorySub.subCategName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
 				//save into button
-				btnSelectCategory.setText(categorySub.categName + (!TextUtils.isEmpty(categorySub.subCategName) ? " : " + categorySub.subCategName : ""));
-				btnSelectCategory.setTag(categorySub);
+				txtSelectCategory.setText(categorySub.categName + (!TextUtils.isEmpty(categorySub.subCategName) ? " : " + categorySub.subCategName : ""));
+				txtSelectCategory.setTag(categorySub);
+			}
+		}
+	}
+	
+	public void onDoneClick() {
+		getSherlockActivity().finish();
+	}
+	
+	public void onSearchClick() {
+		executeSearch();
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		Core core = new Core(getSherlockActivity());
+		if (core.isTablet()) {
+			inflater.inflate(R.menu.menu_button_cancel_done, menu);
+			// change item ok in search
+			MenuItem doneItem = menu.findItem(R.id.menu_done);
+			if (doneItem != null) {
+				doneItem.setIcon(core.resolveIdAttribute(R.attr.ic_action_search));
+				doneItem.setTitle(R.string.search);
 			}
 		}
 	}
@@ -280,6 +324,10 @@ public class SearchFragment extends SherlockFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.menu_cancel:
+			getSherlockActivity().finish();
+			return true;
+		case R.id.menu_done:
 		case R.id.menu_search_transaction:
 			executeSearch();
 			return true;
@@ -289,7 +337,7 @@ public class SearchFragment extends SherlockFragment {
 	/**
 	 * Compose arguments and execute search
 	 */
-	private void executeSearch() {
+	public void executeSearch() {
 		ArrayList<String> whereClause = new ArrayList<String>();
 		//account
 		if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
@@ -305,29 +353,29 @@ public class SearchFragment extends SherlockFragment {
 			whereClause.add(ViewAllData.Status + "='" + mStatusValues.get(spinStatus.getSelectedItemPosition()) + "'");
 		}
 		//from date
-		if (!TextUtils.isEmpty(edtFromDate.getText())) {
-			whereClause.add(ViewAllData.Date + ">='" + mApplication.getSQLiteStringDate(mApplication.getDateFromString(edtFromDate.getText().toString())) + "'");
+		if (!TextUtils.isEmpty(txtFromDate.getText())) {
+			whereClause.add(ViewAllData.Date + ">='" + mApplication.getSQLiteStringDate(mApplication.getDateFromString(String.valueOf(txtFromDate.getText()))) + "'");
 		}
 		//to date
-		if (!TextUtils.isEmpty(edtToDate.getText())) {
-			whereClause.add(ViewAllData.Date + "<='" + mApplication.getSQLiteStringDate(mApplication.getDateFromString(edtToDate.getText().toString())) + "'");
+		if (!TextUtils.isEmpty(txtToDate.getText())) {
+			whereClause.add(ViewAllData.Date + "<='" + mApplication.getSQLiteStringDate(mApplication.getDateFromString(String.valueOf(txtToDate.getText()))) + "'");
 		}
 		//payee
-		if (btnSelectPayee.getTag() != null) {
-			whereClause.add(ViewAllData.PayeeID + "=" + btnSelectPayee.getTag().toString());
+		if (txtSelectPayee.getTag() != null) {
+			whereClause.add(ViewAllData.PayeeID + "=" + String.valueOf(txtSelectPayee.getTag()));
 		}
 		//categories
-		if (btnSelectCategory.getTag() != null) {
-			CategorySub categorySub = (CategorySub)btnSelectCategory.getTag();
+		if (txtSelectCategory.getTag() != null) {
+			CategorySub categorySub = (CategorySub)txtSelectCategory.getTag();
 			whereClause.add(ViewAllData.CategID + "=" + categorySub.categId + " AND " + ViewAllData.SubcategID + "=" + categorySub.subCategId);
 		}
 		//from amount
-		if (!TextUtils.isEmpty(edtFromAmount.getText())) {
-			whereClause.add(ViewAllData.Amount + ">=" + edtFromAmount.getText());
+		if (txtFromAmount.getTag() != null) {
+			whereClause.add(ViewAllData.Amount + ">=" + String.valueOf(txtFromAmount.getTag()));
 		}
 		//to amount
-		if (!TextUtils.isEmpty(edtToAmount.getText())) {
-			whereClause.add(ViewAllData.Amount + "<=" + edtToAmount.getText());
+		if (txtToAmount.getTag() != null) {
+			whereClause.add(ViewAllData.Amount + "<=" + String.valueOf(txtToAmount.getTag()));
 		}
 		//transaction number
 		if (!TextUtils.isEmpty(edtTransNumber.getText())) {
@@ -339,9 +387,9 @@ public class SearchFragment extends SherlockFragment {
 		}
 		//create a fragment search
 		AllDataFragment fragment;
-		fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
+		fragment = (AllDataFragment) getSherlockActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
 		if (fragment != null) {
-			getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+			getSherlockActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 		}
 		fragment = AllDataFragment.newInstance(-1);
 		//create bundle
@@ -350,10 +398,10 @@ public class SearchFragment extends SherlockFragment {
 		args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
 		//set arguments
 		fragment.setArguments(args);
-		fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getActivity());
+		fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getSherlockActivity());
 		fragment.setShownHeader(true);
 		//add fragment
-		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSherlockActivity().getSupportFragmentManager().beginTransaction();
 		//animation
 		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
 		// Replace whatever is in the fragment_container view with this fragment,
@@ -380,5 +428,14 @@ public class SearchFragment extends SherlockFragment {
 	 */
 	public boolean isDualPanel() {
 		return mDualPanel;
+	}
+
+	@Override
+	public void onFinishedInputAmountDialog(int id, Float amount) {
+		Core core = new Core(getSherlockActivity());
+
+		View view = getView().findViewById(id);
+		if (view != null && view instanceof TextView)
+			core.formatAmountTextView(((TextView) view), amount);
 	}
 }

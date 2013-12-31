@@ -17,9 +17,7 @@ public class SummaryDashExtension extends DashClockExtension {
 		try {
 			Context context = getApplicationContext();
 			MoneyManagerApplication app = new MoneyManagerApplication();
-			// load base currency
-			app.loadBaseCurrencyId(context);
-			app.loadHashMapCurrency(context);
+
 			// summary formatted
 			String summary = app.getBaseCurrencyFormatted(app.getSummaryAccounts(context));
 		

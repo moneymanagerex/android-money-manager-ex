@@ -36,7 +36,7 @@ public class DonateActivity extends BaseFragmentActivity  {
 			Toast.makeText(this, R.string.donate_thank_you, Toast.LENGTH_LONG).show();
 			Core core = new Core(this);
 			// update the info value
-			core.setInfoValue(Core.INFO_SKU_ORDER_ID, itemId);
+			core.setInfoValue(Constants.INFOTABLE_SKU_ORDER_ID, itemId);
 			finish();
 		}
 	}

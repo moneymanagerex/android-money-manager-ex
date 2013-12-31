@@ -252,6 +252,11 @@ public class FileBrowseActivity extends BaseFragmentActivity {
 			// annullo i dati nell'adapter
 			mAdapter.setData(null);			
 		}
+
+		@Override
+		public String getSubTitle() {
+			return null;
+		}
 	}
 
 	public static class BrowseFileListLoader extends

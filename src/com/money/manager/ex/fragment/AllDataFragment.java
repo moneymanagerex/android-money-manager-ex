@@ -17,45 +17,45 @@
  ******************************************************************************/
 package com.money.manager.ex.fragment;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
-import au.com.bytecode.opencsv.CSVWriter;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.CheckingAccountActivity;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SearchActivity;
-import com.money.manager.ex.core.AllDataAdapter;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.adapter.AllDataAdapter;
+import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
+import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
@@ -71,112 +71,78 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
 		public void onCallbackLoaderReset(Loader<Cursor> loader);
 	}
-	/**
-	 * Export data to CSV file
-	 *
-	 */
-	private class ExportDataToCSV extends AsyncTask<Void, Void, Boolean> {
-		private final String LOGCAT = AllDataFragment.ExportDataToCSV.class.getSimpleName();
-		private String mFileName = null;
-		private ProgressDialog dialog;
-		private String mPrefix = "";
+	
+	
+	// class to manage multi choice mode
+	public class AllDataMultiChoiceModeListener implements MultiChoiceModeListener {
 		
-		public ExportDataToCSV() {
-			// create progress dialog
-			dialog = new ProgressDialog(getActivity());
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
+			// TODO Auto-generated method stub
+			return false;
 		}
 		
 		@Override
-		protected Boolean doInBackground(Void... params) {
-			AllDataAdapter allDataAdapter = (AllDataAdapter)getListAdapter();
-			if (allDataAdapter == null || allDataAdapter.getCursor() == null) 
-				return false;
-			//take cursor
-			Cursor data = allDataAdapter.getCursor();
-			//create object to write csv file
-			try {
-				CSVWriter csvWriter = new CSVWriter(new FileWriter(mFileName), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
-				data.moveToFirst();
-				while (!data.isAfterLast()) {
-					String[] record = new String[7];
-					// compose a records
-					record[0] = data.getString(data.getColumnIndex(QueryAllData.UserDate));
-					if (!TextUtils.isEmpty(data.getString(data.getColumnIndex(QueryAllData.Payee)))) {
-						record[1] = data.getString(data.getColumnIndex(QueryAllData.Payee));
-					} else {
-						record[1] = data.getString(data.getColumnIndex(QueryAllData.ToAccountName));
-					}
-					record[2] = Float.toString(data.getFloat(data.getColumnIndex(QueryAllData.TOTRANSAMOUNT)));
-					record[3] = data.getString(data.getColumnIndex(QueryAllData.Category));
-					record[4] = data.getString(data.getColumnIndex(QueryAllData.Subcategory));
-					record[5] = Integer.toString(data.getInt(data.getColumnIndex(QueryAllData.TransactionNumber)));
-					record[6] = data.getString(data.getColumnIndex(QueryAllData.Notes));
-					// writer record
-					csvWriter.writeNext(record);
-					// move to next row
-					data.moveToNext();
-				}
-				csvWriter.close();
-			} catch (Exception e) {
-				Log.e(LOGCAT, e.getMessage());
-				return false;
-			}			
+		public void onDestroyActionMode(ActionMode mode) {
+			if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+				AllDataAdapter adapter = (AllDataAdapter)getListAdapter();
+				adapter.clearPositionChecked();
+				adapter.notifyDataSetChanged();
+			}
+		}
+		
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, android.view.Menu menu) {
+			getSherlockActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
 			return true;
 		}
 		
 		@Override
-		protected void onPostExecute(Boolean result) {
-			super.onPostExecute(result);
-			if (dialog != null && dialog.isShowing()) {
-				dialog.dismiss();
+		public boolean onActionItemClicked(ActionMode mode, android.view.MenuItem item) {
+			ArrayList<Integer> transIds = new ArrayList<Integer>();
+			if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+				AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+				Cursor cursor = adapter.getCursor();
+				if (cursor != null) {
+					SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
+					for(int i = 0; i < getListView().getCheckedItemCount(); i ++) {
+						int position = positionChecked.keyAt(i);
+						if (cursor.moveToPosition(position)) {
+							transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+						}
+					}
+				}
 			}
-			// prompt
-			Toast.makeText(getActivity(), getString(result ? R.string.export_file_complete : R.string.export_file_failed, mFileName), Toast.LENGTH_LONG).show();
+			switch (item.getItemId()) {
+			case R.id.menu_delete:
+				showDialogDeleteCheckingAccount(convertArraryListToArray(transIds));
+				return true;
+			case R.id.menu_none:
+			case R.id.menu_reconciled:
+			case R.id.menu_follow_up:
+			case R.id.menu_duplicate:
+			case R.id.menu_void:
+				String status = Character.toString(item.getAlphabeticShortcut());
+				if (setStatusCheckingAccount(convertArraryListToArray(transIds), status)) {
+					((AllDataAdapter) getListAdapter()).clearPositionChecked();
+					startLoaderData();
+					mode.finish();
+					return true;
+				}
+			}
+			return false;
 		}
 		
 		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			//file
-			File externalStorage = Environment.getExternalStorageDirectory();
-			if (!(externalStorage != null && externalStorage.exists() && externalStorage.isDirectory()))
-				return;
-			//create folder to copy database
-			File folderOutput = new File(externalStorage + "/" + getActivity().getPackageName());
-			//make a directory
-			if (!folderOutput.exists()) {
-				if (!folderOutput.mkdirs())
-					return;
+		public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+			if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+				AllDataAdapter adapter = (AllDataAdapter)getListAdapter();
+				adapter.setPositionChecked(position, checked);
+				adapter.notifyDataSetChanged();
 			}
-			String prefix = getPrefixName();
-			if (!TextUtils.isEmpty(prefix))
-				prefix = prefix + "_";
-			//compose file name
-			mFileName = folderOutput + "/" + prefix + new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".csv";
-			//dialog
-			dialog.setIndeterminate(true);
-			dialog.setMessage(getString(R.string.export_data_in_progress));
-			dialog.show();
-		}
-
-		/**
-		 * @return the mPrefix
-		 */
-		public String getPrefixName() {
-			if (TextUtils.isEmpty(mPrefix)) {
-				return "";
-			} else {
-				return mPrefix;
-			}
-		}
-
-		/**
-		 * @param mPrefix the mPrefix to set
-		 */
-		public void setPrefixName(String mPrefix) {
-			this.mPrefix = mPrefix;
 		}
 	}
+	
 	// ID Loader
 	public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
 	// KEY Arguments
@@ -201,6 +167,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	private int mGroupId = 0;
 	
 	private int mAccountId = -1;
+	
+	private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
 
 	/**
 	 * Export data to CSV file
@@ -214,7 +182,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	 * @param accountName
 	 */
 	public void exportDataToCSVFile(String prefixName) {
-		ExportDataToCSV csv = new ExportDataToCSV();
+		ExportToCsvFile csv = new ExportToCsvFile(getActivity(), (AllDataAdapter)getListAdapter());
 		csv.setPrefixName(prefixName);
 		csv.execute();
 	}
@@ -254,22 +222,42 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		setEmptyText(getString(R.string.no_data));
 		setListShown(false);
 		// option menu
-		setHasOptionsMenu(true);
+		setHasOptionsMenu(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB);
 		// create adapter
-		AllDataAdapter adapter = new AllDataAdapter(getActivity(), null);
+		AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
 		adapter.setAccountId(mAccountId);
 		adapter.setShowAccountName(isShownHeader());
 		adapter.setShowBalanceAmount(isShownBalance());
 		if (isShownBalance()) {
 			adapter.setDatabase(new MoneyManagerOpenHelper(getActivity()).getReadableDatabase());
 		}
+		// set choice mode in listview
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
+			getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+			getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
+		}
+		// click item
+		getListView().setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+					Cursor cursor = ((AllDataAdapter)getListAdapter()).getCursor();
+					if (cursor.moveToPosition(position)) {
+						startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));						
+					}
+				}
+			}
+		});
+		// set adapter		
 		setListAdapter(adapter);
 		// register context menu
 		registerForContextMenu(getListView());
 		// set divider
-		Core core = new Core(getSherlockActivity());
+		/*Core core = new Core(getSherlockActivity());
 		if (core.getThemeApplication() == R.style.Theme_Money_Manager_Light_DarkActionBar)
-			getListView().setDivider(new ColorDrawable(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.theme_background_color)));
+			getListView().setDivider(new ColorDrawable(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.theme_background_color)));*/
 		//getListView().setSelector(new ColorDrawable(getResources().getColor(R.color.money_background)));
 		// set animation
 		setListShown(false);
@@ -281,33 +269,29 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
-		if (item.getGroupId() == getContextMenuGroupId()) {
-			// take a info of the selected menu, and cursor at position
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-			Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
-			// check if cursor is valid
-			if (cursor != null) {
-				//quick-fix convert 'switch' to 'if-else'
-				if (item.getItemId() == R.id.menu_edit) {
-					startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-				} else if (item.getItemId() == R.id.menu_delete) {
-					showDialogDeleteCheckingAccount(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-				} else if (item.getItemId() == R.id.menu_reconciled) {
-					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "R");
-				} else if (item.getItemId() == R.id.menu_none) {
-					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "");
-				} else if (item.getItemId() == R.id.menu_duplicate) {
-					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "D");
-				} else if (item.getItemId() == R.id.menu_follow_up) {
-					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "F");
-				} else if (item.getItemId() == R.id.menu_void) {
-					setStatusCheckingAccount(getListView().getFirstVisiblePosition(), cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), "V");
+		//if (item.getGroupId() == getContextMenuGroupId())
+		// take a info of the selected menu, and cursor at position
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
+		// check if cursor is valid
+		if (cursor != null) {
+			switch (item.getItemId()) {
+			case R.id.menu_delete:
+				showDialogDeleteCheckingAccount(new int[] {cursor.getInt(cursor.getColumnIndex(QueryAllData.ID))});
+				return true;
+			case R.id.menu_none:
+			case R.id.menu_reconciled:
+			case R.id.menu_follow_up:
+			case R.id.menu_duplicate:
+			case R.id.menu_void:
+				String status = Character.toString(item.getAlphabeticShortcut());
+				if (setStatusCheckingAccount(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), status)) {
+					startLoaderData();
+					return true;
 				}
 			}
-			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -316,10 +300,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 		Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
 		// check if cursor is valid
-		if (cursor == null) {
+		if (cursor == null) 
 			return;
-		}
-		/* getActivity().getMenuInflater().inflate(R.menu.contextmenu_accountfragment, menu); */
+		/* getActivity().getMenuInflater().inflate(R.menu.contextmenu_accountfragment, menu); 
 		// add manually
 		int[] menuItem = new int[] { R.id.menu_edit, R.id.menu_delete, R.id.menu_reconciled, R.id.menu_none, R.id.menu_follow_up, R.id.menu_duplicate,
 				R.id.menu_void };
@@ -327,20 +310,21 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 				R.string.status_duplicate, R.string.status_void };
 		for (int i = 0; i < menuItem.length; i++) {
 			menu.add(getContextMenuGroupId(), menuItem[i], i, menuText[i]);
-		}
+		} */
 		// create a context menu
+		getSherlockActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
 		menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName)));
 		// hide current status
 		if (menu.findItem(R.id.menu_reconciled) != null)
-			menu.findItem(R.id.menu_reconciled).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("R") == false);
+			menu.findItem(R.id.menu_reconciled).setVisible(!Constants.TRANSACTION_STATUS_RECONCILED.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
 		if (menu.findItem(R.id.menu_none) != null)
-			menu.findItem(R.id.menu_none).setVisible(TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))) == false);
+			menu.findItem(R.id.menu_none).setVisible(!Constants.TRANSACTION_STATUS_UNRECONCILED.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
 		if (menu.findItem(R.id.menu_duplicate) != null)
-			menu.findItem(R.id.menu_duplicate).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("D") == false);
+			menu.findItem(R.id.menu_duplicate).setVisible(!Constants.TRANSACTION_STATUS_DUPLICATE.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
 		if (menu.findItem(R.id.menu_follow_up) != null)
-			menu.findItem(R.id.menu_follow_up).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("F") == false);
+			menu.findItem(R.id.menu_follow_up).setVisible(!Constants.TRANSACTION_STATUS_FOLLOWUP.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
 		if (menu.findItem(R.id.menu_void) != null)
-			menu.findItem(R.id.menu_void).setVisible(cursor.getString(cursor.getColumnIndex(QueryAllData.Status)).equalsIgnoreCase("V") == false);
+			menu.findItem(R.id.menu_void).setVisible(!Constants.TRANSACTION_STATUS_VOID.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
 
 	}
 
@@ -389,6 +373,13 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return super.onCreateView(inflater, container, savedInstanceState);
+	}
+	
+	@Override
+	public void onDestroy() {
+		if (mMultiChoiceModeListener != null)
+			mMultiChoiceModeListener.onDestroyActionMode(null);
+		super.onDestroy();
 	}
 
 	@Override
@@ -466,30 +457,36 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	public void setShownHeader(boolean mShownHeader) {
 		this.mShownHeader = mShownHeader;
 	}
-	/**
-	 * set status to transaction
-	 * 
-	 * @param position
-	 * @param transId
-	 * @param status
-	 * @return
-	 */
-	private boolean setStatusCheckingAccount(int position, int transId, String status) {
-		// content value for updates
-		ContentValues values = new ContentValues();
-		// set new state
-		values.put(TableCheckingAccount.STATUS, status);
 
-		// update
-		if (getActivity().getContentResolver().update(new TableCheckingAccount().getUri(), values, TableCheckingAccount.TRANSID + "=?",
-				new String[] { Integer.toString(transId) }) <= 0) {
-			Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
-			return false;
-		} else {
-			// reload data
-			startLoaderData();
-			return true;
+	private int[] convertArraryListToArray(ArrayList<Integer> list) {
+		int[] ret = new int[list.size()];
+		for(int i = 0; i < list.size(); i ++) {
+			ret[i] = list.get(i);
 		}
+		return ret;
+	}
+	
+	private boolean setStatusCheckingAccount(int transId, String status) {
+		return setStatusCheckingAccount(new int[] {transId}, status);
+	}
+	
+	private boolean setStatusCheckingAccount(int[] transId, String status) {
+		// check if status = "U" convert to empty string
+		if ("U".equalsIgnoreCase(status)) status = "";
+		
+		for (int id : transId) {
+			// content value for updates
+			ContentValues values = new ContentValues();
+			// set new state
+			values.put(TableCheckingAccount.STATUS, status);
+
+			// update
+			if (getActivity().getContentResolver().update(new TableCheckingAccount().getUri(), values, TableCheckingAccount.TRANSID + "=?", new String[] { Integer.toString(id) }) <= 0) {
+				Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/**
@@ -497,21 +494,24 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	 * @param transId
 	 *            primary key of transation
 	 */
-	private void showDialogDeleteCheckingAccount(final int transId) {
+	private void showDialogDeleteCheckingAccount(final int[] transId) {
 		// create alert dialog and set title and message
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 
 		alertDialog.setTitle(R.string.delete_transaction);
-		alertDialog.setMessage(R.string.confirmDelete);
+		alertDialog.setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions, transId.length, transId.length));
 		alertDialog.setIcon(R.drawable.ic_action_warning_light);
 
 		// set listener button positive
 		alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				TableCheckingAccount trans = new TableCheckingAccount();
-				if (getActivity().getContentResolver().delete(trans.getUri(), TableCheckingAccount.TRANSID + "=?", new String[] { Integer.toString(transId) }) == 0) {
-					Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+				for(int i = 0; i < transId.length; i ++) {
+					TableCheckingAccount trans = new TableCheckingAccount();
+					if (getActivity().getContentResolver().delete(trans.getUri(), TableCheckingAccount.TRANSID + "=?", new String[] { Integer.toString(transId[i]) }) == 0) {
+						Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+						return;
+					}
 				}
 				// restart loader
 				startLoaderData();
@@ -568,5 +568,10 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	 */
 	public void setShownBalance(boolean mShownBalance) {
 		this.mShownBalance = mShownBalance;
+	}
+
+	@Override
+	public String getSubTitle() {
+		return null;
 	}
 }

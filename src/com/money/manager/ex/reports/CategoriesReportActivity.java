@@ -43,6 +43,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.chart.ValuePieChart;
@@ -146,7 +147,8 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 				SubMenu subMenu = itemOption.getSubMenu();
 				if (subMenu != null) {
 					//create access to category
-					SQLiteDatabase database = new MoneyManagerOpenHelper(getActivity()).getReadableDatabase();
+					MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(getActivity());
+					SQLiteDatabase database = helper.getReadableDatabase();
 					TableCategory category = new TableCategory();
 					Cursor cursor = database.query(category.getSource(), new String[] {TableCategory.CATEGID, TableCategory.CATEGNAME}, null, null, null, null, TableCategory.CATEGNAME);
 					if (cursor != null && cursor.moveToFirst()) {
@@ -156,6 +158,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 							cursor.moveToNext();
 						}
 					}
+					helper.close();
 				}
 			}
 			// pie chart
@@ -234,7 +237,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			String groupBy = ViewMobileData.CategID + ", " + ViewMobileData.Category + ", " + ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
 			String having = null;
 			if (!TextUtils.isEmpty(((CategoriesReportActivity)getActivity()).mFilter)) {
-				if ("Withdrawal".equalsIgnoreCase(((CategoriesReportActivity)getActivity()).mFilter)) {
+				if (Constants.TRANSACTION_TYPE_WITHDRAWAL.equalsIgnoreCase(((CategoriesReportActivity)getActivity()).mFilter)) {
 					having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") < 0";
 				} else {
 					having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") > 0";
@@ -307,6 +310,11 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 				}
 				fragmentTransaction.commit();
 			}
+		}
+
+		@Override
+		public String getSubTitle() {
+			return null;
 		}	
 	}
 	

@@ -29,7 +29,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -50,6 +49,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MainActivity;
@@ -89,9 +89,11 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 	private static String passcode = null;
 
 	private String getDateFormatFromMask(String mask) {
-		for (int i = 0; i < getResources().getStringArray(R.array.date_format_mask).length; i ++) {
-			if (mask.equals(getResources().getStringArray(R.array.date_format_mask)[i])) {
-				return getResources().getStringArray(R.array.date_format)[i];
+		if (!TextUtils.isEmpty(mask)) {
+			for (int i = 0; i < getResources().getStringArray(R.array.date_format_mask).length; i++) {
+				if (mask.equals(getResources().getStringArray(R.array.date_format_mask)[i])) {
+					return getResources().getStringArray(R.array.date_format)[i];
+				}
 			}
 		}
 		return null;
@@ -288,7 +290,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			lstDateFormat.setEntries(getResources().getStringArray(R.array.date_format));
 			lstDateFormat.setEntryValues(getResources().getStringArray(R.array.date_format_mask));
 			//set summary
-			String value = mCore.getInfoValue(Core.INFO_NAME_DATEFORMAT);
+			String value = mCore.getInfoValue(Constants.INFOTABLE_DATEFORMAT);
 			lstDateFormat.setSummary(getDateFormatFromMask(value));
 			lstDateFormat.setValue(value);
 			//on change
@@ -296,7 +298,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 				
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					if (mCore.setInfoValue(Core.INFO_NAME_DATEFORMAT, (String)newValue)) {
+					if (mCore.setInfoValue(Constants.INFOTABLE_DATEFORMAT, (String)newValue)) {
 						lstDateFormat.setSummary(getDateFormatFromMask((String)newValue));
 						return true;
 					} else {
@@ -338,10 +340,36 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			});
 		}
 		
+		// default status
+		final ListPreference lstDefaultStatus = (ListPreference)findPreference(PreferencesConstant.PREF_DEFAULT_STATUS);
+		if (lstDefaultStatus != null) {
+			setSummaryListPreference(lstDefaultStatus, lstDefaultStatus.getValue(), R.array.status_values, R.array.status_items);
+			lstDefaultStatus.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {	
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					setSummaryListPreference(lstDefaultStatus, newValue.toString(), R.array.status_values, R.array.status_items);
+					return true;
+				}
+			});
+		}
+		
+		//default payee
+		final ListPreference lstDefaultPayee = (ListPreference)findPreference(PreferencesConstant.PREF_DEFAULT_PAYEE);
+		if (lstDefaultPayee != null) {
+			setSummaryListPreference(lstDefaultPayee, lstDefaultPayee.getValue(), R.array.new_transaction_dialog_values, R.array.new_transaction_dialog_items);
+			lstDefaultPayee.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {	
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					setSummaryListPreference(lstDefaultPayee, newValue.toString(), R.array.new_transaction_dialog_values, R.array.new_transaction_dialog_items);
+					return true;
+				}
+			});
+		} 
+		
 		// financial day and month
 		final Preference pFinancialDay = (Preference)findPreference(PreferencesConstant.PREF_FINANCIAL_YEAR_STARTDATE);
 		if (pFinancialDay != null) {
-			pFinancialDay.setSummary(mCore.getInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_DAY));
+			pFinancialDay.setSummary(mCore.getInfoValue(Constants.INFOTABLE_FINANCIAL_YEAR_START_DAY));
 			if (pFinancialDay.getSummary() != null) {
 				pFinancialDay.setDefaultValue(pFinancialDay.getSummary().toString());
 			}
@@ -354,7 +382,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 						if (!(day >= 1 && day <= 31)) {
 							return false;
 						}
-						if (mCore.setInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
+						if (mCore.setInfoValue(Constants.INFOTABLE_FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
 							pFinancialDay.setSummary(Integer.toString(day));
 						}
 						return true;
@@ -373,7 +401,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			lstFinancialMonth.setDefaultValue("0");
 			// get current month
 			try {
-				String currentMonth = mCore.getInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH);
+				String currentMonth = mCore.getInfoValue(Constants.INFOTABLE_FINANCIAL_YEAR_START_MONTH);
 				if ((!TextUtils.isEmpty(currentMonth)) && Core.StringUtils.isNumeric(currentMonth)) {
 					int month = Integer.parseInt(currentMonth) - 1;
 					if (month > -1 && month < lstFinancialMonth.getEntries().length) {
@@ -391,7 +419,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 					try {
 						int value = Integer.parseInt(newValue.toString());
 						if (value > -1 && value < lstFinancialMonth.getEntries().length) {
-							if (mCore.setInfoValue(Core.INFO_NAME_FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
+							if (mCore.setInfoValue(Constants.INFOTABLE_FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
 								lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
 								return true;
 							}
@@ -546,6 +574,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(this);
 			String sqliteVersion = helper.getSQLiteVersion();
 			if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
+			helper.close();
 		}
 	}
 	
@@ -661,7 +690,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		}
 		
 		//times repeat
-		EditTextPreference pRepeats = (EditTextPreference)findPreference(PreferencesConstant.PREF_DROPBOX_TIMES_REPEAT);
+		ListPreference pRepeats = (ListPreference)findPreference(PreferencesConstant.PREF_DROPBOX_TIMES_REPEAT);
 		if (pRepeats != null) {
 			pRepeats.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				
@@ -792,5 +821,15 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		alertDialog.setCancelable(false);
 		// show dialog
 		alertDialog.create().show();
+	}
+	
+	public void setSummaryListPreference(Preference preference, String value, int idArrayValues, int idArrayItems) {
+		final String[] values = getResources().getStringArray(idArrayValues);
+		final String[] items = getResources().getStringArray(idArrayItems);
+		for(int i = 0; i < values.length; i ++) {
+			if (value.equals(values[i])) {
+				preference.setSummary(items[i]);
+			}
+		}		
 	}
 }

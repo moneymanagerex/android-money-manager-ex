@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2012 The Android Money Manager Ex Project
-  
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceScreen android:title="@string/preferences_general" >
@@ -27,10 +10,25 @@
         <ListPreference
             android:key="@string/pref_date_format"
             android:title="@string/date_format" />
+        
         <ListPreference
             android:key="@string/pref_base_currency"
             android:title="@string/base_currency" />
- 
+        
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/status_items"
+            android:entryValues="@array/status_values"
+            android:key="@string/pref_default_status"
+            android:title="@string/default_status" />
+
+        <ListPreference
+            android:defaultValue="N"
+            android:entries="@array/new_transaction_dialog_items"
+            android:entryValues="@array/new_transaction_dialog_values"
+            android:key="@string/pref_default_payee"
+            android:title="@string/default_payee" />
+        
         <EditTextPreference
             android:key="@string/pref_financial_year_startdate"
             android:title="@string/financial_year_start_day" />
@@ -38,13 +36,12 @@
         <ListPreference
             android:key="@string/pref_financial_year_startmonth"
             android:title="@string/financial_year_start_month" />
-        
+
         <com.money.manager.ex.preferences.TimePreference
+            android:defaultValue="08:00"
             android:key="@string/pref_repeating_transaction_check_time"
-            android:title="@string/title_check_repeating_transaction" 
-            android:summary="@string/summary_check_repeating_transaction" 
-            android:defaultValue="08:00" />
-        
+            android:summary="@string/summary_check_repeating_transaction"
+            android:title="@string/title_check_repeating_transaction" />
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/preferences_dispaly" >
         <CheckBoxPreference
@@ -64,30 +61,31 @@
             android:title="@string/show_transaction" />
 
         <CheckBoxPreference
+            android:defaultValue="false"
             android:key="@string/pref_transaction_shown_balance"
             android:summary="@string/summary_transaction_shown_balance"
-            android:title="@string/title_transaction_shown_balance" 
-            android:defaultValue="false"/>
+            android:title="@string/title_transaction_shown_balance" />
+
         <ListPreference
-            android:key="@string/pref_application_font"
-            android:title="@string/title_application_font"
-            android:summary="@string/summary_application_font"
+            android:defaultValue="-1"
             android:entries="@array/application_font_entries"
-            android:entryValues="@array/application_font_values" 
-            android:defaultValue="12" />
+            android:entryValues="@array/application_font_values"
+            android:key="@string/pref_application_font"
+            android:summary="@string/summary_application_font"
+            android:title="@string/title_application_font" />
         <ListPreference
-            android:key="@string/pref_application_font_size"
-            android:title="@string/title_application_font_size"
-            android:summary="@string/summary_application_font_size"
+            android:defaultValue="default"
             android:entries="@array/application_font_size_entries"
-            android:entryValues="@array/application_font_size_values" 
-            android:defaultValue="@string/Default" />
-        <ListPreference 
-            android:key="@string/pref_theme"
-            android:title="@string/theme_application"
+            android:entryValues="@array/application_font_size_values"
+            android:key="@string/pref_application_font_size"
+            android:summary="@string/summary_application_font_size"
+            android:title="@string/title_application_font_size" />
+        <ListPreference
+            android:defaultValue="@string/theme_light"
             android:entries="@array/themes_values"
             android:entryValues="@array/themes_values"
-            android:defaultValue="@string/theme_light"/>
+            android:key="@string/pref_theme"
+            android:title="@string/theme_application" />
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/preferences_security" >
         <PreferenceScreen
@@ -100,7 +98,7 @@
             android:key="@string/pref_disable_passcode"
             android:title="@string/preferences_disable_passcode" />
     </PreferenceScreen>
-    <PreferenceScreen android:title="@string/database">
+    <PreferenceScreen android:title="@string/database" >
         <PreferenceScreen
             android:key="@string/pref_database_path"
             android:title="@string/path" />
@@ -122,15 +120,17 @@
             android:key="@string/pref_dropbox_linked_file"
             android:title="@string/dropbox_linkedFile" />
 
-        <EditTextPreference
+        <ListPreference
             android:defaultValue="30"
+            android:entries="@array/timeout_synchronize_items"
+            android:entryValues="@array/timeout_synchronize_values"
             android:dependency="@string/pref_dropbox_unlink"
             android:key="@string/pref_dropbox_times_repeat_service"
             android:summary="@string/summary_synchronization_interval"
             android:title="@string/synchronization_interval" />
 
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:dependency="@string/pref_dropbox_unlink"
             android:key="@string/pref_dropbox_upload_immediate"
             android:summary="@string/summary_dropbox_upload_immediate"
@@ -150,7 +150,6 @@
         <Preference
             android:key="@string/pref_dropbox_unlink"
             android:title="@string/dropbox_unlink" />
-        
         <Preference
             android:key="@string/pref_dropbox_wiki"
             android:title="@string/help" />
@@ -158,7 +157,8 @@
     <PreferenceScreen
         android:key="@string/pref_donate"
         android:title="@string/donate" />
-    <PreferenceScreen android:title="@string/preferences_info_application" 
-        android:key="@string/pref_version_name"/>
+    <PreferenceScreen
+        android:key="@string/pref_version_name"
+        android:title="@string/preferences_info_application" />
 
 </PreferenceScreen>

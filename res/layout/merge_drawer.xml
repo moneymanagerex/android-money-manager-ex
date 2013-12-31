@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayoutDrawer"
+    android:layout_width="260dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="?attr/theme_drawer_background_color"
+    android:orientation="vertical"
+    tools:ignore="UselessParent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" >
+        android:padding="10dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewUserName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="14sp" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewTotalAccounts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginLeft="2dp"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                app:typeface="roboto_bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:visibility="gone" />
+
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/textViewItem"
+        style="?attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="@string/menu"
+        android:textSize="18sp"
+        app:typeface="roboto_light" />
+
+    <ListView
+        android:id="@+id/listViewDrawer"
+        android:layout_width="320dp"
+        android:layout_height="0dp"
+        android:layout_gravity="start"
+        android:layout_weight="1"
+        android:choiceMode="singleChoice"
+        android:dividerHeight="0dp" />
+    <!-- android:background="#F3F3F4" -->
+
+    <include layout="@layout/merge_main_footer_billdeposits" />
+
+</LinearLayout>

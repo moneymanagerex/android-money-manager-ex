@@ -1,93 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2012 The Android Money Manager Ex Project
-  
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/Theme.Sherlock.Light.DarkActionBar">
-
-        <!-- Colors -->
-        <item name="theme_background_color">@color/holo_light_darkaction_money_background</item>
-        <item name="holo_blue_color_theme">@color/holo_blue_dark</item>
-        <item name="holo_green_color_theme">@color/holo_green_dark</item>
-        <item name="holo_red_color_theme">@color/holo_red_dark</item>
-        <item name="row_dark_theme">@android:color/transparent</item>
-        <item name="row_light_theme">@color/holo_light_row_light</item>
-        <!-- AChartEngine Colors -->
-        <item name="theme_axes_color">@color/theme_chart_labels_color</item>
-        <item name="theme_labels_color">@android:color/black</item>
-        <!-- Drawables -->
-        <item name="ic_action_add">@drawable/ic_action_add_dark</item>
-        <item name="ic_action_bargraph">@drawable/ic_action_bargraph_dark</item>
-        <item name="ic_action_business">@drawable/ic_action_business_dark</item>
-        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
-        <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
-        <item name="ic_action_folder_open">@drawable/ic_action_folder_open_dark</item>
-        <item name="ic_action_list">@drawable/ic_action_list_dark</item>
-        <item name="ic_action_pie_chart">@drawable/ic_action_pie_chart_dark</item>
-        <item name="ic_action_reload">@drawable/ic_action_reload_dark</item>
-        <item name="ic_action_search">@drawable/ic_action_search_dark</item>
-        <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
-        <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
-        <item name="ic_action_upload">@drawable/ic_action_upload_dark</item>
-        <!-- Shape -->
-        <item name="shape_background_shadow">@drawable/shape_background_shadow</item>
-        <item name="shape_white_background_shadow">@drawable/shape_white_background_shadow</item>
-        <item name="shape_rectangle_backgroud_dark">@drawable/shape_rectangle_backgroud_dark</item>
-        <!-- TextView -->
-        <item name="listSeparatorTextViewStyle">@style/listSeparatorTextViewStyle</item>
-    </style>
-
-    <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
-
-        <!-- Colors -->
-        <item name="theme_background_color">@android:color/transparent</item>
-        <item name="holo_blue_color_theme">@color/holo_blue_dark</item>
-        <item name="holo_green_color_theme">@color/holo_green_dark</item>
-        <item name="holo_red_color_theme">@color/holo_red_dark</item>
-		<item name="row_dark_theme">@android:color/transparent</item>
-        <item name="row_light_theme">@color/holo_dark_row_light</item>
-        <!-- AChartEngine Colors -->
-        <item name="theme_axes_color">@android:color/black</item>
-        <item name="theme_labels_color">@color/theme_chart_labels_color</item>
-        <!-- Drawables -->
-        <item name="ic_action_add">@drawable/ic_action_add_dark</item>
-        <item name="ic_action_bargraph">@drawable/ic_action_bargraph_dark</item>
-        <item name="ic_action_business">@drawable/ic_action_business_dark</item>
-        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
-        <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
-        <item name="ic_action_folder_open">@drawable/ic_action_folder_open_dark</item>
-        <item name="ic_action_list">@drawable/ic_action_list_dark</item>
-        <item name="ic_action_pie_chart">@drawable/ic_action_pie_chart_dark</item>
-        <item name="ic_action_reload">@drawable/ic_action_reload_dark</item>
-        <item name="ic_action_search">@drawable/ic_action_search_dark</item>
-        <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
-        <item name="ic_action_warning">@drawable/ic_action_warning_dark</item>
-        <item name="ic_action_upload">@drawable/ic_action_upload_dark</item>
-        <!-- Shape -->
-        <item name="shape_background_shadow">@null</item>
-        <item name="shape_white_background_shadow">@null</item>
-        <item name="shape_rectangle_backgroud_dark">@null</item>
-        <!-- TextView -->
-        <item name="listSeparatorTextViewStyle">?android:attr/listSeparatorTextViewStyle</item>
-    </style>
-    
     <style name="Money.TextView" parent="@android:style/Widget.TextView">
-        <!-- <item name="android:textColor">@color/textview_textcolor</item> -->
+        <item name="android:textSize">@dimen/money_text_view_size</item>
     </style>
 
     <style name="Money.TextView.Medium" parent="Money.TextView">
@@ -105,23 +20,54 @@
     </style>
 
     <style name="Money.Button.Medium" parent="Money.Button">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/money_text_view_size_medium</item>
     </style>
 
     <style name="Money.Button.Medium.Bold" parent="Money.Button.Medium">
         <item name="android:textStyle">bold</item>
     </style>
-    
 
     <style name="listSeparatorTextViewStyle" parent="android:Widget.Holo.Light.TextView">
         <item name="android:drawableBottom">@drawable/list_separator_text_view_style_drawable</item>
         <item name="android:drawablePadding">4dp</item>
-        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
         <item name="android:paddingLeft">4dp</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/emphasis</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/holo_ics_color</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="headerTextViewStyle" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
+    <style name="EditEventCustomActionButton" parent="android:style/Widget.Holo.Light.ActionButton">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:focusable">true</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="EditEventCustomActionButtonImage">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="EditEventCustomActionButtonText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/actionMenuTextAppearance</item>
+        <item name="android:textColor">?android:attr/actionMenuTextColor</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:padding">4dp</item>
     </style>
 
 </resources>

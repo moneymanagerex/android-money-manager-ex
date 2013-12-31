@@ -17,7 +17,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import com.money.manager.ex.CategorySubCategoryActivity;
+import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableSplitTransactions;
@@ -67,8 +67,8 @@ public class SplitItemFragment extends Fragment {
 			Button btnSelectCategory = (Button) getView().findViewById(R.id.buttonSelectCategory);
 			btnSelectCategory.setText(R.string.select_category);
 			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-				mSplitObject.setCategId(data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGID, -1));
-				mSplitObject.setSubCategId(data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGID, -1));
+				mSplitObject.setCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1));
+				mSplitObject.setSubCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1));
 				btnSelectCategory.setText(new Core(getActivity()).getCategSubName(mSplitObject.getCategId(), mSplitObject.getSubCategId()));
 			}
 		}
@@ -109,7 +109,7 @@ public class SplitItemFragment extends Fragment {
 
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(getActivity(), CategorySubCategoryActivity.class);
+					Intent intent = new Intent(getActivity(), CategorySubCategoryExpandableListActivity.class);
 					intent.setAction(Intent.ACTION_PICK);
 					startActivityForResult(intent, REQUEST_PICK_CATEGORY);
 				}

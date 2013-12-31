@@ -20,9 +20,6 @@ public class AccountBillsDashExtension extends DashClockExtension {
 		try {
 			Context context = getApplicationContext();
 			MoneyManagerApplication app = new MoneyManagerApplication();
-			// load base currency
-			app.loadBaseCurrencyId(context);
-			app.loadHashMapCurrency(context);
 			
 			QueryAccountBills accountBills = new QueryAccountBills(context);
 			String selection = accountBills.getFilterAccountSelection();

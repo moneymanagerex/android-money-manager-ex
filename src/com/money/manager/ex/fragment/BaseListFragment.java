@@ -35,21 +35,21 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
+import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 
-public class BaseListFragment extends SherlockListFragment {
-	// ID MENU
-	private static final int MENU_ITEM_SEARCH = 1000;
+public abstract class BaseListFragment extends SherlockListFragment {
 	// saved instance
 	private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
-	// stato della visualizzazione menu
+	// menu items
 	private boolean mDisplayShowCustomEnabled = false;
-	// flag che per la visualizzazione del menu'
 	private boolean mShowMenuItemSearch = false;
 	// flag for tips wildcard
 	private boolean isShowTipsWildcard = false;
 
+	public abstract String getSubTitle( );
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// set theme
@@ -61,15 +61,46 @@ public class BaseListFragment extends SherlockListFragment {
 		}
 		super.onCreate(savedInstanceState);
 	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		// set animation
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			getListView().setLayoutTransition(new LayoutTransition());
+		// saved instance
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD))
+				isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
+		}
+		// set subtitle in actionbar
+		if (!(TextUtils.isEmpty(getSubTitle())))
+			getSherlockActivity().getSupportActionBar().setSubtitle(getSubTitle());
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (isShowMenuItemSearch() && !isShowTipsWildcard) {
+			// show tooltip for wildcard
+			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getSherlockActivity().getApplicationContext(), "lookupswildcard");
+			if (tipsDropbox != null) {
+				tipsDropbox.setTips(getString(R.string.lookups_wildcard));
+				// tipsDropbox.setCheckDontShowAgain(true);
+				tipsDropbox.show(getSherlockActivity().getSupportFragmentManager(), "lookupswildcard");
+				isShowTipsWildcard = true; // set shown
+			}
+		}
+	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 		if (isShowMenuItemSearch()) {
 			// Place an action bar item for searching.
-			final MenuItem itemSearch = menu.add(0, MENU_ITEM_SEARCH, MENU_ITEM_SEARCH, R.string.search);
+			final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
 			itemSearch.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search));
 			itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-			// uso il Compat per avere l'oggetto
+
 			View searchView = SearchViewCompat.newSearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
 			if (searchView != null) {
 				SearchViewCompat.setOnQueryTextListener(searchView, new OnQueryTextListenerCompat() {
@@ -102,35 +133,17 @@ public class BaseListFragment extends SherlockListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
+			if (getActivity() != null && getActivity() instanceof MainActivity)
+				return super.onOptionsItemSelected(item);
 			// set result and exit
 			this.setResultAndFinish();
-
-			break;
-		case MENU_ITEM_SEARCH:
-			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			return true; // consumed here
+		case R.id.menu_query_mode:
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
 				onMenuItemSearchClick(item);
-			}
-			break;
-		}
-		return false;
-	}
-
-	protected boolean onQueryTextChange(String newText) {
-		return true;
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (isShowMenuItemSearch() && !isShowTipsWildcard) {
-			// show tooltip for wildcard
-			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getSherlockActivity().getApplicationContext(), "lookupswildcard");
-			if (tipsDropbox != null) {
-				tipsDropbox.setTips(getString(R.string.lookups_wildcard));
-				// tipsDropbox.setCheckDontShowAgain(true);
-				tipsDropbox.show(getSherlockActivity().getSupportFragmentManager(), "lookupswildcard");
-				isShowTipsWildcard = true; // set shown
-			}
+			return true; // consumed here
+		default:
+			return super.onOptionsItemSelected(item);			
 		}
 	}
 
@@ -150,7 +163,7 @@ public class BaseListFragment extends SherlockListFragment {
 			mDisplayShowCustomEnabled = true;
 		} else {
 			// controllo se ho del testo lo pulisco
-			if (TextUtils.isEmpty(edtSearch.getText().toString())) {
+			if (TextUtils.isEmpty(String.valueOf(edtSearch.getText()))) {
 				// nascondo la keyboard
 				imm.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
 				// tolgo la searchview
@@ -163,6 +176,16 @@ public class BaseListFragment extends SherlockListFragment {
 				onQueryTextChange("");
 			}
 		}
+	}
+
+	protected boolean onQueryTextChange(String newText) {
+		return true;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putBoolean(KEY_SHOWN_TIPS_WILDCARD, isShowTipsWildcard);
+		super.onSaveInstanceState(outState);
 	}
 
 	/**
@@ -191,24 +214,5 @@ public class BaseListFragment extends SherlockListFragment {
 		this.setResult();
 		// chiudo l'activity dove sono collegato
 		getActivity().finish();
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		// set animation
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			getListView().setLayoutTransition(new LayoutTransition());
-		// saved instance
-		if (savedInstanceState != null) {
-			if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD))
-				isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
-		}
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		outState.putBoolean(KEY_SHOWN_TIPS_WILDCARD, isShowTipsWildcard);
-		super.onSaveInstanceState(outState);
 	}
 }

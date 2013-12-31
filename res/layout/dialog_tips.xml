@@ -15,11 +15,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
+            <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewTips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tips_new_version_dropbox" />
+                android:text="@string/tips_new_version_dropbox" 
+                android:textSize="16sp"/>
 
             <WebView
                 android:id="@+id/webViewTips"
@@ -30,7 +31,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <CheckBox
+    <com.money.manager.ex.view.RobotoCheckBox
         android:id="@+id/checkBoxDontShow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

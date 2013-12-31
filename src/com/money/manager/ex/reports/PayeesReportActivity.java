@@ -252,6 +252,12 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 				fragmentTransaction.commit();
 			}
 		}
+
+		@Override
+		public String getSubTitle() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 	
 	static MoneyManagerApplication application;

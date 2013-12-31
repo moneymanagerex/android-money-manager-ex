@@ -1,32 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2012 The Android Money Manager Ex Project
-  
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="?attr/theme_background_color"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical" >
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_margin="@dimen/money_margin"
-        android:layout_weight="1"
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
         android:padding="@dimen/money_padding" >
@@ -34,63 +19,83 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:orientation="vertical" >
-
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/listSeparatorTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="@string/account" />
-
-            <Spinner
-                android:id="@+id/spinnerAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                android:focusableInTouchMode="true" >
-
-                <requestFocus />
-            </Spinner>
-
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/listSeparatorTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="@string/next_occurrence" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 android:orientation="horizontal" >
 
-                <com.money.manager.ex.view.RobotoEditText
-                    android:id="@+id/editTextNextOccurrence"
-                    android:layout_width="match_parent"
+                <com.money.manager.ex.view.RobotoTextView
+                    style="?attr/headerTextViewStyle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/next_occurrence"
-                    android:inputType="date" />
+                    android:singleLine="true"
+                    android:text="@string/account" />
 
-                <ImageButton
-                    android:id="@+id/buttonNextOccurrence"
-                    style="@style/Money.Button"
-                    android:layout_width="@dimen/money_button_height"
-                    android:layout_height="@dimen/money_button_height"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_action_calendar_day_dark" />
+                <com.money.manager.ex.view.RobotoTextView
+                    style="?attr/headerTextViewStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/to_account"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="horizontal" >
+
+                <Spinner
+                    android:id="@+id/spinnerAccount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
+
+                <Spinner
+                    android:id="@+id/spinnerToAccount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <com.money.manager.ex.view.RobotoTextView
+                style="?attr/headerTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/next_occurrence" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/editTextNextOccurrence"
+                style="?attr/styleHoloSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 android:orientation="horizontal" >
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewRepeat"
-                    style="?attr/listSeparatorTextViewStyle"
+                    style="?attr/headerTextViewStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -99,7 +104,7 @@
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewTimesRepeated"
-                    style="?attr/listSeparatorTextViewStyle"
+                    style="?attr/headerTextViewStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -111,6 +116,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 android:orientation="horizontal" >
 
                 <Spinner
@@ -137,7 +143,7 @@
                 android:orientation="horizontal" >
 
                 <com.money.manager.ex.view.RobotoTextView
-                    style="?attr/listSeparatorTextViewStyle"
+                    style="?attr/headerTextViewStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -145,7 +151,7 @@
                     android:text="@string/transaction_type" />
 
                 <com.money.manager.ex.view.RobotoTextView
-                    style="?attr/listSeparatorTextViewStyle"
+                    style="?attr/headerTextViewStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -173,73 +179,16 @@
                     android:layout_weight="1"
                     android:prompt="@string/status" />
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutPayee"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewPayee"
-                    style="?attr/listSeparatorTextViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="@string/payee" />
-
-                <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonSelectPayee"
-                    style="@style/Money.Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/money_button_height"
-                    android:text="@string/select_payee" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutToAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone" >
-
-                <com.money.manager.ex.view.RobotoTextView
-                    style="?attr/listSeparatorTextViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="@string/to" />
-
-                <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonSelectToAccount"
-                    style="@style/Money.Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/money_button_height"
-                    android:text="@string/select_to_account" />
-            </LinearLayout>
-
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/listSeparatorTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="@string/category" />
-
-            <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonSelectCategory"
-                style="@style/Money.Button"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/money_button_height"
-                android:text="@string/select_category" />
-
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
                 android:orientation="horizontal" >
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewTotAmount"
-                    style="?attr/listSeparatorTextViewStyle"
+                    style="?attr/headerTextViewStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -248,7 +197,7 @@
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewAmount"
-                    style="?attr/listSeparatorTextViewStyle"
+                    style="?attr/headerTextViewStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -259,31 +208,73 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
                 android:orientation="horizontal" >
 
-                <com.money.manager.ex.view.RobotoEditText
+                <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/editTextTotAmount"
+                    style="?attr/styleHoloSpinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:gravity="right"
-                    android:hint="@string/total_amount"
-                    android:inputType="numberDecimal" />
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:textStyle="bold" />
 
-                <com.money.manager.ex.view.RobotoEditText
+                <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/editTextAmount"
+                    style="?attr/styleHoloSpinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:gravity="right"
-                    android:hint="@string/amount"
-                    android:inputType="numberDecimal" />
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <com.money.manager.ex.view.RobotoTextView
-                style="?attr/listSeparatorTextViewStyle"
+                android:id="@+id/textViewPayee"
+                style="?attr/headerTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/payee" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewSelectPayee"
+                style="?attr/styleHoloSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:ellipsize="end"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:singleLine="true" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                style="?attr/headerTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/category" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewSelectCategory"
+                style="?attr/styleHoloSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:ellipsize="end"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:singleLine="true" />
+
+
+
+            <com.money.manager.ex.view.RobotoTextView
+                style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -299,10 +290,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:gravity="right"
-                    android:hint="@string/transaction_number"
-                    android:inputType="number" />
+                    android:hint="@string/transaction_number" />
 
                 <ImageButton
                     android:id="@+id/buttonTransNumber"
@@ -310,11 +298,11 @@
                     android:layout_width="@dimen/money_button_height"
                     android:layout_height="@dimen/money_button_height"
                     android:layout_gravity="center_vertical"
-                    android:src="@android:drawable/ic_menu_add" />
+                    android:src="@drawable/ic_action_plusone_dark" />
             </LinearLayout>
 
             <com.money.manager.ex.view.RobotoTextView
-                style="?attr/listSeparatorTextViewStyle"
+                style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -327,42 +315,9 @@
                 android:gravity="top|left"
                 android:hint="@string/notes"
                 android:inputType="textMultiLine"
-                android:lines="5"
                 android:maxLength="1000"
                 android:scrollHorizontally="false" />
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal" >
-
-        <com.money.manager.ex.view.RobotoButton
-            android:id="@+id/buttonCancel"
-            style="@style/Money.Button"
-            android:layout_width="0dip"
-            android:layout_height="@dimen/money_button_height"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_action_cancel_dark"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:text="@android:string/cancel"
-            android:textSize="@dimen/money_text_view_size_small"
-            android:textStyle="bold" />
-
-        <com.money.manager.ex.view.RobotoButton
-            android:id="@+id/buttonOk"
-            style="@style/Money.Button"
-            android:layout_width="0dip"
-            android:layout_height="@dimen/money_button_height"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_action_tick_dark"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:text="@android:string/ok"
-            android:textSize="@dimen/money_text_view_size_small"
-            android:textStyle="bold" />
-    </LinearLayout>
 
 </LinearLayout>

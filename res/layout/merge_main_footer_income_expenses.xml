@@ -1,97 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex" >
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:stretchColumns="1" >
+        android:stretchColumns="2" >
 
         <TableRow>
 
             <com.money.manager.ex.view.RobotoTextView
-                
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
+                android:singleLine="true"
                 android:text="@string/income"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?attr/holo_green_color_theme" 
-                android:singleLine="true"/>
+                android:textColor="?attr/holo_green_color_theme" />
 
             <com.money.manager.ex.view.RobotoTextView
-                
                 android:id="@+id/textViewIncome"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_weight="1"
+                android:gravity="right"
+                android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?attr/holo_green_color_theme" 
-                android:singleLine="true"/>
+                android:textColor="?attr/holo_green_color_theme" />
+
+            <ProgressBar
+                android:id="@+id/progressBarIncome"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:indeterminate="false"
+                android:paddingTop="2dp"
+                android:progressDrawable="@drawable/progress_income" />
         </TableRow>
 
         <TableRow>
 
             <com.money.manager.ex.view.RobotoTextView
-                
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
+                android:singleLine="true"
                 android:text="@string/expenses"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?attr/holo_red_color_theme" 
-                android:singleLine="true"/>
+                android:textColor="?attr/holo_red_color_theme" />
 
             <com.money.manager.ex.view.RobotoTextView
-                
                 android:id="@+id/textViewExpenses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_weight="1"
+                android:gravity="right"
+                android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?attr/holo_red_color_theme" 
-                android:singleLine="true"/>
+                android:textColor="?attr/holo_red_color_theme" />
+
+            <ProgressBar
+                android:id="@+id/progressBarExpenses"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:indeterminate="false"
+                android:paddingTop="2dp"
+                android:progressDrawable="@drawable/progress_expenses" />
         </TableRow>
 
         <TableRow>
 
             <com.money.manager.ex.view.RobotoTextView
-                
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
+                android:singleLine="true"
                 android:text="@string/difference"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold" 
-                android:singleLine="true"/>
+                android:textStyle="bold" />
 
             <com.money.manager.ex.view.RobotoTextView
-                
                 android:id="@+id/textViewDifference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_weight="1"
+                android:gravity="right"
+                android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold" 
-                android:singleLine="true"/>
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/progressBarDifference"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:indeterminate="false"
+                android:paddingTop="2dp"
+                android:progressDrawable="@drawable/progress_expenses"
+                android:visibility="invisible" />
         </TableRow>
     </TableLayout>
 

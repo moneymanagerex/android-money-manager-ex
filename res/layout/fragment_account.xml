@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2012 The Android Money Manager Ex Project
-  
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex"
     android:layout_width="match_parent"
@@ -27,69 +10,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/money_margin"
         android:animateLayoutChanges="true"
-        android:background="?attr/shape_white_background_shadow"
         android:orientation="horizontal"
         android:padding="@dimen/money_padding" >
 
-        <TableLayout
+        <include
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:stretchColumns="1" >
-
-            <!-- android:background="@color/abBackground" -->
-
-            <TableRow>
-
-                <com.money.manager.ex.view.RobotoTextView
-                    style="@style/Money.TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_marginLeft="2dp"
-                    android:layout_weight="1"
-                    android:text="@string/account_balance"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                     />
-
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewAccountBalance"
-                    style="@style/Money.TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_marginLeft="2dp"
-                    android:layout_weight="1"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                     />
-            </TableRow>
-
-            <TableRow>
-
-                <com.money.manager.ex.view.RobotoTextView
-                    style="@style/Money.TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_marginLeft="2dp"
-                    android:layout_weight="1"
-                    android:text="@string/account_reconciled_balance"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                     />
-
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewAccountReconciled"
-                    style="@style/Money.TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_marginLeft="2dp"
-                    android:layout_weight="1"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                     />
-            </TableRow>
-        </TableLayout>
+            layout="@layout/merge_header_fragment_account" />
 
         <ImageView
             android:id="@+id/imageViewAccountFav"

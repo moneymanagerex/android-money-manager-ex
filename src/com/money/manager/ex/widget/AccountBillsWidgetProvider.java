@@ -37,9 +37,6 @@ public class AccountBillsWidgetProvider extends AppWidgetProvider {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		
 		MoneyManagerApplication app = new MoneyManagerApplication();
-		//load base currency
-		app.loadBaseCurrencyId(context);
-		app.loadHashMapCurrency(context);
 		
 		for (int i = 0; i < appWidgetIds.length; ++i) {
 			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_account_bills);

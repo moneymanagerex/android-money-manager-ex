@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:stretchColumns="1" >
+
+    <TableRow>
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="@string/account_balance" />
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/textViewAccountBalance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow>
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:text="@string/account_reconciled_balance" />
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/textViewAccountReconciled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow android:visibility="gone" >
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:text="@string/difference"
+            android:textSize="@dimen/money_text_view_size_micro" />
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/textViewDifference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:textSize="@dimen/money_text_view_size_micro"
+            android:textStyle="bold" />
+    </TableRow>
+
+</TableLayout>

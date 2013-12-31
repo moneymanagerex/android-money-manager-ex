@@ -70,7 +70,7 @@ public class PayeeActivity extends BaseFragmentActivity {
 			setEmptyText(getActivity().getResources().getString(R.string.payee_empty_list));
 			setHasOptionsMenu(true);
 			
-			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
+			mLayout = Intent.ACTION_PICK.equals(mAction) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
 			// associate adapter
 			MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(), mLayout, null, new String[] { TablePayee.PAYEENAME },
 					new int[] { android.R.id.text1 }, 0);
@@ -202,25 +202,24 @@ public class PayeeActivity extends BaseFragmentActivity {
 
 		@Override
 		protected void setResult() {
-			if (mAction.equals(Intent.ACTION_PICK)) {
-				Intent result = new Intent();
-
+			Intent result = null;
+			if (Intent.ACTION_PICK.equals(mAction)) {
 				Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
-
 				for(int i = 0; i < getListView().getCount(); i ++) {
 					if (getListView().isItemChecked(i)) {
 						cursor.moveToPosition(i);
-
+						
+						result = new Intent();
 						result.putExtra(INTENT_RESULT_PAYEEID, cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
 						result.putExtra(INTENT_RESULT_PAYEENAME, cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
 
-						break;
+						getActivity().setResult(Activity.RESULT_OK, result);
+						
+						return;
 					}
 				}
-				// set result
-				getActivity().setResult(Activity.RESULT_OK, result);
 			}
-			//esco
+			getActivity().setResult(RESULT_CANCELED);			
 			return;
 		}
 		
@@ -306,6 +305,11 @@ public class PayeeActivity extends BaseFragmentActivity {
 			});
 			// show dialog
 			alertDialog.create().show();
+		}
+
+		@Override
+		public String getSubTitle() {
+			return getString(R.string.payee);
 		}
 	}
 	@SuppressWarnings("unused")

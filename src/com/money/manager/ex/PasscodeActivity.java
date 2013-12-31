@@ -128,7 +128,7 @@ public class PasscodeActivity extends SherlockActivity {
 		textView.setText(null);
 		// intent and action
 		if (getIntent() != null && getIntent().getAction() != null) {
-			if (getIntent().getAction().equals(INTENT_REQUEST_PASSWORD)) {
+			if (INTENT_REQUEST_PASSWORD.equals(getIntent().getAction())) {
 				if (getIntent().getStringExtra(INTENT_MESSAGE_TEXT) != null) {
 					textView.setText(getIntent().getStringExtra(INTENT_MESSAGE_TEXT));
 				}

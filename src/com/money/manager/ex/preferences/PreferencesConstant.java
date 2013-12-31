@@ -40,6 +40,8 @@ public class PreferencesConstant {
     public static final String PREF_DATABASE_BACKUP = "prefdatabasebackup";
     public static final String PREF_APPLICATION_FONT = "prefapplicationfont";
     public static final String PREF_APPLICATION_FONT_SIZE = "prefapplicationfontsize";
+    public static final String PREF_DEFAULT_STATUS = "prefdefaultstatus";
+    public static final String PREF_DEFAULT_PAYEE = "prefdefaultpayee";
     // others preference setting don't display
     public static final String PREF_DROPBOX_ACCOUNT_PREFS_NAME = "com.money.manager.ex_dropbox_preferences";
 	public static final String PREF_DROPBOX_ACCESS_KEY_NAME = "ACCESS_KEY";

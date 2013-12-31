@@ -19,11 +19,13 @@ package com.money.manager.ex;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -31,6 +33,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -58,6 +61,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 	public static class CurrencyFormatsLoaderListFragment extends BaseListFragment
 		implements LoaderManager.LoaderCallbacks<Cursor> {
 		// ID menu item
+		private static final int MENU_ITEM_IMPORT_ALL_CURRENCIES = 0;
 		private static final int MENU_ITEM_ADD = 1;
 		// filter
 		private String mCurFilter;
@@ -72,7 +76,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 			setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
 			setHasOptionsMenu(true);
 			
-			mLayout = mAction.equals(Intent.ACTION_PICK) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1; 
+			mLayout = Intent.ACTION_PICK.equals(mAction) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1; 
 			// associate adapter
 			MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(), mLayout, null, new String[] { TableCurrencyFormats.CURRENCYNAME },
 					new int[] { android.R.id.text1 }, 0);
@@ -152,10 +156,15 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 		@Override
 		public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
+			Core core = new Core(getSherlockActivity());
 			// item add
-            MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
-            itemadd.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_add));
-            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            MenuItem menuItem = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
+            menuItem.setIcon(core.resolveIdAttribute(R.attr.ic_action_add));
+            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            // item import currencies
+            menuItem = menu.add(0, MENU_ITEM_IMPORT_ALL_CURRENCIES, MENU_ITEM_IMPORT_ALL_CURRENCIES, R.string.import_all_currencies);
+            menuItem.setIcon(core.resolveIdAttribute(R.attr.ic_action_download));
+            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
         }
 		
         @Override
@@ -182,9 +191,40 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 			switch (item.getItemId()) {
+			case MENU_ITEM_IMPORT_ALL_CURRENCIES:
+				AsyncTask<Void, Void, Boolean> asyncTask =  new AsyncTask<Void, Void, Boolean>() {
+					ProgressDialog dialog = null;
+					
+					@Override
+					protected void onPreExecute() {
+						super.onPreExecute();
+						dialog = ProgressDialog.show(getSherlockActivity(), null, getString(R.string.import_all_currencies));
+					}
+
+					@Override
+					protected Boolean doInBackground(Void... params) {
+						Core core = new Core(getSherlockActivity());
+						return core.importCurrenciesFromLocaleAvaible();
+					}
+					
+					@Override
+					protected void onPostExecute(Boolean result) {
+						try {
+							if (dialog != null)
+								dialog.hide();
+						} catch (Exception e){
+							Log.e(LOGCAT, e.getMessage());
+						}
+						super.onPostExecute(result);
+					}
+				};
+				asyncTask.execute();
+				
+				return true;
+				
 			case MENU_ITEM_ADD:
 				startCurrencyFormatActivity(null);
-				break;
+				return true; 
 			}
 			return super.onOptionsItemSelected(item);
 		}
@@ -201,23 +241,26 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
 		@Override
 		protected void setResult() {
-			if (mAction.equals(Intent.ACTION_PICK)) {
+			Intent result = null;
+			if (Intent.ACTION_PICK.equals(mAction)) {
 				// create intent
-				Intent result = new Intent();
 				Cursor cursor = ((SimpleCursorAdapter)getListAdapter()).getCursor();
 				
 				for(int i = 0; i < getListView().getCount(); i ++) {
 					if (getListView().isItemChecked(i)) {
 						cursor.moveToPosition(i);
+						
+						result = new Intent();
 						result.putExtra(INTENT_RESULT_CURRENCYID, cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
 						result.putExtra(INTENT_RESULT_CURRENCYNAME, cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
 
-						break;
+						getActivity().setResult(Activity.RESULT_OK, result);
+
+						return;
 					}
 				}
-				// set result and exit
-				getActivity().setResult(Activity.RESULT_OK, result);
 			}
+			getActivity().setResult(RESULT_CANCELED);
 			return;
 		}
 		
@@ -262,8 +305,13 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 			// launch activity
 			startActivity(intent);
 		}
+
+		@Override
+		public String getSubTitle() {
+			return getString(R.string.currency);
+		}
 	}
-	@SuppressWarnings("unused")
+	
 	private static final String LOGCAT = CurrencyFormatsListActivity.class.getSimpleName();
 	private static final String FRAGMENTTAG = CurrencyFormatsListActivity.class.getSimpleName() + "_Fragment";
 	public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";

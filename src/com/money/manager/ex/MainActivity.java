@@ -22,6 +22,7 @@ import java.net.URLDecoder;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -31,24 +32,38 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.money.manager.ex.AccountListActivity.AccountLoaderListFragment;
+import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
+import com.money.manager.ex.CurrencyFormatsListActivity.CurrencyFormatsLoaderListFragment;
+import com.money.manager.ex.PayeeActivity.PayeeLoaderListFragment;
+import com.money.manager.ex.RepeatingTransactionListActivity.RepeatingTransactionListFragment;
 import com.money.manager.ex.about.AboutActivity;
+import com.money.manager.ex.adapter.DrawerMenuItem;
+import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
@@ -74,8 +89,9 @@ public class MainActivity extends BaseFragmentActivity {
 	private static final String KEY_IS_AUTHENTICATED = "MainActivity:isAuthenticated";
 	private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
 	private static final String KEY_IS_SHOW_TIPS_DROPBOX2 = "MainActivity:isShowTipsDropbox2";
+	private static final String KEY_CLASS_FRAGMENT_CONTENT = "MainActivity:Fragment";
 
-	// definizione dei requestcode da passare alle activity
+	// requestcode
 	public static final int REQUEST_PICKFILE_CODE = 1;
 	public static final int REQUEST_PASSCODE = 2;
 
@@ -103,7 +119,16 @@ public class MainActivity extends BaseFragmentActivity {
 
 	// list of account visible
 	List<TableAccountList> mAccountList;
-
+	// navigation drawer
+	private LinearLayout mDrawerLayout;
+	private ListView mDrawerList;
+	private DrawerLayout mDrawer;
+	private CustomActionBarDrawerToggle mDrawerToggle;
+	// object in drawer
+	private LinearLayout mDrawerLinearRepeating;
+	private TextView mDrawerTextUserName;
+	private TextView mDrawerTextTotalAccounts;
+	private TextView mDrawerTextViewRepeating;
 	// dropbox object
 	private DropboxHelper mDropboxHelper;
 
@@ -123,7 +148,11 @@ public class MainActivity extends BaseFragmentActivity {
 	public void setDualPanel(boolean mIsDualPanel) {
 		this.mIsDualPanel = mIsDualPanel;
 	}
-
+	
+	public int getResIdLayoutContent() {
+		return isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent;
+	}
+	
 	/**
 	 * Change database applications
 	 * 
@@ -142,7 +171,7 @@ public class MainActivity extends BaseFragmentActivity {
 		String tagFragment = AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
 		AccountFragment fragment;
 		fragment = (AccountFragment) getSupportFragmentManager().findFragmentByTag(tagFragment);
-		if (fragment == null) {
+		if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
 			fragment = AccountFragment.newIstance(accountId);
 		}
 		// set if shown open menu
@@ -240,13 +269,48 @@ public class MainActivity extends BaseFragmentActivity {
 	// show fragment dashboard
 	public void showDashboardFragment() {
 		DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager().findFragmentByTag(DashboardFragment.class.getSimpleName());
-		if (dashboardFragment == null) {
+		if (dashboardFragment == null || dashboardFragment.getId() != getResIdLayoutContent()) {
 			dashboardFragment = new DashboardFragment();
 		}
 		// fragment dashboard
 		showFragment(dashboardFragment, DashboardFragment.class.getSimpleName());
 	}
 
+	/*
+	 * Show fragment using reflection from class
+	 */
+	public void showFragment(Class<?> clsFragment) {
+		Fragment fragment = getSupportFragmentManager().findFragmentByTag(clsFragment.getName());
+		if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
+			ClassLoader loader = getClassLoader();
+			if (loader != null) {
+				try {
+					Class<?> classFragment = loader.loadClass(clsFragment.getName());
+					fragment = (Fragment) classFragment.newInstance();
+				} catch (Exception e) {
+					Log.e(LOGCAT, e.getMessage());
+				}
+			}
+		}
+		// check if fragment is not null
+		if (fragment != null) {
+			showFragment(fragment);
+		}
+	}
+	
+	/**
+	 * Displays the fragment without indicating the tag. The tag will be the classname of the fragment
+	 * @param fragment
+	 */
+	public void showFragment(Fragment fragment) {
+		showFragment(fragment, fragment.getClass().getName());
+	}
+	
+	/**
+	 * Displays the fragment and associate the tag
+	 * @param fragment
+	 * @param tagFragment
+	 */
 	public void showFragment(Fragment fragment, String tagFragment) {
 		// transaction
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -278,19 +342,7 @@ public class MainActivity extends BaseFragmentActivity {
 	 * Show tips dialog on startup
 	 * @param savedInstanceState
 	 */
-	public void showTipsDialog(Bundle savedInstanceState) {
-		/*if (savedInstanceState == null || (savedInstanceState != null && !savedInstanceState.getBoolean(KEY_IS_SHOW_TIPS_DROPBOX2))) {
-			// show tooltip for dropbox
-			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getApplicationContext(), "passtodropbox2");
-			if (tipsDropbox != null) {
-				tipsDropbox.setTitle(Html.fromHtml("<small>" + getString(R.string.tips_title_new_version_dropbox) + "</small>"));
-				tipsDropbox.setTips(getString(R.string.tips_new_version_dropbox));
-				// tipsDropbox.setCheckDontShowAgain(true);
-				tipsDropbox.show(getSupportFragmentManager(), "passtodropbox2");
-				isShowTipsDropbox2 = true; // set shown
-			}
-		}*/
-	}
+	public void showTipsDialog(Bundle savedInstanceState) {	}
 	
 	public void startServiceSyncDropbox() {
 		if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
@@ -359,15 +411,33 @@ public class MainActivity extends BaseFragmentActivity {
 		}
 	}
 	
+	public void setDrawableUserName(String userName) {
+		if (mDrawerTextUserName != null)
+			mDrawerTextUserName.setText(userName);
+	}
+	
+	public void setDrawableTotalAccounts(String totalAccounts) {
+		if (mDrawerTextTotalAccounts != null)
+			mDrawerTextTotalAccounts.setText(totalAccounts);
+	}
+	
+	public void setDrawableRepeatingTransactions(int repeatingTransaction) {
+		if (mDrawerLinearRepeating != null && mDrawerTextViewRepeating != null) {
+			mDrawerLinearRepeating.setVisibility(repeatingTransaction <= 0 ? View.GONE : View.VISIBLE);
+			mDrawerTextViewRepeating.setText(getString(R.string.num_repeating_transaction_expired, repeatingTransaction));
+		}
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// debug mode rotate screen
-		setShownRotateInDebugMode(false);
-	
+		
+		Core core = new Core(this);
+		
 		// close notification
 		NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
+		
 		// check intent is valid
 		if (getIntent() != null && getIntent().getData() != null) {
 			String pathFile = getIntent().getData().getEncodedPath();
@@ -376,15 +446,14 @@ public class MainActivity extends BaseFragmentActivity {
 				pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
 				if (BuildConfig.DEBUG)
 					Log.d(LOGCAT, "Path intent file to open:" + pathFile);
-				if (new File(pathFile).exists()) {
-					MoneyManagerApplication.setDatabasePath(this, pathFile);
-				} else {
-					Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not exists!!!");
+				if (!core.changeDatabase(pathFile)) {
+					Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
 				}
 			} catch (Exception e) {
 				Log.e(LOGCAT, e.getMessage());
 			}
 		}
+		
 		// check authentication
 		if (savedInstanceState != null) {
 			if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
@@ -392,18 +461,20 @@ public class MainActivity extends BaseFragmentActivity {
 			if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
 				isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
 		}
-	
-		MoneyManagerApplication application = (MoneyManagerApplication) getApplication();
+		// init application
+		core.initDatabase();
 		// load base currency and compose hash currencies
-		application.loadBaseCurrencyId(this);
-		application.loadHashMapCurrency(this);
+		/*application.loadBaseCurrencyId(this);
+		application.loadHashMapCurrency(this);*/
+		// create a connection to dropbox
+		mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
 		// check type mode
 		onCreateFragments(savedInstanceState);
 		// show tips dialog
 		showTipsDialog(savedInstanceState);
 		// show donate dialog
-		Core core = new Core(this);
-		if (TextUtils.isEmpty(core.getInfoValue(Core.INFO_SKU_ORDER_ID)))
+		
+		if (TextUtils.isEmpty(core.getInfoValue(Constants.INFOTABLE_SKU_ORDER_ID)))
 			MoneyManagerApplication.showDonateDialog(this, false);
 		// show change log and path
 		// MoneyManagerApplication.showChangeLog(this, false, false);
@@ -413,9 +484,6 @@ public class MainActivity extends BaseFragmentActivity {
 		// notification send broadcast
 		Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
 		getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
-	
-		// create a connection to dropbox
-		mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
 	}
 
 	@Override
@@ -453,26 +521,66 @@ public class MainActivity extends BaseFragmentActivity {
 	 * @param savedInstanceState
 	 */
 	public void onCreateFragments(Bundle savedInstanceState) {
+		Core core = new Core(this);		
+		
 		setContentView(R.layout.main_fragments_activity);
+		
 		LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
 		setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
-		// check if fragment into stack
+		// show home fragment
 		HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
 		if (fragment == null) {
 			// fragment create
 			fragment = new HomeFragment();
 			// add to stack
-			getSupportFragmentManager().beginTransaction().add(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
+			getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
+		} else if (core.isTablet()) {
+			getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
 		}
-		//
-		if (isDualPanel()) 
-			showDashboardFragment();
+		
+		// manage fragment
+		if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
+			String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
+			if (className.contains(AccountFragment.class.getSimpleName())) {
+				changeFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+			} else {
+				try {
+					showFragment(Class.forName(className));
+				} catch (ClassNotFoundException e) {
+					Log.e(LOGCAT, e.getMessage());
+				}
+			}
+		}
+		
+		
+		// navigation drawer
+		mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+		
+		// set a custom shadow that overlays the main content when the drawer opens
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			mDrawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+			mDrawerToggle = new CustomActionBarDrawerToggle(this, mDrawer);
+			mDrawer.setDrawerListener(mDrawerToggle);
+			// create drawer menu
+			createDrawerMenu();
+			// enable ActionBar app icon to behave as action to toggle nav drawer
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			getSupportActionBar().setHomeButtonEnabled(true);
+			getSupportActionBar().setDisplayShowHomeEnabled(true);
+		} else {
+			mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		}
 	}
-
-	/**
-	 * refresh user interface advance
-	 * 
-	 */
+	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		if (mDrawerToggle != null)
+			mDrawerToggle.syncState();
+		// dual panel
+		/*if (isDualPanel() && getSupportFragmentManager().findFragmentById(R.id.fragmentDetail) == null) 
+			showDashboardFragment();*/
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -514,7 +622,7 @@ public class MainActivity extends BaseFragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
 		getSherlock().getMenuInflater().inflate(R.menu.menu_main, menu);
-
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -522,23 +630,32 @@ public class MainActivity extends BaseFragmentActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// dropbox sync
 		MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
-		if (itemDropbox != null) {
+		if (itemDropbox != null && itemDropbox.isVisible()) {
 			itemDropbox.setVisible(mDropboxHelper != null && mDropboxHelper.isLinked());
 		}
+		
 		// check if it has already made ​​a donation
 		MenuItem itemDonate = menu.findItem(R.id.menu_donate);
 		if (itemDonate != null) {
 			Core core = new Core(this);
-			itemDonate.setVisible(TextUtils.isEmpty(core.getInfoValue(Core.INFO_SKU_ORDER_ID)));
+			itemDonate.setVisible(TextUtils.isEmpty(core.getInfoValue(Constants.INFOTABLE_SKU_ORDER_ID)));
 		}
+		
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		// process item
 		Intent intent;
 		// quick-fix convert 'switch' to 'if-else'
-		if (item.getItemId() == R.id.menu_search_transaction) {
+		if (item.getItemId() == android.R.id.home) {
+			if (mDrawer.isDrawerOpen(mDrawerLayout)) {
+				mDrawer.closeDrawer(mDrawerLayout);
+			} else {
+				mDrawer.openDrawer(mDrawerLayout);
+			}
+		} else if (item.getItemId() == R.id.menu_search_transaction) {
 			startActivity(new Intent(this, SearchActivity.class));
 		} else if (item.getItemId() == R.id.menu_dashboard) {
 			showDashboardFragment();
@@ -551,7 +668,7 @@ public class MainActivity extends BaseFragmentActivity {
 			startActivity(intent);
 		} else if (item.getItemId() == R.id.menu_category) {
 			// manage category
-			intent = new Intent(this, CategorySubCategoryActivity.class);
+			intent = new Intent(this, CategorySubCategoryExpandableListActivity.class);
 			intent.setAction(Intent.ACTION_EDIT);
 			startActivity(intent);
 		} else if (item.getItemId() == R.id.menu_payee) {
@@ -571,12 +688,12 @@ public class MainActivity extends BaseFragmentActivity {
 			startActivity(new Intent(this, PreferencesActivity.class));
 		} else if (item.getItemId() == R.id.menu_report_where_money_goes) {
 			intent = new Intent(this, CategoriesReportActivity.class);
-			intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, "Withdrawal");
+			intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, Constants.TRANSACTION_TYPE_WITHDRAWAL);
 			intent.putExtra(CategoriesReportActivity.REPORT_TITLE, item.getTitle());
 			startActivity(intent);
 		} else if (item.getItemId() == R.id.menu_report_where_money_comes_from) {
 			intent = new Intent(this, CategoriesReportActivity.class);
-			intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, "Deposit");
+			intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, Constants.TRANSACTION_TYPE_DEPOSIT);
 			intent.putExtra(CategoriesReportActivity.REPORT_TITLE, item.getTitle());
 			startActivity(intent);
 		} else if (item.getItemId() == R.id.menu_report_categories) {
@@ -613,10 +730,26 @@ public class MainActivity extends BaseFragmentActivity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
+		Core core = new Core(this);
+		if (core.isTablet()) {
+			Fragment fragment = getSupportFragmentManager().findFragmentById(getResIdLayoutContent());
+			if (fragment != null) {
+				if (fragment instanceof AccountFragment) {
+					outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountFragment) fragment).getNameFragment());
+				} else if ((!(fragment instanceof DashboardFragment)) && (!(fragment instanceof HomeFragment))) {
+					outState.putString(KEY_CLASS_FRAGMENT_CONTENT, fragment.getClass().getName());
+				}
+				// manage tablet layout
+				for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+					getSupportFragmentManager().popBackStack();
+				}
+			}
+		}
 		outState.putBoolean(KEY_IS_AUTHENTICATED, isAuthenticated);
 		outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
 		outState.putBoolean(KEY_IS_SHOW_TIPS_DROPBOX2, isShowTipsDropbox2);
+		
+		super.onSaveInstanceState(outState);
 	}
 
 	@Override
@@ -625,5 +758,100 @@ public class MainActivity extends BaseFragmentActivity {
 		if (notificationManager != null)
 			notificationManager.cancelAll();
 		super.onDestroy();
+	}
+	
+	// management drawer
+	public void createDrawerMenu() {
+		mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
+		mDrawerList = (ListView) findViewById(R.id.listViewDrawer);
+		mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
+		mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
+		// repeating transaction
+		mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
+		mDrawerLinearRepeating.setVisibility(View.GONE);
+		mDrawerTextViewRepeating = (TextView) findViewById(R.id.textViewOverdue);
+		
+		// create adapter
+		DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+		adapter.add(new DrawerMenuItem(R.id.menu_open_database, getString(R.string.open_database)));
+		if (mDropboxHelper != null && mDropboxHelper.isLinked())
+			adapter.add(new DrawerMenuItem(R.id.menu_sync_dropbox, getString(R.string.synchronize)));
+		adapter.add(new DrawerMenuItem(R.id.menu_account, getString(R.string.accounts)));
+		adapter.add(new DrawerMenuItem(R.id.menu_category, getString(R.string.categories)));
+		adapter.add(new DrawerMenuItem(R.id.menu_currency, getString(R.string.currencies)));
+		adapter.add(new DrawerMenuItem(R.id.menu_payee, getString(R.string.payees)));
+		adapter.add(new DrawerMenuItem(R.id.menu_repeating_transaction, getString(R.string.repeating_transactions)));
+		//adapter.add(new DrawerMenuItem(R.id.menu_dashboard, getString(R.string.dashboard)));
+		adapter.add(new DrawerMenuItem(R.id.menu_search_transaction, getString(R.string.search)));
+		// get drawerlist and set adapter
+		if (mDrawerList != null)
+			mDrawerList.setAdapter(adapter);
+		// set listener on item click
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+	}
+	
+	private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle {
+
+		public CustomActionBarDrawerToggle(Activity mActivity, DrawerLayout mDrawerLayout) {
+			super(mActivity, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name);
+		}
+		
+		@Override
+		public void onDrawerOpened(View drawerView) {
+			super.onDrawerOpened(drawerView);
+			syncState();
+		}
+		
+		@Override
+		public void onDrawerClosed(View drawerView) {
+			super.onDrawerClosed(drawerView);
+			syncState();
+		}
+	}
+
+	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			// Highlight the selected item, update the title, and close the
+			// drawer
+			// update selected item and title, then close the drawer
+			mDrawerList.setItemChecked(position, true);
+
+			// You should reset item counter
+			mDrawer.closeDrawer(mDrawerLayout);
+			// check item selected
+			final DrawerMenuItem item = ((DrawerMenuItemAdapter)mDrawerList.getAdapter()).getItem(position);
+			if (item != null) {
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						// execute operation
+						if (item.getId() == R.id.menu_home) {
+							showFragment(HomeFragment.class);
+						} else if (item.getId() == R.id.menu_sync_dropbox) {
+							startServiceSyncDropbox();
+						} else if (item.getId() == R.id.menu_open_database) {
+							pickFile(Environment.getExternalStorageDirectory());
+						} else if (item.getId() == R.id.menu_account) {
+							showFragment(AccountLoaderListFragment.class);
+						} else if (item.getId() == R.id.menu_category) {
+							//showFragment(CategorySubLoaderListFragment.class);
+							showFragment(CategorySubCategoryExpandableLoaderListFragment.class);
+						} else if (item.getId() == R.id.menu_currency) {
+							showFragment(CurrencyFormatsLoaderListFragment.class);
+						} else if (item.getId() == R.id.menu_payee) {
+							showFragment(PayeeLoaderListFragment.class);
+						} else if (item.getId() == R.id.menu_repeating_transaction) {
+							showFragment(RepeatingTransactionListFragment.class);
+						} else if (item.getId() == R.id.menu_search_transaction) {
+							startActivity(new Intent(MainActivity.this, SearchActivity.class));
+						} else if (item.getId() == R.id.menu_dashboard) {
+							showFragment(DashboardFragment.class);
+						}
+					}
+				}, 250);
+			}
+		}
 	}
 }

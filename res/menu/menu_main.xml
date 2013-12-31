@@ -1,60 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2012 The Android Money Manager Ex Project
-  
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
         android:id="@+id/menu_open_database"
         android:icon="?attr/ic_action_folder_open"
+        android:orderInCategory="1000"
         android:showAsAction="always|withText"
         android:title="@string/menu_open_database"/>
-    
     <item
         android:id="@+id/menu_add_transaction_account"
-        android:title="@string/new_transaction"
         android:icon="?attr/ic_action_add"
-        android:showAsAction="ifRoom|withText" 
-        android:visible="false" />
-    
+        android:orderInCategory="1001"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/new_transaction"
+        android:visible="false"/>
     <item
         android:id="@+id/menu_sync_dropbox"
         android:icon="@drawable/ic_action_dropbox"
+        android:orderInCategory="1002"
         android:showAsAction="always|withText"
         android:title="@string/synchronize"/>
-    
     <item
         android:id="@+id/menu_search_transaction"
         android:icon="?attr/ic_action_search"
+        android:orderInCategory="1003"
         android:showAsAction="always|withText"
         android:title="@string/search"/>
-    
     <item
         android:id="@+id/menu_dashboard"
         android:icon="?attr/ic_action_business"
+        android:orderInCategory="1004"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/dashboard"/>
-    
+        android:title="@string/dashboard"
+        android:visible="false"/>
     <item
         android:id="@+id/menu_export_to_csv"
+        android:orderInCategory="1005"
         android:title="@string/export_data_to_csv"
-        android:visible="false" />
-    
-    <group android:id="@+id/menu_group_main" >
+        android:visible="false"/>
+
+    <group
+        android:id="@+id/menu_group_main"
+        android:orderInCategory="1006" >
         <item
             android:id="@+id/menu_action_main"
             android:title="@string/menu_manage">
@@ -77,7 +64,9 @@
             </menu>
         </item>
     </group>
-    <group android:id="@+id/menu_group_reports" >
+    <group
+        android:id="@+id/menu_group_reports"
+        android:orderInCategory="1007" >
         <item
             android:id="@+id/menu_reports"
             android:title="@string/menu_reports">
@@ -103,18 +92,23 @@
 
     <item
         android:id="@+id/menu_settings"
+        android:orderInCategory="1008"
         android:title="@string/settings"/>
     <item
         android:id="@+id/menu_donate"
+        android:orderInCategory="1009"
         android:title="@string/donate"/>
     <item
-        android:id="@+id/menu_about"
-        android:title="@string/about"/>
-    <item
         android:id="@+id/menu_help"
+        android:orderInCategory="1010"
         android:title="@string/help"/>
     <item
+        android:id="@+id/menu_about"
+        android:orderInCategory="1011"
+        android:title="@string/about"/>
+    <item
         android:id="@+id/menu_exit"
+        android:orderInCategory="1020"
         android:title="@string/menu_exit"/>
 
 </menu>

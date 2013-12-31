@@ -32,14 +32,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -51,6 +54,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -62,21 +67,21 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.InputAmountDialog;
+import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+import com.money.manager.ex.preferences.PreferencesConstant;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.1
  */
-public class CheckingAccountActivity extends BaseFragmentActivity {
-	private static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
+public class CheckingAccountActivity extends BaseFragmentActivity implements InputAmountDialogListener {
+	public static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
 	// ID REQUEST Data
-	private static final int REQUEST_PICK_PAYEE = 1;
-	private static final int REQUEST_PICK_ACCOUNT = 2;
-	private static final int REQUEST_PICK_CATEGORY = 3;
-	private static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
-	// Intent action
-	public static final String INTENT_ACTION_EDIT = "android.intent.action.EDIT";
-	public static final String INTENT_ACTION_INSERT = "android.intent.action.INSERT";
+	public static final int REQUEST_PICK_PAYEE = 1;
+	public static final int REQUEST_PICK_ACCOUNT = 2;
+	public static final int REQUEST_PICK_CATEGORY = 3;
+	public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
 	// KEY INTENT per il passaggio dei dati
 	public static final String KEY_TRANS_ID = "AllDataActivity:TransId";
 	public static final String KEY_BDID_ID = "AllDataActivity:bdId";
@@ -103,56 +108,54 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	// object of the table
 	TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
 	// action type intent
-	private String mIntentAction;
+	public String mIntentAction;
 	// id account from and id ToAccount
-	private int mAccountId = -1, mToAccountId = -1;
-	private List<TableAccountList> mAccountList;
-	private String mToAccountName;
-	private int mTransId = -1;
-	private String mTransCode, mStatus;
+	public int mAccountId = -1, mToAccountId = -1;
+	public List<TableAccountList> mAccountList;
+	public String mToAccountName;
+	public int mTransId = -1;
+	public String mTransCode, mStatus;
 	// info payee
-	private int mPayeeId = -1;
-	private String mPayeeName, mTextDefaultPayee;
+	public int mPayeeId = -1;
+	public String mPayeeName;
 	// info category and subcategory
-	private int mCategoryId = -1, mSubCategoryId = -1;
-	private String mCategoryName, mSubCategoryName;
+	public int mCategoryId = -1, mSubCategoryId = -1;
+	public String mCategoryName, mSubCategoryName;
 	// arrays to manage transcode and status 
-	private String[] mTransCodeItems, mStatusItems;
-	private String[] mTransCodeValues, mStatusValues;
+	public String[] mTransCodeItems, mStatusItems;
+	public String[] mTransCodeValues, mStatusValues;
 	// arrayslist accountname and accountid
-	private ArrayList<String> mAccountNameList = new ArrayList<String>();
-	private ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
+	public ArrayList<String> mAccountNameList = new ArrayList<String>();
+	public ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
 	// amount
-	private float mTotAmount = 0, mAmount = 0;
+	public float mTotAmount = 0, mAmount = 0;
 	// notes
-	private String mNotes = "";
+	public String mNotes = "";
 	// transaction numbers
-	private String mTransNumber = "";
+	public String mTransNumber = "";
 	// bill deposits
-	private int mBdId = -1;
-	private String mNextOccurrence = null;
+	public int mBdId = -1;
+	public String mNextOccurrence = null;
 	// application
-	private MoneyManagerApplication mApplication;
+	public MoneyManagerApplication mApplication;
 	// datepicker value
-	private String mDate = "";
+	public String mDate = "";
 	// list split transactions
 	ArrayList<TableSplitTransactions> mSplitTransaction = null;
 	ArrayList<TableSplitTransactions> mSplitTransactionDeleted = null;
 	// reference view into layout
-	private LinearLayout linearPayee, linearToAccount;
-	private Spinner spinAccount, spinTransCode, spinStatus;
-	private Button btnSelectPayee, btnSelectToAccount, btnSelectCategory, btnCancel, btnOk;
-	private ImageButton btnTransNumber, btnSelectDate;
-	private EditText edtTotAmount, edtAmount, edtTransNumber, edtNotes, edtDate;
-	private TextView txtPayee, txtAmount;
-	private CheckBox chbSplitTransaction;
+	public Spinner spinAccount, spinToAccount, spinTransCode, spinStatus;
+	public ImageButton btnTransNumber;
+	public EditText  edtTransNumber, edtNotes;
+	public CheckBox chbSplitTransaction;
+	public TextView txtSelectDate, txtSelectPayee, txtSelectCategory, txtTotAmount, txtAmount;
 
 	/**
 	 * getCategoryFromPayee set last category used from payee
 	 * @param payeeId Identify of payee
 	 * @return true if category set
 	 */
-	private boolean getCategoryFromPayee(int payeeId) {
+	public boolean getCategoryFromPayee(int payeeId) {
 		boolean ret = false;
 		// take data of payee
 		TablePayee payee = new TablePayee();
@@ -183,7 +186,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		return ret;
 	}
 	
-	private ArrayList<TableSplitTransactions> getSplitTransaction(int transId) {
+	public ArrayList<TableSplitTransactions> getSplitTransaction(int transId) {
 		ArrayList<TableSplitTransactions> listSplitTrans = null;
 		
 		TableSplitTransactions split = new TableSplitTransactions();
@@ -222,16 +225,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
 				mToAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
 				mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
-				// refresh UI account name
-				refreshAccountName();
 			}
 			break;
 		case REQUEST_PICK_CATEGORY:
 			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-				mCategoryId = data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGID, -1);
-				mCategoryName = data.getStringExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGNAME);
-				mSubCategoryId = data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGID, -1);
-				mSubCategoryName = data.getStringExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGNAME);
+				mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
+				mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
+				mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
+				mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
 				// refresh UI category
 				refreshCategoryName();
 			}
@@ -243,7 +244,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 					for (int i = 0; i < mSplitTransaction.size(); i ++) {
 						totAmount += mSplitTransaction.get(i).getSplitTransAmount();
 					}
-					edtTotAmount.setText(Float.toString(totAmount));
+					formatAmount(txtTotAmount, totAmount);
 				}
 				// deleted item
 				if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
@@ -253,13 +254,43 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		}
 	}
 	
+	public void createActionBar() {
+		Core core = new Core(this);
+		// ****** action bar *****
+		if (!core.isTablet()) {
+			getSupportActionBar().setDisplayOptions(
+					ActionBar.DISPLAY_SHOW_CUSTOM,
+					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+							| ActionBar.DISPLAY_SHOW_CUSTOM);
+			
+			LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+			
+	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
+	        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
+	        cancelActionView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					onCancelClick();
+				}
+			});
+	        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
+	        doneActionView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onDoneClick();
+				}
+			});
+	        getSupportActionBar().setCustomView(actionBarButtons);
+		}
+		// ****** action bar *****
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getSupportActionBar().setTitle(getResources().getString(R.string.new_edit_transaction));
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		
 		mApplication = (MoneyManagerApplication)getApplication();
+		Core core = new Core(this);
 		// manage save instance
 		if ((savedInstanceState != null)) {
 			mTransId = savedInstanceState.getInt(KEY_TRANS_ID);
@@ -269,12 +300,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			mDate = savedInstanceState.getString(KEY_TRANS_DATE);
 			mTransCode = savedInstanceState.getString(KEY_TRANS_CODE);
 			mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
-			if (TextUtils.isEmpty(savedInstanceState.getString(KEY_TRANS_AMOUNT)) == false) {
-				mAmount = savedInstanceState.getFloat(KEY_TRANS_AMOUNT);
-			}
-			if (TextUtils.isEmpty(savedInstanceState.getString(KEY_TRANS_TOTAMOUNT)) == false) {
-				mTotAmount = savedInstanceState.getFloat(KEY_TRANS_TOTAMOUNT);
-			}
+			mAmount = savedInstanceState.getFloat(KEY_TRANS_AMOUNT);
+			mTotAmount = savedInstanceState.getFloat(KEY_TRANS_TOTAMOUNT);
 			mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
 			mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
 			mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
@@ -294,7 +321,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		if (getIntent() != null) {
 			if (savedInstanceState == null) {
 				mAccountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, -1);
-				if (getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_EDIT)) {
+				if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
 					mTransId = getIntent().getIntExtra(KEY_TRANS_ID, -1);
 					// select data transaction
 					getCheckingAccount(mTransId);
@@ -307,34 +334,29 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 				}
 			}
 			mIntentAction = getIntent().getAction();
+			if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
+				mStatus = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_STATUS, "");
+				if ("L".equals(PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_PAYEE, "N"))) {
+					TablePayee payee = core.getLastPayeeUsed();
+					if (payee != null) {
+						// get id payee and category
+						mPayeeId = payee.getPayeeId();
+						mPayeeName = payee.getPayeeName();
+						mCategoryId = payee.getCategId();
+						mSubCategoryId = payee.getSubCategId();
+						// load category and subcategory name
+						getCategSubName(mCategoryId, mSubCategoryId);
+					}
+				}
+			}
+			// set title
+			getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_transaction : R.string.edit_transaction);
 		}
 		// compose layout
 		setContentView(R.layout.checkingaccount_activity);
 		// take a reference view into layout
-		linearPayee = (LinearLayout)findViewById(R.id.linearLayoutPayee);
-		linearToAccount = (LinearLayout)findViewById(R.id.linearLayoutToAccount);
-
-		txtPayee = (TextView)findViewById(R.id.textViewPayee);
-		txtAmount = (TextView)findViewById(R.id.textViewTotAmount);
-
-		btnSelectPayee = (Button)findViewById(R.id.buttonSelectPayee);
-		btnSelectToAccount = (Button)findViewById(R.id.buttonSelectToAccount);
-		btnSelectCategory = (Button)findViewById(R.id.buttonSelectCategory);
-		chbSplitTransaction = (CheckBox)findViewById(R.id.checkBoxSplitTransaction);
-
+		// account
 		spinAccount = (Spinner)findViewById(R.id.spinnerAccount);
-		spinTransCode = (Spinner)findViewById(R.id.spinnerTransCode);
-		spinStatus = (Spinner)findViewById(R.id.spinnerStatus);
-
-		edtTotAmount = (EditText)findViewById(R.id.editTextTotAmount);
-		if (!(mTotAmount == 0)) {
-			edtTotAmount.setText(Float.toString(mTotAmount));
-		}
-		edtAmount = (EditText)findViewById(R.id.editTextAmount);
-		if (!(mAmount == 0)) {
-			edtAmount.setText(Float.toString(mAmount));
-		}
-		
 		// accountlist <> to populate the spin
 		mAccountList = new MoneyManagerOpenHelper(this).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
 		for(int i = 0; i <= mAccountList.size() - 1; i ++) {
@@ -362,12 +384,35 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
             }
 		});
 		
+		// account
+		spinToAccount = (Spinner)findViewById(R.id.spinnerToAccount);
+		adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinToAccount.setAdapter(adapterAccount);
+		spinToAccount.setSelection(Spinner.INVALID_POSITION);
+
+		spinToAccount.setOnItemSelectedListener(new OnItemSelectedListener() {
+	           @Override
+	           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+					if ((position >= 0) && (position <= mAccountIdList.size())) {
+						mToAccountId = mAccountIdList.get(position);
+					}
+				}
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {       	   
+            }
+		});
+		
+		// trans-code
+		spinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
 		// populate arrays TransCode
 		mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
 		mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
 		// create adapter for TransCode
-		ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mTransCodeItems);
+		ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+				mTransCodeItems);
 		adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
 		spinTransCode.setAdapter(adapterTrans);
 		// select a current value
 		if (TextUtils.isEmpty(mTransCode) == false) {
@@ -375,74 +420,35 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 				spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mTransCode), true);
 			}
 		} else {
-			mTransCode = (String)spinTransCode.getSelectedItem();
+			mTransCode = (String) spinTransCode.getSelectedItem();
 		}
 		spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
-	           @Override
-	           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-					if ((position >= 0) && (position <= mTransCodeValues.length)) {
-						mTransCode = mTransCodeValues[position];
-					}
-					// aggiornamento dell'interfaccia grafica
-					refreshTransCode();
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				if ((position >= 0) && (position <= mTransCodeValues.length)) {
+					mTransCode = mTransCodeValues[position];
 				}
+				// aggiornamento dell'interfaccia grafica
+				refreshTransCode();
+			}
 
-               @Override
-               public void onNothingSelected(AdapterView<?> parent) {       	   
-               }
-		});
-
-		btnSelectToAccount.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(CheckingAccountActivity.this, AccountListActivity.class);
-				intent.setAction(Intent.ACTION_PICK);
-				startActivityForResult(intent, REQUEST_PICK_ACCOUNT);
+			public void onNothingSelected(AdapterView<?> parent) {
 			}
 		});
 		
-		btnSelectPayee.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(CheckingAccountActivity.this, PayeeActivity.class);
-				intent.setAction(Intent.ACTION_PICK);
-				startActivityForResult(intent, REQUEST_PICK_PAYEE);
-			}
-		});
-		
-		btnSelectCategory.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (!chbSplitTransaction.isChecked()) {
-					Intent intent = new Intent(CheckingAccountActivity.this, CategorySubCategoryActivity.class);
-					intent.setAction(Intent.ACTION_PICK);
-					startActivityForResult(intent, REQUEST_PICK_CATEGORY);
-				} else {
-					Intent intent = new Intent(CheckingAccountActivity.this, SplitTransactionsActivity.class);
-					intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransaction);
-					intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
-					startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
-				}
-			}
-		});
-		
-		chbSplitTransaction.setChecked(mSplitTransaction != null && mSplitTransaction.size() >= 0);
-		chbSplitTransaction.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				CheckingAccountActivity.this.refreshCategoryName();
-			}
-		});
-		
+		// status
+		spinStatus = (Spinner)findViewById(R.id.spinnerStatus);
 		// arrays to manage Status
 		mStatusItems = getResources().getStringArray(R.array.status_items);
 		mStatusValues = getResources().getStringArray(R.array.status_values);
 		// create adapter for spinnerStatus
 		ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStatusItems);
 		adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
 		spinStatus.setAdapter(adapterStatus);
 		// select current value
-		if (TextUtils.isEmpty(mStatus) == false) {
+		if (!(TextUtils.isEmpty(mStatus))) {
 			if (Arrays.asList(mStatusValues).indexOf(mStatus) >= 0) {
 				spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(mStatus), true);
 			}
@@ -461,29 +467,29 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
                public void onNothingSelected(AdapterView<?> parent) {   
                }
 		});
-		
-		// next occurrence
-		edtDate = (EditText)findViewById(R.id.editDate);
-		edtDate.setKeyListener(null);
+
+		// date
+		txtSelectDate = (TextView)findViewById(R.id.textViewDate);
 		if (!(TextUtils.isEmpty(mDate))) {
 			try {
-				edtDate.setText(mApplication.getStringFromDate(new SimpleDateFormat("yyyy-MM-dd").parse(mDate)));
+				txtSelectDate.setTag(new SimpleDateFormat("yyyy-MM-dd").parse(mDate));
 			} catch (ParseException e) {
 				Log.e(LOGCAT, e.getMessage());
 			}
 		} else {
-			edtDate.setText(mApplication.getStringFromDate((Date)Calendar.getInstance().getTime()));
+			txtSelectDate.setTag((Date)Calendar.getInstance().getTime());
 		}
-			
-		btnSelectDate = (ImageButton)findViewById(R.id.buttonDate);
-		btnSelectDate.setOnClickListener(new OnClickListener() {
-			private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+		formatExtendedDate(txtSelectDate);
+		
+		txtSelectDate.setOnClickListener(new OnClickListener() {
+			public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
 				@Override
 				public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 					try {
 						Date date = new SimpleDateFormat("yyyy-MM-dd").parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-						edtDate.setText(mApplication.getStringFromDate(date));
+						txtSelectDate.setTag(date);
+						formatExtendedDate(txtSelectDate);
 					} catch (Exception e) {
 						Log.e(LOGCAT, e.getMessage());
 					}
@@ -493,36 +499,82 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				Calendar date = Calendar.getInstance();
-				date.setTime(mApplication.getDateFromString(edtDate.getText().toString()));
+				date.setTime((Date)txtSelectDate.getTag());
 				DatePickerDialog dialog = new DatePickerDialog(CheckingAccountActivity.this, mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
 				dialog.show();
 			}
 		});
 		
-		btnOk = (Button)findViewById(R.id.buttonOk);
-		btnOk.setOnClickListener(new OnClickListener() {
+		// payee
+		txtSelectPayee = (TextView)findViewById(R.id.textViewPayee);
+		txtSelectPayee.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (updateData() == true) {
-					// set result ok, send broadcat to update widgets and finish activity
-					setResult(RESULT_OK);
-					//((MoneyManagerApplication)getApplication()).updateAllWidget();
-					finish();
+				Intent intent = new Intent(CheckingAccountActivity.this, PayeeActivity.class);
+				intent.setAction(Intent.ACTION_PICK);
+				startActivityForResult(intent, REQUEST_PICK_PAYEE);
+			}
+		});
+		
+		// select category
+		txtSelectCategory = (TextView)findViewById(R.id.textViewCategory);
+		txtSelectCategory.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (!chbSplitTransaction.isChecked()) {
+					Intent intent = new Intent(CheckingAccountActivity.this, CategorySubCategoryExpandableListActivity.class);
+					intent.setAction(Intent.ACTION_PICK);
+					startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+				} else {
+					Intent intent = new Intent(CheckingAccountActivity.this, SplitTransactionsActivity.class);
+					intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransaction);
+					intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
+					startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
 				}
 			}
 		});
 		
-		btnCancel = (Button)findViewById(R.id.buttonCancel);
-		btnCancel.setOnClickListener(new OnClickListener() {
+		// split transaction
+		chbSplitTransaction = (CheckBox)findViewById(R.id.checkBoxSplitTransaction);
+		chbSplitTransaction.setChecked(mSplitTransaction != null && mSplitTransaction.size() >= 0);
+		chbSplitTransaction.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
-			public void onClick(View v) {
-				// force refresh UI MainActivity
-				// MainActivity.setRefreshUserInterface(true);
-				// finish CheckingAccountActivity
-				setResult(RESULT_CANCELED);
-				finish();
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				CheckingAccountActivity.this.refreshCategoryName();
 			}
 		});
+		
+		// amount and tot amount
+		// listener on dialog amount edittext
+		OnClickListener onClickAmount = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Integer currencyId = null;
+				if (spinAccount.getSelectedItemPosition() >= 0
+						&& spinAccount.getSelectedItemPosition() < mAccountList.size()) {
+					currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
+				}
+				float amount = (Float)((TextView) v).getTag();
+				InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
+				dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+			}
+		};
+		
+		// total amount
+		txtTotAmount = (TextView)findViewById(R.id.textViewTotAmount);
+		formatAmount(txtTotAmount, mTotAmount);
+
+		// on click open dialog
+		txtTotAmount.setOnClickListener(onClickAmount);
+		
+		// amount
+		txtAmount = (TextView)findViewById(R.id.textViewAmount);
+		formatAmount(txtAmount, mAmount);
+
+		// on click open dialog
+		txtAmount.setOnClickListener(onClickAmount);
+
 		// transaction number
 		edtTransNumber = (EditText)findViewById(R.id.editTextTransNumber);
 		if (!TextUtils.isEmpty(mTransNumber)) {
@@ -550,26 +602,42 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 				helper.close();
 			}
 		});
-				
+			
+		// notes
 		edtNotes = (EditText)findViewById(R.id.editTextNotes);
 		if (!(TextUtils.isEmpty(mNotes))) {
 			edtNotes.setText(mNotes);
 		}
+		
 		// refresh user interface
 		refreshTransCode();
 		refreshPayeeName();
-		refreshAccountName();
 		refreshCategoryName();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		Core core = new Core(this);
+		if (core.isTablet()) {
+			getSherlock().getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
+		} else {
+			createActionBar();
+		}
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 		switch (item.getItemId()) {
 	    case android.R.id.home:
-	        // close this activity and return to home
-	        startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-	        this.finish();
-	        break;
+	    	onCancelClick();
+	    	return true;
+	    case R.id.menu_cancel:
+	    	onCancelClick();
+	    	return true;
+	    case R.id.menu_done:
+	    	onDoneClick();
+	    	return true;
 		}
 		return false;
 	}
@@ -582,11 +650,11 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		outState.putInt(KEY_ACCOUNT_ID, mAccountId);
 		outState.putInt(KEY_TO_ACCOUNT_ID, mToAccountId);
 		outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
-		outState.putString(KEY_TRANS_DATE, edtDate.getText().toString());
+		outState.putString(KEY_TRANS_DATE, new SimpleDateFormat("yyyy-MM-dd").format(txtSelectDate.getTag()));
 		outState.putString(KEY_TRANS_CODE, mTransCode);
 		outState.putString(KEY_TRANS_STATUS, mStatus);
-		outState.putString(KEY_TRANS_TOTAMOUNT, edtTotAmount.getText().toString());
-		outState.putString(KEY_TRANS_AMOUNT, edtAmount.getText().toString());
+		outState.putFloat(KEY_TRANS_TOTAMOUNT, (Float)txtTotAmount.getTag());
+		outState.putFloat(KEY_TRANS_AMOUNT, (Float)txtAmount.getTag());
 		outState.putInt(KEY_PAYEE_ID, mPayeeId);
 		outState.putString(KEY_PAYEE_NAME, mPayeeName);
 		outState.putInt(KEY_CATEGORY_ID, mCategoryId);
@@ -604,12 +672,37 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		outState.putString(KEY_ACTION, mIntentAction);
 	}
 	
+	@Override
+	public void onFinishedInputAmountDialog(int id, Float amount) {
+		View view = findViewById(id);
+		if (view != null && view instanceof TextView)
+			formatAmount(((TextView)view), amount);
+	}
+	
+	/**
+	 * Event called when cancel button clicked
+	 */
+	public void onCancelClick() {
+		this.finish();
+	}
+
+	public boolean onDoneClick() {
+		if (updateData() == true) {
+			// set result ok and finish activity
+			setResult(RESULT_OK);
+			this.finish();
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * query info payee
 	 * @param payeeId id payee
 	 * @return true if the data selected
 	 */
-	private boolean getAccountName(int accountId) {
+	public boolean getAccountName(int accountId) {
 		TableAccountList account = new TableAccountList();
 		Cursor cursor = getContentResolver().query(account.getUri(), account.getAllColumns(), TableAccountList.ACCOUNTID + "=?",
 				new String[] { Integer.toString(accountId) }, null);
@@ -630,7 +723,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	 * @param subCategoryId
 	 * @return
 	 */
-	private boolean getCategSubName(int categoryId, int subCategoryId) {
+	public boolean getCategSubName(int categoryId, int subCategoryId) {
 		TableCategory category = new TableCategory();
 		TableSubCategory subCategory  = new TableSubCategory();
 		Cursor cursor;
@@ -659,7 +752,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	 * @param transId transaction id
 	 * @return true if data selected, false nothing
 	 */
-	private boolean getCheckingAccount(int transId) {
+	public boolean getCheckingAccount(int transId) {
 		Cursor cursor = getContentResolver().query(mCheckingAccount.getUri(),
 				mCheckingAccount.getAllColumns(),
 				TableCheckingAccount.TRANSID + "=?",
@@ -698,7 +791,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 	 * @param payeeId id payee
 	 * @return true if the data selected
 	 */
-	private boolean getPayeeName(int payeeId) {
+	public boolean getPayeeName(int payeeId) {
 		TablePayee payee = new TablePayee();
 		Cursor cursor = getContentResolver().query(payee.getUri(),
 				payee.getAllColumns(),
@@ -715,7 +808,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		return true;
 	}
 	
-	private boolean getRepeatingTransaction(int billId) {
+	public boolean getRepeatingTransaction(int billId) {
 		TableBillsDeposits billDeposits = new TableBillsDeposits();
 		Cursor cursor = getContentResolver().query(billDeposits.getUri(),
 				billDeposits.getAllColumns(),
@@ -746,36 +839,99 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		
 		return true;
 	}
-
-	private void refreshAccountName() {
-		// write into text button account name
-		btnSelectToAccount.setText(TextUtils.isEmpty(mToAccountName) == false ? mToAccountName : getResources().getString(R.string.select_to_account));
-	}
 	
-	private void refreshCategoryName() {
-		if (chbSplitTransaction.isChecked()) {
-			btnSelectCategory.setText(R.string.split_category);
+	public void formatExtendedDate(TextView dateTextView) {
+		try { 
+			dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy").format((Date)dateTextView.getTag()));
+		} catch (Exception e){
+			Log.e(LOGCAT, e.getMessage());
+		}
+	}
+
+	public void formatAmount(TextView view, float amount) {
+		// take currency id
+		Integer currencyId = null;
+		if (spinAccount.getSelectedItemPosition() >= 0 && spinAccount.getSelectedItemPosition() < mAccountList.size()) {
+			currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
+		}
+		
+		if (currencyId == null) {
+			view.setText(mApplication.getBaseCurrencyFormatted(amount));
 		} else {
-			String category = ""; 
-			if (TextUtils.isEmpty(mCategoryName) == false) {
-				category = mCategoryName + (TextUtils.isEmpty(mSubCategoryName) == false ? " : " + mSubCategoryName : "");
-			}
-			// write into text button category/subcategory
-			if (TextUtils.isEmpty(category) == false)  {
-				btnSelectCategory.setText(category);
-			} else {
-				btnSelectCategory.setText(getResources().getString(R.string.select_category));
+			view.setText(mApplication.getCurrencyFormatted(currencyId, amount));
+		}
+		view.setTag(amount);
+	}
+
+	public void refreshCategoryName() {
+		txtSelectCategory.setText("");
+		
+		if (!TextUtils.isEmpty(mCategoryName)) {
+			txtSelectCategory.setText(mCategoryName);
+			if (!TextUtils.isEmpty(mSubCategoryName)) {
+				txtSelectCategory.setText(Html.fromHtml(txtSelectCategory.getText() + " : <i>" + mSubCategoryName + "</i>"));
 			}
 		}
-		edtAmount.setFocusable(!chbSplitTransaction.isChecked()); edtAmount.setFocusableInTouchMode(!chbSplitTransaction.isChecked());
-		edtTotAmount.setFocusable(!chbSplitTransaction.isChecked()); edtTotAmount.setFocusableInTouchMode(!chbSplitTransaction.isChecked());
 	}
 	
+	/**
+	 * update UI interface with PayeeName
+	 */
+	public void refreshPayeeName() {
+		// write into text button payee name
+		txtSelectPayee.setText(mPayeeName);
+	}
+
+	public void refreshTransCode() {
+		// check type of transaction
+		TextView txtFromAccount = (TextView)findViewById(R.id.textViewFromAccount);
+		TextView txtToAccount = (TextView)findViewById(R.id.textViewToAccount);
+		ViewGroup tableRowPayee = (ViewGroup)findViewById(R.id.tableRowPayee);
+		ViewGroup tableRowAmmount = (ViewGroup)findViewById(R.id.tableRowAmount);
+		// hide and show
+		txtFromAccount.setText(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? R.string.from_account : R.string.account);
+		txtToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+		tableRowPayee.setVisibility(!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) ? View.VISIBLE : View.GONE);
+		tableRowAmmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+		spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+	}
+
+	/**
+	 * validate data insert in activity
+	 * @return
+	 */
+	public boolean validateData() {
+		if ((Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mToAccountId == -1)) {
+			Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
+			return false;
+		} else if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
+			Core.alertDialog(this, R.string.error_payee_not_selected).show();
+			return false;
+		}
+		if (mCategoryId == -1 && (!chbSplitTransaction.isChecked())) {
+			Core.alertDialog(this, R.string.error_category_not_selected).show();
+			return false;
+		}
+		if (chbSplitTransaction.isChecked() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
+			Core.alertDialog(this, R.string.error_split_transaction_empty).show();
+			return false;
+		}
+		if ((Float)txtTotAmount.getTag() == 0) {
+			if ((Float)txtAmount.getTag() == 0) {
+				Core.alertDialog(this, R.string.error_totamount_empty).show();
+				return false;
+			} else {
+				txtTotAmount.setTag(txtAmount.getTag());
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * update data into database
 	 * @return true if update data successful 
 	 */
-	private boolean updateData() {
+	public boolean updateData() {
 		if (validateData() == false) {
 			return false;
 		}
@@ -783,29 +939,29 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 		ContentValues values = new ContentValues();
 		
 		values.put(TableCheckingAccount.ACCOUNTID, mAccountId);
-		if (mTransCode.equals("Transfer")) {
+		if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
 			values.put(TableCheckingAccount.TOACCOUNTID, mToAccountId);
 			values.put(TableCheckingAccount.PAYEEID, -1);
 		} else {
 			values.put(TableCheckingAccount.PAYEEID, mPayeeId);
 		}
 		values.put(TableCheckingAccount.TRANSCODE, mTransCode);
-		if (TextUtils.isEmpty(edtAmount.getText().toString()) || (!(mTransCode.equalsIgnoreCase("Transfer")))) {
-			values.put(TableCheckingAccount.TRANSAMOUNT, Float.valueOf(edtTotAmount.getText().toString()));
+		if (TextUtils.isEmpty(txtAmount.getText().toString()) || (!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)))) {
+			values.put(TableCheckingAccount.TRANSAMOUNT, (Float)txtTotAmount.getTag());
 		} else {
-			values.put(TableCheckingAccount.TRANSAMOUNT, Float.valueOf(edtAmount.getText().toString()));
+			values.put(TableCheckingAccount.TRANSAMOUNT, (Float)txtAmount.getTag());
 		}
 		values.put(TableCheckingAccount.STATUS, mStatus);
 		values.put(TableCheckingAccount.CATEGID, !chbSplitTransaction.isChecked() ? mCategoryId : -1);
 		values.put(TableCheckingAccount.SUBCATEGID, !chbSplitTransaction.isChecked() ? mSubCategoryId : -1);
-		values.put(TableCheckingAccount.TRANSDATE, mApplication.getSQLiteStringDate(mApplication.getDateFromString(edtDate.getText().toString())));
+		values.put(TableCheckingAccount.TRANSDATE, mApplication.getSQLiteStringDate((Date)txtSelectDate.getTag()));
 		values.put(TableCheckingAccount.FOLLOWUPID, -1);
-		values.put(TableCheckingAccount.TOTRANSAMOUNT, Float.valueOf(edtTotAmount.getText().toString()));
+		values.put(TableCheckingAccount.TOTRANSAMOUNT, (Float)txtTotAmount.getTag());
 		values.put(TableCheckingAccount.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
 		values.put(TableCheckingAccount.NOTES, edtNotes.getText().toString());
 		
 		// check whether the application should do the update or insert
-		if (mIntentAction.equals(INTENT_ACTION_INSERT)) {
+		if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
 			// insert
 			Uri insert = getContentResolver().insert(mCheckingAccount.getUri(), values);
 			if (insert == null) {
@@ -867,7 +1023,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			}
 		}
 		// update category and subcategory payee
-		if ((!(mTransCode.equalsIgnoreCase("Transfer"))) && (mPayeeId > 0) && (!hasSplitTransaction)) {
+		if ((!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode))) && (mPayeeId > 0) && (!hasSplitTransaction)) {
 			// clear content value for update categoryId, subCategoryId 
 			values.clear();
 			// set categoryId and subCategoryId
@@ -888,63 +1044,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity {
 			// update date
 			if (getContentResolver().update(new TableBillsDeposits().getUri(), values, TableBillsDeposits.BDID + "=?", new String[] {Integer.toString(mBdId)}) > 0) {
 			} else {
-				Toast.makeText(this, R.string.db_update_failed, Toast.LENGTH_SHORT);
+				Toast.makeText(this, R.string.db_update_failed, Toast.LENGTH_SHORT).show();
 				Log.w(LOGCAT, "Update Bill Deposits with Id=" + Integer.toString(mBdId) + " return <= 0");
-			}
-		}
-		return true;
-	}
-	/**
-	 * update UI interface with PayeeName
-	 */
-	private void refreshPayeeName() {
-		// write into text button payee name
-		btnSelectPayee.setText(TextUtils.isEmpty(mPayeeName) == false ? mPayeeName : mTextDefaultPayee);
-	}
-	
-	private void refreshTransCode() {
- 	   // check type of transaction
- 	   if (mTransCode.equalsIgnoreCase("Transfer")) {
- 		  linearPayee.setVisibility(View.GONE);
- 		  linearToAccount.setVisibility(View.VISIBLE);
- 		  txtAmount.setVisibility(View.VISIBLE);
- 		  edtAmount.setVisibility(View.VISIBLE);
- 	   } else {
-			linearPayee.setVisibility(View.VISIBLE);
-			linearToAccount.setVisibility(View.GONE);
-			txtAmount.setVisibility(View.GONE);
-			edtAmount.setVisibility(View.GONE);
- 		  
- 		   txtPayee.setText(mTransCode.equals(getString(R.string.withdrawal)) ? R.string.payee : R.string.from);
- 		   mTextDefaultPayee = getResources().getString(mTransCode.equals(getString(R.string.withdrawal)) ? R.string.payee : R.string.from);
- 	   }
-	}
-	/**
-	 * validate data insert in activity
-	 * @return
-	 */
-	private boolean validateData() {
-		if ((mTransCode.equals("Transfer")) && (mToAccountId == -1)) {
-			Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
-			return false;
-		} else if ((mTransCode.equals("Transfer") == false) && (mPayeeId == -1)) {
-			Core.alertDialog(this, R.string.error_payee_not_selected).show();
-			return false;
-		}
-		if (mCategoryId == -1 && (!chbSplitTransaction.isChecked())) {
-			Core.alertDialog(this, R.string.error_category_not_selected).show();
-			return false;
-		}
-		if (chbSplitTransaction.isChecked() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
-			Core.alertDialog(this, R.string.error_split_transaction_empty).show();
-			return false;
-		}
-		if (TextUtils.isEmpty(edtTotAmount.getText())) {
-			if (TextUtils.isEmpty(edtAmount.getText())) {
-				Core.alertDialog(this, R.string.error_totamount_empty).show();
-				return false;
-			} else {
-				edtTotAmount.setText(edtAmount.getText());
 			}
 		}
 		return true;

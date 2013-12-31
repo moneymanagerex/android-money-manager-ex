@@ -23,7 +23,6 @@ import android.support.v4.app.FragmentTransaction;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 

@@ -46,8 +46,6 @@ public class RepeatingTransactionNotifications {
 	public void notifyRepeatingTransaction() {
 		// create application
 		MoneyManagerApplication application = new MoneyManagerApplication();
-		application.loadBaseCurrencyId(context);
-		application.loadHashMapCurrency(context);
 		
 		// select data
 		QueryBillDeposits billDeposits = new QueryBillDeposits(context);

@@ -41,9 +41,10 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.money.manager.ex.adapter.AllDataAdapter;
+import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Passcode;
-import com.money.manager.ex.core.RepeatingTransactionAdapter;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
@@ -63,8 +64,8 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 		// ID request to add repeating transaction
 		private static final int REQUEST_ADD_REPEATING_TRANSACTION = 1001;
 		private static final int REQUEST_ADD_TRANSACTION = 1002;
-		// Intent
-		
+		// query
+		private static QueryBillDeposits mBillDeposits;
 		// ID item menu add
 		private static final int MENU_ITEM_ADD = 1;
 
@@ -74,18 +75,14 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
+			// create a object query
+			mBillDeposits = new QueryBillDeposits(getActivity());
 			// set listview
 			setEmptyText(getActivity().getResources().getString(R.string.repeating_empty_transaction));
 			setHasOptionsMenu(true);
 			registerForContextMenu(getListView());
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 			getListView().setDivider(new ColorDrawable(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.theme_background_color)));
-			
-			//set margin
-			/*FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)getListView().getLayoutParams();
-			int margin = (int)getResources().getDimension(R.dimen.money_margin);
-			params.setMargins(margin, margin, margin, margin);
-			getListView().setLayoutParams(params);*/
 			
 			setListShown(false);
 			// start loaderapplication.getSQLiteStringDate(date)
@@ -100,7 +97,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 			MoneyManagerApplication application = (MoneyManagerApplication)getActivity().getApplication();
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 			// take cursor and move to position
-			Cursor cursor = ((RepeatingTransactionAdapter) getListAdapter()).getCursor();
+			Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
 			if (cursor != null) {
 				cursor.moveToPosition(info.position);
 				//quick-fix convert 'switch' to 'if-else'
@@ -112,7 +109,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 					date = application.getDateNextOccurence(date, repeats);
 					if (date != null) {
 						Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
-						intent.setAction(CheckingAccountActivity.INTENT_ACTION_INSERT);
+						intent.setAction(Constants.INTENT_ACTION_INSERT);
 						intent.putExtra(CheckingAccountActivity.KEY_BDID_ID, bdId);
 						intent.putExtra(CheckingAccountActivity.KEY_NEXT_OCCURRENCE, application.getSQLiteStringDate(date));
 						// start for insert new transaction
@@ -131,7 +128,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 						if (getActivity().getContentResolver().update(new TableBillsDeposits().getUri(), values, TableBillsDeposits.BDID + "=?", new String[] {Integer.toString(bdId)}) > 0) {
 							getLoaderManager().restartLoader(ID_LOADER_REPEATING, null, this);
 						} else {
-							Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT);
+							Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
 						}	
 					}
 				} else if (item.getItemId() == R.id.menu_edit) {
@@ -173,7 +170,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			// take a cursor and move to position
-			Cursor cursor = ((RepeatingTransactionAdapter) getListAdapter()).getCursor();
+			Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
 			if (cursor != null) {
 				cursor.moveToPosition(info.position);
 				// set title and inflate menu
@@ -216,7 +213,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			switch (loader.getId()) {
 			case ID_LOADER_REPEATING:
-				RepeatingTransactionAdapter adapter = new RepeatingTransactionAdapter(getActivity(), data);
+				AllDataAdapter adapter = new AllDataAdapter(getActivity(), data, TypeCursor.REPEATINGTRANSACTION);
 				setListAdapter(adapter);
 
 				if (isResumed()) {
@@ -280,6 +277,11 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 				}
 			}
 		}
+
+		@Override
+		public String getSubTitle() {
+			return getString(R.string.repeating_transaction);
+		}
 	}
 	@SuppressWarnings("unused")
 	private static final String LOGCAT = RepeatingTransactionListActivity.class.getSimpleName();
@@ -290,9 +292,6 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 	// ID loader
 	private static final int ID_LOADER_REPEATING = 0;
 	private RepeatingTransactionListFragment listFragment;
-
-	// query
-	private static QueryBillDeposits mBillDeposits;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -309,8 +308,6 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 				startActivityForResult(intent, INTENT_REQUEST_PASSCODE);
 			}
 		}
-		// create a object query
-		mBillDeposits = new QueryBillDeposits(this);
 		// set actionbar
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		// set fragment and fragment manager

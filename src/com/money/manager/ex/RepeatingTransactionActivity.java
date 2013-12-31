@@ -33,12 +33,12 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -46,6 +46,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -57,19 +59,17 @@ import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.InputAmountDialog;
+import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
-public class RepeatingTransactionActivity extends BaseFragmentActivity {
+public class RepeatingTransactionActivity extends BaseFragmentActivity implements InputAmountDialogListener{
 	private static final String LOGCAT = RepeatingTransactionActivity.class.getSimpleName();
 	// ID REQUEST Data
 	private static final int REQUEST_PICK_PAYEE = 1;
-	private static final int REQUEST_PICK_ACCOUNT = 2;
 	private static final int REQUEST_PICK_CATEGORY = 3;
-	// Intent action
-	public static final String INTENT_ACTION_EDIT = "android.intent.action.EDIT";
-	public static final String INTENT_ACTION_INSERT = "android.intent.action.INSERT";
 	// KEY INTENT per il passaggio dei dati
 	public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
 	public static final String KEY_ACCOUNT_ID = "RepeatingTransaction:AccountId";
@@ -127,13 +127,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 	// application
 	private MoneyManagerApplication mApplication;
 	// reference view into layout
-	private LinearLayout linearPayee, linearToAccount;
-	private Spinner spinAccount, spinTransCode, spinStatus, spinFrequencies;
-	private Button btnSelectPayee, btnSelectToAccount, btnSelectCategory,  
-				   btnCancel, btnOk;
-	private ImageButton btnTransNumber, btnNextOccurrence;
-	private EditText edtTotAmount, edtAmount, edtTransNumber, edtNotes, edtNextOccurrence, edtTimesRepeated;
-	private TextView txtPayee, txtAmount, txtRepeats, txtTimesRepeated;
+	private Spinner spinAccount, spinToAccount, spinTransCode, spinStatus, spinFrequencies;
+	private ImageButton btnTransNumber;
+	private EditText edtTransNumber, edtNotes, edtTimesRepeated;
+	private TextView txtPayee, txtSelectPayee, txtSelectCategory, txtCaptionAmount, txtRepeats, txtTimesRepeated, txtNextOccurrence, txtTotAmount, txtAmount;
 
 	/**
 	 * getCategoryFromPayee set last category used from payee
@@ -185,32 +182,70 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 				refreshPayeeName();
 			}
 			break;
-		case REQUEST_PICK_ACCOUNT:
-			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-				mToAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
-				mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
-				// refresh UI account name
-				refreshAccountName();
-			}
-			break;
 		case REQUEST_PICK_CATEGORY:
 			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-				mCategoryId = data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGID, -1);
-				mCategoryName = data.getStringExtra(CategorySubCategoryActivity.INTENT_RESULT_CATEGNAME);
-				mSubCategoryId = data.getIntExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGID, -1);
-				mSubCategoryName = data.getStringExtra(CategorySubCategoryActivity.INTENT_RESULT_SUBCATEGNAME);
+				mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
+				mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
+				mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
+				mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
 				// refresh UI category
 				refreshCategoryName();
 			}
 		}
 	}
 	
+	public void onCancelClick() {
+		// finish CheckingAccountActivity
+		setResult(RESULT_CANCELED);
+		finish();
+	}
+	
+	public void onDoneClick() {
+		if (updateData() == true) {
+			// set result ok, send broadcast to update widgets and finish activity
+			setResult(RESULT_OK);
+			finish();
+		}
+	}
+	
+	public void createActionBar() {
+		Core core = new Core(this);
+		// ****** action bar *****
+		if (!core.isTablet()) {
+			getSupportActionBar().setDisplayOptions(
+					ActionBar.DISPLAY_SHOW_CUSTOM,
+					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+							| ActionBar.DISPLAY_SHOW_CUSTOM);
+			
+			LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+			
+	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
+	        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
+	        cancelActionView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					onCancelClick();
+				}
+			});
+	        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
+	        doneActionView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onDoneClick();
+				}
+			});
+	        getSupportActionBar().setCustomView(actionBarButtons);
+		}
+		// ****** action bar *****
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		// take a reference of application
 		mApplication = (MoneyManagerApplication)getApplication();
+		Core core = new Core(this);
 		// manage save instance
 		if ((savedInstanceState != null)) {
 			mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
@@ -219,12 +254,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 			mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
 			mTransCode = savedInstanceState.getString(KEY_TRANS_CODE);
 			mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
-			if (TextUtils.isEmpty(savedInstanceState.getString(KEY_TRANS_AMOUNT)) == false) {
-				mAmount = savedInstanceState.getFloat(KEY_TRANS_AMOUNT);
-			}
-			if (TextUtils.isEmpty(savedInstanceState.getString(KEY_TRANS_TOTAMOUNT)) == false) {
-				mTotAmount = savedInstanceState.getFloat(KEY_TRANS_TOTAMOUNT);
-			}
+			mAmount = savedInstanceState.getFloat(KEY_TRANS_AMOUNT);
+			mTotAmount = savedInstanceState.getFloat(KEY_TRANS_TOTAMOUNT);
 			mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
 			mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
 			mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
@@ -243,42 +274,61 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 		if (getIntent() != null) {
 			if (savedInstanceState == null) {
 				mAccountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, -1);
-				if (getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_EDIT)) {
+				if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
 					mBillDepositsId = getIntent().getIntExtra(KEY_BILL_DEPOSITS_ID, -1);
 					// select data transaction
 					selectRepeatingTransaction(mBillDepositsId);
 				}
 			}
 			mIntentAction = getIntent().getAction();
+			// set title
+			getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
 		}
 		// compose layout
 		setContentView(R.layout.repeatingtransaction_activity);
 		// take a reference view into layout
-		linearPayee = (LinearLayout)findViewById(R.id.linearLayoutPayee);
-		linearToAccount = (LinearLayout)findViewById(R.id.linearLayoutToAccount);
-
 		txtPayee = (TextView)findViewById(R.id.textViewPayee);
-		txtAmount = (TextView)findViewById(R.id.textViewTotAmount);
+		txtCaptionAmount = (TextView)findViewById(R.id.textViewTotAmount);
 		txtRepeats = (TextView)findViewById(R.id.textViewRepeat);
 		txtTimesRepeated = (TextView)findViewById(R.id.textViewTimesRepeated);
 
-		btnSelectPayee = (Button)findViewById(R.id.buttonSelectPayee);
-		btnSelectToAccount = (Button)findViewById(R.id.buttonSelectToAccount);
-		btnSelectCategory = (Button)findViewById(R.id.buttonSelectCategory);
+		txtSelectPayee = (TextView)findViewById(R.id.textViewSelectPayee);
+		txtSelectCategory = (TextView)findViewById(R.id.textViewSelectCategory);
 
 		spinAccount = (Spinner)findViewById(R.id.spinnerAccount);
+		spinToAccount = (Spinner)findViewById(R.id.spinnerToAccount);
 		spinTransCode = (Spinner)findViewById(R.id.spinnerTransCode);
 		spinStatus = (Spinner)findViewById(R.id.spinnerStatus);
 		spinFrequencies =  (Spinner)findViewById(R.id.spinnerFrequencies);
+		
+		// listener on dialog amount edittext
+		OnClickListener onClickAmount = new OnClickListener() {
 
-		edtTotAmount = (EditText)findViewById(R.id.editTextTotAmount);
-		if (!(mTotAmount == 0)) {
-			edtTotAmount.setText(Float.toString(mTotAmount));
+			@Override
+			public void onClick(View v) {
+				Integer currencyId = null;
+				if (spinAccount.getSelectedItemPosition() >= 0
+						&& spinAccount.getSelectedItemPosition() < mAccountList.size()) {
+					currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
+				}
+				float amount = (Float)((TextView) v).getTag();
+				InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
+				dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+			}
+		};
+		
+		// get currency id
+		Integer currencyId = null;
+		if (spinAccount.getSelectedItemPosition() >= 0 && spinAccount.getSelectedItemPosition() < mAccountList.size()) {
+			currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
 		}
-		edtAmount = (EditText)findViewById(R.id.editTextAmount);
-		if (!(mAmount == 0)) {
-			edtAmount.setText(Float.toString(mAmount));
-		}
+		txtTotAmount = (TextView)findViewById(R.id.editTextTotAmount);
+		txtTotAmount.setOnClickListener(onClickAmount);
+		core.formatAmountTextView(txtTotAmount, mTotAmount, currencyId);
+		
+		txtAmount = (TextView)findViewById(R.id.editTextAmount);
+		txtAmount.setOnClickListener(onClickAmount);
+		core.formatAmountTextView(txtAmount, mAmount, currencyId);
 		
 		// accountlist <> to populate the spin
 		mAccountList = new MoneyManagerOpenHelper(this).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
@@ -305,6 +355,24 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {       	   
             }
+		});
+		spinToAccount.setAdapter(adapterAccount);
+		if (mAccountIdList.indexOf(mToAccountId) >= 0) {
+			spinToAccount.setSelection(mAccountIdList.indexOf(mToAccountId), true);
+		} else {
+			spinToAccount.setSelection(Spinner.INVALID_POSITION, true);
+		}
+		spinToAccount.setOnItemSelectedListener(new OnItemSelectedListener() {
+	           @Override
+	           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+					if ((position >= 0) && (position <= mAccountIdList.size())) {
+						mToAccountId = mAccountIdList.get(position);
+					}
+				}
+
+         @Override
+         public void onNothingSelected(AdapterView<?> parent) {       	   
+         }
 		});
 		
 		// populate arrays TransCode
@@ -336,16 +404,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
                public void onNothingSelected(AdapterView<?> parent) {       	   
                }
 		});
-
-		btnSelectToAccount.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(RepeatingTransactionActivity.this, AccountListActivity.class);
-				intent.setAction(Intent.ACTION_PICK);
-				startActivityForResult(intent, REQUEST_PICK_ACCOUNT);
-			}
-		});
-		btnSelectPayee.setOnClickListener(new OnClickListener() {
+		txtSelectPayee.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(RepeatingTransactionActivity.this, PayeeActivity.class);
@@ -353,10 +412,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 				startActivityForResult(intent, REQUEST_PICK_PAYEE);
 			}
 		});
-		btnSelectCategory.setOnClickListener(new OnClickListener() {
+		txtSelectCategory.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(RepeatingTransactionActivity.this, CategorySubCategoryActivity.class);
+				Intent intent = new Intent(RepeatingTransactionActivity.this, CategorySubCategoryExpandableListActivity.class);
 				intent.setAction(Intent.ACTION_PICK);
 				startActivityForResult(intent, REQUEST_PICK_CATEGORY);
 			}
@@ -388,30 +447,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
                public void onNothingSelected(AdapterView<?> parent) {   
                }
 		});
-
-		btnOk = (Button)findViewById(R.id.buttonOk);
-		btnOk.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (updateData() == true) {
-					// set result ok, send broadcast to update widgets and finish activity
-					setResult(RESULT_OK);
-					finish();
-				}
-			}
-		});
 		
-		btnCancel = (Button)findViewById(R.id.buttonCancel);
-		btnCancel.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// force refresh UI MainActivity
-				// MainActivity.setRefreshUserInterface(true);
-				// finish CheckingAccountActivity
-				setResult(RESULT_CANCELED);
-				finish();
-			}
-		});
 		// transaction number
 		edtTransNumber = (EditText)findViewById(R.id.editTextTransNumber);
 		if (!TextUtils.isEmpty(mTransNumber)) {
@@ -445,28 +481,27 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 			edtNotes.setText(mNotes);
 		}
 		// next occurrence
-		edtNextOccurrence = (EditText)findViewById(R.id.editTextNextOccurrence);
-		edtNextOccurrence.setKeyListener(null);
+		txtNextOccurrence = (TextView)findViewById(R.id.editTextNextOccurrence);
 		
 		if (!(TextUtils.isEmpty(mNextOccurrence))) {
 			try {
-				edtNextOccurrence.setText(mApplication.getStringFromDate(new SimpleDateFormat("yyyy-MM-dd").parse(mNextOccurrence)));
+				txtNextOccurrence.setTag(new SimpleDateFormat("yyyy-MM-dd").parse(mNextOccurrence));
 			} catch (ParseException e) {
 				Log.e(LOGCAT, e.getMessage());
 			}
 		} else {
-			edtNextOccurrence.setText(mApplication.getStringFromDate((Date)Calendar.getInstance().getTime()));
+			txtNextOccurrence.setTag((Date)Calendar.getInstance().getTime());
 		}
-			
-		btnNextOccurrence = (ImageButton)findViewById(R.id.buttonNextOccurrence);
-		btnNextOccurrence.setOnClickListener(new OnClickListener() {
-			private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+		formatExtendedDate(txtNextOccurrence);
+		txtNextOccurrence.setOnClickListener(new OnClickListener() {
+			public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
 				@Override
 				public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 					try {
 						Date date = new SimpleDateFormat("yyyy-MM-dd").parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-						edtNextOccurrence.setText(mApplication.getStringFromDate(date));
+						txtNextOccurrence.setTag(date);
+						formatExtendedDate(txtNextOccurrence);
 					} catch (Exception e) {
 						Log.e(LOGCAT, e.getMessage());
 					}
@@ -476,11 +511,12 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				Calendar date = Calendar.getInstance();
-				date.setTime(mApplication.getDateFromString(edtNextOccurrence.getText().toString()));
+				date.setTime((Date)txtNextOccurrence.getTag());
 				DatePickerDialog dialog = new DatePickerDialog(RepeatingTransactionActivity.this, mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
 				dialog.show();
 			}
 		});
+		
 		// times repeated
 		edtTimesRepeated = (EditText)findViewById(R.id.editTextTimesRepeated);
 		if (mNumOccurrence >= 0) {
@@ -507,10 +543,21 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 		// refresh user interface
 		refreshTransCode();
 		refreshPayeeName();
-		refreshAccountName();
 		refreshCategoryName();
 		refreshTimesRepeated();
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		Core core = new Core(this);
+		if (core.isTablet()) {
+			getSherlock().getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
+		} else {
+			createActionBar();
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+	
 	/**
 	 * refersh UI control times repeated
 	 */
@@ -525,11 +572,13 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-	    case android.R.id.home:
-	        // close this activity and return to home
-	        startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-	        this.finish();
-	        break;
+		case android.R.id.home:
+	    case R.id.menu_cancel:
+	    	onCancelClick();
+	        return true;
+	    case R.id.menu_ok:
+	    	onDoneClick();
+	    	return true;
 		}
 		return false;
 	}
@@ -544,8 +593,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 		outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
 		outState.putString(KEY_TRANS_CODE, mTransCode);
 		outState.putString(KEY_TRANS_STATUS, mStatus);
-		outState.putString(KEY_TRANS_TOTAMOUNT, edtTotAmount.getText().toString());
-		outState.putString(KEY_TRANS_AMOUNT, edtAmount.getText().toString());
+		outState.putFloat(KEY_TRANS_TOTAMOUNT, (Float) txtTotAmount.getTag());
+		outState.putFloat(KEY_TRANS_AMOUNT, (Float) txtAmount.getTag());
 		outState.putInt(KEY_PAYEE_ID, mPayeeId);
 		outState.putString(KEY_PAYEE_NAME, mPayeeName);
 		outState.putInt(KEY_CATEGORY_ID, mCategoryId);
@@ -553,8 +602,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 		outState.putInt(KEY_SUBCATEGORY_ID, mSubCategoryId);
 		outState.putString(KEY_SUBCATEGORY_NAME, mSubCategoryName);
 		outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
-		outState.putString(KEY_NOTES, edtNotes.getText().toString());
-		outState.putString(KEY_NEXT_OCCURRENCE, edtNextOccurrence.getText().toString());
+		outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
+		outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat("yyyy-MM-dd").format(txtNextOccurrence.getTag()))	;
 		outState.putInt(KEY_REPEATS, mFrequencies);
 		if (!TextUtils.isEmpty(edtTimesRepeated.getText())) {
 			outState.putInt(KEY_NUM_OCCURRENCE, Integer.parseInt(edtTimesRepeated.getText().toString()));
@@ -674,21 +723,14 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 		
 		return true;
 	}
-	public void refreshAccountName() {
-		// write into text button account name
-		btnSelectToAccount.setText(TextUtils.isEmpty(mToAccountName) == false ? mToAccountName : getResources().getString(R.string.select_to_account));
-	}
+	
 	public void refreshCategoryName() {
 		String category = ""; 
 		if (TextUtils.isEmpty(mCategoryName) == false) {
 			category = mCategoryName + (TextUtils.isEmpty(mSubCategoryName) == false ? " : " + mSubCategoryName : "");
 		}
 		// write into text button category/subcategory
-		if (TextUtils.isEmpty(category) == false)  {
-			btnSelectCategory.setText(category);
-		} else {
-			btnSelectCategory.setText(getResources().getString(R.string.select_category));
-		}
+		txtSelectCategory.setText(category);
 	}
 	/**
 	 * update data into database
@@ -702,32 +744,32 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 		ContentValues values = new ContentValues();
 		
 		values.put(TableBillsDeposits.ACCOUNTID, mAccountId);
-		if (mTransCode.equals("Transfer")) {
+		if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
 			values.put(TableBillsDeposits.TOACCOUNTID, mToAccountId);
 			values.put(TableBillsDeposits.PAYEEID, -1);
 		} else {
 			values.put(TableBillsDeposits.PAYEEID, mPayeeId);
 		}
 		values.put(TableBillsDeposits.TRANSCODE, mTransCode);
-		if (TextUtils.isEmpty(edtAmount.getText().toString()) || (!(mTransCode.equalsIgnoreCase("Transfer")))) {
-			values.put(TableBillsDeposits.TRANSAMOUNT, Float.valueOf(edtTotAmount.getText().toString()));
+		if (TextUtils.isEmpty(txtAmount.getText().toString()) || (!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)))) {
+			values.put(TableBillsDeposits.TRANSAMOUNT, (Float)txtTotAmount.getTag());
 		} else {
-			values.put(TableBillsDeposits.TRANSAMOUNT, Float.valueOf(edtAmount.getText().toString()));
+			values.put(TableBillsDeposits.TRANSAMOUNT, (Float)txtAmount.getTag());
 		}
 		values.put(TableBillsDeposits.STATUS, mStatus);
 		values.put(TableBillsDeposits.CATEGID, mCategoryId);
 		values.put(TableBillsDeposits.SUBCATEGID, mSubCategoryId);
 		values.put(TableBillsDeposits.FOLLOWUPID, -1);
-		values.put(TableBillsDeposits.TOTRANSAMOUNT, Float.valueOf(edtTotAmount.getText().toString()));
+		values.put(TableBillsDeposits.TOTRANSAMOUNT, (Float)txtTotAmount.getTag());
 		values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
 		values.put(TableBillsDeposits.NOTES, edtNotes.getText().toString());
-		values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, mApplication.getSQLiteStringDate(mApplication.getDateFromString(edtNextOccurrence.getText().toString())));
-		values.put(TableBillsDeposits.TRANSDATE, mApplication.getSQLiteStringDate(mApplication.getDateFromString(edtNextOccurrence.getText().toString())));
+		values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat("yyyy-MM-dd").format(txtNextOccurrence.getTag()));
+		values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat("yyyy-MM-dd").format(txtNextOccurrence.getTag()));
 		values.put(TableBillsDeposits.REPEATS, mFrequencies);
 		values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0 ? edtTimesRepeated.getText().toString() : null);
 		
 		// check whether the application should do the update or insert
-		if (mIntentAction.equals(INTENT_ACTION_INSERT)) {
+		if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
 			// insert
 			if (getContentResolver().insert(mRepeatingTransaction.getUri(), values) == null) {
 				Core.alertDialog(this, R.string.db_checking_insert_failed).show();
@@ -750,34 +792,25 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 	 */
 	public void refreshPayeeName() {
 		// write into text button payee name
-		btnSelectPayee.setText(TextUtils.isEmpty(mPayeeName) == false ? mPayeeName : mTextDefaultPayee);
+		txtSelectPayee.setText(TextUtils.isEmpty(mPayeeName) == false ? mPayeeName : mTextDefaultPayee);
 	}
+	
 	public void refreshTransCode() {
- 	   // check type of transaction
- 	   if (mTransCode.equalsIgnoreCase("Transfer")) {
- 		  linearPayee.setVisibility(View.GONE);
- 		  linearToAccount.setVisibility(View.VISIBLE);
- 		  txtAmount.setVisibility(View.VISIBLE);
- 		  edtAmount.setVisibility(View.VISIBLE);
- 	   } else {
-			linearPayee.setVisibility(View.VISIBLE);
-			linearToAccount.setVisibility(View.GONE);
-			txtAmount.setVisibility(View.GONE);
-			edtAmount.setVisibility(View.GONE);
- 		  
- 		   txtPayee.setText(mTransCode.equals(getString(R.string.withdrawal)) ? R.string.payee : R.string.from);
- 		   mTextDefaultPayee = getResources().getString(mTransCode.equals(getString(R.string.withdrawal)) ? R.string.payee : R.string.from);
- 	   }
+		txtCaptionAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+		txtAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+		spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+		txtPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+		txtSelectPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
 	}
 	/**
 	 * validate data insert in activity
 	 * @return
 	 */
 	private boolean validateData() {
-		if ((mTransCode.equals("Transfer")) && (mToAccountId == -1)) {
+		if ((Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mToAccountId == -1)) {
 			Core.alertDialog(this, R.string.error_toaccount_not_selected).show();;
 			return false;
-		} else if ((mTransCode.equals("Transfer") == false) && (mPayeeId == -1)) {
+		} else if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
 			Core.alertDialog(this, R.string.error_payee_not_selected).show();;
 			return false;
 		}
@@ -785,18 +818,40 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity {
 			Core.alertDialog(this, R.string.error_category_not_selected).show();;
 			return false;
 		}
-		if (TextUtils.isEmpty(edtTotAmount.getText())) {
-			if (TextUtils.isEmpty(edtAmount.getText())) {
+		if (TextUtils.isEmpty(txtTotAmount.getText())) {
+			if (TextUtils.isEmpty(txtAmount.getText())) {
 				Core.alertDialog(this, R.string.error_totamount_empty).show();;
 				return false;
 			} else {
-				edtTotAmount.setText(edtAmount.getText());
+				txtTotAmount.setText(txtAmount.getText());
 			}
 		}
-		if (TextUtils.isEmpty(edtNextOccurrence.getText().toString())) {
+		if (TextUtils.isEmpty(txtNextOccurrence.getText().toString())) {
 			Core.alertDialog(this, R.string.error_next_occurrence_not_populate).show();;
 			return false;
 		}
 		return true;
+	}
+	
+	public void formatExtendedDate(TextView dateTextView) {
+		try { 
+			dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy").format((Date)dateTextView.getTag()));
+		} catch (Exception e){
+			Log.e(LOGCAT, e.getMessage());
+		}
+	}
+
+	@Override
+	public void onFinishedInputAmountDialog(int id, Float amount) {
+		Core core = new Core(this);
+		
+		TextView view = (TextView) findViewById(id);
+		if (view != null) {
+			Integer currencyId = null;
+			if (spinAccount.getSelectedItemPosition() >= 0 && spinAccount.getSelectedItemPosition() < mAccountList.size()) {
+				currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
+			}
+			core.formatAmountTextView(view, amount, currencyId);
+		}
 	}
 }

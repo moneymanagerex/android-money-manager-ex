@@ -23,12 +23,17 @@
     <dimen name="money_text_view_size_small">14sp</dimen>
     <dimen name="money_text_view_size_medium">18sp</dimen>
     <dimen name="money_text_view_size_large">22sp</dimen>
-    <dimen name="money_text_view_size_header">18sp</dimen>
+    <dimen name="money_text_view_size_header">16sp</dimen>
     <dimen name="money_button_height">36dp</dimen>
+    
+    <!-- default padding and margin -->
     <dimen name="money_padding">4dp</dimen>
     <dimen name="money_margin">6dp</dimen>
-    <dimen name="money_margin_middle">3dp</dimen>
+    <dimen name="money_margin_bottom_top">3dp</dimen>
 
+    <!-- shape dimens -->
+    <dimen name="money_corners_radius">2dp</dimen>
+    
     <!-- chart dimens -->
     <dimen name="chart_label_text_size">8sp</dimen>
     <dimen name="chart_title_text_size">14sp</dimen>

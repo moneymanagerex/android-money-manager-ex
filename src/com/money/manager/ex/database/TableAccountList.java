@@ -240,7 +240,7 @@ public class TableAccountList extends Dataset {
 	 * @return se il conto � favorito oppure no
 	 */
 	public boolean isFavoriteAcct() {
-		return this.getFavoriteAcct().toUpperCase().equals("TRUE");
+		return String.valueOf(Boolean.TRUE).equalsIgnoreCase(getFavoriteAcct());
 	}
 	/**
 	 * 

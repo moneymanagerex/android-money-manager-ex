@@ -29,36 +29,41 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.InputAmountDialog;
+import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 
 /**
  * @author Francesco Berton
  * @version 0.6.4
  *
  */
-public class AccountListEditActivity extends BaseFragmentActivity {
+public class AccountListEditActivity extends BaseFragmentActivity implements InputAmountDialogListener {
 	// LOGCAT
 	private static final String LOGCAT = AccountListEditActivity.class.getSimpleName();
 	// ID REQUEST Data
 	private static final int REQUEST_PICK_CURRENCY = 1;
 	// action
-	public static final String INTENT_ACTION_EDIT = "android.intent.action.EDIT";
-	public static final String INTENT_ACTION_INSERT = "android.intent.action.INSERT";
+	
+	
 	// KEY INTENT for data exchange
 	public static final String KEY_INTENT_ACTION = "AccountListEditActivity:IntentAction";
 	public static final String KEY_ACCOUNT_ID = "AccountListEditActivity:AccountId";
@@ -84,50 +89,40 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 	MoneyManagerApplication mApplication;
 	// Activity members
 	private int mAccountId = -1;
-	private String mAccountName;
-	private String mAccountType;
-	private String mAccountNum;
-	private String mHeldAt;
-	private String mWebsite;
-	private String mContactInfo;
-	private String mAccessInfo;
-	private String mStatus;
-	private float mInitialBal;
-	private String mNotes;
-	private String mFavoriteAcct;
-	private int mCurrencyId = -1;
-	private String mCurrencyName;
+	private String mAccountName, mAccountType, mAccountNum, mHeldAt, mWebsite, mContactInfo, mAccessInfo, mStatus, mNotes, mFavoriteAcct, mCurrencyName;
+	private float mInitialBal = 0;
+	private Integer mCurrencyId = null;
 	// Arrays for spinner items and values
 	private String[] mAccountTypeItems;
 	private String[] mAccountStatusItems;
 	private String[] mAccountTypeValues;
 	private String[] mAccountStatusValues;
 	// Activity controls
-	private EditText edtAccountName;
-	private Spinner spinAccountType;
-	private EditText edtAccountNumber;
-	private EditText edtAccountHeldAt;
-	private EditText edtWebsite;
-	private EditText edtContact;
-	private EditText edtAccessInfo;
-	private Spinner spinAccountStatus;
-	private EditText edtInitialBalance;
-	private EditText edtNotes;
-	private CheckBox chkbFavouriteAccount;
-	private Button btnOk;
-	private Button btnCancel;
-	private Button btnSelectCurrency;
-	// Methods 
+	private EditText edtAccountName, edtAccountNumber, edtAccountHeldAt, edtWebsite, edtContact, edtAccessInfo, edtNotes;;
+	private Spinner spinAccountType, spinAccountStatus;
+	private TextView txtSelectCurrency, txtInitialBalance;
+	private ImageView imgbFavouriteAccount;
+	
+	public void onCancelClick() {
+		// close activity
+		finish();
+	}
+	
+	public void onDoneClick() {
+		if (updateAccountList()) {
+			// If everything is okay, finish the activity
+			finish();
+		}
+	}
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// Set ActionBar properties
-		getSupportActionBar().setTitle(getResources().getString(R.string.new_edit_account));
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		
 		//application
 		mApplication = (MoneyManagerApplication)getApplication();
+		Core core = new Core(this);
 		
 		// Restore saved instance state
 		if ((savedInstanceState != null)) {
@@ -140,12 +135,12 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 			mContactInfo = savedInstanceState.getString(KEY_CONTACT_INFO);
 			mAccessInfo = savedInstanceState.getString(KEY_ACCESS_INFO);
 			mStatus = savedInstanceState.getString(KEY_STATUS);
-			if (!(TextUtils.isEmpty(savedInstanceState.getString(KEY_INITIAL_BAL)))) {
-				mInitialBal = savedInstanceState.getFloat(KEY_INITIAL_BAL);
-			}
+			mInitialBal = savedInstanceState.getFloat(KEY_INITIAL_BAL);
 			mNotes = savedInstanceState.getString(KEY_NOTES);
 			mFavoriteAcct = savedInstanceState.getString(KEY_FAVORITE_ACCT);
 			mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
+			if (mCurrencyId == -1)
+				mCurrencyId = null;
 			mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
 			mIntentAction = savedInstanceState.getString(KEY_ACTION);
 		}
@@ -154,13 +149,53 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		if (getIntent() != null) {
 			if (savedInstanceState == null) {
 				mIntentAction = getIntent().getAction();
-				if (mIntentAction != null && getIntent().getAction().equals(Intent.ACTION_EDIT)) {
+				if (mIntentAction != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
 					mAccountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, -1);
 					// Load account row
 					selectAccount(mAccountId);
 				}
 			}
 		}
+		
+		// default currency
+		if (mCurrencyId == null) {
+			TableCurrencyFormats currencyFormats = mApplication.getCurrencyFormats(mApplication.getBaseCurrencyId());
+			if (currencyFormats != null) {
+				mCurrencyId = currencyFormats.getCurrencyId();
+				mCurrencyName = currencyFormats.getCurrencyName();
+			}
+		}
+		
+		// ****** action bar *****
+		if (!core.isTablet()) {
+			getSupportActionBar().setDisplayOptions(
+					ActionBar.DISPLAY_SHOW_CUSTOM,
+					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+							| ActionBar.DISPLAY_SHOW_CUSTOM);
+			
+			LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+			
+	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
+	        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
+	        cancelActionView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					onCancelClick();
+				}
+			});
+	        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
+	        doneActionView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onDoneClick();
+				}
+			});
+	        getSupportActionBar().setCustomView(actionBarButtons);
+	        
+	        getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_account : R.string.edit_account);
+		}
+		// ****** action bar *****
 		
 		// Compose layout
 		setContentView(R.layout.accountlist_edit_activity);
@@ -174,10 +209,10 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		edtContact = (EditText) findViewById(R.id.editTextContact);
 		edtAccessInfo = (EditText) findViewById(R.id.editTextAccessInfo);
 		spinAccountStatus = (Spinner) findViewById(R.id.spinnerAccountStatus);
-		edtInitialBalance = (EditText) findViewById(R.id.editTextInitialBalance);
+		txtInitialBalance = (TextView) findViewById(R.id.editTextInitialBalance);
 		edtNotes = (EditText) findViewById(R.id.editTextNotes);
-		chkbFavouriteAccount = (CheckBox) findViewById(R.id.checkboxFavouriteAccount);
-		btnSelectCurrency = (Button) findViewById(R.id.buttonSelectCurrency);
+		imgbFavouriteAccount = (ImageView) findViewById(R.id.imageViewAccountFav);
+		txtSelectCurrency = (TextView) findViewById(R.id.textViewSelectCurrency);
 		
 		// Initialize control values
 		if (!(TextUtils.isEmpty(mAccountName))) {
@@ -198,19 +233,27 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		if (!(TextUtils.isEmpty(mAccessInfo))) {
 			edtAccessInfo.setText(mAccessInfo);
 		}
-		/*if (!(mInitialBal == 0)) {
-			edtInitialBalance.setText(Float.toString(mInitialBal));
-		}*/
-		edtInitialBalance.setText(Float.toString(mInitialBal));
+		
+		core.formatAmountTextView(txtInitialBalance, mInitialBal, mCurrencyId);
+		txtInitialBalance.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				float amount = (Float)((TextView) v).getTag();
+				InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, mCurrencyId);
+				dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+			}
+		});
+		
 		if (!(TextUtils.isEmpty(mNotes))) {
 			edtNotes.setText(mNotes);
 		}
-		if (!(TextUtils.isEmpty(mFavoriteAcct))) {
+		if (TextUtils.isEmpty(mFavoriteAcct)) {
 			// TODO should be done better with enumeration for TRUE and FALSE
-			chkbFavouriteAccount.setChecked((mFavoriteAcct.equalsIgnoreCase("TRUE")) ? true : false);
-		} else {
-			mFavoriteAcct = (chkbFavouriteAccount.isChecked() ? "TRUE" : "FALSE");
+			mFavoriteAcct = String.valueOf(Boolean.FALSE);
 		}
+		imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(mFavoriteAcct) ? R.drawable.ic_rate_star_on : R.drawable.ic_rate_star_off);
+		imgbFavouriteAccount.setTag(mFavoriteAcct);
 		
 		// spinAccountType adapters and values
 		mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
@@ -267,19 +310,24 @@ public class AccountListEditActivity extends BaseFragmentActivity {
          }
 		});
 		
-		chkbFavouriteAccount.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-	           @Override
-	           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-	        	    if ( isChecked ) {
-	        	    	mFavoriteAcct = "TRUE";
-	        	    }
-					else {
-						mFavoriteAcct = "FALSE";
-					}
+		imgbFavouriteAccount.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String status = (String)v.getTag();
+				// check empty string
+				if (TextUtils.isEmpty(status))
+					status = String.valueOf(Boolean.FALSE);
+				if (String.valueOf(Boolean.TRUE).equalsIgnoreCase(status)) {
+					v.setTag(String.valueOf(Boolean.FALSE));
+				} else {
+					v.setTag(String.valueOf(Boolean.TRUE));
 				}
+				imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(String.valueOf(v.getTag())) ? R.drawable.ic_rate_star_on : R.drawable.ic_rate_star_off);
+			}
 		});
 		
-		btnSelectCurrency.setOnClickListener(new OnClickListener() {
+		txtSelectCurrency.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(AccountListEditActivity.this, CurrencyFormatsListActivity.class);
@@ -288,30 +336,31 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 			}
 		});
 		
-		btnOk = (Button) findViewById(R.id.buttonOk);
-		btnOk.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (updateAccountList()) {
-					// If everything is okay, finish the activity
-					AccountListEditActivity.this.finish();
-				}
-			}
-		});
-		
-		btnCancel = (Button)findViewById(R.id.buttonCancel);
-		btnCancel.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// force refresh UI MainActivity
-				// MainActivity.setRefreshUserInterface(true);
-				// finish the activity
-				AccountListEditActivity.this.finish();
-			}
-		});
-		
 		// Refresh data on the other controls
 		refreshCurrencyName();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		Core core = new Core(this);
+		if (core.isTablet()) {
+			getSherlock().getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_done:
+			onDoneClick();
+			return true;
+		case android.R.id.home:
+		case R.id.menu_cancel:
+			onCancelClick();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
@@ -342,10 +391,10 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		outState.putString(KEY_CONTACT_INFO, mContactInfo);
 		outState.putString(KEY_ACCESS_INFO, mAccessInfo);
 		outState.putString(KEY_STATUS, mStatus);
-		outState.putFloat(KEY_INITIAL_BAL, mInitialBal);
+		outState.putFloat(KEY_INITIAL_BAL, (Float)txtInitialBalance.getTag());
 		outState.putString(KEY_NOTES, mNotes);
-		outState.putString(KEY_FAVORITE_ACCT, mFavoriteAcct);
-		outState.putInt(KEY_CURRENCY_ID, mCurrencyId);
+		outState.putString(KEY_FAVORITE_ACCT, String.valueOf(imgbFavouriteAccount.getTag()));
+		outState.putInt(KEY_CURRENCY_ID, mCurrencyId != null ? mCurrencyId : -1);
 		outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
 		outState.putString(KEY_ACTION, mIntentAction);
 	}
@@ -362,20 +411,16 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		mWebsite = edtWebsite.getText().toString();
 		mContactInfo = edtContact.getText().toString();
 		mAccessInfo = edtAccessInfo.getText().toString();
-		if (!(TextUtils.isEmpty(edtInitialBalance.getText().toString()))) {
-			mInitialBal = Float.valueOf(edtInitialBalance.getText().toString().trim()).floatValue();
-		} else {
-			mInitialBal = 0;
-		}
+		
+		mInitialBal = (Float)txtInitialBalance.getTag();
 		mNotes = edtNotes.getText().toString();
-		mFavoriteAcct = (chkbFavouriteAccount.isChecked() ? "TRUE" : "FALSE");
 		
 		if (bCheck) {
 			if (mCurrencyId == -1) {
 				Core.alertDialog(this, R.string.error_currency_not_selected).show();
 				return false;
 			}
-			if (TextUtils.isEmpty(edtInitialBalance.getText().toString())) {
+			if (TextUtils.isEmpty(txtInitialBalance.getText().toString())) {
 				Core.alertDialog(this, R.string.error_initialbal_empty).show();
 				return false;
 			}
@@ -417,11 +462,11 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		values.put(TableAccountList.WEBSITE, mWebsite);
 		values.put(TableAccountList.CONTACTINFO, mContactInfo);
 		values.put(TableAccountList.ACCESSINFO, mAccessInfo);
-		values.put(TableAccountList.INITIALBAL, Float.valueOf(mInitialBal));
-		values.put(TableAccountList.FAVORITEACCT, mFavoriteAcct);
+		values.put(TableAccountList.INITIALBAL, (Float)txtInitialBalance.getTag());
+		values.put(TableAccountList.FAVORITEACCT, imgbFavouriteAccount.getTag().toString().toUpperCase());
 		values.put(TableAccountList.CURRENCYID, mCurrencyId);
 		// check whether the application should update or insert
-		if (mIntentAction.equals(INTENT_ACTION_INSERT)) {
+		if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
 			// insert
 			if (getContentResolver().insert(mAccountList.getUri(), values) == null) {
 				Core.alertDialog(this, R.string.db_account_insert_failed).show();
@@ -470,9 +515,7 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		mInitialBal = (float) cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
 		mFavoriteAcct = cursor.getString(cursor.getColumnIndex(TableAccountList.FAVORITEACCT));		
 		mCurrencyId = cursor.getInt(cursor.getColumnIndex(TableAccountList.CURRENCYID));
-		// TODO Find a better way to format according to system settings 
-		// Format Decimal Value 
-		//mInitialBal = mInitialBal.replace(",", ".");
+		
 		// TODO Select currency name: could be improved for better usage of members
 		selectCurrencyName(mCurrencyId);
 		// return
@@ -486,9 +529,9 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 	public void refreshCurrencyName() {
 		// write currency into text button
 		if (!(TextUtils.isEmpty(mCurrencyName)))  {
-			btnSelectCurrency.setText(mCurrencyName);
+			txtSelectCurrency.setText(mCurrencyName);
 		} else {
-			btnSelectCurrency.setText(getResources().getString(R.string.select_currency));
+			txtSelectCurrency.setText(getResources().getString(R.string.select_currency));
 		}
 	}
 	
@@ -511,6 +554,15 @@ public class AccountListEditActivity extends BaseFragmentActivity {
 		mCurrencyName = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME));
 		// return
 		return true;
+	}
+
+	@Override
+	public void onFinishedInputAmountDialog(int id, Float amount) {
+		Core core = new Core(this);
+		
+		View view = findViewById(id);
+		if (view != null && view instanceof TextView)
+			core.formatAmountTextView(((TextView)view), amount, mCurrencyId);
 	}
 	
 }

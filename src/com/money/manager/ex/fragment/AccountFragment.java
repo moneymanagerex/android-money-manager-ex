@@ -29,8 +29,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -74,7 +72,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		AccountFragment fragment = new AccountFragment();
 		fragment.mAccountId = accountid;
 		// set name of child fragment
-		fragment.mNameFragment = AllDataFragment.class.getSimpleName() + "_" + Integer.toString(accountid);
+		fragment.setNameFragment(AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountid));
 
 		return fragment;
 	}
@@ -84,14 +82,14 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	// id account
 	private int mAccountId = 0;
 	// string name fragment
-	String mNameFragment;
+	private String mNameFragment;
 	// account balance
 	private float mAccountBalance = 0;
 	private float mAccountReconciled = 0;
 	// Dataset: accountlist e alldata
 	private TableAccountList mAccountList;
 	// view into layout
-	private TextView txtAccountBalance, txtAccountReconciled;
+	private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
 	private ImageView imgAccountFav;
 	// all data fragment
 	AllDataFragment mAllDataFragment;
@@ -189,6 +187,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		// take reference textview from layout
 		txtAccountBalance = (TextView) view.findViewById(R.id.textViewAccountBalance);
 		txtAccountReconciled = (TextView) view.findViewById(R.id.textViewAccountReconciled);
+		txtAccountDifference = (TextView) view.findViewById(R.id.textViewDifference);
 		// favorite icon
 		imgAccountFav = (ImageView) view.findViewById(R.id.imageViewAccountFav);
 		// set listener click on favorite icon for change image
@@ -218,7 +217,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		mAllDataFragment.setContextMenuGroupId(mAccountId);
 		mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
 		// add fragment
-		transaction.replace(R.id.fragmentContent, mAllDataFragment, mNameFragment);
+		transaction.replace(R.id.fragmentContent, mAllDataFragment, getNameFragment());
 		transaction.commit();
 
 		// refresh user interface
@@ -329,11 +328,9 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	private void setTextViewBalance() {
 		// write account balance
 		if (mAccountList != null && mApplication != null) {
-			Spanned balance = Html.fromHtml("<b>" + mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance) + "</b>");
-			txtAccountBalance.setText(balance);
-			// write account reconciled
-			Spanned reconciled = Html.fromHtml("<b>" + mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled) + "</b>");
-			txtAccountReconciled.setText(reconciled);
+			txtAccountBalance.setText(mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance));
+			txtAccountReconciled.setText(mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled));
+			txtAccountDifference.setText(mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled - mAccountBalance));
 		}
 	}
 
@@ -386,5 +383,13 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	 */
 	public boolean isShownOpenDatabaseItemMenu() {
 		return mShownOpenDatabaseItemMenu;
+	}
+
+	public String getNameFragment() {
+		return mNameFragment;
+	}
+
+	public void setNameFragment(String mNameFragment) {
+		this.mNameFragment = mNameFragment;
 	}
 }

@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2012 The Android Money Manager Ex Project
-  
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
 <resources>
-	<!-- Themes -->
-	<string-array name="themes_values">
-	    <item>@string/theme_light</item>
-	    <item>@string/theme_holo</item>
-	</string-array>
-	<string-array name="themes_items">
-	    <item>Holo Light with Dark ActionBar (Default)</item>
-	    <item>Holo</item>
-	</string-array>
+
+    <!-- Themes -->
+    <string-array name="themes_values">
+        <item>@string/theme_light</item>
+        <item>@string/theme_holo_light</item>
+        <item>@string/theme_holo</item>
+    </string-array>
     <!-- Define transcode items and values -->
     <string-array name="transcode_values">
         <item>Withdrawal</item>
@@ -116,7 +97,44 @@
         <item>@string/advance</item>
     </string-array>
 
-    <!-- Define frequencies items and values -->
+    <!-- Define last or none used payee -->
+    <string-array name="new_transaction_dialog_values">
+        <item>N</item>
+        <item>L</item>
+    </string-array>
+    <string-array name="new_transaction_dialog_items">
+        <item>@string/none</item>
+        <item>@string/last</item>
+    </string-array>
+    
+    <!-- Define timeout synchronize dropbox -->
+    <string-array name="timeout_synchronize_values">
+        <item>0</item>
+        <item>5</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+        <item>10080</item>
+        <item>43200</item>
+    </string-array>
+	<string-array name="timeout_synchronize_items">
+	    <item>@string/never</item>
+        <item>@string/every_5_minutes</item>
+        <item>@string/every_15_minutes</item>
+        <item>@string/every_30_minutes</item>
+        <item>@string/every_hour</item>
+        <item>@string/every_2_hours</item>
+        <item>@string/every_6_hours</item>
+        <item>@string/every_12_hours</item>
+        <item>@string/daily</item>
+        <item>@string/weekly</item>
+        <item>@string/monthly</item>
+    </string-array>
+	<!-- Define frequencies items and values -->
     <integer-array name="frequencies_values">
         <item>0</item>
         <item>1</item>
@@ -161,6 +179,7 @@
         <item>Roboto Medium</item>
         <item>Roboto Black</item>
         <item>Roboto Condensed</item>
+        <item>Roboto Condensed Light</item>
     </string-array>
     <string-array name="application_font_values">
         <item>-1</item>
@@ -169,8 +188,9 @@
         <item>6</item>
         <item>10</item>
         <item>12</item>
+        <item>20</item>
     </string-array>
-    
+
     <!-- Define font sizeentries and values -->
     <string-array name="application_font_size_entries">
         <item>@string/micro</item>
@@ -186,7 +206,7 @@
         <item>medium</item>
         <item>large</item>
     </string-array>
-    
+
     <!-- Navigation mode DashboardFragment -->
     <string-array name="navigation_mode_dashboard">
         <item>@string/income_vs_expenses_current_month</item>
@@ -194,126 +214,8 @@
         <item>@string/top_payees_last_30_days</item>
         <item>@string/upcoming_transactions</item>
     </string-array>
-    
-    <!-- Define currency value -->
-    <string-array name="currency_values">
-        <item>EUR</item>
-        <item>USD</item>
-        <item>GBP</item>
-        <item>INR</item>
-        <item>AUD</item>
-        <item>CAD</item>
-        <item>AED</item>
-        <item>CHF</item>
-        <item>CNY</item>
-        <item>MYR</item>
-        <item>THB</item>
-        <item>ALL</item>
-        <item>AFN</item>
-        <item>ARS</item>
-        <item>AWG</item>
-        <item>AZN</item>
-        <item>BSD</item>
-        <item>BBD</item>
-        <item>BYR</item>
-        <item>BZD</item>
-        <item>BMD</item>
-        <item>BOB</item>
-        <item>BAM</item>
-        <item>BWP</item>
-        <item>BGN</item>
-        <item>BRL</item>
-        <item>BND</item>
-        <item>KHR</item>
-        <item>KYD</item>
-        <item>CLP</item>
-        <item>COP</item>
-        <item>CRC</item>
-        <item>HRK</item>
-        <item>CUP</item>
-        <item>CZK</item>
-        <item>DKK</item>
-        <item>DOP</item>
-        <item>XCD</item>
-        <item>EGP</item>
-        <item>SVC</item>
-        <item>EEK</item>
-        <item>FKP</item>
-        <item>FJD</item>
-        <item>GHC</item>
-        <item>GIP</item>
-        <item>GTQ</item>
-        <item>GGP</item>
-        <item>GYD</item>
-        <item>HNL</item>
-        <item>HKD</item>
-        <item>HUF</item>
-        <item>ISK</item>
-        <item>IDR</item>
-        <item>IRR</item>
-        <item>IMP</item>
-        <item>ILS</item>
-        <item>JMD</item>
-        <item>JPY</item>
-        <item>JEP</item>
-        <item>KZT</item>
-        <item>KPW</item>
-        <item>KRW</item>
-        <item>KGS</item>
-        <item>LAK</item>
-        <item>LVL</item>
-        <item>LBP</item>
-        <item>LRD</item>
-        <item>LTL</item>
-        <item>MKD</item>
-        <item>MUR</item>
-        <item>MXN</item>
-        <item>MNT</item>
-        <item>MZN</item>
-        <item>NAD</item>
-        <item>NPR</item>
-        <item>ANG</item>
-        <item>NZD</item>
-        <item>NIO</item>
-        <item>NGN</item>
-        <item>KPW</item>
-        <item>NOK</item>
-        <item>OMR</item>
-        <item>PKR</item>
-        <item>PAB</item>
-        <item>PYG</item>
-        <item>PEN</item>
-        <item>PHP</item>
-        <item>PLN</item>
-        <item>QAR</item>
-        <item>RON</item>
-        <item>RUB</item>
-        <item>SHP</item>
-        <item>SAR</item>
-        <item>RSD</item>
-        <item>SCR</item>
-        <item>SGD</item>
-        <item>SBD</item>
-        <item>SOS</item>
-        <item>ZAR</item>
-        <item>KRW</item>
-        <item>LKR</item>
-        <item>SEK</item>
-        <item>SRD</item>
-        <item>SYP</item>
-        <item>TWD</item>
-        <item>TTD</item>
-        <item>TRY</item>
-        <item>TRL</item>
-        <item>TVD</item>
-        <item>UAH</item>
-        <item>UYU</item>
-        <item>UZS</item>
-        <item>VEF</item>
-        <item>VND</item>
-        <item>YER</item>
-        <item>ZWD</item>
-    </string-array>
+
+
     <!-- Date format -->
     <string-array name="date_format">
         <item>DD/MM/YY</item>

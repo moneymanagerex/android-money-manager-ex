@@ -18,7 +18,9 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<item name="menu_ok" type="id"/>
-	<item name="menu_cancel" type="id"/>
-	<item name="menu_debug_rotate" type="id"/>
+    <item name="menu_ok" type="id"/>
+    <item name="menu_cancel" type="id"/>
+    <item name="menu_debug_rotate" type="id"/>
+    <item name="menu_home" type="id"/>
+	<item name="menu_query_mode" type="id"/>
 </resources>

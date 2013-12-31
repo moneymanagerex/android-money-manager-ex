@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2012 The Android Money Manager Ex Project
-  
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
 <resources>
 
     <!-- application -->
@@ -24,7 +7,7 @@
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
     <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock, ViewPagerIndicator and RobotMediaBilling libraries</string>
     <string name="application_license">Open source licenses</string>
-    <string name="application_build">20131007</string>
+    <string name="application_build">20131125</string>
 
     <!-- database -->
     <string name="db_insert_failed">Insert data failed</string>
@@ -208,7 +191,7 @@
     <string name="path">Path</string>
     <string name="theme_application">Theme Application</string>
     <string name="theme_holo">Holo</string>
-    <string name="theme_light">Light</string>
+    <string name="theme_light">Holo Light With Dark ActionBar</string>
 
     <!-- 20120906 -->
     <string name="close_application">Close Application</string>
@@ -418,4 +401,45 @@
 	<!-- 20130927 -->
 	<string name="delete_repeating_transaction">Delete Repeating Transaction</string>
 	<!-- 20131007 -->
+	<string name="bank_accounts_total">Bank Accounts Total</string>
+	<string name="term_accounts_total">Term Accounts Total</string>
+	<!-- 20131104 -->
+	<string name="last">Last</string>
+	<string name="accounts">Accounts</string>
+	<string name="to_account">To Account</string>
+	<string name="from_account">From Account</string>
+	<string name="default_status">Default Status</string>
+	<string name="default_payee">Default Payee</string>
+	<string name="new_transaction">New Transaction</string>
+	<string name="edit_transaction">Edit Transaction</string>
+	<string name="delete_one_selected_transaction">Confirm the deletion of the selected transaction?</string>
+	<string name="delete_others_selected_transaction">Confirm the deletion of the %d selected transactions?</string>
+	<string name="categories">Categories</string>
+	<string name="currencies">Currencies</string>
+	<string name="payees">Payees</string>
+	<string name="repeating_transactions">Repeating Transactions</string>
+	<string name="theme_holo_light">Holo Light</string>
+	<string name="new_account">New Account</string>
+	<string name="edit_account">Edit Account</string>
+	<string name="new_currency">New Currency</string>
+	<string name="edit_currency">Edit Currency</string>
+	<string name="import_all_currencies">Import All Currencies of the World</string>
+	<string name="import_currencies_in_progres">import currencies in progress …</string>
+	<string name="from_date">From the date</string>
+	<string name="at_the_date">At the date</string>
+	<string name="amount_greater_or_equal">Amount greater or equal</string>
+	<string name="amount_less_or_equal">Amount less or equal</string>
+	<string name="result_search">Result of your search</string>
+	<string name="new_repeating_transaction">New Repeating Transaction</string>
+	<string name="edit_repeating_transaction">Edit Repeating Transaction</string>
+	<string name="every_5_minutes">Every 5 minutes</string>
+	<string name="every_15_minutes">Every 15 minutes</string>
+	<string name="every_30_minutes">Every 30 minutes</string>
+	<string name="every_hour">Every hour</string>
+	<string name="every_2_hours">Every 2 hours</string>
+	<string name="every_6_hours">Every 6 hours</string>
+	<string name="every_12_hours">Every 12 hours</string>
+	<string name="never">Never</string>
+	<string name="path_database_not_exists">Database path not exists</string>
+	<string name="database_can_not_open_write">The database can not be opened for writing</string>
 </resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="plurals_delete_transactions">
+        <item quantity="one">@string/delete_one_selected_transaction</item>
+        <item quantity="other">@string/delete_others_selected_transaction</item>
+    </plurals>
+
+</resources>

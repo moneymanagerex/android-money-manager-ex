@@ -37,9 +37,6 @@ public class SummaryWidgetProvider extends AppWidgetProvider {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		
 		MoneyManagerApplication app = new MoneyManagerApplication();
-		//load base currency
-		app.loadBaseCurrencyId(context);
-		app.loadHashMapCurrency(context);
 		
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, SummaryWidgetProvider.class));
 		

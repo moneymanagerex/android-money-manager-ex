@@ -17,26 +17,22 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.LayoutParams;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.fragment.SearchFragment;
 
-public class SearchActivity extends BaseFragmentActivity implements AllDataFragmentLoaderCallbacks {
+public class SearchActivity extends BaseFragmentActivity implements AllDataFragmentLoaderCallbacks, InputAmountDialogListener {
 	private boolean mIsDualPanel = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +61,15 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish( );
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
 	public void onCallbackCreateLoader(int id, Bundle args) {
 		return;
 	}
@@ -74,7 +79,7 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 		if (loader != null && loader.getId() == AllDataFragment.ID_LOADER_ALL_DATA_DETAIL && data != null) {
 			// getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
 			// custom view count
-			LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			/*LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			final TextView txtCount = (TextView) inflater.inflate(R.layout.actionbar_textview_count, null);
 			
 			txtCount.setText(Integer.toString(data.getCount()));
@@ -83,7 +88,11 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 
 			// set the custom view to use
 			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-			getSupportActionBar().setCustomView(txtCount, lp);
+			getSupportActionBar().setCustomView(txtCount, lp);*/
+			// set action bar
+			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+			getSupportActionBar().setTitle(R.string.result_search);
+			getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
 		}
 		return;
 	}
@@ -101,5 +110,12 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 		if (fragment != null && fragment.isVisible()) {
 			fragment.startLoaderData();
 		}
+	}
+
+	@Override
+	public void onFinishedInputAmountDialog(int id, Float amount) {
+		SearchFragment fragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
+		if (fragment != null) 
+			fragment.onFinishedInputAmountDialog(id, amount);
 	}
 }

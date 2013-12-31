@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
@@ -26,37 +25,14 @@
             android:padding="@dimen/money_padding" >
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewUserName"
+                android:id="@+id/textViewItem"
+                style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="@dimen/money_text_view_size_header"
-                android:visibility="gone"
-                 />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_gravity="center_horizontal"
-                android:background="?attr/theme_background_color"
-                android:visibility="gone" />
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewTotalAccounts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="@dimen/money_text_view_size_header"
-                android:textStyle="bold"
-                 />
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/summary"
-                android:textSize="@dimen/money_text_view_size_header"
-                android:textStyle="bold"
-                 />
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="@string/accounts" 
+                android:textSize="@dimen/money_text_view_size_header"/>
 
             <View
                 android:layout_width="match_parent"
@@ -87,6 +63,27 @@
                     android:layout_gravity="center"
                     android:visibility="visible" />
             </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/summary"
+                    android:textStyle="bold" />
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewTotalAccounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -101,11 +98,12 @@
             android:padding="@dimen/money_padding" >
 
             <com.money.manager.ex.view.RobotoTextView
-                style="?attr/listSeparatorTextViewStyle"
+                style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="@string/income_vs_expenses_current_month"
-                 />
+                android:textSize="@dimen/money_text_view_size_header" />
 
             <include layout="@layout/merge_main_footer_income_expenses" />
         </LinearLayout>

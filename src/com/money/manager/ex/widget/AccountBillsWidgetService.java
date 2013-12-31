@@ -38,7 +38,6 @@ public class AccountBillsWidgetService extends RemoteViewsService {
 			this.mContext = context;
 			// create application
 			mApp = new MoneyManagerApplication();
-			mApp.loadHashMapCurrency(context);
 		}
 		@Override
 		public int getCount() {
