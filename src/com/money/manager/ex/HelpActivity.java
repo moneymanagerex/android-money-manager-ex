@@ -18,7 +18,7 @@ public class HelpActivity extends BaseFragmentActivity {
 		setContentView(R.layout.webview_activity);
 		
 		// adjust actionbar
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		setDisplayHomeAsUpEnabled(true);
 		
 		mWebView = (WebView)findViewById(R.id.webViewContent);
 		// enable javascript

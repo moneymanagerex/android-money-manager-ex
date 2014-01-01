@@ -85,7 +85,7 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 			txtCount.setText(Integer.toString(data.getCount()));
 			// set the actionbar to use the custom view (can also be done with a style)
 			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_TITLE);
-
+	
 			// set the custom view to use
 			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
 			getSupportActionBar().setCustomView(txtCount, lp);*/

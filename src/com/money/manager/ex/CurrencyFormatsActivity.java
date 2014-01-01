@@ -27,18 +27,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 /**
@@ -76,13 +68,19 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 					 edtDecimal, edtGroup, edtScale, edtConversion;
 	private Spinner spinCurrencySymbol;
 	
-	public void onCancelClick() {
+	@Override
+	public boolean onActionCancelClick() {
 		finish();
+		return super.onActionCancelClick();
 	}
 	
-	public void onDoneClick() {
+	@Override
+	public boolean onActionDoneClick() {
 		if (updateData()) {
 			finish();
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -133,37 +131,7 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 			mIntentAction = getIntent().getAction();
 		}
 		
-		Core core = new Core(getApplicationContext());
-		// ****** action bar *****
-		if (!core.isTablet()) {
-			getSupportActionBar().setDisplayOptions(
-					ActionBar.DISPLAY_SHOW_CUSTOM,
-					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-							| ActionBar.DISPLAY_SHOW_CUSTOM);
-			
-			LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-			
-	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
-	        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
-	        cancelActionView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					onCancelClick();
-				}
-			});
-	        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
-	        doneActionView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					onDoneClick();
-				}
-			});
-	        getSupportActionBar().setCustomView(actionBarButtons);
-	        
-	        getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_currency : R.string.edit_currency);
-		}
-		// ****** action bar *****
+		setDialogMode(true);
 		
 		// check default values for scale and baseconvrate
 		if (TextUtils.isEmpty(edtScale.getText())) { edtScale.setText("100"); }
@@ -175,29 +143,6 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 		// set default symbols
 		if (TextUtils.isEmpty(edtPrefix.getText())) { edtPrefix.setText(symbols.getCurrencySymbol()); }
  	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		Core core = new Core(this);
-		if (core.isTablet()) {
-			getSherlock().getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
-		}
-		return super.onCreateOptionsMenu(menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_done:
-			onDoneClick();
-			return true;
-		case android.R.id.home:
-		case R.id.menu_cancel:
-			onCancelClick();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

@@ -19,18 +19,24 @@ package com.money.manager.ex.fragment;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 
 public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
-	private boolean mShownRotateInDebugMode = false;
+	private boolean mDialogMode = false;
+	private boolean mDisplayHomeAsUpEnabled = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstance) {
@@ -46,23 +52,65 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//check if debug mode
-		if (BuildConfig.DEBUG) {
-			if (isShownRotateInDebugMode()) {
-				MenuItem item = menu.add(0, R.id.menu_debug_rotate, 0, null);
-				item.setIcon(android.R.drawable.ic_menu_always_landscape_portrait);
-				item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-			}
+		if (isDialogMode()) {
+			Core core = new Core(this);
+			if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+				getSherlock().getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
+			} else {
+				createActionBar();
+			}		
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.menu_debug_rotate) {
-			forceRotateScreenActivity();
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			if (isDisplayHomeAsUpEnabled()) {
+				finish();
+				return true;
+			}
+		case R.id.menu_cancel:
+			if (isDialogMode()) {
+				onActionCancelClick();
+				return true;
+			}
+		case R.id.menu_done:
+			if (isDialogMode()) {
+				onActionDoneClick();
+				return true;
+			}
+
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void createActionBar() {
+		getSupportActionBar().setDisplayOptions(
+				ActionBar.DISPLAY_SHOW_CUSTOM,
+				ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+						| ActionBar.DISPLAY_SHOW_CUSTOM);
+
+		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
+		View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
+		View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
+		cancelActionView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				onActionCancelClick();
+			}
+		});
+		View doneActionView = actionBarButtons.findViewById(R.id.action_done);
+		doneActionView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onActionDoneClick();
+			}
+		});
+		getSupportActionBar().setCustomView(actionBarButtons);
 	}
 	
 	public void forceRotateScreenActivity() {
@@ -72,18 +120,29 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		}
 	}
-
-	/**
-	 * @param mShownRotateInDebugMode the mShownRotateInDebugMode to set
-	 */
-	public void setShownRotateInDebugMode(boolean mShownRotateInDebugMode) {
-		this.mShownRotateInDebugMode = mShownRotateInDebugMode;
+	
+	public boolean onActionCancelClick() {
+		return true;
+	}
+	
+	public boolean onActionDoneClick() {
+		return true;
 	}
 
-	/**
-	 * @return the mShownRotateInDebugMode
-	 */
-	public boolean isShownRotateInDebugMode() {
-		return mShownRotateInDebugMode;
+	public boolean isDialogMode() {
+		return mDialogMode;
+	}
+
+	public void setDialogMode(boolean mDialogMode) {
+		this.mDialogMode = mDialogMode;
+	}
+
+	public boolean isDisplayHomeAsUpEnabled() {
+		return mDisplayHomeAsUpEnabled;
+	}
+
+	public void setDisplayHomeAsUpEnabled(boolean mDisplayHomeAsUpEnabled) {
+		this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
+		getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
 	}
 }

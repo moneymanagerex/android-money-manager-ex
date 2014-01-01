@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -238,7 +239,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		Core core = new Core(getSherlockActivity());
 		// ****** action bar *****
 		getSherlockActivity().getSupportActionBar().setSubtitle(null);
-		if (!core.isTablet()) {
+		if (!(core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH)) {
 			getSherlockActivity().getSupportActionBar().setDisplayOptions(
 					ActionBar.DISPLAY_SHOW_CUSTOM,
 					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
@@ -308,7 +309,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		Core core = new Core(getSherlockActivity());
-		if (core.isTablet()) {
+		if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			inflater.inflate(R.menu.menu_button_cancel_done, menu);
 			// change item ok in search
 			MenuItem doneItem = menu.findItem(R.id.menu_done);

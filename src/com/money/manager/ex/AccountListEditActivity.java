@@ -29,7 +29,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -37,13 +36,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -103,15 +98,20 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 	private TextView txtSelectCurrency, txtInitialBalance;
 	private ImageView imgbFavouriteAccount;
 	
-	public void onCancelClick() {
-		// close activity
+	@Override
+	public boolean onActionCancelClick() {
 		finish();
+		return super.onActionCancelClick();
 	}
-	
-	public void onDoneClick() {
+
+	@Override
+	public boolean onActionDoneClick() {
 		if (updateAccountList()) {
 			// If everything is okay, finish the activity
 			finish();
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -166,36 +166,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 			}
 		}
 		
-		// ****** action bar *****
-		if (!core.isTablet()) {
-			getSupportActionBar().setDisplayOptions(
-					ActionBar.DISPLAY_SHOW_CUSTOM,
-					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-							| ActionBar.DISPLAY_SHOW_CUSTOM);
-			
-			LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-			
-	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
-	        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
-	        cancelActionView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					onCancelClick();
-				}
-			});
-	        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
-	        doneActionView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					onDoneClick();
-				}
-			});
-	        getSupportActionBar().setCustomView(actionBarButtons);
-	        
-	        getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_account : R.string.edit_account);
-		}
-		// ****** action bar *****
+		setDialogMode(true);
 		
 		// Compose layout
 		setContentView(R.layout.accountlist_edit_activity);
@@ -338,29 +309,6 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		
 		// Refresh data on the other controls
 		refreshCurrencyName();
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		Core core = new Core(this);
-		if (core.isTablet()) {
-			getSherlock().getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
-		}
-		return super.onCreateOptionsMenu(menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_done:
-			onDoneClick();
-			return true;
-		case android.R.id.home:
-		case R.id.menu_cancel:
-			onCancelClick();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override

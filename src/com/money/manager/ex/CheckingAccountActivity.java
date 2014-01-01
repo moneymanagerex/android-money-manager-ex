@@ -36,7 +36,6 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -49,13 +48,10 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -254,43 +250,15 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		}
 	}
 	
-	public void createActionBar() {
-		Core core = new Core(this);
-		// ****** action bar *****
-		if (!core.isTablet()) {
-			getSupportActionBar().setDisplayOptions(
-					ActionBar.DISPLAY_SHOW_CUSTOM,
-					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-							| ActionBar.DISPLAY_SHOW_CUSTOM);
-			
-			LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-			
-	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
-	        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
-	        cancelActionView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					onCancelClick();
-				}
-			});
-	        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
-	        doneActionView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					onDoneClick();
-				}
-			});
-	        getSupportActionBar().setCustomView(actionBarButtons);
-		}
-		// ****** action bar *****
-	}
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mApplication = (MoneyManagerApplication)getApplication();
 		Core core = new Core(this);
+		
+		// set dialog mode
+		setDialogMode(true);
+		
 		// manage save instance
 		if ((savedInstanceState != null)) {
 			mTransId = savedInstanceState.getInt(KEY_TRANS_ID);
@@ -616,33 +584,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		Core core = new Core(this);
-		if (core.isTablet()) {
-			getSherlock().getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
-		} else {
-			createActionBar();
-		}
-		return super.onCreateOptionsMenu(menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
-		switch (item.getItemId()) {
-	    case android.R.id.home:
-	    	onCancelClick();
-	    	return true;
-	    case R.id.menu_cancel:
-	    	onCancelClick();
-	    	return true;
-	    case R.id.menu_done:
-	    	onDoneClick();
-	    	return true;
-		}
-		return false;
-	}
-	
-	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// save the state interface
@@ -679,18 +620,18 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 			formatAmount(((TextView)view), amount);
 	}
 	
-	/**
-	 * Event called when cancel button clicked
-	 */
-	public void onCancelClick() {
-		this.finish();
+	@Override
+	public boolean onActionCancelClick() {
+		finish();
+		return super.onActionCancelClick();
 	}
 
-	public boolean onDoneClick() {
-		if (updateData() == true) {
+	@Override
+	public boolean onActionDoneClick() {
+		if (updateData()) {
 			// set result ok and finish activity
 			setResult(RESULT_OK);
-			this.finish();
+			finish();
 			return true;
 		} else {
 			return false;

@@ -337,7 +337,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 		}
 		
 		setContentView(R.layout.report_chart_fragments_activity);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		setDisplayHomeAsUpEnabled(true);
 		//check if is dual panel
 		mIsDualPanel = findViewById(R.id.fragmentChart) != null;
 		//reference to application
