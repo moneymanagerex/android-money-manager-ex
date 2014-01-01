@@ -220,11 +220,9 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		spinStatus.setAdapter(adapterStatus);
 		// from date
 		txtFromDate = (TextView)view.findViewById(R.id.textViewFromDate);
-		txtFromDate.setKeyListener(null);
 		txtFromDate.setOnClickListener(new OnDateButtonClickListener(txtFromDate));
 		// to date
 		txtToDate = (TextView)view.findViewById(R.id.textViewToDate);
-		txtToDate.setKeyListener(null);
 		txtToDate.setOnClickListener(new OnDateButtonClickListener(txtToDate));
 		// transaction number
 		edtTransNumber = (EditText)view.findViewById(R.id.editTextTransNumber);
