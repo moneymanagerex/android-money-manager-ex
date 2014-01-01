@@ -776,9 +776,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		mTransNumber = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSACTIONNUMBER));
 		mNotes = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.NOTES));
 		mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
+		
 		if (mSplitTransaction == null) {
 			mSplitTransaction = getSplitTransaction(transId);
 		}
+		
+		// convert status in uppercase string
+		if (!TextUtils.isEmpty(mStatus))
+			mStatus = mStatus.toUpperCase();		
 		
 		getAccountName(mToAccountId);
 		getPayeeName(mPayeeId);

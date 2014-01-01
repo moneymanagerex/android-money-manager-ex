@@ -472,13 +472,14 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	
 	private boolean setStatusCheckingAccount(int[] transId, String status) {
 		// check if status = "U" convert to empty string
-		if ("U".equalsIgnoreCase(status)) status = "";
+		if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status))
+			status = "";
 		
 		for (int id : transId) {
 			// content value for updates
 			ContentValues values = new ContentValues();
 			// set new state
-			values.put(TableCheckingAccount.STATUS, status);
+			values.put(TableCheckingAccount.STATUS, status.toUpperCase());
 
 			// update
 			if (getActivity().getContentResolver().update(new TableCheckingAccount().getUri(), values, TableCheckingAccount.TRANSID + "=?", new String[] { Integer.toString(id) }) <= 0) {
@@ -491,8 +492,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	
 	/**
 	 * 
-	 * @param transId
-	 *            primary key of transation
+	 * @param transId primary key of transation
 	 */
 	private void showDialogDeleteCheckingAccount(final int[] transId) {
 		// create alert dialog and set title and message
