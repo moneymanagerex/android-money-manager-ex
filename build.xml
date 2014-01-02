@@ -24,7 +24,7 @@
 		<property name="match.start" value="&lt;string name=&quot;application_build&quot;&gt;" />
 		<property name="match.end" value="&lt;/string&gt;" />
 		<property name="today" value="${TODAY}" />
-		<replaceregexp file="res/values/strings.xml" match="${match.start}.*${match.end}" replace="${match.start}${today}${match.end}">
+		<replaceregexp file="res/values/privatestrings.xml" match="${match.start}.*${match.end}" replace="${match.start}${today}${match.end}">
 		</replaceregexp>
 		<!-- Version code  -->
 		<input message="Which version code you give this build?" addproperty="versioncode" />

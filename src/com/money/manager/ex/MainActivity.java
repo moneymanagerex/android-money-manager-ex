@@ -464,8 +464,10 @@ public class MainActivity extends BaseFragmentActivity {
 		// init application
 		core.initDatabase();
 		// load base currency and compose hash currencies
-		/*application.loadBaseCurrencyId(this);
-		application.loadHashMapCurrency(this);*/
+		MoneyManagerApplication application = (MoneyManagerApplication)getApplication();
+		application.loadBaseCurrencyId(this);
+		application.loadHashMapCurrency(this);
+		
 		// create a connection to dropbox
 		mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
 		// check type mode

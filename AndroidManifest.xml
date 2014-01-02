@@ -19,7 +19,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="432"
+    android:versionCode="439"
     android:versionName="1.4.0" >
 
     <uses-sdk
@@ -108,7 +108,8 @@
 
         <provider
             android:name="com.money.manager.ex.MoneyManagerProvider"
-            android:authorities="com.money.manager.ex.provider" >
+            android:authorities="com.money.manager.ex.provider" 
+            android:exported="true">
         </provider>
 
         <service android:name="net.robotmedia.billing.BillingService" />
