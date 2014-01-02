@@ -28,6 +28,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -114,7 +115,12 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 			setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
 			setHasOptionsMenu(true);
 			// define layout
-			mLayout = Intent.ACTION_PICK.equals(mAction) ? R.layout.simple_expandable_list_item_multiple_choice_2 : android.R.layout.simple_expandable_list_item_2;
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+				mLayout = android.R.layout.simple_expandable_list_item_2;
+			} else {
+				mLayout = Intent.ACTION_PICK.equals(mAction) ? R.layout.simple_expandable_list_item_multiple_choice_2 : android.R.layout.simple_expandable_list_item_2;
+			}
+			
 			// associate adapter
 			//CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(), null, null);
 			//setListAdapter(adapter);
@@ -124,35 +130,36 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 			getExpandableListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 			setListShown(false);
 
-			getExpandableListView().setOnChildClickListener(new OnChildClickListener() {
-				
-				@Override
-				public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-					if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
-						CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter)getExpandableListAdapter();
-						
-						QueryCategorySubCategory data = mSubCategories.get(mCategories.get(groupPosition)).get(childPosition);
-						
-						adapter.setIdChildChecked(data.getCategId(), data.getSubCategId());
-						adapter.notifyDataSetChanged();
+			if (Intent.ACTION_PICK.equals(mAction)) {
+				getExpandableListView().setOnChildClickListener(new OnChildClickListener() {
+					
+					@Override
+					public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+						if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
+							CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter)getExpandableListAdapter();
+							
+							QueryCategorySubCategory data = mSubCategories.get(mCategories.get(groupPosition)).get(childPosition);
+							
+							adapter.setIdChildChecked(data.getCategId(), data.getSubCategId());
+							adapter.notifyDataSetChanged();
+						}
+						return false;
 					}
-					return false;
-				}
-			});
-			
-			getExpandableListView().setOnGroupClickListener(new OnGroupClickListener() {
+				});
 				
-				@Override
-				public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-					if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
-						CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter)getExpandableListAdapter();
-						adapter.setIdGroupChecked(mCategories.get(groupPosition).getCategId());
-						adapter.notifyDataSetChanged();
+				getExpandableListView().setOnGroupClickListener(new OnGroupClickListener() {
+					
+					@Override
+					public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+						if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
+							CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter)getExpandableListAdapter();
+							adapter.setIdGroupChecked(mCategories.get(groupPosition).getCategId());
+							adapter.notifyDataSetChanged();
+						}
+						return false;
 					}
-					return false;
-				}
-			});
-			
+				});
+			}
 			// start loader
 			getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
 		}

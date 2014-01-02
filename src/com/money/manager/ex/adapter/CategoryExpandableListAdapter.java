@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableCategory;
 
@@ -73,8 +75,11 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 		
 		holder.text2.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
 		
+		boolean isChildSelected = mIdChildChecked == ((QueryCategorySubCategory)getChild(groupPosition, childPosition)).getSubCategId();
 		if (holder.text1 instanceof CheckedTextView) {
-			((CheckedTextView)holder.text1).setChecked(mIdChildChecked == ((QueryCategorySubCategory)getChild(groupPosition, childPosition)).getSubCategId());
+			((CheckedTextView)holder.text1).setChecked(isChildSelected);
+		} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			convertView.setBackgroundColor(mContext.getResources().getColor(isChildSelected ? R.color.holo_blue_light : android.R.color.transparent));
 		}
 		
 		return convertView;
@@ -116,12 +121,14 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 		}
 		holder.text1.setText(((TableCategory)mCategories.get(groupPosition)).getCategName());
 		
+		boolean isGroupChecked = mIdGroupChecked == ((TableCategory)mCategories.get(groupPosition)).getCategId();
 		if (holder.text1 instanceof CheckedTextView) {
-			boolean isGroupChecked = mIdGroupChecked == ((TableCategory)mCategories.get(groupPosition)).getCategId();
 			((CheckedTextView)holder.text1).setChecked(isGroupChecked && mIdChildChecked == ListView.INVALID_POSITION);
 			if (isGroupChecked) {
 				((ExpandableListView)parent).expandGroup(groupPosition, true);
 			}
+		} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			convertView.setBackgroundColor(mContext.getResources().getColor(isGroupChecked && mIdChildChecked == ExpandableListView.INVALID_POSITION ? R.color.holo_blue_light : android.R.color.transparent));
 		}
 		
 		return convertView;
