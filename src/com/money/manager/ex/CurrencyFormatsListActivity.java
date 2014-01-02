@@ -308,7 +308,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
 		@Override
 		public String getSubTitle() {
-			return getString(R.string.currency);
+			return getString(R.string.currencies);
 		}
 	}
 	

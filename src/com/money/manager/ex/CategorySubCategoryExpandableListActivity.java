@@ -613,7 +613,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 
 		@Override
 		public String getSubTitle() {
-			return getString(R.string.category);
+			return getString(R.string.categories);
 		}
 	}
 	

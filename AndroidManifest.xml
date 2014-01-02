@@ -229,14 +229,12 @@
             <action android:name="android.intent.action.EDIT" />
         </activity>
         <activity
-            android:name="com.money.manager.ex.AccountListActivity"
-            android:label="@string/account_list" >
+            android:name="com.money.manager.ex.AccountListActivity">
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
         <activity
-            android:name="com.money.manager.ex.CategorySubCategoryExpandableListActivity"
-            android:label="@string/category" >
+            android:name="com.money.manager.ex.CategorySubCategoryExpandableListActivity">
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
@@ -247,8 +245,7 @@
             <action android:name="android.intent.action.EDIT" />
         </activity>
         <activity
-            android:name="com.money.manager.ex.CurrencyFormatsListActivity"
-            android:label="@string/currency" >
+            android:name="com.money.manager.ex.CurrencyFormatsListActivity">
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
@@ -270,8 +267,7 @@
         </activity>
         <activity android:name="com.money.manager.ex.IntroductionActivity" />
         <activity
-            android:name=".RepeatingTransactionListActivity"
-            android:label="@string/repeating_transaction" />
+            android:name="com.money.manager.ex.RepeatingTransactionListActivity"/>
         <activity
             android:name="com.money.manager.ex.RepeatingTransactionActivity"
             android:label="@string/new_edit_repeating_transaction" >

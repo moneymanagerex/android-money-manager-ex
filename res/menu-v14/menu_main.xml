@@ -52,19 +52,19 @@
             <menu>
                 <item
                     android:id="@+id/menu_account"
-                    android:title="@string/account"/>
+                    android:title="@string/accounts"/>
                 <item
                     android:id="@+id/menu_category"
-                    android:title="@string/category"/>
+                    android:title="@string/categories"/>
                 <item
                     android:id="@+id/menu_currency"
-                    android:title="@string/currency"/>
+                    android:title="@string/currencies"/>
                 <item
                     android:id="@+id/menu_payee"
-                    android:title="@string/payee"/>
+                    android:title="@string/payees"/>
                 <item
                     android:id="@+id/menu_repeating_transaction"
-                    android:title="@string/repeating_transaction"/>
+                    android:title="@string/repeating_transactions"/>
             </menu>
         </item>
     </group>

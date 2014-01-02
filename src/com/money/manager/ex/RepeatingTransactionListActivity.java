@@ -280,7 +280,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 
 		@Override
 		public String getSubTitle() {
-			return getString(R.string.repeating_transaction);
+			return getString(R.string.repeating_transactions);
 		}
 	}
 	@SuppressWarnings("unused")

@@ -284,7 +284,7 @@ public class AccountListActivity extends BaseFragmentActivity {
 
 		@Override
 		public String getSubTitle() {
-			return getString(R.string.account_list);
+			return getString(R.string.accounts);
 		}
 	}
 	@SuppressWarnings("unused")

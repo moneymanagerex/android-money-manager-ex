@@ -309,7 +309,7 @@ public class PayeeActivity extends BaseFragmentActivity {
 
 		@Override
 		public String getSubTitle() {
-			return getString(R.string.payee);
+			return getString(R.string.payees);
 		}
 	}
 	@SuppressWarnings("unused")
