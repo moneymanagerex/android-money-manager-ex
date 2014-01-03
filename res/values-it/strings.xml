@@ -225,7 +225,7 @@
   <string name="num_repeating_transaction_expired">Ci sono %1$d operazioni ricorrenti scadute</string>
   <string name="send_feedback">Invia commenti</string>
   <string name="send_us_your_feedback">Inviaci i tuoi commenti</string>
-  <string name="preferences_info_application">info</string>
+  <string name="preferences_info_application">Info</string>
   <string name="preferences_security">Sicurezza</string>
   <string name="preferences_active_passcode">Attiva Passcode</string>
   <string name="enter_your_passcode">Inserisci il tuo passcode</string>
@@ -328,7 +328,7 @@
   <string name="menu_report_where_money_comes_from">Da dove arriva il denaro</string>
   <string name="dashclock_extension_summary">Visualizza il saldo di Money Manager Ex for Android</string>
   <string name="dashclock_extension_summary_all_account">Visualizza il saldo per ogni conto di Money Manager Ex for Android</string>
-  <string name="title_check_repeating_transaction">Pianifica il Controllo delle Operazioni Riccorenti scadute</string>
+  <string name="title_check_repeating_transaction">Pianifica il Controllo delle Operazioni Ricorrenti scadute</string>
   <string name="summary_check_repeating_transaction">Indicare l\'orario del giorno nel quale l\'applicazione controlla se ci sono operazioni ricorrenti scadute (default 08:00)</string>
   <string name="credits">Ringraziamenti</string>
   <string name="about_thirdsparty_credits_title">Ringraziamenti speciali alle librerie di 3rd parti utilizzate</string>
@@ -361,7 +361,7 @@
   <string name="categories">Categorie</string>
   <string name="currencies">Valute</string>
   <string name="payees">Beneficiari</string>
-  <string name="repeating_transactions">Operazioni Riccorenti</string>
+  <string name="repeating_transactions">Operazioni Ricorrenti</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Nuovo Conto</string>
   <string name="edit_account">Modifica Conto</string>
@@ -374,8 +374,8 @@
   <string name="amount_greater_or_equal">Importo maggiore o uguale</string>
   <string name="amount_less_or_equal">Importo minore o uguale</string>
   <string name="result_search">Risultato della tua ricerca</string>
-  <string name="new_repeating_transaction">Nuova operazione riccorente</string>
-  <string name="edit_repeating_transaction">Modifica Operazione Riccorente</string>
+  <string name="new_repeating_transaction">Nuova operazione ricorrente</string>
+  <string name="edit_repeating_transaction">Modifica Operazione Ricorrente</string>
   <string name="every_5_minutes">Ogni 5 minuti</string>
   <string name="every_15_minutes">Ogni 15 minuti</string>
   <string name="every_30_minutes">Ogni 30 minuti</string>
