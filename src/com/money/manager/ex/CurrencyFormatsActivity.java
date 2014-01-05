@@ -44,9 +44,6 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 	private static final String LOGCAT = CurrencyFormatsActivity.class.getSimpleName();
 	// key intent
 	public static final String KEY_CURRENCY_ID = "CurrencyFormatsActivity:CurrencyId";
-	// action
-	
-	
 	// saveinstance key
 	private static final String KEY_CURRENCY_NAME = "CurrencyFormatsActivity:CurrencyName";
 	private static final String KEY_CURRENCY_SYMBOL = "CurrencyFormatsActivity:CurrencySymbol";
@@ -135,14 +132,21 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 		setDialogMode(true);
 		
 		// check default values for scale and baseconvrate
-		if (TextUtils.isEmpty(edtScale.getText())) { edtScale.setText("100"); }
-		if (TextUtils.isEmpty(edtConversion.getText())) { edtConversion.setText("1"); }
-		// set default separator
-		DecimalFormatSymbols symbols = ((DecimalFormat)DecimalFormat.getInstance()).getDecimalFormatSymbols();
-		if (TextUtils.isEmpty(edtDecimal.getText())) { edtDecimal.setText(Character.toString(symbols.getDecimalSeparator())); }
-		if (TextUtils.isEmpty(edtGroup.getText())) { edtGroup.setText(Character.toString(symbols.getGroupingSeparator())); }
-		// set default symbols
-		if (TextUtils.isEmpty(edtPrefix.getText())) { edtPrefix.setText(symbols.getCurrencySymbol()); }
+		if (Constants.INTENT_ACTION_INSERT.equalsIgnoreCase(mIntentAction)) {
+			if (TextUtils.isEmpty(edtScale.getText()))
+				edtScale.setText("100");
+			if (TextUtils.isEmpty(edtConversion.getText()))
+				edtConversion.setText("1");
+			// set default separator
+			DecimalFormatSymbols symbols = ((DecimalFormat)DecimalFormat.getInstance()).getDecimalFormatSymbols();
+			if (TextUtils.isEmpty(edtDecimal.getText()))
+				edtDecimal.setText(Character.toString(symbols.getDecimalSeparator()));
+			if (TextUtils.isEmpty(edtGroup.getText()))
+				edtGroup.setText(Character.toString(symbols.getGroupingSeparator()));
+			// set default symbols
+			if (TextUtils.isEmpty(edtPrefix.getText()))
+				edtPrefix.setText(symbols.getCurrencySymbol());
+		}
  	}
 	
 	@Override

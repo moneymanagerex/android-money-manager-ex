@@ -132,15 +132,23 @@ public class CurrencyUtils {
 	 * @return formatted value
 	 */
 	public String getCurrencyFormatted(Integer currencyId, Float value) {
+		// check if value is null
+		if (value == null)
+			value = 0f;
+		
 		// find currencyid
-		TableCurrencyFormats tableCurrency = getTableCurrencyFormats(currencyId);
-	
-		if (tableCurrency == null) {
+		if (currencyId != null) {
+			TableCurrencyFormats tableCurrency = getTableCurrencyFormats(currencyId);
+		
+			if (tableCurrency == null) {
+				return String.valueOf(value);
+			}
+			
+			// formatted value
+			return tableCurrency.getValueFormatted(value);
+		} else {
 			return String.valueOf(value);
 		}
-		
-		// formatted value
-		return tableCurrency.getValueFormatted(value);
 	}
 
 	/**
@@ -150,14 +158,22 @@ public class CurrencyUtils {
 	 * @return formatted value
 	 */
 	public String getNumericFormatted(Integer currencyId, Float value) {
-		// find currency
-		TableCurrencyFormats tableCurrency = getTableCurrencyFormats(currencyId);
+		// check if value is null
+		if (value == null)
+			value = 0f;
 		
-		if (tableCurrency == null) {
+		// find currencyid
+		if (currencyId != null) {
+			TableCurrencyFormats tableCurrency = getTableCurrencyFormats(currencyId);
+			
+			if (tableCurrency == null) {
+				return String.valueOf(value);
+			}
+			// formatted value
+			return tableCurrency.getValueFormatted(value, Boolean.FALSE);
+		} else {
 			return String.valueOf(value);
 		}
-		// formatted value
-		return tableCurrency.getValueFormatted(value, Boolean.FALSE);		
 	}
 	
 	/**
@@ -165,7 +181,7 @@ public class CurrencyUtils {
 	 * @return an instance of class TableCurrencyFormats. Null if fail
 	 */
 	public TableCurrencyFormats getTableCurrencyFormats(Integer currencyId) {
-		if (mCurrencies != null) {
+		if (mCurrencies != null && currencyId != null) {
 			return mCurrencies.get(currencyId);
 		} else {
 			return null;
@@ -257,6 +273,7 @@ public class CurrencyUtils {
 			if (helper != null)
 				helper.close();
 		}
+		
 		return currencyId;
 	}
 }

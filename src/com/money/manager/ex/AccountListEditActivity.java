@@ -57,9 +57,6 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 	private static final String LOGCAT = AccountListEditActivity.class.getSimpleName();
 	// ID REQUEST Data
 	private static final int REQUEST_PICK_CURRENCY = 1;
-	// action
-	
-	
 	// KEY INTENT for data exchange
 	public static final String KEY_INTENT_ACTION = "AccountListEditActivity:IntentAction";
 	public static final String KEY_ACCOUNT_ID = "AccountListEditActivity:AccountId";
@@ -324,6 +321,8 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 				mCurrencyName = data.getStringExtra(CurrencyFormatsListActivity.INTENT_RESULT_CURRENCYNAME);
 				// refresh displayed Currency
 				refreshCurrencyName();
+				// refresh amount
+				onFinishedInputAmountDialog(R.id.editTextInitialBalance, (Float)txtInitialBalance.getTag());
 			}
 		}
 	}

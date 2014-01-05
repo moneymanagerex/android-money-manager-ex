@@ -33,7 +33,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -42,13 +41,9 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -193,56 +188,33 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 			}
 		}
 	}
-	
-	public void onCancelClick() {
+
+	@Override
+	public boolean onActionCancelClick() {
 		// finish CheckingAccountActivity
 		setResult(RESULT_CANCELED);
 		finish();
+		
+		return super.onActionCancelClick();
 	}
 	
-	public void onDoneClick() {
+	@Override
+	public boolean onActionDoneClick() {
 		if (updateData() == true) {
 			// set result ok, send broadcast to update widgets and finish activity
 			setResult(RESULT_OK);
 			finish();
 		}
-	}
-	
-	public void createActionBar() {
-		Core core = new Core(this);
-		// ****** action bar *****
-		if (!core.isTablet()) {
-			getSupportActionBar().setDisplayOptions(
-					ActionBar.DISPLAY_SHOW_CUSTOM,
-					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-							| ActionBar.DISPLAY_SHOW_CUSTOM);
-			
-			LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-			
-	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
-	        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
-	        cancelActionView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					onCancelClick();
-				}
-			});
-	        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
-	        doneActionView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					onDoneClick();
-				}
-			});
-	        getSupportActionBar().setCustomView(actionBarButtons);
-		}
-		// ****** action bar *****
+		
+		return super.onActionDoneClick();
 	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		setDialogMode(Boolean.TRUE);
+		
 		super.onCreate(savedInstanceState);
+		
 		// take a reference of application
 		mApplication = (MoneyManagerApplication)getApplication();
 		Core core = new Core(this);
@@ -547,17 +519,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		refreshTimesRepeated();
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		Core core = new Core(this);
-		if (core.isTablet()) {
-			getSherlock().getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
-		} else {
-			createActionBar();
-		}
-		return super.onCreateOptionsMenu(menu);
-	}
-	
 	/**
 	 * refersh UI control times repeated
 	 */
@@ -567,20 +528,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		txtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
 		txtTimesRepeated.setText(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
 		edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-	    case R.id.menu_cancel:
-	    	onCancelClick();
-	        return true;
-	    case R.id.menu_ok:
-	    	onDoneClick();
-	    	return true;
-		}
-		return false;
 	}
 	
 	@Override
