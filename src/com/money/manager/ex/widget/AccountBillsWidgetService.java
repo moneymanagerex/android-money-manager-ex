@@ -23,21 +23,21 @@ import android.database.Cursor;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.QueryAccountBills;
 
 public class AccountBillsWidgetService extends RemoteViewsService {
 	public class AllAccountBillsViewFactory implements RemoteViewsService.RemoteViewsFactory {
 		private Context mContext;
-		private MoneyManagerApplication mApp;
+		private CurrencyUtils mCurrencyUtils;
 		private Cursor mCursor;
 		
 		public AllAccountBillsViewFactory(Context context, Intent intent) {
 			//appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 			this.mContext = context;
 			// create application
-			mApp = new MoneyManagerApplication();
+			mCurrencyUtils = new CurrencyUtils(context);
 		}
 		@Override
 		public int getCount() {
@@ -58,7 +58,7 @@ public class AccountBillsWidgetService extends RemoteViewsService {
 				int colindex = mCursor.getColumnIndex(QueryAccountBills.ACCOUNTNAME);
 				String accountname = mCursor.getString(colindex);
 				remoteViews.setTextViewText(R.id.textVievItemAccountName, accountname);
-				String value = mApp.getCurrencyFormatted(mCursor.getInt(mCursor.getColumnIndex(QueryAccountBills.CURRENCYID)),
+				String value = mCurrencyUtils.getCurrencyFormatted(mCursor.getInt(mCursor.getColumnIndex(QueryAccountBills.CURRENCYID)),
 						mCursor.getFloat(mCursor.getColumnIndex(QueryAccountBills.TOTAL)));
 				remoteViews.setTextViewText(R.id.textVievItemAccountTotal, value);
 			}

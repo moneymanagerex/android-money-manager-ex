@@ -53,6 +53,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
@@ -82,13 +83,13 @@ public class HomeFragment extends Fragment implements
 			// set account name
 			txtAccountName.setText(cursor.getString(cursor.getColumnIndex(accountBills.ACCOUNTNAME)));
 			// import formatted
-			String value = application.getCurrencyFormatted(cursor
+			String value = currencyUtils.getCurrencyFormatted(cursor
 					.getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
 					cursor.getFloat(cursor.getColumnIndex(accountBills.TOTAL)));
 			// set amount value
 			txtAccountTotal.setText(value);
 			// reconciled
-			value = application.getCurrencyFormatted(cursor
+			value = currencyUtils.getCurrencyFormatted(cursor
 					.getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
 					cursor.getFloat(cursor.getColumnIndex(accountBills.RECONCILED)));
 			txtAccountReconciled.setText(value);
@@ -115,6 +116,7 @@ public class HomeFragment extends Fragment implements
 	private static final int ID_LOADER_INCOME_EXPENSES = 4;
 	// application
 	private MoneyManagerApplication application;
+	private CurrencyUtils currencyUtils;
 	// dataset table/view/query manage into class
 	private TableInfoTable infoTable = new TableInfoTable(); 
 	private QueryAccountBills accountBills;
@@ -131,6 +133,7 @@ public class HomeFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		application = (MoneyManagerApplication)getActivity().getApplication();
+		currencyUtils = new CurrencyUtils(getActivity());
 		accountBills = new QueryAccountBills(getActivity());
 	}
 	
@@ -212,7 +215,7 @@ public class HomeFragment extends Fragment implements
 	public void onLoaderReset(Loader<Cursor> loader) {
 		switch (loader.getId()) {
 		case ID_LOADER_ACCOUNT_BILLS:
-			txtTotalAccounts.setText(application.getBaseCurrencyFormatted(0));
+			txtTotalAccounts.setText(currencyUtils.getBaseCurrencyFormatted(Float.valueOf(0)));
 			lstAccountBills.setAdapter(null);
 			setListViewAccountBillsVisible(false);
 		}
@@ -233,7 +236,7 @@ public class HomeFragment extends Fragment implements
 					if (Constants.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
 						application.setUserName(data.getString(data.getColumnIndex(infoTable.INFOVALUE)));
 					} else if (Constants.INFOTABLE_BASECURRENCYID.equalsIgnoreCase(infoValue)) {
-						application.setBaseCurrencyId(data.getInt(data.getColumnIndex(infoTable.INFOVALUE)));
+						//application.setBaseCurrencyId(data.getInt(data.getColumnIndex(infoTable.INFOVALUE)));
 					}
 					data.moveToNext();
 				}
@@ -261,7 +264,7 @@ public class HomeFragment extends Fragment implements
 				adapter = new AccountBillsAdapter(getActivity(), data);
 			}
 			// write accounts total
-			txtTotalAccounts.setText(application.getBaseCurrencyFormatted(curTotal));
+			txtTotalAccounts.setText(currencyUtils.getBaseCurrencyFormatted(curTotal));
 			// manage footer listview
 			if (linearFooter == null) {
 				linearFooter = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.item_account_bills, null);
@@ -283,7 +286,7 @@ public class HomeFragment extends Fragment implements
 			lstAccountBills.removeFooterView(linearFooter);
 			// set text
 			txtFooterSummary.setText(txtTotalAccounts.getText());
-			txtFooterSummaryReconciled.setText(application.getBaseCurrencyFormatted(curReconciled));
+			txtFooterSummaryReconciled.setText(currencyUtils.getBaseCurrencyFormatted(curReconciled));
 			// add footer
 			lstAccountBills.addFooterView(linearFooter, null, false);
 			// set adapter and shown
@@ -312,15 +315,13 @@ public class HomeFragment extends Fragment implements
 			TextView txtIncome = (TextView)getActivity().findViewById(R.id.textViewIncome);
 			TextView txtExpenses = (TextView)getActivity().findViewById(R.id.textViewExpenses);
 			TextView txtDifference = (TextView)getActivity().findViewById(R.id.textViewDifference);
-			// take application
-			MoneyManagerApplication application = ((MoneyManagerApplication)getActivity().getApplication());
 			// set value
 			if (txtIncome != null)
-				txtIncome.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income));
+				txtIncome.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income));
 			if (txtExpenses != null) 
-				txtExpenses.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), Math.abs(expenses)));
+				txtExpenses.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
 			if (txtDifference != null)
-				txtDifference.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income - Math.abs(expenses)));
+				txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
 			// manage progressbar
 			final ProgressBar barIncome = (ProgressBar)getActivity().findViewById(R.id.progressBarIncome);
 			final ProgressBar barExpenses = (ProgressBar)getActivity().findViewById(R.id.progressBarExpenses);

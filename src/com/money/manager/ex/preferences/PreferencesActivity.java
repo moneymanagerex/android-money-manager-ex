@@ -58,6 +58,7 @@ import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -80,6 +81,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 
 	// application
 	private MoneyManagerApplication application;
+	private CurrencyUtils currencyUtils;
+	
 	// core application
 	private Core mCore;
 	// dropbox object
@@ -221,6 +224,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		application = (MoneyManagerApplication) this.getApplication();
+		currencyUtils = new CurrencyUtils(this);
+		
 		mCore = new Core(this);
 		
 		// set theme application
@@ -311,7 +316,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		// list preference base currency
 		final ListPreference lstBaseCurrency = (ListPreference) findPreference(PreferencesConstant.PREF_BASE_CURRENCY);
 		if (lstBaseCurrency != null) {
-			List<TableCurrencyFormats> currencies = application.getAllCurrencyFormats();
+			List<TableCurrencyFormats> currencies = currencyUtils.getAllCurrencyFormats();
 			String[] entries = new String[currencies.size()];
 			String[] entryValues = new String[currencies.size()];
 			// list of currency
@@ -322,15 +327,16 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			// set value
 			lstBaseCurrency.setEntries(entries);
 			lstBaseCurrency.setEntryValues(entryValues);
-			TableCurrencyFormats tableCurrency = application.getCurrencyFormats(application.getBaseCurrencyId());
+			TableCurrencyFormats tableCurrency = currencyUtils.getTableCurrencyFormats(currencyUtils.getBaseCurrencyId());
 			if (tableCurrency != null) {
 				lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
 			}
 			lstBaseCurrency.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					if (application.setBaseCurrencyId(Integer.parseInt((String) newValue), true)) {
-						TableCurrencyFormats tableCurrency = application.getCurrencyFormats(application.getBaseCurrencyId());
+					if (currencyUtils.setBaseCurrencyId(Integer.valueOf(String.valueOf(newValue)))) {
+						currencyUtils.reInit();
+						TableCurrencyFormats tableCurrency = currencyUtils.getTableCurrencyFormats(currencyUtils.getBaseCurrencyId());
 						if (tableCurrency != null) {
 							lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
 						}

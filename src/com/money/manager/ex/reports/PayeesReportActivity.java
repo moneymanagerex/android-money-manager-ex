@@ -40,10 +40,10 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.chart.ValuePieChart;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
@@ -70,7 +70,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 				txtColumn1.setText(context.getString(R.string.empty_payee));
 			}
 			
-			txtColumn2.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
+			txtColumn2.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
 			Core core = new Core(context);
 			if (total < 0) {
 				txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
@@ -135,7 +135,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 						data.moveToNext();
 					}
 					TextView txtColumn2 = (TextView)mFooterListView.findViewById(R.id.textViewColumn2);
-					txtColumn2.setText(application.getBaseCurrencyFormatted(totalAmount));
+					txtColumn2.setText(currencyUtils.getBaseCurrencyFormatted(totalAmount));
 					// soved bug chart
 					if (data.getCount() > 0) {
 						getListView().removeFooterView(mFooterListView);
@@ -221,7 +221,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 					item.setCategory(getString(R.string.empty_payee));
 				}
 				item.setValue(total);
-				item.setValueFormatted(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
+				item.setValueFormatted(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
 				// add element
 				arrayList.add(item);
 				// move to next record
@@ -260,7 +260,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 		}
 	}
 	
-	static MoneyManagerApplication application;
+	static CurrencyUtils currencyUtils;
 	public boolean mIsDualPanel = false; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -273,7 +273,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 		mIsDualPanel = findViewById(R.id.fragmentChart) != null;
 		
 		//reference to application
-		application = (MoneyManagerApplication)getApplication();
+		currencyUtils = new CurrencyUtils(this);
 		//create a fragment
 		PayeeReportFragment fragment = new PayeeReportFragment();
 		FragmentManager fm = getSupportFragmentManager();

@@ -21,6 +21,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.QueryBillDeposits;
 
 public class RepeatingTransactionAdapter extends CursorAdapter {
@@ -96,7 +97,8 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
 				amount = cursor.getFloat(cursor.getColumnIndex(QueryBillDeposits.TOTRANSAMOUNT)); // to account = account
 			}
 		}
-		txtAmount.setText(application.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), amount));
+		CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+		txtAmount.setText(currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), amount));
 		// check amount sign
 		Core core = new Core(context);
 		txtAmount.setTextColor(context.getResources().getColor( amount > 0 ? core.resolveIdAttribute(R.attr.holo_green_color_theme) : core.resolveIdAttribute(R.attr.holo_red_color_theme) ));

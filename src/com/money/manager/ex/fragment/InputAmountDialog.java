@@ -15,8 +15,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.CurrencyUtils;
 
 public class InputAmountDialog extends SherlockDialogFragment {
 	private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
@@ -27,8 +27,6 @@ public class InputAmountDialog extends SherlockDialogFragment {
 	private int[] idButtonKeyNum = { R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
 			R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7, R.id.buttonKeyNum8,
 			R.id.buttonKeyNum9, R.id.buttonKeyNumDecimal };
-	
-	private MoneyManagerApplication mApplication;
 	
 	private int mIdView;
 	private String mAmount = "0";
@@ -69,7 +67,6 @@ public class InputAmountDialog extends SherlockDialogFragment {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		mApplication = (MoneyManagerApplication)getActivity().getApplication();
 		super.onCreate(savedInstanceState);
 		
 		if (savedInstanceState != null) {
@@ -157,10 +154,12 @@ public class InputAmountDialog extends SherlockDialogFragment {
 	public void refreshAmount() {
 		float fAmount = !TextUtils.isEmpty(mAmount) ? Float.parseFloat(mAmount) : 0;
 		
+		CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
+		
 		if (mCurrencyId == null) {
-			txtAmount.setText(mApplication.getBaseCurrencyFormatted(fAmount));
+			txtAmount.setText(currencyUtils.getBaseCurrencyFormatted(fAmount));
 		} else {
-			txtAmount.setText(mApplication.getCurrencyFormatted(mCurrencyId, fAmount));
+			txtAmount.setText(currencyUtils.getCurrencyFormatted(mCurrencyId, fAmount));
 		}
 	}
 }

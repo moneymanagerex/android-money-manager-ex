@@ -56,9 +56,9 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.ViewMobileData;
@@ -99,9 +99,9 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			String formatMonth = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "MMM" : "MMMM";
 			
 			txtMonth.setText(new SimpleDateFormat(formatMonth).format(calendar.getTime()));
-			txtIncome.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income));
-			txtExpenses.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), Math.abs(expenses)));
-			txtDifference.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income - Math.abs(expenses)));
+			txtIncome.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income));
+			txtExpenses.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
+			txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
 			Core core = new Core(context);
 			if (income - Math.abs(expenses) < 0) {
 				txtDifference.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
@@ -419,13 +419,13 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			TextView txtExpenses = (TextView)footer.findViewById(R.id.textViewExpenses);
 			TextView txtDifference = (TextView)footer.findViewById(R.id.textViewDifference);
 			//set income
-			txtIncome.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income));
+			txtIncome.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income));
 			txtIncome.setTypeface(null, Typeface.BOLD_ITALIC);
 			//set expenses
-			txtExpenses.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), Math.abs(expenses)));
+			txtExpenses.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
 			txtExpenses.setTypeface(null, Typeface.BOLD_ITALIC);
 			//set difference
-			txtDifference.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), income - Math.abs(expenses)));
+			txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
 			txtDifference.setTypeface(null, Typeface.BOLD_ITALIC);
 			//change colors
 			Core core = new Core(getActivity());
@@ -495,7 +495,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 	}
 	
 	private IncomeVsExpensesListFragment listFragment = new IncomeVsExpensesListFragment();
-	private static MoneyManagerApplication application;
+	private static CurrencyUtils currencyUtils;
 	public boolean mIsDualPanel = false;
 	
 	
@@ -511,7 +511,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 		
 		FragmentManager fm = getSupportFragmentManager();
 		// get application
-		application = (MoneyManagerApplication)getApplication();
+		currencyUtils = new CurrencyUtils(this);
 		// attach fragment activity
         if (fm.findFragmentById(R.id.fragmentContent) == null) {
             fm.beginTransaction().replace(R.id.fragmentContent, listFragment, IncomeVsExpensesListFragment.class.getSimpleName()).commit();

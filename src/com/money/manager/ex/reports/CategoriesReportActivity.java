@@ -44,10 +44,10 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.chart.ValuePieChart;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.ViewMobileData;
@@ -81,7 +81,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 				column1 = "<i>" + context.getString(R.string.empty_category);
 			}
 			txtColumn1.setText(Html.fromHtml(column1));
-			txtColumn2.setText(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
+			txtColumn2.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
 			if (total < 0) {
 				txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
 			} else {
@@ -182,7 +182,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 						data.moveToNext();
 					}
 					TextView txtColumn2 = (TextView)mFooterListView.findViewById(R.id.textViewColumn2);
-					txtColumn2.setText(application.getBaseCurrencyFormatted(totalAmount));
+					txtColumn2.setText(currencyUtils.getBaseCurrencyFormatted(totalAmount));
 					// soved bug chart
 					if (data.getCount() > 0) {
 						getListView().removeFooterView(mFooterListView);
@@ -279,7 +279,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 				
 				item.setCategory(category);
 				item.setValue(total);
-				item.setValueFormatted(application.getCurrencyFormatted(application.getBaseCurrencyId(), total));
+				item.setValueFormatted(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
 				// add element
 				arrayList.add(item);	
 				
@@ -321,7 +321,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 	public static final String REPORT_FILTERS = "CategoriesReportActivity:Filter";
 	public static final String REPORT_TITLE = "CategoriesReportActivity:Title";
 	
-	private static MoneyManagerApplication application;
+	private static CurrencyUtils currencyUtils;
 	public boolean mIsDualPanel = false;
 	public String mFilter = "";
 	
@@ -341,7 +341,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 		//check if is dual panel
 		mIsDualPanel = findViewById(R.id.fragmentChart) != null;
 		//reference to application
-		application = (MoneyManagerApplication)getApplication();
+		currencyUtils = new CurrencyUtils(this);
 		//create a fragment
 		CategoriesReportFragment fragment = new CategoriesReportFragment();
 		FragmentManager fm = getSupportFragmentManager();

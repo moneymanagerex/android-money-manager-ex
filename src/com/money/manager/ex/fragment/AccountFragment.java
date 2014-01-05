@@ -45,6 +45,7 @@ import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
@@ -78,7 +79,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	}
 
 	// application
-	MoneyManagerApplication mApplication;
+	MoneyManagerApplication currencyUtils;
 	// id account
 	private int mAccountId = 0;
 	// string name fragment
@@ -116,7 +117,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mApplication = (MoneyManagerApplication) getActivity().getApplication();
+		currencyUtils = (MoneyManagerApplication) getActivity().getApplication();
 	}
 
 	@Override
@@ -289,18 +290,18 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		ArrayList<String> selection = new ArrayList<String>();
 		selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountID + "="
 				+ Integer.toString(mAccountId) + ")");
-		if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
+		if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
 			selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
-		} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
+		} else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
 			selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
-		} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
+		} else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
 			selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
 			selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-		} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
+		} else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
 			selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
-		} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
+		} else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
 			selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
-		} else if (mApplication.getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
+		} else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
 			selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
 		}
 		// create a bundle to returns
@@ -327,10 +328,12 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	 */
 	private void setTextViewBalance() {
 		// write account balance
-		if (mAccountList != null && mApplication != null) {
-			txtAccountBalance.setText(mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance));
-			txtAccountReconciled.setText(mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled));
-			txtAccountDifference.setText(mApplication.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled - mAccountBalance));
+		if (mAccountList != null) {
+			CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
+			
+			txtAccountBalance.setText(currencyUtils.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance));
+			txtAccountReconciled.setText(currencyUtils.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled));
+			txtAccountDifference.setText(currencyUtils.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled - mAccountBalance));
 		}
 	}
 

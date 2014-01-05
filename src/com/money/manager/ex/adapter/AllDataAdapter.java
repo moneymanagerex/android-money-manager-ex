@@ -43,6 +43,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
@@ -141,7 +142,8 @@ public class AllDataAdapter extends CursorAdapter {
 		// set currency id
 		setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
 		// check amount sign
-		txtAmount.setText(mApplication.getCurrencyFormatted(getCurrencyId(), amount));
+		CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+		txtAmount.setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), amount));
 		// text color amount
 		if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)))) {
 			txtAmount.setTextColor(Color.GRAY);
@@ -391,7 +393,9 @@ public class AllDataAdapter extends CursorAdapter {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result && getTextView() != null) {
-				getTextView().setText(mApplication.getCurrencyFormatted(getCurrencyId(), total));
+				CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+				
+				getTextView().setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), total));
 				if (getTextView().getVisibility() != View.VISIBLE) getTextView().setVisibility(View.VISIBLE);
 				// put in hash map balance total
 				// mBalanceTransactions.put(getTransId(), total);

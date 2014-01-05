@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 /**
@@ -233,7 +234,8 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 			}
 		}
 		//reload currency
-		((MoneyManagerApplication)getApplication()).loadHashMapCurrency(getApplicationContext());
+		CurrencyUtils currencyUtils = new CurrencyUtils(this);
+		currencyUtils.reInit();
 		
 		return true;
 	}

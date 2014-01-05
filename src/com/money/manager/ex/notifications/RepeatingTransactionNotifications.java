@@ -27,9 +27,9 @@ import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.util.Log;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.RepeatingTransactionListActivity;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
 
@@ -45,10 +45,10 @@ public class RepeatingTransactionNotifications {
 	
 	public void notifyRepeatingTransaction() {
 		// create application
-		MoneyManagerApplication application = new MoneyManagerApplication();
+		CurrencyUtils currencyUtils = new CurrencyUtils(context);
 		// init currencies
-		application.loadBaseCurrencyId(context);
-		application.loadHashMapCurrency(context);
+		if (!currencyUtils.isInit())
+			currencyUtils.init();
 		
 		// select data
 		QueryBillDeposits billDeposits = new QueryBillDeposits(context);
@@ -63,7 +63,7 @@ public class RepeatingTransactionNotifications {
 					while (!cursor.isAfterLast()) {
 						String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
 						" " + cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)) +
-						": <b>" + application.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getFloat(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
+						": <b>" + currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getFloat(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
 						// add line
 						inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
 						// move to next row

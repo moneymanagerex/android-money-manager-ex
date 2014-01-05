@@ -178,12 +178,14 @@ public class Core {
 	}
 
 	public void formatAmountTextView(TextView view, float amount, Integer currencyId) {
-		MoneyManagerApplication application = (MoneyManagerApplication)context.getApplicationContext();
+		CurrencyUtils currencyUtils = new CurrencyUtils(context);
+		
 		if (currencyId == null) {
-			view.setText(application.getBaseCurrencyFormatted(amount));
+			view.setText(currencyUtils.getBaseCurrencyFormatted(amount));
 		} else {
-			view.setText(application.getCurrencyFormatted(currencyId, amount));
+			view.setText(currencyUtils.getCurrencyFormatted(currencyId, amount));
 		}
+		
 		view.setTag(amount);
 	}
 

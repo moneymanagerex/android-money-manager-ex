@@ -40,6 +40,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -159,7 +160,10 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		
 		// default currency
 		if (mCurrencyId == null) {
-			TableCurrencyFormats currencyFormats = mApplication.getCurrencyFormats(mApplication.getBaseCurrencyId());
+			CurrencyUtils currencyUtils = new CurrencyUtils(this);
+			
+			TableCurrencyFormats currencyFormats = currencyUtils.getTableCurrencyFormats(currencyUtils.getBaseCurrencyId());
+			
 			if (currencyFormats != null) {
 				mCurrencyId = currencyFormats.getCurrencyId();
 				mCurrencyName = currencyFormats.getCurrencyName();

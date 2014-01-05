@@ -53,6 +53,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -801,10 +802,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 			currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
 		}
 		
+		CurrencyUtils currencyUtils = new CurrencyUtils(this);
+		
 		if (currencyId == null) {
-			view.setText(mApplication.getBaseCurrencyFormatted(amount));
+			view.setText(currencyUtils.getBaseCurrencyFormatted(amount));
 		} else {
-			view.setText(mApplication.getCurrencyFormatted(currencyId, amount));
+			view.setText(currencyUtils.getCurrencyFormatted(currencyId, amount));
 		}
 		view.setTag(amount);
 	}

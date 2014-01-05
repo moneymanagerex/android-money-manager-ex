@@ -11,6 +11,7 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.QueryAccountBills;
 
 public class AccountBillsDashExtension extends DashClockExtension {
@@ -20,6 +21,7 @@ public class AccountBillsDashExtension extends DashClockExtension {
 		try {
 			Context context = getApplicationContext();
 			MoneyManagerApplication app = new MoneyManagerApplication();
+			CurrencyUtils currencyUtils = new CurrencyUtils(context);
 			
 			QueryAccountBills accountBills = new QueryAccountBills(context);
 			String selection = accountBills.getFilterAccountSelection();
@@ -34,7 +36,7 @@ public class AccountBillsDashExtension extends DashClockExtension {
 					String accountname = cursor.getString(cursor.getColumnIndex(QueryAccountBills.ACCOUNTNAME));
 					int currencyId = cursor.getInt(cursor.getColumnIndex(QueryAccountBills.CURRENCYID));
 					float summaryAccount = cursor.getFloat(cursor.getColumnIndex(QueryAccountBills.TOTAL));
-					String value = app.getCurrencyFormatted(currencyId, summaryAccount);
+					String value = currencyUtils.getCurrencyFormatted(currencyId, summaryAccount);
 					if (!TextUtils.isEmpty(body)) body += "\r\n";
 					// add account and summary
 					body += accountname + ": " + value;
@@ -48,7 +50,7 @@ public class AccountBillsDashExtension extends DashClockExtension {
 			publishUpdate(new ExtensionData()
 						  .visible(true)
 						  .icon(R.drawable.ic_stat_notification)
-						  .status(app.getBaseCurrencyFormatted(app.getSummaryAccounts(context)))
+						  .status(currencyUtils.getBaseCurrencyFormatted(app.getSummaryAccounts(context)))
 						  .expandedTitle(app.getUserName())
 						  .expandedBody(body)
 						  .clickIntent(new Intent(this, MainActivity.class)));

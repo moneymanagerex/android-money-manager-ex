@@ -65,6 +65,7 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.adapter.DrawerMenuItem;
 import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.TableAccountList;
@@ -162,6 +163,8 @@ public class MainActivity extends BaseFragmentActivity {
 		// save the database file
 		MoneyManagerApplication.setDatabasePath(getApplicationContext(), pathDatabase);
 		MoneyManagerApplication.resetDonateDialog(getApplicationContext());
+		// destroy and reload currencies
+		CurrencyUtils.destroy();
 		// set to restart activity
 		setRestartActivity(true);
 		restartActivity();
@@ -464,9 +467,9 @@ public class MainActivity extends BaseFragmentActivity {
 		// init application
 		core.initDatabase();
 		// load base currency and compose hash currencies
-		MoneyManagerApplication application = (MoneyManagerApplication)getApplication();
-		application.loadBaseCurrencyId(this);
-		application.loadHashMapCurrency(this);
+		CurrencyUtils currencyUtils = new CurrencyUtils(this);
+		if (!currencyUtils.isInit())
+			currencyUtils.reInit();
 		
 		// create a connection to dropbox
 		mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());

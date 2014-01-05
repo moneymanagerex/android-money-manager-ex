@@ -23,12 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -44,8 +40,6 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -61,7 +55,6 @@ import com.dropbox.client2.session.Session.AccessType;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.view.RobotoView;
@@ -320,11 +313,6 @@ public class MoneyManagerApplication extends Application {
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
     private Editor editPreferences;
-    // definition of the hashmap for the management of the currency
-	@SuppressLint("UseSparseArrays")
-	private static Map<Integer, TableCurrencyFormats> mMapCurrency = new HashMap<Integer, TableCurrencyFormats>();
-	// Id of BaseCurrency
-	private static int mBaseCurrencyId = 0;
 	// user name application
 	private static String userName = "";
 	
@@ -365,62 +353,6 @@ public class MoneyManagerApplication extends Application {
 	}
 
 	/**
-	 * 
-	 * @return List of all CurrencyFormats
-	 */
-	public List<TableCurrencyFormats> getAllCurrencyFormats() {
-		List<TableCurrencyFormats> ret = new ArrayList<TableCurrencyFormats>(mMapCurrency.values());
-		return ret;
-	}
-	public String getBaseCurrencyFormatted(float value) {
-		return this.getCurrencyFormatted(mBaseCurrencyId, value);
-	}
-	/**
-	 * 
-	 * @return the base currency used from application
-	 */
-	public int getBaseCurrencyId() {
-		return MoneyManagerApplication.mBaseCurrencyId;
-	}
-
-	/**
-	 * this method convert a float value to base numeric string
-	 * @param value to format
-	 * @return value formatted
-	 */
-	public String getBaseNumericFormatted(float value) {
-		return getNumericFormatted(mBaseCurrencyId, value);
-	}
-
-	/**
-	 * @param currency
-	 * @return CurrencyFormats
-	 */
-	public TableCurrencyFormats getCurrencyFormats(int currency) {
-		if (mMapCurrency.size() == 0) {
-			loadHashMapCurrency(this);
-			loadBaseCurrencyId(this);
-		}
-		return mMapCurrency.get(currency);
-	}
-	/**
-	 * 
-	 * @param currency id della valuta
-	 * @param value valore da formattare
-	 * @return valore formattato
-	 */
-	public String getCurrencyFormatted(int currency, float value) {
-		// find currencyid
-		TableCurrencyFormats tableCurrency = getCurrencyFormats(currency);
-
-		if (tableCurrency == null) {
-			return Float.toString(value);
-		}
-		// formatted value
-		return tableCurrency.getValueFormatted(value);
-	}
-	
-	/**
 	 * Convert string date into date object using pattern define to user
 	 * @param date string to convert
 	 * @return date converted
@@ -428,6 +360,7 @@ public class MoneyManagerApplication extends Application {
 	public Date getDateFromString(String date) {
 		return getDateFromString(date, getUserDatePattern());
 	}
+	
 	/**
 	 * Convert string date into date object using pattern params
 	 * @param date string to convert
@@ -442,6 +375,7 @@ public class MoneyManagerApplication extends Application {
 		}
 		return null;		
 	}
+	
 	public Date getDateNextOccurence(Date date, int repeats) {
 		if (repeats >= 200) { repeats = repeats - 200; } // set auto execute without user acknowlegement
 		if (repeats >= 100) { repeats = repeats - 100; } // set auto execute on the next occurrence
@@ -520,22 +454,7 @@ public class MoneyManagerApplication extends Application {
 		
 		return ret;
 	}
-	/**
-	 * this method convert a float value to numeric string
-	 * @param currency id of currency to format
-	 * @param value value to format
-	 * @return value formatted
-	 */
-	public String getNumericFormatted(int currency, float value) {
-		// find currency
-		TableCurrencyFormats tableCurrency = getCurrencyFormats(currency);
-		
-		if (tableCurrency == null) {
-			return Float.toString(value);
-		}
-		// formatted value
-		return tableCurrency.getValueFormatted(value, false);		
-	}
+	
 	/**
 	 * 
 	 * @param repeat frequency repeats
@@ -665,70 +584,6 @@ public class MoneyManagerApplication extends Application {
 		return context.getPackageManager().resolveActivity(intent, 0) != null;
 	}
 	
-	/**
-	 * method that loads the base currency
-	 * @param context contesto della chiamata
-	 */
-	public void loadBaseCurrencyId(Context context) {
-		// get database connection
-		MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(context);
-		SQLiteDatabase database = helper.getReadableDatabase();
-		
-		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		TableInfoTable tableInfo = new TableInfoTable();
-		
-		// set table
-		queryBuilder.setTables(tableInfo.getSource());
-		
-		// get cursor from query builder
-		Cursor cursorInfo = queryBuilder.query(database,
-				tableInfo.getAllColumns(), TableInfoTable.INFONAME
-						+ "='BASECURRENCYID'", null, null, null, null);
-		
-		// set BaseCurrencyId
-		if (cursorInfo != null && cursorInfo.moveToFirst()) {
-			mBaseCurrencyId = cursorInfo.getInt(cursorInfo.getColumnIndex(TableInfoTable.INFOVALUE)); 
-			cursorInfo.close();
-		} else {
-			mBaseCurrencyId = 0;
-		}
-		
-		// close database
-		helper.close();
-	}
-	/**
-	 * populate the hashmap Currency
-	 */
-	public void loadHashMapCurrency(Context context) {
-		MoneyManagerOpenHelper openHelper = new MoneyManagerOpenHelper(context);
-		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
-		
-		// set table name
-		queryBuilder.setTables(tableCurrency.getSource());
-		
-		// get cursor
-		Cursor cursorCurrency = queryBuilder.query(openHelper.getReadableDatabase(), tableCurrency.getAllColumns(), null, null, null, null, null);
-		
-		// clear hashmap for new populate
-		mMapCurrency.clear();
-		
-		// load data into hashmap
-		if (cursorCurrency != null && cursorCurrency.moveToFirst()) {
-			while (cursorCurrency.isAfterLast() == false) {
-				TableCurrencyFormats mapCur = new TableCurrencyFormats();
-				mapCur.setValueFromCursor(cursorCurrency);
-
-				int currencyId = cursorCurrency.getInt(cursorCurrency.getColumnIndex(TableCurrencyFormats.CURRENCYID));
-				// put object into hashmap
-				mMapCurrency.put(currencyId, mapCur);
-
-				cursorCurrency.moveToNext();
-			}
-			cursorCurrency.close();
-		}
-		openHelper.close();
-	}
 	
 	@Override
 	public void onCreate() {
@@ -758,41 +613,7 @@ public class MoneyManagerApplication extends Application {
 		Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		editor.putString(PreferencesConstant.PREF_THEME, theme);
 		editor.commit();
-	}
-	/**
-	 * set value of base currency
-	 * @param value
-	 * @return
-	 */
-	public boolean setBaseCurrencyId(int value) {
-		return this.setBaseCurrencyId(value, false);
-	}
-	/**
-	 * set value of base currency
-	 * @param value
-	 * @param save save value into database
-	 */
-	public boolean setBaseCurrencyId(int value, boolean save) {
-		if (save) {
-			TableInfoTable infoTable = new TableInfoTable();
-			// update data into database
-			ContentValues values = new ContentValues();
-			values.put(TableInfoTable.INFOVALUE, value);
-
-			if (getContentResolver().update(infoTable.getUri(), values, TableInfoTable.INFONAME + "='BASECURRENCYID'", null) != 1) {
-				return false;
-			}
-		}
-		// edit preferences
-		editPreferences = appPreferences.edit();
-		editPreferences.putString(PreferencesConstant.PREF_BASE_CURRENCY, ((Integer)value).toString());
-		// commit
-		editPreferences.commit();
-		// imposto il valore
-		MoneyManagerApplication.mBaseCurrencyId = value;
-		
-		return true;
-	}
+	}	
 	
 	/**
 	 * 
