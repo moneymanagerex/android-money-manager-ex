@@ -126,7 +126,7 @@
                     android:layout_weight="1"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:hint="@string/from_date"
+                    android:hint="@string/from"
                     android:textStyle="bold" />
 
                 <com.money.manager.ex.view.RobotoTextView
@@ -137,7 +137,7 @@
                     android:layout_weight="1"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:hint="@string/at_the_date"
+                    android:hint="@string/to"
                     android:textStyle="bold" />
             </LinearLayout>
 

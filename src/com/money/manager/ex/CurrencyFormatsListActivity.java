@@ -192,34 +192,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 		public boolean onOptionsItemSelected(MenuItem item) {
 			switch (item.getItemId()) {
 			case MENU_ITEM_IMPORT_ALL_CURRENCIES:
-				AsyncTask<Void, Void, Boolean> asyncTask =  new AsyncTask<Void, Void, Boolean>() {
-					ProgressDialog dialog = null;
-					
-					@Override
-					protected void onPreExecute() {
-						super.onPreExecute();
-						dialog = ProgressDialog.show(getSherlockActivity(), null, getString(R.string.import_all_currencies));
-					}
-
-					@Override
-					protected Boolean doInBackground(Void... params) {
-						Core core = new Core(getSherlockActivity());
-						return core.importCurrenciesFromLocaleAvaible();
-					}
-					
-					@Override
-					protected void onPostExecute(Boolean result) {
-						try {
-							if (dialog != null)
-								dialog.hide();
-						} catch (Exception e){
-							Log.e(LOGCAT, e.getMessage());
-						}
-						super.onPostExecute(result);
-					}
-				};
-				asyncTask.execute();
-				
+				showDialogImportAllCurrencies();
 				return true;
 				
 			case MENU_ITEM_ADD:
@@ -309,6 +282,63 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 		@Override
 		public String getSubTitle() {
 			return getString(R.string.currencies);
+		}
+		
+		private void showDialogImportAllCurrencies() {
+			// config alert dialog
+			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+			alertDialog.setTitle(R.string.attention);
+			alertDialog.setMessage(R.string.question_import_currencies);
+			// set listener on positive button
+			alertDialog.setPositiveButton(android.R.string.ok,
+					new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							importAllCurrencies();
+						}
+					});
+			// set listener on negative button
+			alertDialog.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+			// create dialog and show
+			alertDialog.create().show();
+		}
+		
+		/**
+		 * Import all currencies from Android System
+		 */
+		public void importAllCurrencies() {
+			AsyncTask<Void, Void, Boolean> asyncTask =  new AsyncTask<Void, Void, Boolean>() {
+				ProgressDialog dialog = null;
+				
+				@Override
+				protected void onPreExecute() {
+					super.onPreExecute();
+					dialog = ProgressDialog.show(getSherlockActivity(), null, getString(R.string.import_all_currencies));
+				}
+
+				@Override
+				protected Boolean doInBackground(Void... params) {
+					Core core = new Core(getSherlockActivity());
+					return core.importCurrenciesFromLocaleAvaible();
+				}
+				
+				@Override
+				protected void onPostExecute(Boolean result) {
+					try {
+						if (dialog != null)
+							dialog.hide();
+					} catch (Exception e){
+						Log.e(LOGCAT, e.getMessage());
+					}
+					super.onPostExecute(result);
+				}
+			};
+			asyncTask.execute();
 		}
 	}
 	
