@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -85,7 +86,16 @@ public class InputAmountDialog extends SherlockDialogFragment {
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mAmount += ((Button)v).getText();
+				String parseAmountTry = mAmount;
+				parseAmountTry += ((Button)v).getText();
+				try {
+					Float.parseFloat(parseAmountTry);
+				} catch (Exception e) {
+					Log.e(InputAmountDialog.class.getSimpleName(), e.getMessage());
+					return;
+				}
+				// change amount
+				mAmount = parseAmountTry;
 				refreshAmount();
 			}
 		};
