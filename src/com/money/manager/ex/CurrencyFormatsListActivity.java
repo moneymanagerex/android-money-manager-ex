@@ -318,7 +318,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 				@Override
 				protected void onPreExecute() {
 					super.onPreExecute();
-					dialog = ProgressDialog.show(getSherlockActivity(), null, getString(R.string.import_all_currencies));
+					dialog = ProgressDialog.show(getSherlockActivity(), null, getString(R.string.import_currencies_in_progres));
 				}
 
 				@Override
