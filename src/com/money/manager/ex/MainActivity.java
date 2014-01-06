@@ -22,7 +22,6 @@ import java.net.URLDecoder;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -38,7 +37,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -79,6 +77,7 @@ import com.money.manager.ex.preferences.PreferencesActivity;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
+import com.sherlock.navigationdrawer.compat.SherlockActionBarDrawerToggle;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -124,7 +123,7 @@ public class MainActivity extends BaseFragmentActivity {
 	private LinearLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private DrawerLayout mDrawer;
-	private CustomActionBarDrawerToggle mDrawerToggle;
+	private SherlockActionBarDrawerToggle  mDrawerToggle;
 	// object in drawer
 	private LinearLayout mDrawerLinearRepeating;
 	private TextView mDrawerTextUserName;
@@ -569,14 +568,13 @@ public class MainActivity extends BaseFragmentActivity {
 		// set a custom shadow that overlays the main content when the drawer opens
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			mDrawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-			mDrawerToggle = new CustomActionBarDrawerToggle(this, mDrawer);
+			mDrawerToggle = new SherlockActionBarDrawerToggle (this, mDrawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close);
 			mDrawer.setDrawerListener(mDrawerToggle);
 			// create drawer menu
 			createDrawerMenu();
-			// enable ActionBar app icon to behave as action to toggle nav drawer
+			// enable ActionBar app icon to behave as action to toggle nav drawer	
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			getSupportActionBar().setHomeButtonEnabled(true);
-			getSupportActionBar().setDisplayShowHomeEnabled(true);
+			getSupportActionBar().setDisplayShowTitleEnabled(true);
 		} else {
 			mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		}
@@ -799,7 +797,7 @@ public class MainActivity extends BaseFragmentActivity {
 		// set listener on item click
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 	}
-	
+	/*
 	private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle {
 
 		public CustomActionBarDrawerToggle(Activity mActivity, DrawerLayout mDrawerLayout) {
@@ -818,6 +816,7 @@ public class MainActivity extends BaseFragmentActivity {
 			syncState();
 		}
 	}
+	*/
 
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
