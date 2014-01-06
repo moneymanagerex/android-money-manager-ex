@@ -206,21 +206,6 @@
                 android:hint="@string/notes"
                 android:inputType="textMultiLine"
                 android:scrollHorizontally="false" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal" >
-
-                <com.money.manager.ex.view.RobotoCheckBox
-                    android:id="@+id/checkboxFavouriteAccount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/favourite_account"
-                    android:textAllCaps="true"
-                    android:textStyle="bold" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

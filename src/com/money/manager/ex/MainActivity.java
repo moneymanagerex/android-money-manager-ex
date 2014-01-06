@@ -465,7 +465,12 @@ public class MainActivity extends BaseFragmentActivity {
 				isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
 		}
 		// init application
-		core.initDatabase();
+		try {
+			core.initDatabase();
+		} catch (Exception e) {
+			Log.e(LOGCAT, !TextUtils.isEmpty(e.getMessage()) ? e.getMessage() : "Init database failed");
+		}
+		
 		// load base currency and compose hash currencies
 		CurrencyUtils currencyUtils = new CurrencyUtils(this);
 		if (!currencyUtils.isInit())

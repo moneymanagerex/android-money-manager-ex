@@ -367,7 +367,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		mNotes = edtNotes.getText().toString();
 		
 		if (bCheck) {
-			if (mCurrencyId == -1) {
+			if (mCurrencyId == null) {
 				Core.alertDialog(this, R.string.error_currency_not_selected).show();
 				return false;
 			}
