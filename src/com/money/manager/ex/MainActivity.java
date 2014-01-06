@@ -22,6 +22,7 @@ import java.net.URLDecoder;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -37,6 +38,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -77,7 +79,6 @@ import com.money.manager.ex.preferences.PreferencesActivity;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
-import com.sherlock.navigationdrawer.compat.SherlockActionBarDrawerToggle;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -123,7 +124,8 @@ public class MainActivity extends BaseFragmentActivity {
 	private LinearLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private DrawerLayout mDrawer;
-	private SherlockActionBarDrawerToggle  mDrawerToggle;
+	//private SherlockActionBarDrawerToggle  mDrawerToggle;
+	private CustomActionBarDrawerToggle mDrawerToggle;
 	// object in drawer
 	private LinearLayout mDrawerLinearRepeating;
 	private TextView mDrawerTextUserName;
@@ -566,25 +568,32 @@ public class MainActivity extends BaseFragmentActivity {
 		mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
 		
 		// set a custom shadow that overlays the main content when the drawer opens
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			mDrawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-			mDrawerToggle = new SherlockActionBarDrawerToggle (this, mDrawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close);
-			mDrawer.setDrawerListener(mDrawerToggle);
-			// create drawer menu
-			createDrawerMenu();
-			// enable ActionBar app icon to behave as action to toggle nav drawer	
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			getSupportActionBar().setDisplayShowTitleEnabled(true);
-		} else {
-			mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		if (mDrawer != null) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+				mDrawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+				//mDrawerToggle = new SherlockActionBarDrawerToggle (this, mDrawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close);
+				mDrawerToggle = new CustomActionBarDrawerToggle(this, mDrawer);
+				mDrawer.setDrawerListener(mDrawerToggle);
+				// create drawer menu
+				createDrawerMenu();
+				// enable ActionBar app icon to behave as action to toggle nav drawer	
+				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+				getSupportActionBar().setDisplayShowTitleEnabled(true);
+			} else {
+				mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+			}
 		}
 	}
 	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		if (mDrawerToggle != null)
-			mDrawerToggle.syncState();
+		if (mDrawerToggle != null) {
+			try {
+				mDrawerToggle.syncState();
+			} catch (Exception e) {
+			}
+		}
 		// dual panel
 		/*if (isDualPanel() && getSupportFragmentManager().findFragmentById(R.id.fragmentDetail) == null) 
 			showDashboardFragment();*/
@@ -658,10 +667,12 @@ public class MainActivity extends BaseFragmentActivity {
 		Intent intent;
 		// quick-fix convert 'switch' to 'if-else'
 		if (item.getItemId() == android.R.id.home) {
-			if (mDrawer.isDrawerOpen(mDrawerLayout)) {
-				mDrawer.closeDrawer(mDrawerLayout);
-			} else {
-				mDrawer.openDrawer(mDrawerLayout);
+			if (mDrawer != null) {
+				if (mDrawer.isDrawerOpen(mDrawerLayout)) {
+					mDrawer.closeDrawer(mDrawerLayout);
+				} else {
+					mDrawer.openDrawer(mDrawerLayout);
+				}
 			}
 		} else if (item.getItemId() == R.id.menu_search_transaction) {
 			startActivity(new Intent(this, SearchActivity.class));
@@ -797,7 +808,7 @@ public class MainActivity extends BaseFragmentActivity {
 		// set listener on item click
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 	}
-	/*
+	
 	private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle {
 
 		public CustomActionBarDrawerToggle(Activity mActivity, DrawerLayout mDrawerLayout) {
@@ -816,12 +827,12 @@ public class MainActivity extends BaseFragmentActivity {
 			syncState();
 		}
 	}
-	*/
 
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			if (mDrawer == null) return;
 			// Highlight the selected item, update the title, and close the
 			// drawer
 			// update selected item and title, then close the drawer
