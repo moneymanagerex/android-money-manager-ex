@@ -14,19 +14,21 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
         android:id="@+id/menu_chart"
         android:showAsAction="always"
-        android:visible="false"/>
+        android:visible="false"
+        android:title="@string/show_chart"/>
     
     <item
         android:id="@+id/menu_period"
         android:icon="?attr/ic_action_calendar_day"
-        android:showAsAction="ifRoom">
+        android:showAsAction="ifRoom"
+        android:title="@string/time_frame">
         <menu>
             <group android:checkableBehavior="single" >
                 <item

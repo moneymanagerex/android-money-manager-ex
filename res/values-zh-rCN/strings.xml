@@ -254,7 +254,7 @@
   <string name="last_year">去年</string>
   <string name="to">至</string>
   <string name="result">结果</string>
-  <string name="number_transaction_found">交易次数: %1$ d</string>
+  <string name="number_transaction_found">交易次数: %1$d</string>
   <string name="date_format">日期格式</string>
   <string name="financial_year_start_day">会计年度：起始日</string>
   <string name="financial_year_start_month">会计年度：起始月</string>

@@ -333,8 +333,12 @@ public class MoneyManagerApplication extends Application {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String lastPath = preferences.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN, "");
 		if (!lastPath.equals(currentPath)) {
-			Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG).show();
 			preferences.edit().putString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN, currentPath).commit();
+			try {			
+				Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG).show();
+			} catch (Exception e) {
+				Log.e(LOGCAT, e.getMessage());
+			}
 		}
 	}
 	/**

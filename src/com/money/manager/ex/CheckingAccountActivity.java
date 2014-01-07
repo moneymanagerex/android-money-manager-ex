@@ -353,11 +353,15 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             }
 		});
 		
-		// account
+		// to account
 		spinToAccount = (Spinner)findViewById(R.id.spinnerToAccount);
 		adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinToAccount.setAdapter(adapterAccount);
-		spinToAccount.setSelection(Spinner.INVALID_POSITION);
+		if (mToAccountId != -1) {
+			if (mAccountIdList.indexOf(mToAccountId) >= 0) {
+				spinToAccount.setSelection(mAccountIdList.indexOf(mToAccountId), true);
+			}
+		}
 
 		spinToAccount.setOnItemSelectedListener(new OnItemSelectedListener() {
 	           @Override

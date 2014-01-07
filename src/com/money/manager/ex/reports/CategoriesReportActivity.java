@@ -140,9 +140,11 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			
 			MenuItem itemOption = menu.findItem(R.id.menu_option1);
 			if (itemOption != null) {
+				// show option 1
 				itemOption.setVisible(true);
 				itemOption.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 				itemOption.setIcon(getActivity().getResources().getDrawable(core.resolveIdAttribute(R.attr.ic_action_list)));
+				itemOption.setTitle(R.string.categories);
 				//take a submenu
 				SubMenu subMenu = itemOption.getSubMenu();
 				if (subMenu != null) {

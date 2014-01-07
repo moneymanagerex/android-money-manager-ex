@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,11 +16,14 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.Core.StringUtils;
 import com.money.manager.ex.core.CurrencyUtils;
 
 public class InputAmountDialog extends SherlockDialogFragment {
 	private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
 	private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
+	private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
 	private static final String COMMA_DECIMAL = ".";
 	
 	// arrays id keynum button
@@ -73,6 +75,8 @@ public class InputAmountDialog extends SherlockDialogFragment {
 		if (savedInstanceState != null) {
 			if (savedInstanceState.containsKey(KEY_AMOUNT))
 				mAmount = savedInstanceState.getString(KEY_AMOUNT);
+			if (savedInstanceState.containsKey(KEY_CURRENCY_ID))
+				mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
 			if (savedInstanceState.containsKey(KEY_ID_VIEW))
 				mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
 		}
@@ -88,15 +92,17 @@ public class InputAmountDialog extends SherlockDialogFragment {
 			public void onClick(View v) {
 				String parseAmountTry = mAmount;
 				parseAmountTry += ((Button)v).getText();
-				try {
+				/*try {
 					Float.parseFloat(parseAmountTry);
 				} catch (Exception e) {
 					Log.e(InputAmountDialog.class.getSimpleName(), e.getMessage());
 					return;
+				}*/
+				if (StringUtils.isNumeric(parseAmountTry)) {
+					// change amount
+					mAmount = parseAmountTry;
+					refreshAmount();
 				}
-				// change amount
-				mAmount = parseAmountTry;
-				refreshAmount();
 			}
 		};
 		// reference button click listener
@@ -137,8 +143,13 @@ public class InputAmountDialog extends SherlockDialogFragment {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				((InputAmountDialogListener) getActivity()).onFinishedInputAmountDialog(mIdView, Float.parseFloat(mAmount));
-				dismiss();
+				if (TextUtils.isEmpty(mAmount))
+					mAmount = Float.toString(0);
+				// check if is float
+				if (Core.StringUtils.isNumeric(mAmount)) {
+					((InputAmountDialogListener) getActivity()).onFinishedInputAmountDialog(mIdView, Float.parseFloat(mAmount));
+					dismiss();
+				}
 			}
 		});
 		
@@ -158,18 +169,27 @@ public class InputAmountDialog extends SherlockDialogFragment {
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
 		savedInstanceState.putString(KEY_AMOUNT, mAmount);
+		if (mCurrencyId != null)
+			savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
 		savedInstanceState.putInt(KEY_ID_VIEW, mIdView);
 	}
 	
 	public void refreshAmount() {
-		float fAmount = !TextUtils.isEmpty(mAmount) ? Float.parseFloat(mAmount) : 0;
+		String amount = mAmount;
+		// check if amount is not empty and is float
+		if (TextUtils.isEmpty(amount))
+			amount = Float.toString(0);
 		
-		CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
-		
-		if (mCurrencyId == null) {
-			txtAmount.setText(currencyUtils.getBaseCurrencyFormatted(fAmount));
-		} else {
-			txtAmount.setText(currencyUtils.getCurrencyFormatted(mCurrencyId, fAmount));
+		if (Core.StringUtils.isNumeric(amount)) {
+			float fAmount = Float.parseFloat(amount);
+			
+			CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
+			
+			if (mCurrencyId == null) {
+				txtAmount.setText(currencyUtils.getBaseCurrencyFormatted(fAmount));
+			} else {
+				txtAmount.setText(currencyUtils.getCurrencyFormatted(mCurrencyId, fAmount));
+			}
 		}
 	}
 }
