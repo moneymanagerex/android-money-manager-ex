@@ -568,7 +568,11 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 						transNumber = "0";
 					}
 					if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
-						edtTransNumber.setText(Integer.toString(Integer.parseInt(transNumber) + 1));
+						try {
+							edtTransNumber.setText(Long.toString(Long.parseLong(transNumber) + 1));
+						} catch (Exception e) {
+							Log.e(LOGCAT, e.getMessage());
+						}
 					}
 					cursor.close();
 				}

@@ -576,6 +576,9 @@ public class MainActivity extends BaseFragmentActivity {
 				mDrawer.setDrawerListener(mDrawerToggle);
 				// create drawer menu
 				createDrawerMenu();
+				// TODO issue to fix: on some version of device do not display icon drawer
+				if (core.isTablet() && Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
+					mDrawerToggle.setDrawerIndicatorEnabled(false);
 				// enable ActionBar app icon to behave as action to toggle nav drawer	
 				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 				getSupportActionBar().setDisplayShowTitleEnabled(true);

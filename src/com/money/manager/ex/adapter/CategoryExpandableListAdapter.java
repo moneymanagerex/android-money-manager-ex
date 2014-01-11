@@ -119,16 +119,20 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 		} else {
 			holder = (ViewHolderGroup)convertView.getTag();
 		}
-		holder.text1.setText(((TableCategory)mCategories.get(groupPosition)).getCategName());
 		
-		boolean isGroupChecked = mIdGroupChecked == ((TableCategory)mCategories.get(groupPosition)).getCategId();
-		if (holder.text1 instanceof CheckedTextView) {
-			((CheckedTextView)holder.text1).setChecked(isGroupChecked && mIdChildChecked == ListView.INVALID_POSITION);
-			if (isGroupChecked) {
-				((ExpandableListView)parent).expandGroup(groupPosition, true);
+		// check position and size of ArrayList
+		if (groupPosition < mCategories.size()) {
+			holder.text1.setText(((TableCategory)mCategories.get(groupPosition)).getCategName());
+			
+			boolean isGroupChecked = mIdGroupChecked == ((TableCategory)mCategories.get(groupPosition)).getCategId();
+			if (holder.text1 instanceof CheckedTextView) {
+				((CheckedTextView)holder.text1).setChecked(isGroupChecked && mIdChildChecked == ListView.INVALID_POSITION);
+				if (isGroupChecked) {
+					((ExpandableListView)parent).expandGroup(groupPosition, true);
+				}
+			} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+				convertView.setBackgroundColor(mContext.getResources().getColor(isGroupChecked && mIdChildChecked == ExpandableListView.INVALID_POSITION ? R.color.holo_blue_light : android.R.color.transparent));
 			}
-		} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			convertView.setBackgroundColor(mContext.getResources().getColor(isGroupChecked && mIdChildChecked == ExpandableListView.INVALID_POSITION ? R.color.holo_blue_light : android.R.color.transparent));
 		}
 		
 		return convertView;
