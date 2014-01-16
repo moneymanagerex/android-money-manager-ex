@@ -2,17 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:orientation="vertical" >
+    android:layout_height="32dp"
+    android:orientation="horizontal" >
+    
+    <ImageView android:id="@+id/imageViewIcon"
+        android:layout_marginLeft="12dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"/>
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:minHeight="48dp"
-        android:textSize="18sp"
+        android:minHeight="32dp"
         android:paddingLeft="10dp"
-        app:typeface="roboto_light" />
+        app:typeface="roboto_light" 
+        android:text="Test"/>
 
+        <!-- android:textSize="18sp" -->
 </LinearLayout>
