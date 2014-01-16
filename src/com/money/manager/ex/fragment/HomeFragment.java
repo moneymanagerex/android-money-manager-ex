@@ -21,6 +21,7 @@ import java.util.Calendar;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -40,6 +42,7 @@ import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
@@ -49,6 +52,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.money.manager.ex.AccountListEditActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -123,9 +127,10 @@ public class HomeFragment extends Fragment implements
 	// view show in layout
 	private TextView txtTotalAccounts;
 	private ListView lstAccountBills;
-	private LinearLayout linearFooter;
+	private ViewGroup linearHome, linearFooter, linearWelcome;
 	private TextView txtFooterSummary;
 	private TextView txtFooterSummaryReconciled;
+	private Button btnAddAccount;
 	
 	private ProgressBar prgAccountBills;
 	
@@ -177,6 +182,22 @@ public class HomeFragment extends Fragment implements
 		// inflate layout
 		View view = (LinearLayout)inflater.inflate(R.layout.fragment_main, container, false);
 		// reference view into layout
+		linearHome = (LinearLayout)view.findViewById(R.id.linearLayoutHome);
+		linearWelcome = (ViewGroup)view.findViewById(R.id.linearLayoutWelcome);
+		
+		// add account button
+		btnAddAccount = (Button)view.findViewById(R.id.buttonAddAccount);
+		if (btnAddAccount != null) {
+			btnAddAccount.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), AccountListEditActivity.class);
+					intent.setAction(Constants.INTENT_ACTION_INSERT);
+					startActivity(intent);
+				}
+			});
+		}
 		
 		txtTotalAccounts = (TextView)view.findViewById(R.id.textViewTotalAccounts);
 		lstAccountBills = (ListView)view.findViewById(R.id.listViewAccountBills);
@@ -253,6 +274,10 @@ public class HomeFragment extends Fragment implements
 		case ID_LOADER_ACCOUNT_BILLS:
 			float curTotal = 0, curReconciled = 0;
 			AccountBillsAdapter adapter = null;
+			
+			linearHome.setVisibility(data != null && data.getCount() > 0 ? View.VISIBLE : View.GONE);
+			linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+			
 			// cycle cursor
 			if (data != null && data.moveToFirst()) {
 				while (data.isAfterLast() == false) {

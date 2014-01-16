@@ -7,12 +7,13 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@android:id/content"
+        android:id="@+id/linearLayoutHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:background="?attr/theme_background_color"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,8 +32,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="@string/accounts" 
-                android:textSize="@dimen/money_text_view_size_header"/>
+                android:text="@string/accounts"
+                android:textSize="@dimen/money_text_view_size_header" />
 
             <View
                 android:layout_width="match_parent"
@@ -108,5 +109,10 @@
             <include layout="@layout/merge_main_footer_income_expenses" />
         </LinearLayout>
     </LinearLayout>
+
+    <include
+        android:id="@+id/linearLayoutWelcome"
+        layout="@layout/welcome_layout"
+        android:visibility="gone" />
 
 </LinearLayout>

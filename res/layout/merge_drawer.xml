@@ -16,9 +16,7 @@
         android:layout_gravity="start"
         android:layout_weight="1"
         android:choiceMode="singleChoice"
-        android:dividerHeight="0dp" 
-        android:layout_marginTop="10dp"/>
-    <!-- android:background="#F3F3F4" -->
+        android:dividerHeight="0dp" />
 
     <include layout="@layout/merge_main_footer_billdeposits" />
 

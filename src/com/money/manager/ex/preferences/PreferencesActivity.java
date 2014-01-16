@@ -261,6 +261,12 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		
 		// about preference screen
 		onCreateScreenPreferenceInfo();
+		
+		
+		/*PreferenceScreen screen = getPreferenceScreen();
+		if (screen != null) {
+			screen.onItemClick(null, null, findPreference(PreferencesConstant.PREF_DROPBOX_HOWITWORKS).getOrder(), 0);
+		}*/
 	}
 
 	@Override

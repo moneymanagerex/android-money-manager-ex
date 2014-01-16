@@ -31,7 +31,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources.Theme;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,7 +42,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.util.Log;
@@ -562,16 +560,14 @@ public class MainActivity extends BaseFragmentActivity {
 					Log.e(LOGCAT, e.getMessage());
 				}
 			}
-		}
-		
-		
+		}		
 		// navigation drawer
 		mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
 		
 		// set a custom shadow that overlays the main content when the drawer opens
 		if (mDrawer != null) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-				mDrawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+				//mDrawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 				//mDrawerToggle = new SherlockActionBarDrawerToggle (this, mDrawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close);
 				mDrawerToggle = new CustomActionBarDrawerToggle(this, mDrawer);
 				mDrawer.setDrawerListener(mDrawerToggle);
@@ -797,15 +793,25 @@ public class MainActivity extends BaseFragmentActivity {
 		
 		// create adapter
 		DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+		// open database
 		adapter.add(new DrawerMenuItem(R.id.menu_open_database, getString(R.string.open_database), isDarkTheme ? R.drawable.ic_action_folder_open_dark : R.drawable.ic_action_folder_open_light));
+		// dropbox synchronize
 		if (mDropboxHelper != null && mDropboxHelper.isLinked())
 			adapter.add(new DrawerMenuItem(R.id.menu_sync_dropbox, getString(R.string.synchronize), R.drawable.ic_action_dropbox));
-		adapter.add(new DrawerMenuItem(R.id.menu_account, getString(R.string.accounts)));
+		// manage: add transaction
+		adapter.add(new DrawerMenuItem(R.id.menu_add_transaction_account, getString(R.string.add_transaction), isDarkTheme ? R.drawable.ic_action_add_dark : R.drawable.ic_action_add_light));
+		// manage: account
+		adapter.add(new DrawerMenuItem(R.id.menu_account, getString(R.string.accounts), isDarkTheme ? R.drawable.ic_action_bank_dark : R.drawable.ic_action_bank_light));
+		// manage: categories
 		adapter.add(new DrawerMenuItem(R.id.menu_category, getString(R.string.categories), isDarkTheme ? R.drawable.ic_action_tags_dark : R.drawable.ic_action_tags_light));
-		adapter.add(new DrawerMenuItem(R.id.menu_currency, getString(R.string.currencies)));
+		// manage: currencies
+		adapter.add(new DrawerMenuItem(R.id.menu_currency, getString(R.string.currencies), isDarkTheme ? R.drawable.ic_action_currency_dark : R.drawable.ic_action_currency_light));
+		// manage: payees
 		adapter.add(new DrawerMenuItem(R.id.menu_payee, getString(R.string.payees), isDarkTheme ? R.drawable.ic_action_users_dark : R.drawable.ic_action_users_light));
+		// manage: repeating transactions
 		adapter.add(new DrawerMenuItem(R.id.menu_repeating_transaction, getString(R.string.repeating_transactions), isDarkTheme ? R.drawable.ic_action_playback_repeat_dark : R.drawable.ic_action_playback_repeat_light));
 		//adapter.add(new DrawerMenuItem(R.id.menu_dashboard, getString(R.string.dashboard)));
+		// search transaction
 		adapter.add(new DrawerMenuItem(R.id.menu_search_transaction, getString(R.string.search), isDarkTheme ? R.drawable.ic_action_search_dark : R.drawable.ic_action_search_light));
 		// get drawerlist and set adapter
 		if (mDrawerList != null)
