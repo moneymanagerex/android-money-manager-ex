@@ -252,7 +252,7 @@
     <string name="notification_repeating_transaction_expired">There are repeating transaction expired</string>
     <string name="notification_click_to_check_repeating_transaction">Click to check the transaction overdue</string>
     <!-- 20121115 -->
-    <string name="num_repeating_transaction_expired">There are %1$d repeating transaction expired</string>
+    <string name="num_repeating_transaction_expired">%1$d repeating transaction overdue</string>
     <!-- 20121121 -->
     <string name="send_feedback">Send Feedback</string>
     <string name="send_us_your_feedback">Send us your feedback</string>
