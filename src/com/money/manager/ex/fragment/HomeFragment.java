@@ -62,6 +62,8 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.preferences.PreferencesActivity;
+import com.money.manager.ex.preferences.PreferencesConstant;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -130,7 +132,6 @@ public class HomeFragment extends Fragment implements
 	private ViewGroup linearHome, linearFooter, linearWelcome;
 	private TextView txtFooterSummary;
 	private TextView txtFooterSummaryReconciled;
-	private Button btnAddAccount;
 	
 	private ProgressBar prgAccountBills;
 	
@@ -186,7 +187,7 @@ public class HomeFragment extends Fragment implements
 		linearWelcome = (ViewGroup)view.findViewById(R.id.linearLayoutWelcome);
 		
 		// add account button
-		btnAddAccount = (Button)view.findViewById(R.id.buttonAddAccount);
+		Button btnAddAccount = (Button)view.findViewById(R.id.buttonAddAccount);
 		if (btnAddAccount != null) {
 			btnAddAccount.setOnClickListener(new OnClickListener() {
 				
@@ -194,6 +195,20 @@ public class HomeFragment extends Fragment implements
 				public void onClick(View v) {
 					Intent intent = new Intent(getActivity(), AccountListEditActivity.class);
 					intent.setAction(Constants.INTENT_ACTION_INSERT);
+					startActivity(intent);
+				}
+			});
+		}
+		
+		// link to dropbox
+		Button btnLinkDropbox = (Button)view.findViewById(R.id.buttonLinkDropbox);
+		if (btnLinkDropbox != null) {
+			btnLinkDropbox.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), PreferencesActivity.class);
+					intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferencesConstant.PREF_DROPBOX_HOWITWORKS);
 					startActivity(intent);
 				}
 			});

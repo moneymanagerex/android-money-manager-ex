@@ -17,7 +17,7 @@
         android:visible="false"/>
     <item
         android:id="@+id/menu_sync_dropbox"
-        android:icon="@drawable/ic_action_dropbox"
+        android:icon="@drawable/ic_action_dropbox_dark"
         android:orderInCategory="1002"
         android:showAsAction="always|withText"
         android:title="@string/synchronize"

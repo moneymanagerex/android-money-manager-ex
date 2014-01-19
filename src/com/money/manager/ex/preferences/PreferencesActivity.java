@@ -262,6 +262,20 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		// about preference screen
 		onCreateScreenPreferenceInfo();
 		
+		// manage intent
+		if (getIntent() != null) {
+			if (!TextUtils.isEmpty(getIntent().getStringExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN))) {
+				try {
+					PreferenceScreen screen = getPreferenceScreen();
+					Preference preference = findPreference(getIntent().getStringExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN));
+					if (preference != null) {
+						screen.onItemClick(null, null, preference.getOrder(), 0);
+					}
+				} catch (Exception e) {
+					Log.e(LOGCAT, e.getMessage());
+				}
+			}
+		}
 		
 		/*PreferenceScreen screen = getPreferenceScreen();
 		if (screen != null) {

@@ -336,7 +336,7 @@ public class DropboxHelper {
 											.setAutoCancel(false)
 											.setDefaults(Notification.FLAG_FOREGROUND_SERVICE)
 											.setContentText(mContext.getString(R.string.dropbox_downloadProgress))
-											.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox))
+											.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
 											.setSmallIcon(R.drawable.ic_stat_notification);
 		// only for previous version!
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
@@ -365,7 +365,7 @@ public class DropboxHelper {
 											.setContentIntent(pendingIntent)
 											.setContentTitle(mContext.getString(R.string.application_name_dropbox))
 											.setContentText(mContext.getString(R.string.dropbox_open_database_downloaded))
-											.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox))
+											.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
 											.setSmallIcon(R.drawable.ic_stat_notification)
 											.setTicker(mContext.getString(R.string.dropbox_file_ready_for_use))
 											.setStyle(inboxStyle);
@@ -383,7 +383,7 @@ public class DropboxHelper {
 											.setContentInfo(mContext.getString(R.string.upload_file_to_dropbox_complete))
 											.setAutoCancel(false)
 											.setContentText(mContext.getString(R.string.dropbox_uploadProgress))
-											.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox))
+											.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
 											.setSmallIcon(R.drawable.ic_stat_notification);
 		// only for previous version!
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
@@ -411,7 +411,7 @@ public class DropboxHelper {
 											.setContentIntent(pendingIntent)
 											.setContentTitle(mContext.getString(R.string.application_name_dropbox))
 											.setContentText(mContext.getString(R.string.upload_file_to_dropbox_complete))
-											.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox))
+											.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
 											.setSmallIcon(R.drawable.ic_stat_notification)
 											.setStyle(inboxStyle)
 											.setTicker(mContext.getString(R.string.upload_file_to_dropbox_complete));

@@ -797,7 +797,7 @@ public class MainActivity extends BaseFragmentActivity {
 		adapter.add(new DrawerMenuItem(R.id.menu_open_database, getString(R.string.open_database), isDarkTheme ? R.drawable.ic_action_folder_open_dark : R.drawable.ic_action_folder_open_light));
 		// dropbox synchronize
 		if (mDropboxHelper != null && mDropboxHelper.isLinked())
-			adapter.add(new DrawerMenuItem(R.id.menu_sync_dropbox, getString(R.string.synchronize), R.drawable.ic_action_dropbox));
+			adapter.add(new DrawerMenuItem(R.id.menu_sync_dropbox, getString(R.string.synchronize), isDarkTheme ? R.drawable.ic_action_dropbox_dark : R.drawable.ic_action_dropbox_light));
 		// manage: add transaction
 		adapter.add(new DrawerMenuItem(R.id.menu_add_transaction_account, getString(R.string.add_transaction), isDarkTheme ? R.drawable.ic_action_add_dark : R.drawable.ic_action_add_light));
 		// manage: account

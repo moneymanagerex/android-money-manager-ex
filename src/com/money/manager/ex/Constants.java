@@ -21,4 +21,6 @@ public class Constants {
 	// Intent: Action
 	public static final String INTENT_ACTION_EDIT = "android.intent.action.EDIT";
 	public static final String INTENT_ACTION_INSERT = "android.intent.action.INSERT";
+	// Intent: Request
+	public static final String INTENT_REQUEST_PREFERENCES_SCREEN = "PreferencesActivity:PreferenceScreen";
 }
