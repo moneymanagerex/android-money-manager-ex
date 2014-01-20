@@ -256,8 +256,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mApplication = (MoneyManagerApplication)getApplication();
-		Core core = new Core(this);
-		
 		// set dialog mode
 		setDialogMode(true);
 		
