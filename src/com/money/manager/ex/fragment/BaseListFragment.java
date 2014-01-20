@@ -21,6 +21,7 @@ import android.animation.LayoutTransition;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SearchViewCompat;
 import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 import android.text.TextUtils;
@@ -38,6 +39,7 @@ import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.preferences.PreferencesConstant;
 
 public abstract class BaseListFragment extends SherlockListFragment {
 	// saved instance
@@ -106,7 +108,7 @@ public abstract class BaseListFragment extends SherlockListFragment {
 				SearchViewCompat.setOnQueryTextListener(searchView, new OnQueryTextListenerCompat() {
 					@Override
 					public boolean onQueryTextChange(String newText) {
-						return BaseListFragment.this.onQueryTextChange(newText);
+						return BaseListFragment.this.onPreQueryTextChange(newText);
 					}
 				});
 				itemSearch.setActionView(searchView);
@@ -121,7 +123,7 @@ public abstract class BaseListFragment extends SherlockListFragment {
 
 					@Override
 					public boolean onQueryTextChange(String newText) {
-						return BaseListFragment.this.onQueryTextChange(newText);
+						return BaseListFragment.this.onPreQueryTextChange(newText);
 					}
 				});
 				itemSearch.setActionView(actionSearchView);
@@ -173,9 +175,16 @@ public abstract class BaseListFragment extends SherlockListFragment {
 			} else {
 				// annullo il testo
 				edtSearch.setText(null);
-				onQueryTextChange("");
+				onPreQueryTextChange("");
 			}
 		}
+	}
+	
+	protected boolean onPreQueryTextChange(String newText) {
+		if (PreferenceManager.getDefaultSharedPreferences(getSherlockActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE))
+			newText = "%" + newText;
+		
+		return onQueryTextChange(newText);
 	}
 
 	protected boolean onQueryTextChange(String newText) {

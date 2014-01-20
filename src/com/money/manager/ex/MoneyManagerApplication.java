@@ -127,7 +127,17 @@ public class MoneyManagerApplication extends Application {
 	 */
 	@SuppressLint("SdCardPath")
 	public static String getDatabasePath(Context context) {
-		String defaultPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/data.mmb";
+		String defaultPath = "";
+		
+		// try to fix errorcode 14
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			defaultPath = context.getApplicationInfo().dataDir;
+		} else {
+			defaultPath = "/data/data/" + context.getApplicationContext().getPackageName();
+		}
+		// add databases
+		defaultPath += "/databases/data.mmb";
+		
 		String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(PreferencesConstant.PREF_DATABASE_PATH, defaultPath);
 		File f = new File(dbFile);
 		// check if database exists

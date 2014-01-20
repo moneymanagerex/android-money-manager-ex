@@ -41,4 +41,5 @@
 	<string name="pref_dropbox_wiki">prefdropboxwiki</string>
 	<string name="pref_default_status">prefdefaultstatus</string>
 	<string name="pref_default_payee">prefdefaultpayee</string>
+	<string name="pref_text_search_type">preftextsearchtype</string>
 </resources>
