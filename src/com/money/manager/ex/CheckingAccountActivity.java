@@ -31,6 +31,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -306,16 +307,27 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 			if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
 				mStatus = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_STATUS, "");
 				if ("L".equals(PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_PAYEE, "N"))) {
-					TablePayee payee = core.getLastPayeeUsed();
-					if (payee != null) {
-						// get id payee and category
-						mPayeeId = payee.getPayeeId();
-						mPayeeName = payee.getPayeeName();
-						mCategoryId = payee.getCategId();
-						mSubCategoryId = payee.getSubCategId();
-						// load category and subcategory name
-						getCategSubName(mCategoryId, mSubCategoryId);
-					}
+					AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+						@Override
+						protected Void doInBackground(Void... params) {
+							Core core = new Core(CheckingAccountActivity.this);
+							TablePayee payee = core.getLastPayeeUsed();
+							if (payee != null && mPayeeId == -1) {
+								// get id payee and category
+								mPayeeId = payee.getPayeeId();
+								mPayeeName = payee.getPayeeName();
+								mCategoryId = payee.getCategId();
+								mSubCategoryId = payee.getSubCategId();
+								// load category and subcategory name
+								getCategSubName(mCategoryId, mSubCategoryId);
+								// refresh field
+								refreshPayeeName();
+								refreshCategoryName();
+							}
+							return null;
+						}
+					};
+					task.execute();
 				}
 			}
 			// set title
@@ -821,6 +833,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	}
 
 	public void refreshCategoryName() {
+		if (txtSelectCategory == null)
+			return;
+		
 		txtSelectCategory.setText("");
 		
 		if (!TextUtils.isEmpty(mCategoryName)) {
@@ -836,7 +851,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	 */
 	public void refreshPayeeName() {
 		// write into text button payee name
-		txtSelectPayee.setText(mPayeeName);
+		if (txtSelectPayee != null)
+			txtSelectPayee.setText(mPayeeName);
 	}
 
 	public void refreshTransCode() {

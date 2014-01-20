@@ -864,6 +864,10 @@ public class MainActivity extends BaseFragmentActivity {
 							startServiceSyncDropbox();
 						} else if (item.getId() == R.id.menu_open_database) {
 							pickFile(Environment.getExternalStorageDirectory());
+						} else if (item.getId() == R.id.menu_add_transaction_account) {
+							Intent intent = new Intent(MainActivity.this, CheckingAccountActivity.class);
+							intent.setAction(Intent.ACTION_INSERT);
+							startActivity(intent);
 						} else if (item.getId() == R.id.menu_account) {
 							showFragment(AccountLoaderListFragment.class);
 						} else if (item.getId() == R.id.menu_category) {

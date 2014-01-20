@@ -83,7 +83,11 @@ public abstract class BaseListFragment extends SherlockListFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (isShowMenuItemSearch() && !isShowTipsWildcard) {
+		// show tooltip wildcard
+		// check search type
+		Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getSherlockActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE);
+		
+		if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
 			// show tooltip for wildcard
 			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getSherlockActivity().getApplicationContext(), "lookupswildcard");
 			if (tipsDropbox != null) {
