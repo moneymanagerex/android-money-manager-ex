@@ -123,7 +123,6 @@ public class MainActivity extends BaseFragmentActivity {
 	private LinearLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private DrawerLayout mDrawer;
-	//private SherlockActionBarDrawerToggle  mDrawerToggle;
 	private CustomActionBarDrawerToggle mDrawerToggle;
 	// object in drawer
 	private LinearLayout mDrawerLinearRepeating;
@@ -567,15 +566,10 @@ public class MainActivity extends BaseFragmentActivity {
 		// set a custom shadow that overlays the main content when the drawer opens
 		if (mDrawer != null) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-				//mDrawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-				//mDrawerToggle = new SherlockActionBarDrawerToggle (this, mDrawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close);
 				mDrawerToggle = new CustomActionBarDrawerToggle(this, mDrawer);
 				mDrawer.setDrawerListener(mDrawerToggle);
 				// create drawer menu
 				createDrawerMenu();
-				// TODO issue to fix: on some version of device do not display icon drawer
-				if (core.isTablet() && Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
-					mDrawerToggle.setDrawerIndicatorEnabled(false);
 				// enable ActionBar app icon to behave as action to toggle nav drawer	
 				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 				getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -594,9 +588,6 @@ public class MainActivity extends BaseFragmentActivity {
 			} catch (Exception e) {
 			}
 		}
-		// dual panel
-		/*if (isDualPanel() && getSupportFragmentManager().findFragmentById(R.id.fragmentDetail) == null) 
-			showDashboardFragment();*/
 	}
 
 	@Override
@@ -823,19 +814,7 @@ public class MainActivity extends BaseFragmentActivity {
 	private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle {
 
 		public CustomActionBarDrawerToggle(Activity mActivity, DrawerLayout mDrawerLayout) {
-			super(mActivity, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name);
-		}
-		
-		@Override
-		public void onDrawerOpened(View drawerView) {
-			super.onDrawerOpened(drawerView);
-			syncState();
-		}
-		
-		@Override
-		public void onDrawerClosed(View drawerView) {
-			super.onDrawerClosed(drawerView);
-			syncState();
+			super(mActivity, mDrawerLayout, R.drawable.ic_navigation_drawer, R.string.app_name, R.string.app_name);
 		}
 	}
 
