@@ -26,6 +26,10 @@
     <dimen name="money_text_view_size_header">16sp</dimen>
     <dimen name="money_button_height">36dp</dimen>
     
+    <!-- Preference activity side margins -->
+    <dimen name="activity_side_margin">0dp</dimen>
+    <dimen name="activity_padding_side">16dp</dimen>
+    
     <!-- default padding and margin -->
     <dimen name="money_padding">4dp</dimen>
     <dimen name="money_margin">6dp</dimen>

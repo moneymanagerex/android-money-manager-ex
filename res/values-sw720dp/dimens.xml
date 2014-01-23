@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Preference activity side margins -->
+    <dimen name="activity_side_margin">0dp</dimen>
+    <dimen name="activity_padding_side">32dp</dimen>
+</resources>
