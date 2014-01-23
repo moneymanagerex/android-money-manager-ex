@@ -6,7 +6,6 @@
   <string name="application_definition">一個簡單易用的管理個人財務、銀行帳戶、家庭預算等的應用程式。</string>
   <string name="application_credits">Android Money Manager Ex 專案使用 ActionBarSherlock、 ViewPagerIndicator、RobotMediaBilling 程式庫</string>
   <string name="application_license">開放原始碼授權</string>
-  <string name="application_build">20131125</string>
   <string name="db_insert_failed">新增資料失敗</string>
   <string name="db_delete_failed">刪除資料失敗</string>
   <string name="db_update_failed">更新資料失敗</string>
@@ -102,7 +101,6 @@
   <string name="group_char">每3位數分隔文字</string>
   <string name="scale">比例</string>
   <string name="conversion_to_base_rate">轉換為基本利率</string>
-  <string name="new_edit_currency">新增/編輯貨幣</string>
   <string name="currency_name_empty">貨幣名稱未輸入</string>
   <string name="amount">金額</string>
   <string name="total_amount">金額</string>
@@ -252,7 +250,6 @@
   <string name="last_month">上月</string>
   <string name="last30days">最近30天</string>
   <string name="last_year">去年</string>
-  <string name="to">至</string>
   <string name="result">結果</string>
   <string name="number_transaction_found">交易次數: %1$d</string>
   <string name="date_format">日期格式</string>
@@ -354,7 +351,6 @@
   <string name="from_account">從帳戶</string>
   <string name="default_status">預設狀態</string>
   <string name="default_payee">預設受帳人</string>
-  <string name="new_transaction">新增交易</string>
   <string name="edit_transaction">編輯交易</string>
   <string name="delete_one_selected_transaction">確認刪除所選交易紀錄嗎？</string>
   <string name="delete_others_selected_transaction">確認刪除 %d 個所選的交易紀錄嗎？</string>
@@ -386,4 +382,12 @@
   <string name="never">永遠不要</string>
   <string name="path_database_not_exists">資料庫路徑不存在</string>
   <string name="database_can_not_open_write">該資料庫無法開啟以寫入</string>
+  <string name="question_import_currencies">你要匯入貨幣嗎？</string>
+  <string name="time_frame">Time Frame</string>
+  <string name="show_chart">顯示圖表</string>
+  <string name="add_transaction">新增交易</string>
+  <string name="welcome_header">歡迎使用 MoneyManagerEx</string>
+  <string name="welcome_body">MoneyManagerEx車型所有交易屬於帳戶。\ n\ n為了幫助您開始，使您保持帳戶中的所有金融機構的名單開始。\n\n單擊此處開始進入你的帳戶。</string>
+  <string name="welcome_body_dropbox">如果您已經在 Windows 、 Linux 或 Mac 上使用 MoneyManagerEx，將此程式連結到 Dropbox 可以同步您的資料庫</string>
+  <string name="configure_dropbox">設定 Dropbox</string>
 </resources>

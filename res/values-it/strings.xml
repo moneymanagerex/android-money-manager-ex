@@ -6,7 +6,6 @@
   <string name="application_definition">Una applicazione semplice e facile da usare per gestire finanze personali, conti bancari, budget familiare, etc.</string>
   <string name="application_credits">Il Progetto Android Money Manager Ex usa le librerie ActionBarSherlock, ViewPagerIndicator e RobotoMedia Billing</string>
   <string name="application_license">Licenze open source</string>
-  <string name="application_build">20131125</string>
   <string name="db_insert_failed">Inserimento dei dati fallito</string>
   <string name="db_delete_failed">Cancellazione dei dati fallita</string>
   <string name="db_update_failed">Aggiornamento dei dati fallito</string>
@@ -102,7 +101,6 @@
   <string name="group_char">Separatore Migliaia</string>
   <string name="scale">Scala</string>
   <string name="conversion_to_base_rate">Tasso Base di Conversione</string>
-  <string name="new_edit_currency">Nuovo/Modifica Valuta</string>
   <string name="currency_name_empty">Il nome della valuta è obbligatorio</string>
   <string name="amount">Importo</string>
   <string name="total_amount">Importo Totale</string>
@@ -252,7 +250,6 @@
   <string name="last_month">Scorso Mese</string>
   <string name="last30days">Ultimi 30 Giorni</string>
   <string name="last_year">Scorso Anno</string>
-  <string name="to">Da</string>
   <string name="result">Risultato</string>
   <string name="number_transaction_found">Numero di transazioni trovate: %1$d</string>
   <string name="date_format">Formato data</string>
@@ -354,7 +351,6 @@
   <string name="from_account">Dal Conto</string>
   <string name="default_status">Stato di Default</string>
   <string name="default_payee">Beneficiario di Default</string>
-  <string name="new_transaction">Nuova Transazione</string>
   <string name="edit_transaction">Modifica Transazione</string>
   <string name="delete_one_selected_transaction">Confermare l\'eliminazione della transazione selezionata?</string>
   <string name="delete_others_selected_transaction">Confermare la cancellazione delle %d transazioni selezionate?</string>
@@ -386,4 +382,12 @@
   <string name="never">Mai</string>
   <string name="path_database_not_exists">Percorso del database non esiste</string>
   <string name="database_can_not_open_write">Il database non può essere aperto in scrittura</string>
+  <string name="question_import_currencies">Vuoi importare tutte le valute?</string>
+  <string name="time_frame">Intervallo di tempo</string>
+  <string name="show_chart">Visualizza Grafico</string>
+  <string name="add_transaction">Aggiungi Transazione</string>
+  <string name="welcome_header">Benevenuti in MoneyManagerEx!</string>
+  <string name="welcome_body">MoneyManagerEx tratta tutte le transazioni assegnandole a dei conti.\n\nPer aiutarti nella fase iniziale, comincia con l\'annotare l\'elenco di tutti gli istituti finanziari presso i quali intrattieni un conto.\n\nClicca qui per iniziare a inserire i vostri conti.</string>
+  <string name="welcome_body_dropbox">Se utilizzi già MoneyManagerEx su Windows, Linux o Mac collegate questa applicazione con Dropbox per sincronizzare il database</string>
+  <string name="configure_dropbox">Configura Dropbox</string>
 </resources>

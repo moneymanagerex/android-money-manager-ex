@@ -6,7 +6,6 @@
   <string name="application_definition">Jednoduchá a snadno použitelná aplikace pro správu osobních financí, bankovních účtů, rodinného rozpočtu a tak dále.</string>
   <string name="application_credits">Projekt Android Money Manager Ex používá knihovny ActionBarSherlock, ViewPagerIndicator a RobotMediaBilling</string>
   <string name="application_license">Open source licence</string>
-  <string name="application_build">20131125</string>
   <string name="db_insert_failed">Vkládání dat se nezdařilo</string>
   <string name="db_delete_failed">Odstranění dat se nezdařilo</string>
   <string name="db_update_failed">Aktualizace dat se nezdařila</string>
@@ -102,7 +101,6 @@
   <string name="group_char">Skupinový oddělovač</string>
   <string name="scale">Míra</string>
   <string name="conversion_to_base_rate">Kurz pro převod</string>
-  <string name="new_edit_currency">Nová/úprava měny</string>
   <string name="currency_name_empty">Je vyžadován název měny</string>
   <string name="amount">Částka</string>
   <string name="total_amount">Celková částka</string>
@@ -188,8 +186,8 @@
   <string name="advance">Pokročilý</string>
   <string name="changelog">Přehled změn</string>
   <string name="transaction_number">Číslo transakce</string>
-  <string name="widget_summary">Money Manager Ex přehled</string>
-  <string name="widget_all_accounts">Money Manager Ex všechny účty</string>
+  <string name="widget_summary">Money Manager Ex - Souhrnný zůstatek</string>
+  <string name="widget_all_accounts">Money Manager Ex - Zůstatky na účtech</string>
   <string name="widget_add_transaction">Money Manager Ex přidat transakci</string>
   <string name="repeating_empty_transaction">Žádný trvalý příkaz</string>
   <string name="repeating_transaction">Trvalý příkaz</string>
@@ -252,7 +250,6 @@
   <string name="last_month">Minulý měsíc</string>
   <string name="last30days">Posledních 30 dnů</string>
   <string name="last_year">Minulý rok</string>
-  <string name="to">Komu</string>
   <string name="result">Výsledek</string>
   <string name="number_transaction_found">Počet nalezených transakcí: %1$d</string>
   <string name="date_format">Formát data</string>
@@ -354,7 +351,6 @@
   <string name="from_account">Z účtu</string>
   <string name="default_status">Výchozí stav</string>
   <string name="default_payee">Výchozí příjemce</string>
-  <string name="new_transaction">Nová transakce</string>
   <string name="edit_transaction">Upravit transakci</string>
   <string name="delete_one_selected_transaction">Opravdu odstranit vybranou transakci?</string>
   <string name="delete_others_selected_transaction">Opravdu odstranit %d označených transakcí?</string>
@@ -386,4 +382,12 @@
   <string name="never">Nikdy</string>
   <string name="path_database_not_exists">Cesta k databázi neexistuje</string>
   <string name="database_can_not_open_write">Databázi nelze otevřít pro zápis</string>
+  <string name="question_import_currencies">Chcete importovat měnu?</string>
+  <string name="time_frame">Časový rámec</string>
+  <string name="show_chart">Zobrazit graf</string>
+  <string name="add_transaction">Přidat transakci</string>
+  <string name="welcome_header">Vítejte v MoneyManagerEx</string>
+  <string name="welcome_body">V MoneyManagerEx patří všechny transakce k účtům.\n\nPro snazší používání, začněte vytvořením seznamu finančních institucí, ve kterých máte své účty.\n\nZadávání účtů můžete zahájit zde.</string>
+  <string name="welcome_body_dropbox">Pokud již používáte aplikaci MoneyManagerEx na Windows, Max OS nebo Linux, můžete použít vzájemnou synchronizaci databází pomocí Dropbox</string>
+  <string name="configure_dropbox">Nastavit Dropbox</string>
 </resources>

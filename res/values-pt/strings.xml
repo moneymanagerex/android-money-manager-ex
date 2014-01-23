@@ -6,7 +6,6 @@
   <string name="application_definition">Uma aplicação simples e fácil de usar para gerir finanças pessoais, contas bancárias, orçamento familiar, entre outros.</string>
   <string name="application_credits">O projecto Android Money Manager Ex utiliza as bibliotecas ActionBarSherlock, ViewPagerIndicator e RobotMediaBillin</string>
   <string name="application_license">Licenças de Código Aberto</string>
-  <string name="application_build">20131125</string>
   <string name="db_insert_failed">Falha na introdução de dados</string>
   <string name="db_delete_failed">Falha na eliminação de dados</string>
   <string name="db_update_failed">Falha na atualização de dados</string>
@@ -102,7 +101,6 @@
   <string name="group_char">Caractér Grupo</string>
   <string name="scale">Escala</string>
   <string name="conversion_to_base_rate">Conversão</string>
-  <string name="new_edit_currency">Nova/Editar Moeda</string>
   <string name="currency_name_empty">A introdução do nome da Moeda é obrigatória</string>
   <string name="amount">Montante</string>
   <string name="total_amount">Montante Total</string>
@@ -252,7 +250,6 @@
   <string name="last_month">Mês anterior</string>
   <string name="last30days">Últimos 30 Dias</string>
   <string name="last_year">Ano Anterior</string>
-  <string name="to">Para</string>
   <string name="result">Resultado</string>
   <string name="number_transaction_found">Nº de movimentos econtrados: %1$d</string>
   <string name="date_format">Formato de data</string>
@@ -339,7 +336,7 @@
   <string name="quantity">Quantidade</string>
   <string name="dashboard">Painel de controle</string>
   <string name="dropbox_database_is_synchronized">O banco de dados está sincronizado</string>
-  <string name="dropbox_application_restart_between_seconds">Você pode baixar uma versão mais recente do banco de dados do Dropbox. Entre %1$d segundos, os dados do novo aplicativo irão recarregar.</string>
+  <string name="dropbox_application_restart_between_seconds">Você pode baixar uma versão mais recente do banco de dados do Dropbox. Entre %1$d segundos, os dados do novo aplicativo irão recarregar</string>
   <string name="last3months">Últimos 3 meses</string>
   <string name="last6months">Últimos 6 meses</string>
   <string name="empty_category">Categoria vazia</string>
@@ -354,7 +351,6 @@
   <string name="from_account">Da Conta</string>
   <string name="default_status">Status padrão</string>
   <string name="default_payee">Beneficiário padrão</string>
-  <string name="new_transaction">Novo movimento</string>
   <string name="edit_transaction">Editar transação</string>
   <string name="delete_one_selected_transaction">Confirmar a exclusão da transação selecionada?</string>
   <string name="delete_others_selected_transaction">Confirmar a exclusão das %d transações selecionadas?</string>
@@ -386,4 +382,12 @@
   <string name="never">Nunca</string>
   <string name="path_database_not_exists">Caminho da base de dados não existe</string>
   <string name="database_can_not_open_write">A base de dados não pode ser aberta para gravação</string>
+  <string name="question_import_currencies">Deseja importar a moeda?</string>
+  <string name="time_frame">Período de tempo</string>
+  <string name="show_chart">Mostrar gráfico</string>
+  <string name="add_transaction">Adicionar Transacção</string>
+  <string name="welcome_header">Bem vindo ao MoneyManagerEx</string>
+  <string name="welcome_body">O MoneyManagerEx modela todas as transacções como pertencentes a uma conta.\n\nPara o ajudar a iniciar, comece por fazer uma lista de todos os bancos onde tem uma conta.\n\nClique aqui para inserir as suas contas.</string>
+  <string name="welcome_body_dropbox">Se já usa o MoneyManagerEx no Windows , Linux ou Mac, ligue esta aplicação com o Dropbox para sincronizar a sua base de dados</string>
+  <string name="configure_dropbox">Configurar o Dropbox</string>
 </resources>

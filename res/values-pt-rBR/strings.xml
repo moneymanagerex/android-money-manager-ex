@@ -6,9 +6,8 @@
   <string name="application_definition">Um aplicativo fácil de usar para gerenciar suas finanças pessoais, contas bancárias, orçamentos familiares e muito mais.</string>
   <string name="application_credits">O projeto Android Money Manager EX usa as bibliotecas ActionBarSherlock, ViewPagerIndicator e RobotMediaBilling</string>
   <string name="application_license">Licenças de código aberto</string>
-  <string name="application_build">20131125</string>
-  <string name="db_insert_failed">Falha na introdução de dados</string>
-  <string name="db_delete_failed">Falha na eliminação de dados</string>
+  <string name="db_insert_failed">Falha na inserção de dados</string>
+  <string name="db_delete_failed">Falha na exclusão de dados</string>
   <string name="db_update_failed">Falha na atualização de dados</string>
   <string name="menu">Menu</string>
   <string name="menu_exit">Sair</string>
@@ -31,13 +30,13 @@
   <string name="dropbox_listFileProgress">Lista de arquivos em progresso…</string>
   <string name="dropbox_syncProgress">Sincronização com o Dropbox em andamento…</string>
   <string name="dropbox_downloadProgress">Baixando arquivo do Dropbox…</string>
-  <string name="dropbox_uploadProgress">fazendo upload de arquivo para Dropbox…</string>
+  <string name="dropbox_uploadProgress">Atualizando arquivo no Dropbox…</string>
   <string name="dropbox_account">Conta Dropbox</string>
-  <string name="dropbox_linkedFile">Arquivo vinculado ao Dropbox</string>
+  <string name="dropbox_linkedFile">Arquivo vinculado no Dropbox</string>
   <string name="dropbox_method">Método de sincronização Dropbox</string>
   <string name="preferences_general">Geral</string>
   <string name="preferences_dispaly">Visualização</string>
-  <string name="base_currency">Moeda Padrão</string>
+  <string name="base_currency">Moeda Corrente</string>
   <string name="accounts_visible">Contas visíveis</string>
   <string name="view_accounts_opened">Visualizar contas abertas</string>
   <string name="if_not_selected_willShowAllAccounts">Se não selecionado, mostrará todas as contas</string>
@@ -102,7 +101,6 @@
   <string name="group_char">Caractere de Grupo</string>
   <string name="scale">Escala</string>
   <string name="conversion_to_base_rate">Conversão</string>
-  <string name="new_edit_currency">Nova/Editar Moeda</string>
   <string name="currency_name_empty">A introdução do nome da Moeda é obrigatória</string>
   <string name="amount">Montante</string>
   <string name="total_amount">Montante Total</string>
@@ -252,7 +250,6 @@
   <string name="last_month">Mês Anterior</string>
   <string name="last30days">Últimos 30 Dias</string>
   <string name="last_year">Ano Anterior</string>
-  <string name="to">Para</string>
   <string name="result">Resultado</string>
   <string name="number_transaction_found">Nº de transações econtradas: %1$d</string>
   <string name="date_format">Formato da Data</string>
@@ -354,7 +351,6 @@
   <string name="from_account">Da Conta</string>
   <string name="default_status">Estado Padrão</string>
   <string name="default_payee">Pagador Padrão</string>
-  <string name="new_transaction">Nova Transação</string>
   <string name="edit_transaction">Editar Transação</string>
   <string name="delete_one_selected_transaction">Confirmar a exclusão da transação selecionada?</string>
   <string name="delete_others_selected_transaction">Confirmar a exclusão das %d transações selecionadas?</string>
@@ -386,4 +382,12 @@
   <string name="never">Nunca</string>
   <string name="path_database_not_exists">Caminho da base de dados não existe</string>
   <string name="database_can_not_open_write">A base de dados não pode ser aberta para gravação</string>
+  <string name="question_import_currencies">Você quer importar a moeda?</string>
+  <string name="time_frame">Período de tempo</string>
+  <string name="show_chart">Mostrar gráfico</string>
+  <string name="add_transaction">Adicionar Transação</string>
+  <string name="welcome_header">Bem vindo ao MoneyManagerEx</string>
+  <string name="welcome_body">O MoneyManagerEx modela todas as transacções como pertencentes às contas.\n\nPara ajudá-lo a iniciar, comece fazendo uma lista de todos os bancos onde tem uma conta.\n\nClique aqui para começar a inserir as suas contas.</string>
+  <string name="welcome_body_dropbox">Se você já usa MoneyManagerEx no Windows, Linux ou Mac, vincule esta aplicação com o Dropbox para sincronizar sua base de dados</string>
+  <string name="configure_dropbox">Configurar o Dropbox</string>
 </resources>

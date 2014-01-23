@@ -6,7 +6,6 @@
   <string name="application_definition">Une application simple et facile à utiliser pour gérer ses finances personnelles, comptes bancaires, budget familial…</string>
   <string name="application_credits">Android Money Manager Ex Project utilise les librairies de ActionBarSherlock et ViewPagerIndicator</string>
   <string name="application_license">License open source</string>
-  <string name="application_build">20131125</string>
   <string name="db_insert_failed">Echec d\'insertion en base de données</string>
   <string name="db_delete_failed">Echec de suppresion en base de données</string>
   <string name="db_update_failed">Echec de mise à jour en base données</string>
@@ -44,7 +43,7 @@
   <string name="view_accounts_favorites">Voir les comptes préférés</string>
   <string name="preferences_version">Android Money Manager Ex</string>
   <string name="version">Version</string>
-  <string name="build">Build</string>
+  <string name="build">Compilation</string>
   <string name="preferences_dropbox">Paramètres Dropbox</string>
   <string name="preferences_database_path">Chemin de la base de données</string>
   <string name="account">Compte</string>
@@ -102,7 +101,6 @@
   <string name="group_char">Caractère de groupement</string>
   <string name="scale">Echelle</string>
   <string name="conversion_to_base_rate">Taux de conversion de base</string>
-  <string name="new_edit_currency">Créer/Editer une devise</string>
   <string name="currency_name_empty">Merci de nommer la devise</string>
   <string name="amount">Montant</string>
   <string name="total_amount">Montant total</string>
@@ -171,7 +169,7 @@
   <string name="theme_light">Holo Light With Dark ActionBar</string>
   <string name="close_application">Fermer l\'application</string>
   <string name="question_close_application">Voulez-vous fermer l\'application?</string>
-  <string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string>
+  <string name="error_intent_pick_file">Aucune activité trouvée pour gérer le fichier choisi</string>
   <string name="attention">Attention</string>
   <string name="payee_can_not_deleted">Le bénéficiaire sélectionné ne peut pas être supprimé car il fait référence</string>
   <string name="account_can_not_deleted">Le compte sélectionné ne peut pas être supprimé car il fait référence</string>
@@ -201,8 +199,8 @@
   <string name="quaterly">Trimestriel</string>
   <string name="half_year">Semestriel</string>
   <string name="yearly">Annuel</string>
-  <string name="four_months">Four-Months</string>
-  <string name="four_weeks">Four-Weeks</string>
+  <string name="four_months">Quatre mois</string>
+  <string name="four_weeks">4 Semaines</string>
   <string name="daily">Quotidien</string>
   <string name="in_x_days">Dans (x) jours</string>
   <string name="in_x_months">Dans (x) mois</string>
@@ -214,8 +212,8 @@
   <string name="new_edit_repeating_transaction">Nouvelle/Modifier opération périodique</string>
   <string name="next_occurrence">Occurrence suivante</string>
   <string name="repeats">Répétitions</string>
-  <string name="times_repeated">Périodicité</string>
-  <string name="error_next_occurrence_not_populate">Attention: Date next occurrence is not populate</string>
+  <string name="times_repeated">Occurrence</string>
+  <string name="error_next_occurrence_not_populate">ATTENTION : La date de la prochaine occurrence  n\'est pas renseignée</string>
   <string name="activates">Activates</string>
   <string name="period_days">Durée : jours</string>
   <string name="enter_next_occurrence">Entrez l\'Occurrence suivante</string>
@@ -252,13 +250,12 @@
   <string name="last_month">Mois dernier</string>
   <string name="last30days">30 derniers jours</string>
   <string name="last_year">L\'an dernier</string>
-  <string name="to">De</string>
   <string name="result">Résultat</string>
   <string name="number_transaction_found">Nombre de transactions trouvé : %1$d</string>
   <string name="date_format">Format de date</string>
   <string name="financial_year_start_day">Exercice : Date de début</string>
   <string name="financial_year_start_month">Exercice : Début mois</string>
-  <string name="release_date">Release Date</string>
+  <string name="release_date">Date de Publication</string>
   <string name="menu_move_database_to_external_storage">Déplacer la base de données vers le stockage externe</string>
   <string name="database_has_been_moved">La base de données a été déplacée : %1$s</string>
   <string name="copy_database_on_external_storage_failed">La copie de la base de données sur le stockage externe a échouée</string>
@@ -273,7 +270,7 @@
   <string name="export_file_failed">L\'exportation du fichier %1$s a échoué</string>
   <string name="donate_header">Android Money Manager Ex est fourni gratuitement. Si cette application vous plait, vous pouvez soutenir l\'équipe de développement avec un don.</string>
   <string name="donate_in_app_title">Google Play In-App Billing</string>
-  <string name="donate_in_app_description">Donate via Google Play In-App Billing.</string>
+  <string name="donate_in_app_description">Faire un don via Google Play In-App Billing.</string>
   <string name="donate_in_app_spinner_text">Sélectionnez le montant du don</string>
   <string name="donate_in_app_button">Donner</string>
   <string name="donate_thank_you">Merci pour votre don !</string>
@@ -286,7 +283,7 @@
   <string name="descending">décroissant</string>
   <string name="sorting_month">Tri par mois</string>
   <string name="dropbox_empty_folder">Le dossier Dropbox/Apps/Money Manager Ex Mobile est vide</string>
-  <string name="dropbox_select_file">Dropbox Select File</string>
+  <string name="dropbox_select_file">Dropbox sélectionnez fichier</string>
   <string name="last_modified">Dernière modification</string>
   <string name="select_dropbox_file">Select Dropbox Remote File</string>
   <string name="dropbox">Dropbox</string>
@@ -294,9 +291,9 @@
   <string name="dropbox_open_database_downloaded">Cliquez ici pour ouvrir la base de données téléchargée</string>
   <string name="click_to_select_file_dropbox">Cliquez pour sélectionner le fichier à lier à Dropbox</string>
   <string name="download_from_drobpox">Télécharger la base de données depuis Dropbox</string>
-  <string name="summary_download_from_drobpox">Click here to manually download the linked file from Dropbox folder</string>
+  <string name="summary_download_from_drobpox">Cliquez ici pour télécharger manuellement le fichier lié du dossier Dropbox</string>
   <string name="upload_to_drobpox">Télécharger la base de données sur Dropbox</string>
-  <string name="summary_upload_to_drobpox">Click here to manually uploading the linked file to Dropbox folder</string>
+  <string name="summary_upload_to_drobpox">Cliquez ici pour télécharger manuellement le fichier lié vers Dropbox</string>
   <string name="upload_file_to_dropbox_complete">Le téléchargement de la base de données sur Dropbox a réussi</string>
   <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
   <string name="dropbox_how_it_works">Comment fonctionne Dropbox pour Money Manager Ex\ ?</string>
@@ -354,7 +351,6 @@
   <string name="from_account">Du compte</string>
   <string name="default_status">Statut par défaut</string>
   <string name="default_payee">Bénéficiaire par défaut</string>
-  <string name="new_transaction">Nouvelle opération</string>
   <string name="edit_transaction">Éditer l\'opération</string>
   <string name="delete_one_selected_transaction">Confirmer la suppression de la transaction sélectionnée ?</string>
   <string name="delete_others_selected_transaction">Confirmer la suppression des %d transactions sélectionnées ?</string>
@@ -386,4 +382,12 @@
   <string name="never">Jamais</string>
   <string name="path_database_not_exists">Le chemin de la base de données n\'existe pas</string>
   <string name="database_can_not_open_write">La base de données ne peut pas être ouvert en écriture</string>
+  <string name="question_import_currencies">Vous voulez importer des devises ?</string>
+  <string name="time_frame">Délai</string>
+  <string name="show_chart">Afficher le graphique</string>
+  <string name="add_transaction">Ajouter une transaction</string>
+  <string name="welcome_header">Bienvenue sur MoneyManagerEx</string>
+  <string name="welcome_body">MoneyManagerEx défini toutes les transactions comme appartenant a un compte.\n\nPour vous aider à démarrer, commencez par établir une liste de toutes les institutions financières où vous détenez un compte.\n\nCliquez ici pour commencer à saisir vos comptes.</string>
+  <string name="welcome_body_dropbox">Si vous utilisez déjà MoneyManagerEx sur Windows, Linux ou Mac reliez cette application avec Dropbox pour synchroniser votre base de données</string>
+  <string name="configure_dropbox">Configuration de Dropbox</string>
 </resources>
