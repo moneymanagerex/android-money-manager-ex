@@ -90,6 +90,7 @@ public class MainActivity extends BaseFragmentActivity {
 	private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
 	private static final String KEY_IS_SHOW_TIPS_DROPBOX2 = "MainActivity:isShowTipsDropbox2";
 	private static final String KEY_CLASS_FRAGMENT_CONTENT = "MainActivity:Fragment";
+	private static final String KEY_ORIENTATION = "MainActivity:Orientation";
 
 	// requestcode
 	public static final int REQUEST_PICKFILE_CODE = 1;
@@ -462,6 +463,15 @@ public class MainActivity extends BaseFragmentActivity {
 				isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
 			if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
 				isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
+			if (savedInstanceState.containsKey(KEY_ORIENTATION)) {
+				if (core.isTablet()) {
+					if (savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
+						for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+							getSupportFragmentManager().popBackStack();
+						}
+					}
+				}
+			}
 		}
 		// init application
 		try {
@@ -749,15 +759,13 @@ public class MainActivity extends BaseFragmentActivity {
 				} else if ((!(fragment instanceof DashboardFragment)) && (!(fragment instanceof HomeFragment))) {
 					outState.putString(KEY_CLASS_FRAGMENT_CONTENT, fragment.getClass().getName());
 				}
-				// manage tablet layout
-				for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
-					getSupportFragmentManager().popBackStack();
-				}
+				// move pop stack in onCreate event
 			}
 		}
 		outState.putBoolean(KEY_IS_AUTHENTICATED, isAuthenticated);
 		outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
 		outState.putBoolean(KEY_IS_SHOW_TIPS_DROPBOX2, isShowTipsDropbox2);
+		outState.putInt(KEY_ORIENTATION, getResources().getConfiguration().orientation);
 		
 		super.onSaveInstanceState(outState);
 	}
