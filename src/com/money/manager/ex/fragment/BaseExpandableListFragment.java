@@ -21,6 +21,7 @@ import android.animation.LayoutTransition;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SearchViewCompat;
 import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.preferences.PreferencesConstant;
 
 public abstract class BaseExpandableListFragment extends SherlockExpandableListFragment {
 	// saved instance
@@ -80,7 +82,9 @@ public abstract class BaseExpandableListFragment extends SherlockExpandableListF
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (isShowMenuItemSearch() && !isShowTipsWildcard) {
+		// check search type
+		Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getSherlockActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE);
+		if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
 			// show tooltip for wildcard
 			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getSherlockActivity().getApplicationContext(), "lookupswildcard");
 			if (tipsDropbox != null) {
@@ -105,7 +109,7 @@ public abstract class BaseExpandableListFragment extends SherlockExpandableListF
 				SearchViewCompat.setOnQueryTextListener(searchView, new OnQueryTextListenerCompat() {
 					@Override
 					public boolean onQueryTextChange(String newText) {
-						return BaseExpandableListFragment.this.onQueryTextChange(newText);
+						return BaseExpandableListFragment.this.onPreQueryTextChange(newText);
 					}
 				});
 				itemSearch.setActionView(searchView);
@@ -120,7 +124,7 @@ public abstract class BaseExpandableListFragment extends SherlockExpandableListF
 
 					@Override
 					public boolean onQueryTextChange(String newText) {
-						return BaseExpandableListFragment.this.onQueryTextChange(newText);
+						return BaseExpandableListFragment.this.onPreQueryTextChange(newText);
 					}
 				});
 				itemSearch.setActionView(actionSearchView);
@@ -172,9 +176,16 @@ public abstract class BaseExpandableListFragment extends SherlockExpandableListF
 			} else {
 				// annullo il testo
 				edtSearch.setText(null);
-				onQueryTextChange("");
+				onPreQueryTextChange("");
 			}
 		}
+	}
+	
+	protected boolean onPreQueryTextChange(String newText) {
+		if (PreferenceManager.getDefaultSharedPreferences(getSherlockActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE))
+			newText = "%" + newText;
+		
+		return onQueryTextChange(newText);
 	}
 
 	protected boolean onQueryTextChange(String newText) {
