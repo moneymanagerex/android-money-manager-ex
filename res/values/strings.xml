@@ -449,4 +449,5 @@
 	<!-- 20140115 -->
 	<string name="search_text_contain_title">Searching by text contents and not by text beginning with</string>
 	<string name="search_text_contain_summary">Search payee , categories, currencies, etc… by contents and not by starting characters</string>
+	<string name="rate_application">Rate Application</string>
 </resources>
