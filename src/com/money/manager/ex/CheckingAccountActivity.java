@@ -305,24 +305,40 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 			if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
 				mStatus = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_STATUS, "");
 				if ("L".equals(PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_PAYEE, "N"))) {
-					AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+					AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
 						@Override
-						protected Void doInBackground(Void... params) {
-							Core core = new Core(CheckingAccountActivity.this);
-							TablePayee payee = core.getLastPayeeUsed();
-							if (payee != null && mPayeeId == -1) {
-								// get id payee and category
-								mPayeeId = payee.getPayeeId();
-								mPayeeName = payee.getPayeeName();
-								mCategoryId = payee.getCategId();
-								mSubCategoryId = payee.getSubCategId();
-								// load category and subcategory name
-								getCategSubName(mCategoryId, mSubCategoryId);
-								// refresh field
-								refreshPayeeName();
-								refreshCategoryName();
+						protected Boolean doInBackground(Void... params) {
+							try {
+								Core core = new Core(CheckingAccountActivity.this);
+								TablePayee payee = core.getLastPayeeUsed();
+								if (payee != null && mPayeeId == -1) {
+									// get id payee and category
+									mPayeeId = payee.getPayeeId();
+									mPayeeName = payee.getPayeeName();
+									mCategoryId = payee.getCategId();
+									mSubCategoryId = payee.getSubCategId();
+									// load category and subcategory name
+									getCategSubName(mCategoryId, mSubCategoryId);
+									return Boolean.TRUE;
+								}
+							} catch (Exception e) {
+								Log.e(LOGCAT, e.getMessage());
 							}
-							return null;
+							return Boolean.FALSE;
+						}
+						
+						@Override
+						protected void onPostExecute(Boolean result) {
+							super.onPostExecute(result);
+							if (result) {
+								try {
+									// refresh field
+									refreshPayeeName();
+									refreshCategoryName();
+								} catch (Exception e) {
+									Log.e(LOGCAT, e.getMessage());
+								}
+							}
 						}
 					};
 					task.execute();
