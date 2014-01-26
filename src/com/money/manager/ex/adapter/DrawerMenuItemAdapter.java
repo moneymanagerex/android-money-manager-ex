@@ -48,7 +48,7 @@ public class DrawerMenuItemAdapter extends ArrayAdapter<DrawerMenuItem> {
 		if (item != null && holder != null) {
 			holder.textViewItem.setText(item.getItemText());
 			if (item.getIcon() != null)
-				holder.imageViewIcon.setBackground(getContext().getResources().getDrawable(item.getIcon()));
+				holder.imageViewIcon.setBackgroundResource(item.getIcon());
 		}
 		
 		return view;
