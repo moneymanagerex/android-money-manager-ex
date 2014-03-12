@@ -162,6 +162,9 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 			}
 			// start loader
 			getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
+
+			// set iconfied searched
+			setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
 		}
 		
 		@Override
@@ -550,7 +553,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 				categId.add(category.getCategId());
 				categName.add(category.getCategName());
 			}
-			ArrayAdapter<String> adapterCategory = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categName);
+			ArrayAdapter<String> adapterCategory = new ArrayAdapter<String>(getActivity(), R.layout.sherlock_spinner_item, categName);
 			adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spnCategory.setAdapter(adapterCategory);
 			//select category if present

@@ -95,7 +95,7 @@ public class SplitItemFragment extends Fragment {
 			// type
 			spinTransCode = (Spinner) layout.findViewById(R.id.spinnerTransCode);
 			String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
-			ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
+			ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getActivity(), R.layout.sherlock_spinner_item, transCodeItems);
 			adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinTransCode.setAdapter(adapterTrans);
 			spinTransCode.setSelection(mSplitObject.getSplitTransAmount() >= 0 ? 0 : 1, true);

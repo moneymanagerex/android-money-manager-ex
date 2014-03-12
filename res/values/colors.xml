@@ -24,7 +24,7 @@
     <color name="GreenButtonDisabledEndColor">#736F6E</color>
     <color name="GreenButtonBorderColor">#254117</color>
     <!-- Colos ICS -->
-    <color name="holo_ics_color">#33b5e5</color>
+    <color name="holo_color">#33b5e5</color>
     <!-- A light Holo shade of blue -->
     <color name="holo_blue_light">#ff33b5e5</color>
     <!-- A light Holo shade of green -->

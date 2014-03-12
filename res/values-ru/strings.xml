@@ -26,11 +26,11 @@
   <string name="import_export_success">Импорт / Экспорт успешно завершен</string>
   <string name="import_export_failed">Импорт / Экспорт не удалось</string>
   <string name="dropbox_link">Соединиться с Dropbox</string>
-  <string name="dropbox_unlink">отсоединиться от Dropbox</string>
-  <string name="dropbox_listFileProgress">Чтение списока файлов в процессе…</string>
-  <string name="dropbox_syncProgress">Синхронизация с Dropbox в процессе…</string>
-  <string name="dropbox_downloadProgress">Загрузка файла с Dropbox в процессе…</string>
-  <string name="dropbox_uploadProgress">Загрузка файла в Dropbox в процессе…</string>
+  <string name="dropbox_unlink">Отсоединиться от Dropbox</string>
+  <string name="dropbox_listFileProgress">Чтение списока файлов в процессе&#8230;</string>
+  <string name="dropbox_syncProgress">Синхронизация с Dropbox в процессе&#8230;</string>
+  <string name="dropbox_downloadProgress">Загрузка файла с Dropbox в процессе&#8230;</string>
+  <string name="dropbox_uploadProgress">Загрузка файла в Dropbox в процессе&#8230;</string>
   <string name="dropbox_account">Учетная запись Dropbox</string>
   <string name="dropbox_linkedFile">Связанный файл Dropbox</string>
   <string name="dropbox_method">Метод синхронизации с Dropbox</string>
@@ -154,7 +154,7 @@
   <string name="username">Имя пользователя</string>
   <string name="tell_us_a_problem">Пожалуйста, сообщите о любых ошибках или проблемах</string>
   <string name="to">В</string>
-  <string name="website">Вебсайт</string>
+  <string name="website">Веб-сайт</string>
   <string name="contact">Контакты</string>
   <string name="access_info">Информация о доступе</string>
   <string name="initial_balance">Начальный баланс</string>
@@ -220,7 +220,7 @@
   <string name="skip_next_occurrence">Пропустить следующее начисление</string>
   <string name="notification_repeating_transaction_expired">Запланированная проводка просрочена</string>
   <string name="notification_click_to_check_repeating_transaction">Щелкните, чтобы проверить просроченную проводку</string>
-  <string name="num_repeating_transaction_expired">Количество просроченных проводок %1$d</string>
+  <string name="num_repeating_transaction_expired">%1$d повторяющаяся транзакция просрочена</string>
   <string name="send_feedback">Отправить отзыв</string>
   <string name="send_us_your_feedback">Отправьте нам ваш отзыв</string>
   <string name="preferences_info_application">Информация</string>
@@ -364,7 +364,7 @@
   <string name="new_currency">Новая валюта</string>
   <string name="edit_currency">Редактирование валюты</string>
   <string name="import_all_currencies">Импорт всех валют мира</string>
-  <string name="import_currencies_in_progres">Импорт валют в процессе …</string>
+  <string name="import_currencies_in_progres">Импорт валют в процессе &#8230;</string>
   <string name="from_date">Из даты</string>
   <string name="at_the_date">На дату</string>
   <string name="amount_greater_or_equal">Сумма больше или равно</string>
@@ -390,4 +390,7 @@
   <string name="welcome_body">MoneyManagerEx хранит все проводки на ваших счетах.\n\nДля того чтобы вам начать работу, надо составить список своих счетов.\n\nНажмите здесь, чтобы начать ввод своих счетов.</string>
   <string name="welcome_body_dropbox">Если вы уже используете MoneyManagerEx на Windows, Linux или Mac синхронизируйте базу данных приложения через Dropbox</string>
   <string name="configure_dropbox">Настройка Dropbox</string>
+  <string name="search_text_contain_title">Поиск по содержимому текста, а не только с начала строки</string>
+  <string name="search_text_contain_summary">Поиск среди контрагентов, категорий, валют и.т.д. по всему содержимому текста, а не только с начала строки</string>
+  <string name="rate_application">Оценить приложение</string>
 </resources>

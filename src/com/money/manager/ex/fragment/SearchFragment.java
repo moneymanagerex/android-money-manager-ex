@@ -185,7 +185,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		cbxTransfer = (CheckBox)view.findViewById(R.id.checkBoxTransfer);
 		cbxWithdrawal = (CheckBox)view.findViewById(R.id.checkBoxWithdrawal);
 		// create adapter for spinAccount
-		ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(getSherlockActivity(), android.R.layout.simple_spinner_item, mAccountNameList);
+		ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(getSherlockActivity(), R.layout.sherlock_spinner_item, mAccountNameList);
 		adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinAccount.setAdapter(adapterAccount);
 		//Payee
@@ -216,7 +216,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		}
 		// create adapter for spinnerStatus
 		spinStatus = (Spinner)view.findViewById(R.id.spinnerStatus);
-		ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(getSherlockActivity(), android.R.layout.simple_spinner_item, mStatusItems);
+		ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(getSherlockActivity(), R.layout.sherlock_spinner_item, mStatusItems);
 		adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinStatus.setAdapter(adapterStatus);
 		// from date

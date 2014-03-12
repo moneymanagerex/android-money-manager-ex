@@ -27,10 +27,10 @@
   <string name="import_export_failed">Importazione / Esportazione fallita</string>
   <string name="dropbox_link">Collega con Dropbox</string>
   <string name="dropbox_unlink">Scollega da Dropbox</string>
-  <string name="dropbox_listFileProgress">Elenco dei file in corso…</string>
-  <string name="dropbox_syncProgress">Sincronizzazione con Dropbox in corso…</string>
-  <string name="dropbox_downloadProgress">Scarico file da Dropbox in corso…</string>
-  <string name="dropbox_uploadProgress">Carico file su Dropbox in corso…</string>
+  <string name="dropbox_listFileProgress">Elenco dei file in corso&#8230;</string>
+  <string name="dropbox_syncProgress">Sincronizzazione con Dropbox in corso&#8230;</string>
+  <string name="dropbox_downloadProgress">Scarico file da Dropbox in corso&#8230;</string>
+  <string name="dropbox_uploadProgress">Carico file su Dropbox in corso&#8230;</string>
   <string name="dropbox_account">Account Dropbox</string>
   <string name="dropbox_linkedFile">File collegato con Dropbox</string>
   <string name="dropbox_method">Metodo di Sincronizzazione con Dropbox</string>
@@ -220,7 +220,7 @@
   <string name="skip_next_occurrence">Ignora Successiva Scadenza</string>
   <string name="notification_repeating_transaction_expired">Ci sono delle operazioni ricorrenti scadute</string>
   <string name="notification_click_to_check_repeating_transaction">Seleziona per visualizzare le operazioni scadute</string>
-  <string name="num_repeating_transaction_expired">Ci sono %1$d operazioni ricorrenti scadute</string>
+  <string name="num_repeating_transaction_expired">%1$d operazioni ricorrenti scadute</string>
   <string name="send_feedback">Invia commenti</string>
   <string name="send_us_your_feedback">Inviaci i tuoi commenti</string>
   <string name="preferences_info_application">Info</string>
@@ -265,7 +265,7 @@
   <string name="split">Suddividi</string>
   <string name="error_split_transaction_empty">Attenzione: inserire almeno una categoria suddivisa</string>
   <string name="export_data_to_csv">Esporta su CSV</string>
-  <string name="export_data_in_progress">Esportazione dati in corso …</string>
+  <string name="export_data_in_progress">Esportazione dati in corso &#8230;</string>
   <string name="export_file_complete">Esportazione file %1$s completata</string>
   <string name="export_file_failed">Esportazione file %1$s fallita</string>
   <string name="donate_header">Android Money Manager Ex viene fornito gratuitamente. Se questa applicazione è di vostro gradimento, potete sostenere il team di sviluppo con una donazione.</string>
@@ -319,8 +319,8 @@
   <string name="Default">Default</string>
   <string name="medium">Medio</string>
   <string name="large">Grande</string>
-  <string name="dropbox_download_is_starting">Download da Dropbox è iniziato. Attendere prego…</string>
-  <string name="dropbox_upload_is_starting">Upload su Dropbox è iniziato. Attendere prego…</string>
+  <string name="dropbox_download_is_starting">Download da Dropbox è iniziato. Attendere prego&#8230;</string>
+  <string name="dropbox_upload_is_starting">Upload su Dropbox è iniziato. Attendere prego&#8230;</string>
   <string name="menu_report_where_money_goes">Dove va il denaro</string>
   <string name="menu_report_where_money_comes_from">Da dove arriva il denaro</string>
   <string name="dashclock_extension_summary">Visualizza il saldo di Money Manager Ex for Android</string>
@@ -364,7 +364,7 @@
   <string name="new_currency">Nuova Valuta</string>
   <string name="edit_currency">Modifica Valuta</string>
   <string name="import_all_currencies">Importa Tutte le Valute del Mondo</string>
-  <string name="import_currencies_in_progres">importazione delle valute in corso …</string>
+  <string name="import_currencies_in_progres">importazione delle valute in corso &#8230;</string>
   <string name="from_date">Dalla data</string>
   <string name="at_the_date">Alla data</string>
   <string name="amount_greater_or_equal">Importo maggiore o uguale</string>
@@ -390,4 +390,7 @@
   <string name="welcome_body">MoneyManagerEx tratta tutte le transazioni assegnandole a dei conti.\n\nPer aiutarti nella fase iniziale, comincia con l\'annotare l\'elenco di tutti gli istituti finanziari presso i quali intrattieni un conto.\n\nClicca qui per iniziare a inserire i vostri conti.</string>
   <string name="welcome_body_dropbox">Se utilizzi già MoneyManagerEx su Windows, Linux o Mac collegate questa applicazione con Dropbox per sincronizzare il database</string>
   <string name="configure_dropbox">Configura Dropbox</string>
+  <string name="search_text_contain_title">Ricerca testo per contenuto e non per l\'inizio del testo</string>
+  <string name="search_text_contain_summary">Ricerca beneficiario, categorie, valute, etc&#8230; per contenuto e non per l\'inizio del testo</string>
+  <string name="rate_application">Valuta l\'applicazione</string>
 </resources>

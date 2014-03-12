@@ -18,6 +18,6 @@
 -->
 <resources>
     <color name="color_money_manager">@color/GreenButtonEndColor</color>
-    <color name="color_ice_cream_sandiwich">@color/holo_ics_color</color>
-    <color name="textview_textcolor">@color/holo_ics_color</color>
+    <color name="color_ice_cream_sandiwich">@color/holo_color</color>
+    <color name="textview_textcolor">@color/holo_color</color>
 </resources>

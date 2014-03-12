@@ -1,7 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Money.Manager" parent="@style/Theme.Sherlock">
+    <style name="App" parent="_App" />
+
+    <style name="_App" parent="Theme.Sherlock">
+        <item name="android:editTextStyle">@style/EditText_App</item>
+        <item name="android:textColorHighlight">#9933b5e5</item>
+        <item name="android:checkboxStyle">@style/CheckBox_App</item>
+        <item name="android:buttonStyle">@style/Button_App</item>
+        <item name="android:imageButtonStyle">@style/ImageButton_App</item>
+        <item name="android:spinnerStyle">@style/Spinner_App</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem_App</item>
+        <item name="android:progressBarStyleHorizontal">@style/ProgressBar_App</item>
+    </style>
+
+    <style name="App_Light" parent="@style/_App_Light" />
+
+    <style name="_App_Light" parent="Theme.Sherlock.Light">
+        <item name="android:editTextStyle">@style/EditText_App_Light</item>
+        <item name="android:textColorHighlight">#9933b5e5</item>
+        <item name="android:checkboxStyle">@style/CheckBox_App_Light</item>
+        <item name="android:buttonStyle">@style/Button_App_Light</item>
+        <item name="android:imageButtonStyle">@style/ImageButton_App_Light</item>
+        <item name="android:spinnerStyle">@style/Spinner_App_Light</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem_App_Light</item>
+        <item name="android:progressBarStyleHorizontal">@style/ProgressBar_App_Light</item>
+    </style>
+
+    <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar" />
+
+    <style name="_App_Light_DarkActionBar" parent="Theme.Sherlock.Light.DarkActionBar">
+        <item name="android:editTextStyle">@style/EditText_App_Light</item>
+        <item name="android:textColorHighlight">#9933b5e5</item>
+        <item name="android:checkboxStyle">@style/CheckBox_App_Light</item>
+        <item name="android:buttonStyle">@style/Button_App_Light</item>
+        <item name="android:imageButtonStyle">@style/ImageButton_App_Light</item>
+        <item name="android:spinnerStyle">@style/Spinner_App_Light</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem_App_Light</item>
+        <item name="android:progressBarStyleHorizontal">@style/ProgressBar_App_Light</item>
+    </style>
+    
+    <!-- Theme Application -->
+
+    <style name="Theme.Money.Manager" parent="@style/App">
 
         <!-- Colors -->
         <item name="theme_background_color">@android:color/transparent</item>
@@ -50,11 +91,10 @@
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">?android:attr/listSeparatorTextViewStyle</item>
         <item name="headerTextViewStyle">@style/headerTextViewStyle</item>
-        <!-- Spinner -->
-        <item name="styleHoloSpinner">@android:style/Widget.Holo.Spinner</item>
+        <item name="styleHoloSpinner">@style/Spinner_App</item>
     </style>
 
-    <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+    <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/App_Light_DarkActionBar">
 
         <!-- Colors -->
         <item name="theme_background_color">@color/holo_light_darkaction_money_background</item>
@@ -103,11 +143,10 @@
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">@style/listSeparatorTextViewStyle</item>
         <item name="headerTextViewStyle">@style/headerTextViewStyle</item>
-        <!-- Spinner -->
-        <item name="styleHoloSpinner">@android:style/Widget.Holo.Light.Spinner</item>
+        <item name="styleHoloSpinner">@style/Spinner_App_Light</item>
     </style>
 
-    <style name="Theme.Money.Manager.Light" parent="@style/Theme.Sherlock.Light">
+    <style name="Theme.Money.Manager.Light" parent="@style/App_Light">
 
         <!-- Colors -->
         <item name="theme_background_color">@color/holo_light_darkaction_money_background</item>
@@ -156,8 +195,7 @@
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">@style/listSeparatorTextViewStyle</item>
         <item name="headerTextViewStyle">@style/headerTextViewStyle</item>
-        <!-- Spinner -->
-        <item name="styleHoloSpinner">@android:style/Widget.Holo.Light.Spinner</item>
+        <item name="styleHoloSpinner">@style/Spinner_App_Light</item>
     </style>
 
 </resources>

@@ -6,7 +6,6 @@
   <string name="application_definition">Una aplicación simple y fácil de utilizar para organizar las finanzas personales, las cuentas bancarias, el presupuesto familiar, etc.</string>
   <string name="application_credits">El proyecto Android Money Manager Ex utiliza las librerias ActionBarSherlock y ViewPagerIndicator</string>
   <string name="application_license">Licencias de fuente abierta</string>
-  <string name="application_build">20131125</string>
   <string name="db_insert_failed">La inserción de datos ha fallado</string>
   <string name="db_delete_failed">El borrado de datos ha fallado</string>
   <string name="db_update_failed">La actualización de datos ha fallado</string>
@@ -28,10 +27,10 @@
   <string name="import_export_failed">La importación/exportación ha fallado</string>
   <string name="dropbox_link">Conectar con Dropbox</string>
   <string name="dropbox_unlink">Desconectar desde Dropbox</string>
-  <string name="dropbox_listFileProgress">Lista de archivos en curso…</string>
-  <string name="dropbox_syncProgress">Sincronización con Dropbox en curso…</string>
-  <string name="dropbox_downloadProgress">Descargando los archivos desde Dropbox…</string>
-  <string name="dropbox_uploadProgress">Cargando los archivos a Dropbox…</string>
+  <string name="dropbox_listFileProgress">Lista de archivos en curso&#8230;</string>
+  <string name="dropbox_syncProgress">Sincronización con Dropbox en curso&#8230;</string>
+  <string name="dropbox_downloadProgress">Descargando los archivos desde Dropbox&#8230;</string>
+  <string name="dropbox_uploadProgress">Cargando los archivos a Dropbox&#8230;</string>
   <string name="dropbox_account">Usuario Dropbox</string>
   <string name="dropbox_linkedFile">Archivo enlazado con Dropbox</string>
   <string name="dropbox_method">Método de sincronización con Dropbox</string>
@@ -102,7 +101,6 @@
   <string name="group_char">Separador de millares</string>
   <string name="scale">Escala</string>
   <string name="conversion_to_base_rate">Conversión a tasa base</string>
-  <string name="new_edit_currency">Nueva/modificar divisa</string>
   <string name="currency_name_empty">El nombre de la divisa es necesario</string>
   <string name="amount">Importe</string>
   <string name="total_amount">Importe total</string>
@@ -222,7 +220,7 @@
   <string name="skip_next_occurrence">Omitir Siguiente Ocurrencia</string>
   <string name="notification_repeating_transaction_expired">Hay Transacciónes Periódicas vencidas</string>
   <string name="notification_click_to_check_repeating_transaction">Haga clic para verificar la transacción atrasada</string>
-  <string name="num_repeating_transaction_expired">Hay %1$d Transacciónes Periódicas vencidas</string>
+  <string name="num_repeating_transaction_expired">%1$d transacción periódica vencida</string>
   <string name="send_feedback">Enviar comentarios</string>
   <string name="send_us_your_feedback">Envíenos sus comentarios</string>
   <string name="preferences_info_application">Información</string>
@@ -252,7 +250,6 @@
   <string name="last_month">Mes Pasado</string>
   <string name="last30days">Últimos 30 Días</string>
   <string name="last_year">Año Pasado</string>
-  <string name="to">A</string>
   <string name="result">Resultado</string>
   <string name="number_transaction_found">Número de transacciónes encontradas: %1$d</string>
   <string name="date_format">Formato de la fecha</string>
@@ -268,7 +265,7 @@
   <string name="split">Dividido</string>
   <string name="error_split_transaction_empty">Atención: por favor, introduzcan al menos una transacción dividida</string>
   <string name="export_data_to_csv">Exportar a archivo CSV</string>
-  <string name="export_data_in_progress">Exportación de datos en curso …</string>
+  <string name="export_data_in_progress">Exportación de datos en curso &#8230;</string>
   <string name="export_file_complete">La Exportación del archivo %1$s ha terminado correctamente</string>
   <string name="export_file_failed">La Exportación del archivo %1$s ha fallado</string>
   <string name="donate_header">Android Money Manager Ex es gratuito. Si esta aplicación es de tu agrado, puedes ayudar al equipo de desarrollo con una donación.</string>
@@ -322,8 +319,8 @@
   <string name="Default">Por defecto</string>
   <string name="medium">Medio</string>
   <string name="large">Grande</string>
-  <string name="dropbox_download_is_starting">La descarga desde Dropbox está comenzando. Espere por favor…</string>
-  <string name="dropbox_upload_is_starting">La carga a Dropbox está comenzando. Espere por favor…</string>
+  <string name="dropbox_download_is_starting">La descarga desde Dropbox está comenzando. Espere por favor&#8230;</string>
+  <string name="dropbox_upload_is_starting">La carga a Dropbox está comenzando. Espere por favor&#8230;</string>
   <string name="menu_report_where_money_goes">¿Dónde va el dinero?
 </string>
   <string name="menu_report_where_money_comes_from">¿De dónde viene el dinero?</string>
@@ -355,7 +352,6 @@
   <string name="from_account">Desde Cuenta</string>
   <string name="default_status">Estado por defecto</string>
   <string name="default_payee">Beneficiario por defecto</string>
-  <string name="new_transaction">Nueva transacción</string>
   <string name="edit_transaction">Editar Transacción</string>
   <string name="delete_one_selected_transaction">¿Confirmar la eliminación de la transacción seleccionada?</string>
   <string name="delete_others_selected_transaction">Confirma la eliminación de las %d transacciones seleccionadas?</string>
@@ -387,4 +383,15 @@
   <string name="never">Nunca</string>
   <string name="path_database_not_exists">La Ruta de base de datos no existe</string>
   <string name="database_can_not_open_write">No se puede abrir la base de datos para la escritura</string>
+  <string name="question_import_currencies">¿Quiere impotar divisa?</string>
+  <string name="time_frame">Intervalo de tiempo</string>
+  <string name="show_chart">Mostrar Gráfico</string>
+  <string name="add_transaction">Añadir Transacción</string>
+  <string name="welcome_header">¡ Bienvenido a MoneyManagerEx!</string>
+  <string name="welcome_body">Todos los modelos de transacción en MoneyManagerEx pertenecen a cuentas.\n\nPara comenzar, haga una lista de todas sus instituciones financieras donde tenga una cuenta..\n\n\Toque aquí para introducir sus cuentas.</string>
+  <string name="welcome_body_dropbox">Si ya está usando MoneyManagerEx en Windows, Linux o Mac puede enlazar esta aplicación con Dropbox para sincronizar su base de datos</string>
+  <string name="configure_dropbox">Configurar Dropbox</string>
+  <string name="search_text_contain_title">Buscando textos que contengas y no textos que comiencen con</string>
+  <string name="search_text_contain_summary">Buscar beneficiarios, categorías, divisas,  etc... por contenido y no por los caracteres iniciales</string>
+  <string name="rate_application">Valorar Aplicación</string>
 </resources>

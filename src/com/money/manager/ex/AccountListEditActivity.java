@@ -73,7 +73,11 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 	public static final String KEY_FAVORITE_ACCT = "AccountListEditActivity:FavoriteAcct";
 	public static final String KEY_CURRENCY_ID = "AccountListEditActivity:CurrencyId";
 	public static final String KEY_CURRENCY_NAME = "AccountListEditActivity:CurrencyName";
+	public static final String KEY_SYMBOL = "AccountListEditActivity:Symbol";
 	private static final String KEY_ACTION = "AccountListEditActivity:Action";
+	// Constant
+	private static final int PLUS = 0;
+	private static final int LESS = 1;
 	// Action type
 	private String mIntentAction = ""; // Insert? Edit?
 	// Table object instance
@@ -92,7 +96,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 	private String[] mAccountStatusValues;
 	// Activity controls
 	private EditText edtAccountName, edtAccountNumber, edtAccountHeldAt, edtWebsite, edtContact, edtAccessInfo, edtNotes;;
-	private Spinner spinAccountType, spinAccountStatus;
+	private Spinner spinAccountType, spinAccountStatus, spinSymbolInitialBalance;
 	private TextView txtSelectCurrency, txtInitialBalance;
 	private ImageView imgbFavouriteAccount;
 	
@@ -134,6 +138,8 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 			mAccessInfo = savedInstanceState.getString(KEY_ACCESS_INFO);
 			mStatus = savedInstanceState.getString(KEY_STATUS);
 			mInitialBal = savedInstanceState.getFloat(KEY_INITIAL_BAL);
+			if (savedInstanceState.getInt(KEY_SYMBOL) == LESS) 
+				mInitialBal = mInitialBal * -1;
 			mNotes = savedInstanceState.getString(KEY_NOTES);
 			mFavoriteAcct = savedInstanceState.getString(KEY_FAVORITE_ACCT);
 			mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
@@ -181,6 +187,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		edtContact = (EditText) findViewById(R.id.editTextContact);
 		edtAccessInfo = (EditText) findViewById(R.id.editTextAccessInfo);
 		spinAccountStatus = (Spinner) findViewById(R.id.spinnerAccountStatus);
+		spinSymbolInitialBalance = (Spinner) findViewById(R.id.spinnerSymbolInitialBalance);
 		txtInitialBalance = (TextView) findViewById(R.id.editTextInitialBalance);
 		edtNotes = (EditText) findViewById(R.id.editTextNotes);
 		imgbFavouriteAccount = (ImageView) findViewById(R.id.imageViewAccountFav);
@@ -206,6 +213,12 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 			edtAccessInfo.setText(mAccessInfo);
 		}
 		
+		ArrayAdapter<String> adapterSymbol = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, new String[] {"+", "-"});
+		spinSymbolInitialBalance.setAdapter(adapterSymbol);
+		spinSymbolInitialBalance.setSelection(mInitialBal >= 0 ? PLUS : LESS);
+		
+		mInitialBal = Math.abs(mInitialBal);
+		
 		core.formatAmountTextView(txtInitialBalance, mInitialBal, mCurrencyId);
 		txtInitialBalance.setOnClickListener(new OnClickListener() {
 			
@@ -216,6 +229,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 				dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
 			}
 		});
+		
 		
 		if (!(TextUtils.isEmpty(mNotes))) {
 			edtNotes.setText(mNotes);
@@ -230,7 +244,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		// spinAccountType adapters and values
 		mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
 		mAccountTypeValues = getResources().getStringArray(R.array.accounttype_values);
-		ArrayAdapter<String> adapterAccountType = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountTypeItems);
+		ArrayAdapter<String> adapterAccountType = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, mAccountTypeItems);
 		adapterAccountType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinAccountType.setAdapter(adapterAccountType);
 		if (!(TextUtils.isEmpty(mAccountType))) {
@@ -244,7 +258,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		// spinAccountStatus adapters and values
 		mAccountStatusItems = getResources().getStringArray(R.array.accountstatus_items);
 		mAccountStatusValues = getResources().getStringArray(R.array.accountstatus_values);
-		ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
+		ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, mAccountStatusItems);
 		adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinAccountStatus.setAdapter(adapterAccountStatus);
 		if (!(TextUtils.isEmpty(mStatus))) {
@@ -413,7 +427,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		values.put(TableAccountList.WEBSITE, mWebsite);
 		values.put(TableAccountList.CONTACTINFO, mContactInfo);
 		values.put(TableAccountList.ACCESSINFO, mAccessInfo);
-		values.put(TableAccountList.INITIALBAL, (Float)txtInitialBalance.getTag());
+		values.put(TableAccountList.INITIALBAL, (Float)txtInitialBalance.getTag() * (spinSymbolInitialBalance.getSelectedItemPosition() == PLUS ? 1 : -1));
 		values.put(TableAccountList.FAVORITEACCT, imgbFavouriteAccount.getTag().toString().toUpperCase());
 		values.put(TableAccountList.CURRENCYID, mCurrencyId);
 		// check whether the application should update or insert

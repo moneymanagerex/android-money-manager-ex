@@ -27,10 +27,10 @@
   <string name="import_export_failed">Import / Export selhal</string>
   <string name="dropbox_link">Připojit na Dropboxu</string>
   <string name="dropbox_unlink">Odpojit od Dropboxu</string>
-  <string name="dropbox_listFileProgress">Probíhá seznam souborů…</string>
-  <string name="dropbox_syncProgress">Probíhá synchronizace s Dropboxem…</string>
-  <string name="dropbox_downloadProgress">Stahování souboru z Dropboxu…</string>
-  <string name="dropbox_uploadProgress">Odesílání souboru na Dropbox…</string>
+  <string name="dropbox_listFileProgress">Probíhá seznam souborů&#8230;</string>
+  <string name="dropbox_syncProgress">Probíhá synchronizace s Dropboxem&#8230;</string>
+  <string name="dropbox_downloadProgress">Stahování souboru z Dropboxu&#8230;</string>
+  <string name="dropbox_uploadProgress">Odesílání souboru na Dropbox&#8230;</string>
   <string name="dropbox_account">Účet Dropboxu</string>
   <string name="dropbox_linkedFile">Soubor propojený s Dropboxem</string>
   <string name="dropbox_method">Metoda synchronizace s Dropboxem</string>
@@ -220,7 +220,7 @@
   <string name="skip_next_occurrence">Přeskočit další výskyt</string>
   <string name="notification_repeating_transaction_expired">Existují propadlé trvalé příkazy</string>
   <string name="notification_click_to_check_repeating_transaction">Kliknutím zkontrolujete zpožděné transakce</string>
-  <string name="num_repeating_transaction_expired">Existuje %1$d propadlých trvalých příkazů</string>
+  <string name="num_repeating_transaction_expired">%1$d opakované transakce po splatnosti</string>
   <string name="send_feedback">Zašlete svůj názor</string>
   <string name="send_us_your_feedback">Zašlete nám svůj názor</string>
   <string name="preferences_info_application">Informace</string>
@@ -265,7 +265,7 @@
   <string name="split">Rozdělit</string>
   <string name="error_split_transaction_empty">Upozornění: Prosím, vložte alespoň jednu rozdělenou transakci</string>
   <string name="export_data_to_csv">Export do CSV</string>
-  <string name="export_data_in_progress">Probíhá export dat …</string>
+  <string name="export_data_in_progress">Probíhá export dat &#8230;</string>
   <string name="export_file_complete">Export souboru %1$s dokončen</string>
   <string name="export_file_failed">Export souboru %1$s selhal</string>
   <string name="donate_header">Money Manager Ex pro Android je poskytován zdarma. Je-li tato aplikace podle vašich představ, můžete podpořit vývojový tým příspěvkem.</string>
@@ -319,8 +319,8 @@
   <string name="Default">Výchozí</string>
   <string name="medium">Střední</string>
   <string name="large">Velké</string>
-  <string name="dropbox_download_is_starting">Začíná stahování z Dropboxu. Počkejte prosím…</string>
-  <string name="dropbox_upload_is_starting">Začíná nahrávání na Dropbox. Počkejte prosím…</string>
+  <string name="dropbox_download_is_starting">Začíná stahování z Dropboxu. Počkejte prosím&#8230;</string>
+  <string name="dropbox_upload_is_starting">Začíná nahrávání na Dropbox. Počkejte prosím&#8230;</string>
   <string name="menu_report_where_money_goes">Peníze odchozí</string>
   <string name="menu_report_where_money_comes_from">Peníze příchozí</string>
   <string name="dashclock_extension_summary">Zobrazit přehled v Money Manager Ex pro Android</string>
@@ -364,7 +364,7 @@
   <string name="new_currency">Nová měna</string>
   <string name="edit_currency">Upravit měnu</string>
   <string name="import_all_currencies">Importovat všechny světové měny</string>
-  <string name="import_currencies_in_progres">Načítání měn v probíhá…</string>
+  <string name="import_currencies_in_progres">Načítání měn v probíhá&#8230;</string>
   <string name="from_date">Od data</string>
   <string name="at_the_date">Ke dni</string>
   <string name="amount_greater_or_equal">Částka větší nebo rovna</string>
@@ -390,4 +390,7 @@
   <string name="welcome_body">V MoneyManagerEx patří všechny transakce k účtům.\n\nPro snazší používání, začněte vytvořením seznamu finančních institucí, ve kterých máte své účty.\n\nZadávání účtů můžete zahájit zde.</string>
   <string name="welcome_body_dropbox">Pokud již používáte aplikaci MoneyManagerEx na Windows, Max OS nebo Linux, můžete použít vzájemnou synchronizaci databází pomocí Dropbox</string>
   <string name="configure_dropbox">Nastavit Dropbox</string>
+  <string name="search_text_contain_title">Hledání v textu podle obsahu a nikoli počátečních písmen</string>
+  <string name="search_text_contain_summary">Hledání příjemců, kategorií, měn, apod. podle obsahu a nikoli počátečních písmen</string>
+  <string name="rate_application">Hodnocení aplikace</string>
 </resources>

@@ -122,7 +122,7 @@ public class DonateActivity extends BaseFragmentActivity  {
 			}
 			
 			Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
-			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, inAppName);
+			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, inAppName);
 			// Specify the layout to use when the list of choices appears
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			// Apply the adapter to the spinner

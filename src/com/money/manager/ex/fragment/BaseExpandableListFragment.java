@@ -46,6 +46,7 @@ public abstract class BaseExpandableListFragment extends SherlockExpandableListF
 	// menu items
 	private boolean mDisplayShowCustomEnabled = false;
 	private boolean mShowMenuItemSearch = false;
+	private boolean mMenuItemSearchIconified = true;
 	// flag for tips wildcard
 	private boolean isShowTipsWildcard = false;
 
@@ -112,6 +113,7 @@ public abstract class BaseExpandableListFragment extends SherlockExpandableListF
 						return BaseExpandableListFragment.this.onPreQueryTextChange(newText);
 					}
 				});
+				SearchViewCompat.setIconified(searchView, isMenuItemSearchIconified());
 				itemSearch.setActionView(searchView);
 			} else {
 				SearchView actionSearchView = new SearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
@@ -224,5 +226,13 @@ public abstract class BaseExpandableListFragment extends SherlockExpandableListF
 		this.setResult();
 		// chiudo l'activity dove sono collegato
 		getActivity().finish();
+	}
+
+	public boolean isMenuItemSearchIconified() {
+		return mMenuItemSearchIconified;
+	}
+
+	public void setMenuItemSearchIconified(boolean mMenuItemSearchIconified) {
+		this.mMenuItemSearchIconified = mMenuItemSearchIconified;
 	}
 }

@@ -114,81 +114,10 @@ public class RobotoView {
     	if (view.isInEditMode()) {
     	    return;
     	}
-    	
-    	TypedArray values = context.obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
-    	int typefaceValue = values.getInt(R.styleable.RobotoTextView_typeface, 0);
-    	values.recycle();
-    	
-    	// user-fonts
-    	if (typefaceValue == 0 && getUserFont() != DEFAULT_FONT) {
-    		typefaceValue = getUserFont();
-    		// manage bold or italic
-    		Typeface typeface = view.getTypeface();
-    		if (typeface != null) {
-	    		switch (typefaceValue) {
-				case ROBOTO_LIGHT:
-					if (typeface.isItalic() && typeface.isBold()) {
-						typefaceValue = ROBOTO_BOLD_ITALIC;
-					} else if (typeface.isItalic()) {
-						typefaceValue = ROBOTO_LIGHT_ITALIC;
-					} else if (typeface.isBold()) {
-						typefaceValue = ROBOTO_BOLD;
-					}
-					break;
-				case ROBOTO_REGULAR:
-					if (typeface.isItalic() && typeface.isBold()) {
-						typefaceValue = ROBOTO_BOLD_ITALIC;
-					} else if (typeface.isItalic()) {
-						typefaceValue = ROBOTO_ITALIC;
-					} else if (typeface.isBold()) {
-						typefaceValue = ROBOTO_BOLD;
-					}
-					break;
-				case ROBOTO_MEDIUM:
-					if (typeface.isItalic()) {
-						typefaceValue = ROBOTO_MEDIUM_ITALIC;
-					}
-					break;
-				case ROBOTO_BLACK:
-					if (typeface.isItalic()) {
-						typefaceValue = ROBOTO_BLACK_ITALIC;
-					}
-					break;
-				case ROBOTO_CONDENSED:
-					if (typeface.isItalic() && typeface.isBold()) {
-						typefaceValue = ROBOTO_CONDENSED_BOLD_ITALIC;
-					} else if (typeface.isItalic()) {
-						typefaceValue = ROBOTO_CONDENSED_ITALIC;
-					} else if (typeface.isBold()) {
-						typefaceValue = ROBOTO_CONDENSED_BOLD;
-					}
-					break;
-				case ROBOTO_CONDENSED_LIGHT:
-					if (typeface.isItalic()) {
-						typefaceValue = ROBOTO_CONDENSED_ITALIC;
-					}
-					break;
-				default:
-					break;
-				}
-    		}
-    		// if typefaceValue = -1 default font
-    		if (!(typefaceValue == DEFAULT_FONT)) {
-    			try {
-    				view.setTypeface(RobotoView.obtainTypeface(context, typefaceValue));
-    			} catch (Exception e) {
-    				Log.e(LOGCAT, e.getMessage());
-    			}
-    		}
-		}
-    	
-
-		// set text size
-		if (view.getTextSize() == MoneyManagerApplication.getTextSize()) {
-			if (view.getTextSize() != getUserFontSize()) {
-				view.setTextSize(TypedValue.COMPLEX_UNIT_PX, getUserFontSize());
-			}
-		}
+    	// set type face
+    	setTypefaceView(context, view, attrs);
+    	// set text size
+    	setTextSizeView(context, view, attrs);
     }
     
     /**
@@ -294,5 +223,95 @@ public class RobotoView {
                 throw new IllegalArgumentException("Unknown `typeface` attribute value " + typefaceValue);
         }
         return typeface;
+    }
+    
+    /**
+     * Sets the user typeface to view 
+     * @param context
+     * @param view
+     * @param attrs
+     */
+    public static void setTypefaceView(Context context, TextView view, AttributeSet attrs) {
+    	TypedArray values = context.obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
+    	int typefaceValue = values.getInt(R.styleable.RobotoTextView_typeface, 0);
+    	values.recycle();
+    	
+    	// user-fonts
+    	if (typefaceValue == 0 && getUserFont() != DEFAULT_FONT) {
+    		typefaceValue = getUserFont();
+    		// manage bold or italic
+    		Typeface typeface = view.getTypeface();
+    		if (typeface != null) {
+	    		switch (typefaceValue) {
+				case ROBOTO_LIGHT:
+					if (typeface.isItalic() && typeface.isBold()) {
+						typefaceValue = ROBOTO_BOLD_ITALIC;
+					} else if (typeface.isItalic()) {
+						typefaceValue = ROBOTO_LIGHT_ITALIC;
+					} else if (typeface.isBold()) {
+						typefaceValue = ROBOTO_BOLD;
+					}
+					break;
+				case ROBOTO_REGULAR:
+					if (typeface.isItalic() && typeface.isBold()) {
+						typefaceValue = ROBOTO_BOLD_ITALIC;
+					} else if (typeface.isItalic()) {
+						typefaceValue = ROBOTO_ITALIC;
+					} else if (typeface.isBold()) {
+						typefaceValue = ROBOTO_BOLD;
+					}
+					break;
+				case ROBOTO_MEDIUM:
+					if (typeface.isItalic()) {
+						typefaceValue = ROBOTO_MEDIUM_ITALIC;
+					}
+					break;
+				case ROBOTO_BLACK:
+					if (typeface.isItalic()) {
+						typefaceValue = ROBOTO_BLACK_ITALIC;
+					}
+					break;
+				case ROBOTO_CONDENSED:
+					if (typeface.isItalic() && typeface.isBold()) {
+						typefaceValue = ROBOTO_CONDENSED_BOLD_ITALIC;
+					} else if (typeface.isItalic()) {
+						typefaceValue = ROBOTO_CONDENSED_ITALIC;
+					} else if (typeface.isBold()) {
+						typefaceValue = ROBOTO_CONDENSED_BOLD;
+					}
+					break;
+				case ROBOTO_CONDENSED_LIGHT:
+					if (typeface.isItalic()) {
+						typefaceValue = ROBOTO_CONDENSED_ITALIC;
+					}
+					break;
+				default:
+					break;
+				}
+    		}
+    		// if typefaceValue = -1 default font
+    		if (!(typefaceValue == DEFAULT_FONT)) {
+    			try {
+    				view.setTypeface(RobotoView.obtainTypeface(context, typefaceValue));
+    			} catch (Exception e) {
+    				Log.e(LOGCAT, e.getMessage());
+    			}
+    		}
+		}
+    }
+    
+    /**
+     * Sets the user text size to view
+     * @param context
+     * @param view
+     * @param attrs
+     */
+    public static void setTextSizeView(Context context, TextView view, AttributeSet attrs) {
+    	// set text size
+		if (view.getTextSize() == MoneyManagerApplication.getTextSize()) {
+			if (view.getTextSize() != getUserFontSize()) {
+				view.setTextSize(TypedValue.COMPLEX_UNIT_PX, getUserFontSize());		
+			}
+		}
     }
 }

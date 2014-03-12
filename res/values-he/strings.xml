@@ -3,8 +3,8 @@
 <resources>
   <string name="application_name">Money Manager Ex</string>
   <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
-  <string name="application_definition">יישום לניהול כספים אישי, פשוט וקל לשימוש, לניהול חשבונות בנק, תקציב משפחה, וכן הלאה.</string>
-  <string name="application_credits">פרויקט Money Manager Ex לאנדרואיד משתמש ספריות ActionBarSherlock, ViewPagerIndicator ו- RobotMediaBilling</string>
+  <string name="application_definition">יישום לניהול הכספים האישי, הוא קל ופשוט  לניהול חשבונות בנק, תקציב משפחה, וכן הלאה.</string>
+  <string name="application_credits">פרויקט Money Manager Ex לאנדרואיד משתמש בספריות ActionBarSherlock, ViewPagerIndicator ו- RobotMediaBilling</string>
   <string name="application_license">רשיונות קוד פתוח</string>
   <string name="db_insert_failed">הוספת נתונים נכשלה</string>
   <string name="db_delete_failed">מחיקת נתונים נכשלה</string>
@@ -220,7 +220,7 @@
   <string name="skip_next_occurrence">דלג על מופע הבא</string>
   <string name="notification_repeating_transaction_expired">קימות תנועת חוזרות שמועד פרעונן חלף</string>
   <string name="notification_click_to_check_repeating_transaction">לחץ כדי לבדוק את התנועות שמועד פרעונן חלף</string>
-  <string name="num_repeating_transaction_expired">קימות %1$d תנועת חוזרות שמועד פרעונן חלף</string>
+  <string name="num_repeating_transaction_expired">%1$d  תנועות חוזרות חלף זמנם</string>
   <string name="send_feedback">שלח משוב</string>
   <string name="send_us_your_feedback">שלח לנו משוב</string>
   <string name="preferences_info_application">מידע</string>
@@ -382,12 +382,15 @@
   <string name="never">אף פעם</string>
   <string name="path_database_not_exists">נתיב מסד הנתונים לא קיים</string>
   <string name="database_can_not_open_write">לא ניתן לפתוח את מסד הנתונים לכתיבה</string>
-  <string name="question_import_currencies">האם ברצונך לייבא המטבע?</string>
+  <string name="question_import_currencies">האם  לייבא מטבע?</string>
   <string name="time_frame">מסגרת הזמן</string>
   <string name="show_chart">הצג תרשים</string>
-  <string name="add_transaction">להוסיף תנועה</string>
-  <string name="welcome_header">ברוכים הבאים MoneyManagerEx</string>
+  <string name="add_transaction">הוסף תנועה</string>
+  <string name="welcome_header">ברוכים הבאים ל MoneyManagerEx</string>
   <string name="welcome_body">מודלים MoneyManagerEx כל העסקאות כשייך accounts.\n\nTo לעזור לך להתחיל בעבודה, להתחיל על-ידי הפיכת רשימה של כל מוסדות פיננסיים, איפה אתה מחזיק account.\n\nClick כאן כדי להתחיל להזין את החשבונות שלך.</string>
   <string name="welcome_body_dropbox">אם אתה כבר משתמש MoneyManagerEx על חלונות, לינוקס או Mac קישור יישום זה עם Dropbox כדי לסנכרן את הנתונים שלך</string>
   <string name="configure_dropbox">קביעת תצורה של Dropbox</string>
+  <string name="search_text_contain_title">חיפוש לפי תוכן הטקסט ולא לפי האות בה מתחיל הטקסט</string>
+  <string name="search_text_contain_summary">חפש מוטבים, קטגוריות, מטבעות, וכו \'... על ידי תוכן ולא לפי האות בה מתחיל הטקסט</string>
+  <string name="rate_application">דרג את היישום</string>
 </resources>

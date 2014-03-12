@@ -87,6 +87,9 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 			
 			setListShown(false);
 			getLoaderManager().initLoader(ID_LOADER_CURRENCY, null, this);
+
+			// set iconfied searched
+			setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
 		}
 		
 		@Override

@@ -86,6 +86,9 @@ public class AccountListActivity extends BaseFragmentActivity {
 			setListShown(false);
 			// start loader
 			getLoaderManager().initLoader(ID_LOADER_ACCOUNT, null, this);
+
+			// set iconfied searched
+			setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
 		}
 		
 		@Override

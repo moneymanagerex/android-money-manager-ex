@@ -27,10 +27,10 @@
   <string name="import_export_failed">A Importação / Exportação Falhou</string>
   <string name="dropbox_link">Ligar à Dropbox</string>
   <string name="dropbox_unlink">Desligar da Dropbox</string>
-  <string name="dropbox_listFileProgress">A carregar lista de ficheiros…</string>
-  <string name="dropbox_syncProgress">A sincronizar com a Dropbox…</string>
-  <string name="dropbox_downloadProgress">A descarregar ficheiro da Dropbox…</string>
-  <string name="dropbox_uploadProgress">A carregar ficheiro para a Dropbox…</string>
+  <string name="dropbox_listFileProgress">A carregar lista de ficheiros&#8230;</string>
+  <string name="dropbox_syncProgress">A sincronizar com a Dropbox&#8230;</string>
+  <string name="dropbox_downloadProgress">A descarregar ficheiro da Dropbox&#8230;</string>
+  <string name="dropbox_uploadProgress">A carregar ficheiro para a Dropbox&#8230;</string>
   <string name="dropbox_account">Conta Dropbox</string>
   <string name="dropbox_linkedFile">Ficheiro de ligação da Dropbox</string>
   <string name="dropbox_method">Método de Sincronização Dropbox</string>
@@ -138,7 +138,7 @@
   <string name="logo">Logotipo</string>
   <string name="New">Novo</string>
   <string name="new_edit_transaction">Novo/Editar Movimento</string>
-  <string name="refresh">Recarregar</string>
+  <string name="refresh">Atualizar</string>
   <string name="report_problem">Reportar problema</string>
   <string name="search">Procurar</string>
   <string name="select">Escolher</string>
@@ -155,7 +155,7 @@
   <string name="tell_us_a_problem">Por favor, reporte alguma falha ou problema</string>
   <string name="to">Para</string>
   <string name="website">Website</string>
-  <string name="contact">Contactos</string>
+  <string name="contact">Contacto</string>
   <string name="access_info">Informação de Acesso</string>
   <string name="initial_balance">Saldo inicial</string>
   <string name="currency">Moeda</string>
@@ -220,7 +220,7 @@
   <string name="skip_next_occurrence">Saltar Próxima Ocorrência</string>
   <string name="notification_repeating_transaction_expired">Existem movimentos agendados em atraso</string>
   <string name="notification_click_to_check_repeating_transaction">Clique para marcar o movimento em atraso</string>
-  <string name="num_repeating_transaction_expired">Existem %1$d movimentos agendados em atraso</string>
+  <string name="num_repeating_transaction_expired">%1$d transacções agendadas em atraso</string>
   <string name="send_feedback">Envie Comentários</string>
   <string name="send_us_your_feedback">Envie-nos a sua opinião</string>
   <string name="preferences_info_application">Info</string>
@@ -265,7 +265,7 @@
   <string name="split">Dividir</string>
   <string name="error_split_transaction_empty">Atenção: Por favor, insira pelo menos um valor do movimento dividido</string>
   <string name="export_data_to_csv">Exportar para CSV</string>
-  <string name="export_data_in_progress">A processar os dados de exportação…</string>
+  <string name="export_data_in_progress">A processar os dados de exportação&#8230;</string>
   <string name="export_file_complete">Ficheiro %1$s exportado com sucesso</string>
   <string name="export_file_failed">Ficheiro %1$s falhou a exportação</string>
   <string name="donate_header">O Android Money Manager Ex é fornecido gratuitamente. Se considera esta aplicação útil, apoie a equipa de desenvolvimento com uma pequena doação.</string>
@@ -319,8 +319,8 @@
   <string name="Default">Padrão</string>
   <string name="medium">Média</string>
   <string name="large">Grande</string>
-  <string name="dropbox_download_is_starting">Descarga da Dropbox está a começar. Por favor aguarde…</string>
-  <string name="dropbox_upload_is_starting">Inicio do carregamento para a Dropbox. Por favor aguarde…</string>
+  <string name="dropbox_download_is_starting">Descarga da Dropbox está a começar. Por favor aguarde&#8230;</string>
+  <string name="dropbox_upload_is_starting">Inicio do carregamento para a Dropbox. Por favor aguarde&#8230;</string>
   <string name="menu_report_where_money_goes">Despesas</string>
   <string name="menu_report_where_money_comes_from">Receitas</string>
   <string name="dashclock_extension_summary">Mostrar Resumo do Money Manager Ex</string>
@@ -390,4 +390,7 @@
   <string name="welcome_body">O MoneyManagerEx modela todas as transacções como pertencentes a uma conta.\n\nPara o ajudar a iniciar, comece por fazer uma lista de todos os bancos onde tem uma conta.\n\nClique aqui para inserir as suas contas.</string>
   <string name="welcome_body_dropbox">Se já usa o MoneyManagerEx no Windows , Linux ou Mac, ligue esta aplicação com o Dropbox para sincronizar a sua base de dados</string>
   <string name="configure_dropbox">Configurar o Dropbox</string>
+  <string name="search_text_contain_title">Pesquisar no conteúdo do texto e não por texto a começar por</string>
+  <string name="search_text_contain_summary">Pesquisar beneficiários, categorias, moedas, etc... pelo conteúdo e não pelos caracteres iniciais</string>
+  <string name="rate_application">Avaliar aplicação</string>
 </resources>
