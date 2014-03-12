@@ -41,7 +41,11 @@ public class AccountBillsWidgetService extends RemoteViewsService {
 		}
 		@Override
 		public int getCount() {
-			return mCursor.getCount();
+			if (mCursor != null) {
+				return mCursor.getCount();
+			} else {
+				return 0;
+			}
 		}
 		@Override
 		public long getItemId(int position) {

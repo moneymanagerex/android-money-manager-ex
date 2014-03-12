@@ -366,7 +366,9 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		//categories
 		if (txtSelectCategory.getTag() != null) {
 			CategorySub categorySub = (CategorySub)txtSelectCategory.getTag();
-			whereClause.add(ViewAllData.CategID + "=" + categorySub.categId + " AND " + ViewAllData.SubcategID + "=" + categorySub.subCategId);
+			whereClause.add(ViewAllData.CategID + "=" + categorySub.categId);
+			if (categorySub.subCategId != -1)
+				whereClause.add(ViewAllData.SubcategID + "=" + categorySub.subCategId);
 		}
 		//from amount
 		if (txtFromAmount.getTag() != null) {
