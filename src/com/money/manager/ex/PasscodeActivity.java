@@ -52,29 +52,31 @@ public class PasscodeActivity extends SherlockActivity {
 			@Override
 			public void onClick(View v) {
 				ImageButton click = (ImageButton) v;
-				EditText getFocus = (EditText) getWindow().getCurrentFocus();
-				if (getFocus != null && click.getTag() != null) {
-					getFocus.setText(click.getTag().toString());
-					//quick-fix convert 'switch' to 'if-else'
-					if (getFocus.getId() == R.id.editTextPasscode1) {
-						((EditText) findViewById(R.id.editTextPasscode2)).requestFocus();
-					} else if (getFocus.getId() == R.id.editTextPasscode2) {
-						((EditText) findViewById(R.id.editTextPasscode3)).requestFocus();
-					} else if (getFocus.getId() == R.id.editTextPasscode3) {
-						((EditText) findViewById(R.id.editTextPasscode4)).requestFocus();
-					} else if (getFocus.getId() == R.id.editTextPasscode4) {
-						((EditText) findViewById(R.id.editTextPasscode5)).requestFocus();
-					} else if (getFocus.getId() == R.id.editTextPasscode5) {
-						Intent result = new Intent();
-						// set result
-						result.putExtra(INTENT_RESULT_PASSCODE, ((EditText) findViewById(R.id.editTextPasscode1)).getText().toString()
-								+ ((EditText) findViewById(R.id.editTextPasscode2)).getText().toString()
-								+ ((EditText) findViewById(R.id.editTextPasscode3)).getText().toString()
-								+ ((EditText) findViewById(R.id.editTextPasscode4)).getText().toString()
-								+ ((EditText) findViewById(R.id.editTextPasscode5)).getText().toString());
-						// return result
-						setResult(RESULT_OK, result);
-						finish();
+				if (getWindow().getCurrentFocus() != null && getWindow().getCurrentFocus() instanceof EditText) {
+					EditText getFocus = (EditText) getWindow().getCurrentFocus();
+					if (getFocus != null && click.getTag() != null) {
+						getFocus.setText(click.getTag().toString());
+						//quick-fix convert 'switch' to 'if-else'
+						if (getFocus.getId() == R.id.editTextPasscode1) {
+							((EditText) findViewById(R.id.editTextPasscode2)).requestFocus();
+						} else if (getFocus.getId() == R.id.editTextPasscode2) {
+							((EditText) findViewById(R.id.editTextPasscode3)).requestFocus();
+						} else if (getFocus.getId() == R.id.editTextPasscode3) {
+							((EditText) findViewById(R.id.editTextPasscode4)).requestFocus();
+						} else if (getFocus.getId() == R.id.editTextPasscode4) {
+							((EditText) findViewById(R.id.editTextPasscode5)).requestFocus();
+						} else if (getFocus.getId() == R.id.editTextPasscode5) {
+							Intent result = new Intent();
+							// set result
+							result.putExtra(INTENT_RESULT_PASSCODE, ((EditText) findViewById(R.id.editTextPasscode1)).getText().toString()
+									+ ((EditText) findViewById(R.id.editTextPasscode2)).getText().toString()
+									+ ((EditText) findViewById(R.id.editTextPasscode3)).getText().toString()
+									+ ((EditText) findViewById(R.id.editTextPasscode4)).getText().toString()
+									+ ((EditText) findViewById(R.id.editTextPasscode5)).getText().toString());
+							// return result
+							setResult(RESULT_OK, result);
+							finish();
+						}
 					}
 				}
 			}
