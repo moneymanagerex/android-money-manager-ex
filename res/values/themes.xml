@@ -79,6 +79,7 @@
         <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_dark</item>
         <item name="ic_action_upload">@drawable/ic_action_upload_dark</item>
+        <item name="ic_action_tag">@drawable/ic_action_tag_dark</item>
         <item name="ic_action_tags">@drawable/ic_action_tags_dark</item>
         <item name="ic_action_tick">@drawable/ic_action_tick_dark</item>
         <item name="ic_action_trash">@drawable/ic_action_trash_dark</item>
@@ -131,6 +132,7 @@
         <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
         <item name="ic_action_upload">@drawable/ic_action_upload_dark</item>
+        <item name="ic_action_tag">@drawable/ic_action_tag_dark</item>
         <item name="ic_action_tags">@drawable/ic_action_tags_dark</item>
         <item name="ic_action_tick">@drawable/ic_action_tick_dark</item>
         <item name="ic_action_trash">@drawable/ic_action_trash_dark</item>
@@ -183,6 +185,7 @@
         <item name="ic_action_sort_1">@drawable/ic_action_sort_1_light</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
         <item name="ic_action_upload">@drawable/ic_action_upload_light</item>
+        <item name="ic_action_tag">@drawable/ic_action_tag_light</item>
         <item name="ic_action_tags">@drawable/ic_action_tags_light</item>
         <item name="ic_action_tick">@drawable/ic_action_tick_light</item>
         <item name="ic_action_trash">@drawable/ic_action_trash_light</item>

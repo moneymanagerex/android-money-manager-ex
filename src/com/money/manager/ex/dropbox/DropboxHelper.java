@@ -73,6 +73,8 @@ public class DropboxHelper {
 	DropboxAPI<AndroidAuthSession> mDropboxApi;
 	// flag status upload immediatle
 	private static boolean mDelayedUploadImmediate = false;
+	// flag temp disable auto upload
+	private static boolean mDisableAutoUpload = false;
 	
 	/**
 	 * Get a singleton of dropbox. if object don't exists it does create
@@ -95,6 +97,7 @@ public class DropboxHelper {
 	public static void notifyDataChanged() {
 		if (mHelper == null) return;
 		if (!mHelper.isLinked()) return;
+		if (isDisableAutoUpload()) return;
 		// save the last modified date
 		File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
 		mHelper.setDateLastModified(database.getName(), Calendar.getInstance().getTime());
@@ -295,6 +298,14 @@ public class DropboxHelper {
 			return false;
 	}
 	
+	public static boolean isDisableAutoUpload() {
+		return mDisableAutoUpload;
+	}
+
+	public static void setDisableAutoUpload(boolean mDisableAutoUpload) {
+		DropboxHelper.mDisableAutoUpload = mDisableAutoUpload;
+	}
+
 	/**
 	 * Send a broadcast intent for start service shceduled
 	 */

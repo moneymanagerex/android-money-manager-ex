@@ -295,6 +295,21 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 	}
 
 	public void onCreateScreenPreferenceGeneral() {
+		// application locale
+		final ListPreference lstLocaleApp = (ListPreference) findPreference(PreferencesConstant.PREF_LOCALE);
+		if (lstLocaleApp != null) {
+			String summary = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(PreferencesConstant.PREF_LOCALE, "");
+			setSummaryListPreference(lstLocaleApp, summary, R.array.application_locale_values, R.array.application_locale_entries);
+			lstLocaleApp.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					setSummaryListPreference(preference, String.valueOf(newValue), R.array.application_locale_values, R.array.application_locale_entries);
+					MainActivity.setRestartActivity(true);
+					return true;
+				}
+			});
+		}
 		// preference username
 		final Preference pUserName = findPreference(PreferencesConstant.PREF_USER_NAME);
 		if (pUserName != null) {

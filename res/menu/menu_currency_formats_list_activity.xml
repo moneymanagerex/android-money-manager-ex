@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item
+        android:id="@+id/menu_update_exchange_rate"
+        android:icon="?attr/ic_action_reload"
+        android:showAsAction="always"
+        android:title="@string/update_menu_currency_exchange_rates"/>
+    <item
+        android:id="@+id/menu_import_all_currencies"
+        android:icon="?attr/ic_action_download"
+        android:showAsAction="ifRoom"
+        android:title="@string/import_all_currencies"/>
+    <item
+        android:id="@+id/menu_add_currency"
+        android:icon="?attr/ic_action_add"
+        android:showAsAction="always"
+        android:title="@string/add"/>
+
+
+</menu>

@@ -43,8 +43,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.MenuItem;
+import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.MoneySimpleCursorAdapter;
 import com.money.manager.ex.database.SQLTypeTransacion;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -173,7 +173,9 @@ public class PayeeActivity extends BaseFragmentActivity {
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			switch (loader.getId()) {
 			case ID_LOADER_PAYEE:
-				((SimpleCursorAdapter)getListAdapter()).swapCursor(data);
+				MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+				adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
+				adapter.swapCursor(data);
 				if (isResumed()) {
 	                setListShown(true);
 	            } else {

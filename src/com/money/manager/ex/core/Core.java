@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormatSymbols;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Currency;
@@ -26,7 +27,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.TextView;
@@ -158,7 +162,40 @@ public class Core {
 		
 		return new File(folderOutput + "/" + filesFromCopy.get(0).getName());
 	}
+	
+	/**
+	 * Method, which allows you to change the language of the application
+	 * @param languageToLoad
+	 * @return
+	 */
+	public boolean changeLocaleApp(String languageToLoad) {
+		try {
+			// load locale
+		    Locale locale;
+		    if (!TextUtils.isEmpty(languageToLoad)) {
+		    	locale = new Locale(languageToLoad);
+		    } else {
+		    	locale = Locale.getDefault();
+		    }
+		    Locale.setDefault(locale);
+		    // change locale to configuration
+		    Configuration config = new Configuration();
+		    config.locale = locale;
+		    // set new locale
+		    context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+		} catch (Exception e) {
+			Log.e(LOGCAT, e.getMessage());
+			return false;
+		}
+		return true;
+	}
 
+	/**
+	 * Method that allows you to make a copy of file
+	 * @param src Source file
+	 * @param dst Destination file
+	 * @throws IOException
+	 */
 	public void copy(File src, File dst) throws IOException {
 	    InputStream in = new FileInputStream(src);
 	    OutputStream out = new FileOutputStream(dst);
@@ -173,10 +210,21 @@ public class Core {
 	    out.close();
 	}
 	
+	/**
+	 * Method, which formats the default currency amount in TextView
+	 * @param view TextView to set the amount
+	 * @param amount to be formatted
+	 */
 	public void formatAmountTextView(TextView view, float amount) {
 		formatAmountTextView(view, amount, null);
 	}
 
+	/**
+	 * Method, which formats the default currency amount in TextView
+	 * @param view TextView to set the amount
+	 * @param amount to be formatted
+	 * @param currencyId Id currency to be formatted
+	 */
 	public void formatAmountTextView(TextView view, float amount, Integer currencyId) {
 		CurrencyUtils currencyUtils = new CurrencyUtils(context);
 		
@@ -209,6 +257,10 @@ public class Core {
 		}
 	}
 	
+	/**
+	 * Method, which returns the last payee used
+	 * @return last payee used
+	 */
 	public TablePayee getLastPayeeUsed() {
 		MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(context);
 		SQLiteDatabase database = helper.getReadableDatabase();
@@ -394,6 +446,39 @@ public class Core {
 		return map;
 	}
 	
+	/**
+	 * This method allows to highlight in bold the content of a search string
+	 * @param search string
+	 * @param originalText string where to find
+	 * @return CharSequence modified
+	 */
+	public CharSequence highlight(String search, String originalText) {
+		if (TextUtils.isEmpty(search))
+			return originalText;
+	    // ignore case and accents
+	    // the same thing should have been done for the search text
+	    String normalizedText = Normalizer.normalize(originalText, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
+
+	    int start = normalizedText.indexOf(search.toLowerCase());
+	    if (start < 0) {
+	        // not found, nothing to to
+	        return originalText;
+	    } else {
+	        // highlight each appearance in the original text
+	        // while searching in normalized text
+	        Spannable highlighted = new SpannableString(originalText);
+	        while (start >= 0) {
+	            int spanStart = Math.min(start, originalText.length());
+	            int spanEnd = Math.min(start + search.length(), originalText.length());
+
+	            highlighted.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), spanStart, spanEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+	            start = normalizedText.indexOf(search, spanEnd);
+	        }
+	        return highlighted;
+	    }
+	}
+	
 	public boolean importCurrenciesFromLocaleAvaible() {
 		Locale[] locales = Locale.getAvailableLocales();
 		TableCurrencyFormats tableCurrencyFormats = new TableCurrencyFormats();
@@ -435,6 +520,10 @@ public class Core {
 		return true;
 	}
 	
+	/**
+	 * Method, which allows you to initialize the database with the settings of the device. It should be called only when you first start
+	 * @return true if initialization succeed, otherwise false
+	 */
 	public boolean initDatabase() {
 		// get an instance of database for writing
 		MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(context);

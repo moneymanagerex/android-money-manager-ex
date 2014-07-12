@@ -1,17 +1,34 @@
 package com.money.manager.ex.core;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.os.StrictMode;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -25,6 +42,7 @@ import com.money.manager.ex.database.TableInfoTable;
 
 public class CurrencyUtils {
 	private static final String LOGCAT = CurrencyUtils.class.getSimpleName();
+	private static final String URL_FREE_CURRENCY_CONVERT_API = "http://www.freecurrencyconverterapi.com/api/convert?q=SYMBOL&compact=y";
 	// context
 	private Context mContext;
 	// TableInfoTable
@@ -85,6 +103,82 @@ public class CurrencyUtils {
 	public static void destroy() {
 		mCurrencies = null;
 		mBaseCurrencyId = null;
+	}
+	
+	public Float doCurrencyExchange(Integer toCurrencyId, float toAmount, Integer fromCurrencyId) {
+		TableCurrencyFormats fromCurrencyFormats = getTableCurrencyFormats(fromCurrencyId);
+		TableCurrencyFormats toCurrencyFormats = getTableCurrencyFormats(toCurrencyId);
+		// check if exists from and to currencies
+		if (fromCurrencyFormats == null || toCurrencyFormats == null)
+			return null;
+		// exchange
+		return (float) ((toAmount * toCurrencyFormats.getBaseConvRate()) / fromCurrencyFormats.getBaseConvRate());
+	}
+	
+	public boolean updateCurrencyRateFromBase(Integer toCurrencyId) {
+		return updateCurrencyRate(getBaseCurrencyId(), toCurrencyId);
+	}
+	
+	public boolean updateCurrencyRate(Integer fromCurrencyId, Integer toCurrencyId) {
+		TableCurrencyFormats fromCurrencyFormats = getTableCurrencyFormats(fromCurrencyId);
+		TableCurrencyFormats toCurrencyFormats = getTableCurrencyFormats(toCurrencyId);
+		// check if exists from and to currencies
+		if (fromCurrencyFormats == null || toCurrencyFormats == null)
+			return false;
+		// take symbol from and to currencies
+		String fromSymbol = fromCurrencyFormats.getCurrencySymbol();
+		String toSymbol = toCurrencyFormats.getCurrencySymbol();
+		// check if symbol is empty
+		if (TextUtils.isEmpty(fromSymbol) || TextUtils.isEmpty(toSymbol))
+			return false;
+		// compose symbol
+		String symbolRate = fromSymbol + "-" + toSymbol;
+		// compose url
+		String url = URL_FREE_CURRENCY_CONVERT_API.replace("SYMBOL", symbolRate);
+		// check if DEBUG
+		if (BuildConfig.DEBUG) {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		    StrictMode.setThreadPolicy(policy); 
+		}
+		// compose connection
+		StringBuilder stringBuilder = new StringBuilder();
+		HttpClient client = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(url);
+		try {
+			HttpResponse httpResponse = client.execute(httpGet);
+			StatusLine statusLine = httpResponse.getStatusLine();
+			if (statusLine.getStatusCode() == 200) {
+				HttpEntity httpEntity = httpResponse.getEntity();
+				InputStream inputStream = httpEntity.getContent();
+				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+				String line;
+				while ((line = bufferedReader.readLine()) != null) {
+					stringBuilder.append(line);
+				}
+				// close buffer and stream
+				bufferedReader.close();
+				inputStream.close();
+				// convert string builder in json object
+				JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+				JSONObject jsonRate = jsonObject.getJSONObject(symbolRate);
+				Float rate = (float) jsonRate.getDouble("val");
+				// update value on database
+				ContentValues contentValues = new ContentValues();
+				contentValues.put(TableCurrencyFormats.BASECONVRATE, rate);
+
+				return mContext.getContentResolver().update(toCurrencyFormats.getUri(), contentValues, TableCurrencyFormats.CURRENCYID + "=" + Integer.toString(toCurrencyId), null) > 0;
+			}
+		} catch (ClientProtocolException e) {
+			Log.e(LOGCAT, e.getMessage());
+			return false;
+		} catch (IOException e) {
+			Log.e(LOGCAT, e.getMessage());
+			return false;
+		} catch (JSONException e) {
+			Log.e(LOGCAT, e.getMessage());
+			return false;
+		}
+		return true;
 	}
 	
 	/**

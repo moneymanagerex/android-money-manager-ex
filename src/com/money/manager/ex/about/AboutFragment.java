@@ -81,12 +81,12 @@ public class AboutFragment extends SherlockFragment {
 		clickListenerRate.setUrl("http://play.google.com/store/apps/details?id=com.money.manager.ex");
 		txtRate.setOnClickListener(clickListenerRate);
 		// report set link
-		TextView txtReport = (TextView)view.findViewById(R.id.textViewLinkProblem);
+		TextView txtReport = (TextView)view.findViewById(R.id.textViewLinkWebSite);
 		text = "<u>" + (String) txtReport.getText() + "</u>";
 		txtReport.setText(Html.fromHtml(text));
 		txtReport.setMovementMethod(LinkMovementMethod.getInstance());
 		OnClickListenerUrl clickListenerFeedback = new OnClickListenerUrl();
-		clickListenerFeedback.setUrl("http://code.google.com/p/android-money-manager-ex/issues/list");
+		clickListenerFeedback.setUrl("http://www.moneymanagerex.org");
 		txtReport.setOnClickListener(clickListenerFeedback);
 		// image view google plus
 		OnClickListenerUrl clickListenerGooglePlus = new OnClickListenerUrl();

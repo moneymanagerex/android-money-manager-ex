@@ -215,7 +215,37 @@
         <item>@string/upcoming_transactions</item>
     </string-array>
 
-
+    <!-- Locale -->
+	<string-array name="application_locale_entries">
+	    <item>@string/Default</item>
+	    <item>@string/locale_cs</item>
+	    <item>@string/locale_en</item>
+	    <item>@string/locale_es</item>
+	    <item>@string/locale_fr</item>
+	    <item>@string/locale_he</item>
+	    <item>@string/locale_it</item>
+	    <item>@string/locale_pt</item>
+	    <item>@string/locale_pt_BR</item>
+	    <item>@string/locale_ru</item>
+	    <item>@string/locale_vi</item>
+	    <item>@string/locale_zh_rCN</item>
+	    <item>@string/locale_zh_rTW</item>
+	</string-array>
+	<string-array name="application_locale_values">
+	    <item></item>
+	    <item>cs</item>
+	    <item>en</item>
+	    <item>es</item>
+	    <item>fr</item>
+	    <item>he</item>
+	    <item>it</item>
+	    <item>pt</item>
+	    <item>pt-BR</item>
+	    <item>ru</item>
+	    <item>vi</item>
+	    <item>zh-rCN</item>
+	    <item>zh-rTW</item>
+	</string-array>
     <!-- Date format -->
     <string-array name="date_format">
         <item>DD/MM/YY</item>

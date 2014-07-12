@@ -16,12 +16,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <LinearLayout
+       	<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_padding_side"
-            android:paddingRight="@dimen/activity_padding_side" >
+            android:paddingRight="@dimen/activity_padding_side" 
+            android:animateLayoutChanges="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,23 +128,6 @@
                 android:focusableInTouchMode="false"
                 android:textStyle="bold" />
 
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/headerTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/total_amount"
-                android:textStyle="bold" />
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewTotAmount"
-                style="?attr/styleHoloSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:textStyle="bold" />
-
             <LinearLayout
                 android:id="@+id/tableRowAmount"
                 android:layout_width="match_parent"
@@ -151,9 +135,12 @@
                 android:orientation="vertical" >
 
                 <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewHeaderAmount"
                     style="?attr/headerTextViewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:text="@string/amount"
                     android:textStyle="bold" />
 
@@ -167,6 +154,26 @@
                     android:focusableInTouchMode="false"
                     android:textStyle="bold" />
             </LinearLayout>
+            
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewHeaderTotalAmount"
+                style="?attr/headerTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/total_amount"
+                android:textStyle="bold" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewTotAmount"
+                style="?attr/styleHoloSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/tableRowPayee"

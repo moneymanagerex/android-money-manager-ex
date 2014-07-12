@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -260,7 +262,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		setContentView(R.layout.repeatingtransaction_activity);
 		// take a reference view into layout
 		txtPayee = (TextView)findViewById(R.id.textViewPayee);
-		txtCaptionAmount = (TextView)findViewById(R.id.textViewTotAmount);
+		txtCaptionAmount = (TextView)findViewById(R.id.textViewHeaderTotalAmount);
 		txtRepeats = (TextView)findViewById(R.id.textViewRepeat);
 		txtTimesRepeated = (TextView)findViewById(R.id.textViewTimesRepeated);
 
@@ -289,18 +291,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 			}
 		};
 		
-		// get currency id
-		Integer currencyId = null;
-		if (spinAccount.getSelectedItemPosition() >= 0 && spinAccount.getSelectedItemPosition() < mAccountList.size()) {
-			currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
-		}
-		txtTotAmount = (TextView)findViewById(R.id.editTextTotAmount);
-		txtTotAmount.setOnClickListener(onClickAmount);
-		core.formatAmountTextView(txtTotAmount, mTotAmount, currencyId);
-		
-		txtAmount = (TextView)findViewById(R.id.editTextAmount);
-		txtAmount.setOnClickListener(onClickAmount);
-		core.formatAmountTextView(txtAmount, mAmount, currencyId);
 		
 		// accountlist <> to populate the spin
 		mAccountList = new MoneyManagerOpenHelper(this).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
@@ -308,6 +298,16 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 			mAccountNameList.add(mAccountList.get(i).getAccountName());
 			mAccountIdList.add(mAccountList.get(i).getAccountId());
 		}
+		
+		txtTotAmount = (TextView)findViewById(R.id.editTextTotAmount);
+		txtTotAmount.setOnClickListener(onClickAmount);
+		core.formatAmountTextView(txtTotAmount, mTotAmount, getCurrencyIdFromAccountId(!Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId));
+		
+		txtAmount = (TextView)findViewById(R.id.editTextAmount);
+		txtAmount.setOnClickListener(onClickAmount);
+		//core.formatAmountTextView(txtAmount, mAmount, currencyId);
+		core.formatAmountTextView(txtAmount, mAmount, getCurrencyIdFromAccountId(!Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mToAccountId : mAccountId));
+		
 		// create adapter for spinAccount
 		ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, mAccountNameList);
 		adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -319,8 +319,15 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		spinAccount.setOnItemSelectedListener(new OnItemSelectedListener() {
 	           @Override
 	           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+	        	   Core core = new Core(getBaseContext());
 					if ((position >= 0) && (position <= mAccountIdList.size())) {
 						mAccountId = mAccountIdList.get(position);
+						if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+							core.formatAmountTextView(txtAmount, (Float)txtAmount.getTag(), getCurrencyIdFromAccountId(mAccountId)); 
+						} else {
+							core.formatAmountTextView(txtTotAmount, (Float)txtTotAmount.getTag(), getCurrencyIdFromAccountId(mAccountId));
+						}
+						refreshHeaderAmount();
 					}
 				}
 
@@ -336,9 +343,13 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		}
 		spinToAccount.setOnItemSelectedListener(new OnItemSelectedListener() {
 	           @Override
-	           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+	           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) { 
 					if ((position >= 0) && (position <= mAccountIdList.size())) {
 						mToAccountId = mAccountIdList.get(position);
+						Core core = new Core(getBaseContext());
+						core.formatAmountTextView(txtAmount, (Float)txtAmount.getTag(), getCurrencyIdFromAccountId(mAccountId));
+						core.formatAmountTextView(txtTotAmount, (Float)txtTotAmount.getTag(), getCurrencyIdFromAccountId(mToAccountId));
+						refreshHeaderAmount();
 					}
 				}
 
@@ -743,11 +754,19 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 	}
 	
 	public void refreshTransCode() {
+		TextView txtFromAccount = (TextView)findViewById(R.id.textViewFromAccount);
+		TextView txtToAccount = (TextView)findViewById(R.id.textViewToAccount);
+		
+		txtFromAccount.setText(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? R.string.from_account : R.string.account);
+		txtToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+		
 		txtCaptionAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
 		txtAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
 		spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
 		txtPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
 		txtSelectPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+		
+		refreshHeaderAmount();
 	}
 	/**
 	 * validate data insert in activity
@@ -792,13 +811,77 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 	public void onFinishedInputAmountDialog(int id, Float amount) {
 		Core core = new Core(this);
 		
-		TextView view = (TextView) findViewById(id);
-		if (view != null) {
-			Integer currencyId = null;
-			if (spinAccount.getSelectedItemPosition() >= 0 && spinAccount.getSelectedItemPosition() < mAccountList.size()) {
-				currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
+		View view = findViewById(id);
+		int accountId;
+		if (view != null && view instanceof TextView) {
+			CurrencyUtils currencyUtils = new CurrencyUtils(this);
+			if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+				Float originalAmount;
+				try {
+					Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(id == R.id.textViewTotAmount ? mAccountId : mToAccountId)).getCurrencyId();
+					Integer fromCurrencyId = mAccountList.get(mAccountIdList.indexOf(id == R.id.textViewTotAmount ? mToAccountId : mAccountId)).getCurrencyId();
+					// take a original values 
+					originalAmount = id == R.id.textViewTotAmount ? (Float)txtTotAmount.getTag() : (Float)txtAmount.getTag();
+					// convert value
+					Float amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
+					// take original amount converted
+					originalAmount = id == R.id.textViewTotAmount ? (Float)txtAmount.getTag() : (Float)txtTotAmount.getTag();
+					if (originalAmount == null)
+						originalAmount = 0f;
+					// check if two values is equals, and then convert value
+					DecimalFormat decimalFormat = new DecimalFormat("0.00");
+					if (originalAmount == 0) {
+						if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
+							amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+							core.formatAmountTextView(id == R.id.textViewTotAmount ? txtAmount : txtTotAmount, amountExchange, getCurrencyIdFromAccountId(id == R.id.textViewTotAmount ? mAccountId : mToAccountId));
+						}
+					}
+					
+				} catch (Exception e) {
+					Log.e(LOGCAT, e.getMessage());
+				}
 			}
-			core.formatAmountTextView(view, amount, currencyId);
+			if (txtTotAmount.equals(view)) {
+				if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+					accountId = mToAccountId;
+				} else {
+					accountId = mAccountId;
+				}
+			} else {
+				accountId = mAccountId;
+			}
+			core.formatAmountTextView((TextView) view, amount, getCurrencyIdFromAccountId(accountId));
+		}
+	}
+	
+	public void refreshHeaderAmount() {
+		TextView txtHeaderTotAmount = (TextView)findViewById(R.id.textViewHeaderTotalAmount);
+		TextView txtHeaderAmount = (TextView)findViewById(R.id.textViewHeaderAmount);
+		
+		if (txtHeaderAmount == null || txtHeaderTotAmount == null)
+			return;
+		
+		if (!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
+			txtHeaderTotAmount.setText(R.string.total_amount);
+			txtHeaderAmount.setText(R.string.amount);
+		} else {
+			int index = mAccountIdList.indexOf(mAccountId); 
+			if (index >= 0) {
+				txtHeaderAmount.setText(getString(R.string.withdrawal_from, mAccountList.get(index).getAccountName()));
+			}
+			index = mAccountIdList.indexOf(mToAccountId);
+			if (index >= 0) {
+				txtHeaderTotAmount.setText(getString(R.string.deposit_to, mAccountList.get(index).getAccountName()));
+			}
+		}
+	}
+	
+	
+	public Integer getCurrencyIdFromAccountId(int accountId) {
+		try {
+			return mAccountList.get(mAccountIdList.indexOf(accountId)).getCurrencyId();
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return null;
 		}
 	}
 }

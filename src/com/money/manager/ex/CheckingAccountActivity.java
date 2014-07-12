@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	public List<TableAccountList> mAccountList;
 	public String mToAccountName;
 	public int mTransId = -1;
-	public String mTransCode, mStatus;
+	public String mTransCode, mStatus = null;
 	// info payee
 	public int mPayeeId = -1;
 	public String mPayeeName;
@@ -242,7 +243,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 					for (int i = 0; i < mSplitTransaction.size(); i ++) {
 						totAmount += mSplitTransaction.get(i).getSplitTransAmount();
 					}
-					formatAmount(txtTotAmount, totAmount);
+					formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
 				}
 				// deleted item
 				if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
@@ -303,7 +304,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 			}
 			mIntentAction = getIntent().getAction();
 			if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
-				mStatus = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_STATUS, "");
+				if (mStatus == null)
+					mStatus = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_STATUS, "");
+				
 				if ("L".equals(PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_PAYEE, "N"))) {
 					AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
 						@Override
@@ -371,6 +374,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 					if ((position >= 0) && (position <= mAccountIdList.size())) {
 						mAccountId = mAccountIdList.get(position);
+						if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+							formatAmount(txtAmount, (Float)txtAmount.getTag(), mAccountId); 
+						} else {
+							formatAmount(txtTotAmount, (Float)txtTotAmount.getTag(), mAccountId);
+						}
+						refreshHeaderAmount();
 					}
 				}
 
@@ -394,6 +403,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 					if ((position >= 0) && (position <= mAccountIdList.size())) {
 						mToAccountId = mAccountIdList.get(position);
+						formatAmount(txtAmount, (Float)txtAmount.getTag(), mAccountId); 
+						formatAmount(txtTotAmount, (Float)txtTotAmount.getTag(), mToAccountId);
+						refreshHeaderAmount();
 					}
 				}
 
@@ -550,9 +562,18 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 			@Override
 			public void onClick(View v) {
 				Integer currencyId = null;
-				if (spinAccount.getSelectedItemPosition() >= 0
-						&& spinAccount.getSelectedItemPosition() < mAccountList.size()) {
-					currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
+				if (txtTotAmount.equals(v)) {
+					if (spinAccount.getSelectedItemPosition() >= 0 && spinAccount.getSelectedItemPosition() < mAccountList.size()) {
+						if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+							currencyId = mAccountList.get(spinToAccount.getSelectedItemPosition()).getCurrencyId();
+						} else {
+							currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
+						}
+					}
+				} else {
+					if (spinToAccount.getSelectedItemPosition() >= 0 && spinToAccount.getSelectedItemPosition() < mAccountList.size()) {
+						currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
+					}
 				}
 				float amount = (Float)((TextView) v).getTag();
 				InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
@@ -562,14 +583,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		
 		// total amount
 		txtTotAmount = (TextView)findViewById(R.id.textViewTotAmount);
-		formatAmount(txtTotAmount, mTotAmount);
+		formatAmount(txtTotAmount, mTotAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
 
 		// on click open dialog
 		txtTotAmount.setOnClickListener(onClickAmount);
 		
 		// amount
 		txtAmount = (TextView)findViewById(R.id.textViewAmount);
-		formatAmount(txtAmount, mAmount);
+		formatAmount(txtAmount, mAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mToAccountId : mAccountId);
 
 		// on click open dialog
 		txtAmount.setOnClickListener(onClickAmount);
@@ -646,13 +667,54 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		outState.putString(KEY_NEXT_OCCURRENCE, mNextOccurrence);
 		
 		outState.putString(KEY_ACTION, mIntentAction);
+		
 	}
 	
 	@Override
 	public void onFinishedInputAmountDialog(int id, Float amount) {
 		View view = findViewById(id);
-		if (view != null && view instanceof TextView)
-			formatAmount(((TextView)view), amount);
+		int accountId;
+		if (view != null && view instanceof TextView) {
+			CurrencyUtils currencyUtils = new CurrencyUtils(this);
+			if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+				Float originalAmount;
+				try {
+					/*Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(mAccountId)).getCurrencyId();
+					Integer fromCurrencyId = mAccountList.get(mAccountIdList.indexOf(mToAccountId)).getCurrencyId();*/
+					Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(view.getId() == R.id.textViewTotAmount ? mAccountId : mToAccountId)).getCurrencyId();
+					Integer fromCurrencyId = mAccountList.get(mAccountIdList.indexOf(view.getId() == R.id.textViewTotAmount ? mToAccountId : mAccountId)).getCurrencyId();
+					// take a original values 
+					originalAmount = view.getId() == R.id.textViewTotAmount ? (Float)txtTotAmount.getTag() : (Float)txtAmount.getTag();
+					// convert value
+					Float amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
+					// take original amount converted
+					originalAmount = view.getId() == R.id.textViewTotAmount ? (Float)txtAmount.getTag() : (Float)txtTotAmount.getTag();
+					if (originalAmount == null)
+						originalAmount = 0f;
+					// check if two values is equals, and then convert value
+					if (originalAmount == 0) {
+						DecimalFormat decimalFormat = new DecimalFormat("0.00");
+						if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
+							amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+							formatAmount(view.getId() == R.id.textViewTotAmount ? txtAmount : txtTotAmount, amountExchange, view.getId() == R.id.textViewTotAmount ? mAccountId : mToAccountId);
+						}						
+					}
+					
+				} catch (Exception e) {
+					Log.e(LOGCAT, e.getMessage());
+				}
+			}
+			if (txtTotAmount.equals(view)) {
+				if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+					accountId = mToAccountId;
+				} else {
+					accountId = mAccountId;
+				}
+			} else {
+				accountId = mAccountId;
+			}
+			formatAmount(((TextView)view), amount, accountId);
+		}
 	}
 	
 	@Override
@@ -813,6 +875,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		mTransNumber = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
 		mNotes = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NOTES));
 		mDate = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
+		mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
 		
 		getAccountName(mToAccountId);
 		getPayeeName(mPayeeId);
@@ -829,11 +892,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		}
 	}
 
-	public void formatAmount(TextView view, float amount) {
+	public void formatAmount(TextView view, float amount, Integer accountId) {
 		// take currency id
 		Integer currencyId = null;
-		if (spinAccount.getSelectedItemPosition() >= 0 && spinAccount.getSelectedItemPosition() < mAccountList.size()) {
-			currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
+		
+		int index = mAccountIdList.indexOf(accountId);
+		
+		if (index >= 0) {
+			currencyId = mAccountList.get(index).getCurrencyId();
 		}
 		
 		CurrencyUtils currencyUtils = new CurrencyUtils(this);
@@ -852,11 +918,15 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		
 		txtSelectCategory.setText("");
 		
-		if (!TextUtils.isEmpty(mCategoryName)) {
-			txtSelectCategory.setText(mCategoryName);
-			if (!TextUtils.isEmpty(mSubCategoryName)) {
-				txtSelectCategory.setText(Html.fromHtml(txtSelectCategory.getText() + " : <i>" + mSubCategoryName + "</i>"));
+		if (!chbSplitTransaction.isChecked()) {
+			if (!TextUtils.isEmpty(mCategoryName)) {
+				txtSelectCategory.setText(mCategoryName);
+				if (!TextUtils.isEmpty(mSubCategoryName)) {
+					txtSelectCategory.setText(Html.fromHtml(txtSelectCategory.getText() + " : <i>" + mSubCategoryName + "</i>"));
+				}
 			}
+		} else {
+			txtSelectCategory.setText("\u2026");
 		}
 	}
 	
@@ -881,8 +951,32 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		tableRowPayee.setVisibility(!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) ? View.VISIBLE : View.GONE);
 		tableRowAmmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
 		spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+		
+		refreshHeaderAmount();
 	}
 
+	public void refreshHeaderAmount() {
+		TextView txtHeaderTotAmount = (TextView)findViewById(R.id.textViewHeaderTotalAmount);
+		TextView txtHeaderAmount = (TextView)findViewById(R.id.textViewHeaderAmount);
+		
+		if (txtHeaderAmount == null || txtHeaderTotAmount == null)
+			return;
+		
+		if (!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
+			txtHeaderTotAmount.setText(R.string.total_amount);
+			txtHeaderAmount.setText(R.string.amount);
+		} else {
+			int index = mAccountIdList.indexOf(mAccountId); 
+			if (index >= 0) {
+				txtHeaderAmount.setText(getString(R.string.withdrawal_from, mAccountList.get(index).getAccountName()));
+			}
+			index = mAccountIdList.indexOf(mToAccountId);
+			if (index >= 0) {
+				txtHeaderTotAmount.setText(getString(R.string.deposit_to, mAccountList.get(index).getAccountName()));
+			}
+		}
+	}
+	
 	/**
 	 * validate data insert in activity
 	 * @return

@@ -43,6 +43,7 @@ public class PreferencesConstant {
     public static final String PREF_DEFAULT_STATUS = "prefdefaultstatus";
     public static final String PREF_DEFAULT_PAYEE = "prefdefaultpayee";
     public static final String PREF_TEXT_SEARCH_TYPE = "preftextsearchtype";
+    public static final String PREF_LOCALE = "preflocale";
     // others preference setting don't display
     public static final String PREF_DROPBOX_ACCOUNT_PREFS_NAME = "com.money.manager.ex_dropbox_preferences";
 	public static final String PREF_DROPBOX_ACCESS_KEY_NAME = "ACCESS_KEY";

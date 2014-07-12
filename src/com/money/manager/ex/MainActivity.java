@@ -38,6 +38,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -75,6 +76,7 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.preferences.PreferencesActivity;
+import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
@@ -318,7 +320,7 @@ public class MainActivity extends BaseFragmentActivity {
 		// transaction
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		// animation
-		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+		transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
 		// Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack
 		if (isDualPanel()) {
@@ -436,6 +438,9 @@ public class MainActivity extends BaseFragmentActivity {
 		super.onCreate(savedInstanceState);
 		
 		Core core = new Core(this);
+		
+		String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(PreferencesConstant.PREF_LOCALE, "");
+		core.changeLocaleApp(locale);
 		
 		// close notification
 		NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

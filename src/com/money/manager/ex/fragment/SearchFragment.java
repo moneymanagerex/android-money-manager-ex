@@ -404,7 +404,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		//add fragment
 		FragmentTransaction transaction = getSherlockActivity().getSupportFragmentManager().beginTransaction();
 		//animation
-		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+		transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
 		// Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack
 		if (isDualPanel()) {

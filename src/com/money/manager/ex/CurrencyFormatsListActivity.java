@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+o * Copyright (C) 2012 The Android Money Manager Ex Project
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 package com.money.manager.ex;
+
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -44,11 +46,14 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
+import com.money.manager.ex.core.ActivityUtils;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.MoneySimpleCursorAdapter;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 /**
@@ -58,11 +63,7 @@ import com.money.manager.ex.fragment.BaseListFragment;
  * 
  */
 public class CurrencyFormatsListActivity extends BaseFragmentActivity {
-	public static class CurrencyFormatsLoaderListFragment extends BaseListFragment
-		implements LoaderManager.LoaderCallbacks<Cursor> {
-		// ID menu item
-		private static final int MENU_ITEM_IMPORT_ALL_CURRENCIES = 0;
-		private static final int MENU_ITEM_ADD = 1;
+	public static class CurrencyFormatsLoaderListFragment extends BaseListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 		// filter
 		private String mCurFilter;
 		private int mLayout;
@@ -159,15 +160,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 		@Override
 		public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
-			Core core = new Core(getSherlockActivity());
-			// item add
-            MenuItem menuItem = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
-            menuItem.setIcon(core.resolveIdAttribute(R.attr.ic_action_add));
-            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-            // item import currencies
-            menuItem = menu.add(0, MENU_ITEM_IMPORT_ALL_CURRENCIES, MENU_ITEM_IMPORT_ALL_CURRENCIES, R.string.import_all_currencies);
-            menuItem.setIcon(core.resolveIdAttribute(R.attr.ic_action_download));
-            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+			inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
         }
 		
         @Override
@@ -182,7 +175,10 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			switch (loader.getId()) {
 			case ID_LOADER_CURRENCY:
-				((SimpleCursorAdapter)getListAdapter()).swapCursor(data);
+				MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+				adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
+				adapter.swapCursor(data);
+				
 	            if (isResumed()) {
 	                setListShown(true);
 	            } else {
@@ -194,13 +190,16 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 			switch (item.getItemId()) {
-			case MENU_ITEM_IMPORT_ALL_CURRENCIES:
+			case R.id.menu_import_all_currencies:
 				showDialogImportAllCurrencies();
 				return true;
 				
-			case MENU_ITEM_ADD:
+			case R.id.menu_add_currency:
 				startCurrencyFormatActivity(null);
 				return true; 
+				
+			case R.id.menu_update_exchange_rate:
+				showDialogUpdateExchangeRateCurrencies();
 			}
 			return super.onOptionsItemSelected(item);
 		}
@@ -311,6 +310,30 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 			alertDialog.create().show();
 		}
 		
+		private void showDialogUpdateExchangeRateCurrencies() {
+			// config alert dialog
+			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+			alertDialog.setTitle(R.string.attention);
+			alertDialog.setMessage(R.string.question_update_currency_exchange_rates);
+			// set listener on positive button
+			alertDialog.setPositiveButton(android.R.string.ok,
+					new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							updateRateCurrencies();
+						}
+					});
+			// set listener on negative button
+			alertDialog.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+			// create dialog and show
+			alertDialog.create().show();
+		}
+		
 		/**
 		 * Import all currencies from Android System
 		 */
@@ -338,6 +361,84 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 					} catch (Exception e){
 						Log.e(LOGCAT, e.getMessage());
 					}
+					super.onPostExecute(result);
+				}
+			};
+			asyncTask.execute();
+		}
+		
+		public void updateRateCurrencies() {
+			AsyncTask<Void, Integer, Boolean> asyncTask =  new AsyncTask<Void, Integer, Boolean>() {
+				private ProgressDialog dialog = null;
+				private int mCountCurrencies = 0;
+				private TableCurrencyFormats mCurrencyFormat;
+				
+				private Core mCore;
+				
+				private int mPrevOrientation;
+				
+				@Override
+				protected void onPreExecute() {
+					super.onPreExecute();
+					
+					mPrevOrientation = ActivityUtils.forceCurrentOrientation(getSherlockActivity());
+					
+					mCore = new Core(getSherlockActivity());
+					DropboxHelper.setDisableAutoUpload(true);
+					
+					//getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+					
+					dialog = new ProgressDialog(getSherlockActivity());
+					// setting dialog
+					dialog.setMessage(getString(R.string.start_currency_exchange_rates));
+					dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			        dialog.setCancelable(false); 
+			        dialog.setCanceledOnTouchOutside(false);
+			        // show dialog
+			        dialog.show();
+				}
+				
+				@Override
+				protected Boolean doInBackground(Void... params) {
+					CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
+					List<TableCurrencyFormats> currencyFormats = currencyUtils.getAllCurrencyFormats();
+					mCountCurrencies = currencyFormats.size();
+					for(int i = 0; i < currencyFormats.size(); i ++) {
+						mCurrencyFormat = currencyFormats.get(i);
+						currencyUtils.updateCurrencyRateFromBase(mCurrencyFormat.getCurrencyId());
+						publishProgress(new Integer[] {i});
+					}
+					return Boolean.TRUE;
+				}
+				
+				@Override
+				protected void onProgressUpdate(Integer... values) {
+					super.onProgressUpdate(values);
+					if (dialog != null) {
+						dialog.setMax(mCountCurrencies);
+						dialog.setProgress(values[0]);
+						if (mCurrencyFormat != null) {
+							dialog.setMessage(mCore.highlight(mCurrencyFormat.getCurrencyName(), getString(R.string.update_currency_exchange_rates, mCurrencyFormat.getCurrencyName())));
+						}
+					}
+				}
+				
+				@Override
+				protected void onPostExecute(Boolean result) {
+					try {
+						if (dialog != null)
+							dialog.hide();
+					} catch (Exception e){
+						Log.e(LOGCAT, e.getMessage());
+					}
+					if (result)
+						Toast.makeText(getSherlockActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
+
+					DropboxHelper.setDisableAutoUpload(false);
+					DropboxHelper.notifyDataChanged();
+					
+					ActivityUtils.restoreOrientation(getSherlockActivity(), mPrevOrientation);
+					
 					super.onPostExecute(result);
 				}
 			};

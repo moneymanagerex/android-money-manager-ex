@@ -47,7 +47,13 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 	
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		return mSubCategories.get(mCategories.get(groupPosition)).get(childPosition);
+		if (groupPosition < mCategories.size()) {
+			TableCategory category = mCategories.get(groupPosition);
+			List<QueryCategorySubCategory> categorySubCategories = mSubCategories.get(category);
+			if (childPosition < categorySubCategories.size())
+				return categorySubCategories.get(childPosition);
+		}
+		return null;
 	}
 
 	@Override
@@ -70,16 +76,20 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 		}
 		holder = (ViewHolderChild)convertView.getTag();
 		
-		holder.text1.setText(((QueryCategorySubCategory)getChild(groupPosition, childPosition)).getSubCategName());
-		holder.text2.setText(((QueryCategorySubCategory)getChild(groupPosition, childPosition)).getCategName());
+		QueryCategorySubCategory categorySubCategory = (QueryCategorySubCategory)getChild(groupPosition, childPosition);
 		
-		holder.text2.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
-		
-		boolean isChildSelected = mIdChildChecked == ((QueryCategorySubCategory)getChild(groupPosition, childPosition)).getSubCategId();
-		if (holder.text1 instanceof CheckedTextView) {
-			((CheckedTextView)holder.text1).setChecked(isChildSelected);
-		} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			convertView.setBackgroundColor(mContext.getResources().getColor(isChildSelected ? R.color.holo_blue_light : android.R.color.transparent));
+		if (categorySubCategory != null) {
+			holder.text1.setText(categorySubCategory.getSubCategName());
+			holder.text2.setText(categorySubCategory.getCategName());
+			
+			holder.text2.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+			
+			boolean isChildSelected = mIdChildChecked == ((QueryCategorySubCategory)getChild(groupPosition, childPosition)).getSubCategId();
+			if (holder.text1 instanceof CheckedTextView) {
+				((CheckedTextView)holder.text1).setChecked(isChildSelected);
+			} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+				convertView.setBackgroundColor(mContext.getResources().getColor(isChildSelected ? R.color.holo_blue_light : android.R.color.transparent));
+			}
 		}
 		
 		return convertView;

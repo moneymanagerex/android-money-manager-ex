@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +52,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SQLTypeTransacion;
@@ -69,9 +71,8 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 
 		private static final String KEY_ID_GROUP = "CategorySubCategory:idGroup";
 		private static final String KEY_ID_CHILD = "CategorySubCategory:idChild";
-		
-		private static final int SUBMENU_ITEM_ADD_CATEGORY = 2;
-		private static final int SUBMENU_ITEM_ADD_SUBCATEGORY = 3;
+		private static final String KEY_CUR_FILTER = "CategorySubCategory:curFilter";
+
 		private int mLayout;
 		
 		private int mIdGroupChecked = ExpandableListView.INVALID_POSITION;
@@ -83,6 +84,8 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 		private List<TableCategory> mCategories;
 		private HashMap<TableCategory, List<QueryCategorySubCategory>> mSubCategories;
 		
+		private ArrayList<Integer> mPositionToExpand;
+		
 		private String mCurFilter;
 		
 		@Override
@@ -91,6 +94,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 			if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
 				outState.putInt(KEY_ID_GROUP, ((CategoryExpandableListAdapter)getExpandableListAdapter()).getIdGroupChecked());
 				outState.putInt(KEY_ID_CHILD, ((CategoryExpandableListAdapter)getExpandableListAdapter()).getIdChildChecked());
+				outState.putString(KEY_CUR_FILTER, mCurFilter);
 			}
 		}
 		
@@ -102,12 +106,15 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 			
 			mCategories = new ArrayList<TableCategory>();
 			mSubCategories =  new HashMap<TableCategory, List<QueryCategorySubCategory>>();
+			mPositionToExpand = new ArrayList<Integer>();
 			
 			if (savedInstanceState != null) {
 				if (savedInstanceState.containsKey(KEY_ID_GROUP))
 					mIdGroupChecked = savedInstanceState.getInt(KEY_ID_GROUP);
 				if (savedInstanceState.containsKey(KEY_ID_CHILD))
 					mIdChildChecked = savedInstanceState.getInt(KEY_ID_CHILD);
+				if (savedInstanceState.containsKey(KEY_CUR_FILTER))
+					mCurFilter = savedInstanceState.getString(KEY_CUR_FILTER, ""); 
 			}
 			// set visibile search menu
 			setShowMenuItemSearch(true);
@@ -176,9 +183,9 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 			int child = ExpandableListView.getPackedPositionChild(info.packedPosition);
 			
 			int categId = ExpandableListView.INVALID_POSITION;
-			String categName = "";
+			CharSequence categName = "";
 			int subCategId = ExpandableListView.INVALID_POSITION;
-			String subCategName = "";
+			CharSequence subCategName = "";
 			
 			if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
 				categId = mCategories.get(group).getCategId();
@@ -213,10 +220,10 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 			int child = ExpandableListView.getPackedPositionChild(info.packedPosition);
 			
 			if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-				menu.setHeaderTitle(mCategories.get(group).getCategName());
+				menu.setHeaderTitle(mCategories.get(group).getCategName().toString());
 			} else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
 				QueryCategorySubCategory subCategory = mSubCategories.get(mCategories.get(group)).get(child);
-				menu.setHeaderTitle(subCategory.getCategName() + ": " + subCategory.getSubCategName());
+				menu.setHeaderTitle(subCategory.getCategName().toString() + ": " + subCategory.getSubCategName().toString());
 			}
 			// context menu from resource
 			String[] menuItems = getResources().getStringArray(R.array.context_menu);
@@ -256,8 +263,9 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 			super.onCreateOptionsMenu(menu, inflater);
             
             // create submenu from item add
-            menu.addSubMenu(0, SUBMENU_ITEM_ADD_CATEGORY, SUBMENU_ITEM_ADD_CATEGORY, R.string.add_category);
-            menu.addSubMenu(0, SUBMENU_ITEM_ADD_SUBCATEGORY, SUBMENU_ITEM_ADD_SUBCATEGORY, R.string.add_subcategory);
+            /*menu.addSubMenu(0, SUBMENU_ITEM_ADD_CATEGORY, SUBMENU_ITEM_ADD_CATEGORY, R.string.add_category);
+            menu.addSubMenu(0, SUBMENU_ITEM_ADD_SUBCATEGORY, SUBMENU_ITEM_ADD_SUBCATEGORY, R.string.add_subcategory);*/
+			inflater.inflate(R.menu.menu_category_sub_category_expandable_list, menu);
             
         }
 
@@ -274,6 +282,10 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 		public CategoryExpandableListAdapter getAdapter(Cursor data) {
 			mCategories.clear();
 			mSubCategories.clear();
+			mPositionToExpand.clear();
+			// create core and fixed string filter to hightlight
+			Core core = new Core(getActivity());
+			String filter = mCurFilter != null ? mCurFilter.replace("%", "") : "";
 			// compose list and hashmap
 			if (data != null && data.moveToFirst()) {
 				int key = -1;
@@ -289,7 +301,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 						// create instance cateogry
 						TableCategory category = new TableCategory();
 						category.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
-						category.setCategName(data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME)));
+						category.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
 						// add list
 						mCategories.add(category);
 						listSubCategories = new ArrayList<QueryCategorySubCategory>();
@@ -299,11 +311,18 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 						QueryCategorySubCategory subCategory = new QueryCategorySubCategory(getSherlockActivity());
 						// subcategory
 						subCategory.setSubCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)));
-						subCategory.setSubCategName(data.getString(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME)));
+						subCategory.setSubCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME))));
 						subCategory.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
-						subCategory.setCategName(data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME)));
-						// add to hashmao
+						subCategory.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
+						// add to hashmap
 						listSubCategories.add(subCategory);
+						// check if expand group
+						if (!TextUtils.isEmpty(filter)) {
+							String normalizedText = Normalizer.normalize(subCategory.getSubCategName(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
+							if ((normalizedText.indexOf(filter) >= 0) && (!mPositionToExpand.contains(mCategories.size() - 1))) {
+								mPositionToExpand.add(mCategories.size() - 1);
+							}
+						}
 					}
 					
 					data.moveToNext();
@@ -328,16 +347,20 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 	            } else {
 	                setListShownNoAnimation(true);
 	            }
+	            
+	            for(int i = 0; i < mPositionToExpand.size(); i ++) {
+	            	getExpandableListView().expandGroup(mPositionToExpand.get(i));
+	            }
 			}
 		}
 
 		@Override
 		public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 			switch (item.getItemId()) {
-			case SUBMENU_ITEM_ADD_CATEGORY:
+			case R.id.menu_add_category:
 				showDialogEditCategName(SQLTypeTransacion.INSERT, -1, null);
 				break;
-			case SUBMENU_ITEM_ADD_SUBCATEGORY:
+			case R.id.menu_add_subcategory:
 				showDialogEditSubCategName(SQLTypeTransacion.INSERT, -1, -1, null);
 			}
 			return super.onOptionsItemSelected(item);
@@ -377,16 +400,16 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 										if (mSubCategories.get(mCategories.get(group)).get(child).getSubCategId() == subCategId) {
 											result = new Intent();
 											result.putExtra(INTENT_RESULT_CATEGID, categId);
-											result.putExtra(INTENT_RESULT_CATEGNAME, mSubCategories.get(mCategories.get(group)).get(child).getCategName());
+											result.putExtra(INTENT_RESULT_CATEGNAME, mSubCategories.get(mCategories.get(group)).get(child).getCategName().toString());
 											result.putExtra(INTENT_RESULT_SUBCATEGID, subCategId);
-											result.putExtra(INTENT_RESULT_SUBCATEGNAME, mSubCategories.get(mCategories.get(group)).get(child).getSubCategName());
+											result.putExtra(INTENT_RESULT_SUBCATEGNAME, mSubCategories.get(mCategories.get(group)).get(child).getSubCategName().toString());
 											break;
 										}
 									}
 								} else {
 									result = new Intent();
 									result.putExtra(INTENT_RESULT_CATEGID, categId);
-									result.putExtra(INTENT_RESULT_CATEGNAME, mCategories.get(group).getCategName());
+									result.putExtra(INTENT_RESULT_CATEGNAME, mCategories.get(group).getCategName().toString());
 									result.putExtra(INTENT_RESULT_SUBCATEGID, subCategId);
 									result.putExtra(INTENT_RESULT_SUBCATEGNAME, "");
 								}
@@ -473,7 +496,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 		/**
 		 * Show alter dialog, for create or edit new category
 		 */
-		private void showDialogEditCategName(final SQLTypeTransacion type, final int categoryId, final String categName) {
+		private void showDialogEditCategName(final SQLTypeTransacion type, final int categoryId, final CharSequence categName) {
 			final TableCategory category = new TableCategory();
 			// inflate view
 			View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
@@ -528,7 +551,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 		/**
 		 * Show alter dialog, for create or edit new category
 		 */
-		private void showDialogEditSubCategName(final SQLTypeTransacion type, final int categoryId, final int subCategoryId, final String subCategName) {
+		private void showDialogEditSubCategName(final SQLTypeTransacion type, final int categoryId, final int subCategoryId, final CharSequence subCategName) {
 			final TableSubCategory subCategory = new TableSubCategory();
 			// inflate view
 			View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
@@ -551,7 +574,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 			ArrayList<Integer> categId = new ArrayList<Integer>();
 			for (TableCategory category : categories) {
 				categId.add(category.getCategId());
-				categName.add(category.getCategName());
+				categName.add(category.getCategName().toString());
 			}
 			ArrayAdapter<String> adapterCategory = new ArrayAdapter<String>(getActivity(), R.layout.sherlock_spinner_item, categName);
 			adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

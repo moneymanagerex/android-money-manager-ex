@@ -42,6 +42,7 @@
         <attr name="ic_action_sort_1" format="reference" />
         <attr name="ic_action_warning" format="reference" />
         <attr name="ic_action_upload" format="reference" />
+        <attr name="ic_action_tag" format="reference" />
         <attr name="ic_action_tags" format="reference" />
         <attr name="ic_action_tick" format="reference" />
         <attr name="ic_action_trash" format="reference" />

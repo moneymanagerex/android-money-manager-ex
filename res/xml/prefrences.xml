@@ -2,6 +2,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceScreen android:title="@string/preferences_general" >
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/application_locale_entries"
+            android:entryValues="@array/application_locale_values"
+            android:key="@string/pref_locale"
+            android:title="@string/locale_application" />
+        
         <EditTextPreference
             android:key="@string/pref_user_name"
             android:summary="@string/username"

@@ -3,26 +3,26 @@ package com.money.manager.ex.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableSplitTransactions;
+import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 
-public class SplitItemFragment extends Fragment {
+public class SplitItemFragment extends SherlockFragment implements InputAmountDialogListener {
 	public interface SplitItemFragmentCallbacks {
 		public void onRemoveItem(TableSplitTransactions object);
 	}
@@ -38,8 +38,8 @@ public class SplitItemFragment extends Fragment {
 	private TableSplitTransactions mSplitObject;
 	
 	private SplitItemFragmentCallbacks mOnSplitItemCallback;
-	private Button btnSelectCategory;
-	private EditText edtAmount;
+	private TextView txtSelectCategory;
+	private TextView txtAmount;
 	
 	private Spinner spinTransCode;
 
@@ -52,8 +52,8 @@ public class SplitItemFragment extends Fragment {
 	
 	public TableSplitTransactions getTableSplitTransactions() {
 		String selectItem = spinTransCode.getSelectedItem().toString();
-		if (!TextUtils.isEmpty(edtAmount.getText())) {
-			mSplitObject.setSplitTransAmount(Float.parseFloat(edtAmount.getText().toString()) * (selectItem.equals(getString(R.string.withdrawal)) ? 1 : -1));
+		if (txtAmount.getTag() != null) {
+			mSplitObject.setSplitTransAmount((Float)txtAmount.getTag() * (selectItem.equals(getString(R.string.withdrawal)) ? 1 : -1));
 		} else {
 			mSplitObject.setSplitTransAmount(0);
 		}
@@ -64,12 +64,14 @@ public class SplitItemFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case REQUEST_PICK_CATEGORY:
-			Button btnSelectCategory = (Button) getView().findViewById(R.id.buttonSelectCategory);
-			btnSelectCategory.setText(R.string.select_category);
-			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-				mSplitObject.setCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1));
-				mSplitObject.setSubCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1));
-				btnSelectCategory.setText(new Core(getActivity()).getCategSubName(mSplitObject.getCategId(), mSplitObject.getSubCategId()));
+			TextView txtSelectCategory = (TextView) getView().findViewById(R.id.textViewCategory);
+			if (txtSelectCategory != null) {
+				txtSelectCategory.setText(null);
+				if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+					mSplitObject.setCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1));
+					mSplitObject.setSubCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1));
+					txtSelectCategory.setText(new Core(getSherlockActivity()).getCategSubName(mSplitObject.getCategId(), mSplitObject.getSubCategId()));
+				}
 			}
 		}
 
@@ -85,31 +87,50 @@ public class SplitItemFragment extends Fragment {
 			mSplitObject = savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
 		}
 		
+		Core core = new Core(getSherlockActivity());
+		
 		final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.item_splittransaction, null);
 		if (layout != null) {
 			// amount
-			edtAmount = (EditText) layout.findViewById(R.id.editTextTotAmount);
+			txtAmount = (TextView) layout.findViewById(R.id.editTextTotAmount);
 			if (!(mSplitObject.getSplitTransAmount() == 0)) {
-				edtAmount.setText(Float.toString(Math.abs(mSplitObject.getSplitTransAmount())));
+				core.formatAmountTextView(txtAmount, mSplitObject.getSplitTransAmount());
 			}
+			txtAmount.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Float amount = (Float)((TextView) v).getTag();
+					if (amount == null) 
+						amount = 0f;
+					
+					if (getSherlockActivity() instanceof SplitTransactionsActivity) {
+						SplitTransactionsActivity activity = (SplitTransactionsActivity)getSherlockActivity();
+						activity.setFragmentInputAmountClick(SplitItemFragment.this);
+					}
+					
+					InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+					dialog.show(getSherlockActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+				}
+			});
 			// type
 			spinTransCode = (Spinner) layout.findViewById(R.id.spinnerTransCode);
 			String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
-			ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getActivity(), R.layout.sherlock_spinner_item, transCodeItems);
+			ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getSherlockActivity(), R.layout.sherlock_spinner_item, transCodeItems);
 			adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinTransCode.setAdapter(adapterTrans);
 			spinTransCode.setSelection(mSplitObject.getSplitTransAmount() >= 0 ? 0 : 1, true);
-			Core core = new Core(getActivity());
+
 			// category and subcategory
-			btnSelectCategory = (Button) layout.findViewById(R.id.buttonSelectCategory);
+			txtSelectCategory = (TextView) layout.findViewById(R.id.textViewCategory);
 			String buttonText = core.getCategSubName(mSplitObject.getCategId(), mSplitObject.getSubCategId());
-			btnSelectCategory.setText(TextUtils.isEmpty(buttonText) ? getString(R.string.select_category) : buttonText);
+			txtSelectCategory.setText(buttonText);
 			
-			btnSelectCategory.setOnClickListener(new OnClickListener() {
+			txtSelectCategory.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(getActivity(), CategorySubCategoryExpandableListActivity.class);
+					Intent intent = new Intent(getSherlockActivity(), CategorySubCategoryExpandableListActivity.class);
 					intent.setAction(Intent.ACTION_PICK);
 					startActivityForResult(intent, REQUEST_PICK_CATEGORY);
 				}
@@ -120,7 +141,7 @@ public class SplitItemFragment extends Fragment {
 				
 				@Override
 				public void onClick(View v) {
-					FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+					FragmentTransaction transaction = getSherlockActivity().getSupportFragmentManager().beginTransaction();
 					transaction.remove(SplitItemFragment.this);
 					transaction.commit();
 					if (getOnSplitItemCallback() != null) {
@@ -146,5 +167,15 @@ public class SplitItemFragment extends Fragment {
 	 */
 	public void setOnSplitItemCallback(SplitItemFragmentCallbacks splitItemCallback) {
 		this.mOnSplitItemCallback = splitItemCallback;
+	}
+
+	@Override
+	public void onFinishedInputAmountDialog(int id, Float amount) {
+		Core core = new Core(getSherlockActivity());
+		if (txtAmount.getId() == id) {
+			txtAmount.setTag(amount);
+			mSplitObject.setSplitTransAmount(amount);
+			core.formatAmountTextView(txtAmount, amount);
+		}
 	}
 }

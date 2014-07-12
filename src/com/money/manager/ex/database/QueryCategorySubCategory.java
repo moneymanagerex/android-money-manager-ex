@@ -33,10 +33,10 @@ public class QueryCategorySubCategory extends Dataset {
 	public static final String CATEGSUBNAME = "CATEGSUBNAME";
 	//definizione dei campi
 	private int categId;
-	private String categName;
+	private CharSequence categName;
 	private int subCategId;
-	private String subCategName;
-	private String categSubName;
+	private CharSequence subCategName;
+	private CharSequence categSubName;
 	// definizione del costruttore
 	public QueryCategorySubCategory(Context context) {
 		super(MoneyManagerApplication.getRawAsString(context, R.raw.query_categorysubcategory), DatasetType.QUERY, "categorysubcategory");
@@ -48,31 +48,31 @@ public class QueryCategorySubCategory extends Dataset {
 	public int getCategId() {
 		return categId;
 	}
-	public String getCategName() {
+	public CharSequence getCategName() {
 		return categName;
 	}
-	public String getCategSubName() {
+	public CharSequence getCategSubName() {
 		return categSubName;
 	}
 	public int getSubCategId() {
 		return subCategId;
 	}
-	public String getSubCategName() {
+	public CharSequence getSubCategName() {
 		return subCategName;
 	}
 	public void setCategId(int categId) {
 		this.categId = categId;
 	}
-	public void setCategName(String categName) {
+	public void setCategName(CharSequence categName) {
 		this.categName = categName;
 	}
-	public void setCategSubName(String categSubName) {
+	public void setCategSubName(CharSequence categSubName) {
 		this.categSubName = categSubName;
 	}
 	public void setSubCategId(int subCategId) {
 		this.subCategId = subCategId;
 	}
-	public void setSubCategName(String subCategName) {
+	public void setSubCategName(CharSequence subCategName) {
 		this.subCategName = subCategName;
 	}
 	@Override

@@ -14,10 +14,11 @@ import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.fragment.SplitItemFragment;
 import com.money.manager.ex.fragment.SplitItemFragment.SplitItemFragmentCallbacks;
 
-public class SplitTransactionsActivity extends BaseFragmentActivity implements SplitItemFragmentCallbacks {
+public class SplitTransactionsActivity extends BaseFragmentActivity implements SplitItemFragmentCallbacks, InputAmountDialogListener {
 	public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
 	public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
 	public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitTransactionsActivity:ResultSplitTransaction";
@@ -28,6 +29,8 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 	private ArrayList<TableSplitTransactions> mSplitTransactions = null;
 	private ArrayList<TableSplitTransactions> mSplitDeleted = null;
 	private static int mIdTag = 0x8000;
+	
+	private SplitItemFragment mFragmentInputAmountClick;
 	
 	private void addFragmentChild(TableSplitTransactions object) {
 		String nameFragment = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(object.getSplitTransId() == -1 ? mIdTag ++ : object.getSplitTransId());
@@ -60,6 +63,8 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// set dialog mode
+		setDialogMode(true);
 		// load intent
 		if (getIntent() != null) {
 			mSplitTransactions = getIntent().getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
@@ -72,36 +77,13 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 		
 		// set view
 		setContentView(R.layout.splittransaction_activity);
-		// button ok and abort
-		Button btnOk = (Button)findViewById(R.id.buttonOk);
-		btnOk.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				ArrayList<TableSplitTransactions> items = getAllTableSplitTransaction();
-				// check data
-				for (int i = 0; i < items.size(); i ++) {
-					TableSplitTransactions item = items.get(i);
-					if (item.getCategId() == -1 && item.getCategId() == -1) {
-						Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected).show();
-						return;
-					}
-				}
-				Intent result = new Intent();
-				result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION, items);
-				result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
-				setResult(RESULT_OK, result);
-				finish();
-			}
-		});
 		
-		Button btnCancell = (Button)findViewById(R.id.buttonCancel);
-		btnCancell.setOnClickListener(new OnClickListener() {
+		Button buttonAdd = (Button)findViewById(R.id.buttonAdd);
+		buttonAdd.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				setResult(RESULT_CANCELED);
-				finish();
+				addFragmentChild(new TableSplitTransactions());
 			}
 		});
 		
@@ -115,9 +97,9 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// item add
-		MenuItem itemadd = menu.add(MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, R.string.add);
+		/*MenuItem itemadd = menu.add(MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, R.string.add);
 		itemadd.setIcon(new Core(this).resolveIdAttribute(R.attr.ic_action_add));
-		itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+		itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);*/
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -145,5 +127,49 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 		super.onSaveInstanceState(outState);
 		if (mSplitDeleted != null) 
 			outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
+	}
+	
+	@Override
+	public boolean onActionCancelClick() {
+		setResult(RESULT_CANCELED);
+		finish();
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onActionDoneClick() {
+		ArrayList<TableSplitTransactions> items = getAllTableSplitTransaction();
+		// check data
+		for (int i = 0; i < items.size(); i ++) {
+			TableSplitTransactions item = items.get(i);
+			if (item.getCategId() == -1 && item.getCategId() == -1) {
+				Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected).show();
+				return false;
+			}
+		}
+		Intent result = new Intent();
+		result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION, items);
+		result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
+		setResult(RESULT_OK, result);
+		finish();
+		
+		return true;
+	}
+
+	@Override
+	public void onFinishedInputAmountDialog(int id, Float amount) {
+		SplitItemFragment fragment = getFragmentInputAmountClick();
+		if (fragment != null && fragment.isVisible() && fragment.isResumed()) {
+			fragment.onFinishedInputAmountDialog(id, amount);
+		}
+	}
+
+	public SplitItemFragment getFragmentInputAmountClick() {
+		return mFragmentInputAmountClick;
+	}
+
+	public void setFragmentInputAmountClick(SplitItemFragment mFragmentInputAmountClick) {
+		this.mFragmentInputAmountClick = mFragmentInputAmountClick;
 	}
 }

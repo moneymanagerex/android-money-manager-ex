@@ -57,7 +57,7 @@ public class AllDataAdapter extends CursorAdapter {
 	private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
 	// define cursor field
 	private String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE, TOACCOUNTID, TOTRANSAMOUNT, CURRENCYID, PAYEE,
-			ACCOUNTNAME, TOACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES;
+			ACCOUNTNAME, TOACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES, TOCURRENCYID;
 	
 	private LayoutInflater mInflater;
 	private MoneyManagerApplication mApplication;
@@ -130,6 +130,8 @@ public class AllDataAdapter extends CursorAdapter {
 		}
 		// take transaction amount
 		float amount = cursor.getFloat(cursor.getColumnIndex(AMOUNT));
+		// set currency id
+		setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
 		// manage transfer and change amount sign
 		if ((cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)) != null) &&
 			(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)))))  {
@@ -137,10 +139,9 @@ public class AllDataAdapter extends CursorAdapter {
 				amount = -(amount); // -total
 			} else if (getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
 				amount = cursor.getFloat(cursor.getColumnIndex(TOTRANSAMOUNT)); // to account = account
+				setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
 			}
 		}
-		// set currency id
-		setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
 		// check amount sign
 		CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
 		txtAmount.setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), amount));
@@ -337,6 +338,7 @@ public class AllDataAdapter extends CursorAdapter {
 		TOACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountID : QueryBillDeposits.TOACCOUNTID;
 		TOTRANSAMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TOTRANSAMOUNT : QueryBillDeposits.TOTRANSAMOUNT;
 		CURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.CURRENCYID : QueryBillDeposits.CURRENCYID;
+		TOCURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToCurrencyID : QueryBillDeposits.CURRENCYID;
 		PAYEE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Payee : QueryBillDeposits.PAYEENAME;
 		ACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.AccountName : QueryBillDeposits.ACCOUNTNAME;
 		TOACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountName : QueryBillDeposits.TOACCOUNTNAME;

@@ -25,7 +25,7 @@ public class TableCategory extends Dataset {
 	public static final String CATEGNAME = "CATEGNAME";
 	// definizione dei campi
 	private int categId;
-	private String categName;
+	private CharSequence categName;
 	// costruttore
 	public TableCategory() {
 		super("category_v1", DatasetType.TABLE, "category");
@@ -57,13 +57,13 @@ public class TableCategory extends Dataset {
 	/**
 	 * @return the categName
 	 */
-	public String getCategName() {
+	public CharSequence getCategName() {
 		return categName;
 	}
 	/**
 	 * @param categName the categName to set
 	 */
-	public void setCategName(String categName) {
+	public void setCategName(CharSequence categName) {
 		this.categName = categName;
 	}
 }

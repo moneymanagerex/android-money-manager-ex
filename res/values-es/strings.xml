@@ -282,7 +282,7 @@
   <string name="ascending">Ascendente</string>
   <string name="descending">Descendente</string>
   <string name="sorting_month">Mes de ordenamiento</string>
-  <string name="dropbox_empty_folder">La carpeta en Dropbox/Apps/Money Manager Ex Mobile está vacía</string>
+  <string name="dropbox_empty_folder">La carpeta en Dropbox/Apps/Money Manager Ex Mobile está vacía. Si ya utilizas MoneyManagerEx copia tu base de datos a esta carpeta en tu ordenador, y después actualiza.</string>
   <string name="dropbox_select_file">Selecciona el Archivo en Dropbox</string>
   <string name="last_modified">Última fecha de modificación</string>
   <string name="select_dropbox_file">Selecciona el Archivo Remoto en Dropbox</string>
@@ -394,4 +394,24 @@
   <string name="search_text_contain_title">Buscando textos que contengas y no textos que comiencen con</string>
   <string name="search_text_contain_summary">Buscar beneficiarios, categorías, divisas,  etc... por contenido y no por los caracteres iniciales</string>
   <string name="rate_application">Valorar Aplicación</string>
+  <string name="locale_application">Lenguaje de la Aplicación</string>
+  <string name="locale_cs">Checo</string>
+  <string name="locale_en">Inglés</string>
+  <string name="locale_es">Español</string>
+  <string name="locale_fr">Francés</string>
+  <string name="locale_he">Hebreo</string>
+  <string name="locale_it">Italiano</string>
+  <string name="locale_pt">Portugés</string>
+  <string name="locale_pt_BR">Brasileño</string>
+  <string name="locale_ru">Ruso</string>
+  <string name="locale_vi">Vietnamita</string>
+  <string name="locale_zh_rCN">Chino Simplificado</string>
+  <string name="locale_zh_rTW">Chino Tradicional</string>
+  <string name="start_currency_exchange_rates">Comenzar Actualizando el valor de las Monedas</string>
+  <string name="update_currency_exchange_rates">Actualizar el Tipo de Cambio:\n%1$s</string>
+  <string name="success_currency_exchange_rates">La Actualización del tipo de Cambio se completó satisfactoriamente</string>
+  <string name="update_menu_currency_exchange_rates">Actualizar Cambio de Moneda</string>
+  <string name="question_update_currency_exchange_rates">¿Quieres actualizar el tipo de cambio de todas las monedas?</string>
+  <string name="withdrawal_from">Retirar desde %1$s</string>
+  <string name="deposit_to">Depositar en %1$s</string>
 </resources>

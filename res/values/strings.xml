@@ -325,7 +325,7 @@
 	<string name="descending">Descending</string>
 	<string name="sorting_month">Sorting Month</string>
 	<!-- 20130305 -->
-	<string name="dropbox_empty_folder">The folder in Dropbox/Apps/Money Manager Ex Mobile is empty</string>
+	<string name="dropbox_empty_folder">The folder in Dropbox/Apps/Money Manager Ex Mobile is empty. If you already use MoneyManagerEx copy your database to this folder in your computer, and after you do the refresh.</string>
 	<string name="dropbox_select_file">Dropbox Select File</string>
 	<string name="last_modified">Last modified</string>
 	<string name="select_dropbox_file">Select Dropbox Remote File</string>
@@ -450,4 +450,26 @@
 	<string name="search_text_contain_title">Searching by text contents and not by text beginning with</string>
 	<string name="search_text_contain_summary">Search payee , categories, currencies, etc… by contents and not by starting characters</string>
 	<string name="rate_application">Rate Application</string>
+	<!-- 20140314 -->
+	<string name="locale_application">Language Application</string>
+	<string name="locale_cs">Czech</string>
+	<string name="locale_en">English</string>
+	<string name="locale_es">Spanish</string>
+	<string name="locale_fr">French</string>
+	<string name="locale_he">Hebrew</string>
+	<string name="locale_it">Italian</string>
+	<string name="locale_pt">Portoguese</string>
+	<string name="locale_pt_BR">Portoguese, Brazilian</string>
+	<string name="locale_ru">Russian</string>
+	<string name="locale_vi">Vietnamese</string>
+	<string name="locale_zh_rCN">Chinese Simplified</string>
+	<string name="locale_zh_rTW">Chinese Traditional</string>
+	<string name="start_currency_exchange_rates">Starting Update the Exchange of Currencies</string>
+	<string name="update_currency_exchange_rates">Update the Exchange Rate:\n%1$s</string>
+	<string name="success_currency_exchange_rates">Update the Exchange Rate Currencies completed successfully</string>
+	<string name="update_menu_currency_exchange_rates">Update Exchange Rate</string>
+	<string name="question_update_currency_exchange_rates">Do you want to update exchange rate of all currencies?</string>
+	<string name="withdrawal_from">Withdrawal From %1$s</string>
+	<string name="deposit_to">Deposit To %1$s</string>
+	<string name="mmex_website">MoneyManagerEx Website</string>
 </resources>

@@ -20,6 +20,8 @@ import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.RESTUtility;
@@ -112,11 +114,23 @@ public class DropboxBrowserActivity extends BaseFragmentActivity {
 		}
 		
 		@Override
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+			super.onCreateOptionsMenu(menu, inflater);
+			inflater.inflate(R.menu.menu_dropbox_browser_activity, menu);
+		}
+		
+		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
-			if (item.getItemId() == android.R.id.home) {
+			switch (item.getItemId()) {
+			case android.R.id.home:
 				setResultAndFinish();
+				return true;
+			case R.id.menu_refresh:
+				refreshEntries();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 			}
-			return super.onOptionsItemSelected(item);
 		}
 		
 		public void setResultAndFinish() {

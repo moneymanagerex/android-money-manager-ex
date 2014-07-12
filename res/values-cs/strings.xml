@@ -393,4 +393,23 @@
   <string name="search_text_contain_title">Hledání v textu podle obsahu a nikoli počátečních písmen</string>
   <string name="search_text_contain_summary">Hledání příjemců, kategorií, měn, apod. podle obsahu a nikoli počátečních písmen</string>
   <string name="rate_application">Hodnocení aplikace</string>
+  <string name="locale_application">Jazyk aplikace</string>
+  <string name="locale_cs">Čeština</string>
+  <string name="locale_es">Španělština</string>
+  <string name="locale_fr">Francouzština</string>
+  <string name="locale_he">Hebrejština</string>
+  <string name="locale_it">Italština</string>
+  <string name="locale_pt">Portugalština</string>
+  <string name="locale_pt_BR">Brazilská portugalština</string>
+  <string name="locale_ru">Ruština</string>
+  <string name="locale_vi">Vietnamština</string>
+  <string name="locale_zh_rCN">Zjednodušená čínština</string>
+  <string name="locale_zh_rTW">Tradiční čínština</string>
+  <string name="start_currency_exchange_rates">Zahajuje se aktualizace kurzovního lístku</string>
+  <string name="update_currency_exchange_rates">Update the Exchange Rate:\n%1$s</string>
+  <string name="success_currency_exchange_rates">Update the Exchange Rate Currencies completed successfully</string>
+  <string name="update_menu_currency_exchange_rates">Update Exchange Rate</string>
+  <string name="question_update_currency_exchange_rates">Do you want to update exchange rate of all currencies?</string>
+  <string name="withdrawal_from">Withdrawal From %1$s</string>
+  <string name="deposit_to">Deposit To %1$s</string>
 </resources>

@@ -282,7 +282,7 @@
   <string name="ascending">По возрастанию</string>
   <string name="descending">По убыванию</string>
   <string name="sorting_month">Сортировка \"Месяц\"</string>
-  <string name="dropbox_empty_folder">Папка Dropbox </string>
+  <string name="dropbox_empty_folder">Папка Dropbox/Apps/Money Manager Ex Mobile пустая. Если ранее программа MoneyManagerEx использовалась - просто скопируйте файл с базой данный программы в эту папку на компьютере после чего обновите состояние папки в Dropbox.</string>
   <string name="dropbox_select_file">Выбор файла Dropbox</string>
   <string name="last_modified">Последнее изменение</string>
   <string name="select_dropbox_file">Выбор удаленного файла Dropbox</string>
@@ -393,4 +393,24 @@
   <string name="search_text_contain_title">Поиск по содержимому текста, а не только с начала строки</string>
   <string name="search_text_contain_summary">Поиск среди контрагентов, категорий, валют и.т.д. по всему содержимому текста, а не только с начала строки</string>
   <string name="rate_application">Оценить приложение</string>
+  <string name="locale_application">Язык приложения</string>
+  <string name="locale_cs">чешский</string>
+  <string name="locale_en">Английский</string>
+  <string name="locale_es">Испанский</string>
+  <string name="locale_fr">Французский</string>
+  <string name="locale_he">Иврит</string>
+  <string name="locale_it">Итальянский</string>
+  <string name="locale_pt">Португальский</string>
+  <string name="locale_pt_BR">Португальский, Бразильский</string>
+  <string name="locale_ru">Русский</string>
+  <string name="locale_vi">Vietnamese</string>
+  <string name="locale_zh_rCN">Китайский (упрощенный)</string>
+  <string name="locale_zh_rTW">Китайский (традиционный)</string>
+  <string name="start_currency_exchange_rates">Начать обновление курсов валют</string>
+  <string name="update_currency_exchange_rates">Обновить курс:\n%1$s</string>
+  <string name="success_currency_exchange_rates">Обновление курсов валют успешно завершено</string>
+  <string name="update_menu_currency_exchange_rates">Обновить курс валюты</string>
+  <string name="question_update_currency_exchange_rates">Вы хотите обновить курс всех валют?</string>
+  <string name="withdrawal_from">Снятие со счета  %1$s</string>
+  <string name="deposit_to">Пополнение счета %1$s</string>
 </resources>
