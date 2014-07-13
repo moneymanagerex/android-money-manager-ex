@@ -1,4 +1,4 @@
-##MoneyManagerEx for Android##
+##![Logo](/res/drawable-hdpi/ic_launcher.png)MoneyManagerEx for Android##
 
 ####Basic information####
 Money Manager Ex for Android is an port of the PC/Desktop personal finance application, currently available for Windows, Mac OSX and LINUX. It maintains the best features of its sisters' Desktop applications, while adding mobility and synchronization.
