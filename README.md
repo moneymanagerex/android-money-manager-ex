@@ -1,27 +1,29 @@
-===Basic information==
-That's a simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on. Our main goal is to add a mobile implementation for an application we love to use on our Desktop machines!
+##MoneyManagerEx for Android##
 
-===What is done===
+####Basic information####
+Money Manager Ex for Android is an port of the PC/Desktop personal finance application, currently available for Windows, Mac OSX and LINUX. It maintains the best features of its sisters' Desktop applications, while adding mobility and synchronization.
+
+####What is done####
   * Management of single transactions
   * Account, payee, category, currency management
   * Storage card Import/Export
-  * [http://code.google.com/p/android-money-manager-ex/wiki/DropboxSync Dropbox synchronization]
-  * Security, application lock/unlock
+  * [Dropbox synchronization](http://code.google.com/p/android-money-manager-ex/wiki/DropboxSync Dropbox)
+  * Security, application lock/unlock with pin code
   * Repeating transactions
   * Charts
   * Different languages ​​supported. 
 
-===What will be done===
+####What will be done####
   * Database encryption
+  * Stocks
+  * Investments
+  * Attachements
 
-===Desktop version===
-Desktop version of the application is currently free, open-source, cross-platform. Is it developed by CodeLathe for Windows, Linux, Mac OSX. Go [http://www.codelathe.com/mmex/ here] for the official webpage, or [http://sourceforge.net/projects/moneymanagerex/ here] for the SourceForge project page.
+####Links####
+[![MoneyManagerEx for Android on PlayStore](https://developer.android.com/images/brand/en_app_rgb_wo_60.png)](http://play.google.com/store/apps/details?id=com.money.manager.ex)
 
-===Links===
-[http://play.google.com/store/apps/details?id=com.money.manager.ex https://developer.android.com/images/brand/en_app_rgb_wo_60.png]
+####Contact####
+For any question, bug report, suggestion please drop us a line  [android.money.manager.ex@gmail.com](mailto:android.money.manager.ex@gmail.com)
 
-===Contact===
-For any question, bug report, suggestion please drop us a line [mailto:android.money.manager.ex@gmail.com android.money.manager.ex@gmail.com]
-
-===Translate===
-If you want to join our translation team: [https://crowdin.net/project/android-money-manager-ex MoneyManagerEx for Android on Crowdin.net]
+####Translate####
+If you want to join our translation team: [MoneyManagerEx for Android on Crowdin.net](https://crowdin.net/project/android-money-manager-ex)
