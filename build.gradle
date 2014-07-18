@@ -17,19 +17,10 @@ allprojects {
 apply plugin: 'android'
 
 dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':androidbillinglibrary')
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:20.0.0'
-    compile files('libs/achartengine-1.1.0.jar')
-    compile files('libs/apache-commons-lang.jar')
-    compile files('libs/commons-logging-1.1.1.jar')
-    compile files('libs/dashclock-api-r2.0.jar')
-    compile files('libs/dropbox-android-sdk-1.5.3.jar')
-    compile files('libs/httpclient-4.0.3.jar')
-    compile files('libs/httpcore-4.0.1.jar')
-    compile files('libs/httpmime-4.0.3.jar')
-    compile files('libs/json_simple-1.1.jar')
-    compile files('libs/opencsv-2.3.jar')
 }
 
 android {
