@@ -73,6 +73,11 @@ android {
         }
     }
 
+    lintOptions {
+        // if true, stop the gradle build if errors are found
+        abortOnError false
+    }
+
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/LICENSE'
