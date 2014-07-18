@@ -29,7 +29,7 @@
         <item name="android:progressBarStyleHorizontal">@style/ProgressBar_App_Light</item>
     </style>
 
-    <style name="App_Light" parent="@style/_App_Light_DarkActionBar" />
+    <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar" />
 
     <style name="_App_Light_DarkActionBar" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:editTextBackground">@drawable/app_light_edit_text_holo_light</item>
