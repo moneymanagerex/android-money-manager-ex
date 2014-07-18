@@ -89,7 +89,6 @@
   <string name="category_name">Nome da Categoria</string>
   <string name="edit_categoryName">Editar nome da Categoria</string>
   <string name="delete_category">Excluir Categoria</string>
-  <string name="currency">Moeda</string>
   <string name="currency_name">Nome da Moeda</string>
   <string name="currency_symbol">Símbolo da Moeda</string>
   <string name="delete_currency">Excluir Moeda</string>
