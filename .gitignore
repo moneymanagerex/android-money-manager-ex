@@ -1,2 +1,6 @@
 /gen
 /bin
+
+build/
+androidbillinglibrary/build/
+actionbarsherlock/build/
