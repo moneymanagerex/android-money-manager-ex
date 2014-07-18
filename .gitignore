@@ -1,6 +1,10 @@
-/gen
-/bin
+.gradle/
+.idea/
+.settings/
 
 build/
 androidbillinglibrary/build/
 actionbarsherlock/build/
+
+bin/
+gen/
