@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res/com.money.manager.ex">
+    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res-auto">
     
 	<com.money.manager.ex.view.RobotoTextView
 	    android:id="@+id/textViewTitle"
