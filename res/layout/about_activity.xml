@@ -107,6 +107,13 @@
                 android:src="@drawable/ic_social_google_plus" />
 
             <ImageView
+                android:id="@+id/imageViewGithub"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_social_github" />
+
+            <ImageView
                 android:id="@+id/imageViewTwitter"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
