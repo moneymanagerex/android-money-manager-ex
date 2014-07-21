@@ -9,5 +9,19 @@ actionbarsherlock/build/
 bin/
 gen/
 
-android-money-manager-ex-master.iml
-androidbillinglibrary/androidbillinglibrary.iml
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea
+*.iml
