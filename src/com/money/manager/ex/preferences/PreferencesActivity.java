@@ -20,6 +20,7 @@ package com.money.manager.ex.preferences;
 import java.io.File;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -118,11 +119,12 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		}
 	}
 	
-	public void onActivityResultDropbox(int requestCode, int resultCode, Intent data) { 
+	@SuppressWarnings("UnusedParameters")
+    public void onActivityResultDropbox(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK && data != null) {
 			final Preference pDropboxFile = findPreference(PreferencesConstant.PREF_DROPBOX_LINKED_FILE);
 			if (pDropboxFile != null) {
-				CharSequence oldFile = "", newFile = "";
+				CharSequence oldFile = "", newFile;
 				if (!TextUtils.isEmpty(pDropboxFile.getSummary())) {
 					oldFile = pDropboxFile.getSummary();
 				}
@@ -247,7 +249,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		onCreateScreenPreferenceDisplay();
 		
 		// database preference
-		onCreateScreenPreferenceDatabase();
+		//onCreateScreenPreferenceDatabase();
 		
 		// dropbox preference screen
 		mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
@@ -408,7 +410,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		} 
 		
 		// financial day and month
-		final Preference pFinancialDay = (Preference)findPreference(PreferencesConstant.PREF_FINANCIAL_YEAR_STARTDATE);
+		final Preference pFinancialDay = findPreference(PreferencesConstant.PREF_FINANCIAL_YEAR_STARTDATE);
 		if (pFinancialDay != null) {
 			pFinancialDay.setSummary(mCore.getInfoValue(Constants.INFOTABLE_FINANCIAL_YEAR_START_DAY));
 			if (pFinancialDay.getSummary() != null) {
@@ -417,7 +419,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			pFinancialDay.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					int day = 0;
+					int day;
 					try { 
 						day = Integer.parseInt((String)newValue);
 						if (!(day >= 1 && day <= 31)) {
@@ -582,7 +584,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		});
 	}
 	
-	public void onCreateScreenPreferenceDatabase() {
+	@SuppressWarnings("UnusedDeclaration")
+    public void onCreateScreenPreferenceDatabase() {
 		final PreferenceScreen pMoveDatabase = (PreferenceScreen) findPreference(PreferencesConstant.PREF_DATABASE_BACKUP);
 		if (pMoveDatabase != null) {
 			pMoveDatabase.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -747,7 +750,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 	
 	public void onCreateScreenPreferenceDonate() { 
 		//donate
-		final Preference pDonate = (Preference)findPreference(PreferencesConstant.PREF_DONATE);
+		final Preference pDonate = findPreference(PreferencesConstant.PREF_DONATE);
 		if (pDonate != null) {
 			pDonate.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 				@Override
@@ -825,7 +828,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		// title and icons
 		alertDialog.setTitle(title);
 		// view body
-		final View view = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.dialog_tips, null);
+		@SuppressLint("InflateParams")
+        final LinearLayout view = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.dialog_tips, null);
 		// set invisible tips
 		final TextView textTips = (TextView)view.findViewById(R.id.textViewTips);
 		textTips.setVisibility(View.GONE);

@@ -112,7 +112,7 @@
             android:key="@string/pref_disable_passcode"
             android:title="@string/preferences_disable_passcode" />
     </PreferenceScreen>
-    <PreferenceScreen android:title="@string/database" >
+    <!--<PreferenceScreen android:title="@string/database" >
         <PreferenceScreen
             android:key="@string/pref_database_path"
             android:title="@string/path" />
@@ -122,7 +122,7 @@
         <PreferenceScreen
             android:key="@string/pref_database_backup"
             android:title="@string/menu_move_database_to_external_storage" />
-    </PreferenceScreen>
+    </PreferenceScreen>-->
     <PreferenceScreen
         android:key="@string/pref_dropbox_how_it_works"
         android:title="@string/dropbox" >
