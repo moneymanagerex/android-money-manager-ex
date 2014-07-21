@@ -160,11 +160,9 @@
   <string name="contact">联系</string>
   <string name="access_info">登陆信息</string>
   <string name="initial_balance">初始金额</string>
-  <string name="currency">货币</string>
   <string name="notes">备注</string>
   <string name="new_edit_account">添加/编辑帐户</string>
   <string name="closed">关闭</string>
-  <string name="new_edit_currency">添加/修改货币</string>
   <string name="path">路径</string>
   <string name="theme_application">应用主题</string>
   <string name="theme_holo">Holo</string>
@@ -252,7 +250,6 @@
   <string name="last_month">上月</string>
   <string name="last30days">最近 30 天</string>
   <string name="last_year">去年</string>
-  <string name="to">至</string>
   <string name="result">结果</string>
   <string name="number_transaction_found">交易次数: %1$d</string>
   <string name="date_format">日期格式</string>
