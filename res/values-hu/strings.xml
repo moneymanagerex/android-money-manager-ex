@@ -89,7 +89,6 @@
   <string name="category_name">Kategória neve</string>
   <string name="edit_categoryName">Kategória név módosítása</string>
   <string name="delete_category">Kategória törlése</string>
-  <string name="currency">Pénznem</string>
   <string name="currency_name">Pénznem neve</string>
   <string name="currency_symbol">Pénznem szimbóluma</string>
   <string name="delete_currency">Pénznem törlése</string>

@@ -42,21 +42,26 @@ public class InputAmountDialog extends SherlockDialogFragment {
 	}
 	
 	public static InputAmountDialog getInstance(int id, Float amount) {
-		return new InputAmountDialog(id, amount);
+        Bundle args = new Bundle();
+        args.putInt("id", id);
+        args.putFloat("amount", amount);
+
+        InputAmountDialog fragment = new InputAmountDialog();
+        fragment.setArguments(args);
+
+		return fragment;
 	}
 	
 	public static InputAmountDialog getInstance(int id, Float amount, Integer currencyId) {
-		InputAmountDialog dialog = new InputAmountDialog(id, amount);
+		InputAmountDialog dialog = getInstance(id, amount);
 		dialog.mCurrencyId = currencyId;
 		return dialog;
 	}
 	
-	public InputAmountDialog() {
-		// empty constructor
-	}
-	
-	public InputAmountDialog(int id, Float amount) {
+	/*public InputAmountDialog() {
 		super();
+        int id = getArguments().getInt("id");
+        Float amount = getArguments().getFloat("amount");
 		mIdView = id;
 		if (!(amount == null || amount == 0)) {
 			int iAmount = (int) (amount * 100);
@@ -66,7 +71,7 @@ public class InputAmountDialog extends SherlockDialogFragment {
 				mAmount = Float.toString(amount);
 			}
 		}
-	}
+	}*/
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +84,19 @@ public class InputAmountDialog extends SherlockDialogFragment {
 				mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
 			if (savedInstanceState.containsKey(KEY_ID_VIEW))
 				mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
-		}
+		} else {
+            int id = getArguments().getInt("id");
+            Float amount = getArguments().getFloat("amount");
+            mIdView = id;
+            if (!(amount == null || amount == 0)) {
+                int iAmount = (int) (amount * 100);
+                if (Math.abs(amount - (iAmount / 100)) == 0) {
+                    mAmount = Integer.toString(iAmount / 100);
+                } else {
+                    mAmount = Float.toString(amount);
+                }
+            }
+        }
 	}
 	
 	@Override
