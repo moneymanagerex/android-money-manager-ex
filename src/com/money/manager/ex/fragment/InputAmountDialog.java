@@ -58,33 +58,11 @@ public class InputAmountDialog extends SherlockDialogFragment {
 		return dialog;
 	}
 	
-	/*public InputAmountDialog() {
-		super();
-        int id = getArguments().getInt("id");
-        Float amount = getArguments().getFloat("amount");
-		mIdView = id;
-		if (!(amount == null || amount == 0)) {
-			int iAmount = (int) (amount * 100);
-			if (Math.abs(amount - (iAmount / 100)) == 0) {
-				mAmount = Integer.toString(iAmount / 100);
-			} else {
-				mAmount = Float.toString(amount);
-			}
-		}
-	}*/
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		if (savedInstanceState != null) {
-			if (savedInstanceState.containsKey(KEY_AMOUNT))
-				mAmount = savedInstanceState.getString(KEY_AMOUNT);
-			if (savedInstanceState.containsKey(KEY_CURRENCY_ID))
-				mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
-			if (savedInstanceState.containsKey(KEY_ID_VIEW))
-				mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
-		} else {
+
+        if (savedInstanceState == null) {
             int id = getArguments().getInt("id");
             Float amount = getArguments().getFloat("amount");
             mIdView = id;
@@ -96,10 +74,17 @@ public class InputAmountDialog extends SherlockDialogFragment {
                     mAmount = Float.toString(amount);
                 }
             }
+        } else {
+            if (savedInstanceState.containsKey(KEY_AMOUNT))
+                mAmount = savedInstanceState.getString(KEY_AMOUNT);
+            if (savedInstanceState.containsKey(KEY_CURRENCY_ID))
+                mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
+            if (savedInstanceState.containsKey(KEY_ID_VIEW))
+                mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
         }
-	}
-	
-	@Override
+    }
+
+    @Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
 		View view = inflater.inflate(R.layout.input_amount_dialog, null);
@@ -109,12 +94,7 @@ public class InputAmountDialog extends SherlockDialogFragment {
 			public void onClick(View v) {
 				String parseAmountTry = mAmount;
 				parseAmountTry += ((Button)v).getText();
-				/*try {
-					Float.parseFloat(parseAmountTry);
-				} catch (Exception e) {
-					Log.e(InputAmountDialog.class.getSimpleName(), e.getMessage());
-					return;
-				}*/
+
 				if (StringUtils.isNumeric(parseAmountTry)) {
 					// change amount
 					mAmount = parseAmountTry;
