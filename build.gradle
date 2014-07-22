@@ -21,6 +21,7 @@ dependencies {
     compile project(':androidbillinglibrary')
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.github.gabrielemariotti.changeloglib:library:1.5.1'
 }
 
 android {

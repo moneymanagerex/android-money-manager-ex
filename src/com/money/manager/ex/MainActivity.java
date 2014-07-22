@@ -17,10 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import java.io.File;
-import java.net.URLDecoder;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -80,6 +76,10 @@ import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
+
+import java.io.File;
+import java.net.URLDecoder;
+import java.util.List;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -502,7 +502,10 @@ public class MainActivity extends BaseFragmentActivity {
 			MoneyManagerApplication.showDonateDialog(this, false);
 		// show change log and path
 		// MoneyManagerApplication.showChangeLog(this, false, false);
-		MoneyManagerApplication.showChangeLog(this, false);
+		// MoneyManagerApplication.showChangeLog(this, false);
+        if (core.isToDisplayChangelog())
+            core.showChangelog();
+
 		MoneyManagerApplication.showDatabasePathWork(this);
 	
 		// notification send broadcast

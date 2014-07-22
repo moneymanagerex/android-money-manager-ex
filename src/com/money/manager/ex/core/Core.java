@@ -1,19 +1,5 @@
 package com.money.manager.ex.core;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.DateFormatSymbols;
-import java.text.Normalizer;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.HashMap;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -33,6 +19,8 @@ import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +36,20 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 import com.money.manager.ex.preferences.PreferencesConstant;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.DateFormatSymbols;
+import java.text.Normalizer;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.HashMap;
+import java.util.Locale;
 
 public class Core {
 	
@@ -370,7 +372,7 @@ public class Core {
 	
 	/**
 	 * Returns category and sub-category formatted
-	 * @param QueryCategorySubCategory object
+	 * @param queryCategorySubCategory object
 	 * @return category : sub-category
 	 */
 	public String getCategSubName(QueryCategorySubCategory queryCategorySubCategory) {
@@ -388,7 +390,7 @@ public class Core {
 	
 	/**
 	 * Returns category and sub-category formatted
-	 * @param subcategory object
+	 * @param subCategory object
 	 * @return category : sub-category
 	 */
 	public String getCategSubName(TableSubCategory subCategory) {
@@ -724,4 +726,36 @@ public class Core {
 		
 		return ret;
 	}
+
+    public boolean isToDisplayChangelog(){
+        int currentVersionCode = MoneyManagerApplication.getCurrentVersionCode(context);
+        int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(context).getInt(PreferencesConstant.PREF_LAST_VERSION_KEY, -1);
+
+        return lastVersionCode != currentVersionCode;
+    }
+
+    public boolean showChangelog() {
+        int currentVersionCode = MoneyManagerApplication.getCurrentVersionCode(context);
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(PreferencesConstant.PREF_LAST_VERSION_KEY, currentVersionCode).commit();
+
+        // create layout
+        View view = LayoutInflater.from(context).inflate(R.layout.changelog_layout, null);
+        //create dialog
+        AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
+        showDialog.setCancelable(false);
+        showDialog.setTitle(R.string.changelog);
+
+        showDialog.setView(view);
+        showDialog.setNeutralButton(android.R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        // show dialog
+        showDialog.create().show();
+        return true;
+    }
 }

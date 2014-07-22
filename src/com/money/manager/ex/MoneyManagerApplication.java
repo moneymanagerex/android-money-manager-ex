@@ -17,15 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Application;
@@ -47,7 +38,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +50,15 @@ import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.view.RobotoView;
 import com.money.manager.ex.widget.AccountBillsWidgetProvider;
 import com.money.manager.ex.widget.SummaryWidgetProvider;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * This class extends Application and implements all the methods common in the
@@ -150,7 +149,7 @@ public class MoneyManagerApplication extends Application {
 	
     /**
 	 * 
-	 * @param Context context from call
+	 * @param context from call
 	 * int resId: rawid
 	 * @return String: String file
 	 */
@@ -229,9 +228,7 @@ public class MoneyManagerApplication extends Application {
 		if (!(lastVersionCode == currentVersionCode) || forceShow) {
 			preferences.edit().putInt(PreferencesConstant.PREF_LAST_VERSION_KEY, currentVersionCode).commit();
 			//layout
-			View view = LayoutInflater.from(context).inflate(R.layout.changelog, null);
-			WebView webView = (WebView) view.findViewById(R.id.changelogcontent);
-			webView.loadData(getRawAsString(context, R.raw.changelog), "text/html", "UTF-8");
+			View view = LayoutInflater.from(context).inflate(R.layout.changelog_layout, null);
 			//create dialog
 			AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
 			showDialog.setCancelable(false);
@@ -298,7 +295,7 @@ public class MoneyManagerApplication extends Application {
 	/**
      * This method show introduction activity
      * @param context activity called
-     * @param force true show
+     * @param forceShow true show
      */
     public static boolean showIntroduction(Context context, boolean forceShow) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
