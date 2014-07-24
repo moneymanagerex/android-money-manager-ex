@@ -411,5 +411,5 @@
   <string name="update_menu_currency_exchange_rates">更新匯率</string>
   <string name="question_update_currency_exchange_rates">你想要更新所有貨幣的匯率嗎？</string>
   <string name="withdrawal_from">由 %1$s 匯出</string>
-  <string name="deposit_to">匯入到 %1$ s</string>
+  <string name="deposit_to">匯入到 %1$s</string>
 </resources>

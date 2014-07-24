@@ -219,7 +219,7 @@
   <string name="skip_next_occurrence">Pular Próxima Ocorrência</string>
   <string name="notification_repeating_transaction_expired">Existem transações recorrentes expiradas</string>
   <string name="notification_click_to_check_repeating_transaction">Clique para marcar a transação em atraso</string>
-  <string name="num_repeating_transaction_expired">%1$ d repetir transações em atraso</string>
+  <string name="num_repeating_transaction_expired">%1$d repetir transações em atraso</string>
   <string name="send_feedback">Envie Comentários</string>
   <string name="send_us_your_feedback">Envie-nos a sua opinião</string>
   <string name="preferences_info_application">Informações</string>
@@ -410,6 +410,6 @@
   <string name="success_currency_exchange_rates">Atualização da taxa de câmbio moedas foi concluída com êxito</string>
   <string name="update_menu_currency_exchange_rates">Atualização da taxa de câmbio</string>
   <string name="question_update_currency_exchange_rates">Você quer atualizar a taxa de câmbio de todas as moedas?</string>
-  <string name="withdrawal_from">Retirada de %1$ s</string>
+  <string name="withdrawal_from">Retirada de %1$s</string>
   <string name="deposit_to">Depósito para %1$s</string>
 </resources>

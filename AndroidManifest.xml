@@ -19,8 +19,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex"
-    android:versionCode="530"
-    android:versionName="1.4.10" >
+    android:versionCode="560"
+    android:versionName="1.4.11" >
 
     <uses-sdk
         android:minSdkVersion="8"

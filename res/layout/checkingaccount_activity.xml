@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/activity_side_margin"
-    android:layout_marginRight="@dimen/activity_side_margin"
-    android:animateLayoutChanges="true"
-    android:background="?attr/theme_background_color"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginLeft="@dimen/activity_side_margin"
+              android:layout_marginRight="@dimen/activity_side_margin"
+              android:animateLayoutChanges="true"
+              android:background="?attr/theme_background_color"
+              android:focusable="true"
+              android:focusableInTouchMode="true"
+              android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -104,7 +103,7 @@
                 <Spinner
                     android:id="@+id/spinnerStatus"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:prompt="@string/status" />
             </LinearLayout>
