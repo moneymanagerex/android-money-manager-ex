@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
-    <changelogversion changeDate="Not released" versionName="1.4.11">
+    <changelogversion changeDate="July 28, 2014" versionName="1.4.11">
         <changelogtext>Fixed application crash when user choose transfer transaction</changelogtext>
         <changelogtext>Add changeloglib library to shown application changelog(thanks gabrielemariotti)</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>

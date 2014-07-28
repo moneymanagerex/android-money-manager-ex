@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="application_build">20140724</string>
+    <string name="application_build">20140728</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 	<string name="view_user_size">user_size</string>
