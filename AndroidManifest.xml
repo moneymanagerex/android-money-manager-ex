@@ -18,106 +18,106 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.money.manager.ex"
-    android:versionCode="562"
-    android:versionName="1.4.11" >
+          package="com.money.manager.ex"
+          android:versionCode="563"
+          android:versionName="1.4.12">
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="19"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="com.android.vending.BILLING" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <supports-screens
         android:largeScreens="true"
-        android:xlargeScreens="true" />
+        android:xlargeScreens="true"/>
 
     <application
         android:name="com.money.manager.ex.MoneyManagerApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_name"
-        android:theme="@style/Theme.Money.Manager.Light.DarkActionBar" >
+        android:theme="@style/Theme.Money.Manager.Light.DarkActionBar">
         <receiver
             android:name="com.money.manager.ex.widget.ButtonAddTransactionWidgetProvider"
-            android:label="@string/widget_add_transaction" >
+            android:label="@string/widget_add_transaction">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_button_add_transaction" >
+                android:resource="@xml/widget_button_add_transaction">
             </meta-data>
         </receiver>
         <receiver
             android:name="com.money.manager.ex.widget.SummaryWidgetProvider"
-            android:label="@string/widget_summary" >
+            android:label="@string/widget_summary">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_summary" >
+                android:resource="@xml/widget_summary">
             </meta-data>
         </receiver>
         <receiver
             android:name="com.money.manager.ex.widget.AccountBillsWidgetProvider"
-            android:label="@string/widget_all_accounts" >
+            android:label="@string/widget_all_accounts">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_account_bills" >
+                android:resource="@xml/widget_account_bills">
             </meta-data>
         </receiver>
-        <receiver android:name="com.money.manager.ex.dropbox.DropboxReceiver" >
+        <receiver android:name="com.money.manager.ex.dropbox.DropboxReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX" />
-                <action android:name="com.money.manager.ex.custom.intent.action.CANCEL_SERVICE_DROPBOX" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX"/>
+                <action android:name="com.money.manager.ex.custom.intent.action.CANCEL_SERVICE_DROPBOX"/>
             </intent-filter>
         </receiver>
-        <receiver android:name="com.money.manager.ex.dropbox.DropboxStartServiceReceiver" />
-        <receiver android:name="com.money.manager.ex.core.MoneyManagerBootReceiver" >
+        <receiver android:name="com.money.manager.ex.dropbox.DropboxStartServiceReceiver"/>
+        <receiver android:name="com.money.manager.ex.core.MoneyManagerBootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name="com.money.manager.ex.notifications.RepeatingTransactionReceiver" />
+        <receiver android:name="com.money.manager.ex.notifications.RepeatingTransactionReceiver"/>
 
-        <service android:name="com.money.manager.ex.notifications.RepeatingTransactionService" />
+        <service android:name="com.money.manager.ex.notifications.RepeatingTransactionService"/>
         <service
             android:name="com.money.manager.ex.widget.AccountBillsWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <service android:name="com.money.manager.ex.dropbox.DropboxServiceIntent" >
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        <service android:name="com.money.manager.ex.dropbox.DropboxServiceIntent">
             <intent-filter>
-                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_SYNC" />
-                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_DOWNLOAD" />
-                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_UPLOAD" />
+                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_SYNC"/>
+                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_DOWNLOAD"/>
+                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_UPLOAD"/>
             </intent-filter>
         </service>
 
         <provider
             android:name="com.money.manager.ex.MoneyManagerProvider"
-            android:authorities="com.money.manager.ex.provider" 
+            android:authorities="com.money.manager.ex.provider"
             android:exported="true">
         </provider>
 
-        <service android:name="net.robotmedia.billing.BillingService" />
+        <service android:name="net.robotmedia.billing.BillingService"/>
 
-        <receiver android:name="net.robotmedia.billing.BillingReceiver" >
+        <receiver android:name="net.robotmedia.billing.BillingReceiver">
             <intent-filter>
-                <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
-                <action android:name="com.android.vending.billing.RESPONSE_CODE" />
-                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
+                <action android:name="com.android.vending.billing.IN_APP_NOTIFY"/>
+                <action android:name="com.android.vending.billing.RESPONSE_CODE"/>
+                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED"/>
             </intent-filter>
         </receiver>
 
@@ -125,212 +125,214 @@
             android:name=".widget.SummaryDashExtension"
             android:icon="@drawable/ic_stat_notification"
             android:label="@string/widget_summary"
-            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" >
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
             <intent-filter>
-                <action android:name="com.google.android.apps.dashclock.Extension" />
+                <action android:name="com.google.android.apps.dashclock.Extension"/>
             </intent-filter>
 
             <meta-data
                 android:name="protocolVersion"
-                android:value="2" />
+                android:value="2"/>
             <meta-data
                 android:name="worldReadable"
-                android:value="true" />
+                android:value="true"/>
             <meta-data
                 android:name="description"
-                android:value="@string/dashclock_extension_summary" />
+                android:value="@string/dashclock_extension_summary"/>
         </service>
         <service
             android:name="com.money.manager.ex.widget.AccountBillsDashExtension"
             android:icon="@drawable/ic_stat_notification"
             android:label="@string/widget_all_accounts"
-            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" >
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
             <intent-filter>
-                <action android:name="com.google.android.apps.dashclock.Extension" />
+                <action android:name="com.google.android.apps.dashclock.Extension"/>
             </intent-filter>
 
             <meta-data
                 android:name="protocolVersion"
-                android:value="2" />
+                android:value="2"/>
             <meta-data
                 android:name="worldReadable"
-                android:value="true" />
+                android:value="true"/>
             <meta-data
                 android:name="description"
-                android:value="@string/dashclock_extension_summary_all_account" />
+                android:value="@string/dashclock_extension_summary_all_account"/>
         </service>
 
         <activity
             android:name="com.money.manager.ex.MainActivity"
-            android:label="@string/application_name" >
+            android:label="@string/application_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
                 <!-- Samsung MultiWindow Function -->
-                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER"/>
             </intent-filter>
-            <intent-filter android:label="@string/app_name" >
-                <action android:name="android.intent.action.VIEW" />
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="file" />
-                <data android:mimeType="*/*" />
-                <data android:host="*" />
-                <data android:pathPattern=".*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb" />
+                <data android:scheme="file"/>
+                <data android:mimeType="*/*"/>
+                <data android:host="*"/>
+                <data android:pathPattern=".*\\.mmb"/>
+                <data android:pathPattern=".*\\..*\\.mmb"/>
+                <data android:pathPattern=".*\\..*\\..*\\.mmb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.mmb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.mmb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.mmb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb"/>
             </intent-filter>
         </activity>
         <activity
             android:name="com.dropbox.client2.android.AuthActivity"
             android:configChanges="orientation|keyboard|screenSize"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask">
             <intent-filter>
 
                 <!-- Change this to be db- followed by your app key -->
-                <data android:scheme="db-cakbv9zh9l083ep" />
+                <data android:scheme="db-cakbv9zh9l083ep"/>
 
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity
             android:name="com.money.manager.ex.dropbox.DropboxActivity"
-            android:label="Sync Dropbox" >
+            android:label="Sync Dropbox">
         </activity>
         <activity
             android:name="com.money.manager.ex.CheckingAccountActivity"
-            android:label="@string/new_edit_transaction" >
-            <action android:name="android.intent.action.EDIT" />
-            <action android:name="android.intent.action.INSERT" />
+            android:label="@string/new_edit_transaction">
+            <action android:name="android.intent.action.EDIT"/>
+            <action android:name="android.intent.action.INSERT"/>
         </activity>
         <activity
             android:name="com.money.manager.ex.PayeeActivity"
-            android:label="@string/payee" >
-            <action android:name="android.intent.action.PICK" />
-            <action android:name="android.intent.action.EDIT" />
+            android:label="@string/payee">
+            <action android:name="android.intent.action.PICK"/>
+            <action android:name="android.intent.action.EDIT"/>
         </activity>
         <activity
             android:name="com.money.manager.ex.AccountListActivity">
-            <action android:name="android.intent.action.PICK" />
-            <action android:name="android.intent.action.EDIT" />
+            <action android:name="android.intent.action.PICK"/>
+            <action android:name="android.intent.action.EDIT"/>
         </activity>
         <activity
             android:name="com.money.manager.ex.CategorySubCategoryExpandableListActivity">
-            <action android:name="android.intent.action.PICK" />
-            <action android:name="android.intent.action.EDIT" />
+            <action android:name="android.intent.action.PICK"/>
+            <action android:name="android.intent.action.EDIT"/>
         </activity>
         <activity
             android:name="com.money.manager.ex.CurrencyFormatsListActivity">
-            <action android:name="android.intent.action.PICK" />
-            <action android:name="android.intent.action.EDIT" />
+            <action android:name="android.intent.action.PICK"/>
+            <action android:name="android.intent.action.EDIT"/>
         </activity>
         <activity
             android:name="com.money.manager.ex.about.AboutActivity"
-            android:label="@string/about" >
+            android:label="@string/about">
         </activity>
         <activity
             android:name="com.money.manager.ex.CurrencyFormatsActivity"
-            android:label="@string/new_edit_currency" >
-            <action android:name="android.intent.action.EDIT" />
-            <action android:name="android.intent.action.INSERT" />
+            android:label="@string/new_edit_currency">
+            <action android:name="android.intent.action.EDIT"/>
+            <action android:name="android.intent.action.INSERT"/>
         </activity>
         <activity
             android:name="com.money.manager.ex.AccountListEditActivity"
-            android:label="@string/account_list" >
-            <action android:name="android.intent.action.EDIT" />
-            <action android:name="android.intent.action.INSERT" />
+            android:label="@string/account_list">
+            <action android:name="android.intent.action.EDIT"/>
+            <action android:name="android.intent.action.INSERT"/>
         </activity>
-        <activity android:name="com.money.manager.ex.IntroductionActivity" />
+        <activity android:name="com.money.manager.ex.IntroductionActivity"/>
         <activity
             android:name="com.money.manager.ex.RepeatingTransactionListActivity"/>
         <activity
             android:name="com.money.manager.ex.RepeatingTransactionActivity"
-            android:label="@string/new_edit_repeating_transaction" >
-            <action android:name="android.intent.action.EDIT" />
-            <action android:name="android.intent.action.INSERT" />
+            android:label="@string/new_edit_repeating_transaction">
+            <action android:name="android.intent.action.EDIT"/>
+            <action android:name="android.intent.action.INSERT"/>
         </activity>
         <activity
             android:name="com.money.manager.ex.preferences.PreferencesActivity"
-            android:label="@string/settings" >
+            android:label="@string/settings">
         </activity>
-        <activity android:name="com.money.manager.ex.PasscodeActivity" >
+        <activity android:name="com.money.manager.ex.PasscodeActivity">
             <intent-filter>
-                <action android:name="com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD" />
+                <action android:name="com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD"/>
             </intent-filter>
         </activity>
         <activity
             android:name="com.money.manager.ex.reports.IncomeVsExpensesActivity"
-            android:label="@string/menu_report_income_vs_expenses" />
+            android:label="@string/menu_report_income_vs_expenses"/>
         <activity
             android:name="com.money.manager.ex.reports.PayeesReportActivity"
-            android:label="@string/payee" >
+            android:label="@string/payee">
         </activity>
         <activity
             android:name="com.money.manager.ex.reports.CategoriesReportActivity"
-            android:label="@string/category" >
+            android:label="@string/category">
         </activity>
         <activity
             android:name="com.money.manager.ex.SearchActivity"
-            android:label="@string/search" >
+            android:label="@string/search">
         </activity>
         <activity
             android:name="com.money.manager.ex.SplitTransactionsActivity"
-            android:label="@string/split_transaction" >
+            android:label="@string/split_transaction">
         </activity>
         <activity
             android:name="com.money.manager.ex.DonateActivity"
-            android:label="@string/donate" >
+            android:label="@string/donate">
         </activity>
         <activity
             android:name="com.money.manager.ex.dropbox.DropboxBrowserActivity"
-            android:label="@string/dropbox_select_file" >
+            android:label="@string/dropbox_select_file">
         </activity>
         <activity
-			android:name="com.money.manager.ex.HelpActivity" 
+            android:name="com.money.manager.ex.HelpActivity"
             android:label="@string/help">
             <intent-filter>
-                <action android:name="com.money.manager.ex.custom.intent.action.WEB_VIEW_RAW_FILE" />
-                <action android:name="com.money.manager.ex.custom.intent.action.WEB_VIEW_URL" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="file" />
-                <data android:mimeType="*/*" />
+                <action android:name="com.money.manager.ex.custom.intent.action.WEB_VIEW_RAW_FILE"/>
+                <action android:name="com.money.manager.ex.custom.intent.action.WEB_VIEW_URL"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:scheme="file"/>
+                <data android:mimeType="*/*"/>
             </intent-filter>
         </activity>
-        
+
         <!-- Samsung MultiWindow Function -->
         <uses-library
             android:name="com.sec.android.app.multiwindow"
-            android:required="false" >
+            android:required="false">
         </uses-library>
 
         <meta-data
             android:name="com.sec.android.support.multiwindow"
-            android:value="true" />
+            android:value="true"/>
         <meta-data
             android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W"
-            android:resource="@dimen/app_defaultsize_w" />
+            android:resource="@dimen/app_defaultsize_w"/>
         <meta-data
             android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H"
-            android:resource="@dimen/app_defaultsize_h" />
+            android:resource="@dimen/app_defaultsize_h"/>
         <meta-data
             android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W"
-            android:resource="@dimen/app_minimumsize_w" />
+            android:resource="@dimen/app_minimumsize_w"/>
         <meta-data
             android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
-            android:resource="@dimen/app_minimumsize_h" />
+            android:resource="@dimen/app_minimumsize_h"/>
     </application>
 
 </manifest>
