@@ -27,7 +27,7 @@
 
     <!-- import / export database -->
     <!--<string name="emptyFolder">Empty folder</string>-->
-    <string name="upLevel">Up level</string>
+    <!--<string name="upLevel">Up level</string>-->
     <!--<string name="import_export">Import / Export</string>-->
     <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
     <!--<string name="import_export_success">Import / Export completed successfully</string>-->
