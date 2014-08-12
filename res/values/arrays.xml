@@ -91,12 +91,6 @@
         <item>@string/current_year</item>
     </string-array>
 
-    <!-- Define array to type home -->
-    <string-array name="type_home_values">
-        <item>@string/classic</item>
-        <item>@string/advance</item>
-    </string-array>
-
     <!-- Define last or none used payee -->
     <string-array name="new_transaction_dialog_values">
         <item>N</item>
@@ -106,7 +100,7 @@
         <item>@string/none</item>
         <item>@string/last</item>
     </string-array>
-    
+
     <!-- Define timeout synchronize dropbox -->
     <string-array name="timeout_synchronize_values">
         <item>0</item>
@@ -121,8 +115,8 @@
         <item>10080</item>
         <item>43200</item>
     </string-array>
-	<string-array name="timeout_synchronize_items">
-	    <item>@string/never</item>
+    <string-array name="timeout_synchronize_items">
+        <item>@string/never</item>
         <item>@string/every_5_minutes</item>
         <item>@string/every_15_minutes</item>
         <item>@string/every_30_minutes</item>
@@ -134,7 +128,7 @@
         <item>@string/weekly</item>
         <item>@string/monthly</item>
     </string-array>
-	<!-- Define frequencies items and values -->
+    <!-- Define frequencies items and values -->
     <integer-array name="frequencies_values">
         <item>0</item>
         <item>1</item>
@@ -216,36 +210,36 @@
     </string-array>
 
     <!-- Locale -->
-	<string-array name="application_locale_entries">
-	    <item>@string/Default</item>
-	    <item>@string/locale_cs</item>
-	    <item>@string/locale_en</item>
-	    <item>@string/locale_es</item>
-	    <item>@string/locale_fr</item>
-	    <item>@string/locale_he</item>
-	    <item>@string/locale_it</item>
-	    <item>@string/locale_pt</item>
-	    <item>@string/locale_pt_BR</item>
-	    <item>@string/locale_ru</item>
-	    <item>@string/locale_vi</item>
-	    <item>@string/locale_zh_rCN</item>
-	    <item>@string/locale_zh_rTW</item>
-	</string-array>
-	<string-array name="application_locale_values">
-	    <item></item>
-	    <item>cs</item>
-	    <item>en</item>
-	    <item>es</item>
-	    <item>fr</item>
-	    <item>he</item>
-	    <item>it</item>
-	    <item>pt</item>
-	    <item>pt-BR</item>
-	    <item>ru</item>
-	    <item>vi</item>
-	    <item>zh-rCN</item>
-	    <item>zh-rTW</item>
-	</string-array>
+    <string-array name="application_locale_entries">
+        <item>@string/Default</item>
+        <item>@string/locale_cs</item>
+        <item>@string/locale_en</item>
+        <item>@string/locale_es</item>
+        <item>@string/locale_fr</item>
+        <item>@string/locale_he</item>
+        <item>@string/locale_it</item>
+        <item>@string/locale_pt</item>
+        <item>@string/locale_pt_BR</item>
+        <item>@string/locale_ru</item>
+        <item>@string/locale_vi</item>
+        <item>@string/locale_zh_rCN</item>
+        <item>@string/locale_zh_rTW</item>
+    </string-array>
+    <string-array name="application_locale_values">
+        <item></item>
+        <item>cs</item>
+        <item>en</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>he</item>
+        <item>it</item>
+        <item>pt</item>
+        <item>pt-BR</item>
+        <item>ru</item>
+        <item>vi</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
+    </string-array>
     <!-- Date format -->
     <string-array name="date_format">
         <item>DD/MM/YY</item>
