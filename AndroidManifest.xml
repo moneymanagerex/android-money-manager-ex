@@ -207,10 +207,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.money.manager.ex.dropbox.DropboxActivity"
-            android:label="Sync Dropbox">
-        </activity>
-        <activity
             android:name="com.money.manager.ex.CheckingAccountActivity"
             android:label="@string/new_edit_transaction">
             <action android:name="android.intent.action.EDIT"/>
