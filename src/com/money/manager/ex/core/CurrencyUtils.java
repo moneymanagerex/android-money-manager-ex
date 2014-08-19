@@ -105,14 +105,14 @@ public class CurrencyUtils {
 		mBaseCurrencyId = null;
 	}
 	
-	public Float doCurrencyExchange(Integer toCurrencyId, float toAmount, Integer fromCurrencyId) {
+	public Double doCurrencyExchange(Integer toCurrencyId, double toAmount, Integer fromCurrencyId) {
 		TableCurrencyFormats fromCurrencyFormats = getTableCurrencyFormats(fromCurrencyId);
 		TableCurrencyFormats toCurrencyFormats = getTableCurrencyFormats(toCurrencyId);
 		// check if exists from and to currencies
 		if (fromCurrencyFormats == null || toCurrencyFormats == null)
 			return null;
 		// exchange
-		return (float) ((toAmount * toCurrencyFormats.getBaseConvRate()) / fromCurrencyFormats.getBaseConvRate());
+		return (double) ((toAmount * toCurrencyFormats.getBaseConvRate()) / fromCurrencyFormats.getBaseConvRate());
 	}
 	
 	public boolean updateCurrencyRateFromBase(Integer toCurrencyId) {
@@ -161,7 +161,7 @@ public class CurrencyUtils {
 				// convert string builder in json object
 				JSONObject jsonObject = new JSONObject(stringBuilder.toString());
 				JSONObject jsonRate = jsonObject.getJSONObject(symbolRate);
-				Float rate = (float) jsonRate.getDouble("val");
+				Double rate = (double) jsonRate.getDouble("val");
 				// update value on database
 				ContentValues contentValues = new ContentValues();
 				contentValues.put(TableCurrencyFormats.BASECONVRATE, rate);
@@ -206,7 +206,7 @@ public class CurrencyUtils {
 	 * @param value to format
 	 * @return formatted value
 	 */
-	public String getBaseCurrencyFormatted(Float value) {
+	public String getBaseCurrencyFormatted(Double value) {
 		return this.getCurrencyFormatted(mBaseCurrencyId, value);
 	}
 	
@@ -215,7 +215,7 @@ public class CurrencyUtils {
 	 * @param value to format
 	 * @return fomatted value
 	 */
-	public String getBaseNumericFormatted(Float value) {
+	public String getBaseNumericFormatted(Double value) {
 		return getNumericFormatted(mBaseCurrencyId, value);
 	}
 
@@ -225,10 +225,10 @@ public class CurrencyUtils {
 	 * @param value value to format
 	 * @return formatted value
 	 */
-	public String getCurrencyFormatted(Integer currencyId, Float value) {
+	public String getCurrencyFormatted(Integer currencyId, Double value) {
 		// check if value is null
 		if (value == null)
-			value = 0f;
+			value = 0d;
 		
 		// find currencyid
 		if (currencyId != null) {
@@ -251,10 +251,10 @@ public class CurrencyUtils {
 	 * @param value value to format
 	 * @return formatted value
 	 */
-	public String getNumericFormatted(Integer currencyId, Float value) {
+	public String getNumericFormatted(Integer currencyId, Double value) {
 		// check if value is null
 		if (value == null)
-			value = 0f;
+			value = 0d;
 		
 		// find currencyid
 		if (currencyId != null) {

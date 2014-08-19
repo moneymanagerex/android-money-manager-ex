@@ -40,7 +40,7 @@ public class TableSplitTransactions extends Dataset implements Parcelable {
 	@DatabaseField(columnName = SUBCATEGID)
 	private int subCategId = -1;
 	@DatabaseField(columnName = SPLITTRANSAMOUNT)
-	private float splitTransAmount = 0;
+	private double splitTransAmount = 0;
 	
 	// CONSTRUCTOR
 	public TableSplitTransactions() {
@@ -63,7 +63,7 @@ public class TableSplitTransactions extends Dataset implements Parcelable {
 	/**
 	 * @return the splitTransAmount
 	 */
-	public float getSplitTransAmount() {
+	public double getSplitTransAmount() {
 		return splitTransAmount;
 	}
 
@@ -98,7 +98,7 @@ public class TableSplitTransactions extends Dataset implements Parcelable {
 	/**
 	 * @param splitTransAmount the splitTransAmount to set
 	 */
-	public void setSplitTransAmount(float splitTransAmount) {
+	public void setSplitTransAmount(double splitTransAmount) {
 		this.splitTransAmount = splitTransAmount;
 	}
 
@@ -137,7 +137,7 @@ public class TableSplitTransactions extends Dataset implements Parcelable {
 		if (c.getColumnIndex(SUBCATEGID) != -1) 
 			setSubCategId(c.getInt(c.getColumnIndex(SUBCATEGID)));
 		if (c.getColumnIndex(SPLITTRANSAMOUNT) != -1) 
-			setSplitTransAmount(c.getFloat(c.getColumnIndex(SPLITTRANSAMOUNT)));
+			setSplitTransAmount(c.getDouble(c.getColumnIndex(SPLITTRANSAMOUNT)));
 	}
 
 	@Override
@@ -151,7 +151,7 @@ public class TableSplitTransactions extends Dataset implements Parcelable {
 		dest.writeInt(getTransId());
 		dest.writeInt(getCategId());
 		dest.writeInt(getSubCategId());
-		dest.writeFloat(getSplitTransAmount());
+		dest.writeDouble(getSplitTransAmount());
 	}
 	
 	public void readToParcel(Parcel source) {
@@ -159,7 +159,7 @@ public class TableSplitTransactions extends Dataset implements Parcelable {
 		setTransId(source.readInt());
 		setCategId(source.readInt());
 		setSubCategId(source.readInt());
-		setSplitTransAmount(source.readFloat());
+		setSplitTransAmount(source.readDouble());
 	}
 	
 	public final static Parcelable.Creator<TableSplitTransactions> CREATOR = new Parcelable.Creator<TableSplitTransactions>() {

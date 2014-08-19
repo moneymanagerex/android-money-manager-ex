@@ -224,7 +224,7 @@ public class TableCurrencyFormats extends Dataset {
 	 * @param value value to format
 	 * @return value formatted
 	 */
-	public String getValueFormatted(float value) {
+	public String getValueFormatted(double value) {
 		return getValueFormatted(value, true);
 	}
 	/**
@@ -233,7 +233,7 @@ public class TableCurrencyFormats extends Dataset {
 	 * @param showSymbols if true show symbols of currency
 	 * @return value formatted
 	 */
-	public String getValueFormatted(float value, boolean showSymbols) {
+	public String getValueFormatted(double value, boolean showSymbols) {
 		// set format
 		DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
 		if (!(TextUtils.isEmpty(getDecimalPoint()))) {

@@ -113,7 +113,7 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 	}
 
 	@Override
-	public void onFinishedInputAmountDialog(int id, Float amount) {
+	public void onFinishedInputAmountDialog(int id, Double amount) {
 		SearchFragment fragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
 		if (fragment != null) 
 			fragment.onFinishedInputAmountDialog(id, amount);

@@ -158,7 +158,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 	}
 
 	@Override
-	public void onFinishedInputAmountDialog(int id, Float amount) {
+	public void onFinishedInputAmountDialog(int id, Double amount) {
 		SplitItemFragment fragment = getFragmentInputAmountClick();
 		if (fragment != null && fragment.isVisible() && fragment.isResumed()) {
 			fragment.onFinishedInputAmountDialog(id, amount);

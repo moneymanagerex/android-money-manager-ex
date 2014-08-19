@@ -86,7 +86,7 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
 		}
 		txtRepeat.setText(application.getRepeatAsString(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.REPEATS))));
 		// take transaction amount
-		float amount = cursor.getFloat(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
+		double amount = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
 		// manage transfer and change amount sign
 		if ((cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TRANSCODE)) != null)
 				&& (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TRANSCODE))))) {
@@ -94,7 +94,7 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
 				amount = -(amount); // -total
 			} else if (cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTID)) == cursor.getInt(cursor
 					.getColumnIndex(QueryBillDeposits.TOACCOUNTID))) {
-				amount = cursor.getFloat(cursor.getColumnIndex(QueryBillDeposits.TOTRANSAMOUNT)); // to account = account
+				amount = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.TOTRANSAMOUNT)); // to account = account
 			}
 		}
 		CurrencyUtils currencyUtils = new CurrencyUtils(mContext);

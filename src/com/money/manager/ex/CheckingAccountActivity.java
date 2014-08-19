@@ -127,7 +127,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	public ArrayList<String> mAccountNameList = new ArrayList<String>();
 	public ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
 	// amount
-	public float mTotAmount = 0, mAmount = 0;
+	public double mTotAmount = 0, mAmount = 0;
 	// notes
 	public String mNotes = "";
 	// transaction numbers
@@ -239,7 +239,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 			if ((resultCode == Activity.RESULT_OK) && (data != null)) {
 				mSplitTransaction = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
 				if (mSplitTransaction != null && mSplitTransaction.size() > 0) {
-					float totAmount = 0;
+					double totAmount = 0;
 					for (int i = 0; i < mSplitTransaction.size(); i ++) {
 						totAmount += mSplitTransaction.get(i).getSplitTransAmount();
 					}
@@ -269,8 +269,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 			mDate = savedInstanceState.getString(KEY_TRANS_DATE);
 			mTransCode = savedInstanceState.getString(KEY_TRANS_CODE);
 			mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
-			mAmount = savedInstanceState.getFloat(KEY_TRANS_AMOUNT);
-			mTotAmount = savedInstanceState.getFloat(KEY_TRANS_TOTAMOUNT);
+			mAmount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
+			mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
 			mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
 			mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
 			mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
@@ -375,9 +375,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 					if ((position >= 0) && (position <= mAccountIdList.size())) {
 						mAccountId = mAccountIdList.get(position);
 						if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
-							formatAmount(txtAmount, (Float)txtAmount.getTag(), mAccountId); 
+							formatAmount(txtAmount, (Double)txtAmount.getTag(), mAccountId);
 						} else {
-							formatAmount(txtTotAmount, (Float)txtTotAmount.getTag(), mAccountId);
+							formatAmount(txtTotAmount, (Double)txtTotAmount.getTag(), mAccountId);
 						}
 						refreshHeaderAmount();
 					}
@@ -403,8 +403,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 					if ((position >= 0) && (position <= mAccountIdList.size())) {
 						mToAccountId = mAccountIdList.get(position);
-						formatAmount(txtAmount, (Float)txtAmount.getTag(), mAccountId); 
-						formatAmount(txtTotAmount, (Float)txtTotAmount.getTag(), mToAccountId);
+						formatAmount(txtAmount, (Double)txtAmount.getTag(), mAccountId);
+						formatAmount(txtTotAmount, (Double)txtTotAmount.getTag(), mToAccountId);
 						refreshHeaderAmount();
 					}
 				}
@@ -575,7 +575,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 						currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
 					}
 				}
-				float amount = (Float)((TextView) v).getTag();
+				double amount = (Double)((TextView) v).getTag();
 				InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
 				dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
 			}
@@ -650,8 +650,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		outState.putString(KEY_TRANS_DATE, new SimpleDateFormat("yyyy-MM-dd").format(txtSelectDate.getTag()));
 		outState.putString(KEY_TRANS_CODE, mTransCode);
 		outState.putString(KEY_TRANS_STATUS, mStatus);
-		outState.putFloat(KEY_TRANS_TOTAMOUNT, (Float)txtTotAmount.getTag());
-		outState.putFloat(KEY_TRANS_AMOUNT, (Float)txtAmount.getTag());
+		outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double)txtTotAmount.getTag());
+		outState.putDouble(KEY_TRANS_AMOUNT, (Double)txtAmount.getTag());
 		outState.putInt(KEY_PAYEE_ID, mPayeeId);
 		outState.putString(KEY_PAYEE_NAME, mPayeeName);
 		outState.putInt(KEY_CATEGORY_ID, mCategoryId);
@@ -671,26 +671,26 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	}
 	
 	@Override
-	public void onFinishedInputAmountDialog(int id, Float amount) {
+	public void onFinishedInputAmountDialog(int id, Double amount) {
 		View view = findViewById(id);
 		int accountId;
 		if (view != null && view instanceof TextView) {
 			CurrencyUtils currencyUtils = new CurrencyUtils(this);
 			if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
-				Float originalAmount;
+				Double originalAmount;
 				try {
 					/*Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(mAccountId)).getCurrencyId();
 					Integer fromCurrencyId = mAccountList.get(mAccountIdList.indexOf(mToAccountId)).getCurrencyId();*/
 					Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(view.getId() == R.id.textViewTotAmount ? mAccountId : mToAccountId)).getCurrencyId();
 					Integer fromCurrencyId = mAccountList.get(mAccountIdList.indexOf(view.getId() == R.id.textViewTotAmount ? mToAccountId : mAccountId)).getCurrencyId();
 					// take a original values 
-					originalAmount = view.getId() == R.id.textViewTotAmount ? (Float)txtTotAmount.getTag() : (Float)txtAmount.getTag();
+					originalAmount = view.getId() == R.id.textViewTotAmount ? (Double)txtTotAmount.getTag() : (Double)txtAmount.getTag();
 					// convert value
-					Float amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
+					Double amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
 					// take original amount converted
-					originalAmount = view.getId() == R.id.textViewTotAmount ? (Float)txtAmount.getTag() : (Float)txtTotAmount.getTag();
+					originalAmount = view.getId() == R.id.textViewTotAmount ? (Double)txtAmount.getTag() : (Double)txtTotAmount.getTag();
 					if (originalAmount == null)
-						originalAmount = 0f;
+						originalAmount = 0d;
 					// check if two values is equals, and then convert value
 					if (originalAmount == 0) {
 						DecimalFormat decimalFormat = new DecimalFormat("0.00");
@@ -737,7 +737,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 	
 	/**
 	 * query info payee
-	 * @param payeeId id payee
+	 * @param accountId id payee
 	 * @return true if the data selected
 	 */
 	public boolean getAccountName(int accountId) {
@@ -806,8 +806,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		mToAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TOACCOUNTID));
 		mTransCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
 		mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
-		mAmount = (float) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
-		mTotAmount = (float) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
+		mAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+		mTotAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
 		mPayeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
 		mCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
 		mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
@@ -867,8 +867,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		mToAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
 		mTransCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
 		mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
-		mAmount = (float) cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
-		mTotAmount = (float) cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
+		mAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
+		mTotAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
 		mPayeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
 		mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
 		mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
@@ -892,7 +892,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		}
 	}
 
-	public void formatAmount(TextView view, float amount, Integer accountId) {
+	public void formatAmount(TextView view, double amount, Integer accountId) {
 		// take currency id
 		Integer currencyId = null;
 		
@@ -997,8 +997,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 			Core.alertDialog(this, R.string.error_split_transaction_empty).show();
 			return false;
 		}
-		if ((Float)txtTotAmount.getTag() == 0) {
-			if ((Float)txtAmount.getTag() == 0) {
+		if ((Double)txtTotAmount.getTag() == 0) {
+			if ((Double)txtAmount.getTag() == 0) {
 				Core.alertDialog(this, R.string.error_totamount_empty).show();
 				return false;
 			} else {
@@ -1028,16 +1028,16 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 		}
 		values.put(TableCheckingAccount.TRANSCODE, mTransCode);
 		if (TextUtils.isEmpty(txtAmount.getText().toString()) || (!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)))) {
-			values.put(TableCheckingAccount.TRANSAMOUNT, (Float)txtTotAmount.getTag());
+			values.put(TableCheckingAccount.TRANSAMOUNT, (Double)txtTotAmount.getTag());
 		} else {
-			values.put(TableCheckingAccount.TRANSAMOUNT, (Float)txtAmount.getTag());
+			values.put(TableCheckingAccount.TRANSAMOUNT, (Double)txtAmount.getTag());
 		}
 		values.put(TableCheckingAccount.STATUS, mStatus);
 		values.put(TableCheckingAccount.CATEGID, !chbSplitTransaction.isChecked() ? mCategoryId : -1);
 		values.put(TableCheckingAccount.SUBCATEGID, !chbSplitTransaction.isChecked() ? mSubCategoryId : -1);
 		values.put(TableCheckingAccount.TRANSDATE, mApplication.getSQLiteStringDate((Date)txtSelectDate.getTag()));
 		values.put(TableCheckingAccount.FOLLOWUPID, -1);
-		values.put(TableCheckingAccount.TOTRANSAMOUNT, (Float)txtTotAmount.getTag());
+		values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double)txtTotAmount.getTag());
 		values.put(TableCheckingAccount.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
 		values.put(TableCheckingAccount.NOTES, edtNotes.getText().toString());
 		

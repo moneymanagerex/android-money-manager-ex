@@ -47,7 +47,7 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 	private static final int ID_LOADER_SCREEN4 = 0x003;
 	// Padding
 	final int padding_in_dp = 6; // 6 dps
-	float scale;
+	double scale;
 	int padding_in_px;
 
 	// array of part screen
@@ -232,8 +232,8 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 		String[] titles = new String[3];
 
 		// incomes and expenses
-		incomes[1] = cursor.getFloat(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-		expenses[1] = Math.abs(cursor.getFloat(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses)));
+		incomes[1] = cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+		expenses[1] = Math.abs(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses)));
 		// titles
 		int year = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Year));
 		int month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));
@@ -291,7 +291,7 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 				if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
 					category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
 				}
-				float total = cursor.getFloat(cursor.getColumnIndex("TOTAL"));
+				double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
 				int num = cursor.getInt(cursor.getColumnIndex("NUM"));
 				// Add Row
 				tableLayout.addView(createTableRow(new String[] { "<small>" + category + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
@@ -324,7 +324,7 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 			while (!cursor.isAfterLast()) {
 				// load values
 				String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee));
-				float total = cursor.getFloat(cursor.getColumnIndex("TOTAL"));
+				double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
 				int num = cursor.getInt(cursor.getColumnIndex("NUM"));
 				// Add Row
 				tableLayout.addView(createTableRow(new String[] { "<small>" + payee + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
@@ -354,7 +354,7 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 			while (!cursor.isAfterLast()) {
 				// load values
 				String payee = "<i>" + cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)) + "</i>";
-				float total = cursor.getFloat(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
+				double total = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
 				int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
 				int currencyId = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID));
 				String daysLeftText = "";

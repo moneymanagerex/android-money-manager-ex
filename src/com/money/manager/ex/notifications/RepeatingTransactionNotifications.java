@@ -63,7 +63,7 @@ public class RepeatingTransactionNotifications {
 					while (!cursor.isAfterLast()) {
 						String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
 						" " + cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)) +
-						": <b>" + currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getFloat(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
+						": <b>" + currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
 						// add line
 						inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
 						// move to next row

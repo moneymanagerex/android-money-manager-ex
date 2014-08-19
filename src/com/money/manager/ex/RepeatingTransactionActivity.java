@@ -112,7 +112,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 	private ArrayList<String> mAccountNameList = new ArrayList<String>();
 	private ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
 	// amount
-	private float mTotAmount = 0, mAmount = 0;
+	private double mTotAmount = 0, mAmount = 0;
 	// notes
 	private String mNotes = "";
 	// next occurrance
@@ -228,8 +228,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 			mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
 			mTransCode = savedInstanceState.getString(KEY_TRANS_CODE);
 			mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
-			mAmount = savedInstanceState.getFloat(KEY_TRANS_AMOUNT);
-			mTotAmount = savedInstanceState.getFloat(KEY_TRANS_TOTAMOUNT);
+			mAmount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
+			mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
 			mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
 			mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
 			mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
@@ -285,7 +285,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 						&& spinAccount.getSelectedItemPosition() < mAccountList.size()) {
 					currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
 				}
-				float amount = (Float)((TextView) v).getTag();
+				double amount = (Double)((TextView) v).getTag();
 				InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
 				dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
 			}
@@ -323,9 +323,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 					if ((position >= 0) && (position <= mAccountIdList.size())) {
 						mAccountId = mAccountIdList.get(position);
 						if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
-							core.formatAmountTextView(txtAmount, (Float)txtAmount.getTag(), getCurrencyIdFromAccountId(mAccountId)); 
+							core.formatAmountTextView(txtAmount, (Double)txtAmount.getTag(), getCurrencyIdFromAccountId(mAccountId));
 						} else {
-							core.formatAmountTextView(txtTotAmount, (Float)txtTotAmount.getTag(), getCurrencyIdFromAccountId(mAccountId));
+							core.formatAmountTextView(txtTotAmount, (Double)txtTotAmount.getTag(), getCurrencyIdFromAccountId(mAccountId));
 						}
 						refreshHeaderAmount();
 					}
@@ -347,8 +347,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 					if ((position >= 0) && (position <= mAccountIdList.size())) {
 						mToAccountId = mAccountIdList.get(position);
 						Core core = new Core(getBaseContext());
-						core.formatAmountTextView(txtAmount, (Float)txtAmount.getTag(), getCurrencyIdFromAccountId(mAccountId));
-						core.formatAmountTextView(txtTotAmount, (Float)txtTotAmount.getTag(), getCurrencyIdFromAccountId(mToAccountId));
+						core.formatAmountTextView(txtAmount, (Double)txtAmount.getTag(), getCurrencyIdFromAccountId(mAccountId));
+						core.formatAmountTextView(txtTotAmount, (Double)txtTotAmount.getTag(), getCurrencyIdFromAccountId(mToAccountId));
 						refreshHeaderAmount();
 					}
 				}
@@ -551,8 +551,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
 		outState.putString(KEY_TRANS_CODE, mTransCode);
 		outState.putString(KEY_TRANS_STATUS, mStatus);
-		outState.putFloat(KEY_TRANS_TOTAMOUNT, (Float) txtTotAmount.getTag());
-		outState.putFloat(KEY_TRANS_AMOUNT, (Float) txtAmount.getTag());
+		outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double) txtTotAmount.getTag());
+		outState.putDouble(KEY_TRANS_AMOUNT, (Double) txtAmount.getTag());
 		outState.putInt(KEY_PAYEE_ID, mPayeeId);
 		outState.putString(KEY_PAYEE_NAME, mPayeeName);
 		outState.putInt(KEY_CATEGORY_ID, mCategoryId);
@@ -573,7 +573,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 	
 	/**
 	 * query info payee
-	 * @param payeeId id payee
+	 * @param accountId id payee
 	 * @return true if the data selected
 	 */
 	private boolean selectAccountName(int accountId) {
@@ -664,8 +664,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		mToAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
 		mTransCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
 		mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
-		mAmount = (float) cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
-		mTotAmount = (float) cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
+		mAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
+		mTotAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
 		mPayeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
 		mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
 		mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
@@ -710,15 +710,15 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		}
 		values.put(TableBillsDeposits.TRANSCODE, mTransCode);
 		if (TextUtils.isEmpty(txtAmount.getText().toString()) || (!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)))) {
-			values.put(TableBillsDeposits.TRANSAMOUNT, (Float)txtTotAmount.getTag());
+			values.put(TableBillsDeposits.TRANSAMOUNT, (Double)txtTotAmount.getTag());
 		} else {
-			values.put(TableBillsDeposits.TRANSAMOUNT, (Float)txtAmount.getTag());
+			values.put(TableBillsDeposits.TRANSAMOUNT, (Double)txtAmount.getTag());
 		}
 		values.put(TableBillsDeposits.STATUS, mStatus);
 		values.put(TableBillsDeposits.CATEGID, mCategoryId);
 		values.put(TableBillsDeposits.SUBCATEGID, mSubCategoryId);
 		values.put(TableBillsDeposits.FOLLOWUPID, -1);
-		values.put(TableBillsDeposits.TOTRANSAMOUNT, (Float)txtTotAmount.getTag());
+		values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double)txtTotAmount.getTag());
 		values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
 		values.put(TableBillsDeposits.NOTES, edtNotes.getText().toString());
 		values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat("yyyy-MM-dd").format(txtNextOccurrence.getTag()));
@@ -808,7 +808,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 	}
 
 	@Override
-	public void onFinishedInputAmountDialog(int id, Float amount) {
+	public void onFinishedInputAmountDialog(int id, Double amount) {
 		Core core = new Core(this);
 		
 		View view = findViewById(id);
@@ -816,18 +816,18 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		if (view != null && view instanceof TextView) {
 			CurrencyUtils currencyUtils = new CurrencyUtils(this);
 			if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
-				Float originalAmount;
+				Double originalAmount;
 				try {
 					Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(id == R.id.textViewTotAmount ? mAccountId : mToAccountId)).getCurrencyId();
 					Integer fromCurrencyId = mAccountList.get(mAccountIdList.indexOf(id == R.id.textViewTotAmount ? mToAccountId : mAccountId)).getCurrencyId();
 					// take a original values 
-					originalAmount = id == R.id.textViewTotAmount ? (Float)txtTotAmount.getTag() : (Float)txtAmount.getTag();
+					originalAmount = id == R.id.textViewTotAmount ? (Double)txtTotAmount.getTag() : (Double)txtAmount.getTag();
 					// convert value
-					Float amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
+					Double amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
 					// take original amount converted
-					originalAmount = id == R.id.textViewTotAmount ? (Float)txtAmount.getTag() : (Float)txtTotAmount.getTag();
+					originalAmount = id == R.id.textViewTotAmount ? (Double)txtAmount.getTag() : (Double)txtTotAmount.getTag();
 					if (originalAmount == null)
-						originalAmount = 0f;
+						originalAmount = 0d;
 					// check if two values is equals, and then convert value
 					DecimalFormat decimalFormat = new DecimalFormat("0.00");
 					if (originalAmount == 0) {

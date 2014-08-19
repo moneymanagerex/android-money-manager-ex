@@ -63,7 +63,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 		public void bindView(View view, Context context, Cursor cursor) {
 			TextView txtColumn1 = (TextView)view.findViewById(R.id.textViewColumn1);
 			TextView txtColumn2 = (TextView)view.findViewById(R.id.textViewColumn2);
-			float total = cursor.getFloat(cursor.getColumnIndex("TOTAL")); 
+			double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
 			if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
 				txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
 			} else {
@@ -129,9 +129,9 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 			case ID_LOADER:
 				//parse cursor for calculate total
 				if (data != null && data.moveToFirst()) {
-					float totalAmount = 0;
+					double totalAmount = 0;
 					while (!data.isAfterLast()) {
-						totalAmount += data.getFloat(data.getColumnIndex("TOTAL"));
+						totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
 						data.moveToNext();
 					}
 					TextView txtColumn2 = (TextView)mFooterListView.findViewById(R.id.textViewColumn2);
@@ -214,7 +214,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
 			while (!cursor.isAfterLast()) {
 				ValuePieChart item = new ValuePieChart();
 				// total
-				float total = Math.abs(cursor.getFloat(cursor.getColumnIndex("TOTAL")));
+				double total = Math.abs(cursor.getDouble(cursor.getColumnIndex("TOTAL")));
 				if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
 					item.setCategory(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
 				} else {

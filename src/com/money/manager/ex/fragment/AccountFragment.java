@@ -85,8 +85,8 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	// string name fragment
 	private String mNameFragment;
 	// account balance
-	private float mAccountBalance = 0;
-	private float mAccountReconciled = 0;
+	private double mAccountBalance = 0;
+	private double mAccountReconciled = 0;
 	// Dataset: accountlist e alldata
 	private TableAccountList mAccountList;
 	// view into layout
@@ -242,8 +242,8 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		switch (loader.getId()) {
 		case ID_LOADER_SUMMARY:
 			if (data != null && data.moveToFirst()) {
-				mAccountBalance = data.getFloat(data.getColumnIndex(QueryAccountBills.TOTAL));
-				mAccountReconciled = data.getFloat(data.getColumnIndex(QueryAccountBills.RECONCILED));
+				mAccountBalance = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL));
+				mAccountReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED));
 			} else {
 				mAccountBalance = 0;
 				mAccountReconciled = 0;
