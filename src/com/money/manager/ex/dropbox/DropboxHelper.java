@@ -417,7 +417,7 @@ public class DropboxHelper {
 		inboxStyle.addLine(mContext.getString(R.string.upload_file_to_dropbox_complete));
 		// compose builder
 		NotificationCompat.Builder notification = new NotificationCompat.Builder(mContext)
-											.addAction(R.drawable.ic_action_folder_open_dark, mContext.getString(R.string.open_database), pendingIntent)
+											//.addAction(R.drawable.ic_action_folder_open_dark, mContext.getString(R.string.open_database), pendingIntent)
 											.setAutoCancel(true)
 											.setContentIntent(pendingIntent)
 											.setContentTitle(mContext.getString(R.string.application_name_dropbox))

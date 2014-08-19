@@ -385,7 +385,7 @@
     <string name="quantity">Quantity</string>
     <string name="dashboard">Dashboard</string>
     <!-- 20130808 -->
-    <string name="dropbox_database_is_synchronized">The database is synchronized</string>
+    <string name="dropbox_database_is_synchronized">The database is up to date</string>
     <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
     <string name="last3months">Last 3 months</string>
     <string name="last6months">Last 6 months</string>
