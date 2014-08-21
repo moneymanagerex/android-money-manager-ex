@@ -70,7 +70,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			TextView txtColumn1 = (TextView)view.findViewById(R.id.textViewColumn1);
 			TextView txtColumn2 = (TextView)view.findViewById(R.id.textViewColumn2);
 			Core core = new Core(context);
-			float total = cursor.getFloat(cursor.getColumnIndex("TOTAL"));
+			double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
 			String column1;
 			if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)))) {
 				column1 = "<b>" + cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)) + "</b>";
@@ -178,9 +178,9 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 			case ID_LOADER:
 				//parse cursor for calculate total
 				if (data != null && data.moveToFirst()) {
-					float totalAmount = 0;
+					double totalAmount = 0;
 					while (!data.isAfterLast()) {
-						totalAmount += data.getFloat(data.getColumnIndex("TOTAL"));
+						totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
 						data.moveToNext();
 					}
 					TextView txtColumn2 = (TextView)mFooterListView.findViewById(R.id.textViewColumn2);
@@ -274,7 +274,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
 					category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
 				}
 				// total
-				float total = Math.abs(cursor.getFloat(cursor.getColumnIndex("TOTAL")));
+				double total = Math.abs(cursor.getDouble(cursor.getColumnIndex("TOTAL")));
 				// check if category is empty
 				if (TextUtils.isEmpty(category))
 					category = getString(R.string.empty_category);

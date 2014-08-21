@@ -121,7 +121,7 @@
                 style="?attr/styleHoloSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:textStyle="bold"/>
@@ -153,7 +153,6 @@
                         style="?attr/styleHoloSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:textStyle="bold"/>
@@ -174,7 +173,6 @@
                     style="?attr/styleHoloSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:textStyle="bold"/>
@@ -197,7 +195,6 @@
                     style="?attr/styleHoloSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
@@ -220,7 +217,7 @@
                     style="?attr/styleHoloSpinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:focusable="false"
@@ -246,7 +243,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:hint="@string/transaction_number"
@@ -271,7 +267,6 @@
                 android:id="@+id/editTextNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:gravity="top|left"
                 android:inputType="textMultiLine"
                 android:maxLength="1000"

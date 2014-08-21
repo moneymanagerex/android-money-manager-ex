@@ -94,7 +94,7 @@ public class TipsDialogFragment extends DialogFragment {
 		});
 		// bug CheckBox object of Android
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-			final float scale = this.getResources().getDisplayMetrics().density;
+			final double scale = this.getResources().getDisplayMetrics().density;
 			checkDont.setPadding(checkDont.getPaddingLeft() + (int) (40.0f * scale + 0.5f),
 								 checkDont.getPaddingTop(),
 								 checkDont.getPaddingRight(),

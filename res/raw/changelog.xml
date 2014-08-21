@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion changeDate="NOT YET RELEASED" versionName="1.4.13">
+        <changelogtext>Fixed minor bugs</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="August 10, 2014" versionName="1.4.12">
         <changelogtext>Fixed problem when changing the state and the type of transaction</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>

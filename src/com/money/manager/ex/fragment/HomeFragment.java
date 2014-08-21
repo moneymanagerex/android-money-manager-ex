@@ -92,13 +92,13 @@ public class HomeFragment extends Fragment implements
 			// import formatted
 			String value = currencyUtils.getCurrencyFormatted(cursor
 					.getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
-					cursor.getFloat(cursor.getColumnIndex(accountBills.TOTAL)));
+					cursor.getDouble(cursor.getColumnIndex(accountBills.TOTAL)));
 			// set amount value
 			txtAccountTotal.setText(value);
 			// reconciled
 			value = currencyUtils.getCurrencyFormatted(cursor
 					.getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
-					cursor.getFloat(cursor.getColumnIndex(accountBills.RECONCILED)));
+					cursor.getDouble(cursor.getColumnIndex(accountBills.RECONCILED)));
 			txtAccountReconciled.setText(value);
 			// set imageview account type
 			ImageView imgAccountType = (ImageView)view.findViewById(R.id.imageViewAccountType);
@@ -253,7 +253,7 @@ public class HomeFragment extends Fragment implements
 	public void onLoaderReset(Loader<Cursor> loader) {
 		switch (loader.getId()) {
 		case ID_LOADER_ACCOUNT_BILLS:
-			txtTotalAccounts.setText(currencyUtils.getBaseCurrencyFormatted(Float.valueOf(0)));
+			txtTotalAccounts.setText(currencyUtils.getBaseCurrencyFormatted(Double.valueOf(0)));
 			lstAccountBills.setAdapter(null);
 			setListViewAccountBillsVisible(false);
 		}
@@ -289,7 +289,7 @@ public class HomeFragment extends Fragment implements
 			break;
 			
 		case ID_LOADER_ACCOUNT_BILLS:
-			float curTotal = 0, curReconciled = 0;
+			double curTotal = 0, curReconciled = 0;
 			AccountBillsAdapter adapter = null;
 			
 			linearHome.setVisibility(data != null && data.getCount() > 0 ? View.VISIBLE : View.GONE);
@@ -298,8 +298,8 @@ public class HomeFragment extends Fragment implements
 			// cycle cursor
 			if (data != null && data.moveToFirst()) {
 				while (data.isAfterLast() == false) {
-					curTotal += data.getFloat(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
-					curReconciled += data.getFloat(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
+					curTotal += data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+					curReconciled += data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
 					data.moveToNext();
 				}
 				// create adapter
@@ -345,11 +345,11 @@ public class HomeFragment extends Fragment implements
 			break;
 			
 		case ID_LOADER_INCOME_EXPENSES:
-			float income = 0, expenses = 0;
+			double income = 0, expenses = 0;
 			if (data != null && data.moveToFirst()) {
 				while (!data.isAfterLast()) {
-					expenses = data.getFloat(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
-					income = data.getFloat(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+					expenses = data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+					income = data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
 					//move to next record
 					data.moveToNext();
 				}

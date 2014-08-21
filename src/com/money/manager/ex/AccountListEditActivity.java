@@ -87,7 +87,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 	// Activity members
 	private int mAccountId = -1;
 	private String mAccountName, mAccountType, mAccountNum, mHeldAt, mWebsite, mContactInfo, mAccessInfo, mStatus, mNotes, mFavoriteAcct, mCurrencyName;
-	private float mInitialBal = 0;
+	private double mInitialBal = 0;
 	private Integer mCurrencyId = null;
 	// Arrays for spinner items and values
 	private String[] mAccountTypeItems;
@@ -137,7 +137,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 			mContactInfo = savedInstanceState.getString(KEY_CONTACT_INFO);
 			mAccessInfo = savedInstanceState.getString(KEY_ACCESS_INFO);
 			mStatus = savedInstanceState.getString(KEY_STATUS);
-			mInitialBal = savedInstanceState.getFloat(KEY_INITIAL_BAL);
+			mInitialBal = savedInstanceState.getDouble(KEY_INITIAL_BAL);
 			if (savedInstanceState.getInt(KEY_SYMBOL) == LESS) 
 				mInitialBal = mInitialBal * -1;
 			mNotes = savedInstanceState.getString(KEY_NOTES);
@@ -224,7 +224,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 			
 			@Override
 			public void onClick(View v) {
-				float amount = (Float)((TextView) v).getTag();
+				double amount = (Double)((TextView) v).getTag();
 				InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, mCurrencyId);
 				dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
 			}
@@ -336,7 +336,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 				// refresh displayed Currency
 				refreshCurrencyName();
 				// refresh amount
-				onFinishedInputAmountDialog(R.id.editTextInitialBalance, (Float)txtInitialBalance.getTag());
+				onFinishedInputAmountDialog(R.id.editTextInitialBalance, (Double)txtInitialBalance.getTag());
 			}
 		}
 	}
@@ -356,7 +356,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		outState.putString(KEY_CONTACT_INFO, mContactInfo);
 		outState.putString(KEY_ACCESS_INFO, mAccessInfo);
 		outState.putString(KEY_STATUS, mStatus);
-		outState.putFloat(KEY_INITIAL_BAL, (Float)txtInitialBalance.getTag());
+		outState.putDouble(KEY_INITIAL_BAL, (Double)txtInitialBalance.getTag());
 		outState.putString(KEY_NOTES, mNotes);
 		outState.putString(KEY_FAVORITE_ACCT, String.valueOf(imgbFavouriteAccount.getTag()));
 		outState.putInt(KEY_CURRENCY_ID, mCurrencyId != null ? mCurrencyId : -1);
@@ -377,7 +377,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		mContactInfo = edtContact.getText().toString();
 		mAccessInfo = edtAccessInfo.getText().toString();
 		
-		mInitialBal = (Float)txtInitialBalance.getTag();
+		mInitialBal = (Double)txtInitialBalance.getTag();
 		mNotes = edtNotes.getText().toString();
 		
 		if (bCheck) {
@@ -427,7 +427,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		values.put(TableAccountList.WEBSITE, mWebsite);
 		values.put(TableAccountList.CONTACTINFO, mContactInfo);
 		values.put(TableAccountList.ACCESSINFO, mAccessInfo);
-		values.put(TableAccountList.INITIALBAL, (Float)txtInitialBalance.getTag() * (spinSymbolInitialBalance.getSelectedItemPosition() == PLUS ? 1 : -1));
+		values.put(TableAccountList.INITIALBAL, (Double)txtInitialBalance.getTag() * (spinSymbolInitialBalance.getSelectedItemPosition() == PLUS ? 1 : -1));
 		values.put(TableAccountList.FAVORITEACCT, imgbFavouriteAccount.getTag().toString().toUpperCase());
 		values.put(TableAccountList.CURRENCYID, mCurrencyId);
 		// check whether the application should update or insert
@@ -477,7 +477,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		mWebsite = cursor.getString(cursor.getColumnIndex(TableAccountList.WEBSITE));
 		mContactInfo = cursor.getString(cursor.getColumnIndex(TableAccountList.CONTACTINFO));
 		mAccessInfo = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCESSINFO));
-		mInitialBal = (float) cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
+		mInitialBal = (double) cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
 		mFavoriteAcct = cursor.getString(cursor.getColumnIndex(TableAccountList.FAVORITEACCT));		
 		mCurrencyId = cursor.getInt(cursor.getColumnIndex(TableAccountList.CURRENCYID));
 		
@@ -522,7 +522,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 	}
 
 	@Override
-	public void onFinishedInputAmountDialog(int id, Float amount) {
+	public void onFinishedInputAmountDialog(int id, Double amount) {
 		Core core = new Core(this);
 		
 		View view = findViewById(id);

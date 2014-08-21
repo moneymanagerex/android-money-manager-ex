@@ -35,7 +35,7 @@ public class AccountBillsDashExtension extends DashClockExtension {
 				while (!cursor.isAfterLast()) {
 					String accountname = cursor.getString(cursor.getColumnIndex(QueryAccountBills.ACCOUNTNAME));
 					int currencyId = cursor.getInt(cursor.getColumnIndex(QueryAccountBills.CURRENCYID));
-					float summaryAccount = cursor.getFloat(cursor.getColumnIndex(QueryAccountBills.TOTAL));
+					double summaryAccount = cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTAL));
 					String value = currencyUtils.getCurrencyFormatted(currencyId, summaryAccount);
 					if (!TextUtils.isEmpty(body)) body += "\r\n";
 					// add account and summary

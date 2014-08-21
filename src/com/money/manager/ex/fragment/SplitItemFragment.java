@@ -53,7 +53,7 @@ public class SplitItemFragment extends SherlockFragment implements InputAmountDi
 	public TableSplitTransactions getTableSplitTransactions() {
 		String selectItem = spinTransCode.getSelectedItem().toString();
 		if (txtAmount.getTag() != null) {
-			mSplitObject.setSplitTransAmount((Float)txtAmount.getTag() * (selectItem.equals(getString(R.string.withdrawal)) ? 1 : -1));
+			mSplitObject.setSplitTransAmount((Double)txtAmount.getTag() * (selectItem.equals(getString(R.string.withdrawal)) ? 1 : -1));
 		} else {
 			mSplitObject.setSplitTransAmount(0);
 		}
@@ -100,9 +100,9 @@ public class SplitItemFragment extends SherlockFragment implements InputAmountDi
 				
 				@Override
 				public void onClick(View v) {
-					Float amount = (Float)((TextView) v).getTag();
+					Double amount = (Double)((TextView) v).getTag();
 					if (amount == null) 
-						amount = 0f;
+						amount = 0d;
 					
 					if (getSherlockActivity() instanceof SplitTransactionsActivity) {
 						SplitTransactionsActivity activity = (SplitTransactionsActivity)getSherlockActivity();
@@ -170,7 +170,7 @@ public class SplitItemFragment extends SherlockFragment implements InputAmountDi
 	}
 
 	@Override
-	public void onFinishedInputAmountDialog(int id, Float amount) {
+	public void onFinishedInputAmountDialog(int id, Double amount) {
 		Core core = new Core(getSherlockActivity());
 		if (txtAmount.getId() == id) {
 			txtAmount.setTag(amount);

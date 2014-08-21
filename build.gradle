@@ -32,6 +32,8 @@ android {
         applicationId "com.money.manager.ex"
         minSdkVersion 8
         targetSdkVersion 19
+        setVersionCode(573)
+        setVersionName("1.4.13")
     }
 
     sourceSets {
@@ -62,6 +64,11 @@ android {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            applicationVariants.all { variant ->
+                def file = variant.outputFile
+                def version = "-" + defaultConfig.versionName.replace(".", "_") + "_r" + defaultConfig.versionCode
+                variant.outputFile = new File(file.parent, file.name.replace(".apk", version + ".apk"))
+            }
         }
     }
 

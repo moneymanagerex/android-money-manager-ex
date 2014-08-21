@@ -38,13 +38,13 @@ public class InputAmountDialog extends SherlockDialogFragment {
 	private ImageButton imgDelete;
 	
 	public interface InputAmountDialogListener {
-		public void onFinishedInputAmountDialog(int id, Float amount);
+		public void onFinishedInputAmountDialog(int id, Double amount);
 	}
 	
-	public static InputAmountDialog getInstance(int id, Float amount) {
+	public static InputAmountDialog getInstance(int id, Double amount) {
         Bundle args = new Bundle();
         args.putInt("id", id);
-        args.putFloat("amount", amount);
+        args.putDouble("amount", amount);
 
         InputAmountDialog fragment = new InputAmountDialog();
         fragment.setArguments(args);
@@ -52,7 +52,7 @@ public class InputAmountDialog extends SherlockDialogFragment {
 		return fragment;
 	}
 	
-	public static InputAmountDialog getInstance(int id, Float amount, Integer currencyId) {
+	public static InputAmountDialog getInstance(int id, Double amount, Integer currencyId) {
 		InputAmountDialog dialog = getInstance(id, amount);
 		dialog.mCurrencyId = currencyId;
 		return dialog;
@@ -64,14 +64,14 @@ public class InputAmountDialog extends SherlockDialogFragment {
 
         if (savedInstanceState == null) {
             int id = getArguments().getInt("id");
-            Float amount = getArguments().getFloat("amount");
+            Double amount = getArguments().getDouble("amount");
             mIdView = id;
             if (!(amount == null || amount == 0)) {
                 int iAmount = (int) (amount * 100);
                 if (Math.abs(amount - (iAmount / 100)) == 0) {
                     mAmount = Integer.toString(iAmount / 100);
                 } else {
-                    mAmount = Float.toString(amount);
+                    mAmount = Double.toString(amount);
                 }
             }
         } else {
@@ -141,10 +141,10 @@ public class InputAmountDialog extends SherlockDialogFragment {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if (TextUtils.isEmpty(mAmount))
-					mAmount = Float.toString(0);
-				// check if is float
+					mAmount = Double.toString(0);
+				// check if is double
 				if (Core.StringUtils.isNumeric(mAmount)) {
-					((InputAmountDialogListener) getActivity()).onFinishedInputAmountDialog(mIdView, Float.parseFloat(mAmount));
+					((InputAmountDialogListener) getActivity()).onFinishedInputAmountDialog(mIdView, Double.parseDouble(mAmount));
 					dismiss();
 				}
 			}
@@ -173,12 +173,12 @@ public class InputAmountDialog extends SherlockDialogFragment {
 	
 	public void refreshAmount() {
 		String amount = mAmount;
-		// check if amount is not empty and is float
+		// check if amount is not empty and is double
 		if (TextUtils.isEmpty(amount))
-			amount = Float.toString(0);
+			amount = Double.toString(0);
 		
 		if (Core.StringUtils.isNumeric(amount)) {
-			float fAmount = Float.parseFloat(amount);
+			double fAmount = Double.parseDouble(amount);
 			
 			CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
 			

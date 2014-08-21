@@ -63,7 +63,7 @@ public class AllDataAdapter extends CursorAdapter {
 	private MoneyManagerApplication mApplication;
 	// hash map for group
 	private HashMap<Integer, Integer> mHeadersAccountIndex;
-	// private HashMap<Integer, Float> mBalanceTransactions;
+	// private HashMap<Integer, Double> mBalanceTransactions;
 	private SparseBooleanArray mCheckedPosition;
 	// account and currency
 	private int mAccountId = -1;
@@ -129,7 +129,7 @@ public class AllDataAdapter extends CursorAdapter {
 			Log.e(AllDataAdapter.class.getSimpleName(), e.getMessage());
 		}
 		// take transaction amount
-		float amount = cursor.getFloat(cursor.getColumnIndex(AMOUNT));
+		double amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
 		// set currency id
 		setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
 		// manage transfer and change amount sign
@@ -138,7 +138,7 @@ public class AllDataAdapter extends CursorAdapter {
 			if (getAccountId() != cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
 				amount = -(amount); // -total
 			} else if (getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
-				amount = cursor.getFloat(cursor.getColumnIndex(TOTRANSAMOUNT)); // to account = account
+				amount = cursor.getDouble(cursor.getColumnIndex(TOTRANSAMOUNT)); // to account = account
 				setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
 			}
 		}
@@ -354,7 +354,7 @@ public class AllDataAdapter extends CursorAdapter {
 		private String mDate;
 		private TextView mTextView;
 		private Context mContext;
-		private float total = 0;
+		private double total = 0;
 		private SQLiteDatabase mDatabase;
 		
 		@Override
@@ -367,15 +367,15 @@ public class AllDataAdapter extends CursorAdapter {
 			if (cursor != null && cursor.moveToFirst()) {
 				while (!cursor.isAfterLast()) {
 					if (Constants.TRANSACTION_TYPE_WITHDRAWAL.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE)))) {
-						total -= cursor.getFloat(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+						total -= cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
 					}
 					else if (Constants.TRANSACTION_TYPE_DEPOSIT.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE)))) {
-						total += cursor.getFloat(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+						total += cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
 					} else {
 						if (cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.ACCOUNTID)) == getAccountId()) {
-							total -= cursor.getFloat(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+							total -= cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
 						} else {
-							total += cursor.getFloat(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
+							total += cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
 						}
 					}
 					cursor.moveToNext();
@@ -386,7 +386,7 @@ public class AllDataAdapter extends CursorAdapter {
 			TableAccountList accountList = new TableAccountList();
 			cursor = getDatabase().query(accountList.getSource(), accountList.getAllColumns(), TableAccountList.ACCOUNTID + "=" + Integer.toString(getAccountId()), null, null, null, null);
 			if (cursor != null && cursor.moveToFirst()) {
-				total += cursor.getFloat(cursor.getColumnIndex(TableAccountList.INITIALBAL));
+				total += cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
 			}
 			cursor.close();
 			return true;

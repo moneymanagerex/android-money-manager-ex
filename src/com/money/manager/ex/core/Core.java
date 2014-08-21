@@ -57,7 +57,7 @@ public class Core {
 
 		public static boolean isNumeric(String s) {
 			try {
-				Float.parseFloat(s);
+				Double.parseDouble(s);
 			} catch (Exception e) {
 				return false;
 			}
@@ -217,7 +217,7 @@ public class Core {
 	 * @param view TextView to set the amount
 	 * @param amount to be formatted
 	 */
-	public void formatAmountTextView(TextView view, float amount) {
+	public void formatAmountTextView(TextView view, double amount) {
 		formatAmountTextView(view, amount, null);
 	}
 
@@ -227,7 +227,7 @@ public class Core {
 	 * @param amount to be formatted
 	 * @param currencyId Id currency to be formatted
 	 */
-	public void formatAmountTextView(TextView view, float amount, Integer currencyId) {
+	public void formatAmountTextView(TextView view, double amount, Integer currencyId) {
 		CurrencyUtils currencyUtils = new CurrencyUtils(context);
 		
 		if (currencyId == null) {

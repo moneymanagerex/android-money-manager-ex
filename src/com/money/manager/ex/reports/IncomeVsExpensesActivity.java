@@ -90,9 +90,9 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(year, month - 1, 1);
-			float income = 0, expenses = 0;
-			expenses = cursor.getFloat(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
-			income = cursor.getFloat(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+			double income = 0, expenses = 0;
+			expenses = cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+			income = cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
 			// attach data
 			txtYear.setText(Integer.toString(year));
 			//txtMonth.setText(new SimpleDateFormat("MMMM").format(new Date(year, month - 1, 1)));
@@ -279,11 +279,11 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 	                setListShownNoAnimation(true);
 	            }
 				// calculate income, expenses
-				float income = 0, expenses = 0;
+				double income = 0, expenses = 0;
 				if (data != null && data.moveToFirst()) {
 					while (!data.isAfterLast()) {
-						income += data.getFloat(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-						expenses += data.getFloat(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+						income += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+						expenses += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
 						// move to next record
 						data.moveToNext();
 					}
@@ -411,7 +411,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 		 * @param income
 		 * @param expenses
 		 */
-		private void updateListViewFooter(View footer, float income, float expenses) {
+		private void updateListViewFooter(View footer, double income, double expenses) {
 			if (footer == null) {
 				return;
 			}
@@ -451,8 +451,8 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			// cycle cursor
 			while (!cursor.isAfterLast()) {
 				// incomes and expenses
-				incomes[cursor.getPosition()] = cursor.getFloat(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-				expenses[cursor.getPosition()] = Math.abs(cursor.getFloat(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses)));
+				incomes[cursor.getPosition()] = cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+				expenses[cursor.getPosition()] = Math.abs(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses)));
 				// titles
 				int year = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Year));
 				int month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));

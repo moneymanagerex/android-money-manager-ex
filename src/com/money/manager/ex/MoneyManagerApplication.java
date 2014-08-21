@@ -537,7 +537,7 @@ public class MoneyManagerApplication extends Application {
 	 * @param context
 	 * @return
 	 */
-	public float getSummaryAccounts(Context context) {
+	public double getSummaryAccounts(Context context) {
 		// compose whereClause
 		String where = "";
 		// check if show only open accounts
@@ -550,12 +550,12 @@ public class MoneyManagerApplication extends Application {
 		}
 		QueryAccountBills accountBills = new QueryAccountBills(context);
 		Cursor data = context.getContentResolver().query(accountBills.getUri(), null, where, null, null);
-		float curTotal = 0;
+		double curTotal = 0;
 		
 		if (data != null && data.moveToFirst()) {
 			// calculate summary
 			while (data.isAfterLast() == false) {
-				curTotal = curTotal + data.getFloat(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+				curTotal = curTotal + data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
 				data.moveToNext();
 			}
 		}

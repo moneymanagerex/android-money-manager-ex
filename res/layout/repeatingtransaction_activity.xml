@@ -85,7 +85,6 @@
                 style="?attr/styleHoloSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:textStyle="bold"/>
@@ -202,7 +201,6 @@
                     style="?attr/styleHoloSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:textStyle="bold"/>
@@ -220,7 +218,6 @@
                     style="?attr/styleHoloSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:textStyle="bold"/>
@@ -239,7 +236,6 @@
                 style="?attr/styleHoloSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
@@ -257,7 +253,6 @@
                 style="?attr/styleHoloSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:focusable="false"
                 android:focusableInTouchMode="false"

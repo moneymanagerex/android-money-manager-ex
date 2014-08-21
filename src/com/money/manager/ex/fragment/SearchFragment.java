@@ -150,9 +150,9 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 
 			@Override
 			public void onClick(View v) {
-				float amount = 0;
-				if (v.getTag() != null && v.getTag() instanceof Float) {
-					amount = (Float)((TextView) v).getTag();
+				double amount = 0;
+				if (v.getTag() != null && v.getTag() instanceof Double) {
+					amount = (Double)((TextView) v).getTag();
 				}
 				InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
 				dialog.show(getSherlockActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
@@ -432,7 +432,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 	}
 
 	@Override
-	public void onFinishedInputAmountDialog(int id, Float amount) {
+	public void onFinishedInputAmountDialog(int id, Double amount) {
 		Core core = new Core(getSherlockActivity());
 
 		View view = getView().findViewById(id);
