@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
-    <changelogversion changeDate="NOT YET RELEASED" versionName="1.4.13">
+    <changelogversion changeDate="August 25, 2014" versionName="1.4.13">
         <changelogtext>Fixed minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="August 10, 2014" versionName="1.4.12">

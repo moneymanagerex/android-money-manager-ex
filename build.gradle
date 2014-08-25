@@ -32,7 +32,7 @@ android {
         applicationId "com.money.manager.ex"
         minSdkVersion 8
         targetSdkVersion 19
-        setVersionCode(573)
+        setVersionCode(578)
         setVersionName("1.4.13")
     }
 
