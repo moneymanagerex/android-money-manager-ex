@@ -46,14 +46,6 @@
             android:text="@string/version" />
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewBuild"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="2dp"
-            android:text="@string/build" />
-
-        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewCopyright"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

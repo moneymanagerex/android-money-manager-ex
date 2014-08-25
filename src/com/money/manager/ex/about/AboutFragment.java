@@ -52,25 +52,21 @@ public class AboutFragment extends SherlockFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        String text, version = "";
+        String text, version = "", build = "";
         View view = inflater.inflate(R.layout.about_activity, container, false);
 
         getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Version application
         TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
-        TextView txtBuild = (TextView) view.findViewById(R.id.textViewBuild);
         try {
             version = getSherlockActivity().getPackageManager().getPackageInfo(getSherlockActivity().getPackageName(), 0).versionName;
-            txtVersion.setText(txtVersion.getText() + " " + version);
-            String build = getString(R.string.application_build) + "r" +
-                    getSherlockActivity().getPackageManager().getPackageInfo(getSherlockActivity().getPackageName(), 0).versionCode;
-
-            txtBuild.setText(txtBuild.getText() + " " + build);
+            build = Integer.toString(getSherlockActivity().getPackageManager().getPackageInfo(getSherlockActivity().getPackageName(), 0).versionCode);
+            txtVersion.setText(txtVersion.getText() + " " + version + " (" + getString(R.string.build) + " " + build + ")");
         } catch (NameNotFoundException e) {
             Log.e(LOGCAT, e.getMessage());
         }
-        // take a object into layout
 
+        // take a object into layout
         TextView txtFeedback = (TextView) view.findViewById(R.id.textViewLinkFeedback);
         text = "<u>" + txtFeedback.getText() + "</u>";
         txtFeedback.setText(Html.fromHtml(text));
