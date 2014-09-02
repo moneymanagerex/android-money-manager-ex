@@ -17,8 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import java.util.Date;
-
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -34,13 +32,14 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
 import com.money.manager.ex.core.Core;
@@ -50,6 +49,8 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
+
+import java.util.Date;
 
 /**
  * 
@@ -82,7 +83,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 			setHasOptionsMenu(true);
 			registerForContextMenu(getListView());
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			getListView().setDivider(new ColorDrawable(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.theme_background_color)));
+			getListView().setDivider(new ColorDrawable(new Core(getActivity()).resolveIdAttribute(R.attr.theme_background_color)));
 			
 			setListShown(false);
 			// start loaderapplication.getSQLiteStringDate(date)
@@ -194,7 +195,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 		}
 		
 		@Override
-		public void onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu, MenuInflater inflater) {
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
 			// add menu item add
 			MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);

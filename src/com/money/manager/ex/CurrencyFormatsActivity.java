@@ -17,10 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Arrays;
-
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -34,6 +30,10 @@ import android.widget.Toast;
 import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)

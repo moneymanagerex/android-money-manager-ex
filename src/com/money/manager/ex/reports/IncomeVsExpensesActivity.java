@@ -17,11 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex.reports;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,6 +29,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -41,6 +37,10 @@ import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -51,11 +51,6 @@ import android.widget.RadioButton;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.CurrencyUtils;
@@ -64,6 +59,11 @@ import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 	private static final String LOGCAT = IncomeVsExpensesActivity.class.getSimpleName();
@@ -117,7 +117,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 		}
 	}
 	
-	public static class IncomeVsExpensesListFragment extends SherlockListFragment implements LoaderManager.LoaderCallbacks<Cursor> { 
+	public static class IncomeVsExpensesListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 		private static final int ID_LOADER = 1;
 		private static final String SORT_ASCENDING = "ASC";
 		private static final String SORT_DESCENDING = "DESC";
@@ -195,7 +195,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 				mCheckedItem.put(Calendar.getInstance().get(Calendar.YEAR), true);
 			}
 			// set home button fase
-			getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+			getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 			// set listview
 			setEmptyText(getString(R.string.no_data));
 			// add header and footer

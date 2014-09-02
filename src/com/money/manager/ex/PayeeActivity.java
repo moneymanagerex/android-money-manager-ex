@@ -36,13 +36,14 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.SQLTypeTransacion;
@@ -153,7 +154,7 @@ public class PayeeActivity extends BaseFragmentActivity {
 		}
 		
 		@Override
-		public void onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
 			// item add
             MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);

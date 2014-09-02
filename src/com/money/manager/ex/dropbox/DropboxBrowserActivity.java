@@ -1,9 +1,5 @@
 package com.money.manager.ex.dropbox;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -11,6 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,15 +19,16 @@ import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.RESTUtility;
 import com.money.manager.ex.R;
 import com.money.manager.ex.dropbox.DropboxHelper.OnGetEntries;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DropboxBrowserActivity extends BaseFragmentActivity {
 	public static class DropboxBrowserFragment extends BaseListFragment {
@@ -141,9 +141,9 @@ public class DropboxBrowserActivity extends BaseFragmentActivity {
 				// set result and exit
 				result.putExtra(INTENT_DROBPOXFILE_PATH, mAdapter.getItem(getListView().getCheckedItemPosition()).path);
 			}
-			getSherlockActivity().setResult(RESULT_OK, result);
+			getActivity().setResult(RESULT_OK, result);
 			// exit
-			getSherlockActivity().finish();
+			getActivity().finish();
 		}
 		
 		private void refreshEntries() {

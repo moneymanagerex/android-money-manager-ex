@@ -1,24 +1,25 @@
 package com.money.manager.ex;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.robotmedia.billing.BillingController;
-import net.robotmedia.billing.BillingRequest.ResponseCode;
-import net.robotmedia.billing.helper.AbstractBillingObserver;
-import net.robotmedia.billing.model.Transaction.PurchaseState;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InAppBilling;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+
+import net.robotmedia.billing.BillingController;
+import net.robotmedia.billing.BillingRequest.ResponseCode;
+import net.robotmedia.billing.helper.AbstractBillingObserver;
+import net.robotmedia.billing.model.Transaction.PurchaseState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DonateActivity extends BaseFragmentActivity  {
 	
@@ -122,7 +123,7 @@ public class DonateActivity extends BaseFragmentActivity  {
 			}
 			
 			Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
-			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, inAppName);
+			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, inAppName);
 			// Specify the layout to use when the list of choices appears
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			// Apply the adapter to the spinner

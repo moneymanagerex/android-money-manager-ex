@@ -1,9 +1,15 @@
 package com.money.manager.ex.chart;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.util.SparseArrayCompat;
+import android.text.Html;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Toast;
+
+import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -15,16 +21,10 @@ import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer.Orientation;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.util.SparseArrayCompat;
-import android.text.Html;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Toast;
-
-import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class Chart extends AbstractChart {
 

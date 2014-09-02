@@ -20,12 +20,12 @@ package com.money.manager.ex;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -56,7 +56,7 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSherlock().getMenuInflater().inflate(R.menu.menu_search_transaction, menu);
+		getMenuInflater().inflate(R.menu.menu_search_transaction, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

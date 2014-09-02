@@ -1,12 +1,5 @@
 package com.money.manager.ex.preferences;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -18,6 +11,13 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class TimePreference extends DialogPreference implements TimePicker.OnTimeChangedListener {
 	private String timeString;

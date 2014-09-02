@@ -21,20 +21,20 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 
-public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
+public abstract class BaseFragmentActivity extends ActionBarActivity {
 	private boolean mDialogMode = false;
 	private boolean mDisplayHomeAsUpEnabled = false;
 	
@@ -55,7 +55,7 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
 		if (isDialogMode()) {
 			Core core = new Core(this);
 			if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-				getSherlock().getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
+				getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
 			} else {
 				createActionBar();
 			}		

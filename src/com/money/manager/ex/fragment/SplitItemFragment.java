@@ -3,6 +3,7 @@ package com.money.manager.ex.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
@@ -22,7 +22,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 
-public class SplitItemFragment extends SherlockFragment implements InputAmountDialogListener {
+public class SplitItemFragment extends Fragment implements InputAmountDialogListener {
 	public interface SplitItemFragmentCallbacks {
 		public void onRemoveItem(TableSplitTransactions object);
 	}
@@ -70,7 +70,7 @@ public class SplitItemFragment extends SherlockFragment implements InputAmountDi
 				if ((resultCode == Activity.RESULT_OK) && (data != null)) {
 					mSplitObject.setCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1));
 					mSplitObject.setSubCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1));
-					txtSelectCategory.setText(new Core(getSherlockActivity()).getCategSubName(mSplitObject.getCategId(), mSplitObject.getSubCategId()));
+					txtSelectCategory.setText(new Core(getActivity()).getCategSubName(mSplitObject.getCategId(), mSplitObject.getSubCategId()));
 				}
 			}
 		}
@@ -87,7 +87,7 @@ public class SplitItemFragment extends SherlockFragment implements InputAmountDi
 			mSplitObject = savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
 		}
 		
-		Core core = new Core(getSherlockActivity());
+		Core core = new Core(getActivity());
 		
 		final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.item_splittransaction, null);
 		if (layout != null) {
@@ -104,19 +104,19 @@ public class SplitItemFragment extends SherlockFragment implements InputAmountDi
 					if (amount == null) 
 						amount = 0d;
 					
-					if (getSherlockActivity() instanceof SplitTransactionsActivity) {
-						SplitTransactionsActivity activity = (SplitTransactionsActivity)getSherlockActivity();
+					if (getActivity() instanceof SplitTransactionsActivity) {
+						SplitTransactionsActivity activity = (SplitTransactionsActivity)getActivity();
 						activity.setFragmentInputAmountClick(SplitItemFragment.this);
 					}
 					
 					InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
-					dialog.show(getSherlockActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+					dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
 				}
 			});
 			// type
 			spinTransCode = (Spinner) layout.findViewById(R.id.spinnerTransCode);
 			String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
-			ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getSherlockActivity(), R.layout.sherlock_spinner_item, transCodeItems);
+			ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
 			adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinTransCode.setAdapter(adapterTrans);
 			spinTransCode.setSelection(mSplitObject.getSplitTransAmount() >= 0 ? 0 : 1, true);
@@ -130,7 +130,7 @@ public class SplitItemFragment extends SherlockFragment implements InputAmountDi
 
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(getSherlockActivity(), CategorySubCategoryExpandableListActivity.class);
+					Intent intent = new Intent(getActivity(), CategorySubCategoryExpandableListActivity.class);
 					intent.setAction(Intent.ACTION_PICK);
 					startActivityForResult(intent, REQUEST_PICK_CATEGORY);
 				}
@@ -141,7 +141,7 @@ public class SplitItemFragment extends SherlockFragment implements InputAmountDi
 				
 				@Override
 				public void onClick(View v) {
-					FragmentTransaction transaction = getSherlockActivity().getSupportFragmentManager().beginTransaction();
+					FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 					transaction.remove(SplitItemFragment.this);
 					transaction.commit();
 					if (getOnSplitItemCallback() != null) {
@@ -171,7 +171,7 @@ public class SplitItemFragment extends SherlockFragment implements InputAmountDi
 
 	@Override
 	public void onFinishedInputAmountDialog(int id, Double amount) {
-		Core core = new Core(getSherlockActivity());
+		Core core = new Core(getActivity());
 		if (txtAmount.getId() == id) {
 			txtAmount.setTag(amount);
 			mSplitObject.setSplitTransAmount(amount);

@@ -1,8 +1,5 @@
 package com.money.manager.ex.dropbox;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -16,6 +13,9 @@ import android.util.Log;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.preferences.PreferencesConstant;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class DropboxReceiver extends BroadcastReceiver {
 	private static final String LOGCAT = DropboxReceiver.class.getSimpleName();

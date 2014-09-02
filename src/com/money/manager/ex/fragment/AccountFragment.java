@@ -17,19 +17,20 @@
  ******************************************************************************/
 package com.money.manager.ex.fragment;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -38,9 +39,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -53,12 +51,15 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 /**
  * 
  * @author a.lazzari
  * 
  */
-public class AccountFragment extends SherlockFragment implements LoaderManager.LoaderCallbacks<Cursor>, AllDataFragmentLoaderCallbacks {
+public class AccountFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, AllDataFragmentLoaderCallbacks {
 
 	private static final String KEY_CONTENT = "AccountFragment:AccountId";
 	private static final int ID_LOADER_SUMMARY = 2;
@@ -133,7 +134,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		
 		// call create option menu of fragment
@@ -213,7 +214,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		mAllDataFragment = AllDataFragment.newInstance(mAccountId);
 		// set arguments and settings of fragment
 		mAllDataFragment.setArguments(prepareArgsForChildFragment());
-		mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getSherlockActivity()).getBoolean(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE, false));
+		mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE, false));
 		mAllDataFragment.setAutoStarLoader(false);
 		mAllDataFragment.setContextMenuGroupId(mAccountId);
 		mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
@@ -251,7 +252,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 			// show balance values
 			setTextViewBalance();
 			// set titles
-			getSherlockActivity().getSupportActionBar().setSubtitle(mAccountName);
+			getActivity().getActionBar().setSubtitle(mAccountName);
 			
 			break;
 		}
@@ -276,7 +277,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 		// restart loader
 		startLoaderData();
 		// set subtitle account name
-		getSherlockActivity().getSupportActionBar().setSubtitle(mAccountName);
+		getActivity().getActionBar().setSubtitle(mAccountName);
 	}
 
 	@Override
@@ -329,7 +330,7 @@ public class AccountFragment extends SherlockFragment implements LoaderManager.L
 	private void setTextViewBalance() {
 		// write account balance
 		if (mAccountList != null) {
-			CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
+			CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
 			
 			txtAccountBalance.setText(currencyUtils.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance));
 			txtAccountReconciled.setText(currencyUtils.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled));

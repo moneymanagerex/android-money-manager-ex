@@ -1,13 +1,11 @@
 package com.money.manager.ex.fragment;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -17,6 +15,8 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -26,8 +26,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.CurrencyUtils;
@@ -37,7 +35,10 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.view.RobotoTextView;
 
-public class DashboardFragment extends SherlockFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+public class DashboardFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	@SuppressWarnings("unused")
 	private static final String LOGCAT = DashboardFragment.class.getSimpleName();
 	// ID LOADER
@@ -88,7 +89,7 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 	}
 	
 	@Override
-	public void onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		//find menu dashboard
 		MenuItem itemDashboard = menu.findItem(R.id.menu_dashboard);
@@ -114,7 +115,7 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		// add progress bar
-		ProgressBar progressBar = new ProgressBar(getSherlockActivity());
+		ProgressBar progressBar = new ProgressBar(getActivity());
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParams.gravity = Gravity.CENTER;
 		progressBar.setLayoutParams(layoutParams);
@@ -128,7 +129,7 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 		// start loader
 		switch (id) {
 		case ID_LOADER_SCREEN1:
-			QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getSherlockActivity());
+			QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
 			return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), QueryReportIncomeVsExpenses.Month + "="
 					+ Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
 					+ Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), null, null);
@@ -137,7 +138,7 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 		case ID_LOADER_SCREEN3:
 			return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null, prepareQueryTopPayees(), null, null);
 		case ID_LOADER_SCREEN4:
-			QueryBillDeposits billDeposits = new QueryBillDeposits(getSherlockActivity());
+			QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
 			return new CursorLoader(getActivity(), billDeposits.getUri(), billDeposits.getAllColumns(), QueryBillDeposits.DAYSLEFT + "<=10", null, QueryBillDeposits.DAYSLEFT);
 		}
 		return null;
@@ -270,9 +271,9 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 	}
 
 	private View showTableLayoutTopWithdrawals(Cursor cursor) {
-		LayoutInflater inflater = (LayoutInflater) getSherlockActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dashboard_summary_layout, null);
-		CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());		
+		CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
 
 		// Textview Title
 		TextView title = (TextView) layout.findViewById(R.id.textViewTitle);
@@ -306,9 +307,9 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 	}
 
 	private View showTableLayoutTopPayees(Cursor cursor) {
-		LayoutInflater inflater = (LayoutInflater) getSherlockActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dashboard_summary_layout, null);
-		CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
+		CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
 
 		// Textview Title
 		TextView title = (TextView) layout.findViewById(R.id.textViewTitle);
@@ -339,10 +340,10 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 	}
 	
 	private View showTableLayoutUpComingTransactions(Cursor cursor) {
-		LayoutInflater inflater = (LayoutInflater) getSherlockActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dashboard_summary_layout, null);
-		CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
-		Core core = new Core(getSherlockActivity());
+		CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
+		Core core = new Core(getActivity());
 		
 		// Textview Title
 		TextView title = (TextView) layout.findViewById(R.id.textViewTitle);
@@ -377,10 +378,10 @@ public class DashboardFragment extends SherlockFragment implements LoaderManager
 
 	private TableRow createTableRow(String[] fields, Float[] weight, Integer[] gravity, Integer[][] margin) {
 		// create row
-		TableRow row = new TableRow(getSherlockActivity());
+		TableRow row = new TableRow(getActivity());
 		row.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		for (int i = 0; i < fields.length; i++) {
-			RobotoTextView txtField = new RobotoTextView(getSherlockActivity(), null);
+			RobotoTextView txtField = new RobotoTextView(getActivity(), null);
 			TableRow.LayoutParams layoutParams;
 			if (weight[i] != null) {
 				layoutParams = new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, weight[i]);

@@ -1,22 +1,22 @@
 package com.money.manager.ex;
 
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.fragment.SplitItemFragment;
 import com.money.manager.ex.fragment.SplitItemFragment.SplitItemFragmentCallbacks;
+
+import java.util.ArrayList;
 
 public class SplitTransactionsActivity extends BaseFragmentActivity implements SplitItemFragmentCallbacks, InputAmountDialogListener {
 	public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";

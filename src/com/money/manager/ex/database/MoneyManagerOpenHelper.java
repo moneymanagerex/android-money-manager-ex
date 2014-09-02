@@ -17,9 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex.database;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -30,6 +27,9 @@ import android.util.Log;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)

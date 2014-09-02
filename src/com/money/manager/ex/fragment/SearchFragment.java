@@ -17,23 +17,21 @@
  ******************************************************************************/
 package com.money.manager.ex.fragment;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -47,11 +45,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
@@ -64,7 +57,14 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.ViewAllData;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 
-public class SearchFragment extends SherlockFragment implements InputAmountDialogListener {
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+public class SearchFragment extends Fragment implements InputAmountDialogListener {
 	// LOGCAT
 	private static final String LOGCAT = SearchFragment.class.getSimpleName(); 
 	// ID REQUEST code
@@ -122,7 +122,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 			if (!TextUtils.isEmpty(mTextView.getText())) {
 				date.setTime(mApplication.getDateFromString(mTextView.getText().toString()));
 			}
-			DatePickerDialog dialog = new DatePickerDialog(getSherlockActivity(), mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+			DatePickerDialog dialog = new DatePickerDialog(getActivity(), mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
 			dialog.show();
 		}
 	}		
@@ -131,12 +131,12 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mApplication = (MoneyManagerApplication)getSherlockActivity().getApplication();
+		mApplication = (MoneyManagerApplication)getActivity().getApplication();
 		setHasOptionsMenu(true);
 		AllDataFragment fragment;
-		fragment = (AllDataFragment) getSherlockActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
+		fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
 		if (fragment != null) {
-			fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getSherlockActivity());
+			fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getActivity());
 		}
 	}
 	
@@ -155,7 +155,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 					amount = (Double)((TextView) v).getTag();
 				}
 				InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
-				dialog.show(getSherlockActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+				dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
 			}
 		};
 		//To Amount
@@ -168,7 +168,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		// accountlist <> to populate the spin
 		spinAccount = (Spinner)view.findViewById(R.id.spinnerAccount);
 		if (mAccountList == null) {
-			mAccountList = new MoneyManagerOpenHelper(getSherlockActivity()).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
+			mAccountList = new MoneyManagerOpenHelper(getActivity()).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
 			mAccountList.add(0, null);
 			for(int i = 0; i <= mAccountList.size() - 1; i ++) {
 				if (mAccountList.get(i) != null) {
@@ -185,7 +185,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		cbxTransfer = (CheckBox)view.findViewById(R.id.checkBoxTransfer);
 		cbxWithdrawal = (CheckBox)view.findViewById(R.id.checkBoxWithdrawal);
 		// create adapter for spinAccount
-		ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(getSherlockActivity(), R.layout.sherlock_spinner_item, mAccountNameList);
+		ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mAccountNameList);
 		adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinAccount.setAdapter(adapterAccount);
 		//Payee
@@ -193,7 +193,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		txtSelectPayee.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getSherlockActivity(), PayeeActivity.class);
+				Intent intent = new Intent(getActivity(), PayeeActivity.class);
 				intent.setAction(Intent.ACTION_PICK);
 				startActivityForResult(intent, REQUEST_PICK_PAYEE);
 			}
@@ -203,7 +203,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		txtSelectCategory.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getSherlockActivity(), CategorySubCategoryExpandableListActivity.class);
+				Intent intent = new Intent(getActivity(), CategorySubCategoryExpandableListActivity.class);
 				intent.setAction(Intent.ACTION_PICK);
 				startActivityForResult(intent, REQUEST_PICK_CATEGORY);
 			}
@@ -216,7 +216,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		}
 		// create adapter for spinnerStatus
 		spinStatus = (Spinner)view.findViewById(R.id.spinnerStatus);
-		ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(getSherlockActivity(), R.layout.sherlock_spinner_item, mStatusItems);
+		ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mStatusItems);
 		adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinStatus.setAdapter(adapterStatus);
 		// from date
@@ -236,18 +236,18 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Core core = new Core(getSherlockActivity());
+		Core core = new Core(getActivity());
 		// ****** action bar *****
-		getSherlockActivity().getSupportActionBar().setSubtitle(null);
+		getActivity().getActionBar().setSubtitle(null);
 		if (!(core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH)) {
-			getSherlockActivity().getSupportActionBar().setDisplayOptions(
+			getActivity().getActionBar().setDisplayOptions(
 					ActionBar.DISPLAY_SHOW_CUSTOM,
 					ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
 							| ActionBar.DISPLAY_SHOW_CUSTOM);
 			
-			LayoutInflater inflater = (LayoutInflater)getSherlockActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			
-	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(getSherlockActivity()), false);
+	        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(getActivity()), false);
 	        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
 	        cancelActionView.setOnClickListener(new OnClickListener() {
 				
@@ -258,7 +258,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 			});
 	        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
 	        ImageView doneImageView = (ImageView) doneActionView.findViewById(R.id.image_done);
-	        doneImageView.setImageDrawable(getSherlockActivity().getResources().getDrawable(core.resolveIdAttribute(R.attr.ic_action_search)));
+	        doneImageView.setImageDrawable(getActivity().getResources().getDrawable(core.resolveIdAttribute(R.attr.ic_action_search)));
 	        TextView doneTextView = (TextView) doneActionView.findViewById(R.id.text_done);
 	        doneTextView.setText(R.string.search);
 	        
@@ -268,7 +268,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 					onSearchClick();
 				}
 			});
-	        getSherlockActivity().getSupportActionBar().setCustomView(actionBarButtons);
+	        getActivity().getActionBar().setCustomView(actionBarButtons);
 		}
 		// ****** action bar *****
 	}
@@ -298,7 +298,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 	}
 	
 	public void onDoneClick() {
-		getSherlockActivity().finish();
+		getActivity().finish();
 	}
 	
 	public void onSearchClick() {
@@ -308,7 +308,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		Core core = new Core(getSherlockActivity());
+		Core core = new Core(getActivity());
 		if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			inflater.inflate(R.menu.menu_button_cancel_done, menu);
 			// change item ok in search
@@ -324,7 +324,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_cancel:
-			getSherlockActivity().finish();
+			getActivity().finish();
 			return true;
 		case R.id.menu_done:
 		case R.id.menu_search_transaction:
@@ -388,9 +388,9 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		}
 		//create a fragment search
 		AllDataFragment fragment;
-		fragment = (AllDataFragment) getSherlockActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
+		fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
 		if (fragment != null) {
-			getSherlockActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+			getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 		}
 		fragment = AllDataFragment.newInstance(-1);
 		//create bundle
@@ -399,10 +399,10 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 		args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
 		//set arguments
 		fragment.setArguments(args);
-		fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getSherlockActivity());
+		fragment.setSearResultFragmentLoaderCallbacks((SearchActivity)getActivity());
 		fragment.setShownHeader(true);
 		//add fragment
-		FragmentTransaction transaction = getSherlockActivity().getSupportFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 		//animation
 		transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
 		// Replace whatever is in the fragment_container view with this fragment,
@@ -433,7 +433,7 @@ public class SearchFragment extends SherlockFragment implements InputAmountDialo
 
 	@Override
 	public void onFinishedInputAmountDialog(int id, Double amount) {
-		Core core = new Core(getSherlockActivity());
+		Core core = new Core(getActivity());
 
 		View view = getView().findViewById(id);
 		if (view != null && view instanceof TextView)

@@ -34,19 +34,22 @@ import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
+
+//
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -157,7 +160,7 @@ public class AccountListActivity extends BaseFragmentActivity {
 		}
 		
 		@Override
-		public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
 			// item add
             MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);

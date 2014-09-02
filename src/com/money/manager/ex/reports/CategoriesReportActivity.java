@@ -17,8 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex.reports;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,15 +32,15 @@ import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.chart.ValuePieChart;
@@ -54,6 +52,8 @@ import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
 import com.money.manager.ex.fragment.PieChartFragment;
+
+import java.util.ArrayList;
 
 public class CategoriesReportActivity extends BaseFragmentActivity {
 	private static class CategoriesReportAdapter extends CursorAdapter {

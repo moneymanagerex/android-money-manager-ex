@@ -18,11 +18,10 @@
 package com.money.manager.ex.about;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
@@ -73,35 +72,33 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
 				savedInstanceState.getInt(BUNDLE_KEY_TABINDEX));
 	}
 
-	@Override
-	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		SherlockFragment fragment = null;
-		switch (tab.getPosition()) {
-		case 0: //about
-			fragment = new AboutFragment();
-			break;
-		case 1: //changelog
-			fragment = new AboutChangelogFragment();
-			break;
-		case 2: //credits
-			fragment = new AboutCreditsFragment();
-			break;
-		default:
-			break;
-		}
-		if (fragment != null)
-			ft.replace(android.R.id.content, fragment);
-	}
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        Fragment fragment = null;
+        switch (tab.getPosition()) {
+            case 0: //about
+                fragment = new AboutFragment();
+                break;
+            case 1: //changelog
+                fragment = new AboutChangelogFragment();
+                break;
+            case 2: //credits
+                fragment = new AboutCreditsFragment();
+                break;
+            default:
+                break;
+        }
+        if (fragment != null)
+            fragmentTransaction.replace(android.R.id.content, fragment);
+    }
 
-	@Override
-	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 
-	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
 }

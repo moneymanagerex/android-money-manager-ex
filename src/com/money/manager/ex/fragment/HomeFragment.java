@@ -17,8 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex.fragment;
 
-import java.util.Calendar;
-
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +25,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -52,7 +51,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.money.manager.ex.AccountListEditActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
@@ -65,6 +63,8 @@ import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.preferences.PreferencesActivity;
 import com.money.manager.ex.preferences.PreferencesConstant;
+
+import java.util.Calendar;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -281,7 +281,7 @@ public class HomeFragment extends Fragment implements
 			}
 			// show username
 			if (!TextUtils.isEmpty(application.getUserName())) 
-				((SherlockFragmentActivity)getActivity()).getSupportActionBar().setSubtitle(application.getUserName());
+				((FragmentActivity)getActivity()).getActionBar().setSubtitle(application.getUserName());
 			// set user name on drawer
 			if (mainActivity != null) 
 				mainActivity.setDrawableUserName(application.getUserName());
@@ -416,7 +416,7 @@ public class HomeFragment extends Fragment implements
 		return controller;
 	}
 	/**
-	 * @param if visible set true show the listview; false show progressbar
+	 * @param visible if visible set true show the listview; false show progressbar
 	 */
 	private void setListViewAccountBillsVisible(boolean visible) {
 		if (visible) {

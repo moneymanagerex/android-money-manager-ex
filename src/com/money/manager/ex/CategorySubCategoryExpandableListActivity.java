@@ -17,11 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -40,6 +35,9 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -50,7 +48,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -60,6 +57,11 @@ import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.fragment.BaseExpandableListFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -259,7 +261,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 		}
 		
         @Override
-        public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 			super.onCreateOptionsMenu(menu, inflater);
             
             // create submenu from item add
@@ -308,7 +310,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 					}
 					// check if subcategory != -1
 					if (data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != -1) {
-						QueryCategorySubCategory subCategory = new QueryCategorySubCategory(getSherlockActivity());
+						QueryCategorySubCategory subCategory = new QueryCategorySubCategory(getActivity());
 						// subcategory
 						subCategory.setSubCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)));
 						subCategory.setSubCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME))));
@@ -331,7 +333,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 					mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
 				}
 			}
-			CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getSherlockActivity(), mLayout, mCategories, mSubCategories);
+			CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(), mLayout, mCategories, mSubCategories);
 			adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
 			return adapter;
 		}
@@ -355,7 +357,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 		}
 
 		@Override
-		public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+		public boolean onOptionsItemSelected(MenuItem item) {
 			switch (item.getItemId()) {
 			case R.id.menu_add_category:
 				showDialogEditCategName(SQLTypeTransacion.INSERT, -1, null);
@@ -576,7 +578,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 				categId.add(category.getCategId());
 				categName.add(category.getCategName().toString());
 			}
-			ArrayAdapter<String> adapterCategory = new ArrayAdapter<String>(getActivity(), R.layout.sherlock_spinner_item, categName);
+			ArrayAdapter<String> adapterCategory = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categName);
 			adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spnCategory.setAdapter(adapterCategory);
 			//select category if present

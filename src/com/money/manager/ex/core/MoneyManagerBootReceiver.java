@@ -1,7 +1,5 @@
 package com.money.manager.ex.core;
 
-import java.util.Calendar;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -12,6 +10,8 @@ import android.util.Log;
 
 import com.money.manager.ex.notifications.RepeatingTransactionReceiver;
 import com.money.manager.ex.preferences.PreferencesConstant;
+
+import java.util.Calendar;
 
 public class MoneyManagerBootReceiver extends BroadcastReceiver {
 

@@ -16,8 +16,10 @@
 
 package com.money.manager.ex.chart;
 
-import java.util.Date;
-import java.util.List;
+import android.content.Context;
+
+import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 
 import org.achartengine.chart.PointStyle;
 import org.achartengine.model.CategorySeries;
@@ -29,10 +31,8 @@ import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
-import android.content.Context;
-
-import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
+import java.util.Date;
+import java.util.List;
 
 /**
  * An abstract class for the demo charts to extend.

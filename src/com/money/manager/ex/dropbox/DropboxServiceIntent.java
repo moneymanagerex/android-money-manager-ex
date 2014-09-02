@@ -1,9 +1,5 @@
 package com.money.manager.ex.dropbox;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,6 +18,10 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.DropboxHelper.OnDownloadUploadEntry;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DropboxServiceIntent extends IntentService {
 	private static final String LOGCAT = DropboxServiceIntent.class.getSimpleName();

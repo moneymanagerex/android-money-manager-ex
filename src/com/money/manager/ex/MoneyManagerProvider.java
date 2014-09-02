@@ -17,11 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -58,6 +53,11 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.database.ViewAllData;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.dropbox.DropboxHelper;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * MoneyManagerProvider is the extension of the base class of Android

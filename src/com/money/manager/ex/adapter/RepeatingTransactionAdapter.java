@@ -1,10 +1,5 @@
 package com.money.manager.ex.adapter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
@@ -23,6 +18,11 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.QueryBillDeposits;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 
 public class RepeatingTransactionAdapter extends CursorAdapter {
 	private LayoutInflater inflater;

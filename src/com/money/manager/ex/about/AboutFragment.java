@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -17,11 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 
-public class AboutFragment extends SherlockFragment {
+public class AboutFragment extends Fragment {
     private static final String LOGCAT = AboutFragment.class.getSimpleName();
 
     // implement a class to manage the opening of several url
@@ -36,7 +36,7 @@ public class AboutFragment extends SherlockFragment {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()));
                 startActivity(intent);
             } catch (Exception e) {
-                Toast.makeText(getSherlockActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
 
@@ -55,12 +55,12 @@ public class AboutFragment extends SherlockFragment {
         String text, version = "", build = "";
         View view = inflater.inflate(R.layout.about_activity, container, false);
 
-        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         // Version application
         TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
         try {
-            version = getSherlockActivity().getPackageManager().getPackageInfo(getSherlockActivity().getPackageName(), 0).versionName;
-            build = Integer.toString(getSherlockActivity().getPackageManager().getPackageInfo(getSherlockActivity().getPackageName(), 0).versionCode);
+            version = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+            build = Integer.toString(getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionCode);
             txtVersion.setText(txtVersion.getText() + " " + version + " (" + getString(R.string.build) + " " + build + ")");
         } catch (NameNotFoundException e) {
             Log.e(LOGCAT, e.getMessage());
@@ -80,7 +80,7 @@ public class AboutFragment extends SherlockFragment {
                 try {
                     startActivity(Intent.createChooser(intent, "Send mail..."));
                 } catch (Exception e) {
-                    Toast.makeText(getSherlockActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -127,7 +127,7 @@ public class AboutFragment extends SherlockFragment {
         buttonDonate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getSherlockActivity(), DonateActivity.class));
+                startActivity(new Intent(getActivity(), DonateActivity.class));
             }
         });
 

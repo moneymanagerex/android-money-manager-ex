@@ -17,11 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex.adapter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -48,6 +43,11 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 
 @SuppressLint("UseSparseArrays")
 public class AllDataAdapter extends CursorAdapter {

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +15,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Core.StringUtils;
 import com.money.manager.ex.core.CurrencyUtils;
 
-public class InputAmountDialog extends SherlockDialogFragment {
+public class InputAmountDialog extends DialogFragment {
 	private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
 	private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
 	private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
@@ -180,7 +180,7 @@ public class InputAmountDialog extends SherlockDialogFragment {
 		if (Core.StringUtils.isNumeric(amount)) {
 			double fAmount = Double.parseDouble(amount);
 			
-			CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
+			CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
 			
 			if (mCurrencyId == null) {
 				txtAmount.setText(currencyUtils.getBaseCurrencyFormatted(fAmount));

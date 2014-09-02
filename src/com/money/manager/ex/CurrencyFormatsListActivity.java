@@ -37,13 +37,14 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.ActivityUtils;
 import com.money.manager.ex.core.Core;
@@ -198,7 +199,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
         }
 
         @Override
-        public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
             inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
         }
@@ -384,12 +385,12 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
-                    dialog = ProgressDialog.show(getSherlockActivity(), null, getString(R.string.import_currencies_in_progress));
+                    dialog = ProgressDialog.show(getActivity(), null, getString(R.string.import_currencies_in_progress));
                 }
 
                 @Override
                 protected Boolean doInBackground(Void... params) {
-                    Core core = new Core(getSherlockActivity());
+                    Core core = new Core(getActivity());
                     return core.importCurrenciesFromLocaleAvaible();
                 }
 
@@ -421,14 +422,14 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
                 protected void onPreExecute() {
                     super.onPreExecute();
 
-                    mPrevOrientation = ActivityUtils.forceCurrentOrientation(getSherlockActivity());
+                    mPrevOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
 
-                    mCore = new Core(getSherlockActivity());
+                    mCore = new Core(getActivity());
                     DropboxHelper.setDisableAutoUpload(true);
 
-                    //getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+                    //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
-                    dialog = new ProgressDialog(getSherlockActivity());
+                    dialog = new ProgressDialog(getActivity());
                     // setting dialog
                     dialog.setMessage(getString(R.string.start_currency_exchange_rates));
                     dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -440,7 +441,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
                 @Override
                 protected Boolean doInBackground(Void... params) {
-                    CurrencyUtils currencyUtils = new CurrencyUtils(getSherlockActivity());
+                    CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
                     List<TableCurrencyFormats> currencyFormats = currencyUtils.getAllCurrencyFormats();
                     mCountCurrencies = currencyFormats.size();
                     for (int i = 0; i < currencyFormats.size(); i++) {
@@ -472,12 +473,12 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
                         Log.e(LOGCAT, e.getMessage());
                     }
                     if (result)
-                        Toast.makeText(getSherlockActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
 
                     DropboxHelper.setDisableAutoUpload(false);
                     DropboxHelper.notifyDataChanged();
 
-                    ActivityUtils.restoreOrientation(getSherlockActivity(), mPrevOrientation);
+                    ActivityUtils.restoreOrientation(getActivity(), mPrevOrientation);
 
                     super.onPostExecute(result);
                 }

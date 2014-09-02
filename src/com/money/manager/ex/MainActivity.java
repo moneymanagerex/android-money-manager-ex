@@ -43,6 +43,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -50,8 +52,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.AccountListActivity.AccountLoaderListFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.CurrencyFormatsListActivity.CurrencyFormatsLoaderListFragment;
@@ -646,8 +646,8 @@ public class MainActivity extends BaseFragmentActivity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-		getSherlock().getMenuInflater().inflate(R.menu.menu_main, menu);
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_main, menu);
 		
 		return super.onCreateOptionsMenu(menu);
 	}

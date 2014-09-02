@@ -20,8 +20,6 @@
  */
 package com.money.manager.ex;
 
-import java.util.Arrays;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -46,6 +44,8 @@ import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+
+import java.util.Arrays;
 
 /**
  * @author Francesco Berton
@@ -213,7 +213,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 			edtAccessInfo.setText(mAccessInfo);
 		}
 		
-		ArrayAdapter<String> adapterSymbol = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, new String[] {"+", "-"});
+		ArrayAdapter<String> adapterSymbol = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[] {"+", "-"});
 		spinSymbolInitialBalance.setAdapter(adapterSymbol);
 		spinSymbolInitialBalance.setSelection(mInitialBal >= 0 ? PLUS : LESS);
 		
@@ -244,7 +244,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		// spinAccountType adapters and values
 		mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
 		mAccountTypeValues = getResources().getStringArray(R.array.accounttype_values);
-		ArrayAdapter<String> adapterAccountType = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, mAccountTypeItems);
+		ArrayAdapter<String> adapterAccountType = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountTypeItems);
 		adapterAccountType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinAccountType.setAdapter(adapterAccountType);
 		if (!(TextUtils.isEmpty(mAccountType))) {
@@ -258,7 +258,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 		// spinAccountStatus adapters and values
 		mAccountStatusItems = getResources().getStringArray(R.array.accountstatus_items);
 		mAccountStatusValues = getResources().getStringArray(R.array.accountstatus_values);
-		ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, mAccountStatusItems);
+		ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
 		adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinAccountStatus.setAdapter(adapterAccountStatus);
 		if (!(TextUtils.isEmpty(mStatus))) {

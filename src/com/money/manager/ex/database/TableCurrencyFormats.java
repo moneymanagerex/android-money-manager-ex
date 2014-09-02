@@ -17,11 +17,11 @@
  ******************************************************************************/
 package com.money.manager.ex.database;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-
 import android.database.Cursor;
 import android.text.TextUtils;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)

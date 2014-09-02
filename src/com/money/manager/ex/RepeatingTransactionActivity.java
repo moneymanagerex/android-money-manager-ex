@@ -17,15 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
@@ -58,6 +49,15 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -309,7 +309,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		core.formatAmountTextView(txtAmount, mAmount, getCurrencyIdFromAccountId(!Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mToAccountId : mAccountId));
 		
 		// create adapter for spinAccount
-		ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, mAccountNameList);
+		ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountNameList);
 		adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinAccount.setAdapter(adapterAccount);
 		// select current value
@@ -362,7 +362,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
 		mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
 		// create adapter for TransCode
-		ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, mTransCodeItems);
+		ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mTransCodeItems);
 		adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinTransCode.setAdapter(adapterTrans);
 		// select a current value
@@ -407,7 +407,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 		mStatusItems = getResources().getStringArray(R.array.status_items);
 		mStatusValues = getResources().getStringArray(R.array.status_values);
 		// create adapter for spinnerStatus
-		ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, mStatusItems);
+		ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStatusItems);
 		adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinStatus.setAdapter(adapterStatus);
 		// select current value

@@ -17,8 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex.fragment;
 
-import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -37,6 +35,9 @@ import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView.MultiChoiceModeListener;
@@ -46,9 +47,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -59,6 +57,8 @@ import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
+
+import java.util.ArrayList;
 
 public class AllDataFragment extends BaseListFragment implements LoaderCallbacks<Cursor> {
 	private static final String LOGCAT = AllDataFragment.class.getSimpleName();
@@ -93,7 +93,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, android.view.Menu menu) {
-			getSherlockActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
+			getActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
 			return true;
 		}
 		
@@ -179,7 +179,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	
 	/**
 	 * Export data to CSV file
-	 * @param accountName
+	 * @param prefixName
 	 */
 	public void exportDataToCSVFile(String prefixName) {
 		ExportToCsvFile csv = new ExportToCsvFile(getActivity(), (AllDataAdapter)getListAdapter());
@@ -255,9 +255,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 		// register context menu
 		registerForContextMenu(getListView());
 		// set divider
-		/*Core core = new Core(getSherlockActivity());
+		/*Core core = new Core(getActivity());
 		if (core.getThemeApplication() == R.style.Theme_Money_Manager_Light_DarkActionBar)
-			getListView().setDivider(new ColorDrawable(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.theme_background_color)));*/
+			getListView().setDivider(new ColorDrawable(new Core(getActivity()).resolveIdAttribute(R.attr.theme_background_color)));*/
 		//getListView().setSelector(new ColorDrawable(getResources().getColor(R.color.money_background)));
 		// set animation
 		setListShown(false);
@@ -312,7 +312,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 			menu.add(getContextMenuGroupId(), menuItem[i], i, menuText[i]);
 		} */
 		// create a context menu
-		getSherlockActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
+		getActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
 		menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName)));
 		// hide current status
 		if (menu.findItem(R.id.menu_reconciled) != null)
@@ -362,11 +362,11 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		if (getSherlockActivity() != null) {
+		if (getActivity() != null) {
 			MenuItem itemExportToCsv = menu.findItem(R.id.menu_export_to_csv);
 			if (itemExportToCsv != null) itemExportToCsv.setVisible(true);
 			MenuItem itemSearch = menu.findItem(R.id.menu_search_transaction);
-			if (itemSearch != null) itemSearch.setVisible(!getSherlockActivity().getClass().getSimpleName().equals(SearchActivity.class.getSimpleName()));
+			if (itemSearch != null) itemSearch.setVisible(!getActivity().getClass().getSimpleName().equals(SearchActivity.class.getSimpleName()));
 		}
 	}
 
@@ -410,8 +410,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 	public void onStop() {
 		super.onStop();
 		try {
-			if (getSherlockActivity().getSupportActionBar().getCustomView() != null)
-				getSherlockActivity().getSupportActionBar().setCustomView(null);
+			if (getActivity().getActionBar().getCustomView() != null)
+				getActivity().getActionBar().setCustomView(null);
 		} catch (Exception e) {
 			Log.e(LOGCAT, e.getMessage());
 		}

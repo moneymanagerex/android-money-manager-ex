@@ -1,18 +1,18 @@
 package com.money.manager.ex.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.util.SparseArrayCompat;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.chart.Chart;
 
-public class IncomeVsExpensesChartFragment extends SherlockFragment {
+public class IncomeVsExpensesChartFragment extends Fragment {
 	// LOGCAT
 	@SuppressWarnings("unused")
 	private static final String LOGCAT = IncomeVsExpensesChartFragment.class.getSimpleName();
@@ -54,7 +54,7 @@ public class IncomeVsExpensesChartFragment extends SherlockFragment {
 		double[] income = getChartArguments().getDoubleArray(KEY_INCOME_VALUES);
 		double[] expenses = getChartArguments().getDoubleArray(KEY_EXPENSES_VALUES);
 		
-		return chart.buildIncomeExpensesChart(getSherlockActivity(), getChartArguments().getString(KEY_TITLE), income, expenses, xTitles);
+		return chart.buildIncomeExpensesChart(getActivity(), getChartArguments().getString(KEY_TITLE), income, expenses, xTitles);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class IncomeVsExpensesChartFragment extends SherlockFragment {
 				setDisplayHomeAsUpEnabled(savedInstanceState.getBoolean(KEY_DISPLAY_AS_UP_ENABLED));
 		}
 		// enabled display as home
-		getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(isDisplayHomeAsUpEnabled());
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(isDisplayHomeAsUpEnabled());
 		// set has option menu
 		setHasOptionsMenu(true);
 	}
@@ -75,7 +75,7 @@ public class IncomeVsExpensesChartFragment extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		//return buildChart();
-		mLayout = new LinearLayout(getSherlockActivity());
+		mLayout = new LinearLayout(getActivity());
 		mLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 		return mLayout;

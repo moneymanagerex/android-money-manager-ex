@@ -22,26 +22,26 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SearchViewCompat;
 import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
-import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
-public abstract class BaseListFragment extends SherlockListFragment {
+public abstract class BaseListFragment extends ListFragment {
 	// saved instance
 	private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
 	// menu items
@@ -56,9 +56,9 @@ public abstract class BaseListFragment extends SherlockListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// set theme
-		Core core = new Core(getSherlockActivity());
+		Core core = new Core(getActivity());
 		try {
-			getSherlockActivity().setTheme(core.getThemeApplication());
+			getActivity().setTheme(core.getThemeApplication());
 		} catch (Exception e) {
 			Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
 		}
@@ -78,7 +78,7 @@ public abstract class BaseListFragment extends SherlockListFragment {
 		}
 		// set subtitle in actionbar
 		if (!(TextUtils.isEmpty(getSubTitle())))
-			getSherlockActivity().getSupportActionBar().setSubtitle(getSubTitle());
+			getActivity().getActionBar().setSubtitle(getSubTitle());
 	}
 
 	@Override
@@ -86,29 +86,29 @@ public abstract class BaseListFragment extends SherlockListFragment {
 		super.onStart();
 		// show tooltip wildcard
 		// check search type
-		Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getSherlockActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE);
+		Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE);
 		
 		if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
 			// show tooltip for wildcard
-			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getSherlockActivity().getApplicationContext(), "lookupswildcard");
+			TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getActivity().getApplicationContext(), "lookupswildcard");
 			if (tipsDropbox != null) {
 				tipsDropbox.setTips(getString(R.string.lookups_wildcard));
 				// tipsDropbox.setCheckDontShowAgain(true);
-				tipsDropbox.show(getSherlockActivity().getSupportFragmentManager(), "lookupswildcard");
+				tipsDropbox.show(getActivity().getSupportFragmentManager(), "lookupswildcard");
 				isShowTipsWildcard = true; // set shown
 			}
 		}
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, com.actionbarsherlock.view.MenuInflater inflater) {
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		if (isShowMenuItemSearch()) {
 			// Place an action bar item for searching.
 			final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
 			itemSearch.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search));
 			itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-			View searchView = SearchViewCompat.newSearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
+			View searchView = SearchViewCompat.newSearchView(getActivity().getActionBar().getThemedContext());
 			if (searchView != null) {
 				SearchViewCompat.setOnQueryTextListener(searchView, new OnQueryTextListenerCompat() {
 					@Override
@@ -119,8 +119,8 @@ public abstract class BaseListFragment extends SherlockListFragment {
 				SearchViewCompat.setIconified(searchView, isMenuItemSearchIconified());
 				itemSearch.setActionView(searchView);
 			} else {
-				SearchView actionSearchView = new SearchView(getSherlockActivity().getSupportActionBar().getThemedContext());
-				actionSearchView.setOnQueryTextListener(new OnQueryTextListener() {
+				SearchView actionSearchView = new SearchView(getActivity().getActionBar().getThemedContext());
+				actionSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
 					@Override
 					public boolean onQueryTextSubmit(String query) {
@@ -156,7 +156,7 @@ public abstract class BaseListFragment extends SherlockListFragment {
 	}
 
 	protected void onMenuItemSearchClick(MenuItem item) {
-		View searchView = ((SherlockFragmentActivity) getActivity()).getSupportActionBar().getCustomView();
+		View searchView = ((FragmentActivity) getActivity()).getActionBar().getCustomView();
 		final EditText edtSearch = (EditText) searchView.findViewById(R.id.editTextSearchView);
 		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		// se in visualizzazione prendo l'edittext
@@ -187,7 +187,7 @@ public abstract class BaseListFragment extends SherlockListFragment {
 	}
 	
 	protected boolean onPreQueryTextChange(String newText) {
-		if (PreferenceManager.getDefaultSharedPreferences(getSherlockActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE))
+		if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE))
 			newText = "%" + newText;
 		
 		return onQueryTextChange(newText);
