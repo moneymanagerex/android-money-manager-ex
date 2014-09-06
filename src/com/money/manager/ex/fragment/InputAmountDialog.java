@@ -20,6 +20,9 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Core.StringUtils;
 import com.money.manager.ex.core.CurrencyUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class InputAmountDialog extends SherlockDialogFragment {
 	private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
 	private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
@@ -57,6 +60,10 @@ public class InputAmountDialog extends SherlockDialogFragment {
 		dialog.mCurrencyId = currencyId;
 		return dialog;
 	}
+
+    private double Round(double value, int places) {
+        return new BigDecimal(value).setScale(places, RoundingMode.HALF_UP).doubleValue();
+    }
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +71,7 @@ public class InputAmountDialog extends SherlockDialogFragment {
 
         if (savedInstanceState == null) {
             int id = getArguments().getInt("id");
-            Double amount = getArguments().getDouble("amount");
+            Double amount = Round(getArguments().getDouble("amount"), 2);
             mIdView = id;
             if (!(amount == null || amount == 0)) {
                 int iAmount = (int) (amount * 100);
@@ -144,7 +151,8 @@ public class InputAmountDialog extends SherlockDialogFragment {
 					mAmount = Double.toString(0);
 				// check if is double
 				if (Core.StringUtils.isNumeric(mAmount)) {
-					((InputAmountDialogListener) getActivity()).onFinishedInputAmountDialog(mIdView, Double.parseDouble(mAmount));
+                    InputAmountDialogListener listener = (InputAmountDialogListener) getActivity();
+					listener.onFinishedInputAmountDialog(mIdView, Round(Double.parseDouble(mAmount), 2));
 					dismiss();
 				}
 			}
