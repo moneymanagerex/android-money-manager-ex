@@ -1,8 +1,10 @@
 package com.money.manager.ex;
 
 public class Constants {
-    // JAVA
+    // Java
     public static final String EMPTY_STRING = "";
+    // Database
+    public static final String PATTERN_DB_DATE = "yyyy-MM-dd";
     // Transaction Type
     public static final String TRANSACTION_TYPE_WITHDRAWAL = "Withdrawal";
     public static final String TRANSACTION_TYPE_DEPOSIT = "Deposit";
