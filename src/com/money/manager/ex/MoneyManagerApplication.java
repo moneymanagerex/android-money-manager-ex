@@ -80,7 +80,6 @@ public class MoneyManagerApplication extends Application {
     ///////////////////////////////////////////////////////////////////////////
     private Editor editPreferences;
 
-
     /**
      * @param context
      * @return path database file
@@ -106,16 +105,6 @@ public class MoneyManagerApplication extends Application {
         } else {
             return defaultPath;
         }
-    }
-
-    /**
-     * Reset to force show donate dialog
-     *
-     * @param context
-     */
-    public static void resetDonateDialog(final Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putInt(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY, -1).commit();
     }
 
     /**
@@ -219,7 +208,7 @@ public class MoneyManagerApplication extends Application {
      * @return string formatted date SQLite
      */
     /*public String getSQLiteStringDate(Date date) {
-		return getStringFromDate(date, PATTERN_DB_DATE);
+        return getStringFromDate(date, PATTERN_DB_DATE);
 	}*/
 
     /**

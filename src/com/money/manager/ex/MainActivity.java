@@ -158,7 +158,7 @@ public class MainActivity extends BaseFragmentActivity {
     public void changeDatabase(String pathDatabase) {
         // save the database file
         MoneyManagerApplication.setDatabasePath(getApplicationContext(), pathDatabase);
-        MoneyManagerApplication.resetDonateDialog(getApplicationContext());
+        DonateDialogUtils.resetDonateDialog(getApplicationContext());
         // destroy and reload currencies
         CurrencyUtils.destroy();
         // set to restart activity

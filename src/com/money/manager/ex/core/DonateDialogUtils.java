@@ -61,4 +61,14 @@ public class DonateDialogUtils {
         } else
             return false;
     }
+
+    /**
+     * Reset to force show donate dialog
+     *
+     * @param context application
+     */
+    public static void resetDonateDialog(final Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putInt(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY, -1).commit();
+    }
 }
