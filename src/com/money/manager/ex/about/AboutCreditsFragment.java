@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.RawFileUtils;
 
 public class AboutCreditsFragment extends Fragment {
 
@@ -23,6 +23,6 @@ public class AboutCreditsFragment extends Fragment {
 
         WebView creditsWebView = (WebView) getActivity().findViewById(R.id.about_thirdsparty_credits);
 
-        creditsWebView.loadData(Core.getRawAsString(getActivity(), R.raw.credits_thirdparty), "text/html", "UTF-8");
+        creditsWebView.loadData(RawFileUtils.getRawAsString(getActivity(), R.raw.credits_thirdparty), "text/html", "UTF-8");
     }
 }

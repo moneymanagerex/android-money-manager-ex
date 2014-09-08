@@ -20,7 +20,7 @@ package com.money.manager.ex.database;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.RawFileUtils;
 
 
 public class QueryAllData extends Dataset {
@@ -57,7 +57,7 @@ public class QueryAllData extends Dataset {
     // CONSTRUCTOR
     public QueryAllData(Context context) {
 
-        super(Core.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
+        super(RawFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
     }
 
     @Override

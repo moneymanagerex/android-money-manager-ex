@@ -20,7 +20,7 @@ package com.money.manager.ex.database;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.RawFileUtils;
 
 public class QueryReportIncomeVsExpenses extends Dataset {
     //field name
@@ -31,7 +31,7 @@ public class QueryReportIncomeVsExpenses extends Dataset {
     public static final String Transfers = "Transfers";
 
     public QueryReportIncomeVsExpenses(Context context) {
-        super(Core.getRawAsString(context, R.raw.report_income_vs_expenses), DatasetType.QUERY, "report_income_vs_expenses");
+        super(RawFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses), DatasetType.QUERY, "report_income_vs_expenses");
     }
 
     @Override

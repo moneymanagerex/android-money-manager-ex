@@ -20,7 +20,7 @@ package com.money.manager.ex.database;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.RawFileUtils;
 
 /**
  * @author lazzari.ale@gmail.com
@@ -54,7 +54,7 @@ public class QueryBillDeposits extends Dataset {
 
     // constructor
     public QueryBillDeposits(Context context) {
-        super(Core.getRawAsString(context, R.raw.query_billdeposits), DatasetType.QUERY, QueryBillDeposits.class.getSimpleName());
+        super(RawFileUtils.getRawAsString(context, R.raw.query_billdeposits), DatasetType.QUERY, QueryBillDeposits.class.getSimpleName());
     }
 
     // get all columns

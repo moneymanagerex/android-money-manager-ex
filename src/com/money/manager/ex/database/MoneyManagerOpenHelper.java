@@ -27,7 +27,7 @@ import android.util.Log;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.RawFileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +109,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
      * @param rawId id raw resource
      */
     private void executeRawSql(SQLiteDatabase db, int rawId) {
-        String sqlCreate = Core.getRawAsString(mContext, rawId);
+        String sqlCreate = RawFileUtils.getRawAsString(mContext, rawId);
         String sqlStatment[] = sqlCreate.split(";");
         // process all statment
         for (int i = 0; i < sqlStatment.length; i++) {
@@ -149,7 +149,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
         }
         // data cursor
         /*Cursor cursor = mContext.getContentResolver().query(
-				new TableAccountList().getUri(), null, where, null,
+                new TableAccountList().getUri(), null, where, null,
 				"upper(" + TableAccountList.ACCOUNTNAME + ")");*/
         TableAccountList tAccountList = new TableAccountList();
         SQLiteDatabase db = getReadableDatabase();

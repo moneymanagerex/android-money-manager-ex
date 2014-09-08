@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.RawFileUtils;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 public class HelpActivity extends BaseFragmentActivity {
@@ -29,7 +29,7 @@ public class HelpActivity extends BaseFragmentActivity {
             try {
                 if ("android.resource".equals(getIntent().getData().getScheme())) {
                     int rawId = Integer.parseInt(getIntent().getData().getPathSegments().get(getIntent().getData().getPathSegments().size() - 1));
-                    mWebView.loadData(Core.getRawAsString(getApplicationContext(), rawId), "text/html", "UTF-8");
+                    mWebView.loadData(RawFileUtils.getRawAsString(getApplicationContext(), rawId), "text/html", "UTF-8");
                 } else {
                     mWebView.loadUrl(getIntent().getData().toString());
                 }

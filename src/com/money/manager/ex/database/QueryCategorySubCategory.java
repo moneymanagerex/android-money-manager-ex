@@ -21,7 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.RawFileUtils;
 
 public class QueryCategorySubCategory extends Dataset {
     //definizione dei nomi dei campi
@@ -40,7 +40,7 @@ public class QueryCategorySubCategory extends Dataset {
 
     // definizione del costruttore
     public QueryCategorySubCategory(Context context) {
-        super(Core.getRawAsString(context, R.raw.query_categorysubcategory), DatasetType.QUERY, "categorysubcategory");
+        super(RawFileUtils.getRawAsString(context, R.raw.query_categorysubcategory), DatasetType.QUERY, "categorysubcategory");
     }
 
     @Override

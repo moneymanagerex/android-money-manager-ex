@@ -59,6 +59,7 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.core.Passcode;
+import com.money.manager.ex.core.RawFileUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.dropbox.DropboxBrowserActivity;
@@ -665,7 +666,7 @@ public class PreferencesActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 mDropboxHelper.logOut();
-				/* SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                /* SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 				sharedPreferences.edit().putString(PreferencesConstant.PREF_DROPBOX_TIMES_REPEAT, null).commit(); */
                 mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxReceiver.ACTION_CANCEL);
                 // refresh ui
@@ -845,7 +846,7 @@ public class PreferencesActivity extends PreferenceActivity {
         textTips.setVisibility(View.GONE);
         // set webView
         final WebView webTips = (WebView) view.findViewById(R.id.webViewTips);
-        webTips.loadData(Core.getRawAsString(getApplicationContext(), rawResources), "text/html", "UTF-8");
+        webTips.loadData(RawFileUtils.getRawAsString(getApplicationContext(), rawResources), "text/html", "UTF-8");
         webTips.setVisibility(View.VISIBLE);
 
         final CheckBox checkDont = (CheckBox) view.findViewById(R.id.checkBoxDontShow);

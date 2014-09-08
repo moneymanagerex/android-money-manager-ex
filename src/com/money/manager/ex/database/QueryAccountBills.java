@@ -23,7 +23,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.RawFileUtils;
 
 public class QueryAccountBills extends Dataset {
     //definizione dei nomi dei campi
@@ -48,7 +48,8 @@ public class QueryAccountBills extends Dataset {
 
     // constructor
     public QueryAccountBills(Context context) {
-        super(Core.getRawAsString(context, R.raw.query_account_bills), DatasetType.QUERY, "accountbills");
+
+        super(RawFileUtils.getRawAsString(context, R.raw.query_account_bills), DatasetType.QUERY, "accountbills");
     }
 
     /**

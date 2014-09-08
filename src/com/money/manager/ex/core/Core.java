@@ -39,7 +39,6 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -116,42 +115,6 @@ public class Core {
             Log.e(LOGCAT, e.getMessage());
         }
         return null;
-    }
-
-    /**
-     * @param context from call
-     *                int resId: rawid
-     * @return String: String file
-     */
-    public static String getRawAsString(Context context, int resId) {
-        final int BUFFER_DIMENSION = 128;
-        String result = null;
-        // take input stream
-        InputStream is = context.getResources().openRawResource(resId);
-        if (is != null) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[BUFFER_DIMENSION];
-            int numRead = 0;
-            try {
-                while ((numRead = is.read(buffer)) >= 0) {
-                    baos.write(buffer, 0, numRead);
-                }
-                // convert to string
-                result = new String(baos.toByteArray());
-            } catch (IOException e) {
-                Log.e(LOGCAT, e.getMessage());
-                e.printStackTrace();
-            } finally {
-                if (baos != null) {
-                    try {
-                        baos.close();
-                    } catch (IOException e) {
-                        Log.e(LOGCAT, e.getMessage());
-                    }
-                }
-            }
-        }
-        return result;
     }
 
     /**
