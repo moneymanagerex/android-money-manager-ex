@@ -68,6 +68,8 @@ import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.view.RobotoView;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import java.io.File;
 import java.util.List;
 
@@ -279,7 +281,7 @@ public class PreferencesActivity extends PreferenceActivity {
                 }
             }
         }
-		
+
 		/*PreferenceScreen screen = getPreferenceScreen();
 		if (screen != null) {
 			screen.onItemClick(null, null, findPreference(PreferencesConstant.PREF_DROPBOX_HOWITWORKS).getOrder(), 0);
@@ -454,7 +456,7 @@ public class PreferencesActivity extends PreferenceActivity {
             // get current month
             try {
                 String currentMonth = mCore.getInfoValue(Constants.INFOTABLE_FINANCIAL_YEAR_START_MONTH);
-                if ((!TextUtils.isEmpty(currentMonth)) && Core.StringUtils.isNumeric(currentMonth)) {
+                if ((!TextUtils.isEmpty(currentMonth)) && NumberUtils.isNumber(currentMonth)) {
                     int month = Integer.parseInt(currentMonth) - 1;
                     if (month > -1 && month < lstFinancialMonth.getEntries().length) {
                         lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[month]);
@@ -521,7 +523,7 @@ public class PreferencesActivity extends PreferenceActivity {
             lstFont.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (newValue instanceof String && Core.StringUtils.isNumeric(newValue.toString())) {
+                    if (newValue instanceof String && NumberUtils.isNumber(newValue.toString())) {
                         RobotoView.setUserFont(Integer.parseInt(newValue.toString()));
                         return true;
                     }

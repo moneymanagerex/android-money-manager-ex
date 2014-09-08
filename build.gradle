@@ -22,6 +22,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:20.0.0'
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.github.gabrielemariotti.changeloglib:library:1.5.1'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
 }
 
 android {

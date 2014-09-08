@@ -15,13 +15,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.Core.StringUtils;
 import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.core.MathUtils;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 public class InputAmountDialog extends DialogFragment {
+    private static final String LOGCAT = InputAmountDialog.class.getSimpleName();
+
     private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
     private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
     private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
@@ -33,7 +36,7 @@ public class InputAmountDialog extends DialogFragment {
             R.id.buttonKeyNum9, R.id.buttonKeyNumDecimal};
 
     private int mIdView;
-    private String mAmount = "0";
+    private String mAmount = Constants.EMPTY_STRING;
     private Integer mCurrencyId;
     private TextView txtAmount;
     private ImageButton imgDelete;
@@ -91,8 +94,12 @@ public class InputAmountDialog extends DialogFragment {
             public void onClick(View v) {
                 String parseAmountTry = mAmount;
                 parseAmountTry += ((Button) v).getText();
-
-                if (StringUtils.isNumeric(parseAmountTry)) {
+                // check if amount string is empty
+                if (TextUtils.isEmpty(parseAmountTry))
+                    parseAmountTry = Double.toString(0);
+                // check if amount end with
+                // check if amount is number
+                if (NumberUtils.isNumber(parseAmountTry)) {
                     // change amount
                     mAmount = parseAmountTry;
                     refreshAmount();
@@ -140,7 +147,7 @@ public class InputAmountDialog extends DialogFragment {
                 if (TextUtils.isEmpty(mAmount))
                     mAmount = Double.toString(0);
                 // check if is double
-                if (Core.StringUtils.isNumeric(mAmount)) {
+                if (NumberUtils.isNumber(mAmount)) {
                     ((InputAmountDialogListener) getActivity()).onFinishedInputAmountDialog(mIdView, MathUtils.Round(Double.parseDouble(mAmount), 2));
                     dismiss();
                 }
@@ -174,7 +181,7 @@ public class InputAmountDialog extends DialogFragment {
         if (TextUtils.isEmpty(amount))
             amount = Double.toString(0);
 
-        if (Core.StringUtils.isNumeric(amount)) {
+        if (NumberUtils.isNumber(amount)) {
             double fAmount = Double.parseDouble(amount);
 
             CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
