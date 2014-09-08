@@ -6,6 +6,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -64,6 +66,37 @@ public class Core {
     public Core(Context context) {
         super();
         this.context = context;
+    }
+
+    /**
+     * Take a versioncode of this application
+     *
+     * @param context
+     * @return application version name
+     */
+    public static int getCurrentVersionCode(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            return 0;
+        }
+
+    }
+
+    /**
+     * Take a versioncode of this application
+     *
+     * @param context
+     * @return application version name
+     */
+    public static String getCurrentVersionName(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            return "";
+        }
     }
 
     public static String getAppBase64() {
@@ -738,14 +771,14 @@ public class Core {
     }
 
     public boolean isToDisplayChangelog() {
-        int currentVersionCode = MoneyManagerApplication.getCurrentVersionCode(context);
+        int currentVersionCode = getCurrentVersionCode(context);
         int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(context).getInt(PreferencesConstant.PREF_LAST_VERSION_KEY, -1);
 
         return lastVersionCode != currentVersionCode;
     }
 
     public boolean showChangelog() {
-        int currentVersionCode = MoneyManagerApplication.getCurrentVersionCode(context);
+        int currentVersionCode = getCurrentVersionCode(context);
         PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(PreferencesConstant.PREF_LAST_VERSION_KEY, currentVersionCode).commit();
 
         // create layout

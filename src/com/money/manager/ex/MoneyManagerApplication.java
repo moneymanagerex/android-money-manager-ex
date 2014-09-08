@@ -18,31 +18,24 @@
 package com.money.manager.ex;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Application;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropbox.client2.session.Session.AccessType;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
@@ -92,36 +85,7 @@ public class MoneyManagerApplication extends Application {
     ///////////////////////////////////////////////////////////////////////////
     private Editor editPreferences;
 
-    /**
-     * Take a versioncode of this application
-     *
-     * @param context
-     * @return application version name
-     */
-    public static int getCurrentVersionCode(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (NameNotFoundException e) {
-            return 0;
-        }
 
-    }
-
-    /**
-     * Take a versioncode of this application
-     *
-     * @param context
-     * @return application version name
-     */
-    public static String getCurrentVersionName(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionName;
-        } catch (NameNotFoundException e) {
-            return "";
-        }
-    }
 
     /**
      * @param context
@@ -207,96 +171,6 @@ public class MoneyManagerApplication extends Application {
         editor.commit();
     }
 
-    /**
-     * Show changelog dialog
-     *
-     * @param context
-     * @param forceShow force show changelog alert dialog
-     * @return
-     */
-    public static boolean showChangeLog(Context context, boolean forceShow) {
-        return showChangeLog(context, forceShow, true);
-    }
-
-    /**
-     * Show changelog dialog
-     *
-     * @param context
-     * @param forceShow force show changelog alert dialog
-     * @param complete  to show all changelog
-     * @return
-     */
-    public static boolean showChangeLog(Context context, boolean forceShow, boolean complete) {
-        int currentVersionCode = getCurrentVersionCode(context);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int lastVersionCode = preferences.getInt(PreferencesConstant.PREF_LAST_VERSION_KEY, -1);
-        if (!(lastVersionCode == currentVersionCode) || forceShow) {
-            preferences.edit().putInt(PreferencesConstant.PREF_LAST_VERSION_KEY, currentVersionCode).commit();
-            //layout
-            View view = LayoutInflater.from(context).inflate(R.layout.changelog_layout, null);
-            //create dialog
-            AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
-            showDialog.setCancelable(false);
-            showDialog.setTitle(R.string.changelog);
-            //showDialog.setMessage(Html.fromHtml(changelog));
-            showDialog.setView(view);
-            showDialog.setNeutralButton(android.R.string.ok,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            // show dialog
-            showDialog.create().show();
-            return true;
-        } else
-            return false;
-    }
-
-    /**
-     * Show donate dialog
-     *
-     * @param context
-     * @param forceShow
-     * @return
-     */
-    public static boolean showDonateDialog(final Context context, boolean forceShow) {
-        int currentVersionCode = getCurrentVersionCode(context);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int lastVersionCode = preferences.getInt(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY, -1);
-        if (!(lastVersionCode == currentVersionCode) || forceShow) {
-            preferences.edit().putInt(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY, currentVersionCode).commit();
-            Core core = new Core(context);
-            if (TextUtils.isEmpty(core.getInfoValue(Constants.INFOTABLE_SKU_ORDER_ID))) {
-                //get text donate
-                String donateText = context.getString(R.string.donate_header);
-                //create dialog
-                AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
-                showDialog.setCancelable(false);
-                showDialog.setTitle(R.string.donate);
-                showDialog.setIcon(R.drawable.ic_launcher);
-                showDialog.setMessage(Html.fromHtml(donateText));
-                showDialog.setNegativeButton(R.string.no_thanks, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                showDialog.setPositiveButton(R.string.donate_exlamation, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        context.startActivity(new Intent(context, DonateActivity.class));
-                        dialog.dismiss();
-                    }
-                });
-                // show dialog
-                showDialog.create().show();
-            }
-            return true;
-        } else
-            return false;
-    }
 
     /**
      * This method show introduction activity
