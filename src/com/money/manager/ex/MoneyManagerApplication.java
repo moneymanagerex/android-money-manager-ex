@@ -27,10 +27,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -239,31 +237,6 @@ public class MoneyManagerApplication extends Application {
     }
 
     /**
-     * @return default home type
-     */
-    public int getDefaultTypeHome() {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB ? TYPE_HOME_CLASSIC : TYPE_HOME_ADVANCE;
-    }
-
-    /**
-     * @return the dropbox mode synchronization
-     */
-    public String getDropboxSyncMode() {
-        return appPreferences.getString(PreferencesConstant.PREF_DROPBOX_MODE, getString(R.string.synchronize));
-    }
-
-    /**
-     * @param value mode of syncronization to apply
-     */
-    public void setDropboxSyncMode(String value) {
-        // open edit preferences
-        editPreferences = appPreferences.edit();
-        editPreferences.putString(PreferencesConstant.PREF_DROPBOX_MODE, value);
-        // commit
-        editPreferences.commit();
-    }
-
-    /**
      * @param context
      * @return the username
      */
@@ -314,24 +287,6 @@ public class MoneyManagerApplication extends Application {
         return PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_SHOW_TRANSACTION, getResources().getString(R.string.last7days));
     }
 
-    /**
-     * @param status char of status
-     * @return decode status char
-     */
-    public String getStatusAsString(String status) {
-        if (TextUtils.isEmpty(status)) {
-            return this.getResources().getString(R.string.status_none);
-        } else if (Constants.TRANSACTION_STATUS_RECONCILED.equalsIgnoreCase(status)) {
-            return this.getResources().getString(R.string.status_reconciled);
-        } else if (Constants.TRANSACTION_STATUS_VOID.equalsIgnoreCase(status)) {
-            return this.getResources().getString(R.string.status_void);
-        } else if (Constants.TRANSACTION_STATUS_FOLLOWUP.equalsIgnoreCase(status)) {
-            return this.getResources().getString(R.string.status_follow_up);
-        } else if (Constants.TRANSACTION_STATUS_DUPLICATE.equalsIgnoreCase(status)) {
-            return this.getResources().getString(R.string.status_duplicate);
-        }
-        return "";
-    }
 
     /**
      * Compute account balance and returns balance
