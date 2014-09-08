@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion changeDate="September 6, 2014" versionName="1.4.14">
+        <changelogtext>Fixed issue that sometimes prevented by modifying the amounts in the dialog</changelogtext>
+        <changelogtext>Updated translations</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="August 25, 2014" versionName="1.4.13">
         <changelogtext>Fixed minor bugs</changelogtext>
     </changelogversion>
