@@ -58,6 +58,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.CurrencyUtils;
+import com.money.manager.ex.core.DonateDialogUtils;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.RawFileUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -612,7 +613,7 @@ public class PreferencesActivity extends PreferenceActivity {
                         //MainActivity.changeDatabase(newDatabases.getAbsolutePath());
                         // save the database file
                         MoneyManagerApplication.setDatabasePath(getApplicationContext(), newDatabases.getAbsolutePath());
-                        MoneyManagerApplication.resetDonateDialog(getApplicationContext());
+                        DonateDialogUtils.resetDonateDialog(getApplicationContext());
                         // set to restart activity
                         MainActivity.setRestartActivity(true);
                     } else {
