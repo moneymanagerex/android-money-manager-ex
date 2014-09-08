@@ -1,6 +1,7 @@
 package com.money.manager.ex.database;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
@@ -27,6 +28,20 @@ public class TransactionStatus {
             return ctx.getResources().getString(R.string.status_duplicate);
         }
         return "";
+    }
+
+    public static int getBackgroundColorFromStatus(Context ctx, String status) {
+        if (Constants.TRANSACTION_STATUS_RECONCILED.equalsIgnoreCase(status)) {
+            return ctx.getResources().getColor(R.color.holo_green_dark);
+        } else if (Constants.TRANSACTION_STATUS_VOID.equalsIgnoreCase(status)) {
+            return ctx.getResources().getColor(R.color.holo_red_dark);
+        } else if (Constants.TRANSACTION_STATUS_FOLLOWUP.equalsIgnoreCase(status)) {
+            return ctx.getResources().getColor(R.color.holo_orange_dark);
+        } else if (Constants.TRANSACTION_STATUS_DUPLICATE.equalsIgnoreCase(status)) {
+            return ctx.getResources().getColor(R.color.holo_blue_dark);
+        } else {
+            return Color.GRAY;
+        }
     }
 }
 
