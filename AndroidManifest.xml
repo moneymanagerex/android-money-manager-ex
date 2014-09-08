@@ -17,8 +17,9 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.money.manager.ex" >
+<manifest
+    package="com.money.manager.ex"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -243,7 +244,6 @@
             <action android:name="android.intent.action.EDIT"/>
             <action android:name="android.intent.action.INSERT"/>
         </activity>
-        <activity android:name="com.money.manager.ex.IntroductionActivity"/>
         <activity
             android:name="com.money.manager.ex.RepeatingTransactionListActivity"/>
         <activity

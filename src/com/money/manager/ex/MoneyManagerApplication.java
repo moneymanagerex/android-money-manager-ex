@@ -42,10 +42,7 @@ import com.money.manager.ex.view.RobotoView;
 import com.money.manager.ex.widget.AccountBillsWidgetProvider;
 import com.money.manager.ex.widget.SummaryWidgetProvider;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This class extends Application and implements all the methods common in the
@@ -84,7 +81,6 @@ public class MoneyManagerApplication extends Application {
     private Editor editPreferences;
 
 
-
     /**
      * @param context
      * @return path database file
@@ -113,42 +109,6 @@ public class MoneyManagerApplication extends Application {
     }
 
     /**
-     * @param context from call
-     *                int resId: rawid
-     * @return String: String file
-     */
-    public static String getRawAsString(Context context, int resId) {
-        final int BUFFER_DIMENSION = 128;
-        String result = null;
-        // take input stream
-        InputStream is = context.getResources().openRawResource(resId);
-        if (is != null) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[BUFFER_DIMENSION];
-            int numRead = 0;
-            try {
-                while ((numRead = is.read(buffer)) >= 0) {
-                    baos.write(buffer, 0, numRead);
-                }
-                // convert to string
-                result = new String(baos.toByteArray());
-            } catch (IOException e) {
-                Log.e(LOGCAT, e.getMessage());
-                e.printStackTrace();
-            } finally {
-                if (baos != null) {
-                    try {
-                        baos.close();
-                    } catch (IOException e) {
-                        Log.e(LOGCAT, e.getMessage());
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    /**
      * Reset to force show donate dialog
      *
      * @param context
@@ -167,24 +127,6 @@ public class MoneyManagerApplication extends Application {
         Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.putString(PreferencesConstant.PREF_DATABASE_PATH, dbpath);
         editor.commit();
-    }
-
-
-    /**
-     * This method show introduction activity
-     *
-     * @param context   activity called
-     * @param forceShow true show
-     */
-    public static boolean showIntroduction(Context context, boolean forceShow) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Boolean isShowed = preferences.getBoolean(PreferencesConstant.PREF_SHOW_INTRODUCTION, false);
-        if ((!isShowed) || forceShow) {
-            preferences.edit().putBoolean(PreferencesConstant.PREF_SHOW_INTRODUCTION, true).commit();
-            context.startActivity(new Intent(context, IntroductionActivity.class));
-            return true;
-        } else
-            return false;
     }
 
     public static float getTextSize() {
@@ -276,7 +218,7 @@ public class MoneyManagerApplication extends Application {
      * @param date to convert
      * @return string formatted date SQLite
      */
-	/*public String getSQLiteStringDate(Date date) {
+    /*public String getSQLiteStringDate(Date date) {
 		return getStringFromDate(date, PATTERN_DB_DATE);
 	}*/
 

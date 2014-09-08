@@ -283,7 +283,7 @@ public class PreferencesActivity extends PreferenceActivity {
         }
 
 		/*PreferenceScreen screen = getPreferenceScreen();
-		if (screen != null) {
+        if (screen != null) {
 			screen.onItemClick(null, null, findPreference(PreferencesConstant.PREF_DROPBOX_HOWITWORKS).getOrder(), 0);
 		}*/
     }
@@ -845,7 +845,7 @@ public class PreferencesActivity extends PreferenceActivity {
         textTips.setVisibility(View.GONE);
         // set webView
         final WebView webTips = (WebView) view.findViewById(R.id.webViewTips);
-        webTips.loadData(MoneyManagerApplication.getRawAsString(getApplicationContext(), rawResources), "text/html", "UTF-8");
+        webTips.loadData(Core.getRawAsString(getApplicationContext(), rawResources), "text/html", "UTF-8");
         webTips.setVisibility(View.VISIBLE);
 
         final CheckBox checkDont = (CheckBox) view.findViewById(R.id.checkBoxDontShow);
