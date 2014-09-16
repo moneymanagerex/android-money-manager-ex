@@ -19,8 +19,6 @@ import com.money.manager.ex.inapp.util.Inventory;
 import com.money.manager.ex.inapp.util.Purchase;
 import com.money.manager.ex.inapp.util.SkuDetails;
 
-import net.robotmedia.billing.helper.AbstractBillingObserver;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +35,6 @@ public class DonateActivity extends BaseFragmentActivity {
     private String purchasedSku = "";
     private String purchasedToken = "";
     // Helper In-app Billing
-    private AbstractBillingObserver billingObserver;
     private IabHelper mIabHelper;
     private IabHelper.OnIabPurchaseFinishedListener mConsumeFinishedListener;
     private IabHelper.QueryInventoryFinishedListener mQueryInventoryFinishedListener;

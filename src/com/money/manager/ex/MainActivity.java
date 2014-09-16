@@ -817,7 +817,7 @@ public class MainActivity extends BaseFragmentActivity {
 	private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle {
 
 		public CustomActionBarDrawerToggle(Activity mActivity, DrawerLayout mDrawerLayout) {
-			super(mActivity, mDrawerLayout, R.drawable.ic_navigation_drawer, R.string.app_name, R.string.app_name);
+			super(mActivity, mDrawerLayout, R.drawable.ic_navigation_drawer, R.string.application_name, R.string.application_name);
 		}
 	}
 
