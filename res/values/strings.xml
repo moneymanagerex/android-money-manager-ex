@@ -5,7 +5,7 @@
     <string name="application_name">Money Manager Ex</string>
     <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
-    <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock and RobotMediaBilling libraries</string>
+    <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock library</string>
     <string name="application_license">Open source licenses</string>
 
     <!-- database -->

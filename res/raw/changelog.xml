@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion changeDate="NOT YET RELEASED" versionName="1.4.15">
+        <changelogtext>Fixed issue that shows the messagebox of the donation, even if you've already donated</changelogtext>
+        <changelogtext>Migrate to Google In App Billing v3</changelogtext>
+        <changelogtext>Remove libray Robotmedia</changelogtext>
+        <changelogtext>Fixed other minor bugs</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="September 6, 2014" versionName="1.4.14">
         <changelogtext>Fixed issue that sometimes prevented by modifying the amounts in the dialog</changelogtext>
         <changelogtext>Updated translations</changelogtext>
