@@ -2,6 +2,7 @@ package com.money.manager.ex;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class DonateActivity extends BaseFragmentActivity {
+    private static final String LOGCAT = DonateActivity.class.getSimpleName();
 
     private final String PURCHASED_SKU = "DonateActivity:Purchased_Sku";
     private final String PURCHASED_TOKEN = "DonateActivity:Purchased_Token";
@@ -72,16 +74,6 @@ public class DonateActivity extends BaseFragmentActivity {
         });
         // Disabilito il tasto fin che non è pronto
         inAppButton.setEnabled(false);
-        // init IabHelper
-        mIabHelper = new IabHelper(this.getApplicationContext(), Core.getAppBase64());
-        mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            @Override
-            public void onIabSetupFinished(IabResult result) {
-                if (result.isSuccess()) {
-                    mIabHelper.queryInventoryAsync(true, skus, mQueryInventoryFinishedListener);
-                }
-            }
-        });
 
         mConsumeFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
             @Override
@@ -109,6 +101,21 @@ public class DonateActivity extends BaseFragmentActivity {
                 onStartupInApp(result.isSuccess());
             }
         };
+        // init IabHelper
+        try {
+            mIabHelper = new IabHelper(this.getApplicationContext(), Core.getAppBase64());
+            mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                @Override
+                public void onIabSetupFinished(IabResult result) {
+                    if (result.isSuccess()) {
+                        mIabHelper.queryInventoryAsync(true, skus, mQueryInventoryFinishedListener);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.e(LOGCAT, "In-App Billing startup error");
+            onStartupInApp(false);
+        }
         // set enable return
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -138,6 +145,7 @@ public class DonateActivity extends BaseFragmentActivity {
     }
 
     public void onStartupInApp(boolean supported) {
+        final TextView inAppStatus = (TextView) findViewById(R.id.textViewInAppStatus);
         if (supported) {
             final List<String> inAppName = new ArrayList<String>();
 
@@ -155,11 +163,13 @@ public class DonateActivity extends BaseFragmentActivity {
             final Button inAppButton = (Button) findViewById(R.id.buttonDonateInApp);
             inAppButton.setVisibility(inAppName.size() > 0 ? View.VISIBLE : View.GONE);
             inAppButton.setEnabled(inAppName.size() > 0 );
-            // text view
-            final TextView inAppAlready = (TextView) findViewById(R.id.textViewInAppAlreadyDonate);
-            inAppAlready.setVisibility(inAppName.size() <= 0 ? View.VISIBLE : View.GONE);
+            // status
+            inAppStatus.setText(inAppName.size() <= 0 ? Html.fromHtml("<b>" + getString(R.string.donate_in_app_already_donate) + "</b>") : null);
             // hide spinner if release version
             inAppSpinner.setVisibility(inAppName.size() > 1 ? View.VISIBLE : View.GONE);
+        } else {
+            inAppStatus.setText(R.string.donate_in_app_error);
+            inAppStatus.setTextColor(getResources().getColor(R.color.holo_red_dark));
         }
     }
 

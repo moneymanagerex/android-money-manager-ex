@@ -472,5 +472,7 @@
     <string name="deposit_to">Deposit To %1$s</string>
     <string name="mmex_website">MoneyManagerEx Website</string>
     
-    <string name="you_have_already_donated">You already supported the development of MoneyManagerEx for Android with your donation!\n\nThank you from development team!</string>
+    <string name="donate_in_app_already_donate">You already supported the development of MoneyManagerEx for Android with your donation!\n\nThank you from development team!</string>
+    <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
+    <string name="donate_in_app_error">Cannot use the in-app billing. Check whether the latest version of the Play Store application is installed.</string>
 </resources>
