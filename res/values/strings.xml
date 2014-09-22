@@ -3,9 +3,8 @@
 
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
-    <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
-    <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock and RobotMediaBilling libraries</string>
+    <string name="application_credits">MoneyManagerEx for Android Project uses ActionBarSherlock library</string>
     <string name="application_license">Open source licenses</string>
 
     <!-- database -->
@@ -52,7 +51,7 @@
     <string name="view_accounts_opened">View open accounts</string>
     <string name="if_not_selected_willShowAllAccounts">If not selected will show all accounts</string>
     <string name="view_accounts_favorites">View favourite accounts</string>
-    <!--<string name="preferences_version">Android Money Manager Ex</string>-->
+    <!--<string name="preferences_version">MoneyManagerEx for Android</string>-->
     <string name="version">Version</string>
     <string name="build">Build</string>
     <!--<string name="preferences_dropbox">Dropbox settings</string>-->
@@ -307,7 +306,7 @@
     <string name="export_file_complete">The data has been successfully exported to the file %1$s</string>
     <string name="export_file_failed">Export file %1$s failed</string>
     <!-- 20130220 -->
-    <string name="donate_header">Android Money Manager Ex is provided free. If this application is to your liking, you can support the development team with a donation.</string>
+    <string name="donate_header">MoneyManagerEx for Android is provided free. If this application is to your liking, you can support the development team with a donation.</string>
     <string name="donate_in_app_title">Google Play In-App Billing</string>
     <string name="donate_in_app_description">Donate via Google Play In-App Billing.</string>
     <string name="donate_in_app_spinner_text">Select a donation amount</string>
@@ -471,4 +470,8 @@
     <string name="withdrawal_from">Withdrawal From %1$s</string>
     <string name="deposit_to">Deposit To %1$s</string>
     <string name="mmex_website">MoneyManagerEx Website</string>
+    
+    <string name="donate_in_app_already_donate">You already supported the development of MoneyManagerEx for Android with your donation!\n\nThank you from development team!</string>
+    <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
+    <string name="donate_in_app_error">Cannot use the in-app billing. Check whether the latest version of the Play Store application is installed.</string>
 </resources>

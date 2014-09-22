@@ -8,15 +8,15 @@
 
     <LinearLayout
         android:id="@+id/about_thirdsparty_credits_container"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="6dip" >
 
         <WebView
             android:id="@+id/about_thirdsparty_credits"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="#FFF" />
     </LinearLayout>
 
