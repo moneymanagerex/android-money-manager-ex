@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,7 +12,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.inapp.util.IabHelper;
@@ -137,11 +137,14 @@ public class DonateActivity extends BaseFragmentActivity {
 
     @Override
     protected void onDestroy() {
-        //BillingController.unregisterObserver(billingObserver);
         super.onDestroy();
-        if (mIabHelper != null)
-            mIabHelper.dispose();
-        mIabHelper = null;
+        try {
+            if (mIabHelper != null)
+                mIabHelper.dispose();
+            mIabHelper = null;
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
+        }
     }
 
     public void onStartupInApp(boolean supported) {
@@ -154,7 +157,7 @@ public class DonateActivity extends BaseFragmentActivity {
             }
 
             Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, inAppName);
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, inAppName);
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             // Apply the adapter to the spinner
