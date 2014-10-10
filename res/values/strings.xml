@@ -45,7 +45,7 @@
 
     <!-- preferences -->
     <string name="preferences_general">General</string>
-    <string name="preferences_dispaly">Display</string>
+    <string name="preferences_dispaly">Look &#38; Feel</string>
     <string name="base_currency">Base currency</string>
     <!--<string name="accounts_visible">Visible accounts</string>-->
     <string name="view_accounts_opened">View open accounts</string>
@@ -55,7 +55,7 @@
     <string name="version">Version</string>
     <string name="build">Build</string>
     <!--<string name="preferences_dropbox">Dropbox settings</string>-->
-    <!--<string name="preferences_database_path">Database path</string>-->
+    <string name="path">Database path</string>
 
     <!-- account -->
     <string name="account">Account</string>
@@ -292,7 +292,7 @@
     <string name="financial_year_start_month">Financial Year: Start Month</string>
     <!--<string name="release_date">Release Date</string>-->
     <!-- 20130121 -->
-    <!--<string name="menu_move_database_to_external_storage">Move Database to External Storage</string>-->
+    <string name="menu_move_database_to_external_storage">Export database</string>
     <string name="database_has_been_moved">The database has been moved: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Copy database on external storage failed</string>
     <string name="path_database_using">You\'re using the database saved in: %1$s</string>
@@ -350,7 +350,7 @@
     <string name="title_transaction_shown_balance">Shows the balance for each transaction</string>
     <string name="summary_transaction_shown_balance">Shows the balance for each transaction. The display of balance could make the application slower</string>
     <string name="menu_open_database">Open database</string>
-    <!--<string name="database">Database</string>-->
+    <string name="database">Database</string>-->
     <string name="tips">Tips</string>
     <string name="title_application_font">Application Font</string>
     <string name="summary_application_font">Select the font you want to give the application</string>
