@@ -185,7 +185,7 @@
     <string name="closed">Closed</string>
     <string name="new_edit_currency">New/Edit Currency</string>
     <!--<string name="path">Path</string>-->
-    <string name="theme_application">Theme application</string>
+    <string name="theme_application">Theme</string>
     <string name="theme_holo">Holo</string>
     <string name="theme_light">Holo Light With Dark ActionBar</string>
 
@@ -371,8 +371,8 @@
     <string name="dashclock_extension_summary">Displays the summary of Money Manager Ex for Android</string>
     <string name="dashclock_extension_summary_all_account">View the summary of each account Money Manager Ex for Android</string>
     <!-- 20130728 -->
-    <string name="title_check_repeating_transaction">Schedule Check Repeating Transaction Overdue</string>
-    <string name="summary_check_repeating_transaction">Indicate what time of day the application should check if there are repeating transaction overdue (default 08:00)</string>
+    <string name="title_check_repeating_transaction">Check time</string>
+    <string name="summary_check_repeating_transaction">What time would you check if there are repeating transactions overdue? (default 08:00)</string>
     <!-- 20130730 -->
     <string name="credits">Credits</string>
     <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
@@ -470,8 +470,11 @@
     <string name="withdrawal_from">Withdrawal From %1$s</string>
     <string name="deposit_to">Deposit To %1$s</string>
     <string name="mmex_website">MoneyManagerEx Website</string>
-    
+
     <string name="donate_in_app_already_donate">You already supported the development of MoneyManagerEx for Android with your donation!\n\nThank you from development team!</string>
     <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
     <string name="donate_in_app_error">Cannot use the in-app billing. Check whether the latest version of the Play Store application is installed.</string>
+
+    <string name="title_notifications_repeating_transaction">Notification Repeating Transaction overdue </string>
+    <string name="summary_notifications_repeating_transaction">Show notification for repeating transaction overdue</string>
 </resources>
