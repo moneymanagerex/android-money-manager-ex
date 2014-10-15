@@ -50,7 +50,6 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.database.TableSubCategory;
-import com.money.manager.ex.database.ViewAllData;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.dropbox.DropboxHelper;
 
@@ -98,8 +97,7 @@ public class MoneyManagerProvider extends ContentProvider {
 			new TableCheckingAccount(), new TableCurrencyFormats(),
 			new TableInfoTable(), new TablePayee(),
 			new TableSplitTransactions(), new TableStock(),
-			new TableSubCategory(), new ViewAllData(),
-			new QueryAccountBills(getContext()), new QueryCategorySubCategory(getContext()),
+			new TableSubCategory(), new QueryAccountBills(getContext()), new QueryCategorySubCategory(getContext()),
 			new QueryAllData(getContext()), new QueryBillDeposits(getContext()),
 			new QueryReportIncomeVsExpenses(getContext()), new ViewMobileData(),
 			new SQLDataSet()});
