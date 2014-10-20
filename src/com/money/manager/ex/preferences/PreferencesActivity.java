@@ -254,7 +254,7 @@ public class PreferencesActivity extends PreferenceActivity {
         onCreateScreenPreferenceDisplay();
 
         // database preference
-        //onCreateScreenPreferenceDatabase();
+        onCreateScreenPreferenceDatabase();
 
         // dropbox preference screen
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
@@ -622,6 +622,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     return false;
                 }
             });
+            pMoveDatabase.setEnabled(MoneyManagerApplication.getDatabasePath(this.getApplicationContext()).startsWith("/data/"));
         }
         final PreferenceScreen pDatabasePath = (PreferenceScreen) findPreference(PreferencesConstant.PREF_DATABASE_PATH);
         pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(this.getApplicationContext()));

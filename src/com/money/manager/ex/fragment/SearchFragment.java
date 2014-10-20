@@ -55,7 +55,7 @@ import com.money.manager.ex.core.DateUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.database.ViewAllData;
+import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 
 import java.text.SimpleDateFormat;
@@ -301,51 +301,51 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         ArrayList<String> whereClause = new ArrayList<String>();
         //account
         if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
-            whereClause.add(ViewAllData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
+            whereClause.add(ViewMobileData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
         }
         //checkbox
         if (cbxDeposit.isChecked() || cbxTransfer.isChecked() || cbxWithdrawal.isChecked()) {
-            whereClause.add(ViewAllData.TransactionType + " IN (" + (cbxDeposit.isChecked() ? "'Deposit'" : "''") + "," + (cbxTransfer.isChecked() ? "'Transfer'" : "''")
+            whereClause.add(ViewMobileData.TransactionType + " IN (" + (cbxDeposit.isChecked() ? "'Deposit'" : "''") + "," + (cbxTransfer.isChecked() ? "'Transfer'" : "''")
                     + "," + (cbxWithdrawal.isChecked() ? "'Withdrawal'" : "''") + ")");
         }
         //status
         if (spinStatus.getSelectedItemPosition() > 0) {
-            whereClause.add(ViewAllData.Status + "='" + mStatusValues.get(spinStatus.getSelectedItemPosition()) + "'");
+            whereClause.add(ViewMobileData.Status + "='" + mStatusValues.get(spinStatus.getSelectedItemPosition()) + "'");
         }
         //from date
         if (!TextUtils.isEmpty(txtFromDate.getText())) {
-            whereClause.add(ViewAllData.Date + ">='" + DateUtils.getSQLiteStringDate(getActivity(), DateUtils.getDateFromString(getActivity(), String.valueOf(txtFromDate.getText()))) + "'");
+            whereClause.add(ViewMobileData.Date + ">='" + DateUtils.getSQLiteStringDate(getActivity(), DateUtils.getDateFromString(getActivity(), String.valueOf(txtFromDate.getText()))) + "'");
         }
         //to date
         if (!TextUtils.isEmpty(txtToDate.getText())) {
-            whereClause.add(ViewAllData.Date + "<='" + DateUtils.getSQLiteStringDate(getActivity(), DateUtils.getDateFromString(getActivity(), String.valueOf(txtToDate.getText()))) + "'");
+            whereClause.add(ViewMobileData.Date + "<='" + DateUtils.getSQLiteStringDate(getActivity(), DateUtils.getDateFromString(getActivity(), String.valueOf(txtToDate.getText()))) + "'");
         }
         //payee
         if (txtSelectPayee.getTag() != null) {
-            whereClause.add(ViewAllData.PayeeID + "=" + String.valueOf(txtSelectPayee.getTag()));
+            whereClause.add(ViewMobileData.PayeeID + "=" + String.valueOf(txtSelectPayee.getTag()));
         }
         //categories
         if (txtSelectCategory.getTag() != null) {
             CategorySub categorySub = (CategorySub) txtSelectCategory.getTag();
-            whereClause.add(ViewAllData.CategID + "=" + categorySub.categId);
+            whereClause.add(ViewMobileData.CategID + "=" + categorySub.categId);
             if (categorySub.subCategId != -1)
-                whereClause.add(ViewAllData.SubcategID + "=" + categorySub.subCategId);
+                whereClause.add(ViewMobileData.SubcategID + "=" + categorySub.subCategId);
         }
         //from amount
         if (txtFromAmount.getTag() != null) {
-            whereClause.add(ViewAllData.Amount + ">=" + String.valueOf(txtFromAmount.getTag()));
+            whereClause.add(ViewMobileData.Amount + ">=" + String.valueOf(txtFromAmount.getTag()));
         }
         //to amount
         if (txtToAmount.getTag() != null) {
-            whereClause.add(ViewAllData.Amount + "<=" + String.valueOf(txtToAmount.getTag()));
+            whereClause.add(ViewMobileData.Amount + "<=" + String.valueOf(txtToAmount.getTag()));
         }
         //transaction number
         if (!TextUtils.isEmpty(edtTransNumber.getText())) {
-            whereClause.add(ViewAllData.TransactionNumber + " LIKE '" + edtTransNumber.getText() + "'");
+            whereClause.add(ViewMobileData.TransactionNumber + " LIKE '" + edtTransNumber.getText() + "'");
         }
         //note
         if (!TextUtils.isEmpty(edtNotes.getText())) {
-            whereClause.add(ViewAllData.Notes + " LIKE '" + edtNotes.getText() + "'");
+            whereClause.add(ViewMobileData.Notes + " LIKE '" + edtNotes.getText() + "'");
         }
         //create a fragment search
         AllDataFragment fragment;
