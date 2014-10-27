@@ -143,11 +143,13 @@ public class PayeeActivity extends BaseFragmentActivity {
 		public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 			switch (id) {
 			case ID_LOADER_PAYEE:
-				String select = null;
+				String whereClause = null;
+                String selectionArgs[] = null;
 				if (!TextUtils.isEmpty(mCurFilter)) {
-					select = TablePayee.PAYEENAME + " LIKE '" + mCurFilter + "%'"; 
+					whereClause = TablePayee.PAYEENAME + " LIKE ?";// + mCurFilter + "%'";
+                    selectionArgs = new String[] {mCurFilter + '%'};
 				}
-				return new CursorLoader(getActivity(), mPayee.getUri(), mPayee.getAllColumns(), select, null, "upper(" + TablePayee.PAYEENAME + ")");
+				return new CursorLoader(getActivity(), mPayee.getUri(), mPayee.getAllColumns(), whereClause, selectionArgs, "upper(" + TablePayee.PAYEENAME + ")");
 			}
 
 			return null;

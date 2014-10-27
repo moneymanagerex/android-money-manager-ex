@@ -249,13 +249,15 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 				mSubCategories.clear();
 				// load data
 				
-				String select = null;
+				String whereClause = null;
+                String selectionArgs[] = null;
 				if (!TextUtils.isEmpty(mCurFilter)) {
-					select = QueryCategorySubCategory.CATEGNAME + " LIKE '" + mCurFilter + "%' OR "
-							+ QueryCategorySubCategory.SUBCATEGNAME + " LIKE '" + mCurFilter + "%'";
-				}
-				return new CursorLoader(getActivity(), mCategorySub.getUri(), mCategorySub.getAllColumns(), select,
-						null, QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
+					whereClause = QueryCategorySubCategory.CATEGNAME + " LIKE ? OR "
+							+ QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
+                    selectionArgs = new String[] {mCurFilter + "%", mCurFilter + "%"};
+                }
+				return new CursorLoader(getActivity(), mCategorySub.getUri(), mCategorySub.getAllColumns(), whereClause,
+						selectionArgs, QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
 			}
 			return null;
 		}

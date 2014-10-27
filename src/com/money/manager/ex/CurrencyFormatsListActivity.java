@@ -188,11 +188,13 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             switch (id) {
                 case ID_LOADER_CURRENCY:
-                    String select = null;
+                    String whereClause = null;
+                    String selectionArgs[] = null;
                     if (!TextUtils.isEmpty(mCurFilter)) {
-                        select = TableCurrencyFormats.CURRENCYNAME + " LIKE '" + mCurFilter + "%'";
+                        whereClause = TableCurrencyFormats.CURRENCYNAME + " LIKE ?";
+                        selectionArgs = new String[] {mCurFilter + "%"};
                     }
-                    return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(), select, null, "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
+                    return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(), whereClause, selectionArgs, "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
             }
 
             return null;

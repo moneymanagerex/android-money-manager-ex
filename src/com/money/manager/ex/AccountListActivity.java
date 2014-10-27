@@ -149,11 +149,13 @@ public class AccountListActivity extends BaseFragmentActivity {
 		public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 			switch (id) {
 			case ID_LOADER_ACCOUNT:
-				String select = null;
+				String whereClause = null;
+                String selectionArgs[] = null;
 				if (!TextUtils.isEmpty(mCurFilter)) {
-					select = TableAccountList.ACCOUNTNAME + " LIKE '" + mCurFilter + "%'"; 
+					whereClause = TableAccountList.ACCOUNTNAME + " LIKE ?";
+                    selectionArgs = new String[] {mCurFilter + "%"};
 				}
-				return new CursorLoader(getActivity(), mAccount.getUri(), mAccount.getAllColumns(), select, null, "upper(" + TableAccountList.ACCOUNTNAME + ")");
+				return new CursorLoader(getActivity(), mAccount.getUri(), mAccount.getAllColumns(), whereClause, selectionArgs, "upper(" + TableAccountList.ACCOUNTNAME + ")");
 			}
 
 			return null;

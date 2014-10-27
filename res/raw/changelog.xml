@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
-    <changelogversion changeDate="NOT YET RELEASED" versionName="1.4.15">
+    <changelogversion changeDate="October 27, 2014" versionName="1.4.15">
+        <changelogtext>Added setting to enable/disable repeating transaction notifications</changelogtext>
         <changelogtext>Fixed issue that shows the messagebox of the donation, even if you've already donated</changelogtext>
+        <changelogtext>Fixed issue in searching of accounts, categories, currencies and payees</changelogtext>
         <changelogtext>Migrate to Google In App Billing v3</changelogtext>
-        <changelogtext>Remove libray Robotmedia</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="September 6, 2014" versionName="1.4.14">
