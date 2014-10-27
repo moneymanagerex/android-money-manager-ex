@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package net.robotmedia.billing.utils;
+package com.money.manager.ex.inapp.util;
 
 /**
  * Exception thrown when encountering an invalid Base64 input character.
@@ -20,13 +20,13 @@ package net.robotmedia.billing.utils;
  * @author nelson
  */
 public class Base64DecoderException extends Exception {
-  public Base64DecoderException() {
-    super();
-  }
+    public Base64DecoderException() {
+        super();
+    }
 
-  public Base64DecoderException(String s) {
-    super(s);
-  }
+    public Base64DecoderException(String s) {
+        super(s);
+    }
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 }

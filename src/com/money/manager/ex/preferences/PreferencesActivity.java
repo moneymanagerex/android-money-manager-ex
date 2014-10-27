@@ -17,9 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex.preferences;
 
-import java.io.File;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -61,7 +58,6 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.core.Passcode;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.dropbox.DropboxBrowserActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
@@ -69,6 +65,9 @@ import com.money.manager.ex.dropbox.DropboxReceiver;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.view.RobotoView;
+
+import java.io.File;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class PreferencesActivity extends SherlockPreferenceActivity {
@@ -249,7 +248,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 		onCreateScreenPreferenceDisplay();
 		
 		// database preference
-		//onCreateScreenPreferenceDatabase();
+		onCreateScreenPreferenceDatabase();
 		
 		// dropbox preference screen
 		mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
@@ -609,17 +608,18 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 					return false;
 				}
 			});
+            pMoveDatabase.setEnabled(MoneyManagerApplication.getDatabasePath(this.getApplicationContext()).startsWith("/data/"));
 		}
 		final PreferenceScreen pDatabasePath = (PreferenceScreen) findPreference(PreferencesConstant.PREF_DATABASE_PATH);
 		pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(this.getApplicationContext()));
 		//sqlite version
-		PreferenceScreen pSQLiteVersion = (PreferenceScreen)findPreference(PreferencesConstant.PREF_SQLITE_VERSION);
+		/*PreferenceScreen pSQLiteVersion = (PreferenceScreen)findPreference(PreferencesConstant.PREF_SQLITE_VERSION);
 		if (pSQLiteVersion != null) {
 			MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(this);
 			String sqliteVersion = helper.getSQLiteVersion();
 			if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
 			helper.close();
-		}
+		}*/
 	}
 	
 	public void onCreateScreenPreferenceDropbox() {

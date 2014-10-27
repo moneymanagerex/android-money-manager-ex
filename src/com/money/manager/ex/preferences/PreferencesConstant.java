@@ -46,11 +46,12 @@ public class PreferencesConstant {
     public static final String PREF_LOCALE = "preflocale";
     // others preference setting don't display
     public static final String PREF_DROPBOX_ACCOUNT_PREFS_NAME = "com.money.manager.ex_dropbox_preferences";
-	public static final String PREF_DROPBOX_ACCESS_KEY_NAME = "ACCESS_KEY";
-	public static final String PREF_DROPBOX_ACCESS_SECRET_NAME = "ACCESS_SECRET";
+    public static final String PREF_DROPBOX_ACCESS_KEY_NAME = "ACCESS_KEY";
+    public static final String PREF_DROPBOX_ACCESS_SECRET_NAME = "ACCESS_SECRET";
     public static final String PREF_DROPBOX_REMOTE_FILE = "DROPBOX_REMOTE_FILE";
     // check repeating transacion
     public static final String PREF_REPEATING_TRANSACTION_CHECK = "prefrepeatingtransactionchecktime";
+    public static final String PREF_REPEATING_TRANSACTION_NOTIFICATIONS = "prefrepeatingtransactionnotifications";
     // Wiki dropbox
     public static final String PREF_DROPBOX_WIKI = "prefdropboxwiki";
 }

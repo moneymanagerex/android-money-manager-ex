@@ -3,9 +3,8 @@
 
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
-    <string name="application_copyright">© 2012 The Android Money Manager Ex Project</string>
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
-    <string name="application_credits">Android Money Manager Ex Project uses ActionBarSherlock and RobotMediaBilling libraries</string>
+    <string name="application_credits">MoneyManagerEx for Android Project uses ActionBarSherlock library</string>
     <string name="application_license">Open source licenses</string>
 
     <!-- database -->
@@ -46,17 +45,17 @@
 
     <!-- preferences -->
     <string name="preferences_general">General</string>
-    <string name="preferences_dispaly">Display</string>
+    <string name="preferences_dispaly">Look &#38; Feel</string>
     <string name="base_currency">Base currency</string>
     <!--<string name="accounts_visible">Visible accounts</string>-->
     <string name="view_accounts_opened">View open accounts</string>
     <string name="if_not_selected_willShowAllAccounts">If not selected will show all accounts</string>
     <string name="view_accounts_favorites">View favourite accounts</string>
-    <!--<string name="preferences_version">Android Money Manager Ex</string>-->
+    <!--<string name="preferences_version">MoneyManagerEx for Android</string>-->
     <string name="version">Version</string>
     <string name="build">Build</string>
     <!--<string name="preferences_dropbox">Dropbox settings</string>-->
-    <!--<string name="preferences_database_path">Database path</string>-->
+    <string name="path">Database path</string>
 
     <!-- account -->
     <string name="account">Account</string>
@@ -186,7 +185,7 @@
     <string name="closed">Closed</string>
     <string name="new_edit_currency">New/Edit Currency</string>
     <!--<string name="path">Path</string>-->
-    <string name="theme_application">Theme application</string>
+    <string name="theme_application">Theme</string>
     <string name="theme_holo">Holo</string>
     <string name="theme_light">Holo Light With Dark ActionBar</string>
 
@@ -293,7 +292,7 @@
     <string name="financial_year_start_month">Financial Year: Start Month</string>
     <!--<string name="release_date">Release Date</string>-->
     <!-- 20130121 -->
-    <!--<string name="menu_move_database_to_external_storage">Move Database to External Storage</string>-->
+    <string name="menu_move_database_to_external_storage">Export database</string>
     <string name="database_has_been_moved">The database has been moved: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Copy database on external storage failed</string>
     <string name="path_database_using">You\'re using the database saved in: %1$s</string>
@@ -307,7 +306,7 @@
     <string name="export_file_complete">The data has been successfully exported to the file %1$s</string>
     <string name="export_file_failed">Export file %1$s failed</string>
     <!-- 20130220 -->
-    <string name="donate_header">Android Money Manager Ex is provided free. If this application is to your liking, you can support the development team with a donation.</string>
+    <string name="donate_header">MoneyManagerEx for Android is provided free. If this application is to your liking, you can support the development team with a donation.</string>
     <string name="donate_in_app_title">Google Play In-App Billing</string>
     <string name="donate_in_app_description">Donate via Google Play In-App Billing.</string>
     <string name="donate_in_app_spinner_text">Select a donation amount</string>
@@ -351,7 +350,7 @@
     <string name="title_transaction_shown_balance">Shows the balance for each transaction</string>
     <string name="summary_transaction_shown_balance">Shows the balance for each transaction. The display of balance could make the application slower</string>
     <string name="menu_open_database">Open database</string>
-    <!--<string name="database">Database</string>-->
+    <string name="database">Database</string>-->
     <string name="tips">Tips</string>
     <string name="title_application_font">Application Font</string>
     <string name="summary_application_font">Select the font you want to give the application</string>
@@ -372,8 +371,8 @@
     <string name="dashclock_extension_summary">Displays the summary of Money Manager Ex for Android</string>
     <string name="dashclock_extension_summary_all_account">View the summary of each account Money Manager Ex for Android</string>
     <!-- 20130728 -->
-    <string name="title_check_repeating_transaction">Schedule Check Repeating Transaction Overdue</string>
-    <string name="summary_check_repeating_transaction">Indicate what time of day the application should check if there are repeating transaction overdue (default 08:00)</string>
+    <string name="title_check_repeating_transaction">Check time</string>
+    <string name="summary_check_repeating_transaction">What time would you check if there are repeating transactions overdue? (default 08:00)</string>
     <!-- 20130730 -->
     <string name="credits">Credits</string>
     <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
@@ -450,7 +449,7 @@
     <string name="search_text_contain_summary">Search payee, categories, currencies, etc… by contents and not by starting characters</string>
     <string name="rate_application">Rate Application</string>
     <!-- 20140314 -->
-    <string name="locale_application">Language Application</string>
+    <string name="locale_application">Application Language</string>
     <string name="locale_cs">Czech</string>
     <string name="locale_en">English</string>
     <string name="locale_es">Spanish</string>
@@ -471,4 +470,11 @@
     <string name="withdrawal_from">Withdrawal From %1$s</string>
     <string name="deposit_to">Deposit To %1$s</string>
     <string name="mmex_website">MoneyManagerEx Website</string>
+
+    <string name="donate_in_app_already_donate">You already supported the development of MoneyManagerEx for Android with your donation!\n\nThank you from development team!</string>
+    <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
+    <string name="donate_in_app_error">Cannot use the in-app billing. Check whether the latest version of the Play Store application is installed.</string>
+
+    <string name="title_notifications_repeating_transaction">Notification Repeating Transaction overdue </string>
+    <string name="summary_notifications_repeating_transaction">Show notification for repeating transaction overdue</string>
 </resources>
