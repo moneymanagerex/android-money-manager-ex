@@ -17,11 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -60,6 +55,11 @@ import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.fragment.BaseExpandableListFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -247,13 +247,15 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 				mSubCategories.clear();
 				// load data
 				
-				String select = null;
+				String whereClause = null;
+                String selectionArgs[] = null;
 				if (!TextUtils.isEmpty(mCurFilter)) {
-					select = QueryCategorySubCategory.CATEGNAME + " LIKE '" + mCurFilter + "%' OR "
-							+ QueryCategorySubCategory.SUBCATEGNAME + " LIKE '" + mCurFilter + "%'";
-				}
-				return new CursorLoader(getActivity(), mCategorySub.getUri(), mCategorySub.getAllColumns(), select,
-						null, QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
+					whereClause = QueryCategorySubCategory.CATEGNAME + " LIKE ? OR "
+							+ QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
+                    selectionArgs = new String[] {mCurFilter + "%", mCurFilter + "%"};
+                }
+				return new CursorLoader(getActivity(), mCategorySub.getUri(), mCategorySub.getAllColumns(), whereClause,
+						selectionArgs, QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
 			}
 			return null;
 		}

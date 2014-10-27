@@ -18,24 +18,23 @@ apply plugin: 'android'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile project(':androidbillinglibrary')
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.github.gabrielemariotti.changeloglib:library:1.5.1'
 }
 
 android {
+    signingConfigs {
+    }
     compileSdkVersion 19
-    buildToolsVersion "19.1.0"
-
+    buildToolsVersion '19.1.0'
     defaultConfig {
-        applicationId "com.money.manager.ex"
+        applicationId 'com.money.manager.ex'
         minSdkVersion 8
         targetSdkVersion 19
-        versionCode 586
-        versionName "1.4.14"
+        versionCode 597
+        versionName '1.4.15'
     }
-
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -59,7 +58,6 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
-
     buildTypes {
         release {
             runProguard false
@@ -71,17 +69,17 @@ android {
             }
         }
     }
-
     lintOptions {
         // if true, stop the gradle build if errors are found
         abortOnError false
     }
-
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
+    }
+    productFlavors {
     }
 }
 

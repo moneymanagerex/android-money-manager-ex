@@ -101,15 +101,22 @@
 
                 <com.money.manager.ex.view.RobotoButton
                     android:id="@+id/buttonDonateInApp"
-                    style="@style/Money.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:text="@string/donate_in_app_button" />
+                    android:text="@string/donate_in_app_button"
+                    android:visibility="gone" />
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewInAppStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/donate_in_app_retrieving_status"
+                    android:gravity="center_horizontal" />
 
             </LinearLayout>
         </RelativeLayout>

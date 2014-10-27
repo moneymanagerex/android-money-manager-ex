@@ -496,13 +496,7 @@ public class MainActivity extends BaseFragmentActivity {
 		onCreateFragments(savedInstanceState);
 		// show tips dialog
 		showTipsDialog(savedInstanceState);
-		// show donate dialog
-		
-		if (TextUtils.isEmpty(core.getInfoValue(Constants.INFOTABLE_SKU_ORDER_ID)))
-			MoneyManagerApplication.showDonateDialog(this, false);
-		// show change log and path
-		// MoneyManagerApplication.showChangeLog(this, false, false);
-		// MoneyManagerApplication.showChangeLog(this, false);
+		// show change log and path;
         if (core.isToDisplayChangelog())
             core.showChangelog();
 
@@ -658,13 +652,6 @@ public class MainActivity extends BaseFragmentActivity {
 		MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
 		if (itemDropbox != null && itemDropbox.isVisible()) {
 			itemDropbox.setVisible(mDropboxHelper != null && mDropboxHelper.isLinked());
-		}
-		
-		// check if it has already made ​​a donation
-		MenuItem itemDonate = menu.findItem(R.id.menu_donate);
-		if (itemDonate != null) {
-			Core core = new Core(this);
-			itemDonate.setVisible(TextUtils.isEmpty(core.getInfoValue(Constants.INFOTABLE_SKU_ORDER_ID)));
 		}
 		
 		return super.onPrepareOptionsMenu(menu);
@@ -830,7 +817,7 @@ public class MainActivity extends BaseFragmentActivity {
 	private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle {
 
 		public CustomActionBarDrawerToggle(Activity mActivity, DrawerLayout mDrawerLayout) {
-			super(mActivity, mDrawerLayout, R.drawable.ic_navigation_drawer, R.string.app_name, R.string.app_name);
+			super(mActivity, mDrawerLayout, R.drawable.ic_navigation_drawer, R.string.application_name, R.string.application_name);
 		}
 	}
 
