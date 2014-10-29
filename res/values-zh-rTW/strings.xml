@@ -346,7 +346,7 @@
     <string name="update_menu_currency_exchange_rates">更新匯率</string>
     <string name="question_update_currency_exchange_rates">你想要更新匯率嗎？</string>
     <string name="withdrawal_from">由 %1$s 匯出</string>
-    <string name="deposit_to">匯入到 %1$ s</string>
+    <string name="deposit_to">匯入到 %1$s</string>
     <string name="mmex_website">MoneyManagerEx 網站</string>
     <string name="donate_in_app_already_donate">您已經捐款支持 MoneyManagerEx for android 的開發！ \n\n開發團隊感謝您！</string>
     <string name="donate_in_app_retrieving_status">正由 Google Play 檢查您的捐贈情形。請稍候&#8230;</string>
