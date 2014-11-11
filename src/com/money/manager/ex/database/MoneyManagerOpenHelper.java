@@ -27,6 +27,7 @@ import android.util.Log;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.core.RawFileUtils;
 
 import java.util.ArrayList;
@@ -37,19 +38,44 @@ import java.util.List;
  * @version 1.0.1
  */
 public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
-
     private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
     // database name, database version
     //private static final String databaseName = "data.mmb";
     private static final int databaseCurrentVersion = 1;
+    // singleton
+    private static MoneyManagerOpenHelper mInstance;
     // context of creation
     private Context mContext;
 
-    public MoneyManagerOpenHelper(Context context) {
+    private MoneyManagerOpenHelper(Context context) {
         super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseCurrentVersion);
         this.mContext = context;
 
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
+
+        Log.v(LOGCAT, "event onCreate( )");
+    }
+
+    public static synchronized MoneyManagerOpenHelper getInstance(Context context) {
+        if (mInstance == null) {
+            Log.v(LOGCAT, "MoneyManagerOpenHelper.getInstance()");
+            mInstance = new MoneyManagerOpenHelper(context);
+        }
+        return mInstance;
+    }
+
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        Log.v(LOGCAT, "event onConfigure( )");
+    }
+
+    @Override
+    public synchronized void close() {
+        // close CurrencyUtils
+        CurrencyUtils.destroy();
+        super.close();
+        mInstance = null;
     }
 
     /**
@@ -72,7 +98,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
      *
      * @param db       the database
      * @param sql      the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
-     * @param bingArgs only byte[], String, Long and Double are supported in bindArgs.
+     * @param bindArgs only byte[], String, Long and Double are supported in bindArgs.
      * @since versionCode = 12 Version = 0.5.2
      */
     public void execSQL(SQLiteDatabase db, String sql, Object[] bindArgs) throws SQLException {
@@ -97,7 +123,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
      * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
      *
      * @param sql      the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
-     * @param bingArgs only byte[], String, Long and Double are supported in bindArgs.
+     * @param bindArgs only byte[], String, Long and Double are supported in bindArgs.
      * @since versionCode = 12 Version = 0.5.2
      */
     public void execSQL(String sql, Object[] bindArgs) throws SQLException {
@@ -238,7 +264,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
                 return account;
             }
             database.close();
-            close();
+            //close();
         }
         // find is false then return null
         return null;

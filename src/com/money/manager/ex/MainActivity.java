@@ -62,7 +62,6 @@ import com.money.manager.ex.adapter.DrawerMenuItem;
 import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.CurrencyUtils;
-import com.money.manager.ex.core.DonateDialogUtils;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.TableAccountList;
@@ -156,12 +155,11 @@ public class MainActivity extends BaseFragmentActivity {
      * @param pathDatabase new path of databases
      */
     public void changeDatabase(String pathDatabase) {
-        // save the database file
-        MoneyManagerApplication.setDatabasePath(getApplicationContext(), pathDatabase);
-        DonateDialogUtils.resetDonateDialog(getApplicationContext());
-        // destroy and reload currencies
-        CurrencyUtils.destroy();
-        // set to restart activity
+        Log.v(LOGCAT, "Change database: " + pathDatabase);
+
+        Core core = new Core(getApplicationContext());
+        core.changeDatabase(pathDatabase);
+        // restart this activity
         setRestartActivity(true);
         restartActivity();
     }

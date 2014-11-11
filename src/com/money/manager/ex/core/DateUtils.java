@@ -83,7 +83,7 @@ public class DateUtils {
      */
     public static String getUserDatePattern(Context ctx) {
         TableInfoTable infoTable = new TableInfoTable();
-        MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(ctx);
+        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(ctx);
         Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[]{"DATEFORMAT"}, null, null, null);
         String pattern = null;
         if (cursor != null && cursor.moveToFirst()) {
@@ -93,7 +93,7 @@ public class DateUtils {
         }
         //close cursor and helper
         cursor.close();
-        helper.close();
+        //helper.close();
 
         return pattern;
     }

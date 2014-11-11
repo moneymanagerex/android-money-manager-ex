@@ -173,14 +173,14 @@ public class MoneyManagerApplication extends Application {
      */
     public String getFromDatabaseUserName(Context context) {
         TableInfoTable infoTable = new TableInfoTable();
-        MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(context);
+        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
         Cursor data = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[]{"USERNAME"}, null, null, null);
         String ret = "";
         if (data != null && data.moveToFirst()) {
             ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
         }
         data.close();
-        helper.close();
+        //helper.close();
 
         return ret;
     }

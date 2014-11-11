@@ -629,10 +629,10 @@ public class PreferencesActivity extends PreferenceActivity {
         //sqlite version
         PreferenceScreen pSQLiteVersion = (PreferenceScreen) findPreference(PreferencesConstant.PREF_SQLITE_VERSION);
         if (pSQLiteVersion != null) {
-            MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(this);
+            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(this);
             String sqliteVersion = helper.getSQLiteVersion();
             if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
-            helper.close();
+            //helper.close();
         }
     }
 
@@ -669,7 +669,7 @@ public class PreferencesActivity extends PreferenceActivity {
             public boolean onPreferenceClick(Preference preference) {
                 mDropboxHelper.logOut();
                 /* SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-				sharedPreferences.edit().putString(PreferencesConstant.PREF_DROPBOX_TIMES_REPEAT, null).commit(); */
+                sharedPreferences.edit().putString(PreferencesConstant.PREF_DROPBOX_TIMES_REPEAT, null).commit(); */
                 mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxReceiver.ACTION_CANCEL);
                 // refresh ui
                 onResume();

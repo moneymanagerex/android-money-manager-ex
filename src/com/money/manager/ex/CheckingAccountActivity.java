@@ -358,7 +358,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         // account
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         // accountlist <> to populate the spin
-        mAccountList = new MoneyManagerOpenHelper(this).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
+        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());
@@ -608,7 +608,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         btnTransNumber.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(CheckingAccountActivity.this);
+                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(CheckingAccountActivity.this);
                 String query = "SELECT MAX(CAST(" + TableCheckingAccount.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
                         new TableCheckingAccount().getSource() + " WHERE " +
                         TableCheckingAccount.ACCOUNTID + "=?";
@@ -627,7 +627,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                     }
                     cursor.close();
                 }
-                helper.close();
+                //helper.close();
             }
         });
 
@@ -684,7 +684,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 Double originalAmount;
                 try {
                     /*Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(mAccountId)).getCurrencyId();
-					Integer fromCurrencyId = mAccountList.get(mAccountIdList.indexOf(mToAccountId)).getCurrencyId();*/
+                    Integer fromCurrencyId = mAccountList.get(mAccountIdList.indexOf(mToAccountId)).getCurrencyId();*/
                     Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(view.getId() == R.id.textViewTotAmount ? mAccountId : mToAccountId)).getCurrencyId();
                     Integer fromCurrencyId = mAccountList.get(mAccountIdList.indexOf(view.getId() == R.id.textViewTotAmount ? mToAccountId : mAccountId)).getCurrencyId();
                     // take a original values

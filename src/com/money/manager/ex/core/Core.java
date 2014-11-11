@@ -291,7 +291,7 @@ public class Core {
      * @return last payee used
      */
     public TablePayee getLastPayeeUsed() {
-        MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(context);
+        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
         SQLiteDatabase database = helper.getReadableDatabase();
         TablePayee payee = null;
 
@@ -309,7 +309,7 @@ public class Core {
             payee.setSubCategId(cursor.getInt(cursor.getColumnIndex(TablePayee.SUBCATEGID)));
         }
         //close database
-        helper.close();
+        //helper.close();
 
         return payee;
     }
@@ -374,7 +374,7 @@ public class Core {
         TableCategory category = new TableCategory();
         TableSubCategory subCategory = new TableSubCategory();
         Cursor cursor;
-        MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(context);
+        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
         // category
         cursor = helper.getReadableDatabase().query(category.getSource(), null, TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null, null, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
@@ -393,7 +393,7 @@ public class Core {
             subCategoryName = null;
         }
         cursor.close();
-        helper.close();
+        ////helper.close();
 
         ret = (!TextUtils.isEmpty(categoryName) ? categoryName : "") + (!TextUtils.isEmpty(subCategoryName) ? ":" + subCategoryName : "");
 
@@ -443,7 +443,7 @@ public class Core {
         String ret = null;
 
         try {
-            helper = new MoneyManagerOpenHelper(context);
+            helper = MoneyManagerOpenHelper.getInstance(context);
             data = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[]{info}, null, null, null);
             if (data != null && data.moveToFirst()) {
                 ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
@@ -454,8 +454,7 @@ public class Core {
             // close data
             if (data != null)
                 data.close();
-            if (helper != null)
-                helper.close();
+            //if (helper != null) helper.close();
         }
 
         return ret;
@@ -565,7 +564,7 @@ public class Core {
      */
     public boolean initDatabase() {
         // get an instance of database for writing
-        MoneyManagerOpenHelper helper = new MoneyManagerOpenHelper(context);
+        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
         SQLiteDatabase database = helper.getWritableDatabase();
 
         TableInfoTable infoTable = new TableInfoTable();
@@ -651,7 +650,7 @@ public class Core {
                 infoDate.close();
         }
 
-        helper.close();
+        //helper.close();
 
         return true;
     }
@@ -704,6 +703,8 @@ public class Core {
             Toast.makeText(context, R.string.database_can_not_open_write, Toast.LENGTH_LONG).show();
             return false;
         }
+        // close connection
+        MoneyManagerOpenHelper.getInstance(context).close();
         // change database
         MoneyManagerApplication.setDatabasePath(context, path);
 
@@ -753,7 +754,7 @@ public class Core {
         values.put(TableInfoTable.INFOVALUE, value);
 
         try {
-            helper = new MoneyManagerOpenHelper(context);
+            helper = MoneyManagerOpenHelper.getInstance(context);
             if (exists) {
                 ret = helper.getWritableDatabase().update(infoTable.getSource(), values, TableInfoTable.INFONAME + "=?", new String[]{info}) >= 0;
             } else {
@@ -764,7 +765,7 @@ public class Core {
             Log.e(LOGCAT, e.getMessage());
             ret = false;
         } finally {
-            if (helper != null) helper.close();
+            //if (helper != null) helper.close();
         }
 
         return ret;
