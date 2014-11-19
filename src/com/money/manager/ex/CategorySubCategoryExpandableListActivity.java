@@ -68,7 +68,7 @@ import java.util.List;
  * @version 1.0.0
  */
 public class CategorySubCategoryExpandableListActivity extends BaseFragmentActivity {
-    uppressWarnings("unused")
+    @SuppressWarnings("unused")
 
     private static final String LOGCAT = CategorySubCategoryExpandableListActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = CategorySubCategoryExpandableListActivity.class.getSimpleName() + "_Fragment";
@@ -102,7 +102,6 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
         }
     }
 
-    @Over
     public static class CategorySubCategoryExpandableLoaderListFragment extends BaseExpandableListFragment
             implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -681,7 +680,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
         }
     }
 
-    @Sride
+    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // set result and terminate activity
