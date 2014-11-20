@@ -34,6 +34,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -219,8 +220,11 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             } else {
                 mCheckedItem.put(Calendar.getInstance().get(Calendar.YEAR), true);
             }
-            // set home button fase
-            getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+            // set home button
+            ActionBarActivity activity = (ActionBarActivity) getActivity();
+            if (activity != null) {
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            }
             // set listview
             setEmptyText(getString(R.string.no_data));
             // add header and footer

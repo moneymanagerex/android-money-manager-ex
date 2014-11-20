@@ -198,9 +198,12 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         super.onActivityCreated(savedInstanceState);
         Core core = new Core(getActivity());
         // ****** action bar *****
-        getActivity().getActionBar().setSubtitle(null);
+        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+        if (activity != null)
+            activity.getSupportActionBar().setSubtitle(null);
+
         if (!(core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH)) {
-            getActivity().getActionBar().setDisplayOptions(
+            activity.getSupportActionBar().setDisplayOptions(
                     ActionBar.DISPLAY_SHOW_CUSTOM,
                     ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
                             | ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -228,7 +231,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
                     onSearchClick();
                 }
             });
-            getActivity().getActionBar().setCustomView(actionBarButtons);
+            activity.getSupportActionBar().setCustomView(actionBarButtons);
         }
         // ****** action bar *****
     }

@@ -247,8 +247,10 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
                 // show balance values
                 setTextViewBalance();
                 // set titles
-                getActivity().getActionBar().setSubtitle(mAccountName);
-
+                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+                if (activity != null) {
+                    activity.getSupportActionBar().setSubtitle(mAccountName);
+                }
                 break;
         }
     }
@@ -272,7 +274,10 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
         // restart loader
         startLoaderData();
         // set subtitle account name
-        getActivity().getActionBar().setSubtitle(mAccountName);
+        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+        if (activity != null) {
+            activity.getSupportActionBar().setSubtitle(mAccountName);
+        }
     }
 
     @Override

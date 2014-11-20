@@ -202,7 +202,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         registerForContextMenu(getListView());
         // set divider
         /*Core core = new Core(getActivity());
-		if (core.getThemeApplication() == R.style.Theme_Money_Manager_Light_DarkActionBar)
+        if (core.getThemeApplication() == R.style.Theme_Money_Manager_Light_DarkActionBar)
 			getListView().setDivider(new ColorDrawable(new Core(getActivity()).resolveIdAttribute(R.attr.theme_background_color)));*/
         //getListView().setSelector(new ColorDrawable(getResources().getColor(R.color.money_background)));
         // set animation
@@ -356,8 +356,12 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     public void onStop() {
         super.onStop();
         try {
-            if (getActivity().getActionBar().getCustomView() != null)
-                getActivity().getActionBar().setCustomView(null);
+            BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+            if (activity != null) {
+                if (activity.getSupportActionBar().getCustomView() != null) {
+                    activity.getSupportActionBar().setCustomView(null);
+                }
+            }
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
         }

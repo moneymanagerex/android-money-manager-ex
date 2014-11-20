@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 public class AboutFragment extends Fragment {
     private static final String LOGCAT = AboutFragment.class.getSimpleName();
@@ -55,7 +56,10 @@ public class AboutFragment extends Fragment {
         String text, version = "", build = "";
         View view = inflater.inflate(R.layout.about_activity, container, false);
 
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+        if (activity != null) {
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         // Version application
         TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
         try {
