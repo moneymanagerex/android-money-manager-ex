@@ -773,14 +773,14 @@ public class Core {
 
     public boolean isToDisplayChangelog() {
         int currentVersionCode = getCurrentVersionCode(context);
-        int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(context).getInt(PreferencesConstant.PREF_LAST_VERSION_KEY, -1);
+        int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(context).getInt(context.getString(PreferencesConstant.PREF_LAST_VERSION_KEY), -1);
 
         return lastVersionCode != currentVersionCode;
     }
 
     public boolean showChangelog() {
         int currentVersionCode = getCurrentVersionCode(context);
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(PreferencesConstant.PREF_LAST_VERSION_KEY, currentVersionCode).commit();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(context.getString(PreferencesConstant.PREF_LAST_VERSION_KEY), currentVersionCode).commit();
 
         // create layout
         View view = LayoutInflater.from(context).inflate(R.layout.changelog_layout, null);

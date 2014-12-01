@@ -6,11 +6,11 @@ public class PreferencesConstant {
     ///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
-    public static final String PREF_LAST_VERSION_KEY = "preflastversioncodekey";
-    public static final String PREF_DONATE_LAST_VERSION_KEY = "prefdonatelastversioncodekey";
-    public static final String PREF_LAST_DB_PATH_SHOWN = "preflastdbpathshown";
-    public static final String PREF_SHOW_INTRODUCTION = "prefshowintroduction";
-    public static final String PREF_DATABASE_PATH = "databasepath";
+    public static final Integer PREF_LAST_VERSION_KEY = R.string.pref_last_version_key;
+    public static final Integer PREF_DONATE_LAST_VERSION_KEY = R.string.pref_donate_last_version_key;
+    public static final Integer PREF_LAST_DB_PATH_SHOWN = R.string.pref_last_db_path_shown;
+
+    public static final Integer PREF_DATABASE_PATH = R.string.pref_database_path;
     public static final String PREF_USER_NAME = "username";
     public static final String PREF_DATE_FORMAT = "dateformat";
     public static final String PREF_FINANCIAL_YEAR_STARTDATE = "financial_year_startday";

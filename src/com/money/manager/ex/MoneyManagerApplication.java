@@ -97,7 +97,7 @@ public class MoneyManagerApplication extends Application {
         // add databases
         defaultPath += "/databases/data.mmb";
 
-        String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(PreferencesConstant.PREF_DATABASE_PATH, defaultPath);
+        String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), defaultPath);
         File f = new File(dbFile);
         // check if database exists
         if (f.getAbsoluteFile().exists()) {
@@ -114,7 +114,7 @@ public class MoneyManagerApplication extends Application {
     public static void setDatabasePath(Context context, String dbpath) {
         // save a reference dbpath
         Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        editor.putString(PreferencesConstant.PREF_DATABASE_PATH, dbpath);
+        editor.putString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), dbpath);
         editor.commit();
     }
 
@@ -142,9 +142,9 @@ public class MoneyManagerApplication extends Application {
     public static void showDatabasePathWork(Context context) {
         String currentPath = getDatabasePath(context);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String lastPath = preferences.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN, "");
+        String lastPath = preferences.getString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), "");
         if (!lastPath.equals(currentPath)) {
-            preferences.edit().putString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN, currentPath).commit();
+            preferences.edit().putString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), currentPath).commit();
             try {
                 Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG).show();
             } catch (Exception e) {

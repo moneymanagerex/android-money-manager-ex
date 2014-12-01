@@ -61,7 +61,7 @@ public class DatabaseSettingsActivity extends BaseFragmentActivity {
                 });
                 pMoveDatabase.setEnabled(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()).startsWith("/data/"));
             }
-            final Preference pDatabasePath = findPreference(PreferencesConstant.PREF_DATABASE_PATH);
+            final Preference pDatabasePath = findPreference(getActivity().getString(PreferencesConstant.PREF_DATABASE_PATH));
             pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
             //sqlite version
             Preference pSQLiteVersion = findPreference(PreferencesConstant.PREF_SQLITE_VERSION);
