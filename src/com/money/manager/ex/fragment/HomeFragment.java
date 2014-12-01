@@ -60,8 +60,8 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
-import com.money.manager.ex.preferences.PreferencesActivity;
 import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.SettingsActivity;
 
 import java.util.Calendar;
 
@@ -71,50 +71,6 @@ import java.util.Calendar;
 @SuppressWarnings("static-access")
 public class HomeFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
-    public class AccountBillsAdapter extends CursorAdapter {
-        private LayoutInflater inflater;
-
-        @SuppressWarnings("deprecation")
-        public AccountBillsAdapter(Context context, Cursor c) {
-            super(context, c);
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            TextView txtAccountName = (TextView) view.findViewById(R.id.textVievItemAccountName);
-            TextView txtAccountTotal = (TextView) view.findViewById(R.id.textVievItemAccountTotal);
-            TextView txtAccountReconciled = (TextView) view.findViewById(R.id.textVievItemAccountTotalReconciled);
-            // set account name
-            txtAccountName.setText(cursor.getString(cursor.getColumnIndex(accountBills.ACCOUNTNAME)));
-            // import formatted
-            String value = currencyUtils.getCurrencyFormatted(cursor
-                            .getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
-                    cursor.getDouble(cursor.getColumnIndex(accountBills.TOTAL)));
-            // set amount value
-            txtAccountTotal.setText(value);
-            // reconciled
-            value = currencyUtils.getCurrencyFormatted(cursor
-                            .getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
-                    cursor.getDouble(cursor.getColumnIndex(accountBills.RECONCILED)));
-            txtAccountReconciled.setText(value);
-            // set imageview account type
-            ImageView imgAccountType = (ImageView) view.findViewById(R.id.imageViewAccountType);
-            String accountType = cursor.getString(cursor.getColumnIndex(accountBills.ACCOUNTTYPE));
-            if (!TextUtils.isEmpty(accountType)) {
-                if ("term".equalsIgnoreCase(accountType)) {
-                    imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
-                }
-            }
-        }
-
-        @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            return inflater.inflate(R.layout.item_account_bills, parent, false);
-        }
-
-    }
-
     // ID Loader Manager
     private static final int ID_LOADER_USER_NAME = 1;
     private static final int ID_LOADER_ACCOUNT_BILLS = 2;
@@ -132,7 +88,6 @@ public class HomeFragment extends Fragment implements
     private ViewGroup linearHome, linearFooter, linearWelcome;
     private TextView txtFooterSummary;
     private TextView txtFooterSummaryReconciled;
-
     private ProgressBar prgAccountBills;
 
     @Override
@@ -209,7 +164,7 @@ public class HomeFragment extends Fragment implements
 
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), PreferencesActivity.class);
+                    Intent intent = new Intent(getActivity(), SettingsActivity.class);
                     intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferencesConstant.PREF_DROPBOX_HOWITWORKS);
                     startActivity(intent);
                 }
@@ -439,5 +394,49 @@ public class HomeFragment extends Fragment implements
         getLoaderManager().restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
         getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);
         getLoaderManager().restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
+    }
+
+    public class AccountBillsAdapter extends CursorAdapter {
+        private LayoutInflater inflater;
+
+        @SuppressWarnings("deprecation")
+        public AccountBillsAdapter(Context context, Cursor c) {
+            super(context, c);
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            TextView txtAccountName = (TextView) view.findViewById(R.id.textVievItemAccountName);
+            TextView txtAccountTotal = (TextView) view.findViewById(R.id.textVievItemAccountTotal);
+            TextView txtAccountReconciled = (TextView) view.findViewById(R.id.textVievItemAccountTotalReconciled);
+            // set account name
+            txtAccountName.setText(cursor.getString(cursor.getColumnIndex(accountBills.ACCOUNTNAME)));
+            // import formatted
+            String value = currencyUtils.getCurrencyFormatted(cursor
+                            .getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
+                    cursor.getDouble(cursor.getColumnIndex(accountBills.TOTAL)));
+            // set amount value
+            txtAccountTotal.setText(value);
+            // reconciled
+            value = currencyUtils.getCurrencyFormatted(cursor
+                            .getInt(cursor.getColumnIndex(accountBills.CURRENCYID)),
+                    cursor.getDouble(cursor.getColumnIndex(accountBills.RECONCILED)));
+            txtAccountReconciled.setText(value);
+            // set imageview account type
+            ImageView imgAccountType = (ImageView) view.findViewById(R.id.imageViewAccountType);
+            String accountType = cursor.getString(cursor.getColumnIndex(accountBills.ACCOUNTTYPE));
+            if (!TextUtils.isEmpty(accountType)) {
+                if ("term".equalsIgnoreCase(accountType)) {
+                    imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
+                }
+            }
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            return inflater.inflate(R.layout.item_account_bills, parent, false);
+        }
+
     }
 }

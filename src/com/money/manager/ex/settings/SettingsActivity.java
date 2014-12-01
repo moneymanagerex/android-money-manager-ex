@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
+import android.text.TextUtils;
+import android.util.Log;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
@@ -110,6 +114,20 @@ public class SettingsActivity extends BaseFragmentActivity {
                 });
             }
 
+            // manage intent
+            if (getActivity().getIntent() != null) {
+                if (!TextUtils.isEmpty(getActivity().getIntent().getStringExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN))) {
+                    try {
+                        PreferenceScreen screen = getPreferenceScreen();
+                        Preference preference = findPreference(getActivity().getIntent().getStringExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN));
+                        if (preference != null) {
+                            screen.onItemClick(null, null, preference.getOrder(), 0);
+                        }
+                    } catch (Exception e) {
+                        Log.e(LOGCAT, e.getMessage());
+                    }
+                }
+            }
         }
     }
 }
