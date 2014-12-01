@@ -243,9 +243,6 @@
             <action android:name="android.intent.action.INSERT"/>
         </activity>
         <activity
-            android:name="com.money.manager.ex.preferences.PreferencesActivity"
-            android:label="@string/settings"/>
-        <activity
             android:name="com.money.manager.ex.settings.SettingsActivity"
             android:label="@string/settings"/>
         <activity
