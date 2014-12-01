@@ -1,5 +1,7 @@
 package com.money.manager.ex.preferences;
 
+import com.money.manager.ex.R;
+
 public class PreferencesConstant {
     ///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //
@@ -27,13 +29,13 @@ public class PreferencesConstant {
     public static final String PREF_DROPBOX_UNLINK = "dropbox2unlink";
     public static final String PREF_DROPBOX_LINKED_FILE = "dropbox2linkedfile";
     public static final String PREF_DONATE = "donate";
-    public static final String PREF_VERSION_NAME = "versionname";
+    public static final Integer PREF_VERSION_NAME = R.string.pref_version_name;
     public static final String PREF_VERSION_CODE = "versioncode";
     public static final String PREF_VERSION_DATE = "versiondate";
     public static final String PREF_SQLITE_VERSION = "sqliteversion";
     public static final String PREF_DROPBOX_DOWNLOAD = "dropbox2download";
     public static final String PREF_DROPBOX_UPLOAD = "dropbox2upload";
-    public static final String PREF_DROPBOX_HOWITWORKS = "dropbox2howitworks";
+    public static final Integer PREF_DROPBOX_HOWITWORKS = R.string.pref_dropbox_how_it_works;
     public static final String PREF_DROPBOX_TIMES_REPEAT = "dropbox2servicetimesrepeat";
     public static final String PREF_DROPBOX_UPLOAD_IMMEDIATE = "dropbox2uploadimmediate";
     public static final String PREF_TRANSACTION_SHOWN_BALANCE = "transactionshownbalance";
@@ -54,4 +56,9 @@ public class PreferencesConstant {
     public static final String PREF_REPEATING_TRANSACTION_NOTIFICATIONS = "prefrepeatingtransactionnotifications";
     // Wiki dropbox
     public static final String PREF_DROPBOX_WIKI = "prefdropboxwiki";
+
+    public static final Integer PREF_GENERAL = R.string.pref_general;
+    public static final Integer PREF_LOOK_FEEL = R.string.pref_look_feel;
+    public static final Integer PREF_SECURITY = R.string.pref_security;
+    public static final Integer PREF_DATABASE = R.string.pref_database;
 }

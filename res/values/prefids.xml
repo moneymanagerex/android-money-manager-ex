@@ -44,4 +44,8 @@
     <string name="pref_text_search_type">preftextsearchtype</string>
     <string name="pref_locale">preflocale</string>
     <string name="pref_repeating_transaction_notifications">prefrepeatingtransactionnotifications</string>
+    <string name="pref_general">prefgeneral</string>
+    <string name="pref_look_feel">preflookfeel</string>
+    <string name="pref_security">prefsecurity</string>
+    <string name="pref_database">prefdatabase</string>
 </resources>

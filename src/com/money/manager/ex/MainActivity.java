@@ -71,11 +71,11 @@ import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
-import com.money.manager.ex.preferences.PreferencesActivity;
 import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
+import com.money.manager.ex.settings.SettingsActivity;
 
 import java.io.File;
 import java.net.URLDecoder;
@@ -696,7 +696,8 @@ public class MainActivity extends BaseFragmentActivity {
         } else if (item.getItemId() == R.id.menu_open_database) {
             pickFile(Environment.getExternalStorageDirectory());
         } else if (item.getItemId() == R.id.menu_settings) {
-            startActivity(new Intent(this, PreferencesActivity.class));
+            //startActivity(new Intent(this, PreferencesActivity.class));
+            startActivity(new Intent(this, SettingsActivity.class));
         } else if (item.getItemId() == R.id.menu_report_where_money_goes) {
             intent = new Intent(this, CategoriesReportActivity.class);
             intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, Constants.TRANSACTION_TYPE_WITHDRAWAL);
@@ -732,7 +733,7 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         /*
-		 * if (keyCode == KeyEvent.KEYCODE_BACK) { Fragment fragment = getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName()); //
+         * if (keyCode == KeyEvent.KEYCODE_BACK) { Fragment fragment = getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName()); //
 		 * check if show home fragment if ((fragment != null && fragment.isVisible()) || mAdvanceShow) { exitApplication(); // question if user would exit
 		 * return true; } }
 		 */

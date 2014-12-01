@@ -294,7 +294,7 @@ public class PreferencesActivity extends BaseFragmentActivity {
 
 		/*PreferenceScreen screen = getPreferenceScreen();
         if (screen != null) {
-			screen.onItemClick(null, null, findPreference(PreferencesConstant.PREF_DROPBOX_HOWITWORKS).getOrder(), 0);
+			screen.onItemClick(null, null, findPreference(getString(PreferencesConstant.PREF_DROPBOX_HOWITWORKS)).getOrder(), 0);
 		}*/
         }
 
@@ -645,13 +645,13 @@ public class PreferencesActivity extends BaseFragmentActivity {
         }
 
         public void onCreateScreenPreferenceDropbox() {
-            final PreferenceScreen pDropbox = (PreferenceScreen) findPreference(PreferencesConstant.PREF_DROPBOX_HOWITWORKS);
+            final PreferenceScreen pDropbox = (PreferenceScreen) findPreference(getString(PreferencesConstant.PREF_DROPBOX_HOWITWORKS));
             if (pDropbox != null) {
                 pDropbox.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        showWebTipsDialog(PreferencesConstant.PREF_DROPBOX_HOWITWORKS, getString(R.string.dropbox_how_it_works), R.raw.help_dropbox, false);
+                        showWebTipsDialog(getString(PreferencesConstant.PREF_DROPBOX_HOWITWORKS), getString(R.string.dropbox_how_it_works), R.raw.help_dropbox, false);
                         return false;
                     }
                 });
@@ -785,8 +785,8 @@ public class PreferencesActivity extends BaseFragmentActivity {
         }
 
         public void onCreateScreenPreferenceInfo() {
-            if (findPreference(PreferencesConstant.PREF_VERSION_NAME) != null) {
-                findPreference(PreferencesConstant.PREF_VERSION_NAME).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            if (findPreference(getString(PreferencesConstant.PREF_VERSION_NAME)) != null) {
+                findPreference(getString(PreferencesConstant.PREF_VERSION_NAME)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
                     @Override
                     public boolean onPreferenceClick(Preference preference) {

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="@string/pref_database_path"
+        android:title="@string/path"/>
+    <!--<Preference
+        android:key="@string/pref_sqlite_version"
+        android:title="@string/android_sqlite_vesion" />-->
+    <Preference
+        android:key="@string/pref_database_backup"
+        android:title="@string/menu_move_database_to_external_storage"/>
+</PreferenceScreen>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="@string/pref_general"
+        android:title="@string/preferences_general"/>
+    <Preference
+        android:key="@string/pref_look_feel"
+        android:title="@string/preferences_dispaly"/>
+    <Preference
+        android:key="@string/pref_security"
+        android:title="@string/preferences_security"/>
+    <Preference
+        android:key="@string/pref_database"
+        android:title="@string/database"/>
+    <Preference
+        android:key="@string/pref_dropbox_how_it_works"
+        android:title="@string/dropbox"/>
+    <Preference
+        android:key="@string/pref_donate"
+        android:title="@string/donate"/>
+    <Preference
+        android:key="@string/pref_version_name"
+        android:title="@string/preferences_info_application"/>
+</PreferenceScreen>

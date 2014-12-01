@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceScreen
+        android:key="@string/pref_active_passcode"
+        android:title="@string/preferences_active_passcode"/>
+    <PreferenceScreen
+        android:key="@string/pref_edit_passcode"
+        android:title="@string/preferences_edit_passcode"/>
+    <PreferenceScreen
+        android:key="@string/pref_disable_passcode"
+        android:title="@string/preferences_disable_passcode"/>
+</PreferenceScreen>
