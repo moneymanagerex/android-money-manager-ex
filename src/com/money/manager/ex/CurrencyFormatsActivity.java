@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright (C) 2012 alessandro
- * 
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- ******************************************************************************/
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 package com.money.manager.ex;
 
 import android.content.ContentValues;
@@ -41,10 +41,10 @@ import java.util.Arrays;
  * 
  */
 public class CurrencyFormatsActivity extends BaseFragmentActivity {
-	private static final String LOGCAT = CurrencyFormatsActivity.class.getSimpleName();
 	// key intent
 	public static final String KEY_CURRENCY_ID = "CurrencyFormatsActivity:CurrencyId";
-	// saveinstance key
+    private static final String LOGCAT = CurrencyFormatsActivity.class.getSimpleName();
+    // saveinstance key
 	private static final String KEY_CURRENCY_NAME = "CurrencyFormatsActivity:CurrencyName";
 	private static final String KEY_CURRENCY_SYMBOL = "CurrencyFormatsActivity:CurrencySymbol";
 	private static final String KEY_UNIT_NAME = "CurrencyFormatsActivity:UnitName";
