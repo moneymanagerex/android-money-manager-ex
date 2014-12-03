@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
@@ -45,9 +63,9 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
 
             // application locale
-            final ListPreference lstLocaleApp = (ListPreference) findPreference(PreferencesConstant.PREF_LOCALE);
+            final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferencesConstant.PREF_LOCALE));
             if (lstLocaleApp != null) {
-                String summary = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).getString(PreferencesConstant.PREF_LOCALE, "");
+                String summary = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).getString(getString(PreferencesConstant.PREF_LOCALE), "");
                 setSummaryListPreference(lstLocaleApp, summary, R.array.application_locale_values, R.array.application_locale_entries);
                 lstLocaleApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
@@ -60,7 +78,7 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
                 });
             }
             // preference username
-            final Preference pUserName = findPreference(PreferencesConstant.PREF_USER_NAME);
+            final Preference pUserName = findPreference(getString(PreferencesConstant.PREF_USER_NAME));
             if (pUserName != null) {
                 pUserName.setSummary(application.getUserName());
                 pUserName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -74,7 +92,7 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             }
 
             // list date format
-            final ListPreference lstDateFormat = (ListPreference) findPreference(PreferencesConstant.PREF_DATE_FORMAT);
+            final ListPreference lstDateFormat = (ListPreference) findPreference(getString(PreferencesConstant.PREF_DATE_FORMAT));
             if (lstDateFormat != null) {
                 lstDateFormat.setEntries(getResources().getStringArray(R.array.date_format));
                 lstDateFormat.setEntryValues(getResources().getStringArray(R.array.date_format_mask));
@@ -98,7 +116,7 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             }
 
             // list preference base currency
-            final ListPreference lstBaseCurrency = (ListPreference) findPreference(PreferencesConstant.PREF_BASE_CURRENCY);
+            final ListPreference lstBaseCurrency = (ListPreference) findPreference(getString(PreferencesConstant.PREF_BASE_CURRENCY));
             if (lstBaseCurrency != null) {
                 List<TableCurrencyFormats> currencies = currencyUtils.getAllCurrencyFormats();
                 String[] entries = new String[currencies.size()];
@@ -131,7 +149,7 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             }
 
             // default status
-            final ListPreference lstDefaultStatus = (ListPreference) findPreference(PreferencesConstant.PREF_DEFAULT_STATUS);
+            final ListPreference lstDefaultStatus = (ListPreference) findPreference(getString(PreferencesConstant.PREF_DEFAULT_STATUS));
             if (lstDefaultStatus != null) {
                 setSummaryListPreference(lstDefaultStatus, lstDefaultStatus.getValue(), R.array.status_values, R.array.status_items);
                 lstDefaultStatus.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -144,7 +162,7 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             }
 
             //default payee
-            final ListPreference lstDefaultPayee = (ListPreference) findPreference(PreferencesConstant.PREF_DEFAULT_PAYEE);
+            final ListPreference lstDefaultPayee = (ListPreference) findPreference(getString(PreferencesConstant.PREF_DEFAULT_PAYEE));
             if (lstDefaultPayee != null) {
                 setSummaryListPreference(lstDefaultPayee, lstDefaultPayee.getValue(), R.array.new_transaction_dialog_values, R.array.new_transaction_dialog_items);
                 lstDefaultPayee.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -157,7 +175,7 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             }
 
             // financial day and month
-            final Preference pFinancialDay = findPreference(PreferencesConstant.PREF_FINANCIAL_YEAR_STARTDATE);
+            final Preference pFinancialDay = findPreference(getString(PreferencesConstant.PREF_FINANCIAL_YEAR_STARTDATE));
             if (pFinancialDay != null) {
                 pFinancialDay.setSummary(core.getInfoValue(Constants.INFOTABLE_FINANCIAL_YEAR_START_DAY));
                 if (pFinancialDay.getSummary() != null) {
@@ -184,7 +202,7 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
                 });
             }
 
-            final ListPreference lstFinancialMonth = (ListPreference) findPreference(PreferencesConstant.PREF_FINANCIAL_YEAR_STARTMONTH);
+            final ListPreference lstFinancialMonth = (ListPreference) findPreference(getString(PreferencesConstant.PREF_FINANCIAL_YEAR_STARTMONTH));
             if (lstFinancialMonth != null) {
                 lstFinancialMonth.setEntries(core.getListMonths());
                 lstFinancialMonth.setEntryValues(new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"});

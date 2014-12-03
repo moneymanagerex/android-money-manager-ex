@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
@@ -37,8 +55,8 @@ public class LookFeelSettingsActivity extends BaseFragmentActivity {
             final MoneyManagerApplication application = (MoneyManagerApplication) getActivity().getApplication();
 
             // checkbox on open and favorite account
-            final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE);
-            final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE);
+            final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE));
+            final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE));
 
             Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -52,7 +70,7 @@ public class LookFeelSettingsActivity extends BaseFragmentActivity {
             chkAccountFav.setOnPreferenceChangeListener(listener);
 
             // show transaction
-            final ListPreference lstShow = (ListPreference) findPreference(PreferencesConstant.PREF_SHOW_TRANSACTION);
+            final ListPreference lstShow = (ListPreference) findPreference(getString(PreferencesConstant.PREF_SHOW_TRANSACTION));
             if (lstShow != null) {
                 lstShow.setSummary(application.getShowTransaction());
                 lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -65,7 +83,7 @@ public class LookFeelSettingsActivity extends BaseFragmentActivity {
             }
 
             // font type
-            final ListPreference lstFont = (ListPreference) findPreference(PreferencesConstant.PREF_APPLICATION_FONT);
+            final ListPreference lstFont = (ListPreference) findPreference(getString(PreferencesConstant.PREF_APPLICATION_FONT));
             if (lstFont != null) {
                 lstFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
@@ -80,7 +98,7 @@ public class LookFeelSettingsActivity extends BaseFragmentActivity {
             }
 
             //font size
-            final ListPreference lstFontSize = (ListPreference) findPreference(PreferencesConstant.PREF_APPLICATION_FONT_SIZE);
+            final ListPreference lstFontSize = (ListPreference) findPreference(getString(PreferencesConstant.PREF_APPLICATION_FONT_SIZE));
             if (lstFontSize != null) {
                 lstFontSize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
@@ -93,7 +111,7 @@ public class LookFeelSettingsActivity extends BaseFragmentActivity {
             }
 
             //theme
-            final ListPreference lstTheme = (ListPreference) findPreference(PreferencesConstant.PREF_THEME);
+            final ListPreference lstTheme = (ListPreference) findPreference(getString(PreferencesConstant.PREF_THEME));
             if (lstTheme != null) {
                 lstTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 

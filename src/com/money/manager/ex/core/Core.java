@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.core;
 
 import android.annotation.SuppressLint;
@@ -271,7 +289,7 @@ public class Core {
      */
     public int getThemeApplication() {
         try {
-            String currentTheme = PreferenceManager.getDefaultSharedPreferences(context).getString(PreferencesConstant.PREF_THEME, context.getString(R.string.theme_light));
+            String currentTheme = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_THEME), context.getString(R.string.theme_light));
             if (currentTheme.endsWith(context.getString(R.string.theme_holo))) {
                 return R.style.Theme_Money_Manager;
             } else if (currentTheme.endsWith(context.getString(R.string.theme_holo_light))) {

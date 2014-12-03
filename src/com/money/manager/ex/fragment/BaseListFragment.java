@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.fragment;
 
 import android.animation.LayoutTransition;
@@ -92,7 +92,7 @@ public abstract class BaseListFragment extends ListFragment {
         super.onStart();
         // show tooltip wildcard
         // check search type
-        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE);
+        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
 
         if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
             // show tooltip for wildcard
@@ -198,7 +198,7 @@ public abstract class BaseListFragment extends ListFragment {
     }
 
     protected boolean onPreQueryTextChange(String newText) {
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE))
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
             newText = "%" + newText;
 
         return onQueryTextChange(newText);

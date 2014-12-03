@@ -435,7 +435,7 @@ public class MainActivity extends BaseFragmentActivity {
 
         Core core = new Core(this);
 
-        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(PreferencesConstant.PREF_LOCALE, "");
+        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_LOCALE), "");
         core.changeLocaleApp(locale);
 
         // close notification

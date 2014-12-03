@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.settings;
 
 import android.app.Activity;
@@ -48,7 +66,7 @@ public class SecuritySettingsActivity extends BaseFragmentActivity {
             final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
 
             // active passcode
-            final PreferenceScreen psActivePasscode = (PreferenceScreen) findPreference(PreferencesConstant.PREF_ACTIVE_PASSCODE);
+            final PreferenceScreen psActivePasscode = (PreferenceScreen) findPreference(getString(PreferencesConstant.PREF_ACTIVE_PASSCODE));
             psActivePasscode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
@@ -59,7 +77,7 @@ public class SecuritySettingsActivity extends BaseFragmentActivity {
                 }
             });
 
-            final PreferenceScreen psEditPasscode = (PreferenceScreen) findPreference(PreferencesConstant.PREF_EDIT_PASSCODE);
+            final PreferenceScreen psEditPasscode = (PreferenceScreen) findPreference(getString(PreferencesConstant.PREF_EDIT_PASSCODE));
             psEditPasscode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
@@ -70,7 +88,7 @@ public class SecuritySettingsActivity extends BaseFragmentActivity {
                 }
             });
 
-            final PreferenceScreen psDisablePasscode = (PreferenceScreen) findPreference(PreferencesConstant.PREF_DISABLE_PASSCODE);
+            final PreferenceScreen psDisablePasscode = (PreferenceScreen) findPreference(getString(PreferencesConstant.PREF_DISABLE_PASSCODE));
             psDisablePasscode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
@@ -145,12 +163,12 @@ public class SecuritySettingsActivity extends BaseFragmentActivity {
             // check if has passcode
             Passcode passcode = new Passcode(getActivity());
 
-            if (findPreference(PreferencesConstant.PREF_ACTIVE_PASSCODE) != null)
-                findPreference(PreferencesConstant.PREF_ACTIVE_PASSCODE).setEnabled(!passcode.hasPasscode());
-            if (findPreference(PreferencesConstant.PREF_EDIT_PASSCODE) != null)
-                findPreference(PreferencesConstant.PREF_EDIT_PASSCODE).setEnabled(passcode.hasPasscode());
-            if (findPreference(PreferencesConstant.PREF_DISABLE_PASSCODE) != null)
-                findPreference(PreferencesConstant.PREF_DISABLE_PASSCODE).setEnabled(passcode.hasPasscode());
+            if (findPreference(getString(PreferencesConstant.PREF_ACTIVE_PASSCODE)) != null)
+                findPreference(getString(PreferencesConstant.PREF_ACTIVE_PASSCODE)).setEnabled(!passcode.hasPasscode());
+            if (findPreference(getString(PreferencesConstant.PREF_EDIT_PASSCODE)) != null)
+                findPreference(getString(PreferencesConstant.PREF_EDIT_PASSCODE)).setEnabled(passcode.hasPasscode());
+            if (findPreference(getString(PreferencesConstant.PREF_DISABLE_PASSCODE)) != null)
+                findPreference(getString(PreferencesConstant.PREF_DISABLE_PASSCODE)).setEnabled(passcode.hasPasscode());
         }
 
         private void startActivityPasscode(CharSequence message, int request) {

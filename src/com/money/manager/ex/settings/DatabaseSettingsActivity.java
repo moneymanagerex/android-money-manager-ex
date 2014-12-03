@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
@@ -36,7 +54,7 @@ public class DatabaseSettingsActivity extends BaseFragmentActivity {
             addPreferencesFromResource(R.xml.database_settings);
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-            final Preference pMoveDatabase = findPreference(PreferencesConstant.PREF_DATABASE_BACKUP);
+            final Preference pMoveDatabase = findPreference(getString(PreferencesConstant.PREF_DATABASE_BACKUP));
             if (pMoveDatabase != null) {
                 pMoveDatabase.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
@@ -64,7 +82,7 @@ public class DatabaseSettingsActivity extends BaseFragmentActivity {
             final Preference pDatabasePath = findPreference(getActivity().getString(PreferencesConstant.PREF_DATABASE_PATH));
             pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
             //sqlite version
-            Preference pSQLiteVersion = findPreference(PreferencesConstant.PREF_SQLITE_VERSION);
+            Preference pSQLiteVersion = findPreference(getString(PreferencesConstant.PREF_SQLITE_VERSION));
             if (pSQLiteVersion != null) {
                 MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity());
                 String sqliteVersion = helper.getSQLiteVersion();

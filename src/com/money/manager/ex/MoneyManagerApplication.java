@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex;
 
 import android.annotation.SuppressLint;
@@ -157,14 +157,14 @@ public class MoneyManagerApplication extends Application {
      * @return preferences account fav visible
      */
     public boolean getAccountFavoriteVisible() {
-        return appPreferences.getBoolean(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE, false);
+        return appPreferences.getBoolean(getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE), false);
     }
 
     /**
      * @return preferences accounts visible
      */
     public boolean getAccountsOpenVisible() {
-        return appPreferences.getBoolean(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE, false);
+        return appPreferences.getBoolean(getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE), false);
     }
 
     /**
@@ -215,7 +215,7 @@ public class MoneyManagerApplication extends Application {
      * @return the show transaction
      */
     public String getShowTransaction() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_SHOW_TRANSACTION, getResources().getString(R.string.last7days));
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(getString(PreferencesConstant.PREF_SHOW_TRANSACTION), getResources().getString(R.string.last7days));
     }
 
 
@@ -273,8 +273,8 @@ public class MoneyManagerApplication extends Application {
         // preference
         if (appPreferences == null) {
             appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            RobotoView.setUserFont(Integer.parseInt(appPreferences.getString(PreferencesConstant.PREF_APPLICATION_FONT, "-1")));
-            RobotoView.setUserFontSize(getApplicationContext(), appPreferences.getString(PreferencesConstant.PREF_APPLICATION_FONT_SIZE, "default"));
+            RobotoView.setUserFont(Integer.parseInt(appPreferences.getString(getString(PreferencesConstant.PREF_APPLICATION_FONT), "-1")));
+            RobotoView.setUserFontSize(getApplicationContext(), appPreferences.getString(getString(PreferencesConstant.PREF_APPLICATION_FONT_SIZE), "default"));
         }
     }
 
@@ -288,7 +288,7 @@ public class MoneyManagerApplication extends Application {
      */
     public void setApplicationTheme(String theme) {
         Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        editor.putString(PreferencesConstant.PREF_THEME, theme);
+        editor.putString(getString(PreferencesConstant.PREF_THEME), theme);
         editor.commit();
     }
 
@@ -313,7 +313,7 @@ public class MoneyManagerApplication extends Application {
         }
         // edit preferences
         editPreferences = appPreferences.edit();
-        editPreferences.putString(PreferencesConstant.PREF_USER_NAME, userName);
+        editPreferences.putString(getString(PreferencesConstant.PREF_USER_NAME), userName);
         // commit
         editPreferences.commit();
         // set the value

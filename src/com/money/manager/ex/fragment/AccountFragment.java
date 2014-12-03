@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.fragment;
 
 import android.content.ContentValues;
@@ -209,7 +209,7 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
         mAllDataFragment = AllDataFragment.newInstance(mAccountId);
         // set arguments and settings of fragment
         mAllDataFragment.setArguments(prepareArgsForChildFragment());
-        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE, false));
+        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE), false));
         mAllDataFragment.setAutoStarLoader(false);
         mAllDataFragment.setContextMenuGroupId(mAccountId);
         mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);

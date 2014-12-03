@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.settings;
 
 import android.annotation.SuppressLint;
@@ -78,7 +96,7 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
             }
 
             //login to dropbox
-            final Preference pDropboxLink = findPreference(PreferencesConstant.PREF_DROPBOX_LINK);
+            final Preference pDropboxLink = findPreference(getString(PreferencesConstant.PREF_DROPBOX_LINK));
             pDropboxLink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
@@ -90,7 +108,7 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
             });
 
             //logout from dropbox
-            final Preference pDropboxUnlink = findPreference(PreferencesConstant.PREF_DROPBOX_UNLINK);
+            final Preference pDropboxUnlink = findPreference(getString(PreferencesConstant.PREF_DROPBOX_UNLINK));
             pDropboxUnlink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
@@ -106,7 +124,7 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
             });
 
             //wiki
-            Preference pWiki = findPreference(PreferencesConstant.PREF_DROPBOX_WIKI);
+            Preference pWiki = findPreference(getString(PreferencesConstant.PREF_DROPBOX_WIKI));
             if (pWiki != null) {
                 pWiki.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
@@ -123,7 +141,7 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
             }
 
             //link file
-            final Preference pDropboxFile = findPreference(PreferencesConstant.PREF_DROPBOX_LINKED_FILE);
+            final Preference pDropboxFile = findPreference(getString(PreferencesConstant.PREF_DROPBOX_LINKED_FILE));
             if (pDropboxFile != null) {
                 pDropboxFile.setSummary(mDropboxHelper.getLinkedRemoteFile());
                 // check if summary is null and
@@ -144,7 +162,7 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
             }
 
             //force download
-            PreferenceScreen pDownload = (PreferenceScreen) findPreference(PreferencesConstant.PREF_DROPBOX_DOWNLOAD);
+            PreferenceScreen pDownload = (PreferenceScreen) findPreference(getString(PreferencesConstant.PREF_DROPBOX_DOWNLOAD));
             if (pDownload != null) {
                 pDownload.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
@@ -158,7 +176,7 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
             }
 
             //force upload
-            PreferenceScreen pUpload = (PreferenceScreen) findPreference(PreferencesConstant.PREF_DROPBOX_UPLOAD);
+            PreferenceScreen pUpload = (PreferenceScreen) findPreference(getString(PreferencesConstant.PREF_DROPBOX_UPLOAD));
             if (pUpload != null) {
                 pUpload.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
@@ -176,7 +194,7 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
             }
 
             //times repeat
-            ListPreference pRepeats = (ListPreference) findPreference(PreferencesConstant.PREF_DROPBOX_TIMES_REPEAT);
+            ListPreference pRepeats = (ListPreference) findPreference(getString(PreferencesConstant.PREF_DROPBOX_TIMES_REPEAT));
             if (pRepeats != null) {
                 pRepeats.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
@@ -195,7 +213,7 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
             super.onActivityResult(requestCode, resultCode, data);
 
             if (resultCode == Activity.RESULT_OK && data != null) {
-                final Preference pDropboxFile = findPreference(PreferencesConstant.PREF_DROPBOX_LINKED_FILE);
+                final Preference pDropboxFile = findPreference(getString(PreferencesConstant.PREF_DROPBOX_LINKED_FILE));
                 if (pDropboxFile != null) {
                     CharSequence oldFile = "", newFile;
                     if (!TextUtils.isEmpty(pDropboxFile.getSummary())) {
@@ -228,19 +246,20 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
             }
 
             // dropbox link and unlink
-            if (findPreference(PreferencesConstant.PREF_DROPBOX_LINK) != null) {
-                findPreference(PreferencesConstant.PREF_DROPBOX_LINK).setSelectable(!mDropboxHelper.isLinked());
-                findPreference(PreferencesConstant.PREF_DROPBOX_LINK).setEnabled(!mDropboxHelper.isLinked());
+            if (findPreference(getString(PreferencesConstant.PREF_DROPBOX_LINK)) != null) {
+                findPreference(getString(PreferencesConstant.PREF_DROPBOX_LINK)).setSelectable(!mDropboxHelper.isLinked());
+                findPreference(getString(PreferencesConstant.PREF_DROPBOX_LINK)).setEnabled(!mDropboxHelper.isLinked());
             }
-            if (findPreference(PreferencesConstant.PREF_DROPBOX_UNLINK) != null) {
-                findPreference(PreferencesConstant.PREF_DROPBOX_UNLINK).setSelectable(mDropboxHelper.isLinked());
-                findPreference(PreferencesConstant.PREF_DROPBOX_UNLINK).setEnabled(mDropboxHelper.isLinked());
+            if (findPreference(getString(PreferencesConstant.PREF_DROPBOX_UNLINK)) != null) {
+                findPreference(getString(PreferencesConstant.PREF_DROPBOX_UNLINK)).setSelectable(mDropboxHelper.isLinked());
+                findPreference(getString(PreferencesConstant.PREF_DROPBOX_UNLINK)).setEnabled(mDropboxHelper.isLinked());
             }
         }
 
         private void showWebTipsDialog(final String key, final CharSequence title, final int rawResources, boolean force) {
             if (!force) {
-                if (getActivity().getSharedPreferences(TipsDialogFragment.PREF_DIALOG, 0).getBoolean(key, false)) return;
+                if (getActivity().getSharedPreferences(TipsDialogFragment.PREF_DIALOG, 0).getBoolean(key, false))
+                    return;
             }
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
             // title and icons
