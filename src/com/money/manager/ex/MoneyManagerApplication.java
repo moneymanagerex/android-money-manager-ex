@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropbox.client2.session.Session.AccessType;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
@@ -66,11 +67,8 @@ public class MoneyManagerApplication extends Application {
     public static final int TYPE_HOME_CLASSIC = R.layout.main_fragments_activity;
     public static final int TYPE_HOME_ADVANCE = R.layout.main_pager_activity;
     private static final String LOGCAT = "MoneyManagerApplication";
-    ///////////////////////////////////////////////////////////////////////////
-    //                         CONSTANTS VALUES                              //
-    ///////////////////////////////////////////////////////////////////////////
     public static String PATTERN_DB_DATE = "yyyy-MM-dd";
-
+    private static MoneyManagerApplication myInstance;
     private static SharedPreferences appPreferences;
     private static float mTextSize;
     // user name application
@@ -80,22 +78,52 @@ public class MoneyManagerApplication extends Application {
     ///////////////////////////////////////////////////////////////////////////
     private Editor editPreferences;
 
+    public static MoneyManagerApplication getInstanceApp() {
+        return myInstance;
+    }
+
     /**
      * @param context
      * @return path database file
      */
     @SuppressLint("SdCardPath")
     public static String getDatabasePath(Context context) {
-        String defaultPath = "";
-
-        // try to fix errorcode 14
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            defaultPath = context.getApplicationInfo().dataDir;
-        } else {
-            defaultPath = "/data/data/" + context.getApplicationContext().getPackageName();
+        String databasePath = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), null);
+        if (databasePath != null) {
+            File databaseFile = new File(databasePath);
+            if (databaseFile.getAbsoluteFile().exists()) return databaseFile.toString();
         }
-        // add databases
-        defaultPath += "/databases/data.mmb";
+        Core core = new Core(context);
+        File defaultFolder = core.getExternalStorageDirectoryApplication();
+        if (defaultFolder.getAbsoluteFile().exists()) {
+            return defaultFolder.toString() + "/data.mmb";
+        } else {
+            String internalFolder;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                internalFolder = context.getApplicationInfo().dataDir;
+            } else {
+                internalFolder = "/data/data/" + context.getApplicationContext().getPackageName();
+            }
+            // add databases
+            internalFolder += "/databases/data.mmb";
+            return internalFolder;
+        }
+
+        /*String defaultPath = "";
+        // check if folder Application is created
+        Core core = new Core(context);
+        File defaultFile = core.getExternalStorageDirectoryApplication();
+        if (defaultFile != null && defaultFile.getAbsoluteFile().exists()) {
+            defaultPath = defaultFile.toString() + "/data.mmb";
+        } else {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                defaultPath = context.getApplicationInfo().dataDir;
+            } else {
+                defaultPath = "/data/data/" + context.getApplicationContext().getPackageName();
+            }
+            // add databases
+            defaultPath += "/databases/data.mmb";
+        }
 
         String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), defaultPath);
         File f = new File(dbFile);
@@ -104,7 +132,7 @@ public class MoneyManagerApplication extends Application {
             return dbFile;
         } else {
             return defaultPath;
-        }
+        }*/
     }
 
     /**
@@ -266,8 +294,14 @@ public class MoneyManagerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // save instance of application
+        myInstance = this;
 
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
+        // create application folder
+        Core core = new Core(getApplicationContext());
+        core.getExternalStorageDirectoryApplication();
+
         // set default value
         setTextSize(new TextView(getApplicationContext()).getTextSize());
         // preference
