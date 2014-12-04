@@ -214,7 +214,7 @@ public class MainActivity extends BaseFragmentActivity {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setDataAndType(Uri.fromFile(file), "vnd.android.cursor.dir/*");
         intent.setType("file/*");
-        if (((MoneyManagerApplication) getApplication()).isUriAvailable(getApplicationContext(), intent)) {
+        if (MoneyManagerApplication.getInstanceApp().isUriAvailable(getApplicationContext(), intent)) {
             try {
                 startActivityForResult(intent, REQUEST_PICKFILE_CODE);
             } catch (Exception e) {

@@ -52,8 +52,6 @@ public class LookFeelSettingsActivity extends BaseFragmentActivity {
             addPreferencesFromResource(R.xml.look_and_feel_settings);
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-            final MoneyManagerApplication application = (MoneyManagerApplication) getActivity().getApplication();
-
             // checkbox on open and favorite account
             final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE));
             final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE));
@@ -72,7 +70,7 @@ public class LookFeelSettingsActivity extends BaseFragmentActivity {
             // show transaction
             final ListPreference lstShow = (ListPreference) findPreference(getString(PreferencesConstant.PREF_SHOW_TRANSACTION));
             if (lstShow != null) {
-                lstShow.setSummary(application.getShowTransaction());
+                lstShow.setSummary(MoneyManagerApplication.getInstanceApp().getShowTransaction());
                 lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {

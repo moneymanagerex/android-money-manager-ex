@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2013 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.fragment;
 
 import android.app.Activity;
@@ -76,8 +76,6 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     private EditText edtTransNumber, edtNotes;
     private TextView txtToAmount, txtFromAmount, txtSelectCategory, txtSelectPayee, txtFromDate, txtToDate;
     private CheckBox cbxWithdrawal, cbxDeposit, cbxTransfer;
-    // application
-    private MoneyManagerApplication mApplication;
     // arrayslist accountname and accountid
     private ArrayList<String> mAccountNameList = new ArrayList<String>();
     private ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
@@ -90,7 +88,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApplication = (MoneyManagerApplication) getActivity().getApplication();
+
         setHasOptionsMenu(true);
         AllDataFragment fragment;
         fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
@@ -127,7 +125,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         // accountlist <> to populate the spin
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         if (mAccountList == null) {
-            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
+            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getListAccounts(MoneyManagerApplication.getInstanceApp().getAccountsOpenVisible(), MoneyManagerApplication.getInstanceApp().getAccountFavoriteVisible());
             mAccountList.add(0, null);
             for (int i = 0; i <= mAccountList.size() - 1; i++) {
                 if (mAccountList.get(i) != null) {

@@ -27,11 +27,8 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.widget.Toast;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.preferences.PreferencesConstant;
@@ -60,10 +57,6 @@ public class SecuritySettingsActivity extends BaseFragmentActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.security_settings);
             PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-            final MoneyManagerApplication application = (MoneyManagerApplication) getActivity().getApplication();
-            final Core core = new Core(getActivity());
-            final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
 
             // active passcode
             final PreferenceScreen psActivePasscode = (PreferenceScreen) findPreference(getString(PreferencesConstant.PREF_ACTIVE_PASSCODE));

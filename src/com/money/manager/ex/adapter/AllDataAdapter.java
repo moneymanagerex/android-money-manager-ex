@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2013 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.adapter;
 
 import android.annotation.SuppressLint;
@@ -35,7 +35,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.CurrencyUtils;
@@ -59,7 +58,6 @@ public class AllDataAdapter extends CursorAdapter {
     private String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE, TOACCOUNTID, TOTRANSAMOUNT, CURRENCYID, PAYEE,
             ACCOUNTNAME, TOACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES, TOCURRENCYID;
     private LayoutInflater mInflater;
-    private MoneyManagerApplication mApplication;
     // hash map for group
     private HashMap<Integer, Integer> mHeadersAccountIndex;
     // private HashMap<Integer, Double> mBalanceTransactions;
@@ -79,7 +77,6 @@ public class AllDataAdapter extends CursorAdapter {
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
         super(context, c, -1);
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.mApplication = (MoneyManagerApplication) context.getApplicationContext();
         // create hash map
         mHeadersAccountIndex = new HashMap<Integer, Integer>();
         // create sparse array boolean checked

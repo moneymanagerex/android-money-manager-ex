@@ -61,8 +61,6 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
 
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
-    // application
-    MoneyManagerApplication currencyUtils;
     // all data fragment
     AllDataFragment mAllDataFragment;
     // id account
@@ -113,7 +111,6 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currencyUtils = (MoneyManagerApplication) getActivity().getApplication();
     }
 
     @Override
@@ -291,18 +288,18 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
         ArrayList<String> selection = new ArrayList<String>();
         selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountID + "="
                 + Integer.toString(mAccountId) + ")");
-        if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
+        if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
-        } else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
+        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
-        } else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
+        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
             selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
             selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-        } else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
+        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
-        } else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
+        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
-        } else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
+        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
             selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
         }
         // create a bundle to returns

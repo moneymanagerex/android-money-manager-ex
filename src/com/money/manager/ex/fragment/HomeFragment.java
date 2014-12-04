@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.fragment;
 
 import android.animation.ObjectAnimator;
@@ -76,8 +76,7 @@ public class HomeFragment extends Fragment implements
     private static final int ID_LOADER_ACCOUNT_BILLS = 2;
     private static final int ID_LOADER_BILL_DEPOSITS = 3;
     private static final int ID_LOADER_INCOME_EXPENSES = 4;
-    // application
-    private MoneyManagerApplication application;
+    // MoneyManagerApplication.getInstanceApp()
     private CurrencyUtils currencyUtils;
     // dataset table/view/query manage into class
     private TableInfoTable infoTable = new TableInfoTable();
@@ -93,7 +92,7 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        application = (MoneyManagerApplication) getActivity().getApplication();
+
         currencyUtils = new CurrencyUtils(getActivity());
         accountBills = new QueryAccountBills(getActivity());
     }
@@ -109,11 +108,11 @@ public class HomeFragment extends Fragment implements
                 // compose whereClause
                 String where = "";
                 // check if show only open accounts
-                if (application.getAccountsOpenVisible()) {
+                if (MoneyManagerApplication.getInstanceApp().getAccountsOpenVisible()) {
                     where = "LOWER(STATUS)='open'";
                 }
                 // check if show fav accounts
-                if (application.getAccountFavoriteVisible()) {
+                if (MoneyManagerApplication.getInstanceApp().getAccountFavoriteVisible()) {
                     where = "LOWER(FAVORITEACCT)='true'";
                 }
                 return new CursorLoader(getActivity(), accountBills.getUri(),
@@ -228,23 +227,23 @@ public class HomeFragment extends Fragment implements
                         String infoValue = data.getString(data.getColumnIndex(infoTable.INFONAME));
                         // save into preferences username and basecurrency id
                         if (Constants.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
-                            application.setUserName(data.getString(data.getColumnIndex(infoTable.INFOVALUE)));
+                            MoneyManagerApplication.getInstanceApp().setUserName(data.getString(data.getColumnIndex(infoTable.INFOVALUE)));
                         } else if (Constants.INFOTABLE_BASECURRENCYID.equalsIgnoreCase(infoValue)) {
-                            //application.setBaseCurrencyId(data.getInt(data.getColumnIndex(infoTable.INFOVALUE)));
+                            //MoneyManagerApplication.getInstanceApp().setBaseCurrencyId(data.getInt(data.getColumnIndex(infoTable.INFOVALUE)));
                         }
                         data.moveToNext();
                     }
                 }
                 // show username
-                if (!TextUtils.isEmpty(application.getUserName())) {
+                if (!TextUtils.isEmpty(MoneyManagerApplication.getInstanceApp().getUserName())) {
                     BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
                     if (activity != null) {
-                        activity.getSupportActionBar().setSubtitle(application.getUserName());
+                        activity.getSupportActionBar().setSubtitle(MoneyManagerApplication.getInstanceApp().getUserName());
                     }
                 }
                 // set user name on drawer
                 if (mainActivity != null)
-                    mainActivity.setDrawableUserName(application.getUserName());
+                    mainActivity.setDrawableUserName(MoneyManagerApplication.getInstanceApp().getUserName());
 
                 break;
 

@@ -58,7 +58,6 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             addPreferencesFromResource(R.xml.general_settings);
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-            final MoneyManagerApplication application = (MoneyManagerApplication) getActivity().getApplication();
             final Core core = new Core(getActivity());
             final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
 
@@ -80,12 +79,12 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             // preference username
             final Preference pUserName = findPreference(getString(PreferencesConstant.PREF_USER_NAME));
             if (pUserName != null) {
-                pUserName.setSummary(application.getUserName());
+                pUserName.setSummary(MoneyManagerApplication.getInstanceApp().getUserName());
                 pUserName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        application.setUserName((String) newValue, true);
-                        pUserName.setSummary(application.getUserName());
+                        MoneyManagerApplication.getInstanceApp().setUserName((String) newValue, true);
+                        pUserName.setSummary(MoneyManagerApplication.getInstanceApp().getUserName());
                         return true;
                     }
                 });

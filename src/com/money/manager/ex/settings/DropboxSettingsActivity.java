@@ -79,7 +79,6 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
             addPreferencesFromResource(R.xml.dropbox_settings);
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-            final MoneyManagerApplication application = (MoneyManagerApplication) getActivity().getApplication();
             // dropbox preference screen
             mDropboxHelper = DropboxHelper.getInstance(getActivity().getApplicationContext());
 

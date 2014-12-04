@@ -134,8 +134,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     // bill deposits
     public int mBdId = -1;
     public String mNextOccurrence = null;
-    // application
-    public MoneyManagerApplication mApplication;
     // datepicker value
     public String mDate = "";
     // reference view into layout
@@ -258,7 +256,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApplication = (MoneyManagerApplication) getApplication();
         // set dialog mode
         setDialogMode(true);
 
@@ -358,7 +355,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         // account
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         // accountlist <> to populate the spin
-        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
+        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(MoneyManagerApplication.getInstanceApp().getAccountsOpenVisible(), MoneyManagerApplication.getInstanceApp().getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());
