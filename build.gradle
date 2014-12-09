@@ -1,10 +1,28 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.1'
+        classpath 'com.android.tools.build:gradle:1.0.0'
     }
 }
 
@@ -61,6 +79,7 @@ android {
         release.setRoot('build-types/release')
     }
 
+    /* before gradle 2.2.1
     buildTypes {
         release {
             runProguard false
@@ -69,6 +88,18 @@ android {
                 def file = variant.outputFile
                 def version = "-" + defaultConfig.versionName.replace(".", "_") + "_r" + defaultConfig.versionCode
                 variant.outputFile = new File(file.parent, file.name.replace(".apk", version + ".apk"))
+            }
+        }
+    }*/
+    buildTypes {
+        release {
+            //runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def version = "-" + defaultConfig.versionName.replace(".", "_") + "_r" + defaultConfig.versionCode
+                    output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace(".apk", version + ".apk"))
+                }
             }
         }
     }
