@@ -292,8 +292,6 @@ public class Core {
             String currentTheme = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_THEME), context.getString(R.string.theme_light));
             if (currentTheme.endsWith(context.getString(R.string.theme_holo))) {
                 return R.style.Theme_Money_Manager;
-            } else if (currentTheme.endsWith(context.getString(R.string.theme_holo_light))) {
-                return R.style.Theme_Money_Manager_Light;
             } else {
                 return R.style.Theme_Money_Manager_Light_DarkActionBar;
             }
