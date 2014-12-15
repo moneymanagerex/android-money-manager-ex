@@ -1,45 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
 
-    <style name="App" parent="_App" />
+<resources>
 
-    <style name="_App" parent="@style/Theme.AppCompat">
-        <item name="android:editTextStyle">@style/EditText_App</item>
-        <item name="android:textColorHighlight">#9933b5e5</item>
-        <item name="android:checkboxStyle">@style/CheckBox_App</item>
-        <item name="android:buttonStyle">@style/Button_App</item>
-        <item name="android:imageButtonStyle">@style/ImageButton_App</item>
-        <item name="android:spinnerStyle">@style/Spinner_App</item>
-        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem_App</item>
-        <item name="android:progressBarStyleHorizontal">@style/ProgressBar_App</item>
-    </style>
+    <style name="App" parent="@style/Theme.AppCompat" />
 
-    <style name="App_Light" parent="@style/_App_Light" />
+    <style name="App_Light" parent="@style/Theme.AppCompat.Light" />
 
-    <style name="_App_Light" parent="@style/Theme.AppCompat.Light">
-        <item name="android:editTextStyle">@style/EditText_App_Light</item>
-        <item name="android:textColorHighlight">#9933b5e5</item>
-        <item name="android:checkboxStyle">@style/CheckBox_App_Light</item>
-        <item name="android:buttonStyle">@style/Button_App_Light</item>
-        <item name="android:imageButtonStyle">@style/ImageButton_App_Light</item>
-        <item name="android:spinnerStyle">@style/Spinner_App_Light</item>
-        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem_App_Light</item>
-        <item name="android:progressBarStyleHorizontal">@style/ProgressBar_App_Light</item>
-    </style>
+    <style name="App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar" />
 
-    <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar" />
-
-    <style name="_App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:editTextStyle">@style/EditText_App_Light</item>
-        <item name="android:textColorHighlight">#9933b5e5</item>
-        <item name="android:checkboxStyle">@style/CheckBox_App_Light</item>
-        <item name="android:buttonStyle">@style/Button_App_Light</item>
-        <item name="android:imageButtonStyle">@style/ImageButton_App_Light</item>
-        <item name="android:spinnerStyle">@style/Spinner_App_Light</item>
-        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem_App_Light</item>
-        <item name="android:progressBarStyleHorizontal">@style/ProgressBar_App_Light</item>
-    </style>
-    
     <!-- Theme Application -->
 
     <style name="Theme.Money.Manager" parent="@style/App">
@@ -92,7 +77,7 @@
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">?android:attr/listSeparatorTextViewStyle</item>
         <item name="headerTextViewStyle">@style/headerTextViewStyle</item>
-        <item name="styleHoloSpinner">@style/Spinner_App</item>
+        <item name="styleHoloSpinner">@android:style/Widget.Holo.Spinner</item>
     </style>
 
     <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/App_Light_DarkActionBar">
@@ -145,7 +130,7 @@
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">@style/listSeparatorTextViewStyle</item>
         <item name="headerTextViewStyle">@style/headerTextViewStyle</item>
-        <item name="styleHoloSpinner">@style/Spinner_App_Light</item>
+        <item name="styleHoloSpinner">@android:style/Widget.Holo.Light.Spinner</item>
     </style>
 
     <style name="Theme.Money.Manager.Light" parent="@style/App_Light">
@@ -198,7 +183,7 @@
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">@style/listSeparatorTextViewStyle</item>
         <item name="headerTextViewStyle">@style/headerTextViewStyle</item>
-        <item name="styleHoloSpinner">@style/Spinner_App_Light</item>
+        <item name="styleHoloSpinner">@android:style/Widget.Holo.Light.Spinner</item>
     </style>
 
 </resources>
