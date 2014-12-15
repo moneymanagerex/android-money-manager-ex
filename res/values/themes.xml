@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2014 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -23,7 +22,10 @@
 
     <style name="App_Light" parent="@style/Theme.AppCompat.Light" />
 
-    <style name="App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar" />
+    <style name="App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/material_green_700</item>
+        <item name="colorPrimaryDark">@color/material_green_900</item>
+    </style>
 
     <!-- Theme Application -->
 
@@ -84,7 +86,8 @@
 
         <!-- Colors -->
         <item name="theme_background_color">@color/holo_light_darkaction_money_background</item>
-        <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background</item>
+        <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background
+        </item>
         <item name="holo_blue_color_theme">@color/holo_blue_dark</item>
         <item name="holo_green_color_theme">@color/holo_green_dark</item>
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
@@ -137,7 +140,8 @@
 
         <!-- Colors -->
         <item name="theme_background_color">@color/holo_light_darkaction_money_background</item>
-        <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background</item>
+        <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background
+        </item>
         <item name="holo_blue_color_theme">@color/holo_blue_dark</item>
         <item name="holo_green_color_theme">@color/holo_green_dark</item>
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
