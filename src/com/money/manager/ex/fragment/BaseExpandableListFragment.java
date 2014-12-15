@@ -111,7 +111,8 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
             itemSearch.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search));
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-            View searchView = SearchViewCompat.newSearchView(getActivity().getActionBar().getThemedContext());
+            ActionBarActivity activity = (ActionBarActivity) getActivity();
+            View searchView = SearchViewCompat.newSearchView(activity.getSupportActionBar().getThemedContext());
             if (searchView != null) {
                 SearchViewCompat.setOnQueryTextListener(searchView, new OnQueryTextListenerCompat() {
                     @Override

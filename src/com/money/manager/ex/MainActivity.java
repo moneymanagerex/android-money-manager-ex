@@ -18,7 +18,6 @@
 package com.money.manager.ex;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -35,11 +34,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -106,7 +105,7 @@ public class MainActivity extends BaseFragmentActivity {
     private LinearLayout mDrawerLayout;
     private ListView mDrawerList;
     private DrawerLayout mDrawer;
-    private CustomActionBarDrawerToggle mDrawerToggle;
+    private ActionBarDrawerToggle mDrawerToggle;
     // object in drawer
     private LinearLayout mDrawerLinearRepeating;
     private TextView mDrawerTextUserName;
@@ -574,7 +573,7 @@ public class MainActivity extends BaseFragmentActivity {
         // set a custom shadow that overlays the main content when the drawer opens
         if (mDrawer != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                mDrawerToggle = new CustomActionBarDrawerToggle(this, mDrawer);
+                mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
                 mDrawer.setDrawerListener(mDrawerToggle);
                 // create drawer menu
                 createDrawerMenu();
@@ -809,13 +808,6 @@ public class MainActivity extends BaseFragmentActivity {
             mDrawerList.setAdapter(adapter);
         // set listener on item click
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-    }
-
-    private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle {
-
-        public CustomActionBarDrawerToggle(Activity mActivity, DrawerLayout mDrawerLayout) {
-            super(mActivity, mDrawerLayout, R.drawable.ic_navigation_drawer, R.string.application_name, R.string.application_name);
-        }
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
