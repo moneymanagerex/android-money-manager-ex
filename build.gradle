@@ -79,25 +79,11 @@ android {
         release.setRoot('build-types/release')
     }
 
-    /* before gradle 2.2.1
     buildTypes {
         release {
-            //runProguard false
             minifyEnabled true
             shrinkResources true
 
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def version = "-" + defaultConfig.versionName.replace(".", "_") + "_r" + defaultConfig.versionCode
-                    output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace(".apk", version + ".apk"))
-                }
-            }
-        }
-    }*/
-    buildTypes {
-        release {
-            //runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
