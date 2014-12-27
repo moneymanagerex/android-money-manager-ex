@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.1'
+        classpath 'com.android.tools.build:gradle:1.0.0'
     }
 }
 
@@ -60,12 +60,16 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            //runProguard false
+            minifyEnabled true
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             applicationVariants.all { variant ->
-                def file = variant.outputFile
-                def version = "-" + defaultConfig.versionName.replace(".", "_") + "_r" + defaultConfig.versionCode
-                variant.outputFile = new File(file.parent, file.name.replace(".apk", version + ".apk"))
+                variant.outputs.each { output ->
+                    def version = "-" + defaultConfig.versionName.replace(".", "_") + "_r" + defaultConfig.versionCode
+                    output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace(".apk", version + ".apk"))
+                }
             }
         }
     }
