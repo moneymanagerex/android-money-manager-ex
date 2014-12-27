@@ -96,7 +96,7 @@ public class MoneyManagerApplication extends Application {
         Core core = new Core(context);
         File defaultFolder = core.getExternalStorageDirectoryApplication();
         if (defaultFolder.getAbsoluteFile().exists()) {
-            return defaultFolder.toString() + "/data.mmb";
+            databasePath = defaultFolder.toString() + "/data.mmb";
         } else {
             String internalFolder;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -106,33 +106,10 @@ public class MoneyManagerApplication extends Application {
             }
             // add databases
             internalFolder += "/databases/data.mmb";
-            return internalFolder;
+            databasePath = internalFolder;
         }
-
-        /*String defaultPath = "";
-        // check if folder Application is created
-        Core core = new Core(context);
-        File defaultFile = core.getExternalStorageDirectoryApplication();
-        if (defaultFile != null && defaultFile.getAbsoluteFile().exists()) {
-            defaultPath = defaultFile.toString() + "/data.mmb";
-        } else {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                defaultPath = context.getApplicationInfo().dataDir;
-            } else {
-                defaultPath = "/data/data/" + context.getApplicationContext().getPackageName();
-            }
-            // add databases
-            defaultPath += "/databases/data.mmb";
-        }
-
-        String dbFile = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), defaultPath);
-        File f = new File(dbFile);
-        // check if database exists
-        if (f.getAbsoluteFile().exists()) {
-            return dbFile;
-        } else {
-            return defaultPath;
-        }*/
+        MoneyManagerApplication.setDatabasePath(context, databasePath);
+        return databasePath;
     }
 
     /**
