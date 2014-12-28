@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2014 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -495,4 +494,6 @@
 
     <string name="title_notifications_repeating_transaction">Notification Repeating Transaction overdue </string>
     <string name="summary_notifications_repeating_transaction">Show notification for repeating transaction overdue</string>
+
+    <string name="tools">Tools</string>
 </resources>

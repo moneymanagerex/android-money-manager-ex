@@ -121,7 +121,9 @@
         <item name="ic_action_pie_chart">@drawable/ic_action_pie_chart_dark</item>
         <item name="ic_action_playback_repeat">@drawable/ic_action_playback_repeat_dark</item>
         <item name="ic_action_reload">@drawable/ic_action_reload_dark</item>
+        <item name="ic_action_report">@drawable/ic_action_reports_dark</item>
         <item name="ic_action_search">@drawable/ic_action_search_dark</item>
+        <item name="ic_action_setting">@drawable/ic_action_settings_dark</item>
         <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
         <item name="ic_action_upload">@drawable/ic_action_upload_dark</item>
@@ -175,7 +177,9 @@
         <item name="ic_action_pie_chart">@drawable/ic_action_pie_chart_light</item>
         <item name="ic_action_playback_repeat">@drawable/ic_action_playback_repeat_light</item>
         <item name="ic_action_reload">@drawable/ic_action_reload_light</item>
+        <item name="ic_action_report">@drawable/ic_action_reports_light</item>
         <item name="ic_action_search">@drawable/ic_action_search_light</item>
+        <item name="ic_action_setting">@drawable/ic_action_settings_light</item>
         <item name="ic_action_sort_1">@drawable/ic_action_sort_1_light</item>
         <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
         <item name="ic_action_upload">@drawable/ic_action_upload_light</item>
