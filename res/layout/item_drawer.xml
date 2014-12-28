@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2014 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -40,9 +39,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginLeft="24dp"
         app:typeface="roboto_black"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="@android:style/TextAppearance.Material.Body1"
         android:text="Test"
-        android:textSize="14dp"
         android:singleLine="true" />
 
     <!-- android:textSize="18sp" -->

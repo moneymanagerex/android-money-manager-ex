@@ -19,34 +19,14 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Money.TextView" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">@dimen/money_text_view_size</item>
-    </style>
-
-    <style name="Money.TextView.Medium" parent="Money.TextView">
-        <item name="android:textSize">@dimen/money_text_view_size_medium</item>
-    </style>
-
     <style name="Money.Button" parent="android:Widget.Button">
-        <item name="android:background">@drawable/button_green</item>
-        <item name="android:layout_margin">3dp</item>
-        <item name="android:shadowColor">@android:color/black</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">1</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/md_primary</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Button</item>
+        <item name="android:elevation">@dimen/money_elevation</item>
     </style>
 
-    <style name="Money.Button.Medium" parent="Money.Button">
-        <item name="android:textSize">@dimen/money_text_view_size_medium</item>
-    </style>
-
-    <style name="Money.Button.Medium.Bold" parent="Money.Button.Medium">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="listSeparatorTextViewStyle" parent="android:Widget.Holo.Light.TextView">
-        <item name="android:drawableBottom">@drawable/list_separator_text_view_style_drawable</item>
+    <style name="listSeparatorTextViewStyle" parent="android:Widget.Material.Light.TextView">
+    <item name="android:drawableBottom">@drawable/list_separator_text_view_style_drawable</item>
         <item name="android:drawablePadding">4dp</item>
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:paddingLeft">4dp</item>
@@ -55,8 +35,8 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="headerTextViewStyle" parent="android:Widget.Holo.Light.TextView">
-        <item name="android:drawablePadding">4dp</item>
+    <style name="headerTextViewStyle" parent="android:Widget.Material.Light.TextView">
+    <item name="android:drawablePadding">4dp</item>
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:paddingLeft">4dp</item>
         <item name="android:textAllCaps">true</item>
@@ -64,8 +44,8 @@
         <item name="android:tag">@string/view_user_size</item>
     </style>
 
-    <style name="EditEventCustomActionButton" parent="android:style/Widget.Holo.Light.ActionButton">
-        <item name="android:layout_height">match_parent</item>
+    <style name="EditEventCustomActionButton" parent="android:style/Widget.Material.Light.ActionButton">
+    <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:focusable">true</item>
@@ -82,7 +62,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textAppearance">?android:attr/actionMenuTextAppearance</item>
-        <item name="android:textColor">?android:attr/actionMenuTextColor</item>
+        <item name="android:textColor">@color/md_primary_light</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">none</item>

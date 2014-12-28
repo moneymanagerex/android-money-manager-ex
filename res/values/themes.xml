@@ -23,8 +23,13 @@
     <style name="App_Light" parent="@style/Theme.AppCompat.Light" />
 
     <style name="App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/material_green_700</item>
-        <item name="colorPrimaryDark">@color/material_green_900</item>
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="colorPrimaryDark">@color/md_primary_dark</item>
+        <item name="android:colorAccent">@color/md_accent</item>
+        <item name="android:textColorPrimary">@color/md_primary_text</item>
+        <item name="android:textColorSecondary">@color/md_secondary_text</item>
+        <item name="android:icon">@color/md_icons</item>
+        <item name="android:divider">@color/md_divider</item>
     </style>
 
     <!-- Theme Application -->
