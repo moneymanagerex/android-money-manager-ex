@@ -39,7 +39,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginLeft="24dp"
         app:typeface="roboto_black"
-        android:textAppearance="@android:style/TextAppearance.Material.Body1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:text="Test"
         android:singleLine="true" />
 

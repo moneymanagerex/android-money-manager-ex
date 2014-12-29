@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2014 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -21,31 +20,24 @@
 
     <style name="Money.Button" parent="android:Widget.Button">
         <item name="android:background">@color/md_primary</item>
-        <item name="android:textAppearance">@android:style/TextAppearance.Material.Button</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
         <item name="android:elevation">@dimen/money_elevation</item>
     </style>
 
-    <style name="listSeparatorTextViewStyle" parent="android:Widget.Material.Light.TextView">
-    <item name="android:drawableBottom">@drawable/list_separator_text_view_style_drawable</item>
-        <item name="android:drawablePadding">4dp</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:paddingLeft">4dp</item>
+    <style name="listSeparatorTextViewStyle" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:drawableBottom">@drawable/list_separator_text_view_style_drawable</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/holo_color</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="headerTextViewStyle" parent="android:Widget.Material.Light.TextView">
-    <item name="android:drawablePadding">4dp</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@android:color/darker_gray</item>
+    <style name="headerTextViewStyle" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
         <item name="android:tag">@string/view_user_size</item>
     </style>
 
-    <style name="EditEventCustomActionButton" parent="android:style/Widget.Material.Light.ActionButton">
-    <item name="android:layout_height">match_parent</item>
+    <style name="EditEventCustomActionButton" parent="android:style/Widget.Holo.Light.ActionButton">
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:focusable">true</item>

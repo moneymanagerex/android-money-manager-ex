@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+<!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:stretchColumns="2" >
+        android:stretchColumns="2">
 
         <TableRow>
 
@@ -19,8 +36,8 @@
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/income"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?attr/holo_green_color_theme" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/md_green" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewIncome"
@@ -31,8 +48,8 @@
                 android:layout_marginRight="2dp"
                 android:gravity="right"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?attr/holo_green_color_theme" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/md_green" />
 
             <ProgressBar
                 android:id="@+id/progressBarIncome"
@@ -59,8 +76,8 @@
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/expenses"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?attr/holo_red_color_theme" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/md_red" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewExpenses"
@@ -71,8 +88,8 @@
                 android:layout_marginRight="2dp"
                 android:gravity="right"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?attr/holo_red_color_theme" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/md_red" />
 
             <ProgressBar
                 android:id="@+id/progressBarExpenses"
@@ -99,8 +116,7 @@
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/difference"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewDifference"
@@ -111,8 +127,7 @@
                 android:layout_marginRight="2dp"
                 android:gravity="right"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
             <ProgressBar
                 android:id="@+id/progressBarDifference"
