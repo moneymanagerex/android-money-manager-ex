@@ -30,6 +30,7 @@
         <item name="android:textColorSecondary">@color/md_secondary_text</item>
         <item name="android:icon">@color/md_icons</item>
         <item name="android:divider">@color/md_divider</item>
+        <item name="android:textColor">@color/md_primary_text</item>
     </style>
 
     <!-- Theme Application -->
