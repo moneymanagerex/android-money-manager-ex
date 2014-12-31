@@ -61,7 +61,7 @@
         <attr name="listSeparatorTextViewStyle" format="reference" />
         <attr name="headerTextViewStyle" format="reference" />
         <attr name="theme_drawer_background_color" format="color|reference" />
-        <attr name="styleHoloSpinner" format="reference" />
+        <attr name="holoSpinnerStyle" format="reference" />
         <!-- AChartEngine -->
         <attr name="theme_axes_color" format="color|reference" />
         <attr name="theme_labels_color" format="color|reference" />

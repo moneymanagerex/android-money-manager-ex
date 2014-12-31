@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (C) 2012 alessandro
   
   This program is free software; you can redistribute it and/or
@@ -19,23 +18,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TableLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:stretchColumns="2" >
+            android:stretchColumns="2">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:layout_width="wrap_content"
@@ -47,7 +46,7 @@
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewCategory"
-                    style="?attr/styleHoloSpinner"
+                    style="?attr/holoSpinnerStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -60,7 +59,7 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:layout_width="wrap_content"
@@ -80,7 +79,7 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:layout_width="32dp"
@@ -92,14 +91,14 @@
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/editTextTotAmount"
-                    style="?attr/styleHoloSpinner"
+                    style="?attr/holoSpinnerStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:textStyle="bold" 
-                    android:layout_weight="1"
-                    android:hint="@string/total_amount" />
+                    android:hint="@string/total_amount"
+                    android:textStyle="bold" />
             </TableRow>
         </TableLayout>
 

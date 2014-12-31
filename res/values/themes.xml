@@ -84,8 +84,8 @@
         <item name="shape_rectangle_backgroud_dark">@null</item>
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">?android:attr/listSeparatorTextViewStyle</item>
-        <item name="headerTextViewStyle">@style/headerTextViewStyle</item>
-        <item name="styleHoloSpinner">@android:style/Widget.Holo.Spinner</item>
+        <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
+        <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>
     </style>
 
     <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/App_Light_DarkActionBar">
@@ -139,9 +139,9 @@
         <item name="shape_white_background_shadow">@drawable/shape_white_background_shadow</item>
         <item name="shape_rectangle_backgroud_dark">@drawable/shape_rectangle_backgroud_dark</item>
         <!-- TextView -->
-        <item name="listSeparatorTextViewStyle">@style/listSeparatorTextViewStyle</item>
-        <item name="headerTextViewStyle">@style/headerTextViewStyle</item>
-        <item name="styleHoloSpinner">@android:style/Widget.Holo.Light.Spinner</item>
+        <item name="listSeparatorTextViewStyle">@style/Money.TextView.ListSeparator</item>
+        <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
+        <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
     </style>
 
     <style name="Theme.Money.Manager.Light" parent="@style/App_Light">
@@ -195,9 +195,9 @@
         <item name="shape_white_background_shadow">@drawable/shape_white_background_shadow</item>
         <item name="shape_rectangle_backgroud_dark">@drawable/shape_rectangle_backgroud_dark</item>
         <!-- TextView -->
-        <item name="listSeparatorTextViewStyle">@style/listSeparatorTextViewStyle</item>
-        <item name="headerTextViewStyle">@style/headerTextViewStyle</item>
-        <item name="styleHoloSpinner">@android:style/Widget.Holo.Light.Spinner</item>
+        <item name="listSeparatorTextViewStyle">@style/Money.TextView.ListSeparator</item>
+        <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
+        <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
     </style>
 
 </resources>

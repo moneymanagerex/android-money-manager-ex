@@ -24,17 +24,20 @@
         <item name="android:elevation">@dimen/money_elevation</item>
     </style>
 
-    <style name="listSeparatorTextViewStyle" parent="android:Widget.Holo.Light.TextView">
+    <style name="Money.TextView" parent="android:Widget.TextView">
+        <item name="android:tag">@string/view_user_size</item>
+    </style>
+
+    <style name="Money.TextView.ListSeparator" parent="Money.TextView">
         <item name="android:drawableBottom">@drawable/list_separator_text_view_style_drawable</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/holo_color</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="headerTextViewStyle">
+    <style name="Money.TextView.Header" parent="Money.TextView">
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/md_secondary_text</item>
-        <item name="android:tag">@string/view_user_size</item>
     </style>
 
     <style name="EditEventCustomActionButton" parent="android:style/Widget.Holo.Light.ActionButton">
