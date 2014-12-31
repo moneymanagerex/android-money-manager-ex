@@ -31,8 +31,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="headerTextViewStyle" parent="android:Widget.Holo.Light.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+    <style name="headerTextViewStyle">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/md_secondary_text</item>
         <item name="android:tag">@string/view_user_size</item>
     </style>
 

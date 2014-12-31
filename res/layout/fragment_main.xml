@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2014 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -54,8 +53,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="@string/accounts"
-                    android:textSize="@dimen/money_text_view_size_header" />
+                    android:text="@string/accounts" />
 
                 <View
                     android:layout_width="match_parent"
@@ -125,10 +123,10 @@
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="@string/income_vs_expenses_current_month"
                 android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp" />
+                android:layout_marginRight="2dp"
+                android:singleLine="true"
+                android:text="@string/income_vs_expenses_current_month" />
 
             <include layout="@layout/merge_main_footer_income_expenses" />
         </LinearLayout>

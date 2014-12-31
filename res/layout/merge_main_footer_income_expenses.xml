@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2014 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -36,7 +35,7 @@
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/income"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+
                 android:textColor="@color/md_green" />
 
             <com.money.manager.ex.view.RobotoTextView
@@ -48,7 +47,7 @@
                 android:layout_marginRight="2dp"
                 android:gravity="right"
                 android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+
                 android:textColor="@color/md_green" />
 
             <ProgressBar
@@ -76,7 +75,7 @@
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/expenses"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+
                 android:textColor="@color/md_red" />
 
             <com.money.manager.ex.view.RobotoTextView
@@ -88,7 +87,7 @@
                 android:layout_marginRight="2dp"
                 android:gravity="right"
                 android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+
                 android:textColor="@color/md_red" />
 
             <ProgressBar
@@ -115,8 +114,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="@string/difference"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                android:text="@string/difference" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewDifference"
@@ -126,8 +124,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:gravity="right"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                android:singleLine="true" />
 
             <ProgressBar
                 android:id="@+id/progressBarDifference"
