@@ -40,6 +40,12 @@
         <item name="android:textColor">@color/md_secondary_text</item>
     </style>
 
+    <style name="Money.TextView.Header.Caption" parent="Money.TextView.Header">
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingLeft">4dp</item>
+    </style>
+
     <style name="EditEventCustomActionButton" parent="android:style/Widget.Holo.Light.ActionButton">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>

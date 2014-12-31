@@ -85,6 +85,7 @@
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">?android:attr/listSeparatorTextViewStyle</item>
         <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
+        <item name="headerCaptionTextViewStyle">@style/Money.TextView.Header.Caption</item>
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>
     </style>
 
@@ -141,6 +142,7 @@
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">@style/Money.TextView.ListSeparator</item>
         <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
+        <item name="headerCaptionTextViewStyle">@style/Money.TextView.Header.Caption</item>
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
     </style>
 
@@ -197,6 +199,8 @@
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">@style/Money.TextView.ListSeparator</item>
         <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
+        <item name="headerCaptionTextViewStyle">@style/Money.TextView.Header.Caption</item>
+
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
     </style>
 
