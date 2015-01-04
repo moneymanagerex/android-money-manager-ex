@@ -496,4 +496,5 @@
     <string name="summary_notifications_repeating_transaction">Show notification for repeating transaction overdue</string>
 
     <string name="tools">Tools</string>
+    <string name="loading">Loading…</string>
 </resources>

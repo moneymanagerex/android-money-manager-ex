@@ -130,8 +130,10 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
             setListShown(false);
             getLoaderManager().initLoader(ID_LOADER_CURRENCY, null, this);
 
-            // set iconfied searched
+            // set icon searched
             setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
+            setFloatingActionButtonVisbile(true);
+            setFloatingActionButtonAttachListView(true);
         }
 
         @Override
@@ -192,7 +194,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
                     String selectionArgs[] = null;
                     if (!TextUtils.isEmpty(mCurFilter)) {
                         whereClause = TableCurrencyFormats.CURRENCYNAME + " LIKE ?";
-                        selectionArgs = new String[] {mCurFilter + "%"};
+                        selectionArgs = new String[]{mCurFilter + "%"};
                     }
                     return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(), whereClause, selectionArgs, "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
             }
@@ -235,10 +237,6 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
             switch (item.getItemId()) {
                 case R.id.menu_import_all_currencies:
                     showDialogImportAllCurrencies();
-                    return true;
-
-                case R.id.menu_add_currency:
-                    startCurrencyFormatActivity(null);
                     return true;
 
                 case R.id.menu_update_exchange_rate:
@@ -486,6 +484,11 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
                 }
             };
             asyncTask.execute();
+        }
+
+        @Override
+        public void onFloatingActionButtonClickListener() {
+            startCurrencyFormatActivity(null);
         }
     }
 }

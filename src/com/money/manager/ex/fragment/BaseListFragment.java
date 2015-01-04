@@ -21,7 +21,7 @@ import android.animation.LayoutTransition;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ListFragment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -29,16 +29,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.AbsListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
-public abstract class BaseListFragment extends ListFragment {
+public abstract class BaseListFragment extends AbsListFragment {
     // saved instance
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
+    // FloatingActionButton
+    FloatingActionButton mFloatingActionButton;
     // menu items
     private boolean mDisplayShowCustomEnabled = false;
     private boolean mShowMenuItemSearch = false;
@@ -46,8 +51,9 @@ public abstract class BaseListFragment extends ListFragment {
     // flag for tips wildcard
     private boolean isShowTipsWildcard = false;
     // hint searchview
-    private String mSearchHint = null;
+    private String mSearchHint = "";
 
+    // abstract method
     public abstract String getSubTitle();
 
     @Override
@@ -60,6 +66,21 @@ public abstract class BaseListFragment extends ListFragment {
             Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
         }
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onFloatingActionButtonClickListener();
+                }
+            });
+        }
+
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -134,7 +155,7 @@ public abstract class BaseListFragment extends ListFragment {
                 formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
                 formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
                 formatter.setSearchHintColorResource(R.color.hint_foreground_material_dark);
-                setSearchHint("Hint");
+
                 formatter.setSearchHintText(getSearchHint());
 
                 formatter.format(searchView);
@@ -210,7 +231,27 @@ public abstract class BaseListFragment extends ListFragment {
         return mSearchHint;
     }
 
-    public void setSearchHint(String mSearchHint) {
+    public void setSearchHint(@NonNull String mSearchHint) {
         this.mSearchHint = mSearchHint;
+    }
+
+    public FloatingActionButton getFloatingActionButton() {
+        return mFloatingActionButton;
+    }
+
+    public void setFloatingActionButtonVisbile(boolean visible) {
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void setFloatingActionButtonAttachListView(boolean attachListView) {
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.attachToListView(getListView());
+        }
+    }
+
+    public void onFloatingActionButtonClickListener() {
+        return;
     }
 }

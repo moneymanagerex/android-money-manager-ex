@@ -34,8 +34,6 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -43,7 +41,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -127,8 +124,10 @@ public class AccountListActivity extends BaseFragmentActivity {
             // start loader
             getLoaderManager().initLoader(ID_LOADER_ACCOUNT, null, this);
 
-            // set iconfied searched
+            // set incon searched
             setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
+            setFloatingActionButtonVisbile(true);
+            setFloatingActionButtonAttachListView(true);
         }
 
         @Override
@@ -199,15 +198,6 @@ public class AccountListActivity extends BaseFragmentActivity {
         }
 
         @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            super.onCreateOptionsMenu(menu, inflater);
-            // item add
-            MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
-            itemadd.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_add));
-            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        }
-
-        @Override
         public void onLoaderReset(Loader<Cursor> loader) {
             switch (loader.getId()) {
                 case ID_LOADER_ACCOUNT:
@@ -229,16 +219,6 @@ public class AccountListActivity extends BaseFragmentActivity {
                         setListShownNoAnimation(true);
                     }
             }
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                case MENU_ITEM_ADD:
-                    startAccountListEditActivity();
-                    break;
-            }
-            return super.onOptionsItemSelected(item);
         }
 
         @Override
@@ -334,6 +314,11 @@ public class AccountListActivity extends BaseFragmentActivity {
         @Override
         public String getSubTitle() {
             return getString(R.string.accounts);
+        }
+
+        @Override
+        public void onFloatingActionButtonClickListener() {
+            startAccountListEditActivity();
         }
     }
 }

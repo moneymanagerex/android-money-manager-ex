@@ -35,8 +35,6 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -45,13 +43,12 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.SQLTypeTransacion;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
+
 /**
- * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 0.9.0
  */
@@ -59,8 +56,8 @@ public class PayeeActivity extends BaseFragmentActivity {
     public static final String INTENT_RESULT_PAYEEID = "PayeeActivity:PayeeId";
     public static final String INTENT_RESULT_PAYEENAME = "PayeeActivity:PayeeName";
     @SuppressWarnings("unused")
-	private static final String LOGCAT = PayeeActivity.class.getSimpleName();
-	private static final String FRAGMENTTAG = PayeeActivity.class.getSimpleName() + "_Fragment";
+    private static final String LOGCAT = PayeeActivity.class.getSimpleName();
+    private static final String FRAGMENTTAG = PayeeActivity.class.getSimpleName() + "_Fragment";
     private static final int ID_LOADER_PAYEE = 0;
     private static TablePayee mPayee = new TablePayee();
     private static String mAction = Intent.ACTION_EDIT;
@@ -123,8 +120,11 @@ public class PayeeActivity extends BaseFragmentActivity {
             setListShown(false);
             // start loader
             getLoaderManager().initLoader(ID_LOADER_PAYEE, null, this);
-            // set iconfied searched
+            // set icon searched
             setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
+            // set fab visible
+            setFloatingActionButtonVisbile(true);
+            setFloatingActionButtonAttachListView(true);
         }
 
         @Override
@@ -195,15 +195,6 @@ public class PayeeActivity extends BaseFragmentActivity {
         }
 
         @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            super.onCreateOptionsMenu(menu, inflater);
-            // item add
-            MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
-            itemadd.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_add));
-            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        }
-
-        @Override
         public void onLoaderReset(Loader<Cursor> loader) {
             switch (loader.getId()) {
                 case ID_LOADER_PAYEE:
@@ -224,16 +215,6 @@ public class PayeeActivity extends BaseFragmentActivity {
                         setListShownNoAnimation(true);
                     }
             }
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                case MENU_ITEM_ADD:
-                    showDialogEditPayeeName(SQLTypeTransacion.INSERT, 0, null);
-                    break;
-            }
-            return super.onOptionsItemSelected(item);
         }
 
         @Override
@@ -356,6 +337,11 @@ public class PayeeActivity extends BaseFragmentActivity {
         @Override
         public String getSubTitle() {
             return getString(R.string.payees);
+        }
+
+        @Override
+        public void onFloatingActionButtonClickListener() {
+            showDialogEditPayeeName(SQLTypeTransacion.INSERT, 0, null);
         }
     }
 }
