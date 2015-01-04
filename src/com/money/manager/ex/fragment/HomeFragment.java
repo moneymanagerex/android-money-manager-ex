@@ -50,7 +50,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.AccountListEditActivity;
+import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -200,6 +202,16 @@ public class HomeFragment extends Fragment implements
         }
 
         prgAccountBills = (ProgressBar) view.findViewById(R.id.progressAccountBills);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
+                intent.setAction(Intent.ACTION_INSERT);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

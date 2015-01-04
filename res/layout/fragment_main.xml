@@ -61,7 +61,7 @@
                     android:layout_gravity="center_horizontal"
                     android:background="?attr/theme_background_color" />
 
-                <FrameLayout
+                <FrameLayout xmlns:fab="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="10dp"
@@ -83,6 +83,16 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:visibility="visible" />
+
+                    <com.melnykov.fab.FloatingActionButton
+                        android:id="@+id/fab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right"
+                        android:layout_margin="16dp"
+                        android:src="@drawable/ic_action_add_dark"
+                        fab:fab_colorNormal="@color/md_primary"
+                        fab:fab_colorPressed="@color/md_primary_dark" />
                 </FrameLayout>
 
                 <LinearLayout
