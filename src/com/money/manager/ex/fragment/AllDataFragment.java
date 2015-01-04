@@ -200,13 +200,14 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         setListAdapter(adapter);
         // register context menu
         registerForContextMenu(getListView());
-        // set divider
-        /*Core core = new Core(getActivity());
-        if (core.getThemeApplication() == R.style.Theme_Money_Manager_Light_DarkActionBar)
-			getListView().setDivider(new ColorDrawable(new Core(getActivity()).resolveIdAttribute(R.attr.theme_background_color)));*/
-        //getListView().setSelector(new ColorDrawable(getResources().getColor(R.color.money_background)));
-        // set animation
+
+        // set animation progress
         setListShown(false);
+
+        // floating action button
+        setFloatingActionButtonVisbile(true);
+        setFloatingActionButtonAttachListView(true);
+
         // start loader
         if (isAutoStarLoader()) {
             startLoaderData();
@@ -490,6 +491,11 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     @Override
     public String getSubTitle() {
         return null;
+    }
+
+    @Override
+    public void onFloatingActionButtonClickListener() {
+        startCheckingAccountActivity(null);
     }
 
     // Interface for callback fragment
