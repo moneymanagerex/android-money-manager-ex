@@ -44,6 +44,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -152,7 +153,7 @@ public class Core {
      * @return
      */
     public static AlertDialog alertDialog(Context ctx, String text) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
+        MaterialDialogCompat.Builder dialog = new MaterialDialogCompat.Builder(ctx);
         // setting alert dialog
         dialog.setIcon(R.drawable.ic_action_warning_light);
         dialog.setTitle(R.string.attention);
@@ -801,7 +802,7 @@ public class Core {
         // create layout
         View view = LayoutInflater.from(context).inflate(R.layout.changelog_layout, null);
         //create dialog
-        AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
+        MaterialDialogCompat.Builder showDialog = new MaterialDialogCompat.Builder(context);
         showDialog.setCancelable(false);
         showDialog.setTitle(R.string.changelog);
 

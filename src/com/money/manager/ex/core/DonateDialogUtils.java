@@ -1,6 +1,23 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.core;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +26,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
@@ -36,7 +54,7 @@ public class DonateDialogUtils {
                 //get text donate
                 String donateText = context.getString(R.string.donate_header);
                 //create dialog
-                AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
+                MaterialDialogCompat.Builder showDialog = new MaterialDialogCompat.Builder(context);
                 showDialog.setCancelable(false);
                 showDialog.setTitle(R.string.donate);
                 showDialog.setIcon(R.drawable.ic_launcher);

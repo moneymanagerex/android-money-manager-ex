@@ -20,7 +20,6 @@ package com.money.manager.ex.settings;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -260,7 +260,7 @@ public class DropboxSettingsActivity extends BaseFragmentActivity {
                 if (getActivity().getSharedPreferences(TipsDialogFragment.PREF_DIALOG, 0).getBoolean(key, false))
                     return;
             }
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
             // title and icons
             alertDialog.setTitle(title);
             // view body

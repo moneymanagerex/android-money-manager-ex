@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2013 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.fragment;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,6 +46,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -413,7 +413,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
      */
     private void showDialogDeleteCheckingAccount(final int[] transId) {
         // create alert dialog and set title and message
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
 
         alertDialog.setTitle(R.string.delete_transaction);
         alertDialog.setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions, transId.length, transId.length));

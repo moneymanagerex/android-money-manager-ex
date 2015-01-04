@@ -18,7 +18,6 @@
 package com.money.manager.ex;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -51,6 +50,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.AccountListActivity.AccountLoaderListFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
@@ -179,7 +179,7 @@ public class MainActivity extends BaseFragmentActivity {
      * Dialog to choose exit from application
      */
     public void exitApplication() {
-        AlertDialog.Builder exitDialog = new AlertDialog.Builder(this);
+        MaterialDialogCompat.Builder exitDialog = new MaterialDialogCompat.Builder(this);
         exitDialog.setTitle(R.string.close_application);
         exitDialog.setMessage(R.string.question_close_application);
         exitDialog.setIcon(R.drawable.ic_launcher);
