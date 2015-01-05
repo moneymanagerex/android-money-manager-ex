@@ -173,7 +173,7 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
             return null;
         }
         // inflate layout
-        View view = (LinearLayout) inflater.inflate(R.layout.fragment_account, container, false);
+        View view = (LinearLayout) inflater.inflate(R.layout.account_fragment, container, false);
         // take object AccountList
         if (mAccountList == null) {
             mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getTableAccountList(mAccountId);

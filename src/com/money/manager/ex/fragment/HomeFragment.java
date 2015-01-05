@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment implements
             return null;
         }
         // inflate layout
-        View view = (LinearLayout) inflater.inflate(R.layout.fragment_main, container, false);
+        View view = (LinearLayout) inflater.inflate(R.layout.home_fragment, container, false);
         // reference view into layout
         linearHome = (LinearLayout) view.findViewById(R.id.linearLayoutHome);
         linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
