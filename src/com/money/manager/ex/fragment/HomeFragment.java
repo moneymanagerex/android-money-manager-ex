@@ -21,8 +21,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.os.Build;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -43,7 +42,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.HeaderViewListAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -86,9 +85,9 @@ public class HomeFragment extends Fragment implements
     // view show in layout
     private TextView txtTotalAccounts;
     private ListView lstAccountBills;
-    private ViewGroup linearHome, linearFooter, linearWelcome;
-    private TextView txtFooterSummary;
-    private TextView txtFooterSummaryReconciled;
+    private ViewGroup linearHome, linearGrandTotal, linearWelcome;
+    private TextView txtGrandTotal;
+    private TextView txtGrandTotalReconciled;
     private ProgressBar prgAccountBills;
 
     @Override
@@ -141,7 +140,7 @@ public class HomeFragment extends Fragment implements
         // inflate layout
         View view = (LinearLayout) inflater.inflate(R.layout.home_fragment, container, false);
         // reference view into layout
-        linearHome = (LinearLayout) view.findViewById(R.id.linearLayoutHome);
+        linearHome = (FrameLayout) view.findViewById(R.id.linearLayoutHome);
         linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
 
         // add account button
@@ -179,10 +178,10 @@ public class HomeFragment extends Fragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MainActivity activity = (MainActivity) getActivity();
-                //Cursor cursor = ((CursorAdapter)lstAccountBills.getAdapter()).getCursor();
-                HeaderViewListAdapter headerViewListAdapter = (HeaderViewListAdapter) lstAccountBills.getAdapter();
+                Cursor cursor = ((CursorAdapter) lstAccountBills.getAdapter()).getCursor();
+                /*HeaderViewListAdapter headerViewListAdapter = (HeaderViewListAdapter) lstAccountBills.getAdapter();
                 AccountBillsAdapter accountBillsAdapter = (AccountBillsAdapter) headerViewListAdapter.getWrappedAdapter();
-                Cursor cursor = accountBillsAdapter.getCursor();
+                Cursor cursor = accountBillsAdapter.getCursor();*/
                 int accountId = -1;
                 if (cursor != null && cursor.moveToPosition(position)) {
                     accountId = cursor.getInt(cursor.getColumnIndex(QueryAccountBills.ACCOUNTID));
@@ -193,13 +192,6 @@ public class HomeFragment extends Fragment implements
                 }
             }
         });
-        // set highlight item
-        if (getActivity() != null && getActivity() instanceof MainActivity) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-                lstAccountBills.setSelector(R.color.holo_blue_light);
-            lstAccountBills.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            //lstAccountBills.setSelection(ListView.INVALID_POSITION);
-        }
 
         prgAccountBills = (ProgressBar) view.findViewById(R.id.progressAccountBills);
 
@@ -212,6 +204,19 @@ public class HomeFragment extends Fragment implements
                 startActivity(intent);
             }
         });
+
+        // grand total
+        linearGrandTotal = (LinearLayout) view.findViewById(R.id.linearLayoutGrandTotal);
+        // textview into layout
+        txtGrandTotal = (TextView) linearGrandTotal.findViewById(R.id.textVievItemAccountTotal);
+        txtGrandTotalReconciled = (TextView) linearGrandTotal.findViewById(R.id.textVievItemAccountTotalReconciled);
+        // set text
+        TextView txtTextGrandTotal = (TextView) linearGrandTotal.findViewById(R.id.textVievItemAccountName);
+        txtTextGrandTotal.setText(R.string.grand_total);
+        txtTextGrandTotal.setTypeface(null, Typeface.BOLD);
+        // invisibile image
+        ImageView imgGrandTotal = (ImageView) linearGrandTotal.findViewById(R.id.imageViewAccountType);
+        imgGrandTotal.setVisibility(View.INVISIBLE);
 
         return view;
     }
@@ -278,30 +283,10 @@ public class HomeFragment extends Fragment implements
                 }
                 // write accounts total
                 txtTotalAccounts.setText(currencyUtils.getBaseCurrencyFormatted(curTotal));
-                // manage footer listview
-                if (linearFooter == null) {
-                    linearFooter = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.item_account_bills, null);
-                    // textview into layout
-                    txtFooterSummary = (TextView) linearFooter.findViewById(R.id.textVievItemAccountTotal);
-                    txtFooterSummaryReconciled = (TextView) linearFooter.findViewById(R.id.textVievItemAccountTotalReconciled);
-                    // set text
-                    TextView txtTextSummary = (TextView) linearFooter.findViewById(R.id.textVievItemAccountName);
-                    txtTextSummary.setText(R.string.summary);
-                    // invisibile image
-                    ImageView imgSummary = (ImageView) linearFooter.findViewById(R.id.imageViewAccountType);
-                    imgSummary.setVisibility(View.INVISIBLE);
-                    // set color textview
-                    txtTextSummary.setTextColor(Color.GRAY);
-                    txtFooterSummary.setTextColor(Color.GRAY);
-                    txtFooterSummaryReconciled.setTextColor(Color.GRAY);
-                }
-                // remove footer
-                lstAccountBills.removeFooterView(linearFooter);
-                // set text
-                txtFooterSummary.setText(txtTotalAccounts.getText());
-                txtFooterSummaryReconciled.setText(currencyUtils.getBaseCurrencyFormatted(curReconciled));
-                // add footer
-                lstAccountBills.addFooterView(linearFooter, null, false);
+
+                txtGrandTotal.setText(txtTotalAccounts.getText());
+                txtGrandTotalReconciled.setText(currencyUtils.getBaseCurrencyFormatted(curReconciled));
+
                 // set adapter and shown
                 lstAccountBills.setAdapter(adapter);
                 setListViewAccountBillsVisible(true);

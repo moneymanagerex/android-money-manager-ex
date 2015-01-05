@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2014 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -29,7 +28,7 @@
     <!-- Preference activity side margins -->
     <dimen name="activity_side_margin">0dp</dimen>
     <dimen name="activity_padding_side">16dp</dimen>
-    
+
     <!-- default padding and margin -->
     <dimen name="money_padding">4dp</dimen>
     <dimen name="money_margin">6dp</dimen>
@@ -37,15 +36,18 @@
 
     <!-- shape dimens -->
     <dimen name="money_corners_radius">2dp</dimen>
-    
+
     <!-- chart dimens -->
     <dimen name="chart_label_text_size">8sp</dimen>
     <dimen name="chart_title_text_size">14sp</dimen>
     <dimen name="chart_list_item_text_size">14sp</dimen>
-    
+
+    <!-- fab in home fragment -->
+    <dimen name="fab_margin_bottom_home_fragment">64dp</dimen>
+
     <!-- Samsung MultiWindow Function -->
-	<dimen name="app_defaultsize_w">632.0dip</dimen>
-	<dimen name="app_defaultsize_h">598.0dip</dimen>
-	<dimen name="app_minimumsize_w">632.0dip</dimen>
-	<dimen name="app_minimumsize_h">598.0dip</dimen>
+    <dimen name="app_defaultsize_w">632.0dip</dimen>
+    <dimen name="app_defaultsize_h">598.0dip</dimen>
+    <dimen name="app_minimumsize_w">632.0dip</dimen>
+    <dimen name="app_minimumsize_h">598.0dip</dimen>
 </resources>

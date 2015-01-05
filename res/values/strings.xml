@@ -497,4 +497,5 @@
 
     <string name="tools">Tools</string>
     <string name="loading">Loading…</string>
+    <string name="grand_total">Grand Total</string>
 </resources>

@@ -709,7 +709,7 @@ public class MainActivity extends BaseFragmentActivity {
         if (mDropboxHelper != null && mDropboxHelper.isLinked())
             adapter.add(new DrawerMenuItem(R.id.menu_sync_dropbox, getString(R.string.synchronize), isDarkTheme ? R.drawable.ic_action_dropbox_dark : R.drawable.ic_action_dropbox_light));
         // manage: add transaction
-        adapter.add(new DrawerMenuItem(R.id.menu_add_transaction_account, getString(R.string.add_transaction), isDarkTheme ? R.drawable.ic_action_add_dark : R.drawable.ic_action_add_light));
+        // adapter.add(new DrawerMenuItem(R.id.menu_add_transaction_account, getString(R.string.add_transaction), isDarkTheme ? R.drawable.ic_action_add_dark : R.drawable.ic_action_add_light));
         // tools
         adapter.add(new DrawerMenuItem(R.id.menu_group_main, getString(R.string.tools), isDarkTheme ? R.drawable.ic_action_domain_dark : R.drawable.ic_action_domain_light));
         // manage: repeating transactions
