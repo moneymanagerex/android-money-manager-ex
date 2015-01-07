@@ -50,8 +50,8 @@ android {
         applicationId 'com.money.manager.ex'
         minSdkVersion 8
         targetSdkVersion 19
-        versionCode 600
-        versionName '1.4.16'
+        versionCode 601
+        versionName '1.4.17'
     }
     sourceSets {
         main {

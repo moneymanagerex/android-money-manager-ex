@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2014 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -18,8 +17,12 @@
   -->
 
 <changelog bulletedList="true">
+    <changelogversion changeDate="January 7, 2015" versionName="1.4.17">
+        <changelogtext>Dropbox API updated to version 1.6.2</changelogtext>
+        <changelogtext>Fixed other minor bugs</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="December 28, 2014" versionName="1.4.16">
-    <changelogtext>Add translation: German (thanks paulle and philipp9494)</changelogtext>
+        <changelogtext>Add translation: German (thanks paulle and philipp9494)</changelogtext>
         <changelogtext>Add translation: Japanese (thanks naofum)</changelogtext>
         <changelogtext>Update all translations</changelogtext>
     </changelogversion>
