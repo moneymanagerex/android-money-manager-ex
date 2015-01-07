@@ -17,8 +17,8 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="in Development" versionName="1.4.17">
-        <changelogtext>Dropbox SDK updated to version 1.6.2</changelogtext>
+    <changelogversion changeDate="January 7, 2015" versionName="1.4.17">
+        <changelogtext>Dropbox API updated to version 1.6.2</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="December 28, 2014" versionName="1.4.16">
