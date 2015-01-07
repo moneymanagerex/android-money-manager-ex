@@ -17,14 +17,8 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="Still in development" versionName="1.5.00">
-        <changelogtext>Introduced the material layout design</changelogtext>
-        <changelogtext>Changed sync with Dropbox. The downloaded file is downloaded as temporary and
-            when downloaded is overwritten
-        </changelogtext>
-        <changelogtext>Changed database management. Now no longer creates the log file and
-            everything is managed on a single file
-        </changelogtext>
+    <changelogversion changeDate="in Development" versionName="1.4.17">
+        <changelogtext>Dropbox SDK updated to version 1.6.2</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="December 28, 2014" versionName="1.4.16">
