@@ -27,47 +27,33 @@
         <changelogtext>Update all translations</changelogtext>
     </changelogversion>
     <changelogversion changeDate="October 27, 2014" versionName="1.4.15">
-        <changelogtext>Added setting to enable/disable repeating transaction notifications
-        </changelogtext>
-        <changelogtext>Fixed issue that shows the messagebox of the donation, even if you've already
-            donated
-        </changelogtext>
-        <changelogtext>Fixed issue in searching of accounts, categories, currencies and payees
-        </changelogtext>
+        <changelogtext>Added setting to enable/disable repeating transaction notifications</changelogtext>
+        <changelogtext>Fixed issue that shows the messagebox of the donation, even if you've alreadydonated</changelogtext>
+        <changelogtext>Fixed issue in searching of accounts, categories, currencies and payees</changelogtext>
         <changelogtext>Migrate to Google In App Billing v3</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="September 6, 2014" versionName="1.4.14">
-        <changelogtext>Fixed issue that sometimes prevented by modifying the amounts in the dialog
-        </changelogtext>
+        <changelogtext>Fixed issue that sometimes prevented by modifying the amounts in the dialog</changelogtext>
         <changelogtext>Updated translations</changelogtext>
     </changelogversion>
     <changelogversion changeDate="August 25, 2014" versionName="1.4.13">
         <changelogtext>Fixed minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="August 10, 2014" versionName="1.4.12">
-        <changelogtext>Fixed problem when changing the state and the type of transaction
-        </changelogtext>
+        <changelogtext>Fixed problem when changing the state and the type of transaction</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="July 28, 2014" versionName="1.4.11">
         <changelogtext>Fixed application crash when user choose transfer transaction</changelogtext>
-        <changelogtext>Add changeloglib library to shown application changelog(thanks
-            gabrielemariotti)
-        </changelogtext>
+        <changelogtext>Add changeloglib library to shown application changelog(thanksgabrielemariotti)</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="July 12, 2014" versionName="1.4.10">
-        <changelogtext>Implemented the setting that allows you to change the language of the
-            application
-        </changelogtext>
-        <changelogtext>Implemented functionality to update the currency exchange, in the Currencies
-            interface
-        </changelogtext>
+        <changelogtext>Implemented the setting that allows you to change the language of theapplication</changelogtext>
+        <changelogtext>Implemented functionality to update the currency exchange, in the Currenciesinterface</changelogtext>
         <changelogtext>Implemented in the transfer transaction currency exchange</changelogtext>
-        <changelogtext>Implemented the highlighting of search results into categories, payees,
-            currencies, etc ...
-        </changelogtext>
+        <changelogtext>Implemented the highlighting of search results into categories, payees,currencies, etc ...</changelogtext>
         <changelogtext>Improved searching and displaying of the categories</changelogtext>
         <changelogtext>Add translation: Hungarian (thanks zolmesz)</changelogtext>
         <changelogtext>Add translation: Polish (thanks maral)</changelogtext>
@@ -76,31 +62,24 @@
     </changelogversion>
     <changelogversion changeDate="March 14, 2014" versionName="1.4.9">
         <changelogtext>Fixed crash on startup for devices with Gingerbread versions</changelogtext>
-        <changelogtext>Fixed the search of the transactions, with the only criteria category
-        </changelogtext>
+        <changelogtext>Fixed the search of the transactions, with the only criteria category</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="February 23, 2014" versionName="1.4.8">
         <changelogtext>Fixed layout for devices with Gingerbread versions</changelogtext>
-        <changelogtext>when you are selecting a payee, category, currency, for a new transaction ...
-            from this version immediately opens the looking field
-            (works from 4.2+)
-        </changelogtext>
+        <changelogtext>when you are selecting a payee, category, currency, for a new transaction ...from this version immediately opens the looking field(works from 4.2+)</changelogtext>
         <changelogtext>Fixed bug: you can enter an account with a negative balance.</changelogtext>
         <changelogtext>Add translation: Vietnamese (thanks duytrung2121)</changelogtext>
         <changelogtext>Update translations</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="January 26, 2014" versionName="1.4.7">
-        <changelogtext>Fixed crash insertion transaction with the setting "Default Payee" set to
-            Last
-        </changelogtext>
+        <changelogtext>Fixed crash insertion transaction with the setting "Default Payee" set toLast</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="January 25, 2014" versionName="1.4.5">
         <changelogtext>Fixed issue new drawer icon menu</changelogtext>
-        <changelogtext>Add setting: Searching by text contents and not by text beginning with
-        </changelogtext>
+        <changelogtext>Add setting: Searching by text contents and not by text beginning with</changelogtext>
         <changelogtext>Add translation: Hebrew (thanks avi_mar)</changelogtext>
         <changelogtext>Update other translations</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
@@ -110,11 +89,8 @@
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="January 7, 2014" versionName="1.4.3">
-        <changelogtext>Updated translations: French, Portoguese and Portoguese, Brazilian.
-        </changelogtext>
-        <changelogtext>Fixed editing a transaction of transfer: destination account is reported
-            correctly.
-        </changelogtext>
+        <changelogtext>Updated translations: French, Portoguese and Portoguese, Brazilian.</changelogtext>
+        <changelogtext>Fixed editing a transaction of transfer: destination account is reportedcorrectly.</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="January 6, 2014" versionName="1.4.2">
@@ -122,36 +98,18 @@
         <changelogtext>Updated translations: Czech and French</changelogtext>
     </changelogversion>
     <changelogversion changeDate="January 3, 2014" versionName="1.4.0">
-        <changelogtext>New layout for the application, added drawer, animations, etc ...
-        </changelogtext>
-        <changelogtext>New layout for the insertion and editing of transactions and repeating
-            transactions
-        </changelogtext>
-        <changelogtext>New layout for the list of transactions (colored status: grey = not
-            reconciled, green = reconciled, red = void; orange = follow-up;
-            duplicated = blue)
-        </changelogtext>
+        <changelogtext>New layout for the application, added drawer, animations, etc ...</changelogtext>
+        <changelogtext>New layout for the insertion and editing of transactions and repeatingtransactions</changelogtext>
+        <changelogtext>New layout for the list of transactions (colored status: grey = notreconciled, green = reconciled, red = void; orange = follow-up;duplicated = blue)</changelogtext>
         <changelogtext>Added all the world's currencies.</changelogtext>
-        <changelogtext>Changed the layout of the categories. Now the display of categories, it is
-            much clearer
-        </changelogtext>
-        <changelogtext>Added a new setting "Default State": You can choose a default state for new
-            transactions
-        </changelogtext>
-        <changelogtext>Added new setting "Default Payee": You can choose between the options "None"
-            (the beneficiary must be chosen by the user for each
-            transaction) and "Last" (the application proposes the ultimate payee used)
-        </changelogtext>
+        <changelogtext>Changed the layout of the categories. Now the display of categories, it ismuch clearer</changelogtext>
+        <changelogtext>Added a new setting "Default State": You can choose a default state for newtransactions</changelogtext>
+        <changelogtext>Added new setting "Default Payee": You can choose between the options "None"(the beneficiary must be chosen by the user for eachtransaction) and "Last" (the application proposes the ultimate payee used)</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
-        <changelogtext>Please note that this version has disabled the dashboard, it is going to be
-            redesigned.
-        </changelogtext>
+        <changelogtext>Please note that this version has disabled the dashboard, it is going to beredesigned.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="October 7, 2013" versionName="1.3.6">
-        <changelogtext>Fixed issue with selection of categories, payee or currencies, and with
-            pressing the back button in the actionbar not return the selected
-            data
-        </changelogtext>
+        <changelogtext>Fixed issue with selection of categories, payee or currencies, and withpressing the back button in the actionbar not return the selecteddata</changelogtext>
         <changelogtext>Fixed issue in the suffix formatting currency</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
@@ -163,17 +121,13 @@
         <changelogtext>Updated all existing translations</changelogtext>
     </changelogversion>
     <changelogversion changeDate="September 27, 2013" versionName="1.3.4">
-        <changelogtext>Adding online help page on the project wiki, to sync with Dropbox.
-        </changelogtext>
+        <changelogtext>Adding online help page on the project wiki, to sync with Dropbox.</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="September 2, 2013" versionName="1.3.3">
         <changelogtext>Fixed issue with display the pie charts.</changelogtext>
-        <changelogtext>Arrange the size of the widgets, which occupied more space than necessary.
-        </changelogtext>
-        <changelogtext>Fixed problem when opening the Repeating Transaction from notification, if
-            set Pin Code, this was not required.
-        </changelogtext>
+        <changelogtext>Arrange the size of the widgets, which occupied more space than necessary.</changelogtext>
+        <changelogtext>Fixed problem when opening the Repeating Transaction from notification, ifset Pin Code, this was not required.</changelogtext>
         <changelogtext>Update all translations.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="August 26, 2013" versionName="1.3.2">
@@ -190,15 +144,10 @@
         <changelogtext>Added in the home, Dashboard such as MoneyManagerEx for PC</changelogtext>
         <changelogtext>Fixed opening files mmb from file browser</changelogtext>
         <changelogtext>Added a new item in the main menu to sync with Dropbox</changelogtext>
-        <changelogtext>Added two extensions that can be used in the application DashClock of Roman
-            Nurik
-        </changelogtext>
+        <changelogtext>Added two extensions that can be used in the application DashClock of RomanNurik</changelogtext>
         <changelogtext>Added MultiWindow support for Samsung devices</changelogtext>
         <changelogtext>Added language: Portoguese (thanks Ricardo!)</changelogtext>
-        <changelogtext>From this version, the notification of repeating transactions overdue will no
-            longer be displayed when you open the application, but at a
-            specific time that you have set
-        </changelogtext>
+        <changelogtext>From this version, the notification of repeating transactions overdue will nolonger be displayed when you open the application, but at aspecific time that you have set</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
 
