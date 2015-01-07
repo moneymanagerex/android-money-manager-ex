@@ -89,6 +89,7 @@ public class HomeFragment extends Fragment implements
     private TextView txtGrandTotal;
     private TextView txtGrandTotalReconciled;
     private ProgressBar prgAccountBills;
+    private FloatingActionButton mFloatingActionButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -195,8 +196,8 @@ public class HomeFragment extends Fragment implements
 
         prgAccountBills = (ProgressBar) view.findViewById(R.id.progressAccountBills);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new OnClickListener() {
+        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        mFloatingActionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
@@ -252,7 +253,7 @@ public class HomeFragment extends Fragment implements
                     }
                 }
                 // show username
-                if (!TextUtils.isEmpty(MoneyManagerApplication.getInstanceApp().getUserName())) {
+                /*if (!TextUtils.isEmpty(MoneyManagerApplication.getInstanceApp().getUserName())) {
                     BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
                     if (activity != null) {
                         activity.getSupportActionBar().setSubtitle(MoneyManagerApplication.getInstanceApp().getUserName());
@@ -261,7 +262,7 @@ public class HomeFragment extends Fragment implements
                 // set user name on drawer
                 if (mainActivity != null)
                     mainActivity.setDrawableUserName(MoneyManagerApplication.getInstanceApp().getUserName());
-
+                */
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:

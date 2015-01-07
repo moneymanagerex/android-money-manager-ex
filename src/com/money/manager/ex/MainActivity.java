@@ -18,6 +18,7 @@
 package com.money.manager.ex;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -38,6 +39,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -104,7 +106,7 @@ public class MainActivity extends BaseFragmentActivity {
     private LinearLayout mDrawerLayout;
     private ListView mDrawerList;
     private DrawerLayout mDrawer;
-    private ActionBarDrawerToggle mDrawerToggle;
+    private MyActionBarDrawerToggle mDrawerToggle;
     // object in drawer
     private LinearLayout mDrawerLinearRepeating;
     private TextView mDrawerTextUserName;
@@ -572,7 +574,7 @@ public class MainActivity extends BaseFragmentActivity {
         // set a custom shadow that overlays the main content when the drawer opens
         if (mDrawer != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
+                mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
                 mDrawer.setDrawerListener(mDrawerToggle);
                 // create drawer menu
                 createDrawerMenu();
@@ -870,6 +872,33 @@ public class MainActivity extends BaseFragmentActivity {
                     }
                 }, 250);
             }
+        }
+    }
+
+    public class MyActionBarDrawerToggle extends ActionBarDrawerToggle {
+
+
+        public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+            super(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes);
+        }
+
+        public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+            super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
+        }
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            String title = MoneyManagerApplication.getInstanceApp().getUserName();
+            if (TextUtils.isEmpty(title))
+                title = getString(R.string.application_name);
+            getSupportActionBar().setTitle(title);
+            super.onDrawerOpened(drawerView);
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            getSupportActionBar().setTitle(R.string.application_name);
+            super.onDrawerClosed(drawerView);
         }
     }
 }
