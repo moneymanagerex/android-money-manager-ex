@@ -39,23 +39,6 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/money_margin"
-                android:layout_marginRight="@dimen/money_margin"
-                android:layout_marginTop="@dimen/money_margin"
-                android:animateLayoutChanges="true"
-                android:background="?attr/theme_background_color"
-                android:orientation="vertical"
-                android:padding="@dimen/money_padding">
-
-                <include
-                    android:id="@+id/linearLayoutGrandTotal"
-                    layout="@layout/item_account_bills"/>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="@dimen/money_margin"
                 android:layout_weight="1"
