@@ -57,6 +57,7 @@ import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
+import com.money.manager.ex.database.TableSplitTransactions;
 
 import java.util.ArrayList;
 
@@ -202,7 +203,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         registerForContextMenu(getListView());
         // set divider
         /*Core core = new Core(getSherlockActivity());
-		if (core.getThemeApplication() == R.style.Theme_Money_Manager_Light_DarkActionBar)
+        if (core.getThemeApplication() == R.style.Theme_Money_Manager_Light_DarkActionBar)
 			getListView().setDivider(new ColorDrawable(new Core(getSherlockActivity()).resolveIdAttribute(R.attr.theme_background_color)));*/
         //getListView().setSelector(new ColorDrawable(getResources().getColor(R.color.money_background)));
         // set animation
@@ -419,12 +420,15 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                TableCheckingAccount trans = new TableCheckingAccount();
+                TableSplitTransactions splitTransactions = new TableSplitTransactions();
                 for (int i = 0; i < transId.length; i++) {
-                    TableCheckingAccount trans = new TableCheckingAccount();
                     if (getActivity().getContentResolver().delete(trans.getUri(), TableCheckingAccount.TRANSID + "=?", new String[]{Integer.toString(transId[i])}) == 0) {
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    // delete also split transactions
+                    getActivity().getContentResolver().delete(splitTransactions.getUri(), TableSplitTransactions.TRANSID + "=?", new String[]{Integer.toString(transId[i])});
                 }
                 // restart loader
                 startLoaderData();

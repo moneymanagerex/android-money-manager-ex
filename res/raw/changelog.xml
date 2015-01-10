@@ -17,6 +17,9 @@
   -->
 
 <changelog bulletedList="true">
+    <changelogversion changeDate="" versionName="1.4.18">
+        <changelogtext>Fixed deletion of transactions with splitting into several categories</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="January 7, 2015" versionName="1.4.17">
         <changelogtext>Dropbox API updated to version 1.6.2</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
