@@ -59,6 +59,7 @@ import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySu
 import com.money.manager.ex.CurrencyFormatsListActivity.CurrencyFormatsLoaderListFragment;
 import com.money.manager.ex.PayeeActivity.PayeeLoaderListFragment;
 import com.money.manager.ex.RepeatingTransactionListActivity.RepeatingTransactionListFragment;
+import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.adapter.DrawerMenuItem;
 import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.Core;
@@ -725,7 +726,7 @@ public class MainActivity extends BaseFragmentActivity {
         // donate
         adapter.add(new DrawerMenuItem(R.id.menu_donate, getString(R.string.donate), isDarkTheme ? R.drawable.ic_action_reports_dark : R.drawable.ic_action_redeem_light));
         // help
-        adapter.add(new DrawerMenuItem(R.id.menu_help, getString(R.string.help), isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light));
+        adapter.add(new DrawerMenuItem(R.id.menu_about, getString(R.string.about), isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light));
 
         // get drawerlist and set adapter
         if (mDrawerList != null)
@@ -823,6 +824,9 @@ public class MainActivity extends BaseFragmentActivity {
             return true;
         } else if (item.getId() == R.id.menu_help) {
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
+            return true;
+        } else if (item.getId() == R.id.menu_about) {
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
             return true;
         }
         return false;
