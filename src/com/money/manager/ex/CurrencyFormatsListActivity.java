@@ -46,15 +46,15 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
-import com.money.manager.ex.core.ActivityUtils;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.utils.ActivityUtils;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.List;
 

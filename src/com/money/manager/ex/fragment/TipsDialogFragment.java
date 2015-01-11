@@ -37,7 +37,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.RawFileUtils;
+import com.money.manager.ex.utils.RawFileUtils;
 
 public class TipsDialogFragment extends DialogFragment {
     public static final String PREF_DIALOG = "com.money.manager.ex_tips_dialog_preferences";

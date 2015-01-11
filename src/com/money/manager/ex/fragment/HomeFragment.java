@@ -59,13 +59,13 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.Calendar;
 

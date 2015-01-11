@@ -38,12 +38,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.Arrays;
 
@@ -52,10 +52,6 @@ import java.util.Arrays;
  * @version 0.6.4
  */
 public class AccountListEditActivity extends BaseFragmentActivity implements InputAmountDialogListener {
-    // LOGCAT
-    private static final String LOGCAT = AccountListEditActivity.class.getSimpleName();
-    // ID REQUEST Data
-    private static final int REQUEST_PICK_CURRENCY = 1;
     // KEY INTENT for data exchange
     public static final String KEY_INTENT_ACTION = "AccountListEditActivity:IntentAction";
     public static final String KEY_ACCOUNT_ID = "AccountListEditActivity:AccountId";
@@ -73,14 +69,18 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
     public static final String KEY_CURRENCY_ID = "AccountListEditActivity:CurrencyId";
     public static final String KEY_CURRENCY_NAME = "AccountListEditActivity:CurrencyName";
     public static final String KEY_SYMBOL = "AccountListEditActivity:Symbol";
+    // LOGCAT
+    private static final String LOGCAT = AccountListEditActivity.class.getSimpleName();
+    // ID REQUEST Data
+    private static final int REQUEST_PICK_CURRENCY = 1;
     private static final String KEY_ACTION = "AccountListEditActivity:Action";
     // Constant
     private static final int PLUS = 0;
     private static final int LESS = 1;
-    // Action type
-    private String mIntentAction = ""; // Insert? Edit?
     // Table object instance
     TableAccountList mAccountList = new TableAccountList();
+    // Action type
+    private String mIntentAction = ""; // Insert? Edit?
     // Activity members
     private int mAccountId = -1;
     private String mAccountName, mAccountType, mAccountNum, mHeldAt, mWebsite, mContactInfo, mAccessInfo, mStatus, mNotes, mFavoriteAcct, mCurrencyName;

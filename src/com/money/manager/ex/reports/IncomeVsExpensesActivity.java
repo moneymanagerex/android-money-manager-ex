@@ -54,12 +54,12 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

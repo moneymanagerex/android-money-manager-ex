@@ -27,8 +27,8 @@ import android.util.Log;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.CurrencyUtils;
-import com.money.manager.ex.core.RawFileUtils;
+import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.utils.RawFileUtils;
 
 import java.util.ArrayList;
 import java.util.List;

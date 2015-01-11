@@ -43,13 +43,13 @@ import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.DateUtils;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.utils.DateUtils;
 
 import java.util.Date;
 

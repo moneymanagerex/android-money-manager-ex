@@ -57,6 +57,7 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -46,8 +46,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
-import com.money.manager.ex.core.DateUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -61,6 +59,8 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.utils.DateUtils;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;

@@ -51,12 +51,12 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SearchActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.DateUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+import com.money.manager.ex.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

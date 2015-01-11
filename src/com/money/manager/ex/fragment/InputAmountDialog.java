@@ -35,8 +35,8 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.CurrencyUtils;
-import com.money.manager.ex.core.MathUtils;
+import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.utils.MathUtils;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
