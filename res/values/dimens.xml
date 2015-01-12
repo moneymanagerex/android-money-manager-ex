@@ -33,6 +33,7 @@
     <dimen name="money_padding">4dp</dimen>
     <dimen name="money_margin">6dp</dimen>
     <dimen name="money_margin_bottom_top">3dp</dimen>
+    <dimen name="money_margin_top_textview_widget_edittext">-8dp</dimen>
 
     <!-- shape dimens -->
     <dimen name="money_corners_radius">2dp</dimen>
