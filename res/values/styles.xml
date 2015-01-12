@@ -55,6 +55,11 @@
         <item name="android:singleLine">true</item>
     </style>
 
+    <style name="SpinnerApp_Light_DarkActionBar" parent="android:Widget.Holo.Light.Spinner">
+        <item name="android:background">@drawable/app_light_darkactionbar_spinner_background_holo_light</item>
+        <item name="android:dropDownSelector">@drawable/app_light_darkactionbar_list_selector_holo_light</item>
+    </style>
+
     <style name="EditEventCustomActionButton" parent="android:style/Widget.Holo.Light.ActionButton">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>
