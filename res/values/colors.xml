@@ -65,6 +65,7 @@
     <color name="holo_light_darkaction_money_background">#EDEEF1</color>
     <color name="money_background_dark">#F3F4F5</color>
     <color name="money_background_button">#EEEEEE</color>
+    <color name="app_light_darkactionbar_color">#727272</color>
     <!-- AChartEngine Colors -->
     <color name="theme_chart_labels_color">#CCCCCC</color>
     <!-- Material Design -->
@@ -80,6 +81,4 @@
     <color name="md_red">@color/material_red_500</color>
     <color name="md_green">@color/material_green_500</color>
     <color name="md_indigo">@color/material_indigo_500</color>
-
-    <color name="app_light_darkactionbar_color">#727272</color>
 </resources>
