@@ -31,8 +31,9 @@
         <item name="android:icon">@color/md_icons</item>
         <item name="android:divider">@color/md_divider</item>
         <item name="android:textColor">@color/md_primary_text</item>
-        <item name="android:dropDownSpinnerStyle">@style/SpinnerApp_Light_DarkActionBar</item>
-        <item name="android:spinnerStyle">@style/SpinnerApp_Light_DarkActionBar</item>
+        <item name="android:dropDownSpinnerStyle">@style/Money.Spinner.Style</item>
+        <item name="android:spinnerStyle">@style/Money.Spinner.Style</item>
+        <item name="android:editTextStyle">@style/Money.EditText</item>
     </style>
 
     <!-- Theme Application -->

@@ -47,18 +47,19 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Money.TextView.Widget.EditText" parent="Widget.AppCompat.EditText">
-        <item name="android:ellipsize">end</item>
+    <style name="Money.Base.TextView.Widget.EditText" parent="android:Widget.Holo.EditText"/>
+
+    <style name="Money.TextView.Widget.EditText" parent="Money.Base.TextView.Widget.EditText">
+    <item name="android:ellipsize">end</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:layout_marginTop">@dimen/money_margin_top_textview_widget_edittext</item>
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="SpinnerApp_Light_DarkActionBar" parent="android:Widget.Holo.Light.Spinner">
-        <item name="android:background">@drawable/app_light_darkactionbar_spinner_background_holo_light</item>
-        <item name="android:dropDownSelector">@drawable/app_light_darkactionbar_list_selector_holo_light</item>
-    </style>
+    <style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner"/>
+
+    <style name="Money.EditText" parent="android:Widget.Holo.EditText"/>
 
     <style name="EditEventCustomActionButton" parent="android:style/Widget.Holo.Light.ActionButton">
         <item name="android:layout_height">match_parent</item>
