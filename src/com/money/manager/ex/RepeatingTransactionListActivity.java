@@ -31,9 +31,6 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -149,6 +146,14 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
             setListShown(false);
             // start loaderapplication.getSQLiteStringDate(date)
             getLoaderManager().initLoader(ID_LOADER_REPEATING, null, this);
+            // set fab visible
+            setFloatingActionButtonVisbile(true);
+            setFloatingActionButtonAttachListView(true);
+        }
+
+        @Override
+        public void onFloatingActionButtonClickListener() {
+            startRepeatingTransactionActivity();
         }
 
         @Override
@@ -256,15 +261,6 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         }
 
         @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            super.onCreateOptionsMenu(menu, inflater);
-            // add menu item add
-            MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
-            itemadd.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_add));
-            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        }
-
-        @Override
         public void onLoaderReset(Loader<Cursor> loader) {
             switch (loader.getId()) {
                 case ID_LOADER_REPEATING:
@@ -284,16 +280,6 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
                         setListShownNoAnimation(true);
                     }
             }
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                case MENU_ITEM_ADD:
-                    startRepeatingTransactionActivity();
-                    break;
-            }
-            return super.onOptionsItemSelected(item);
         }
 
         @Override
