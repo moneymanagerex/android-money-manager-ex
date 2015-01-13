@@ -121,8 +121,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     private int mNumOccurrence = -1;
     // transaction numbers
     private String mTransNumber = "";
-    // application
-    private MoneyManagerApplication mApplication;
     // reference view into layout
     private Spinner spinAccount, spinToAccount, spinTransCode, spinStatus, spinFrequencies;
     private ImageButton btnTransNumber;
@@ -290,9 +288,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         };
 
-
         // accountlist <> to populate the spin
-        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
+        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(MoneyManagerApplication.getInstanceApp().getAccountsOpenVisible(), MoneyManagerApplication.getInstanceApp().getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());
@@ -777,7 +774,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         txtCaptionAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         txtAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
-        txtPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+        //txtPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         txtSelectPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
 
         refreshHeaderAmount();
