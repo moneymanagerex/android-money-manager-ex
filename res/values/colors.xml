@@ -78,7 +78,7 @@
     <color name="md_icons">@color/material_white</color>
     <color name="md_divider">#B6B6B6</color>
 
-    <color name="md_red">@color/material_red_500</color>
-    <color name="md_green">@color/material_green_500</color>
+    <color name="md_red">@color/material_red_700</color>
+    <color name="md_green">@color/material_green_700</color>
     <color name="md_indigo">@color/material_indigo_500</color>
 </resources>
