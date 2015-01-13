@@ -86,6 +86,14 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // set elevation actionbar 0
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setElevation(0);
+    }
+
     public void createActionBar() {
         getSupportActionBar().setDisplayOptions(
                 ActionBar.DISPLAY_SHOW_CUSTOM,

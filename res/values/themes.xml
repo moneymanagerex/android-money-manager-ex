@@ -18,9 +18,9 @@
 
 <resources>
 
-    <style name="App" parent="@style/Theme.AppCompat" />
+    <style name="App" parent="@style/Theme.AppCompat"/>
 
-    <style name="App_Light" parent="@style/Theme.AppCompat.Light" />
+    <style name="App_Light" parent="@style/Theme.AppCompat.Light"/>
 
     <style name="App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/md_primary</item>
@@ -34,6 +34,7 @@
         <item name="android:dropDownSpinnerStyle">@style/Money.Spinner.Style</item>
         <item name="android:spinnerStyle">@style/Money.Spinner.Style</item>
         <item name="android:editTextStyle">@style/Money.EditText</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <!-- Theme Application -->
