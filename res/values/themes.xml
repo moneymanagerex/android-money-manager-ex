@@ -35,6 +35,7 @@
         <item name="android:spinnerStyle">@style/Money.Spinner.Style</item>
         <item name="android:editTextStyle">@style/Money.EditText</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionModeBackground">@color/md_primary_dark</item>
     </style>
 
     <!-- Theme Application -->
