@@ -133,11 +133,11 @@ public class AllDataAdapter extends CursorAdapter {
         holder.txtAmount.setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), amount));
         // text color amount
         if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)))) {
-            holder.txtAmount.setTextColor(Color.GRAY);
+            holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_grey_700));
         } else if (Constants.TRANSACTION_TYPE_DEPOSIT.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)))) {
-            holder.txtAmount.setTextColor(mCore.resolveColorAttribute(R.attr.holo_green_color_theme));
+            holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_green_700));
         } else {
-            holder.txtAmount.setTextColor(mCore.resolveColorAttribute(R.attr.holo_red_color_theme));
+            holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_red_700));
         }
         // compose payee description
         holder.txtPayee.setText(cursor.getString(cursor.getColumnIndex(PAYEE)));
@@ -180,7 +180,7 @@ public class AllDataAdapter extends CursorAdapter {
         }
         // check if item is checked
         if (mCheckedPosition.get(cursor.getPosition(), false)) {
-            view.setBackgroundResource(R.color.holo_blue_light);
+            view.setBackgroundResource(R.color.material_green_100);
         } else {
             view.setBackgroundResource(android.R.color.transparent);
         }
