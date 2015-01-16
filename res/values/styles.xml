@@ -35,6 +35,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Money.TextView.Subhead" parent="TextAppearance.AppCompat.Subhead"/>
+
+    <style name="Money.TextView.Subhead.Inverse" parent="TextAppearance.AppCompat.Subhead.Inverse">
+        <item name="android:textColor">@color/md_icons</item>
+    </style>
+
+    <style name="Money.TextView.Body2" parent="TextAppearance.AppCompat.Body2"/>
+
+    <style name="Money.TextView.Body2.Inverse" parent="Money.TextView.Body2">
+        <item name="android:textColor">@color/md_icons</item>
+    </style>
+
     <style name="Money.TextView.Header" parent="Money.TextView">
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/md_secondary_text</item>
@@ -51,7 +63,7 @@
     <style name="Money.Base.TextView.Widget.EditText" parent="android:Widget.Holo.EditText"/>
 
     <style name="Money.TextView.Widget.EditText" parent="Money.Base.TextView.Widget.EditText">
-    <item name="android:ellipsize">end</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:singleLine">true</item>
