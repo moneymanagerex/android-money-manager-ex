@@ -31,8 +31,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,18 +39,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.MaterialDialogCompat;
+import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.CheckingAccountActivity;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SearchActivity;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
+import com.money.manager.ex.adapter.DrawerMenuItem;
+import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
@@ -212,67 +213,6 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         if (isAutoStarLoader()) {
             startLoaderData();
         }
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        //if (item.getGroupId() == getContextMenuGroupId())
-        // take a info of the selected menu, and cursor at position
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
-        // check if cursor is valid
-        if (cursor != null) {
-            switch (item.getItemId()) {
-                case R.id.menu_delete:
-                    showDialogDeleteCheckingAccount(new int[]{cursor.getInt(cursor.getColumnIndex(QueryAllData.ID))});
-                    return true;
-                case R.id.menu_none:
-                case R.id.menu_reconciled:
-                case R.id.menu_follow_up:
-                case R.id.menu_duplicate:
-                case R.id.menu_void:
-                    String status = Character.toString(item.getAlphabeticShortcut());
-                    if (setStatusCheckingAccount(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)), status)) {
-                        startLoaderData();
-                        return true;
-                    }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        // take info and cursor from listview adapter
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
-        // check if cursor is valid
-        if (cursor == null)
-            return;
-		/* getActivity().getMenuInflater().inflate(R.menu.contextmenu_accountfragment, menu);
-		// add manually
-		int[] menuItem = new int[] { R.id.menu_edit, R.id.menu_delete, R.id.menu_reconciled, R.id.menu_none, R.id.menu_follow_up, R.id.menu_duplicate,
-				R.id.menu_void };
-		int[] menuText = new int[] { R.string.edit, R.string.delete, R.string.status_reconciled, R.string.status_none, R.string.status_follow_up,
-				R.string.status_duplicate, R.string.status_void };
-		for (int i = 0; i < menuItem.length; i++) {
-			menu.add(getContextMenuGroupId(), menuItem[i], i, menuText[i]);
-		} */
-        // create a context menu
-        getActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName)));
-        // hide current status
-        if (menu.findItem(R.id.menu_reconciled) != null)
-            menu.findItem(R.id.menu_reconciled).setVisible(!Constants.TRANSACTION_STATUS_RECONCILED.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
-        if (menu.findItem(R.id.menu_none) != null)
-            menu.findItem(R.id.menu_none).setVisible(!Constants.TRANSACTION_STATUS_UNRECONCILED.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
-        if (menu.findItem(R.id.menu_duplicate) != null)
-            menu.findItem(R.id.menu_duplicate).setVisible(!Constants.TRANSACTION_STATUS_DUPLICATE.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
-        if (menu.findItem(R.id.menu_follow_up) != null)
-            menu.findItem(R.id.menu_follow_up).setVisible(!Constants.TRANSACTION_STATUS_FOLLOWUP.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
-        if (menu.findItem(R.id.menu_void) != null)
-            menu.findItem(R.id.menu_void).setVisible(!Constants.TRANSACTION_STATUS_VOID.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryAllData.Status))));
-
     }
 
     @Override
@@ -533,7 +473,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, android.view.MenuItem item) {
-            ArrayList<Integer> transIds = new ArrayList<Integer>();
+            final ArrayList<Integer> transIds = new ArrayList<Integer>();
             if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                 AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
                 Cursor cursor = adapter.getCursor();
@@ -548,6 +488,58 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                 }
             }
             switch (item.getItemId()) {
+                case R.id.menu_change_status:
+                    final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
+                    final Core core = new Core(getActivity());
+                    final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
+                    // add status
+                    adapter.add(new DrawerMenuItem(R.id.menu_none, getString(R.string.status_none), isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light, ""));
+                    adapter.add(new DrawerMenuItem(R.id.menu_reconciled, getString(R.string.status_reconciled), isDarkTheme ? R.drawable.ic_action_done_dark : R.drawable.ic_action_done_light, "R"));
+                    adapter.add(new DrawerMenuItem(R.id.menu_follow_up, getString(R.string.status_follow_up), isDarkTheme ? R.drawable.ic_action_alarm_on_dark : R.drawable.ic_action_alarm_on_light, "F"));
+                    adapter.add(new DrawerMenuItem(R.id.menu_duplicate, getString(R.string.status_duplicate), isDarkTheme ? R.drawable.ic_action_copy_dark : R.drawable.ic_action_copy_light, "D"));
+                    adapter.add(new DrawerMenuItem(R.id.menu_void, getString(R.string.status_void), isDarkTheme ? R.drawable.ic_action_halt_dark : R.drawable.ic_action_halt_light, "V"));
+
+                    // open dialog
+                    final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                            .title(getString(R.string.change_status))
+                            .adapter(adapter)
+                            .theme(core.getThemeApplication() == R.style.Theme_Money_Manager ? Theme.DARK : Theme.LIGHT)
+                            .build();
+
+                    ListView listView = dialog.getListView();
+                    if (listView != null) listView.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            DrawerMenuItem item = adapter.getItem(position);
+                            switch (item.getId()) {
+                                case R.id.menu_none:
+                                case R.id.menu_reconciled:
+                                case R.id.menu_follow_up:
+                                case R.id.menu_duplicate:
+                                case R.id.menu_void:
+                                    String status = item.getAlphabeticShortcut();
+                                    if (setStatusCheckingAccount(convertArraryListToArray(transIds), status)) {
+                                        ((AllDataAdapter) getListAdapter()).clearPositionChecked();
+                                        startLoaderData();
+                                    }
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                    mode.finish();
+                    break;
+                case R.id.menu_duplicate_transactions:
+                    int[] ids = convertArraryListToArray(transIds);
+                    Intent[] intents = new Intent[ids.length];
+                    for (int i = 0; i < ids.length; i++) {
+                        intents[i] = new Intent(getActivity(), CheckingAccountActivity.class);
+                        intents[i].putExtra(CheckingAccountActivity.KEY_TRANS_ID, ids[i]);
+                        intents[i].setAction(Intent.ACTION_PASTE);
+                    }
+                    getActivity().startActivities(intents);
+                    mode.finish();
+                    break;
                 case R.id.menu_delete:
                     showDialogDeleteCheckingAccount(convertArraryListToArray(transIds));
                     return true;

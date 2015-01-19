@@ -498,4 +498,6 @@
     <string name="tools">Tools</string>
     <string name="loading">Loading…</string>
     <string name="grand_total">Grand Total</string>
+    <string name="change_status">Change status</string>
+    <string name="duplicate_selected_transactions">Duplicate selected transactions</string>
 </resources>

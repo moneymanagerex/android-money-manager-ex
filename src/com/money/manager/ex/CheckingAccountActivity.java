@@ -292,7 +292,10 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     mTransId = getIntent().getIntExtra(KEY_TRANS_ID, -1);
                     // select data transaction
-                    getCheckingAccount(mTransId);
+                    getCheckingAccount(mTransId, false);
+                } else if (getIntent().getAction() != null && Intent.ACTION_PASTE.equals(getIntent().getAction())) {
+                    // select data transaction
+                    getCheckingAccount(getIntent().getIntExtra(KEY_TRANS_ID, -1), true);
                 } else {
                     if (getIntent().getIntExtra(KEY_BDID_ID, -1) > -1) {
                         mBdId = getIntent().getIntExtra(KEY_BDID_ID, -1);
@@ -794,7 +797,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
      * @param transId transaction id
      * @return true if data selected, false nothing
      */
-    public boolean getCheckingAccount(int transId) {
+    public boolean getCheckingAccount(int transId, boolean duplicate) {
         Cursor cursor = getContentResolver().query(mCheckingAccount.getUri(),
                 mCheckingAccount.getAllColumns(),
                 TableCheckingAccount.TRANSID + "=?",
@@ -805,7 +808,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         }
 
         // take a data
-        mTransId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TRANSID));
+        if (!duplicate)
+            mTransId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TRANSID));
         mAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.ACCOUNTID));
         mToAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TOACCOUNTID));
         mTransCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
@@ -1050,7 +1054,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         values.put(TableCheckingAccount.NOTES, edtNotes.getText().toString());
 
         // check whether the application should do the update or insert
-        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
+        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction) || Constants.INTENT_ACTION_PASTE.equals(mIntentAction)) {
             // insert
             Uri insert = getContentResolver().insert(mCheckingAccount.getUri(), values);
             if (insert == null) {
