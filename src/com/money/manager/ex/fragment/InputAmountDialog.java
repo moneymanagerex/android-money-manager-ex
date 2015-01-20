@@ -20,19 +20,17 @@ package com.money.manager.ex.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialogCompat;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.CurrencyUtils;
@@ -148,20 +146,12 @@ public class InputAmountDialog extends DialogFragment {
         // reference TextView amount
         txtAmount = (TextView) view.findViewById(R.id.textViewAmount);
 
-        MaterialDialogCompat.Builder builder = new MaterialDialogCompat.Builder(getActivity());
-        builder.setView(view);
-        builder.setCancelable(false);
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        builder.customView(view, false);
+        builder.cancelable(false);
+        builder.callback(new MaterialDialog.ButtonCallback() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dismiss();
-            }
-        });
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onPositive(MaterialDialog dialog) {
                 if (TextUtils.isEmpty(mAmount))
                     mAmount = Double.toString(0);
                 // check if is double
@@ -170,10 +160,19 @@ public class InputAmountDialog extends DialogFragment {
                     dismiss();
                 }
             }
-        });
 
-        Dialog dialog = builder.create();
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            @Override
+            public void onNegative(MaterialDialog dialog) {
+                dismiss();
+            }
+        });
+        builder.negativeText(android.R.string.cancel);
+        builder.positiveText(android.R.string.ok);
+        builder.negativeColorRes(android.R.color.black);
+        builder.positiveColorRes(android.R.color.black);
+
+        Dialog dialog = builder.show();
+        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         return dialog;
     }
