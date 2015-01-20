@@ -401,6 +401,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             intent.putExtra(CheckingAccountActivity.KEY_TRANS_ID, transId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
+            intent.putExtra(CheckingAccountActivity.KEY_ACCOUNT_ID, mAccountId);
             intent.setAction(Intent.ACTION_INSERT);
         }
         // launch activity
