@@ -668,7 +668,36 @@ public class Core {
                 infoDate.close();
         }
 
-        //helper.close();
+        try {
+            int keyCategory = 0;
+            String[] categories = new String[]{"1;1", "2;1", "3;1", "4;1", "5;1", "6;1", "7;1", "8;2", "9;2", "10;3", "11;3", "12;3", "13;4", "14;4", "15;4", "16;4", "17;5", "18;5", "19;5", "20;6", "21;6", "22;6", "23;7", "24;7", "25;7", "26;7", "27;7", "28;8", "29;8", "30;8", "31;8", "32;9", "33;9", "34;9", "35;10", "36;10", "37;10", "38;10", "39;13", "40;13", "41;13"};
+            final String tableCategory = new TableCategory().getSource();
+            final String tableSubcategory = new TableSubCategory().getSource();
+            for (String item : categories) {
+                int subCategoryId = Integer.parseInt(item.substring(0, item.indexOf(";")));
+                int categoryId = Integer.parseInt(item.substring(item.indexOf(";") + 1));
+                if (categoryId != keyCategory) {
+                    keyCategory = categoryId;
+                    int idStringCategory = context.getResources().getIdentifier("category_" + Integer.toString(categoryId), "string", context.getPackageName());
+                    if (idStringCategory > 0) {
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(TableCategory.CATEGID, categoryId);
+                        contentValues.put(TableCategory.CATEGNAME, context.getString(idStringCategory));
+                        database.insert(tableCategory, null, contentValues);
+                    }
+                }
+                int idStringSubcategory = context.getResources().getIdentifier("subcategory_" + Integer.toString(subCategoryId), "string", context.getPackageName());
+                if (idStringSubcategory > 0) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(TableSubCategory.SUBCATEGID, subCategoryId);
+                    contentValues.put(TableSubCategory.CATEGID, categoryId);
+                    contentValues.put(TableSubCategory.SUBCATEGNAME, context.getString(idStringSubcategory));
+                    database.insert(tableSubcategory, null, contentValues);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
+        }
 
         return true;
     }
