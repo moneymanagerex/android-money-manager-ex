@@ -131,6 +131,16 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
         execSQL(this.getWritableDatabase(), sql, bindArgs);
     }
 
+    @Override
+    public SQLiteDatabase getWritableDatabase() {
+        SQLiteDatabase db = super.getWritableDatabase();
+
+        if (db != null)
+            db.rawQuery("PRAGMA journal_mode=OFF", null).close();
+
+        return db;
+    }
+
     /**
      * @param db    SQLite database to execute raw SQL
      * @param rawId id raw resource
