@@ -79,4 +79,5 @@ public class PreferencesConstant {
     public static final Integer PREF_LOOK_FEEL = R.string.pref_look_feel;
     public static final Integer PREF_SECURITY = R.string.pref_security;
     public static final Integer PREF_DATABASE = R.string.pref_database;
+    public static final Integer PREF_SORT_PAYEE = R.string.pref_sort_payee;
 }

@@ -24,6 +24,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -35,18 +36,22 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.database.SQLTypeTransacion;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.preferences.PreferencesConstant;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -59,6 +64,10 @@ public class PayeeActivity extends BaseFragmentActivity {
     private static final String LOGCAT = PayeeActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = PayeeActivity.class.getSimpleName() + "_Fragment";
     private static final int ID_LOADER_PAYEE = 0;
+    // SORT BY USAGE
+    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEE_V1.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID) DESC";
+    // SORT BY NAME
+    private static final String SORT_BY_NAME = "UPPER(" + TablePayee.PAYEENAME + ")";
     private static TablePayee mPayee = new TablePayee();
     private static String mAction = Intent.ACTION_EDIT;
     PayeeLoaderListFragment listFragment = new PayeeLoaderListFragment();
@@ -97,6 +106,7 @@ public class PayeeActivity extends BaseFragmentActivity {
         // add menu ite,
         private static final int MENU_ITEM_ADD = 1;
         private String mCurFilter;
+        private int mSort = 0;
         private int mLayout;
 
         @Override
@@ -118,6 +128,8 @@ public class PayeeActivity extends BaseFragmentActivity {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
             setListShown(false);
+            // init sort
+            mSort = PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferencesConstant.PREF_SORT_PAYEE), 0);
             // start loader
             getLoaderManager().initLoader(ID_LOADER_PAYEE, null, this);
             // set icon searched
@@ -125,6 +137,35 @@ public class PayeeActivity extends BaseFragmentActivity {
             // set fab visible
             setFloatingActionButtonVisbile(true);
             setFloatingActionButtonAttachListView(true);
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            super.onCreateOptionsMenu(menu, inflater);
+            inflater.inflate(R.menu.menu_payee, menu);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_sort:
+                    new MaterialDialog.Builder(getActivity())
+                            .title(R.string.choose_sorting)
+                            .items(R.array.choose_payee_sort)
+                            .itemsCallbackSingleChoice(mSort, new MaterialDialog.ListCallback() {
+                                @Override
+                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                    mSort = which;
+                                    PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferencesConstant.PREF_SORT_PAYEE), mSort).commit();
+                                    // restart search
+                                    restartLoader();
+                                }
+                            })
+                            .positiveText(android.R.string.ok)
+                            .show();
+                    return true;
+            }
+            return super.onOptionsItemSelected(item);
         }
 
         @Override
@@ -188,7 +229,7 @@ public class PayeeActivity extends BaseFragmentActivity {
                         whereClause = TablePayee.PAYEENAME + " LIKE ?";// + mCurFilter + "%'";
                         selectionArgs = new String[]{mCurFilter + '%'};
                     }
-                    return new CursorLoader(getActivity(), mPayee.getUri(), mPayee.getAllColumns(), whereClause, selectionArgs, "upper(" + TablePayee.PAYEENAME + ")");
+                    return new CursorLoader(getActivity(), mPayee.getUri(), mPayee.getAllColumns(), whereClause, selectionArgs, mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
             }
 
             return null;
@@ -223,7 +264,7 @@ public class PayeeActivity extends BaseFragmentActivity {
             // the search filter, and restart the loader to do a new query
             // with this filter.
             mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
-            getLoaderManager().restartLoader(ID_LOADER_PAYEE, null, this);
+            restartLoader();
             return true;
         }
 
@@ -266,7 +307,7 @@ public class PayeeActivity extends BaseFragmentActivity {
                                 Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                             }
                             // restart loader
-                            getLoaderManager().restartLoader(ID_LOADER_PAYEE, null, PayeeLoaderListFragment.this);
+                            restartLoader();
                         }
                     });
 
@@ -320,7 +361,7 @@ public class PayeeActivity extends BaseFragmentActivity {
                                     break;
                             }
                             // restart loader
-                            getLoaderManager().restartLoader(ID_LOADER_PAYEE, null, PayeeLoaderListFragment.this);
+                            restartLoader();
                         }
                     });
 
@@ -342,6 +383,10 @@ public class PayeeActivity extends BaseFragmentActivity {
         @Override
         public void onFloatingActionButtonClickListener() {
             showDialogEditPayeeName(SQLTypeTransacion.INSERT, 0, !TextUtils.isEmpty(mCurFilter) ? mCurFilter.replace("%", "") : "");
+        }
+
+        public void restartLoader() {
+            getLoaderManager().restartLoader(ID_LOADER_PAYEE, null, this);
         }
     }
 }

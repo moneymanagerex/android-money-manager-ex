@@ -302,5 +302,10 @@
         <item>%Y.%m.%d</item>
         <item>%Y%m%d</item>
     </string-array>
+    <!-- Sorting viewing payees -->
+    <string-array name="choose_payee_sort">
+        <item>@string/sort_by_name</item>
+        <item>@string/sort_by_usage</item>
+    </string-array>
 
 </resources>
