@@ -17,9 +17,10 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="Still in development" versionName="1.5.00">
+    <changelogversion changeDate="Still in development" versionName="2.0.0-alpha0">
         <changelogtext>Introduced the material layout design</changelogtext>
         <changelogtext>Added function duplicates transaction</changelogtext>
+        <changelogtext>Added the ordering in the payee activity for name or use</changelogtext>
         <changelogtext>Changed sync with Dropbox. The downloaded file is downloaded as temporary and when downloaded is overwritten</changelogtext>
         <changelogtext>Changed database management. Now no longer creates the log file and everything is managed on a single file</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
