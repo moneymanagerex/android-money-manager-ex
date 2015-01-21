@@ -54,7 +54,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 601
-        versionName '2.0.0-alpa'
+        versionName '2.0.0-alpha0'
     }
 
     sourceSets {
