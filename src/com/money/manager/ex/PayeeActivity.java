@@ -341,7 +341,7 @@ public class PayeeActivity extends BaseFragmentActivity {
 
         @Override
         public void onFloatingActionButtonClickListener() {
-            showDialogEditPayeeName(SQLTypeTransacion.INSERT, 0, null);
+            showDialogEditPayeeName(SQLTypeTransacion.INSERT, 0, !TextUtils.isEmpty(mCurFilter) ? mCurFilter.replace("%", "") : "");
         }
     }
 }
