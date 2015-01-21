@@ -124,7 +124,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 		private static final String KEY_BUNDLE_YEAR = "IncomeVsExpensesListFragment:Years";
 		private View mFooterListView;
 		private Map<Integer, Boolean> mCheckedItem = new HashMap<Integer, Boolean>();
-		private String mSort = SORT_ASCENDING;
+		private String mSort = SORT_DESCENDING;
 		
 		/**
 		 * Add footer to ListView
@@ -234,7 +234,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			if (TextUtils.isEmpty(selection)) {
 				selection = "1=2";
 			}
-			return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " DESC, " + QueryReportIncomeVsExpenses.Month  + " " + mSort);
+			return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " " + mSort +", " + QueryReportIncomeVsExpenses.Month  + " " + mSort);
 		}
 		
 		@Override
