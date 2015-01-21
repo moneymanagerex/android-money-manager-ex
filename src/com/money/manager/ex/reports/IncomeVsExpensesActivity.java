@@ -234,7 +234,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 			if (TextUtils.isEmpty(selection)) {
 				selection = "1=2";
 			}
-			return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " DESC, " + QueryReportIncomeVsExpenses.Month  + " " + mSort);
+			return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " " + mSort +", " + QueryReportIncomeVsExpenses.Month  + " " + mSort);
 		}
 		
 		@Override
