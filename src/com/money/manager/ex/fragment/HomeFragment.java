@@ -432,8 +432,10 @@ public class HomeFragment extends Fragment implements
             ImageView imgAccountType = (ImageView) view.findViewById(R.id.imageViewAccountType);
             String accountType = cursor.getString(cursor.getColumnIndex(accountBills.ACCOUNTTYPE));
             if (!TextUtils.isEmpty(accountType)) {
-                if ("term".equalsIgnoreCase(accountType)) {
+                if (Constants.ACCOUNT_TYPE_TERM.equalsIgnoreCase(accountType)) {
                     imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
+                } else if (Constants.ACCOUNT_TYPE_CREDIT_CARD.equalsIgnoreCase(accountType)) {
+                    imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_credit_card));
                 }
             }
         }

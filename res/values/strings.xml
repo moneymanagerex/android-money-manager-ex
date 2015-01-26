@@ -504,4 +504,5 @@
     <string name="sort_by_name">Sort by name</string>
     <string name="sort_by_usage">Sort by usage</string>
     <string name="choose_sorting">Choose sorting</string>
+    <string name="credit_card">Credit Card</string>
 </resources>

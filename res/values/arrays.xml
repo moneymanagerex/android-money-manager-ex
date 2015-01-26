@@ -67,11 +67,13 @@
         <item>Checking</item>
         <item>Investment</item>
         <item>Term</item>
+        <item>Credit Card</item>
     </string-array>
     <string-array name="accounttype_items">
         <item>@string/checking</item>
         <item>@string/investment</item>
         <item>@string/term</item>
+        <item>@string/credit_card</item>
     </string-array>
 
     <!-- Accountstatus items and values -->
