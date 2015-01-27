@@ -58,7 +58,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:paddingLeft="10dp"
-                        android:text="@string/accounts"/>
+                        android:text="@string/accounts"
+                        android:visibility="gone"/>
 
                     <View
                         android:layout_width="match_parent"
@@ -72,13 +73,14 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1">
 
-                        <ListView
+                        <ExpandableListView
                             android:id="@+id/listViewAccountBills"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:animateLayoutChanges="true"
                             android:choiceMode="none"
                             android:dividerHeight="1dp"
+                            android:groupIndicator="@null"
                             android:visibility="gone"/>
 
                         <ProgressBar

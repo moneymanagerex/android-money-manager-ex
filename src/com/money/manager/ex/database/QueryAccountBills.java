@@ -45,11 +45,38 @@ public class QueryAccountBills extends Dataset {
     private String accountType;
     private int currencyId;
     private double total;
+    private double reconciled;
+    private double totalBaseConvRate;
+    private double reconciledBaseConvRate;
 
     // constructor
     public QueryAccountBills(Context context) {
 
         super(RawFileUtils.getRawAsString(context, R.raw.query_account_bills), DatasetType.QUERY, "accountbills");
+    }
+
+    public double getReconciled() {
+        return reconciled;
+    }
+
+    public void setReconciled(double reconciled) {
+        this.reconciled = reconciled;
+    }
+
+    public double getTotalBaseConvRate() {
+        return totalBaseConvRate;
+    }
+
+    public void setTotalBaseConvRate(double totalBaseConvRate) {
+        this.totalBaseConvRate = totalBaseConvRate;
+    }
+
+    public double getReconciledBaseConvRate() {
+        return reconciledBaseConvRate;
+    }
+
+    public void setReconciledBaseConvRate(double reconciledBaseConvRate) {
+        this.reconciledBaseConvRate = reconciledBaseConvRate;
     }
 
     /**
