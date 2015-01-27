@@ -506,9 +506,9 @@ public class HomeFragment extends Fragment implements
                 // set account type value
                 holder.txtAccountTotal.setText(currencyUtils.getBaseCurrencyFormatted(total.getTotalBaseConvRate()));
                 holder.txtAccountReconciled.setText(currencyUtils.getBaseCurrencyFormatted(total.getReconciledBaseConvRate()));
+                // set account name
+                holder.txtAccountName.setText(total.getAccountName());
             }
-            // set account name
-            holder.txtAccountName.setText(accountType);
             // set imageview account type
             if (!TextUtils.isEmpty(accountType)) {
                 if (Constants.ACCOUNT_TYPE_TERM.equalsIgnoreCase(accountType)) {
