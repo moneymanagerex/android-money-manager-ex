@@ -275,7 +275,7 @@ public class HomeFragment extends Fragment implements
                         bills.setTotal(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL)));
                         bills.setReconciled(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED)));
                         bills.setTotalBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
-                        bills.setReconciledBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
+                        bills.setReconciledBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
 
                         String accountType = data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTTYPE));
                         QueryAccountBills totals;

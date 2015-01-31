@@ -42,6 +42,12 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstance) {
         // set theme
         Core core = new Core(getApplicationContext());
+        // set orietation
+        if (core.isTablet()) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         try {
             this.setTheme(core.getThemeApplication());
         } catch (Exception e) {
