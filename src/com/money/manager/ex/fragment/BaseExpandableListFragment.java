@@ -24,8 +24,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.SearchViewCompat;
-import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -40,6 +38,7 @@ import android.widget.EditText;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
 public abstract class BaseExpandableListFragment extends ExpandableListFragment {
@@ -111,38 +110,37 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (isShowMenuItemSearch()) {
+        if (isShowMenuItemSearch() && getActivity() != null && getActivity() instanceof ActionBarActivity) {
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
-            itemSearch.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search));
+
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
             ActionBarActivity activity = (ActionBarActivity) getActivity();
-            View searchView = SearchViewCompat.newSearchView(activity.getSupportActionBar().getThemedContext());
-            if (searchView != null) {
-                SearchViewCompat.setOnQueryTextListener(searchView, new OnQueryTextListenerCompat() {
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        return BaseExpandableListFragment.this.onPreQueryTextChange(newText);
-                    }
-                });
-                SearchViewCompat.setIconified(searchView, isMenuItemSearchIconified());
-                itemSearch.setActionView(searchView);
-            } else {
-                SearchView actionSearchView = new SearchView(getActivity().getActionBar().getThemedContext());
-                actionSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
+            SearchView searchView = new SearchView(getActivity());
+            if (searchView != null) {
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
-                    public boolean onQueryTextSubmit(String query) {
+                    public boolean onQueryTextSubmit(String s) {
                         return false;
                     }
 
                     @Override
-                    public boolean onQueryTextChange(String newText) {
-                        return BaseExpandableListFragment.this.onPreQueryTextChange(newText);
+                    public boolean onQueryTextChange(String s) {
+                        return BaseExpandableListFragment.this.onPreQueryTextChange(s);
                     }
                 });
-                itemSearch.setActionView(actionSearchView);
+                searchView.setIconified(isMenuItemSearchIconified());
+                itemSearch.setActionView(searchView);
+
+                SearchViewFormatter formatter = new SearchViewFormatter();
+
+                formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
+                formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
+                formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
+                formatter.setSearchHintColorResource(R.color.hint_foreground_material_dark);
+
+                formatter.format(searchView);
             }
         }
     }
