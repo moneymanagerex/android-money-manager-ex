@@ -290,7 +290,8 @@ public class Core {
      * @return
      */
     public int getThemeApplication() {
-        try {
+        //TODO implement Material Dark Theme
+        /*try {
             String currentTheme = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_THEME), context.getString(R.string.theme_light));
             if (currentTheme.endsWith(context.getString(R.string.theme_holo))) {
                 return R.style.Theme_Money_Manager;
@@ -300,7 +301,8 @@ public class Core {
         } catch (Exception e) {
             Log.e("", e.getMessage());
             return R.style.Theme_Money_Manager_Light_DarkActionBar;
-        }
+        }*/
+        return R.style.Theme_Money_Manager_Light_DarkActionBar;
     }
 
     /**

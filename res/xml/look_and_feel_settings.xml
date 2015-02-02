@@ -22,12 +22,12 @@
         android:icon="@null"
         android:key="@string/pref_account_open_visible"
         android:summary="@string/if_not_selected_willShowAllAccounts"
-        android:title="@string/view_accounts_opened" />
+        android:title="@string/view_accounts_opened"/>
     <CheckBoxPreference
         android:icon="@null"
         android:key="@string/pref_account_fav_visible"
         android:summary="@string/if_not_selected_willShowAllAccounts"
-        android:title="@string/view_accounts_favorites" />
+        android:title="@string/view_accounts_favorites"/>
 
     <ListPreference
         android:defaultValue="@string/last7days"
@@ -35,14 +35,14 @@
         android:entryValues="@array/show_transaction_values"
         android:icon="@null"
         android:key="@string/pref_show_transaction"
-        android:title="@string/show_transaction" />
+        android:title="@string/show_transaction"/>
 
     <CheckBoxPreference
         android:defaultValue="false"
         android:icon="@null"
         android:key="@string/pref_transaction_shown_balance"
         android:summary="@string/summary_transaction_shown_balance"
-        android:title="@string/title_transaction_shown_balance" />
+        android:title="@string/title_transaction_shown_balance"/>
 
     <ListPreference
         android:defaultValue="-1"
@@ -51,7 +51,7 @@
         android:icon="@null"
         android:key="@string/pref_application_font"
         android:summary="@string/summary_application_font"
-        android:title="@string/title_application_font" />
+        android:title="@string/title_application_font"/>
     <ListPreference
         android:defaultValue="default"
         android:entries="@array/application_font_size_entries"
@@ -59,12 +59,12 @@
         android:icon="@null"
         android:key="@string/pref_application_font_size"
         android:summary="@string/summary_application_font_size"
-        android:title="@string/title_application_font_size" />
-    <ListPreference
+        android:title="@string/title_application_font_size"/>
+    <!-- <ListPreference
         android:defaultValue="@string/theme_light"
         android:entries="@array/themes_values"
         android:entryValues="@array/themes_values"
         android:icon="@null"
         android:key="@string/pref_theme"
-        android:title="@string/theme_application" />
+        android:title="@string/theme_application" /> -->
 </PreferenceScreen>
