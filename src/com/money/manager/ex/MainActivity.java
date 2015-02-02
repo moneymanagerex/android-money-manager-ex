@@ -33,7 +33,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -72,7 +71,6 @@ import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
-import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.settings.SettingsActivity;
@@ -435,9 +433,6 @@ public class MainActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
 
         Core core = new Core(this);
-
-        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_LOCALE), "");
-        core.changeLocaleApp(locale);
 
         // close notification
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

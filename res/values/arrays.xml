@@ -236,11 +236,16 @@
     <string-array name="application_locale_entries">
         <item>@string/Default</item>
         <item>@string/locale_cs</item>
+        <item>@string/locale_de</item>
         <item>@string/locale_en</item>
         <item>@string/locale_es</item>
         <item>@string/locale_fr</item>
         <item>@string/locale_he</item>
+        <item>@string/locale_hu</item>
         <item>@string/locale_it</item>
+        <item>@string/locale_ja</item>
+        <item>@string/locale_nl</item>
+        <item>@string/locale_pl</item>
         <item>@string/locale_pt</item>
         <item>@string/locale_pt_BR</item>
         <item>@string/locale_ru</item>
@@ -251,11 +256,16 @@
     <string-array name="application_locale_values">
         <item></item>
         <item>cs</item>
+        <item>de</item>
         <item>en</item>
         <item>es</item>
         <item>fr</item>
         <item>he</item>
+        <item>hu</item>
         <item>it</item>
+        <item>ja</item>
+        <item>nl</item>
+        <item>pl</item>
         <item>pt</item>
         <item>pt-BR</item>
         <item>ru</item>
@@ -313,7 +323,4 @@
         <item>@string/sort_by_name</item>
         <item>@string/sort_by_usage</item>
     </string-array>
-
-    <string name="montly_last_days">Montly (last day)</string>
-    <string name="montly_last_bussines_day">Montly (last business day)</string>
 </resources>

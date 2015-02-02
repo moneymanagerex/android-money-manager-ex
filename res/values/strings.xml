@@ -508,4 +508,11 @@
     <string name="bank_accounts">Bank Accounts</string>
     <string name="term_accounts">Term Accounts</string>
     <string name="credit_card_accounts">Credit Card Accounts</string>
+    <string name="locale_hu">Hungarian</string>
+    <string name="montly_last_days">Montly (last day)</string>
+    <string name="montly_last_bussines_day">Montly (last business day)</string>
+    <string name="locale_de">German</string>
+    <string name="locale_ja">Japanese</string>
+    <string name="locale_nl">Ducth</string>
+    <string name="locale_pl">Polish</string>
 </resources>

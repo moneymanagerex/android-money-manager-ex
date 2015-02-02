@@ -24,6 +24,7 @@
         <changelogtext>Added the ordering in the payee activity for name or use</changelogtext>
         <changelogtext>Changed sync with Dropbox. The downloaded file is downloaded as temporary and when downloaded is overwritten</changelogtext>
         <changelogtext>Changed database management. Now no longer creates the log file and everything is managed on a single file</changelogtext>
+        <changelogtext>Add translation: Dutch (thanks kareltje68, dvdspelert and frijtersbart)</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="January 7, 2015" versionName="1.4.17">

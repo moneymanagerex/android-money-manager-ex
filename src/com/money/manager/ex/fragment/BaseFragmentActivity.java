@@ -21,6 +21,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -33,6 +34,7 @@ import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.preferences.PreferencesConstant;
 
 public abstract class BaseFragmentActivity extends ActionBarActivity {
     private boolean mDialogMode = false;
@@ -42,6 +44,9 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstance) {
         // set theme
         Core core = new Core(getApplicationContext());
+
+        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_LOCALE), "");
+        core.changeLocaleApp(locale);
         // set orietation
         if (core.isTablet()) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
