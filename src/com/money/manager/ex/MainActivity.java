@@ -475,12 +475,6 @@ public class MainActivity extends BaseFragmentActivity {
                 }
             }
         }
-        // init application
-        try {
-            core.initDatabase();
-        } catch (Exception e) {
-            Log.e(LOGCAT, !TextUtils.isEmpty(e.getMessage()) ? e.getMessage() : "Init database failed");
-        }
 
         // load base currency and compose hash currencies
         CurrencyUtils currencyUtils = new CurrencyUtils(this);
