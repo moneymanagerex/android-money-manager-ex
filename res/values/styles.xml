@@ -22,6 +22,12 @@
         <item name="android:background">@color/md_primary</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
         <item name="android:elevation">@dimen/money_elevation</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="Money.Button.Input.Dialog" parent="android:Widget.Button">
