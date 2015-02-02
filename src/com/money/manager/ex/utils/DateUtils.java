@@ -168,6 +168,14 @@ public class DateUtils {
             case 12: //in_x_months
             case 13: //every_x_days
             case 14: //every_x_months
+                break;
+            case 15: //month (last day)
+                calendar.add(Calendar.MONTH, 1);
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+                calendar.add(Calendar.DATE, -1);
+                break;
+            case 16: //month (last business day)
+
         }
         return calendar.getTime();
     }

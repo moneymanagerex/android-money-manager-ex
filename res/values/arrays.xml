@@ -164,6 +164,8 @@
         <item>12</item>
         <item>13</item>
         <item>14</item>
+        <item>15</item>
+        <item>16</item>
     </integer-array>
 
     <string-array name="frequencies_items">
@@ -182,6 +184,8 @@
         <item>@string/in_x_months</item>
         <item>@string/every_x_days</item>
         <item>@string/every_x_months</item>
+        <item>@string/montly_last_days</item>
+        <item>@string/montly_last_bussines_day</item>
     </string-array>
 
     <!-- Define font entries and values -->
@@ -310,4 +314,6 @@
         <item>@string/sort_by_usage</item>
     </string-array>
 
+    <string name="montly_last_days">Montly (last day)</string>
+    <string name="montly_last_bussines_day">Montly (last business day)</string>
 </resources>
