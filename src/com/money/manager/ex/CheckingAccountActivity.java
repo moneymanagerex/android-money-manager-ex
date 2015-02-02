@@ -55,6 +55,7 @@ import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
@@ -256,6 +257,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            DropboxHelper.getInstance();
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
+            // create helper
+            DropboxHelper.getInstance(getApplicationContext());
+        }
+
         // set dialog mode
         setDialogMode(true);
 
