@@ -724,7 +724,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     @Override
     public boolean onActionCancelClick() {
         finish();
-        return super.onActionCancelClick();
+        return true;
     }
 
     @Override
