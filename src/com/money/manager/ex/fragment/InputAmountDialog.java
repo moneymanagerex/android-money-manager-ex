@@ -168,8 +168,6 @@ public class InputAmountDialog extends DialogFragment {
         });
         builder.negativeText(android.R.string.cancel);
         builder.positiveText(android.R.string.ok);
-        builder.negativeColorRes(android.R.color.black);
-        builder.positiveColorRes(android.R.color.black);
 
         Dialog dialog = builder.show();
         //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
