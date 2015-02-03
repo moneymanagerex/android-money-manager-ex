@@ -52,6 +52,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
@@ -104,6 +105,8 @@ public class HomeFragment extends Fragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Core core = new Core(getActivity().getApplicationContext());
+
         switch (id) {
             case ID_LOADER_USER_NAME:
                 return new CursorLoader(getActivity(), infoTable.getUri(),
@@ -113,11 +116,11 @@ public class HomeFragment extends Fragment implements
                 // compose whereClause
                 String where = "";
                 // check if show only open accounts
-                if (MoneyManagerApplication.getInstanceApp().getAccountsOpenVisible()) {
+                if (core.getAccountsOpenVisible()) {
                     where = "LOWER(STATUS)='open'";
                 }
                 // check if show fav accounts
-                if (MoneyManagerApplication.getInstanceApp().getAccountFavoriteVisible()) {
+                if (core.getAccountFavoriteVisible()) {
                     where = "LOWER(FAVORITEACCT)='true'";
                 }
                 return new CursorLoader(getActivity(), accountBills.getUri(),

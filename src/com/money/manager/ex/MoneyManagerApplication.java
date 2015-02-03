@@ -159,20 +159,6 @@ public class MoneyManagerApplication extends Application {
     }
 
     /**
-     * @return preferences account fav visible
-     */
-    public boolean getAccountFavoriteVisible() {
-        return appPreferences.getBoolean(getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE), false);
-    }
-
-    /**
-     * @return preferences accounts visible
-     */
-    public boolean getAccountsOpenVisible() {
-        return appPreferences.getBoolean(getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE), false);
-    }
-
-    /**
      * @param context
      * @return the username
      */
@@ -231,14 +217,15 @@ public class MoneyManagerApplication extends Application {
      * @return
      */
     public double getSummaryAccounts(Context context) {
+        Core core = new Core(context);
         // compose whereClause
         String where = "";
         // check if show only open accounts
-        if (this.getAccountsOpenVisible()) {
+        if (core.getAccountsOpenVisible()) {
             where = "LOWER(STATUS)='open'";
         }
         // check if show fav accounts
-        if (this.getAccountFavoriteVisible()) {
+        if (core.getAccountFavoriteVisible()) {
             where = "LOWER(FAVORITEACCT)='true'";
         }
         QueryAccountBills accountBills = new QueryAccountBills(context);

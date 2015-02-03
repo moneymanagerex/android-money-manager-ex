@@ -361,13 +361,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             // set title
             getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_transaction : R.string.edit_transaction);
         }
+        Core core = new Core(getApplicationContext());
         // compose layout
         setContentView(R.layout.checkingaccount_activity);
         // take a reference view into layout
         // account
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         // accountlist <> to populate the spin
-        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(MoneyManagerApplication.getInstanceApp().getAccountsOpenVisible(), MoneyManagerApplication.getInstanceApp().getAccountFavoriteVisible());
+        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());

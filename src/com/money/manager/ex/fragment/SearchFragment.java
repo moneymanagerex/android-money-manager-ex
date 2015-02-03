@@ -46,7 +46,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SearchActivity;
@@ -100,6 +99,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) return null;
+        Core core = new Core(getActivity().getApplicationContext());
         //create view
         View view = (LinearLayout) inflater.inflate(R.layout.search_activity, container, false);
         //create listener amount
@@ -125,7 +125,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         // accountlist <> to populate the spin
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         if (mAccountList == null) {
-            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getListAccounts(MoneyManagerApplication.getInstanceApp().getAccountsOpenVisible(), MoneyManagerApplication.getInstanceApp().getAccountFavoriteVisible());
+            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
             mAccountList.add(0, null);
             for (int i = 0; i <= mAccountList.size() - 1; i++) {
                 if (mAccountList.get(i) != null) {

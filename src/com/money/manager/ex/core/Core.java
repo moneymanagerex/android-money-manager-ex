@@ -722,4 +722,18 @@ public class Core {
         showDialog.create().show();
         return true;
     }
+
+    /**
+     * @return preferences account fav visible
+     */
+    public boolean getAccountFavoriteVisible() {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE), false);
+    }
+
+    /**
+     * @return preferences accounts visible
+     */
+    public boolean getAccountsOpenVisible() {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE), false);
+    }
 }

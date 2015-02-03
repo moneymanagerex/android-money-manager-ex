@@ -21,8 +21,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.utils.RawFileUtils;
 
 public class QueryAccountBills extends Dataset {
@@ -48,11 +48,13 @@ public class QueryAccountBills extends Dataset {
     private double reconciled;
     private double totalBaseConvRate;
     private double reconciledBaseConvRate;
+    // context
+    private Context context;
 
     // constructor
     public QueryAccountBills(Context context) {
-
         super(RawFileUtils.getRawAsString(context, R.raw.query_account_bills), DatasetType.QUERY, "accountbills");
+        this.context = context;
     }
 
     public double getReconciled() {
@@ -144,11 +146,11 @@ public class QueryAccountBills extends Dataset {
      * @return selection made ​​if it appears only accounts opened and / or favorites
      */
     public String getFilterAccountSelection() {
-        MoneyManagerApplication application = new MoneyManagerApplication();
+        Core core = new Core(context);
         // check if show only open accounts
-        String where = application.getAccountsOpenVisible() ? "LOWER(" + STATUS + ")='open'" : null;
+        String where = core.getAccountsOpenVisible() ? "LOWER(" + STATUS + ")='open'" : null;
         // check if show fav accounts
-        where = application.getAccountFavoriteVisible() ? "LOWER(" + FAVORITEACCT + ")='true'" : where;
+        where = core.getAccountFavoriteVisible() ? "LOWER(" + FAVORITEACCT + ")='true'" : where;
 
         return !(TextUtils.isEmpty(where)) ? where : null;
     }
