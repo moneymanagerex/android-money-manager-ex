@@ -178,12 +178,13 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
         if (mAccountList == null) {
             mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getTableAccountList(mAccountId);
         }
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, container, false);
         // take reference textview from layout
-        txtAccountBalance = (TextView) view.findViewById(R.id.textViewAccountBalance);
-        txtAccountReconciled = (TextView) view.findViewById(R.id.textViewAccountReconciled);
-        txtAccountDifference = (TextView) view.findViewById(R.id.textViewDifference);
+        txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
+        txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
+        txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
         // favorite icon
-        imgAccountFav = (ImageView) view.findViewById(R.id.imageViewAccountFav);
+        imgAccountFav = (ImageView) header.findViewById(R.id.imageViewAccountFav);
         // set listener click on favorite icon for change image
         imgAccountFav.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -206,6 +207,7 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
         mAllDataFragment = AllDataFragment.newInstance(mAccountId);
         // set arguments and settings of fragment
         mAllDataFragment.setArguments(prepareArgsForChildFragment());
+        mAllDataFragment.setListHeader(header);
         mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE), false));
         mAllDataFragment.setAutoStarLoader(false);
         mAllDataFragment.setContextMenuGroupId(mAccountId);

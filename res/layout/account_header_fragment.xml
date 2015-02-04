@@ -19,13 +19,26 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+              android:layout_height="wrap_content"
+              android:animateLayoutChanges="true"
+              android:background="@color/md_primary"
+              android:orientation="horizontal">
 
-    <FrameLayout
-        android:id="@+id/fragmentContent"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <include
+        layout="@layout/merge_header_fragment_account"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="@dimen/money_margin"
+        android:layout_marginTop="@dimen/money_margin"
         android:layout_weight="1"/>
+
+    <ImageView
+        android:id="@+id/imageViewAccountFav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginRight="16dp"
+        android:background="@android:drawable/star_off"/>
 
 </LinearLayout>

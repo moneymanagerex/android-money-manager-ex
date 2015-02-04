@@ -75,6 +75,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     private int mGroupId = 0;
     private int mAccountId = -1;
     private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
+    private View mListHeader = null;
 
     /**
      * Create a new instance of AllDataFragment with accountId params
@@ -191,14 +192,18 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                     Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
-                    if (cursor.moveToPosition(position)) {
+                    if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
                         startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
                     }
                 }
             }
         });
+
         // set adapter
         setListAdapter(adapter);
+        // if header is not null add to listview
+        if (mListHeader != null)
+            getListView().addHeaderView(mListHeader);
         // register context menu
         registerForContextMenu(getListView());
 
@@ -437,6 +442,14 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     @Override
     public void onFloatingActionButtonClickListener() {
         startCheckingAccountActivity(null);
+    }
+
+    public View getListHeader() {
+        return mListHeader;
+    }
+
+    public void setListHeader(View mHeaderList) {
+        this.mListHeader = mHeaderList;
     }
 
     // Interface for callback fragment
