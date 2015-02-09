@@ -21,6 +21,7 @@
         <changelogtext>Introduced the material layout design</changelogtext>
         <changelogtext>Added the type of account Credit Card</changelogtext>
         <changelogtext>Added function duplicates transaction</changelogtext>
+        <changelogtext>Added calculator on amount dialog</changelogtext>
         <changelogtext>Added the ordering in the payee activity for name or use</changelogtext>
         <changelogtext>Added Google Backup Agent</changelogtext>
         <changelogtext>Changed sync with Dropbox. The downloaded file is downloaded as temporary and when downloaded is overwritten</changelogtext>
