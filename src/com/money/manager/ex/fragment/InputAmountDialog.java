@@ -31,8 +31,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.utils.MathUtils;
 
@@ -102,6 +104,7 @@ public class InputAmountDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Core core = new Core(getActivity());
         LayoutInflater inflater = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         View view = inflater.inflate(R.layout.input_amount_dialog, null);
         // create listener
@@ -168,9 +171,9 @@ public class InputAmountDialog extends DialogFragment {
         });
         builder.negativeText(android.R.string.cancel);
         builder.positiveText(android.R.string.ok);
+        builder.theme(core.getThemeApplication() == R.style.Theme_Money_Manager ? Theme.DARK : Theme.LIGHT);
 
         Dialog dialog = builder.show();
-        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         return dialog;
     }
