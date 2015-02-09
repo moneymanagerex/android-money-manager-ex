@@ -38,6 +38,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.view.RobotoView;
 import com.money.manager.ex.widget.AccountBillsWidgetProvider;
@@ -265,6 +266,9 @@ public class MoneyManagerApplication extends Application {
         // create application folder
         Core core = new Core(getApplicationContext());
         core.getExternalStorageDirectoryApplication();
+
+        // create instance drobpox
+        DropboxHelper dropboxHelper = DropboxHelper.getInstance(getApplicationContext());
 
         // set default value
         setTextSize(new TextView(getApplicationContext()).getTextSize());
