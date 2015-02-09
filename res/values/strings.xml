@@ -518,4 +518,5 @@
     <string name="transaction_cancel_confirm">Are you sure you want to discard this transaction?</string>
     <string name="keep_editing">Keep editing</string>
     <string name="discard">Discard</string>
+    <string name="invalid_expression">Invalid expression</string>
 </resources>

@@ -41,6 +41,10 @@
         <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
 
+    <style name="Money.Button.Input.Dialog.Operator" parent="Money.Button.Input.Dialog">
+        <item name="android:textColor">@color/md_primary_dark</item>
+    </style>
+
     <style name="Money.TextView" parent="android:Widget.TextView">
         <item name="android:tag">@string/view_user_size</item>
     </style>

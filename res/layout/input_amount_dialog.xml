@@ -24,6 +24,18 @@
               android:orientation="vertical">
 
     <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/textViewExpression"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="right"
+        android:textSize="16dp"
+        app:typeface="roboto_light"/>
+
+    <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,6 +59,32 @@
         android:orientation="horizontal">
 
         <com.money.manager.ex.view.RobotoButton
+            style="@style/Money.Button.Input.Dialog"
+            android:text=""
+            android:visibility="invisible"/>
+
+        <com.money.manager.ex.view.RobotoButton
+            android:id="@+id/buttonKeyLeftParenthesis"
+            style="@style/Money.Button.Input.Dialog.Operator"
+            android:text="("/>
+
+        <com.money.manager.ex.view.RobotoButton
+            android:id="@+id/buttonKeyRightParenthesis"
+            style="@style/Money.Button.Input.Dialog.Operator"
+            android:text=")"/>
+
+        <com.money.manager.ex.view.RobotoButton
+            android:id="@+id/buttonKeyDiv"
+            style="@style/Money.Button.Input.Dialog.Operator"
+            android:text="/"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal">
+
+        <com.money.manager.ex.view.RobotoButton
             android:id="@+id/buttonKeyNum1"
             style="@style/Money.Button.Input.Dialog"
             android:text="1"/>
@@ -60,6 +98,11 @@
             android:id="@+id/buttonKeyNum3"
             style="@style/Money.Button.Input.Dialog"
             android:text="3"/>
+
+        <com.money.manager.ex.view.RobotoButton
+            android:id="@+id/buttonKeyMultiplication"
+            style="@style/Money.Button.Input.Dialog.Operator"
+            android:text="*"/>
     </LinearLayout>
 
     <LinearLayout
@@ -81,6 +124,11 @@
             android:id="@+id/buttonKeyNum6"
             style="@style/Money.Button.Input.Dialog"
             android:text="6"/>
+
+        <com.money.manager.ex.view.RobotoButton
+            android:id="@+id/buttonKeyLess"
+            style="@style/Money.Button.Input.Dialog.Operator"
+            android:text="-"/>
     </LinearLayout>
 
     <LinearLayout
@@ -102,6 +150,11 @@
             android:id="@+id/buttonKeyNum9"
             style="@style/Money.Button.Input.Dialog"
             android:text="9"/>
+
+        <com.money.manager.ex.view.RobotoButton
+            android:id="@+id/buttonKeyAdd"
+            style="@style/Money.Button.Input.Dialog.Operator"
+            android:text="+"/>
     </LinearLayout>
 
     <LinearLayout
@@ -123,6 +176,11 @@
             android:id="@+id/imageButtonCancel"
             style="@style/Money.Button.Input.Dialog"
             android:src="?attr/sym_keyboard_delete"/>
+
+        <com.money.manager.ex.view.RobotoButton
+            android:id="@+id/buttonKeyEqual"
+            style="@style/Money.Button.Input.Dialog.Operator"
+            android:text="="/>
     </LinearLayout>
 
 </LinearLayout>
