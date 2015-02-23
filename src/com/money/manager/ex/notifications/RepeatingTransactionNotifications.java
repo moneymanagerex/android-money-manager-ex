@@ -91,6 +91,7 @@ public class RepeatingTransactionNotifications {
                                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
                                 .setNumber(cursor.getCount())
                                 .setStyle(inboxStyle)
+                                .setColor(context.getResources().getColor(R.color.md_primary))
                                 .build();
                         // notify
                         notificationManager.cancel(ID_NOTIFICATION);

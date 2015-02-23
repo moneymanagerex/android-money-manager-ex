@@ -363,7 +363,8 @@ public class DropboxHelper {
                 .setDefaults(Notification.FLAG_FOREGROUND_SERVICE)
                 .setContentText(mContext.getString(R.string.dropbox_downloadProgress))
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
-                .setSmallIcon(R.drawable.ic_stat_notification);
+                .setSmallIcon(R.drawable.ic_stat_notification)
+                .setColor(mContext.getResources().getColor(R.color.md_primary));
         // only for previous version!
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             Intent intent = new Intent(mContext, MainActivity.class);
@@ -395,7 +396,8 @@ public class DropboxHelper {
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setTicker(mContext.getString(R.string.dropbox_file_ready_for_use))
-                .setStyle(inboxStyle);
+                .setStyle(inboxStyle)
+                .setColor(mContext.getResources().getColor(R.color.md_primary));
 
         return notification;
     }
@@ -412,7 +414,9 @@ public class DropboxHelper {
                 .setAutoCancel(false)
                 .setContentText(mContext.getString(R.string.dropbox_uploadProgress))
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
-                .setSmallIcon(R.drawable.ic_stat_notification);
+                .setSmallIcon(R.drawable.ic_stat_notification)
+                .setColor(mContext.getResources().getColor(R.color.md_primary));
+        ;
         // only for previous version!
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             Intent intent = new Intent(mContext, MainActivity.class);
@@ -443,7 +447,9 @@ public class DropboxHelper {
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setStyle(inboxStyle)
-                .setTicker(mContext.getString(R.string.upload_file_to_dropbox_complete));
+                .setTicker(mContext.getString(R.string.upload_file_to_dropbox_complete))
+                .setColor(mContext.getResources().getColor(R.color.md_primary));
+        ;
 
         return notification;
     }
