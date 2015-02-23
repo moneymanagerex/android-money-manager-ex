@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -25,13 +26,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.CurrencyUtils;
-import com.money.manager.ex.core.RawFileUtils;
+import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.utils.RawFileUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -68,6 +73,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
         Log.v(LOGCAT, "event onConfigure( )");
+        db.rawQuery("PRAGMA journal_mode=OFF", null).close();
     }
 
     @Override
@@ -128,6 +134,16 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
      */
     public void execSQL(String sql, Object[] bindArgs) throws SQLException {
         execSQL(this.getWritableDatabase(), sql, bindArgs);
+    }
+
+    @Override
+    public SQLiteDatabase getWritableDatabase() {
+        SQLiteDatabase db = super.getWritableDatabase();
+
+        if (db != null)
+            db.rawQuery("PRAGMA journal_mode=OFF", null).close();
+
+        return db;
     }
 
     /**
@@ -276,8 +292,12 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
         executeRawSql(db, R.raw.database_create);
         // force update database
         updateDatabase(db, 0, databaseCurrentVersion);
-        // initial database
-        executeRawSql(db, R.raw.database_init);
+        // init database
+        try {
+            initDatabase(db);
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
+        }
     }
 
     @Override
@@ -300,5 +320,125 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
                 executeRawSql(db, idResource);
             }
         }
+    }
+
+    private boolean initDatabase(SQLiteDatabase database) {
+        TableInfoTable infoTable = new TableInfoTable();
+        Cursor infoCurrency = null, infoDate = null;
+        // check if database is initial
+        // currencies
+        try {
+            infoCurrency = database.rawQuery("SELECT * FROM " + infoTable.getSource() + " WHERE " + TableInfoTable.INFONAME + "=?",
+                    new String[]{Constants.INFOTABLE_BASECURRENCYID});
+
+            if (!(infoCurrency != null && infoCurrency.moveToFirst())) {
+                // get current currencies
+                Currency currency = Currency.getInstance(Locale.getDefault());
+
+                if (currency != null) {
+                    Cursor cursor = database.rawQuery(
+                            "SELECT CURRENCYID FROM CURRENCYFORMATS_V1 WHERE CURRENCY_SYMBOL=?",
+                            new String[]{currency.getCurrencyCode()});
+                    if (cursor != null && cursor.moveToFirst()) {
+                        ContentValues values = new ContentValues();
+
+                        values.put(TableInfoTable.INFONAME, Constants.INFOTABLE_BASECURRENCYID);
+                        values.put(TableInfoTable.INFOVALUE, cursor.getInt(0));
+
+                        database.insert(infoTable.getSource(), null, values);
+                        cursor.close();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
+        } finally {
+            if (infoCurrency != null)
+                infoCurrency.close();
+        }
+
+        // date format
+        try {
+            infoDate = database.rawQuery("SELECT * FROM " + infoTable.getSource() + " WHERE " + TableInfoTable.INFONAME + "=?",
+                    new String[]{Constants.INFOTABLE_DATEFORMAT});
+            if (!(infoDate != null && infoDate.moveToFirst())) {
+                Locale loc = Locale.getDefault();
+                SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, loc);
+                String pattern = sdf.toLocalizedPattern();
+                // replace date
+                if (pattern.indexOf("dd") >= 0) {
+                    pattern = pattern.replace("dd", "%d");
+                } else {
+                    pattern = pattern.replace("d", "%d");
+                }
+                // replace month
+                if (pattern.indexOf("MM") >= 0) {
+                    pattern = pattern.replace("MM", "%m");
+                } else {
+                    pattern = pattern.replace("M", "%m");
+                }
+                // replace year
+                pattern = pattern.replace("yyyy", "%Y");
+                pattern = pattern.replace("yy", "%y");
+                // check if exists in format definition
+                boolean find = false;
+                for (int i = 0; i < mContext.getResources().getStringArray(R.array.date_format_mask).length; i++) {
+                    if (pattern.equals(mContext.getResources().getStringArray(R.array.date_format_mask)[i])) {
+                        find = true;
+                        break;
+                    }
+                }
+                // check if pattern exists
+                if (find) {
+                    ContentValues values = new ContentValues();
+
+                    values.put(TableInfoTable.INFONAME, Constants.INFOTABLE_DATEFORMAT);
+                    values.put(TableInfoTable.INFOVALUE, pattern);
+
+                    database.insert(infoTable.getSource(), null, values);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
+        } finally {
+            if (infoDate != null)
+                infoDate.close();
+        }
+
+        try {
+            Cursor countCategories = database.rawQuery("SELECT * FROM CATEGORY_V1", null);
+            if (countCategories != null && countCategories.getCount() <= 0) {
+                int keyCategory = 0;
+                String[] categories = new String[]{"1;1", "2;1", "3;1", "4;1", "5;1", "6;1", "7;1", "8;2", "9;2", "10;3", "11;3", "12;3", "13;4", "14;4", "15;4", "16;4", "17;5", "18;5", "19;5", "20;6", "21;6", "22;6", "23;7", "24;7", "25;7", "26;7", "27;7", "28;8", "29;8", "30;8", "31;8", "32;9", "33;9", "34;9", "35;10", "36;10", "37;10", "38;10", "39;13", "40;13", "41;13"};
+                final String tableCategory = new TableCategory().getSource();
+                final String tableSubcategory = new TableSubCategory().getSource();
+                for (String item : categories) {
+                    int subCategoryId = Integer.parseInt(item.substring(0, item.indexOf(";")));
+                    int categoryId = Integer.parseInt(item.substring(item.indexOf(";") + 1));
+                    if (categoryId != keyCategory) {
+                        keyCategory = categoryId;
+                        int idStringCategory = mContext.getResources().getIdentifier("category_" + Integer.toString(categoryId), "string", mContext.getPackageName());
+                        if (idStringCategory > 0) {
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(TableCategory.CATEGID, categoryId);
+                            contentValues.put(TableCategory.CATEGNAME, mContext.getString(idStringCategory));
+                            database.insert(tableCategory, null, contentValues);
+                        }
+                    }
+                    int idStringSubcategory = mContext.getResources().getIdentifier("subcategory_" + Integer.toString(subCategoryId), "string", mContext.getPackageName());
+                    if (idStringSubcategory > 0) {
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(TableSubCategory.SUBCATEGID, subCategoryId);
+                        contentValues.put(TableSubCategory.CATEGID, categoryId);
+                        contentValues.put(TableSubCategory.SUBCATEGNAME, mContext.getString(idStringSubcategory));
+                        database.insert(tableSubcategory, null, contentValues);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
+        }
+
+        return true;
     }
 }

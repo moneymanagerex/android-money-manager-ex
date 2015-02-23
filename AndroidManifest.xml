@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (C) 2012 The Android Money Manager Ex Project
-  
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
 
 <manifest
     package="com.money.manager.ex"
@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="com.android.vending.BILLING"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
@@ -34,9 +34,16 @@
 
     <application
         android:name="com.money.manager.ex.MoneyManagerApplication"
+        android:allowBackup="true"
+        android:backupAgent=".core.MoneyManagerBackupAgentHelper"
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_name"
         android:theme="@style/Theme.Money.Manager.Light.DarkActionBar">
+
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ"/>
+
         <receiver
             android:name="com.money.manager.ex.widget.ButtonAddTransactionWidgetProvider"
             android:label="@string/widget_add_transaction">
@@ -243,9 +250,23 @@
             <action android:name="android.intent.action.INSERT"/>
         </activity>
         <activity
-            android:name="com.money.manager.ex.preferences.PreferencesActivity"
-            android:label="@string/settings">
-        </activity>
+            android:name="com.money.manager.ex.settings.SettingsActivity"
+            android:label="@string/settings"/>
+        <activity
+            android:name="com.money.manager.ex.settings.GeneralSettingsActivity"
+            android:label="@string/preferences_general"/>
+        <activity
+            android:name="com.money.manager.ex.settings.LookFeelSettingsActivity"
+            android:label="@string/preferences_dispaly"/>
+        <activity
+            android:name="com.money.manager.ex.settings.SecuritySettingsActivity"
+            android:label="@string/preferences_security"/>
+        <activity
+            android:name="com.money.manager.ex.settings.DatabaseSettingsActivity"
+            android:label="@string/database"/>
+        <activity
+            android:name="com.money.manager.ex.settings.DropboxSettingsActivity"
+            android:label="@string/dropbox"/>
         <activity android:name="com.money.manager.ex.PasscodeActivity">
             <intent-filter>
                 <action android:name="com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD"/>

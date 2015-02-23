@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex;
 
 import android.content.ContentProvider;
@@ -140,22 +140,22 @@ public class MoneyManagerProvider extends ContentProvider {
                         log += " VALUES ( " + values.toString() + ")";
                     }
                     // open transaction
-                    database.beginTransaction();
-                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
+                    ////database.beginTransaction();
+                    //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
                     try {
                         if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
                         id = database.insert(dataset.getSource(), null, values);
                         // committed
-                        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
-                        database.setTransactionSuccessful();
+                        ////if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
+                        ////database.setTransactionSuccessful();
                     } catch (SQLiteException sqlLiteExc) {
                         Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
                     } catch (Exception exc) {
                         Log.e(LOGCAT, exc.getMessage());
                     } finally {
                         // close transaction
-                        database.endTransaction();
-                        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
+                        ////database.endTransaction();
+                        //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
                     }
                     parse = dataset.getBasepath() + "/" + id;
                     break;
@@ -202,23 +202,23 @@ public class MoneyManagerProvider extends ContentProvider {
                         log += "; ARGS=" + Arrays.asList(whereArgs).toString();
                     }
                     // open transaction
-                    database.beginTransaction();
+                    //database.beginTransaction();
                     if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
                     // update
                     try {
                         if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
                         rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
                         // committed
-                        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
-                        database.setTransactionSuccessful();
+                        ////if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
+                        //database.setTransactionSuccessful();
                     } catch (SQLiteException sqlLiteExc) {
                         Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
                     } catch (Exception exc) {
                         Log.e(LOGCAT, exc.getMessage());
                     } finally {
                         // close transaction
-                        database.endTransaction();
-                        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
+                        //database.endTransaction();
+                        //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
                     }
                     break;
                 default:
@@ -265,22 +265,22 @@ public class MoneyManagerProvider extends ContentProvider {
                         log += "; ARGS=" + Arrays.asList(selectionArgs).toString();
                     }
                     // open transaction
-                    database.beginTransaction();
+                    //database.beginTransaction();
                     if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
                     try {
                         if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
                         rowsDelete = database.delete(dataset.getSource(), selection, selectionArgs);
                         // committed
-                        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
-                        database.setTransactionSuccessful();
+                        //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
+                        //database.setTransactionSuccessful();
                     } catch (SQLiteException sqlLiteExc) {
                         Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
                     } catch (Exception exc) {
                         Log.e(LOGCAT, exc.getMessage());
                     } finally {
                         // close transaction
-                        database.endTransaction();
-                        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
+                        //database.endTransaction();
+                        //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
                     }
                     break;
                 default:

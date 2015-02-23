@@ -1,5 +1,5 @@
-/*******************************************************************************
- o * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,11 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -45,16 +44,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
-import com.money.manager.ex.core.ActivityUtils;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.utils.ActivityUtils;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.List;
 
@@ -130,8 +130,10 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
             setListShown(false);
             getLoaderManager().initLoader(ID_LOADER_CURRENCY, null, this);
 
-            // set iconfied searched
+            // set icon searched
             setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
+            setFloatingActionButtonVisbile(true);
+            setFloatingActionButtonAttachListView(true);
         }
 
         @Override
@@ -152,7 +154,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
                     if (new TablePayee().canDelete(getActivity(), contentValues, TableAccountList.class.getName())) {
                         showDialogDeleteCurrency(cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
                     } else {
-                        new AlertDialog.Builder(getActivity())
+                        new MaterialDialogCompat.Builder(getActivity())
                                 .setTitle(R.string.attention)
                                 .setMessage(R.string.currency_can_not_deleted)
                                 .setIcon(R.drawable.ic_action_warning_light)
@@ -192,7 +194,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
                     String selectionArgs[] = null;
                     if (!TextUtils.isEmpty(mCurFilter)) {
                         whereClause = TableCurrencyFormats.CURRENCYNAME + " LIKE ?";
-                        selectionArgs = new String[] {mCurFilter + "%"};
+                        selectionArgs = new String[]{mCurFilter + "%"};
                     }
                     return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(), whereClause, selectionArgs, "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
             }
@@ -235,10 +237,6 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
             switch (item.getItemId()) {
                 case R.id.menu_import_all_currencies:
                     showDialogImportAllCurrencies();
-                    return true;
-
-                case R.id.menu_add_currency:
-                    startCurrencyFormatActivity(null);
                     return true;
 
                 case R.id.menu_update_exchange_rate:
@@ -284,7 +282,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
         private void showDialogDeleteCurrency(final int currencyId) {
             // config alert dialog
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
             alertDialog.setTitle(R.string.delete_currency);
             alertDialog.setMessage(R.string.confirmDelete);
             // set listener on positive button
@@ -331,7 +329,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
         private void showDialogImportAllCurrencies() {
             // config alert dialog
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
             alertDialog.setTitle(R.string.attention);
             alertDialog.setMessage(R.string.question_import_currencies);
             // set listener on positive button
@@ -355,7 +353,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
         private void showDialogUpdateExchangeRateCurrencies() {
             // config alert dialog
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
             alertDialog.setTitle(R.string.attention);
             alertDialog.setMessage(R.string.question_update_currency_exchange_rates);
             // set listener on positive button
@@ -486,6 +484,11 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
                 }
             };
             asyncTask.execute();
+        }
+
+        @Override
+        public void onFloatingActionButtonClickListener() {
+            startCurrencyFormatActivity(null);
         }
     }
 }

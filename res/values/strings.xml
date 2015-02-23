@@ -1,4 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
 <resources>
 
     <!-- application -->
@@ -186,8 +203,8 @@
     <string name="new_edit_currency">New/Edit Currency</string>
     <!--<string name="path">Path</string>-->
     <string name="theme_application">Theme</string>
-    <string name="theme_holo">Holo</string>
-    <string name="theme_light">Holo Light With Dark ActionBar</string>
+    <string name="theme_holo">Material Dark</string>
+    <string name="theme_light">Material Light</string>
 
     <!-- 20120906 -->
     <string name="close_application">Close application</string>
@@ -477,4 +494,29 @@
 
     <string name="title_notifications_repeating_transaction">Notification Repeating Transaction overdue </string>
     <string name="summary_notifications_repeating_transaction">Show notification for repeating transaction overdue</string>
+
+    <string name="tools">Tools</string>
+    <string name="loading">Loading…</string>
+    <string name="grand_total">Grand Total</string>
+    <string name="change_status">Change status</string>
+    <string name="duplicate_selected_transactions">Duplicate selected transactions</string>
+    <string name="sort">Sort</string>
+    <string name="sort_by_name">Sort by name</string>
+    <string name="sort_by_usage">Sort by usage</string>
+    <string name="choose_sorting">Choose sorting</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="bank_accounts">Bank Accounts</string>
+    <string name="term_accounts">Term Accounts</string>
+    <string name="credit_card_accounts">Credit Card Accounts</string>
+    <string name="locale_hu">Hungarian</string>
+    <string name="montly_last_days">Montly (last day)</string>
+    <string name="montly_last_bussines_day">Montly (last business day)</string>
+    <string name="locale_de">German</string>
+    <string name="locale_ja">Japanese</string>
+    <string name="locale_nl">Ducth</string>
+    <string name="locale_pl">Polish</string>
+    <string name="transaction_cancel_confirm">Are you sure you want to discard this transaction?</string>
+    <string name="keep_editing">Keep editing</string>
+    <string name="discard">Discard</string>
+    <string name="invalid_expression">Invalid expression</string>
 </resources>

@@ -1,71 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2013 The Android Money Manager Ex Project
-  
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
 <resources>
 
     <declare-styleable name="Theme.Money.Manager">
-        <attr name="ic_action_add" format="reference" />
-        <attr name="ic_action_bell" format="reference" />
-        <attr name="ic_action_bank" format="reference" />
-        <attr name="ic_action_bargraph" format="reference" />
-        <attr name="ic_action_business" format="reference" />
-        <attr name="ic_action_calendar_day" format="reference" />
-        <attr name="ic_action_cancel" format="reference" />
-        <attr name="ic_action_copy" format="reference" />
-        <attr name="ic_action_currency" format="reference" />
-        <attr name="ic_action_download" format="reference" />
-        <attr name="ic_action_dropbox" format="reference" />
-        <attr name="ic_action_folder_open" format="reference" />
-        <attr name="ic_action_foursquare" format="reference" />
-        <attr name="ic_action_halt" format="reference" />
-        <attr name="ic_action_help" format="reference" />
-        <attr name="ic_action_list" format="reference" />
-        <attr name="ic_action_pie_chart" format="reference" />
-        <attr name="ic_action_playback_repeat" format="reference" />
-        <attr name="ic_action_reload" format="reference" />
-        <attr name="ic_action_search" format="reference" />
-        <attr name="ic_action_sort_1" format="reference" />
-        <attr name="ic_action_warning" format="reference" />
-        <attr name="ic_action_upload" format="reference" />
-        <attr name="ic_action_tag" format="reference" />
-        <attr name="ic_action_tags" format="reference" />
-        <attr name="ic_action_tick" format="reference" />
-        <attr name="ic_action_trash" format="reference" />
-        <attr name="ic_action_users" format="reference" />
-        <attr name="sym_keyboard_delete" format="reference" />
-        <attr name="holo_blue_color_theme" format="color|reference" />
-        <attr name="holo_green_color_theme" format="color|reference" />
-        <attr name="holo_red_color_theme" format="color|reference" />
-        <attr name="row_dark_theme" format="color|reference" />
-        <attr name="row_light_theme" format="color|reference" />
-        <attr name="theme_background_color" format="color|reference" /> 
-        <attr name="shape_background_shadow" format="reference" /> 
-        <attr name="shape_white_background_shadow" format="reference" /> 
+        <attr name="ic_action_add" format="reference"/>
+        <attr name="ic_action_bell" format="reference"/>
+        <attr name="ic_action_bank" format="reference"/>
+        <attr name="ic_action_bargraph" format="reference"/>
+        <attr name="ic_action_business" format="reference"/>
+        <attr name="ic_action_calendar_day" format="reference"/>
+        <attr name="ic_action_cancel" format="reference"/>
+        <attr name="ic_action_copy" format="reference"/>
+        <attr name="ic_action_currency" format="reference"/>
+        <attr name="ic_action_download" format="reference"/>
+        <attr name="ic_action_dropbox" format="reference"/>
+        <attr name="ic_action_folder_open" format="reference"/>
+        <attr name="ic_action_foursquare" format="reference"/>
+        <attr name="ic_action_halt" format="reference"/>
+        <attr name="ic_action_help" format="reference"/>
+        <attr name="ic_action_list" format="reference"/>
+        <attr name="ic_action_pie_chart" format="reference"/>
+        <attr name="ic_action_playback_repeat" format="reference"/>
+        <attr name="ic_action_refresh" format="reference"/>
+        <attr name="ic_action_reload" format="reference"/>
+        <attr name="ic_action_report" format="reference"/>
+        <attr name="ic_action_search" format="reference"/>
+        <attr name="ic_action_setting" format="reference"/>
+        <attr name="ic_action_sort" format="reference"/>
+        <attr name="ic_action_sort_1" format="reference"/>
+        <attr name="ic_action_warning" format="reference"/>
+        <attr name="ic_action_upload" format="reference"/>
+        <attr name="ic_action_tag" format="reference"/>
+        <attr name="ic_action_tags" format="reference"/>
+        <attr name="ic_action_tick" format="reference"/>
+        <attr name="ic_action_trash" format="reference"/>
+        <attr name="ic_action_users" format="reference"/>
+        <attr name="sym_keyboard_delete" format="reference"/>
+        <attr name="holo_blue_color_theme" format="color|reference"/>
+        <attr name="holo_green_color_theme" format="color|reference"/>
+        <attr name="holo_red_color_theme" format="color|reference"/>
+        <attr name="row_dark_theme" format="color|reference"/>
+        <attr name="row_light_theme" format="color|reference"/>
+        <attr name="theme_background_color" format="color|reference"/>
+        <attr name="shape_background_shadow" format="reference"/>
+        <attr name="shape_white_background_shadow" format="reference"/>
         <attr name="shape_rectangle_backgroud_dark" format="reference"/>
         <attr name="listSeparatorTextViewStyle" format="reference"/>
         <attr name="headerTextViewStyle" format="reference"/>
-        <attr name="theme_drawer_background_color" format="color|reference" />
-        <attr name="styleHoloSpinner" format="reference" />
+        <attr name="headerCaptionTextViewStyle" format="reference"/>
+        <attr name="theme_drawer_background_color" format="color|reference"/>
+        <attr name="holoSpinnerStyle" format="reference"/>
         <!-- AChartEngine -->
-        <attr name="theme_axes_color" format="color|reference" />
-        <attr name="theme_labels_color" format="color|reference" />  
+        <attr name="theme_axes_color" format="color|reference"/>
+        <attr name="theme_labels_color" format="color|reference"/>
     </declare-styleable>
-    
+
     <declare-styleable name="RobotoTextView">
         <attr name="typeface"/>
     </declare-styleable>

@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2013 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.adapter;
 
 import android.annotation.SuppressLint;
@@ -35,15 +35,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TransactionStatus;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,7 +58,6 @@ public class AllDataAdapter extends CursorAdapter {
     private String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE, TOACCOUNTID, TOTRANSAMOUNT, CURRENCYID, PAYEE,
             ACCOUNTNAME, TOACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES, TOCURRENCYID;
     private LayoutInflater mInflater;
-    private MoneyManagerApplication mApplication;
     // hash map for group
     private HashMap<Integer, Integer> mHeadersAccountIndex;
     // private HashMap<Integer, Double> mBalanceTransactions;
@@ -79,7 +77,6 @@ public class AllDataAdapter extends CursorAdapter {
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
         super(context, c, -1);
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.mApplication = (MoneyManagerApplication) context.getApplicationContext();
         // create hash map
         mHeadersAccountIndex = new HashMap<Integer, Integer>();
         // create sparse array boolean checked
@@ -136,11 +133,11 @@ public class AllDataAdapter extends CursorAdapter {
         holder.txtAmount.setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), amount));
         // text color amount
         if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)))) {
-            holder.txtAmount.setTextColor(Color.GRAY);
+            holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_grey_700));
         } else if (Constants.TRANSACTION_TYPE_DEPOSIT.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)))) {
-            holder.txtAmount.setTextColor(mCore.resolveColorAttribute(R.attr.holo_green_color_theme));
+            holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_green_700));
         } else {
-            holder.txtAmount.setTextColor(mCore.resolveColorAttribute(R.attr.holo_red_color_theme));
+            holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_red_700));
         }
         // compose payee description
         holder.txtPayee.setText(cursor.getString(cursor.getColumnIndex(PAYEE)));
@@ -183,7 +180,7 @@ public class AllDataAdapter extends CursorAdapter {
         }
         // check if item is checked
         if (mCheckedPosition.get(cursor.getPosition(), false)) {
-            view.setBackgroundResource(R.color.holo_blue_light);
+            view.setBackgroundResource(R.color.material_green_100);
         } else {
             view.setBackgroundResource(android.R.color.transparent);
         }

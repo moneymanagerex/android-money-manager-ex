@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.core;
 
 import android.annotation.SuppressLint;
@@ -26,7 +44,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.money.manager.ex.Constants;
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -38,6 +56,7 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,7 +66,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormatSymbols;
 import java.text.Normalizer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.HashMap;
@@ -134,7 +152,7 @@ public class Core {
      * @return
      */
     public static AlertDialog alertDialog(Context ctx, String text) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
+        MaterialDialogCompat.Builder dialog = new MaterialDialogCompat.Builder(ctx);
         // setting alert dialog
         dialog.setIcon(R.drawable.ic_action_warning_light);
         dialog.setTitle(R.string.attention);
@@ -270,19 +288,19 @@ public class Core {
      * @return
      */
     public int getThemeApplication() {
-        try {
-            String currentTheme = PreferenceManager.getDefaultSharedPreferences(context).getString(PreferencesConstant.PREF_THEME, context.getString(R.string.theme_light));
+        //TODO implement Material Dark Theme
+        /*try {
+            String currentTheme = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_THEME), context.getString(R.string.theme_light));
             if (currentTheme.endsWith(context.getString(R.string.theme_holo))) {
                 return R.style.Theme_Money_Manager;
-            } else if (currentTheme.endsWith(context.getString(R.string.theme_holo_light))) {
-                return R.style.Theme_Money_Manager_Light;
             } else {
                 return R.style.Theme_Money_Manager_Light_DarkActionBar;
             }
         } catch (Exception e) {
             Log.e("", e.getMessage());
             return R.style.Theme_Money_Manager_Light_DarkActionBar;
-        }
+        }*/
+        return R.style.Theme_Money_Manager_Light_DarkActionBar;
     }
 
     /**
@@ -558,104 +576,6 @@ public class Core {
     }
 
     /**
-     * Method, which allows you to initialize the database with the settings of the device. It should be called only when you first start
-     *
-     * @return true if initialization succeed, otherwise false
-     */
-    public boolean initDatabase() {
-        // get an instance of database for writing
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
-        SQLiteDatabase database = helper.getWritableDatabase();
-
-        TableInfoTable infoTable = new TableInfoTable();
-
-        Cursor infoCurrency = null, infoDate = null;
-        // check if database is initial
-        // currencies
-        try {
-            infoCurrency = database.rawQuery("SELECT * FROM " + infoTable.getSource() + " WHERE " + TableInfoTable.INFONAME + "=?",
-                    new String[]{Constants.INFOTABLE_BASECURRENCYID});
-
-            if (!(infoCurrency != null && infoCurrency.moveToFirst())) {
-                // get current currencies
-                Currency currency = Currency.getInstance(Locale.getDefault());
-
-                if (currency != null) {
-                    Cursor cursor = database.rawQuery(
-                            "SELECT CURRENCYID FROM CURRENCYFORMATS_V1 WHERE CURRENCY_SYMBOL=?",
-                            new String[]{currency.getCurrencyCode()});
-                    if (cursor != null && cursor.moveToFirst()) {
-                        ContentValues values = new ContentValues();
-
-                        values.put(TableInfoTable.INFONAME, Constants.INFOTABLE_BASECURRENCYID);
-                        values.put(TableInfoTable.INFOVALUE, cursor.getInt(0));
-
-                        database.insert(infoTable.getSource(), null, values);
-                        cursor.close();
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
-        } finally {
-            if (infoCurrency != null)
-                infoCurrency.close();
-        }
-
-        // date format
-        try {
-            infoDate = database.rawQuery("SELECT * FROM " + infoTable.getSource() + " WHERE " + TableInfoTable.INFONAME + "=?",
-                    new String[]{Constants.INFOTABLE_DATEFORMAT});
-            if (!(infoDate != null && infoDate.moveToFirst())) {
-                Locale loc = Locale.getDefault();
-                SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, loc);
-                String pattern = sdf.toLocalizedPattern();
-                // replace date
-                if (pattern.indexOf("dd") >= 0) {
-                    pattern = pattern.replace("dd", "%d");
-                } else {
-                    pattern = pattern.replace("d", "%d");
-                }
-                // replace month
-                if (pattern.indexOf("MM") >= 0) {
-                    pattern = pattern.replace("MM", "%m");
-                } else {
-                    pattern = pattern.replace("M", "%m");
-                }
-                // replace year
-                pattern = pattern.replace("yyyy", "%Y");
-                pattern = pattern.replace("yy", "%y");
-                // check if exists in format definition
-                boolean find = false;
-                for (int i = 0; i < context.getResources().getStringArray(R.array.date_format_mask).length; i++) {
-                    if (pattern.equals(context.getResources().getStringArray(R.array.date_format_mask)[i])) {
-                        find = true;
-                        break;
-                    }
-                }
-                // check if pattern exists
-                if (find) {
-                    ContentValues values = new ContentValues();
-
-                    values.put(TableInfoTable.INFONAME, Constants.INFOTABLE_DATEFORMAT);
-                    values.put(TableInfoTable.INFOVALUE, pattern);
-
-                    database.insert(infoTable.getSource(), null, values);
-                }
-            }
-        } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
-        } finally {
-            if (infoDate != null)
-                infoDate.close();
-        }
-
-        //helper.close();
-
-        return true;
-    }
-
-    /**
      * Check if device has connection
      *
      * @return true if is online otherwise false
@@ -773,19 +693,19 @@ public class Core {
 
     public boolean isToDisplayChangelog() {
         int currentVersionCode = getCurrentVersionCode(context);
-        int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(context).getInt(PreferencesConstant.PREF_LAST_VERSION_KEY, -1);
+        int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(context).getInt(context.getString(PreferencesConstant.PREF_LAST_VERSION_KEY), -1);
 
         return lastVersionCode != currentVersionCode;
     }
 
     public boolean showChangelog() {
         int currentVersionCode = getCurrentVersionCode(context);
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(PreferencesConstant.PREF_LAST_VERSION_KEY, currentVersionCode).commit();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(context.getString(PreferencesConstant.PREF_LAST_VERSION_KEY), currentVersionCode).commit();
 
         // create layout
         View view = LayoutInflater.from(context).inflate(R.layout.changelog_layout, null);
         //create dialog
-        AlertDialog.Builder showDialog = new AlertDialog.Builder(context);
+        MaterialDialogCompat.Builder showDialog = new MaterialDialogCompat.Builder(context);
         showDialog.setCancelable(false);
         showDialog.setTitle(R.string.changelog);
 
@@ -801,5 +721,19 @@ public class Core {
         // show dialog
         showDialog.create().show();
         return true;
+    }
+
+    /**
+     * @return preferences account fav visible
+     */
+    public boolean getAccountFavoriteVisible() {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE), false);
+    }
+
+    /**
+     * @return preferences accounts visible
+     */
+    public boolean getAccountsOpenVisible() {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE), false);
     }
 }

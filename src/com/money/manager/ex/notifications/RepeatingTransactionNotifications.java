@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2013 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.notifications;
 
 import android.app.Notification;
@@ -29,9 +29,9 @@ import android.util.Log;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.RepeatingTransactionListActivity;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 public class RepeatingTransactionNotifications {
     private static final String LOGCAT = RepeatingTransactionNotifications.class.getSimpleName();
@@ -91,6 +91,7 @@ public class RepeatingTransactionNotifications {
                                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
                                 .setNumber(cursor.getCount())
                                 .setStyle(inboxStyle)
+                                .setColor(context.getResources().getColor(R.color.md_primary))
                                 .build();
                         // notify
                         notificationManager.cancel(ID_NOTIFICATION);

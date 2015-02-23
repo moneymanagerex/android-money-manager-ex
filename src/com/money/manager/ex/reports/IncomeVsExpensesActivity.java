@@ -1,5 +1,6 @@
-/*******************************************************************************
- * Copyright (C) 2013 The Android Money Manager Ex Project
+
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,10 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.reports;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -52,14 +52,15 @@ import android.widget.RadioButton;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -263,7 +264,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             if (TextUtils.isEmpty(selection)) {
                 selection = "1=2";
             }
-            return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " DESC, " + QueryReportIncomeVsExpenses.Month + " " + mSort);
+            return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
         }
 
         @Override
@@ -359,7 +360,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
         }
 
         private void showDialogSortMonth() {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            MaterialDialogCompat.Builder dialog = new MaterialDialogCompat.Builder(getActivity());
             final LinearLayout layout = new LinearLayout(getActivity());
             layout.setOrientation(LinearLayout.VERTICAL);
             layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));

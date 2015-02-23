@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
 <resources>
 
     <!-- Themes -->
     <string-array name="themes_values">
         <item>@string/theme_light</item>
-        <item>@string/theme_holo_light</item>
         <item>@string/theme_holo</item>
     </string-array>
     <!-- Define transcode items and values -->
@@ -50,11 +67,13 @@
         <item>Checking</item>
         <item>Investment</item>
         <item>Term</item>
+        <item>Credit Card</item>
     </string-array>
     <string-array name="accounttype_items">
         <item>@string/checking</item>
         <item>@string/investment</item>
         <item>@string/term</item>
+        <item>@string/credit_card</item>
     </string-array>
 
     <!-- Accountstatus items and values -->
@@ -145,6 +164,8 @@
         <item>12</item>
         <item>13</item>
         <item>14</item>
+        <item>15</item>
+        <item>16</item>
     </integer-array>
 
     <string-array name="frequencies_items">
@@ -163,6 +184,8 @@
         <item>@string/in_x_months</item>
         <item>@string/every_x_days</item>
         <item>@string/every_x_months</item>
+        <item>@string/montly_last_days</item>
+        <item>@string/montly_last_bussines_day</item>
     </string-array>
 
     <!-- Define font entries and values -->
@@ -213,11 +236,16 @@
     <string-array name="application_locale_entries">
         <item>@string/Default</item>
         <item>@string/locale_cs</item>
+        <item>@string/locale_de</item>
         <item>@string/locale_en</item>
         <item>@string/locale_es</item>
         <item>@string/locale_fr</item>
         <item>@string/locale_he</item>
+        <item>@string/locale_hu</item>
         <item>@string/locale_it</item>
+        <item>@string/locale_ja</item>
+        <item>@string/locale_nl</item>
+        <item>@string/locale_pl</item>
         <item>@string/locale_pt</item>
         <item>@string/locale_pt_BR</item>
         <item>@string/locale_ru</item>
@@ -228,11 +256,16 @@
     <string-array name="application_locale_values">
         <item></item>
         <item>cs</item>
+        <item>de</item>
         <item>en</item>
         <item>es</item>
         <item>fr</item>
         <item>he</item>
+        <item>hu</item>
         <item>it</item>
+        <item>ja</item>
+        <item>nl</item>
+        <item>pl</item>
         <item>pt</item>
         <item>pt-BR</item>
         <item>ru</item>
@@ -285,5 +318,9 @@
         <item>%Y.%m.%d</item>
         <item>%Y%m%d</item>
     </string-array>
-
+    <!-- Sorting viewing payees -->
+    <string-array name="choose_payee_sort">
+        <item>@string/sort_by_name</item>
+        <item>@string/sort_by_usage</item>
+    </string-array>
 </resources>

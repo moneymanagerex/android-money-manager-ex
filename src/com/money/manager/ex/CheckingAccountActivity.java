@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex;
 
 import android.app.Activity;
@@ -45,9 +45,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
-import com.money.manager.ex.core.DateUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -57,10 +57,13 @@ import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.utils.DateUtils;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -134,8 +137,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     // bill deposits
     public int mBdId = -1;
     public String mNextOccurrence = null;
-    // application
-    public MoneyManagerApplication mApplication;
     // datepicker value
     public String mDate = "";
     // reference view into layout
@@ -258,7 +259,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApplication = (MoneyManagerApplication) getApplication();
+        try {
+            DropboxHelper.getInstance();
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
+            // create helper
+            DropboxHelper.getInstance(getApplicationContext());
+        }
+
         // set dialog mode
         setDialogMode(true);
 
@@ -295,7 +303,10 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     mTransId = getIntent().getIntExtra(KEY_TRANS_ID, -1);
                     // select data transaction
-                    getCheckingAccount(mTransId);
+                    getCheckingAccount(mTransId, false);
+                } else if (getIntent().getAction() != null && Intent.ACTION_PASTE.equals(getIntent().getAction())) {
+                    // select data transaction
+                    getCheckingAccount(getIntent().getIntExtra(KEY_TRANS_ID, -1), true);
                 } else {
                     if (getIntent().getIntExtra(KEY_BDID_ID, -1) > -1) {
                         mBdId = getIntent().getIntExtra(KEY_BDID_ID, -1);
@@ -307,9 +318,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             mIntentAction = getIntent().getAction();
             if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
                 if (mStatus == null)
-                    mStatus = PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_STATUS, "");
+                    mStatus = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(PreferencesConstant.PREF_DEFAULT_STATUS), "");
 
-                if ("L".equals(PreferenceManager.getDefaultSharedPreferences(this).getString(PreferencesConstant.PREF_DEFAULT_PAYEE, "N"))) {
+                if ("L".equals(PreferenceManager.getDefaultSharedPreferences(this).getString(getString(PreferencesConstant.PREF_DEFAULT_PAYEE), "N"))) {
                     AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
                         @Override
                         protected Boolean doInBackground(Void... params) {
@@ -352,13 +363,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             // set title
             getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_transaction : R.string.edit_transaction);
         }
+        Core core = new Core(getApplicationContext());
         // compose layout
         setContentView(R.layout.checkingaccount_activity);
         // take a reference view into layout
         // account
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         // accountlist <> to populate the spin
-        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
+        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());
@@ -723,8 +735,34 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
     @Override
     public boolean onActionCancelClick() {
-        finish();
-        return super.onActionCancelClick();
+        Core core = new Core(getApplicationContext());
+        final MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title(android.R.string.cancel)
+                .content(R.string.transaction_cancel_confirm)
+                .positiveText(R.string.keep_editing)
+                .negativeText(R.string.discard)
+                .theme(core.getThemeApplication() == R.style.Theme_Money_Manager ? Theme.DARK : Theme.LIGHT)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
+                    }
+
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                        super.onNegative(dialog);
+                    }
+                })
+                .build();
+        dialog.show();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        onActionCancelClick();
     }
 
     @Override
@@ -797,7 +835,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
      * @param transId transaction id
      * @return true if data selected, false nothing
      */
-    public boolean getCheckingAccount(int transId) {
+    public boolean getCheckingAccount(int transId, boolean duplicate) {
         Cursor cursor = getContentResolver().query(mCheckingAccount.getUri(),
                 mCheckingAccount.getAllColumns(),
                 TableCheckingAccount.TRANSID + "=?",
@@ -808,7 +846,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         }
 
         // take a data
-        mTransId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TRANSID));
+        if (!duplicate)
+            mTransId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TRANSID));
         mAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.ACCOUNTID));
         mToAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TOACCOUNTID));
         mTransCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
@@ -1053,7 +1092,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         values.put(TableCheckingAccount.NOTES, edtNotes.getText().toString());
 
         // check whether the application should do the update or insert
-        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
+        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction) || Constants.INTENT_ACTION_PASTE.equals(mIntentAction)) {
             // insert
             Uri insert = getContentResolver().insert(mCheckingAccount.getUri(), values);
             if (insert == null) {

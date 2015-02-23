@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -32,24 +31,22 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.DateUtils;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.utils.DateUtils;
 
 import java.util.Date;
 
@@ -149,6 +146,14 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
             setListShown(false);
             // start loaderapplication.getSQLiteStringDate(date)
             getLoaderManager().initLoader(ID_LOADER_REPEATING, null, this);
+            // set fab visible
+            setFloatingActionButtonVisbile(true);
+            setFloatingActionButtonAttachListView(true);
+        }
+
+        @Override
+        public void onFloatingActionButtonClickListener() {
+            startRepeatingTransactionActivity();
         }
 
         @Override
@@ -156,7 +161,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
             String nextOccurrence;
             int repeats, bdId;
             Date date;
-            MoneyManagerApplication application = (MoneyManagerApplication) getActivity().getApplication();
+
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             // take cursor and move to position
             Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
@@ -204,7 +209,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 
         private void showDialogDeleteRepeatingTransaction(final int BDID) {
             // create alert dialog
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
             alertDialog.setTitle(R.string.delete_repeating_transaction);
             alertDialog.setMessage(R.string.confirmDelete);
             // set listener
@@ -256,15 +261,6 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         }
 
         @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            super.onCreateOptionsMenu(menu, inflater);
-            // add menu item add
-            MenuItem itemadd = menu.add(0, MENU_ITEM_ADD, MENU_ITEM_ADD, R.string.add);
-            itemadd.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_add));
-            itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        }
-
-        @Override
         public void onLoaderReset(Loader<Cursor> loader) {
             switch (loader.getId()) {
                 case ID_LOADER_REPEATING:
@@ -284,16 +280,6 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
                         setListShownNoAnimation(true);
                     }
             }
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                case MENU_ITEM_ADD:
-                    startRepeatingTransactionActivity();
-                    break;
-            }
-            return super.onOptionsItemSelected(item);
         }
 
         @Override

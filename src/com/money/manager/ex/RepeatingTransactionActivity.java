@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex;
 
 import android.app.Activity;
@@ -36,8 +36,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -49,6 +50,7 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -121,8 +123,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     private int mNumOccurrence = -1;
     // transaction numbers
     private String mTransNumber = "";
-    // application
-    private MoneyManagerApplication mApplication;
     // reference view into layout
     private Spinner spinAccount, spinToAccount, spinTransCode, spinStatus, spinFrequencies;
     private ImageButton btnTransNumber;
@@ -194,11 +194,34 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
     @Override
     public boolean onActionCancelClick() {
-        // finish CheckingAccountActivity
-        setResult(RESULT_CANCELED);
-        finish();
+        Core core = new Core(getApplicationContext());
+        final MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title(android.R.string.cancel)
+                .content(R.string.transaction_cancel_confirm)
+                .positiveText(R.string.keep_editing)
+                .negativeText(R.string.discard)
+                .theme(core.getThemeApplication() == R.style.Theme_Money_Manager ? Theme.DARK : Theme.LIGHT)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
+                    }
 
-        return super.onActionCancelClick();
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                        super.onNegative(dialog);
+                    }
+                })
+                .build();
+        dialog.show();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        onActionCancelClick();
     }
 
     @Override
@@ -218,8 +241,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         super.onCreate(savedInstanceState);
 
-        // take a reference of application
-        mApplication = (MoneyManagerApplication) getApplication();
         Core core = new Core(this);
         // manage save instance
         if ((savedInstanceState != null)) {
@@ -292,9 +313,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         };
 
-
         // accountlist <> to populate the spin
-        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
+        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());
@@ -779,7 +799,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         txtCaptionAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         txtAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
-        txtPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+        //txtPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         txtSelectPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
 
         refreshHeaderAmount();

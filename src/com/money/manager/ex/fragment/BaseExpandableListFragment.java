@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,17 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.fragment;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.SearchViewCompat;
-import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -39,6 +38,7 @@ import android.widget.EditText;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
 public abstract class BaseExpandableListFragment extends ExpandableListFragment {
@@ -57,6 +57,11 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
     public void onCreate(Bundle savedInstanceState) {
         // set theme
         Core core = new Core(getActivity());
+        if (core.isTablet()) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         try {
             getActivity().setTheme(core.getThemeApplication());
         } catch (Exception e) {
@@ -90,7 +95,7 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
     public void onStart() {
         super.onStart();
         // check search type
-        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE);
+        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
         if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
             // show tooltip for wildcard
             TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getActivity().getApplicationContext(), "lookupswildcard");
@@ -105,37 +110,37 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (isShowMenuItemSearch()) {
+        if (isShowMenuItemSearch() && getActivity() != null && getActivity() instanceof ActionBarActivity) {
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
-            itemSearch.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_search));
+
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            ActionBarActivity activity = (ActionBarActivity) getActivity();
 
-            View searchView = SearchViewCompat.newSearchView(getActivity().getActionBar().getThemedContext());
+            SearchView searchView = new SearchView(getActivity());
             if (searchView != null) {
-                SearchViewCompat.setOnQueryTextListener(searchView, new OnQueryTextListenerCompat() {
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
-                    public boolean onQueryTextChange(String newText) {
-                        return BaseExpandableListFragment.this.onPreQueryTextChange(newText);
-                    }
-                });
-                SearchViewCompat.setIconified(searchView, isMenuItemSearchIconified());
-                itemSearch.setActionView(searchView);
-            } else {
-                SearchView actionSearchView = new SearchView(getActivity().getActionBar().getThemedContext());
-                actionSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
+                    public boolean onQueryTextSubmit(String s) {
                         return false;
                     }
 
                     @Override
-                    public boolean onQueryTextChange(String newText) {
-                        return BaseExpandableListFragment.this.onPreQueryTextChange(newText);
+                    public boolean onQueryTextChange(String s) {
+                        return BaseExpandableListFragment.this.onPreQueryTextChange(s);
                     }
                 });
-                itemSearch.setActionView(actionSearchView);
+                searchView.setIconified(isMenuItemSearchIconified());
+                itemSearch.setActionView(searchView);
+
+                SearchViewFormatter formatter = new SearchViewFormatter();
+
+                formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
+                formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
+                formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
+                formatter.setSearchHintColorResource(R.color.hint_foreground_material_dark);
+
+                formatter.format(searchView);
             }
         }
     }
@@ -190,7 +195,7 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
     }
 
     protected boolean onPreQueryTextChange(String newText) {
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(PreferencesConstant.PREF_TEXT_SEARCH_TYPE, Boolean.TRUE))
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
             newText = "%" + newText;
 
         return onQueryTextChange(newText);

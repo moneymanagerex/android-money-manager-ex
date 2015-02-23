@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2013 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.fragment;
 
 import android.app.Activity;
@@ -46,17 +46,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SearchActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.DateUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+import com.money.manager.ex.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,8 +75,6 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     private EditText edtTransNumber, edtNotes;
     private TextView txtToAmount, txtFromAmount, txtSelectCategory, txtSelectPayee, txtFromDate, txtToDate;
     private CheckBox cbxWithdrawal, cbxDeposit, cbxTransfer;
-    // application
-    private MoneyManagerApplication mApplication;
     // arrayslist accountname and accountid
     private ArrayList<String> mAccountNameList = new ArrayList<String>();
     private ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
@@ -90,7 +87,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApplication = (MoneyManagerApplication) getActivity().getApplication();
+
         setHasOptionsMenu(true);
         AllDataFragment fragment;
         fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
@@ -102,6 +99,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) return null;
+        Core core = new Core(getActivity().getApplicationContext());
         //create view
         View view = (LinearLayout) inflater.inflate(R.layout.search_activity, container, false);
         //create listener amount
@@ -127,7 +125,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         // accountlist <> to populate the spin
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         if (mAccountList == null) {
-            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getListAccounts(mApplication.getAccountsOpenVisible(), mApplication.getAccountFavoriteVisible());
+            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
             mAccountList.add(0, null);
             for (int i = 0; i <= mAccountList.size() - 1; i++) {
                 if (mAccountList.get(i) != null) {

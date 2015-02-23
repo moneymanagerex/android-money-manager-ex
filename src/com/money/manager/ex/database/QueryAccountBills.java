@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.database;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.RawFileUtils;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.utils.RawFileUtils;
 
 public class QueryAccountBills extends Dataset {
     //definizione dei nomi dei campi
@@ -45,11 +45,40 @@ public class QueryAccountBills extends Dataset {
     private String accountType;
     private int currencyId;
     private double total;
+    private double reconciled;
+    private double totalBaseConvRate;
+    private double reconciledBaseConvRate;
+    // context
+    private Context context;
 
     // constructor
     public QueryAccountBills(Context context) {
-
         super(RawFileUtils.getRawAsString(context, R.raw.query_account_bills), DatasetType.QUERY, "accountbills");
+        this.context = context;
+    }
+
+    public double getReconciled() {
+        return reconciled;
+    }
+
+    public void setReconciled(double reconciled) {
+        this.reconciled = reconciled;
+    }
+
+    public double getTotalBaseConvRate() {
+        return totalBaseConvRate;
+    }
+
+    public void setTotalBaseConvRate(double totalBaseConvRate) {
+        this.totalBaseConvRate = totalBaseConvRate;
+    }
+
+    public double getReconciledBaseConvRate() {
+        return reconciledBaseConvRate;
+    }
+
+    public void setReconciledBaseConvRate(double reconciledBaseConvRate) {
+        this.reconciledBaseConvRate = reconciledBaseConvRate;
     }
 
     /**
@@ -117,11 +146,11 @@ public class QueryAccountBills extends Dataset {
      * @return selection made ​​if it appears only accounts opened and / or favorites
      */
     public String getFilterAccountSelection() {
-        MoneyManagerApplication application = new MoneyManagerApplication();
+        Core core = new Core(context);
         // check if show only open accounts
-        String where = application.getAccountsOpenVisible() ? "LOWER(" + STATUS + ")='open'" : null;
+        String where = core.getAccountsOpenVisible() ? "LOWER(" + STATUS + ")='open'" : null;
         // check if show fav accounts
-        where = application.getAccountFavoriteVisible() ? "LOWER(" + FAVORITEACCT + ")='true'" : where;
+        where = core.getAccountFavoriteVisible() ? "LOWER(" + FAVORITEACCT + ")='true'" : where;
 
         return !(TextUtils.isEmpty(where)) ? where : null;
     }

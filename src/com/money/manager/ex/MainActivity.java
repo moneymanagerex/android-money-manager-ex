@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,12 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -34,16 +33,15 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,6 +50,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.MaterialDialogCompat;
+import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.AccountListActivity.AccountLoaderListFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.CurrencyFormatsListActivity.CurrencyFormatsLoaderListFragment;
@@ -61,7 +62,6 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.adapter.DrawerMenuItem;
 import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.TableAccountList;
@@ -71,11 +71,10 @@ import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
-import com.money.manager.ex.preferences.PreferencesActivity;
-import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
-import com.money.manager.ex.reports.PayeesReportActivity;
+import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.io.File;
 import java.net.URLDecoder;
@@ -106,7 +105,7 @@ public class MainActivity extends BaseFragmentActivity {
     private LinearLayout mDrawerLayout;
     private ListView mDrawerList;
     private DrawerLayout mDrawer;
-    private CustomActionBarDrawerToggle mDrawerToggle;
+    private MyActionBarDrawerToggle mDrawerToggle;
     // object in drawer
     private LinearLayout mDrawerLinearRepeating;
     private TextView mDrawerTextUserName;
@@ -181,7 +180,7 @@ public class MainActivity extends BaseFragmentActivity {
      * Dialog to choose exit from application
      */
     public void exitApplication() {
-        AlertDialog.Builder exitDialog = new AlertDialog.Builder(this);
+        MaterialDialogCompat.Builder exitDialog = new MaterialDialogCompat.Builder(this);
         exitDialog.setTitle(R.string.close_application);
         exitDialog.setMessage(R.string.question_close_application);
         exitDialog.setIcon(R.drawable.ic_launcher);
@@ -214,7 +213,7 @@ public class MainActivity extends BaseFragmentActivity {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setDataAndType(Uri.fromFile(file), "vnd.android.cursor.dir/*");
         intent.setType("file/*");
-        if (((MoneyManagerApplication) getApplication()).isUriAvailable(getApplicationContext(), intent)) {
+        if (MoneyManagerApplication.getInstanceApp().isUriAvailable(getApplicationContext(), intent)) {
             try {
                 startActivityForResult(intent, REQUEST_PICKFILE_CODE);
             } catch (Exception e) {
@@ -435,9 +434,6 @@ public class MainActivity extends BaseFragmentActivity {
 
         Core core = new Core(this);
 
-        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(PreferencesConstant.PREF_LOCALE, "");
-        core.changeLocaleApp(locale);
-
         // close notification
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
@@ -473,12 +469,6 @@ public class MainActivity extends BaseFragmentActivity {
                     }
                 }
             }
-        }
-        // init application
-        try {
-            core.initDatabase();
-        } catch (Exception e) {
-            Log.e(LOGCAT, !TextUtils.isEmpty(e.getMessage()) ? e.getMessage() : "Init database failed");
         }
 
         // load base currency and compose hash currencies
@@ -574,7 +564,7 @@ public class MainActivity extends BaseFragmentActivity {
         // set a custom shadow that overlays the main content when the drawer opens
         if (mDrawer != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                mDrawerToggle = new CustomActionBarDrawerToggle(this, mDrawer);
+                mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
                 mDrawer.setDrawerListener(mDrawerToggle);
                 // create drawer menu
                 createDrawerMenu();
@@ -636,27 +626,7 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // dropbox sync
-        MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
-        if (itemDropbox != null && itemDropbox.isVisible()) {
-            itemDropbox.setVisible(mDropboxHelper != null && mDropboxHelper.isLinked());
-        }
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // process item
-        Intent intent;
         // quick-fix convert 'switch' to 'if-else'
         if (item.getItemId() == android.R.id.home) {
             if (mDrawer != null) {
@@ -666,65 +636,7 @@ public class MainActivity extends BaseFragmentActivity {
                     mDrawer.openDrawer(mDrawerLayout);
                 }
             }
-        } else if (item.getItemId() == R.id.menu_search_transaction) {
-            startActivity(new Intent(this, SearchActivity.class));
-        } else if (item.getItemId() == R.id.menu_dashboard) {
-            showDashboardFragment();
-        } else if (item.getItemId() == R.id.menu_sync_dropbox) {
-            startServiceSyncDropbox();
-        } else if (item.getItemId() == R.id.menu_account) {
-            // manage accounts
-            intent = new Intent(this, AccountListActivity.class);
-            intent.setAction(Intent.ACTION_EDIT);
-            startActivity(intent);
-        } else if (item.getItemId() == R.id.menu_category) {
-            // manage category
-            intent = new Intent(this, CategorySubCategoryExpandableListActivity.class);
-            intent.setAction(Intent.ACTION_EDIT);
-            startActivity(intent);
-        } else if (item.getItemId() == R.id.menu_payee) {
-            // manage payee
-            intent = new Intent(this, PayeeActivity.class);
-            intent.setAction(Intent.ACTION_EDIT);
-            startActivity(intent);
-        } else if (item.getItemId() == R.id.menu_repeating_transaction) {
-            startActivity(new Intent(this, RepeatingTransactionListActivity.class));
-        } else if (item.getItemId() == R.id.menu_currency) {
-            intent = new Intent(this, CurrencyFormatsListActivity.class);
-            intent.setAction(Intent.ACTION_EDIT);
-            startActivity(intent);
-        } else if (item.getItemId() == R.id.menu_open_database) {
-            pickFile(Environment.getExternalStorageDirectory());
-        } else if (item.getItemId() == R.id.menu_settings) {
-            startActivity(new Intent(this, PreferencesActivity.class));
-        } else if (item.getItemId() == R.id.menu_report_where_money_goes) {
-            intent = new Intent(this, CategoriesReportActivity.class);
-            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, Constants.TRANSACTION_TYPE_WITHDRAWAL);
-            intent.putExtra(CategoriesReportActivity.REPORT_TITLE, item.getTitle());
-            startActivity(intent);
-        } else if (item.getItemId() == R.id.menu_report_where_money_comes_from) {
-            intent = new Intent(this, CategoriesReportActivity.class);
-            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, Constants.TRANSACTION_TYPE_DEPOSIT);
-            intent.putExtra(CategoriesReportActivity.REPORT_TITLE, item.getTitle());
-            startActivity(intent);
-        } else if (item.getItemId() == R.id.menu_report_categories) {
-            startActivity(new Intent(this, CategoriesReportActivity.class));
-        } else if (item.getItemId() == R.id.menu_report_payees) {
-            startActivity(new Intent(this, PayeesReportActivity.class));
-        } else if (item.getItemId() == R.id.menu_report_income_vs_expenses) {
-            startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-        } else if (item.getItemId() == R.id.menu_help) {
-            intent = new Intent(getApplicationContext(), HelpActivity.class);
-            intent.setData(Uri.parse("android.resource://com.money.manager.ex/" + R.raw.help));
-            startActivity(intent);
-        } else if (item.getItemId() == R.id.menu_about) {
-            // open about activity
-            startActivity(new Intent(this, AboutActivity.class));
-        } else if (item.getItemId() == R.id.menu_donate) {
-            startActivity(new Intent(this, DonateActivity.class));
-        } else if (item.getItemId() == R.id.menu_exit) {
-            // close application
-            exitApplication();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -732,7 +644,7 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         /*
-		 * if (keyCode == KeyEvent.KEYCODE_BACK) { Fragment fragment = getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName()); //
+         * if (keyCode == KeyEvent.KEYCODE_BACK) { Fragment fragment = getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName()); //
 		 * check if show home fragment if ((fragment != null && fragment.isVisible()) || mAdvanceShow) { exitApplication(); // question if user would exit
 		 * return true; } }
 		 */
@@ -789,20 +701,22 @@ public class MainActivity extends BaseFragmentActivity {
         if (mDropboxHelper != null && mDropboxHelper.isLinked())
             adapter.add(new DrawerMenuItem(R.id.menu_sync_dropbox, getString(R.string.synchronize), isDarkTheme ? R.drawable.ic_action_dropbox_dark : R.drawable.ic_action_dropbox_light));
         // manage: add transaction
-        adapter.add(new DrawerMenuItem(R.id.menu_add_transaction_account, getString(R.string.add_transaction), isDarkTheme ? R.drawable.ic_action_add_dark : R.drawable.ic_action_add_light));
-        // manage: account
-        adapter.add(new DrawerMenuItem(R.id.menu_account, getString(R.string.accounts), isDarkTheme ? R.drawable.ic_action_bank_dark : R.drawable.ic_action_bank_light));
-        // manage: categories
-        adapter.add(new DrawerMenuItem(R.id.menu_category, getString(R.string.categories), isDarkTheme ? R.drawable.ic_action_tags_dark : R.drawable.ic_action_tags_light));
-        // manage: currencies
-        adapter.add(new DrawerMenuItem(R.id.menu_currency, getString(R.string.currencies), isDarkTheme ? R.drawable.ic_action_currency_dark : R.drawable.ic_action_currency_light));
-        // manage: payees
-        adapter.add(new DrawerMenuItem(R.id.menu_payee, getString(R.string.payees), isDarkTheme ? R.drawable.ic_action_users_dark : R.drawable.ic_action_users_light));
+        // adapter.add(new DrawerMenuItem(R.id.menu_add_transaction_account, getString(R.string.add_transaction), isDarkTheme ? R.drawable.ic_action_add_dark : R.drawable.ic_action_add_light));
+        // tools
+        adapter.add(new DrawerMenuItem(R.id.menu_group_main, getString(R.string.tools), isDarkTheme ? R.drawable.ic_action_domain_dark : R.drawable.ic_action_domain_light));
         // manage: repeating transactions
-        adapter.add(new DrawerMenuItem(R.id.menu_repeating_transaction, getString(R.string.repeating_transactions), isDarkTheme ? R.drawable.ic_action_playback_repeat_dark : R.drawable.ic_action_playback_repeat_light));
-        //adapter.add(new DrawerMenuItem(R.id.menu_dashboard, getString(R.string.dashboard)));
+        adapter.add(new DrawerMenuItem(R.id.menu_repeating_transaction, getString(R.string.repeating_transactions), isDarkTheme ? R.drawable.ic_action_history_dark : R.drawable.ic_action_history_light));
         // search transaction
         adapter.add(new DrawerMenuItem(R.id.menu_search_transaction, getString(R.string.search), isDarkTheme ? R.drawable.ic_action_search_dark : R.drawable.ic_action_search_light));
+        // settings
+        adapter.add(new DrawerMenuItem(R.id.menu_reports, getString(R.string.menu_reports), isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
+        // settings
+        adapter.add(new DrawerMenuItem(R.id.menu_settings, getString(R.string.settings), isDarkTheme ? R.drawable.ic_action_settings_dark : R.drawable.ic_action_settings_light));
+        // donate
+        adapter.add(new DrawerMenuItem(R.id.menu_donate, getString(R.string.donate), isDarkTheme ? R.drawable.ic_action_reports_dark : R.drawable.ic_action_redeem_light));
+        // help
+        adapter.add(new DrawerMenuItem(R.id.menu_about, getString(R.string.about), isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light));
+
         // get drawerlist and set adapter
         if (mDrawerList != null)
             mDrawerList.setAdapter(adapter);
@@ -810,11 +724,122 @@ public class MainActivity extends BaseFragmentActivity {
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
-    private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle {
+    public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
+        Intent intent;
+        final Core core = new Core(getApplicationContext());
+        final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
 
-        public CustomActionBarDrawerToggle(Activity mActivity, DrawerLayout mDrawerLayout) {
-            super(mActivity, mDrawerLayout, R.drawable.ic_navigation_drawer, R.string.application_name, R.string.application_name);
+        if (item.getId() == R.id.menu_home) {
+            showFragment(HomeFragment.class);
+            return true;
+        } else if (item.getId() == R.id.menu_sync_dropbox) {
+            startServiceSyncDropbox();
+            return true;
+        } else if (item.getId() == R.id.menu_open_database) {
+            pickFile(Environment.getExternalStorageDirectory());
+            return true;
+        } else if (item.getId() == R.id.menu_add_transaction_account) {
+            intent = new Intent(MainActivity.this, CheckingAccountActivity.class);
+            intent.setAction(Intent.ACTION_INSERT);
+            startActivity(intent);
+            return true;
+        } else if (item.getId() == R.id.menu_group_main) {
+            final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+            // manage: account
+            adapter.add(new DrawerMenuItem(R.id.menu_account, getString(R.string.accounts), isDarkTheme ? R.drawable.ic_action_bank_dark : R.drawable.ic_action_bank_light));
+            // manage: categories
+            adapter.add(new DrawerMenuItem(R.id.menu_category, getString(R.string.categories), isDarkTheme ? R.drawable.ic_action_label_outline_dark : R.drawable.ic_action_label_outline_light));
+            // manage: currencies
+            adapter.add(new DrawerMenuItem(R.id.menu_currency, getString(R.string.currencies), isDarkTheme ? R.drawable.ic_action_attach_money_dark : R.drawable.ic_action_attach_money_light));
+            // manage: payees
+            adapter.add(new DrawerMenuItem(R.id.menu_payee, getString(R.string.payees), isDarkTheme ? R.drawable.ic_action_users_dark : R.drawable.ic_action_users_light));
+
+            onDrawerItemSubDialogs(adapter, item.getItemText(), isDarkTheme);
+        } else if (item.getId() == R.id.menu_account) {
+            showFragment(AccountLoaderListFragment.class);
+            return true;
+        } else if (item.getId() == R.id.menu_category) {
+            showFragment(CategorySubCategoryExpandableLoaderListFragment.class);
+            return true;
+        } else if (item.getId() == R.id.menu_currency) {
+            showFragment(CurrencyFormatsLoaderListFragment.class);
+            return true;
+        } else if (item.getId() == R.id.menu_payee) {
+            showFragment(PayeeLoaderListFragment.class);
+            return true;
+        } else if (item.getId() == R.id.menu_repeating_transaction) {
+            showFragment(RepeatingTransactionListFragment.class);
+            return true;
+        } else if (item.getId() == R.id.menu_search_transaction) {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            return true;
+        } else if (item.getId() == R.id.menu_settings) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        } else if (item.getId() == R.id.menu_dashboard) {
+            showFragment(DashboardFragment.class);
+            return true;
+        } else if (item.getId() == R.id.menu_reports) {
+            final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+            // where money goes
+            adapter.add(new DrawerMenuItem(R.id.menu_report_where_money_goes, getString(R.string.menu_report_where_money_goes), isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
+            // where money comes from
+            adapter.add(new DrawerMenuItem(R.id.menu_report_where_money_comes_from, getString(R.string.menu_report_where_money_comes_from), isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
+            // where money comes from
+            adapter.add(new DrawerMenuItem(R.id.menu_report_categories, getString(R.string.categories), isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));// where money comes from
+            // income vs. expenses
+            adapter.add(new DrawerMenuItem(R.id.menu_report_income_vs_expenses, getString(R.string.menu_report_income_vs_expenses), isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
+            onDrawerItemSubDialogs(adapter, item.getItemText(), isDarkTheme);
+            return true;
+        } else if (item.getId() == R.id.menu_report_where_money_goes) {
+            intent = new Intent(this, CategoriesReportActivity.class);
+            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, Constants.TRANSACTION_TYPE_WITHDRAWAL);
+            intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_goes));
+            startActivity(intent);
+            return true;
+        } else if (item.getId() == R.id.menu_report_where_money_comes_from) {
+            intent = new Intent(this, CategoriesReportActivity.class);
+            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, Constants.TRANSACTION_TYPE_DEPOSIT);
+            intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_comes_from));
+            startActivity(intent);
+            return true;
+        } else if (item.getId() == R.id.menu_report_categories) {
+            startActivity(new Intent(this, CategoriesReportActivity.class));
+            return true;
+        } else if (item.getId() == R.id.menu_report_income_vs_expenses) {
+            startActivity(new Intent(this, IncomeVsExpensesActivity.class));
+            return true;
+        } else if (item.getId() == R.id.menu_donate) {
+            startActivity(new Intent(this, DonateActivity.class));
+            return true;
+        } else if (item.getId() == R.id.menu_help) {
+            startActivity(new Intent(MainActivity.this, HelpActivity.class));
+            return true;
+        } else if (item.getId() == R.id.menu_about) {
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
+            return true;
         }
+        return false;
+    }
+
+    public void onDrawerItemSubDialogs(final DrawerMenuItemAdapter adapter, CharSequence title, Boolean isDarkTheme) {
+        final MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title(title)
+                .adapter(adapter)
+                .theme(isDarkTheme ? Theme.DARK : Theme.LIGHT)
+                .build();
+
+        ListView listView = dialog.getListView();
+        if (listView != null) {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    onDrawerMenuAndOptionMenuSelected(adapter.getItem(position));
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        dialog.show();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -836,35 +861,37 @@ public class MainActivity extends BaseFragmentActivity {
                     @Override
                     public void run() {
                         // execute operation
-                        if (item.getId() == R.id.menu_home) {
-                            showFragment(HomeFragment.class);
-                        } else if (item.getId() == R.id.menu_sync_dropbox) {
-                            startServiceSyncDropbox();
-                        } else if (item.getId() == R.id.menu_open_database) {
-                            pickFile(Environment.getExternalStorageDirectory());
-                        } else if (item.getId() == R.id.menu_add_transaction_account) {
-                            Intent intent = new Intent(MainActivity.this, CheckingAccountActivity.class);
-                            intent.setAction(Intent.ACTION_INSERT);
-                            startActivity(intent);
-                        } else if (item.getId() == R.id.menu_account) {
-                            showFragment(AccountLoaderListFragment.class);
-                        } else if (item.getId() == R.id.menu_category) {
-                            //showFragment(CategorySubLoaderListFragment.class);
-                            showFragment(CategorySubCategoryExpandableLoaderListFragment.class);
-                        } else if (item.getId() == R.id.menu_currency) {
-                            showFragment(CurrencyFormatsLoaderListFragment.class);
-                        } else if (item.getId() == R.id.menu_payee) {
-                            showFragment(PayeeLoaderListFragment.class);
-                        } else if (item.getId() == R.id.menu_repeating_transaction) {
-                            showFragment(RepeatingTransactionListFragment.class);
-                        } else if (item.getId() == R.id.menu_search_transaction) {
-                            startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                        } else if (item.getId() == R.id.menu_dashboard) {
-                            showFragment(DashboardFragment.class);
-                        }
+                        onDrawerMenuAndOptionMenuSelected(item);
                     }
                 }, 250);
             }
+        }
+    }
+
+    public class MyActionBarDrawerToggle extends ActionBarDrawerToggle {
+
+
+        public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+            super(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes);
+        }
+
+        public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+            super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
+        }
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            String title = MoneyManagerApplication.getInstanceApp().getUserName();
+            if (TextUtils.isEmpty(title))
+                title = getString(R.string.application_name);
+            getSupportActionBar().setTitle(title);
+            super.onDrawerOpened(drawerView);
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            getSupportActionBar().setTitle(R.string.application_name);
+            super.onDrawerClosed(drawerView);
         }
     }
 }

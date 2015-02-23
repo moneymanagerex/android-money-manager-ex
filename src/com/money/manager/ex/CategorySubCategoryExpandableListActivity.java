@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,11 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -48,6 +47,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -68,20 +68,19 @@ import java.util.List;
  * @version 1.0.0
  */
 public class CategorySubCategoryExpandableListActivity extends BaseFragmentActivity {
-    @SuppressWarnings("unused")
-
-    private static final String LOGCAT = CategorySubCategoryExpandableListActivity.class.getSimpleName();
-    private static final String FRAGMENTTAG = CategorySubCategoryExpandableListActivity.class.getSimpleName() + "_Fragment";
     public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";
     public static final String INTENT_RESULT_CATEGNAME = "CategorySubCategory:CategName";
     public static final String INTENT_RESULT_SUBCATEGID = "CategorySubCategory:SubCategId";
     public static final String INTENT_RESULT_SUBCATEGNAME = "CategorySubCategory:SubCategName";
-    // define listFragment into FragmentActivity
-    CategorySubCategoryExpandableLoaderListFragment listFragment = new CategorySubCategoryExpandableLoaderListFragment();
+    @SuppressWarnings("unused")
+
+    private static final String LOGCAT = CategorySubCategoryExpandableListActivity.class.getSimpleName();
+    private static final String FRAGMENTTAG = CategorySubCategoryExpandableListActivity.class.getSimpleName() + "_Fragment";
     // ID loader
     private static final int ID_LOADER_CATEGORYSUB = 0;
-
     private static String mAction = Intent.ACTION_EDIT;
+    // define listFragment into FragmentActivity
+    CategorySubCategoryExpandableLoaderListFragment listFragment = new CategorySubCategoryExpandableLoaderListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +99,18 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
         if (fm.findFragmentById(android.R.id.content) == null) {
             fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
         }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // set result and terminate activity
+            CategorySubCategoryExpandableLoaderListFragment fragment = (CategorySubCategoryExpandableLoaderListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+            if (fragment != null) {
+                fragment.setResultAndFinish();
+            }
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
     public static class CategorySubCategoryExpandableLoaderListFragment extends BaseExpandableListFragment
@@ -481,7 +492,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
                 canDelete = new TableSubCategory().canDelete(getActivity(), values);
             }
             if (!(canDelete)) {
-                new AlertDialog.Builder(getActivity())
+                new MaterialDialogCompat.Builder(getActivity())
                         .setTitle(R.string.attention)
                         .setMessage(R.string.category_can_not_deleted)
                         .setIcon(R.drawable.ic_action_warning_light)
@@ -497,7 +508,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
                 return;
             }
             // create and set alert dialog
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
             alertDialog.setTitle(R.string.delete_category);
             alertDialog.setMessage(R.string.confirmDelete);
             alertDialog.setIcon(R.drawable.ic_action_warning_light);
@@ -544,7 +555,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
                 edtCategName.setSelection(categName.length());
             }
             // create alter dialog
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
             alertDialog.setView(viewDialog);
             alertDialog.setTitle(R.string.edit_categoryName);
             // listener on positive button
@@ -622,7 +633,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
             }
 
             // create alter dialog
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
             alertDialog.setView(viewDialog);
             alertDialog.setTitle(R.string.edit_categoryName);
             // listener on positive button
@@ -634,7 +645,8 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
                             // get description category
                             String name = edtSubCategName.getText().toString();
                             // check position
-                            if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION) return;
+                            if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
+                                return;
                             // get categid
                             int categId = categories.get(spnCategory.getSelectedItemPosition()).getCategId();
                             ContentValues values = new ContentValues();
@@ -678,17 +690,5 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
         public String getSubTitle() {
             return getString(R.string.categories);
         }
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // set result and terminate activity
-            CategorySubCategoryExpandableLoaderListFragment fragment = (CategorySubCategoryExpandableLoaderListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null) {
-                fragment.setResultAndFinish();
-            }
-        }
-        return super.onKeyUp(keyCode, event);
     }
 }

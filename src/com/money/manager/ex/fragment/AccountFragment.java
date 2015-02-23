@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2012 The Android Money Manager Ex Project
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
+ */
 package com.money.manager.ex.fragment;
 
 import android.content.ContentValues;
@@ -39,17 +39,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.money.manager.ex.AccountListEditActivity;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.CurrencyUtils;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,8 +62,6 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
 
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
-    // application
-    MoneyManagerApplication currencyUtils;
     // all data fragment
     AllDataFragment mAllDataFragment;
     // id account
@@ -76,7 +75,7 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
     private TableAccountList mAccountList;
     // view into layout
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
-    private ImageView imgAccountFav;
+    private ImageView imgAccountFav, imgGotoAccount;
     // name account
     private String mAccountName;
     // setting for shown open database item menu
@@ -113,7 +112,6 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currencyUtils = (MoneyManagerApplication) getActivity().getApplication();
     }
 
     @Override
@@ -176,17 +174,18 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
             return null;
         }
         // inflate layout
-        View view = (LinearLayout) inflater.inflate(R.layout.fragment_account, container, false);
+        View view = (LinearLayout) inflater.inflate(R.layout.account_fragment, container, false);
         // take object AccountList
         if (mAccountList == null) {
             mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getTableAccountList(mAccountId);
         }
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, container, false);
         // take reference textview from layout
-        txtAccountBalance = (TextView) view.findViewById(R.id.textViewAccountBalance);
-        txtAccountReconciled = (TextView) view.findViewById(R.id.textViewAccountReconciled);
-        txtAccountDifference = (TextView) view.findViewById(R.id.textViewDifference);
+        txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
+        txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
+        txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
         // favorite icon
-        imgAccountFav = (ImageView) view.findViewById(R.id.imageViewAccountFav);
+        imgAccountFav = (ImageView) header.findViewById(R.id.imageViewAccountFav);
         // set listener click on favorite icon for change image
         imgAccountFav.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -204,12 +203,24 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
                 }
             }
         });
+        // goto account
+        imgGotoAccount = (ImageView) header.findViewById(R.id.imageViewGotoAccount);
+        imgGotoAccount.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AccountListEditActivity.class);
+                intent.putExtra(AccountListEditActivity.KEY_ACCOUNT_ID, mAccountId);
+                intent.setAction(Intent.ACTION_EDIT);
+                startActivity(intent);
+            }
+        });
         // manage fragment
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         mAllDataFragment = AllDataFragment.newInstance(mAccountId);
         // set arguments and settings of fragment
         mAllDataFragment.setArguments(prepareArgsForChildFragment());
-        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE, false));
+        mAllDataFragment.setListHeader(header);
+        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE), false));
         mAllDataFragment.setAutoStarLoader(false);
         mAllDataFragment.setContextMenuGroupId(mAccountId);
         mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
@@ -291,18 +302,18 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
         ArrayList<String> selection = new ArrayList<String>();
         selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountID + "="
                 + Integer.toString(mAccountId) + ")");
-        if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
+        if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
-        } else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
+        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
-        } else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
+        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
             selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
             selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-        } else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
+        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
-        } else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
+        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
-        } else if (currencyUtils.getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
+        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
             selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
         }
         // create a bundle to returns
