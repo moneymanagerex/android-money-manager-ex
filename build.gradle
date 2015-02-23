@@ -53,7 +53,7 @@ android {
         applicationId "com.money.manager.ex"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 601
+        versionCode 602
         versionName '2.0.0-alpha0'
     }
 
@@ -66,7 +66,7 @@ android {
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
-            jniLibs.srcDirs = ['libs']
+            //jniLibs.srcDirs = ['libs']
         }
 
         // Move the tests to tests/java, tests/res, etc...

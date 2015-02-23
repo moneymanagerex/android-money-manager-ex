@@ -36,6 +36,7 @@
         <attr name="ic_action_list" format="reference"/>
         <attr name="ic_action_pie_chart" format="reference"/>
         <attr name="ic_action_playback_repeat" format="reference"/>
+        <attr name="ic_action_refresh" format="reference"/>
         <attr name="ic_action_reload" format="reference"/>
         <attr name="ic_action_report" format="reference"/>
         <attr name="ic_action_search" format="reference"/>

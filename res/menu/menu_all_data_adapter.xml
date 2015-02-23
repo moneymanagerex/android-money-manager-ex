@@ -17,24 +17,25 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menu_change_status"
-        android:icon="@drawable/ic_action_label_outline_dark"
-        android:showAsAction="always"
-        android:title="@string/change_status"/>
+        android:icon="@drawable/ic_action_refresh_dark"
+        android:title="@string/change_status"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/menu_duplicate_transactions"
         android:icon="?attr/ic_action_copy"
-        android:showAsAction="always"
-        android:title="@string/duplicate_selected_transactions"/>
+        android:title="@string/duplicate_selected_transactions"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/menu_delete"
         android:icon="?attr/ic_action_trash"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/delete_transaction"/>
+        android:title="@string/delete_transaction"
+        app:showAsAction="ifRoom|withText"/>
 
 </menu>

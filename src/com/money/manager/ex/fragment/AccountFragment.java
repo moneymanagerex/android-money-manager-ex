@@ -39,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.money.manager.ex.AccountListEditActivity;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -74,7 +75,7 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
     private TableAccountList mAccountList;
     // view into layout
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
-    private ImageView imgAccountFav;
+    private ImageView imgAccountFav, imgGotoAccount;
     // name account
     private String mAccountName;
     // setting for shown open database item menu
@@ -200,6 +201,17 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
                 } else {
                     setImageViewFavorite();
                 }
+            }
+        });
+        // goto account
+        imgGotoAccount = (ImageView) header.findViewById(R.id.imageViewGotoAccount);
+        imgGotoAccount.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AccountListEditActivity.class);
+                intent.putExtra(AccountListEditActivity.KEY_ACCOUNT_ID, mAccountId);
+                intent.setAction(Intent.ACTION_EDIT);
+                startActivity(intent);
             }
         });
         // manage fragment
