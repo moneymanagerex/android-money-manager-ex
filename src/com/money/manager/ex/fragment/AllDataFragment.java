@@ -495,6 +495,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
                     for (int i = 0; i < getListView().getCheckedItemCount(); i++) {
                         int position = positionChecked.keyAt(i);
+                        if (getListHeader() != null)
+                            position--;
                         if (cursor.moveToPosition(position)) {
                             transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
                         }
@@ -575,6 +577,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
         @Override
         public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+            if (getListHeader() != null)
+                position--;
+
             if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                 AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
                 adapter.setPositionChecked(position, checked);
