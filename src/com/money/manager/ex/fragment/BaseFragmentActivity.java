@@ -47,12 +47,7 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
 
         String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_LOCALE), "");
         core.changeLocaleApp(locale);
-        // set orietation
-        if (core.isTablet()) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+
         try {
             this.setTheme(core.getThemeApplication());
         } catch (Exception e) {
