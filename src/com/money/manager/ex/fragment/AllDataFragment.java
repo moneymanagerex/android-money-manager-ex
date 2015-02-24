@@ -198,12 +198,12 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                 }
             }
         });
-
-        // set adapter
-        setListAdapter(adapter);
         // if header is not null add to listview
         if (mListHeader != null)
             getListView().addHeaderView(mListHeader);
+        // set adapter
+        setListAdapter(adapter);
+
         // register context menu
         registerForContextMenu(getListView());
 
