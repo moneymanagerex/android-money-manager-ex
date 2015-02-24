@@ -385,4 +385,15 @@
     <string name="bank_accounts">Conti bancari</string>
     <string name="term_accounts">Conti a termine</string>
     <string name="credit_card_accounts">Carte di credito</string>
+    <string name="locale_hu">Ungherese</string>
+    <string name="montly_last_days">Mensile (ultimo giorno)</string>
+    <string name="montly_last_bussines_day">Mensile (ultimo giorno lavorativo)</string>
+    <string name="locale_de">Tedesco</string>
+    <string name="locale_ja">Giapponese</string>
+    <string name="locale_nl">Olandese</string>
+    <string name="locale_pl">Polacco</string>
+    <string name="transaction_cancel_confirm">Sei sicuro di che voler eliminare questa transazione?</string>
+    <string name="keep_editing">Mantenere la modifica</string>
+    <string name="discard">Abbandona</string>
+    <string name="invalid_expression">Espressione non valida</string>
 </resources>

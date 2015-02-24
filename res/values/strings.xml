@@ -513,7 +513,7 @@
     <string name="montly_last_bussines_day">Montly (last business day)</string>
     <string name="locale_de">German</string>
     <string name="locale_ja">Japanese</string>
-    <string name="locale_nl">Ducth</string>
+    <string name="locale_nl">Dutch</string>
     <string name="locale_pl">Polish</string>
     <string name="transaction_cancel_confirm">Are you sure you want to discard this transaction?</string>
     <string name="keep_editing">Keep editing</string>
