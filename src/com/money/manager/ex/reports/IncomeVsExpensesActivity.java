@@ -52,7 +52,7 @@ import android.widget.RadioButton;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialogCompat;
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -360,7 +360,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
         }
 
         private void showDialogSortMonth() {
-            MaterialDialogCompat.Builder dialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder dialog = new AlertDialogWrapper.Builder(getActivity());
             final LinearLayout layout = new LinearLayout(getActivity());
             layout.setOrientation(LinearLayout.VERTICAL);
             layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));

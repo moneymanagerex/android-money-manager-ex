@@ -385,4 +385,15 @@
     <string name="bank_accounts">Bankovní účty</string>
     <string name="term_accounts">Termínované účty</string>
     <string name="credit_card_accounts">Účty kreditních karet</string>
+    <string name="locale_hu">Maďarština</string>
+    <string name="montly_last_days">Měsíčně (poslední den)</string>
+    <string name="montly_last_bussines_day">Měsíčně (poslední pracovní den)</string>
+    <string name="locale_de">Němčina</string>
+    <string name="locale_ja">Japonština</string>
+    <string name="locale_nl">Nizozemština</string>
+    <string name="locale_pl">Polština</string>
+    <string name="transaction_cancel_confirm">Jste si jisti, že chcete zrušit tuto transakci?</string>
+    <string name="keep_editing">Pokračovat v editaci</string>
+    <string name="discard">Zrušit</string>
+    <string name="invalid_expression">Neplatný výraz</string>
 </resources>

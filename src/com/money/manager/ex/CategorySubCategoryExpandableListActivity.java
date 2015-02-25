@@ -47,7 +47,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialogCompat;
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -492,7 +492,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
                 canDelete = new TableSubCategory().canDelete(getActivity(), values);
             }
             if (!(canDelete)) {
-                new MaterialDialogCompat.Builder(getActivity())
+                new AlertDialogWrapper.Builder(getActivity())
                         .setTitle(R.string.attention)
                         .setMessage(R.string.category_can_not_deleted)
                         .setIcon(R.drawable.ic_action_warning_light)
@@ -508,7 +508,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
                 return;
             }
             // create and set alert dialog
-            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
             alertDialog.setTitle(R.string.delete_category);
             alertDialog.setMessage(R.string.confirmDelete);
             alertDialog.setIcon(R.drawable.ic_action_warning_light);
@@ -555,7 +555,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
                 edtCategName.setSelection(categName.length());
             }
             // create alter dialog
-            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
             alertDialog.setView(viewDialog);
             alertDialog.setTitle(R.string.edit_categoryName);
             // listener on positive button
@@ -633,7 +633,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
             }
 
             // create alter dialog
-            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
             alertDialog.setView(viewDialog);
             alertDialog.setTitle(R.string.edit_categoryName);
             // listener on positive button

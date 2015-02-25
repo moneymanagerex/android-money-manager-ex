@@ -385,4 +385,15 @@
     <string name="bank_accounts">銀行帳戶</string>
     <string name="term_accounts">定期存款帳戶</string>
     <string name="credit_card_accounts">信用卡帳戶</string>
+    <string name="locale_hu">匈牙利語</string>
+    <string name="montly_last_days">每月 (最後一天)</string>
+    <string name="montly_last_bussines_day">每月 (最後一個工作日)</string>
+    <string name="locale_de">德語</string>
+    <string name="locale_ja">日語</string>
+    <string name="locale_nl">荷蘭語</string>
+    <string name="locale_pl">波蘭語</string>
+    <string name="transaction_cancel_confirm">你確定要放棄這筆交易？</string>
+    <string name="keep_editing">繼續編輯</string>
+    <string name="discard">放棄</string>
+    <string name="invalid_expression">運算式有誤</string>
 </resources>

@@ -44,7 +44,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialogCompat;
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
@@ -154,7 +154,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
                     if (new TablePayee().canDelete(getActivity(), contentValues, TableAccountList.class.getName())) {
                         showDialogDeleteCurrency(cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
                     } else {
-                        new MaterialDialogCompat.Builder(getActivity())
+                        new AlertDialogWrapper.Builder(getActivity())
                                 .setTitle(R.string.attention)
                                 .setMessage(R.string.currency_can_not_deleted)
                                 .setIcon(R.drawable.ic_action_warning_light)
@@ -282,7 +282,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
         private void showDialogDeleteCurrency(final int currencyId) {
             // config alert dialog
-            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
             alertDialog.setTitle(R.string.delete_currency);
             alertDialog.setMessage(R.string.confirmDelete);
             // set listener on positive button
@@ -329,7 +329,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
         private void showDialogImportAllCurrencies() {
             // config alert dialog
-            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
             alertDialog.setTitle(R.string.attention);
             alertDialog.setMessage(R.string.question_import_currencies);
             // set listener on positive button
@@ -353,7 +353,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
         private void showDialogUpdateExchangeRateCurrencies() {
             // config alert dialog
-            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
             alertDialog.setTitle(R.string.attention);
             alertDialog.setMessage(R.string.question_update_currency_exchange_rates);
             // set listener on positive button

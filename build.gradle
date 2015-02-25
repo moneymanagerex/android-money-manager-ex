@@ -41,7 +41,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:21.0.3'
     compile 'com.github.gabrielemariotti.changeloglib:library:1.5.1'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'com.afollestad:material-dialogs:0.6.2.2'
+    compile 'com.afollestad:material-dialogs:0.6.3.1'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
 }
 
@@ -53,8 +53,8 @@ android {
         applicationId "com.money.manager.ex"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 603
-        versionName '2.0.0-alpha1'
+        versionCode 604
+        versionName '2.0.0-alpha2'
     }
 
     sourceSets {

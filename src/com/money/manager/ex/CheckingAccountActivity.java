@@ -741,6 +741,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 .content(R.string.transaction_cancel_confirm)
                 .positiveText(R.string.keep_editing)
                 .negativeText(R.string.discard)
+                .cancelable(false)
                 .theme(core.getThemeApplication() == R.style.Theme_Money_Manager ? Theme.DARK : Theme.LIGHT)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
@@ -859,7 +860,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
         mTransNumber = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSACTIONNUMBER));
         mNotes = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.NOTES));
-        mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
+        if (!duplicate)
+            mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
 
         if (mSplitTransaction == null) {
             mSplitTransaction = getSplitTransaction(transId);

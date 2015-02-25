@@ -35,7 +35,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialogCompat;
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.RawFileUtils;
 
@@ -120,7 +120,7 @@ public class TipsDialogFragment extends DialogFragment {
         }
 
         // Compose Builder
-        MaterialDialogCompat.Builder builder = new MaterialDialogCompat.Builder(getActivity());
+        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(getActivity());
         builder.setTitle(getTitle());
         builder.setView(view);
         builder.setCancelable(false);

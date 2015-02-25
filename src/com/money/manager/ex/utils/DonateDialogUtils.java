@@ -26,7 +26,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 
-import com.afollestad.materialdialogs.MaterialDialogCompat;
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
@@ -55,7 +55,7 @@ public class DonateDialogUtils {
                 //get text donate
                 String donateText = context.getString(R.string.donate_header);
                 //create dialog
-                MaterialDialogCompat.Builder showDialog = new MaterialDialogCompat.Builder(context);
+                AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(context);
                 showDialog.setCancelable(false);
                 showDialog.setTitle(R.string.donate);
                 showDialog.setIcon(R.drawable.ic_launcher);

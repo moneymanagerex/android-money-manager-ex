@@ -385,4 +385,15 @@
     <string name="bank_accounts">Bankrekeningen</string>
     <string name="term_accounts">Termijnrekeningen</string>
     <string name="credit_card_accounts">Credit Card rekeningen</string>
+    <string name="locale_hu">Hongaars</string>
+    <string name="montly_last_days">Maandelijkse (laatste dag)</string>
+    <string name="montly_last_bussines_day">Maandelijkse (laatste werkdag)</string>
+    <string name="locale_de">Duits</string>
+    <string name="locale_ja">Japans</string>
+    <string name="locale_nl">Nederlands</string>
+    <string name="locale_pl">Pools</string>
+    <string name="transaction_cancel_confirm">Weet u zeker dat u wilt deze transactie annuleren?</string>
+    <string name="keep_editing">Doorgaan met bewerken</string>
+    <string name="discard">Negeren</string>
+    <string name="invalid_expression">Ongeldige expressie</string>
 </resources>

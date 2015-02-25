@@ -385,4 +385,15 @@
     <string name="bank_accounts">銀行口座</string>
     <string name="term_accounts">定期アカウント</string>
     <string name="credit_card_accounts">クレジット カード アカウント</string>
+    <string name="locale_hu">ハンガリー語</string>
+    <string name="montly_last_days">毎月 (最終日)</string>
+    <string name="montly_last_bussines_day">毎月 (最終営業日)</string>
+    <string name="locale_de">ドイツ語</string>
+    <string name="locale_ja">日本語</string>
+    <string name="locale_nl">オランダ語</string>
+    <string name="locale_pl">ポーランド語</string>
+    <string name="transaction_cancel_confirm">この取引を破棄してもよろしいですか?</string>
+    <string name="keep_editing">編集を続ける</string>
+    <string name="discard">破棄</string>
+    <string name="invalid_expression">式が正しくありません</string>
 </resources>

@@ -43,8 +43,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
@@ -359,7 +359,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
      */
     private void showDialogDeleteCheckingAccount(final int[] transId) {
         // create alert dialog and set title and message
-        MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
 
         alertDialog.setTitle(R.string.delete_transaction);
         alertDialog.setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions, transId.length, transId.length));
