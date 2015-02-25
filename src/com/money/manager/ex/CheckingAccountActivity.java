@@ -741,6 +741,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 .content(R.string.transaction_cancel_confirm)
                 .positiveText(R.string.keep_editing)
                 .negativeText(R.string.discard)
+                .cancelable(false)
                 .theme(core.getThemeApplication() == R.style.Theme_Money_Manager ? Theme.DARK : Theme.LIGHT)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
