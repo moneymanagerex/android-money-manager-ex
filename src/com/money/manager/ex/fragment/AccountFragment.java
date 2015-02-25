@@ -179,7 +179,7 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
         if (mAccountList == null) {
             mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getTableAccountList(mAccountId);
         }
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, container, false);
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
         // take reference textview from layout
         txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
         txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);

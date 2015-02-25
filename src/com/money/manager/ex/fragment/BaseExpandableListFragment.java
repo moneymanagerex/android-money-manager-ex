@@ -19,7 +19,6 @@ package com.money.manager.ex.fragment;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -57,11 +56,6 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
     public void onCreate(Bundle savedInstanceState) {
         // set theme
         Core core = new Core(getActivity());
-        if (core.isTablet()) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
         try {
             getActivity().setTheme(core.getThemeApplication());
         } catch (Exception e) {

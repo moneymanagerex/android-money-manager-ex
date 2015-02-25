@@ -17,8 +17,8 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="February 23, 2014" versionName="2.0.0-alpha0">
-        <changelogtext>Introduced the material layout design</changelogtext>
+    <changelogversion changeDate="Feb 24, 2015" versionName="2.0.0-alpha1">
+    <changelogtext>Introduced the material layout design</changelogtext>
         <changelogtext>Added the type of account Credit Card</changelogtext>
         <changelogtext>Added function duplicates transaction</changelogtext>
         <changelogtext>Added calculator on amount dialog</changelogtext>
