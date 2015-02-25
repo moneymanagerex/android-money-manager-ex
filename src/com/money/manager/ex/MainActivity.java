@@ -50,8 +50,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.AccountListActivity.AccountLoaderListFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
@@ -180,7 +180,7 @@ public class MainActivity extends BaseFragmentActivity {
      * Dialog to choose exit from application
      */
     public void exitApplication() {
-        MaterialDialogCompat.Builder exitDialog = new MaterialDialogCompat.Builder(this);
+        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(this);
         exitDialog.setTitle(R.string.close_application);
         exitDialog.setMessage(R.string.question_close_application);
         exitDialog.setIcon(R.drawable.ic_launcher);

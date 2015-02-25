@@ -39,7 +39,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialogCompat;
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
@@ -147,7 +147,7 @@ public class AccountListActivity extends BaseFragmentActivity {
                     if (new TablePayee().canDelete(getActivity(), contentValues)) {
                         showDialogDeleteAccount(cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
                     } else {
-                        new MaterialDialogCompat.Builder(getActivity())
+                        new AlertDialogWrapper.Builder(getActivity())
                                 .setTitle(R.string.attention)
                                 .setMessage(R.string.account_can_not_deleted)
                                 .setIcon(R.drawable.ic_action_warning_light)
@@ -257,7 +257,7 @@ public class AccountListActivity extends BaseFragmentActivity {
 
         private void showDialogDeleteAccount(final int ACCOUNTID) {
             // create dialog
-            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
 
             alertDialog.setTitle(R.string.delete_account);
             alertDialog.setMessage(R.string.confirmDelete);

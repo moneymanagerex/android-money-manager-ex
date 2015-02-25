@@ -36,7 +36,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialogCompat;
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
 import com.money.manager.ex.core.Core;
@@ -209,7 +209,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 
         private void showDialogDeleteRepeatingTransaction(final int BDID) {
             // create alert dialog
-            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
             alertDialog.setTitle(R.string.delete_repeating_transaction);
             alertDialog.setMessage(R.string.confirmDelete);
             // set listener

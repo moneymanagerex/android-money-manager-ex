@@ -44,8 +44,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.database.SQLTypeTransacion;
 import com.money.manager.ex.database.TablePayee;
@@ -186,7 +186,7 @@ public class PayeeActivity extends BaseFragmentActivity {
                     if (new TablePayee().canDelete(getActivity(), contentValues)) {
                         showDialogDeletePayee(cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
                     } else {
-                        new MaterialDialogCompat.Builder(getActivity())
+                        new AlertDialogWrapper.Builder(getActivity())
                                 .setTitle(R.string.attention)
                                 .setMessage(R.string.payee_can_not_deleted)
                                 .setIcon(R.drawable.ic_action_warning_light)
@@ -293,7 +293,7 @@ public class PayeeActivity extends BaseFragmentActivity {
 
         private void showDialogDeletePayee(final int payeeId) {
             // creating dialog
-            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
 
             alertDialog.setTitle(R.string.delete_payee);
             alertDialog.setMessage(R.string.confirmDelete);
@@ -330,7 +330,7 @@ public class PayeeActivity extends BaseFragmentActivity {
                 edtPayeeName.setSelection(payeeName.length());
             }
             // create dialog
-            MaterialDialogCompat.Builder alertDialog = new MaterialDialogCompat.Builder(getActivity());
+            AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
 
             alertDialog.setView(viewDialog);
             alertDialog.setTitle(R.string.edit_payeeName);
