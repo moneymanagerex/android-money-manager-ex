@@ -315,7 +315,7 @@
     <string name="categories">Категории</string>
     <string name="currencies">Валюты</string>
     <string name="payees">Контрагенты</string>
-    <string name="repeating_transactions">Повторяющиеся проводки</string>
+    <string name="repeating_transactions">План проводок</string>
     <string name="theme_holo_light">Holo светлая</string>
     <string name="new_account">Новый счет</string>
     <string name="import_all_currencies">Импорт валют</string>
@@ -381,8 +381,19 @@
     <string name="sort_by_name">Сортировать по имени</string>
     <string name="sort_by_usage">Сортировать по назначению</string>
     <string name="choose_sorting">Выберите способ сортировки</string>
-    <string name="credit_card">Банковская Карта</string>
+    <string name="credit_card">Кредитная Карта</string>
     <string name="bank_accounts">Банковские Счета</string>
     <string name="term_accounts">Срочные Депозиты</string>
-    <string name="credit_card_accounts">Карточные Счета</string>
+    <string name="credit_card_accounts">Счета Кредитной Карты</string>
+    <string name="locale_hu">Венгерский</string>
+    <string name="montly_last_days">Ежемесячно (в последний день)</string>
+    <string name="montly_last_bussines_day">Ежемесячно (последний рабочий день)</string>
+    <string name="locale_de">Немецкий</string>
+    <string name="locale_ja">Японский</string>
+    <string name="locale_nl">Нидерландский</string>
+    <string name="locale_pl">Польский</string>
+    <string name="transaction_cancel_confirm">Вы уверены, что не хотите сохранить изменения ?</string>
+    <string name="keep_editing">Продолжить редактирование</string>
+    <string name="discard">Не сохранять</string>
+    <string name="invalid_expression">Недопустимое выражение</string>
 </resources>

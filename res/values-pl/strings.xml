@@ -376,13 +376,24 @@
     <string name="loading">Ładowanie&#8230;</string>
     <string name="grand_total">Łącznie</string>
     <string name="change_status">Zmień status</string>
-    <string name="duplicate_selected_transactions">Duplicate selected transactions</string>
+    <string name="duplicate_selected_transactions">Powielenie zaznaczonych tranzakcji</string>
     <string name="sort">Sortowanie</string>
     <string name="sort_by_name">Sortuj według nazwy</string>
     <string name="sort_by_usage">Sortuj według użycia</string>
     <string name="choose_sorting">Wybierz sortowanie</string>
     <string name="credit_card">Karta kredytowa</string>
     <string name="bank_accounts">Konta bankowe</string>
-    <string name="term_accounts">Term Accounts</string>
-    <string name="credit_card_accounts">Credit Card Accounts</string>
+    <string name="term_accounts">Lokata terminowa</string>
+    <string name="credit_card_accounts">Konta kart kredytowych</string>
+    <string name="locale_hu">Węgierski</string>
+    <string name="montly_last_days">Miesięczne (ostatni dzień)</string>
+    <string name="montly_last_bussines_day">Miesięczne (ostatni dzień roboczy)</string>
+    <string name="locale_de">Niemiecki</string>
+    <string name="locale_ja">Japoński</string>
+    <string name="locale_nl">Duński</string>
+    <string name="locale_pl">Polski</string>
+    <string name="transaction_cancel_confirm">Czy na pewno chcesz odrzucić tę transakcję?</string>
+    <string name="keep_editing">Kontynuuj edycję</string>
+    <string name="discard">Odrzuć</string>
+    <string name="invalid_expression">Nieprawidłowe wyrażenie</string>
 </resources>
