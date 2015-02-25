@@ -859,7 +859,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
         mTransNumber = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSACTIONNUMBER));
         mNotes = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.NOTES));
-        mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
+        if (!duplicate)
+            mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
 
         if (mSplitTransaction == null) {
             mSplitTransaction = getSplitTransaction(transId);
