@@ -55,7 +55,7 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // set theme
-        Core core = new Core(getActivity());
+        Core core = new Core(getActivity().getApplicationContext());
         try {
             getActivity().setTheme(core.getThemeApplication());
         } catch (Exception e) {

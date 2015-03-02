@@ -40,7 +40,7 @@ public class MoneyManagerBackupAgentHelper extends BackupAgentHelper {
         SharedPreferencesBackupHelper appHelper = new SharedPreferencesBackupHelper(this, getPackageName() + "_preferences");
         SharedPreferencesBackupHelper dropboxHelper = new SharedPreferencesBackupHelper(this, getPackageName() + "_dropbox_preferences");
         // create helper files
-        FileBackupHelper databaseHelper = new FileBackupHelper(this, MoneyManagerApplication.getDatabasePath(this));
+        FileBackupHelper databaseHelper = new FileBackupHelper(this, MoneyManagerApplication.getDatabasePath(getApplicationContext()));
 
         addHelper(KEY_BACKUP_APP_PREFERENCES, appHelper);
         addHelper(KEY_BACKUP_DROPBOX_PREFERENCES, dropboxHelper);

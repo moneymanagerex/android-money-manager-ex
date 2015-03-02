@@ -59,7 +59,7 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (isDialogMode()) {
-            Core core = new Core(this);
+            Core core = new Core(getApplicationContext());
             if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
             } else {

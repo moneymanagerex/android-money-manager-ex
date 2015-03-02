@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        currencyUtils = new CurrencyUtils(getActivity());
+        currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
         accountBills = new QueryAccountBills(getActivity());
     }
 

@@ -620,7 +620,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         btnTransNumber.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(CheckingAccountActivity.this);
+                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getApplicationContext());
                 String query = "SELECT MAX(CAST(" + TableCheckingAccount.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
                         new TableCheckingAccount().getSource() + " WHERE " +
                         TableCheckingAccount.ACCOUNTID + "=?";
@@ -691,7 +691,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         View view = findViewById(id);
         int accountId;
         if (view != null && view instanceof TextView) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(this);
+            CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
             if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
                 Double originalAmount;
                 try {
@@ -952,7 +952,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             currencyId = mAccountList.get(index).getCurrencyId();
         }
 
-        CurrencyUtils currencyUtils = new CurrencyUtils(this);
+        CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
 
         if (currencyId == null) {
             view.setText(currencyUtils.getBaseCurrencyFormatted(amount));

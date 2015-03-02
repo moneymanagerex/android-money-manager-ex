@@ -177,7 +177,7 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
         View view = (LinearLayout) inflater.inflate(R.layout.account_fragment, container, false);
         // take object AccountList
         if (mAccountList == null) {
-            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getTableAccountList(mAccountId);
+            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getTableAccountList(mAccountId);
         }
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
         // take reference textview from layout
@@ -341,7 +341,7 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
     private void setTextViewBalance() {
         // write account balance
         if (mAccountList != null) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
+            CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
 
             txtAccountBalance.setText(currencyUtils.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance));
             txtAccountReconciled.setText(currencyUtils.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled));

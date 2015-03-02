@@ -125,7 +125,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         // accountlist <> to populate the spin
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         if (mAccountList == null) {
-            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
+            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
             mAccountList.add(0, null);
             for (int i = 0; i <= mAccountList.size() - 1; i++) {
                 if (mAccountList.get(i) != null) {
@@ -194,7 +194,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Core core = new Core(getActivity());
+        Core core = new Core(getActivity().getApplicationContext());
         // ****** action bar *****
         BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
         if (activity != null)
@@ -269,7 +269,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        Core core = new Core(getActivity());
+        Core core = new Core(getActivity().getApplicationContext());
         if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             inflater.inflate(R.menu.menu_button_cancel_done, menu);
             // change item ok in search
@@ -315,11 +315,11 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         }
         //from date
         if (!TextUtils.isEmpty(txtFromDate.getText())) {
-            whereClause.add(ViewMobileData.Date + ">='" + DateUtils.getSQLiteStringDate(getActivity(), DateUtils.getDateFromString(getActivity(), String.valueOf(txtFromDate.getText()))) + "'");
+            whereClause.add(ViewMobileData.Date + ">='" + DateUtils.getSQLiteStringDate(getActivity(), DateUtils.getDateFromString(getActivity().getApplicationContext(), String.valueOf(txtFromDate.getText()))) + "'");
         }
         //to date
         if (!TextUtils.isEmpty(txtToDate.getText())) {
-            whereClause.add(ViewMobileData.Date + "<='" + DateUtils.getSQLiteStringDate(getActivity(), DateUtils.getDateFromString(getActivity(), String.valueOf(txtToDate.getText()))) + "'");
+            whereClause.add(ViewMobileData.Date + "<='" + DateUtils.getSQLiteStringDate(getActivity(), DateUtils.getDateFromString(getActivity().getApplicationContext(), String.valueOf(txtToDate.getText()))) + "'");
         }
         //payee
         if (txtSelectPayee.getTag() != null) {
@@ -395,7 +395,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
 
     @Override
     public void onFinishedInputAmountDialog(int id, Double amount) {
-        Core core = new Core(getActivity());
+        Core core = new Core(getActivity().getApplicationContext());
 
         View view = getView().findViewById(id);
         if (view != null && view instanceof TextView)
@@ -421,7 +421,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         public void onClick(View v) {
             Calendar date = Calendar.getInstance();
             if (!TextUtils.isEmpty(mTextView.getText())) {
-                date.setTime(DateUtils.getDateFromString(getActivity(), mTextView.getText().toString()));
+                date.setTime(DateUtils.getDateFromString(getActivity().getApplicationContext(), mTextView.getText().toString()));
             }
             DatePickerDialog dialog = new DatePickerDialog(getActivity(), mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
             dialog.show();
@@ -433,7 +433,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 try {
                     Date date = new SimpleDateFormat("yyyy-MM-dd").parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-                    mTextView.setText(DateUtils.getStringFromDate(getActivity(), date));
+                    mTextView.setText(DateUtils.getStringFromDate(getActivity().getApplicationContext(), date));
                 } catch (Exception e) {
                     Log.e(LOGCAT, e.getMessage());
                 }

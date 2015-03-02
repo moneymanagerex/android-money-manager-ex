@@ -291,7 +291,7 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
     private View showTableLayoutTopWithdrawals(Cursor cursor) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dashboard_summary_layout, null);
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
+        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
 
         // Textview Title
         TextView title = (TextView) layout.findViewById(R.id.textViewTitle);
@@ -327,7 +327,7 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
     private View showTableLayoutTopPayees(Cursor cursor) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dashboard_summary_layout, null);
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
+        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
 
         // Textview Title
         TextView title = (TextView) layout.findViewById(R.id.textViewTitle);
@@ -360,8 +360,8 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
     private View showTableLayoutUpComingTransactions(Cursor cursor) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dashboard_summary_layout, null);
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
-        Core core = new Core(getActivity());
+        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        Core core = new Core(getActivity().getApplicationContext());
 
         // Textview Title
         TextView title = (TextView) layout.findViewById(R.id.textViewTitle);

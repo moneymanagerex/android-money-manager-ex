@@ -58,8 +58,8 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             addPreferencesFromResource(R.xml.general_settings);
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-            final Core core = new Core(getActivity());
-            final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
+            final Core core = new Core(getActivity().getApplicationContext());
+            final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
 
             // application locale
             final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferencesConstant.PREF_LOCALE));

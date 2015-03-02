@@ -85,7 +85,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         // get application
-        currencyUtils = new CurrencyUtils(this);
+        currencyUtils = new CurrencyUtils(getApplicationContext());
         // attach fragment activity
         if (fm.findFragmentById(R.id.fragmentContent) == null) {
             fm.beginTransaction().replace(R.id.fragmentContent, listFragment, IncomeVsExpensesListFragment.class.getSimpleName()).commit();
@@ -272,7 +272,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             super.onCreateOptionsMenu(menu, inflater);
             inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
             //Create a cursor for select year
-            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity());
+            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
             SQLiteDatabase database = helper.getReadableDatabase();
             Cursor cursor = database.rawQuery("SELECT DISTINCT Year FROM " + ViewMobileData.mobiledata + " ORDER BY Year DESC", null);
             if (cursor != null && cursor.moveToFirst()) {
@@ -460,7 +460,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
             txtDifference.setTypeface(null, Typeface.BOLD_ITALIC);
             //change colors
-            Core core = new Core(getActivity());
+            Core core = new Core(getActivity().getApplicationContext());
             if (income - Math.abs(expenses) < 0) {
                 txtDifference.setTextColor(getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
             } else {

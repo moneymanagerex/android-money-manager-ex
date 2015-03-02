@@ -432,7 +432,7 @@ public class MainActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
 
         // close notification
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -472,7 +472,7 @@ public class MainActivity extends BaseFragmentActivity {
         }
 
         // load base currency and compose hash currencies
-        CurrencyUtils currencyUtils = new CurrencyUtils(this);
+        CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
         if (!currencyUtils.isInit())
             currencyUtils.reInit();
 
@@ -528,7 +528,7 @@ public class MainActivity extends BaseFragmentActivity {
      * @param savedInstanceState
      */
     public void onCreateFragments(Bundle savedInstanceState) {
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
 
         setContentView(R.layout.main_fragments_activity);
 
@@ -653,7 +653,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
         if (core.isTablet()) {
             Fragment fragment = getSupportFragmentManager().findFragmentById(getResIdLayoutContent());
             if (fragment != null) {
@@ -683,7 +683,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     // management drawer
     public void createDrawerMenu() {
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
         Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
 
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);

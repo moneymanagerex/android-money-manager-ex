@@ -120,7 +120,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
 
         // Restore saved instance state
         if ((savedInstanceState != null)) {
@@ -159,7 +159,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 
         // default currency
         if (mCurrencyId == null) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(this);
+            CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
 
             TableCurrencyFormats currencyFormats = currencyUtils.getTableCurrencyFormats(currencyUtils.getBaseCurrencyId());
 
@@ -524,7 +524,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 
     @Override
     public void onFinishedInputAmountDialog(int id, Double amount) {
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
 
         View view = findViewById(id);
         if (view != null && view instanceof TextView)

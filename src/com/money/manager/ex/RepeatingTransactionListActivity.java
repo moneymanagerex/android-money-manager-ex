@@ -141,7 +141,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
             setHasOptionsMenu(true);
             registerForContextMenu(getListView());
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            getListView().setDivider(new ColorDrawable(new Core(getActivity()).resolveIdAttribute(R.attr.theme_background_color)));
+            getListView().setDivider(new ColorDrawable(new Core(getActivity().getApplicationContext()).resolveIdAttribute(R.attr.theme_background_color)));
 
             setListShown(false);
             // start loaderapplication.getSQLiteStringDate(date)
@@ -172,7 +172,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
                     nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
                     repeats = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
                     bdId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
-                    date = DateUtils.getDateFromString(getActivity(), nextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
+                    date = DateUtils.getDateFromString(getActivity().getApplicationContext(), nextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
                     date = DateUtils.getDateNextOccurence(date, repeats);
                     if (date != null) {
                         Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
@@ -186,7 +186,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
                     nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
                     repeats = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
                     bdId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
-                    date = DateUtils.getDateFromString(getActivity(), nextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
+                    date = DateUtils.getDateFromString(getActivity().getApplicationContext(), nextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
                     date = DateUtils.getDateNextOccurence(date, repeats);
                     if (date != null) {
                         ContentValues values = new ContentValues();

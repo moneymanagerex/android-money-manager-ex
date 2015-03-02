@@ -390,7 +390,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
                 @Override
                 protected Boolean doInBackground(Void... params) {
-                    Core core = new Core(getActivity());
+                    Core core = new Core(getActivity().getApplicationContext());
                     return core.importCurrenciesFromLocaleAvaible();
                 }
 
@@ -424,7 +424,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
                     mPrevOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
 
-                    mCore = new Core(getActivity());
+                    mCore = new Core(getActivity().getApplicationContext());
                     DropboxHelper.setDisableAutoUpload(true);
 
                     //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
@@ -441,7 +441,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
                 @Override
                 protected Boolean doInBackground(Void... params) {
-                    CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
+                    CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
                     List<TableCurrencyFormats> currencyFormats = currencyUtils.getAllCurrencyFormats();
                     mCountCurrencies = currencyFormats.size();
                     for (int i = 0; i < currencyFormats.size(); i++) {

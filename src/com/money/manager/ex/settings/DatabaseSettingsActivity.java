@@ -61,7 +61,7 @@ public class DatabaseSettingsActivity extends BaseFragmentActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         // copy files
-                        Core core = new Core(getActivity());
+                        Core core = new Core(getActivity().getApplicationContext());
                         File newDatabases = core.backupDatabase();
                         if (newDatabases != null) {
                             Toast.makeText(getActivity(), Html.fromHtml(getString(R.string.database_has_been_moved, "<b>" + newDatabases.getAbsolutePath() + "</b>")), Toast.LENGTH_LONG).show();
@@ -84,7 +84,7 @@ public class DatabaseSettingsActivity extends BaseFragmentActivity {
             //sqlite version
             Preference pSQLiteVersion = findPreference(getString(PreferencesConstant.PREF_SQLITE_VERSION));
             if (pSQLiteVersion != null) {
-                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity());
+                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
                 String sqliteVersion = helper.getSQLiteVersion();
                 if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
             }

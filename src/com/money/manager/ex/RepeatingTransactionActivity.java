@@ -241,7 +241,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         super.onCreate(savedInstanceState);
 
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
         // manage save instance
         if ((savedInstanceState != null)) {
             mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
@@ -461,7 +461,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         btnTransNumber.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(RepeatingTransactionActivity.this);
+                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getApplicationContext());
                 String query = "SELECT MAX(" + TableCheckingAccount.TRANSACTIONNUMBER + ") FROM " +
                         new TableCheckingAccount().getSource() + " WHERE " +
                         TableCheckingAccount.ACCOUNTID + "=?";
@@ -852,12 +852,12 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
     @Override
     public void onFinishedInputAmountDialog(int id, Double amount) {
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
 
         View view = findViewById(id);
         int accountId;
         if (view != null && view instanceof TextView) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(this);
+            CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
             if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
                 Double originalAmount;
                 try {
