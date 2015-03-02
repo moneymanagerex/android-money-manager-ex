@@ -95,7 +95,7 @@ public static class DropboxBrowserFragment extends BaseListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // take a instance
-        mHelper = DropboxHelper.getInstance(getActivity().getApplicationContext());
+        mHelper = DropboxHelper.getInstance(getActivity());
         mAdapter = new EntryAdapter(getActivity(), R.layout.simple_list_item_multiple_choice_2);
         // set adapter
         setListAdapter(mAdapter);
@@ -236,4 +236,3 @@ public static class DropboxBrowserFragment extends BaseListFragment {
 
     }
 }
-
