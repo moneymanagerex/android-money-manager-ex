@@ -194,7 +194,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Core core = new Core(getActivity().getApplicationContext());
+        Core core = new Core(getActivity());
         // ****** action bar *****
         BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
         if (activity != null)

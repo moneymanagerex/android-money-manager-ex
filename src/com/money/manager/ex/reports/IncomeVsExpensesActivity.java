@@ -460,7 +460,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
             txtDifference.setTypeface(null, Typeface.BOLD_ITALIC);
             //change colors
-            Core core = new Core(getActivity().getApplicationContext());
+            Core core = new Core(getActivity());
             if (income - Math.abs(expenses) < 0) {
                 txtDifference.setTextColor(getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
             } else {

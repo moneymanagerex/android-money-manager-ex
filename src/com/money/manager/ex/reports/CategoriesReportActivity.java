@@ -168,7 +168,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
 
-            Core core = new Core(getActivity().getApplicationContext());
+            Core core = new Core(getActivity());
 
             MenuItem itemOption = menu.findItem(R.id.menu_option1);
             if (itemOption != null) {
