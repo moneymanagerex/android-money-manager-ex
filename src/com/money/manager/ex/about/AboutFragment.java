@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.about;
 
 import android.content.Intent;
@@ -18,38 +36,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.pedrovgs.lynx.LynxActivity;
+import com.github.pedrovgs.lynx.LynxConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 public class AboutFragment extends Fragment {
     private static final String LOGCAT = AboutFragment.class.getSimpleName();
-
-    // implement a class to manage the opening of several url
-    private class OnClickListenerUrl implements OnClickListener {
-        private String mUrl;
-
-        @Override
-        public void onClick(View v) {
-            if (TextUtils.isEmpty(getUrl()))
-                return;
-            try {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()));
-                startActivity(intent);
-            } catch (Exception e) {
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-
-        public String getUrl() {
-            return mUrl;
-        }
-
-        public void setUrl(String mUrl) {
-            this.mUrl = mUrl;
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +80,20 @@ public class AboutFragment extends Fragment {
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        // logcat
+        TextView txtLogcat = (TextView) view.findViewById(R.id.textViewLogcat);
+        text = "<u>" + txtLogcat.getText() + "</u>";
+        txtLogcat.setText(Html.fromHtml(text));
+        txtLogcat.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LynxConfig lynxConfig = new LynxConfig();
+                lynxConfig.setMaxNumberOfTracesToShow(4000);
+
+                Intent lynxActivityIntent = LynxActivity.getIntent(getActivity(), lynxConfig);
+                startActivity(lynxActivityIntent);
             }
         });
         // rate application
@@ -136,6 +144,32 @@ public class AboutFragment extends Fragment {
         });
 
         return view;
+    }
+
+    // implement a class to manage the opening of several url
+    private class OnClickListenerUrl implements OnClickListener {
+        private String mUrl;
+
+        @Override
+        public void onClick(View v) {
+            if (TextUtils.isEmpty(getUrl()))
+                return;
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()));
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+        public String getUrl() {
+            return mUrl;
+        }
+
+        public void setUrl(String mUrl) {
+            this.mUrl = mUrl;
+        }
+
     }
 
 }
