@@ -642,13 +642,15 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        /*
-         * if (keyCode == KeyEvent.KEYCODE_BACK) { Fragment fragment = getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName()); //
-		 * check if show home fragment if ((fragment != null && fragment.isVisible()) || mAdvanceShow) { exitApplication(); // question if user would exit
-		 * return true; } }
-		 */
-        return super.onKeyUp(keyCode, event);
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            if (mDrawer.isDrawerOpen(mDrawerLayout)) {
+                mDrawer.closeDrawer(mDrawerLayout);
+            } else {
+                mDrawer.openDrawer(mDrawerLayout);
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
