@@ -125,7 +125,7 @@ public class MoneyManagerProvider extends ContentProvider {
         // find object from uri
         Object ret = getObjectFromUri(uri);
         // database reference
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         long id = 0;
         String parse;
@@ -181,7 +181,7 @@ public class MoneyManagerProvider extends ContentProvider {
         // find object from uri
         Object ret = getObjectFromUri(uri);
         // Instance of database
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext().getApplicationContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
         int rowsUpdate = 0;
@@ -248,7 +248,7 @@ public class MoneyManagerProvider extends ContentProvider {
             return 0;
         }
         // take a database reference
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         int rowsDelete = 0;
         // check type of istance dataset
@@ -305,7 +305,7 @@ public class MoneyManagerProvider extends ContentProvider {
         // find object from uri
         Object ret = getObjectFromUri(uri);
         // take a database reference
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
         Cursor cursorRet;
         // compose log verbose instruction

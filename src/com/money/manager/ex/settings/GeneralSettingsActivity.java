@@ -34,10 +34,12 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.utils.CurrencyNameComparator;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 public class GeneralSettingsActivity extends BaseFragmentActivity {
@@ -58,8 +60,8 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             addPreferencesFromResource(R.xml.general_settings);
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-            final Core core = new Core(getActivity());
-            final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
+            final Core core = new Core(getActivity().getApplicationContext());
+            final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
 
             // application locale
             final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferencesConstant.PREF_LOCALE));
@@ -118,6 +120,9 @@ public class GeneralSettingsActivity extends BaseFragmentActivity {
             final ListPreference lstBaseCurrency = (ListPreference) findPreference(getString(PreferencesConstant.PREF_BASE_CURRENCY));
             if (lstBaseCurrency != null) {
                 List<TableCurrencyFormats> currencies = currencyUtils.getAllCurrencyFormats();
+                // sort the currencies by name.
+                Collections.sort(currencies, new CurrencyNameComparator());
+
                 String[] entries = new String[currencies.size()];
                 String[] entryValues = new String[currencies.size()];
                 // list of currency

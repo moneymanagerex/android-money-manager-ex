@@ -150,7 +150,7 @@ public class CurrencyUtils {
         if (TextUtils.isEmpty(fromSymbol) || TextUtils.isEmpty(toSymbol))
             return false;
         // compose symbol
-        String symbolRate = fromSymbol + "-" + toSymbol;
+        String symbolRate = toSymbol + "-" + fromSymbol;
         // compose url
         String url = URL_FREE_CURRENCY_CONVERT_API.replace("SYMBOL", symbolRate);
         // check if DEBUG

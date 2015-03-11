@@ -114,7 +114,7 @@ public class InputAmountDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Core core = new Core(getActivity());
+        Core core = new Core(getActivity().getApplicationContext());
         LayoutInflater inflater = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         View view = inflater.inflate(R.layout.input_amount_dialog, null);
         // create listener
@@ -235,7 +235,7 @@ public class InputAmountDialog extends DialogFragment {
         if (NumberUtils.isNumber(amount)) {
             double fAmount = Double.parseDouble(amount);
 
-            CurrencyUtils currencyUtils = new CurrencyUtils(getActivity());
+            CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
 
             if (mCurrencyId == null) {
                 txtAmount.setText(currencyUtils.getBaseCurrencyFormatted(fAmount));

@@ -177,7 +177,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         adapter.setShowAccountName(isShownHeader());
         adapter.setShowBalanceAmount(isShownBalance());
         if (isShownBalance()) {
-            adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity()).getReadableDatabase());
+            adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getReadableDatabase());
         }
         // set choice mode in listview
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -506,7 +506,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             switch (item.getItemId()) {
                 case R.id.menu_change_status:
                     final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
-                    final Core core = new Core(getActivity());
+                    final Core core = new Core(getActivity().getApplicationContext());
                     final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
                     // add status
                     adapter.add(new DrawerMenuItem(R.id.menu_none, getString(R.string.status_none), isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light, ""));

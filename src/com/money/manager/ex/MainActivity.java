@@ -180,7 +180,7 @@ public class MainActivity extends BaseFragmentActivity {
      * Dialog to choose exit from application
      */
     public void exitApplication() {
-        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(this);
+        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext());
         exitDialog.setTitle(R.string.close_application);
         exitDialog.setMessage(R.string.question_close_application);
         exitDialog.setIcon(R.drawable.ic_launcher);
@@ -218,10 +218,10 @@ public class MainActivity extends BaseFragmentActivity {
                 startActivityForResult(intent, REQUEST_PICKFILE_CODE);
             } catch (Exception e) {
                 Log.e(LOGCAT, e.getMessage());
-                Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(this, R.string.error_intent_pick_file, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.error_intent_pick_file, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -229,7 +229,7 @@ public class MainActivity extends BaseFragmentActivity {
      * Reload all fragment into activity
      */
     public void reloadAllFragment() {
-        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager != null) {
             // content
             Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContent);
@@ -348,10 +348,10 @@ public class MainActivity extends BaseFragmentActivity {
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
             Intent service = new Intent(getApplicationContext(), DropboxServiceIntent.class);
             service.setAction(DropboxServiceIntent.INTENT_ACTION_SYNC);
-            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(this.getApplicationContext()));
+            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(getApplicationContext()));
             service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, mDropboxHelper.getLinkedRemoteFile());
             //progress dialog
-            final ProgressDialog progressDialog = new ProgressDialog(this);
+            final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
             progressDialog.setCancelable(false);
             progressDialog.setMessage(getString(R.string.dropbox_syncProgress));
             progressDialog.setIndeterminate(true);
@@ -472,7 +472,7 @@ public class MainActivity extends BaseFragmentActivity {
         }
 
         // load base currency and compose hash currencies
-        CurrencyUtils currencyUtils = new CurrencyUtils(this);
+        CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
         if (!currencyUtils.isInit())
             currencyUtils.reInit();
 
@@ -486,7 +486,7 @@ public class MainActivity extends BaseFragmentActivity {
         if (core.isToDisplayChangelog())
             core.showChangelog();
 
-        MoneyManagerApplication.showDatabasePathWork(this);
+        MoneyManagerApplication.showDatabasePathWork(getApplicationContext());
 
         // notification send broadcast
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
@@ -528,7 +528,7 @@ public class MainActivity extends BaseFragmentActivity {
      * @param savedInstanceState
      */
     public void onCreateFragments(Bundle savedInstanceState) {
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
 
         setContentView(R.layout.main_fragments_activity);
 
@@ -602,13 +602,13 @@ public class MainActivity extends BaseFragmentActivity {
                 isAuthenticated = false;
                 isInAuthentication = false;
                 if (resultCode == RESULT_OK && data != null) {
-                    Passcode passcode = new Passcode(this);
+                    Passcode passcode = new Passcode(getApplicationContext());
                     String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
                     String passDb = passcode.getPasscode();
                     if (passIntent != null && passDb != null) {
                         isAuthenticated = passIntent.equals(passDb);
                         if (!isAuthenticated) {
-                            Toast.makeText(this, R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -642,18 +642,20 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        /*
-         * if (keyCode == KeyEvent.KEYCODE_BACK) { Fragment fragment = getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName()); //
-		 * check if show home fragment if ((fragment != null && fragment.isVisible()) || mAdvanceShow) { exitApplication(); // question if user would exit
-		 * return true; } }
-		 */
-        return super.onKeyUp(keyCode, event);
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            if (mDrawer.isDrawerOpen(mDrawerLayout)) {
+                mDrawer.closeDrawer(mDrawerLayout);
+            } else {
+                mDrawer.openDrawer(mDrawerLayout);
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
         if (core.isTablet()) {
             Fragment fragment = getSupportFragmentManager().findFragmentById(getResIdLayoutContent());
             if (fragment != null) {
@@ -683,7 +685,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     // management drawer
     public void createDrawerMenu() {
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
         Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
 
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);

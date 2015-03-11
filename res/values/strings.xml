@@ -519,4 +519,5 @@
     <string name="keep_editing">Keep editing</string>
     <string name="discard">Discard</string>
     <string name="invalid_expression">Invalid expression</string>
+    <string name="send_me_logcat">Logcat</string>
 </resources>

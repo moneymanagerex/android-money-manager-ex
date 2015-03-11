@@ -78,7 +78,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
         //check if is dual panel
         mIsDualPanel = findViewById(R.id.fragmentChart) != null;
         //reference to application
-        currencyUtils = new CurrencyUtils(this);
+        currencyUtils = new CurrencyUtils(getApplicationContext());
         //create a fragment
         CategoriesReportFragment fragment = new CategoriesReportFragment();
         FragmentManager fm = getSupportFragmentManager();
@@ -181,7 +181,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
                 SubMenu subMenu = itemOption.getSubMenu();
                 if (subMenu != null) {
                     //create access to category
-                    MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity());
+                    MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
                     SQLiteDatabase database = helper.getReadableDatabase();
                     TableCategory category = new TableCategory();
                     Cursor cursor = database.query(category.getSource(), new String[]{TableCategory.CATEGID, TableCategory.CATEGNAME}, null, null, null, null, TableCategory.CATEGNAME);

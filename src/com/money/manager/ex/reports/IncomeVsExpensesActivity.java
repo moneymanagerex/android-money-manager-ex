@@ -85,7 +85,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         // get application
-        currencyUtils = new CurrencyUtils(this);
+        currencyUtils = new CurrencyUtils(getApplicationContext());
         // attach fragment activity
         if (fm.findFragmentById(R.id.fragmentContent) == null) {
             fm.beginTransaction().replace(R.id.fragmentContent, listFragment, IncomeVsExpensesListFragment.class.getSimpleName()).commit();
@@ -272,7 +272,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             super.onCreateOptionsMenu(menu, inflater);
             inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
             //Create a cursor for select year
-            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity());
+            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
             SQLiteDatabase database = helper.getReadableDatabase();
             Cursor cursor = database.rawQuery("SELECT DISTINCT Year FROM " + ViewMobileData.mobiledata + " ORDER BY Year DESC", null);
             if (cursor != null && cursor.moveToFirst()) {

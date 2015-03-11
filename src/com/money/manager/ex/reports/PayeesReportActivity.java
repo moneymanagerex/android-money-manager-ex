@@ -64,7 +64,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
         mIsDualPanel = findViewById(R.id.fragmentChart) != null;
 
         //reference to application
-        currencyUtils = new CurrencyUtils(this);
+        currencyUtils = new CurrencyUtils(getApplicationContext());
         //create a fragment
         PayeeReportFragment fragment = new PayeeReportFragment();
         FragmentManager fm = getSupportFragmentManager();
@@ -212,7 +212,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
             MenuItem itemChart = menu.findItem(R.id.menu_chart);
             if (itemChart != null) {
                 itemChart.setVisible(!((PayeesReportActivity) getActivity()).mIsDualPanel);
-                itemChart.setIcon(new Core(getActivity()).resolveIdAttribute(R.attr.ic_action_pie_chart));
+                itemChart.setIcon(new Core(getActivity().getApplicationContext()).resolveIdAttribute(R.attr.ic_action_pie_chart));
             }
         }
 

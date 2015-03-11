@@ -329,7 +329,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
             mSubCategories.clear();
             mPositionToExpand.clear();
             // create core and fixed string filter to hightlight
-            Core core = new Core(getActivity());
+            Core core = new Core(getActivity().getApplicationContext());
             String filter = mCurFilter != null ? mCurFilter.replace("%", "") : "";
             // compose list and hashmap
             if (data != null && data.moveToFirst()) {
@@ -613,7 +613,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 
             // populate spinner
             // take a categories list
-            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity());
+            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
             final List<TableCategory> categories = helper.getListCategories();
             // close connection database
             //helper.close();

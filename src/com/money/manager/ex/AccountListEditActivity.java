@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
+ * along with getApplicationContext() program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 /**
@@ -120,7 +120,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
 
         // Restore saved instance state
         if ((savedInstanceState != null)) {
@@ -159,7 +159,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 
         // default currency
         if (mCurrencyId == null) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(this);
+            CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
 
             TableCurrencyFormats currencyFormats = currencyUtils.getTableCurrencyFormats(currencyUtils.getBaseCurrencyId());
 
@@ -379,23 +379,23 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 
         if (bCheck) {
             if (mCurrencyId == null) {
-                Core.alertDialog(this, R.string.error_currency_not_selected).show();
+                Core.alertDialog(getApplicationContext(), R.string.error_currency_not_selected).show();
                 return false;
             }
             if (TextUtils.isEmpty(txtInitialBalance.getText().toString())) {
-                Core.alertDialog(this, R.string.error_initialbal_empty).show();
+                Core.alertDialog(getApplicationContext(), R.string.error_initialbal_empty).show();
                 return false;
             }
             if (TextUtils.isEmpty(mAccountName)) {
-                Core.alertDialog(this, R.string.error_accountname_empty).show();
+                Core.alertDialog(getApplicationContext(), R.string.error_accountname_empty).show();
                 return false;
             }
             if (TextUtils.isEmpty(mAccountType)) {
-                Core.alertDialog(this, R.string.error_accounttype_empty).show();
+                Core.alertDialog(getApplicationContext(), R.string.error_accounttype_empty).show();
                 return false;
             }
             if (TextUtils.isEmpty(mStatus)) {
-                Core.alertDialog(this, R.string.error_status_empty).show();
+                Core.alertDialog(getApplicationContext(), R.string.error_status_empty).show();
                 return false;
             }
         }
@@ -432,14 +432,14 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
             // insert
             if (getContentResolver().insert(mAccountList.getUri(), values) == null) {
-                Core.alertDialog(this, R.string.db_account_insert_failed).show();
+                Core.alertDialog(getApplicationContext(), R.string.db_account_insert_failed).show();
                 Log.w(LOGCAT, "Error inserting account!");
                 return false;
             }
         } else {
             // update
             if (getContentResolver().update(mAccountList.getUri(), values, TableAccountList.ACCOUNTID + "=?", new String[]{Integer.toString(mAccountId)}) <= 0) {
-                Core.alertDialog(this, R.string.db_account_update_failed).show();
+                Core.alertDialog(getApplicationContext(), R.string.db_account_update_failed).show();
                 Log.w(LOGCAT, "Error updating account!");
                 return false;
             }
@@ -524,7 +524,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 
     @Override
     public void onFinishedInputAmountDialog(int id, Double amount) {
-        Core core = new Core(this);
+        Core core = new Core(getApplicationContext());
 
         View view = findViewById(id);
         if (view != null && view instanceof TextView)

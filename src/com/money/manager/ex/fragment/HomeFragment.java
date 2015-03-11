@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        currencyUtils = new CurrencyUtils(getActivity());
+        currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
         accountBills = new QueryAccountBills(getActivity());
     }
 
@@ -549,11 +549,11 @@ public class HomeFragment extends Fragment implements
             // set account name
             holder.txtAccountName.setText(bills.getAccountName());
             // import formatted
-            String value = currencyUtils.getCurrencyFormatted(bills.getCurrencyId(), bills.getTotalBaseConvRate());
+            String value = currencyUtils.getCurrencyFormatted(bills.getCurrencyId(), bills.getTotal());
             // set amount value
             holder.txtAccountTotal.setText(value);
             // reconciled
-            value = currencyUtils.getCurrencyFormatted(bills.getCurrencyId(), bills.getReconciledBaseConvRate());
+            value = currencyUtils.getCurrencyFormatted(bills.getCurrencyId(), bills.getReconciled());
             holder.txtAccountReconciled.setText(value);
 
             return convertView;
