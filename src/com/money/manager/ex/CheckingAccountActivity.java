@@ -511,7 +511,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             public void onClick(View v) {
                 Calendar date = Calendar.getInstance();
                 date.setTime((Date) txtSelectDate.getTag());
-                DatePickerDialog dialog = new DatePickerDialog(getApplicationContext(), mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+                DatePickerDialog dialog = new DatePickerDialog(CheckingAccountActivity.this, mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
                 dialog.show();
             }
 
