@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
+ * along with getApplicationContext() program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 package com.money.manager.ex;
@@ -170,7 +170,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
                 mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
                 // create instance of query
-                QueryCategorySubCategory category = new QueryCategorySubCategory(this);
+                QueryCategorySubCategory category = new QueryCategorySubCategory(getApplicationContext());
                 // compose selection
                 String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
                 Cursor curCategory = getContentResolver().query(category.getUri(), category.getAllColumns(), where, null, null);
@@ -318,14 +318,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             mIntentAction = getIntent().getAction();
             if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
                 if (mStatus == null)
-                    mStatus = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(PreferencesConstant.PREF_DEFAULT_STATUS), "");
+                    mStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_DEFAULT_STATUS), "");
 
-                if ("L".equals(PreferenceManager.getDefaultSharedPreferences(this).getString(getString(PreferencesConstant.PREF_DEFAULT_PAYEE), "N"))) {
+                if ("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_DEFAULT_PAYEE), "N"))) {
                     AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
                         @Override
                         protected Boolean doInBackground(Void... params) {
                             try {
-                                Core core = new Core(CheckingAccountActivity.this);
+                                Core core = new Core(getApplicationContext());
                                 TablePayee payee = core.getLastPayeeUsed();
                                 if (payee != null && mPayeeId == -1) {
                                     // get id payee and category
@@ -370,7 +370,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         // account
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         // accountlist <> to populate the spin
-        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
+        mAccountList = MoneyManagerOpenHelper.getInstance(getApplicationContext()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());
@@ -511,7 +511,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             public void onClick(View v) {
                 Calendar date = Calendar.getInstance();
                 date.setTime((Date) txtSelectDate.getTag());
-                DatePickerDialog dialog = new DatePickerDialog(CheckingAccountActivity.this, mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+                DatePickerDialog dialog = new DatePickerDialog(getApplicationContext(), mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
                 dialog.show();
             }
 
@@ -537,7 +537,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         txtSelectPayee.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CheckingAccountActivity.this, PayeeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(intent, REQUEST_PICK_PAYEE);
             }
@@ -831,7 +831,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     }
 
     /**
-     * this method allows you to search the transaction data
+     * getApplicationContext() method allows you to search the transaction data
      *
      * @param transId transaction id
      * @return true if data selected, false nothing
@@ -1034,23 +1034,23 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
      */
     public boolean validateData() {
         if ((Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mToAccountId == -1)) {
-            Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
+            Core.alertDialog(getApplicationContext(), R.string.error_toaccount_not_selected).show();
             return false;
         } else if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
-            Core.alertDialog(this, R.string.error_payee_not_selected).show();
+            Core.alertDialog(getApplicationContext(), R.string.error_payee_not_selected).show();
             return false;
         }
         if (mCategoryId == -1 && (!chbSplitTransaction.isChecked())) {
-            Core.alertDialog(this, R.string.error_category_not_selected).show();
+            Core.alertDialog(getApplicationContext(), R.string.error_category_not_selected).show();
             return false;
         }
         if (chbSplitTransaction.isChecked() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
-            Core.alertDialog(this, R.string.error_split_transaction_empty).show();
+            Core.alertDialog(getApplicationContext(), R.string.error_split_transaction_empty).show();
             return false;
         }
         if ((Double) txtTotAmount.getTag() == 0) {
             if ((Double) txtAmount.getTag() == 0) {
-                Core.alertDialog(this, R.string.error_totamount_empty).show();
+                Core.alertDialog(getApplicationContext(), R.string.error_totamount_empty).show();
                 return false;
             } else {
                 txtTotAmount.setTag(txtAmount.getTag());
@@ -1098,7 +1098,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             // insert
             Uri insert = getContentResolver().insert(mCheckingAccount.getUri(), values);
             if (insert == null) {
-                Toast.makeText(this, R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Insert new transaction failed!");
                 return false;
             }
@@ -1106,7 +1106,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         } else {
             // update
             if (getContentResolver().update(mCheckingAccount.getUri(), values, TableCheckingAccount.TRANSID + "=?", new String[]{Integer.toString(mTransId)}) <= 0) {
-                Toast.makeText(this, R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Update transaction failed!");
                 return false;
             }
@@ -1126,14 +1126,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 if (mSplitTransaction.get(i).getSplitTransId() == -1) {
                     // insert data
                     if (getContentResolver().insert(mSplitTransaction.get(i).getUri(), values) == null) {
-                        Toast.makeText(this, R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Insert new split transaction failed!");
                         return false;
                     }
                 } else {
                     // update data
                     if (getContentResolver().update(mSplitTransaction.get(i).getUri(), values, TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransaction.get(i).getSplitTransId())}) <= 0) {
-                        Toast.makeText(this, R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Update split transaction failed!");
                         return false;
                     }
@@ -1149,7 +1149,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
                 // update data
                 if (getContentResolver().delete(mSplitTransactionDeleted.get(i).getUri(), TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactionDeleted.get(i).getSplitTransId())}) <= 0) {
-                    Toast.makeText(this, R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(LOGCAT, "Delete split transaction failed!");
                     return false;
                 }
@@ -1166,7 +1166,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             TablePayee payee = new TablePayee();
             // update data
             if (getContentResolver().update(payee.getUri(), values, TablePayee.PAYEEID + "=" + Integer.toString(mPayeeId), null) <= 0) {
-                Toast.makeText(this, R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mPayeeId) + " return <= 0");
             }
         }
@@ -1177,7 +1177,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             // update date
             if (getContentResolver().update(new TableBillsDeposits().getUri(), values, TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(mBdId)}) > 0) {
             } else {
-                Toast.makeText(this, R.string.db_update_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Update Bill Deposits with Id=" + Integer.toString(mBdId) + " return <= 0");
             }
         }

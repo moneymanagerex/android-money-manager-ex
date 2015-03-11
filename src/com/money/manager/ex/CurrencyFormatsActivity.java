@@ -198,7 +198,7 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
      */
     private boolean validateData() {
         if (TextUtils.isEmpty(edtCurrencyName.getText().toString())) {
-            Toast.makeText(this, R.string.currency_name_empty, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.currency_name_empty, Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
@@ -231,13 +231,13 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
         // update data
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
             if (getContentResolver().insert(mCurrency.getUri(), values) == null) {
-                Toast.makeText(this, R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Insert new currency failed!");
                 return false;
             }
         } else {
             if (getContentResolver().update(mCurrency.getUri(), values, TableCurrencyFormats.CURRENCYID + "=?", new String[]{Integer.toString(mCurrencyId)}) <= 0) {
-                Toast.makeText(this, R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Update currency id = " + Integer.toString(mCurrencyId) + " failed!");
                 return false;
             }

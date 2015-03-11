@@ -70,7 +70,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         // check if launch from notification
         if (getIntent() != null && getIntent().getBooleanExtra(INTENT_EXTRA_LAUNCH_NOTIFICATION, false)) {
-            Passcode passcode = new Passcode(this);
+            Passcode passcode = new Passcode(getApplicationContext());
             if (passcode.hasPasscode()) {
                 Intent intent = new Intent(this, PasscodeActivity.class);
                 // set action and data
@@ -99,13 +99,13 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
             case INTENT_REQUEST_PASSCODE:
                 boolean isAuthenticated = false;
                 if (resultCode == RESULT_OK && data != null) {
-                    Passcode passcode = new Passcode(this);
+                    Passcode passcode = new Passcode(getApplicationContext());
                     String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
                     String passDb = passcode.getPasscode();
                     if (passIntent != null && passDb != null) {
                         isAuthenticated = passIntent.equals(passDb);
                         if (!isAuthenticated) {
-                            Toast.makeText(this, R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
                         }
                     }
                 }

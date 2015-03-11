@@ -147,7 +147,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
                 mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
                 // create instance of query
-                QueryCategorySubCategory category = new QueryCategorySubCategory(this);
+                QueryCategorySubCategory category = new QueryCategorySubCategory(getApplicationContext());
                 // compose selection
                 String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
                 Cursor curCategory = getContentResolver().query(category.getUri(), category.getAllColumns(), where, null, null);
@@ -314,7 +314,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         };
 
         // accountlist <> to populate the spin
-        mAccountList = MoneyManagerOpenHelper.getInstance(this).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
+        mAccountList = MoneyManagerOpenHelper.getInstance(getApplicationContext()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());
