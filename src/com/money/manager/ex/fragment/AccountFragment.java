@@ -329,9 +329,9 @@ public class AccountFragment extends Fragment implements LoaderManager.LoaderCal
      */
     private void setImageViewFavorite() {
         if (mAccountList.isFavoriteAcct()) {
-            imgAccountFav.setBackgroundResource(R.drawable.ic_rate_star_on);
+            imgAccountFav.setBackgroundResource(R.drawable.ic_star);
         } else {
-            imgAccountFav.setBackgroundResource(R.drawable.ic_rate_star_off);
+            imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
         }
     }
 

@@ -63,6 +63,7 @@
         <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
         <item name="ic_action_copy">@drawable/ic_action_copy_dark</item>
         <item name="ic_action_currency">@drawable/ic_action_currency_dark</item>
+        <item name="ic_action_delete">@drawable/ic_action_delete_dark</item>
         <item name="ic_action_download">@drawable/ic_action_download_dark</item>
         <item name="ic_action_dropbox">@drawable/ic_action_dropbox_dark</item>
         <item name="ic_action_folder_open">@drawable/ic_action_folder_open_dark</item>
@@ -120,6 +121,7 @@
         <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
         <item name="ic_action_copy">@drawable/ic_action_copy_dark</item>
         <item name="ic_action_currency">@drawable/ic_action_currency_dark</item>
+        <item name="ic_action_delete">@drawable/ic_action_delete_dark</item>
         <item name="ic_action_download">@drawable/ic_action_download_dark</item>
         <item name="ic_action_dropbox">@drawable/ic_action_dropbox_dark</item>
         <item name="ic_action_folder_open">@drawable/ic_action_folder_open_dark</item>

@@ -36,26 +36,26 @@ apply plugin: 'android'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.android.support:cardview-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.android.support:cardview-v7:22.0.0'
     compile 'com.github.gabrielemariotti.changeloglib:library:1.5.1'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'com.afollestad:material-dialogs:0.6.3.1'
+    compile 'com.afollestad:material-dialogs:0.6.3.5'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
-    compile 'com.github.pedrovgs:lynx:1.2'
+    compile 'com.github.pedrovgs:lynx:1.4'
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.0"
 
     defaultConfig {
         applicationId "com.money.manager.ex"
         minSdkVersion 16
-        targetSdkVersion 21
-        versionCode 604
-        versionName '2.0.0-alpha2'
+        targetSdkVersion 22
+        versionCode 605
+        versionName '2.0.0-alpha3'
     }
 
     sourceSets {
