@@ -22,7 +22,7 @@
 
     <item
         android:id="@+id/menu_change_status"
-        android:icon="@drawable/ic_action_refresh_dark"
+        android:icon="@drawable/ic_tag_text_outline_dark"
         android:title="@string/change_status"
         app:showAsAction="always"/>
 
@@ -34,7 +34,7 @@
 
     <item
         android:id="@+id/menu_delete"
-        android:icon="?attr/ic_action_trash"
+        android:icon="?attr/ic_action_delete"
         android:title="@string/delete_transaction"
         app:showAsAction="ifRoom|withText"/>
 

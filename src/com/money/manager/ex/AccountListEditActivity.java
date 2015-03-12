@@ -234,7 +234,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
             // TODO should be done better with enumeration for TRUE and FALSE
             mFavoriteAcct = String.valueOf(Boolean.FALSE);
         }
-        imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(mFavoriteAcct) ? R.drawable.ic_rate_star_on : R.drawable.ic_rate_star_off);
+        imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(mFavoriteAcct) ? R.drawable.ic_star : R.drawable.ic_star_outline);
         imgbFavouriteAccount.setTag(mFavoriteAcct);
 
         // spinAccountType adapters and values
@@ -305,7 +305,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
                 } else {
                     v.setTag(String.valueOf(Boolean.TRUE));
                 }
-                imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(String.valueOf(v.getTag())) ? R.drawable.ic_rate_star_on : R.drawable.ic_rate_star_off);
+                imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(String.valueOf(v.getTag())) ? R.drawable.ic_star : R.drawable.ic_star_outline);
             }
         });
 
