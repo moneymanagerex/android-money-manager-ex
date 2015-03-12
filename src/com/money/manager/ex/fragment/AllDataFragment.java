@@ -176,9 +176,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         adapter.setAccountId(mAccountId);
         adapter.setShowAccountName(isShownHeader());
         adapter.setShowBalanceAmount(isShownBalance());
-        if (isShownBalance()) {
+        /*if (isShownBalance()) {
             adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getReadableDatabase());
-        }
+        }*/
         // set choice mode in listview
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
@@ -289,7 +289,11 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         }
         switch (loader.getId()) {
             case ID_LOADER_ALL_DATA_DETAIL:
-                ((CursorAdapter) getListAdapter()).swapCursor(data);
+                AllDataAdapter adapter = (AllDataAdapter)getListAdapter();
+                if (isShownBalance()) {
+                    adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getReadableDatabase());
+                }
+                adapter.swapCursor(data);
                 if (isResumed()) {
                     setListShown(true);
                 } else {
