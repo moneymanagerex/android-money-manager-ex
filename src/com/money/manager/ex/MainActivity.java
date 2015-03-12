@@ -351,7 +351,7 @@ public class MainActivity extends BaseFragmentActivity {
             service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(getApplicationContext()));
             service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, mDropboxHelper.getLinkedRemoteFile());
             //progress dialog
-            final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+            final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setCancelable(false);
             progressDialog.setMessage(getString(R.string.dropbox_syncProgress));
             progressDialog.setIndeterminate(true);
