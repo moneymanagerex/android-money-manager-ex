@@ -701,6 +701,8 @@ public class MainActivity extends BaseFragmentActivity {
 
         // create adapter
         DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+        // home
+        adapter.add(new DrawerMenuItem(R.id.menu_home, getString(R.string.home), isDarkTheme ? R.drawable.ic_home_dark : R.drawable.ic_home_light));
         // open database
         adapter.add(new DrawerMenuItem(R.id.menu_open_database, getString(R.string.open_database), isDarkTheme ? R.drawable.ic_action_folder_open_dark : R.drawable.ic_action_folder_open_light));
         // dropbox synchronize
