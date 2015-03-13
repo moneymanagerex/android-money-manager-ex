@@ -27,6 +27,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -75,6 +76,8 @@ import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.listeners.ActionClickListener;
 
 import java.io.File;
 import java.net.URLDecoder;
@@ -346,6 +349,36 @@ public class MainActivity extends BaseFragmentActivity {
     public void showTipsDialog(Bundle savedInstanceState) {
     }
 
+    public void showSnackbarDropbox() {
+        if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
+            AsyncTask<Void, Void, Integer> asyncTask = new AsyncTask<Void, Void, Integer>() {
+                @Override
+                protected Integer doInBackground(Void... voids) {
+                    return mDropboxHelper.checkIfFileIsSync();
+                }
+
+                @Override
+                protected void onPostExecute(Integer ret) {
+                    if (DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD == ret) {
+                        Snackbar.with(getApplicationContext()) // context
+                                .text(getString(R.string.dropbox_database_can_be_updted))
+                                .actionLabel(getString(R.string.sync))
+                                .actionColor(getResources().getColor(R.color.md_primary))
+                                .actionListener(new ActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(Snackbar snackbar) {
+                                        startServiceSyncDropbox();
+                                    }
+                                })
+                                .duration(5 * 1000)
+                                .show(MainActivity.this);
+                    }
+                }
+            };
+            asyncTask.execute();
+        }
+    }
+
     public void startServiceSyncDropbox() {
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
             Intent service = new Intent(getApplicationContext(), DropboxServiceIntent.class);
@@ -493,6 +526,8 @@ public class MainActivity extends BaseFragmentActivity {
         // notification send broadcast
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
+
+        showSnackbarDropbox();
     }
 
     @Override
