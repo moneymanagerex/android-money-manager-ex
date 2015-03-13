@@ -225,7 +225,7 @@ public class MainActivity extends BaseFragmentActivity {
         }
     }
 
-    /*
+    /**
      * Reload all fragment into activity
      */
     public void reloadAllFragment() {
@@ -262,7 +262,9 @@ public class MainActivity extends BaseFragmentActivity {
         setRestartActivity(false);
     }
 
-    // show fragment dashboard
+    /**
+     * show fragment dashboard
+     */
     public void showDashboardFragment() {
         DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager().findFragmentByTag(DashboardFragment.class.getSimpleName());
         if (dashboardFragment == null || dashboardFragment.getId() != getResIdLayoutContent()) {
@@ -272,7 +274,7 @@ public class MainActivity extends BaseFragmentActivity {
         showFragment(dashboardFragment, DashboardFragment.class.getSimpleName());
     }
 
-    /*
+    /**
      * Show fragment using reflection from class
      */
     public void showFragment(Class<?> clsFragment) {
@@ -683,7 +685,9 @@ public class MainActivity extends BaseFragmentActivity {
         super.onDestroy();
     }
 
-    // management drawer
+    /**
+     * drawer management
+     */
     public void createDrawerMenu() {
         Core core = new Core(getApplicationContext());
         Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
@@ -871,7 +875,6 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     public class MyActionBarDrawerToggle extends ActionBarDrawerToggle {
-
 
         public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
             super(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes);

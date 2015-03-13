@@ -115,7 +115,6 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
