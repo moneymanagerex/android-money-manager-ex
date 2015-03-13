@@ -194,6 +194,7 @@ public class MoneyManagerApplication extends Application {
         }
         return "";
     }
+
     /**
      * Convert date object in string SQLite date format
      * @param date to convert
@@ -209,7 +210,6 @@ public class MoneyManagerApplication extends Application {
     public String getShowTransaction() {
         return PreferenceManager.getDefaultSharedPreferences(this).getString(getString(PreferencesConstant.PREF_SHOW_TRANSACTION), getResources().getString(R.string.last7days));
     }
-
 
     /**
      * Compute account balance and returns balance
