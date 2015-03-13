@@ -94,7 +94,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
             mAction = intent.getAction();
         }
 
-        // management fargment
+        // management fragment
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentById(android.R.id.content) == null) {
             fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();

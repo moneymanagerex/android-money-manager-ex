@@ -117,7 +117,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     private double mTotAmount = 0, mAmount = 0;
     // notes
     private String mNotes = "";
-    // next occurrance
+    // next occurrence
     private String mNextOccurrence = "";
     private int mFrequencies = 0;
     private int mNumOccurrence = -1;
