@@ -261,6 +261,14 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         }
 
         @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            super.onListItemClick(l, v, position, id);
+
+            // show context menu here.
+            getActivity().openContextMenu(v);
+        }
+
+        @Override
         public void onLoaderReset(Loader<Cursor> loader) {
             switch (loader.getId()) {
                 case ID_LOADER_REPEATING:
