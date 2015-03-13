@@ -34,6 +34,7 @@ import com.money.manager.ex.fragment.SearchFragment;
 
 public class SearchActivity extends BaseFragmentActivity implements AllDataFragmentLoaderCallbacks, InputAmountDialogListener {
 	private boolean mIsDualPanel = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
