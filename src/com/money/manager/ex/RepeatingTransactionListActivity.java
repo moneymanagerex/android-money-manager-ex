@@ -263,9 +263,9 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
             super.onListItemClick(l, v, position, id);
-            // Intent launcher here
-            // todo: show context menu here
-            System.out.println("touch");
+
+            // show context menu here.
+            getActivity().openContextMenu(v);
         }
 
         @Override
