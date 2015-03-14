@@ -235,7 +235,7 @@
     <string name="widget_all_accounts">Money Manager Ex All Accounts</string>
     <string name="widget_add_transaction">Money Manager Ex Add Transaction</string>
     <!-- 20121023 -->
-    <string name="repeating_empty_transaction">Empty Repeating Transaction</string>
+    <string name="repeating_empty_transaction">Empty Recurring Transactions</string>
     <!--<string name="repeating_transaction">Repeating Transaction</string>-->
     <string name="none">None</string>
     <string name="weekly">Weekly</string>
@@ -255,7 +255,7 @@
     <string name="inactive">Inactive</string>
     <string name="days_overdue">days overdue!</string>
     <string name="days_remaining">days remaining</string>
-    <string name="new_edit_repeating_transaction">New/Edit Repeating Transaction</string>
+    <string name="new_edit_repeating_transaction">New/Edit Recurring Transaction</string>
     <string name="next_occurrence">Next Occurrence</string>
     <string name="repeats">Repeats</string>
     <string name="times_repeated">Times Repeated</string>
@@ -264,10 +264,10 @@
     <!--<string name="period_days">Period: days</string>-->
     <string name="enter_next_occurrence">Enter Next Occurrence</string>
     <string name="skip_next_occurrence">Skip Next Occurrence</string>
-    <string name="notification_repeating_transaction_expired">There are repeating transaction expired</string>
+    <string name="notification_repeating_transaction_expired">There are expired recurring transactions</string>
     <string name="notification_click_to_check_repeating_transaction">Touch to check the transaction overdue</string>
     <!-- 20121115 -->
-    <string name="num_repeating_transaction_expired">%1$d repeating transaction overdue</string>
+    <string name="num_repeating_transaction_expired">%1$d recurring transaction overdue</string>
     <!-- 20121121 -->
     <string name="send_feedback">Send Feedback</string>
     <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -389,7 +389,7 @@
     <string name="dashclock_extension_summary_all_account">View the summary of each account Money Manager Ex for Android</string>
     <!-- 20130728 -->
     <string name="title_check_repeating_transaction">Check time</string>
-    <string name="summary_check_repeating_transaction">What time would you check if there are repeating transactions overdue? (default 08:00)</string>
+    <string name="summary_check_repeating_transaction">What time would you check if there are recurring transactions overdue? (default 08:00)</string>
     <!-- 20130730 -->
     <string name="credits">Credits</string>
     <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
@@ -411,7 +411,7 @@
     <!-- 20130831 -->
     <string name="help">Help</string>
     <!-- 20130927 -->
-    <string name="delete_repeating_transaction">Delete Repeating Transaction</string>
+    <string name="delete_repeating_transaction">Delete Recurring Transaction</string>
     <!-- 20131007 -->
     <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
     <!--<string name="term_accounts_total">Term Accounts Total</string>-->
@@ -428,7 +428,7 @@
     <string name="categories">Categories</string>
     <string name="currencies">Currencies</string>
     <string name="payees">Payees</string>
-    <string name="repeating_transactions">Repeating Transactions</string>
+    <string name="repeating_transactions">Recurring Transactions</string>
     <string name="theme_holo_light">Holo Light</string>
     <string name="new_account">New Account</string>
     <!--<string name="edit_account">Edit Account</string>-->
@@ -441,8 +441,8 @@
     <string name="amount_greater_or_equal">Amount greater or equal</string>
     <string name="amount_less_or_equal">Amount less or equal</string>
     <string name="result_search">Result of your search</string>
-    <string name="new_repeating_transaction">New Repeating Transaction</string>
-    <string name="edit_repeating_transaction">Edit Repeating Transaction</string>
+    <string name="new_repeating_transaction">New Recurring Transaction</string>
+    <string name="edit_repeating_transaction">Edit Recurring Transaction</string>
     <string name="every_5_minutes">Every 5 minutes</string>
     <string name="every_15_minutes">Every 15 minutes</string>
     <string name="every_30_minutes">Every 30 minutes</string>
@@ -492,8 +492,8 @@
     <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
     <string name="donate_in_app_error">Cannot use the in-app billing. Check whether the latest version of the Play Store application is installed.</string>
 
-    <string name="title_notifications_repeating_transaction">Notification Repeating Transaction overdue </string>
-    <string name="summary_notifications_repeating_transaction">Show notification for repeating transaction overdue</string>
+    <string name="title_notifications_repeating_transaction">Notification Recurring Transaction overdue </string>
+    <string name="summary_notifications_repeating_transaction">Show notification for recurring transaction overdue</string>
 
     <string name="tools">Tools</string>
     <string name="loading">Loading…</string>
