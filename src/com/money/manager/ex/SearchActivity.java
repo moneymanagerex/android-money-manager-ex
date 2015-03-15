@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +41,10 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.main_fragments_activity);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 		SearchFragment fragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
 		if (fragment == null) {
 			// fragment create

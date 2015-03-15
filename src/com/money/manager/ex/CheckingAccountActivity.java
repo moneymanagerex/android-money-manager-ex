@@ -26,7 +26,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -259,7 +258,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.checkingaccount_activity);
         super.onCreate(savedInstanceState);
+
         try {
             DropboxHelper.getInstance();
         } catch (Exception e) {
@@ -269,14 +270,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         }
 
         Core core = new Core(getApplicationContext());
-        // compose layout
-        setContentView(R.layout.checkingaccount_activity);
-        // toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            setToolbarStandardAction(toolbar);
-        }
+        setToolbarStandardAction(getToolbar());
 
         // manage save instance
         if ((savedInstanceState != null)) {

@@ -74,6 +74,7 @@ public class PayeeActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
         // enable home button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -84,8 +85,8 @@ public class PayeeActivity extends BaseFragmentActivity {
         }
         FragmentManager fm = getSupportFragmentManager();
         // attach fragment activity
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
+        if (fm.findFragmentById(R.id.content) == null) {
+            fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
     }
 

@@ -24,7 +24,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.money.manager.ex.R;
@@ -81,12 +80,8 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
         setContentView(R.layout.about_activity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
+        super.onCreate(savedInstanceState);
 		setDisplayHomeAsUpEnabled(true);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);

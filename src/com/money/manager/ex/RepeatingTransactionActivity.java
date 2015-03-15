@@ -23,7 +23,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -238,15 +237,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // compose layout
         setContentView(R.layout.repeatingtransaction_activity);
-        // toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            setToolbarStandardAction(toolbar);
-        }
+        super.onCreate(savedInstanceState);
+        setToolbarStandardAction(getToolbar());
+
         Core core = new Core(getApplicationContext());
         // manage save instance
         if ((savedInstanceState != null)) {

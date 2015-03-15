@@ -20,7 +20,6 @@ package com.money.manager.ex;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
@@ -62,6 +61,7 @@ public class DonateActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        setContentView(R.layout.donate_activity);
         super.onCreate(savedInstanceState);
         // Set up SKUs
         if (1==2 && BuildConfig.DEBUG) {
@@ -74,12 +74,6 @@ public class DonateActivity extends BaseFragmentActivity {
         }
         // add SKU application
         skus.add("android.money.manager.ex.donations.small");
-        // Set up the UI
-        setContentView(R.layout.donate_activity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
 
         final Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
         final Button inAppButton = (Button) findViewById(R.id.buttonDonateInApp);

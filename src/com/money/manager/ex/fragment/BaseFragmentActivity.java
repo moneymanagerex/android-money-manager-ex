@@ -40,6 +40,7 @@ import com.money.manager.ex.preferences.PreferencesConstant;
 public abstract class BaseFragmentActivity extends ActionBarActivity {
     private boolean mDialogMode = false;
     private boolean mDisplayHomeAsUpEnabled = false;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -55,6 +56,11 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
             Log.e(BaseFragmentActivity.class.getSimpleName(), e.getMessage());
         }
         super.onCreate(savedInstance);
+        // check if Toolbar define into layout
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+        }
     }
 
     @Override
@@ -135,19 +141,19 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
             if (cancelActionView != null)
                 cancelActionView.setOnClickListener(new OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    onActionCancelClick();
-                }
-            });
+                    @Override
+                    public void onClick(View v) {
+                        onActionCancelClick();
+                    }
+                });
             View doneActionView = toolbar.findViewById(R.id.action_done);
             if (doneActionView != null)
                 doneActionView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onActionDoneClick();
-                }
-            });
+                    @Override
+                    public void onClick(View v) {
+                        onActionDoneClick();
+                    }
+                });
         }
     }
 
@@ -183,5 +189,9 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
     public void setDisplayHomeAsUpEnabled(boolean mDisplayHomeAsUpEnabled) {
         this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
         getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
+    }
+
+    protected Toolbar getToolbar() {
+        return mToolbar;
     }
 }
