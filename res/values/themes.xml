@@ -36,6 +36,7 @@
         <item name="android:actionModeBackground">@color/md_primary_dark</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="App" parent="@style/_App"/>
