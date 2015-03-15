@@ -23,6 +23,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -237,10 +238,15 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setDialogMode(Boolean.TRUE);
-
         super.onCreate(savedInstanceState);
-
+        // compose layout
+        setContentView(R.layout.repeatingtransaction_activity);
+        // toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            setToolbarStandardAction(toolbar);
+        }
         Core core = new Core(getApplicationContext());
         // manage save instance
         if ((savedInstanceState != null)) {
@@ -280,8 +286,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             // set title
             getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
         }
-        // compose layout
-        setContentView(R.layout.repeatingtransaction_activity);
         // take a reference view into layout
         txtPayee = (TextView) findViewById(R.id.textViewPayee);
         txtCaptionAmount = (TextView) findViewById(R.id.textViewHeaderTotalAmount);

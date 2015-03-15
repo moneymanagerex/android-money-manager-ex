@@ -9,6 +9,14 @@ import android.view.ViewGroup;
 import com.money.manager.ex.R;
 
 public class AboutChangelogFragment extends Fragment {
+    private static Fragment mInstance;
+
+    public static Fragment newInstance(int page) {
+        if (mInstance == null) {
+            mInstance = new AboutChangelogFragment();
+        }
+        return mInstance;
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup group,
                              Bundle saved) {

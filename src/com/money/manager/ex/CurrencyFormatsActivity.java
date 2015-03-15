@@ -21,6 +21,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
@@ -87,6 +88,12 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 
         // view
         setContentView(R.layout.currecyformats_activity);
+        // toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            setToolbarStandardAction(toolbar);
+        }
         // take object
         edtCurrencyName = (EditText) findViewById(R.id.editTextCurrencyName);
         spinCurrencySymbol = (Spinner) findViewById(R.id.spinCurrencySymbol);
@@ -127,8 +134,6 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
             }
             mIntentAction = getIntent().getAction();
         }
-
-        setDialogMode(true);
 
         // check default values for scale and baseconvrate
         if (Constants.INTENT_ACTION_INSERT.equalsIgnoreCase(mIntentAction)) {

@@ -29,6 +29,14 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.utils.RawFileUtils;
 
 public class AboutCreditsFragment extends Fragment {
+    private static Fragment mInstance;
+
+    public static Fragment newInstance(int page) {
+        if (mInstance == null) {
+            mInstance = new AboutCreditsFragment();
+        }
+        return mInstance;
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup group,
                              Bundle saved) {

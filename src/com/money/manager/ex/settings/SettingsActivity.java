@@ -31,18 +31,15 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
-public class SettingsActivity extends BaseFragmentActivity {
+public class SettingsActivity extends BaseSettingsFragmentActivity {
     private static String LOGCAT = SettingsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setDisplayHomeAsUpEnabled(true);
-
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
+        setSettingFragment(new SettingsFragment());
     }
 
     public static class SettingsFragment extends PreferenceFragment {

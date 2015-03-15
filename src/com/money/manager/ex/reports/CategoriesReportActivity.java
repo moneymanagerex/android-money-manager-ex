@@ -29,6 +29,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -74,7 +75,12 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
         }
 
         setContentView(R.layout.report_chart_fragments_activity);
-        setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            // set actionbar
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         //check if is dual panel
         mIsDualPanel = findViewById(R.id.fragmentChart) != null;
         //reference to application

@@ -30,21 +30,18 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.utils.DonateDialogUtils;
 
 import java.io.File;
 
-public class DatabaseSettingsActivity extends BaseFragmentActivity {
+public class DatabaseSettingsActivity extends BaseSettingsFragmentActivity {
     private static String LOGCAT = DatabaseSettingsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setDisplayHomeAsUpEnabled(true);
-
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new DatabaseFragment()).commit();
+        setSettingFragment(new DatabaseFragment());
     }
 
     public static class DatabaseFragment extends PreferenceFragment {

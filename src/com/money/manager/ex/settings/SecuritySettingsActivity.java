@@ -30,18 +30,15 @@ import android.widget.Toast;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Passcode;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
-public class SecuritySettingsActivity extends BaseFragmentActivity {
+public class SecuritySettingsActivity extends BaseSettingsFragmentActivity {
     private static String LOGCAT = SecuritySettingsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setDisplayHomeAsUpEnabled(true);
-
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new SecuritySettingsFragment()).commit();
+        setSettingFragment(new SecuritySettingsFragment());
     }
 
     public static class SecuritySettingsFragment extends PreferenceFragment {

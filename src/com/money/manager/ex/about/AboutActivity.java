@@ -19,9 +19,14 @@ package com.money.manager.ex.about;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
@@ -34,42 +39,75 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
 	@SuppressWarnings("unused")
 	private static final String LOGCAT = AboutActivity.class.getSimpleName();
 	private static final String BUNDLE_KEY_TABINDEX = "AboutActivity:tabindex";
-	
-	@Override
+
+    private ViewPager mViewPager;
+
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 3;
+        private String tabTitles[];
+
+        public MyPagerAdapter(FragmentManager fragmentManager, String titles[]) {
+            super(fragmentManager);
+            tabTitles = titles;
+        }
+
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0: // Fragment # 0 - This will show FirstFragment
+                    return AboutFragment.newInstance(position);
+                case 1: // Fragment # 0 - This will show FirstFragment different title
+                    return AboutChangelogFragment.newInstance(position);
+                case 2: // Fragment # 1 - This will show SecondFragment
+                    return AboutCreditsFragment.newInstance(position);
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            // Generate title based on item position
+            return tabTitles[position];
+        }
+    }
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState); 
+		super.onCreate(savedInstanceState);
+        setContentView(R.layout.about_activity);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 		setDisplayHomeAsUpEnabled(true);
-		
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		ActionBar.Tab tab1 = getSupportActionBar().newTab();
-		tab1.setText(R.string.about);
-		tab1.setTabListener(this);
 
-		ActionBar.Tab tab2 = getSupportActionBar().newTab();
-		tab2.setText(R.string.changelog);
-		tab2.setTabListener(this);
-		
-		ActionBar.Tab tab3 = getSupportActionBar().newTab();
-		tab3.setText(R.string.credits);
-		tab3.setTabListener(this);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), new String[] {getString(R.string.about), getString(R.string.changelog), getString(R.string.credits)}));
 
-		getSupportActionBar().addTab(tab1);
-		getSupportActionBar().addTab(tab2);
-		getSupportActionBar().addTab(tab3);
+        // Give the PagerSlidingTabStrip the ViewPager
+        PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        // Attach the view pager to the tab strip
+        tabsStrip.setViewPager(mViewPager);
 	}
 	
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
-		savedInstanceState.putInt(BUNDLE_KEY_TABINDEX, getSupportActionBar()
-				.getSelectedTab().getPosition());
+		savedInstanceState.putInt(BUNDLE_KEY_TABINDEX, mViewPager.getCurrentItem());
 	}
 
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		getSupportActionBar().setSelectedNavigationItem(
-				savedInstanceState.getInt(BUNDLE_KEY_TABINDEX));
+		mViewPager.setCurrentItem(savedInstanceState.getInt(BUNDLE_KEY_TABINDEX));
 	}
 
     @Override

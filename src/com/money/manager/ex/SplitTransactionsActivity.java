@@ -21,6 +21,7 @@ package com.money.manager.ex;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,8 +80,6 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // set dialog mode
-        setDialogMode(true);
         // load intent
         if (getIntent() != null) {
             mSplitTransactions = getIntent().getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
@@ -93,6 +92,12 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 
         // set view
         setContentView(R.layout.splittransaction_activity);
+        // toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            setToolbarStandardAction(toolbar);
+        }
 
         Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
         buttonAdd.setOnClickListener(new OnClickListener() {

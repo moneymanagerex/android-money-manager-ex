@@ -45,6 +45,7 @@ dependencies {
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.github.pedrovgs:lynx:1.4'
     compile 'com.nispok:snackbar:2.10.2'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 }
 
 android {

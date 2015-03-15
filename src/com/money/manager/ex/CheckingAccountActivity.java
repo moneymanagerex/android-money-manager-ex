@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -267,8 +268,15 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             DropboxHelper.getInstance(getApplicationContext());
         }
 
-        // set dialog mode
-        setDialogMode(true);
+        Core core = new Core(getApplicationContext());
+        // compose layout
+        setContentView(R.layout.checkingaccount_activity);
+        // toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            setToolbarStandardAction(toolbar);
+        }
 
         // manage save instance
         if ((savedInstanceState != null)) {
@@ -360,12 +368,10 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                     task.execute();
                 }
             }
+
             // set title
             getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_transaction : R.string.edit_transaction);
         }
-        Core core = new Core(getApplicationContext());
-        // compose layout
-        setContentView(R.layout.checkingaccount_activity);
         // take a reference view into layout
         // account
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
