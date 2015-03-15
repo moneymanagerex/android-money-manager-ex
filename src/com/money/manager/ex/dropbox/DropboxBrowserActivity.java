@@ -204,6 +204,7 @@ public class DropboxBrowserActivity extends BaseFragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FragmentManager fm = getSupportFragmentManager();
@@ -212,10 +213,10 @@ public class DropboxBrowserActivity extends BaseFragmentActivity {
             mDropboxFile = getIntent().getExtras().getString(INTENT_DROBPOXFILE_PATH);
         }
         // attach fragment to activity
-        if (fm.findFragmentById(android.R.id.content) == null) {
+        if (fm.findFragmentById(R.id.content) == null) {
             if (fm.findFragmentByTag(DropboxBrowserFragment.class.getSimpleName()) == null) {
                 DropboxBrowserFragment fragment = new DropboxBrowserFragment();
-                fm.beginTransaction().add(android.R.id.content, fragment, DropboxBrowserFragment.class.getSimpleName()).commit();
+                fm.beginTransaction().add(R.id.content, fragment, DropboxBrowserFragment.class.getSimpleName()).commit();
             }
         }
     }
