@@ -208,7 +208,7 @@
 
     <!-- 20120906 -->
     <string name="close_application">Close application</string>
-    <string name="question_close_application">Do you want close application?</string>
+    <string name="question_close_application">Do you want to close the application?</string>
     <string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string>
     <!-- do not translate -->
     <string name="attention">Attention</string>
