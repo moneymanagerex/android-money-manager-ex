@@ -89,4 +89,12 @@
         android:key="@string/pref_repeating_transaction_check_time"
         android:summary="@string/summary_check_repeating_transaction"
         android:title="@string/title_check_repeating_transaction" />
+
+    <CheckBoxPreference
+        android:icon="@null"
+        android:defaultValue="true"
+        android:key="@string/pref_show_tutorial"
+        android:title="@string/title_show_tutorial"
+        android:summary="@string/summary_show_tutorial" />
+
 </PreferenceScreen>
