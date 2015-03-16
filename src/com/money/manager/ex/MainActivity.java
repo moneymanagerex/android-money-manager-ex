@@ -353,8 +353,8 @@ public class MainActivity extends BaseFragmentActivity {
     public void showTipsDialog(Bundle savedInstanceState) {
         Context context = getApplicationContext();
         String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        //SharedPreferences settings = getSharedPreferences(key, 0);
+        //SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences settings = getSharedPreferences(key, 0);
         boolean showTutorial = settings.getBoolean(key, true);
 
         if(!showTutorial) return;
