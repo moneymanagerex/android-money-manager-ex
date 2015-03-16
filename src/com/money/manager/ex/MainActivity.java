@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -34,6 +35,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -71,6 +73,7 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
+import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.settings.SettingsActivity;
@@ -267,7 +270,7 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     /**
-     * show fragment dashboard
+     * show dashboard fragment
      */
     public void showDashboardFragment() {
         DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager().findFragmentByTag(DashboardFragment.class.getSimpleName());
@@ -343,11 +346,24 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     /**
-     * Show tips dialog on startup
+     * Show tips dialog on startup.
      *
      * @param savedInstanceState
      */
     public void showTipsDialog(Bundle savedInstanceState) {
+        Context context = getApplicationContext();
+        String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        //SharedPreferences settings = getSharedPreferences(key, 0);
+        boolean showTutorial = settings.getBoolean(key, true);
+
+        if(!showTutorial) return;
+
+        // else show tutorial the first time app is run.
+        Log.d("Tutorial", "Show tutorial the first time");
+
+        // mark the tutorial as seen.
+        settings.edit().putBoolean(key, false).commit();
     }
 
     public void showSnackbarDropbox() {
@@ -536,6 +552,7 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         // check if has passcode and authenticate
         if (!isAuthenticated) {
             Passcode passcode = new Passcode(this);
