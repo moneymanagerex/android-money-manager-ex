@@ -40,7 +40,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -968,16 +967,11 @@ public class MainActivity extends BaseFragmentActivity {
 
         @Override
         public void onDrawerOpened(View drawerView) {
-            String title = MoneyManagerApplication.getInstanceApp().getUserName();
-            if (TextUtils.isEmpty(title))
-                title = getString(R.string.application_name);
-            getSupportActionBar().setTitle(title);
             super.onDrawerOpened(drawerView);
         }
 
         @Override
         public void onDrawerClosed(View drawerView) {
-            getSupportActionBar().setTitle(R.string.application_name);
             super.onDrawerClosed(drawerView);
         }
     }
