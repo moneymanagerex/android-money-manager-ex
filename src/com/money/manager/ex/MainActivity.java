@@ -353,14 +353,17 @@ public class MainActivity extends BaseFragmentActivity {
     public void showTutorial(Bundle savedInstanceState) {
         Context context = getApplicationContext();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        //SharedPreferences settings = getSharedPreferences(key, 0);
         String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
+        // The setting is always false when using the settings this way:
+        //SharedPreferences settings = getSharedPreferences(key, 0);
         boolean showTutorial = settings.getBoolean(key, true);
 
         if(!showTutorial) return;
 
         // else show tutorial.
-        Log.d("Tutorial", "Show tutorial the first time");
+        Log.d("Tutorial", "Showing tutorial");
+        Intent intent = new Intent(this, TutorialActivity.class);
+        startActivity(intent);
 
         // mark the tutorial as seen.
         SharedPreferences.Editor editor = settings.edit();
