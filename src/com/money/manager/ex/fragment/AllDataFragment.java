@@ -516,23 +516,23 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     adapter.add(new DrawerMenuItem().withId(R.id.menu_none)
                             .withText(getString(R.string.status_none))
                             .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light)
-                            .withAlphabeticShortcut(""));
+                            .withShortcut(""));
                     adapter.add(new DrawerMenuItem().withId(R.id.menu_reconciled)
                             .withText(getString(R.string.status_reconciled))
                             .withIcon(isDarkTheme ? R.drawable.ic_action_done_dark : R.drawable.ic_action_done_light)
-                            .withAlphabeticShortcut("R"));
+                            .withShortcut("R"));
                     adapter.add(new DrawerMenuItem().withId(R.id.menu_follow_up)
                             .withText(getString(R.string.status_follow_up))
                             .withIcon(isDarkTheme ? R.drawable.ic_action_alarm_on_dark : R.drawable.ic_action_alarm_on_light)
-                            .withAlphabeticShortcut("F"));
+                            .withShortcut("F"));
                     adapter.add(new DrawerMenuItem().withId(R.id.menu_duplicate)
                             .withText(getString(R.string.status_duplicate))
                             .withIcon(isDarkTheme ? R.drawable.ic_action_copy_dark : R.drawable.ic_action_copy_light)
-                            .withAlphabeticShortcut("D"));
+                            .withShortcut("D"));
                     adapter.add(new DrawerMenuItem().withId(R.id.menu_void)
                             .withText(getString(R.string.status_void))
                             .withIcon(isDarkTheme ? R.drawable.ic_action_halt_dark : R.drawable.ic_action_halt_light)
-                            .withAlphabeticShortcut("V"));
+                            .withShortcut("V"));
 
                     // open dialog
                     final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
