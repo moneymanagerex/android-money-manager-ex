@@ -71,6 +71,7 @@ import com.money.manager.ex.fragment.AccountFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
+import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.settings.SettingsActivity;
@@ -96,6 +97,7 @@ public class MainActivity extends BaseFragmentActivity {
     private static final String KEY_IS_SHOW_TIPS_DROPBOX2 = "MainActivity:isShowTipsDropbox2";
     private static final String KEY_CLASS_FRAGMENT_CONTENT = "MainActivity:Fragment";
     private static final String KEY_ORIENTATION = "MainActivity:Orientation";
+    private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
     // state if restart activity
     private static boolean mRestartActivity = false;
     // list of account visible
@@ -103,6 +105,7 @@ public class MainActivity extends BaseFragmentActivity {
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
     private boolean isShowTipsDropbox2 = false;
+    private boolean isRecurringTransactionStarted = false;
     // navigation drawer
     private LinearLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -494,6 +497,8 @@ public class MainActivity extends BaseFragmentActivity {
                 isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
             if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
                 isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
+            if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION))
+                isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
             if (savedInstanceState.containsKey(KEY_ORIENTATION)) {
                 if (core.isTablet()) {
                     if (savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
@@ -616,6 +621,12 @@ public class MainActivity extends BaseFragmentActivity {
                 mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
         }
+        // start notification for recurring transaction
+        if (!isRecurringTransactionStarted) {
+            RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
+            notifications.notifyRepeatingTransaction();
+            isRecurringTransactionStarted = true;
+        }
     }
 
     @Override
@@ -711,6 +722,7 @@ public class MainActivity extends BaseFragmentActivity {
         outState.putBoolean(KEY_IS_AUTHENTICATED, isAuthenticated);
         outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
         outState.putBoolean(KEY_IS_SHOW_TIPS_DROPBOX2, isShowTipsDropbox2);
+        outState.putBoolean(KEY_RECURRING_TRANSACTION, isRecurringTransactionStarted);
         outState.putInt(KEY_ORIENTATION, getResources().getConfiguration().orientation);
 
         super.onSaveInstanceState(outState);

@@ -409,7 +409,7 @@ public class HomeFragment extends Fragment implements
     public void startLoader() {
         getLoaderManager().restartLoader(ID_LOADER_USER_NAME, null, this);
         getLoaderManager().restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
-        getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);
+        /*getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);*/
         getLoaderManager().restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
     }
 

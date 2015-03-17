@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="96dp"
+        android:layout_height="wrap_content"
         android:background="@color/md_primary_dark"
         android:orientation="vertical">
 
@@ -20,8 +20,8 @@
             android:id="@+id/profile_image"
             android:layout_marginTop="2dp"
             android:layout_marginLeft="16dp"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/ic_logo_money_manager_ex"
             app:border_width="1dp"
             app:border_color="@color/material_green_50"/>
@@ -42,10 +42,10 @@
             android:singleLine="true"
             android:id="@+id/textViewTotalAccounts"
             android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             android:layout_marginLeft="16dp"
             android:fontFamily="sans-serif"
-            android:textColor="@color/material_green_50"
-            android:text="Test"/>
+            android:textColor="@color/material_green_50"/>
     </LinearLayout>
 
     <ListView
