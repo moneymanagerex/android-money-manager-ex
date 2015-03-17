@@ -1,7 +1,10 @@
 package com.money.manager.ex;
 
+import com.money.manager.ex.adapter.TutorialPagerAdapter;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -9,7 +12,9 @@ import android.view.MenuItem;
  *
  * See: http://developer.android.com/training/implementing-navigation/lateral.html
  */
-public class TutorialActivity extends BaseFragmentActivity {
+public class TutorialActivity extends FragmentActivity {
+    TutorialPagerAdapter mTutorialPagerAdapter;
+    ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
