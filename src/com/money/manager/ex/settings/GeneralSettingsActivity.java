@@ -242,26 +242,7 @@ public class GeneralSettingsActivity extends BaseSettingsFragmentActivity {
                     }
                 });
             }
-
-//            this.handleShowTutorial();
         }
-
-//        private void handleShowTutorial(){
-//            String key = getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
-//            final CheckBoxPreference chkShowTutorial = (CheckBoxPreference) findPreference(key);
-//
-//            if(chkShowTutorial != null){
-//                Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
-//                    @Override
-//                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-//                    MainActivity.setRestartActivity(true);
-//                    return true;
-//                    }
-//                };
-//
-//                chkShowTutorial.setOnPreferenceChangeListener(listener);
-//            }
-//        }
 
         public void setSummaryListPreference(Preference preference, String value, int idArrayValues, int idArrayItems) {
             final String[] values = getResources().getStringArray(idArrayValues);
