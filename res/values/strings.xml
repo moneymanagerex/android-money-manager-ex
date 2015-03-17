@@ -523,5 +523,8 @@
     <string name="invalid_expression">Invalid expression</string>
     <string name="send_me_logcat">Logcat</string>
     <string name="dropbox_database_can_be_updted">There is an update of the database on Dropbox</string>
+    <string name="title_activity_tutorial">TutorialActivity</string>
     <string name="due_today">Due Today</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>
