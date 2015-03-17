@@ -19,6 +19,7 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -240,6 +241,25 @@ public class GeneralSettingsActivity extends BaseSettingsFragmentActivity {
                         return true;
                     }
                 });
+            }
+
+            this.handleShowTutorial();
+        }
+
+        private void handleShowTutorial(){
+            String key = getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
+            final CheckBoxPreference chkShowTutorial = (CheckBoxPreference) findPreference(key);
+
+            if(chkShowTutorial != null){
+                Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    MainActivity.setRestartActivity(true);
+                    return true;
+                    }
+                };
+
+                chkShowTutorial.setOnPreferenceChangeListener(listener);
             }
         }
 
