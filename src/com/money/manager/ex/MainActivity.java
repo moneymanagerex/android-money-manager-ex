@@ -346,7 +346,7 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     /**
-     * Show tips dialog on startup.
+     * Show tutorial on first run.
      *
      * @param savedInstanceState
      */
@@ -359,7 +359,7 @@ public class MainActivity extends BaseFragmentActivity {
 
         if(!showTutorial) return;
 
-        // else show tutorial the first time app is run.
+        // else show tutorial.
         Log.d("Tutorial", "Show tutorial the first time");
 
         // mark the tutorial as seen.
