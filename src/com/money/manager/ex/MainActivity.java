@@ -350,11 +350,11 @@ public class MainActivity extends BaseFragmentActivity {
      *
      * @param savedInstanceState
      */
-    public void showTipsDialog(Bundle savedInstanceState) {
+    public void showTutorial(Bundle savedInstanceState) {
         Context context = getApplicationContext();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        //SharedPreferences settings = getSharedPreferences(key, 0);
         String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
-        //SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences settings = getSharedPreferences(key, 0);
         boolean showTutorial = settings.getBoolean(key, true);
 
         if(!showTutorial) return;
@@ -363,7 +363,9 @@ public class MainActivity extends BaseFragmentActivity {
         Log.d("Tutorial", "Show tutorial the first time");
 
         // mark the tutorial as seen.
-        settings.edit().putBoolean(key, false).commit();
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(key, false);
+        editor.commit();
     }
 
     public void showSnackbarDropbox() {
@@ -535,7 +537,7 @@ public class MainActivity extends BaseFragmentActivity {
         // check type mode
         onCreateFragments(savedInstanceState);
         // show tips dialog
-        showTipsDialog(savedInstanceState);
+        showTutorial(savedInstanceState);
         // show changelog dialog
         if (core.isToDisplayChangelog())
             core.showChangelog();
