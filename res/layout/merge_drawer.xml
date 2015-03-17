@@ -1,13 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayoutDrawer"
-    android:layout_width="260dp"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    android:background="?attr/theme_drawer_background_color"
-    android:orientation="vertical"
-    tools:ignore="UselessParent" >
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/linearLayoutDrawer"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_gravity="start"
+              android:background="?attr/theme_drawer_background_color"
+              android:orientation="vertical"
+              tools:ignore="UselessParent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:background="@color/md_primary_dark"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_logo_money_manager_ex"
+            app:border_width="1dp"
+            app:border_color="@color/material_green_50"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:id="@+id/textViewUserName"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/material_green_50"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:id="@+id/textViewTotalAccounts"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/material_green_50"
+            android:text="Test"/>
+    </LinearLayout>
 
     <ListView
         android:id="@+id/listViewDrawer"
@@ -19,6 +58,6 @@
         android:dividerHeight="0dp"
         android:divider="@null"/>
 
-    <include layout="@layout/merge_main_footer_billdeposits" />
+    <include layout="@layout/merge_main_footer_billdeposits"/>
 
 </LinearLayout>

@@ -738,6 +738,8 @@ public class MainActivity extends BaseFragmentActivity {
         mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
         mDrawerLinearRepeating.setVisibility(View.GONE);
         mDrawerTextViewRepeating = (TextView) findViewById(R.id.textViewOverdue);
+        mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
+        mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
 
         // create adapter
         DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
