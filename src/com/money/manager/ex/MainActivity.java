@@ -361,10 +361,11 @@ public class MainActivity extends BaseFragmentActivity {
         if(!showTutorial) return;
 
         // else show tutorial.
-        Log.d("Tutorial", "Showing tutorial");
+//        Log.d("Tutorial", "Showing tutorial");
         Intent intent = new Intent(this, TutorialActivity.class);
         startActivity(intent);
 
+        // todo: move this to the last screen of tutorial.
         // mark the tutorial as seen.
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(key, false);
