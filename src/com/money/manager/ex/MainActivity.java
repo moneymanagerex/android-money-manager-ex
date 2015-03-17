@@ -742,28 +742,50 @@ public class MainActivity extends BaseFragmentActivity {
         // create adapter
         DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
         // home
-        adapter.add(new DrawerMenuItem(R.id.menu_home, getString(R.string.home), isDarkTheme ? R.drawable.ic_home_dark : R.drawable.ic_home_light));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_home)
+                .withText(getString(R.string.home))
+                .withIcon(isDarkTheme ? R.drawable.ic_home_dark : R.drawable.ic_home_light));
         // open database
-        adapter.add(new DrawerMenuItem(R.id.menu_open_database, getString(R.string.open_database), isDarkTheme ? R.drawable.ic_action_folder_open_dark : R.drawable.ic_action_folder_open_light));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_open_database)
+                .withText(getString(R.string.open_database))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_folder_open_dark : R.drawable.ic_action_folder_open_light));
         // dropbox synchronize
         if (mDropboxHelper != null && mDropboxHelper.isLinked())
-            adapter.add(new DrawerMenuItem(R.id.menu_sync_dropbox, getString(R.string.synchronize), isDarkTheme ? R.drawable.ic_action_dropbox_dark : R.drawable.ic_action_dropbox_light));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
+                    .withText(getString(R.string.synchronize))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_dropbox_dark : R.drawable.ic_action_dropbox_light));
         // manage: add transaction
         // adapter.add(new DrawerMenuItem(R.id.menu_add_transaction_account, getString(R.string.add_transaction), isDarkTheme ? R.drawable.ic_action_add_dark : R.drawable.ic_action_add_light));
         // tools
-        adapter.add(new DrawerMenuItem(R.id.menu_group_main, getString(R.string.tools), isDarkTheme ? R.drawable.ic_action_domain_dark : R.drawable.ic_action_domain_light));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_group_main)
+                .withText(getString(R.string.tools))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_domain_dark : R.drawable.ic_action_domain_light));
         // manage: repeating transactions
-        adapter.add(new DrawerMenuItem(R.id.menu_repeating_transaction, getString(R.string.repeating_transactions), isDarkTheme ? R.drawable.ic_action_history_dark : R.drawable.ic_action_history_light));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_repeating_transaction)
+                .withText(getString(R.string.repeating_transactions))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_history_dark : R.drawable.ic_action_history_light));
         // search transaction
-        adapter.add(new DrawerMenuItem(R.id.menu_search_transaction, getString(R.string.search), isDarkTheme ? R.drawable.ic_action_search_dark : R.drawable.ic_action_search_light));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
+                .withText(getString(R.string.search))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_search_dark : R.drawable.ic_action_search_light));
+        // reports
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_reports)
+                .withText(getString(R.string.menu_reports))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light)
+                .withDivider(true));
         // settings
-        adapter.add(new DrawerMenuItem(R.id.menu_reports, getString(R.string.menu_reports), isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
-        // settings
-        adapter.add(new DrawerMenuItem(R.id.menu_settings, getString(R.string.settings), isDarkTheme ? R.drawable.ic_action_settings_dark : R.drawable.ic_action_settings_light));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_settings)
+                .withText(getString(R.string.settings))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_settings_dark : R.drawable.ic_action_settings_light));
         // donate
-        adapter.add(new DrawerMenuItem(R.id.menu_donate, getString(R.string.donate), isDarkTheme ? R.drawable.ic_action_reports_dark : R.drawable.ic_action_redeem_light));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_donate)
+                .withText(getString(R.string.donate))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_reports_dark : R.drawable.ic_action_redeem_light)
+                .withDivider(Boolean.TRUE));
         // help
-        adapter.add(new DrawerMenuItem(R.id.menu_about, getString(R.string.about), isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_about)
+                .withText(getString(R.string.about))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light));
 
         // get drawerlist and set adapter
         if (mDrawerList != null)
@@ -794,15 +816,23 @@ public class MainActivity extends BaseFragmentActivity {
         } else if (item.getId() == R.id.menu_group_main) {
             final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
             // manage: account
-            adapter.add(new DrawerMenuItem(R.id.menu_account, getString(R.string.accounts), isDarkTheme ? R.drawable.ic_action_bank_dark : R.drawable.ic_action_bank_light));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_account)
+                    .withText(getString(R.string.accounts))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_bank_dark : R.drawable.ic_action_bank_light));
             // manage: categories
-            adapter.add(new DrawerMenuItem(R.id.menu_category, getString(R.string.categories), isDarkTheme ? R.drawable.ic_action_label_outline_dark : R.drawable.ic_action_label_outline_light));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_category)
+                    .withText(getString(R.string.categories))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_label_outline_dark : R.drawable.ic_action_label_outline_light));
             // manage: currencies
-            adapter.add(new DrawerMenuItem(R.id.menu_currency, getString(R.string.currencies), isDarkTheme ? R.drawable.ic_action_attach_money_dark : R.drawable.ic_action_attach_money_light));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_currency)
+                    .withText(getString(R.string.currencies))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_attach_money_dark : R.drawable.ic_action_attach_money_light));
             // manage: payees
-            adapter.add(new DrawerMenuItem(R.id.menu_payee, getString(R.string.payees), isDarkTheme ? R.drawable.ic_action_users_dark : R.drawable.ic_action_users_light));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_payee)
+                    .withText(getString(R.string.payees))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_users_dark : R.drawable.ic_action_users_light));
 
-            onDrawerItemSubDialogs(adapter, item.getItemText(), isDarkTheme);
+            onDrawerItemSubDialogs(adapter, item.getText(), isDarkTheme);
         } else if (item.getId() == R.id.menu_account) {
             showFragment(AccountLoaderListFragment.class);
             return true;
@@ -829,14 +859,22 @@ public class MainActivity extends BaseFragmentActivity {
         } else if (item.getId() == R.id.menu_reports) {
             final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
             // where money goes
-            adapter.add(new DrawerMenuItem(R.id.menu_report_where_money_goes, getString(R.string.menu_report_where_money_goes), isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)
+                    .withText(getString(R.string.menu_report_where_money_goes))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
             // where money comes from
-            adapter.add(new DrawerMenuItem(R.id.menu_report_where_money_comes_from, getString(R.string.menu_report_where_money_comes_from), isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_comes_from)
+                    .withText(getString(R.string.menu_report_where_money_comes_from))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
             // where money comes from
-            adapter.add(new DrawerMenuItem(R.id.menu_report_categories, getString(R.string.categories), isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));// where money comes from
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_report_categories)
+                    .withText(getString(R.string.categories))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));// where money comes from
             // income vs. expenses
-            adapter.add(new DrawerMenuItem(R.id.menu_report_income_vs_expenses, getString(R.string.menu_report_income_vs_expenses), isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
-            onDrawerItemSubDialogs(adapter, item.getItemText(), isDarkTheme);
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_report_income_vs_expenses)
+                    .withText(getString(R.string.menu_report_income_vs_expenses))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
+            onDrawerItemSubDialogs(adapter, item.getText(), isDarkTheme);
             return true;
         } else if (item.getId() == R.id.menu_report_where_money_goes) {
             intent = new Intent(this, CategoriesReportActivity.class);

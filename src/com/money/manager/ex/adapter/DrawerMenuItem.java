@@ -19,58 +19,54 @@
 package com.money.manager.ex.adapter;
 
 public class DrawerMenuItem {
-    private int mId;
-    private String mItemText;
+    private Integer mId;
+    private String mText;
     private Integer mIcon;
-    private String mAlphabeticShortcut;
+    private String mShortcut;
+    private Boolean mDivider = Boolean.FALSE;
 
-    public DrawerMenuItem(int id, String itemText) {
-        setId(id);
-        setItemText(itemText);
-    }
-
-    public DrawerMenuItem(int id, String itemText, Integer icon) {
-        setId(id);
-        setItemText(itemText);
-        setIcon(icon);
-    }
-
-    public DrawerMenuItem(int id, String itemText, Integer icon, String alphabeticShortcut) {
-        setId(id);
-        setItemText(itemText);
-        setIcon(icon);
-        setAlphabeticShortcut(alphabeticShortcut);
-    }
-
-    public int getId() {
+    public Integer getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public DrawerMenuItem withId(Integer id) {
         this.mId = id;
+        return this;
     }
 
-    public String getItemText() {
-        return mItemText;
+    public String getText() {
+        return mText;
     }
 
-    public void setItemText(String itemText) {
-        this.mItemText = itemText;
+    public DrawerMenuItem withText(String text) {
+        this.mText = text;
+        return this;
     }
 
     public Integer getIcon() {
         return mIcon;
     }
 
-    public void setIcon(Integer mIcon) {
+    public DrawerMenuItem withIcon(Integer mIcon) {
         this.mIcon = mIcon;
+        return this;
     }
 
-    public String getAlphabeticShortcut() {
-        return mAlphabeticShortcut;
+    public String getShortcut() {
+        return mShortcut;
     }
 
-    public void setAlphabeticShortcut(String mAlphabeticShortcut) {
-        this.mAlphabeticShortcut = mAlphabeticShortcut;
+    public DrawerMenuItem withShortcut(String shortcut) {
+        this.mShortcut = shortcut;
+        return this;
+    }
+
+    public Boolean hasDivider() {
+        return mDivider;
+    }
+
+    public DrawerMenuItem withDivider(Boolean divider) {
+        this.mDivider = divider;
+        return this;
     }
 }

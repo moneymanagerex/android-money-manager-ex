@@ -289,7 +289,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         }
         switch (loader.getId()) {
             case ID_LOADER_ALL_DATA_DETAIL:
-                AllDataAdapter adapter = (AllDataAdapter)getListAdapter();
+                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
                 if (isShownBalance()) {
                     adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getReadableDatabase());
                 }
@@ -513,11 +513,26 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     final Core core = new Core(getActivity().getApplicationContext());
                     final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
                     // add status
-                    adapter.add(new DrawerMenuItem(R.id.menu_none, getString(R.string.status_none), isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light, ""));
-                    adapter.add(new DrawerMenuItem(R.id.menu_reconciled, getString(R.string.status_reconciled), isDarkTheme ? R.drawable.ic_action_done_dark : R.drawable.ic_action_done_light, "R"));
-                    adapter.add(new DrawerMenuItem(R.id.menu_follow_up, getString(R.string.status_follow_up), isDarkTheme ? R.drawable.ic_action_alarm_on_dark : R.drawable.ic_action_alarm_on_light, "F"));
-                    adapter.add(new DrawerMenuItem(R.id.menu_duplicate, getString(R.string.status_duplicate), isDarkTheme ? R.drawable.ic_action_copy_dark : R.drawable.ic_action_copy_light, "D"));
-                    adapter.add(new DrawerMenuItem(R.id.menu_void, getString(R.string.status_void), isDarkTheme ? R.drawable.ic_action_halt_dark : R.drawable.ic_action_halt_light, "V"));
+                    adapter.add(new DrawerMenuItem().withId(R.id.menu_none)
+                            .withText(getString(R.string.status_none))
+                            .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light)
+                            .withAlphabeticShortcut(""));
+                    adapter.add(new DrawerMenuItem().withId(R.id.menu_reconciled)
+                            .withText(getString(R.string.status_reconciled))
+                            .withIcon(isDarkTheme ? R.drawable.ic_action_done_dark : R.drawable.ic_action_done_light)
+                            .withAlphabeticShortcut("R"));
+                    adapter.add(new DrawerMenuItem().withId(R.id.menu_follow_up)
+                            .withText(getString(R.string.status_follow_up))
+                            .withIcon(isDarkTheme ? R.drawable.ic_action_alarm_on_dark : R.drawable.ic_action_alarm_on_light)
+                            .withAlphabeticShortcut("F"));
+                    adapter.add(new DrawerMenuItem().withId(R.id.menu_duplicate)
+                            .withText(getString(R.string.status_duplicate))
+                            .withIcon(isDarkTheme ? R.drawable.ic_action_copy_dark : R.drawable.ic_action_copy_light)
+                            .withAlphabeticShortcut("D"));
+                    adapter.add(new DrawerMenuItem().withId(R.id.menu_void)
+                            .withText(getString(R.string.status_void))
+                            .withIcon(isDarkTheme ? R.drawable.ic_action_halt_dark : R.drawable.ic_action_halt_light)
+                            .withAlphabeticShortcut("V"));
 
                     // open dialog
                     final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
@@ -537,7 +552,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                                 case R.id.menu_follow_up:
                                 case R.id.menu_duplicate:
                                 case R.id.menu_void:
-                                    String status = item.getAlphabeticShortcut();
+                                    String status = item.getShortcut();
                                     if (setStatusCheckingAccount(convertArraryListToArray(transIds), status)) {
                                         ((AllDataAdapter) getListAdapter()).clearPositionChecked();
                                         startLoaderData();

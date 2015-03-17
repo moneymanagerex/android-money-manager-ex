@@ -16,7 +16,8 @@
         android:layout_gravity="start"
         android:layout_weight="1"
         android:choiceMode="singleChoice"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="0dp"
+        android:divider="@null"/>
 
     <include layout="@layout/merge_main_footer_billdeposits" />
 
