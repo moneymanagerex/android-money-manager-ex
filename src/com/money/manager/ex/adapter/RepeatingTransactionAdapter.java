@@ -86,7 +86,7 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
         // take daysleft
         int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
         if (daysLeft == 0) {
-            txtNextDueDate.setText(R.string.inactive);
+            txtNextDueDate.setText(R.string.due_today);
         } else {
             txtNextDueDate.setText(Integer.toString(Math.abs(daysLeft)) + " " + context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
             imgClock.setVisibility(daysLeft < 0 ? View.VISIBLE : View.INVISIBLE);
