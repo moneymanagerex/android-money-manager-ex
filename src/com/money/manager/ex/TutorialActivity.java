@@ -2,17 +2,21 @@ package com.money.manager.ex;
 
 import com.money.manager.ex.adapter.TutorialPagerAdapter;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.TutorialPage1Fragment;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 /**
- *
+ * Horizontal Swipe View
  * See: http://developer.android.com/training/implementing-navigation/lateral.html
  */
-public class TutorialActivity extends FragmentActivity {
+public class TutorialActivity extends FragmentActivity implements TutorialPage1Fragment.OnFragmentInteractionListener {
     TutorialPagerAdapter mTutorialPagerAdapter;
     ViewPager mViewPager;
 
@@ -23,13 +27,10 @@ public class TutorialActivity extends FragmentActivity {
 
         // ViewPager and its adapters use support library
         // fragments, so use getSupportFragmentManager.
-//        mDemoCollectionPagerAdapter =
-//                new DemoCollectionPagerAdapter(
-//                        getSupportFragmentManager());
-//        mViewPager = (ViewPager) findViewById(R.id.pager);
-//        mViewPager.setAdapter(mDemoCollectionPagerAdapter);
+        mTutorialPagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mTutorialPagerAdapter);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -51,5 +52,10 @@ public class TutorialActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        Log.d("Tutorial", "fragment interaction: " + uri.toString());
     }
 }

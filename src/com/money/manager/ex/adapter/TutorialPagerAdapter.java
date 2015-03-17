@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.money.manager.ex.fragment.TutorialPage1Fragment;
 
 /**
+ * Adapter that returns the tutorial pages.
  * Created by Alen on 17/03/2015.
  */
 public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
@@ -27,7 +28,7 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 100;
+        return 5;
     }
 
     @Override
