@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:id="@+id/linearLayoutDrawer"
-              android:layout_width="match_parent"
+              android:layout_width="320dp"
               android:layout_height="match_parent"
               android:layout_gravity="start"
               android:background="?attr/theme_drawer_background_color"
