@@ -107,7 +107,7 @@
                 style="@style/Money.Base.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_action_calendar_day_light"
+                android:drawableLeft="?attr/ic_calendar_day"
                 android:textStyle="bold"/>
 
             <LinearLayout
@@ -221,7 +221,7 @@
                     style="@style/Money.Base.TextView.Widget.EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_action_calculator_light"
+                    android:drawableLeft="?attr/ic_calculator"
                     android:textStyle="bold"/>
 
                 <com.money.manager.ex.view.RobotoTextView
@@ -237,7 +237,7 @@
                     style="@style/Money.Base.TextView.Widget.EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_action_calculator_light"
+                    android:drawableLeft="?attr/ic_calculator"
                     android:textStyle="bold"/>
             </LinearLayout>
 
@@ -255,7 +255,7 @@
                 style="@style/Money.Base.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_action_users_light"
+                android:drawableLeft="?attr/ic_users"
                 android:hint="@string/payee"
                 android:singleLine="true"/>
 
@@ -272,7 +272,7 @@
                 style="@style/Money.Base.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_action_label_outline_light"
+                android:drawableLeft="?attr/ic_label_outline"
                 android:hint="@string/category"/>
 
             <com.money.manager.ex.view.RobotoTextView
@@ -293,7 +293,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableLeft="@drawable/ic_action_plusone_light"
+                    android:drawableLeft="?attr/ic_plusone"
                     android:hint="@string/transaction_number"/>
 
                 <ImageButton
@@ -322,7 +322,7 @@
                 android:inputType="textMultiLine"
                 android:maxLength="1000"
                 android:scrollHorizontally="false"
-                android:src="@drawable/ic_action_paste_light"/>
+                android:src="@drawable/ic_action_paste"/>
         </LinearLayout>
     </ScrollView>
 
