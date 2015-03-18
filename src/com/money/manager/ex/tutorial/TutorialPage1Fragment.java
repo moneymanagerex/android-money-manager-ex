@@ -1,4 +1,4 @@
-package com.money.manager.ex.fragment;
+package com.money.manager.ex.tutorial;
 
 import android.app.Activity;
 import android.net.Uri;
