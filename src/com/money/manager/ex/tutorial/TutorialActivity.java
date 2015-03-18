@@ -1,8 +1,8 @@
-package com.money.manager.ex;
+package com.money.manager.ex.tutorial;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.TutorialPagerAdapter;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.TutorialPage1Fragment;
+import com.money.manager.ex.tutorial.TutorialPage1Fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
