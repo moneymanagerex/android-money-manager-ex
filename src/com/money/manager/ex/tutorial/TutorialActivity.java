@@ -1,8 +1,6 @@
 package com.money.manager.ex.tutorial;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.TutorialPagerAdapter;
-import com.money.manager.ex.tutorial.TutorialPage1Fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * Horizontal Swipe View
@@ -25,11 +25,19 @@ public class TutorialActivity extends FragmentActivity implements TutorialPage1F
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
-        // ViewPager and its adapters use support library
-        // fragments, so use getSupportFragmentManager.
+        //ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager_default);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager_default);
+
+        CircleIndicator circleIndicator = (CircleIndicator) findViewById(R.id.indicator_default);
+
+        //TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
         mTutorialPagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+
+        //viewpager.setAdapter(pagerAdapter);
         mViewPager.setAdapter(mTutorialPagerAdapter);
+
+        //circleIndicator.setViewPager(viewpager);
+        circleIndicator.setViewPager(mViewPager);
     }
 
     @Override

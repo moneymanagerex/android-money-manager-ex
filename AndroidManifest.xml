@@ -329,7 +329,7 @@
             android:resource="@dimen/app_minimumsize_h" />
 
         <activity
-            android:name=".TutorialActivity"
+            android:name=".tutorial.TutorialActivity"
             android:label="@string/title_activity_tutorial" >
         </activity>
     </application>

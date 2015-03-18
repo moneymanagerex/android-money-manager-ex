@@ -18,6 +18,32 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
+        Fragment pageFragment = null;
+
+        switch(i){
+            case 0:
+                pageFragment = getPage(i);
+                break;
+            case 1:
+                pageFragment = getPage(i);
+                break;
+            case 2:
+                pageFragment = new TutorialPageCurrencies();
+                break;
+            case 3:
+                pageFragment = getPage(i);
+                break;
+            case 4:
+                pageFragment = getPage(i);
+                break;
+            default:
+                pageFragment = getPage(i);
+        }
+
+        return pageFragment;
+    }
+
+    private Fragment getPage(int i){
         Fragment fragment = new TutorialPage1Fragment();
         Bundle args = new Bundle();
         // Our object is just an integer :-P
