@@ -13,15 +13,15 @@ import com.money.manager.ex.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TutorialPage1Fragment.OnFragmentInteractionListener} interface
+ * {@link TutorialPageAccountsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class TutorialPage1Fragment extends Fragment {
+public class TutorialPageAccountsFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
 
     private OnFragmentInteractionListener mListener;
 
-    public TutorialPage1Fragment() {
+    public TutorialPageAccountsFragment() {
         // Required empty public constructor
     }
 
@@ -38,7 +38,7 @@ public class TutorialPage1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tutorial_page1, container, false);
+        return inflater.inflate(R.layout.fragment_tutorial_page_accounts, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
