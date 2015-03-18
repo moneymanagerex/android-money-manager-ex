@@ -24,6 +24,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.money.manager.ex.R;
@@ -32,12 +33,11 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.0
- * 
  */
-public class AboutActivity extends BaseFragmentActivity implements ActionBar.TabListener{
-	@SuppressWarnings("unused")
-	private static final String LOGCAT = AboutActivity.class.getSimpleName();
-	private static final String BUNDLE_KEY_TABINDEX = "AboutActivity:tabindex";
+public class AboutActivity extends BaseFragmentActivity implements ActionBar.TabListener {
+    @SuppressWarnings("unused")
+    private static final String LOGCAT = AboutActivity.class.getSimpleName();
+    private static final String BUNDLE_KEY_TABINDEX = "AboutActivity:tabindex";
 
     private ViewPager mViewPager;
 
@@ -79,31 +79,31 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
     }
 
     @Override
-	protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.about_activity);
         super.onCreate(savedInstanceState);
-		setDisplayHomeAsUpEnabled(true);
+        setDisplayHomeAsUpEnabled(true);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), new String[] {getString(R.string.about), getString(R.string.changelog), getString(R.string.credits)}));
+        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), new String[]{getString(R.string.about), getString(R.string.changelog), getString(R.string.credits)}));
 
         // Give the PagerSlidingTabStrip the ViewPager
         PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         // Attach the view pager to the tab strip
         tabsStrip.setViewPager(mViewPager);
-	}
-	
-	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
-		super.onSaveInstanceState(savedInstanceState);
-		savedInstanceState.putInt(BUNDLE_KEY_TABINDEX, mViewPager.getCurrentItem());
-	}
+    }
 
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		mViewPager.setCurrentItem(savedInstanceState.getInt(BUNDLE_KEY_TABINDEX));
-	}
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(BUNDLE_KEY_TABINDEX, mViewPager.getCurrentItem());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mViewPager.setCurrentItem(savedInstanceState.getInt(BUNDLE_KEY_TABINDEX));
+    }
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -133,5 +133,14 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 
+    }
+
+    @Override
+    protected void setTheme() {
+        try {
+            this.setTheme(R.style.Theme_Money_Manager_Light_DarkActionBar);
+        } catch (Exception e) {
+            Log.e(BaseFragmentActivity.class.getSimpleName(), e.getMessage());
+        }
     }
 }

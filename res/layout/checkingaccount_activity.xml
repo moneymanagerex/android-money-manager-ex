@@ -141,7 +141,7 @@
                 style="@style/Money.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_action_calendar_day_light"
+                android:drawableLeft="?attr/ic_calendar_day"
                 android:hint="@string/date"
                 android:textStyle="bold"/>
 
@@ -191,7 +191,7 @@
                     style="@style/Money.TextView.Widget.EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_action_calculator_light"
+                    android:drawableLeft="?attr/ic_calculator"
                     android:textStyle="bold"/>
             </LinearLayout>
 
@@ -213,7 +213,7 @@
                     style="@style/Money.TextView.Widget.EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_action_users_light"
+                    android:drawableLeft="?attr/ic_users"
                     android:hint="@string/payee"/>
             </LinearLayout>
 
@@ -235,7 +235,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableLeft="@drawable/ic_action_label_outline_light"
+                    android:drawableLeft="?attr/ic_label_outline"
                     android:hint="@string/category"/>
 
                 <com.money.manager.ex.view.RobotoCheckBox
@@ -258,7 +258,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:drawableLeft="@drawable/ic_action_plusone_light"
+                    android:drawableLeft="?attr/ic_plusone"
                     android:ellipsize="end"
                     android:hint="@string/transaction_number"
                     android:singleLine="true"/>
@@ -283,7 +283,7 @@
                 android:id="@+id/editTextNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_action_paste_light"
+                android:drawableLeft="?attr/ic_paste"
                 android:gravity="top|left"
                 android:hint="@string/notes"
                 android:inputType="textMultiLine"

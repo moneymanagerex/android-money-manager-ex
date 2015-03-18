@@ -46,7 +46,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -735,14 +734,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
     @Override
     public boolean onActionCancelClick() {
-        Core core = new Core(getApplicationContext());
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title(android.R.string.cancel)
                 .content(R.string.transaction_cancel_confirm)
                 .positiveText(R.string.keep_editing)
                 .negativeText(R.string.discard)
                 .cancelable(false)
-                .theme(core.getThemeApplication() == R.style.Theme_Money_Manager ? Theme.DARK : Theme.LIGHT)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {

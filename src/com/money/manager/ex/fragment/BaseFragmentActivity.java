@@ -41,21 +41,14 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
     private boolean mDialogMode = false;
     private boolean mDisplayHomeAsUpEnabled = false;
     private Toolbar mToolbar;
+    private Core mCore;
 
     @Override
-    protected void onCreate(Bundle savedInstance) {
-        // set theme
-        Core core = new Core(getApplicationContext());
-
-        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_LOCALE), "");
-        core.changeLocaleApp(locale);
-
-        try {
-            this.setTheme(core.getThemeApplication());
-        } catch (Exception e) {
-            Log.e(BaseFragmentActivity.class.getSimpleName(), e.getMessage());
-        }
-        super.onCreate(savedInstance);
+    public void setContentView(int layoutResID) {
+        // setTheme
+        setTheme();
+        // call super method
+        super.setContentView(layoutResID);
         // check if Toolbar define into layout
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null) {
@@ -64,10 +57,22 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onCreate(Bundle savedInstance) {
+        // create Core
+        mCore = new Core(getApplicationContext());
+        // setTheme
+        setTheme();
+
+        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_LOCALE), "");
+        Core.changeLocaleApp(getApplicationContext(), locale);
+
+        super.onCreate(savedInstance);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (isDialogMode()) {
-            Core core = new Core(getApplicationContext());
-            if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            if (mCore.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
             } else {
                 createActionBar();
@@ -193,5 +198,18 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
 
     protected Toolbar getToolbar() {
         return mToolbar;
+    }
+
+    protected void setTheme() {
+        try {
+            Core core = new Core(this);
+            this.setTheme(core.getThemeApplication());
+        } catch (Exception e) {
+            Log.e(BaseFragmentActivity.class.getSimpleName(), e.getMessage());
+        }
+    }
+
+    public Core getCore() {
+        return mCore;
     }
 }

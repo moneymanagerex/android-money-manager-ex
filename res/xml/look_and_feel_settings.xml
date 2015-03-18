@@ -60,11 +60,11 @@
         android:key="@string/pref_application_font_size"
         android:summary="@string/summary_application_font_size"
         android:title="@string/title_application_font_size"/>
-    <!-- <ListPreference
+    <ListPreference
         android:defaultValue="@string/theme_light"
         android:entries="@array/themes_values"
         android:entryValues="@array/themes_values"
         android:icon="@null"
         android:key="@string/pref_theme"
-        android:title="@string/theme_application" /> -->
+        android:title="@string/theme_application"/>
 </PreferenceScreen>

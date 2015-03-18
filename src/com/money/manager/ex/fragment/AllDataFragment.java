@@ -45,7 +45,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SearchActivity;
@@ -538,7 +537,6 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                             .title(getString(R.string.change_status))
                             .adapter(adapter)
-                            .theme(core.getThemeApplication() == R.style.Theme_Money_Manager ? Theme.DARK : Theme.LIGHT)
                             .build();
 
                     ListView listView = dialog.getListView();
