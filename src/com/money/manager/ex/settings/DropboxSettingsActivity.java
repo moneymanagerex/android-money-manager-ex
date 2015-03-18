@@ -49,22 +49,19 @@ import com.money.manager.ex.dropbox.DropboxBrowserActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxReceiver;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.utils.RawFileUtils;
 
 import java.io.File;
 
-public class DropboxSettingsActivity extends BaseFragmentActivity {
+public class DropboxSettingsActivity extends BaseSettingsFragmentActivity {
     private static String LOGCAT = DropboxSettingsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setDisplayHomeAsUpEnabled(true);
-
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new DropboxSettingsFragment()).commit();
+        setSettingFragment(new  DropboxSettingsFragment());
     }
 
     public static class DropboxSettingsFragment extends PreferenceFragment {

@@ -44,11 +44,19 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 public class AboutFragment extends Fragment {
     private static final String LOGCAT = AboutFragment.class.getSimpleName();
+    private static Fragment mInstance;
+
+    public static Fragment newInstance(int page) {
+        if (mInstance == null) {
+            mInstance = new AboutFragment();
+        }
+        return mInstance;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         String text, version = "", build = "";
-        View view = inflater.inflate(R.layout.about_activity, container, false);
+        View view = inflater.inflate(R.layout.about_fragment, container, false);
 
         BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
         if (activity != null) {

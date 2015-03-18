@@ -35,6 +35,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,8 +79,13 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.report_chart_fragments_activity);
-        // set actionbar
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            // set actionbar
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         // check if is dual panel
         mIsDualPanel = findViewById(R.id.fragmentChart) != null;
 

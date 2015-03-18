@@ -83,10 +83,9 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // view
         setContentView(R.layout.currecyformats_activity);
+        super.onCreate(savedInstanceState);
+        setToolbarStandardAction(getToolbar());
         // take object
         edtCurrencyName = (EditText) findViewById(R.id.editTextCurrencyName);
         spinCurrencySymbol = (Spinner) findViewById(R.id.spinCurrencySymbol);
@@ -127,8 +126,6 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
             }
             mIntentAction = getIntent().getAction();
         }
-
-        setDialogMode(true);
 
         // check default values for scale and baseconvrate
         if (Constants.INTENT_ACTION_INSERT.equalsIgnoreCase(mIntentAction)) {

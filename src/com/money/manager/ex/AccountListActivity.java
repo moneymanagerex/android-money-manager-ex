@@ -66,6 +66,7 @@ public class AccountListActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // take intent send
@@ -75,8 +76,8 @@ public class AccountListActivity extends BaseFragmentActivity {
         }
         FragmentManager fm = getSupportFragmentManager();
         // attach fragment to activity
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
+        if (fm.findFragmentById(R.id.content) == null) {
+            fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
     }
 

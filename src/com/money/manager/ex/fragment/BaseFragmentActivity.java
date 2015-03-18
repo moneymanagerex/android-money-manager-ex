@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,6 +40,7 @@ import com.money.manager.ex.preferences.PreferencesConstant;
 public abstract class BaseFragmentActivity extends ActionBarActivity {
     private boolean mDialogMode = false;
     private boolean mDisplayHomeAsUpEnabled = false;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -54,6 +56,11 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
             Log.e(BaseFragmentActivity.class.getSimpleName(), e.getMessage());
         }
         super.onCreate(savedInstance);
+        // check if Toolbar define into layout
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+        }
     }
 
     @Override
@@ -100,6 +107,7 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
             getSupportActionBar().setElevation(0);
     }
 
+    @Deprecated
     public void createActionBar() {
         getSupportActionBar().setDisplayOptions(
                 ActionBar.DISPLAY_SHOW_CUSTOM,
@@ -127,6 +135,28 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
         getSupportActionBar().setCustomView(actionBarButtons);
     }
 
+    public void setToolbarStandardAction(Toolbar toolbar) {
+        if (toolbar != null) {
+            View cancelActionView = toolbar.findViewById(R.id.action_cancel);
+            if (cancelActionView != null)
+                cancelActionView.setOnClickListener(new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        onActionCancelClick();
+                    }
+                });
+            View doneActionView = toolbar.findViewById(R.id.action_done);
+            if (doneActionView != null)
+                doneActionView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onActionDoneClick();
+                    }
+                });
+        }
+    }
+
     public void forceRotateScreenActivity() {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -147,6 +177,7 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
         return mDialogMode;
     }
 
+    @Deprecated
     public void setDialogMode(boolean mDialogMode) {
         this.mDialogMode = mDialogMode;
     }
@@ -158,5 +189,9 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
     public void setDisplayHomeAsUpEnabled(boolean mDisplayHomeAsUpEnabled) {
         this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
         getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
+    }
+
+    protected Toolbar getToolbar() {
+        return mToolbar;
     }
 }

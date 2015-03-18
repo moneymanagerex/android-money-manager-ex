@@ -44,6 +44,9 @@ dependencies {
     compile 'com.afollestad:material-dialogs:0.6.3.5'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.github.pedrovgs:lynx:1.4'
+    compile 'com.nispok:snackbar:2.10.2'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'de.hdodenhof:circleimageview:1.2.2'
 }
 
 android {

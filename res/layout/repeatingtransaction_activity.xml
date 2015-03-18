@@ -30,6 +30,8 @@
               android:orientation="vertical"
               tools:context=".RepeatingTransactionActivity">
 
+    <include layout="@layout/toolbar_actionbar_button_cancel_done"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

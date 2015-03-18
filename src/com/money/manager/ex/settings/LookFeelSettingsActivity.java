@@ -28,21 +28,18 @@ import android.preference.PreferenceManager;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.view.RobotoView;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class LookFeelSettingsActivity extends BaseFragmentActivity {
+public class LookFeelSettingsActivity extends BaseSettingsFragmentActivity {
     private static String LOGCAT = LookFeelSettingsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setDisplayHomeAsUpEnabled(true);
-
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new LookFeelFragment()).commit();
+        setSettingFragment(new LookFeelFragment());
     }
 
     public static class LookFeelFragment extends PreferenceFragment {

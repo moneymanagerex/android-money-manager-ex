@@ -237,9 +237,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setDialogMode(Boolean.TRUE);
-
+        setContentView(R.layout.repeatingtransaction_activity);
         super.onCreate(savedInstanceState);
+        setToolbarStandardAction(getToolbar());
 
         Core core = new Core(getApplicationContext());
         // manage save instance
@@ -280,8 +280,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             // set title
             getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
         }
-        // compose layout
-        setContentView(R.layout.repeatingtransaction_activity);
         // take a reference view into layout
         txtPayee = (TextView) findViewById(R.id.textViewPayee);
         txtCaptionAmount = (TextView) findViewById(R.id.textViewHeaderTotalAmount);

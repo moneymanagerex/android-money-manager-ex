@@ -258,7 +258,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.checkingaccount_activity);
         super.onCreate(savedInstanceState);
+
         try {
             DropboxHelper.getInstance();
         } catch (Exception e) {
@@ -267,8 +269,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             DropboxHelper.getInstance(getApplicationContext());
         }
 
-        // set dialog mode
-        setDialogMode(true);
+        Core core = new Core(getApplicationContext());
+        setToolbarStandardAction(getToolbar());
 
         // manage save instance
         if ((savedInstanceState != null)) {
@@ -360,12 +362,10 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                     task.execute();
                 }
             }
+
             // set title
             getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_transaction : R.string.edit_transaction);
         }
-        Core core = new Core(getApplicationContext());
-        // compose layout
-        setContentView(R.layout.checkingaccount_activity);
         // take a reference view into layout
         // account
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);

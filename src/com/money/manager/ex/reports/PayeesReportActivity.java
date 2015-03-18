@@ -28,6 +28,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,7 +59,12 @@ public class PayeesReportActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.report_chart_fragments_activity);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            // set actionbar
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         //check if is dual panel
         mIsDualPanel = findViewById(R.id.fragmentChart) != null;

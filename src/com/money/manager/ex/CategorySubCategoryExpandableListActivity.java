@@ -84,6 +84,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
         // enable home button into actionbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -96,8 +97,8 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 
         // management fragment
         FragmentManager fm = getSupportFragmentManager();
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
+        if (fm.findFragmentById(R.id.content) == null) {
+            fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
     }
 

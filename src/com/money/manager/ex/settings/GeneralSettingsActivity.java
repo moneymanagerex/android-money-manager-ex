@@ -32,7 +32,6 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.utils.CurrencyNameComparator;
 import com.money.manager.ex.utils.CurrencyUtils;
@@ -42,15 +41,13 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.util.Collections;
 import java.util.List;
 
-public class GeneralSettingsActivity extends BaseFragmentActivity {
+public class GeneralSettingsActivity extends BaseSettingsFragmentActivity {
     private static String LOGCAT = GeneralSettingsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setDisplayHomeAsUpEnabled(true);
-
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new GeneralSettingsFragment()).commit();
+        setSettingFragment(new GeneralSettingsFragment());
     }
 
     public static class GeneralSettingsFragment extends PreferenceFragment {

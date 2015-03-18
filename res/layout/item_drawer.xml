@@ -17,31 +17,44 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:orientation="horizontal">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="48dp"
+              android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imageViewIcon"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center_vertical" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
-    <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/textViewItem"
+        <ImageView
+            android:id="@+id/imageViewIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/textViewItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="16dp"
+            android:singleLine="true"
+            android:text="Test"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:typeface="roboto_black"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/viewDivider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="24dp"
-        app:typeface="roboto_black"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:text="Test"
-        android:singleLine="true" />
+        android:background="?android:attr/listDivider"
+        android:visibility="gone"/>
 
-    <!-- android:textSize="18sp" -->
 </LinearLayout>

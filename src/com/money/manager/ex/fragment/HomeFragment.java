@@ -250,6 +250,7 @@ public class HomeFragment extends Fragment implements
                         data.moveToNext();
                     }
                 }
+                mainActivity.setDrawableUserName(MoneyManagerApplication.getInstanceApp().getUserName());
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:
@@ -326,9 +327,9 @@ public class HomeFragment extends Fragment implements
                 setListViewAccountBillsVisible(true);
 
                 // set total accounts in drawer
-                if (mainActivity != null) {
+                if (mainActivity != null)
                     mainActivity.setDrawableTotalAccounts(txtTotalAccounts.getText().toString());
-                }
+
                 break;
 
             case ID_LOADER_BILL_DEPOSITS:
@@ -408,7 +409,7 @@ public class HomeFragment extends Fragment implements
     public void startLoader() {
         getLoaderManager().restartLoader(ID_LOADER_USER_NAME, null, this);
         getLoaderManager().restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
-        getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);
+        /*getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);*/
         getLoaderManager().restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
     }
 

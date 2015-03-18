@@ -648,6 +648,44 @@ public class DropboxHelper {
         return !TextUtils.isEmpty(message) ? message : messageIfNull;
     }
 
+    /**
+     * This function returns if the file is synchronized or not
+     * @return int
+     */
+    public int checkIfFileIsSync() {
+        if (isLinked()) {
+            String localPath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
+            String remotePath = getLinkedRemoteFile();
+            // check if file is correct
+            if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath)) return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+            // check if remoteFile path is contain into localFile
+            if (!localPath.toLowerCase().contains(remotePath.toLowerCase())) return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+            // get File and Entry
+            File localFile = new File(localPath);
+            DropboxAPI.Entry remoteFile = getEntry(remotePath);
+            // date lastModificed
+            Date localLastModified = null;
+            Date remoteLastModified = null;
+            try {
+                localLastModified = getDateLastModified(remoteFile.fileName());
+                if (localLastModified == null)
+                    localLastModified = new Date(localFile.lastModified());
+                remoteLastModified = getLastModifiedEntry(remoteFile);
+            } catch (Exception e) {
+                Log.e(LOGCAT, e.getMessage());
+                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+            }
+            if (remoteLastModified.after(localLastModified)) {
+                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD;
+            } else if (remoteLastModified.before(localLastModified)) {
+                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD;
+            } else {
+                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+            }
+        }
+        return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+    }
+
     // interface for callbacks when call
     public interface OnGetEntries {
         public void onStarting();

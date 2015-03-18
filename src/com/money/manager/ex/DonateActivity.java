@@ -61,6 +61,7 @@ public class DonateActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        setContentView(R.layout.donate_activity);
         super.onCreate(savedInstanceState);
         // Set up SKUs
         if (1==2 && BuildConfig.DEBUG) {
@@ -73,8 +74,7 @@ public class DonateActivity extends BaseFragmentActivity {
         }
         // add SKU application
         skus.add("android.money.manager.ex.donations.small");
-        // Set up the UI
-        setContentView(R.layout.donate_activity);
+
         final Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
         final Button inAppButton = (Button) findViewById(R.id.buttonDonateInApp);
         inAppButton.setOnClickListener(new View.OnClickListener() {

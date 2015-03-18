@@ -77,6 +77,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
         // enabled home to come back
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -87,8 +88,8 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
         }
 
         FragmentManager fm = getSupportFragmentManager();
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
+        if (fm.findFragmentById(R.id.content) == null) {
+            fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
     }
 
