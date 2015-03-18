@@ -13,6 +13,14 @@ import com.money.manager.ex.R;
  */
 public class TutorialPageCurrenciesFragment extends Fragment {
 
+    public static TutorialPageCurrenciesFragment newInstance(){
+        TutorialPageCurrenciesFragment fragment = new TutorialPageCurrenciesFragment();
+        Bundle bundle = new Bundle();
+
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
 
     public TutorialPageCurrenciesFragment() {
         // Required empty public constructor
