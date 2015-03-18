@@ -57,8 +57,7 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
-import com.money.manager.ex.preferences.PreferencesConstant;
-import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
@@ -172,8 +171,8 @@ public class HomeFragment extends Fragment implements
 
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                    intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferencesConstant.PREF_DROPBOX_HOWITWORKS);
+                    Intent intent = new Intent(getActivity(), DropboxSettingsActivity.class);
+                    //intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferencesConstant.PREF_DROPBOX_HOWITWORKS);
                     startActivity(intent);
                 }
             });
