@@ -1,11 +1,11 @@
-package com.money.manager.ex.adapter;
+package com.money.manager.ex.tutorial;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.money.manager.ex.fragment.TutorialPage1Fragment;
+import com.money.manager.ex.tutorial.TutorialPage1Fragment;
 
 /**
  * Adapter that returns the tutorial pages.
