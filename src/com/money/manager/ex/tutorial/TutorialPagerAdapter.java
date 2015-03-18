@@ -32,7 +32,7 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
                 pageFragment = getPage(i);
                 break;
             case 4:
-                pageFragment = new TutorialPageDropboxFragment();
+                pageFragment = TutorialPageDropboxFragment.newInstance();
                 break;
             default:
                 pageFragment = getPage(i);
