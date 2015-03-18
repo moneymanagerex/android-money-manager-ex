@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.money.manager.ex.tutorial.TutorialPage1Fragment;
-
 /**
  * Adapter that returns the tutorial pages.
  * Created by Alen on 17/03/2015.
@@ -28,13 +26,13 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
                 pageFragment = getPage(i);
                 break;
             case 2:
-                pageFragment = new TutorialPageCurrencies();
+                pageFragment = new TutorialPageCurrenciesFragment();
                 break;
             case 3:
                 pageFragment = getPage(i);
                 break;
             case 4:
-                pageFragment = getPage(i);
+                pageFragment = new TutorialPageDropboxFragment();
                 break;
             default:
                 pageFragment = getPage(i);
@@ -44,10 +42,10 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     private Fragment getPage(int i){
-        Fragment fragment = new TutorialPage1Fragment();
+        Fragment fragment = new TutorialPageAccountsFragment();
         Bundle args = new Bundle();
         // Our object is just an integer :-P
-        args.putInt(TutorialPage1Fragment.ARG_OBJECT, i + 1);
+        args.putInt(TutorialPageAccountsFragment.ARG_OBJECT, i + 1);
         fragment.setArguments(args);
         return fragment;
     }

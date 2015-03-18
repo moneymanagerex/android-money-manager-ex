@@ -1,6 +1,5 @@
 package com.money.manager.ex.tutorial;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,10 +11,10 @@ import com.money.manager.ex.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TutorialPageCurrencies extends Fragment {
+public class TutorialPageCurrenciesFragment extends Fragment {
 
 
-    public TutorialPageCurrencies() {
+    public TutorialPageCurrenciesFragment() {
         // Required empty public constructor
     }
 
