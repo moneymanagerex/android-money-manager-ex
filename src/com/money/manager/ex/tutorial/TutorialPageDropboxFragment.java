@@ -25,6 +25,15 @@ public class TutorialPageDropboxFragment extends Fragment {
 
     }
 
+    public static TutorialPageDropboxFragment newInstance(){
+        TutorialPageDropboxFragment fragment = new TutorialPageDropboxFragment();
+        Bundle bundle = new Bundle();
+
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

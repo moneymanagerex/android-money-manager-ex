@@ -359,7 +359,8 @@ public class MainActivity extends BaseFragmentActivity {
         //SharedPreferences settings = getSharedPreferences(key, 0);
         boolean showTutorial = settings.getBoolean(key, true);
 
-        if(!showTutorial) return;
+        // While developing, always show tutorial. Remove the comment before release.
+        // todo: if(!showTutorial) return;
 
         // else show tutorial.
         Intent intent = new Intent(this, TutorialActivity.class);

@@ -23,27 +23,28 @@ import me.relex.circleindicator.CircleIndicator;
  */
 public class TutorialActivity extends FragmentActivity
         implements TutorialPageAccountsFragment.OnFragmentInteractionListener {
-    TutorialPagerAdapter mTutorialPagerAdapter;
-    ViewPager mViewPager;
+    //TutorialPagerAdapter mTutorialPagerAdapter;
+    //ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
-        //ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager_default);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager_default);
-
         CircleIndicator circleIndicator = (CircleIndicator) findViewById(R.id.indicator_default);
 
-        //TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
+        //
+        ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager_default);
+        TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
+        viewpager.setAdapter(pagerAdapter);
+        circleIndicator.setViewPager(viewpager);
+
+        /*
+        mViewPager = (ViewPager) findViewById(R.id.viewpager_default);
         mTutorialPagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
-
-        //viewpager.setAdapter(pagerAdapter);
         mViewPager.setAdapter(mTutorialPagerAdapter);
-
-        //circleIndicator.setViewPager(viewpager);
         circleIndicator.setViewPager(mViewPager);
+        */
     }
 
     @Override
