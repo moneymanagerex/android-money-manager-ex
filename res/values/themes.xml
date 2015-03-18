@@ -71,6 +71,7 @@
         <item name="ic_action_bargraph">@drawable/ic_action_bargraph_dark</item>
         <item name="ic_action_bell">@drawable/ic_action_bell_dark</item>
         <item name="ic_action_business">@drawable/ic_action_business_dark</item>
+        <item name="ic_action_calculator">@drawable/ic_action_calculator_dark</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
         <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
         <item name="ic_action_copy">@drawable/ic_action_copy_dark</item>
@@ -82,9 +83,12 @@
         <item name="ic_action_foursquare">@drawable/ic_action_foursquare_dark</item>
         <item name="ic_action_halt">@drawable/ic_action_halt_dark</item>
         <item name="ic_action_help">@drawable/ic_action_help_dark</item>
+        <item name="ic_action_label_outline">@drawable/ic_action_label_outline_dark</item>
         <item name="ic_action_list">@drawable/ic_action_list_dark</item>
+        <item name="ic_action_paste">@drawable/ic_action_paste_dark</item>
         <item name="ic_action_pie_chart">@drawable/ic_action_pie_chart_dark</item>
         <item name="ic_action_playback_repeat">@drawable/ic_action_playback_repeat_dark</item>
+        <item name="ic_action_plusone">@drawable/ic_action_plusone_dark</item>
         <item name="ic_action_refresh">@drawable/ic_action_refresh_dark</item>
         <item name="ic_action_reload">@drawable/ic_action_reload_dark</item>
         <item name="ic_action_report">@drawable/ic_action_reports_dark</item>
@@ -100,6 +104,13 @@
         <item name="ic_action_trash">@drawable/ic_action_trash_dark</item>
         <item name="sym_keyboard_delete">@drawable/sym_keyboard_feedback_delete</item>
         <item name="ic_action_users">@drawable/ic_action_users_dark</item>
+        <!-- others drawable -->
+        <item name="ic_calendar_day">@drawable/ic_action_calendar_day_light</item>
+        <item name="ic_calculator">@drawable/ic_action_calculator_light</item>
+        <item name="ic_users">@drawable/ic_action_users_light</item>
+        <item name="ic_label_outline">@drawable/ic_action_label_outline_light</item>
+        <item name="ic_plusone">@drawable/ic_action_plusone_light</item>
+        <item name="ic_paste">@drawable/ic_action_paste_light</item>
         <!-- Shape -->
         <item name="shape_background_shadow">@drawable/shape_background_shadow</item>
         <item name="shape_white_background_shadow">@drawable/shape_white_background_shadow</item>
@@ -130,6 +141,7 @@
         <item name="ic_action_bargraph">@drawable/ic_action_bargraph_dark</item>
         <item name="ic_action_bell">@drawable/ic_action_bell_dark</item>
         <item name="ic_action_business">@drawable/ic_action_business_dark</item>
+        <item name="ic_action_calculator">@drawable/ic_action_calculator_dark</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
         <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
         <item name="ic_action_copy">@drawable/ic_action_copy_dark</item>
@@ -141,9 +153,12 @@
         <item name="ic_action_foursquare">@drawable/ic_action_foursquare_dark</item>
         <item name="ic_action_halt">@drawable/ic_action_halt_dark</item>
         <item name="ic_action_help">@drawable/ic_action_help_dark</item>
+        <item name="ic_action_label_outline">@drawable/ic_action_label_outline_dark</item>
         <item name="ic_action_list">@drawable/ic_action_list_dark</item>
+        <item name="ic_action_paste">@drawable/ic_action_paste_dark</item>
         <item name="ic_action_pie_chart">@drawable/ic_action_pie_chart_dark</item>
         <item name="ic_action_playback_repeat">@drawable/ic_action_playback_repeat_dark</item>
+        <item name="ic_action_plusone">@drawable/ic_action_plusone_dark</item>
         <item name="ic_action_reload">@drawable/ic_action_reload_dark</item>
         <item name="ic_action_refresh">@drawable/ic_action_refresh_dark</item>
         <item name="ic_action_search">@drawable/ic_action_search_dark</item>
@@ -157,6 +172,14 @@
         <item name="ic_action_trash">@drawable/ic_action_trash_dark</item>
         <item name="ic_action_users">@drawable/ic_action_users_dark</item>
         <item name="sym_keyboard_delete">@drawable/sym_keyboard_delete</item>
+        <!-- others drawable -->
+        <item name="ic_calendar_day">@drawable/ic_action_calendar_day_dark</item>
+        <item name="ic_calculator">@drawable/ic_action_calculator_dark</item>
+        <item name="ic_users">@drawable/ic_action_users_dark</item>
+        <item name="ic_label_outline">@drawable/ic_action_label_outline_dark</item>
+        <item name="ic_plusone">@drawable/ic_action_plusone_dark</item>
+        <item name="ic_paste">@drawable/ic_action_paste_dark</item>
+
         <!-- Shape -->
         <item name="shape_background_shadow">@null</item>
         <item name="shape_white_background_shadow">@null</item>
