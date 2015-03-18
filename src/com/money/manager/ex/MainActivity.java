@@ -52,7 +52,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.AccountListActivity.AccountLoaderListFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.CurrencyFormatsListActivity.CurrencyFormatsLoaderListFragment;
@@ -924,7 +923,6 @@ public class MainActivity extends BaseFragmentActivity {
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title(title)
                 .adapter(adapter)
-                .theme(isDarkTheme ? Theme.DARK : Theme.LIGHT)
                 .build();
 
         ListView listView = dialog.getListView();

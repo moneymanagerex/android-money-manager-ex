@@ -32,7 +32,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -203,7 +202,6 @@ public class InputAmountDialog extends DialogFragment {
         builder.autoDismiss(false);
         builder.negativeText(android.R.string.cancel);
         builder.positiveText(android.R.string.ok);
-        builder.theme(core.getThemeApplication() == R.style.Theme_Money_Manager ? Theme.DARK : Theme.LIGHT);
 
         Dialog dialog = builder.show();
 

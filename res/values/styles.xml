@@ -39,6 +39,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textSize">32sp</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="Money.Button.Input.Dialog.Operator" parent="Money.Button.Input.Dialog">

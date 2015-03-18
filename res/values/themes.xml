@@ -18,7 +18,12 @@
 
 <resources>
 
-    <style name="_App" parent="@style/Theme.AppCompat.NoActionBar"/>
+    <style name="_App" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:textColorPrimary">@color/material_grey_50</item>
+        <item name="android:textColorSecondary">@color/md_secondary_text</item>
+        <item name="android:textColor">@color/material_grey_50</item>
+        <item name="md_dark_theme">true</item>
+    </style>
 
     <style name="_App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/md_primary</item>
@@ -37,6 +42,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="md_dark_theme">false</item>
     </style>
 
     <style name="App" parent="@style/_App"/>
@@ -48,7 +54,7 @@
     <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/App_Light_DarkActionBar">
 
         <!-- Colors -->
-        <item name="theme_background_color">@color/holo_light_darkaction_money_background</item>
+        <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background
         </item>
         <item name="holo_blue_color_theme">@color/holo_blue_dark</item>

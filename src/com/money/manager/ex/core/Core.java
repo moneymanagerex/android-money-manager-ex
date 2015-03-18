@@ -207,10 +207,11 @@ public class Core {
     /**
      * Method, which allows you to change the language of the application
      *
+     * @param context        Context
      * @param languageToLoad
      * @return
      */
-    public boolean changeLocaleApp(String languageToLoad) {
+    public static boolean changeLocaleApp(Context context, String languageToLoad) {
         try {
             // load locale
             Locale locale;
@@ -300,7 +301,7 @@ public class Core {
             Log.e("", e.getMessage());
             return R.style.Theme_Money_Manager_Light_DarkActionBar;
         }*/
-        return R.style.Theme_Money_Manager_Light_DarkActionBar;
+        return R.style.Theme_Money_Manager;
     }
 
     /**
