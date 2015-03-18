@@ -16,7 +16,7 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        Fragment pageFragment = null;
+        Fragment pageFragment;
 
         switch(i){
             case 0:
@@ -26,7 +26,7 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
                 pageFragment = getPage(i);
                 break;
             case 2:
-                pageFragment = new TutorialPageCurrenciesFragment();
+                pageFragment = TutorialPageCurrenciesFragment.newInstance();
                 break;
             case 3:
                 pageFragment = getPage(i);
