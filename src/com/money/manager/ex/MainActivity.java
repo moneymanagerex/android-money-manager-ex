@@ -77,6 +77,7 @@ import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.ActionClickListener;
