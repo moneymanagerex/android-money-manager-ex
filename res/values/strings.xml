@@ -74,7 +74,7 @@
     <!--<string name="preferences_dropbox">Dropbox settings</string>-->
     <string name="path">Database path</string>
     <string name="title_show_tutorial">Show tutorial</string>
-    <string name="summary_show_tutorial">Show tutorial on next run?</string>
+    <string name="summary_show_tutorial">Show tutorial on the next run?</string>
 
     <!-- account -->
     <string name="account">Account</string>
