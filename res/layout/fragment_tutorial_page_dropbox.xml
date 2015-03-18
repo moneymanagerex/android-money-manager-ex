@@ -1,18 +1,40 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.money.manager.ex.tutorial.TutorialPageDropboxFragment">
+    android:background="@color/material_grey_900" >
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--tools:context="com.money.manager.ex.tutorial.TutorialPageDropboxFragment">-->
 
-    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="screenshot"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_social_twitter" />
+
     <TextView android:layout_width="match_parent" android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment"
-        android:theme="@style/Theme.AppCompat" />
+        android:theme="@style/Theme.AppCompat"
+        android:layout_below="@+id/imageView"
+        android:textColor="@color/material_grey_50" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OK"
+        android:text="@string/close"
         android:id="@+id/okButton"
-        android:layout_gravity="right|bottom" />
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-</FrameLayout>
+</RelativeLayout>
