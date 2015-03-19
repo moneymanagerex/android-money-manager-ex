@@ -69,7 +69,7 @@ public class TutorialPageSyncFragment extends Fragment {
             }
         });
 
-        this.loadSvg(view);
+//        this.loadSvg(view);
 
         return view;
     }
@@ -89,9 +89,9 @@ public class TutorialPageSyncFragment extends Fragment {
         // Set the background color to white
         imageView.setBackgroundColor(Color.WHITE);
         // Parse the SVG file from the resource
-        SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.sync_screen);
+//        SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.sync_screen);
         // Get a drawable from the parsed SVG and set it as the drawable for the ImageView
-        imageView.setImageDrawable(svg.createPictureDrawable());
+//        imageView.setImageDrawable(svg.createPictureDrawable());
         // Set the ImageView as the content view for the Activity
 //        setContentView(imageView);
 
