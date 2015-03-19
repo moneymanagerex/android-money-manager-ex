@@ -3,6 +3,7 @@ package com.money.manager.ex.tutorial;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 import com.money.manager.ex.R;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
@@ -19,14 +23,14 @@ import com.money.manager.ex.preferences.PreferencesConstant;
  * Also, being the last page, it contains the OK button that closes the Tutorial.
  * A simple {@link Fragment} subclass.
  */
-public class TutorialPageDropboxFragment extends Fragment {
+public class TutorialPageSyncFragment extends Fragment {
 
-    public TutorialPageDropboxFragment() {
+    public TutorialPageSyncFragment() {
 
     }
 
-    public static TutorialPageDropboxFragment newInstance(){
-        TutorialPageDropboxFragment fragment = new TutorialPageDropboxFragment();
+    public static TutorialPageSyncFragment newInstance(){
+        TutorialPageSyncFragment fragment = new TutorialPageSyncFragment();
         Bundle bundle = new Bundle();
 
         fragment.setArguments(bundle);
@@ -65,6 +69,8 @@ public class TutorialPageDropboxFragment extends Fragment {
             }
         });
 
+        this.loadSvg(view);
+
         return view;
     }
 
@@ -74,4 +80,20 @@ public class TutorialPageDropboxFragment extends Fragment {
 
     }
 
+    private void loadSvg(View view){
+        // test: show vector image.
+        // imageView
+        // Create a new ImageView
+//        ImageView imageView = new ImageView(this);
+        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+        // Set the background color to white
+        imageView.setBackgroundColor(Color.WHITE);
+        // Parse the SVG file from the resource
+        SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.sync_screen);
+        // Get a drawable from the parsed SVG and set it as the drawable for the ImageView
+        imageView.setImageDrawable(svg.createPictureDrawable());
+        // Set the ImageView as the content view for the Activity
+//        setContentView(imageView);
+
+    }
 }
