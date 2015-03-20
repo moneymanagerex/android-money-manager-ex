@@ -20,7 +20,7 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
 
         switch(i){
             case 0:
-                pageFragment = getPage(i);
+                pageFragment = TutorialPageAccountsFragment.newInstance();
                 break;
             case 1:
                 pageFragment = TutorialPageTransactionsFragment.newInstance();
@@ -29,7 +29,7 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
                 pageFragment = TutorialPageGlobalFragment.newInstance();
                 break;
             case 3:
-                pageFragment = getPage(i);
+                pageFragment = TutorialPageFinancialOverviewFragment.newInstance();
                 break;
             case 4:
                 pageFragment = TutorialPageSyncFragment.newInstance();

@@ -25,6 +25,15 @@ public class TutorialPageAccountsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static TutorialPageAccountsFragment newInstance(){
+        TutorialPageAccountsFragment fragment = new TutorialPageAccountsFragment();
+        Bundle bundle = new Bundle();
+
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
