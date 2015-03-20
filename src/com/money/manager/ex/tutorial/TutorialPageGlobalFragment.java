@@ -11,10 +11,10 @@ import com.money.manager.ex.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TutorialPageCurrenciesFragment extends Fragment {
+public class TutorialPageGlobalFragment extends Fragment {
 
-    public static TutorialPageCurrenciesFragment newInstance(){
-        TutorialPageCurrenciesFragment fragment = new TutorialPageCurrenciesFragment();
+    public static TutorialPageGlobalFragment newInstance(){
+        TutorialPageGlobalFragment fragment = new TutorialPageGlobalFragment();
         Bundle bundle = new Bundle();
 
         fragment.setArguments(bundle);
@@ -22,7 +22,7 @@ public class TutorialPageCurrenciesFragment extends Fragment {
         return fragment;
     }
 
-    public TutorialPageCurrenciesFragment() {
+    public TutorialPageGlobalFragment() {
         // Required empty public constructor
     }
 
@@ -30,7 +30,7 @@ public class TutorialPageCurrenciesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tutorial_page_currencies, container, false);
+        return inflater.inflate(R.layout.fragment_tutorial_page_global, container, false);
     }
 
 }
