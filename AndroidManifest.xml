@@ -330,7 +330,9 @@
 
         <activity
             android:name=".tutorial.TutorialActivity"
-            android:label="@string/title_activity_tutorial" >
+            android:label="@string/title_activity_tutorial"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
     </application>
 

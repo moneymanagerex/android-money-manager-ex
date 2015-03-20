@@ -59,14 +59,14 @@ public class TutorialPageTransactionsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tutorial_page_transactions, container, false);
 
-        // todo: load graphics
+        // load graphics
         this.loadGraphics(view);
 
         return view;
     }
 
     private void loadGraphics(View view){
-        WebView webView = (WebView)view.findViewById(R.id.webView);
+        WebView webView = (WebView)view.findViewById(R.id.webViewTransactions);
 
         webView.loadUrl("file:///android_asset/tutorial_transactions.html");
     }
