@@ -21,8 +21,7 @@ import me.relex.circleindicator.CircleIndicator;
  * Horizontal Swipe View
  * See: http://developer.android.com/training/implementing-navigation/lateral.html
  */
-public class TutorialActivity extends FragmentActivity
-        implements TutorialPageAccountsFragment.OnFragmentInteractionListener {
+public class TutorialActivity extends FragmentActivity {
     //TutorialPagerAdapter mTutorialPagerAdapter;
     //ViewPager mViewPager;
 
@@ -69,8 +68,4 @@ public class TutorialActivity extends FragmentActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-        Log.d("Tutorial", "fragment interaction: " + uri.toString());
-    }
 }
