@@ -23,10 +23,10 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
                 pageFragment = getPage(i);
                 break;
             case 1:
-                pageFragment = getPage(i);
+                pageFragment = TutorialPageTransactionsFragment.newInstance();
                 break;
             case 2:
-                pageFragment = TutorialPageCurrenciesFragment.newInstance();
+                pageFragment = TutorialPageGlobalFragment.newInstance();
                 break;
             case 3:
                 pageFragment = getPage(i);
