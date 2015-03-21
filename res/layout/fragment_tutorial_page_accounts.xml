@@ -4,9 +4,11 @@
     tools:context="com.money.manager.ex.tutorial.TutorialPageAccountsFragment"
     android:background="@color/abBackground">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:theme="@style/Theme.AppCompat" />
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/webViewAccounts"
+        android:layout_gravity="center"
+        android:background="@color/material_grey_900" />
 
 </FrameLayout>

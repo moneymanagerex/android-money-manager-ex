@@ -16,15 +16,6 @@ import com.money.manager.ex.R;
  * create an instance of this fragment.
  */
 public class TutorialPageTransactionsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-//    private String mParam1;
-//    private String mParam2;
-
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -60,14 +51,10 @@ public class TutorialPageTransactionsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tutorial_page_transactions, container, false);
 
         // load graphics
-        this.loadGraphics(view);
+        WebView webView = (WebView)view.findViewById(R.id.webViewTransactions);
+        webView.loadUrl("file:///android_asset/tutorial/transactions.html");
 
         return view;
     }
 
-    private void loadGraphics(View view){
-        WebView webView = (WebView)view.findViewById(R.id.webViewTransactions);
-
-        webView.loadUrl("file:///android_asset/tutorial_transactions.html");
-    }
 }

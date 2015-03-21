@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -42,8 +43,15 @@ public class TutorialPageSyncFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tutorial_page_sync, container, false);
 
-        // Handle OK button.
+        this.handleOkButton(view);
 
+        WebView webView = (WebView)view.findViewById(R.id.webViewSync);
+        webView.loadUrl("file:///android_asset/tutorial/sync.html");
+
+        return view;
+    }
+
+    private void handleOkButton(View view){
         Button okButton = (Button)view.findViewById(R.id.okButton);
         okButton.setOnClickListener(new View.OnClickListener() {
             /**
@@ -67,9 +75,6 @@ public class TutorialPageSyncFragment extends Fragment {
             }
         });
 
-//        this.loadSvg(view);
-
-        return view;
     }
 
     @Override
@@ -78,20 +83,4 @@ public class TutorialPageSyncFragment extends Fragment {
 
     }
 
-    private void loadSvg(View view){
-        // test: show vector image.
-        // imageView
-        // Create a new ImageView
-//        ImageView imageView = new ImageView(this);
-        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-        // Set the background color to white
-        imageView.setBackgroundColor(Color.WHITE);
-        // Parse the SVG file from the resource
-//        SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.sync_screen);
-        // Get a drawable from the parsed SVG and set it as the drawable for the ImageView
-//        imageView.setImageDrawable(svg.createPictureDrawable());
-        // Set the ImageView as the content view for the Activity
-//        setContentView(imageView);
-
-    }
 }
