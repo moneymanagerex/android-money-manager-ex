@@ -41,8 +41,7 @@ public class TutorialPageGlobalFragment extends Fragment {
 
     private void loadGraphics(View view){
         WebView webView = (WebView)view.findViewById(R.id.webViewGlobal);
-
-        webView.loadUrl("file:///android_asset/tutorial_global.html");
+        webView.loadUrl("file:///android_asset/tutorial/global.html");
     }
 
 }
