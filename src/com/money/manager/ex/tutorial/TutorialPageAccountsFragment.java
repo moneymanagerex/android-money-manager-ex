@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.webkit.WebView;
 
 import com.money.manager.ex.R;
 
@@ -40,7 +41,14 @@ public class TutorialPageAccountsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tutorial_page_accounts, container, false);
+        View view = inflater.inflate(R.layout.fragment_tutorial_page_accounts, container, false);
+
+        // Load graphics.
+        WebView webView = (WebView)view.findViewById(R.id.webViewAccounts);
+        webView.loadUrl("file:///android_asset/tutorial/accounts.html");
+
+
+        return view;
     }
 
 

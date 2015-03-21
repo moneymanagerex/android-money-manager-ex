@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import com.money.manager.ex.R;
 
@@ -51,7 +52,8 @@ public class TutorialPageFinancialOverviewFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tutorial_page_financial_overview, container, false);
 
-        // webViewOverview
+        WebView webView = (WebView)view.findViewById(R.id.webViewOverview);
+        webView.loadUrl("file:///android_asset/tutorial/overview.html");
 
         return view;
     }
