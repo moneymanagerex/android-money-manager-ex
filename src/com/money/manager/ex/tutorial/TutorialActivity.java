@@ -1,10 +1,14 @@
 package com.money.manager.ex.tutorial;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.preferences.PreferencesConstant;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -83,10 +87,25 @@ public class TutorialActivity extends FragmentActivity {
         skipText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // close
-                finish();
+                closeTutorial();
             }
         });
+    }
+
+    private void closeTutorial(){
+
+        // Mark tutorial as seen, in the settings.
+//        Context context = parent.getApplicationContext();
+        Context context = getApplicationContext();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(key, false);
+        editor.commit();
+
+        // close
+        finish();
+
     }
 
     @Override

@@ -485,6 +485,9 @@ public class MainActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // show tutorial
+        showTutorial(savedInstanceState);
+
         Core core = new Core(this);
 
         // close notification
@@ -535,8 +538,8 @@ public class MainActivity extends BaseFragmentActivity {
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
         // check type mode
         onCreateFragments(savedInstanceState);
-        // show tips dialog
-        showTutorial(savedInstanceState);
+//        // show tutorial
+//        showTutorial(savedInstanceState);
         // show changelog dialog
         if (core.isToDisplayChangelog())
             core.showChangelog();

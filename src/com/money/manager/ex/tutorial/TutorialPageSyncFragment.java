@@ -43,7 +43,7 @@ public class TutorialPageSyncFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tutorial_page_sync, container, false);
 
-        this.handleOkButton(view);
+//        this.handleOkButton(view);
 
         WebView webView = (WebView)view.findViewById(R.id.webViewSync);
         webView.loadUrl("file:///android_asset/tutorial/sync.html");
@@ -51,31 +51,30 @@ public class TutorialPageSyncFragment extends Fragment {
         return view;
     }
 
-    private void handleOkButton(View view){
-        Button okButton = (Button)view.findViewById(R.id.okButton);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Handles OK button click. Closes the tutorial activity.
-             * @param view
-             */
-            @Override
-            public void onClick(View view) {
-                Activity parent = getActivity();
-
-                // Mark tutorial as seen, in the settings.
-                Context context = parent.getApplicationContext();
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-                String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean(key, false);
-                editor.commit();
-
-                // Close Tutorial.
-                parent.finish();
-            }
-        });
-
-    }
+//    private void handleOkButton(View view){
+//        Button okButton = (Button)view.findViewById(R.id.okButton);
+//        okButton.setOnClickListener(new View.OnClickListener() {
+//            /**
+//             * Handles OK button click. Closes the tutorial activity.
+//             * @param view
+//             */
+//            @Override
+//            public void onClick(View view) {
+//                Activity parent = getActivity();
+//
+//                // Mark tutorial as seen, in the settings.
+//                Context context = parent.getApplicationContext();
+//                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+//                String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
+//                SharedPreferences.Editor editor = settings.edit();
+//                editor.putBoolean(key, false);
+//                editor.commit();
+//
+//                // Close Tutorial.
+//                parent.finish();
+//            }
+//        });
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
