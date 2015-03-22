@@ -1,9 +1,6 @@
 package com.money.manager.ex.tutorial;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +15,6 @@ import com.money.manager.ex.utils.RawFileUtils;
  * to handle interaction events.
  */
 public class TutorialPageAccountsFragment extends Fragment {
-    public static final String ARG_OBJECT = "object";
 
     public TutorialPageAccountsFragment() {
         // Required empty public constructor
@@ -55,6 +51,5 @@ public class TutorialPageAccountsFragment extends Fragment {
 
         return view;
     }
-
 
 }
