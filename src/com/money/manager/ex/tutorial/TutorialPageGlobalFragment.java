@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.utils.RawFileUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +42,11 @@ public class TutorialPageGlobalFragment extends Fragment {
 
     private void loadGraphics(View view){
         WebView webView = (WebView)view.findViewById(R.id.webViewGlobal);
-        webView.loadUrl("file:///android_asset/tutorial/global.html");
+//        webView.loadUrl("file:///android_asset/tutorial/global.html");
+
+        // localization of the text.
+        String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_global);
+        webView.loadData(content, "text/html", "UTF-8");
     }
 
 }
