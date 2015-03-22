@@ -10,15 +10,4 @@
         android:layout_gravity="center"
         android:background="@color/material_grey_900" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/close"
-        android:id="@+id/okButton"
-        android:layout_gravity="right|bottom"
-        android:layout_marginBottom="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
 </RelativeLayout>
