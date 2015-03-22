@@ -3,6 +3,7 @@ package com.money.manager.ex.tutorial;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.webkit.WebView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.utils.RawFileUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,8 +47,11 @@ public class TutorialPageAccountsFragment extends Fragment {
 
         // Load graphics.
         WebView webView = (WebView)view.findViewById(R.id.webViewAccounts);
-        webView.loadUrl("file:///android_asset/tutorial/accounts.html");
+        //webView.loadUrl("file:///android_asset/tutorial/accounts.html");
 
+        // localization of the text.
+        String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_accounts);
+        webView.loadData(content, "text/html", "UTF-8");
 
         return view;
     }
