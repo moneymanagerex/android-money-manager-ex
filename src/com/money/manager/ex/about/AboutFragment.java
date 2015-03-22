@@ -112,6 +112,14 @@ public class AboutFragment extends Fragment {
         OnClickListenerUrl clickListenerRate = new OnClickListenerUrl();
         clickListenerRate.setUrl("http://play.google.com/store/apps/details?id=com.money.manager.ex");
         txtRate.setOnClickListener(clickListenerRate);
+        // issues tracker application
+        TextView txtIssues = (TextView) view.findViewById(R.id.textViewIssuesTracker);
+        text = "<u>" + txtIssues.getText() + "</u>";
+        txtIssues.setText(Html.fromHtml(text));
+        txtIssues.setMovementMethod(LinkMovementMethod.getInstance());
+        OnClickListenerUrl clickListenerIssuesTracker = new OnClickListenerUrl();
+        clickListenerIssuesTracker.setUrl("https://github.com/moneymanagerex/android-money-manager-ex/issues/");
+        txtIssues.setOnClickListener(clickListenerIssuesTracker);
         // report set link
         TextView txtReport = (TextView) view.findViewById(R.id.textViewLinkWebSite);
         text = "<u>" + txtReport.getText() + "</u>";
