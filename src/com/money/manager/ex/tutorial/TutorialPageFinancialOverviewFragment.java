@@ -24,12 +24,10 @@ public class TutorialPageFinancialOverviewFragment extends Fragment {
      *
      * @return A new instance of fragment TutorialPageFinancialOverviewFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static TutorialPageFinancialOverviewFragment newInstance() {
         TutorialPageFinancialOverviewFragment fragment = new TutorialPageFinancialOverviewFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,7 +42,6 @@ public class TutorialPageFinancialOverviewFragment extends Fragment {
         if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
         }
-
     }
 
     @Override

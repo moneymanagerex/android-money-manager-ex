@@ -1,21 +1,13 @@
 package com.money.manager.ex.tutorial;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.utils.RawFileUtils;
 
 /**
@@ -55,31 +47,6 @@ public class TutorialPageSyncFragment extends Fragment {
 
         return view;
     }
-
-//    private void handleOkButton(View view){
-//        Button okButton = (Button)view.findViewById(R.id.okButton);
-//        okButton.setOnClickListener(new View.OnClickListener() {
-//            /**
-//             * Handles OK button click. Closes the tutorial activity.
-//             * @param view
-//             */
-//            @Override
-//            public void onClick(View view) {
-//                Activity parent = getActivity();
-//
-//                // Mark tutorial as seen, in the settings.
-//                Context context = parent.getApplicationContext();
-//                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-//                String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
-//                SharedPreferences.Editor editor = settings.edit();
-//                editor.putBoolean(key, false);
-//                editor.commit();
-//
-//                // Close Tutorial.
-//                parent.finish();
-//            }
-//        });
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
