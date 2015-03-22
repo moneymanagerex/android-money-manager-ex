@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -34,9 +35,11 @@ public class TutorialActivity extends FragmentActivity {
 
         //
         ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager_default);
-        TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
+        TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager(), this);
         viewpager.setAdapter(pagerAdapter);
         circleIndicator.setViewPager(viewpager);
+
+//        this.handleLastPage(viewpager);
 
         /*
         mViewPager = (ViewPager) findViewById(R.id.viewpager_default);
@@ -44,6 +47,46 @@ public class TutorialActivity extends FragmentActivity {
         mViewPager.setAdapter(mTutorialPagerAdapter);
         circleIndicator.setViewPager(mViewPager);
         */
+
+        this.handleSkip();
+    }
+
+    /**
+     * Add a handler to change text when we reach the last page.
+     */
+    private void handleLastPage(ViewPager pager){
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 4) {
+                    // change the "skip" text into "close".
+                    TextView skipText = (TextView) findViewById(R.id.skipTextView);
+                    skipText.setText(R.string.close);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private void handleSkip(){
+        TextView skipText = (TextView) findViewById(R.id.skipTextView);
+
+        skipText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // close
+                finish();
+            }
+        });
     }
 
     @Override

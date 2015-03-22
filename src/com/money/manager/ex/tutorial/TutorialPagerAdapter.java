@@ -1,5 +1,6 @@
 package com.money.manager.ex.tutorial;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,9 +11,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  * Created by Alen on 17/03/2015.
  */
 public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
-    public TutorialPagerAdapter(FragmentManager fm) {
+    public TutorialPagerAdapter(FragmentManager fm, Activity parent) {
         super(fm);
+
+        mParentActivity = parent;
     }
+
+    private Activity mParentActivity;
 
     @Override
     public Fragment getItem(int i) {
@@ -35,19 +40,11 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
                 pageFragment = TutorialPageSyncFragment.newInstance();
                 break;
             default:
-                pageFragment = getPage(i);
+//                pageFragment = getPage(i);
+                pageFragment = TutorialPageAccountsFragment.newInstance();
         }
 
         return pageFragment;
-    }
-
-    private Fragment getPage(int i){
-        Fragment fragment = new TutorialPageAccountsFragment();
-        Bundle args = new Bundle();
-        // Our object is just an integer :-P
-        args.putInt(TutorialPageAccountsFragment.ARG_OBJECT, i + 1);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
