@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.utils.RawFileUtils;
 
 /**
  * Here we try SVG-Android 2.
@@ -53,7 +54,11 @@ public class TutorialPageFinancialOverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tutorial_page_financial_overview, container, false);
 
         WebView webView = (WebView)view.findViewById(R.id.webViewOverview);
-        webView.loadUrl("file:///android_asset/tutorial/overview.html");
+//        webView.loadUrl("file:///android_asset/tutorial/overview.html");
+
+        // localization of the text.
+        String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_overview);
+        webView.loadData(content, "text/html", "UTF-8");
 
         return view;
     }

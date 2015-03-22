@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.utils.RawFileUtils;
 
 /**
  * Page displaying Dropbox functionality in tutorial.
@@ -46,7 +47,11 @@ public class TutorialPageSyncFragment extends Fragment {
 //        this.handleOkButton(view);
 
         WebView webView = (WebView)view.findViewById(R.id.webViewSync);
-        webView.loadUrl("file:///android_asset/tutorial/sync.html");
+//        webView.loadUrl("file:///android_asset/tutorial/sync.html");
+
+        // localization of the text.
+        String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_sync);
+        webView.loadData(content, "text/html", "UTF-8");
 
         return view;
     }
