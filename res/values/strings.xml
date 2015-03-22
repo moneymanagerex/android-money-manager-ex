@@ -73,6 +73,8 @@
     <string name="build">Build</string>
     <!--<string name="preferences_dropbox">Dropbox settings</string>-->
     <string name="path">Database path</string>
+    <string name="title_show_tutorial">Show tutorial</string>
+    <string name="summary_show_tutorial">Show tutorial on the next run?</string>
 
     <!-- account -->
     <string name="account">Account</string>
@@ -521,5 +523,13 @@
     <string name="invalid_expression">Invalid expression</string>
     <string name="send_me_logcat">Logcat</string>
     <string name="dropbox_database_can_be_updted">There is an update of the database on Dropbox</string>
+    <string name="title_activity_tutorial">TutorialActivity</string>
     <string name="due_today">Due Today</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="close">Close</string>
+    <string name="skip">skip</string>
 </resources>
