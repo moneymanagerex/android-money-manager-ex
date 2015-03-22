@@ -80,4 +80,6 @@ public class PreferencesConstant {
     public static final Integer PREF_SECURITY = R.string.pref_security;
     public static final Integer PREF_DATABASE = R.string.pref_database;
     public static final Integer PREF_SORT_PAYEE = R.string.pref_sort_payee;
+
+    public static final Integer PREF_SHOW_TUTORIAL = R.string.pref_show_tutorial;
 }

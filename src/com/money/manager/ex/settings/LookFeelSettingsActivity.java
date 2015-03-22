@@ -56,8 +56,8 @@ public class LookFeelSettingsActivity extends BaseSettingsFragmentActivity {
             Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    MainActivity.setRestartActivity(true);
-                    return true;
+                MainActivity.setRestartActivity(true);
+                return true;
                 }
             };
             // set listener on the checkbox
@@ -71,8 +71,8 @@ public class LookFeelSettingsActivity extends BaseSettingsFragmentActivity {
                 lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        lstShow.setSummary((CharSequence) newValue);
-                        return true;
+                    lstShow.setSummary((CharSequence) newValue);
+                    return true;
                     }
                 });
             }
@@ -83,11 +83,11 @@ public class LookFeelSettingsActivity extends BaseSettingsFragmentActivity {
                 lstFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        if (newValue instanceof String && NumberUtils.isNumber(newValue.toString())) {
-                            RobotoView.setUserFont(Integer.parseInt(newValue.toString()));
-                            return true;
-                        }
-                        return false;
+                    if (newValue instanceof String && NumberUtils.isNumber(newValue.toString())) {
+                        RobotoView.setUserFont(Integer.parseInt(newValue.toString()));
+                        return true;
+                    }
+                    return false;
                     }
                 });
             }
@@ -99,8 +99,8 @@ public class LookFeelSettingsActivity extends BaseSettingsFragmentActivity {
 
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        RobotoView.setUserFontSize(getActivity().getApplicationContext(), newValue.toString());
-                        return true;
+                    RobotoView.setUserFontSize(getActivity().getApplicationContext(), newValue.toString());
+                    return true;
                     }
                 });
             }
@@ -112,8 +112,8 @@ public class LookFeelSettingsActivity extends BaseSettingsFragmentActivity {
 
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        MainActivity.setRestartActivity(true);
-                        return true;
+                    MainActivity.setRestartActivity(true);
+                    return true;
                     }
                 });
             }
