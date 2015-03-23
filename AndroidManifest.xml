@@ -36,7 +36,8 @@
         android:backupAgent=".core.MoneyManagerBackupAgentHelper"
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_name"
-        android:theme="@style/Theme.Money.Manager.Light.DarkActionBar" >
+        android:theme="@style/Theme.Money.Manager.Startup" >
+        <!-- android:theme="@style/Theme.Money.Manager.Light.DarkActionBar" -->
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ" />
