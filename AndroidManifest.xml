@@ -330,7 +330,7 @@
 
         <activity
             android:name=".tutorial.TutorialActivity"
-            android:label="@string/title_activity_tutorial"
+            android:label="@string/application_name"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >

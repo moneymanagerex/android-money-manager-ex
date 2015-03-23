@@ -34,7 +34,8 @@
             android:layout_alignTop="@+id/indicator_default"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:textAllCaps = "true" />
+            android:textAllCaps = "true"
+            android:textColor="@color/money_manager_ex_sign_dollar"/>
     </RelativeLayout>
 
 </LinearLayout>

@@ -16,6 +16,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <resources>
+    <color name="money_manager_ex_sign_dollar">#2B5429</color>
+    <color name="money_manager_ex_sign_bg">#4CAF50</color>
     <!-- Green button -->
     <color name="GreenButtonStartColor">#4AA02C</color>
     <color name="GreenButtonEndColor">#348017</color>
