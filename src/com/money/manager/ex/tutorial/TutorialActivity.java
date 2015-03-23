@@ -27,63 +27,23 @@ import me.relex.circleindicator.CircleIndicator;
  * See: http://developer.android.com/training/implementing-navigation/lateral.html
  */
 public class TutorialActivity extends FragmentActivity {
-    //TutorialPagerAdapter mTutorialPagerAdapter;
-    //ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Hide the zygote background to speed up rendering.
+        // tip from http://cyrilmottier.com/2013/01/23/android-app-launching-made-gorgeous/
+        //getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.activity_tutorial);
 
         CircleIndicator circleIndicator = (CircleIndicator) findViewById(R.id.indicator_default);
 
-        //
         ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager_default);
         TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager(), this);
         viewpager.setAdapter(pagerAdapter);
         circleIndicator.setViewPager(viewpager);
 
-//        this.handleLastPage(viewpager);
-
-        /*
-        mViewPager = (ViewPager) findViewById(R.id.viewpager_default);
-        mTutorialPagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mTutorialPagerAdapter);
-        circleIndicator.setViewPager(mViewPager);
-        */
-
-        this.handleSkip();
-    }
-
-    /**
-     * Add a handler to change text when we reach the last page.
-     */
-    private void handleLastPage(ViewPager pager){
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if(position == 4) {
-                    // change the "skip" text into "close".
-                    TextView skipText = (TextView) findViewById(R.id.skipTextView);
-                    skipText.setText(R.string.close);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
-
-    private void handleSkip(){
         TextView skipText = (TextView) findViewById(R.id.skipTextView);
-
         skipText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,9 +53,7 @@ public class TutorialActivity extends FragmentActivity {
     }
 
     private void closeTutorial(){
-
         // Mark tutorial as seen, in the settings.
-//        Context context = parent.getApplicationContext();
         Context context = getApplicationContext();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
@@ -105,7 +63,6 @@ public class TutorialActivity extends FragmentActivity {
 
         // close
         finish();
-
     }
 
     @Override
