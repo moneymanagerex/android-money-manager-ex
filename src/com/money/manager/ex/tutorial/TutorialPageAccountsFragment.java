@@ -59,6 +59,11 @@ public class TutorialPageAccountsFragment extends Fragment {
 
         // localization of the text.
         String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_accounts);
+        // paragraphs
+        content = content.replace("R.string.accounts", getString(R.string.accounts));
+        content = content.replace("R.string.tutorial_accounts_1", getString(R.string.tutorial_accounts_1));
+        content = content.replace("R.string.tutorial_accounts_2", getString(R.string.tutorial_accounts_2));
+        // display the page.
         webView.loadData(content, "text/html", "UTF-8");
 
         return view;

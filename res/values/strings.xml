@@ -531,4 +531,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="close">Close</string>
     <string name="skip">skip</string>
+    <string name="tutorial_accounts_1">Multiple account types: checking, savings, credit, assets, and investments.</string>
+    <string name="tutorial_accounts_2">Swipe left to continue...</string>
+    <string name="financial_overview">Financial Overview</string>
+    <string name="tutorial_overview_1">Quick overview dashboard, budgets, reports with customizations.</string>
+    <string name="global">Global</string>
+    <string name="tutorial_global_1">Multiple currencies and languages. Open Source. Join our translation team.</string>
+    <string name="synchronization">Synchronization</string>
+    <string name="tutorial_sync_1">Support for multiple platforms, synchronization via Dropbox. Import and export of your data to other applications.</string>
+    <string name="transactions">Transactions</string>
+    <string name="tutorial_transactions_1">Deposits, withdrawals, transfers. Recurring transactions with reminders.</string>
 </resources>

@@ -43,6 +43,10 @@ public class TutorialPageSyncFragment extends Fragment {
 
         // localization of the text.
         String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_sync);
+        // paragraphs
+        content = content.replace("R.string.synchronization", getString(R.string.synchronization));
+        content = content.replace("R.string.tutorial_sync_1", getString(R.string.tutorial_sync_1));
+        // load page.
         webView.loadData(content, "text/html", "UTF-8");
 
         return view;

@@ -55,6 +55,10 @@ public class TutorialPageTransactionsFragment extends Fragment {
 
         // localization of the text.
         String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_transactions);
+        // paragraphs
+        content = content.replace("R.string.transactions", getString(R.string.transactions));
+        content = content.replace("R.string.tutorial_transactions_1", getString(R.string.tutorial_transactions_1));
+        // load page.
         webView.loadData(content, "text/html", "UTF-8");
 
         return view;
