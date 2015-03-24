@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -34,6 +35,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -71,9 +73,11 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
+import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.ActionClickListener;
@@ -267,7 +271,7 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     /**
-     * show fragment dashboard
+     * show dashboard fragment
      */
     public void showDashboardFragment() {
         DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager().findFragmentByTag(DashboardFragment.class.getSimpleName());
@@ -343,11 +347,24 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     /**
-     * Show tips dialog on startup
+     * Show tutorial on first run.
      *
      * @param savedInstanceState
      */
-    public void showTipsDialog(Bundle savedInstanceState) {
+    public void showTutorial(Bundle savedInstanceState) {
+        Context context = getApplicationContext();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
+        // The setting is always false when using the settings this way:
+        //SharedPreferences settings = getSharedPreferences(key, 0);
+        boolean showTutorial = settings.getBoolean(key, true);
+
+        if(!showTutorial) return;
+
+        // else show tutorial.
+        Intent intent = new Intent(this, TutorialActivity.class);
+        startActivity(intent);
+        // Tutorial is marked as seen when OK on the last page is clicked.
     }
 
     public void showSnackbarDropbox() {
@@ -467,6 +484,8 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // tip from http://cyrilmottier.com/2013/01/23/android-app-launching-made-gorgeous/
+        //getWindow().setBackgroundDrawable(null);
 
         Core core = new Core(this);
 
@@ -518,8 +537,8 @@ public class MainActivity extends BaseFragmentActivity {
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
         // check type mode
         onCreateFragments(savedInstanceState);
-        // show tips dialog
-        showTipsDialog(savedInstanceState);
+        // show tutorial
+        showTutorial(savedInstanceState);
         // show changelog dialog
         if (core.isToDisplayChangelog())
             core.showChangelog();
@@ -536,6 +555,7 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         // check if has passcode and authenticate
         if (!isAuthenticated) {
             Passcode passcode = new Passcode(this);

@@ -73,6 +73,8 @@
     <string name="build">Build</string>
     <!--<string name="preferences_dropbox">Dropbox settings</string>-->
     <string name="path">Database path</string>
+    <string name="title_show_tutorial">Show tutorial</string>
+    <string name="summary_show_tutorial">Show tutorial on the next run?</string>
 
     <!-- account -->
     <string name="account">Account</string>
@@ -523,4 +525,20 @@
     <string name="dropbox_database_can_be_updted">There is an update of the database on Dropbox</string>
     <string name="due_today">Due Today</string>
     <string name="issues_tracker">Issues Tracker on GitHub</string>
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="close">Close</string>
+    <string name="skip">skip</string>
+    <string name="tutorial_accounts_1">Multiple account types: checking, savings, credit, assets, and investments.</string>
+    <string name="tutorial_accounts_2">Swipe left to continue...</string>
+    <string name="financial_overview">Financial Overview</string>
+    <string name="tutorial_overview_1">Quick overview dashboard, budgets, reports with customizations.</string>
+    <string name="global">Global</string>
+    <string name="tutorial_global_1">Multiple currencies and languages. Open Source. Join our translation team.</string>
+    <string name="synchronization">Synchronization</string>
+    <string name="tutorial_sync_1">Support for multiple platforms, synchronization via Dropbox. Import and export of your data to other applications.</string>
+    <string name="transactions">Transactions</string>
+    <string name="tutorial_transactions_1">Deposits, withdrawals, transfers. Recurring transactions with reminders.</string>
 </resources>

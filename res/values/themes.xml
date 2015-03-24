@@ -191,4 +191,13 @@
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>
     </style>
 
+    <!-- theme used for masking the initial screen -->
+    <style name="Theme.Money.Manager.Startup" parent="@android:style/Theme.Holo.NoActionBar">
+        <item name="android:windowBackground">@color/money_manager_ex_sign_bg</item>
+    </style>
+    <!-- This theme is not yet used. The purpose is to speed up rendering. Test. -->
+    <style name="Theme.NoBackground" parent="android:Theme">
+        <item name="android:windowBackground">@null</item>
+    </style>
+
 </resources>
