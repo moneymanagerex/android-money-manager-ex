@@ -36,7 +36,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:textAllCaps = "true"
-            android:textColor="@color/money_manager_ex_sign_dollar"/>
+            android:textColor="@color/material_white"/>
     </RelativeLayout>
 
 </LinearLayout>

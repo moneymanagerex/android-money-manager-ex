@@ -36,10 +36,7 @@ public class TutorialPageSyncFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tutorial_page_sync, container, false);
 
-//        this.handleOkButton(view);
-
         WebView webView = (WebView)view.findViewById(R.id.webViewSync);
-//        webView.loadUrl("file:///android_asset/tutorial/sync.html");
 
         // localization of the text.
         String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_sync);
@@ -47,7 +44,7 @@ public class TutorialPageSyncFragment extends Fragment {
         content = content.replace("R.string.synchronization", getString(R.string.synchronization));
         content = content.replace("R.string.tutorial_sync_1", getString(R.string.tutorial_sync_1));
         // load page.
-        webView.loadData(content, "text/html", "UTF-8");
+        webView.loadDataWithBaseURL("file:///android_asset/tutorial_images/", content, "text/html", "UTF-8", null);
 
         return view;
     }

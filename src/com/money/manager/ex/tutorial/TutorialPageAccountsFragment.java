@@ -55,8 +55,6 @@ public class TutorialPageAccountsFragment extends Fragment {
             }
         });
 
-        //webView.loadUrl("file:///android_asset/tutorial/accounts.html");
-
         // localization of the text.
         String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_accounts);
         // paragraphs
@@ -64,7 +62,7 @@ public class TutorialPageAccountsFragment extends Fragment {
         content = content.replace("R.string.tutorial_accounts_1", getString(R.string.tutorial_accounts_1));
         content = content.replace("R.string.tutorial_accounts_2", getString(R.string.tutorial_accounts_2));
         // display the page.
-        webView.loadData(content, "text/html", "UTF-8");
+        webView.loadDataWithBaseURL("file:///android_asset/tutorial_images/", content, "text/html", "UTF-8", null);
 
         return view;
     }

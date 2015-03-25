@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.money.manager.ex.tutorial.TutorialPageAccountsFragment"
-    android:background="@color/money_manager_ex_sign_bg">
+    android:background="@color/material_grey_900">
 
     <WebView
         android:layout_width="match_parent"

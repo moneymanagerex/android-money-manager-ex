@@ -51,7 +51,6 @@ public class TutorialPageTransactionsFragment extends Fragment {
 
         // load graphics
         WebView webView = (WebView)view.findViewById(R.id.webViewTransactions);
-//        webView.loadUrl("file:///android_asset/tutorial/transactions.html");
 
         // localization of the text.
         String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_transactions);
@@ -59,7 +58,7 @@ public class TutorialPageTransactionsFragment extends Fragment {
         content = content.replace("R.string.transactions", getString(R.string.transactions));
         content = content.replace("R.string.tutorial_transactions_1", getString(R.string.tutorial_transactions_1));
         // load page.
-        webView.loadData(content, "text/html", "UTF-8");
+        webView.loadDataWithBaseURL("file:///android_asset/tutorial_images/", content, "text/html", "UTF-8", null);
 
         return view;
     }

@@ -51,7 +51,6 @@ public class TutorialPageFinancialOverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tutorial_page_financial_overview, container, false);
 
         WebView webView = (WebView)view.findViewById(R.id.webViewOverview);
-//        webView.loadUrl("file:///android_asset/tutorial/overview.html");
 
         // localization of the text.
         String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_overview);
@@ -59,7 +58,7 @@ public class TutorialPageFinancialOverviewFragment extends Fragment {
         content = content.replace("R.string.financial_overview", getString(R.string.financial_overview));
         content = content.replace("R.string.tutorial_overview_1", getString(R.string.tutorial_overview_1));
         // load page.
-        webView.loadData(content, "text/html", "UTF-8");
+        webView.loadDataWithBaseURL("file:///android_asset/tutorial_images/", content, "text/html", "UTF-8", null);
 
         return view;
     }
