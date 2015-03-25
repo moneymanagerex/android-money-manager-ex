@@ -42,7 +42,6 @@ public class TutorialPageGlobalFragment extends Fragment {
 
     private void loadGraphics(View view){
         WebView webView = (WebView)view.findViewById(R.id.webViewGlobal);
-//        webView.loadUrl("file:///android_asset/tutorial/global.html");
 
         // localization of the text.
         String content = RawFileUtils.getRawAsString(getActivity(), R.raw.tutorial_global);
@@ -50,7 +49,7 @@ public class TutorialPageGlobalFragment extends Fragment {
         content = content.replace("R.string.global", getString(R.string.global));
         content = content.replace("R.string.tutorial_global_1", getString(R.string.tutorial_global_1));
         // load page.
-        webView.loadData(content, "text/html", "UTF-8");
+        webView.loadDataWithBaseURL("file:///android_asset/tutorial_images/", content, "text/html", "UTF-8", null);
     }
 
 }
