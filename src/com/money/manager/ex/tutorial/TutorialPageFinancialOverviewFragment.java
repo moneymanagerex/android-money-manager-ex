@@ -11,7 +11,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.utils.RawFileUtils;
 
 /**
- * Here we try SVG-Android 2.
  * A simple {@link Fragment} subclass.
  * Use the {@link TutorialPageFinancialOverviewFragment#newInstance} factory method to
  * create an instance of this fragment.
