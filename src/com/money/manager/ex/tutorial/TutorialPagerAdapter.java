@@ -25,7 +25,8 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
 
         switch(i){
             case 0:
-                pageFragment = TutorialPageAccountsFragment.newInstance();
+                //pageFragment = TutorialPageAccountsFragment.newInstance();
+                pageFragment = TutorialNativePageAccountsFragment.newInstance();
                 break;
             case 1:
                 pageFragment = TutorialPageTransactionsFragment.newInstance();
