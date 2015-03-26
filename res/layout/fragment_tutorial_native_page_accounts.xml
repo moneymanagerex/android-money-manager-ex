@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="66"
+        android:layout_weight="60"
         android:orientation="horizontal"
         android:weightSum="100">
 
@@ -37,7 +37,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="33"
+        android:layout_weight="40"
         android:orientation="horizontal"
         android:weightSum="100">
 
@@ -64,7 +64,7 @@
 
             <!-- description -->
             <TextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tutorial_accounts_1"
