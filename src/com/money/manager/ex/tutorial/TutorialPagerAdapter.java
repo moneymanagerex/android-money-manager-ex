@@ -29,20 +29,25 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
                 pageFragment = TutorialNativePageAccountsFragment.newInstance();
                 break;
             case 1:
-                pageFragment = TutorialPageTransactionsFragment.newInstance();
+//                pageFragment = TutorialPageTransactionsFragment.newInstance();
+                pageFragment = TutorialNativePageTransactionsFragment.newInstance();
                 break;
             case 2:
-                pageFragment = TutorialPageGlobalFragment.newInstance();
+//                pageFragment = TutorialPageGlobalFragment.newInstance();
+                pageFragment = TutorialNativePageGlobalFragment.newInstance();
                 break;
             case 3:
-                pageFragment = TutorialPageFinancialOverviewFragment.newInstance();
+                //pageFragment = TutorialPageFinancialOverviewFragment.newInstance();
+                pageFragment = TutorialNativePageFinancialOverviewFragment.newInstance();
                 break;
             case 4:
-                pageFragment = TutorialPageSyncFragment.newInstance();
+//                pageFragment = TutorialPageSyncFragment.newInstance();
+                pageFragment = TutorialNativePageSyncFragment.newInstance();
                 break;
             default:
 //                pageFragment = getPage(i);
-                pageFragment = TutorialPageAccountsFragment.newInstance();
+//                pageFragment = TutorialPageAccountsFragment.newInstance();
+                pageFragment = TutorialNativePageAccountsFragment.newInstance();
         }
 
         return pageFragment;
