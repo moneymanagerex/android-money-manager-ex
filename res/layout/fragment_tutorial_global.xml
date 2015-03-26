@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/material_grey_900"
     android:orientation="vertical"
-    tools:context="com.money.manager.ex.tutorial.TutorialNativePageAccountsFragment"
+    tools:context="com.money.manager.ex.tutorial.TutorialGlobalFragment"
     android:paddingBottom="50dp">
 
     <!-- image container -->
@@ -23,7 +23,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="40dp"
             android:scaleType="fitCenter"
-            svgimageview:svg="tutorial_images/accounts.svg"/>
+            svgimageview:svg="tutorial_images/global.svg"/>
 
     </LinearLayout>
 
@@ -39,7 +39,7 @@
             android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/accounts"
+            android:text="@string/global"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="40sp"/>
@@ -50,17 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/tutorial_accounts_1"
+            android:text="@string/tutorial_global_1"
             android:textColor="@color/white"/>
-
-        <TextView
-            android:id="@+id/textViewDescription2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/tutorial_accounts_2"
-            android:textColor="@color/white"/>
-
 
     </LinearLayout>
 

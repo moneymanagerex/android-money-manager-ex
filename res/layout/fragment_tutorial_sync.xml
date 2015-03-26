@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/material_grey_900"
     android:orientation="vertical"
-    tools:context="com.money.manager.ex.tutorial.TutorialNativePageSyncFragment"
+    tools:context="com.money.manager.ex.tutorial.TutorialSyncFragment"
     android:paddingBottom="50dp">
 
     <!-- image container -->

@@ -11,19 +11,19 @@ import com.money.manager.ex.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TutorialNativePageGlobalFragment#newInstance} factory method to
+ * Use the {@link TutorialGlobalFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TutorialNativePageGlobalFragment extends Fragment {
+public class TutorialGlobalFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment TutorialNativePageGlobalFragment.
+     * @return A new instance of fragment TutorialGlobalFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static TutorialNativePageGlobalFragment newInstance() {
-        TutorialNativePageGlobalFragment fragment = new TutorialNativePageGlobalFragment();
+    public static TutorialGlobalFragment newInstance() {
+        TutorialGlobalFragment fragment = new TutorialGlobalFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
@@ -31,7 +31,7 @@ public class TutorialNativePageGlobalFragment extends Fragment {
         return fragment;
     }
 
-    public TutorialNativePageGlobalFragment() {
+    public TutorialGlobalFragment() {
         // Required empty public constructor
     }
 
@@ -48,7 +48,7 @@ public class TutorialNativePageGlobalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tutorial_native_page_global, container, false);
+        return inflater.inflate(R.layout.fragment_tutorial_global, container, false);
     }
 
 

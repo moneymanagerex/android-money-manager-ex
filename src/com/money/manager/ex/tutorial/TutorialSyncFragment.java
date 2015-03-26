@@ -9,22 +9,20 @@ import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TutorialNativePageAccountsFragment#newInstance} factory method to
+ * Use the {@link TutorialSyncFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TutorialNativePageAccountsFragment extends Fragment {
-
+public class TutorialSyncFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment TutorialNativePageAccountsFragment.
+     * @return A new instance of fragment TutorialSyncFragment.
      */
-    public static TutorialNativePageAccountsFragment newInstance() {
-        TutorialNativePageAccountsFragment fragment = new TutorialNativePageAccountsFragment();
+    public static TutorialSyncFragment newInstance() {
+        TutorialSyncFragment fragment = new TutorialSyncFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
@@ -32,7 +30,7 @@ public class TutorialNativePageAccountsFragment extends Fragment {
         return fragment;
     }
 
-    public TutorialNativePageAccountsFragment() {
+    public TutorialSyncFragment() {
         // Required empty public constructor
     }
 
@@ -49,7 +47,7 @@ public class TutorialNativePageAccountsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tutorial_native_page_accounts, container, false);
+        return inflater.inflate(R.layout.fragment_tutorial_sync, container, false);
     }
 
 
