@@ -23,6 +23,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +31,9 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -45,6 +49,7 @@ import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
@@ -61,6 +66,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * Recurring transactions are stored in BillsDeposits table.
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
 public class RepeatingTransactionActivity extends BaseFragmentActivity implements InputAmountDialogListener {
@@ -68,6 +74,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     // ID REQUEST Data
     private static final int REQUEST_PICK_PAYEE = 1;
     private static final int REQUEST_PICK_CATEGORY = 3;
+    public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
     // KEY INTENT per il passaggio dei dati
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
     public static final String KEY_ACCOUNT_ID = "RepeatingTransaction:AccountId";
@@ -89,6 +96,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     public static final String KEY_NEXT_OCCURRENCE = "RepeatingTransaction:NextOccurrence";
     public static final String KEY_REPEATS = "RepeatingTransaction:Repeats";
     public static final String KEY_NUM_OCCURRENCE = "RepeatingTransaction:NumOccurrence";
+    public static final String KEY_SPLIT_TRANSACTION = "RepeatingTransaction:SplitTransaction";
+    public static final String KEY_SPLIT_TRANSACTION_DELETED = "RepeatingTransaction:SplitTransactionDeleted";
     public static final String KEY_ACTION = "RepeatingTransaction:Action";
     // action type intent
     private String mIntentAction;
@@ -124,9 +133,13 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     private Spinner spinAccount, spinToAccount, spinTransCode, spinStatus, spinFrequencies;
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
+    public CheckBox chbSplitTransaction;
     private TextView txtPayee, txtSelectPayee, txtSelectCategory, txtCaptionAmount, txtRepeats, txtTimesRepeated, txtNextOccurrence, txtTotAmount, txtAmount;
     // object of the table
     TableBillsDeposits mRepeatingTransaction = new TableBillsDeposits();
+    // list split transactions
+    ArrayList<TableSplitTransactions> mSplitTransaction = null;
+    ArrayList<TableSplitTransactions> mSplitTransactionDeleted = null;
 
     /**
      * getCategoryFromPayee set last category used from payee
@@ -164,6 +177,24 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         return ret;
     }
 
+    public ArrayList<TableSplitTransactions> getSplitTransaction(int transId) {
+        ArrayList<TableSplitTransactions> listSplitTrans = null;
+
+        TableSplitTransactions split = new TableSplitTransactions();
+        Cursor curSplit = getContentResolver().query(split.getUri(), null, TableSplitTransactions.TRANSID + "=" + Integer.toString(transId), null, TableSplitTransactions.SPLITTRANSID);
+        if (curSplit != null && curSplit.moveToFirst()) {
+            listSplitTrans = new ArrayList<TableSplitTransactions>();
+            while (!curSplit.isAfterLast()) {
+                TableSplitTransactions obj = new TableSplitTransactions();
+                obj.setValueFromCursor(curSplit);
+                listSplitTrans.add(obj);
+                curSplit.moveToNext();
+            }
+        }
+
+        return listSplitTrans;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -172,8 +203,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
                     mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                     // select last category used from payee
-                    if (getCategoryFromPayee(mPayeeId)) {
-                        refreshCategoryName(); // refresh UI
+                    if (!chbSplitTransaction.isChecked()) {
+                        if (getCategoryFromPayee(mPayeeId)) {
+                            refreshCategoryName(); // refresh UI
+                        }
                     }
                     // refresh UI
                     refreshPayeeName();
@@ -188,6 +221,25 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     // refresh UI category
                     refreshCategoryName();
                 }
+                break;
+            case REQUEST_PICK_SPLIT_TRANSACTION:
+                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                    mSplitTransaction = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                    if (mSplitTransaction != null && mSplitTransaction.size() > 0) {
+                        double totAmount = 0;
+                        for (int i = 0; i < mSplitTransaction.size(); i++) {
+                            totAmount += mSplitTransaction.get(i).getSplitTransAmount();
+                        }
+                        Core core = new Core(getBaseContext());
+//                        formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
+                        core.formatAmountTextView(txtTotAmount, totAmount, getCurrencyIdFromAccountId(!Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId));
+                    }
+                    // deleted item
+                    if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
+                        mSplitTransactionDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                    }
+                }
+                break;
         }
     }
 
@@ -216,6 +268,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
             mNotes = savedInstanceState.getString(KEY_NOTES);
             mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
+            mSplitTransaction = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
+            mSplitTransactionDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
             mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
             mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
             mNumOccurrence = savedInstanceState.getInt(KEY_NUM_OCCURRENCE);
@@ -303,13 +357,14 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         // trans-code
         spinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
-
         // populate arrays TransCode
         mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
         mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
         // create adapter for TransCode
-        ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mTransCodeItems);
+        ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+                mTransCodeItems);
         adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinTransCode.setAdapter(adapterTrans);
         // select a current value
         if (TextUtils.isEmpty(mTransCode) == false) {
@@ -336,7 +391,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         // status
         spinStatus = (Spinner) findViewById(R.id.spinnerStatus);
-
         // arrays to manage Status
         mStatusItems = getResources().getStringArray(R.array.status_items);
         mStatusValues = getResources().getStringArray(R.array.status_values);
@@ -345,7 +399,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinStatus.setAdapter(adapterStatus);
         // select current value
-        if (TextUtils.isEmpty(mStatus) == false) {
+        if (!(TextUtils.isEmpty(mStatus))) {
             if (Arrays.asList(mStatusValues).indexOf(mStatus) >= 0) {
                 spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(mStatus), true);
             }
@@ -385,12 +439,30 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RepeatingTransactionActivity.this, CategorySubCategoryExpandableListActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+                if (!chbSplitTransaction.isChecked()) {
+	                Intent intent = new Intent(RepeatingTransactionActivity.this, CategorySubCategoryExpandableListActivity.class);
+	                intent.setAction(Intent.ACTION_PICK);
+	                startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+                } else {
+                    Intent intent = new Intent(RepeatingTransactionActivity.this, SplitTransactionsActivity.class);
+                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransaction);
+                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
+                    startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
+                }
             }
         });
 
+        // split transaction
+        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
+        chbSplitTransaction.setChecked(mSplitTransaction != null && mSplitTransaction.size() >= 0);
+        chbSplitTransaction.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                RepeatingTransactionActivity.this.refreshCategoryName();
+            }
+        });
+
+        // amount and tot amount
         // listener on dialog amount edittext
         OnClickListener onClickAmount = new OnClickListener() {
             @Override
@@ -777,12 +849,21 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     }
 
     public void refreshCategoryName() {
-        String category = "";
-        if (TextUtils.isEmpty(mCategoryName) == false) {
-            category = mCategoryName + (TextUtils.isEmpty(mSubCategoryName) == false ? " : " + mSubCategoryName : "");
+        if (txtSelectCategory == null)
+            return;
+
+        txtSelectCategory.setText("");
+
+        if (!chbSplitTransaction.isChecked()) {
+            if (!TextUtils.isEmpty(mCategoryName)) {
+                txtSelectCategory.setText(mCategoryName);
+                if (!TextUtils.isEmpty(mSubCategoryName)) {
+                    txtSelectCategory.setText(Html.fromHtml(txtSelectCategory.getText() + " : <i>" + mSubCategoryName + "</i>"));
+                }
+            }
+        } else {
+            txtSelectCategory.setText("\u2026");
         }
-        // write into text button category/subcategory
-        txtSelectCategory.setText(category);
     }
 
     /**
@@ -921,7 +1002,14 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 return false;
             }
         }
-
+        // has split transaction
+        boolean hasSplitTransaction = mSplitTransaction != null && mSplitTransaction.size() > 0;
+        if (hasSplitTransaction) {
+            for (int i = 0; i < mSplitTransaction.size(); i++) {
+            
+            }
+        }
+        
         return true;
     }
 
