@@ -201,7 +201,7 @@
         <item name="android:windowBackground">@null</item>
     </style>
     <!-- theme for simulating splash screen -->
-    <style name="Theme.Shelves" parent="android:Theme">
+    <style name="Theme.Splash" parent="android:Theme">
         <item name="android:windowBackground">@drawable/background_logo</item>
         <item name="android:windowNoTitle">true</item>
     </style>
