@@ -67,6 +67,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
         // check if launch from notification
         if (getIntent() != null && getIntent().getBooleanExtra(INTENT_EXTRA_LAUNCH_NOTIFICATION, false)) {
@@ -86,8 +87,8 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
         listFragment = new RepeatingTransactionListFragment();
         // attach fragment on activity
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            fm.beginTransaction().add(android.R.id.content, listFragment, FRAGMENTTAG).commit();
+        if (fm.findFragmentById(R.id.content) == null) {
+            fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
     }
 
