@@ -194,10 +194,16 @@
     <!-- theme used for masking the initial screen -->
     <style name="Theme.Money.Manager.Startup" parent="@android:style/Theme.Holo.NoActionBar">
         <item name="android:windowBackground">@color/money_manager_ex_sign_bg</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
     <!-- This theme is not yet used. The purpose is to speed up rendering. Test. -->
     <style name="Theme.NoBackground" parent="android:Theme">
         <item name="android:windowBackground">@null</item>
+    </style>
+    <!-- theme for simulating splash screen -->
+    <style name="Theme.Splash" parent="android:Theme">
+        <item name="android:windowBackground">@drawable/background_logo</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
 </resources>

@@ -1,7 +1,6 @@
 package com.money.manager.ex.tutorial;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -25,23 +24,22 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
 
         switch(i){
             case 0:
-                pageFragment = TutorialPageAccountsFragment.newInstance();
+                pageFragment = TutorialAccountsFragment.newInstance();
                 break;
             case 1:
-                pageFragment = TutorialPageTransactionsFragment.newInstance();
+                pageFragment = TutorialTransactionsFragment.newInstance();
                 break;
             case 2:
-                pageFragment = TutorialPageGlobalFragment.newInstance();
+                pageFragment = TutorialGlobalFragment.newInstance();
                 break;
             case 3:
-                pageFragment = TutorialPageFinancialOverviewFragment.newInstance();
+                pageFragment = TutorialFinancialOverviewFragment.newInstance();
                 break;
             case 4:
-                pageFragment = TutorialPageSyncFragment.newInstance();
+                pageFragment = TutorialSyncFragment.newInstance();
                 break;
             default:
-//                pageFragment = getPage(i);
-                pageFragment = TutorialPageAccountsFragment.newInstance();
+                pageFragment = TutorialAccountsFragment.newInstance();
         }
 
         return pageFragment;

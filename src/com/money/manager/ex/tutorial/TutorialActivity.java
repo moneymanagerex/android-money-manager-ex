@@ -31,7 +31,8 @@ public class TutorialActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Hide the zygote background to speed up rendering.
+        // Hide the zygote background to speed up rendering. Only when activities have
+        // their own background set.
         // tip from http://cyrilmottier.com/2013/01/23/android-app-launching-made-gorgeous/
         //getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.activity_tutorial);

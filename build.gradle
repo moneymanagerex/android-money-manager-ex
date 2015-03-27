@@ -49,6 +49,8 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:1.2.2'
     // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
     compile 'me.relex:circleindicator:1.1.2@aar'
+    // androidSVG
+    compile project(':androidSVG_12')
 }
 
 android {
