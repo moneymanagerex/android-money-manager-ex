@@ -1031,23 +1031,23 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
      */
     public boolean validateData() {
         if ((Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mToAccountId == -1)) {
-            Core.alertDialog(getApplicationContext(), R.string.error_toaccount_not_selected).show();
+            Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
             return false;
         } else if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
-            Core.alertDialog(getApplicationContext(), R.string.error_payee_not_selected).show();
+            Core.alertDialog(this, R.string.error_payee_not_selected).show();
             return false;
         }
         if (mCategoryId == -1 && (!chbSplitTransaction.isChecked())) {
-            Core.alertDialog(getApplicationContext(), R.string.error_category_not_selected).show();
+            Core.alertDialog(this, R.string.error_category_not_selected).show();
             return false;
         }
         if (chbSplitTransaction.isChecked() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
-            Core.alertDialog(getApplicationContext(), R.string.error_split_transaction_empty).show();
+            Core.alertDialog(this, R.string.error_split_transaction_empty).show();
             return false;
         }
         if ((Double) txtTotAmount.getTag() == 0) {
             if ((Double) txtAmount.getTag() == 0) {
-                Core.alertDialog(getApplicationContext(), R.string.error_totamount_empty).show();
+                Core.alertDialog(this, R.string.error_totamount_empty).show();
                 return false;
             } else {
                 txtTotAmount.setTag(txtAmount.getTag());
