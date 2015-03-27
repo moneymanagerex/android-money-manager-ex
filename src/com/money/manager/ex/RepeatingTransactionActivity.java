@@ -46,6 +46,7 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
+import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
@@ -138,8 +139,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     // object of the table
     TableBillsDeposits mRepeatingTransaction = new TableBillsDeposits();
     // list split transactions
-    ArrayList<TableSplitTransactions> mSplitTransaction = null;
-    ArrayList<TableSplitTransactions> mSplitTransactionDeleted = null;
+    ArrayList<TableBudgetSplitTransactions> mSplitTransaction = null;
+    ArrayList<TableBudgetSplitTransactions> mSplitTransactionDeleted = null;
 
     /**
      * getCategoryFromPayee set last category used from payee
@@ -1006,7 +1007,12 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         boolean hasSplitTransaction = mSplitTransaction != null && mSplitTransaction.size() > 0;
         if (hasSplitTransaction) {
             for (int i = 0; i < mSplitTransaction.size(); i++) {
-            
+                values.clear();
+                values.put(TableSplitTransactions.CATEGID, mSplitTransaction.get(i).getCategId());
+                values.put(TableSplitTransactions.SUBCATEGID, mSplitTransaction.get(i).getSubCategId());
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransaction.get(i).getSplitTransAmount());
+                // todo: values.put(TableSplitTransactions.TRANSID, mTransId);
+
             }
         }
         
