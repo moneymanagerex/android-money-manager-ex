@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item android:drawable="@color/black"></item>
+    <item android:drawable="@color/md_primary"/>
     <item>
-        <!--<bitmap-->
-            <!--android:gravity="center"-->
-            <!--android:src="@drawable/logo"-->
-            <!--android:tileMode="disabled" >-->
-        <!--</bitmap>-->
-        <!-- tileMode: repeat, disabled -->
         <bitmap
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:src="@drawable/ic_logo_money_manager_ex"
+            android:src="@drawable/ic_logo_splash"
             android:gravity="center"
             android:tileMode="disabled" />
     </item>
