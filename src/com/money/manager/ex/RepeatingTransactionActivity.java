@@ -337,22 +337,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         // status
         spinStatus = (Spinner) findViewById(R.id.spinnerStatus);
 
-        txtSelectPayee.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RepeatingTransactionActivity.this, PayeeActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_PAYEE);
-            }
-        });
-        txtSelectCategory.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RepeatingTransactionActivity.this, CategorySubCategoryExpandableListActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_CATEGORY);
-            }
-        });
         // arrays to manage Status
         mStatusItems = getResources().getStringArray(R.array.status_items);
         mStatusValues = getResources().getStringArray(R.array.status_values);
@@ -388,8 +372,24 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         // payee
         txtSelectPayee = (TextView) findViewById(R.id.textViewSelectPayee);
+        txtSelectPayee.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RepeatingTransactionActivity.this, PayeeActivity.class);
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(intent, REQUEST_PICK_PAYEE);
+            }
+        });
         // select category
         txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
+        txtSelectCategory.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RepeatingTransactionActivity.this, CategorySubCategoryExpandableListActivity.class);
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+            }
+        });
 
         // listener on dialog amount edittext
         OnClickListener onClickAmount = new OnClickListener() {
