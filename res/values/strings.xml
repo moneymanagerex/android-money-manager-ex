@@ -79,7 +79,7 @@
     <!-- account -->
     <string name="account">Account</string>
     <string name="account_list">Account List</string>
-    <string name="account_empty_list">No accounts found</string>
+    <string name="account_empty_list">No accounts have been found. To create one, tap the green plus button.</string>
     <string name="account_balance">Account Balance</string>
     <string name="account_reconciled_balance">Reconciled Balance</string>
     <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
@@ -110,14 +110,14 @@
     <string name="payee">Payee</string>
     <string name="select_payee">Select Payee</string>
     <!--<string name="select_from">Select From</string>-->
-    <string name="payee_empty_list">No payee found</string>
+    <string name="payee_empty_list">No payee has been found. To create one, tap the green plus button.</string>
     <string name="from">From</string>
     <string name="db_payee_update_failed">Updating payee failed</string>
 
     <!-- category / subcategory -->
     <string name="category">Category</string>
     <string name="subcategory">Subcategory</string>
-    <string name="category_empty_list">No category found</string>
+    <string name="category_empty_list">No category has been found. To create one, tap the green plus button.</string>
     <string name="select_category">Select Category</string>
     <string name="add_category">Add Category</string>
     <string name="add_subcategory">Add Subcategory</string>
@@ -291,7 +291,7 @@
     <string name="income">Income</string>
     <string name="expenses">Expenses</string>
     <string name="difference">Difference</string>
-    <string name="no_data">No data to display</string>
+    <string name="no_data">No records were found. To create one, tap the green plus button. </string>
     <string name="month">Month</string>
     <string name="year">Year</string>
     <string name="menu_reports">Reports</string>
