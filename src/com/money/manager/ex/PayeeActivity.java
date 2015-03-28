@@ -399,5 +399,15 @@ public class PayeeActivity extends BaseFragmentActivity {
         public void restartLoader() {
             getLoaderManager().restartLoader(ID_LOADER_PAYEE, null, this);
         }
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            super.onListItemClick(l, v, position, id);
+
+            // On select go back to the calling activity (if there is one)
+            if (getActivity().getCallingActivity() != null){
+                setResultAndFinish();
+            }
+        }
     }
 }
