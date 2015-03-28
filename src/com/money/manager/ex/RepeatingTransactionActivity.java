@@ -1008,10 +1008,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         if (hasSplitTransaction) {
             for (int i = 0; i < mSplitTransaction.size(); i++) {
                 values.clear();
-                values.put(TableSplitTransactions.CATEGID, mSplitTransaction.get(i).getCategId());
-                values.put(TableSplitTransactions.SUBCATEGID, mSplitTransaction.get(i).getSubCategId());
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransaction.get(i).getSplitTransAmount());
-                // todo: values.put(TableSplitTransactions.TRANSID, mTransId);
+                values.put(TableBudgetSplitTransactions.CATEGID, mSplitTransaction.get(i).getCategId());
+                values.put(TableBudgetSplitTransactions.SUBCATEGID, mSplitTransaction.get(i).getSubCategId());
+                values.put(TableBudgetSplitTransactions.SPLITTRANSAMOUNT, mSplitTransaction.get(i).getSplitTransAmount());
+                values.put(TableBudgetSplitTransactions.TRANSID, mBillDepositsId);
 
             }
         }

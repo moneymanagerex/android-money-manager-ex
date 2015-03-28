@@ -24,7 +24,7 @@ import android.os.Parcelable;
 import com.money.manager.ex.core.DatabaseField;
 
 public class TableSplitTransactions extends Dataset implements Parcelable {
-	// FIELDS NAME
+	// FIELD NAMES
 	public static final String SPLITTRANSID = "SPLITTRANSID";
 	public static final String TRANSID = "TRANSID";
 	public static final String CATEGID = "CATEGID";

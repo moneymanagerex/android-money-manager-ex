@@ -17,7 +17,12 @@
  ******************************************************************************/
 package com.money.manager.ex.database;
 
-public class TableBudgetSplitTransactions extends Dataset {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.money.manager.ex.core.DatabaseField;
+
+public class TableBudgetSplitTransactions extends Dataset implements Parcelable {
 	// FIELDS
 	public static final String SPLITTRANSID = "SPLITTRANSID";
 	public static final String TRANSID = "TRANSID";
@@ -25,7 +30,18 @@ public class TableBudgetSplitTransactions extends Dataset {
 	public static final String SUBCATEGID = "SUBCATEGID";
 	public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
-	// CONSTRUCTOR
+    @DatabaseField(columnName = SPLITTRANSID)
+    private int splitTransId = -1;
+    @DatabaseField(columnName = TRANSID)
+    private int transId = -1;
+    @DatabaseField(columnName = CATEGID)
+    private int categId = -1;
+    @DatabaseField(columnName = SUBCATEGID)
+    private int subCategId = -1;
+    @DatabaseField(columnName = SPLITTRANSAMOUNT)
+    private double splitTransAmount = 0;
+
+    // CONSTRUCTOR
 	public TableBudgetSplitTransactions() {
 		super("budgetsplittransactions_v1", DatasetType.TABLE, "budgetsplittransactions");
 	}
@@ -34,4 +50,96 @@ public class TableBudgetSplitTransactions extends Dataset {
 	public String[] getAllColumns() {
 		return new String[] { "SPLITTRANSID AS _id", SPLITTRANSID, TRANSID, CATEGID, SUBCATEGID, SPLITTRANSAMOUNT};
 	}
+
+    /**
+     * @return the categId
+     */
+    public int getCategId() {
+        return categId;
+    }
+
+    /**
+     * @return the splitTransAmount
+     */
+    public double getSplitTransAmount() {
+        return splitTransAmount;
+    }
+
+    /**
+     * @return the splitTransId
+     */
+    public int getSplitTransId() {
+        return splitTransId;
+    }
+
+    /**
+     * @return the subCategId
+     */
+    public int getSubCategId() {
+        return subCategId;
+    }
+
+    /**
+     * @return the transId
+     */
+    public int getTransId() {
+        return transId;
+    }
+
+    /**
+     * @param categId the categId to set
+     */
+    public void setCategId(int categId) {
+        this.categId = categId;
+    }
+
+    /**
+     * @param splitTransAmount the splitTransAmount to set
+     */
+    public void setSplitTransAmount(double splitTransAmount) {
+        this.splitTransAmount = splitTransAmount;
+    }
+
+    /**
+     * @param splitTransId the splitTransId to set
+     */
+    public void setSplitTransId(int splitTransId) {
+        this.splitTransId = splitTransId;
+    }
+
+    /**
+     * @param subCategId the subCategId to set
+     */
+    public void setSubCategId(int subCategId) {
+        this.subCategId = subCategId;
+    }
+
+    /**
+     * @param transId the transId to set
+     */
+    public void setTransId(int transId) {
+        this.transId = transId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(getSplitTransId());
+        dest.writeInt(getTransId());
+        dest.writeInt(getCategId());
+        dest.writeInt(getSubCategId());
+        dest.writeDouble(getSplitTransAmount());
+    }
+
+    public void readToParcel(Parcel source) {
+        setSplitTransId(source.readInt());
+        setTransId(source.readInt());
+        setCategId(source.readInt());
+        setSubCategId(source.readInt());
+        setSplitTransAmount(source.readDouble());
+    }
 }
