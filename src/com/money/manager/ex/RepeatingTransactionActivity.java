@@ -225,7 +225,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 break;
             case REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mSplitTransaction = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                    mSplitTransaction = data.getParcelableArrayListExtra(SplitTransactionsRepeatingActivity.INTENT_RESULT_SPLIT_TRANSACTION);
                     if (mSplitTransaction != null && mSplitTransaction.size() > 0) {
                         double totAmount = 0;
                         for (int i = 0; i < mSplitTransaction.size(); i++) {

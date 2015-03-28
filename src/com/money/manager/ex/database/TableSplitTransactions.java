@@ -22,8 +22,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.core.DatabaseField;
+import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 
-public class TableSplitTransactions extends Dataset implements Parcelable {
+public class TableSplitTransactions extends Dataset
+        implements Parcelable, ISplitTransactionsDataset {
+
 	// FIELD NAMES
 	public static final String SPLITTRANSID = "SPLITTRANSID";
 	public static final String TRANSID = "TRANSID";
@@ -95,12 +98,12 @@ public class TableSplitTransactions extends Dataset implements Parcelable {
 		this.categId = categId;
 	}
 
-	/**
-	 * @param splitTransAmount the splitTransAmount to set
-	 */
-	public void setSplitTransAmount(double splitTransAmount) {
-		this.splitTransAmount = splitTransAmount;
-	}
+    /**
+     * @param splitTransAmount the splitTransAmount to set
+     */
+    public void setSplitTransAmount(double splitTransAmount) {
+        this.splitTransAmount = splitTransAmount;
+    }
 
 	/**
 	 * @param splitTransId the splitTransId to set

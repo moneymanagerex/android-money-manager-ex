@@ -21,8 +21,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.core.DatabaseField;
+import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 
-public class TableBudgetSplitTransactions extends Dataset implements Parcelable {
+public class TableBudgetSplitTransactions extends Dataset
+        implements Parcelable, ISplitTransactionsDataset {
+
 	// FIELDS
 	public static final String SPLITTRANSID = "SPLITTRANSID";
 	public static final String TRANSID = "TRANSID";

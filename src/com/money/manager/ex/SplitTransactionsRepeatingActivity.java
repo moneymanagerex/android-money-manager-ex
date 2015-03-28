@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2014 Money Manager Ex project
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,8 +20,6 @@ package com.money.manager.ex;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -31,7 +29,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.TableSplitTransactions;
+import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.fragment.SplitItemFragment;
@@ -39,14 +37,13 @@ import com.money.manager.ex.fragment.SplitItemFragment.SplitItemFragmentCallback
 import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 
 import java.util.ArrayList;
-
-public class SplitTransactionsActivity extends BaseFragmentActivity
+public class SplitTransactionsRepeatingActivity extends BaseFragmentActivity
         implements SplitItemFragmentCallbacks, InputAmountDialogListener {
 
-    public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
-    public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
-    public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitTransactionsActivity:ResultSplitTransaction";
-    public static final String INTENT_RESULT_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ResultSplitTransactionDeleted";
+    public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsRepeatingActivity:ArraysSplitTransaction";
+    public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsRepeatingActivity:ArraysSplitTransactionDeleted";
+    public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitTransactionsRepeatingActivity:ResultSplitTransaction";
+    public static final String INTENT_RESULT_SPLIT_TRANSACTION_DELETED = "SplitTransactionsRepeatingActivity:ResultSplitTransactionDeleted";
 
     private static final int MENU_ADD_SPLIT_TRANSACTION = 1;
     private static int mIdTag = 0x8000;
@@ -96,7 +93,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         }
 
         // set view
-        setContentView(R.layout.splittransaction_activity);
+        setContentView(R.layout.activity_split_transactions_repeating);
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -109,7 +106,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
             @Override
             public void onClick(View v) {
-                addFragmentChild(new TableSplitTransactions());
+                addFragmentChild(new TableBudgetSplitTransactions());
             }
         });
 
@@ -122,19 +119,28 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // item add
-        /*MenuItem itemadd = menu.add(MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, R.string.add);
-		itemadd.setIcon(new Core(getApplicationContext()).resolveIdAttribute(R.attr.ic_action_add));
-		itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);*/
+//        getMenuInflater().inflate(R.menu.menu_split_transactions_repeating, menu);
+//        return true;
 
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+
         if (item.getItemId() == MENU_ADD_SPLIT_TRANSACTION) {
-            addFragmentChild(new TableSplitTransactions());
+            addFragmentChild(new TableBudgetSplitTransactions());
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -170,7 +176,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         for (int i = 0; i < items.size(); i++) {
             ISplitTransactionsDataset item = items.get(i);
             if (item.getCategId() == -1 && item.getCategId() == -1) {
-                Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected).show();
+                Core.alertDialog(SplitTransactionsRepeatingActivity.this, R.string.error_category_not_selected).show();
                 return false;
             }
         }
