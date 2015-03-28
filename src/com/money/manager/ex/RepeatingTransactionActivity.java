@@ -39,6 +39,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.core.Core;
@@ -225,7 +226,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 break;
             case REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mSplitTransaction = data.getParcelableArrayListExtra(SplitTransactionsRepeatingActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                    mSplitTransaction = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
                     if (mSplitTransaction != null && mSplitTransaction.size() > 0) {
                         double totAmount = 0;
                         for (int i = 0; i < mSplitTransaction.size(); i++) {
@@ -445,7 +446,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 	                intent.setAction(Intent.ACTION_PICK);
 	                startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 } else {
+                    // Open the activity for creating split transactions.
                     Intent intent = new Intent(RepeatingTransactionActivity.this, SplitTransactionsActivity.class);
+                    // Pass the name of the entity/dataset.
+                    intent.putExtra("DatasetType", TableBudgetSplitTransactions.class.getSimpleName());
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransaction);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
                     startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
@@ -481,12 +485,11 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         // total amount
         txtTotAmount = (TextView) findViewById(R.id.editTextTotAmount);
-        txtTotAmount.setOnClickListener(onClickAmount);
         core.formatAmountTextView(txtTotAmount, mTotAmount, getCurrencyIdFromAccountId(!Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId));
+        txtTotAmount.setOnClickListener(onClickAmount);
 
         // amount
         txtAmount = (TextView) findViewById(R.id.editTextAmount);
-        //core.formatAmountTextView(txtAmount, mAmount, currencyId);
         core.formatAmountTextView(txtAmount, mAmount, getCurrencyIdFromAccountId(!Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mToAccountId : mAccountId));
         txtAmount.setOnClickListener(onClickAmount);
 
@@ -500,7 +503,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             @Override
             public void onClick(View v) {
                 MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getApplicationContext());
-                String query = "SELECT MAX(" + TableCheckingAccount.TRANSACTIONNUMBER + ") FROM " +
+                String query = "SELECT MAX(CAST(" + TableCheckingAccount.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
                         new TableCheckingAccount().getSource() + " WHERE " +
                         TableCheckingAccount.ACCOUNTID + "=?";
                 Cursor cursor = helper.getReadableDatabase().rawQuery(query, new String[]{Integer.toString(mAccountId)});
@@ -614,6 +617,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         outState.putInt(KEY_SUBCATEGORY_ID, mSubCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mSubCategoryName);
         outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
+        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransaction);
+        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
         outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
         outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat("yyyy-MM-dd").format(txtNextOccurrence.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
@@ -704,7 +709,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
     @Override
     public boolean onActionDoneClick() {
-        if (updateData() == true) {
+        if (updateData()) {
             // set result ok, send broadcast to update widgets and finish activity
             setResult(RESULT_OK);
             finish();
@@ -928,9 +933,12 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             ;
             return false;
         }
-        if (mCategoryId == -1) {
+        if (mCategoryId == -1 && (!chbSplitTransaction.isChecked())) {
             Core.alertDialog(this, R.string.error_category_not_selected).show();
-            ;
+            return false;
+        }
+        if (chbSplitTransaction.isChecked() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
+            Core.alertDialog(this, R.string.error_split_transaction_empty).show();
             return false;
         }
         if (TextUtils.isEmpty(txtTotAmount.getText())) {
@@ -956,9 +964,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
      * @return true if update data successful
      */
     private boolean updateData() {
-        if (validateData() == false) {
+        if (!validateData()) {
             return false;
         }
+
         // content value for insert or update data
         ContentValues values = new ContentValues();
 
@@ -976,8 +985,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) txtAmount.getTag());
         }
         values.put(TableBillsDeposits.STATUS, mStatus);
-        values.put(TableBillsDeposits.CATEGID, mCategoryId);
-        values.put(TableBillsDeposits.SUBCATEGID, mSubCategoryId);
+        values.put(TableBillsDeposits.CATEGID, !chbSplitTransaction.isChecked() ? mCategoryId : -1);
+        values.put(TableBillsDeposits.SUBCATEGID, !chbSplitTransaction.isChecked() ? mSubCategoryId : -1);
         values.put(TableBillsDeposits.FOLLOWUPID, -1);
         values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) txtTotAmount.getTag());
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
@@ -1013,9 +1022,55 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 values.put(TableBudgetSplitTransactions.SPLITTRANSAMOUNT, mSplitTransaction.get(i).getSplitTransAmount());
                 values.put(TableBudgetSplitTransactions.TRANSID, mBillDepositsId);
 
+                if (mSplitTransaction.get(i).getSplitTransId() == -1) {
+                    // insert data
+                    if (getContentResolver().insert(mSplitTransaction.get(i).getUri(), values) == null) {
+                        Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
+                        Log.w(LOGCAT, "Insert new split transaction failed!");
+                        return false;
+                    }
+                } else {
+                    // update data
+                    if (getContentResolver().update(mSplitTransaction.get(i).getUri(), values, TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransaction.get(i).getSplitTransId())}) <= 0) {
+                        Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+                        Log.w(LOGCAT, "Update split transaction failed!");
+                        return false;
+                    }
+                }
             }
         }
-        
+
+        // deleted old split transaction
+        if (mSplitTransactionDeleted != null && mSplitTransactionDeleted.size() > 0) {
+            for (int i = 0; i < mSplitTransactionDeleted.size(); i++) {
+                values.clear();
+                //put value
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactionDeleted.get(i).getSplitTransAmount());
+
+                // update data
+                if (getContentResolver().delete(mSplitTransactionDeleted.get(i).getUri(), TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactionDeleted.get(i).getSplitTransId())}) <= 0) {
+                    Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+                    Log.w(LOGCAT, "Delete split transaction failed!");
+                    return false;
+                }
+            }
+        }
+        // update category and subcategory payee
+        if ((!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode))) && (mPayeeId > 0) && (!hasSplitTransaction)) {
+            // clear content value for update categoryId, subCategoryId
+            values.clear();
+            // set categoryId and subCategoryId
+            values.put(TablePayee.CATEGID, mCategoryId);
+            values.put(TablePayee.SUBCATEGID, mSubCategoryId);
+            // create instance TablePayee for update
+            TablePayee payee = new TablePayee();
+            // update data
+            if (getContentResolver().update(payee.getUri(), values, TablePayee.PAYEEID + "=" + Integer.toString(mPayeeId), null) <= 0) {
+                Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
+                Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mPayeeId) + " return <= 0");
+            }
+        }
+
         return true;
     }
 

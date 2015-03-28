@@ -145,4 +145,17 @@ public class TableBudgetSplitTransactions extends Dataset
         setSubCategId(source.readInt());
         setSplitTransAmount(source.readDouble());
     }
+
+    public final static Parcelable.Creator<TableBudgetSplitTransactions> CREATOR = new Parcelable.Creator<TableBudgetSplitTransactions>() {
+        public TableBudgetSplitTransactions createFromParcel(Parcel source) {
+            TableBudgetSplitTransactions splitTransactions = new TableBudgetSplitTransactions();
+            splitTransactions.readToParcel(source);
+            return splitTransactions;
+        }
+
+        @Override
+        public TableBudgetSplitTransactions[] newArray(int size) {
+            return new TableBudgetSplitTransactions[size];
+        };
+    };
 }

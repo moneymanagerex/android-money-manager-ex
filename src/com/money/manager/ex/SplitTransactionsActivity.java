@@ -24,6 +24,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
@@ -50,9 +52,15 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
     private static final int MENU_ADD_SPLIT_TRANSACTION = 1;
     private static int mIdTag = 0x8000;
+    private SplitItemFragment mFragmentInputAmountClick;
+
+    /**
+     * The name of the entity to create when adding split transactions.
+     * Needed to distinguish between TableSplitTransactions and TableBudgetSplitTransactions.
+     */
+    private String EntityTypeName = null;
     private ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
     private ArrayList<ISplitTransactionsDataset> mSplitDeleted = null;
-    private SplitItemFragment mFragmentInputAmountClick;
 
     private void addFragmentChild(ISplitTransactionsDataset object) {
         String nameFragment = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(object.getSplitTransId() == -1 ? mIdTag++ : object.getSplitTransId());
@@ -87,6 +95,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         super.onCreate(savedInstanceState);
         // load intent
         if (getIntent() != null) {
+            this.EntityTypeName = getIntent().getStringExtra("DatasetType");
             mSplitTransactions = getIntent().getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
             mSplitDeleted = getIntent().getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
         }
@@ -104,12 +113,18 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             setToolbarStandardAction(toolbar);
         }
 
-        Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
+        final Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
         buttonAdd.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                addFragmentChild(new TableSplitTransactions());
+                // find which split transactions dataset to instantiate.
+                String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
+                if(EntityTypeName.contains(recurringSplitName)) {
+                    addFragmentChild(new TableBudgetSplitTransactions());
+                } else {
+                    addFragmentChild(new TableSplitTransactions());
+                }
             }
         });
 
@@ -133,7 +148,13 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == MENU_ADD_SPLIT_TRANSACTION) {
-            addFragmentChild(new TableSplitTransactions());
+            // find which split transactions dataset to instantiate.
+            String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
+            if(EntityTypeName.contains(recurringSplitName)) {
+                addFragmentChild(new TableBudgetSplitTransactions());
+            } else {
+                addFragmentChild(new TableSplitTransactions());
+            }
         }
         return super.onOptionsItemSelected(item);
     }
