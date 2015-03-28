@@ -144,26 +144,36 @@ public class PayeeActivity extends BaseFragmentActivity {
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
             inflater.inflate(R.menu.menu_payee, menu);
+            //Check the default sort order
+            final MenuItem item;
+            switch (PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferencesConstant.PREF_SORT_PAYEE), 0)) {
+                case 0 :
+                    item = menu.findItem(R.id.menu_sort_name);
+                    item.setChecked(true);
+                    break;
+                case 1 :
+                    item = menu.findItem(R.id.menu_sort_usage);
+                    item.setChecked(true);
+                    break;
+            }
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.menu_sort:
-                    new MaterialDialog.Builder(getActivity())
-                            .title(R.string.choose_sorting)
-                            .items(R.array.choose_payee_sort)
-                            .itemsCallbackSingleChoice(mSort, new MaterialDialog.ListCallback() {
-                                @Override
-                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                    mSort = which;
-                                    PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferencesConstant.PREF_SORT_PAYEE), mSort).commit();
-                                    // restart search
-                                    restartLoader();
-                                }
-                            })
-                            .positiveText(android.R.string.ok)
-                            .show();
+                case R.id.menu_sort_name:
+                    mSort= 0;
+                    item.setChecked(true);
+                    PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferencesConstant.PREF_SORT_PAYEE), mSort).commit();
+                    // restart search
+                    restartLoader();
+                    return true;
+                case R.id.menu_sort_usage:
+                    mSort = 1;
+                    item.setChecked(true);
+                    PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferencesConstant.PREF_SORT_PAYEE), mSort).commit();
+                    // restart search
+                    restartLoader();
                     return true;
             }
             return super.onOptionsItemSelected(item);
