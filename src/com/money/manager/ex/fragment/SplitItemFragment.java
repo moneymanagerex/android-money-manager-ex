@@ -21,6 +21,7 @@ package com.money.manager.ex.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -39,17 +40,18 @@ import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 
 public class SplitItemFragment extends Fragment implements InputAmountDialogListener {
     public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
     private static final int REQUEST_PICK_CATEGORY = 1;
-    private TableSplitTransactions mSplitObject;
+    private ISplitTransactionsDataset mSplitObject;
     private SplitItemFragmentCallbacks mOnSplitItemCallback;
     private TextView txtSelectCategory;
     private TextView txtAmount;
     private Spinner spinTransCode;
 
-    public static SplitItemFragment newIstance(TableSplitTransactions split) {
+    public static SplitItemFragment newIstance(ISplitTransactionsDataset split) {
         SplitItemFragment fragment = new SplitItemFragment();
         fragment.mSplitObject = split;
         return fragment;
@@ -69,7 +71,7 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
         this.mOnSplitItemCallback = splitItemCallback;
     }
 
-    public TableSplitTransactions getTableSplitTransactions() {
+    public ISplitTransactionsDataset getTableSplitTransactions() {
         String selectItem = spinTransCode.getSelectedItem().toString();
         if (txtAmount.getTag() != null) {
             mSplitObject.setSplitTransAmount((Double) txtAmount.getTag() * (selectItem.equals(getString(R.string.withdrawal)) ? 1 : -1));
@@ -103,7 +105,7 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
             return null;
 
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION)) {
-            mSplitObject = savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
+            mSplitObject = (ISplitTransactionsDataset) savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
         }
 
         Core core = new Core(getActivity().getApplicationContext());
@@ -178,7 +180,7 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(KEY_SPLIT_TRANSACTION, mSplitObject);
+        outState.putParcelable(KEY_SPLIT_TRANSACTION, (Parcelable) mSplitObject);
     }
 
     @Override
@@ -192,6 +194,6 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
     }
 
     public interface SplitItemFragmentCallbacks {
-        public void onRemoveItem(TableSplitTransactions object);
+        public void onRemoveItem(ISplitTransactionsDataset object);
     }
 }

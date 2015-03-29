@@ -40,6 +40,7 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableAssets;
 import com.money.manager.ex.database.TableBillsDeposits;
+import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableBudgetTable;
 import com.money.manager.ex.database.TableBudgetYear;
 import com.money.manager.ex.database.TableCategory;
@@ -98,15 +99,27 @@ public class MoneyManagerProvider extends ContentProvider {
         // create authority
         setAuthority(getContext().getApplicationContext().getPackageName() + ".provider");
         // create object provider
-        objMoneyManager = Arrays.asList(new Dataset[]{new TableAccountList(),
-                new TableAssets(), new TableBillsDeposits(),
-                new TableBudgetTable(), new TableBudgetYear(), new TableCategory(),
-                new TableCheckingAccount(), new TableCurrencyFormats(),
-                new TableInfoTable(), new TablePayee(),
-                new TableSplitTransactions(), new TableStock(),
-                new TableSubCategory(), new QueryAccountBills(getContext()), new QueryCategorySubCategory(getContext()),
-                new QueryAllData(getContext()), new QueryBillDeposits(getContext()),
-                new QueryReportIncomeVsExpenses(getContext()), new ViewMobileData(),
+        objMoneyManager = Arrays.asList(new Dataset[]{
+                new TableAccountList(),
+                new TableAssets(),
+                new TableBillsDeposits(),
+                new TableBudgetTable(),
+                new TableBudgetSplitTransactions(),
+                new TableBudgetYear(),
+                new TableCategory(),
+                new TableCheckingAccount(),
+                new TableCurrencyFormats(),
+                new TableInfoTable(),
+                new TablePayee(),
+                new TableSplitTransactions(),
+                new TableStock(),
+                new TableSubCategory(),
+                new QueryAccountBills(getContext()),
+                new QueryCategorySubCategory(getContext()),
+                new QueryAllData(getContext()),
+                new QueryBillDeposits(getContext()),
+                new QueryReportIncomeVsExpenses(getContext()),
+                new ViewMobileData(),
                 new SQLDataSet()});
 
         // Cycle all datasets for the composition of UriMatcher

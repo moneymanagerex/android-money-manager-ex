@@ -37,7 +37,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_name"
         android:theme="@style/Theme.Splash" >
-
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ" />
@@ -331,10 +330,14 @@
 
         <activity
             android:name=".tutorial.TutorialActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/application_name"
             android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name=".SplitTransactionsRepeatingActivity"
+            android:label="@string/title_activity_split_transactions_repeating" >
         </activity>
     </application>
 
