@@ -120,7 +120,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             public void onClick(View v) {
                 // find which split transactions dataset to instantiate.
                 String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
-                if(EntityTypeName.contains(recurringSplitName)) {
+                if(EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
                     addFragmentChild(new TableBudgetSplitTransactions());
                 } else {
                     addFragmentChild(new TableSplitTransactions());
