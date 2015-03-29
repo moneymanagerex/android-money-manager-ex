@@ -17,7 +17,22 @@
   -->
 
 <resources>
+    <!-- theme used for masking the initial screen -->
+    <style name="Theme.Money.Manager.Startup" parent="@android:style/Theme.Holo.NoActionBar">
+        <item name="android:windowBackground">@color/money_manager_ex_sign_bg</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <!-- This theme is not yet used. The purpose is to speed up rendering. Test. -->
+    <style name="Theme.NoBackground" parent="android:Theme">
+        <item name="android:windowBackground">@null</item>
+    </style>
+    <!-- theme for simulating splash screen -->
+    <style name="Theme.Splash" parent="android:Theme">
+        <item name="android:windowBackground">@drawable/background_logo</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
+    <!-- Theme Base Application -->
     <style name="_App" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="android:textColorPrimary">@color/material_grey_50</item>
         <item name="android:textColorSecondary">@color/md_secondary_text</item>
@@ -50,9 +65,9 @@
     <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar"/>
 
     <!-- Theme Application -->
-
     <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/App_Light_DarkActionBar">
-
+        <!-- Toolbar -->
+        <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <!-- Colors -->
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background
@@ -123,7 +138,8 @@
     </style>
 
     <style name="Theme.Money.Manager" parent="@style/App">
-
+        <!-- Toolbar -->
+        <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat</item>
         <!-- Colors -->
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">#202020</item>
@@ -190,20 +206,4 @@
         <item name="headerCaptionTextViewStyle">@style/Money.TextView.Header.Caption</item>
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>
     </style>
-
-    <!-- theme used for masking the initial screen -->
-    <style name="Theme.Money.Manager.Startup" parent="@android:style/Theme.Holo.NoActionBar">
-        <item name="android:windowBackground">@color/money_manager_ex_sign_bg</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-    <!-- This theme is not yet used. The purpose is to speed up rendering. Test. -->
-    <style name="Theme.NoBackground" parent="android:Theme">
-        <item name="android:windowBackground">@null</item>
-    </style>
-    <!-- theme for simulating splash screen -->
-    <style name="Theme.Splash" parent="android:Theme">
-        <item name="android:windowBackground">@drawable/background_logo</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
 </resources>
