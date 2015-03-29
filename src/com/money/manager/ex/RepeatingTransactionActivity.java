@@ -22,6 +22,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -179,15 +180,22 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         return ret;
     }
 
-    public ArrayList<TableSplitTransactions> getSplitTransaction(int transId) {
-        ArrayList<TableSplitTransactions> listSplitTrans = null;
+    /**
+     * Load split transactions.
+     * @param transId
+     * @return
+     */
+    public ArrayList<TableBudgetSplitTransactions> loadSplitTransaction(int transId) {
+        ArrayList<TableBudgetSplitTransactions> listSplitTrans = null;
 
-        TableSplitTransactions split = new TableSplitTransactions();
-        Cursor curSplit = getContentResolver().query(split.getUri(), null, TableSplitTransactions.TRANSID + "=" + Integer.toString(transId), null, TableSplitTransactions.SPLITTRANSID);
+        TableBudgetSplitTransactions split = new TableBudgetSplitTransactions();
+        Cursor curSplit = getContentResolver().query(split.getUri(), null,
+                TableBudgetSplitTransactions.TRANSID + "=" + Integer.toString(transId), null,
+                TableBudgetSplitTransactions.SPLITTRANSID);
         if (curSplit != null && curSplit.moveToFirst()) {
-            listSplitTrans = new ArrayList<TableSplitTransactions>();
+            listSplitTrans = new ArrayList<TableBudgetSplitTransactions>();
             while (!curSplit.isAfterLast()) {
-                TableSplitTransactions obj = new TableSplitTransactions();
+                TableBudgetSplitTransactions obj = new TableBudgetSplitTransactions();
                 obj.setValueFromCursor(curSplit);
                 listSplitTrans.add(obj);
                 curSplit.moveToNext();
@@ -285,7 +293,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     mBillDepositsId = getIntent().getIntExtra(KEY_BILL_DEPOSITS_ID, -1);
                     // select data transaction
-                    selectRepeatingTransaction(mBillDepositsId);
+                    loadRepeatingTransaction(mBillDepositsId);
                 }
             }
             mIntentAction = getIntent().getAction();
@@ -436,6 +444,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 startActivityForResult(intent, REQUEST_PICK_PAYEE);
             }
         });
+
         // select category
         txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
         txtSelectCategory.setOnClickListener(new OnClickListener() {
@@ -812,7 +821,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
      * @param billId transaction id
      * @return true if data selected, false nothing
      */
-    private boolean selectRepeatingTransaction(int billId) {
+    private boolean loadRepeatingTransaction(int billId) {
         Cursor cursor = getContentResolver().query(mRepeatingTransaction.getUri(),
                 mRepeatingTransaction.getAllColumns(),
                 TableBillsDeposits.BDID + "=?",
@@ -822,14 +831,14 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             return false;
         }
 
-        // take a data
+        // Read data.
         mBillDepositsId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
         mAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.ACCOUNTID));
         mToAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
         mTransCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
         mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
-        mAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
-        mTotAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
+        mAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
+        mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
         mPayeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
         mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
         mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
@@ -838,6 +847,11 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         mNextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
         mFrequencies = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
         mNumOccurrence = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
+
+        // load split transactions only if no category selected.
+        if (mCategoryId == -1 && mSplitTransaction == null) {
+            mSplitTransaction = loadSplitTransaction(billId);
+        }
 
         selectAccountName(mToAccountId);
         selectPayeeName(mPayeeId);
@@ -972,8 +986,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         ContentValues values = new ContentValues();
 
         values.put(TableBillsDeposits.ACCOUNTID, mAccountId);
+        values.put(TableBillsDeposits.TOACCOUNTID, mToAccountId);
         if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
-            values.put(TableBillsDeposits.TOACCOUNTID, mToAccountId);
             values.put(TableBillsDeposits.PAYEEID, -1);
         } else {
             values.put(TableBillsDeposits.PAYEEID, mPayeeId);
@@ -999,11 +1013,13 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         // check whether the application should do the update or insert
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
             // insert
-            if (getContentResolver().insert(mRepeatingTransaction.getUri(), values) == null) {
+            Uri insert = getContentResolver().insert(mRepeatingTransaction.getUri(), values);
+            if (insert == null) {
                 Core.alertDialog(this, R.string.db_checking_insert_failed).show();
                 Log.w(LOGCAT, "Insert new repeating transaction failed!");
                 return false;
             }
+            mBillDepositsId = Integer.parseInt(insert.getPathSegments().get(1));
         } else {
             // update
             if (getContentResolver().update(mRepeatingTransaction.getUri(), values, TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(mBillDepositsId)}) <= 0) {
@@ -1024,7 +1040,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
                 if (mSplitTransaction.get(i).getSplitTransId() == -1) {
                     // insert data
-                    if (getContentResolver().insert(mSplitTransaction.get(i).getUri(), values) == null) {
+                    Uri insert = getContentResolver().insert(mSplitTransaction.get(i).getUri(), values);
+                    if (insert == null) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Insert new split transaction failed!");
                         return false;
@@ -1048,7 +1065,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactionDeleted.get(i).getSplitTransAmount());
 
                 // update data
-                if (getContentResolver().delete(mSplitTransactionDeleted.get(i).getUri(), TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactionDeleted.get(i).getSplitTransId())}) <= 0) {
+                if (getContentResolver().delete(mSplitTransactionDeleted.get(i).getUri(),
+                        TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactionDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(LOGCAT, "Delete split transaction failed!");
                     return false;

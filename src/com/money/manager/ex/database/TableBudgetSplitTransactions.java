@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.money.manager.ex.database;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -117,12 +118,29 @@ public class TableBudgetSplitTransactions extends Dataset
         this.subCategId = subCategId;
     }
 
-    /**
-     * @param transId the transId to set
-     */
-    public void setTransId(int transId) {
-        this.transId = transId;
-    }
+	/**
+	 * @param transId the transId to set
+	 */
+	public void setTransId(int transId) {
+		this.transId = transId;
+	}
+	
+	@Override
+	public void setValueFromCursor(Cursor c) {
+		if (c == null) 
+			return;
+		// set values
+		if (c.getColumnIndex(SPLITTRANSID) != -1) 
+			setSplitTransId(c.getInt(c.getColumnIndex(SPLITTRANSID)));
+		if (c.getColumnIndex(TRANSID) != -1) 
+			setTransId(c.getInt(c.getColumnIndex(TRANSID)));
+		if (c.getColumnIndex(CATEGID) != -1) 
+			setCategId(c.getInt(c.getColumnIndex(CATEGID)));
+		if (c.getColumnIndex(SUBCATEGID) != -1) 
+			setSubCategId(c.getInt(c.getColumnIndex(SUBCATEGID)));
+		if (c.getColumnIndex(SPLITTRANSAMOUNT) != -1) 
+			setSplitTransAmount(c.getDouble(c.getColumnIndex(SPLITTRANSAMOUNT)));
+	}
 
     @Override
     public int describeContents() {
