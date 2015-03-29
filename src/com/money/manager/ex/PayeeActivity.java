@@ -95,7 +95,8 @@ public class PayeeActivity extends BaseFragmentActivity {
             // set result
             BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
             if (fragment != null) {
-                fragment.setResultAndFinish();
+                fragment.getActivity().setResult(RESULT_CANCELED);
+                fragment.getActivity().finish();
             }
         }
         return super.onKeyUp(keyCode, event);
@@ -175,6 +176,10 @@ public class PayeeActivity extends BaseFragmentActivity {
                     PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferencesConstant.PREF_SORT_PAYEE), mSort).commit();
                     // restart search
                     restartLoader();
+                    return true;
+                case android.R.id.home:
+                    getActivity().setResult(RESULT_CANCELED);
+                    getActivity().finish();
                     return true;
             }
             return super.onOptionsItemSelected(item);
