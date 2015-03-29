@@ -45,7 +45,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.database.SQLTypeTransacion;
 import com.money.manager.ex.database.TablePayee;
@@ -118,7 +117,9 @@ public class PayeeActivity extends BaseFragmentActivity {
             setEmptyText(getActivity().getResources().getString(R.string.payee_empty_list));
             setHasOptionsMenu(true);
 
-            mLayout = Intent.ACTION_PICK.equals(mAction) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
+            //Use a single layout, it is not necessary to have the layout with the checkbox, with the single click for the selection of the pay
+            //mLayout = Intent.ACTION_PICK.equals(mAction) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
+            mLayout = android.R.layout.simple_list_item_1;
             // associate adapter
             MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(), mLayout, null, new String[]{TablePayee.PAYEENAME},
                     new int[]{android.R.id.text1}, 0);
@@ -283,21 +284,18 @@ public class PayeeActivity extends BaseFragmentActivity {
         protected void setResult() {
             Intent result = null;
             if (Intent.ACTION_PICK.equals(mAction)) {
+                // Cursor that is already in the desired position, because positioned in the event onListItemClick
                 Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-                for (int i = 0; i < getListView().getCount(); i++) {
-                    if (getListView().isItemChecked(i)) {
-                        cursor.moveToPosition(i);
 
-                        result = new Intent();
-                        result.putExtra(INTENT_RESULT_PAYEEID, cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
-                        result.putExtra(INTENT_RESULT_PAYEENAME, cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
+                result = new Intent();
+                result.putExtra(INTENT_RESULT_PAYEEID, cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
+                result.putExtra(INTENT_RESULT_PAYEENAME, cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
 
-                        getActivity().setResult(Activity.RESULT_OK, result);
+                getActivity().setResult(Activity.RESULT_OK, result);
 
-                        return;
-                    }
-                }
+                return;
             }
+
             getActivity().setResult(RESULT_CANCELED);
             return;
         }
@@ -406,7 +404,12 @@ public class PayeeActivity extends BaseFragmentActivity {
 
             // On select go back to the calling activity (if there is one)
             if (getActivity().getCallingActivity() != null){
-                setResultAndFinish();
+                Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+                if (cursor != null) {
+                    if (cursor.moveToPosition(position)) {
+                        setResultAndFinish();
+                    }
+                }
             }
         }
     }
