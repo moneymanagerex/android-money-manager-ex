@@ -812,7 +812,7 @@ public class MainActivity extends BaseFragmentActivity {
         // donate
         adapter.add(new DrawerMenuItem().withId(R.id.menu_donate)
                 .withText(getString(R.string.donate))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_reports_dark : R.drawable.ic_action_redeem_light)
+                .withIcon(isDarkTheme ? R.drawable.ic_action_redeem_dark : R.drawable.ic_action_redeem_light)
                 .withDivider(Boolean.TRUE));
         // help
         adapter.add(new DrawerMenuItem().withId(R.id.menu_about)
