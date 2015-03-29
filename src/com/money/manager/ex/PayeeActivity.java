@@ -149,11 +149,11 @@ public class PayeeActivity extends BaseFragmentActivity {
             //Check the default sort order
             final MenuItem item;
             switch (PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferencesConstant.PREF_SORT_PAYEE), 0)) {
-                case 0 :
+                case 0:
                     item = menu.findItem(R.id.menu_sort_name);
                     item.setChecked(true);
                     break;
-                case 1 :
+                case 1:
                     item = menu.findItem(R.id.menu_sort_usage);
                     item.setChecked(true);
                     break;
@@ -164,7 +164,7 @@ public class PayeeActivity extends BaseFragmentActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_sort_name:
-                    mSort= 0;
+                    mSort = 0;
                     item.setChecked(true);
                     PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferencesConstant.PREF_SORT_PAYEE), mSort).commit();
                     // restart search
@@ -269,6 +269,9 @@ public class PayeeActivity extends BaseFragmentActivity {
                     adapter.swapCursor(data);
                     if (isResumed()) {
                         setListShown(true);
+                        if (data.getCount() <= 0 && getFloatingActionButton() != null) {
+                            getFloatingActionButton().show(true);
+                        }
                     } else {
                         setListShownNoAnimation(true);
                     }
@@ -408,7 +411,7 @@ public class PayeeActivity extends BaseFragmentActivity {
             super.onListItemClick(l, v, position, id);
 
             // On select go back to the calling activity (if there is one)
-            if (getActivity().getCallingActivity() != null){
+            if (getActivity().getCallingActivity() != null) {
                 Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
                 if (cursor != null) {
                     if (cursor.moveToPosition(position)) {

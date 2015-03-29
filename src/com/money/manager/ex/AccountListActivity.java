@@ -216,6 +216,8 @@ public class AccountListActivity extends BaseFragmentActivity {
 
                     if (isResumed()) {
                         setListShown(true);
+                        if (data.getCount() <= 0 && getFloatingActionButton() != null)
+                            getFloatingActionButton().show(true);
                     } else {
                         setListShownNoAnimation(true);
                     }
