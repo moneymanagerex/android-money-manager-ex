@@ -4,6 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <!-- Navigation Drawer -->
+    <include layout="@layout/toolbar"/>
+
     <WebView
         android:id="@+id/webViewContent"
         android:layout_width="match_parent"
