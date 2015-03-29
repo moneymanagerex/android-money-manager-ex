@@ -20,8 +20,11 @@ package com.money.manager.ex;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,15 +32,19 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.fragment.SplitItemFragment;
 import com.money.manager.ex.fragment.SplitItemFragment.SplitItemFragmentCallbacks;
+import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 
 import java.util.ArrayList;
 
-public class SplitTransactionsActivity extends BaseFragmentActivity implements SplitItemFragmentCallbacks, InputAmountDialogListener {
+public class SplitTransactionsActivity extends BaseFragmentActivity
+        implements SplitItemFragmentCallbacks, InputAmountDialogListener {
+
     public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
     public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitTransactionsActivity:ResultSplitTransaction";
@@ -45,11 +52,17 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 
     private static final int MENU_ADD_SPLIT_TRANSACTION = 1;
     private static int mIdTag = 0x8000;
-    private ArrayList<TableSplitTransactions> mSplitTransactions = null;
-    private ArrayList<TableSplitTransactions> mSplitDeleted = null;
     private SplitItemFragment mFragmentInputAmountClick;
 
-    private void addFragmentChild(TableSplitTransactions object) {
+    /**
+     * The name of the entity to create when adding split transactions.
+     * Needed to distinguish between TableSplitTransactions and TableBudgetSplitTransactions.
+     */
+    private String EntityTypeName = null;
+    private ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
+    private ArrayList<ISplitTransactionsDataset> mSplitDeleted = null;
+
+    private void addFragmentChild(ISplitTransactionsDataset object) {
         String nameFragment = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(object.getSplitTransId() == -1 ? mIdTag++ : object.getSplitTransId());
         SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(nameFragment);
         if (fragment == null) {
@@ -65,8 +78,8 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
         }
     }
 
-    public ArrayList<TableSplitTransactions> getAllTableSplitTransaction() {
-        ArrayList<TableSplitTransactions> items = new ArrayList<TableSplitTransactions>();
+    public ArrayList<ISplitTransactionsDataset> getAllTableSplitTransaction() {
+        ArrayList<ISplitTransactionsDataset> items = new ArrayList<ISplitTransactionsDataset>();
         for (int i = 0; i < mIdTag; i++) {
             String nameFragment = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(i);
             SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(nameFragment);
@@ -82,6 +95,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
         super.onCreate(savedInstanceState);
         // load intent
         if (getIntent() != null) {
+            this.EntityTypeName = getIntent().getStringExtra("DatasetType");
             mSplitTransactions = getIntent().getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
             mSplitDeleted = getIntent().getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
         }
@@ -99,12 +113,18 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
             setToolbarStandardAction(toolbar);
         }
 
-        Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
+        final Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
         buttonAdd.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                addFragmentChild(new TableSplitTransactions());
+                // find which split transactions dataset to instantiate.
+                String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
+                if(EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
+                    addFragmentChild(new TableBudgetSplitTransactions());
+                } else {
+                    addFragmentChild(new TableSplitTransactions());
+                }
             }
         });
 
@@ -128,15 +148,21 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == MENU_ADD_SPLIT_TRANSACTION) {
-            addFragmentChild(new TableSplitTransactions());
+            // find which split transactions dataset to instantiate.
+            String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
+            if(EntityTypeName.contains(recurringSplitName)) {
+                addFragmentChild(new TableBudgetSplitTransactions());
+            } else {
+                addFragmentChild(new TableSplitTransactions());
+            }
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onRemoveItem(TableSplitTransactions object) {
+    public void onRemoveItem(ISplitTransactionsDataset object) {
         if (mSplitDeleted == null) {
-            mSplitDeleted = new ArrayList<TableSplitTransactions>();
+            mSplitDeleted = new ArrayList<ISplitTransactionsDataset>();
         }
         // add item to delete
         if (object.getSplitTransId() != -1) // not new split transaction
@@ -160,10 +186,10 @@ public class SplitTransactionsActivity extends BaseFragmentActivity implements S
 
     @Override
     public boolean onActionDoneClick() {
-        ArrayList<TableSplitTransactions> items = getAllTableSplitTransaction();
+        ArrayList<ISplitTransactionsDataset> items = getAllTableSplitTransaction();
         // check data
         for (int i = 0; i < items.size(); i++) {
-            TableSplitTransactions item = items.get(i);
+            ISplitTransactionsDataset item = items.get(i);
             if (item.getCategId() == -1 && item.getCategId() == -1) {
                 Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected).show();
                 return false;

@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with getApplicationContext() program; if not, write to the Free Software
+ * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 package com.money.manager.ex;
@@ -252,6 +252,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                         mSplitTransactionDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
                     }
                 }
+                break;
         }
     }
 
@@ -469,7 +470,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         // create adapter for spinnerStatus
         ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStatusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spinStatus.setAdapter(adapterStatus);
         // select current value
         if (!(TextUtils.isEmpty(mStatus))) {

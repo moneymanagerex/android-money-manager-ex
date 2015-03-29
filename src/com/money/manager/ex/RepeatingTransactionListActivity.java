@@ -44,6 +44,7 @@ import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
+import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 import com.money.manager.ex.utils.DateUtils;
@@ -208,7 +209,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
             return false;
         }
 
-        private void showDialogDeleteRepeatingTransaction(final int BDID) {
+        private void showDialogDeleteRepeatingTransaction(final int id) {
             // create alert dialog
             AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
             alertDialog.setTitle(R.string.delete_repeating_transaction);
@@ -218,7 +219,15 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
                     new OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (getActivity().getContentResolver().delete(new TableBillsDeposits().getUri(), TableBillsDeposits.BDID + "=" + BDID, null) == 0) {
+                            // Delete split transactions.
+                            if (getActivity().getContentResolver().delete(
+                                    new TableBudgetSplitTransactions().getUri(),
+                                    TableBudgetSplitTransactions.TRANSID + "=" + id, null) == 0) {
+                                Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                            }
+                            // Delete recurring transactions.
+                            if (getActivity().getContentResolver().delete(
+                                    new TableBillsDeposits().getUri(), TableBillsDeposits.BDID + "=" + id, null) == 0) {
                                 Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                             }
                             // restart loader
