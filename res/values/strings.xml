@@ -527,10 +527,8 @@
     <string name="issues_tracker">Issues Tracker on GitHub</string>
     <string name="action_settings">Settings</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="close">Close</string>
-    <string name="skip">skip</string>
     <string name="tutorial_accounts_1">Multiple account types: checking, savings, credit, assets, and investments.</string>
     <string name="tutorial_accounts_2">Swipe left to continue...</string>
     <string name="financial_overview">Financial Overview</string>
@@ -541,8 +539,4 @@
     <string name="tutorial_sync_1">Support for multiple platforms, synchronization via Dropbox. Import and export of your data to other applications.</string>
     <string name="transactions">Transactions</string>
     <string name="tutorial_transactions_1">Deposits, withdrawals, transfers. Recurring transactions with reminders.</string>
-    <string name="title_activity_split_transactions_repeating">SplitTransactionsRepeatingActivity
-    </string>
-
-    <string name="hello_world">Hello world!</string>
 </resources>
