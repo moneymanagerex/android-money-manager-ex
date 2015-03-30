@@ -161,7 +161,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
         if (mCurrencyId == null) {
             CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
 
-            TableCurrencyFormats currencyFormats = currencyUtils.getTableCurrencyFormats(currencyUtils.getBaseCurrencyId());
+            TableCurrencyFormats currencyFormats = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
 
             if (currencyFormats != null) {
                 mCurrencyId = currencyFormats.getCurrencyId();

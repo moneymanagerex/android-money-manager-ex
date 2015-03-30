@@ -498,7 +498,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
         public void onListItemClick(ListView l, View v, int position, long id) {
             super.onListItemClick(l, v, position, id);
 
-            // show context menu here.
+            // todo: show context menu if we are displaying the list of currencies (not in selection mode).
             getActivity().openContextMenu(v);
         }
     }
