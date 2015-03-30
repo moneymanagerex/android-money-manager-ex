@@ -2,18 +2,30 @@ package com.money.manager.ex.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
-import com.money.manager.ex.chart.Chart;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.Highlight;
+import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 
-public class IncomeVsExpensesChartFragment extends Fragment {
+import java.util.ArrayList;
+
+public class IncomeVsExpensesChartFragment extends Fragment implements
+        OnChartValueSelectedListener {
     // LOGCAT
     @SuppressWarnings("unused")
     private static final String LOGCAT = IncomeVsExpensesChartFragment.class.getSimpleName();
@@ -26,36 +38,59 @@ public class IncomeVsExpensesChartFragment extends Fragment {
     public static final String KEY_DISPLAY_AS_UP_ENABLED = "IncomeExpensesChartFragment:DisplayHomeAsUpEnabled";
     // bundle arguments
     private Bundle mArguments;
+    // themes text color
+    private int mTextColor;
     // layout
     private LinearLayout mLayout;
+    private BarChart mChart;
     // show back home
     private boolean mDisplayHomeAsUpEnabled = false;
 
-    public View buildChart() {
-        // compose sparse array titles
-        SparseArrayCompat<String> xTitles = new SparseArrayCompat<String>();
-        if (getChartArguments().containsKey(KEY_XTITLES)) {
-            String[] titles = getChartArguments().getStringArray(KEY_XTITLES);
-            int xLabelDistance = titles.length / (titles.length < 12 ? titles.length : 12);
-            int nextXLabelPrint = 0;
-            for (int i = 0; i < titles.length; i++) {
-                if (i == nextXLabelPrint) {
-                    //xTitles.put(i, titles[i]);
-                    xTitles.append(i, titles[i]);
-                    nextXLabelPrint += xLabelDistance;
-                } else {
-                    xTitles.append(i, null);
-                }
-            }
-        }
-        // create a chart
-        Chart chart = new Chart();
-
-        //debug
-        double[] income = getChartArguments().getDoubleArray(KEY_INCOME_VALUES);
+    public void buildChart() {
+        String[] xVals = getChartArguments().getStringArray(KEY_XTITLES);
+        double[] incomes = getChartArguments().getDoubleArray(KEY_INCOME_VALUES);
         double[] expenses = getChartArguments().getDoubleArray(KEY_EXPENSES_VALUES);
 
-        return chart.buildIncomeExpensesChart(getActivity(), getChartArguments().getString(KEY_TITLE), income, expenses, xTitles);
+        ArrayList<BarEntry> yIncomes = new ArrayList<>();
+        ArrayList<BarEntry> yExpenses = new ArrayList<>();
+
+        for (int i = 0; i < xVals.length; i++) {
+            yIncomes.add(new BarEntry((float) incomes[i], i));
+            yExpenses.add(new BarEntry((float) expenses[i], i));
+        }
+
+        BarDataSet dataSetIncomes = new BarDataSet(yIncomes, getString(R.string.income));
+        BarDataSet dataSetExpenses = new BarDataSet(yExpenses, getString(R.string.expenses));
+
+        dataSetExpenses.setColor(getResources().getColor(R.color.material_red_500));
+        dataSetIncomes.setColor(getResources().getColor(R.color.material_green_500));
+
+        ArrayList<BarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(dataSetIncomes);
+        dataSets.add(dataSetExpenses);
+
+        BarData data = new BarData(xVals, dataSets);
+        data.setValueTextColor(getResources().getColor(mTextColor));
+        mChart.setData(data);
+        mChart.animateXY(1500, 1500);
+        mChart.invalidate();
+
+        Legend l = mChart.getLegend();
+        if (l != null)
+            l.setTextColor(getResources().getColor(mTextColor));
+
+        // x labels
+        XAxis xAxis = mChart.getXAxis();
+        if (xAxis != null)
+            xAxis.setTextColor(getResources().getColor(mTextColor));
+        // right label
+        YAxis yAxis = mChart.getAxisRight();
+        if (yAxis != null)
+            yAxis.setTextColor(getResources().getColor(mTextColor));
+        // left label
+        yAxis = mChart.getAxisLeft();
+        if (yAxis != null)
+            yAxis.setTextColor(getResources().getColor(mTextColor));
     }
 
     @Override
@@ -67,9 +102,12 @@ public class IncomeVsExpensesChartFragment extends Fragment {
             if (savedInstanceState.containsKey(KEY_DISPLAY_AS_UP_ENABLED))
                 setDisplayHomeAsUpEnabled(savedInstanceState.getBoolean(KEY_DISPLAY_AS_UP_ENABLED));
         }
+
+        mTextColor = new Core(getActivity()).resolveIdAttribute(android.R.attr.textColor);
+
         // enabled display as home
         ActionBarActivity activity = (ActionBarActivity) getActivity();
-        if (activity != null) {
+        if (activity != null && activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(isDisplayHomeAsUpEnabled());
         }
         // set has option menu
@@ -79,8 +117,20 @@ public class IncomeVsExpensesChartFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //return buildChart();
-        mLayout = new LinearLayout(getActivity());
-        mLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        mLayout = (LinearLayout) inflater.inflate(R.layout.bar_chart_fragment, container, false);
+
+        mChart = (BarChart) mLayout.findViewById(R.id.chartBar);
+        mChart.setOnChartValueSelectedListener(this);
+        mChart.setDescription("");
+
+//      mChart.setDrawBorders(true);
+
+        // scaling can now only be done on x- and y-axis separately
+        mChart.setPinchZoom(false);
+
+        mChart.setDrawBarShadow(false);
+
+        mChart.setDrawGridBackground(false);
 
         return mLayout;
     }
@@ -88,10 +138,7 @@ public class IncomeVsExpensesChartFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mLayout != null) {
-            mLayout.removeAllViews();
-            mLayout.addView(buildChart());
-        }
+        buildChart();
     }
 
     @Override
@@ -138,4 +185,13 @@ public class IncomeVsExpensesChartFragment extends Fragment {
         this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
     }
 
+    @Override
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+
+    }
+
+    @Override
+    public void onNothingSelected() {
+
+    }
 }
