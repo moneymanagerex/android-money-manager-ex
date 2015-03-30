@@ -204,7 +204,7 @@ public class AllDataAdapter extends CursorAdapter {
         } else {
             int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
             if (daysLeft == 0) {
-                holder.txtBalance.setText(R.string.inactive);
+                holder.txtBalance.setText(R.string.due_today);
             } else {
                 holder.txtBalance.setText(Integer.toString(Math.abs(daysLeft)) + " " + context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
             }
