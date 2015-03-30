@@ -237,7 +237,7 @@
     <string name="widget_all_accounts">Money Manager Ex All Accounts</string>
     <string name="widget_add_transaction">Money Manager Ex Add Transaction</string>
     <!-- 20121023 -->
-    <string name="repeating_empty_transaction">Empty Recurring Transactions</string>
+    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
     <!--<string name="repeating_transaction">Repeating Transaction</string>-->
     <string name="none">None</string>
     <string name="weekly">Weekly</string>
