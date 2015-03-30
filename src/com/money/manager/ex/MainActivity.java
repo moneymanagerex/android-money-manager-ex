@@ -56,7 +56,6 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.AccountListActivity.AccountLoaderListFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
-import com.money.manager.ex.CurrencyFormatsListActivity.CurrencyFormatsLoaderListFragment;
 import com.money.manager.ex.PayeeActivity.PayeeLoaderListFragment;
 import com.money.manager.ex.RepeatingTransactionListActivity.RepeatingTransactionListFragment;
 import com.money.manager.ex.about.AboutActivity;
@@ -872,7 +871,12 @@ public class MainActivity extends BaseFragmentActivity {
             showFragment(CategorySubCategoryExpandableLoaderListFragment.class);
             return true;
         } else if (item.getId() == R.id.menu_currency) {
-            showFragment(CurrencyFormatsLoaderListFragment.class);
+            // Show Currency list.
+
+            intent = new Intent(MainActivity.this, CurrencyFormatsListActivity.class);
+            intent.setAction(Intent.ACTION_EDIT);
+            startActivity(intent);
+
             return true;
         } else if (item.getId() == R.id.menu_payee) {
             showFragment(PayeeLoaderListFragment.class);

@@ -19,7 +19,6 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -55,6 +54,7 @@ public class GeneralSettingsActivity extends BaseSettingsFragmentActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
             addPreferencesFromResource(R.xml.general_settings);
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
@@ -131,7 +131,7 @@ public class GeneralSettingsActivity extends BaseSettingsFragmentActivity {
                 // set value
                 lstBaseCurrency.setEntries(entries);
                 lstBaseCurrency.setEntryValues(entryValues);
-                TableCurrencyFormats tableCurrency = currencyUtils.getTableCurrencyFormats(currencyUtils.getBaseCurrencyId());
+                TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
                 if (tableCurrency != null) {
                     lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
                 }
@@ -140,7 +140,7 @@ public class GeneralSettingsActivity extends BaseSettingsFragmentActivity {
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
                         if (currencyUtils.setBaseCurrencyId(Integer.valueOf(String.valueOf(newValue)))) {
                             currencyUtils.reInit();
-                            TableCurrencyFormats tableCurrency = currencyUtils.getTableCurrencyFormats(currencyUtils.getBaseCurrencyId());
+                            TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
                             if (tableCurrency != null) {
                                 lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
                             }

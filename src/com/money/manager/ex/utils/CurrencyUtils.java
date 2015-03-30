@@ -124,8 +124,8 @@ public class CurrencyUtils {
     }
 
     public Double doCurrencyExchange(Integer toCurrencyId, double toAmount, Integer fromCurrencyId) {
-        TableCurrencyFormats fromCurrencyFormats = getTableCurrencyFormats(fromCurrencyId);
-        TableCurrencyFormats toCurrencyFormats = getTableCurrencyFormats(toCurrencyId);
+        TableCurrencyFormats fromCurrencyFormats = getCurrency(fromCurrencyId);
+        TableCurrencyFormats toCurrencyFormats = getCurrency(toCurrencyId);
         // check if exists from and to currencies
         if (fromCurrencyFormats == null || toCurrencyFormats == null)
             return null;
@@ -138,8 +138,8 @@ public class CurrencyUtils {
     }
 
     public boolean updateCurrencyRate(Integer fromCurrencyId, Integer toCurrencyId) {
-        TableCurrencyFormats fromCurrencyFormats = getTableCurrencyFormats(fromCurrencyId);
-        TableCurrencyFormats toCurrencyFormats = getTableCurrencyFormats(toCurrencyId);
+        TableCurrencyFormats fromCurrencyFormats = getCurrency(fromCurrencyId);
+        TableCurrencyFormats toCurrencyFormats = getCurrency(toCurrencyId);
         // check if exists from and to currencies
         if (fromCurrencyFormats == null || toCurrencyFormats == null)
             return false;
@@ -249,7 +249,7 @@ public class CurrencyUtils {
 
         // find currencyid
         if (currencyId != null) {
-            TableCurrencyFormats tableCurrency = getTableCurrencyFormats(currencyId);
+            TableCurrencyFormats tableCurrency = getCurrency(currencyId);
 
             if (tableCurrency == null) {
                 return String.valueOf(value);
@@ -274,7 +274,7 @@ public class CurrencyUtils {
 
         // find currencyid
         if (currencyId != null) {
-            TableCurrencyFormats tableCurrency = getTableCurrencyFormats(currencyId);
+            TableCurrencyFormats tableCurrency = getCurrency(currencyId);
 
             if (tableCurrency == null) {
                 return String.valueOf(value);
@@ -290,7 +290,7 @@ public class CurrencyUtils {
      * @param currencyId of the currency to be get
      * @return an instance of class TableCurrencyFormats. Null if fail
      */
-    public TableCurrencyFormats getTableCurrencyFormats(Integer currencyId) {
+    public TableCurrencyFormats getCurrency(Integer currencyId) {
         if (mCurrencies != null && currencyId != null) {
             return mCurrencies.get(currencyId);
         } else {
