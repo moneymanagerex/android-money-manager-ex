@@ -84,6 +84,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
         // take intent
         Intent intent = getIntent();
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
+            // Store the requested action.
             mAction = intent.getAction();
         }
 
@@ -105,7 +106,8 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    public static class CurrencyFormatsLoaderListFragment extends BaseListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static class CurrencyFormatsLoaderListFragment extends BaseListFragment
+            implements LoaderManager.LoaderCallbacks<Cursor> {
         // filter
         private String mCurFilter;
         private int mLayout;
@@ -119,7 +121,10 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
             setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
             setHasOptionsMenu(true);
 
-            mLayout = Intent.ACTION_PICK.equals(mAction) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
+            mLayout = Intent.ACTION_PICK.equals(mAction)
+                    ? android.R.layout.simple_list_item_multiple_choice
+                    : android.R.layout.simple_list_item_1;
+
             // associate adapter
             MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(), mLayout, null, new String[]{TableCurrencyFormats.CURRENCYNAME},
                     new int[]{android.R.id.text1}, 0);
@@ -498,8 +503,9 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
         public void onListItemClick(ListView l, View v, int position, long id) {
             super.onListItemClick(l, v, position, id);
 
-            // todo: show context menu if we are displaying the list of currencies (not in selection mode).
-            getActivity().openContextMenu(v);
+            // Show context menu only if we are displaying the list of currencies
+            // but not in selection mode.
+            if(mAction.equals(Intent.ACTION_EDIT)) getActivity().openContextMenu(v);
         }
     }
 }
