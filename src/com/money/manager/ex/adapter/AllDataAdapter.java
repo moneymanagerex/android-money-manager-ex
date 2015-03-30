@@ -159,6 +159,7 @@ public class AllDataAdapter extends CursorAdapter {
             else
                 holder.txtPayee.setText(cursor.getString(cursor.getColumnIndex(ACCOUNTNAME)));
         }
+
         // compose category description
         String categorySub = cursor.getString(cursor.getColumnIndex(CATEGORY));
         // check sub category
@@ -167,10 +168,13 @@ public class AllDataAdapter extends CursorAdapter {
         }
         // write category/subcategory format html
         if (!TextUtils.isEmpty(categorySub)) {
+            // Display category/sub-category.
             holder.txtCategorySub.setText(Html.fromHtml(categorySub));
         } else {
-            holder.txtCategorySub.setText("");
+            // Must be a split category.
+            holder.txtCategorySub.setText(R.string.split_category);
         }
+
         // notes
         if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(NOTES)))) {
             holder.txtNotes.setText(Html.fromHtml("<small>" + cursor.getString(cursor.getColumnIndex(NOTES)) + "</small>"));

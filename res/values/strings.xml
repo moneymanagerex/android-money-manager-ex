@@ -539,4 +539,5 @@
     <string name="tutorial_sync_1">Support for multiple platforms, synchronization via Dropbox. Import and export of your data to other applications.</string>
     <string name="transactions">Transactions</string>
     <string name="tutorial_transactions_1">Deposits, withdrawals, transfers. Recurring transactions with reminders.</string>
+    <string name="split_category">-Split Category-</string>
 </resources>

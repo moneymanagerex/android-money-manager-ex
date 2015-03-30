@@ -70,6 +70,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
+
         // check if launch from notification
         if (getIntent() != null && getIntent().getBooleanExtra(INTENT_EXTRA_LAUNCH_NOTIFICATION, false)) {
             Passcode passcode = new Passcode(getApplicationContext());
@@ -118,7 +119,8 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         }
     }
 
-    public static class RepeatingTransactionListFragment extends BaseListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static class RepeatingTransactionListFragment extends BaseListFragment
+            implements LoaderManager.LoaderCallbacks<Cursor> {
         /**
          * start RepeatingTransaction Activity for insert
          */
@@ -136,6 +138,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
+
             // create a object query
             mBillDeposits = new QueryBillDeposits(getActivity());
             // set listview
@@ -264,7 +267,8 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
                     if (!TextUtils.isEmpty(mCurFilter)) {
                         select = TableAccountList.ACCOUNTNAME + " LIKE '" + mCurFilter + "%'";
                     }
-                    return new CursorLoader(getActivity(), mBillDeposits.getUri(), mBillDeposits.getAllColumns(), select, null, QueryBillDeposits.NEXTOCCURRENCEDATE);
+                    return new CursorLoader(getActivity(), mBillDeposits.getUri(), mBillDeposits.getAllColumns(),
+                            select, null, QueryBillDeposits.NEXTOCCURRENCEDATE);
             }
 
             return null;
