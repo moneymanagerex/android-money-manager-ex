@@ -134,12 +134,14 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
                     dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });
+
             // type
             spinTransCode = (Spinner) layout.findViewById(R.id.spinnerTransCode);
             String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
             ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
             adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinTransCode.setAdapter(adapterTrans);
+            // todo: define the transaction type based on the amount and the parent type.
             spinTransCode.setSelection(mSplitObject.getSplitTransAmount() >= 0 ? 0 : 1, true);
 
             // category and subcategory

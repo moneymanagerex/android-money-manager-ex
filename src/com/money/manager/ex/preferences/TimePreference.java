@@ -144,7 +144,7 @@ public class TimePreference extends DialogPreference implements TimePicker.OnTim
 	}
 
 	/**
-	 * TODO: Called when the user changes the time.
+	 * Called when the user changes the time.
 	 */
 	public void onTimeChanged(TimePicker view, int hour, int minute) {
 		Calendar selected = new GregorianCalendar(1970, 0, 1, hour, minute);

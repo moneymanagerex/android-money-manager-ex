@@ -526,8 +526,6 @@
     <string name="due_today">Due Today</string>
     <string name="issues_tracker">Issues Tracker on GitHub</string>
     <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="close">Close</string>
     <string name="tutorial_accounts_1">Multiple account types: checking, savings, credit, assets, and investments.</string>
     <string name="tutorial_accounts_2">Swipe left to continue...</string>
