@@ -44,7 +44,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.chart.ValuePieChart;
+import com.money.manager.ex.chart.ValuePieEntry;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCategory;
@@ -303,10 +303,10 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
             // move first record
             if (!cursor.moveToFirst()) return;
             // create arraylist
-            ArrayList<ValuePieChart> arrayList = new ArrayList<ValuePieChart>();
+            ArrayList<ValuePieEntry> arrayList = new ArrayList<ValuePieEntry>();
             // process cursor
             while (!cursor.isAfterLast()) {
-                ValuePieChart item = new ValuePieChart();
+                ValuePieEntry item = new ValuePieEntry();
                 String category = cursor.getString(cursor.getColumnIndex(ViewMobileData.Category));
                 if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
                     category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));

@@ -40,7 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.chart.ValuePieChart;
+import com.money.manager.ex.chart.ValuePieEntry;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -239,10 +239,10 @@ public class PayeesReportActivity extends BaseFragmentActivity {
             // move first record
             if (!cursor.moveToFirst()) return;
             // create arraylist
-            ArrayList<ValuePieChart> arrayList = new ArrayList<ValuePieChart>();
+            ArrayList<ValuePieEntry> arrayList = new ArrayList<ValuePieEntry>();
             // process cursor
             while (!cursor.isAfterLast()) {
-                ValuePieChart item = new ValuePieChart();
+                ValuePieEntry item = new ValuePieEntry();
                 // total
                 double total = Math.abs(cursor.getDouble(cursor.getColumnIndex("TOTAL")));
                 if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {

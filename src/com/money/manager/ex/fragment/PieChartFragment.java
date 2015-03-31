@@ -37,7 +37,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PercentFormatter;
 import com.money.manager.ex.R;
-import com.money.manager.ex.chart.ValuePieChart;
+import com.money.manager.ex.chart.ValuePieEntry;
 import com.money.manager.ex.core.Core;
 
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class PieChartFragment extends Fragment implements OnChartValueSelectedLi
     private boolean mDisplayHomeAsUpEnabled = false;
 
     public void buildChart() {
-        ArrayList<ValuePieChart> pieCharts = (ArrayList<ValuePieChart>) mArguments.getSerializable(KEY_CATEGORIES_VALUES);
+        ArrayList<ValuePieEntry> pieCharts = (ArrayList<ValuePieEntry>) mArguments.getSerializable(KEY_CATEGORIES_VALUES);
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
         ArrayList<String> xVals = new ArrayList<String>();
 

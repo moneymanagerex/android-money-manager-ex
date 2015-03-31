@@ -21,20 +21,20 @@ package com.money.manager.ex.chart;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ValuePieChart implements Parcelable {
+public class ValuePieEntry implements Parcelable {
     private String mText;
     private double mValue;
     private String mValueFormatted;
 
-    public ValuePieChart() {
-	}
+    public ValuePieEntry() {
+    }
 
-    public ValuePieChart(String text, double value) {
+    public ValuePieEntry(String text, double value) {
         setText(text);
         setValue(value);
 	}
 
-    public ValuePieChart(String text, double value, String valueFormatted) {
+    public ValuePieEntry(String text, double value, String valueFormatted) {
         setText(text);
         setValue(value);
 		setValueFormatted(valueFormatted);
@@ -93,17 +93,17 @@ public class ValuePieChart implements Parcelable {
         dest.writeDouble(getValue());
 		dest.writeString(getValueFormatted());
 	}
-	
-	public final static Parcelable.Creator<ValuePieChart> CREATOR = new Creator<ValuePieChart>() {
+
+    public final static Parcelable.Creator<ValuePieEntry> CREATOR = new Creator<ValuePieEntry>() {
+
+        @Override
+        public ValuePieEntry[] newArray(int size) {
+            return new ValuePieEntry[size];
+        }
 		
 		@Override
-		public ValuePieChart[] newArray(int size) {
-			return new ValuePieChart[size];
-		}
-		
-		@Override
-		public ValuePieChart createFromParcel(Parcel source) {
-			return new ValuePieChart(source.readString(), source.readDouble(), source.readString());
-		}
+        public ValuePieEntry createFromParcel(Parcel source) {
+            return new ValuePieEntry(source.readString(), source.readDouble(), source.readString());
+        }
 	};
 }
