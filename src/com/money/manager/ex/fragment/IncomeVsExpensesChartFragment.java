@@ -117,7 +117,7 @@ public class IncomeVsExpensesChartFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //return buildChart();
-        mLayout = (LinearLayout) inflater.inflate(R.layout.bar_chart_fragment, container, false);
+        mLayout = (LinearLayout) inflater.inflate(R.layout.chart_bar_fragment, container, false);
 
         mChart = (BarChart) mLayout.findViewById(R.id.chartBar);
         mChart.setOnChartValueSelectedListener(this);
