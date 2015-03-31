@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -70,14 +71,31 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
         this.mOnSplitItemCallback = splitItemCallback;
     }
 
-    public ISplitTransactionsDataset getTableSplitTransactions() {
-        String selectItem = spinTransCode.getSelectedItem().toString();
-        if (txtAmount.getTag() != null) {
-            mSplitObject.setSplitTransAmount((Double) txtAmount.getTag() * (selectItem.equals(getString(R.string.withdrawal)) ? 1 : -1));
-        } else {
-            mSplitObject.setSplitTransAmount(0);
+    /**
+     * Returns the Split Transaction created. Called from the activity that holds multiple
+     * split-fragments.
+     * @param parentTransactionType Parent transaction type. Required to determine the amount sign.
+     *                              If the parent is Deposit then Deposit here is +,
+     *                              Withdrawal is -.
+     * @return Split Transaction
+     */
+    public ISplitTransactionsDataset getSplitTransaction(String parentTransactionType) {
+        // handle 0 values.
+        if(txtAmount.getTag() == null) {
+            mSplitTransaction.setSplitTransAmount(0);
+            return mSplitTransaction;
         }
-        return mSplitObject;
+
+        // otherwise figure out which sign to use for the amount.
+
+        String transactionType = spinTransCode.getSelectedItem().toString();
+//        mSplitTransaction.setSplitTransAmount((Double) txtAmount.getTag() * (transactionType.equals(getString(R.string.withdrawal)) ? 1 : -1));
+        if(!parentTransactionType.equals(transactionType)){
+            // parent transaction type is different. Invert the amount. What if the amount is already negative?
+            mSplitTransaction.setSplitTransAmount((Double) txtAmount.getTag() * -1);
+        }
+
+        return mSplitTransaction;
     }
 
     @Override
@@ -113,8 +131,12 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
         if (layout != null) {
             // amount
             txtAmount = (TextView) layout.findViewById(R.id.editTextTotAmount);
-            if (!(mSplitTransaction.getSplitTransAmount() == 0)) {
-                core.formatAmountTextView(txtAmount, mSplitTransaction.getSplitTransAmount());
+            double splitTransactionAmount = mSplitTransaction.getSplitTransAmount();
+            if (!(splitTransactionAmount == 0)) {
+                // Change the sign to positive.
+                if(splitTransactionAmount < 0) splitTransactionAmount = Math.abs(splitTransactionAmount);
+
+                core.formatAmountTextView(txtAmount, splitTransactionAmount);
             }
             txtAmount.setOnClickListener(new OnClickListener() {
 
@@ -140,8 +162,10 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
             ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
             adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinTransCode.setAdapter(adapterTrans);
-            // todo: define the transaction type based on the amount and the parent type.
-            spinTransCode.setSelection(mSplitTransaction.getSplitTransAmount() >= 0 ? 0 : 1, true);
+            // find the split transaction type.
+//            spinTransCode.setSelection(mSplitTransaction.getSplitTransAmount() >= 0 ? 0 : 1, true);
+            int transactionTypeSelection = getTransactionTypeSelection();
+            spinTransCode.setSelection(transactionTypeSelection);
 
             // category and subcategory
             txtSelectCategory = (TextView) layout.findViewById(R.id.textViewCategory);
@@ -176,6 +200,26 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
         }
 
         return layout;
+    }
+
+    private int getTransactionTypeSelection(){
+        // define the transaction type based on the amount and the parent type.
+
+        // 0 = withdrawal, 1 = deposit.
+        int transactionTypeSelection;
+
+        SplitTransactionsActivity splitActivity = (SplitTransactionsActivity) getActivity();
+        boolean parentIsWithdrawal = splitActivity.parentTransactionType.equals(getString(R.string.withdrawal));
+        double amount = mSplitTransaction.getSplitTransAmount();
+        if(parentIsWithdrawal){
+            // parent is Withdrawal.
+            transactionTypeSelection = amount >= 0 ? 0 : 1;
+        } else {
+            // parent is Deposit.
+            transactionTypeSelection = amount >= 0 ? 1 : 0;
+        }
+
+        return transactionTypeSelection;
     }
 
     @Override

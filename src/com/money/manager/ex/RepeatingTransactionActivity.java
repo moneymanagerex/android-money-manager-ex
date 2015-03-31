@@ -459,6 +459,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     Intent intent = new Intent(RepeatingTransactionActivity.this, SplitTransactionsActivity.class);
                     // Pass the name of the entity/dataset.
                     intent.putExtra("DatasetType", TableBudgetSplitTransactions.class.getSimpleName());
+                    intent.putExtra("TransactionType", mTransCode);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
                     startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);

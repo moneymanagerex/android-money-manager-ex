@@ -49,6 +49,9 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
     private static final int MENU_ADD_SPLIT_TRANSACTION = 1;
     private static int mIdTag = 0x8000;
+
+    public String parentTransactionType;
+
     private SplitItemFragment mFragmentInputAmountClick;
 
     /**
@@ -81,7 +84,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             String nameFragment = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(i);
             SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(nameFragment);
             if (fragment != null && fragment.isVisible()) {
-                splitTransactions.add(fragment.getSplitTransaction());
+                splitTransactions.add(fragment.getSplitTransaction(parentTransactionType));
             }
         }
         return splitTransactions;
@@ -91,10 +94,12 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // load intent
-        if (getIntent() != null) {
-            this.EntityTypeName = getIntent().getStringExtra("DatasetType");
-            mSplitTransactions = getIntent().getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
-            mSplitDeleted = getIntent().getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
+        Intent intent = getIntent();
+        if (intent != null) {
+            this.EntityTypeName = intent.getStringExtra("DatasetType");
+            this.parentTransactionType = intent.getStringExtra("TransactionType");
+            mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
+            mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
         }
         // load deleted item
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
