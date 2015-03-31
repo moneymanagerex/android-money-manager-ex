@@ -79,7 +79,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             // set actionbar
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         //check if is dual panel
         mIsDualPanel = findViewById(R.id.fragmentChart) != null;
