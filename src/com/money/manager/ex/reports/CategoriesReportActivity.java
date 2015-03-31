@@ -317,7 +317,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
                 if (TextUtils.isEmpty(category))
                     category = getString(R.string.empty_category);
 
-                item.setCategory(category);
+                item.setText(category);
                 item.setValue(total);
                 item.setValueFormatted(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
                 // add element

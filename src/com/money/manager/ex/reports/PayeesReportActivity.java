@@ -246,9 +246,9 @@ public class PayeesReportActivity extends BaseFragmentActivity {
                 // total
                 double total = Math.abs(cursor.getDouble(cursor.getColumnIndex("TOTAL")));
                 if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
-                    item.setCategory(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
+                    item.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
                 } else {
-                    item.setCategory(getString(R.string.empty_payee));
+                    item.setText(getString(R.string.empty_payee));
                 }
                 item.setValue(total);
                 item.setValueFormatted(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
