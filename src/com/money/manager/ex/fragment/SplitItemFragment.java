@@ -80,8 +80,10 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
      * @return Split Transaction
      */
     public ISplitTransactionsDataset getSplitTransaction(String parentTransactionType) {
+        Object amount = txtAmount.getTag();
+
         // handle 0 values.
-        if(txtAmount.getTag() == null) {
+        if(amount == null) {
             mSplitTransaction.setSplitTransAmount(0);
             return mSplitTransaction;
         }
@@ -92,7 +94,7 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
 //        mSplitTransaction.setSplitTransAmount((Double) txtAmount.getTag() * (transactionType.equals(getString(R.string.withdrawal)) ? 1 : -1));
         if(!parentTransactionType.equals(transactionType)){
             // parent transaction type is different. Invert the amount. What if the amount is already negative?
-            mSplitTransaction.setSplitTransAmount((Double) txtAmount.getTag() * -1);
+            mSplitTransaction.setSplitTransAmount((Double) amount * -1);
         }
 
         return mSplitTransaction;
