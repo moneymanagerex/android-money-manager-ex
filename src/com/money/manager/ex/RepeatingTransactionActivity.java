@@ -141,8 +141,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     // object of the table
     TableBillsDeposits mRepeatingTransaction = new TableBillsDeposits();
     // list split transactions
-    ArrayList<TableBudgetSplitTransactions> mSplitTransaction = null;
-    ArrayList<TableBudgetSplitTransactions> mSplitTransactionDeleted = null;
+    ArrayList<TableBudgetSplitTransactions> mSplitTransactions = null;
+    ArrayList<TableBudgetSplitTransactions> mSplitTransactionsDeleted = null;
 
     /**
      * getCategoryFromPayee set last category used from payee
@@ -234,11 +234,11 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 break;
             case REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mSplitTransaction = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
-                    if (mSplitTransaction != null && mSplitTransaction.size() > 0) {
+                    mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                    if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
                         double totAmount = 0;
-                        for (int i = 0; i < mSplitTransaction.size(); i++) {
-                            totAmount += mSplitTransaction.get(i).getSplitTransAmount();
+                        for (int i = 0; i < mSplitTransactions.size(); i++) {
+                            totAmount += mSplitTransactions.get(i).getSplitTransAmount();
                         }
                         Core core = new Core(getBaseContext());
 //                        formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
@@ -246,7 +246,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     }
                     // deleted item
                     if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
-                        mSplitTransactionDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                        mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
                     }
                 }
                 break;
@@ -278,8 +278,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
             mNotes = savedInstanceState.getString(KEY_NOTES);
             mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
-            mSplitTransaction = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
-            mSplitTransactionDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
+            mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
+            mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
             mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
             mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
             mNumOccurrence = savedInstanceState.getInt(KEY_NUM_OCCURRENCE);
@@ -459,8 +459,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     Intent intent = new Intent(RepeatingTransactionActivity.this, SplitTransactionsActivity.class);
                     // Pass the name of the entity/dataset.
                     intent.putExtra("DatasetType", TableBudgetSplitTransactions.class.getSimpleName());
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransaction);
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
+                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
+                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
                     startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
                 }
             }
@@ -468,7 +468,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         // split transaction
         chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
-        chbSplitTransaction.setChecked(mSplitTransaction != null && mSplitTransaction.size() >= 0);
+        chbSplitTransaction.setChecked(mSplitTransactions != null && mSplitTransactions.size() >= 0);
         chbSplitTransaction.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -626,8 +626,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         outState.putInt(KEY_SUBCATEGORY_ID, mSubCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mSubCategoryName);
         outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
-        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransaction);
-        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
+        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransactions);
+        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
         outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
         outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat("yyyy-MM-dd").format(txtNextOccurrence.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
@@ -849,8 +849,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         mNumOccurrence = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
 
         // load split transactions only if no category selected.
-        if (mCategoryId == -1 && mSplitTransaction == null) {
-            mSplitTransaction = loadSplitTransaction(billId);
+        if (mCategoryId == -1 && mSplitTransactions == null) {
+            mSplitTransactions = loadSplitTransaction(billId);
         }
 
         selectAccountName(mToAccountId);
@@ -951,7 +951,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             Core.alertDialog(this, R.string.error_category_not_selected).show();
             return false;
         }
-        if (chbSplitTransaction.isChecked() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
+        if (chbSplitTransaction.isChecked() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
             Core.alertDialog(this, R.string.error_split_transaction_empty).show();
             return false;
         }
@@ -1029,18 +1029,18 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         }
         // has split transaction
-        boolean hasSplitTransaction = mSplitTransaction != null && mSplitTransaction.size() > 0;
+        boolean hasSplitTransaction = mSplitTransactions != null && mSplitTransactions.size() > 0;
         if (hasSplitTransaction) {
-            for (int i = 0; i < mSplitTransaction.size(); i++) {
+            for (int i = 0; i < mSplitTransactions.size(); i++) {
                 values.clear();
-                values.put(TableBudgetSplitTransactions.CATEGID, mSplitTransaction.get(i).getCategId());
-                values.put(TableBudgetSplitTransactions.SUBCATEGID, mSplitTransaction.get(i).getSubCategId());
-                values.put(TableBudgetSplitTransactions.SPLITTRANSAMOUNT, mSplitTransaction.get(i).getSplitTransAmount());
+                values.put(TableBudgetSplitTransactions.CATEGID, mSplitTransactions.get(i).getCategId());
+                values.put(TableBudgetSplitTransactions.SUBCATEGID, mSplitTransactions.get(i).getSubCategId());
+                values.put(TableBudgetSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactions.get(i).getSplitTransAmount());
                 values.put(TableBudgetSplitTransactions.TRANSID, mBillDepositsId);
 
-                if (mSplitTransaction.get(i).getSplitTransId() == -1) {
+                if (mSplitTransactions.get(i).getSplitTransId() == -1) {
                     // insert data
-                    Uri insert = getContentResolver().insert(mSplitTransaction.get(i).getUri(), values);
+                    Uri insert = getContentResolver().insert(mSplitTransactions.get(i).getUri(), values);
                     if (insert == null) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Insert new split transaction failed!");
@@ -1048,7 +1048,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     }
                 } else {
                     // update data
-                    if (getContentResolver().update(mSplitTransaction.get(i).getUri(), values, TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransaction.get(i).getSplitTransId())}) <= 0) {
+                    if (getContentResolver().update(mSplitTransactions.get(i).getUri(), values, TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Update split transaction failed!");
                         return false;
@@ -1058,15 +1058,15 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         }
 
         // deleted old split transaction
-        if (mSplitTransactionDeleted != null && mSplitTransactionDeleted.size() > 0) {
-            for (int i = 0; i < mSplitTransactionDeleted.size(); i++) {
+        if (mSplitTransactionsDeleted != null && mSplitTransactionsDeleted.size() > 0) {
+            for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
                 //put value
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactionDeleted.get(i).getSplitTransAmount());
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactionsDeleted.get(i).getSplitTransAmount());
 
                 // update data
-                if (getContentResolver().delete(mSplitTransactionDeleted.get(i).getUri(),
-                        TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactionDeleted.get(i).getSplitTransId())}) <= 0) {
+                if (getContentResolver().delete(mSplitTransactionsDeleted.get(i).getUri(),
+                        TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(LOGCAT, "Delete split transaction failed!");
                     return false;
