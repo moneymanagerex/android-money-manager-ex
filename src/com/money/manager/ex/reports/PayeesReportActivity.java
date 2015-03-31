@@ -40,7 +40,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.chart.ValuePieEntry;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;

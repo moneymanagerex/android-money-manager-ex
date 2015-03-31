@@ -37,8 +37,8 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PercentFormatter;
 import com.money.manager.ex.R;
-import com.money.manager.ex.chart.ValuePieEntry;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.reports.ValuePieEntry;
 
 import java.util.ArrayList;
 
