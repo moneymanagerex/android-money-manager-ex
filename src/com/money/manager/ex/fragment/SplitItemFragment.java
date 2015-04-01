@@ -91,7 +91,6 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
         // otherwise figure out which sign to use for the amount.
 
         String transactionType = spinTransCode.getSelectedItem().toString();
-//        mSplitTransaction.setSplitTransAmount((Double) txtAmount.getTag() * (transactionType.equals(getString(R.string.withdrawal)) ? 1 : -1));
         if(!parentTransactionType.equals(transactionType)){
             // parent transaction type is different. Invert the amount. What if the amount is already negative?
             mSplitTransaction.setSplitTransAmount((double) amount * -1);
