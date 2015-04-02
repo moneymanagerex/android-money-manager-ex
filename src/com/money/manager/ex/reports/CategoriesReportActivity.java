@@ -44,7 +44,6 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.chart.ValuePieChart;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCategory;
@@ -79,7 +78,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             // set actionbar
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         //check if is dual panel
         mIsDualPanel = findViewById(R.id.fragmentChart) != null;
@@ -303,10 +302,10 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
             // move first record
             if (!cursor.moveToFirst()) return;
             // create arraylist
-            ArrayList<ValuePieChart> arrayList = new ArrayList<ValuePieChart>();
+            ArrayList<ValuePieEntry> arrayList = new ArrayList<ValuePieEntry>();
             // process cursor
             while (!cursor.isAfterLast()) {
-                ValuePieChart item = new ValuePieChart();
+                ValuePieEntry item = new ValuePieEntry();
                 String category = cursor.getString(cursor.getColumnIndex(ViewMobileData.Category));
                 if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
                     category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
@@ -317,7 +316,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
                 if (TextUtils.isEmpty(category))
                     category = getString(R.string.empty_category);
 
-                item.setCategory(category);
+                item.setText(category);
                 item.setValue(total);
                 item.setValueFormatted(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
                 // add element

@@ -83,7 +83,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             // set actionbar
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         // check if is dual panel
@@ -230,7 +230,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             // set home button
             ActionBarActivity activity = (ActionBarActivity) getActivity();
             if (activity != null) {
-                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
             // set listview
             setEmptyText(getString(R.string.no_data));

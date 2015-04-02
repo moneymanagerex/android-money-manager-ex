@@ -52,6 +52,14 @@ dependencies {
     // androidSVG
     compile project(':androidSVG_12')
 }
+// MPChartAndroid
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    compile 'com.github.PhilJay:MPAndroidChart:v2.0.8'
+}
 
 android {
     compileSdkVersion 22
