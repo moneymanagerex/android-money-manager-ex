@@ -44,6 +44,8 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
     public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
+    public static final String KEY_TRANSACTION_TYPE = "SplitTransactionsActivity:TransactionType";
+    public static final String KEY_DATASET_TYPE = "SplitTransactionsActivity:DatasetType";
     public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitTransactionsActivity:ResultSplitTransaction";
     public static final String INTENT_RESULT_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ResultSplitTransactionDeleted";
 
@@ -96,8 +98,8 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         // load intent
         Intent intent = getIntent();
         if (intent != null) {
-            this.EntityTypeName = intent.getStringExtra("DatasetType");
-            this.parentTransactionType = intent.getStringExtra("TransactionType");
+            this.EntityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
+            this.parentTransactionType = intent.getStringExtra(KEY_TRANSACTION_TYPE);
             mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
             mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
         }
