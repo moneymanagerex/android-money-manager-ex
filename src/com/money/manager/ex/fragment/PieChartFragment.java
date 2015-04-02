@@ -22,6 +22,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,13 +40,16 @@ import com.github.mikephil.charting.utils.PercentFormatter;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.reports.ValuePieEntry;
+import com.nispok.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class PieChartFragment extends Fragment implements OnChartValueSelectedListener {
     // LOGCAT
-    @SuppressWarnings("unused")
     private static final String LOGCAT = PieChartFragment.class.getSimpleName();
+    private static final Integer MAX_NUM_ITEMS = 12;
     // key arguments
     public static final String KEY_TITLE = "PieChartFragment:Title";
     public static final String KEY_CATEGORIES_VALUES = "PieChartFragment:CategoriesValues";
@@ -62,19 +66,30 @@ public class PieChartFragment extends Fragment implements OnChartValueSelectedLi
     // layout
     private LinearLayout mLayout;
     private PieChart mChart;
+    ArrayList<ValuePieEntry> mPieCharts;
     private int mTextColor;
     // show back home
     private boolean mDisplayHomeAsUpEnabled = false;
 
     public void buildChart() {
-        ArrayList<ValuePieEntry> pieCharts = (ArrayList<ValuePieEntry>) mArguments.getSerializable(KEY_CATEGORIES_VALUES);
+        mPieCharts = (ArrayList<ValuePieEntry>) mArguments.getSerializable(KEY_CATEGORIES_VALUES);
+        //sort pie charts
+        Collections.sort(mPieCharts, new Comparator<ValuePieEntry>() {
+
+            @Override
+            public int compare(ValuePieEntry lhs, ValuePieEntry rhs) {
+                return lhs.getValue() > rhs.getValue() ? -1 : lhs.getValue() == rhs.getValue() ? 0 : 1;
+            }
+        });
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
         ArrayList<String> xVals = new ArrayList<String>();
 
-        for (int i = 0; i < pieCharts.size(); i++) {
-            Entry e = new Entry((float) pieCharts.get(i).getValue(), i);
+        int length = mPieCharts.size() < MAX_NUM_ITEMS ? mPieCharts.size() : MAX_NUM_ITEMS;
+
+        for (int i = 0; i < length; i++) {
+            Entry e = new Entry((float) mPieCharts.get(i).getValue(), i);
             yVals1.add(e);
-            xVals.add(pieCharts.get(i).getText());
+            xVals.add(mPieCharts.get(i).getText());
         }
 
         PieDataSet dataSet = new PieDataSet(yVals1, "");
@@ -98,6 +113,9 @@ public class PieChartFragment extends Fragment implements OnChartValueSelectedLi
         mChart.invalidate();
 
         Legend l = mChart.getLegend();
+        if (l != null) {
+            l.setEnabled(false);
+        }
     }
 
     @Override
@@ -208,7 +226,16 @@ public class PieChartFragment extends Fragment implements OnChartValueSelectedLi
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-
+        String text = "";
+        try {
+            text = mPieCharts.get(e.getXIndex()).getText().concat(": ").concat(mPieCharts.get(e.getXIndex()).getValueFormatted());
+            Snackbar.with(getActivity().getApplicationContext()) // context
+                    .text(text)
+                    .duration(Snackbar.SnackbarDuration.LENGTH_LONG)
+                    .show(getActivity());
+        } catch (Exception exp) {
+            Log.e(LOGCAT, exp.getMessage());
+        }
     }
 
     @Override
