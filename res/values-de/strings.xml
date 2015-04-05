@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -44,9 +44,11 @@
     <string name="version">Version</string>
     <string name="build">Build</string>
     <string name="path">Datenbank-Pfad</string>
+    <string name="title_show_tutorial">Zeige Tutorium</string>
+    <string name="summary_show_tutorial">Zeige Tutorium beim nächsten Programmaufruf?</string>
     <string name="account">Konto</string>
     <string name="account_list">Kontenliste</string>
-    <string name="account_empty_list">Keine Konten gefunden</string>
+    <string name="account_empty_list">Keine Konti gefunden. Um ein Konto zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
     <string name="account_balance">Kontostand</string>
     <string name="account_reconciled_balance">abgestimmter Saldo</string>
     <string name="delete_account">Konto löschen</string>
@@ -72,12 +74,12 @@
     <string name="delete_payee">Zahlungsempfänger löschen</string>
     <string name="payee">Zahlungsempfänger</string>
     <string name="select_payee">Zahlungsempfänger wählen</string>
-    <string name="payee_empty_list">Keinen Empfänger gefunden</string>
+    <string name="payee_empty_list">Kein Zahler/Empfänger gefunden. Um einen Zahler/Empfänger zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
     <string name="from">Von</string>
     <string name="db_payee_update_failed">Aktualisieren des Empfängers fehlgeschlagen</string>
     <string name="category">Kategorie</string>
     <string name="subcategory">Unterkategorie</string>
-    <string name="category_empty_list">Keine Kategorie gefunden</string>
+    <string name="category_empty_list">Keine Kategorie gefunden. Um eine Kategorie zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
     <string name="select_category">Kategorie wählen</string>
     <string name="add_category">Kategorie hinzufügen</string>
     <string name="add_subcategory">Unterkategorie hinzufügen</string>
@@ -123,12 +125,14 @@
     <string name="delete">Löschen</string>
     <string name="download">Download</string>
     <string name="edit">Bearbeiten</string>
+    <string name="home">Heim</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Neue/Bearbeiten der Transaktion</string>
     <string name="refresh">Aktualisieren</string>
     <string name="search">Suche</string>
     <string name="settings">Einstellungen</string>
     <string name="summary">Übersicht</string>
+    <string name="sync">Synchronisation</string>
     <string name="synchronize">Synchronisieren</string>
     <string name="open">Öffnen</string>
     <string name="user">Benutzer</string>
@@ -164,7 +168,7 @@
     <string name="widget_summary">Money Manager Ex - Zusammenfassung</string>
     <string name="widget_all_accounts">Money Manager Ex - alle Konten</string>
     <string name="widget_add_transaction">Money Manager Ex - Transaktion hinzufügen</string>
-    <string name="repeating_empty_transaction">Leere wiederholte Transaktion</string>
+    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
     <string name="none">Nichts</string>
     <string name="weekly">Wöchentlich</string>
     <string name="bi_weekly">Zweiwöchentlich</string>
@@ -183,7 +187,7 @@
     <string name="inactive">Inaktiv</string>
     <string name="days_overdue">Tage überfällig!</string>
     <string name="days_remaining">Tage verbleibend</string>
-    <string name="new_edit_repeating_transaction">Wiederholte Transaktionen erstellen/bearbeiten</string>
+    <string name="new_edit_repeating_transaction">Neu/editieren wiederholte Transaktionen</string>
     <string name="next_occurrence">Nächstes Vorkommen</string>
     <string name="repeats">Wiederholungen</string>
     <string name="times_repeated">Mal wiederholt</string>
@@ -191,9 +195,9 @@
     <string name="activates">aktiviert</string>
     <string name="enter_next_occurrence">Gib den nächsten Vorgang ein</string>
     <string name="skip_next_occurrence">Überspringe den nächsten Vorgang</string>
-    <string name="notification_repeating_transaction_expired">Es gibt eine abgelaufene wiederholte Transaktion</string>
+    <string name="notification_repeating_transaction_expired">Abgelaufene wiederholte Transaktionen vorhanden</string>
     <string name="notification_click_to_check_repeating_transaction">Berühren um die ausstehende Transation zu sehen</string>
-    <string name="num_repeating_transaction_expired">%1$d Wiederholte Transaktion überfallig</string>
+    <string name="num_repeating_transaction_expired">%1$d Wiederholte Transaktion überfällig</string>
     <string name="send_feedback">Rückmeldung senden</string>
     <string name="preferences_info_application">Info</string>
     <string name="preferences_security">Sicherheit</string>
@@ -210,7 +214,7 @@
     <string name="income">Einkommen</string>
     <string name="expenses">Ausgaben</string>
     <string name="difference">Differenz</string>
-    <string name="no_data">Keine anzuzeigenden Daten</string>
+    <string name="no_data">Keine Aufnahmen gefunden. Um eine Aufnahme zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
     <string name="month">Monat</string>
     <string name="year">Jahr</string>
     <string name="menu_reports">Berichte</string>
@@ -289,7 +293,7 @@
     <string name="dashclock_extension_summary">Zeige Zuammenfassung für Money Manager Ex für Android</string>
     <string name="dashclock_extension_summary_all_account">Zeige Zusammenfassung für jedes Konto in Money Manager Ex für Android</string>
     <string name="title_check_repeating_transaction">Setze Zeit</string>
-    <string name="summary_check_repeating_transaction">Welche Zeit wollen Sie wählen für wiederholte überfallige Transaktionen? (default 08:00)</string>
+    <string name="summary_check_repeating_transaction">Welche Zeit wollen Sie wählen für eine überfällige wiederholte Transaktion? (default 08:00)</string>
     <string name="credits">Credits</string>
     <string name="top_withdrawals_last_30_days">Größte Abhebungen: Letzte 30 Tage</string>
     <string name="top_payees_last_30_days">Größter Zahlungsempfänger/Zahler: Letzte 30 Tage</string>
@@ -315,7 +319,7 @@
     <string name="categories">Kategorien</string>
     <string name="currencies">Währungen</string>
     <string name="payees">Zahlungsempfänger/Zahler</string>
-    <string name="repeating_transactions">Wiederholende Transaktionen</string>
+    <string name="repeating_transactions">Wiederholte Transaktionen</string>
     <string name="theme_holo_light">Holo hell</string>
     <string name="new_account">Neues Konto</string>
     <string name="import_all_currencies">Import Währungen</string>
@@ -324,7 +328,7 @@
     <string name="amount_less_or_equal">Betrag kleiner oder gleich</string>
     <string name="result_search">Ergebnis deiner Suche</string>
     <string name="new_repeating_transaction">Neue wiederholte Transaktion</string>
-    <string name="edit_repeating_transaction">Editiere wiederholte Transaktion</string>
+    <string name="edit_repeating_transaction">Editiere Wiederholte Transaktion</string>
     <string name="every_5_minutes">Alle 5 Minuten</string>
     <string name="every_15_minutes">Alle 15 Minuten</string>
     <string name="every_30_minutes">Alle 30 Minuten</string>
@@ -370,8 +374,8 @@
     <string name="donate_in_app_already_donate">Sie haben schon die Entwicklung vonYou already MoneyManagerEx für Android untersützt mit einer Spende!\n\nDanke das Entwicklerteam!</string>
     <string name="donate_in_app_retrieving_status">Rufe den Status Ihrer Spende von Google Play ab. Bitte warten&#8230;</string>
     <string name="donate_in_app_error">Der in-app Kauf kann nicht verwendet werden. Überprüfen Sie ob die letzte Version von Play Store installiert ist.</string>
-    <string name="title_notifications_repeating_transaction">Nchricht wiederholte Transaktion is überfällig </string>
-    <string name="summary_notifications_repeating_transaction">Zeige Nachricht für überfällige wiederholte Transaktionen</string>
+    <string name="title_notifications_repeating_transaction">Benachrichtigung Wiederholte Transaktion ist überfällig </string>
+    <string name="summary_notifications_repeating_transaction">Zeige Benachrichtigung für überfällige wiederholte Transaktionen</string>
     <string name="tools">Werkzeuge</string>
     <string name="loading">Wird geladen&#8230;</string>
     <string name="grand_total">Gesamtbetrag</string>
@@ -396,4 +400,21 @@
     <string name="keep_editing">Weiter editieren</string>
     <string name="discard">Verwerfen</string>
     <string name="invalid_expression">Ungültiger Ausdruck</string>
+    <string name="send_me_logcat">Logcat</string>
+    <string name="dropbox_database_can_be_updted">Es gibt ein Update der Datenbank auf Dropbox</string>
+    <string name="due_today">Heute fällig</string>
+    <string name="issues_tracker">Issues Tracker on GitHub</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="close">Schliessen</string>
+    <string name="tutorial_accounts_1">Multiple Kontotypen: Girokonto, Sparkonto, Kreditkonto, Bestandskonto, Investmentkonto.</string>
+    <string name="tutorial_accounts_2">Nach links wischen um fortzufahren...</string>
+    <string name="financial_overview">Finanzübersicht</string>
+    <string name="tutorial_overview_1">Anzeigetafel für schnelle Übersicht, angepasste Berichte.</string>
+    <string name="global">Global</string>
+    <string name="tutorial_global_1">Multiple Währungen und Sprachen. Open Source. Treten Sie unserer Übersetzungsmannschaft bei.</string>
+    <string name="synchronization">Synchronisation</string>
+    <string name="tutorial_sync_1">Unterstützung für unterschiedliche Plattformen, Synchronisation über Dropbox, Import und Export Ihrer Daten von  und zu anderen Anwendungen.</string>
+    <string name="transactions">Transaktionen</string>
+    <string name="tutorial_transactions_1">Depots, Abhebungen, Überträge, wiederkehrende Transaktionen mit Erinnerungen.</string>
+    <string name="split_category">-Split Category-</string>
 </resources>

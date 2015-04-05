@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -44,9 +44,11 @@
     <string name="version">Versione</string>
     <string name="build">Build</string>
     <string name="path">Percorso del database</string>
+    <string name="title_show_tutorial">Visualizza tutorial</string>
+    <string name="summary_show_tutorial">Visualizza tutorial al prossimo avvio?</string>
     <string name="account">Conto</string>
     <string name="account_list">Elenco dei Conti</string>
-    <string name="account_empty_list">Nessun Conto Trovato</string>
+    <string name="account_empty_list">Nessun conto è stato trovato. Per crearne uno, toccare il pulsante più verde.</string>
     <string name="account_balance">Saldo</string>
     <string name="account_reconciled_balance">Saldo Riconciliato</string>
     <string name="delete_account">Elimina Conto</string>
@@ -72,12 +74,12 @@
     <string name="delete_payee">Elimina Beneficiario</string>
     <string name="payee">Beneficiario</string>
     <string name="select_payee">Seleziona Beneficiario</string>
-    <string name="payee_empty_list">Nessun Beneficiario Trovato</string>
+    <string name="payee_empty_list">Non è stato trovato alcun beneficiario. Per crearne uno, toccare il pulsante più verde.</string>
     <string name="from">Da</string>
     <string name="db_payee_update_failed">Aggiornamento beneficiario fallito</string>
     <string name="category">Categoria</string>
     <string name="subcategory">Sottocategoria</string>
-    <string name="category_empty_list">Nessuna Categoria Trovata</string>
+    <string name="category_empty_list">Nessuna categoria è stata trovata. Per crearne una, toccare il pulsante più verde.</string>
     <string name="select_category">Seleziona Categoria</string>
     <string name="add_category">Aggiungi Categoria</string>
     <string name="add_subcategory">Aggiungi Sottocategoria</string>
@@ -123,12 +125,14 @@
     <string name="delete">Cancella</string>
     <string name="download">Scarica</string>
     <string name="edit">Modifica</string>
+    <string name="home">Casa</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Nuova/Modifica Transazione</string>
     <string name="refresh">Aggiorna</string>
     <string name="search">Ricerca</string>
     <string name="settings">Impostazioni</string>
     <string name="summary">Riepilogo</string>
+    <string name="sync">Sync</string>
     <string name="synchronize">Sincronizza</string>
     <string name="open">Aperto</string>
     <string name="user">Utente</string>
@@ -164,7 +168,7 @@
     <string name="widget_summary">Money Manager Ex Saldo</string>
     <string name="widget_all_accounts">Money Manager Ex Conti Correnti</string>
     <string name="widget_add_transaction">Money Manager Ex Nuova Transazione</string>
-    <string name="repeating_empty_transaction">Nessuna Operazione Ricorrente</string>
+    <string name="repeating_empty_transaction">Non sono state trovate transazioni ricorrenti. Per crearne uno, toccare il pulsante più verde.</string>
     <string name="none">Nessuna</string>
     <string name="weekly">Settimanale</string>
     <string name="bi_weekly">Quindicinale</string>
@@ -183,7 +187,7 @@
     <string name="inactive">Inattivo</string>
     <string name="days_overdue">giorni scaduti!</string>
     <string name="days_remaining">giorni rimanenti</string>
-    <string name="new_edit_repeating_transaction">Nuovo/Modifica Operazione Ricorrente</string>
+    <string name="new_edit_repeating_transaction">Operazione ricorrente nuova/modifica</string>
     <string name="next_occurrence">Prossima Scadenza</string>
     <string name="repeats">Cadenza</string>
     <string name="times_repeated">Numero di Operazione</string>
@@ -191,9 +195,9 @@
     <string name="activates">Attiva</string>
     <string name="enter_next_occurrence">Inserire Scadenza Successiva</string>
     <string name="skip_next_occurrence">Ignora Successiva Scadenza</string>
-    <string name="notification_repeating_transaction_expired">Ci sono delle operazioni ricorrenti scadute</string>
+    <string name="notification_repeating_transaction_expired">Ci sono le transazioni ricorrenti scadute</string>
     <string name="notification_click_to_check_repeating_transaction">Toccare per controllare la transazione scadute</string>
-    <string name="num_repeating_transaction_expired">%1$d operazioni ricorrenti scadute</string>
+    <string name="num_repeating_transaction_expired">%1$d operazione ricorrente scadute</string>
     <string name="send_feedback">Invia commenti</string>
     <string name="preferences_info_application">Info</string>
     <string name="preferences_security">Sicurezza</string>
@@ -210,7 +214,7 @@
     <string name="income">Entrate</string>
     <string name="expenses">Uscite</string>
     <string name="difference">Differenze</string>
-    <string name="no_data">Nessun dato da visualizzare</string>
+    <string name="no_data">Nessun record è stato trovato. Per crearne uno, toccare il pulsante più verde. </string>
     <string name="month">Mese</string>
     <string name="year">Anno</string>
     <string name="menu_reports">Resoconti</string>
@@ -289,7 +293,7 @@
     <string name="dashclock_extension_summary">Visualizza il saldo di Money Manager Ex for Android</string>
     <string name="dashclock_extension_summary_all_account">Visualizza il saldo per ogni conto di Money Manager Ex for Android</string>
     <string name="title_check_repeating_transaction">Orario di Controllo</string>
-    <string name="summary_check_repeating_transaction">A che ora vuoi controllare se ci sono le transazioni ripetute in ritardo? (impostazione predefinita 08.00)</string>
+    <string name="summary_check_repeating_transaction">A che ora sarebbe controllare se ci sono le transazioni ricorrenti in ritardo? (impostazione predefinita 08.00)</string>
     <string name="credits">Ringraziamenti</string>
     <string name="top_withdrawals_last_30_days">Top Prelievi: Ultimi 30 giorni</string>
     <string name="top_payees_last_30_days">Top Beneficiari: Ultimi 30 giorni</string>
@@ -302,7 +306,7 @@
     <string name="empty_category">Categoria Vuota</string>
     <string name="empty_payee">Beneficiario Vuoto</string>
     <string name="help">Guida</string>
-    <string name="delete_repeating_transaction">Elimina Operazioni Ricorrenti</string>
+    <string name="delete_repeating_transaction">Eliminare l\'operazione ricorrente</string>
     <string name="last">Ultimo</string>
     <string name="accounts">Conti</string>
     <string name="to_account">Al Conto</string>
@@ -315,7 +319,7 @@
     <string name="categories">Categorie</string>
     <string name="currencies">Valute</string>
     <string name="payees">Beneficiari</string>
-    <string name="repeating_transactions">Operazioni Ricorrenti</string>
+    <string name="repeating_transactions">Transazioni ricorrenti</string>
     <string name="theme_holo_light">Holo Light</string>
     <string name="new_account">Nuovo Conto</string>
     <string name="import_all_currencies">Importazione Valute</string>
@@ -324,7 +328,7 @@
     <string name="amount_less_or_equal">Importo minore o uguale</string>
     <string name="result_search">Risultato della tua ricerca</string>
     <string name="new_repeating_transaction">Nuova operazione ricorrente</string>
-    <string name="edit_repeating_transaction">Modifica Operazione Ricorrente</string>
+    <string name="edit_repeating_transaction">Modifica operazione ricorrente</string>
     <string name="every_5_minutes">Ogni 5 minuti</string>
     <string name="every_15_minutes">Ogni 15 minuti</string>
     <string name="every_30_minutes">Ogni 30 minuti</string>
@@ -370,8 +374,8 @@
     <string name="donate_in_app_already_donate">Hai già sostenuto lo sviluppo di MoneyManagerEx for Android con la vostra donazione! \n\nGrazie mille dal team di sviluppo!</string>
     <string name="donate_in_app_retrieving_status">Recupero dello stato delle vostre donazioni da Google Play. Attendere prego&#8230;</string>
     <string name="donate_in_app_error">Non è possibile utilizzare la fatturazione in-app. Verifica se è installata l\'ultima versione dell\'applicazione Play Store.</string>
-    <string name="title_notifications_repeating_transaction">Notifica Operazioni Riccorenti scadute</string>
-    <string name="summary_notifications_repeating_transaction">Visualizza notifica per le operazioni riccorenti scadute</string>
+    <string name="title_notifications_repeating_transaction">Transazioni ricorrenti in ritardo </string>
+    <string name="summary_notifications_repeating_transaction">Visualizza operazioni ricorrenti in ritardo</string>
     <string name="tools">Strumenti</string>
     <string name="loading">Caricamento in corso&#8230;</string>
     <string name="grand_total">Totale complessivo</string>
@@ -396,4 +400,21 @@
     <string name="keep_editing">Mantenere la modifica</string>
     <string name="discard">Abbandona</string>
     <string name="invalid_expression">Espressione non valida</string>
+    <string name="send_me_logcat">Logcat</string>
+    <string name="dropbox_database_can_be_updted">C\'è un aggiornamento del database su Dropbox</string>
+    <string name="due_today">Scade oggi</string>
+    <string name="issues_tracker">Issues Tracker on GitHub</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="close">Chiudi</string>
+    <string name="tutorial_accounts_1">Tipi di conto multipli: bancari, di risparmio, di credito, azionari e di investimenti.</string>
+    <string name="tutorial_accounts_2">Scorri a sinistra per continuare...</string>
+    <string name="financial_overview">Riepilogo Finanziario</string>
+    <string name="tutorial_overview_1">Dashboard per una rapida panoramica sui bilanci, budget con personalizzazioni.</string>
+    <string name="global">Globale</string>
+    <string name="tutorial_global_1">Più valute e lingue. Open Source. Unisciti al nostro team di traduzione.</string>
+    <string name="synchronization">Sincronizzazione</string>
+    <string name="tutorial_sync_1">Supporto per piattaforme multiple, sincronizzazione via Dropbox. Importazione ed esportazione dei dati per altre applicazioni.</string>
+    <string name="transactions">Transazioni</string>
+    <string name="tutorial_transactions_1">Depositi, prelievi, trasferimenti. Transazioni ricorrenti con promemoria.</string>
+    <string name="split_category">-Categoria Suddivise-</string>
 </resources>

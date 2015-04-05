@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -44,9 +44,11 @@
     <string name="version">バージョン</string>
     <string name="build">ビルド</string>
     <string name="path">データベースのパス</string>
+    <string name="title_show_tutorial">チュートリアルを表示</string>
+    <string name="summary_show_tutorial">次回の実行時にチュートリアルを表示しますか?</string>
     <string name="account">アカウント</string>
     <string name="account_list">アカウント一覧</string>
-    <string name="account_empty_list">アカウントが見つかりませんでした</string>
+    <string name="account_empty_list">アカウントが見つかりません。作成するには緑のプラスボタンをタップします。</string>
     <string name="account_balance">アカウントの残高</string>
     <string name="account_reconciled_balance">調整残高</string>
     <string name="delete_account">アカウントを削除</string>
@@ -72,12 +74,12 @@
     <string name="delete_payee">支払先を削除</string>
     <string name="payee">支払先</string>
     <string name="select_payee">支払先を選択</string>
-    <string name="payee_empty_list">支払先が見つかりません</string>
+    <string name="payee_empty_list">支払先が見つかりません。作成するには緑のプラスボタンをタップします。</string>
     <string name="from">差出人</string>
     <string name="db_payee_update_failed">支払先の更新に失敗しました</string>
     <string name="category">カテゴリー</string>
     <string name="subcategory">サブカテゴリー</string>
-    <string name="category_empty_list">カテゴリーが見つかりませんでした</string>
+    <string name="category_empty_list">カテゴリが見つかりません。作成するには緑のプラスボタンをタップします。</string>
     <string name="select_category">カテゴリーを選択</string>
     <string name="add_category">カテゴリーを追加</string>
     <string name="add_subcategory">サブカテゴリーを追加</string>
@@ -123,12 +125,14 @@
     <string name="delete">削除</string>
     <string name="download">ダウンロード</string>
     <string name="edit">編集</string>
+    <string name="home">自宅</string>
     <string name="logo">ロゴ</string>
     <string name="new_edit_transaction">取引を新しく作成/編集</string>
     <string name="refresh">更新</string>
     <string name="search">検索　</string>
     <string name="settings">設定</string>
     <string name="summary">概要</string>
+    <string name="sync">同期</string>
     <string name="synchronize">同期</string>
     <string name="open">オープン</string>
     <string name="user">ユーザー</string>
@@ -164,7 +168,7 @@
     <string name="widget_summary">Money Manager Ex 概要</string>
     <string name="widget_all_accounts">Money Manager Ex すべてのアカウント</string>
     <string name="widget_add_transaction">Money Manager Ex 取引の追加</string>
-    <string name="repeating_empty_transaction">空の繰り返し取引</string>
+    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
     <string name="none">なし</string>
     <string name="weekly">毎週</string>
     <string name="bi_weekly">隔週</string>
@@ -183,7 +187,7 @@
     <string name="inactive">非アクティブ</string>
     <string name="days_overdue">日期限超過!</string>
     <string name="days_remaining">残り日数</string>
-    <string name="new_edit_repeating_transaction">繰り返し取引を新しく作成/編集</string>
+    <string name="new_edit_repeating_transaction">定期的な取引を新しく作成/編集</string>
     <string name="next_occurrence">次回発生</string>
     <string name="repeats">繰り返し</string>
     <string name="times_repeated">回繰り返し</string>
@@ -191,9 +195,9 @@
     <string name="activates">有効にする</string>
     <string name="enter_next_occurrence">次回発生を入力してください</string>
     <string name="skip_next_occurrence">次回発生をスキップ</string>
-    <string name="notification_repeating_transaction_expired">有効期限を過ぎた繰り返し取引があります</string>
+    <string name="notification_repeating_transaction_expired">期限切れの定期的な取引があります</string>
     <string name="notification_click_to_check_repeating_transaction">タッチして期限切れの取引を確認</string>
-    <string name="num_repeating_transaction_expired">%1$d 繰り返し取引が期限切れ</string>
+    <string name="num_repeating_transaction_expired">%1$d の定期的な取引が期限切れ</string>
     <string name="send_feedback">フィードバックを送信</string>
     <string name="preferences_info_application">情報</string>
     <string name="preferences_security">セキュリティ</string>
@@ -210,7 +214,7 @@
     <string name="income">収入</string>
     <string name="expenses">支出</string>
     <string name="difference">差異</string>
-    <string name="no_data">表示するデータはありません</string>
+    <string name="no_data">レコードが見つかりません。作成するには緑のプラスボタンをタップします。 </string>
     <string name="month">月</string>
     <string name="year">年</string>
     <string name="menu_reports">レポート</string>
@@ -289,7 +293,7 @@
     <string name="dashclock_extension_summary">Money Manager Ex for Android の概要を表示します</string>
     <string name="dashclock_extension_summary_all_account">Money Manager Ex for Android の各アカウントの概要を表示します</string>
     <string name="title_check_repeating_transaction">確認時間</string>
-    <string name="summary_check_repeating_transaction">期限切れの繰り返し取引があるかの確認を何時行いますか? (デフォルト 8:00)</string>
+    <string name="summary_check_repeating_transaction">期限切れの定期的な取引があるかの確認を、何時に行いますか? (デフォルト 8:00)</string>
     <string name="credits">クレジット</string>
     <string name="top_withdrawals_last_30_days">上位の払戻: 過去 30 日間</string>
     <string name="top_payees_last_30_days">上位の支払先: 過去 30 日間</string>
@@ -302,7 +306,7 @@
     <string name="empty_category">空のカテゴリー</string>
     <string name="empty_payee">空の支払先</string>
     <string name="help">ヘルプ</string>
-    <string name="delete_repeating_transaction">繰り返し取引を削除</string>
+    <string name="delete_repeating_transaction">定期的な取引を削除</string>
     <string name="last">最後</string>
     <string name="accounts">アカウント</string>
     <string name="to_account">先アカウント</string>
@@ -315,7 +319,7 @@
     <string name="categories">カテゴリー</string>
     <string name="currencies">通貨</string>
     <string name="payees">支払先</string>
-    <string name="repeating_transactions">繰り返し取引</string>
+    <string name="repeating_transactions">定期的な取引</string>
     <string name="theme_holo_light">Holo Light</string>
     <string name="new_account">新しいアカウント</string>
     <string name="import_all_currencies">通貨のインポート</string>
@@ -323,8 +327,8 @@
     <string name="amount_greater_or_equal">金額が以上</string>
     <string name="amount_less_or_equal">金額が以下</string>
     <string name="result_search">検索結果</string>
-    <string name="new_repeating_transaction">新しい繰り返し取引</string>
-    <string name="edit_repeating_transaction">繰り返し取引を編集</string>
+    <string name="new_repeating_transaction">新しい定期的な取引</string>
+    <string name="edit_repeating_transaction">定期的な取引を編集</string>
     <string name="every_5_minutes">5 分毎</string>
     <string name="every_15_minutes">15 分毎</string>
     <string name="every_30_minutes">30 分毎</string>
@@ -370,8 +374,8 @@
     <string name="donate_in_app_already_donate">既にあなたの寄付で MoneyManagerEx for Android の開発をサポートしていただいています!\n\n開発チームから、ありがとうございます!</string>
     <string name="donate_in_app_retrieving_status">Google Play から寄付の状態を取得しています。しばらくお待ちください&#8230;</string>
     <string name="donate_in_app_error">アプリ内課金を使用できません。Play ストア アプリケーションの最新バージョンがインストールされているかご確認ください。</string>
-    <string name="title_notifications_repeating_transaction">繰り返し取引の期限切れの通知 </string>
-    <string name="summary_notifications_repeating_transaction">繰り返し取引の期限切れの通知を表示します</string>
+    <string name="title_notifications_repeating_transaction">定期的な取引の期限切れ通知 </string>
+    <string name="summary_notifications_repeating_transaction">定期的な取引が期限切れの通知を表示します</string>
     <string name="tools">ツール</string>
     <string name="loading">読み込んでいます&#8230;</string>
     <string name="grand_total">総合計</string>
@@ -396,4 +400,21 @@
     <string name="keep_editing">編集を続ける</string>
     <string name="discard">破棄</string>
     <string name="invalid_expression">式が正しくありません</string>
+    <string name="send_me_logcat">Logcat</string>
+    <string name="dropbox_database_can_be_updted">Dropbox にデータベースの更新があります</string>
+    <string name="due_today">今日中に完了</string>
+    <string name="issues_tracker">GitHub 上の問題トラッカー</string>
+    <string name="action_settings">設定</string>
+    <string name="close">閉じる</string>
+    <string name="tutorial_accounts_1">複数のアカウント種類: 当座、預金、クレジット、資産、および投資。</string>
+    <string name="tutorial_accounts_2">左にスワイプして続行します...</string>
+    <string name="financial_overview">財務概要</string>
+    <string name="tutorial_overview_1">概要のダッシュ ボード、予算、カスタマイズしたレポート。</string>
+    <string name="global">全般</string>
+    <string name="tutorial_global_1">複数の通貨および言語。オープン ソース。私たちの翻訳チームに参加してください。</string>
+    <string name="synchronization">同期</string>
+    <string name="tutorial_sync_1">マルチプラットフォームのサポート、Dropbox 経由の同期。データを他のアプリケーションにインポートおよびエクスポート。</string>
+    <string name="transactions">取引</string>
+    <string name="tutorial_transactions_1">預金の払出、振替。定期的な取引と通知。</string>
+    <string name="split_category">-Split Category-</string>
 </resources>

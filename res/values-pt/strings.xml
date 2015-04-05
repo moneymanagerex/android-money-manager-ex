@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -44,9 +44,11 @@
     <string name="version">Versão</string>
     <string name="build">Build</string>
     <string name="path">Caminho para a Base de Dados</string>
+    <string name="title_show_tutorial">Mostrar o tutorial</string>
+    <string name="summary_show_tutorial">Mostrar tutorial na próxima execuação?</string>
     <string name="account">Conta</string>
     <string name="account_list">Lista de Contas</string>
-    <string name="account_empty_list">Nenhuma conta encontrada</string>
+    <string name="account_empty_list">No accounts have been found. To create one, tap the green plus button.</string>
     <string name="account_balance">Saldo</string>
     <string name="account_reconciled_balance">Saldo Reconciliado</string>
     <string name="delete_account">Eliminar conta</string>
@@ -72,12 +74,12 @@
     <string name="delete_payee">Eliminar Entidade</string>
     <string name="payee">Entidades</string>
     <string name="select_payee">Escolher entidade</string>
-    <string name="payee_empty_list">Nenhuma entidade encontrada</string>
+    <string name="payee_empty_list">No payee has been found. To create one, tap the green plus button.</string>
     <string name="from">De</string>
     <string name="db_payee_update_failed">Actualização do beneficiário falhou</string>
     <string name="category">Categorias</string>
     <string name="subcategory">Subcategoria</string>
-    <string name="category_empty_list">Nenhuma categoria encontrada</string>
+    <string name="category_empty_list">No category has been found. To create one, tap the green plus button.</string>
     <string name="select_category">Escolher Categoria</string>
     <string name="add_category">Adicionar Categoria</string>
     <string name="add_subcategory">Adicionar subcategoria</string>
@@ -123,12 +125,14 @@
     <string name="delete">Eliminar</string>
     <string name="download">Descarregar</string>
     <string name="edit">Editar</string>
+    <string name="home">Casa</string>
     <string name="logo">Logotipo</string>
     <string name="new_edit_transaction">Novo/Editar Movimento</string>
     <string name="refresh">Atualizar</string>
     <string name="search">Procurar</string>
     <string name="settings">Definições</string>
     <string name="summary">Resumo</string>
+    <string name="sync">Sincronização</string>
     <string name="synchronize">Sincronizar</string>
     <string name="open">Aberta</string>
     <string name="user">Utilizador</string>
@@ -164,7 +168,7 @@
     <string name="widget_summary">Resumo do Money Manager Ex</string>
     <string name="widget_all_accounts">Money Manager Ex Todas as contas</string>
     <string name="widget_add_transaction">Adicionar Movimento no Money Manager Ex</string>
-    <string name="repeating_empty_transaction">Esvaziar Movimentos Agendados</string>
+    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
     <string name="none">Nenhum</string>
     <string name="weekly">Semanal</string>
     <string name="bi_weekly">Quinzenal</string>
@@ -183,7 +187,7 @@
     <string name="inactive">Desactivado</string>
     <string name="days_overdue">dia(s) de atraso</string>
     <string name="days_remaining">dia(s) restante(s)</string>
-    <string name="new_edit_repeating_transaction">Novo/Editar Movimento Agendado</string>
+    <string name="new_edit_repeating_transaction">Novo/editar transação recorrente</string>
     <string name="next_occurrence">Próxima ocorrência</string>
     <string name="repeats">Repetição</string>
     <string name="times_repeated">Nº de Vezes Repetidas</string>
@@ -191,9 +195,9 @@
     <string name="activates">Activar</string>
     <string name="enter_next_occurrence">Introduzir Próxima Ocorrência</string>
     <string name="skip_next_occurrence">Saltar Próxima Ocorrência</string>
-    <string name="notification_repeating_transaction_expired">Existem movimentos agendados em atraso</string>
+    <string name="notification_repeating_transaction_expired">Há transações recorrentes expiradas</string>
     <string name="notification_click_to_check_repeating_transaction">Toque para marcar a transação como atrasada</string>
-    <string name="num_repeating_transaction_expired">%1$d transacções agendadas em atraso</string>
+    <string name="num_repeating_transaction_expired">%1$d transação recorrente em atraso</string>
     <string name="send_feedback">Envie Comentários</string>
     <string name="preferences_info_application">Info</string>
     <string name="preferences_security">Segurança</string>
@@ -210,7 +214,7 @@
     <string name="income">Receitas</string>
     <string name="expenses">Despesa</string>
     <string name="difference">Diferença</string>
-    <string name="no_data">Sem dados para apresentar</string>
+    <string name="no_data">No records were found. To create one, tap the green plus button. </string>
     <string name="month">Mês</string>
     <string name="year">Ano</string>
     <string name="menu_reports">Relatórios</string>
@@ -302,7 +306,7 @@
     <string name="empty_category">Categoria vazia</string>
     <string name="empty_payee">Beneficiário vazio</string>
     <string name="help">Ajuda</string>
-    <string name="delete_repeating_transaction">Apagar repetir o movimento</string>
+    <string name="delete_repeating_transaction">Excluir transações recorrentes</string>
     <string name="last">Último</string>
     <string name="accounts">Contas</string>
     <string name="to_account">Para a conta</string>
@@ -315,7 +319,7 @@
     <string name="categories">Categorias</string>
     <string name="currencies">Moedas</string>
     <string name="payees">Beneficiários</string>
-    <string name="repeating_transactions">Movimentos Agendados</string>
+    <string name="repeating_transactions">Transações recorrentes</string>
     <string name="theme_holo_light">Holo claro</string>
     <string name="new_account">Nova conta</string>
     <string name="import_all_currencies">Importar Moedas</string>
@@ -323,8 +327,8 @@
     <string name="amount_greater_or_equal">Valor maior ou igual</string>
     <string name="amount_less_or_equal">Valor menor ou igual</string>
     <string name="result_search">Resultado da pesquisa</string>
-    <string name="new_repeating_transaction">Nova transação agendada</string>
-    <string name="edit_repeating_transaction">Editar transação agendada</string>
+    <string name="new_repeating_transaction">Nova transação recorrente</string>
+    <string name="edit_repeating_transaction">Editar transação recorrente</string>
     <string name="every_5_minutes">Cada 5 minutos</string>
     <string name="every_15_minutes">A cada 15 minutos</string>
     <string name="every_30_minutes">Cada 30 minutos</string>
@@ -396,4 +400,21 @@
     <string name="keep_editing">Manter edição</string>
     <string name="discard">Eliminar</string>
     <string name="invalid_expression">Expressão inválida</string>
+    <string name="send_me_logcat">Logcat</string>
+    <string name="dropbox_database_can_be_updted">Há uma atualização da base de dados no Dropbox</string>
+    <string name="due_today">Vencimentos hoje</string>
+    <string name="issues_tracker">Rastreador de problemas no GitHub</string>
+    <string name="action_settings">Definições</string>
+    <string name="close">Fechar</string>
+    <string name="tutorial_accounts_1">Vários tipos de conta: cheques, poupanças, créditos, bens e investimentos.</string>
+    <string name="tutorial_accounts_2">Deslizar para a esquerda para continuar...</string>
+    <string name="financial_overview">Visão geral financeira</string>
+    <string name="tutorial_overview_1">Painel de análise rápida, orçamentos, relatórios com personalizações.</string>
+    <string name="global">Global</string>
+    <string name="tutorial_global_1">Várias moedas e idiomas. Código-fonte aberto. Junte-se à nossa equipa de tradução.</string>
+    <string name="synchronization">Sincronização</string>
+    <string name="tutorial_sync_1">Suporte para múltiplas plataformas, sincronização via Dropbox. Importação e exportação de dados para outras aplicações.</string>
+    <string name="transactions">Transacções</string>
+    <string name="tutorial_transactions_1">Depósitos, levantamentos, transferências. Transacções recorrentes com lembretes.</string>
+    <string name="split_category">-Split Category-</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -44,9 +44,11 @@
     <string name="version">Версия</string>
     <string name="build">Номер сборки</string>
     <string name="path">Путь к базе данных</string>
+    <string name="title_show_tutorial">Показать учебник</string>
+    <string name="summary_show_tutorial">Показать учебник на следующий раз?</string>
     <string name="account">Счет</string>
     <string name="account_list">Список счетов</string>
-    <string name="account_empty_list">Список счетов пуст</string>
+    <string name="account_empty_list">No accounts have been found. To create one, tap the green plus button.</string>
     <string name="account_balance">Баланс счета</string>
     <string name="account_reconciled_balance">Выверенный баланс</string>
     <string name="delete_account">Удалить счет</string>
@@ -72,12 +74,12 @@
     <string name="delete_payee">Удалить контрагента</string>
     <string name="payee">Контрагент</string>
     <string name="select_payee">Выбрать контрагента</string>
-    <string name="payee_empty_list">Список контрагентов пустой</string>
+    <string name="payee_empty_list">No payee has been found. To create one, tap the green plus button.</string>
     <string name="from">Из</string>
     <string name="db_payee_update_failed">Ошибка обновления контрагента</string>
     <string name="category">Категория</string>
     <string name="subcategory">Подкатегория</string>
-    <string name="category_empty_list">Список категорий пуст</string>
+    <string name="category_empty_list">No category has been found. To create one, tap the green plus button.</string>
     <string name="select_category">Выбрать категорию</string>
     <string name="add_category">Добавить категорию</string>
     <string name="add_subcategory">Добавить подкатегорию</string>
@@ -123,12 +125,14 @@
     <string name="delete">Удалить</string>
     <string name="download">Скачать</string>
     <string name="edit">Редактировать</string>
+    <string name="home">Дом</string>
     <string name="logo">Логотип</string>
     <string name="new_edit_transaction">Добавить/редактировать проводку</string>
     <string name="refresh">Обновить</string>
     <string name="search">Поиск</string>
     <string name="settings">Настройки</string>
     <string name="summary">Сводка</string>
+    <string name="sync">Синхронизация</string>
     <string name="synchronize">Синхронизировать</string>
     <string name="open">Открыт</string>
     <string name="user">Пользователь</string>
@@ -164,7 +168,7 @@
     <string name="widget_summary">Money Manager Ex Сводка</string>
     <string name="widget_all_accounts">Money Manager Ex Счета</string>
     <string name="widget_add_transaction">Money Manager Ex Создать проводку</string>
-    <string name="repeating_empty_transaction">Запланированные проводки отсутствуют</string>
+    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
     <string name="none">Нет</string>
     <string name="weekly">Еженедельно</string>
     <string name="bi_weekly">Каждые две недели</string>
@@ -183,7 +187,7 @@
     <string name="inactive">Неактивна</string>
     <string name="days_overdue">дней просрочки!</string>
     <string name="days_remaining">дней осталось</string>
-    <string name="new_edit_repeating_transaction">Создать/Редактировать запланированную проводку</string>
+    <string name="new_edit_repeating_transaction">Создать/Изменить повторяющуюся транзакцию</string>
     <string name="next_occurrence">Следующее начисление</string>
     <string name="repeats">Повторы</string>
     <string name="times_repeated">Количество повторов</string>
@@ -191,9 +195,9 @@
     <string name="activates">Активировать</string>
     <string name="enter_next_occurrence">Ввести следующее начисление</string>
     <string name="skip_next_occurrence">Пропустить следующее начисление</string>
-    <string name="notification_repeating_transaction_expired">Запланированная проводка просрочена</string>
+    <string name="notification_repeating_transaction_expired">Есть просроченные повторяющиеся транзакции</string>
     <string name="notification_click_to_check_repeating_transaction">Нажмите чтобы проверить наличие просроченных проводок</string>
-    <string name="num_repeating_transaction_expired">запланированная проводка просрочена на %1$d</string>
+    <string name="num_repeating_transaction_expired">Повторяющаяся транзакция просрочена на %1$d</string>
     <string name="send_feedback">Отправить Отзыв</string>
     <string name="preferences_info_application">Информация</string>
     <string name="preferences_security">Защита</string>
@@ -210,7 +214,7 @@
     <string name="income">Доход</string>
     <string name="expenses">Расход</string>
     <string name="difference">Разница</string>
-    <string name="no_data">Нет данных для отображения</string>
+    <string name="no_data">No records were found. To create one, tap the green plus button. </string>
     <string name="month">Месяц</string>
     <string name="year">Год</string>
     <string name="menu_reports">Отчеты</string>
@@ -289,7 +293,7 @@
     <string name="dashclock_extension_summary">Отображение сводки Money Manager Ex для Android</string>
     <string name="dashclock_extension_summary_all_account">Просмотр сводки по каждому счету Money Manager Ex для Android</string>
     <string name="title_check_repeating_transaction">Время проверки</string>
-    <string name="summary_check_repeating_transaction">В какое время проверять, если есть просроченные запланированные проводки? (по умолчанию 08:00)</string>
+    <string name="summary_check_repeating_transaction">Укажите время проверки наличия просроченных транзакций ? (по умолчанию 08:00)</string>
     <string name="credits">Благодарность</string>
     <string name="top_withdrawals_last_30_days">Топ снятия: Последние 30 дней</string>
     <string name="top_payees_last_30_days">Топ получателей: Последние 30 дней</string>
@@ -302,7 +306,7 @@
     <string name="empty_category">Пустая категория</string>
     <string name="empty_payee">Пустой контрагент</string>
     <string name="help">Справка</string>
-    <string name="delete_repeating_transaction">Удалить запланированные проводки</string>
+    <string name="delete_repeating_transaction">Удалить повторяющуюся транзакцию</string>
     <string name="last">Последний</string>
     <string name="accounts">Счета</string>
     <string name="to_account">На счет</string>
@@ -315,7 +319,7 @@
     <string name="categories">Категории</string>
     <string name="currencies">Валюты</string>
     <string name="payees">Контрагенты</string>
-    <string name="repeating_transactions">План проводок</string>
+    <string name="repeating_transactions">Повторяющиеся транзакции</string>
     <string name="theme_holo_light">Holo светлая</string>
     <string name="new_account">Новый счет</string>
     <string name="import_all_currencies">Импорт валют</string>
@@ -323,8 +327,8 @@
     <string name="amount_greater_or_equal">Сумма больше или равно</string>
     <string name="amount_less_or_equal">Сумма меньше или равно</string>
     <string name="result_search">Результат вашего поиска</string>
-    <string name="new_repeating_transaction">Новая плановая проводка</string>
-    <string name="edit_repeating_transaction">Редактировать запланированную проводку</string>
+    <string name="new_repeating_transaction">Новые повторяющиеся транзакции</string>
+    <string name="edit_repeating_transaction">Изменить повторяющуюся транзакцию</string>
     <string name="every_5_minutes">Каждые 5 минут</string>
     <string name="every_15_minutes">Каждые 15 минут</string>
     <string name="every_30_minutes">Каждые 30 минут</string>
@@ -370,8 +374,8 @@
     <string name="donate_in_app_already_donate">Вы уже поддержали разработчиков MoneyManagerEx для Android внеся пожертвование!\n\nБольшое спасибо от группы разработчиков!</string>
     <string name="donate_in_app_retrieving_status">Запрашиваем статус ваших пожертвований через Google Play. Пожалуйста подождите&#8230;</string>
     <string name="donate_in_app_error">Невозможно использовать функцию оплаты из программы. Проверьте, что у вас установлена последняя версия приложения Google Play Store.</string>
-    <string name="title_notifications_repeating_transaction">Уведомление о просрочке повторяющихся проводок </string>
-    <string name="summary_notifications_repeating_transaction">Показать уведомления для запланированных и просроченных проводок</string>
+    <string name="title_notifications_repeating_transaction">Уведомление о просрочке повторяющейся транзакции </string>
+    <string name="summary_notifications_repeating_transaction">Показать уведомления для просроченных запланированных транзакций</string>
     <string name="tools">Инструменты</string>
     <string name="loading">Загрузка&#8230;</string>
     <string name="grand_total">Общий Итог</string>
@@ -396,4 +400,21 @@
     <string name="keep_editing">Продолжить редактирование</string>
     <string name="discard">Не сохранять</string>
     <string name="invalid_expression">Недопустимое выражение</string>
+    <string name="send_me_logcat">Отладка</string>
+    <string name="dropbox_database_can_be_updted">Есть обновление базы данных на Dropbox</string>
+    <string name="due_today">Завершающиеся сегодня</string>
+    <string name="issues_tracker">Система отслеживания проблем на сайте GitHub</string>
+    <string name="action_settings">Настройки</string>
+    <string name="close">Закрыть</string>
+    <string name="tutorial_accounts_1">Различные типы счетов: текущий, сберегательный, кредитный, активов и инвестиционный.</string>
+    <string name="tutorial_accounts_2">Проведите влево для продолжения...</string>
+    <string name="financial_overview">Финансовый обзор</string>
+    <string name="tutorial_overview_1">Обзорная панель, бюджеты, настраиваемые отчеты.</string>
+    <string name="global">Глобальная</string>
+    <string name="tutorial_global_1">Нескольких языков и валют. Открытый исходный код. Присоединяйтесь к нашей команде перевода.</string>
+    <string name="synchronization">Синхронизация</string>
+    <string name="tutorial_sync_1">Поддержка нескольких платформ, синхронизация через Dropbox. Импорта и экспорта данных в другие приложения.</string>
+    <string name="transactions">Транзакции</string>
+    <string name="tutorial_transactions_1">Поплнения, снятия, переводы. Повторяющиеся транзакции с напоминаниями.</string>
+    <string name="split_category">-Split Category-</string>
 </resources>
