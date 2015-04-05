@@ -21,7 +21,6 @@ public class TutorialTransactionsFragment extends Fragment {
      *
      * @return A new instance of fragment TutorialTransactionsFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static TutorialTransactionsFragment newInstance() {
         TutorialTransactionsFragment fragment = new TutorialTransactionsFragment();
         Bundle args = new Bundle();

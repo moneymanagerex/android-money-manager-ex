@@ -403,8 +403,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
                 return false;
             }
         }
-        // TODO
-        // Should throw an exception in case favoriteacct is not in {'TRUE', 'FALSE'}
+        // TODO: Should throw an exception in case favoriteacct is not in {'TRUE', 'FALSE'}
         return true;
     }
 

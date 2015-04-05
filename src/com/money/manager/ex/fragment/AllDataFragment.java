@@ -471,7 +471,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
-            // TODO Auto-generated method stub
+
             return false;
         }
 

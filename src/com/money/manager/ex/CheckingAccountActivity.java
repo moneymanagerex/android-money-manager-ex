@@ -51,6 +51,7 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
+import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
@@ -553,6 +554,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                     startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 } else {
                     Intent intent = new Intent(CheckingAccountActivity.this, SplitTransactionsActivity.class);
+                    intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, TableSplitTransactions.class.getSimpleName());
+                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransCode);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransaction);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
                     startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);

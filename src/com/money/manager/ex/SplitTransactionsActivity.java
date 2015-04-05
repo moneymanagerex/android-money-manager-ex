@@ -20,11 +20,8 @@ package com.money.manager.ex;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,11 +44,16 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
     public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
+    public static final String KEY_TRANSACTION_TYPE = "SplitTransactionsActivity:TransactionType";
+    public static final String KEY_DATASET_TYPE = "SplitTransactionsActivity:DatasetType";
     public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitTransactionsActivity:ResultSplitTransaction";
     public static final String INTENT_RESULT_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ResultSplitTransactionDeleted";
 
     private static final int MENU_ADD_SPLIT_TRANSACTION = 1;
     private static int mIdTag = 0x8000;
+
+    public String parentTransactionType;
+
     private SplitItemFragment mFragmentInputAmountClick;
 
     /**
@@ -66,7 +68,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         String nameFragment = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(object.getSplitTransId() == -1 ? mIdTag++ : object.getSplitTransId());
         SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(nameFragment);
         if (fragment == null) {
-            fragment = SplitItemFragment.newIstance(object);
+            fragment = SplitItemFragment.newInstance(object);
             fragment.setOnSplitItemCallback(this);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             // animation
@@ -79,25 +81,27 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     }
 
     public ArrayList<ISplitTransactionsDataset> getAllTableSplitTransaction() {
-        ArrayList<ISplitTransactionsDataset> items = new ArrayList<ISplitTransactionsDataset>();
+        ArrayList<ISplitTransactionsDataset> splitTransactions = new ArrayList<ISplitTransactionsDataset>();
         for (int i = 0; i < mIdTag; i++) {
             String nameFragment = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(i);
             SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(nameFragment);
             if (fragment != null && fragment.isVisible()) {
-                items.add(fragment.getTableSplitTransactions());
+                splitTransactions.add(fragment.getSplitTransaction(parentTransactionType));
             }
         }
-        return items;
+        return splitTransactions;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // load intent
-        if (getIntent() != null) {
-            this.EntityTypeName = getIntent().getStringExtra("DatasetType");
-            mSplitTransactions = getIntent().getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
-            mSplitDeleted = getIntent().getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
+        Intent intent = getIntent();
+        if (intent != null) {
+            this.EntityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
+            this.parentTransactionType = intent.getStringExtra(KEY_TRANSACTION_TYPE);
+            mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
+            mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
         }
         // load deleted item
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
@@ -186,17 +190,17 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
     @Override
     public boolean onActionDoneClick() {
-        ArrayList<ISplitTransactionsDataset> items = getAllTableSplitTransaction();
+        ArrayList<ISplitTransactionsDataset> allSplitTransactions = getAllTableSplitTransaction();
         // check data
-        for (int i = 0; i < items.size(); i++) {
-            ISplitTransactionsDataset item = items.get(i);
-            if (item.getCategId() == -1 && item.getCategId() == -1) {
+        for (int i = 0; i < allSplitTransactions.size(); i++) {
+            ISplitTransactionsDataset splitTransactions = allSplitTransactions.get(i);
+            if (splitTransactions.getCategId() == -1 && splitTransactions.getCategId() == -1) {
                 Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected).show();
                 return false;
             }
         }
         Intent result = new Intent();
-        result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION, items);
+        result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION, allSplitTransactions);
         result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
         setResult(RESULT_OK, result);
         finish();
