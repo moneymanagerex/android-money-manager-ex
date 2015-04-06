@@ -17,16 +17,19 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="Mar 12, 2015" versionName="2.0.0-alpha3">
-    <changelogtext>Introduced the material layout design</changelogtext>
+    <changelogversion changeDate="Apr 6, 2015" versionName="2.0.0-beta1">
+        <changelogtext>Introduced the material layout design</changelogtext>
         <changelogtext>Added the type of account Credit Card</changelogtext>
         <changelogtext>Added function duplicates transaction</changelogtext>
         <changelogtext>Added calculator on amount dialog</changelogtext>
+        <changelogtext>Added the split categories, even in the recurring transactions</changelogtext>
         <changelogtext>Added the ordering in the payee activity for name or use</changelogtext>
         <changelogtext>Added Google Backup Agent</changelogtext>
+        <changelogtext>Rebuilt the charts</changelogtext>
         <changelogtext>Changed sync with Dropbox. The downloaded file is downloaded as temporary and when downloaded is overwritten</changelogtext>
         <changelogtext>Changed database management. Now no longer creates the log file and everything is managed on a single file</changelogtext>
         <changelogtext>Added the feature to show the application log (Logcat) from About</changelogtext>
+        <changelogtext>Add translation: Bosnian (thanks MisterY)</changelogtext>
         <changelogtext>Add translation: Dutch (thanks kareltje68, dvdspelert and frijtersbart)</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
