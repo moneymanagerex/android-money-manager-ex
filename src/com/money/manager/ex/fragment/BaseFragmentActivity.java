@@ -141,8 +141,12 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
     }
 
     public void setToolbarStandardAction(Toolbar toolbar) {
+        setToolbarStandardAction(toolbar, R.id.action_cancel, R.id.action_done);
+    }
+
+    public void setToolbarStandardAction(Toolbar toolbar, int actionCancel, int actionDone) {
         if (toolbar != null) {
-            View cancelActionView = toolbar.findViewById(R.id.action_cancel);
+            View cancelActionView = toolbar.findViewById(actionCancel);
             if (cancelActionView != null)
                 cancelActionView.setOnClickListener(new OnClickListener() {
 
@@ -151,7 +155,7 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
                         onActionCancelClick();
                     }
                 });
-            View doneActionView = toolbar.findViewById(R.id.action_done);
+            View doneActionView = toolbar.findViewById(actionDone);
             if (doneActionView != null)
                 doneActionView.setOnClickListener(new OnClickListener() {
                     @Override

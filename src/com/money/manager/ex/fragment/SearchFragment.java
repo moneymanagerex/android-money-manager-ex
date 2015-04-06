@@ -19,13 +19,10 @@ package com.money.manager.ex.fragment;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +37,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -101,7 +97,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         if (container == null) return null;
         Core core = new Core(getActivity().getApplicationContext());
         //create view
-        View view = (LinearLayout) inflater.inflate(R.layout.search_activity, container, false);
+        View view = (LinearLayout) inflater.inflate(R.layout.search_fragment, container, false);
         //create listener amount
         OnClickListener onClickAmount = new OnClickListener() {
 
@@ -192,49 +188,6 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Core core = new Core(getActivity());
-        // ****** action bar *****
-        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-        if (activity != null)
-            activity.getSupportActionBar().setSubtitle(null);
-
-        if (!(core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH)) {
-            activity.getSupportActionBar().setDisplayOptions(
-                    ActionBar.DISPLAY_SHOW_CUSTOM,
-                    ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-                            | ActionBar.DISPLAY_SHOW_CUSTOM);
-
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(getActivity()), false);
-            View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
-            cancelActionView.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    onDoneClick();
-                }
-            });
-            View doneActionView = actionBarButtons.findViewById(R.id.action_done);
-            ImageView doneImageView = (ImageView) doneActionView.findViewById(R.id.image_done);
-            doneImageView.setImageDrawable(getActivity().getResources().getDrawable(core.resolveIdAttribute(R.attr.ic_action_search)));
-            TextView doneTextView = (TextView) doneActionView.findViewById(R.id.text_done);
-            doneTextView.setText(R.string.search);
-
-            doneActionView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onSearchClick();
-                }
-            });
-            activity.getSupportActionBar().setCustomView(actionBarButtons);
-        }
-        // ****** action bar *****
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_PICK_PAYEE:
@@ -268,7 +221,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+        /*super.onCreateOptionsMenu(menu, inflater);
         Core core = new Core(getActivity().getApplicationContext());
         if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             inflater.inflate(R.menu.menu_button_cancel_done, menu);
@@ -278,7 +231,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
                 doneItem.setIcon(core.resolveIdAttribute(R.attr.ic_action_search));
                 doneItem.setTitle(R.string.search);
             }
-        }
+        }*/
     }
 
     @Override
@@ -440,7 +393,5 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
 
             }
         };
-
-
     }
 }
