@@ -162,6 +162,7 @@
     <string name="error_toaccount_not_selected">To Account is required</string>
     <string name="error_category_not_selected">Category is required</string>
     <string name="error_totamount_empty">Total amount is required</string>
+    <string name="error_transfer_to_same_account">The two accounts for the transfer must be distinct</string>
 
     <!-- application string -->
     <string name="about">About</string>
