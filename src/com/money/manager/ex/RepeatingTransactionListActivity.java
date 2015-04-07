@@ -128,12 +128,18 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         // ID request to add repeating transaction
         private static final int REQUEST_ADD_REPEATING_TRANSACTION = 1001;
         private static final int REQUEST_ADD_TRANSACTION = 1002;
+        private static final int REQUEST_EDIT_REPEATING_TRANSACTION = 1003;
         // ID item menu add
         private static final int MENU_ITEM_ADD = 1;
         // query
         private static QueryBillDeposits mBillDeposits;
         // filter
         private String mCurFilter;
+        /**
+         * The cursor position of the current transaction in the list of all transactions.
+         * The active transaction is the one on which we are performing an operation (edit, enter...).
+         */
+        private int mActiveTransactionPosition = 0;
 
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
@@ -158,7 +164,8 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 
         @Override
         public void onFloatingActionButtonClickListener() {
-            startRepeatingTransactionActivity();
+            // create new recurring transaction.
+            startRecurringTransactionActivity(null, REQUEST_ADD_REPEATING_TRANSACTION);
         }
 
         @Override
@@ -168,10 +175,12 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
             Date date;
 
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-            // take cursor and move to position
+            this.mActiveTransactionPosition = info.position;
+
+            // move cursor to selected item's position.
             Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
             if (cursor != null) {
-                cursor.moveToPosition(info.position);
+                cursor.moveToPosition(mActiveTransactionPosition);
                 //quick-fix convert 'switch' to 'if-else'
                 if (item.getItemId() == R.id.menu_enter_next_occurrence) {
                     nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
@@ -188,23 +197,10 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
                         startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
                     }
                 } else if (item.getItemId() == R.id.menu_skip_next_occurrence) {
-                    nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
-                    repeats = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
-                    bdId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
-                    date = DateUtils.getDateFromString(getActivity().getApplicationContext(), nextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
-                    date = DateUtils.getDateNextOccurence(date, repeats);
-                    if (date != null) {
-                        ContentValues values = new ContentValues();
-                        values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, DateUtils.getSQLiteStringDate(getActivity(), date));
-                        // update date
-                        if (getActivity().getContentResolver().update(new TableBillsDeposits().getUri(), values, TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(bdId)}) > 0) {
-                            getLoaderManager().restartLoader(ID_LOADER_REPEATING, null, this);
-                        } else {
-                            Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                    this.moveNextOccurrenceForward(cursor);
                 } else if (item.getItemId() == R.id.menu_edit) {
-                    startRepeatingTransactionActivity(cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID)));
+                    startRecurringTransactionActivity(cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID)),
+                            REQUEST_EDIT_REPEATING_TRANSACTION);
                 } else if (item.getItemId() == R.id.menu_delete) {
                     showDialogDeleteRepeatingTransaction(cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID)));
                 }
@@ -316,16 +312,14 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
             return true;
         }
 
-        private void startRepeatingTransactionActivity() {
-            startRepeatingTransactionActivity(null);
-        }
-
         /**
          * start RepeatingTransaction for insert or edit transaction
          *
          * @param billDepositsId
+         * @param purposeCode       Code that indicates why we are opening the editor.
+         *                          example: REQUEST_ADD_REPEATING_TRANSACTION
          */
-        private void startRepeatingTransactionActivity(Integer billDepositsId) {
+        private void startRecurringTransactionActivity(Integer billDepositsId, int purposeCode) {
             // create intent, set Bill Deposits ID
             Intent intent = new Intent(getActivity(), RepeatingTransactionActivity.class);
             // check transId not null
@@ -336,7 +330,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
                 intent.setAction(Intent.ACTION_INSERT);
             }
             // launch activity
-            startActivityForResult(intent, REQUEST_ADD_REPEATING_TRANSACTION);
+            startActivityForResult(intent, purposeCode);
         }
 
         @Override
@@ -345,15 +339,61 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
             if (resultCode == RESULT_OK) {
                 switch (requestCode) {
                     case REQUEST_ADD_REPEATING_TRANSACTION:
+                        break;
                     case REQUEST_ADD_TRANSACTION:
-                        getLoaderManager().restartLoader(ID_LOADER_REPEATING, null, this);
+                        // move forward the repeating indicator.
+                        this.moveNextOccurrenceForward();
+                        break;
+                    case REQUEST_EDIT_REPEATING_TRANSACTION:
+                        break;
                 }
+                // Always reload the activity?
+                getLoaderManager().restartLoader(ID_LOADER_REPEATING, null, this);
             }
         }
 
         @Override
         public String getSubTitle() {
             return getString(R.string.repeating_transactions);
+        }
+
+        private void moveNextOccurrenceForward() {
+            this.moveNextOccurrenceForward(null);
+        }
+
+        /**
+         * Set the recurring action's due date to the next occurrence.
+         * @param cursor
+         */
+        private void moveNextOccurrenceForward(Cursor cursor) {
+            String nextOccurrence;
+            int repeats, bdId;
+            Date date;
+
+            if(cursor == null) {
+                //AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                // move cursor to selected item's position.
+                cursor = ((AllDataAdapter) getListAdapter()).getCursor();
+                //cursor.moveToPosition(info.position);
+                cursor.moveToPosition(this.mActiveTransactionPosition);
+            }
+
+            nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
+            repeats = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
+            bdId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
+            date = DateUtils.getDateFromString(getActivity().getApplicationContext(), nextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
+            date = DateUtils.getDateNextOccurence(date, repeats);
+            if (date != null) {
+                ContentValues values = new ContentValues();
+                values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, DateUtils.getSQLiteStringDate(getActivity(), date));
+                // update date
+                if (getActivity().getContentResolver().update(new TableBillsDeposits().getUri(),
+                        values, TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(bdId)}) > 0) {
+                    getLoaderManager().restartLoader(ID_LOADER_REPEATING, null, this);
+                } else {
+                    Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 }

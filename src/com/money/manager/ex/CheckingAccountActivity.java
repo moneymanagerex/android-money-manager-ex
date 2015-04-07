@@ -47,6 +47,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.DataRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -304,6 +305,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             // action
             mIntentAction = savedInstanceState.getString(KEY_ACTION);
         }
+
+        // Controls need to be at the beginning as they are referenced throughout the code.
+        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
+        txtSelectCategory = (TextView) findViewById(R.id.textViewCategory);
+
+
         // manage intent
         if (getIntent() != null) {
             if (savedInstanceState == null) {
@@ -319,7 +326,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                     if (getIntent().getIntExtra(KEY_BDID_ID, -1) > -1) {
                         mBdId = getIntent().getIntExtra(KEY_BDID_ID, -1);
                         mNextOccurrence = getIntent().getStringExtra(KEY_NEXT_OCCURRENCE);
-                        getRepeatingTransaction(mBdId);
+                        loadRepeatingTransaction(mBdId);
                     }
                 }
             }
@@ -549,7 +556,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         });
 
         // select category
-        txtSelectCategory = (TextView) findViewById(R.id.textViewCategory);
         txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -569,7 +575,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         });
 
         // split transaction
-        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
         chbSplitTransaction.setChecked(mSplitTransaction != null && mSplitTransaction.size() >= 0);
         chbSplitTransaction.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
@@ -812,6 +817,10 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
      * @return
      */
     public boolean getCategSubName(int categoryId, int subCategoryId) {
+
+        // don't load anything if category & sub-category are not set.
+        if(categoryId <= 0 && subCategoryId <= 0) return false;
+
         TableCategory category = new TableCategory();
         TableSubCategory subCategory = new TableSubCategory();
         Cursor cursor;
@@ -940,6 +949,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         getAccountName(mToAccountId);
         getPayeeName(mPayeeId);
         getCategSubName(mCategoryId, mSubCategoryId);
+
+        // handle splits
+        createSplitCategoriesFromRecurringTransaction();
 
         return true;
     }
@@ -1198,6 +1210,32 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 Log.w(LOGCAT, "Update Bill Deposits with Id=" + Integer.toString(mBdId) + " return <= 0");
             }
         }
+        return true;
+    }
+
+    private boolean createSplitCategoriesFromRecurringTransaction() {
+        // check if category and sub-category are not set.
+        if(!(mCategoryId <= 0 && mSubCategoryId <= 0)) return false;
+
+        // Adding transactions to the split list will set the Split checkbox and the category name.
+
+        // todo: create split transactions
+        DataRepository repo = new DataRepository(getContentResolver());
+        ArrayList<TableBudgetSplitTransactions> splitTemplates = repo.loadSplitTransactionFor(mBdId);
+        if(mSplitTransaction == null) mSplitTransaction = new ArrayList<>();
+
+        // For each of the templates, create a new record.
+        for(int i = 0; i <= splitTemplates.size() - 1; i++) {
+            TableBudgetSplitTransactions record = splitTemplates.get(i);
+
+            TableSplitTransactions newSplit = new TableSplitTransactions();
+            newSplit.setSplitTransAmount(record.getSplitTransAmount());
+            newSplit.setCategId(record.getCategId());
+            newSplit.setSubCategId(record.getSubCategId());
+
+            mSplitTransaction.add(newSplit);
+        }
+
         return true;
     }
 }
