@@ -336,6 +336,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
+
             if (resultCode == RESULT_OK) {
                 switch (requestCode) {
                     case REQUEST_ADD_REPEATING_TRANSACTION:
