@@ -187,6 +187,11 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         return ret;
     }
 
+    /**
+     * Loads split transactions for the given transaction id.
+     * @param transId Id of the main transaction for which to load the splits.
+     * @return
+     */
     public ArrayList<TableSplitTransactions> loadSplitTransaction(int transId) {
         ArrayList<TableSplitTransactions> listSplitTrans = null;
 
@@ -901,7 +906,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         return true;
     }
 
-    public boolean getRepeatingTransaction(int billId) {
+    /**
+     * Loads a recurring transaction data when entering a recurring transaction.
+     * @param billId Id of the recurring transaction.
+     * @return
+     */
+    public boolean loadRepeatingTransaction(int billId) {
         TableBillsDeposits billDeposits = new TableBillsDeposits();
         Cursor cursor = getContentResolver().query(billDeposits.getUri(),
                 billDeposits.getAllColumns(),
@@ -976,6 +986,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 }
             }
         } else {
+            // Split transaction.
             txtSelectCategory.setText("\u2026");
         }
     }
