@@ -483,8 +483,6 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // tip from http://cyrilmottier.com/2013/01/23/android-app-launching-made-gorgeous/
-        //getWindow().setBackgroundDrawable(null);
 
         Core core = new Core(this);
 
@@ -539,8 +537,7 @@ public class MainActivity extends BaseFragmentActivity {
         // show tutorial
         showTutorial(savedInstanceState);
         // show changelog dialog
-        if (core.isToDisplayChangelog())
-            core.showChangelog();
+        if (core.isToDisplayChangelog()) core.showChangelog();
 
         MoneyManagerApplication.showDatabasePathWork(getApplicationContext());
 
