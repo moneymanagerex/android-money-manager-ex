@@ -939,10 +939,15 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
      * @return
      */
     private boolean validateData() {
-        if ((Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mToAccountId == -1)) {
-            Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
-            ;
-            return false;
+        if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
+            if (mToAccountId == -1) {
+                Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
+                return false;
+            }
+            if (mToAccountId == mAccountId) {
+                Core.alertDialog(this, R.string.error_transfer_to_same_account).show();
+                return false;
+            }
         } else if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
             Core.alertDialog(this, R.string.error_payee_not_selected).show();
             ;
