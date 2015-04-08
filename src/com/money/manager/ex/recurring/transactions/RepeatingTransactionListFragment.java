@@ -275,10 +275,6 @@ public class RepeatingTransactionListFragment extends BaseListFragment
         return getString(R.string.repeating_transactions);
     }
 
-    private void moveNextOccurrenceForward() {
-        this.moveNextOccurrenceForward(null);
-    }
-
     /**
      * Set the recurring action's due date to the next occurrence.
      * @param cursor
