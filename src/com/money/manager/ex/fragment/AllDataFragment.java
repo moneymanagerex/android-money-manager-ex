@@ -56,7 +56,6 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
-import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TableSplitTransactions;
 
@@ -200,8 +199,10 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             }
         });
         // if header is not null add to listview
-        if (mListHeader != null)
-            getListView().addHeaderView(mListHeader);
+        if (getListAdapter() == null) {
+            if (mListHeader != null)
+                getListView().addHeaderView(mListHeader);
+        }
         // set adapter
         setListAdapter(adapter);
 
