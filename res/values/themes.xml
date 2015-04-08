@@ -81,6 +81,7 @@
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background
         </item>
+        <item name="cardViewBackgroundColor">@android:color/white</item>
         <item name="holo_blue_color_theme">@color/holo_blue_dark</item>
         <item name="holo_green_color_theme">@color/holo_green_dark</item>
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
@@ -152,6 +153,7 @@
         <!-- Colors -->
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">#202020</item>
+        <item name="cardViewBackgroundColor">@color/money_background_dark</item>
         <item name="holo_blue_color_theme">@color/holo_blue_dark</item>
         <item name="holo_green_color_theme">@color/holo_green_dark</item>
         <item name="holo_red_color_theme">@color/holo_red_dark</item>

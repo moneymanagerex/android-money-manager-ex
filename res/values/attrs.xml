@@ -80,6 +80,8 @@
         <attr name="holoSpinnerStyle" format="reference"/>
         <!-- Toolbar -->
         <attr name="toolbarAppPopupTheme" format="reference"/>
+        <!-- Cardview -->
+        <attr name="cardViewBackgroundColor" format="reference"/>
         <!-- AChartEngine -->
         <attr name="theme_axes_color" format="color|reference"/>
         <attr name="theme_labels_color" format="color|reference"/>

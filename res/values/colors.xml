@@ -65,7 +65,7 @@
     <!-- Color background and border -->
     <color name="money_border">#CFD2DA</color>
     <color name="holo_light_darkaction_money_background">#EDEEF1</color>
-    <color name="money_background_dark">#F3F4F5</color>
+    <color name="money_background_dark">#373737</color>
     <color name="money_background_button">#EEEEEE</color>
     <color name="app_light_darkactionbar_color">#727272</color>
     <!-- AChartEngine Colors -->

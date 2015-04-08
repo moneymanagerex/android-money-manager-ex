@@ -43,7 +43,7 @@
                 android:layout_margin="@dimen/money_margin"
                 android:layout_weight="1"
                 android:animateLayoutChanges="true"
-                cardview:cardBackgroundColor="@android:color/transparent"
+                cardview:cardBackgroundColor="?attr/cardViewBackgroundColor"
                 android:orientation="vertical"
                 android:padding="@dimen/money_padding">
 
@@ -120,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/money_margin"
-                cardview:cardBackgroundColor="@android:color/transparent"
+                cardview:cardBackgroundColor="?attr/cardViewBackgroundColor"
                 android:layout_marginLeft="@dimen/money_margin"
                 android:layout_marginRight="@dimen/money_margin"
                 android:padding="@dimen/money_padding">
