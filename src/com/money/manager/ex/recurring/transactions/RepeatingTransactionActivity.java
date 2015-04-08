@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex;
+package com.money.manager.ex.recurring.transactions;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -43,6 +43,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.PayeeActivity;
+import com.money.manager.ex.R;
+import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DataRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
