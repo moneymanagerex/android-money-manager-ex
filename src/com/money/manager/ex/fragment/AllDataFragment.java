@@ -166,6 +166,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         // set fragment
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
@@ -205,6 +206,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         }
         // set adapter
         setListAdapter(adapter);
+        // ref: http://stackoverflow.com/questions/19583961/cannot-add-header-view-to-list-setadapter-has-already-been-called
+        //adapter.notifyDataSetChanged();
 
         // register context menu
         registerForContextMenu(getListView());

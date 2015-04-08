@@ -58,7 +58,8 @@ import java.util.Calendar;
 /**
  * @author a.lazzari
  */
-public class AccountFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, AllDataFragmentLoaderCallbacks {
+public class AccountFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor>, AllDataFragmentLoaderCallbacks {
 
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;

@@ -57,7 +57,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.AccountListActivity.AccountLoaderListFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.PayeeActivity.PayeeLoaderListFragment;
-import com.money.manager.ex.RepeatingTransactionListActivity.RepeatingTransactionListFragment;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.adapter.DrawerMenuItem;
 import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
@@ -73,6 +72,7 @@ import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
 import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.recurring.transactions.RepeatingTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.settings.SettingsActivity;
@@ -483,8 +483,6 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // tip from http://cyrilmottier.com/2013/01/23/android-app-launching-made-gorgeous/
-        //getWindow().setBackgroundDrawable(null);
 
         Core core = new Core(this);
 
@@ -539,8 +537,7 @@ public class MainActivity extends BaseFragmentActivity {
         // show tutorial
         showTutorial(savedInstanceState);
         // show changelog dialog
-        if (core.isToDisplayChangelog())
-            core.showChangelog();
+        if (core.isToDisplayChangelog()) core.showChangelog();
 
         MoneyManagerApplication.showDatabasePathWork(getApplicationContext());
 

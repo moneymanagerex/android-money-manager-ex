@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex;
+package com.money.manager.ex.recurring.transactions;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -43,7 +43,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.PayeeActivity;
+import com.money.manager.ex.R;
+import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.DataRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -178,31 +184,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         }
 
         return ret;
-    }
-
-    /**
-     * Load split transactions.
-     * @param transId
-     * @return
-     */
-    public ArrayList<TableBudgetSplitTransactions> loadSplitTransaction(int transId) {
-        ArrayList<TableBudgetSplitTransactions> listSplitTrans = null;
-
-        TableBudgetSplitTransactions split = new TableBudgetSplitTransactions();
-        Cursor curSplit = getContentResolver().query(split.getUri(), null,
-                TableBudgetSplitTransactions.TRANSID + "=" + Integer.toString(transId), null,
-                TableBudgetSplitTransactions.SPLITTRANSID);
-        if (curSplit != null && curSplit.moveToFirst()) {
-            listSplitTrans = new ArrayList<TableBudgetSplitTransactions>();
-            while (!curSplit.isAfterLast()) {
-                TableBudgetSplitTransactions obj = new TableBudgetSplitTransactions();
-                obj.setValueFromCursor(curSplit);
-                listSplitTrans.add(obj);
-                curSplit.moveToNext();
-            }
-        }
-
-        return listSplitTrans;
     }
 
     @Override
@@ -851,7 +832,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         // load split transactions only if no category selected.
         if (mCategoryId == -1 && mSplitTransactions == null) {
-            mSplitTransactions = loadSplitTransaction(billId);
+            DataRepository repo = new DataRepository(getContentResolver());
+            mSplitTransactions = repo.loadSplitTransactionFor(billId);
         }
 
         selectAccountName(mToAccountId);

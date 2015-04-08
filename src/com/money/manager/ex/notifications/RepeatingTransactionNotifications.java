@@ -28,7 +28,7 @@ import android.text.Html;
 import android.util.Log;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.RepeatingTransactionListActivity;
+import com.money.manager.ex.recurring.transactions.RepeatingTransactionListActivity;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.utils.CurrencyUtils;
