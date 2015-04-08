@@ -51,7 +51,6 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
-import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
@@ -188,11 +187,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         return ret;
     }
 
-    public ArrayList<TableSplitTransactions> getSplitTransaction(int transId) {
+    public ArrayList<TableSplitTransactions> loadSplitTransaction(int transId) {
         ArrayList<TableSplitTransactions> listSplitTrans = null;
 
         TableSplitTransactions split = new TableSplitTransactions();
-        Cursor curSplit = getContentResolver().query(split.getUri(), null, TableSplitTransactions.TRANSID + "=" + Integer.toString(transId), null, TableSplitTransactions.SPLITTRANSID);
+        Cursor curSplit = getContentResolver().query(split.getUri(), null,
+                TableSplitTransactions.TRANSID + "=" + Integer.toString(transId), null, TableSplitTransactions.SPLITTRANSID);
         if (curSplit != null && curSplit.moveToFirst()) {
             listSplitTrans = new ArrayList<TableSplitTransactions>();
             while (!curSplit.isAfterLast()) {
@@ -864,7 +864,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
 
         if (mSplitTransaction == null) {
-            mSplitTransaction = getSplitTransaction(transId);
+            mSplitTransaction = loadSplitTransaction(transId);
         }
 
         // convert status in uppercase string

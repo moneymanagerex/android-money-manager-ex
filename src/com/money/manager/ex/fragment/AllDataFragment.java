@@ -56,7 +56,9 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableCheckingAccount;
+import com.money.manager.ex.database.TableSplitTransactions;
 
 import java.util.ArrayList;
 
@@ -360,23 +362,44 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     }
 
     /**
-     * @param transId primary key of transation
+     * @param transactionIds primary key of transation
      */
-    private void showDialogDeleteCheckingAccount(final int[] transId) {
+    private void showDialogDeleteCheckingAccount(final int[] transactionIds) {
         // create alert dialog and set title and message
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
 
         alertDialog.setTitle(R.string.delete_transaction);
-        alertDialog.setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions, transId.length, transId.length));
+        alertDialog.setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions, transactionIds.length, transactionIds.length));
         alertDialog.setIcon(R.drawable.ic_action_warning_light);
 
         // set listener button positive
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                for (int i = 0; i < transId.length; i++) {
+                for (int i = 0; i < transactionIds.length; i++) {
+                    int transactionId = transactionIds[i];
+
+                    // First delete any splits.
+                    // See if there are any split records.
+                    TableSplitTransactions split = new TableSplitTransactions();
+                    Cursor curSplit = getActivity().getContentResolver().query(split.getUri(), null,
+                            TableSplitTransactions.TRANSID + "=" + Integer.toString(transactionId), null, TableSplitTransactions.SPLITTRANSID);
+                    int splitCount = curSplit.getCount();
+                    if(splitCount > 0) {
+                        TableSplitTransactions splits = new TableSplitTransactions();
+                        int deleteResult = getActivity().getContentResolver().delete(splits.getUri(),
+                                TableSplitTransactions.TRANSID + "=?", new String[]{Integer.toString(transactionIds[i])});
+                        if (deleteResult != splitCount) {
+                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+
+                    // Delete the transaction.
+
                     TableCheckingAccount trans = new TableCheckingAccount();
-                    if (getActivity().getContentResolver().delete(trans.getUri(), TableCheckingAccount.TRANSID + "=?", new String[]{Integer.toString(transId[i])}) == 0) {
+                    if (getActivity().getContentResolver().delete(
+                            trans.getUri(), TableCheckingAccount.TRANSID + "=?", new String[]{Integer.toString(transactionIds[i])}) == 0) {
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                         return;
                     }
