@@ -338,16 +338,14 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
             super.onActivityResult(requestCode, resultCode, data);
 
             if (resultCode == RESULT_OK) {
-                switch (requestCode) {
-                    case REQUEST_ADD_REPEATING_TRANSACTION:
-                        break;
-                    case REQUEST_ADD_TRANSACTION:
-                        // move forward the repeating indicator.
-                        this.moveNextOccurrenceForward();
-                        break;
-                    case REQUEST_EDIT_REPEATING_TRANSACTION:
-                        break;
-                }
+//                switch (requestCode) {
+//                    case REQUEST_ADD_REPEATING_TRANSACTION:
+//                        break;
+//                    case REQUEST_ADD_TRANSACTION:
+//                        break;
+//                    case REQUEST_EDIT_REPEATING_TRANSACTION:
+//                        break;
+//                }
                 // Always reload the activity?
                 getLoaderManager().restartLoader(ID_LOADER_REPEATING, null, this);
             }
