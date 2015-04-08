@@ -34,10 +34,16 @@
 
     <!-- Theme Base Application -->
     <style name="_App" parent="@style/Theme.AppCompat.NoActionBar">
+        <!-- ** Do not overwrite these colors ** >
         <item name="android:textColorPrimary">@color/material_grey_50</item>
         <item name="android:textColorSecondary">@color/md_secondary_text</item>
         <item name="android:textColor">@color/material_grey_50</item>
+        -->
+        <item name="android:windowContentOverlay">@null</item>
         <item name="actionModeBackground">@color/md_primary_dark</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
         <item name="md_dark_theme">true</item>
     </style>
 
@@ -45,11 +51,13 @@
         <item name="colorPrimary">@color/md_primary</item>
         <item name="colorPrimaryDark">@color/md_primary_dark</item>
         <item name="android:colorAccent">@color/md_accent</item>
+        <!-- ** Do not overwrite these colors ** >
         <item name="android:textColorPrimary">@color/md_primary_text</item>
         <item name="android:textColorSecondary">@color/md_secondary_text</item>
+        <item name="android:textColor">@color/md_primary_text</item>
+        -->
         <item name="android:icon">@color/md_icons</item>
         <item name="android:divider">@color/md_divider</item>
-        <item name="android:textColor">@color/md_primary_text</item>
         <item name="android:dropDownSpinnerStyle">@style/Money.Spinner.Style</item>
         <item name="android:spinnerStyle">@style/Money.Spinner.Style</item>
         <item name="android:editTextStyle">@style/Money.EditText</item>
