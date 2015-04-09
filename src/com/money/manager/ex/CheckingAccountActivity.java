@@ -127,8 +127,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     public String[] mTransCodeItems, mStatusItems;
     public String[] mTransCodeValues, mStatusValues;
     // arrayslist accountname and accountid
-    public ArrayList<String> mAccountNameList = new ArrayList<String>();
-    public ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
+    public ArrayList<String> mAccountNameList = new ArrayList<>();
+    public ArrayList<Integer> mAccountIdList = new ArrayList<>();
     // amount
     public double mTotAmount = 0, mAmount = 0;
     // notes
@@ -192,7 +192,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     /**
      * Loads split transactions for the given transaction id.
      * @param transId Id of the main transaction for which to load the splits.
-     * @return
+     * @return list of split categories for the given transaction.
      */
     public ArrayList<TableSplitTransactions> loadSplitTransaction(int transId) {
         ArrayList<TableSplitTransactions> listSplitTrans = null;
@@ -201,7 +201,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         Cursor curSplit = getContentResolver().query(split.getUri(), null,
                 TableSplitTransactions.TRANSID + "=" + Integer.toString(transId), null, TableSplitTransactions.SPLITTRANSID);
         if (curSplit != null && curSplit.moveToFirst()) {
-            listSplitTrans = new ArrayList<TableSplitTransactions>();
+            listSplitTrans = new ArrayList<>();
             while (!curSplit.isAfterLast()) {
                 TableSplitTransactions obj = new TableSplitTransactions();
                 obj.setValueFromCursor(curSplit);
@@ -350,7 +350,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                                     mCategoryId = payee.getCategId();
                                     mSubCategoryId = payee.getSubCategId();
                                     // load category and subcategory name
-                                    getCategSubName(mCategoryId, mSubCategoryId);
+                                    loadCategSubName(mCategoryId, mSubCategoryId);
                                     return Boolean.TRUE;
                                 }
                             } catch (Exception e) {
@@ -390,7 +390,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             mAccountIdList.add(mAccountList.get(i).getAccountId());
         }
         // create adapter for spinAccount
-        ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountNameList);
+        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountNameList);
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccount.setAdapter(adapterAccount);
         // select current value
@@ -448,13 +448,13 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
         mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
         // create adapter for TransCode
-        ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 mTransCodeItems);
         adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinTransCode.setAdapter(adapterTrans);
         // select a current value
-        if (TextUtils.isEmpty(mTransCode) == false) {
+        if (!TextUtils.isEmpty(mTransCode)) {
             if (Arrays.asList(mTransCodeValues).indexOf(mTransCode) >= 0) {
                 spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mTransCode), true);
             }
@@ -482,7 +482,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         mStatusItems = getResources().getStringArray(R.array.status_items);
         mStatusValues = getResources().getStringArray(R.array.status_values);
         // create adapter for spinnerStatus
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStatusItems);
+        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mStatusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinStatus.setAdapter(adapterStatus);
         // select current value
@@ -515,7 +515,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 Log.e(LOGCAT, e.getMessage());
             }
         } else {
-            txtSelectDate.setTag((Date) Calendar.getInstance().getTime());
+            txtSelectDate.setTag(Calendar.getInstance().getTime());
         }
         formatExtendedDate(txtSelectDate);
 
@@ -604,7 +604,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                         currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
                     }
                 }
-                double amount = (Double) ((TextView) v).getTag();
+                double amount = (Double) v.getTag();
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
@@ -811,13 +811,13 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     }
 
     /**
-     * Query info of Category and Subcategory
+     * Loads info for Category and Subcategory
      *
-     * @param categoryId
-     * @param subCategoryId
-     * @return
+     * @param categoryId Id of the category to load.
+     * @param subCategoryId Id of the subcategory to load.
+     * @return A boolean indicating whether the operation was successful.
      */
-    public boolean getCategSubName(int categoryId, int subCategoryId) {
+    public boolean loadCategSubName(int categoryId, int subCategoryId) {
 
         // don't load anything if category & sub-category are not set.
         if(categoryId <= 0 && subCategoryId <= 0) return false;
@@ -826,7 +826,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         TableSubCategory subCategory = new TableSubCategory();
         Cursor cursor;
         // category
-        cursor = getContentResolver().query(category.getUri(), category.getAllColumns(), TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null);
+        cursor = getContentResolver().query(category.getUri(), category.getAllColumns(),
+                TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
             mCategoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
@@ -834,7 +835,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             mCategoryName = null;
         }
         // sub-category
-        cursor = getContentResolver().query(subCategory.getUri(), subCategory.getAllColumns(), TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null);
+        cursor = getContentResolver().query(subCategory.getUri(), subCategory.getAllColumns(),
+                TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
             mSubCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
@@ -888,7 +890,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
         getAccountName(mToAccountId);
         getPayeeName(mPayeeId);
-        getCategSubName(mCategoryId, mSubCategoryId);
+        loadCategSubName(mCategoryId, mSubCategoryId);
 
         return true;
     }
@@ -919,7 +921,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     /**
      * Loads a recurring transaction data when entering a recurring transaction.
      * @param billId Id of the recurring transaction.
-     * @return
+     * @return A boolean indicating whether the operation was successful.
      */
     public boolean loadRepeatingTransaction(int billId) {
         TableBillsDeposits billDeposits = new TableBillsDeposits();
@@ -949,7 +951,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
         getAccountName(mToAccountId);
         getPayeeName(mPayeeId);
-        getCategSubName(mCategoryId, mSubCategoryId);
+        loadCategSubName(mCategoryId, mSubCategoryId);
 
         // handle splits
         createSplitCategoriesFromRecurringTransaction();
@@ -1095,7 +1097,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
      * @return true if update data successful
      */
     public boolean updateData() {
-        if (validateData() == false) {
+        if (!validateData()) {
             return false;
         }
         // content value for insert or update data
@@ -1205,7 +1207,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             values.clear();
             values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, mNextOccurrence);
             // update date
-            if (getContentResolver().update(new TableBillsDeposits().getUri(), values, TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(mBdId)}) > 0) {
+            if (getContentResolver().update(new TableBillsDeposits().getUri(), values,
+                    TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(mBdId)}) > 0) {
             } else {
                 Toast.makeText(getApplicationContext(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Update Bill Deposits with Id=" + Integer.toString(mBdId) + " return <= 0");
