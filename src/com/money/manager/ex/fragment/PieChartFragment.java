@@ -103,7 +103,10 @@ public class PieChartFragment extends Fragment implements OnChartValueSelectedLi
         dataSet.setColors(colors);
         PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());
-        data.setValueTextColor(getResources().getColor(mTextColor));
+
+        if (mTextColor != -1)
+            data.setValueTextColor(getResources().getColor(mTextColor));
+
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);
         mChart.setData(data);
@@ -121,7 +124,7 @@ public class PieChartFragment extends Fragment implements OnChartValueSelectedLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTextColor = new Core(getActivity()).resolveIdAttribute(android.R.attr.textColor);
+        mTextColor = new Core(getActivity()).resolveIdAttribute(R.attr.chartTextColor);
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_SAVED_INSTANCE))
                 setChartArguments(savedInstanceState.getBundle(KEY_SAVED_INSTANCE));

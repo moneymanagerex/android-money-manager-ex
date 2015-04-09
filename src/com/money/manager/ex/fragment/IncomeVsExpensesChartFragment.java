@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2012-2015 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.fragment;
 
 import android.os.Bundle;
@@ -70,26 +88,27 @@ public class IncomeVsExpensesChartFragment extends Fragment implements
         dataSets.add(dataSetExpenses);
 
         BarData data = new BarData(xVals, dataSets);
-        data.setValueTextColor(getResources().getColor(mTextColor));
+        if (mTextColor != -1)
+            data.setValueTextColor(getResources().getColor(mTextColor));
         mChart.setData(data);
         mChart.animateXY(1500, 1500);
         mChart.invalidate();
 
         Legend l = mChart.getLegend();
-        if (l != null)
+        if (l != null && mTextColor != -1)
             l.setTextColor(getResources().getColor(mTextColor));
 
         // x labels
         XAxis xAxis = mChart.getXAxis();
-        if (xAxis != null)
+        if (xAxis != null && mTextColor != -1)
             xAxis.setTextColor(getResources().getColor(mTextColor));
         // right label
         YAxis yAxis = mChart.getAxisRight();
-        if (yAxis != null)
+        if (yAxis != null && mTextColor != -1)
             yAxis.setTextColor(getResources().getColor(mTextColor));
         // left label
         yAxis = mChart.getAxisLeft();
-        if (yAxis != null)
+        if (yAxis != null && mTextColor != -1)
             yAxis.setTextColor(getResources().getColor(mTextColor));
     }
 
@@ -103,7 +122,7 @@ public class IncomeVsExpensesChartFragment extends Fragment implements
                 setDisplayHomeAsUpEnabled(savedInstanceState.getBoolean(KEY_DISPLAY_AS_UP_ENABLED));
         }
 
-        mTextColor = new Core(getActivity()).resolveIdAttribute(android.R.attr.textColor);
+        mTextColor = new Core(getActivity()).resolveIdAttribute(R.attr.chartTextColor);
 
         // enabled display as home
         ActionBarActivity activity = (ActionBarActivity) getActivity();

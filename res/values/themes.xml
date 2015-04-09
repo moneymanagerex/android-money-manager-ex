@@ -77,6 +77,7 @@
     <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/App_Light_DarkActionBar">
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+
         <!-- Colors -->
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background
@@ -87,9 +88,10 @@
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_light_row_light</item>
-        <!-- AChartEngine Colors -->
-        <item name="theme_axes_color">@color/theme_chart_labels_color</item>
-        <item name="theme_labels_color">@android:color/black</item>
+
+        <!-- Charts -->
+        <item name="chartTextColor">@color/md_primary_text</item>
+
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
         <item name="ic_action_bank">@drawable/ic_action_bank_dark</item>
@@ -152,6 +154,7 @@
     <style name="Theme.Money.Manager" parent="@style/App">
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat</item>
+
         <!-- Colors -->
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">#202020</item>
@@ -161,9 +164,10 @@
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_dark_row_light</item>
-        <!-- AChartEngine Colors -->
-        <item name="theme_axes_color">@android:color/black</item>
-        <item name="theme_labels_color">@color/theme_chart_labels_color</item>
+
+        <!-- Charts -->
+        <item name="chartTextColor">@color/material_grey_50</item>
+
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
         <item name="ic_action_bank">@drawable/ic_action_bank_dark</item>
