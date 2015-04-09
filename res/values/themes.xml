@@ -150,9 +150,6 @@
 
     <!-- Material Dark theme -->
     <style name="Theme.Money.Manager" parent="@style/App">
-        <!-- checkbox-related settings -->
-        <item name="colorAccent">@color/material_white</item>
-        <item name="android:textColorSecondary">@color/material_white</item>
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat</item>
         <!-- Colors -->

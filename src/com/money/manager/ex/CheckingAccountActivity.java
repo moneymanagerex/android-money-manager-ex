@@ -576,7 +576,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         });
 
         // split transaction
-        chbSplitTransaction.setButtonDrawable(R.drawable.abc_btn_check_material);
         chbSplitTransaction.setChecked(mSplitTransaction != null && mSplitTransaction.size() >= 0);
         chbSplitTransaction.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
