@@ -51,6 +51,8 @@ dependencies {
     compile 'me.relex:circleindicator:1.1.2@aar'
     // androidSVG
     compile project(':androidSVG_12')
+    // Material Design library, used for checkboxes
+    compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
 }
 // MPChartAndroid
 repositories {

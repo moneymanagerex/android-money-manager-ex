@@ -18,15 +18,16 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_marginLeft="@dimen/activity_side_margin"
-              android:layout_marginRight="@dimen/activity_side_margin"
-              android:animateLayoutChanges="true"
-              android:background="?attr/theme_background_color"
-              android:focusable="true"
-              android:focusableInTouchMode="true"
-              android:orientation="vertical">
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/activity_side_margin"
+    android:layout_marginRight="@dimen/activity_side_margin"
+    android:animateLayoutChanges="true"
+    android:background="?attr/theme_background_color"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
 
     <include layout="@layout/toolbar_actionbar_button_cancel_done"/>
 
@@ -238,13 +239,30 @@
                     android:drawableLeft="?attr/ic_label_outline"
                     android:hint="@string/category"/>
 
-                <com.money.manager.ex.view.RobotoCheckBox
+                <!--<com.money.manager.ex.view.RobotoCheckBox-->
+                    <!--android:id="@+id/checkBox"-->
+                    <!--android:text="@string/split"-->
+                    <!--style="@style/Money.TextView.Header.Caption"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_gravity="right"-->
+                    <!--/>-->
+                <com.gc.materialdesign.views.CheckBox
                     android:id="@+id/checkBoxSplitTransaction"
-                    style="@style/Money.TextView.Header.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
-                    android:text="@string/split"/>
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    />
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/splitTextView"
+                    android:text="@string/split"
+                    style="@style/Money.TextView.Header.Caption"
+                    android:layout_gravity="right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp" />
             </LinearLayout>
 
             <LinearLayout

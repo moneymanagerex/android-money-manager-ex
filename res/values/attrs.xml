@@ -26,6 +26,7 @@
         <attr name="ic_action_calculator" format="reference"/>
         <attr name="ic_action_calendar_day" format="reference"/>
         <attr name="ic_action_cancel" format="reference"/>
+        <attr name="ic_action_cancel_contrast" format="reference" />
         <attr name="ic_action_copy" format="reference"/>
         <attr name="ic_action_currency" format="reference"/>
         <attr name="ic_action_delete" format="reference"/>

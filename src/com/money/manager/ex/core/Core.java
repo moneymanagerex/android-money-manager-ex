@@ -303,6 +303,12 @@ public class Core {
         }
     }
 
+    public boolean usingDarkTheme(){
+        int currentTheme = this.getThemeApplication();
+        boolean isDarkTheme = currentTheme == R.style.Theme_Money_Manager;
+        return isDarkTheme;
+    }
+
     /**
      * Method, which returns the last payee used
      *

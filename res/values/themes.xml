@@ -73,7 +73,7 @@
 
     <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar"/>
 
-    <!-- Theme Application -->
+    <!-- Theme Application, Material Light -->
     <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/App_Light_DarkActionBar">
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -99,6 +99,7 @@
         <item name="ic_action_calculator">@drawable/ic_action_calculator_dark</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
         <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
+        <item name="ic_action_cancel_contrast">@drawable/ic_action_cancel_light</item>
         <item name="ic_action_copy">@drawable/ic_action_copy_dark</item>
         <item name="ic_action_currency">@drawable/ic_action_currency_dark</item>
         <item name="ic_action_delete">@drawable/ic_action_delete_dark</item>
@@ -147,6 +148,7 @@
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
     </style>
 
+    <!-- Material Dark theme -->
     <style name="Theme.Money.Manager" parent="@style/App">
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat</item>
@@ -171,6 +173,7 @@
         <item name="ic_action_calculator">@drawable/ic_action_calculator_dark</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
         <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
+        <item name="ic_action_cancel_contrast">@drawable/ic_action_cancel_dark</item>
         <item name="ic_action_copy">@drawable/ic_action_copy_dark</item>
         <item name="ic_action_currency">@drawable/ic_action_currency_dark</item>
         <item name="ic_action_delete">@drawable/ic_action_delete_dark</item>

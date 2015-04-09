@@ -184,7 +184,7 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
                     startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 }
             });
-            // image button to remove a item
+            // image button to remove an item
             ImageButton btnRemove = (ImageButton) layout.findViewById(R.id.imageButtonCancel);
             btnRemove.setOnClickListener(new OnClickListener() {
 

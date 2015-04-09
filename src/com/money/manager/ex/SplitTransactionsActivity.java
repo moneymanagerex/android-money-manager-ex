@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.gc.materialdesign.views.ButtonRectangle;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableSplitTransactions;
@@ -117,7 +118,8 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             setToolbarStandardAction(toolbar);
         }
 
-        final Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
+//        final Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
+        final ButtonRectangle buttonAdd = (ButtonRectangle) findViewById(R.id.buttonAdd);
         buttonAdd.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -166,7 +168,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     @Override
     public void onRemoveItem(ISplitTransactionsDataset object) {
         if (mSplitDeleted == null) {
-            mSplitDeleted = new ArrayList<ISplitTransactionsDataset>();
+            mSplitDeleted = new ArrayList<>();
         }
         // add item to delete
         if (object.getSplitTransId() != -1) // not new split transaction

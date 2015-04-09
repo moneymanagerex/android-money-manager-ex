@@ -22,13 +22,23 @@
     android:orientation="vertical" >
 
     <include layout="@layout/toolbar_actionbar_button_cancel_done"/>
-	
-    <com.money.manager.ex.view.RobotoButton 
+
+    <com.gc.materialdesign.views.ButtonRectangle
         android:id="@+id/buttonAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/add"/>
+        android:background="@color/green"
+        android:text="@string/add" />
+
+    <!--<com.money.manager.ex.view.RobotoButton -->
+        <!--android:id="@+id/buttonAdd"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="10dp"-->
+        <!--style="@style/Theme.Money.Manager"-->
+        <!--android:textColor="@color/green"-->
+        <!--android:text="@string/add"/>-->
     
     <ScrollView
         android:layout_width="match_parent"
