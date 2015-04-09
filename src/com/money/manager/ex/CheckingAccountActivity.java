@@ -46,6 +46,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DataRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -137,7 +138,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     // transaction numbers
     public String mTransNumber = "";
     // bill deposits
-    public int mBdId = -1;
+    public int mRecurringTransactionId = -1;
     public String mNextOccurrence = null;
     // datepicker value
     public String mDate = "";
@@ -303,7 +304,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
             mSplitTransaction = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
             mSplitTransactionDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
-            mBdId = savedInstanceState.getInt(KEY_BDID_ID);
+            mRecurringTransactionId = savedInstanceState.getInt(KEY_BDID_ID);
             mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
             // action
             mIntentAction = savedInstanceState.getString(KEY_ACTION);
@@ -327,9 +328,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                     getCheckingAccount(getIntent().getIntExtra(KEY_TRANS_ID, -1), true);
                 } else {
                     if (getIntent().getIntExtra(KEY_BDID_ID, -1) > -1) {
-                        mBdId = getIntent().getIntExtra(KEY_BDID_ID, -1);
+                        mRecurringTransactionId = getIntent().getIntExtra(KEY_BDID_ID, -1);
                         mNextOccurrence = getIntent().getStringExtra(KEY_NEXT_OCCURRENCE);
-                        loadRepeatingTransaction(mBdId);
+                        loadRepeatingTransaction(mRecurringTransactionId);
                     }
                 }
             }
@@ -713,7 +714,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
         outState.putString(KEY_NOTES, edtNotes.getText().toString());
         // bill deposits
-        outState.putInt(KEY_BDID_ID, mBdId);
+        outState.putInt(KEY_BDID_ID, mRecurringTransactionId);
         outState.putString(KEY_NEXT_OCCURRENCE, mNextOccurrence);
 
         outState.putString(KEY_ACTION, mIntentAction);
@@ -1139,7 +1140,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         values.put(TableCheckingAccount.STATUS, mStatus);
         values.put(TableCheckingAccount.CATEGID, !chbSplitTransaction.isCheck() ? mCategoryId : -1);
         values.put(TableCheckingAccount.SUBCATEGID, !chbSplitTransaction.isCheck() ? mSubCategoryId : -1);
-        values.put(TableCheckingAccount.TRANSDATE, DateUtils.getSQLiteStringDate(getApplicationContext(), (Date) txtSelectDate.getTag()));
+        String transactionDate = DateUtils.getSQLiteStringDate(getApplicationContext(), (Date) txtSelectDate.getTag());
+        values.put(TableCheckingAccount.TRANSDATE, transactionDate);
         values.put(TableCheckingAccount.FOLLOWUPID, -1);
         values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) txtTotAmount.getTag());
         values.put(TableCheckingAccount.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
@@ -1157,7 +1159,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             mTransId = Integer.parseInt(insert.getPathSegments().get(1));
         } else {
             // update
-            if (getContentResolver().update(mCheckingAccount.getUri(), values, TableCheckingAccount.TRANSID + "=?", new String[]{Integer.toString(mTransId)}) <= 0) {
+            if (getContentResolver().update(mCheckingAccount.getUri(), values,
+                    TableCheckingAccount.TRANSID + "=?", new String[]{Integer.toString(mTransId)}) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Update transaction failed!");
                 return false;
@@ -1217,22 +1220,26 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             // create instance TablePayee for update
             TablePayee payee = new TablePayee();
             // update data
-            if (getContentResolver().update(payee.getUri(), values, TablePayee.PAYEEID + "=" + Integer.toString(mPayeeId), null) <= 0) {
+            if (getContentResolver().update(payee.getUri(), values,
+                    TablePayee.PAYEEID + "=" + Integer.toString(mPayeeId), null) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mPayeeId) + " return <= 0");
             }
         }
+
         //update bill deposits
-        if (mBdId > -1 && !(TextUtils.isEmpty(mNextOccurrence))) {
+        if (mRecurringTransactionId > -1 && !(TextUtils.isEmpty(mNextOccurrence))) {
             values.clear();
-            values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, mNextOccurrence);
-            // update date
-            if (getContentResolver().update(new TableBillsDeposits().getUri(), values,
-                    TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(mBdId)}) > 0) {
+
+            // handle transactions that do not repeat any more.
+            RecurringTransaction recurringTransaction = new RecurringTransaction(mRecurringTransactionId, this);
+            if(mNextOccurrence == transactionDate) {
+                recurringTransaction.delete();
             } else {
-                Toast.makeText(getApplicationContext(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Update Bill Deposits with Id=" + Integer.toString(mBdId) + " return <= 0");
+                // store next occurrence date.
+                recurringTransaction.setNextOccurrenceDate(mNextOccurrence);
             }
+
         }
         return true;
     }
@@ -1245,7 +1252,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
         // create split transactions
         DataRepository repo = new DataRepository(getContentResolver());
-        ArrayList<TableBudgetSplitTransactions> splitTemplates = repo.loadSplitTransactionFor(mBdId);
+        ArrayList<TableBudgetSplitTransactions> splitTemplates = repo.loadSplitTransactionFor(mRecurringTransactionId);
         if(mSplitTransaction == null) mSplitTransaction = new ArrayList<>();
 
         // For each of the templates, create a new record.

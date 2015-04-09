@@ -39,6 +39,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
+import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
@@ -153,17 +154,9 @@ public class RepeatingTransactionListFragment extends BaseListFragment
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Delete split transactions.
-                        if (getActivity().getContentResolver().delete(
-                                new TableBudgetSplitTransactions().getUri(),
-                                TableBudgetSplitTransactions.TRANSID + "=" + id, null) == 0) {
-                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-                        }
-                        // Delete recurring transactions.
-                        if (getActivity().getContentResolver().delete(
-                                new TableBillsDeposits().getUri(), TableBillsDeposits.BDID + "=" + id, null) == 0) {
-                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-                        }
+                        RecurringTransaction recurringTransaction = new RecurringTransaction(id, getActivity());
+                        recurringTransaction.delete();
+
                         // restart loader
                         getLoaderManager().restartLoader(ID_LOADER_REPEATING,
                                 null, RepeatingTransactionListFragment.this);
