@@ -65,6 +65,7 @@ import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener
 import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.view.RobotoTextView;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -144,7 +145,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     public Spinner spinAccount, spinToAccount, spinTransCode, spinStatus;
     public ImageButton btnTransNumber;
     public EditText edtTransNumber, edtNotes;
-    public CheckBox chbSplitTransaction;
+//    public CheckBox chbSplitTransaction;
+    public com.gc.materialdesign.views.CheckBox chbSplitTransaction;
     public TextView txtSelectDate, txtSelectPayee, txtSelectCategory, txtTotAmount, txtAmount;
     // object of the table
     TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
@@ -221,7 +223,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                     mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
                     mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                     // select last category used from payee
-                    if (!chbSplitTransaction.isChecked()) {
+                    if (!chbSplitTransaction.isCheck()) {
                         if (getCategoryFromPayee(mPayeeId)) {
                             refreshCategoryName(); // refresh UI
                         }
@@ -308,7 +310,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         }
 
         // Controls need to be at the beginning as they are referenced throughout the code.
-        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
+        chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) findViewById(R.id.checkBoxSplitTransaction);
         txtSelectCategory = (TextView) findViewById(R.id.textViewCategory);
 
 
@@ -560,7 +562,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!chbSplitTransaction.isChecked()) {
+                if (!chbSplitTransaction.isCheck()) {
                     Intent intent = new Intent(CheckingAccountActivity.this, CategorySubCategoryExpandableListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
                     startActivityForResult(intent, REQUEST_PICK_CATEGORY);
@@ -577,9 +579,28 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
         // split transaction
         chbSplitTransaction.setChecked(mSplitTransaction != null && mSplitTransaction.size() >= 0);
-        chbSplitTransaction.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//        chbSplitTransaction.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                CheckingAccountActivity.this.refreshCategoryName();
+//            }
+//        });
+        chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener(){
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheck(boolean b) {
+                CheckingAccountActivity.this.refreshCategoryName();
+            }
+        });
+        // split text is as separate control.
+        RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
+        splitText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
+                // None of the below calls work with this custom checkbox!
+//                chbSplitTransaction.performClick();
+//                chbSplitTransaction.callOnClick();
+                // so we have to duplicate the code or create a function to call if there is more to do.
                 CheckingAccountActivity.this.refreshCategoryName();
             }
         });
@@ -992,7 +1013,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
         txtSelectCategory.setText("");
 
-        if (!chbSplitTransaction.isChecked()) {
+        if (!chbSplitTransaction.isCheck()) {
             if (!TextUtils.isEmpty(mCategoryName)) {
                 txtSelectCategory.setText(mCategoryName);
                 if (!TextUtils.isEmpty(mSubCategoryName)) {
@@ -1071,11 +1092,11 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             Core.alertDialog(this, R.string.error_payee_not_selected).show();
             return false;
         }
-        if (mCategoryId == -1 && (!chbSplitTransaction.isChecked())) {
+        if (mCategoryId == -1 && (!chbSplitTransaction.isCheck())) {
             Core.alertDialog(this, R.string.error_category_not_selected).show();
             return false;
         }
-        if (chbSplitTransaction.isChecked() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
+        if (chbSplitTransaction.isCheck() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
             Core.alertDialog(this, R.string.error_split_transaction_empty).show();
             return false;
         }
@@ -1116,8 +1137,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             values.put(TableCheckingAccount.TRANSAMOUNT, (Double) txtAmount.getTag());
         }
         values.put(TableCheckingAccount.STATUS, mStatus);
-        values.put(TableCheckingAccount.CATEGID, !chbSplitTransaction.isChecked() ? mCategoryId : -1);
-        values.put(TableCheckingAccount.SUBCATEGID, !chbSplitTransaction.isChecked() ? mSubCategoryId : -1);
+        values.put(TableCheckingAccount.CATEGID, !chbSplitTransaction.isCheck() ? mCategoryId : -1);
+        values.put(TableCheckingAccount.SUBCATEGID, !chbSplitTransaction.isCheck() ? mSubCategoryId : -1);
         values.put(TableCheckingAccount.TRANSDATE, DateUtils.getSQLiteStringDate(getApplicationContext(), (Date) txtSelectDate.getTag()));
         values.put(TableCheckingAccount.FOLLOWUPID, -1);
         values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) txtTotAmount.getTag());
