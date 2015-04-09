@@ -186,6 +186,8 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
             });
             // image button to remove a item
             ImageButton btnRemove = (ImageButton) layout.findViewById(R.id.imageButtonCancel);
+            // Set the image based on the theme. todo: this should be implemented as an attribute in a theme.
+            btnRemove.setImageResource(core.usingDarkTheme() ? R.drawable.ic_action_cancel_dark : R.drawable.ic_action_cancel_light );
             btnRemove.setOnClickListener(new OnClickListener() {
 
                 @Override
