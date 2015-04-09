@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,83 +40,5 @@ public class LookFeelSettingsActivity extends BaseSettingsFragmentActivity {
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setSettingFragment(new LookFeelFragment());
-    }
-
-    public static class LookFeelFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.look_and_feel_settings);
-            PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-            // checkbox on open and favorite account
-            final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE));
-            final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE));
-
-            Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                MainActivity.setRestartActivity(true);
-                return true;
-                }
-            };
-            // set listener on the checkbox
-            chkAccountOpen.setOnPreferenceChangeListener(listener);
-            chkAccountFav.setOnPreferenceChangeListener(listener);
-
-            // show transaction
-            final ListPreference lstShow = (ListPreference) findPreference(getString(PreferencesConstant.PREF_SHOW_TRANSACTION));
-            if (lstShow != null) {
-                lstShow.setSummary(MoneyManagerApplication.getInstanceApp().getShowTransaction());
-                lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    lstShow.setSummary((CharSequence) newValue);
-                    return true;
-                    }
-                });
-            }
-
-            // font type
-            final ListPreference lstFont = (ListPreference) findPreference(getString(PreferencesConstant.PREF_APPLICATION_FONT));
-            if (lstFont != null) {
-                lstFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (newValue instanceof String && NumberUtils.isNumber(newValue.toString())) {
-                        RobotoView.setUserFont(Integer.parseInt(newValue.toString()));
-                        return true;
-                    }
-                    return false;
-                    }
-                });
-            }
-
-            //font size
-            final ListPreference lstFontSize = (ListPreference) findPreference(getString(PreferencesConstant.PREF_APPLICATION_FONT_SIZE));
-            if (lstFontSize != null) {
-                lstFontSize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    RobotoView.setUserFontSize(getActivity().getApplicationContext(), newValue.toString());
-                    return true;
-                    }
-                });
-            }
-
-            //theme
-            final ListPreference lstTheme = (ListPreference) findPreference(getString(PreferencesConstant.PREF_THEME));
-            if (lstTheme != null) {
-                lstTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    MainActivity.setRestartActivity(true);
-                    return true;
-                    }
-                });
-            }
-        }
     }
 }
