@@ -1226,7 +1226,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             }
         }
 
-        //update bill deposits
+        //update recurring transaction
         if (mRecurringTransactionId > -1 && !(TextUtils.isEmpty(mNextOccurrence))) {
             values.clear();
 
