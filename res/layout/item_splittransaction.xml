@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_action_cancel_light" />
+            android:src="?attr/ic_action_cancel_contrast" />
     </LinearLayout>
 
     <View

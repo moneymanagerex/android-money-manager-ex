@@ -166,7 +166,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     @Override
     public void onRemoveItem(ISplitTransactionsDataset object) {
         if (mSplitDeleted == null) {
-            mSplitDeleted = new ArrayList<ISplitTransactionsDataset>();
+            mSplitDeleted = new ArrayList<>();
         }
         // add item to delete
         if (object.getSplitTransId() != -1) // not new split transaction
