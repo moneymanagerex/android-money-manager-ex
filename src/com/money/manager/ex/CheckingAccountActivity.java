@@ -326,7 +326,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                     if (getIntent().getIntExtra(KEY_BDID_ID, -1) > -1) {
                         mRecurringTransactionId = getIntent().getIntExtra(KEY_BDID_ID, -1);
                         mNextOccurrence = getIntent().getStringExtra(KEY_NEXT_OCCURRENCE);
-                        loadRepeatingTransaction(mRecurringTransactionId);
+                        loadRecurringTransaction(mRecurringTransactionId);
                     }
                 }
             }
@@ -586,8 +586,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 CheckingAccountActivity.this.refreshCategoryName();
             }
         });
-        boolean hasSplit = mSplitTransaction != null && mSplitTransaction.size() >= 0;
-        chbSplitTransaction.setChecked(hasSplit);
+        final boolean hasSplit = mSplitTransaction != null && mSplitTransaction.size() >= 0;
+        chbSplitTransaction.post(new Runnable() {
+            @Override
+            public void run() {
+                chbSplitTransaction.setChecked(hasSplit);
+                CheckingAccountActivity.this.refreshCategoryName();
+            }
+        });
         // split text is a separate control.
         RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
         splitText.setOnClickListener(new OnClickListener() {
@@ -941,15 +947,15 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
     /**
      * Loads a recurring transaction data when entering a recurring transaction.
-     * @param billId Id of the recurring transaction.
+     * @param recurringTransactionId Id of the recurring transaction.
      * @return A boolean indicating whether the operation was successful.
      */
-    public boolean loadRepeatingTransaction(int billId) {
+    public boolean loadRecurringTransaction(int recurringTransactionId) {
         TableBillsDeposits billDeposits = new TableBillsDeposits();
         Cursor cursor = getContentResolver().query(billDeposits.getUri(),
                 billDeposits.getAllColumns(),
                 TableBillsDeposits.BDID + "=?",
-                new String[]{Integer.toString(billId)}, null);
+                new String[]{Integer.toString(recurringTransactionId)}, null);
         // check if cursor is valid and open
         if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
