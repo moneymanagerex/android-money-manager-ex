@@ -329,8 +329,8 @@ public class MainActivity extends BaseFragmentActivity {
             transaction.replace(R.id.fragmentDetail, fragment, tagFragment);
         } else {
             transaction.replace(R.id.fragmentContent, fragment, tagFragment);
-            transaction.addToBackStack(null);
         }
+        transaction.addToBackStack(null);
         // Commit the transaction
         transaction.commit();
     }
