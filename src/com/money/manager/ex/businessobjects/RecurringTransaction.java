@@ -19,6 +19,7 @@ package com.money.manager.ex.businessobjects;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,9 +27,11 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 
+import java.util.ArrayList;
+
 /**
  * Represent a single Recurring Transaction object and provides related operations.
- * Created by Alen on 9/04/2015.
+ * Created by Alen Siljak on 9/04/2015.
  */
 public class RecurringTransaction {
 
@@ -42,6 +45,7 @@ public class RecurringTransaction {
     public Activity Activity;
 
     private TableBillsDeposits mRecurringTransaction = new TableBillsDeposits();
+    private TableBudgetSplitTransactions mSplitCategories = new TableBudgetSplitTransactions();
 
     /**
      * Set the date for the current record.
@@ -74,23 +78,88 @@ public class RecurringTransaction {
         boolean result = false;
 
         // Delete any related split transactions.
-        if (this.Activity.getContentResolver().delete(
-                new TableBudgetSplitTransactions().getUri(),
-                TableBudgetSplitTransactions.TRANSID + "=" + this.RecurringTransactionId, null) != 0) {
-            result = true;
-        } else {
-            Toast.makeText(this.Activity, R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-        }
+        result = this.deleteSplitCategories();
+        // Exit if the deletion of splits failed.
+        if(result == false) return false;
 
         // Delete recurring transactions.
-        if (this.Activity.getContentResolver().delete(
+        int deleteResult = this.Activity.getContentResolver().delete(
                 new TableBillsDeposits().getUri(),
-                TableBillsDeposits.BDID + "=" + this.RecurringTransactionId, null) != 0) {
-            result = result && true;
+                TableBillsDeposits.BDID + "=" + this.RecurringTransactionId, null);
+        if (deleteResult != 0) {
+            // result is true if deletion of related splits was successful.
+            // result = result;
         } else {
             Toast.makeText(this.Activity, R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+            Log.w(LOGCAT, "Deleting recurring transaction " +
+                    this.RecurringTransactionId + " failed.");
+            result = false;
         }
 
         return result;
+    }
+
+    /**
+     * Delete any split categories for the current recurring transaction.
+     * @return
+     */
+    public boolean deleteSplitCategories() {
+        boolean result = false;
+
+        // first check if there are any records.
+        Cursor query = this.getCursorForSplitTransactions();
+        int existingRecords = query.getCount();
+        if(existingRecords == 0) return true;
+
+        // delete them
+
+        int deleteResult = this.Activity.getContentResolver().delete(
+                mSplitCategories.getUri(),
+                TableBudgetSplitTransactions.TRANSID + "=" + this.RecurringTransactionId, null);
+        if (deleteResult != 0) {
+            result = true;
+        } else {
+            Toast.makeText(this.Activity, R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+            Log.w(LOGCAT, "Deleting split categories for recurring transaction " +
+                    this.RecurringTransactionId + " failed.");
+        }
+
+        return result;
+    }
+
+    /**
+     * Load split transactions.
+     * @return array list of all related split transactions
+     */
+    public ArrayList<TableBudgetSplitTransactions> loadSplitTransactions() {
+
+        ArrayList<TableBudgetSplitTransactions> listSplitTrans = null;
+
+        Cursor curSplit = this.getCursorForSplitTransactions();
+
+        if (curSplit != null && curSplit.moveToFirst()) {
+            listSplitTrans = new ArrayList<>();
+            while (!curSplit.isAfterLast()) {
+                TableBudgetSplitTransactions obj = new TableBudgetSplitTransactions();
+                obj.setValueFromCursor(curSplit);
+                listSplitTrans.add(obj);
+                curSplit.moveToNext();
+            }
+        }
+
+        return listSplitTrans;
+    }
+
+    /**
+     * Creates a query for getting all related split transactions.
+     * @return cursor for all the related split transactions
+     */
+    private Cursor getCursorForSplitTransactions(){
+        Cursor curSplit = this.Activity.getContentResolver().query(
+                mSplitCategories.getUri(), null,
+                TableBudgetSplitTransactions.TRANSID + "=" + Integer.toString(this.RecurringTransactionId), null,
+                TableBudgetSplitTransactions.SPLITTRANSID);
+
+        return curSplit;
     }
 }

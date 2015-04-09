@@ -48,7 +48,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.DataRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -1233,13 +1232,13 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
             // handle transactions that do not repeat any more.
             RecurringTransaction recurringTransaction = new RecurringTransaction(mRecurringTransactionId, this);
-            if(mNextOccurrence == transactionDate) {
+            if(mNextOccurrence.equals(transactionDate)) {
+                // The next occurrence date is the same as the current. Expired.
                 recurringTransaction.delete();
             } else {
                 // store next occurrence date.
                 recurringTransaction.setNextOccurrenceDate(mNextOccurrence);
             }
-
         }
         return true;
     }
@@ -1251,8 +1250,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         // Adding transactions to the split list will set the Split checkbox and the category name.
 
         // create split transactions
-        DataRepository repo = new DataRepository(getContentResolver());
-        ArrayList<TableBudgetSplitTransactions> splitTemplates = repo.loadSplitTransactionFor(mRecurringTransactionId);
+        RecurringTransaction recurringTransaction = new RecurringTransaction(mRecurringTransactionId, this);
+        ArrayList<TableBudgetSplitTransactions> splitTemplates = recurringTransaction.loadSplitTransactions();
         if(mSplitTransaction == null) mSplitTransaction = new ArrayList<>();
 
         // For each of the templates, create a new record.
