@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -66,7 +66,7 @@ public class AccountFragment extends Fragment
     // all data fragment
     AllDataFragment mAllDataFragment;
     // id account
-    private int mAccountId = 0;
+    private Integer mAccountId = null;
     // string name fragment
     private String mNameFragment;
     // account balance
@@ -113,6 +113,9 @@ public class AccountFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
+            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
+        }
     }
 
     @Override
@@ -295,7 +298,8 @@ public class AccountFragment extends Fragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(KEY_CONTENT, mAccountId);
+        if (mAccountId != null)
+            outState.putInt(KEY_CONTENT, mAccountId);
     }
 
     private Bundle prepareArgsForChildFragment() {

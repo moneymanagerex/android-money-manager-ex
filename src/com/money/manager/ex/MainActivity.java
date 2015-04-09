@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,6 +42,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -358,7 +359,7 @@ public class MainActivity extends BaseFragmentActivity {
         //SharedPreferences settings = getSharedPreferences(key, 0);
         boolean showTutorial = settings.getBoolean(key, true);
 
-        if(!showTutorial) return;
+        if (!showTutorial) return;
 
         // else show tutorial.
         Intent intent = new Intent(this, TutorialActivity.class);
@@ -609,6 +610,9 @@ public class MainActivity extends BaseFragmentActivity {
         // manage fragment
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
             String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
+            // check if className is null, then setting Home Fragment
+            if (TextUtils.isEmpty(className))
+                className = HomeFragment.class.getName();
             if (className.contains(AccountFragment.class.getSimpleName())) {
                 changeFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
             } else {
