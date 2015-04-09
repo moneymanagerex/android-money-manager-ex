@@ -1220,7 +1220,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
 
         // Adding transactions to the split list will set the Split checkbox and the category name.
 
-        // todo: create split transactions
+        // create split transactions
         DataRepository repo = new DataRepository(getContentResolver());
         ArrayList<TableBudgetSplitTransactions> splitTemplates = repo.loadSplitTransactionFor(mBdId);
         if(mSplitTransaction == null) mSplitTransaction = new ArrayList<>();

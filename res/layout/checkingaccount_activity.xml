@@ -240,11 +240,13 @@
 
                 <com.money.manager.ex.view.RobotoCheckBox
                     android:id="@+id/checkBoxSplitTransaction"
+                    android:text="@string/split"
+                    android:button="@drawable/abc_btn_check_material"
                     style="@style/Money.TextView.Header.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
-                    android:text="@string/split"/>
+                    />
             </LinearLayout>
 
             <LinearLayout

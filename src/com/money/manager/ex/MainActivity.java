@@ -756,7 +756,7 @@ public class MainActivity extends BaseFragmentActivity {
      */
     public void createDrawerMenu() {
         Core core = new Core(getApplicationContext());
-        Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
+        Boolean isDarkTheme = core.usingDarkTheme();
 
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
         mDrawerList = (ListView) findViewById(R.id.listViewDrawer);
