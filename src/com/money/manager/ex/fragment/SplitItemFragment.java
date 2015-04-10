@@ -230,7 +230,7 @@ public class SplitItemFragment extends Fragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(KEY_SPLIT_TRANSACTION, (Parcelable) mSplitTransaction);
+        outState.putParcelable(KEY_SPLIT_TRANSACTION, mSplitTransaction);
     }
 
     @Override

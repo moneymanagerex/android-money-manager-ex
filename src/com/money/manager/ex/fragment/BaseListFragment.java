@@ -39,13 +39,16 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
+/**
+ *
+ */
 public abstract class BaseListFragment extends AbsListFragment {
     // saved instance
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
     // FloatingActionButton
     FloatingActionButton mFloatingActionButton;
     // menu items
-    private boolean mDisplayShowCustomEnabled = false;
+//    private boolean mDisplayShowCustomEnabled = false;
     private boolean mShowMenuItemSearch = false;
     private boolean mMenuItemSearchIconified = true;
     // flag for tips wildcard
