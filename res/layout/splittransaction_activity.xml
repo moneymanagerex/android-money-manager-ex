@@ -31,15 +31,6 @@
         android:background="@color/green"
         android:text="@string/add" />
 
-    <!--<com.money.manager.ex.view.RobotoButton -->
-        <!--android:id="@+id/buttonAdd"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="10dp"-->
-        <!--style="@style/Theme.Money.Manager"-->
-        <!--android:textColor="@color/green"-->
-        <!--android:text="@string/add"/>-->
-    
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -96,6 +96,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // load intent
         Intent intent = getIntent();
         if (intent != null) {
@@ -139,6 +140,9 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
                 addFragmentChild(mSplitTransactions.get(i));
             }
         }
+
+        // show the floating "Add" button
+
     }
 
     @Override
