@@ -251,7 +251,7 @@ public class RepeatingTransactionListFragment extends BaseListFragment
     /**
      * start RepeatingTransaction for insert or edit transaction
      *
-     * @param billDepositsId
+     * @param billDepositsId Id of the recurring transaction.
      * @param purposeCode       Code that indicates why we are opening the editor.
      *                          example: REQUEST_ADD_REPEATING_TRANSACTION
      */
@@ -302,10 +302,8 @@ public class RepeatingTransactionListFragment extends BaseListFragment
         Date date;
 
         if(cursor == null) {
-            //AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             // move cursor to selected item's position.
             cursor = ((AllDataAdapter) getListAdapter()).getCursor();
-            //cursor.moveToPosition(info.position);
             cursor.moveToPosition(this.mActiveTransactionPosition);
         }
 

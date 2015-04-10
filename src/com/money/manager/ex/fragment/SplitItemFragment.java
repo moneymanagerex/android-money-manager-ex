@@ -127,7 +127,7 @@ public class SplitItemFragment extends Fragment
             return null;
 
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION)) {
-            mSplitTransaction = (ISplitTransactionsDataset) savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
+            mSplitTransaction = savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
         }
 
         Core core = new Core(getActivity().getApplicationContext());
@@ -241,15 +241,6 @@ public class SplitItemFragment extends Fragment
             mSplitTransaction.setSplitTransAmount(amount);
             core.formatAmountTextView(txtAmount, amount);
         }
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // set floating button visible
-//        setFloatingActionButtonVisbile(true);
-//        setFloatingActionButtonAttachListView(true);
     }
 
     public interface SplitItemFragmentCallbacks {
