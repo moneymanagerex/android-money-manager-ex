@@ -148,6 +148,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
         // set view
         setContentView(R.layout.splittransaction_activity);
+
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -157,20 +158,13 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
         // 'Add' button
 
-        final ButtonRectangle buttonAdd = (ButtonRectangle) findViewById(R.id.buttonAdd);
-        buttonAdd.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // find which split transactions dataset to instantiate.
-                String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
-                if (EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
-                    addFragmentChild(new TableBudgetSplitTransactions());
-                } else {
-                    addFragmentChild(new TableSplitTransactions());
-                }
-            }
-        });
+//        final ButtonRectangle buttonAdd = (ButtonRectangle) findViewById(R.id.buttonAdd);
+//        buttonAdd.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                addSplitTransaction();
+//            }
+//        });
 
         if (mSplitTransactions != null) {
             for (int i = 0; i < mSplitTransactions.size(); i++) {
@@ -182,19 +176,19 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         setUpFloatingButton();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == MENU_ADD_SPLIT_TRANSACTION) {
-            // find which split transactions dataset to instantiate.
-            String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
-            if(EntityTypeName.contains(recurringSplitName)) {
-                addFragmentChild(new TableBudgetSplitTransactions());
-            } else {
-                addFragmentChild(new TableSplitTransactions());
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == MENU_ADD_SPLIT_TRANSACTION) {
+//            // find which split transactions dataset to instantiate.
+//            String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
+//            if(EntityTypeName.contains(recurringSplitName)) {
+//                addFragmentChild(new TableBudgetSplitTransactions());
+//            } else {
+//                addFragmentChild(new TableSplitTransactions());
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public void onRemoveItem(ISplitTransactionsDataset object) {
@@ -240,7 +234,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     }
 
     public void onFloatingActionButtonClickListener() {
-        Toast.makeText(getApplicationContext(), "blah", Toast.LENGTH_SHORT);
+        addSplitTransaction();
     }
 
     private void setUpFloatingButton() {
@@ -257,4 +251,13 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         setFloatingActionButtonVisible(true);
     }
 
+    private void addSplitTransaction() {
+        // find which split transactions dataset to instantiate.
+        String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
+        if (EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
+            addFragmentChild(new TableBudgetSplitTransactions());
+        } else {
+            addFragmentChild(new TableSplitTransactions());
+        }
+    }
 }

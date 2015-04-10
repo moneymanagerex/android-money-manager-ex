@@ -37,14 +37,6 @@
 
             <include layout="@layout/toolbar_actionbar_button_cancel_done" />
 
-            <com.gc.materialdesign.views.ButtonRectangle
-                android:id="@+id/buttonAdd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@color/green"
-                android:text="@string/add" />
-
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
