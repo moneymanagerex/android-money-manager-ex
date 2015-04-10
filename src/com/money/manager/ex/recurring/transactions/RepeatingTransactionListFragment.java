@@ -93,7 +93,7 @@ public class RepeatingTransactionListFragment extends BaseListFragment
         // start loaderapplication.getSQLiteStringDate(date)
         getLoaderManager().initLoader(ID_LOADER_REPEATING, null, this);
         // set fab visible
-        setFloatingActionButtonVisbile(true);
+        setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
     }
 

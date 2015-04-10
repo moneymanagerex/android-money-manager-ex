@@ -218,7 +218,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         setListShown(false);
 
         // floating action button
-        setFloatingActionButtonVisbile(true);
+        setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
 
         // start loader

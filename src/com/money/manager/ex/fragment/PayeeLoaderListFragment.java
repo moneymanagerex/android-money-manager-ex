@@ -97,7 +97,7 @@ public class PayeeLoaderListFragment extends BaseListFragment
         // set icon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
         // set floating button visible
-        setFloatingActionButtonVisbile(true);
+        setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
     }
 

@@ -92,7 +92,7 @@ public class AccountLoaderListFragment extends BaseListFragment
 
         // set incon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
-        setFloatingActionButtonVisbile(true);
+        setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
     }
 

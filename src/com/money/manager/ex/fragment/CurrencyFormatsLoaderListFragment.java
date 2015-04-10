@@ -98,7 +98,7 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
 
         // set icon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
-        setFloatingActionButtonVisbile(true);
+        setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
     }
 
