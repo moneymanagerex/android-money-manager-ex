@@ -42,7 +42,9 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 
-public class SplitItemFragment extends Fragment implements InputAmountDialogListener {
+public class SplitItemFragment extends Fragment
+        implements InputAmountDialogListener {
+
     public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
     private static final int REQUEST_PICK_CATEGORY = 1;
     private ISplitTransactionsDataset mSplitTransaction;
@@ -241,7 +243,16 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
         }
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // set floating button visible
+//        setFloatingActionButtonVisbile(true);
+//        setFloatingActionButtonAttachListView(true);
+    }
+
     public interface SplitItemFragmentCallbacks {
-        public void onRemoveItem(ISplitTransactionsDataset object);
+        void onRemoveItem(ISplitTransactionsDataset object);
     }
 }
