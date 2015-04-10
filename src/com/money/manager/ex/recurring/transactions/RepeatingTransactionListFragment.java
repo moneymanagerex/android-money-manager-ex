@@ -56,14 +56,10 @@ import java.util.Date;
 public class RepeatingTransactionListFragment extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    // start RepeatingTransaction Activity for insert.
-//    public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RepeatingTransactionListActivity:LaunchNotification";
     // ID request to add repeating transaction
     private static final int REQUEST_ADD_REPEATING_TRANSACTION = 1001;
     private static final int REQUEST_ADD_TRANSACTION = 1002;
     private static final int REQUEST_EDIT_REPEATING_TRANSACTION = 1003;
-    // ID item menu add
-//    private static final int MENU_ITEM_ADD = 1;
     // ID loader
     private static final int ID_LOADER_REPEATING = 0;
     // query

@@ -26,9 +26,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableSplitTransactions;
@@ -64,10 +65,12 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     private String EntityTypeName = null;
     private ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
     private ArrayList<ISplitTransactionsDataset> mSplitDeleted = null;
+    private FloatingActionButton mFloatingActionButton;
 
     private void addFragmentChild(ISplitTransactionsDataset object) {
-        String nameFragment = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(object.getSplitTransId() == -1 ? mIdTag++ : object.getSplitTransId());
-        SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(nameFragment);
+        String fragmentName = SplitItemFragment.class.getSimpleName() + "_" +
+                Integer.toString(object.getSplitTransId() == -1 ? mIdTag++ : object.getSplitTransId());
+        SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentName);
         if (fragment == null) {
             fragment = SplitItemFragment.newInstance(object);
             fragment.setOnSplitItemCallback(this);
@@ -76,7 +79,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             // transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack
-            transaction.add(R.id.linearLayoutSplitTransaction, fragment, nameFragment);
+            transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentName);
             transaction.commit();
         }
     }
@@ -152,6 +155,8 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             setToolbarStandardAction(toolbar);
         }
 
+        // 'Add' button
+
         final ButtonRectangle buttonAdd = (ButtonRectangle) findViewById(R.id.buttonAdd);
         buttonAdd.setOnClickListener(new OnClickListener() {
 
@@ -159,7 +164,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             public void onClick(View v) {
                 // find which split transactions dataset to instantiate.
                 String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
-                if(EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
+                if (EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
                     addFragmentChild(new TableBudgetSplitTransactions());
                 } else {
                     addFragmentChild(new TableSplitTransactions());
@@ -174,17 +179,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         }
 
         // show the floating "Add" button
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // item add
-        /*MenuItem itemadd = menu.add(MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, MENU_ADD_SPLIT_TRANSACTION, R.string.add);
-		itemadd.setIcon(new Core(getApplicationContext()).resolveIdAttribute(R.attr.ic_action_add));
-		itemadd.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);*/
-
-        return super.onCreateOptionsMenu(menu);
+        setUpFloatingButton();
     }
 
     @Override
@@ -233,4 +228,33 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     public void setFragmentInputAmountClick(SplitItemFragment mFragmentInputAmountClick) {
         this.mFragmentInputAmountClick = mFragmentInputAmountClick;
     }
+
+    /**
+     * Set the visibility of the floating button.
+     * @param visible visibility
+     */
+    public void setFloatingActionButtonVisible(boolean visible) {
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void onFloatingActionButtonClickListener() {
+        Toast.makeText(getApplicationContext(), "blah", Toast.LENGTH_SHORT);
+    }
+
+    private void setUpFloatingButton() {
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onFloatingActionButtonClickListener();
+                }
+            });
+        }
+
+        setFloatingActionButtonVisible(true);
+    }
+
 }

@@ -64,8 +64,6 @@ public class AccountLoaderListFragment extends BaseListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        AccountListActivity parentActivity = (AccountListActivity) getActivity();
-
         // set show search
         setShowMenuItemSearch(true);
         // set default value
