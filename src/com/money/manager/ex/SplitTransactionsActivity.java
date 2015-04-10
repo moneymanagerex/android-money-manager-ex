@@ -81,8 +81,12 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         }
     }
 
+    /**
+     * returns all the split transactions visible on the screen
+     * @return list of split transactions
+     */
     public ArrayList<ISplitTransactionsDataset> getAllTableSplitTransaction() {
-        ArrayList<ISplitTransactionsDataset> splitTransactions = new ArrayList<ISplitTransactionsDataset>();
+        ArrayList<ISplitTransactionsDataset> splitTransactions = new ArrayList<>();
         for (int i = 0; i < mIdTag; i++) {
             String nameFragment = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(i);
             SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(nameFragment);
@@ -91,6 +95,34 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             }
         }
         return splitTransactions;
+    }
+
+    @Override
+    public boolean onActionCancelClick() {
+        setResult(RESULT_CANCELED);
+        finish();
+
+        return true;
+    }
+
+    @Override
+    public boolean onActionDoneClick() {
+        ArrayList<ISplitTransactionsDataset> allSplitTransactions = getAllTableSplitTransaction();
+        // check data
+        for (int i = 0; i < allSplitTransactions.size(); i++) {
+            ISplitTransactionsDataset splitTransactions = allSplitTransactions.get(i);
+            if (splitTransactions.getCategId() == -1 && splitTransactions.getCategId() == -1) {
+                Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected).show();
+                return false;
+            }
+        }
+        Intent result = new Intent();
+        result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION, allSplitTransactions);
+        result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
+        setResult(RESULT_OK, result);
+        finish();
+
+        return true;
     }
 
     @Override
@@ -105,6 +137,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
             mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
         }
+
         // load deleted item
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
             mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
@@ -119,7 +152,6 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             setToolbarStandardAction(toolbar);
         }
 
-//        final Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
         final ButtonRectangle buttonAdd = (ButtonRectangle) findViewById(R.id.buttonAdd);
         buttonAdd.setOnClickListener(new OnClickListener() {
 
@@ -184,34 +216,6 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         super.onSaveInstanceState(outState);
         if (mSplitDeleted != null)
             outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
-    }
-
-    @Override
-    public boolean onActionCancelClick() {
-        setResult(RESULT_CANCELED);
-        finish();
-
-        return true;
-    }
-
-    @Override
-    public boolean onActionDoneClick() {
-        ArrayList<ISplitTransactionsDataset> allSplitTransactions = getAllTableSplitTransaction();
-        // check data
-        for (int i = 0; i < allSplitTransactions.size(); i++) {
-            ISplitTransactionsDataset splitTransactions = allSplitTransactions.get(i);
-            if (splitTransactions.getCategId() == -1 && splitTransactions.getCategId() == -1) {
-                Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected).show();
-                return false;
-            }
-        }
-        Intent result = new Intent();
-        result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION, allSplitTransactions);
-        result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
-        setResult(RESULT_OK, result);
-        finish();
-
-        return true;
     }
 
     @Override

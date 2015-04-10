@@ -55,7 +55,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.AccountListActivity.AccountLoaderListFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.PayeeActivity.PayeeLoaderListFragment;
 import com.money.manager.ex.about.AboutActivity;
@@ -68,6 +67,7 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.fragment.AccountFragment;
+import com.money.manager.ex.fragment.AccountLoaderListFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
