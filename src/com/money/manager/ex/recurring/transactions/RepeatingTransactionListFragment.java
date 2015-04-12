@@ -51,20 +51,16 @@ import com.money.manager.ex.utils.DateUtils;
 import java.util.Date;
 
 /**
- * Created by Alen Siljak on 8/04/2015.
+ * The base class that implements common behaviour for list fragments.
+ * Includes floating action button.
  */
 public class RepeatingTransactionListFragment extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
-    /**
-     * start RepeatingTransaction Activity for insert
-     */
-    public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RepeatingTransactionListActivity:LaunchNotification";
+
     // ID request to add repeating transaction
     private static final int REQUEST_ADD_REPEATING_TRANSACTION = 1001;
     private static final int REQUEST_ADD_TRANSACTION = 1002;
     private static final int REQUEST_EDIT_REPEATING_TRANSACTION = 1003;
-    // ID item menu add
-    private static final int MENU_ITEM_ADD = 1;
     // ID loader
     private static final int ID_LOADER_REPEATING = 0;
     // query
@@ -83,7 +79,7 @@ public class RepeatingTransactionListFragment extends BaseListFragment
 
         // create a object query
         mBillDeposits = new QueryBillDeposits(getActivity());
-        // set listview
+        // set list view
         setEmptyText(getActivity().getResources().getString(R.string.repeating_empty_transaction));
         setHasOptionsMenu(true);
         registerForContextMenu(getListView());
@@ -94,7 +90,7 @@ public class RepeatingTransactionListFragment extends BaseListFragment
         // start loaderapplication.getSQLiteStringDate(date)
         getLoaderManager().initLoader(ID_LOADER_REPEATING, null, this);
         // set fab visible
-        setFloatingActionButtonVisbile(true);
+        setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
     }
 
@@ -244,7 +240,7 @@ public class RepeatingTransactionListFragment extends BaseListFragment
     /**
      * start RepeatingTransaction for insert or edit transaction
      *
-     * @param billDepositsId
+     * @param billDepositsId Id of the recurring transaction.
      * @param purposeCode       Code that indicates why we are opening the editor.
      *                          example: REQUEST_ADD_REPEATING_TRANSACTION
      */
@@ -295,10 +291,8 @@ public class RepeatingTransactionListFragment extends BaseListFragment
         Date date;
 
         if(cursor == null) {
-            //AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             // move cursor to selected item's position.
             cursor = ((AllDataAdapter) getListAdapter()).getCursor();
-            //cursor.moveToPosition(info.position);
             cursor.moveToPosition(this.mActiveTransactionPosition);
         }
 

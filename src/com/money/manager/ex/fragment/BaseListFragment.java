@@ -39,13 +39,16 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.preferences.PreferencesConstant;
 
+/**
+ *
+ */
 public abstract class BaseListFragment extends AbsListFragment {
     // saved instance
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
     // FloatingActionButton
     FloatingActionButton mFloatingActionButton;
     // menu items
-    private boolean mDisplayShowCustomEnabled = false;
+//    private boolean mDisplayShowCustomEnabled = false;
     private boolean mShowMenuItemSearch = false;
     private boolean mMenuItemSearchIconified = true;
     // flag for tips wildcard
@@ -110,7 +113,8 @@ public abstract class BaseListFragment extends AbsListFragment {
         super.onStart();
         // show tooltip wildcard
         // check search type
-        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
+        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(getString(PreferencesConstant.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
 
         if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
             // show tooltip for wildcard
@@ -239,7 +243,7 @@ public abstract class BaseListFragment extends AbsListFragment {
         return mFloatingActionButton;
     }
 
-    public void setFloatingActionButtonVisbile(boolean visible) {
+    public void setFloatingActionButtonVisible(boolean visible) {
         if (mFloatingActionButton != null) {
             mFloatingActionButton.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
