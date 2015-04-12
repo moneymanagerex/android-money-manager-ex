@@ -346,8 +346,12 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            if (item.getItemId() == R.id.menu_sort) {
-                showDialogSortMonth();
+            if (item.getItemId() == android.R.id.home) {
+                getActivity().finish();
+            } else if (item.getItemId() == R.id.menu_sort_asceding || item.getItemId() == R.id.menu_sort_desceding) {
+                mSort = item.getItemId() == R.id.menu_sort_asceding ?SORT_ASCENDING : SORT_DESCENDING;
+                startLoader(hashMap2IntArray(mCheckedItem));
+                item.setChecked(true);
             } else if (item.getItemId() == R.id.menu_chart) {
                 showChart();
             } else {
@@ -405,7 +409,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mSort = rbtAscending.isChecked() ? SORT_ASCENDING : SORT_DESCENDING;
+                    mSort= rbtAscending.isChecked() ? SORT_ASCENDING : SORT_DESCENDING;
                     startLoader(hashMap2IntArray(mCheckedItem));
                 }
             });
