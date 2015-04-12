@@ -25,12 +25,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.recurring.transactions.RepeatingTransactionListActivity;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.recurring.transactions.RepeatingTransactionListActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 public class RepeatingTransactionNotifications {
@@ -61,8 +62,13 @@ public class RepeatingTransactionNotifications {
                     cursor.moveToFirst();
                     NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
                     while (!cursor.isAfterLast()) {
+                        String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
+                        // check if payee name is null, then put toAccountName
+                        if (TextUtils.isEmpty(payeeName))
+                            payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
+                        // compose text
                         String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
-                                " " + cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)) +
+                                " " + payeeName +
                                 ": <b>" + currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
                         // add line
                         inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
