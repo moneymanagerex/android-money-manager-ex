@@ -21,10 +21,8 @@ package com.money.manager.ex.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,7 +40,9 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 
-public class SplitItemFragment extends Fragment implements InputAmountDialogListener {
+public class SplitItemFragment extends Fragment
+        implements InputAmountDialogListener {
+
     public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
     private static final int REQUEST_PICK_CATEGORY = 1;
     private ISplitTransactionsDataset mSplitTransaction;
@@ -125,7 +125,7 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
             return null;
 
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION)) {
-            mSplitTransaction = (ISplitTransactionsDataset) savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
+            mSplitTransaction = savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
         }
 
         Core core = new Core(getActivity().getApplicationContext());
@@ -228,7 +228,7 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(KEY_SPLIT_TRANSACTION, (Parcelable) mSplitTransaction);
+        outState.putParcelable(KEY_SPLIT_TRANSACTION, mSplitTransaction);
     }
 
     @Override
@@ -242,6 +242,6 @@ public class SplitItemFragment extends Fragment implements InputAmountDialogList
     }
 
     public interface SplitItemFragmentCallbacks {
-        public void onRemoveItem(ISplitTransactionsDataset object);
+        void onRemoveItem(ISplitTransactionsDataset object);
     }
 }
