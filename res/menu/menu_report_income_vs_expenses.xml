@@ -21,15 +21,30 @@
     <item
         android:id="@+id/menu_chart"
         android:icon="?attr/ic_action_bargraph"
+        android:title="@null"
         app:showAsAction="always"/>
     <item
         android:id="@+id/menu_sort"
         android:icon="?attr/ic_action_sort_1"
-        app:showAsAction="always"/>
+        android:title="@null"
+        app:showAsAction="always">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_sort_asceding"
+                    android:title="@string/sort_by_ascending"
+                    android:checked="true"/>
+                <item
+                    android:id="@+id/menu_sort_desceding"
+                    android:title="@string/sort_by_desceding"/>
+            </group>
+        </menu>
+    </item>
     <item
         android:id="@+id/menu_period"
         android:icon="?attr/ic_action_calendar_day"
-        app:showAsAction="always">
+        app:showAsAction="always"
+        android:title="@null">
         <menu android:id="@+id/submenu_year">
         </menu>
     </item>
