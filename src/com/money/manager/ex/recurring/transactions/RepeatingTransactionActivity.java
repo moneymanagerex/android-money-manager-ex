@@ -48,8 +48,8 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
+import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.DataRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -832,8 +832,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         // load split transactions only if no category selected.
         if (mCategoryId == -1 && mSplitTransactions == null) {
-            DataRepository repo = new DataRepository(getContentResolver());
-            mSplitTransactions = repo.loadSplitTransactionFor(billId);
+            RecurringTransaction recurringTransaction = new RecurringTransaction(billId, this);
+            mSplitTransactions = recurringTransaction.loadSplitTransactions();
         }
 
         selectAccountName(mToAccountId);
