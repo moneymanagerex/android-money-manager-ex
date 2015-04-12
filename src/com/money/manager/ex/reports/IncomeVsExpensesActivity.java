@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2012-2014 Alessandro Lazzari
  *
@@ -63,13 +62,17 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
 import com.money.manager.ex.utils.CurrencyUtils;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class IncomeVsExpensesActivity extends BaseFragmentActivity {
     private static final String LOGCAT = IncomeVsExpensesActivity.class.getSimpleName();
+    private static final int SUBTOTAL_MONTH = 99;
     private static CurrencyUtils currencyUtils;
     public boolean mIsDualPanel = false;
     private IncomeVsExpensesListFragment listFragment = new IncomeVsExpensesListFragment();
@@ -128,7 +131,11 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             //txtMonth.setText(new SimpleDateFormat("MMMM").format(new Date(year, month - 1, 1)));
             String formatMonth = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "MMM" : "MMMM";
 
-            txtMonth.setText(new SimpleDateFormat(formatMonth).format(calendar.getTime()));
+            if (month != SUBTOTAL_MONTH) {
+                txtMonth.setText(new SimpleDateFormat(formatMonth).format(calendar.getTime()));
+            } else {
+                txtMonth.setText(null);
+            }
             txtIncome.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income));
             txtExpenses.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
             txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
@@ -139,6 +146,14 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                 txtDifference.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_green_color_theme)));
             }
             //view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
+            // check if subtotal
+            int typefaceStyle = month == SUBTOTAL_MONTH ? Typeface.BOLD : Typeface.NORMAL;
+
+            txtDifference.setTypeface(null, typefaceStyle);
+            txtExpenses.setTypeface(null, typefaceStyle);
+            txtIncome.setTypeface(null, typefaceStyle);
+            txtMonth.setTypeface(null, typefaceStyle);
+            txtYear.setTypeface(null, typefaceStyle);
         }
 
         @Override
@@ -165,7 +180,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             TableRow row = (TableRow) View.inflate(getActivity(), R.layout.tablerow_income_vs_expenses, null);
             TextView txtYear = (TextView) row.findViewById(R.id.textViewYear);
             txtYear.setText(getString(R.string.total));
-            txtYear.setTypeface(null, Typeface.BOLD_ITALIC);
+            txtYear.setTypeface(null, Typeface.BOLD);
             TextView txtMonth = (TextView) row.findViewById(R.id.textViewMonth);
             txtMonth.setText(null);
             return row;
@@ -318,8 +333,10 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                     double income = 0, expenses = 0;
                     if (data != null && data.moveToFirst()) {
                         while (!data.isAfterLast()) {
-                            income += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-                            expenses += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+                            if (data.getInt(data.getColumnIndex(QueryReportIncomeVsExpenses.Month)) != SUBTOTAL_MONTH) {
+                                income += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+                                expenses += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+                            }
                             // move to next record
                             data.moveToNext();
                         }
@@ -349,7 +366,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             if (item.getItemId() == android.R.id.home) {
                 getActivity().finish();
             } else if (item.getItemId() == R.id.menu_sort_asceding || item.getItemId() == R.id.menu_sort_desceding) {
-                mSort = item.getItemId() == R.id.menu_sort_asceding ?SORT_ASCENDING : SORT_DESCENDING;
+                mSort = item.getItemId() == R.id.menu_sort_asceding ? SORT_ASCENDING : SORT_DESCENDING;
                 startLoader(hashMap2IntArray(mCheckedItem));
                 item.setChecked(true);
             } else if (item.getItemId() == R.id.menu_chart) {
@@ -409,7 +426,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mSort= rbtAscending.isChecked() ? SORT_ASCENDING : SORT_DESCENDING;
+                    mSort = rbtAscending.isChecked() ? SORT_ASCENDING : SORT_DESCENDING;
                     startLoader(hashMap2IntArray(mCheckedItem));
                 }
             });
@@ -462,13 +479,13 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             TextView txtDifference = (TextView) footer.findViewById(R.id.textViewDifference);
             //set income
             txtIncome.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income));
-            txtIncome.setTypeface(null, Typeface.BOLD_ITALIC);
+            txtIncome.setTypeface(null, Typeface.BOLD);
             //set expenses
             txtExpenses.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
-            txtExpenses.setTypeface(null, Typeface.BOLD_ITALIC);
+            txtExpenses.setTypeface(null, Typeface.BOLD);
             //set difference
             txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
-            txtDifference.setTypeface(null, Typeface.BOLD_ITALIC);
+            txtDifference.setTypeface(null, Typeface.BOLD);
             //change colors
             Core core = new Core(getActivity());
             if (income - Math.abs(expenses) < 0) {
@@ -487,30 +504,34 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             // move to first
             if (!cursor.moveToFirst()) return;
             // arrays
-            double[] incomes = new double[cursor.getCount()];
-            double[] expenses = new double[cursor.getCount()];
-            String[] titles = new String[cursor.getCount()];
+            ArrayList<Double> incomes = new ArrayList<Double>();
+            ArrayList<Double> expenses = new ArrayList<Double>();
+            ArrayList<String> titles = new ArrayList<String>();
             // cycle cursor
             while (!cursor.isAfterLast()) {
-                // incomes and expenses
-                incomes[cursor.getPosition()] = cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-                expenses[cursor.getPosition()] = Math.abs(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses)));
-                // titles
-                int year = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Year));
-                int month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));
-                // format month
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month - 1, 1);
-                // titles
-                titles[cursor.getPosition()] = Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime());
+                // check if not subtotal
+                if (cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month)) != SUBTOTAL_MONTH) {
+                    // incomes and expenses
+                    incomes.add(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income)));
+                    expenses.add(Math.abs(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses))));
+                    // titles
+                    int year = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Year));
+                    int month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));
+
+                    // format month
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(year, month - 1, 1);
+                    // titles
+                    titles.add(Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime()));
+                }
                 // move to next
                 cursor.moveToNext();
             }
             //compose bundle for arguments
             Bundle args = new Bundle();
-            args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES, expenses);
-            args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES, incomes);
-            args.putStringArray(IncomeVsExpensesChartFragment.KEY_XTITLES, titles);
+            args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES, ArrayUtils.toPrimitive(expenses.toArray(new Double[0])));
+            args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES, ArrayUtils.toPrimitive(incomes.toArray(new Double[0])));
+            args.putStringArray(IncomeVsExpensesChartFragment.KEY_XTITLES, titles.toArray(new String[titles.size()]));
             //get fragment manager
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             if (fragmentManager != null) {
