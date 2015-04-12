@@ -17,35 +17,14 @@
  */
 package com.money.manager.ex;
 
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
-import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.fragment.AccountLoaderListFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.BaseListFragment;
 
 //
 

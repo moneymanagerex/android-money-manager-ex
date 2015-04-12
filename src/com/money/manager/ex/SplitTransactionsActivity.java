@@ -22,16 +22,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-<<<<<<< HEAD
-=======
-import android.widget.Toast;
->>>>>>> 5c1f2a4c710cba545daa327988a5f0248566af9f
 
-import com.gc.materialdesign.views.ButtonRectangle;
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
