@@ -152,7 +152,7 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
         // set currency name
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
 
-        // compose menu
+        // compose context menu
         String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
         for (int i = 0; i < menuItems.length; i++) {
             menu.add(Menu.NONE, i, i, menuItems[i]);
