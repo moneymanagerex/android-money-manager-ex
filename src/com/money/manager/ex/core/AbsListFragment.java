@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@
 
 package com.money.manager.ex.core;
 
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -29,10 +28,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
 
+/**
+ *
+ */
 public class AbsListFragment extends Fragment {
     final private Handler mHandler = new Handler();
     final private AdapterView.OnItemClickListener mOnClickListener
@@ -49,6 +52,7 @@ public class AbsListFragment extends Fragment {
         }
     };
     View mEmptyView;
+    ScrollView mEmptyViewScroll;
     TextView mStandardEmptyView;
     View mProgressContainer;
     View mListContainer;
@@ -162,7 +166,8 @@ public class AbsListFragment extends Fragment {
         }
         mStandardEmptyView.setText(text);
         if (mEmptyText == null) {
-            mList.setEmptyView(mStandardEmptyView);
+//            mList.setEmptyView(mStandardEmptyView);
+            mList.setEmptyView(mEmptyViewScroll);
         }
         mEmptyText = text;
     }
@@ -273,12 +278,13 @@ public class AbsListFragment extends Fragment {
         if (root instanceof ListView) {
             mList = (ListView) root;
         } else {
-            mStandardEmptyView = (TextView) root.findViewById(
-                    android.R.id.empty);
+            mEmptyViewScroll = (ScrollView) root.findViewById(R.id.emptyViewScroll);
+            mStandardEmptyView = (TextView) root.findViewById(android.R.id.empty);
             if (mStandardEmptyView == null) {
                 mEmptyView = root.findViewById(android.R.id.empty);
             } else {
-                mStandardEmptyView.setVisibility(View.GONE);
+                mEmptyViewScroll.setVisibility(View.GONE);
+//                mStandardEmptyView.setVisibility(View.GONE);
             }
             mProgressContainer = root.findViewById(R.id.progressContainer);
             mListContainer = root.findViewById(R.id.listContainer);
@@ -295,12 +301,15 @@ public class AbsListFragment extends Fragment {
                                 "'android.R.id.list'");
             }
             if (mEmptyView != null) {
-                mList.setEmptyView(mEmptyView);
+//                mList.setEmptyView(mEmptyView);
+                mList.setEmptyView(mEmptyViewScroll);
             } else if (mEmptyText != null) {
                 mStandardEmptyView.setText(mEmptyText);
-                mList.setEmptyView(mStandardEmptyView);
+//                mList.setEmptyView(mStandardEmptyView);
+                mList.setEmptyView(mEmptyViewScroll);
             }
         }
+
         mListShown = true;
         mList.setOnItemClickListener(mOnClickListener);
         if (mAdapter != null) {
