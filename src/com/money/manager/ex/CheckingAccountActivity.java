@@ -583,28 +583,27 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
             @Override
             public void onCheck(boolean b) {
-                CheckingAccountActivity.this.refreshCategoryName();
+                splitSet();
             }
         });
-        final boolean hasSplit = mSplitTransaction != null && mSplitTransaction.size() >= 0;
+        // Mark checked if we are editing a split transaction.
         chbSplitTransaction.post(new Runnable() {
             @Override
             public void run() {
+                boolean hasSplit = hasSplitCategories();
                 chbSplitTransaction.setChecked(hasSplit);
-                CheckingAccountActivity.this.refreshCategoryName();
+
+                splitSet();
             }
         });
         // split text is a separate control.
-        RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
+        final RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
         splitText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
-                // None of the below calls work with this custom checkbox!
-//                chbSplitTransaction.performClick();
-//                chbSplitTransaction.callOnClick();
-                // so we have to duplicate the code or create a function to call if there is more to do.
-                CheckingAccountActivity.this.refreshCategoryName();
+
+                splitSet();
             }
         });
 
@@ -1014,6 +1013,11 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         view.setTag(amount);
     }
 
+    public boolean hasSplitCategories() {
+        boolean hasSplit = mSplitTransaction != null && mSplitTransaction.size() >= 0;
+        return hasSplit;
+    }
+
     public void refreshCategoryName() {
         if (txtSelectCategory == null)
             return;
@@ -1274,5 +1278,17 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         }
 
         return true;
+    }
+
+    private void splitSet() {
+        // update category field
+        CheckingAccountActivity.this.refreshCategoryName();
+
+//        boolean isSplit = hasSplitCategories();
+        boolean isSplit = chbSplitTransaction.isCheck();
+
+        // enable/disable Amount field.
+        txtAmount.setEnabled(!isSplit);
+        txtTotAmount.setEnabled(!isSplit);
     }
 }
