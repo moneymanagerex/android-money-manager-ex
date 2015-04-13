@@ -15,6 +15,10 @@ public class CurrencyChartActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currency_chart);
 
+        // todo: get the currency information from the intent.
+
+        // todo: load currency chart.
+        
     }
 
     @Override

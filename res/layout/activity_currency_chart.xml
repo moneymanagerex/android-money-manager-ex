@@ -27,6 +27,11 @@
     tools:context="com.money.manager.ex.CurrencyChartActivity"
     android:orientation="horizontal" >
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageChart" />
+
     <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
