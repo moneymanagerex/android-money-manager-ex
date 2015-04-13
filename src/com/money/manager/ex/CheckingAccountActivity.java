@@ -78,7 +78,9 @@ import java.util.Locale;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.1
  */
-public class CheckingAccountActivity extends BaseFragmentActivity implements InputAmountDialogListener {
+public class CheckingAccountActivity extends BaseFragmentActivity
+        implements InputAmountDialogListener {
+
     public static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
     // ID REQUEST Data
     public static final int REQUEST_PICK_PAYEE = 1;

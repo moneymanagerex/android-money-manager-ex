@@ -41,6 +41,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.money.manager.ex.CurrencyChartActivity;
 import com.money.manager.ex.CurrencyFormatsActivity;
 import com.money.manager.ex.CurrencyFormatsListActivity;
 import com.money.manager.ex.R;
@@ -118,7 +119,16 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
             case 0: //EDIT
                 startCurrencyFormatActivity(currencyId);
                 break;
-            case 1: //DELETE
+            case 1: // Chart
+                Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
+                intent.setAction(Intent.ACTION_VIEW);
+//                startActivityForResult(intent, REQUEST_PICK_CURRENCY);
+                startActivity(intent);
+                break;
+            case 2: // Update exchange rate
+                updateSingleCurrencyExchangeRate(currencyId);
+                break;
+            case 3: //DELETE
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(TableAccountList.CURRENCYID, currencyId);
                 if (new TablePayee().canDelete(getActivity(), contentValues, TableAccountList.class.getName())) {
@@ -137,8 +147,6 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                             .create().show();
                 }
                 break;
-            case 2: // Update exchange rate
-                updateSingleCurrencyExchangeRate(currencyId);
         }
         return false;
     }
