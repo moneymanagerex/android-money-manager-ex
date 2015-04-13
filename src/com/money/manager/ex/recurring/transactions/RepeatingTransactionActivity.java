@@ -238,6 +238,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.repeatingtransaction_activity);
         super.onCreate(savedInstanceState);
+
         setToolbarStandardAction(getToolbar());
 
         Core core = new Core(getApplicationContext());
@@ -281,10 +282,18 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             // set title
             getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
         }
+
+        // Controls
+
+        txtAmount = (TextView) findViewById(R.id.editTextAmount);
+        txtTotAmount = (TextView) findViewById(R.id.editTextTotAmount);
+        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
+
+
         // take a reference view into layout
         // account
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
-        // accountlist <> to populate the spin
+        // account list <> to populate the spin
         mAccountList = MoneyManagerOpenHelper.getInstance(getApplicationContext()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
@@ -294,7 +303,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
 
         // create adapter for spinAccount
-        ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountNameList);
+        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountNameList);
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccount.setAdapter(adapterAccount);
         // select current value
@@ -426,7 +435,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         });
 
-        // select category
+        // Category
+
         txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
         txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
@@ -448,18 +458,20 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         });
 
-        // split transaction
-        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
-        chbSplitTransaction.setChecked(mSplitTransactions != null && mSplitTransactions.size() >= 0);
+        // Split Categories.
+
+        // Set checked on start if we are editing a tx with split categories.
+        boolean hasSplit = hasSplitCategories();
+        chbSplitTransaction.setChecked(hasSplit);
+        splitSet();
         chbSplitTransaction.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                RepeatingTransactionActivity.this.refreshCategoryName();
+                splitSet();
             }
         });
 
-        // amount and tot amount
-        // listener on dialog amount edittext
+        // amount and total amount
         OnClickListener onClickAmount = new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -475,12 +487,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         };
 
         // total amount
-        txtTotAmount = (TextView) findViewById(R.id.editTextTotAmount);
         core.formatAmountTextView(txtTotAmount, mTotAmount, getCurrencyIdFromAccountId(!Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId));
         txtTotAmount.setOnClickListener(onClickAmount);
 
         // amount
-        txtAmount = (TextView) findViewById(R.id.editTextAmount);
         core.formatAmountTextView(txtAmount, mAmount, getCurrencyIdFromAccountId(!Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mToAccountId : mAccountId));
         txtAmount.setOnClickListener(onClickAmount);
 
@@ -851,6 +861,11 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         }
     }
 
+    public boolean hasSplitCategories() {
+        boolean hasSplit = mSplitTransactions != null && mSplitTransactions.size() >= 0;
+        return hasSplit;
+    }
+
     public void refreshCategoryName() {
         if (txtSelectCategory == null)
             return;
@@ -1087,4 +1102,18 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             return null;
         }
     }
+
+    private void splitSet() {
+        // update category field
+        RepeatingTransactionActivity.this.refreshCategoryName();
+
+//        boolean isSplit = hasSplitCategories();
+//        boolean isSplit = chbSplitTransaction.isCheck();
+        boolean isSplit = chbSplitTransaction.isChecked();
+
+        // enable/disable Amount field.
+        txtAmount.setEnabled(!isSplit);
+        txtTotAmount.setEnabled(!isSplit);
+    }
+
 }
