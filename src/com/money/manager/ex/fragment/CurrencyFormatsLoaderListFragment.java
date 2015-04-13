@@ -487,9 +487,59 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
     /**
      * Update rate for the currently selected currency.
      */
-    private void updateSingleCurrencyExchangeRate(int currencyId) {
-        CurrencyUtils util = getCurrencyUtils();
+    private void updateSingleCurrencyExchangeRate(final int currencyId) {
 
-        util.updateCurrencyRateFromBase(currencyId);
+        AsyncTask<Void, Integer, Boolean> updateAsync = new AsyncTask<Void, Integer, Boolean>() {
+            private ProgressDialog dialog = null;
+            private int mPrevOrientation;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                mPrevOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
+
+                DropboxHelper.setDisableAutoUpload(true);
+
+                dialog = new ProgressDialog(getActivity());
+                // setting dialog
+                // update_menu_currency_exchange_rates
+                dialog.setMessage(getString(R.string.start_currency_exchange_rates));
+                dialog.setIndeterminate(true);
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+                // show dialog
+                dialog.show();
+            }
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                CurrencyUtils util = getCurrencyUtils();
+                util.updateCurrencyRateFromBase(currencyId);
+                return Boolean.TRUE;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                try {
+                    if (dialog != null)
+                        dialog.hide();
+                } catch (Exception e) {
+                    Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
+                }
+                if (result) {
+                    Toast.makeText(getActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
+                }
+
+                DropboxHelper.setDisableAutoUpload(false);
+                DropboxHelper.notifyDataChanged();
+
+                ActivityUtils.restoreOrientation(getActivity(), mPrevOrientation);
+
+                super.onPostExecute(result);
+            }
+        };
+        updateAsync.execute();
+
     }
 }
