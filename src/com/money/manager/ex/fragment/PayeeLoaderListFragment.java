@@ -57,7 +57,7 @@ public class PayeeLoaderListFragment extends BaseListFragment
     public static String mAction = Intent.ACTION_EDIT;
 
     // add menu ite,
-    private static final int MENU_ITEM_ADD = 1;
+//    private static final int MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_PAYEE = 0;
     private static TablePayee mPayee = new TablePayee();
     // SORT BY USAGE
@@ -81,7 +81,8 @@ public class PayeeLoaderListFragment extends BaseListFragment
         //mLayout = Intent.ACTION_PICK.equals(mAction) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
         mLayout = android.R.layout.simple_list_item_1;
         // associate adapter
-        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(), mLayout, null, new String[]{TablePayee.PAYEENAME},
+        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
+                mLayout, null, new String[]{TablePayee.PAYEENAME},
                 new int[]{android.R.id.text1}, 0);
         // set adapter
         setListAdapter(adapter);
@@ -249,9 +250,18 @@ public class PayeeLoaderListFragment extends BaseListFragment
         return true;
     }
 
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        ListView l = getListView();
+//        l.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+//        l.setStackFromBottom(true);
+//
+//        return l;
+//    }
+
     @Override
     protected void setResult() {
-        Intent result = null;
+        Intent result;
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
