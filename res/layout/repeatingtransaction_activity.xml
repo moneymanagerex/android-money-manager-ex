@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -274,28 +274,38 @@
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewSelectCategory"
-                style="@style/Money.TextView.Widget.EditText"
+                    style="@style/Money.TextView.Widget.EditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableLeft="?attr/ic_label_outline"
                     android:hint="@string/category"/>
 
-            <!--<com.money.manager.ex.view.RobotoTextView-->
-                <!--style="@style/Money.TextView.Header.Caption"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:singleLine="true"-->
-                <!--android:text="@string/transaction_number"-->
-                <!--android:visibility="gone"/>-->
+                <!--<com.money.manager.ex.view.RobotoCheckBox-->
+                    <!--android:id="@+id/checkBoxSplitTransaction"-->
+                    <!--style="@style/Money.TextView.Header.Caption"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_gravity="right"-->
+                    <!--android:text="@string/split"/>-->
 
-                <com.money.manager.ex.view.RobotoCheckBox
+                <com.gc.materialdesign.views.CheckBox
                     android:id="@+id/checkBoxSplitTransaction"
-                    style="@style/Money.TextView.Header.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:text="@string/split"/>
+                    android:layout_gravity="end"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    />
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/splitTextView"
+                    android:text="@string/split"
+                    style="@style/Money.TextView.Header.Caption"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp" />
+
             </LinearLayout>
 
             <LinearLayout
