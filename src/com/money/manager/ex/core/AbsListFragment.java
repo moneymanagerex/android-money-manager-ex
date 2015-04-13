@@ -33,6 +33,9 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 
+/**
+ *
+ */
 public class AbsListFragment extends Fragment {
     final private Handler mHandler = new Handler();
     final private AdapterView.OnItemClickListener mOnClickListener
@@ -273,8 +276,7 @@ public class AbsListFragment extends Fragment {
         if (root instanceof ListView) {
             mList = (ListView) root;
         } else {
-            mStandardEmptyView = (TextView) root.findViewById(
-                    android.R.id.empty);
+            mStandardEmptyView = (TextView) root.findViewById(android.R.id.empty);
             if (mStandardEmptyView == null) {
                 mEmptyView = root.findViewById(android.R.id.empty);
             } else {
