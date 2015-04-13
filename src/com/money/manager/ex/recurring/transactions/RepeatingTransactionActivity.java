@@ -126,7 +126,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     // arrays to manage transcode and status
     private String[] mTransCodeItems, mStatusItems;
     private String[] mTransCodeValues, mStatusValues;
-    // arrayslist accountname and accountid
+    // arrays list account name and account id
     private ArrayList<String> mAccountNameList = new ArrayList<String>();
     private ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
     // amount
@@ -288,7 +288,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         txtAmount = (TextView) findViewById(R.id.editTextAmount);
         txtTotAmount = (TextView) findViewById(R.id.editTextTotAmount);
-        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
+        chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) findViewById(R.id.checkBoxSplitTransaction);
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         txtPayee = (TextView) findViewById(R.id.textViewPayee);
         txtCaptionAmount = (TextView) findViewById(R.id.textViewHeaderTotalAmount);
@@ -455,25 +455,24 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         });
 
-        // split transaction
+        // Split Categories
 
         // Set checked on start if we are editing a tx with split categories.
-        boolean hasSplit = hasSplitCategories();
-        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
         splitSet();
         chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
             @Override
             public void onCheck(boolean b) {
-                RepeatingTransactionActivity.this.refreshCategoryName();
+                splitSet();
             }
         });
         // mark checked if there are existing split categories.
-        final boolean hasSplit = mSplitTransactions != null && mSplitTransactions.size() >= 0;
         chbSplitTransaction.post(new Runnable() {
             @Override
             public void run() {
+                boolean hasSplit = hasSplitCategories();
                 chbSplitTransaction.setChecked(hasSplit);
-                RepeatingTransactionActivity.this.refreshCategoryName();
+
+                splitSet();
             }
         });
         // split text is a separate control.
@@ -1127,8 +1126,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         RepeatingTransactionActivity.this.refreshCategoryName();
 
 //        boolean isSplit = hasSplitCategories();
-//        boolean isSplit = chbSplitTransaction.isCheck();
-        boolean isSplit = chbSplitTransaction.isChecked();
+        boolean isSplit = chbSplitTransaction.isCheck();
 
         // enable/disable Amount field.
         txtAmount.setEnabled(!isSplit);
