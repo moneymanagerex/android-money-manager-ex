@@ -458,7 +458,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         // Split Categories
 
         // Set checked on start if we are editing a tx with split categories.
-        splitSet();
         chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
             @Override
             public void onCheck(boolean b) {
@@ -481,10 +480,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             @Override
             public void onClick(View view) {
                 chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
-                // None of the below calls work with this custom checkbox!
-//                chbSplitTransaction.performClick();
-//                chbSplitTransaction.callOnClick();
-                // so we have to duplicate the code or create a function to call if there is more to do.
+
                 splitSet();
             }
         });

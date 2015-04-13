@@ -587,7 +587,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             }
         });
         // mark checked if there are existing split categories.
-        final boolean hasSplit = mSplitTransactions != null && mSplitTransactions.size() >= 0;
         chbSplitTransaction.post(new Runnable() {
             @Override
             public void run() {
