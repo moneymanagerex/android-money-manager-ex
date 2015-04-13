@@ -487,7 +487,7 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
     /**
      * Update rate for the currently selected currency.
      */
-    private void updateSingleCurrencyExchangeRate(int currencyId) {
+    private void updateSingleCurrencyExchangeRate(final int currencyId) {
 
         AsyncTask<Void, Integer, Boolean> updateAsync = new AsyncTask<Void, Integer, Boolean>() {
             private ProgressDialog dialog = null;
