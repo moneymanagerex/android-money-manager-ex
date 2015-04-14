@@ -76,7 +76,6 @@ public class HomeFragment extends Fragment implements
     private static final int ID_LOADER_ACCOUNT_BILLS = 2;
     private static final int ID_LOADER_BILL_DEPOSITS = 3;
     private static final int ID_LOADER_INCOME_EXPENSES = 4;
-    // MoneyManagerApplication.getInstanceApp()
     private CurrencyUtils currencyUtils;
     // dataset table/view/query manage into class
     private TableInfoTable infoTable = new TableInfoTable();
@@ -188,15 +187,28 @@ public class HomeFragment extends Fragment implements
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                QueryAccountBills bills = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
-                if (bills != null) {
+                QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
+                if (selectedAccount != null) {
                     MainActivity activity = (MainActivity) getActivity();
                     if (activity != null && activity instanceof MainActivity) {
-                        activity.showFragmentAccount(childPosition, bills.getAccountId());
+                        activity.showFragmentAccount(childPosition, selectedAccount.getAccountId());
                         return true;
                     }
                 }
                 return false;
+            }
+        });
+        // store settings when groups are collapsed/expanded
+        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener(){
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                // todo: save collapsed group setting
+            }
+        });
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                // todo: save expanded group setting
             }
         });
 
