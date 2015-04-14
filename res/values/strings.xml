@@ -542,4 +542,8 @@
     <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="sort_by_ascending">Sort by year and month ascending</string>
+    <string name="sort_by_desceding">Sort by year and month descending</string>
+    <string name="years">Years</string>
+    <string name="select_the_years_to_be_displayed">Select the years to be displayed</string>
 </resources>

@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2012-2014 Alessandro Lazzari
  *
@@ -19,11 +18,8 @@
 package com.money.manager.ex.reports;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,38 +34,35 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
+import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
 import com.money.manager.ex.utils.CurrencyUtils;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class IncomeVsExpensesActivity extends BaseFragmentActivity {
     private static final String LOGCAT = IncomeVsExpensesActivity.class.getSimpleName();
+    private static final int SUBTOTAL_MONTH = 99;
     private static CurrencyUtils currencyUtils;
     public boolean mIsDualPanel = false;
     private IncomeVsExpensesListFragment listFragment = new IncomeVsExpensesListFragment();
@@ -128,7 +121,11 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             //txtMonth.setText(new SimpleDateFormat("MMMM").format(new Date(year, month - 1, 1)));
             String formatMonth = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "MMM" : "MMMM";
 
-            txtMonth.setText(new SimpleDateFormat(formatMonth).format(calendar.getTime()));
+            if (month != SUBTOTAL_MONTH) {
+                txtMonth.setText(new SimpleDateFormat(formatMonth).format(calendar.getTime()));
+            } else {
+                txtMonth.setText(null);
+            }
             txtIncome.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income));
             txtExpenses.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
             txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
@@ -138,7 +135,15 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             } else {
                 txtDifference.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_green_color_theme)));
             }
-            view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
+            //view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
+            // check if subtotal
+            int typefaceStyle = month == SUBTOTAL_MONTH ? Typeface.BOLD : Typeface.NORMAL;
+
+            txtDifference.setTypeface(null, typefaceStyle);
+            txtExpenses.setTypeface(null, typefaceStyle);
+            txtIncome.setTypeface(null, typefaceStyle);
+            txtMonth.setTypeface(null, typefaceStyle);
+            txtYear.setTypeface(null, typefaceStyle);
         }
 
         @Override
@@ -148,12 +153,13 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
     }
 
     public static class IncomeVsExpensesListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-        private static final int ID_LOADER = 1;
+        private static final int ID_LOADER_REPORT = 1;
+        private static final int ID_LOADER_YEARS = 2;
         private static final String SORT_ASCENDING = "ASC";
         private static final String SORT_DESCENDING = "DESC";
         private static final String KEY_BUNDLE_YEAR = "IncomeVsExpensesListFragment:Years";
         private View mFooterListView;
-        private Map<Integer, Boolean> mCheckedItem = new HashMap<Integer, Boolean>();
+        private SparseBooleanArray mYearsSelected = new SparseBooleanArray();
         private String mSort = SORT_ASCENDING;
 
         /**
@@ -165,7 +171,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             TableRow row = (TableRow) View.inflate(getActivity(), R.layout.tablerow_income_vs_expenses, null);
             TextView txtYear = (TextView) row.findViewById(R.id.textViewYear);
             txtYear.setText(getString(R.string.total));
-            txtYear.setTypeface(null, Typeface.BOLD_ITALIC);
+            txtYear.setTypeface(null, Typeface.BOLD);
             TextView txtMonth = (TextView) row.findViewById(R.id.textViewMonth);
             txtMonth.setText(null);
             return row;
@@ -187,45 +193,16 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             return row;
         }
 
-        /**
-         * Convert from hash map<Integer, Boolean> to int[]
-         *
-         * @param map
-         * @return
-         */
-        private int[] hashMap2IntArray(Map<Integer, Boolean> map) {
-            return hashMap2IntArray(map, false);
-        }
-
-        /**
-         * Convert from hash map<Integer, Boolean> to int[]
-         *
-         * @param map
-         * @param allItems
-         * @return
-         */
-        private int[] hashMap2IntArray(Map<Integer, Boolean> map, boolean allItems) {
-            int[] ret = new int[mCheckedItem.entrySet().size()];
-            int i = 0;
-            // compose arrays list
-            for (Map.Entry<Integer, Boolean> entry : mCheckedItem.entrySet()) {
-                if (allItems || entry.getValue()) {
-                    ret[i++] = entry.getKey();
-                }
-            }
-            return ret;
-        }
-
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
             setHasOptionsMenu(true);
             if (savedInstanceState != null && savedInstanceState.containsKey(KEY_BUNDLE_YEAR) && savedInstanceState.getIntArray(KEY_BUNDLE_YEAR) != null) {
-                for (int item : savedInstanceState.getIntArray(KEY_BUNDLE_YEAR)) {
-                    mCheckedItem.put(item, true);
+                for (int year : savedInstanceState.getIntArray(KEY_BUNDLE_YEAR)) {
+                    mYearsSelected.put(year, true);
                 }
             } else {
-                mCheckedItem.put(Calendar.getInstance().get(Calendar.YEAR), true);
+                mYearsSelected.put(Calendar.getInstance().get(Calendar.YEAR), true);
             }
             // set home button
             ActionBarActivity activity = (ActionBarActivity) getActivity();
@@ -247,52 +224,39 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             setListAdapter(adapter);
             setListShown(false);
             // start loader
-            startLoader(hashMap2IntArray(mCheckedItem));
+            //startLoader();
+            getLoaderManager().restartLoader(ID_LOADER_YEARS, null, this);
         }
 
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             String selection = null;
-            QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-            if (args != null && args.containsKey(KEY_BUNDLE_YEAR) && args.getIntArray(KEY_BUNDLE_YEAR) != null) {
-                selection = "";
-                for (int i = 0; i < args.getIntArray(KEY_BUNDLE_YEAR).length; i++) {
-                    if (!TextUtils.isEmpty(selection)) {
-                        selection += " OR ";
+            switch (id) {
+                case ID_LOADER_REPORT:
+                    QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
+                    if (args != null && args.containsKey(KEY_BUNDLE_YEAR) && args.getString(KEY_BUNDLE_YEAR) != null) {
+                        selection = QueryReportIncomeVsExpenses.Year + " IN (" + args.getString(KEY_BUNDLE_YEAR) + ")";
+                        if (!TextUtils.isEmpty(selection)) {
+                            selection = "(" + selection + ")";
+                        }
                     }
-                    selection += QueryReportIncomeVsExpenses.Year + "=" + Integer.toString(args.getIntArray(KEY_BUNDLE_YEAR)[i]);
-                }
-                if (!TextUtils.isEmpty(selection)) {
-                    selection = "(" + selection + ")";
-                }
+                    // if don't have selection abort query
+                    if (TextUtils.isEmpty(selection)) {
+                        selection = "1=2";
+                    }
+                    return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
+                case ID_LOADER_YEARS:
+                    selection = "SELECT DISTINCT Year FROM " + ViewMobileData.mobiledata + " ORDER BY Year DESC";
+                    return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null, selection, null, null);
             }
-            // if don't have selection abort query
-            if (TextUtils.isEmpty(selection)) {
-                selection = "1=2";
-            }
-            return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
+            return null;
         }
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
             inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
-            //Create a cursor for select year
-            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
-            SQLiteDatabase database = helper.getReadableDatabase();
-            Cursor cursor = database.rawQuery("SELECT DISTINCT Year FROM " + ViewMobileData.mobiledata + " ORDER BY Year DESC", null);
-            if (cursor != null && cursor.moveToFirst()) {
-                int order = 0;
-                while (!cursor.isAfterLast()) {
-                    int year = cursor.getInt(cursor.getColumnIndex("Year"));
-                    menu.findItem(R.id.menu_period).getSubMenu().add(0, year, order++, Integer.toString(year)).setCheckable(true).setChecked(year == Calendar.getInstance().get(Calendar.YEAR));
-                    //move to next
-                    cursor.moveToNext();
-                }
-                cursor.close();
-            }
-            //helper.close();
-            // chart item
+            // fix menu char
             MenuItem itemChart = menu.findItem(R.id.menu_chart);
             if (itemChart != null) {
                 itemChart.setVisible(!((IncomeVsExpensesActivity) getActivity()).mIsDualPanel);
@@ -307,7 +271,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             switch (loader.getId()) {
-                case ID_LOADER:
+                case ID_LOADER_REPORT:
                     ((IncomeVsExpensesAdapter) getListAdapter()).swapCursor(data);
                     if (isResumed()) {
                         setListShown(true);
@@ -318,8 +282,10 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                     double income = 0, expenses = 0;
                     if (data != null && data.moveToFirst()) {
                         while (!data.isAfterLast()) {
-                            income += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-                            expenses += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+                            if (data.getInt(data.getColumnIndex(QueryReportIncomeVsExpenses.Month)) != SUBTOTAL_MONTH) {
+                                income += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+                                expenses += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+                            }
                             // move to next record
                             data.moveToNext();
                         }
@@ -341,105 +307,95 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                         }, 1 * 1000);
                     }
                     break;
+                case ID_LOADER_YEARS:
+                    if (data != null && data.moveToFirst()) {
+                        while (!data.isAfterLast()) {
+                            int year = data.getInt(data.getColumnIndex("Year"));
+                            if (mYearsSelected.get(year, false) == false) {
+                                mYearsSelected.put(year, false);
+                            }
+                            data.moveToNext();
+                        }
+                        startLoader();
+                    }
             }
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            if (item.getItemId() == R.id.menu_sort) {
-                showDialogSortMonth();
+            if (item.getItemId() == android.R.id.home) {
+                getActivity().finish();
+            } else if (item.getItemId() == R.id.menu_sort_asceding || item.getItemId() == R.id.menu_sort_desceding) {
+                mSort = item.getItemId() == R.id.menu_sort_asceding ? SORT_ASCENDING : SORT_DESCENDING;
+                startLoader();
+                item.setChecked(true);
             } else if (item.getItemId() == R.id.menu_chart) {
                 showChart();
-            } else {
-                item.setChecked(!item.isChecked());
-                // put or remove map key
-                if (item.isChecked()) {
-                    mCheckedItem.put(item.getItemId(), Boolean.TRUE);
-                } else {
-                    mCheckedItem.remove(item.getItemId());
-                }
-                // start loader
-                startLoader(hashMap2IntArray(mCheckedItem));
+            } else if (item.getItemId() == R.id.menu_period) {
+                showDialogYears();
             }
 
             return super.onOptionsItemSelected(item);
         }
 
-        private void showDialogSortMonth() {
-            AlertDialogWrapper.Builder dialog = new AlertDialogWrapper.Builder(getActivity());
-            final LinearLayout layout = new LinearLayout(getActivity());
-            layout.setOrientation(LinearLayout.VERTICAL);
-            layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-            //create radio group
-            //create checkbox ascending
-            final RadioButton rbtAscending = new RadioButton(getActivity());
-            rbtAscending.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            rbtAscending.setText(R.string.ascending);
-            //create checkbox descending
-            final RadioButton rbtDescending = new RadioButton(getActivity());
-            rbtDescending.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            rbtDescending.setText(R.string.descending);
-            //check actual value
-            rbtAscending.setChecked(SORT_ASCENDING.equals(mSort));
-            rbtDescending.setChecked(SORT_DESCENDING.equals(mSort));
-            OnCheckedChangeListener changeListener = new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (buttonView.equals(rbtAscending)) {
-                        rbtDescending.setChecked(!isChecked);
-                    } else if (buttonView.equals(rbtDescending)) {
-                        rbtAscending.setChecked(!isChecked);
-                    }
-                }
-            };
-            rbtAscending.setOnCheckedChangeListener(changeListener);
-            rbtDescending.setOnCheckedChangeListener(changeListener);
-            //add checkbox
-            layout.addView(rbtAscending);
-            layout.addView(rbtDescending);
-            //set layuout
-            dialog.setView(layout);
-            //title
-            dialog.setTitle(getString(R.string.sorting_month));
-            dialog.setNeutralButton(android.R.string.ok, new OnClickListener() {
+        public void showDialogYears() {
+            ArrayList<String> years = new ArrayList<String>();
+            Integer[] selected = new Integer[0];
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    mSort = rbtAscending.isChecked() ? SORT_ASCENDING : SORT_DESCENDING;
-                    startLoader(hashMap2IntArray(mCheckedItem));
-                }
-            });
-            //show dialog
-            dialog.create().show();
-        }
-
-        @Override
-        public void onPrepareOptionsMenu(Menu menu) {
-            SubMenu subMenu = menu.findItem(R.id.menu_period).getSubMenu();
-            if (subMenu != null) {
-                for (int i = 0; i < subMenu.size(); i++) {
-                    MenuItem item = subMenu.getItem(i);
-                    item.setChecked(mCheckedItem.containsKey(item.getItemId()));
+            for (int i = 0; i < mYearsSelected.size(); i++) {
+                years.add(String.valueOf(mYearsSelected.keyAt(i)));
+                if (mYearsSelected.valueAt(i)) {
+                    selected = ArrayUtils.add(selected, i);
                 }
             }
-            super.onPrepareOptionsMenu(menu);
+
+            new MaterialDialog.Builder(getActivity())
+                    .items(years.toArray(new String[years.size()]))
+                    .itemsCallbackMultiChoice(selected, new MaterialDialog.ListCallbackMulti() {
+                        @Override
+                        public void onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+                            // reset to false all years
+                            for (int i = 0; i < mYearsSelected.size(); i++) {
+                                mYearsSelected.put(mYearsSelected.keyAt(i), false);
+                            }
+                            // set year select
+                            for (int index : integers) {
+                                mYearsSelected.put(mYearsSelected.keyAt(index), true);
+                            }
+                            startLoader();
+                        }
+                    })
+                            //.alwaysCallMultiChoiceCallback()
+                    .positiveText(android.R.string.ok)
+                    .show();
         }
 
         @Override
         public void onSaveInstanceState(Bundle outState) {
             super.onSaveInstanceState(outState);
-            outState.putIntArray(KEY_BUNDLE_YEAR, hashMap2IntArray(mCheckedItem));
+            ArrayList<Integer> years = new ArrayList<Integer>();
+            for (int i = 0; i < mYearsSelected.size(); i++) {
+                if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
+                    years.add(mYearsSelected.keyAt(i));
+                }
+            }
+            outState.putIntArray(KEY_BUNDLE_YEAR, ArrayUtils.toPrimitive(years.toArray(new Integer[0])));
         }
 
         /**
          * Start loader with arrays year
          *
-         * @param years
          */
-        private void startLoader(int[] years) {
+        private void startLoader() {
             Bundle bundle = new Bundle();
-            bundle.putIntArray(KEY_BUNDLE_YEAR, years);
-            getLoaderManager().restartLoader(ID_LOADER, bundle, this);
+            String years = "";
+            for (int i = 0; i < mYearsSelected.size(); i++) {
+                if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
+                    years += (!TextUtils.isEmpty(years) ? ", " : "") + Integer.toString(mYearsSelected.keyAt(i));
+                }
+            }
+            bundle.putString(KEY_BUNDLE_YEAR, years);
+            getLoaderManager().restartLoader(ID_LOADER_REPORT, bundle, this);
         }
 
         /**
@@ -458,13 +414,13 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             TextView txtDifference = (TextView) footer.findViewById(R.id.textViewDifference);
             //set income
             txtIncome.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income));
-            txtIncome.setTypeface(null, Typeface.BOLD_ITALIC);
+            txtIncome.setTypeface(null, Typeface.BOLD);
             //set expenses
             txtExpenses.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
-            txtExpenses.setTypeface(null, Typeface.BOLD_ITALIC);
+            txtExpenses.setTypeface(null, Typeface.BOLD);
             //set difference
             txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
-            txtDifference.setTypeface(null, Typeface.BOLD_ITALIC);
+            txtDifference.setTypeface(null, Typeface.BOLD);
             //change colors
             Core core = new Core(getActivity());
             if (income - Math.abs(expenses) < 0) {
@@ -483,30 +439,34 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             // move to first
             if (!cursor.moveToFirst()) return;
             // arrays
-            double[] incomes = new double[cursor.getCount()];
-            double[] expenses = new double[cursor.getCount()];
-            String[] titles = new String[cursor.getCount()];
+            ArrayList<Double> incomes = new ArrayList<Double>();
+            ArrayList<Double> expenses = new ArrayList<Double>();
+            ArrayList<String> titles = new ArrayList<String>();
             // cycle cursor
             while (!cursor.isAfterLast()) {
-                // incomes and expenses
-                incomes[cursor.getPosition()] = cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-                expenses[cursor.getPosition()] = Math.abs(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses)));
-                // titles
-                int year = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Year));
-                int month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));
-                // format month
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month - 1, 1);
-                // titles
-                titles[cursor.getPosition()] = Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime());
+                // check if not subtotal
+                if (cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month)) != SUBTOTAL_MONTH) {
+                    // incomes and expenses
+                    incomes.add(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income)));
+                    expenses.add(Math.abs(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses))));
+                    // titles
+                    int year = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Year));
+                    int month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));
+
+                    // format month
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(year, month - 1, 1);
+                    // titles
+                    titles.add(Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime()));
+                }
                 // move to next
                 cursor.moveToNext();
             }
             //compose bundle for arguments
             Bundle args = new Bundle();
-            args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES, expenses);
-            args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES, incomes);
-            args.putStringArray(IncomeVsExpensesChartFragment.KEY_XTITLES, titles);
+            args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES, ArrayUtils.toPrimitive(expenses.toArray(new Double[0])));
+            args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES, ArrayUtils.toPrimitive(incomes.toArray(new Double[0])));
+            args.putStringArray(IncomeVsExpensesChartFragment.KEY_XTITLES, titles.toArray(new String[titles.size()]));
             //get fragment manager
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             if (fragmentManager != null) {
