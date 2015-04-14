@@ -1,10 +1,11 @@
-package com.money.manager.ex;
+package com.money.manager.ex.currency;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 

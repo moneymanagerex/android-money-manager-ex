@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex;
+package com.money.manager.ex.currency;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +23,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.CurrencyFormatsLoaderListFragment;
 

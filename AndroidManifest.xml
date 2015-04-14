@@ -215,7 +215,7 @@
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".CurrencyFormatsListActivity" >
+        <activity android:name=".currency.CurrencyFormatsListActivity" >
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
@@ -224,7 +224,7 @@
             android:label="@string/about" >
         </activity>
         <activity
-            android:name=".CurrencyFormatsActivity"
+            android:name=".currency.CurrencyFormatsActivity"
             android:label="@string/new_edit_currency" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
@@ -336,7 +336,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name=".CurrencyChartActivity"
+            android:name=".currency.CurrencyChartActivity"
             android:label="@string/title_activity_currency_chart"
             android:screenOrientation="landscape" >
         </activity>

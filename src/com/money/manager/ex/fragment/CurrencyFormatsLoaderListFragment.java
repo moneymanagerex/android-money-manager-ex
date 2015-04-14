@@ -41,9 +41,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.CurrencyChartActivity;
-import com.money.manager.ex.CurrencyFormatsActivity;
-import com.money.manager.ex.CurrencyFormatsListActivity;
+import com.money.manager.ex.currency.CurrencyChartActivity;
+import com.money.manager.ex.currency.CurrencyFormatsActivity;
+import com.money.manager.ex.currency.CurrencyFormatsListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.Core;
