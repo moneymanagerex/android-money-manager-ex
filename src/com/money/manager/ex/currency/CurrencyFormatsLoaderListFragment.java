@@ -126,6 +126,12 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
 
                 Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
                 intent.setAction(Intent.ACTION_VIEW);
+                // add the currency information.
+                String symbol = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCY_SYMBOL));
+                intent.putExtra(TableCurrencyFormats.CURRENCY_SYMBOL, symbol);
+                CurrencyUtils currencyUtils = this.getCurrencyUtils();
+                String baseCurrencyCode = currencyUtils.getBaseCurrencyCode();
+                intent.putExtra(CurrencyChartActivity.BASE_CURRENCY_SYMBOL, baseCurrencyCode);
                 startActivity(intent);
                 break;
             case 2: // Update exchange rate

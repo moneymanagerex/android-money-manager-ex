@@ -18,26 +18,37 @@
 
 package com.money.manager.ex.currency;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 
 public class CurrencyChartActivity extends BaseFragmentActivity {
+
+    public static final String BASE_CURRENCY_SYMBOL = "CurrencyChartActivity::BaseCurrencySymbol";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currency_chart);
 
-        // todo: get the currency information from the intent.
+        String currencySymbol = null;
+        String baseCurrencySymbol = null;
+        // get the currency information from the intent.
+        Intent intent = getIntent();
+        if(intent != null) {
+            currencySymbol = intent.getStringExtra(TableCurrencyFormats.CURRENCY_SYMBOL);
+            baseCurrencySymbol = intent.getStringExtra(BASE_CURRENCY_SYMBOL);
+        }
 
         // load currency chart.
-        loadCurrencyChart();
+        loadCurrencyChart(currencySymbol, baseCurrencySymbol);
     }
 
     @Override
@@ -62,10 +73,18 @@ public class CurrencyChartActivity extends BaseFragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadCurrencyChart() {
-        // todo: set the url to use the selected currency and base.
+    private void loadCurrencyChart(String currencySymbol, String baseCurrencySymbol) {
+        if(currencySymbol == null) return;
 
-        String url = "http://chart.finance.yahoo.com/instrument/1.0/EURUSD=X/chart;range=5d/image;size=239x110?&lang=en-US&region=US";
+        // set the url to use the selected currency and base.
+
+//        String url = "http://chart.finance.yahoo.com/t?s=EURUSD%3dX&lang=en-US&region=US&width=300&height=180";
+//        String url = "http://chart.finance.yahoo.com/instrument/1.0/EURUSD=X/chart;range=5d/image;size=239x110?&lang=en-US&region=US";
+//        String url = "http://chart.finance.yahoo.com/z?s=EURUSD=x&t=5d&z=m";
+        // ref: http://stackoverflow.com/questions/4678296/yahoo-historical-currency-rates-api
+        String url = String.format("http://chart.finance.yahoo.com/z?s=%s%s=x&t=5d&z=m",
+                baseCurrencySymbol, currencySymbol);
+
         ImageView imageView = (ImageView) findViewById(R.id.imageChart);
 
         new ImageLoadTask(url, imageView).execute();

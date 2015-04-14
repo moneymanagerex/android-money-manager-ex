@@ -36,6 +36,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
     public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
     public static final String LOGCAT = CurrencyFormatsListActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = CurrencyFormatsListActivity.class.getSimpleName() + "_Fragment";
+
     // Instance fragment list
     private CurrencyFormatsLoaderListFragment listFragment = new CurrencyFormatsLoaderListFragment();
 
