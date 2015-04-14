@@ -65,7 +65,7 @@ public class CurrencyChartActivity extends BaseFragmentActivity {
     private void loadCurrencyChart() {
         // todo: set the url to use the selected currency and base.
 
-        String url = "http://finance.yahoo.com/q/bc?s=EURUSD=X&t=5d&l=on&z=m&q=l&c=";
+        String url = "http://chart.finance.yahoo.com/instrument/1.0/EURUSD=X/chart;range=5d/image;size=239x110?&lang=en-US&region=US";
         ImageView imageView = (ImageView) findViewById(R.id.imageChart);
 
         new ImageLoadTask(url, imageView).execute();
