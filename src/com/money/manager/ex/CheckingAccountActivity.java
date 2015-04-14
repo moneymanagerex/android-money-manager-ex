@@ -785,13 +785,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+
                         super.onPositive(dialog);
                     }
 
                     @Override
                     public void onNegative(MaterialDialog dialog) {
-                        setResult(RESULT_CANCELED);
-                        finish();
                         super.onNegative(dialog);
                     }
                 })

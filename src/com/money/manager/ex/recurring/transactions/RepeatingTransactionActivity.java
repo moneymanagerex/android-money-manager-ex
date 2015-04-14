@@ -702,13 +702,13 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
+                        setResult(RESULT_CANCELED);
+                        finish();
                         super.onPositive(dialog);
                     }
 
                     @Override
                     public void onNegative(MaterialDialog dialog) {
-                        setResult(RESULT_CANCELED);
-                        finish();
                         super.onNegative(dialog);
                     }
                 })
