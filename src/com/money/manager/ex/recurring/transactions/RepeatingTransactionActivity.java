@@ -683,8 +683,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title(android.R.string.cancel)
                 .content(R.string.transaction_cancel_confirm)
-                .positiveText(R.string.keep_editing)
-                .negativeText(R.string.discard)
+                .positiveText(R.string.discard)
+                .negativeText(R.string.keep_editing)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
