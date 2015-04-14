@@ -64,6 +64,7 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.view.RobotoTextView;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -125,7 +126,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     // arrays to manage transcode and status
     private String[] mTransCodeItems, mStatusItems;
     private String[] mTransCodeValues, mStatusValues;
-    // arrayslist accountname and accountid
+    // arrays list account name and account id
     private ArrayList<String> mAccountNameList = new ArrayList<String>();
     private ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
     // amount
@@ -142,7 +143,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     private Spinner spinAccount, spinToAccount, spinTransCode, spinStatus, spinFrequencies;
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
-    public CheckBox chbSplitTransaction;
+    public com.gc.materialdesign.views.CheckBox chbSplitTransaction;
     private TextView txtPayee, txtSelectPayee, txtSelectCategory, txtCaptionAmount, txtRepeats, txtTimesRepeated, txtNextOccurrence, txtTotAmount, txtAmount;
     // object of the table
     TableBillsDeposits mRepeatingTransaction = new TableBillsDeposits();
@@ -194,7 +195,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
                     mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                     // select last category used from payee
-                    if (!chbSplitTransaction.isChecked()) {
+                    if (!chbSplitTransaction.isCheck()) {
                         if (getCategoryFromPayee(mPayeeId)) {
                             refreshCategoryName(); // refresh UI
                         }
@@ -287,20 +288,22 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         txtAmount = (TextView) findViewById(R.id.editTextAmount);
         txtTotAmount = (TextView) findViewById(R.id.editTextTotAmount);
-        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
-
-
-        // take a reference view into layout
-        // account
+        chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) findViewById(R.id.checkBoxSplitTransaction);
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
+        txtPayee = (TextView) findViewById(R.id.textViewPayee);
+        txtCaptionAmount = (TextView) findViewById(R.id.textViewHeaderTotalAmount);
+        spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
+        txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
+        txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
+        txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
+
+        // Account
         // account list <> to populate the spin
         mAccountList = MoneyManagerOpenHelper.getInstance(getApplicationContext()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());
         }
-
-        spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
 
         // create adapter for spinAccount
         ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountNameList);
@@ -419,11 +422,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         });
 
-        txtPayee = (TextView) findViewById(R.id.textViewPayee);
-        txtCaptionAmount = (TextView) findViewById(R.id.textViewHeaderTotalAmount);
-        txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
-        txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
-
         // payee
         txtSelectPayee = (TextView) findViewById(R.id.textViewSelectPayee);
         txtSelectPayee.setOnClickListener(new OnClickListener() {
@@ -437,18 +435,17 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         // Category
 
-        txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
         txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!chbSplitTransaction.isChecked()) {
+                if (!chbSplitTransaction.isCheck()) {
 	                Intent intent = new Intent(RepeatingTransactionActivity.this, CategorySubCategoryExpandableListActivity.class);
 	                intent.setAction(Intent.ACTION_PICK);
 	                startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 } else {
                     // Open the activity for creating split transactions.
                     Intent intent = new Intent(RepeatingTransactionActivity.this, SplitTransactionsActivity.class);
-                    // Pass the name of the entity/dataset.
+                    // Pass the name of the entity/data set.
                     intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, TableBudgetSplitTransactions.class.getSimpleName());
                     intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransCode);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
@@ -458,15 +455,32 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         });
 
-        // Split Categories.
+        // Split Categories
 
         // Set checked on start if we are editing a tx with split categories.
-        boolean hasSplit = hasSplitCategories();
-        chbSplitTransaction.setChecked(hasSplit);
-        splitSet();
-        chbSplitTransaction.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheck(boolean b) {
+                splitSet();
+            }
+        });
+        // mark checked if there are existing split categories.
+        chbSplitTransaction.post(new Runnable() {
+            @Override
+            public void run() {
+                boolean hasSplit = hasSplitCategories();
+                chbSplitTransaction.setChecked(hasSplit);
+
+                splitSet();
+            }
+        });
+        // split text is a separate control.
+        RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
+        splitText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
+
                 splitSet();
             }
         });
@@ -683,18 +697,18 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title(android.R.string.cancel)
                 .content(R.string.transaction_cancel_confirm)
-                .positiveText(R.string.keep_editing)
-                .negativeText(R.string.discard)
+                .positiveText(R.string.discard)
+                .negativeText(R.string.keep_editing)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
+                        setResult(RESULT_CANCELED);
+                        finish();
                         super.onPositive(dialog);
                     }
 
                     @Override
                     public void onNegative(MaterialDialog dialog) {
-                        setResult(RESULT_CANCELED);
-                        finish();
                         super.onNegative(dialog);
                     }
                 })
@@ -872,7 +886,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         txtSelectCategory.setText("");
 
-        if (!chbSplitTransaction.isChecked()) {
+        if (!chbSplitTransaction.isCheck()) {
             if (!TextUtils.isEmpty(mCategoryName)) {
                 txtSelectCategory.setText(mCategoryName);
                 if (!TextUtils.isEmpty(mSubCategoryName)) {
@@ -950,11 +964,11 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             ;
             return false;
         }
-        if (mCategoryId == -1 && (!chbSplitTransaction.isChecked())) {
+        if (mCategoryId == -1 && (!chbSplitTransaction.isCheck())) {
             Core.alertDialog(this, R.string.error_category_not_selected).show();
             return false;
         }
-        if (chbSplitTransaction.isChecked() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
+        if (chbSplitTransaction.isCheck() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
             Core.alertDialog(this, R.string.error_split_transaction_empty).show();
             return false;
         }
@@ -1002,8 +1016,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) txtAmount.getTag());
         }
         values.put(TableBillsDeposits.STATUS, mStatus);
-        values.put(TableBillsDeposits.CATEGID, !chbSplitTransaction.isChecked() ? mCategoryId : -1);
-        values.put(TableBillsDeposits.SUBCATEGID, !chbSplitTransaction.isChecked() ? mSubCategoryId : -1);
+        values.put(TableBillsDeposits.CATEGID, !chbSplitTransaction.isCheck() ? mCategoryId : -1);
+        values.put(TableBillsDeposits.SUBCATEGID, !chbSplitTransaction.isCheck() ? mSubCategoryId : -1);
         values.put(TableBillsDeposits.FOLLOWUPID, -1);
         values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) txtTotAmount.getTag());
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
@@ -1108,8 +1122,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         RepeatingTransactionActivity.this.refreshCategoryName();
 
 //        boolean isSplit = hasSplitCategories();
-//        boolean isSplit = chbSplitTransaction.isCheck();
-        boolean isSplit = chbSplitTransaction.isChecked();
+        boolean isSplit = chbSplitTransaction.isCheck();
 
         // enable/disable Amount field.
         txtAmount.setEnabled(!isSplit);
