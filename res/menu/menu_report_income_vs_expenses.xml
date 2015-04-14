@@ -21,12 +21,12 @@
     <item
         android:id="@+id/menu_chart"
         android:icon="?attr/ic_action_bargraph"
-        android:title="@null"
+        android:title="@string/show_chart"
         app:showAsAction="always"/>
     <item
         android:id="@+id/menu_sort"
         android:icon="?attr/ic_action_sort_1"
-        android:title="@null"
+        android:title="@string/sort"
         app:showAsAction="always">
         <menu>
             <group android:checkableBehavior="single">
@@ -44,7 +44,7 @@
         android:id="@+id/menu_period"
         android:icon="?attr/ic_action_calendar_day"
         app:showAsAction="always"
-        android:title="@null">
+        android:title="@string/select_the_years_to_be_displayed">
     </item>
 
 </menu>
