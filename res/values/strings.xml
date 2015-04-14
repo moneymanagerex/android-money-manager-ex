@@ -539,4 +539,7 @@
     <string name="transactions">Transactions</string>
     <string name="tutorial_transactions_1">Deposits, withdrawals, transfers. Recurring transactions with reminders.</string>
     <string name="split_category">-Split Category-</string>
+    <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

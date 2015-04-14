@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -17,7 +18,7 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="Apr 6, 2015" versionName="2.0.0-beta1">
+    <changelogversion changeDate="April 6, 2015" versionName="2.0.0-beta1">
         <changelogtext>Introduced the material layout design</changelogtext>
         <changelogtext>Added the type of account Credit Card</changelogtext>
         <changelogtext>Added function duplicates transaction</changelogtext>
@@ -29,6 +30,7 @@
         <changelogtext>Changed sync with Dropbox. The downloaded file is downloaded as temporary and when downloaded is overwritten</changelogtext>
         <changelogtext>Changed database management. Now no longer creates the log file and everything is managed on a single file</changelogtext>
         <changelogtext>Added the feature to show the application log (Logcat) from About</changelogtext>
+        <changelogtext>Added currency exchange rate chart. Check the exchange rate fluctuations in the past 5 days for all the currencies.</changelogtext>
         <changelogtext>Add translation: Bosnian (thanks MisterY)</changelogtext>
         <changelogtext>Add translation: Dutch (thanks kareltje68, dvdspelert and frijtersbart)</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>

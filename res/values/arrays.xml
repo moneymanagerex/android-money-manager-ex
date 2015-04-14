@@ -95,8 +95,9 @@
     <!-- context menu options for currency list -->
     <string-array name="context_menu_currencies">
         <item>@string/edit</item>
-        <item>@string/delete</item>
+        <item>@string/show_chart</item>
         <item>@string/update_menu_currency_exchange_rates</item>
+        <item>@string/delete</item>
     </string-array>
 
     <!-- Define method of syncronization of dropbox -->
