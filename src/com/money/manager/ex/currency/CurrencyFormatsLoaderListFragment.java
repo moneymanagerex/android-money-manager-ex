@@ -62,6 +62,9 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
 
     public static String mAction = Intent.ACTION_EDIT;
 
+    // Store previous device orientation when showing other screens (chart, etc.)
+    public int PreviousOrientation = -1;
+
     // ID loader
     private static final int ID_LOADER_CURRENCY = 0;
     // filter
@@ -118,7 +121,8 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                 startCurrencyFormatActivity(currencyId);
                 break;
             case 1: // Chart
-                // todo: remember the device orientation and return to it after the chart.
+                // remember the device orientation and return to it after the chart.
+                this.PreviousOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
 
                 Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
                 intent.setAction(Intent.ACTION_VIEW);

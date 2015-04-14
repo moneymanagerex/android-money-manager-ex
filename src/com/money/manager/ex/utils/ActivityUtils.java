@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +25,11 @@ import android.view.Surface;
 
 public class ActivityUtils {
 
+    /**
+     * Returns current device orientation.
+     * @param activity Activity from which to get the current orientation information.
+     * @return Code indicating the current device orientation.
+     */
     public static int forceCurrentOrientation(Activity activity) {
         int prevOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
         if (activity != null) {
@@ -46,6 +51,11 @@ public class ActivityUtils {
         return prevOrientation;
     }
 
+    /**
+     * Sets the device orientation for the activity.
+     * @param activity Activity to which to apply the orientation.
+     * @param orientation Code for orientation.
+     */
     public static void restoreOrientation(Activity activity, int orientation) {
         if (activity != null) {
             activity.setRequestedOrientation(orientation);

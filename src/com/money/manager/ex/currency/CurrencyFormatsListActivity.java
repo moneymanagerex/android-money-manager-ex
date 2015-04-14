@@ -25,6 +25,7 @@ import android.view.KeyEvent;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.utils.ActivityUtils;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -50,6 +51,13 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
             // Store the requested action.
             listFragment.mAction = intent.getAction();
+            // restore previous device orientation if it was modified.
+            if(listFragment.PreviousOrientation != -1) {
+                int currentOrientation = ActivityUtils.forceCurrentOrientation(this);
+                if(currentOrientation != listFragment.PreviousOrientation) {
+                    ActivityUtils.restoreOrientation(this, listFragment.PreviousOrientation);
+                }
+            }
         }
 
         FragmentManager fm = getSupportFragmentManager();
