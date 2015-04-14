@@ -18,11 +18,8 @@
 package com.money.manager.ex.reports;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,26 +34,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
+import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
@@ -67,8 +59,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class IncomeVsExpensesActivity extends BaseFragmentActivity {
     private static final String LOGCAT = IncomeVsExpensesActivity.class.getSimpleName();
@@ -163,12 +153,13 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
     }
 
     public static class IncomeVsExpensesListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-        private static final int ID_LOADER = 1;
+        private static final int ID_LOADER_REPORT = 1;
+        private static final int ID_LOADER_YEARS = 2;
         private static final String SORT_ASCENDING = "ASC";
         private static final String SORT_DESCENDING = "DESC";
         private static final String KEY_BUNDLE_YEAR = "IncomeVsExpensesListFragment:Years";
         private View mFooterListView;
-        private Map<Integer, Boolean> mCheckedItem = new HashMap<Integer, Boolean>();
+        private SparseBooleanArray mYearsSelected = new SparseBooleanArray();
         private String mSort = SORT_ASCENDING;
 
         /**
@@ -202,45 +193,16 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             return row;
         }
 
-        /**
-         * Convert from hash map<Integer, Boolean> to int[]
-         *
-         * @param map
-         * @return
-         */
-        private int[] hashMap2IntArray(Map<Integer, Boolean> map) {
-            return hashMap2IntArray(map, false);
-        }
-
-        /**
-         * Convert from hash map<Integer, Boolean> to int[]
-         *
-         * @param map
-         * @param allItems
-         * @return
-         */
-        private int[] hashMap2IntArray(Map<Integer, Boolean> map, boolean allItems) {
-            int[] ret = new int[mCheckedItem.entrySet().size()];
-            int i = 0;
-            // compose arrays list
-            for (Map.Entry<Integer, Boolean> entry : mCheckedItem.entrySet()) {
-                if (allItems || entry.getValue()) {
-                    ret[i++] = entry.getKey();
-                }
-            }
-            return ret;
-        }
-
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
             setHasOptionsMenu(true);
             if (savedInstanceState != null && savedInstanceState.containsKey(KEY_BUNDLE_YEAR) && savedInstanceState.getIntArray(KEY_BUNDLE_YEAR) != null) {
-                for (int item : savedInstanceState.getIntArray(KEY_BUNDLE_YEAR)) {
-                    mCheckedItem.put(item, true);
+                for (int year : savedInstanceState.getIntArray(KEY_BUNDLE_YEAR)) {
+                    mYearsSelected.put(year, true);
                 }
             } else {
-                mCheckedItem.put(Calendar.getInstance().get(Calendar.YEAR), true);
+                mYearsSelected.put(Calendar.getInstance().get(Calendar.YEAR), true);
             }
             // set home button
             ActionBarActivity activity = (ActionBarActivity) getActivity();
@@ -262,52 +224,39 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
             setListAdapter(adapter);
             setListShown(false);
             // start loader
-            startLoader(hashMap2IntArray(mCheckedItem));
+            //startLoader();
+            getLoaderManager().restartLoader(ID_LOADER_YEARS, null, this);
         }
 
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             String selection = null;
-            QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-            if (args != null && args.containsKey(KEY_BUNDLE_YEAR) && args.getIntArray(KEY_BUNDLE_YEAR) != null) {
-                selection = "";
-                for (int i = 0; i < args.getIntArray(KEY_BUNDLE_YEAR).length; i++) {
-                    if (!TextUtils.isEmpty(selection)) {
-                        selection += " OR ";
+            switch (id) {
+                case ID_LOADER_REPORT:
+                    QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
+                    if (args != null && args.containsKey(KEY_BUNDLE_YEAR) && args.getString(KEY_BUNDLE_YEAR) != null) {
+                        selection = QueryReportIncomeVsExpenses.Year + " IN (" + args.getString(KEY_BUNDLE_YEAR) + ")";
+                        if (!TextUtils.isEmpty(selection)) {
+                            selection = "(" + selection + ")";
+                        }
                     }
-                    selection += QueryReportIncomeVsExpenses.Year + "=" + Integer.toString(args.getIntArray(KEY_BUNDLE_YEAR)[i]);
-                }
-                if (!TextUtils.isEmpty(selection)) {
-                    selection = "(" + selection + ")";
-                }
+                    // if don't have selection abort query
+                    if (TextUtils.isEmpty(selection)) {
+                        selection = "1=2";
+                    }
+                    return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
+                case ID_LOADER_YEARS:
+                    selection = "SELECT DISTINCT Year FROM " + ViewMobileData.mobiledata + " ORDER BY Year DESC";
+                    return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null, selection, null, null);
             }
-            // if don't have selection abort query
-            if (TextUtils.isEmpty(selection)) {
-                selection = "1=2";
-            }
-            return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
+            return null;
         }
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
             inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
-            //Create a cursor for select year
-            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
-            SQLiteDatabase database = helper.getReadableDatabase();
-            Cursor cursor = database.rawQuery("SELECT DISTINCT Year FROM " + ViewMobileData.mobiledata + " ORDER BY Year DESC", null);
-            if (cursor != null && cursor.moveToFirst()) {
-                int order = 0;
-                while (!cursor.isAfterLast()) {
-                    int year = cursor.getInt(cursor.getColumnIndex("Year"));
-                    menu.findItem(R.id.menu_period).getSubMenu().add(0, year, order++, Integer.toString(year)).setCheckable(true).setChecked(year == Calendar.getInstance().get(Calendar.YEAR));
-                    //move to next
-                    cursor.moveToNext();
-                }
-                cursor.close();
-            }
-            //helper.close();
-            // chart item
+            // fix menu char
             MenuItem itemChart = menu.findItem(R.id.menu_chart);
             if (itemChart != null) {
                 itemChart.setVisible(!((IncomeVsExpensesActivity) getActivity()).mIsDualPanel);
@@ -322,7 +271,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             switch (loader.getId()) {
-                case ID_LOADER:
+                case ID_LOADER_REPORT:
                     ((IncomeVsExpensesAdapter) getListAdapter()).swapCursor(data);
                     if (isResumed()) {
                         setListShown(true);
@@ -358,6 +307,17 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                         }, 1 * 1000);
                     }
                     break;
+                case ID_LOADER_YEARS:
+                    if (data != null && data.moveToFirst()) {
+                        while (!data.isAfterLast()) {
+                            int year = data.getInt(data.getColumnIndex("Year"));
+                            if (mYearsSelected.get(year, false) == false) {
+                                mYearsSelected.put(year, false);
+                            }
+                            data.moveToNext();
+                        }
+                        startLoader();
+                    }
             }
         }
 
@@ -367,100 +327,75 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                 getActivity().finish();
             } else if (item.getItemId() == R.id.menu_sort_asceding || item.getItemId() == R.id.menu_sort_desceding) {
                 mSort = item.getItemId() == R.id.menu_sort_asceding ? SORT_ASCENDING : SORT_DESCENDING;
-                startLoader(hashMap2IntArray(mCheckedItem));
+                startLoader();
                 item.setChecked(true);
             } else if (item.getItemId() == R.id.menu_chart) {
                 showChart();
-            } else {
-                item.setChecked(!item.isChecked());
-                // put or remove map key
-                if (item.isChecked()) {
-                    mCheckedItem.put(item.getItemId(), Boolean.TRUE);
-                } else {
-                    mCheckedItem.remove(item.getItemId());
-                }
-                // start loader
-                startLoader(hashMap2IntArray(mCheckedItem));
+            } else if (item.getItemId() == R.id.menu_period) {
+                showDialogYears();
             }
 
             return super.onOptionsItemSelected(item);
         }
 
-        private void showDialogSortMonth() {
-            AlertDialogWrapper.Builder dialog = new AlertDialogWrapper.Builder(getActivity());
-            final LinearLayout layout = new LinearLayout(getActivity());
-            layout.setOrientation(LinearLayout.VERTICAL);
-            layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-            //create radio group
-            //create checkbox ascending
-            final RadioButton rbtAscending = new RadioButton(getActivity());
-            rbtAscending.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            rbtAscending.setText(R.string.ascending);
-            //create checkbox descending
-            final RadioButton rbtDescending = new RadioButton(getActivity());
-            rbtDescending.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            rbtDescending.setText(R.string.descending);
-            //check actual value
-            rbtAscending.setChecked(SORT_ASCENDING.equals(mSort));
-            rbtDescending.setChecked(SORT_DESCENDING.equals(mSort));
-            OnCheckedChangeListener changeListener = new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (buttonView.equals(rbtAscending)) {
-                        rbtDescending.setChecked(!isChecked);
-                    } else if (buttonView.equals(rbtDescending)) {
-                        rbtAscending.setChecked(!isChecked);
-                    }
-                }
-            };
-            rbtAscending.setOnCheckedChangeListener(changeListener);
-            rbtDescending.setOnCheckedChangeListener(changeListener);
-            //add checkbox
-            layout.addView(rbtAscending);
-            layout.addView(rbtDescending);
-            //set layuout
-            dialog.setView(layout);
-            //title
-            dialog.setTitle(getString(R.string.sorting_month));
-            dialog.setNeutralButton(android.R.string.ok, new OnClickListener() {
+        public void showDialogYears() {
+            ArrayList<String> years = new ArrayList<String>();
+            Integer[] selected = new Integer[0];
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    mSort = rbtAscending.isChecked() ? SORT_ASCENDING : SORT_DESCENDING;
-                    startLoader(hashMap2IntArray(mCheckedItem));
-                }
-            });
-            //show dialog
-            dialog.create().show();
-        }
-
-        @Override
-        public void onPrepareOptionsMenu(Menu menu) {
-            SubMenu subMenu = menu.findItem(R.id.menu_period).getSubMenu();
-            if (subMenu != null) {
-                for (int i = 0; i < subMenu.size(); i++) {
-                    MenuItem item = subMenu.getItem(i);
-                    item.setChecked(mCheckedItem.containsKey(item.getItemId()));
+            for (int i = 0; i < mYearsSelected.size(); i++) {
+                years.add(String.valueOf(mYearsSelected.keyAt(i)));
+                if (mYearsSelected.valueAt(i)) {
+                    selected = ArrayUtils.add(selected, i);
                 }
             }
-            super.onPrepareOptionsMenu(menu);
+
+            new MaterialDialog.Builder(getActivity())
+                    .items(years.toArray(new String[years.size()]))
+                    .itemsCallbackMultiChoice(selected, new MaterialDialog.ListCallbackMulti() {
+                        @Override
+                        public void onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+                            // reset to false all years
+                            for (int i = 0; i < mYearsSelected.size(); i++) {
+                                mYearsSelected.put(mYearsSelected.keyAt(i), false);
+                            }
+                            // set year select
+                            for (int index : integers) {
+                                mYearsSelected.put(mYearsSelected.keyAt(index), true);
+                            }
+                            startLoader();
+                        }
+                    })
+                            //.alwaysCallMultiChoiceCallback()
+                    .positiveText(android.R.string.ok)
+                    .show();
         }
 
         @Override
         public void onSaveInstanceState(Bundle outState) {
             super.onSaveInstanceState(outState);
-            outState.putIntArray(KEY_BUNDLE_YEAR, hashMap2IntArray(mCheckedItem));
+            ArrayList<Integer> years = new ArrayList<Integer>();
+            for (int i = 0; i < mYearsSelected.size(); i++) {
+                if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
+                    years.add(mYearsSelected.keyAt(i));
+                }
+            }
+            outState.putIntArray(KEY_BUNDLE_YEAR, ArrayUtils.toPrimitive(years.toArray(new Integer[0])));
         }
 
         /**
          * Start loader with arrays year
          *
-         * @param years
          */
-        private void startLoader(int[] years) {
+        private void startLoader() {
             Bundle bundle = new Bundle();
-            bundle.putIntArray(KEY_BUNDLE_YEAR, years);
-            getLoaderManager().restartLoader(ID_LOADER, bundle, this);
+            String years = "";
+            for (int i = 0; i < mYearsSelected.size(); i++) {
+                if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
+                    years += (!TextUtils.isEmpty(years) ? ", " : "") + Integer.toString(mYearsSelected.keyAt(i));
+                }
+            }
+            bundle.putString(KEY_BUNDLE_YEAR, years);
+            getLoaderManager().restartLoader(ID_LOADER_REPORT, bundle, this);
         }
 
         /**

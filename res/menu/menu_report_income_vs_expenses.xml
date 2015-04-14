@@ -45,8 +45,6 @@
         android:icon="?attr/ic_action_calendar_day"
         app:showAsAction="always"
         android:title="@null">
-        <menu android:id="@+id/submenu_year">
-        </menu>
     </item>
 
 </menu>
