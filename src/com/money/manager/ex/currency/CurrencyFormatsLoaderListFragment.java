@@ -118,9 +118,10 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                 startCurrencyFormatActivity(currencyId);
                 break;
             case 1: // Chart
+                // todo: remember the device orientation and return to it after the chart.
+
                 Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
                 intent.setAction(Intent.ACTION_VIEW);
-//                startActivityForResult(intent, REQUEST_PICK_CURRENCY);
                 startActivity(intent);
                 break;
             case 2: // Update exchange rate
@@ -133,16 +134,16 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                     showDialogDeleteCurrency(currencyId);
                 } else {
                     new AlertDialogWrapper.Builder(getActivity())
-                            .setTitle(R.string.attention)
-                            .setMessage(R.string.currency_can_not_deleted)
-                            .setIcon(R.drawable.ic_action_warning_light)
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create().show();
+                        .setTitle(R.string.attention)
+                        .setMessage(R.string.currency_can_not_deleted)
+                        .setIcon(R.drawable.ic_action_warning_light)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
                 }
                 break;
         }
