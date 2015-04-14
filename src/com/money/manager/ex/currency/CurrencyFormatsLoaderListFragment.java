@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.fragment;
+package com.money.manager.ex.currency;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -41,9 +41,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.currency.CurrencyChartActivity;
-import com.money.manager.ex.currency.CurrencyFormatsActivity;
-import com.money.manager.ex.currency.CurrencyFormatsListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.Core;
@@ -51,6 +48,7 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.fragment.BaseListFragment;
 import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.CurrencyUtils;
 

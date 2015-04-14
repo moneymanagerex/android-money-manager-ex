@@ -25,7 +25,6 @@ import android.view.KeyEvent;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.CurrencyFormatsLoaderListFragment;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
