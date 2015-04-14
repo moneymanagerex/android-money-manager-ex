@@ -78,7 +78,9 @@ import java.util.Locale;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.1
  */
-public class CheckingAccountActivity extends BaseFragmentActivity implements InputAmountDialogListener {
+public class CheckingAccountActivity extends BaseFragmentActivity
+        implements InputAmountDialogListener {
+
     public static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
     // ID REQUEST Data
     public static final int REQUEST_PICK_PAYEE = 1;
@@ -148,8 +150,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
     // object of the table
     TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
     // list split transactions
-    ArrayList<TableSplitTransactions> mSplitTransaction = null;
-    ArrayList<TableSplitTransactions> mSplitTransactionDeleted = null;
+    ArrayList<TableSplitTransactions> mSplitTransactions = null;
+    ArrayList<TableSplitTransactions> mSplitTransactionsDeleted = null;
 
     /**
      * getCategoryFromPayee set last category used from payee
@@ -247,17 +249,17 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 }
             case REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mSplitTransaction = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
-                    if (mSplitTransaction != null && mSplitTransaction.size() > 0) {
+                    mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                    if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
                         double totAmount = 0;
-                        for (int i = 0; i < mSplitTransaction.size(); i++) {
-                            totAmount += mSplitTransaction.get(i).getSplitTransAmount();
+                        for (int i = 0; i < mSplitTransactions.size(); i++) {
+                            totAmount += mSplitTransactions.get(i).getSplitTransAmount();
                         }
                         formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
                     }
                     // deleted item
                     if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
-                        mSplitTransactionDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                        mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
                     }
                 }
                 break;
@@ -299,8 +301,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
             mNotes = savedInstanceState.getString(KEY_NOTES);
             mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
-            mSplitTransaction = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
-            mSplitTransactionDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
+            mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
+            mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
             mRecurringTransactionId = savedInstanceState.getInt(KEY_BDID_ID);
             mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
             // action
@@ -571,40 +573,39 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                     Intent intent = new Intent(CheckingAccountActivity.this, SplitTransactionsActivity.class);
                     intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, TableSplitTransactions.class.getSimpleName());
                     intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransCode);
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransaction);
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
+                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
+                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
                     startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
                 }
             }
         });
 
-        // Split transaction
+        // Split Categories
 
         chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
             @Override
             public void onCheck(boolean b) {
-                CheckingAccountActivity.this.refreshCategoryName();
+                splitSet();
             }
         });
-        final boolean hasSplit = mSplitTransaction != null && mSplitTransaction.size() >= 0;
+        // mark checked if there are existing split categories.
         chbSplitTransaction.post(new Runnable() {
             @Override
             public void run() {
+                boolean hasSplit = hasSplitCategories();
                 chbSplitTransaction.setChecked(hasSplit);
-                CheckingAccountActivity.this.refreshCategoryName();
+
+                splitSet();
             }
         });
         // split text is a separate control.
-        RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
+        final RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
         splitText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
-                // None of the below calls work with this custom checkbox!
-//                chbSplitTransaction.performClick();
-//                chbSplitTransaction.callOnClick();
-                // so we have to duplicate the code or create a function to call if there is more to do.
-                CheckingAccountActivity.this.refreshCategoryName();
+
+                splitSet();
             }
         });
 
@@ -716,8 +717,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         outState.putInt(KEY_SUBCATEGORY_ID, mSubCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mSubCategoryName);
         outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
-        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransaction);
-        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionDeleted);
+        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransactions);
+        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
         outState.putString(KEY_NOTES, edtNotes.getText().toString());
         // bill deposits
         outState.putInt(KEY_BDID_ID, mRecurringTransactionId);
@@ -778,19 +779,20 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title(android.R.string.cancel)
                 .content(R.string.transaction_cancel_confirm)
-                .positiveText(R.string.keep_editing)
-                .negativeText(R.string.discard)
+                .positiveText(R.string.discard)
+                .negativeText(R.string.keep_editing)
                 .cancelable(false)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+
                         super.onPositive(dialog);
                     }
 
                     @Override
                     public void onNegative(MaterialDialog dialog) {
-                        setResult(RESULT_CANCELED);
-                        finish();
                         super.onNegative(dialog);
                     }
                 })
@@ -907,8 +909,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         if (!duplicate)
             mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
 
-        if (mSplitTransaction == null) {
-            mSplitTransaction = loadSplitTransaction(transId);
+        if (mSplitTransactions == null) {
+            mSplitTransactions = loadSplitTransaction(transId);
         }
 
         // convert status in uppercase string
@@ -1014,6 +1016,11 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         view.setTag(amount);
     }
 
+    public boolean hasSplitCategories() {
+        boolean hasSplit = mSplitTransactions != null && mSplitTransactions.size() >= 0;
+        return hasSplit;
+    }
+
     public void refreshCategoryName() {
         if (txtSelectCategory == null)
             return;
@@ -1103,7 +1110,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             Core.alertDialog(this, R.string.error_category_not_selected).show();
             return false;
         }
-        if (chbSplitTransaction.isCheck() && (mSplitTransaction == null || mSplitTransaction.size() <= 0)) {
+        if (chbSplitTransaction.isCheck() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
             Core.alertDialog(this, R.string.error_split_transaction_empty).show();
             return false;
         }
@@ -1173,27 +1180,27 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             }
         }
         // has split transaction
-        boolean hasSplitTransaction = mSplitTransaction != null && mSplitTransaction.size() > 0;
+        boolean hasSplitTransaction = mSplitTransactions != null && mSplitTransactions.size() > 0;
         // update split transaction
         if (hasSplitTransaction) {
-            for (int i = 0; i < mSplitTransaction.size(); i++) {
+            for (int i = 0; i < mSplitTransactions.size(); i++) {
                 values.clear();
                 //put value
-                values.put(TableSplitTransactions.CATEGID, mSplitTransaction.get(i).getCategId());
-                values.put(TableSplitTransactions.SUBCATEGID, mSplitTransaction.get(i).getSubCategId());
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransaction.get(i).getSplitTransAmount());
+                values.put(TableSplitTransactions.CATEGID, mSplitTransactions.get(i).getCategId());
+                values.put(TableSplitTransactions.SUBCATEGID, mSplitTransactions.get(i).getSubCategId());
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactions.get(i).getSplitTransAmount());
                 values.put(TableSplitTransactions.TRANSID, mTransId);
 
-                if (mSplitTransaction.get(i).getSplitTransId() == -1) {
+                if (mSplitTransactions.get(i).getSplitTransId() == -1) {
                     // insert data
-                    if (getContentResolver().insert(mSplitTransaction.get(i).getUri(), values) == null) {
+                    if (getContentResolver().insert(mSplitTransactions.get(i).getUri(), values) == null) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Insert new split transaction failed!");
                         return false;
                     }
                 } else {
                     // update data
-                    if (getContentResolver().update(mSplitTransaction.get(i).getUri(), values, TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransaction.get(i).getSplitTransId())}) <= 0) {
+                    if (getContentResolver().update(mSplitTransactions.get(i).getUri(), values, TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Update split transaction failed!");
                         return false;
@@ -1202,14 +1209,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             }
         }
         // deleted old split transaction
-        if (mSplitTransactionDeleted != null && mSplitTransactionDeleted.size() > 0) {
-            for (int i = 0; i < mSplitTransactionDeleted.size(); i++) {
+        if (mSplitTransactionsDeleted != null && mSplitTransactionsDeleted.size() > 0) {
+            for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
                 //put value
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactionDeleted.get(i).getSplitTransAmount());
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactionsDeleted.get(i).getSplitTransAmount());
 
                 // update data
-                if (getContentResolver().delete(mSplitTransactionDeleted.get(i).getUri(), TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactionDeleted.get(i).getSplitTransId())}) <= 0) {
+                if (getContentResolver().delete(mSplitTransactionsDeleted.get(i).getUri(), TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(LOGCAT, "Delete split transaction failed!");
                     return false;
@@ -1259,7 +1266,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
         // create split transactions
         RecurringTransaction recurringTransaction = new RecurringTransaction(mRecurringTransactionId, this);
         ArrayList<TableBudgetSplitTransactions> splitTemplates = recurringTransaction.loadSplitTransactions();
-        if(mSplitTransaction == null) mSplitTransaction = new ArrayList<>();
+        if(mSplitTransactions == null) mSplitTransactions = new ArrayList<>();
 
         // For each of the templates, create a new record.
         for(int i = 0; i <= splitTemplates.size() - 1; i++) {
@@ -1270,9 +1277,21 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
             newSplit.setCategId(record.getCategId());
             newSplit.setSubCategId(record.getSubCategId());
 
-            mSplitTransaction.add(newSplit);
+            mSplitTransactions.add(newSplit);
         }
 
         return true;
+    }
+
+    private void splitSet() {
+        // update category field
+        CheckingAccountActivity.this.refreshCategoryName();
+
+//        boolean isSplit = hasSplitCategories();
+        boolean isSplit = chbSplitTransaction.isCheck();
+
+        // enable/disable Amount field.
+        txtAmount.setEnabled(!isSplit);
+        txtTotAmount.setEnabled(!isSplit);
     }
 }

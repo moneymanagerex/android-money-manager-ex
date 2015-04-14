@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex;
+package com.money.manager.ex.currency;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,8 +23,9 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.CurrencyFormatsLoaderListFragment;
+import com.money.manager.ex.utils.ActivityUtils;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -35,6 +36,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
     public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
     public static final String LOGCAT = CurrencyFormatsListActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = CurrencyFormatsListActivity.class.getSimpleName() + "_Fragment";
+
     // Instance fragment list
     private CurrencyFormatsLoaderListFragment listFragment = new CurrencyFormatsLoaderListFragment();
 
@@ -42,6 +44,7 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
+
         // enabled home to come back
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // take intent
@@ -49,6 +52,13 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
             // Store the requested action.
             listFragment.mAction = intent.getAction();
+            // restore previous device orientation if it was modified.
+            if(listFragment.PreviousOrientation != -1) {
+                int currentOrientation = ActivityUtils.forceCurrentOrientation(this);
+                if(currentOrientation != listFragment.PreviousOrientation) {
+                    ActivityUtils.restoreOrientation(this, listFragment.PreviousOrientation);
+                }
+            }
         }
 
         FragmentManager fm = getSupportFragmentManager();

@@ -94,19 +94,18 @@ public class CurrencyUtils {
     public Boolean init() {
         // check if map currencies is create
         if (mCurrencies == null) {
-            mCurrencies = new HashMap<Integer, TableCurrencyFormats>();
+            mCurrencies = new HashMap<>();
 
             // clear map for new populate
             mCurrencies.clear();
 
             // load all currencies
-            if (!loadCurrencies())
-                return Boolean.FALSE;
+            if (!loadCurrencies()) return Boolean.FALSE;
         }
 
         // load id base currency
-        if (mBaseCurrencyId == null)
-            mBaseCurrencyId = getInitBaseCurrencyId();
+        if (mBaseCurrencyId == null) mBaseCurrencyId = getInitBaseCurrencyId();
+
         return Boolean.TRUE;
     }
 
@@ -313,8 +312,8 @@ public class CurrencyUtils {
                 new String[]{Constants.INFOTABLE_BASECURRENCYID}) == 1;
     }
 
-    /*
-     * Load all currencies into map
+    /**
+     *  Load all currencies into map
      */
     protected Boolean loadCurrencies() {
         Boolean ret = Boolean.TRUE;
@@ -374,7 +373,9 @@ public class CurrencyUtils {
         Cursor cursorInfo = null;
         try {
             helper = MoneyManagerOpenHelper.getInstance(mContext);
-            cursorInfo = queryBuilder.query(helper.getReadableDatabase(), tableInfo.getAllColumns(), TableInfoTable.INFONAME + "=?", new String[]{Constants.INFOTABLE_BASECURRENCYID}, null, null, null);
+            cursorInfo = queryBuilder.query(helper.getReadableDatabase(),
+                    tableInfo.getAllColumns(), TableInfoTable.INFONAME + "=?",
+                    new String[]{Constants.INFOTABLE_BASECURRENCYID}, null, null, null);
             // set BaseCurrencyId
             if (cursorInfo != null && cursorInfo.moveToFirst()) {
                 currencyId = cursorInfo.getInt(cursorInfo.getColumnIndex(TableInfoTable.INFOVALUE));
@@ -387,5 +388,14 @@ public class CurrencyUtils {
         }
 
         return currencyId;
+    }
+
+    public String getBaseCurrencyCode() {
+        // get base currency
+        int baseCurrencyId = this.getBaseCurrencyId();
+
+        TableCurrencyFormats currency = this.getCurrency(baseCurrencyId);
+        String symbol = currency.getCurrencySymbol();
+        return symbol;
     }
 }

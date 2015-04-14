@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.fragment;
+package com.money.manager.ex.currency;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -41,8 +41,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.CurrencyFormatsActivity;
-import com.money.manager.ex.CurrencyFormatsListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.Core;
@@ -50,18 +48,22 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.fragment.BaseListFragment;
 import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.List;
 
 /**
- *
+ *  Currency list.
  */
 public class CurrencyFormatsLoaderListFragment extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static String mAction = Intent.ACTION_EDIT;
+
+    // Store previous device orientation when showing other screens (chart, etc.)
+    public int PreviousOrientation = -1;
 
     // ID loader
     private static final int ID_LOADER_CURRENCY = 0;
@@ -70,6 +72,7 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
     private int mLayout;
     // database table
     private static TableCurrencyFormats mCurrency = new TableCurrencyFormats();
+    private CurrencyUtils mCurrencyUtils;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -109,28 +112,48 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
 
+        int currencyId = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
+
         // check item selected
-        switch (item.getItemId()) {
+        int selectedItem = item.getItemId();
+        switch (selectedItem) {
             case 0: //EDIT
-                startCurrencyFormatActivity(cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
+                startCurrencyFormatActivity(currencyId);
                 break;
-            case 1: //DELETE
+            case 1: // Chart
+                // remember the device orientation and return to it after the chart.
+                this.PreviousOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
+
+                Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
+                intent.setAction(Intent.ACTION_VIEW);
+                // add the currency information.
+                String symbol = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCY_SYMBOL));
+                intent.putExtra(TableCurrencyFormats.CURRENCY_SYMBOL, symbol);
+                CurrencyUtils currencyUtils = this.getCurrencyUtils();
+                String baseCurrencyCode = currencyUtils.getBaseCurrencyCode();
+                intent.putExtra(CurrencyChartActivity.BASE_CURRENCY_SYMBOL, baseCurrencyCode);
+                startActivity(intent);
+                break;
+            case 2: // Update exchange rate
+                updateSingleCurrencyExchangeRate(currencyId);
+                break;
+            case 3: //DELETE
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(TableAccountList.CURRENCYID, cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
+                contentValues.put(TableAccountList.CURRENCYID, currencyId);
                 if (new TablePayee().canDelete(getActivity(), contentValues, TableAccountList.class.getName())) {
-                    showDialogDeleteCurrency(cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
+                    showDialogDeleteCurrency(currencyId);
                 } else {
                     new AlertDialogWrapper.Builder(getActivity())
-                            .setTitle(R.string.attention)
-                            .setMessage(R.string.currency_can_not_deleted)
-                            .setIcon(R.drawable.ic_action_warning_light)
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create().show();
+                        .setTitle(R.string.attention)
+                        .setMessage(R.string.currency_can_not_deleted)
+                        .setIcon(R.drawable.ic_action_warning_light)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
                 }
                 break;
         }
@@ -145,8 +168,9 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
         cursor.moveToPosition(info.position);
         // set currency name
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
-        // compose menu
-        String[] menuItems = getResources().getStringArray(R.array.context_menu);
+
+        // compose context menu
+        String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
         for (int i = 0; i < menuItems.length; i++) {
             menu.add(Menu.NONE, i, i, menuItems[i]);
         }
@@ -411,7 +435,7 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+                CurrencyUtils currencyUtils = getCurrencyUtils();
                 List<TableCurrencyFormats> currencyFormats = currencyUtils.getAllCurrencyFormats();
                 mCountCurrencies = currencyFormats.size();
                 for (int i = 0; i < currencyFormats.size(); i++) {
@@ -468,5 +492,71 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
         // Show context menu only if we are displaying the list of currencies
         // but not in selection mode.
         if(mAction.equals(Intent.ACTION_EDIT)) getActivity().openContextMenu(v);
+    }
+
+    private CurrencyUtils getCurrencyUtils() {
+        if(mCurrencyUtils == null) {
+            mCurrencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        }
+        return mCurrencyUtils;
+    }
+
+    /**
+     * Update rate for the currently selected currency.
+     */
+    private void updateSingleCurrencyExchangeRate(final int currencyId) {
+
+        AsyncTask<Void, Integer, Boolean> updateAsync = new AsyncTask<Void, Integer, Boolean>() {
+            private ProgressDialog dialog = null;
+            private int mPrevOrientation;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                mPrevOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
+
+                DropboxHelper.setDisableAutoUpload(true);
+
+                dialog = new ProgressDialog(getActivity());
+                // setting dialog
+                // update_menu_currency_exchange_rates
+                dialog.setMessage(getString(R.string.start_currency_exchange_rates));
+                dialog.setIndeterminate(true);
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+                // show dialog
+                dialog.show();
+            }
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                CurrencyUtils util = getCurrencyUtils();
+                util.updateCurrencyRateFromBase(currencyId);
+                return Boolean.TRUE;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                try {
+                    if (dialog != null)
+                        dialog.hide();
+                } catch (Exception e) {
+                    Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
+                }
+                if (result) {
+                    Toast.makeText(getActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
+                }
+
+                DropboxHelper.setDisableAutoUpload(false);
+                DropboxHelper.notifyDataChanged();
+
+                ActivityUtils.restoreOrientation(getActivity(), mPrevOrientation);
+
+                super.onPostExecute(result);
+            }
+        };
+        updateAsync.execute();
+
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -89,6 +89,7 @@ public abstract class BaseListFragment extends AbsListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         // set animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             getListView().setLayoutTransition(new LayoutTransition());
@@ -135,7 +136,7 @@ public abstract class BaseListFragment extends AbsListFragment {
             final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
 
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            ActionBarActivity activity = (ActionBarActivity) getActivity();
+//            ActionBarActivity activity = (ActionBarActivity) getActivity();
 
             SearchView searchView = new SearchView(getActivity());
             if (searchView != null) {
