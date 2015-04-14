@@ -67,4 +67,5 @@
     <string name="pref_database">prefdatabase</string>
     <string name="pref_sort_payee">prefsortpayee</string>
     <string name="pref_show_tutorial">prefshowtutorial</string>
+    <string name="pref_dashboard_group_visibility">pref-dashboard-group-visibility</string>
 </resources>

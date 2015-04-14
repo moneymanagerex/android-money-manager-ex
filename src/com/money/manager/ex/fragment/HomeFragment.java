@@ -20,10 +20,12 @@ package com.money.manager.ex.fragment;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -31,6 +33,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,8 +60,12 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -203,12 +210,14 @@ public class HomeFragment extends Fragment implements
             @Override
             public void onGroupCollapse(int groupPosition) {
                 // todo: save collapsed group setting
+                saveGroupVisibilitySetting(groupPosition);
             }
         });
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
             @Override
             public void onGroupExpand(int groupPosition) {
                 // todo: save expanded group setting
+                saveGroupVisibilitySetting(groupPosition);
             }
         });
 
@@ -337,6 +346,7 @@ public class HomeFragment extends Fragment implements
                 // set adapter and shown
                 expandableListView.setAdapter(expandableAdapter);
                 // expand all group
+                // todo: check saved visibility settings. Some groups might be collapsed.
                 for (int i = 0; i < mAccountTypes.size(); i++) {
                     expandableListView.expandGroup(i);
                 }
@@ -455,6 +465,35 @@ public class HomeFragment extends Fragment implements
         txtFooterSummaryReconciled.setText(currencyUtils.getBaseCurrencyFormatted(curReconciled));
         // add footer
         expandableListView.addFooterView(linearFooter, null, false);
+    }
+
+    private void saveGroupVisibilitySetting(int groupPosition) {
+        // todo: get group name from position
+        //QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
+        String x = mAccountTypes.get(groupPosition);
+
+        // Store value into the visibility settings JSON object.
+
+        JSONObject visibilitySettings = new JSONObject();
+        try {
+            visibilitySettings.put("x", "y");
+        } catch (JSONException e) {
+            Log.e(this.getClass().getSimpleName(), e.getMessage());
+            e.printStackTrace();
+        }
+
+        String y = visibilitySettings.opt("x").toString();
+
+        // save settings
+
+        Context context = getActivity().getApplicationContext();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        String key = context.getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBILITY);
+//        SharedPreferences.Editor editor = settings.edit();
+//        // todo store settings in JSON object.
+//        editor.putBoolean(key, false);
+//        editor.commit();
+
     }
 
     private class AccountBillsExpandableAdapter extends BaseExpandableListAdapter {
