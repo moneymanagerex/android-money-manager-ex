@@ -586,7 +586,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity implements Inp
                 splitSet();
             }
         });
-        // Mark checked if we are editing a split transaction.
+        // mark checked if there are existing split categories.
         chbSplitTransaction.post(new Runnable() {
             @Override
             public void run() {
