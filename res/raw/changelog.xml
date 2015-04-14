@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -17,7 +18,10 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="Apr 6, 2015" versionName="2.0.0-beta1">
+    <changelogversion changeDate="" versionName="2.0.0">
+        <changelogtext>Added currency exchange rate 5-day chart.</changelogtext>
+    </changelogversion>
+    <changelogversion changeDate="April 6, 2015" versionName="2.0.0-beta1">
         <changelogtext>Introduced the material layout design</changelogtext>
         <changelogtext>Added the type of account Credit Card</changelogtext>
         <changelogtext>Added function duplicates transaction</changelogtext>
