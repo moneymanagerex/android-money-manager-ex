@@ -110,6 +110,7 @@ public class HomeFragment extends Fragment implements
             case ID_LOADER_USER_NAME:
                 return new CursorLoader(getActivity(), infoTable.getUri(),
                         new String[]{infoTable.INFONAME, infoTable.INFOVALUE}, null, null, null);
+
             case ID_LOADER_ACCOUNT_BILLS:
                 setListViewAccountBillsVisible(false);
                 // compose whereClause
@@ -123,16 +124,19 @@ public class HomeFragment extends Fragment implements
                     where = "LOWER(FAVORITEACCT)='true'";
                 }
                 return new CursorLoader(getActivity(), accountBills.getUri(),
-                        accountBills.getAllColumns(), where, null, accountBills.ACCOUNTTYPE + ", upper(" + accountBills.ACCOUNTNAME + ")");
+                        accountBills.getAllColumns(), where, null,
+                        accountBills.ACCOUNTTYPE + ", upper(" + accountBills.ACCOUNTNAME + ")");
 
             case ID_LOADER_BILL_DEPOSITS:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
                 return new CursorLoader(getActivity(), billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
+
             case ID_LOADER_INCOME_EXPENSES:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
                 return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), QueryReportIncomeVsExpenses.Month + "="
                         + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
                         + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), null, null);
+
             default:
                 return null;
         }
@@ -234,8 +238,9 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         MainActivity mainActivity = null;
-        if (getActivity() != null && getActivity() instanceof MainActivity)
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
             mainActivity = (MainActivity) getActivity();
+        }
 
         switch (loader.getId()) {
             case ID_LOADER_USER_NAME:
@@ -413,7 +418,7 @@ public class HomeFragment extends Fragment implements
     }
 
     private void addFooterExpandableListView(double curTotal, double curReconciled) {
-        // manage footer listview
+        // manage footer list view
         if (linearFooter == null) {
             linearFooter = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.item_account_bills, null);
             // textview into layout
