@@ -76,13 +76,7 @@ public class CurrencyChartActivity extends BaseFragmentActivity {
     private void loadCurrencyChart(String currencySymbol, String baseCurrencySymbol) {
         if(currencySymbol == null) return;
 
-        // set the url to use the selected currency and base.
-
-//        String url = "http://chart.finance.yahoo.com/t?s=EURUSD%3dX&lang=en-US&region=US&width=300&height=180";
-//        String url = "http://chart.finance.yahoo.com/instrument/1.0/EURUSD=X/chart;range=5d/image;size=239x110?&lang=en-US&region=US";
-//        String url = "http://chart.finance.yahoo.com/z?s=EURUSD=x&t=5d&z=m";
         // ref: http://stackoverflow.com/questions/4678296/yahoo-historical-currency-rates-api
-
         // Yahoo API reference:
         // https://code.google.com/p/yahoo-finance-managed/wiki/miscapiImageDownload
 
