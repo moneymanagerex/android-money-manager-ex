@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Passcode;
-import com.money.manager.ex.preferences.PreferencesConstant;
 
 public class SecuritySettingsActivity extends BaseSettingsFragmentActivity {
     private static String LOGCAT = SecuritySettingsActivity.class.getSimpleName();

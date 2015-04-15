@@ -60,7 +60,7 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
-import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
 
@@ -268,7 +268,7 @@ public class HomeFragment extends Fragment implements
                 if (data != null && data.moveToFirst()) {
                     while (!data.isAfterLast()) {
                         String infoValue = data.getString(data.getColumnIndex(infoTable.INFONAME));
-                        // save into preferences username and basecurrency id
+                        // save into preferences username and base currency id
                         if (Constants.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
                             MoneyManagerApplication.getInstanceApp().setUserName(data.getString(data.getColumnIndex(infoTable.INFOVALUE)));
                         }

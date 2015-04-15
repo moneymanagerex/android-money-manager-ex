@@ -59,7 +59,7 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
-import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.view.RobotoTextView;

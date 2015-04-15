@@ -31,7 +31,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
-import com.money.manager.ex.preferences.PreferencesConstant;
 
 public class SettingsActivity extends BaseSettingsFragmentActivity {
     private static String LOGCAT = SettingsActivity.class.getSimpleName();

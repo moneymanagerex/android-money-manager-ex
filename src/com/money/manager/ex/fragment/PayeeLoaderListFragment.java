@@ -46,7 +46,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.database.SQLTypeTransacion;
 import com.money.manager.ex.database.TablePayee;
-import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.PreferencesConstant;
 
 /**
  *

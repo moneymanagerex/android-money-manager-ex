@@ -35,7 +35,7 @@ import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.PreferencesConstant;
 
 public abstract class BaseFragmentActivity extends ActionBarActivity {
     private boolean mDialogMode = false;

@@ -31,7 +31,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.PreferencesConstant;
 
 /**
  * Created by Alessandro Lazzari on 08/09/2014.
