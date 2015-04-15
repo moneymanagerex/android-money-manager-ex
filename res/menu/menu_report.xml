@@ -33,6 +33,9 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
+                    android:id="@+id/menu_custom_dates"
+                    android:title="@string/custom_dates"/>
+                <item
                     android:id="@+id/menu_current_month"
                     android:title="@string/current_month"/>
                 <item
