@@ -24,14 +24,22 @@ import android.preference.PreferenceManager;
 
 /**
  * This class is used to interact with application settings/preferences.
+ * Expand with additional methods as needed.
  */
 public class AppSettings {
 
     public AppSettings(Activity activity) {
         mLinkedActivity = activity;
+        init();
     }
 
     private Activity mLinkedActivity;
+    private SharedPreferences mSettings;
+    private SharedPreferences.Editor mEditor;
+
+    public boolean get(String key, boolean defaultValue) {
+        return mSettings.getBoolean(key, defaultValue);
+    }
 
     /**
      * Save string value to settings.
@@ -39,22 +47,19 @@ public class AppSettings {
      * @param value
      */
     public void set(String key, String value) {
-        SharedPreferences.Editor editor = getEditor();
-        editor.putString(key, value);
-        editor.commit();
+        mEditor.putString(key, value);
+        mEditor.commit();
     }
 
     public void set(String key, boolean value) {
-        SharedPreferences.Editor editor = getEditor();
-        editor.putBoolean(key, value);
-        editor.commit();
+        mEditor.putBoolean(key, value);
+        mEditor.commit();
     }
 
-    private SharedPreferences.Editor getEditor() {
+    private void init() {
         Context context = mLinkedActivity.getApplicationContext();
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = settings.edit();
-
-        return editor;
+        mSettings = PreferenceManager.getDefaultSharedPreferences(context);
+        mEditor = mSettings.edit();
     }
+
 }

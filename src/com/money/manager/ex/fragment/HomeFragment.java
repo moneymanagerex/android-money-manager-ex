@@ -311,11 +311,7 @@ public class HomeFragment extends Fragment implements
                 addFooterExpandableListView(curTotal, curReconciled);
                 // set adapter and shown
                 mExpandableListView.setAdapter(expandableAdapter);
-                // expand all group
-                // todo: check saved visibility settings. Some groups might be collapsed.
-                for (int i = 0; i < mAccountTypes.size(); i++) {
-                    mExpandableListView.expandGroup(i);
-                }
+                setVisibilityOfAccountGroups();
                 setListViewAccountBillsVisible(true);
 
                 // set total accounts in drawer
@@ -455,13 +451,10 @@ public class HomeFragment extends Fragment implements
             @Override
             public void onGroupCollapse(int groupPosition) {
                 // save collapsed group setting
-                boolean groupVisible = false;
-                // get group name from position
-                String accountType = mAccountTypes.get(groupPosition);
+                final boolean groupVisible = false;
                 // save each group visibility into its own settings.
                 AppSettings settings = new AppSettings(getActivity());
-                String key = getActivity().getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBLE);
-                key += "-" + accountType;
+                String key = getSettingsKeyFromGroupPosition(groupPosition);
                 // store value.
                 settings.set(key, groupVisible);
             }
@@ -470,17 +463,38 @@ public class HomeFragment extends Fragment implements
             @Override
             public void onGroupExpand(int groupPosition) {
                 // save expanded group setting
-                boolean groupVisible = true;
-                // get group name from position
-                String accountType = mAccountTypes.get(groupPosition);
+                final boolean groupVisible = true;
                 // save each group visibility into its own settings.
                 AppSettings settings = new AppSettings(getActivity());
-                String key = getActivity().getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBLE);
-                key += "-" + accountType;
+                String key = getSettingsKeyFromGroupPosition(groupPosition);
                 // store value.
                 settings.set(key, groupVisible);
             }
         });
+    }
+
+    private String getSettingsKeyFromGroupPosition(int groupPosition) {
+        // get group name from position
+        String accountType = mAccountTypes.get(groupPosition);
+        String key = getActivity().getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBLE);
+        key += "-" + accountType;
+
+        return key;
+    }
+
+    private void setVisibilityOfAccountGroups() {
+        // set visibility of the account groups.
+        AppSettings settings = new AppSettings(getActivity());
+        // Expand groups based on their visibility settings.
+        for (int i = 0; i < mAccountTypes.size(); i++) {
+            // Check saved visibility settings. Some groups might be collapsed.
+            String key = getSettingsKeyFromGroupPosition(i);
+            Boolean expanded = settings.get(key, true);
+
+            if(expanded) {
+                mExpandableListView.expandGroup(i);
+            }
+        }
     }
 
     private class AccountBillsExpandableAdapter extends BaseExpandableListAdapter {
