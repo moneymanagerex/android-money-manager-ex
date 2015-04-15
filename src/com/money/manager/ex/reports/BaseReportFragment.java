@@ -30,7 +30,6 @@ import android.view.View;
 import android.widget.DatePicker;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
@@ -71,9 +70,9 @@ public abstract class BaseReportFragment extends BaseListFragment implements Loa
             if (savedInstanceState.containsKey(KEY_ITEM_SELECTED))
                 mItemSelected = savedInstanceState.getInt(KEY_ITEM_SELECTED);
             if (savedInstanceState.containsKey(KEY_FROM_DATE))
-                mFromDate = DateUtils.getDateFromString(getActivity(), savedInstanceState.getString(KEY_FROM_DATE), Constants.PATTERN_DB_DATE);
+                mFromDate = (Date) savedInstanceState.getSerializable(KEY_FROM_DATE);
             if (savedInstanceState.containsKey(KEY_TO_DATE))
-                mToDate = DateUtils.getDateFromString(getActivity(), savedInstanceState.getString(KEY_TO_DATE), Constants.PATTERN_DB_DATE);
+                mToDate = (Date) savedInstanceState.getSerializable(KEY_TO_DATE);
         }
         //start loader
         startLoader(savedInstanceState);
@@ -175,9 +174,9 @@ public abstract class BaseReportFragment extends BaseListFragment implements Loa
         outState.putInt(KEY_ITEM_SELECTED, mItemSelected);
         outState.putString(KEY_WHERE_CLAUSE, getWhereClause());
         if (mFromDate != null)
-            outState.putString(KEY_FROM_DATE, DateUtils.getSQLiteStringDate(getActivity(), mFromDate));
+            outState.putSerializable(KEY_FROM_DATE, mFromDate);
         if (mToDate != null)
-            outState.putString(KEY_FROM_DATE, DateUtils.getSQLiteStringDate(getActivity(), mToDate));
+            outState.putSerializable(KEY_TO_DATE, mToDate);
     }
 
     /**
