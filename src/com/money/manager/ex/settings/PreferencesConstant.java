@@ -82,5 +82,5 @@ public class PreferencesConstant {
     public static final Integer PREF_SORT_PAYEE = R.string.pref_sort_payee;
 
     public static final Integer PREF_SHOW_TUTORIAL = R.string.pref_show_tutorial;
-    public static final Integer PREF_DASHBOARD_GROUP_VISIBILITY = R.string.pref_dashboard_group_visibility;
+    public static final Integer PREF_DASHBOARD_GROUP_VISIBLE = R.string.pref_dashboard_group_visibility;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -60,6 +60,7 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
@@ -468,32 +469,26 @@ public class HomeFragment extends Fragment implements
     }
 
     private void saveGroupVisibilitySetting(int groupPosition) {
-        // todo: get group name from position
+        // get group name from position
         //QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
-        String x = mAccountTypes.get(groupPosition);
+        String accountType = mAccountTypes.get(groupPosition);
 
         // Store value into the visibility settings JSON object.
-
-        JSONObject visibilitySettings = new JSONObject();
-        try {
-            visibilitySettings.put("x", "y");
-        } catch (JSONException e) {
-            Log.e(this.getClass().getSimpleName(), e.getMessage());
-            e.printStackTrace();
-        }
-
-        String y = visibilitySettings.opt("x").toString();
+//        JSONObject visibilitySettings = new JSONObject();
+//        try {
+//            visibilitySettings.put("x", "y");
+//        } catch (JSONException e) {
+//            Log.e(this.getClass().getSimpleName(), e.getMessage());
+//            e.printStackTrace();
+//        }
+//        String y = visibilitySettings.opt("x").toString();
 
         // save settings
-
-        Context context = getActivity().getApplicationContext();
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        String key = context.getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBILITY);
-//        SharedPreferences.Editor editor = settings.edit();
-//        // todo store settings in JSON object.
-//        editor.putBoolean(key, false);
-//        editor.commit();
-
+        AppSettings settings = new AppSettings(getActivity());
+        String key = getActivity().getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBLE);
+        key += "_" + accountType;
+        // todo: save value
+//        settings.set();
     }
 
     private class AccountBillsExpandableAdapter extends BaseExpandableListAdapter {
