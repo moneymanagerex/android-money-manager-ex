@@ -666,7 +666,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         }
 
         // refresh user interface
-        refreshTransCode();
+        refreshTransactionCode();
         refreshPayeeName();
         refreshCategoryName();
     }
@@ -695,7 +695,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                     mTransCode = mTransCodeValues[position];
                 }
                 // aggiornamento dell'interfaccia grafica
-                refreshTransCode();
+                refreshTransactionCode();
             }
 
             @Override
@@ -1059,7 +1059,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     /**
      * Handle transaction type change.
      */
-    public void refreshTransCode() {
+    public void refreshTransactionCode() {
         // check type of transaction
         TextView txtFromAccount = (TextView) findViewById(R.id.textViewFromAccount);
         TextView txtToAccount = (TextView) findViewById(R.id.textViewToAccount);
