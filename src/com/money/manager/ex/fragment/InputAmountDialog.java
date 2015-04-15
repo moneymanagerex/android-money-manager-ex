@@ -34,7 +34,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.utils.MathUtils;
 
@@ -113,9 +112,10 @@ public class InputAmountDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Core core = new Core(getActivity().getApplicationContext());
+//        Core core = new Core(getActivity().getApplicationContext());
         LayoutInflater inflater = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         View view = inflater.inflate(R.layout.input_amount_dialog, null);
+
         // create listener
         OnClickListener clickListener = new OnClickListener() {
             @Override
@@ -140,12 +140,22 @@ public class InputAmountDialog extends DialogFragment {
             Button button = (Button) view.findViewById(id);
             button.setOnClickListener(clickListener);
         }
+
+        // Clear button.
+        Button clearButton = (Button) view.findViewById(R.id.buttonKeyClear);
+        clearButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                txtExpression.setText("");
+            }
+        });
+
         // button equals
         Button buttonKeyEquals = (Button) view.findViewById(R.id.buttonKeyEqual);
         buttonKeyEquals.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                evalExprension();
+                evalExpression();
             }
         });
         // image button delete
@@ -182,7 +192,7 @@ public class InputAmountDialog extends DialogFragment {
         builder.callback(new MaterialDialog.ButtonCallback() {
             @Override
             public void onPositive(MaterialDialog dialog) {
-                if (!evalExprension())
+                if (!evalExpression())
                     return;
 
                 if (TextUtils.isEmpty(mAmount))
@@ -243,7 +253,7 @@ public class InputAmountDialog extends DialogFragment {
         }
     }
 
-    public boolean evalExprension() {
+    public boolean evalExpression() {
         String exp = txtExpression.getText().toString();
         if (exp.length() > 0) {
             try {
