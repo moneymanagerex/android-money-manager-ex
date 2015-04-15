@@ -571,7 +571,9 @@ public class HomeFragment extends Fragment implements
             }
             // set imageview account type
             if (!TextUtils.isEmpty(accountType)) {
-                if (Constants.ACCOUNT_TYPE_TERM.equalsIgnoreCase(accountType)) {
+                if(Constants.ACCOUNT_TYPE_CHECKING.equalsIgnoreCase(accountType)){
+                    holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_safe));
+                } else if (Constants.ACCOUNT_TYPE_TERM.equalsIgnoreCase(accountType)) {
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
                 } else if (Constants.ACCOUNT_TYPE_CREDIT_CARD.equalsIgnoreCase(accountType)) {
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_credit_card));
