@@ -38,7 +38,7 @@ import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.SearchViewFormatter;
-import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.PreferencesConstant;
 
 public abstract class BaseExpandableListFragment extends ExpandableListFragment {
     // saved instance

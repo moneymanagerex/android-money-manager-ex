@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,6 +57,8 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
 
@@ -76,14 +78,13 @@ public class HomeFragment extends Fragment implements
     private static final int ID_LOADER_ACCOUNT_BILLS = 2;
     private static final int ID_LOADER_BILL_DEPOSITS = 3;
     private static final int ID_LOADER_INCOME_EXPENSES = 4;
-    // MoneyManagerApplication.getInstanceApp()
     private CurrencyUtils currencyUtils;
     // dataset table/view/query manage into class
     private TableInfoTable infoTable = new TableInfoTable();
     private QueryAccountBills accountBills;
     // view show in layout
     private TextView txtTotalAccounts;
-    private ExpandableListView expandableListView;
+    private ExpandableListView mExpandableListView;
     private ViewGroup linearHome, linearFooter, linearWelcome;
     private TextView txtFooterSummary;
     private TextView txtFooterSummaryReconciled;
@@ -110,6 +111,7 @@ public class HomeFragment extends Fragment implements
             case ID_LOADER_USER_NAME:
                 return new CursorLoader(getActivity(), infoTable.getUri(),
                         new String[]{infoTable.INFONAME, infoTable.INFOVALUE}, null, null, null);
+
             case ID_LOADER_ACCOUNT_BILLS:
                 setListViewAccountBillsVisible(false);
                 // compose whereClause
@@ -123,16 +125,19 @@ public class HomeFragment extends Fragment implements
                     where = "LOWER(FAVORITEACCT)='true'";
                 }
                 return new CursorLoader(getActivity(), accountBills.getUri(),
-                        accountBills.getAllColumns(), where, null, accountBills.ACCOUNTTYPE + ", upper(" + accountBills.ACCOUNTNAME + ")");
+                        accountBills.getAllColumns(), where, null,
+                        accountBills.ACCOUNTTYPE + ", upper(" + accountBills.ACCOUNTNAME + ")");
 
             case ID_LOADER_BILL_DEPOSITS:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
                 return new CursorLoader(getActivity(), billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
+
             case ID_LOADER_INCOME_EXPENSES:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
                 return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), QueryReportIncomeVsExpenses.Month + "="
                         + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
                         + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), null, null);
+
             default:
                 return null;
         }
@@ -179,22 +184,8 @@ public class HomeFragment extends Fragment implements
         }
 
         txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
-        expandableListView = (ExpandableListView) view.findViewById(R.id.listViewAccountBills);
 
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                QueryAccountBills bills = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
-                if (bills != null) {
-                    MainActivity activity = (MainActivity) getActivity();
-                    if (activity != null && activity instanceof MainActivity) {
-                        activity.showFragmentAccount(childPosition, bills.getAccountId());
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
+        setUpAccountsList(view);
 
         prgAccountBills = (ProgressBar) view.findViewById(R.id.progressAccountBills);
 
@@ -214,7 +205,7 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mFloatingActionButton.attachToListView(expandableListView);
+        mFloatingActionButton.attachToListView(mExpandableListView);
     }
 
     @Override
@@ -234,15 +225,16 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         MainActivity mainActivity = null;
-        if (getActivity() != null && getActivity() instanceof MainActivity)
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
             mainActivity = (MainActivity) getActivity();
+        }
 
         switch (loader.getId()) {
             case ID_LOADER_USER_NAME:
                 if (data != null && data.moveToFirst()) {
                     while (!data.isAfterLast()) {
                         String infoValue = data.getString(data.getColumnIndex(infoTable.INFONAME));
-                        // save into preferences username and basecurrency id
+                        // save into preferences username and base currency id
                         if (Constants.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
                             MoneyManagerApplication.getInstanceApp().setUserName(data.getString(data.getColumnIndex(infoTable.INFOVALUE)));
                         }
@@ -318,11 +310,8 @@ public class HomeFragment extends Fragment implements
 
                 addFooterExpandableListView(curTotal, curReconciled);
                 // set adapter and shown
-                expandableListView.setAdapter(expandableAdapter);
-                // expand all group
-                for (int i = 0; i < mAccountTypes.size(); i++) {
-                    expandableListView.expandGroup(i);
-                }
+                mExpandableListView.setAdapter(expandableAdapter);
+                setVisibilityOfAccountGroups();
                 setListViewAccountBillsVisible(true);
 
                 // set total accounts in drawer
@@ -397,10 +386,10 @@ public class HomeFragment extends Fragment implements
      */
     private void setListViewAccountBillsVisible(boolean visible) {
         if (visible) {
-            expandableListView.setVisibility(View.VISIBLE);
+            mExpandableListView.setVisibility(View.VISIBLE);
             prgAccountBills.setVisibility(View.GONE);
         } else {
-            expandableListView.setVisibility(View.GONE);
+            mExpandableListView.setVisibility(View.GONE);
             prgAccountBills.setVisibility(View.VISIBLE);
         }
     }
@@ -413,7 +402,7 @@ public class HomeFragment extends Fragment implements
     }
 
     private void addFooterExpandableListView(double curTotal, double curReconciled) {
-        // manage footer listview
+        // manage footer list view
         if (linearFooter == null) {
             linearFooter = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.item_account_bills, null);
             // textview into layout
@@ -431,13 +420,81 @@ public class HomeFragment extends Fragment implements
             txtFooterSummaryReconciled.setTextColor(Color.GRAY);
         }
         // remove footer
-        expandableListView.removeFooterView(linearFooter);
+        mExpandableListView.removeFooterView(linearFooter);
         // set text
         txtTotalAccounts.setText(currencyUtils.getBaseCurrencyFormatted(curTotal));
         txtFooterSummary.setText(txtTotalAccounts.getText());
         txtFooterSummaryReconciled.setText(currencyUtils.getBaseCurrencyFormatted(curReconciled));
         // add footer
-        expandableListView.addFooterView(linearFooter, null, false);
+        mExpandableListView.addFooterView(linearFooter, null, false);
+    }
+
+    private void setUpAccountsList(View view) {
+        mExpandableListView = (ExpandableListView) view.findViewById(R.id.listViewAccountBills);
+
+        mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
+                if (selectedAccount != null) {
+                    MainActivity activity = (MainActivity) getActivity();
+                    if (activity != null) {
+                        activity.showFragmentAccount(childPosition, selectedAccount.getAccountId());
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+        // store settings when groups are collapsed/expanded
+        mExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                // save collapsed group setting
+                final boolean groupVisible = false;
+                // save each group visibility into its own settings.
+                AppSettings settings = new AppSettings(getActivity());
+                String key = getSettingsKeyFromGroupPosition(groupPosition);
+                // store value.
+                settings.set(key, groupVisible);
+            }
+        });
+        mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                // save expanded group setting
+                final boolean groupVisible = true;
+                // save each group visibility into its own settings.
+                AppSettings settings = new AppSettings(getActivity());
+                String key = getSettingsKeyFromGroupPosition(groupPosition);
+                // store value.
+                settings.set(key, groupVisible);
+            }
+        });
+    }
+
+    private String getSettingsKeyFromGroupPosition(int groupPosition) {
+        // get group name from position
+        String accountType = mAccountTypes.get(groupPosition);
+        String key = getActivity().getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBLE);
+        key += "-" + accountType;
+
+        return key;
+    }
+
+    private void setVisibilityOfAccountGroups() {
+        // set visibility of the account groups.
+        AppSettings settings = new AppSettings(getActivity());
+        // Expand groups based on their visibility settings.
+        for (int i = 0; i < mAccountTypes.size(); i++) {
+            // Check saved visibility settings. Some groups might be collapsed.
+            String key = getSettingsKeyFromGroupPosition(i);
+            Boolean expanded = settings.get(key, true);
+
+            if(expanded) {
+                mExpandableListView.expandGroup(i);
+            }
+        }
     }
 
     private class AccountBillsExpandableAdapter extends BaseExpandableListAdapter {

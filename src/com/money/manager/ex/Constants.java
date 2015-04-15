@@ -39,7 +39,7 @@ public class Constants {
     public static final String TRANSACTION_STATUS_VOID = "V";
     public static final String TRANSACTION_STATUS_FOLLOWUP = "F";
     public static final String TRANSACTION_STATUS_DUPLICATE = "D";
-    // Info Table Settings
+    // Info Table AppSettings
     public static final String INFOTABLE_USERNAME = "USERNAME";
     public static final String INFOTABLE_BASECURRENCYID = "BASECURRENCYID";
     public static final String INFOTABLE_DATEFORMAT = "DATEFORMAT";

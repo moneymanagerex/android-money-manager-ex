@@ -28,7 +28,6 @@ import android.preference.PreferenceManager;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.view.RobotoView;
 
 import org.apache.commons.lang3.math.NumberUtils;

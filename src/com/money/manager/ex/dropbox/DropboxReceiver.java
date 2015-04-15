@@ -29,7 +29,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.PreferencesConstant;
 
 import org.apache.commons.lang3.math.NumberUtils;
 

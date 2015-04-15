@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.money.manager.ex.preferences;
+package com.money.manager.ex.settings;
 
 import com.money.manager.ex.R;
 
@@ -82,4 +82,5 @@ public class PreferencesConstant {
     public static final Integer PREF_SORT_PAYEE = R.string.pref_sort_payee;
 
     public static final Integer PREF_SHOW_TUTORIAL = R.string.pref_show_tutorial;
+    public static final Integer PREF_DASHBOARD_GROUP_VISIBLE = R.string.pref_dashboard_group_visibility;
 }

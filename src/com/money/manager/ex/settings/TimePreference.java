@@ -1,4 +1,4 @@
-package com.money.manager.ex.preferences;
+package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.DialogInterface;

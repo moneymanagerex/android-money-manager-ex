@@ -50,7 +50,6 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxReceiver;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.fragment.TipsDialogFragment;
-import com.money.manager.ex.preferences.PreferencesConstant;
 import com.money.manager.ex.utils.RawFileUtils;
 
 import java.io.File;

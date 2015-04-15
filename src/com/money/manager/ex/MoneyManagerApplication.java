@@ -39,7 +39,7 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.view.RobotoView;
 import com.money.manager.ex.widget.AccountBillsWidgetProvider;
 import com.money.manager.ex.widget.SummaryWidgetProvider;

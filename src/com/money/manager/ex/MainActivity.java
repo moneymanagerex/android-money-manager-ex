@@ -73,7 +73,7 @@ import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
-import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.recurring.transactions.RepeatingTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;

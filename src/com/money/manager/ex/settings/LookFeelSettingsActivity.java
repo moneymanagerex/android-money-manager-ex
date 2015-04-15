@@ -19,19 +19,6 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-
-import com.money.manager.ex.MainActivity;
-import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.R;
-import com.money.manager.ex.preferences.PreferencesConstant;
-import com.money.manager.ex.view.RobotoView;
-
-import org.apache.commons.lang3.math.NumberUtils;
 
 public class LookFeelSettingsActivity extends BaseSettingsFragmentActivity {
     private static String LOGCAT = LookFeelSettingsActivity.class.getSimpleName();
