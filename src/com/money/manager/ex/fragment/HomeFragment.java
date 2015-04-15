@@ -20,12 +20,10 @@ package com.money.manager.ex.fragment;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -33,7 +31,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,9 +62,6 @@ import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -90,7 +84,7 @@ public class HomeFragment extends Fragment implements
     private QueryAccountBills accountBills;
     // view show in layout
     private TextView txtTotalAccounts;
-    private ExpandableListView expandableListView;
+    private ExpandableListView mExpandableListView;
     private ViewGroup linearHome, linearFooter, linearWelcome;
     private TextView txtFooterSummary;
     private TextView txtFooterSummaryReconciled;
@@ -190,37 +184,8 @@ public class HomeFragment extends Fragment implements
         }
 
         txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
-        expandableListView = (ExpandableListView) view.findViewById(R.id.listViewAccountBills);
 
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
-                if (selectedAccount != null) {
-                    MainActivity activity = (MainActivity) getActivity();
-                    if (activity != null && activity instanceof MainActivity) {
-                        activity.showFragmentAccount(childPosition, selectedAccount.getAccountId());
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-        // store settings when groups are collapsed/expanded
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener(){
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                // todo: save collapsed group setting
-                saveGroupVisibilitySetting(groupPosition);
-            }
-        });
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                // todo: save expanded group setting
-                saveGroupVisibilitySetting(groupPosition);
-            }
-        });
+        setUpAccountsList(view);
 
         prgAccountBills = (ProgressBar) view.findViewById(R.id.progressAccountBills);
 
@@ -240,7 +205,7 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mFloatingActionButton.attachToListView(expandableListView);
+        mFloatingActionButton.attachToListView(mExpandableListView);
     }
 
     @Override
@@ -345,11 +310,11 @@ public class HomeFragment extends Fragment implements
 
                 addFooterExpandableListView(curTotal, curReconciled);
                 // set adapter and shown
-                expandableListView.setAdapter(expandableAdapter);
+                mExpandableListView.setAdapter(expandableAdapter);
                 // expand all group
                 // todo: check saved visibility settings. Some groups might be collapsed.
                 for (int i = 0; i < mAccountTypes.size(); i++) {
-                    expandableListView.expandGroup(i);
+                    mExpandableListView.expandGroup(i);
                 }
                 setListViewAccountBillsVisible(true);
 
@@ -425,10 +390,10 @@ public class HomeFragment extends Fragment implements
      */
     private void setListViewAccountBillsVisible(boolean visible) {
         if (visible) {
-            expandableListView.setVisibility(View.VISIBLE);
+            mExpandableListView.setVisibility(View.VISIBLE);
             prgAccountBills.setVisibility(View.GONE);
         } else {
-            expandableListView.setVisibility(View.GONE);
+            mExpandableListView.setVisibility(View.GONE);
             prgAccountBills.setVisibility(View.VISIBLE);
         }
     }
@@ -459,36 +424,63 @@ public class HomeFragment extends Fragment implements
             txtFooterSummaryReconciled.setTextColor(Color.GRAY);
         }
         // remove footer
-        expandableListView.removeFooterView(linearFooter);
+        mExpandableListView.removeFooterView(linearFooter);
         // set text
         txtTotalAccounts.setText(currencyUtils.getBaseCurrencyFormatted(curTotal));
         txtFooterSummary.setText(txtTotalAccounts.getText());
         txtFooterSummaryReconciled.setText(currencyUtils.getBaseCurrencyFormatted(curReconciled));
         // add footer
-        expandableListView.addFooterView(linearFooter, null, false);
+        mExpandableListView.addFooterView(linearFooter, null, false);
     }
 
-    private void saveGroupVisibilitySetting(int groupPosition) {
-        // get group name from position
-        //QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
-        String accountType = mAccountTypes.get(groupPosition);
+    private void setUpAccountsList(View view) {
+        mExpandableListView = (ExpandableListView) view.findViewById(R.id.listViewAccountBills);
 
-        // Store value into the visibility settings JSON object.
-//        JSONObject visibilitySettings = new JSONObject();
-//        try {
-//            visibilitySettings.put("x", "y");
-//        } catch (JSONException e) {
-//            Log.e(this.getClass().getSimpleName(), e.getMessage());
-//            e.printStackTrace();
-//        }
-//        String y = visibilitySettings.opt("x").toString();
-
-        // save settings
-        AppSettings settings = new AppSettings(getActivity());
-        String key = getActivity().getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBLE);
-        key += "_" + accountType;
-        // todo: save value
-//        settings.set();
+        mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
+                if (selectedAccount != null) {
+                    MainActivity activity = (MainActivity) getActivity();
+                    if (activity != null) {
+                        activity.showFragmentAccount(childPosition, selectedAccount.getAccountId());
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+        // store settings when groups are collapsed/expanded
+        mExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                // save collapsed group setting
+                boolean groupVisible = false;
+                // get group name from position
+                String accountType = mAccountTypes.get(groupPosition);
+                // save each group visibility into its own settings.
+                AppSettings settings = new AppSettings(getActivity());
+                String key = getActivity().getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBLE);
+                key += "-" + accountType;
+                // store value.
+                settings.set(key, groupVisible);
+            }
+        });
+        mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                // save expanded group setting
+                boolean groupVisible = true;
+                // get group name from position
+                String accountType = mAccountTypes.get(groupPosition);
+                // save each group visibility into its own settings.
+                AppSettings settings = new AppSettings(getActivity());
+                String key = getActivity().getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBLE);
+                key += "-" + accountType;
+                // store value.
+                settings.set(key, groupVisible);
+            }
+        });
     }
 
     private class AccountBillsExpandableAdapter extends BaseExpandableListAdapter {
