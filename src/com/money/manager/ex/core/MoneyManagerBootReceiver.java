@@ -1,6 +1,22 @@
-package com.money.manager.ex.core;
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
-import java.util.Calendar;
+package com.money.manager.ex.core;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -11,20 +27,22 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.money.manager.ex.notifications.RepeatingTransactionReceiver;
-import com.money.manager.ex.preferences.PreferencesConstant;
+import com.money.manager.ex.settings.PreferencesConstant;
+
+import java.util.Calendar;
 
 public class MoneyManagerBootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PreferencesConstant.PREF_REPEATING_TRANSACTION_NOTIFICATIONS, true)) {
+            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(PreferencesConstant.PREF_REPEATING_TRANSACTION_NOTIFICATIONS), true)) {
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 // compose intent
                 Intent i = new Intent(context, RepeatingTransactionReceiver.class);
                 PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
                 // take hour to start
-                String hour = PreferenceManager.getDefaultSharedPreferences(context).getString(PreferencesConstant.PREF_REPEATING_TRANSACTION_CHECK, "08:00");
+                String hour = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_REPEATING_TRANSACTION_CHECK), "08:00");
                 // take a calendar and current time
                 Calendar calendar = Calendar.getInstance();
                 Calendar currentCalendar = Calendar.getInstance();

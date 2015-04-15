@@ -11,7 +11,8 @@
 
     <LinearLayout
         android:id="@+id/action_cancel"
-        style="@style/EditEventCustomActionButton" >
+        style="@style/EditEventCustomActionButton"
+        android:clickable="true" >
 
         <ImageView
             android:id="@+id/image_cancel"
@@ -28,7 +29,8 @@
 
     <LinearLayout
         android:id="@+id/action_done"
-        style="@style/EditEventCustomActionButton" >
+        style="@style/EditEventCustomActionButton"
+        android:clickable="true" >
 
         <ImageView
             android:id="@+id/image_done"

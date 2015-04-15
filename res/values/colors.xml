@@ -1,22 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2012 The Android Money Manager Ex Project
-  
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
 <resources>
+    <color name="money_manager_ex_sign_dollar">#2B5429</color>
+    <color name="money_manager_ex_sign_bg">#4CAF50</color>
     <!-- Green button -->
     <color name="GreenButtonStartColor">#4AA02C</color>
     <color name="GreenButtonEndColor">#348017</color>
@@ -46,7 +47,7 @@
     <!-- A really bright Holo shade of blue -->
     <color name="holo_blue_bright">#ff00ddff</color>
     <!-- Money Manager Application object  -->
-    <color name="abBackground">#80323232</color>   
+    <color name="abBackground">#80323232</color>
     <!-- Money Manager Widget Background -->
     <color name="widget_background">#222222</color>
     <!-- Colors used in application  -->
@@ -64,8 +65,22 @@
     <!-- Color background and border -->
     <color name="money_border">#CFD2DA</color>
     <color name="holo_light_darkaction_money_background">#EDEEF1</color>
-    <color name="money_background_dark">#F3F4F5</color>
+    <color name="money_background_dark">#373737</color>
     <color name="money_background_button">#EEEEEE</color>
+    <color name="app_light_darkactionbar_color">#727272</color>
     <!-- AChartEngine Colors -->
     <color name="theme_chart_labels_color">#CCCCCC</color>
+    <!-- Material Design -->
+    <color name="md_primary">@color/material_green_500</color>
+    <color name="md_primary_dark">@color/material_green_700</color>
+    <color name="md_primary_light">@color/material_green_100</color>
+    <color name="md_accent">@color/material_light_green_900</color>
+    <color name="md_primary_text">@color/material_grey_900</color>
+    <color name="md_secondary_text">#727272</color>
+    <color name="md_icons">@color/material_white</color>
+    <color name="md_divider">#B6B6B6</color>
+
+    <color name="md_red">@color/material_red_700</color>
+    <color name="md_green">@color/material_green_700</color>
+    <color name="md_indigo">@color/material_indigo_500</color>
 </resources>

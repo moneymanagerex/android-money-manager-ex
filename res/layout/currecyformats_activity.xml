@@ -7,6 +7,8 @@
     android:background="?attr/theme_background_color"
     android:orientation="vertical" >
 
+    <include layout="@layout/toolbar_actionbar_button_cancel_done"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"

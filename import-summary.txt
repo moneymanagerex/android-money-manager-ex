@@ -1,0 +1,214 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .hgignore
+* README.md
+* buildAAR.py
+* doc\
+* doc\assets\
+* doc\assets\customizations.css
+* doc\assets\customizations.js
+* doc\assets\doclava-developer-core.css
+* doc\assets\doclava-developer-docs.css
+* doc\assets\doclava-developer-docs.js
+* doc\assets\doclava-developer-reference.js
+* doc\assets\images\
+* doc\assets\images\bg_fade.jpg
+* doc\assets\images\bg_logo.png
+* doc\assets\images\body-gradient-tab.png
+* doc\assets\images\body-gradient.png
+* doc\assets\images\grad-rule-qv.png
+* doc\assets\images\hr_gray_main.jpg
+* doc\assets\images\hr_gray_side.jpg
+* doc\assets\images\left_off.jpg
+* doc\assets\images\left_on.jpg
+* doc\assets\images\preliminary.png
+* doc\assets\images\resizable-e.gif
+* doc\assets\images\resizable-e2.gif
+* doc\assets\images\resizable-eg.gif
+* doc\assets\images\resizable-s.gif
+* doc\assets\images\resizable-s2.gif
+* doc\assets\images\resizable-sg.gif
+* doc\assets\images\right_off.jpg
+* doc\assets\images\right_on.jpg
+* doc\assets\images\sidenav-rule.png
+* doc\assets\images\spacer.gif
+* doc\assets\images\triangle-closed-small.png
+* doc\assets\images\triangle-closed.png
+* doc\assets\images\triangle-opened-small.png
+* doc\assets\images\triangle-opened.png
+* doc\assets\jquery-history.js
+* doc\assets\jquery-resizable.min.js
+* doc\assets\navtree_data.js
+* doc\assets\prettify.js
+* doc\assets\search_autocomplete.js
+* doc\assets\style.css
+* doc\assets\triangle-none.gif
+* doc\index.html
+* doc\reference\
+* doc\reference\classes.html
+* doc\reference\com\
+* doc\reference\com\caverock\
+* doc\reference\com\caverock\androidsvg\
+* doc\reference\com\caverock\androidsvg\PreserveAspectRatio.Alignment.html
+* doc\reference\com\caverock\androidsvg\PreserveAspectRatio.Scale.html
+* doc\reference\com\caverock\androidsvg\PreserveAspectRatio.html
+* doc\reference\com\caverock\androidsvg\SVG.html
+* doc\reference\com\caverock\androidsvg\SVGExternalFileResolver.html
+* doc\reference\com\caverock\androidsvg\SVGImageView.html
+* doc\reference\com\caverock\androidsvg\SVGParseException.html
+* doc\reference\com\caverock\androidsvg\SimpleAssetResolver.html
+* doc\reference\com\caverock\androidsvg\package-descr.html
+* doc\reference\com\caverock\androidsvg\package-summary.html
+* doc\reference\current.xml
+* doc\reference\hierarchy.html
+* doc\reference\index.html
+* doc\reference\lists.js
+* doc\reference\package-list
+* doc\reference\packages.html
+* doc_1.1.182\
+* doc_1.1.182\allclasses-frame.html
+* doc_1.1.182\allclasses-noframe.html
+* doc_1.1.182\com\
+* doc_1.1.182\com\caverock\
+* doc_1.1.182\com\caverock\androidsvg\
+* doc_1.1.182\com\caverock\androidsvg\SVG.AspectRatioAlignment.html
+* doc_1.1.182\com\caverock\androidsvg\SVG.AspectRatioScale.html
+* doc_1.1.182\com\caverock\androidsvg\SVG.html
+* doc_1.1.182\com\caverock\androidsvg\SVGAndroidRenderer.html
+* doc_1.1.182\com\caverock\androidsvg\SVGExternalFileResolver.html
+* doc_1.1.182\com\caverock\androidsvg\SVGParseException.html
+* doc_1.1.182\com\caverock\androidsvg\class-use\
+* doc_1.1.182\com\caverock\androidsvg\class-use\SVG.AspectRatioAlignment.html
+* doc_1.1.182\com\caverock\androidsvg\class-use\SVG.AspectRatioScale.html
+* doc_1.1.182\com\caverock\androidsvg\class-use\SVG.html
+* doc_1.1.182\com\caverock\androidsvg\class-use\SVGAndroidRenderer.html
+* doc_1.1.182\com\caverock\androidsvg\class-use\SVGExternalFileResolver.html
+* doc_1.1.182\com\caverock\androidsvg\class-use\SVGParseException.html
+* doc_1.1.182\com\caverock\androidsvg\package-frame.html
+* doc_1.1.182\com\caverock\androidsvg\package-summary.html
+* doc_1.1.182\com\caverock\androidsvg\package-tree.html
+* doc_1.1.182\com\caverock\androidsvg\package-use.html
+* doc_1.1.182\constant-values.html
+* doc_1.1.182\deprecated-list.html
+* doc_1.1.182\help-doc.html
+* doc_1.1.182\index-files\
+* doc_1.1.182\index-files\index-1.html
+* doc_1.1.182\index-files\index-2.html
+* doc_1.1.182\index-files\index-3.html
+* doc_1.1.182\index-files\index-4.html
+* doc_1.1.182\index-files\index-5.html
+* doc_1.1.182\index-files\index-6.html
+* doc_1.1.182\index.html
+* doc_1.1.182\overview-tree.html
+* doc_1.1.182\package-list
+* doc_1.1.182\resources\
+* doc_1.1.182\resources\background.gif
+* doc_1.1.182\resources\tab.gif
+* doc_1.1.182\resources\titlebar.gif
+* doc_1.1.182\resources\titlebar_end.gif
+* doc_1.1.182\serialized-form.html
+* doc_1.1.182\stylesheet.css
+* doc_1.2.0\
+* doc_1.2.0\assets\
+* doc_1.2.0\assets\customizations.css
+* doc_1.2.0\assets\customizations.js
+* doc_1.2.0\assets\doclava-developer-core.css
+* doc_1.2.0\assets\doclava-developer-docs.css
+* doc_1.2.0\assets\doclava-developer-docs.js
+* doc_1.2.0\assets\doclava-developer-reference.js
+* doc_1.2.0\assets\images\
+* doc_1.2.0\assets\images\bg_fade.jpg
+* doc_1.2.0\assets\images\bg_logo.png
+* doc_1.2.0\assets\images\body-gradient-tab.png
+* doc_1.2.0\assets\images\body-gradient.png
+* doc_1.2.0\assets\images\grad-rule-qv.png
+* doc_1.2.0\assets\images\hr_gray_main.jpg
+* doc_1.2.0\assets\images\hr_gray_side.jpg
+* doc_1.2.0\assets\images\left_off.jpg
+* doc_1.2.0\assets\images\left_on.jpg
+* doc_1.2.0\assets\images\preliminary.png
+* doc_1.2.0\assets\images\resizable-e.gif
+* doc_1.2.0\assets\images\resizable-e2.gif
+* doc_1.2.0\assets\images\resizable-eg.gif
+* doc_1.2.0\assets\images\resizable-s.gif
+* doc_1.2.0\assets\images\resizable-s2.gif
+* doc_1.2.0\assets\images\resizable-sg.gif
+* doc_1.2.0\assets\images\right_off.jpg
+* doc_1.2.0\assets\images\right_on.jpg
+* doc_1.2.0\assets\images\sidenav-rule.png
+* doc_1.2.0\assets\images\spacer.gif
+* doc_1.2.0\assets\images\triangle-closed-small.png
+* doc_1.2.0\assets\images\triangle-closed.png
+* doc_1.2.0\assets\images\triangle-opened-small.png
+* doc_1.2.0\assets\images\triangle-opened.png
+* doc_1.2.0\assets\jquery-history.js
+* doc_1.2.0\assets\jquery-resizable.min.js
+* doc_1.2.0\assets\navtree_data.js
+* doc_1.2.0\assets\prettify.js
+* doc_1.2.0\assets\search_autocomplete.js
+* doc_1.2.0\assets\style.css
+* doc_1.2.0\assets\triangle-none.gif
+* doc_1.2.0\index.html
+* doc_1.2.0\reference\
+* doc_1.2.0\reference\classes.html
+* doc_1.2.0\reference\com\
+* doc_1.2.0\reference\com\caverock\
+* doc_1.2.0\reference\com\caverock\androidsvg\
+* doc_1.2.0\reference\com\caverock\androidsvg\PreserveAspectRatio.Alignment.html
+* doc_1.2.0\reference\com\caverock\androidsvg\PreserveAspectRatio.Scale.html
+* doc_1.2.0\reference\com\caverock\androidsvg\PreserveAspectRatio.html
+* doc_1.2.0\reference\com\caverock\androidsvg\SVG.html
+* doc_1.2.0\reference\com\caverock\androidsvg\SVGExternalFileResolver.html
+* doc_1.2.0\reference\com\caverock\androidsvg\SVGImageView.html
+* doc_1.2.0\reference\com\caverock\androidsvg\SVGParseException.html
+* doc_1.2.0\reference\com\caverock\androidsvg\SVGPositioning.Alignment.html
+* doc_1.2.0\reference\com\caverock\androidsvg\SVGPositioning.Scale.html
+* doc_1.2.0\reference\com\caverock\androidsvg\SVGPositioning.html
+* doc_1.2.0\reference\com\caverock\androidsvg\SimpleAssetResolver.html
+* doc_1.2.0\reference\com\caverock\androidsvg\package-descr.html
+* doc_1.2.0\reference\com\caverock\androidsvg\package-summary.html
+* doc_1.2.0\reference\current.xml
+* doc_1.2.0\reference\hierarchy.html
+* doc_1.2.0\reference\index.html
+* doc_1.2.0\reference\lists.js
+* doc_1.2.0\reference\package-list
+* doc_1.2.0\reference\packages.html
+* doclava.xml
+* ic_launcher-web.png
+* maven\
+* maven\androidsvg-javadoc.jar
+* maven\androidsvg-sources.jar
+* maven\maven-release.py
+* maven\src-pom.xml
+* proguard-project.txt
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => androidSVG_12\src\main\AndroidManifest.xml
+* res\ => androidSVG_12\src\main\res\
+* src\ => androidSVG_12\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

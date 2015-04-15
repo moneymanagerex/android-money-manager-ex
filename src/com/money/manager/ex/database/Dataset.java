@@ -17,11 +17,6 @@
  ******************************************************************************/
 package com.money.manager.ex.database;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -32,6 +27,11 @@ import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerProvider;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
