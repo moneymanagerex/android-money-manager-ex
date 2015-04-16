@@ -166,7 +166,7 @@ public class SplitItemFragment extends Fragment
             adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinTransCode.setAdapter(adapterTrans);
             // find the split transaction type.
-//            spinTransCode.setSelection(mSplitTransaction.getSplitTransAmount() >= 0 ? 0 : 1, true);
+//            SpinTransCode.setSelection(mSplitTransaction.getSplitTransAmount() >= 0 ? 0 : 1, true);
             int transactionTypeSelection = getTransactionTypeSelection();
             spinTransCode.setSelection(transactionTypeSelection);
 

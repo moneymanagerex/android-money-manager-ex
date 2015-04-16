@@ -32,9 +32,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -139,12 +136,15 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     private String mNextOccurrence = "";
     private int mFrequencies = 0;
     private int mNumOccurrence = -1;
-    // reference view into layout
+
+    // Controls on the form.
     private Spinner spinAccount, spinToAccount, spinTransCode, spinStatus, spinFrequencies;
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
     public com.gc.materialdesign.views.CheckBox chbSplitTransaction;
-    private TextView txtPayee, txtSelectPayee, txtSelectCategory, txtCaptionAmount, txtRepeats, txtTimesRepeated, txtNextOccurrence, txtTotAmount, txtAmount;
+    private TextView txtPayee, txtSelectPayee, txtSelectCategory, txtCaptionAmount, txtRepeats,
+            txtTimesRepeated, txtNextOccurrence, txtTotAmount, txtAmount, txtSplit;
+
     // object of the table
     TableBillsDeposits mRepeatingTransaction = new TableBillsDeposits();
     // list split transactions
@@ -296,6 +296,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
         txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
         txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
+        txtSplit = (TextView) findViewById(R.id.splitTextView);
 
         // Account
         // account list <> to populate the spin
@@ -384,7 +385,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     mTransCode = mTransCodeValues[position];
                 }
                 // aggiornamento dell'interfaccia grafica
-                refreshTransCode();
+                refreshTransactionCode();
             }
 
             @Override
@@ -607,7 +608,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         });
         // refresh user interface
-        refreshTransCode();
+        refreshTransactionCode();
         refreshPayeeName();
         refreshCategoryName();
         refreshTimesRepeated();
@@ -906,7 +907,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         txtSelectPayee.setText(TextUtils.isEmpty(mPayeeName) == false ? mPayeeName : mTextDefaultPayee);
     }
 
-    public void refreshTransCode() {
+    public void refreshTransactionCode() {
         TextView txtFromAccount = (TextView) findViewById(R.id.textViewFromAccount);
         TextView txtToAccount = (TextView) findViewById(R.id.textViewToAccount);
 
@@ -918,6 +919,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         //txtPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         txtSelectPayee.setVisibility(!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+        // hide split controls
+//        chbSplitTransaction.setEnabled(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? false : true);
+        chbSplitTransaction.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.GONE : View.VISIBLE);
+        txtSplit.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.GONE : View.VISIBLE);
 
         refreshHeaderAmount();
     }

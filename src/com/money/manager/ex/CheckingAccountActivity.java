@@ -110,6 +110,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     public static final String KEY_SPLIT_TRANSACTION = "AllDataActivity:SplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "AllDataActivity:SplitTransactionDeleted";
     public static final String KEY_ACTION = "AllDataActivity:Action";
+
     // action type intent
     public String mIntentAction;
     // id account from and id ToAccount
@@ -141,12 +142,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     public String mNextOccurrence = null;
     // datepicker value
     public String mDate = "";
-    // reference view into layout
-    public Spinner spinAccount, spinToAccount, spinTransCode, spinStatus;
+
+    // Controls on the form.
+    public Spinner spinAccount, spinToAccount, SpinTransCode, spinStatus;
     public ImageButton btnTransNumber;
     public EditText edtTransNumber, edtNotes;
     public com.gc.materialdesign.views.CheckBox chbSplitTransaction;
-    public TextView txtSelectDate, txtSelectPayee, txtSelectCategory, txtTotAmount, txtAmount;
+    public TextView txtSelectDate, txtSelectPayee, txtSelectCategory, txtTotAmount, txtAmount, txtSplit;
+
     // object of the table
     TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
     // list split transactions
@@ -310,8 +313,10 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         }
 
         // Controls need to be at the beginning as they are referenced throughout the code.
+        SpinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
         chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) findViewById(R.id.checkBoxSplitTransaction);
         txtSelectCategory = (TextView) findViewById(R.id.textViewCategory);
+        txtSplit = (TextView) findViewById(R.id.splitTextView);
 
         // manage intent
         if (getIntent() != null) {
@@ -351,7 +356,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                                     mCategoryId = payee.getCategId();
                                     mSubCategoryId = payee.getSubCategId();
                                     // load category and subcategory name
-                                    loadCategSubName(mCategoryId, mSubCategoryId);
+                                    loadCategorySubName(mCategoryId, mSubCategoryId);
                                     return Boolean.TRUE;
                                 }
                             } catch (Exception e) {
@@ -443,39 +448,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             }
         });
 
-        // trans-code
-        spinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
-        // populate arrays TransCode
-        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
-        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
-        // create adapter for TransCode
-        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                mTransCodeItems);
-        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinTransCode.setAdapter(adapterTrans);
-        // select a current value
-        if (!TextUtils.isEmpty(mTransCode)) {
-            if (Arrays.asList(mTransCodeValues).indexOf(mTransCode) >= 0) {
-                spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mTransCode), true);
-            }
-        } else {
-            mTransCode = (String) spinTransCode.getSelectedItem();
-        }
-        spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mTransCodeValues.length)) {
-                    mTransCode = mTransCodeValues[position];
-                }
-                // aggiornamento dell'interfaccia grafica
-                refreshTransCode();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        // Transaction code
+        initTransactionTypeSelector();
 
         // status
         spinStatus = (Spinner) findViewById(R.id.spinnerStatus);
@@ -692,9 +666,42 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         }
 
         // refresh user interface
-        refreshTransCode();
+        refreshTransactionCode();
         refreshPayeeName();
         refreshCategoryName();
+    }
+
+    private void initTransactionTypeSelector() {
+        // populate arrays TransCode
+        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
+        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
+        // create adapter for TransCode
+        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+                mTransCodeItems);
+        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SpinTransCode.setAdapter(adapterTrans);
+        // select a current value
+        if (!TextUtils.isEmpty(mTransCode)) {
+            if (Arrays.asList(mTransCodeValues).indexOf(mTransCode) >= 0) {
+                SpinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mTransCode), true);
+            }
+        } else {
+            mTransCode = (String) SpinTransCode.getSelectedItem();
+        }
+        SpinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position >= 0) && (position <= mTransCodeValues.length)) {
+                    mTransCode = mTransCodeValues[position];
+                }
+                // aggiornamento dell'interfaccia grafica
+                refreshTransactionCode();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     @Override
@@ -846,7 +853,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
      * @param subCategoryId Id of the subcategory to load.
      * @return A boolean indicating whether the operation was successful.
      */
-    public boolean loadCategSubName(int categoryId, int subCategoryId) {
+    public boolean loadCategorySubName(int categoryId, int subCategoryId) {
 
         // don't load anything if category & sub-category are not set.
         if(categoryId <= 0 && subCategoryId <= 0) return false;
@@ -919,7 +926,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
         getAccountName(mToAccountId);
         getPayeeName(mPayeeId);
-        loadCategSubName(mCategoryId, mSubCategoryId);
+        loadCategorySubName(mCategoryId, mSubCategoryId);
 
         return true;
     }
@@ -980,7 +987,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
         getAccountName(mToAccountId);
         getPayeeName(mPayeeId);
-        loadCategSubName(mCategoryId, mSubCategoryId);
+        loadCategorySubName(mCategoryId, mSubCategoryId);
 
         // handle splits
         createSplitCategoriesFromRecurringTransaction();
@@ -1049,18 +1056,26 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             txtSelectPayee.setText(mPayeeName);
     }
 
-    public void refreshTransCode() {
+    /**
+     * Handle transaction type change.
+     */
+    public void refreshTransactionCode() {
         // check type of transaction
         TextView txtFromAccount = (TextView) findViewById(R.id.textViewFromAccount);
         TextView txtToAccount = (TextView) findViewById(R.id.textViewToAccount);
         ViewGroup tableRowPayee = (ViewGroup) findViewById(R.id.tableRowPayee);
-        ViewGroup tableRowAmmount = (ViewGroup) findViewById(R.id.tableRowAmount);
+        ViewGroup tableRowAmount = (ViewGroup) findViewById(R.id.tableRowAmount);
+
         // hide and show
         txtFromAccount.setText(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? R.string.from_account : R.string.account);
         txtToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         tableRowPayee.setVisibility(!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) ? View.VISIBLE : View.GONE);
-        tableRowAmmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+        tableRowAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+        // hide split controls
+//        chbSplitTransaction.setEnabled(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? false : true);
+        chbSplitTransaction.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.GONE : View.VISIBLE);
+        txtSplit.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.GONE : View.VISIBLE);
 
         refreshHeaderAmount();
     }
