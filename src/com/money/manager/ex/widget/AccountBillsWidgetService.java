@@ -73,7 +73,7 @@ public class AccountBillsWidgetService extends RemoteViewsService {
                 remoteViews.setTextViewText(R.id.textViewItemAccountName, accountname);
                 String value = mCurrencyUtils.getCurrencyFormatted(mCursor.getInt(mCursor.getColumnIndex(QueryAccountBills.CURRENCYID)),
                         mCursor.getDouble(mCursor.getColumnIndex(QueryAccountBills.TOTAL)));
-                remoteViews.setTextViewText(R.id.textVievItemAccountTotal, value);
+                remoteViews.setTextViewText(R.id.textViewItemAccountTotal, value);
             }
             return remoteViews;
         }

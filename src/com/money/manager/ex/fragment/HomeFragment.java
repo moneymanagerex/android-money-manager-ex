@@ -411,8 +411,8 @@ public class HomeFragment extends Fragment implements
         if (linearFooter == null) {
             linearFooter = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.item_account_bills, null);
             // textview into layout
-            txtFooterSummary = (TextView) linearFooter.findViewById(R.id.textVievItemAccountTotal);
-            txtFooterSummaryReconciled = (TextView) linearFooter.findViewById(R.id.textVievItemAccountTotalReconciled);
+            txtFooterSummary = (TextView) linearFooter.findViewById(R.id.textViewItemAccountTotal);
+            txtFooterSummaryReconciled = (TextView) linearFooter.findViewById(R.id.textViewItemAccountTotalReconciled);
             if(mHideReconciled) {
                 txtFooterSummaryReconciled.setVisibility(View.GONE);
             }
@@ -563,10 +563,10 @@ public class HomeFragment extends Fragment implements
                 holder.txtAccountName = (TextView) convertView.findViewById(R.id.textViewItemAccountName);
                 holder.txtAccountName.setTypeface(null, Typeface.BOLD);
 
-                holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textVievItemAccountTotal);
+                holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textViewItemAccountTotal);
                 holder.txtAccountTotal.setTypeface(null, Typeface.BOLD);
 
-                holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textVievItemAccountTotalReconciled);
+                holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textViewItemAccountTotalReconciled);
                 if(mHideReconciled) {
                     holder.txtAccountReconciled.setVisibility(View.GONE);
                 } else {
@@ -611,8 +611,8 @@ public class HomeFragment extends Fragment implements
 
                 holder = new ViewHolderAccountBills();
                 holder.txtAccountName = (TextView) convertView.findViewById(R.id.textViewItemAccountName);
-                holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textVievItemAccountTotal);
-                holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textVievItemAccountTotalReconciled);
+                holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textViewItemAccountTotal);
+                holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textViewItemAccountTotalReconciled);
                 holder.imgAccountType = (ImageView) convertView.findViewById(R.id.imageViewAccountType);
 
                 holder.txtAccountTotal.setTypeface(null, Typeface.NORMAL);

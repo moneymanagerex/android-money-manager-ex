@@ -32,26 +32,37 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewItemAccountTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textVievItemAccountTotal"
+            android:id="@+id/textViewItemAccountTotalReconciled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:textStyle="bold" />
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textVievItemAccountTotalReconciled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:textSize="@dimen/money_text_view_size_micro" />
+            android:textSize="@dimen/money_text_view_size_micro"
+            />
     </LinearLayout>
 
 </LinearLayout>
