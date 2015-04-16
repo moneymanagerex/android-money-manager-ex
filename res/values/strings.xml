@@ -541,8 +541,6 @@
     <string name="tutorial_transactions_1">Deposits, withdrawals, transfers. Recurring transactions with reminders.</string>
     <string name="split_category">-Split Category-</string>
     <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="sort_by_ascending">Sort by year and month ascending</string>
     <string name="sort_by_desceding">Sort by year and month descending</string>
     <string name="years">Years</string>
@@ -550,4 +548,6 @@
     <string name="to_date">To Date</string>
     <string name="from_date">From Date</string>
     <string name="custom_dates">Custom Dates</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">Hide the reconciled amounts from the accounts on dashboard.</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
 </resources>

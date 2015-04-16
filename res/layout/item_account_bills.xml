@@ -20,7 +20,7 @@
             android:src="@drawable/ic_money_safe" />
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textVievItemAccountName"
+            android:id="@+id/textViewItemAccountName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

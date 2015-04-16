@@ -70,7 +70,7 @@ public class AccountBillsWidgetService extends RemoteViewsService {
             if (mCursor.moveToPosition(position)) {
                 int colindex = mCursor.getColumnIndex(QueryAccountBills.ACCOUNTNAME);
                 String accountname = mCursor.getString(colindex);
-                remoteViews.setTextViewText(R.id.textVievItemAccountName, accountname);
+                remoteViews.setTextViewText(R.id.textViewItemAccountName, accountname);
                 String value = mCurrencyUtils.getCurrencyFormatted(mCursor.getInt(mCursor.getColumnIndex(QueryAccountBills.CURRENCYID)),
                         mCursor.getDouble(mCursor.getColumnIndex(QueryAccountBills.TOTAL)));
                 remoteViews.setTextViewText(R.id.textVievItemAccountTotal, value);

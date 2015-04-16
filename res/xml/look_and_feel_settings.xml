@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -43,6 +43,13 @@
         android:key="@string/pref_transaction_shown_balance"
         android:summary="@string/summary_transaction_shown_balance"
         android:title="@string/title_transaction_shown_balance"/>
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="@null"
+        android:key="@string/pref_transaction_hide_reconciled_amounts"
+        android:summary="@string/pref_transaction_hide_reconciled_amounts_summary"
+        android:title="@string/pref_transaction_hide_reconciled_amounts_title"/>
 
     <ListPreference
         android:defaultValue="-1"

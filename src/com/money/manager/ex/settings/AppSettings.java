@@ -22,6 +22,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.money.manager.ex.R;
+
 /**
  * This class is used to interact with application settings/preferences.
  * Expand with additional methods as needed.
@@ -39,6 +41,11 @@ public class AppSettings {
 
     public boolean get(String key, boolean defaultValue) {
         return mSettings.getBoolean(key, defaultValue);
+    }
+
+    public boolean getHideReconciledAmounts() {
+        String key = mLinkedActivity.getString(R.string.pref_transaction_hide_reconciled_amounts);
+        return this.get(key, false);
     }
 
     /**

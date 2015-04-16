@@ -79,10 +79,12 @@ public class HomeFragment extends Fragment implements
     private static final int ID_LOADER_BILL_DEPOSITS = 3;
     private static final int ID_LOADER_INCOME_EXPENSES = 4;
     private CurrencyUtils currencyUtils;
+    private boolean mHideReconciled;
     // dataset table/view/query manage into class
     private TableInfoTable infoTable = new TableInfoTable();
     private QueryAccountBills accountBills;
-    // view show in layout
+
+    // Controls. view show in layout
     private TextView txtTotalAccounts;
     private ExpandableListView mExpandableListView;
     private ViewGroup linearHome, linearFooter, linearWelcome;
@@ -101,6 +103,9 @@ public class HomeFragment extends Fragment implements
 
         currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
         accountBills = new QueryAccountBills(getActivity());
+
+        AppSettings settings = new AppSettings(getActivity());
+        mHideReconciled = settings.getHideReconciledAmounts();
     }
 
     @Override
@@ -411,8 +416,11 @@ public class HomeFragment extends Fragment implements
             // textview into layout
             txtFooterSummary = (TextView) linearFooter.findViewById(R.id.textVievItemAccountTotal);
             txtFooterSummaryReconciled = (TextView) linearFooter.findViewById(R.id.textVievItemAccountTotalReconciled);
+            if(mHideReconciled) {
+                txtFooterSummaryReconciled.setVisibility(View.GONE);
+            }
             // set text
-            TextView txtTextSummary = (TextView) linearFooter.findViewById(R.id.textVievItemAccountName);
+            TextView txtTextSummary = (TextView) linearFooter.findViewById(R.id.textViewItemAccountName);
             txtTextSummary.setText(R.string.summary);
             // invisibile image
             ImageView imgSummary = (ImageView) linearFooter.findViewById(R.id.imageViewAccountType);
@@ -420,14 +428,18 @@ public class HomeFragment extends Fragment implements
             // set color textview
             txtTextSummary.setTextColor(Color.GRAY);
             txtFooterSummary.setTextColor(Color.GRAY);
-            txtFooterSummaryReconciled.setTextColor(Color.GRAY);
+            if(!mHideReconciled) {
+                txtFooterSummaryReconciled.setTextColor(Color.GRAY);
+            }
         }
         // remove footer
         mExpandableListView.removeFooterView(linearFooter);
         // set text
         txtTotalAccounts.setText(currencyUtils.getBaseCurrencyFormatted(curTotal));
         txtFooterSummary.setText(txtTotalAccounts.getText());
-        txtFooterSummaryReconciled.setText(currencyUtils.getBaseCurrencyFormatted(curReconciled));
+        if(!mHideReconciled) {
+            txtFooterSummaryReconciled.setText(currencyUtils.getBaseCurrencyFormatted(curReconciled));
+        }
         // add footer
         mExpandableListView.addFooterView(linearFooter, null, false);
     }
@@ -564,14 +576,21 @@ public class HomeFragment extends Fragment implements
                 convertView = inflater.inflate(R.layout.item_account_bills, null);
 
                 holder = new ViewHolderAccountBills();
-                holder.txtAccountName = (TextView) convertView.findViewById(R.id.textVievItemAccountName);
-                holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textVievItemAccountTotal);
-                holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textVievItemAccountTotalReconciled);
-                holder.imgAccountType = (ImageView) convertView.findViewById(R.id.imageViewAccountType);
 
+                holder.txtAccountName = (TextView) convertView.findViewById(R.id.textViewItemAccountName);
                 holder.txtAccountName.setTypeface(null, Typeface.BOLD);
+
+                holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textVievItemAccountTotal);
                 holder.txtAccountTotal.setTypeface(null, Typeface.BOLD);
-                holder.txtAccountReconciled.setTypeface(null, Typeface.BOLD);
+
+                holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textVievItemAccountTotalReconciled);
+                if(mHideReconciled) {
+                    holder.txtAccountReconciled.setVisibility(View.GONE);
+                } else {
+                    holder.txtAccountReconciled.setTypeface(null, Typeface.BOLD);
+                }
+
+                holder.imgAccountType = (ImageView) convertView.findViewById(R.id.imageViewAccountType);
 
                 convertView.setTag(holder);
             }
@@ -582,7 +601,9 @@ public class HomeFragment extends Fragment implements
             if (total != null) {
                 // set account type value
                 holder.txtAccountTotal.setText(currencyUtils.getBaseCurrencyFormatted(total.getTotalBaseConvRate()));
-                holder.txtAccountReconciled.setText(currencyUtils.getBaseCurrencyFormatted(total.getReconciledBaseConvRate()));
+                if(!mHideReconciled) {
+                    holder.txtAccountReconciled.setText(currencyUtils.getBaseCurrencyFormatted(total.getReconciledBaseConvRate()));
+                }
                 // set account name
                 holder.txtAccountName.setText(total.getAccountName());
             }
@@ -619,7 +640,7 @@ public class HomeFragment extends Fragment implements
                 convertView = inflater.inflate(R.layout.item_account_bills, null);
 
                 holder = new ViewHolderAccountBills();
-                holder.txtAccountName = (TextView) convertView.findViewById(R.id.textVievItemAccountName);
+                holder.txtAccountName = (TextView) convertView.findViewById(R.id.textViewItemAccountName);
                 holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textVievItemAccountTotal);
                 holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textVievItemAccountTotalReconciled);
                 holder.imgAccountType = (ImageView) convertView.findViewById(R.id.imageViewAccountType);
@@ -639,9 +660,14 @@ public class HomeFragment extends Fragment implements
             String value = currencyUtils.getCurrencyFormatted(bills.getCurrencyId(), bills.getTotal());
             // set amount value
             holder.txtAccountTotal.setText(value);
+
             // reconciled
-            value = currencyUtils.getCurrencyFormatted(bills.getCurrencyId(), bills.getReconciled());
-            holder.txtAccountReconciled.setText(value);
+            if(mHideReconciled) {
+                holder.txtAccountReconciled.setVisibility(View.GONE);
+            } else {
+                value = currencyUtils.getCurrencyFormatted(bills.getCurrencyId(), bills.getReconciled());
+                holder.txtAccountReconciled.setText(value);
+            }
 
             return convertView;
         }

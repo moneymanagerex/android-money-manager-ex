@@ -46,6 +46,7 @@ public class LookFeelFragment extends PreferenceFragment {
         // checkbox on open and favorite account
         final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE));
         final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE));
+        final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_HIDE_RECONCILED_AMOUNTS));
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override
@@ -54,9 +55,10 @@ public class LookFeelFragment extends PreferenceFragment {
                 return true;
             }
         };
-        // set listener on the checkbox
+        // Set the main activity to restart on change of any of the following settings.
         chkAccountOpen.setOnPreferenceChangeListener(listener);
         chkAccountFav.setOnPreferenceChangeListener(listener);
+        chkHideReconciled.setOnPreferenceChangeListener(listener);
 
         // show transaction
         final ListPreference lstShow = (ListPreference) findPreference(getString(PreferencesConstant.PREF_SHOW_TRANSACTION));
