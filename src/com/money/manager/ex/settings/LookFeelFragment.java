@@ -33,7 +33,7 @@ import com.money.manager.ex.view.RobotoView;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
- * Created by alen.siljak on 09/04/2015.
+ * Look & feel settings.
  */
 public class LookFeelFragment extends PreferenceFragment {
     @Override
