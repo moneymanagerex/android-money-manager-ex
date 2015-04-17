@@ -21,6 +21,7 @@
     <changelogversion changeDate="April 6, 2015" versionName="2.0.0-beta1">
         <changelogtext>Introduced the material layout design</changelogtext>
         <changelogtext>Added the type of account Credit Card</changelogtext>
+        <changelogtext>Displaying investment accounts with balances on the dashboard</changelogtext>
         <changelogtext>Added function duplicates transaction</changelogtext>
         <changelogtext>Added calculator on amount dialog</changelogtext>
         <changelogtext>Added the split categories, even in the recurring transactions</changelogtext>

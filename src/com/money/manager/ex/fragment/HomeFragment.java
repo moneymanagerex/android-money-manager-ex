@@ -279,12 +279,15 @@ public class HomeFragment extends Fragment implements
 
                             totals = new QueryAccountBills(getActivity());
                             totals.setAccountType(accountType);
+                            // set group title
                             if (Constants.ACCOUNT_TYPE_CHECKING.equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.bank_accounts));
                             } else if (Constants.ACCOUNT_TYPE_TERM.equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.term_accounts));
                             } else if (Constants.ACCOUNT_TYPE_CREDIT_CARD.equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.credit_card_accounts));
+                            } else if (Constants.ACCOUNT_TYPE_INVESTMENT.equalsIgnoreCase(accountType)) {
+                                totals.setAccountName(getString(R.string.investment_accounts));
                             }
                             totals.setReconciledBaseConvRate(.0);
                             totals.setTotalBaseConvRate(.0);
@@ -437,6 +440,12 @@ public class HomeFragment extends Fragment implements
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
                 if (selectedAccount != null) {
+                    // do not show investment accounts until a separate view is created for them.
+                    String accountType = mAccountTypes.get(groupPosition);
+                    if(accountType.equalsIgnoreCase(getString(R.string.investment))) {
+                        return false;
+                    }
+
                     MainActivity activity = (MainActivity) getActivity();
                     if (activity != null) {
                         activity.showFragmentAccount(childPosition, selectedAccount.getAccountId());
@@ -539,6 +548,14 @@ public class HomeFragment extends Fragment implements
             return false;
         }
 
+        /**
+         * Creates a view for the group header row.
+         * @param groupPosition
+         * @param isExpanded
+         * @param convertView
+         * @param parent
+         * @return
+         */
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             ViewHolderAccountBills holder;
@@ -577,12 +594,23 @@ public class HomeFragment extends Fragment implements
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
                 } else if (Constants.ACCOUNT_TYPE_CREDIT_CARD.equalsIgnoreCase(accountType)) {
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_credit_card));
+                } else if (Constants.ACCOUNT_TYPE_INVESTMENT.equalsIgnoreCase(accountType)) {
+                    holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
                 }
             }
 
             return convertView;
         }
 
+        /**
+         * Creates a view for the group item row.
+         * @param groupPosition
+         * @param childPosition
+         * @param isLastChild
+         * @param convertView
+         * @param parent
+         * @return
+         */
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
             ViewHolderAccountBills holder;
