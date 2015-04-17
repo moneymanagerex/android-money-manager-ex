@@ -19,7 +19,6 @@ package com.money.manager.ex.reports;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -36,7 +35,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -45,8 +43,6 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
@@ -124,7 +120,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
             } else {
                 txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_green_color_theme)));
             }
-            view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
+            //view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
         }
 
         @Override
@@ -140,6 +136,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             setListAdapter(null);
+            setShowMenuItemSearch(true);
             //create header view
             mHeaderListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
             TextView txtColumn1 = (TextView) mHeaderListView.findViewById(R.id.textViewColumn1);
@@ -174,32 +171,6 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
             super.onCreateOptionsMenu(menu, inflater);
 
             Core core = new Core(getActivity());
-
-            MenuItem itemOption = menu.findItem(R.id.menu_option1);
-            if (itemOption != null) {
-                // show option 1
-                itemOption.setVisible(true);
-                itemOption.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-                itemOption.setIcon(getActivity().getResources().getDrawable(core.resolveIdAttribute(R.attr.ic_action_list)));
-                itemOption.setTitle(R.string.categories);
-                //take a submenu
-                SubMenu subMenu = itemOption.getSubMenu();
-                if (subMenu != null) {
-                    //create access to category
-                    MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
-                    SQLiteDatabase database = helper.getReadableDatabase();
-                    TableCategory category = new TableCategory();
-                    Cursor cursor = database.query(category.getSource(), new String[]{TableCategory.CATEGID, TableCategory.CATEGNAME}, null, null, null, null, TableCategory.CATEGNAME);
-                    if (cursor != null && cursor.moveToFirst()) {
-                        int order = 0;
-                        while (!cursor.isAfterLast()) {
-                            subMenu.add(GROUP_ID_CATEGORY, -cursor.getInt(cursor.getColumnIndex(TableCategory.CATEGID)), order++, cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME)));
-                            cursor.moveToNext();
-                        }
-                    }
-                    //helper.close();
-                }
-            }
             // pie chart
             MenuItem itemChart = menu.findItem(R.id.menu_chart);
             if (itemChart != null) {
@@ -260,6 +231,36 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
                 startLoader(args);
             }
             return super.onOptionsItemSelected(item);
+        }
+
+        @Override
+        protected boolean onQueryTextChange(String newText) {
+            //recall last where clause
+            String whereClause = getWhereClause();
+            if (whereClause == null) whereClause = "";
+
+            int start = whereClause.indexOf("/** */");
+            if (start > 0) {
+                int end = whereClause.indexOf("/** */", start + 1) + "/** */".length();
+                whereClause = whereClause.substring(0, start) + whereClause.substring(end);
+                // trim some space
+                whereClause = whereClause.trim();
+            }
+
+            if (!TextUtils.isEmpty(whereClause)) {
+                whereClause += " AND ";
+            } else {
+                whereClause = "";
+            }
+            // use token to replace criteria
+            whereClause += " /** */(" + ViewMobileData.Category + " Like '%" + newText + "%' OR " + ViewMobileData.Subcategory + " Like '%" + newText + "%')/** */";
+
+            //create arguments
+            Bundle args = new Bundle();
+            args.putString(KEY_WHERE_CLAUSE, whereClause);
+            //starts loader
+            startLoader(args);
+            return super.onQueryTextChange(newText);
         }
 
         @SuppressWarnings("deprecation")

@@ -21,6 +21,7 @@ package com.money.manager.ex.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
+import android.widget.DatePicker;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -178,5 +179,29 @@ public class DateUtils {
 
         }
         return calendar.getTime();
+    }
+
+    /**
+     * This function from the datepicker returns a date in java
+     *
+     * @param datePicker
+     * @return java date
+     */
+    public static java.util.Date getDateFromDatePicker(DatePicker datePicker) {
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year = datePicker.getYear();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+
+        return calendar.getTime();
+    }
+
+    public static void setDateToDatePicker(Date date, DatePicker datePicker) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 }
