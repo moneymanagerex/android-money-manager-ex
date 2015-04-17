@@ -440,6 +440,12 @@ public class HomeFragment extends Fragment implements
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
                 if (selectedAccount != null) {
+                    // do not show investment accounts until a separate view is created for them.
+                    String accountType = mAccountTypes.get(groupPosition);
+                    if(accountType.equalsIgnoreCase(getString(R.string.investment))) {
+                        return false;
+                    }
+
                     MainActivity activity = (MainActivity) getActivity();
                     if (activity != null) {
                         activity.showFragmentAccount(childPosition, selectedAccount.getAccountId());
