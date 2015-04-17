@@ -279,12 +279,15 @@ public class HomeFragment extends Fragment implements
 
                             totals = new QueryAccountBills(getActivity());
                             totals.setAccountType(accountType);
+                            // set group title
                             if (Constants.ACCOUNT_TYPE_CHECKING.equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.bank_accounts));
                             } else if (Constants.ACCOUNT_TYPE_TERM.equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.term_accounts));
                             } else if (Constants.ACCOUNT_TYPE_CREDIT_CARD.equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.credit_card_accounts));
+                            } else if (Constants.ACCOUNT_TYPE_INVESTMENT.equalsIgnoreCase(accountType)) {
+                                totals.setAccountName(getString(R.string.investment_accounts));
                             }
                             totals.setReconciledBaseConvRate(.0);
                             totals.setTotalBaseConvRate(.0);

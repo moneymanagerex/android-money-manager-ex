@@ -94,6 +94,7 @@
     <string name="select_currency">Select currency</string>
     <string name="checking">Checking</string>
     <string name="investment">Investment</string>
+    <string name="investment_accounts">Investment Accounts</string>
     <string name="term">Term</string>
     <string name="db_account_insert_failed">Error inserting account</string>
     <string name="db_account_update_failed">Error updating account</string>
