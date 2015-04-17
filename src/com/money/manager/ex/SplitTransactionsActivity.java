@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -153,14 +153,6 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
         // 'Add' button
 
-//        final ButtonRectangle buttonAdd = (ButtonRectangle) findViewById(R.id.buttonAdd);
-//        buttonAdd.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                addSplitTransaction();
-//            }
-//        });
-
         if (mSplitTransactions != null) {
             for (int i = 0; i < mSplitTransactions.size(); i++) {
                 addFragmentChild(mSplitTransactions.get(i));
@@ -170,20 +162,6 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         // show the floating "Add" button
         setUpFloatingButton();
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == MENU_ADD_SPLIT_TRANSACTION) {
-//            // find which split transactions dataset to instantiate.
-//            String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
-//            if(EntityTypeName.contains(recurringSplitName)) {
-//                addFragmentChild(new TableBudgetSplitTransactions());
-//            } else {
-//                addFragmentChild(new TableSplitTransactions());
-//            }
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     public void onRemoveItem(ISplitTransactionsDataset object) {

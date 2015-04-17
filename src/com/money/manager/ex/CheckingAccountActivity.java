@@ -540,10 +540,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             @Override
             public void onClick(View v) {
                 if (!chbSplitTransaction.isCheck()) {
+                    // select single category.
                     Intent intent = new Intent(CheckingAccountActivity.this, CategorySubCategoryExpandableListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
                     startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 } else {
+                    // select split categories.
                     Intent intent = new Intent(CheckingAccountActivity.this, SplitTransactionsActivity.class);
                     intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, TableSplitTransactions.class.getSimpleName());
                     intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransCode);
