@@ -253,7 +253,7 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
                 whereClause = "";
             }
             // use token to replace criteria
-            whereClause += " /** */(" + ViewMobileData.Category + " Like '%" + newText + "%' OR " + ViewMobileData.Subcategory + " Like '%" + newText + "%')";
+            whereClause += " /** */(" + ViewMobileData.Category + " Like '%" + newText + "%' OR " + ViewMobileData.Subcategory + " Like '%" + newText + "%')/** */";
 
             //create arguments
             Bundle args = new Bundle();
