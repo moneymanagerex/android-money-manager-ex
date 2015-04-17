@@ -122,10 +122,10 @@ public class DateUtils {
      * @param repeats type of repeating transactions
      * @return next Date
      */
-    public static Date getDateNextOccurence(Date date, int repeats) {
+    public static Date getDateNextOccurrence(Date date, int repeats) {
         if (repeats >= 200) {
             repeats = repeats - 200;
-        } // set auto execute without user acknowlegement
+        } // set auto execute without user acknowledgement
         if (repeats >= 100) {
             repeats = repeats - 100;
         } // set auto execute on the next occurrence
@@ -147,7 +147,7 @@ public class DateUtils {
             case 4: //bi_monthly
                 calendar.add(Calendar.MONTH, 2);
                 break;
-            case 5: //quaterly
+            case 5: //quarterly
                 calendar.add(Calendar.MONTH, 3);
                 break;
             case 6: //half_year
@@ -176,7 +176,7 @@ public class DateUtils {
                 calendar.add(Calendar.DATE, -1);
                 break;
             case 16: //month (last business day)
-
+                break;
         }
         return calendar.getTime();
     }

@@ -23,15 +23,18 @@ import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
+import com.money.manager.ex.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Represent a single Recurring Transaction object and provides related operations.
- * Created by Alen Siljak on 9/04/2015.
  */
 public class RecurringTransaction {
 
@@ -40,16 +43,52 @@ public class RecurringTransaction {
         this.Activity = container;
     }
 
+    public RecurringTransaction(Cursor cursor, Activity container) {
+        mCursor = cursor;
+        this.Activity = container;
+        this.RecurringTransactionId = this.getId();
+    }
+
     public static final String LOGCAT = RecurringTransaction.class.getSimpleName();
     public int RecurringTransactionId;
     public Activity Activity;
+    private Cursor mCursor;
 
     private TableBillsDeposits mRecurringTransaction = new TableBillsDeposits();
     private TableBudgetSplitTransactions mSplitCategories = new TableBudgetSplitTransactions();
 
+    // Properties
+
+    public int getId() {
+        return mCursor.getInt(mCursor.getColumnIndex(TableBillsDeposits.BDID));
+    }
+
+    public int getRepeats() {
+        return mCursor.getInt(mCursor.getColumnIndex(TableBillsDeposits.REPEATS));
+    }
+
+    // Methods
+
+    /**
+     * Skip next occurrence.
+     * If this is the last occurrence, delete the recurring transaction.
+     * Otherwise, move the due date to the next occurrence date.
+     */
+    public void skipNextOccurrence() {
+        int repeats = this.getRepeats();
+
+        if(repeats == 0) {
+            // no more occurrences, this is the only one. Delete the transaction.
+            this.delete();
+        } else {
+            // Just move the date.
+            this.moveNextOccurrenceForward();
+        }
+    }
+
     /**
      * Set the date for the current record.
-     * @param nextOccurrenceDate
+     * @param nextOccurrenceDate ISO-formatted string representation of the date. i.e. 2015-05-25
      * @return success
      */
     public boolean setNextOccurrenceDate(String nextOccurrenceDate) {
@@ -58,9 +97,11 @@ public class RecurringTransaction {
         ContentValues values = new ContentValues();
         values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, nextOccurrenceDate);
 
-        if (this.Activity.getContentResolver().update(mRecurringTransaction.getUri(), values,
+        int updateResult = this.Activity.getContentResolver().update(mRecurringTransaction.getUri(), values,
                 TableBillsDeposits.BDID + "=?",
-                new String[]{Integer.toString(this.RecurringTransactionId)}) > 0) {
+                new String[]{Integer.toString(this.RecurringTransactionId)});
+
+        if (updateResult > 0) {
             result = true;
         } else {
             Toast.makeText(this.Activity.getApplicationContext(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
@@ -68,6 +109,30 @@ public class RecurringTransaction {
         }
 
         return result;
+    }
+
+    public boolean setNextOccurrenceDate(Date nextOccurrenceDate) {
+        // format the date into ISO
+        String stringDate = DateUtils.getSQLiteStringDate(this.Activity, nextOccurrenceDate);
+
+        boolean result = this.setNextOccurrenceDate(stringDate);
+        return result;
+    }
+
+    /**
+     * Set the recurring action's due date to the next occurrence.
+     */
+    public void moveNextOccurrenceForward() {
+        int repeats = this.getRepeats();
+        String currentNextOccurrence = mCursor.getString(mCursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
+        Date newNextOccurrence = DateUtils.getDateFromString(this.Activity.getApplicationContext(),
+                currentNextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
+        // calculate the next occurrence date
+        newNextOccurrence = DateUtils.getDateNextOccurrence(newNextOccurrence, repeats);
+
+        if (newNextOccurrence != null) {
+            this.setNextOccurrenceDate(newNextOccurrence);
+        }
     }
 
     /**
