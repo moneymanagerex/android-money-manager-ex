@@ -542,6 +542,14 @@ public class HomeFragment extends Fragment implements
             return false;
         }
 
+        /**
+         * Creates a view for the group header row.
+         * @param groupPosition
+         * @param isExpanded
+         * @param convertView
+         * @param parent
+         * @return
+         */
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             ViewHolderAccountBills holder;
@@ -581,13 +589,22 @@ public class HomeFragment extends Fragment implements
                 } else if (Constants.ACCOUNT_TYPE_CREDIT_CARD.equalsIgnoreCase(accountType)) {
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_credit_card));
                 } else if (Constants.ACCOUNT_TYPE_INVESTMENT.equalsIgnoreCase(accountType)) {
-//                    holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_));
+                    holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
                 }
             }
 
             return convertView;
         }
 
+        /**
+         * Creates a view for the group item row.
+         * @param groupPosition
+         * @param childPosition
+         * @param isLastChild
+         * @param convertView
+         * @param parent
+         * @return
+         */
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
             ViewHolderAccountBills holder;
