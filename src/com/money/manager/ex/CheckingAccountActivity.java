@@ -155,21 +155,21 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     public TextView txtSelectDate, txtSelectPayee, txtSelectCategory, txtTotAmount, txtAmount, txtSplit;
 
     // object of the table
-    TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
+    private TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
     // list split transactions
-    ArrayList<TableSplitTransactions> mSplitTransactions = null;
-    ArrayList<TableSplitTransactions> mSplitTransactionsDeleted = null;
+    private ArrayList<TableSplitTransactions> mSplitTransactions = null;
+    private ArrayList<TableSplitTransactions> mSplitTransactionsDeleted = null;
 
-//    /**
-//     * When cancelling changing the transaction type to Tranfer, revert back to the
-//     * previous transaction type.
-//     */
-//    private void cancelChangingTransactionToTransfer() {
-//        // Select the previous transaction type.
-//        ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) SpinTransCode.getAdapter();
-//        int originalPosition = adapterTrans.getPosition(mTransCode);
-//        SpinTransCode.setSelection(originalPosition);
-//    }
+    /**
+     * When cancelling changing the transaction type to Tranfer, revert back to the
+     * previous transaction type.
+     */
+    private void cancelChangingTransactionToTransfer() {
+        // Select the previous transaction type.
+        ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) SpinTransCode.getAdapter();
+        int originalPosition = adapterTrans.getPosition(mTransCode);
+        SpinTransCode.setSelection(originalPosition);
+    }
 
     /**
      * getCategoryFromPayee set last category used from payee
@@ -295,12 +295,23 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     /**
      * After the user accepts, remove any split categories.
      */
-    private void removeSplitCategories() {
-        // todo: Remove any newly created splits.
+    private void removeAllSplitCategories() {
+        for(int i = 0; i < mSplitTransactions.size(); i++) {
+            TableSplitTransactions split = mSplitTransactions.get(i);
+            int id = split.getSplitTransId();
+            ArrayList<TableSplitTransactions> deletedSplits = getDeletedSplitCategories();
 
-        // todo: Delete any splits already in the database.
-
-        Log.d("tag", "deleting");
+            if(id == -1) {
+                // Remove any newly created splits.
+                // transaction id == -1
+                mSplitTransactions.remove(i);
+                i--;
+            } else {
+                // Delete any splits already in the database.
+                // transaction id != -1
+                deletedSplits.add(split);
+            }
+        }
     }
 
     @Override
@@ -358,10 +369,10 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     mTransId = getIntent().getIntExtra(KEY_TRANS_ID, -1);
                     // select data transaction
-                    getCheckingAccount(mTransId, false);
+                    loadCheckingAccount(mTransId, false);
                 } else if (getIntent().getAction() != null && Intent.ACTION_PASTE.equals(getIntent().getAction())) {
                     // select data transaction
-                    getCheckingAccount(getIntent().getIntExtra(KEY_TRANS_ID, -1), true);
+                    loadCheckingAccount(getIntent().getIntExtra(KEY_TRANS_ID, -1), true);
                 } else {
                     if (getIntent().getIntExtra(KEY_BDID_ID, -1) > -1) {
                         mRecurringTransactionId = getIntent().getIntExtra(KEY_BDID_ID, -1);
@@ -595,15 +606,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             }
         });
         // mark checked if there are existing split categories.
-        chbSplitTransaction.post(new Runnable() {
-            @Override
-            public void run() {
-                boolean hasSplit = hasSplitCategories();
-                chbSplitTransaction.setChecked(hasSplit);
+        boolean hasSplit = hasSplitCategories();
+        setSplit(hasSplit);
 
-                splitSet();
-            }
-        });
         // split text is a separate control.
         txtSplit.setOnClickListener(new OnClickListener() {
             @Override
@@ -697,7 +702,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         }
 
         // refresh user interface
-        refreshTransactionCode();
+        refreshAfterTransactionCodeChange();
         refreshPayeeName();
         refreshCategoryName();
     }
@@ -712,6 +717,13 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         spinToAccount = (Spinner) findViewById(R.id.spinnerToAccount);
 
+    }
+
+    public ArrayList<TableSplitTransactions> getDeletedSplitCategories() {
+        if(mSplitTransactionsDeleted == null){
+            mSplitTransactionsDeleted = new ArrayList<>();
+        }
+        return mSplitTransactionsDeleted;
     }
 
     private void initTransactionTypeSelector() {
@@ -739,17 +751,15 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
                     // Prevent selection if there are split transactions and the type is being
                     // set to Transfer.
-                    // todo: Check what happens to split transactions on saving.
-                    if(selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
+                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
                         handleSwitchingTransactionTypeToTransfer();
-//                        switchToTransferWhenHavingSplitCategories();
                         return;
                     }
 
                     mTransCode = selectedValue;
                 }
                 // aggiornamento dell'interfaccia grafica
-                refreshTransactionCode();
+                refreshAfterTransactionCodeChange();
             }
 
             @Override
@@ -772,16 +782,17 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
             dialog.setArguments(args);
 //        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
-//        dialog.show(getFragmentManager(), "tag");
             dialog.show(getSupportFragmentManager(), "tag");
 
             // Dialog result is handled in onDialogPositiveClick.
+            return;
         }
 
-        // uncheck split.
-        chbSplitTransaction.setChecked(false);
-        splitSet();
+        // un-check split.
+        setSplit(false);
 
+        mTransCode = getString(R.string.transfer);
+        refreshAfterTransactionCodeChange();
     }
 
     /**
@@ -795,12 +806,21 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         String purpose = yesNoDialog.getPurpose();
         // for now ignore the purpose as we only have one yes-no dialog.
 
-        removeSplitCategories();
+        removeAllSplitCategories();
+
+        setSplit(false);
+
+        mTransCode = getString(R.string.transfer);
+        refreshAfterTransactionCodeChange();
     }
 
+    /**
+     * The user stopped switching to Transfer. Restore previous state.
+     * @param dialog
+     */
     @Override
     public void onDialogNegativeClick(DialogFragment dialog){
-        // nothing
+        cancelChangingTransactionToTransfer();
     }
 
     @Override
@@ -999,7 +1019,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
      * @param transId transaction id
      * @return true if data selected, false nothing
      */
-    public boolean getCheckingAccount(int transId, boolean duplicate) {
+    public boolean loadCheckingAccount(int transId, boolean duplicate) {
         Cursor cursor = getContentResolver().query(mCheckingAccount.getUri(),
                 mCheckingAccount.getAllColumns(),
                 TableCheckingAccount.TRANSID + "=?",
@@ -1173,7 +1193,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     /**
      * Handle transaction type change.
      */
-    public void refreshTransactionCode() {
+    public void refreshAfterTransactionCodeChange() {
         // check type of transaction
         TextView txtFromAccount = (TextView) findViewById(R.id.textViewFromAccount);
         TextView txtToAccount = (TextView) findViewById(R.id.textViewToAccount);
@@ -1187,7 +1207,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         tableRowAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         // hide split controls
-//        chbSplitTransaction.setEnabled(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? false : true);
         chbSplitTransaction.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.GONE : View.VISIBLE);
         txtSplit.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.GONE : View.VISIBLE);
 
@@ -1311,13 +1330,23 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
         // Split Categories
 
-        // todo: delete any split categories if split is unchecked
+        // Delete any split categories if split is unchecked.
+        if(!chbSplitTransaction.isCheck()) {
+            removeAllSplitCategories();
+        }
 
         // has split categories
-        boolean hasSplitCategories = mSplitTransactions != null && mSplitTransactions.size() > 0;
+        boolean hasSplitCategories = hasSplitCategories();
         // update split transaction
         if (hasSplitCategories) {
             for (int i = 0; i < mSplitTransactions.size(); i++) {
+                TableSplitTransactions split = mSplitTransactions.get(i);
+                // do nothing if the split is marked for deletion.
+                ArrayList<TableSplitTransactions> deletedSplits = getDeletedSplitCategories();
+                if(deletedSplits.contains(split)) {
+                    continue;
+                }
+
                 values.clear();
                 //put value
                 values.put(TableSplitTransactions.CATEGID, mSplitTransactions.get(i).getCategId());
@@ -1343,7 +1372,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             }
         }
         // deleted old split transaction
-        if (mSplitTransactionsDeleted != null && mSplitTransactionsDeleted.size() > 0) {
+        if (mSplitTransactionsDeleted != null && !mSplitTransactionsDeleted.isEmpty()) {
             for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
                 //put value
@@ -1357,8 +1386,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 }
             }
         }
+
         // update category and subcategory payee
-        if ((!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode))) && (mPayeeId > 0) && (!hasSplitCategories)) {
+        if ((!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode))) && (mPayeeId > 0) && !hasSplitCategories) {
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
@@ -1419,7 +1449,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
     private void splitSet() {
         // update category field
-        CheckingAccountActivity.this.refreshCategoryName();
+        refreshCategoryName();
 
         boolean isSplit = chbSplitTransaction.isCheck();
 
@@ -1428,4 +1458,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         txtTotAmount.setEnabled(!isSplit);
     }
 
+    public void setSplit(final boolean checked) {
+        chbSplitTransaction.post(new Runnable() {
+            @Override
+            public void run() {
+                chbSplitTransaction.setChecked(checked);
+
+                splitSet();
+            }
+        });
+    }
 }
