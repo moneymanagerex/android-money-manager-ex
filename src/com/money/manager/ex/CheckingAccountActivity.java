@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -89,7 +89,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     public static final int REQUEST_PICK_ACCOUNT = 2;
     public static final int REQUEST_PICK_CATEGORY = 3;
     public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
-    public static final int REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION = 5;
 
     // KEY INTENT per il passaggio dei dati
     public static final String KEY_TRANS_ID = "AllDataActivity:TransId";
@@ -166,6 +165,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
      */
     private void cancelChangingTransactionToTransfer() {
         // Select the previous transaction type.
+        @SuppressWarnings("unchecked")
         ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) SpinTransCode.getAdapter();
         int originalPosition = adapterTrans.getPosition(mTransCode);
         SpinTransCode.setSelection(originalPosition);
@@ -309,7 +309,10 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             } else {
                 // Delete any splits already in the database.
                 // transaction id != -1
-                deletedSplits.add(split);
+                // avoid adding duplicate records.
+                if(!deletedSplits.contains(split)) {
+                    deletedSplits.add(split);
+                }
             }
         }
     }
@@ -798,12 +801,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     /**
      * Handle user's confirmation to delete any Split Categories when switching to
      * Transfer transaction type.
-     * @param dialog
+     * @param dialog The dialog that is returning the value.
      */
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-        YesNoDialog yesNoDialog = (YesNoDialog) dialog;
-        String purpose = yesNoDialog.getPurpose();
+//        YesNoDialog yesNoDialog = (YesNoDialog) dialog;
+//        String purpose = yesNoDialog.getPurpose();
         // for now ignore the purpose as we only have one yes-no dialog.
 
         removeAllSplitCategories();
@@ -816,7 +819,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
     /**
      * The user stopped switching to Transfer. Restore previous state.
-     * @param dialog
+     * @param dialog The dialog that is returning the value.
      */
     @Override
     public void onDialogNegativeClick(DialogFragment dialog){
@@ -1282,6 +1285,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         if (!validateData()) {
             return false;
         }
+
         // content value for insert or update data
         ContentValues values = new ContentValues();
 
