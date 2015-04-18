@@ -138,7 +138,13 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
         // load deleted item
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
+            // todo: is this the correct variable?
             mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
+        }
+
+        // If this is a new split (no existing split categories), then create the first one.
+        if(mSplitTransactions == null || mSplitTransactions.isEmpty()) {
+            addSplitTransaction();
         }
 
         // set view
