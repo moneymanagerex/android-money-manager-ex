@@ -55,7 +55,7 @@ import java.util.Arrays;
  */
 public class AccountListEditActivity extends BaseFragmentActivity implements InputAmountDialogListener {
     // KEY INTENT for data exchange
-    public static final String KEY_INTENT_ACTION = "AccountListEditActivity:IntentAction";
+//    public static final String KEY_INTENT_ACTION = "AccountListEditActivity:IntentAction";
     public static final String KEY_ACCOUNT_ID = "AccountListEditActivity:AccountId";
     public static final String KEY_ACCOUNT_NAME = "AccountListEditActivity:AccountName";
     public static final String KEY_ACCOUNT_TYPE = "AccountListEditActivity:AccountType";
@@ -214,7 +214,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
             edtAccessInfo.setText(mAccessInfo);
         }
 
-        ArrayAdapter<String> adapterSymbol = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
+        ArrayAdapter<String> adapterSymbol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
         spinSymbolInitialBalance.setAdapter(adapterSymbol);
         spinSymbolInitialBalance.setSelection(mInitialBal >= 0 ? PLUS : LESS);
 
@@ -225,7 +225,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 
             @Override
             public void onClick(View v) {
-                double amount = (Double) ((TextView) v).getTag();
+                double amount = (Double) v.getTag();
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, mCurrencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
@@ -245,7 +245,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
         // spinAccountType adapters and values
         mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
         mAccountTypeValues = getResources().getStringArray(R.array.accounttype_values);
-        ArrayAdapter<String> adapterAccountType = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountTypeItems);
+        ArrayAdapter<String> adapterAccountType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountTypeItems);
         adapterAccountType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccountType.setAdapter(adapterAccountType);
         if (!(TextUtils.isEmpty(mAccountType))) {
@@ -259,7 +259,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
         // spinAccountStatus adapters and values
         mAccountStatusItems = getResources().getStringArray(R.array.accountstatus_items);
         mAccountStatusValues = getResources().getStringArray(R.array.accountstatus_values);
-        ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
+        ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
         adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccountStatus.setAdapter(adapterAccountStatus);
         if (!(TextUtils.isEmpty(mStatus))) {
@@ -368,7 +368,7 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
     /**
      * validate data entered
      *
-     * @return
+     * @return A boolean indicating whether the data is valid for saving.
      */
     private boolean validateData(boolean bCheck) {
         // Getting control values
@@ -480,20 +480,20 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
         mWebsite = cursor.getString(cursor.getColumnIndex(TableAccountList.WEBSITE));
         mContactInfo = cursor.getString(cursor.getColumnIndex(TableAccountList.CONTACTINFO));
         mAccessInfo = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCESSINFO));
-        mInitialBal = (double) cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
+        mInitialBal = cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
         mFavoriteAcct = cursor.getString(cursor.getColumnIndex(TableAccountList.FAVORITEACCT));
         mCurrencyId = cursor.getInt(cursor.getColumnIndex(TableAccountList.CURRENCYID));
 
         // TODO Select currency name: could be improved for better usage of members
         selectCurrencyName(mCurrencyId);
-        // return
+
+        cursor.close();
+
         return true;
     }
 
     /**
      * Refresh current currency name on controls
-     *
-     * @return
      */
     public void refreshCurrencyName() {
         // write currency into text button
@@ -507,8 +507,8 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
     /**
      * Query info for current currency
      *
-     * @param currencyId
-     * @return
+     * @param currencyId Id of the currency to select
+     * @return A boolean indicating whether the retrieval of currency name was successful.
      */
     private boolean selectCurrencyName(int currencyId) {
         TableCurrencyFormats tableCurrencyFormats = new TableCurrencyFormats();
@@ -522,7 +522,9 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
         }
         // set category name
         mCurrencyName = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME));
-        // return
+
+        cursor.close();
+
         return true;
     }
 
