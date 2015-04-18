@@ -62,7 +62,6 @@ import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener
 import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.utils.DateUtils;
-import com.money.manager.ex.view.RobotoTextView;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -188,7 +187,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                     // return true
                     ret = true;
                 }
+                if (curCategory != null) {
+                    curCategory.close();
+                }
             }
+        }
+
+        if (curPayee != null) {
+            curPayee.close();
         }
 
         return ret;
@@ -835,7 +841,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
      */
     public boolean getAccountName(int accountId) {
         TableAccountList account = new TableAccountList();
-        Cursor cursor = getContentResolver().query(account.getUri(), account.getAllColumns(), TableAccountList.ACCOUNTID + "=?",
+        Cursor cursor = getContentResolver().query(account.getUri(), account.getAllColumns(),
+                TableAccountList.ACCOUNTID + "=?",
                 new String[]{Integer.toString(accountId)}, null);
         // check if cursor is valid and open
         if ((cursor == null) || (!cursor.moveToFirst())) {
@@ -844,6 +851,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
         // set payeename
         mToAccountName = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
+
+        cursor.close();
 
         return true;
     }
@@ -872,7 +881,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         } else {
             mCategoryName = null;
         }
+        if (cursor != null) {
+            cursor.close();
+        }
+
         // sub-category
+
         cursor = getContentResolver().query(subCategory.getUri(), subCategory.getAllColumns(),
                 TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
@@ -880,6 +894,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             mSubCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
         } else {
             mSubCategoryName = null;
+        }
+        if (cursor != null) {
+            cursor.close();
         }
 
         return true;
@@ -897,7 +914,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 TableCheckingAccount.TRANSID + "=?",
                 new String[]{Integer.toString(transId)}, null);
         // check if cursor is valid and open
-        if ((cursor == null) || (cursor.moveToFirst() == false)) {
+        if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
         }
 
@@ -908,8 +925,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         mToAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TOACCOUNTID));
         mTransCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
         mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
-        mAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
-        mTotAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
+        mAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+        mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
         mPayeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
         mCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
         mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
@@ -923,8 +940,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         }
 
         // convert status in uppercase string
-        if (!TextUtils.isEmpty(mStatus))
-            mStatus = mStatus.toUpperCase();
+        if (!TextUtils.isEmpty(mStatus)) mStatus = mStatus.toUpperCase();
+
+        cursor.close();
 
         getAccountName(mToAccountId);
         getPayeeName(mPayeeId);
@@ -946,12 +964,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 TablePayee.PAYEEID + "=?",
                 new String[]{Integer.toString(payeeId)}, null);
         // check if cursor is valid and open
-        if ((cursor == null) || (cursor.moveToFirst() == false)) {
+        if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
         }
 
         // set payeename
         mPayeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
+
+        cursor.close();
 
         return true;
     }
@@ -986,6 +1006,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         mNotes = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NOTES));
         mDate = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
         mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
+
+        cursor.close();
 
         getAccountName(mToAccountId);
         getPayeeName(mPayeeId);
@@ -1026,8 +1048,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     }
 
     public boolean hasSplitCategories() {
-        boolean hasSplit = mSplitTransactions != null && mSplitTransactions.size() >= 0;
-        return hasSplit;
+        return mSplitTransactions != null && mSplitTransactions.size() >= 0;
     }
 
     public void refreshCategoryName() {
