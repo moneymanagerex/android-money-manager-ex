@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2013 The Android Money Manager Ex Project
+ * Copyright (C) 2012-2015 The Android Money Manager Ex Project
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,11 +37,12 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 	protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.search_activity);
         super.onCreate(savedInstanceState);
+
         SearchFragment fragment = (SearchFragment) getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
         if (fragment == null) {
             // fragment create
             fragment = new SearchFragment();
-            // set dual panle
+            // set dual panel
             LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
             mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
             fragment.setDualPanel(mIsDualPanel);
@@ -53,37 +54,33 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
     }
 
     @Override
-    public void onCallbackCreateLoader(int id, Bundle args) {
-		return;
-	}
+    public void onCallbackCreateLoader(int id, Bundle args) {	}
 
 	@Override
 	public void onCallbackLoaderFinished(Loader<Cursor> loader, final Cursor data) {
-		if (loader != null && loader.getId() == AllDataFragment.ID_LOADER_ALL_DATA_DETAIL && data != null) {
-			// getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
-			// custom view count
-			/*LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final TextView txtCount = (TextView) inflater.inflate(R.layout.actionbar_textview_count, null);
-			
-			txtCount.setText(Integer.toString(data.getCount()));
-			// set the actionbar to use the custom view (can also be done with a style)
-			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_TITLE);
-	
-			// set the custom view to use
-			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-			getSupportActionBar().setCustomView(txtCount, lp);
-			// set action bar
-			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-			getSupportActionBar().setTitle(R.string.result_search);
-			getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));*/
-        }
-		return;
+//		if (loader != null && loader.getId() == AllDataFragment.ID_LOADER_ALL_DATA_DETAIL && data != null) {
+//			// getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
+//			// custom view count
+//			/*LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            final TextView txtCount = (TextView) inflater.inflate(R.layout.actionbar_textview_count, null);
+//
+//			txtCount.setText(Integer.toString(data.getCount()));
+//			// set the actionbar to use the custom view (can also be done with a style)
+//			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_TITLE);
+//
+//			// set the custom view to use
+//			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+//			getSupportActionBar().setCustomView(txtCount, lp);
+//			// set action bar
+//			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+//			getSupportActionBar().setTitle(R.string.result_search);
+//			getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));*/
+//        }
+//		return;
 	}
 
 	@Override
-	public void onCallbackLoaderReset(Loader<Cursor> loader) {
-		return;
-	}
+	public void onCallbackLoaderReset(Loader<Cursor> loader) {	}
 	
 	@Override
 	protected void onResume() {
@@ -98,17 +95,16 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 	@Override
 	public void onFinishedInputAmountDialog(int id, Double amount) {
 		SearchFragment fragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
-		if (fragment != null) 
-			fragment.onFinishedInputAmountDialog(id, amount);
+		if (fragment != null) fragment.onFinishedInputAmountDialog(id, amount);
 	}
 
-    public void onClickActionSearch(View v) {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContent);
-        if (fragment != null && fragment instanceof SearchFragment) {
-            SearchFragment searchFragment = (SearchFragment) fragment;
-            searchFragment.executeSearch();
-        }
-    }
+//    public void onClickActionSearch(View v) {
+//        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContent);
+//        if (fragment != null && fragment instanceof SearchFragment) {
+//            SearchFragment searchFragment = (SearchFragment) fragment;
+//            searchFragment.executeSearch();
+//        }
+//    }
 
     @Override
     public boolean onActionCancelClick() {
@@ -118,7 +114,7 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 
     @Override
     public boolean onActionDoneClick() {
-        Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContent);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContent);
         if (fragment != null && fragment instanceof SearchFragment) {
             ((SearchFragment) fragment).executeSearch();
         } else {
