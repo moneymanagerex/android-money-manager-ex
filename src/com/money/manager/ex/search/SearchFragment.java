@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.fragment;
+package com.money.manager.ex.search;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -37,14 +37,14 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.SearchActivity;
+import com.money.manager.ex.fragment.AllDataFragment;
+import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
@@ -60,7 +60,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class SearchFragment extends Fragment implements InputAmountDialogListener {
+public class SearchFragment extends Fragment
+        implements InputAmountDialogListener {
     // LOGCAT
     private static final String LOGCAT = SearchFragment.class.getSimpleName();
     // ID REQUEST code
@@ -71,12 +72,13 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
     private EditText edtTransNumber, edtNotes;
     private TextView txtToAmount, txtFromAmount, txtSelectCategory, txtSelectPayee, txtFromDate, txtToDate;
     private CheckBox cbxWithdrawal, cbxDeposit, cbxTransfer;
-    // arrayslist accountname and accountid
-    private ArrayList<String> mAccountNameList = new ArrayList<String>();
-    private ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
+    // arrays list account name and account id
+    private ArrayList<String> mAccountNameList = new ArrayList<>();
+    private ArrayList<Integer> mAccountIdList = new ArrayList<>();
     private List<TableAccountList> mAccountList;
     // status item and values
-    private ArrayList<String> mStatusItems = new ArrayList<String>(), mStatusValues = new ArrayList<String>();
+    private ArrayList<String> mStatusItems = new ArrayList<>(),
+            mStatusValues = new ArrayList<>();
     // dual panel
     private boolean mDualPanel = false;
 
@@ -86,7 +88,8 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
 
         setHasOptionsMenu(true);
         AllDataFragment fragment;
-        fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
+        fragment = (AllDataFragment) getActivity().getSupportFragmentManager()
+                .findFragmentByTag(AllDataFragment.class.getSimpleName());
         if (fragment != null) {
             fragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
         }
@@ -97,15 +100,14 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         if (container == null) return null;
         Core core = new Core(getActivity().getApplicationContext());
         //create view
-        View view = (LinearLayout) inflater.inflate(R.layout.search_fragment, container, false);
+        View view = inflater.inflate(R.layout.search_fragment, container, false);
         //create listener amount
         OnClickListener onClickAmount = new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 double amount = 0;
                 if (v.getTag() != null && v.getTag() instanceof Double) {
-                    amount = (Double) ((TextView) v).getTag();
+                    amount = (Double) v.getTag();
                 }
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
@@ -138,7 +140,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         cbxTransfer = (CheckBox) view.findViewById(R.id.checkBoxTransfer);
         cbxWithdrawal = (CheckBox) view.findViewById(R.id.checkBoxWithdrawal);
         // create adapter for spinAccount
-        ArrayAdapter<String> adapterAccount = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mAccountNameList);
+        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mAccountNameList);
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccount.setAdapter(adapterAccount);
         //Payee
@@ -170,7 +172,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         }
         // create adapter for spinnerStatus
         spinStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mStatusItems);
+        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mStatusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinStatus.setAdapter(adapterStatus);
         // from date
@@ -211,13 +213,13 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         }
     }
 
-    public void onDoneClick() {
-        getActivity().finish();
-    }
-
-    public void onSearchClick() {
-        executeSearch();
-    }
+//    public void onDoneClick() {
+//        getActivity().finish();
+//    }
+//
+//    public void onSearchClick() {
+//        executeSearch();
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -252,7 +254,7 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
      * Compose arguments and execute search
      */
     public void executeSearch() {
-        ArrayList<String> whereClause = new ArrayList<String>();
+        ArrayList<String> whereClause = new ArrayList<>();
         //account
         if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
             whereClause.add(ViewMobileData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
