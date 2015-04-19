@@ -73,7 +73,7 @@ public class MoneyManagerProvider extends ContentProvider {
     // object definition for the call to check the content
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     // object map for the definition of the objects referenced in the URI
-    private static Map<Integer, Object> mapContent = new HashMap<Integer, Object>();
+    private static Map<Integer, Object> mapContent = new HashMap<>();
     // authority of application
     private static String mAuthority;
 
@@ -122,7 +122,7 @@ public class MoneyManagerProvider extends ContentProvider {
                 new ViewMobileData(),
                 new SQLDataSet()});
 
-        // Cycle all datasets for the composition of UriMatcher
+        // Cycle all data sets for the composition of UriMatcher
         for (int i = 0; i < objMoneyManager.size(); i++) {
             // add URI
             sUriMatcher.addURI(getAuthority(), objMoneyManager.get(i).getBasepath(), i);
@@ -165,10 +165,6 @@ public class MoneyManagerProvider extends ContentProvider {
                         Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
                     } catch (Exception exc) {
                         Log.e(LOGCAT, exc.getMessage());
-                    } finally {
-                        // close transaction
-                        ////database.endTransaction();
-                        //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
                     }
                     parse = dataset.getBasepath() + "/" + id;
                     break;
@@ -208,7 +204,7 @@ public class MoneyManagerProvider extends ContentProvider {
                     if (values != null) {
                         log += " SET " + values.toString();
                     }
-                    if (TextUtils.isEmpty(whereClause) == false) {
+                    if (!TextUtils.isEmpty(whereClause)) {
                         log += " WHERE " + whereClause;
                     }
                     if (whereArgs != null) {
@@ -228,10 +224,6 @@ public class MoneyManagerProvider extends ContentProvider {
                         Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
                     } catch (Exception exc) {
                         Log.e(LOGCAT, exc.getMessage());
-                    } finally {
-                        // close transaction
-                        //database.endTransaction();
-                        //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
                     }
                     break;
                 default:
@@ -271,7 +263,7 @@ public class MoneyManagerProvider extends ContentProvider {
                 case TABLE:
                     String log = "DELETE FROM " + dataset.getSource();
                     // compose log verbose
-                    if (TextUtils.isEmpty(selection) == false) {
+                    if (!TextUtils.isEmpty(selection)) {
                         log += " WHERE " + selection;
                     }
                     if (selectionArgs != null) {
@@ -290,10 +282,6 @@ public class MoneyManagerProvider extends ContentProvider {
                         Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
                     } catch (Exception exc) {
                         Log.e(LOGCAT, exc.getMessage());
-                    } finally {
-                        // close transaction
-                        //database.endTransaction();
-                        //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database end transaction");
                     }
                     break;
                 default:
@@ -336,10 +324,10 @@ public class MoneyManagerProvider extends ContentProvider {
                     log = "SELECT *";
                 }
                 log += " FROM " + dataset.getSource();
-                if (TextUtils.isEmpty(selection) == false) {
+                if (!TextUtils.isEmpty(selection)) {
                     log += " WHERE " + selection;
                 }
-                if (TextUtils.isEmpty(sortOrder) == false) {
+                if (!TextUtils.isEmpty(sortOrder)) {
                     log += " ORDER BY " + sortOrder;
                 }
                 if (selectionArgs != null) {
@@ -377,16 +365,16 @@ public class MoneyManagerProvider extends ContentProvider {
     }
 
     /**
-     * Prepare statment SQL from dataset object
+     * Prepare statement SQL from data set object
      *
-     * @param query
-     * @param projection
-     * @param selection
-     * @param sortOrder
-     * @return statment
+     * @param query SQL query
+     * @param projection ?
+     * @param selection ?
+     * @param sortOrder field name for sort order
+     * @return statement
      */
     public String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
-        String selectList = "", from = "", where = "", sort = "";
+        String selectList, from, where = "", sort = "";
         // compose select list
         if (projection == null) {
             selectList = "SELECT *";
@@ -404,15 +392,15 @@ public class MoneyManagerProvider extends ContentProvider {
         // compose from
         from = "FROM (" + query + ") T";
         // compose where
-        if (TextUtils.isEmpty(selection) == false) {
-            if (selection.contains("WHERE") == false) {
+        if (!TextUtils.isEmpty(selection)) {
+            if (!selection.contains("WHERE")) {
                 where += "WHERE";
             }
             where += " " + selection;
         }
         // compose sort
-        if (TextUtils.isEmpty(sortOrder) == false) {
-            if (sortOrder.contains("ORDER BY") == false) {
+        if (!TextUtils.isEmpty(sortOrder)) {
+            if (!sortOrder.contains("ORDER BY")) {
                 sort += "ORDER BY ";
             }
             sort += " " + sortOrder;
@@ -420,10 +408,10 @@ public class MoneyManagerProvider extends ContentProvider {
         // compose statment to return
         query = selectList + " " + from;
         // check where or sort not empty
-        if (TextUtils.isEmpty(where) == false) {
+        if (!TextUtils.isEmpty(where)) {
             query += " " + where;
         }
-        if (TextUtils.isEmpty(sort) == false) {
+        if (!TextUtils.isEmpty(sort)) {
             query += " " + sort;
         }
 
