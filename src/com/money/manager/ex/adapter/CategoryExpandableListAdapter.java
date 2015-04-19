@@ -1,8 +1,5 @@
 package com.money.manager.ex.adapter;
 
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -17,6 +14,9 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableCategory;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 	private Context mContext;

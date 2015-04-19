@@ -17,14 +17,14 @@
  ******************************************************************************/
 package com.money.manager.ex.dropbox;
 
+import android.os.Build;
+
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import android.os.Build;
 
 /**
  * {@link http://www.androidsnippets.com/encryptdecrypt-strings}

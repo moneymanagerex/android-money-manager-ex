@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<resources>
+    <!-- default category -->
+    <string name="category_1">Bills</string>
+    <string name="category_2">Food</string>
+    <string name="category_3">Leisure</string>
+    <string name="category_4">Automobile</string>
+    <string name="category_5">Education</string>
+    <string name="category_6">Homeneeds</string>
+    <string name="category_7">Healthcare</string>
+    <string name="category_8">Insurance</string>
+    <string name="category_9">Vacation</string>
+    <string name="category_10">Taxes</string>
+    <string name="category_11">Miscellaneous</string>
+    <string name="category_12">Gifts</string>
+    <string name="category_13">Income</string>
+    <string name="category_14">Other Income</string>
+    <string name="category_15">Other Expenses</string>
+    <string name="category_16">Transfer</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">Telephone</string>
+    <string name="subcategory_2">Electricity</string>
+    <string name="subcategory_3">Gas</string>
+    <string name="subcategory_4">Internet</string>
+    <string name="subcategory_5">Rent</string>
+    <string name="subcategory_6">Cable TV</string>
+    <string name="subcategory_7">Water</string>
+    <string name="subcategory_8">Groceries</string>
+    <string name="subcategory_9">Dining out</string>
+    <string name="subcategory_10">Movies</string>
+    <string name="subcategory_11">Video Rental</string>
+    <string name="subcategory_12">Magazines</string>
+    <string name="subcategory_13">Maintenance</string>
+    <string name="subcategory_14">Gas</string>
+    <string name="subcategory_15">Parking</string>
+    <string name="subcategory_16">Registration</string>
+    <string name="subcategory_17">Books</string>
+    <string name="subcategory_18">Tuition</string>
+    <string name="subcategory_19">Others</string>
+    <string name="subcategory_20">Clothing</string>
+    <string name="subcategory_21">Furnishing</string>
+    <string name="subcategory_22">Others</string>
+    <string name="subcategory_23">Health</string>
+    <string name="subcategory_24">Dental</string>
+    <string name="subcategory_25">Eyecare</string>
+    <string name="subcategory_26">Physician</string>
+    <string name="subcategory_27">Prescriptions</string>
+    <string name="subcategory_28">Auto</string>
+    <string name="subcategory_29">Life</string>
+    <string name="subcategory_30">Home</string>
+    <string name="subcategory_31">Health</string>
+    <string name="subcategory_32">Travel</string>
+    <string name="subcategory_33">Lodging</string>
+    <string name="subcategory_34">Sightseeing</string>
+    <string name="subcategory_35">Income Tax</string>
+    <string name="subcategory_36">House Tax</string>
+    <string name="subcategory_37">Water Tax</string>
+    <string name="subcategory_38">Others</string>
+    <string name="subcategory_39">Salary</string>
+    <string name="subcategory_40">Reimbursement/Refunds</string>
+    <string name="subcategory_41">Investment Income</string>
+</resources>

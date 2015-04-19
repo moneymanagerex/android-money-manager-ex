@@ -19,13 +19,11 @@ package com.money.manager.ex;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -34,43 +32,28 @@ import com.money.manager.ex.fragment.SearchFragment;
 
 public class SearchActivity extends BaseFragmentActivity implements AllDataFragmentLoaderCallbacks, InputAmountDialogListener {
 	private boolean mIsDualPanel = false;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.main_fragments_activity);
-		SearchFragment fragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
-		if (fragment == null) {
-			// fragment create
-			fragment = new SearchFragment();
-			// set dual panle
-			LinearLayout fragmentDetail = (LinearLayout)findViewById(R.id.fragmentDetail); 
-			mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
-			fragment.setDualPanel(mIsDualPanel);
-			// add to stack
-			getSupportFragmentManager().beginTransaction().add(R.id.fragmentContent, fragment, SearchFragment.class.getSimpleName()).commit();
-		}
-		// home
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSherlock().getMenuInflater().inflate(R.menu.menu_search_transaction, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			finish( );
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
-	@Override
-	public void onCallbackCreateLoader(int id, Bundle args) {
+	protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.search_activity);
+        super.onCreate(savedInstanceState);
+        SearchFragment fragment = (SearchFragment) getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
+        if (fragment == null) {
+            // fragment create
+            fragment = new SearchFragment();
+            // set dual panle
+            LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
+            mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
+            fragment.setDualPanel(mIsDualPanel);
+            // add to stack
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentContent, fragment, SearchFragment.class.getSimpleName()).commit();
+        }
+        // reconfigure the toolbar event
+        setToolbarStandardAction(getToolbar(), R.id.action_cancel, R.id.action_search);
+    }
+
+    @Override
+    public void onCallbackCreateLoader(int id, Bundle args) {
 		return;
 	}
 
@@ -80,7 +63,7 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 			// getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
 			// custom view count
 			/*LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			final TextView txtCount = (TextView) inflater.inflate(R.layout.actionbar_textview_count, null);
+            final TextView txtCount = (TextView) inflater.inflate(R.layout.actionbar_textview_count, null);
 			
 			txtCount.setText(Integer.toString(data.getCount()));
 			// set the actionbar to use the custom view (can also be done with a style)
@@ -88,12 +71,12 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 	
 			// set the custom view to use
 			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-			getSupportActionBar().setCustomView(txtCount, lp);*/
+			getSupportActionBar().setCustomView(txtCount, lp);
 			// set action bar
 			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
 			getSupportActionBar().setTitle(R.string.result_search);
-			getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
-		}
+			getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));*/
+        }
 		return;
 	}
 
@@ -118,4 +101,34 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 		if (fragment != null) 
 			fragment.onFinishedInputAmountDialog(id, amount);
 	}
+
+    public void onClickActionSearch(View v) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContent);
+        if (fragment != null && fragment instanceof SearchFragment) {
+            SearchFragment searchFragment = (SearchFragment) fragment;
+            searchFragment.executeSearch();
+        }
+    }
+
+    @Override
+    public boolean onActionCancelClick() {
+        finish();
+        return true;
+    }
+
+    @Override
+    public boolean onActionDoneClick() {
+        Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContent);
+        if (fragment != null && fragment instanceof SearchFragment) {
+            ((SearchFragment) fragment).executeSearch();
+        } else {
+            if (!mIsDualPanel) {
+                SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
+                if (searchFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName()).commit();
+                }
+            }
+        }
+        return super.onActionDoneClick();
+    }
 }

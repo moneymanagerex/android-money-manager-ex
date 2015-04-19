@@ -19,11 +19,13 @@ public class DrawerMenuItemAdapter extends ArrayAdapter<DrawerMenuItem> {
 	public static class ViewHolder {
 		public TextView textViewItem;
 		public ImageView imageViewIcon;
-		
-		public ViewHolder(TextView textViewItem, ImageView imageViewIcon) {
-			this.textViewItem = textViewItem;
+        public View viewDivider;
+
+        public ViewHolder(TextView textViewItem, ImageView imageViewIcon, View viewDivider) {
+            this.textViewItem = textViewItem;
 			this.imageViewIcon = imageViewIcon;
-		}
+            this.viewDivider = viewDivider;
+        }
 	}
 	
 	@Override
@@ -36,8 +38,9 @@ public class DrawerMenuItemAdapter extends ArrayAdapter<DrawerMenuItem> {
 			view = LayoutInflater.from(getContext()).inflate(R.layout.item_drawer, null);
 			TextView textViewItem = (TextView)view.findViewById(R.id.textViewItem);
 			ImageView imageViewIcon = (ImageView)view.findViewById(R.id.imageViewIcon);
-			view.setTag(new ViewHolder(textViewItem, imageViewIcon));
-		}
+            View viewDivider = view.findViewById(R.id.viewDivider);
+            view.setTag(new ViewHolder(textViewItem, imageViewIcon, viewDivider));
+        }
 		
 		if (view != null && holder == null) {
 			if (view.getTag() instanceof ViewHolder) {
@@ -46,8 +49,9 @@ public class DrawerMenuItemAdapter extends ArrayAdapter<DrawerMenuItem> {
 		}
 
 		if (item != null && holder != null) {
-			holder.textViewItem.setText(item.getItemText());
-			if (item.getIcon() != null)
+            holder.textViewItem.setText(item.getText());
+            holder.viewDivider.setVisibility(item.hasDivider() ? View.VISIBLE : View.GONE);
+            if (item.getIcon() != null)
 				holder.imageViewIcon.setBackgroundResource(item.getIcon());
 		}
 		

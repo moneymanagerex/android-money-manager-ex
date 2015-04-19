@@ -1,9 +1,28 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,7 +30,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.MenuItem;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.inapp.util.IabHelper;
@@ -43,6 +61,7 @@ public class DonateActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        setContentView(R.layout.donate_activity);
         super.onCreate(savedInstanceState);
         // Set up SKUs
         if (1==2 && BuildConfig.DEBUG) {
@@ -55,8 +74,7 @@ public class DonateActivity extends BaseFragmentActivity {
         }
         // add SKU application
         skus.add("android.money.manager.ex.donations.small");
-        // Set up the UI
-        setContentView(R.layout.donate_activity);
+
         final Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
         final Button inAppButton = (Button) findViewById(R.id.buttonDonateInApp);
         inAppButton.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +121,7 @@ public class DonateActivity extends BaseFragmentActivity {
         };
         // init IabHelper
         try {
-            mIabHelper = new IabHelper(this.getApplicationContext(), Core.getAppBase64());
+            mIabHelper = new IabHelper(getApplicationContext(), Core.getAppBase64());
             mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 @Override
                 public void onIabSetupFinished(IabResult result) {
@@ -137,11 +155,14 @@ public class DonateActivity extends BaseFragmentActivity {
 
     @Override
     protected void onDestroy() {
-        //BillingController.unregisterObserver(billingObserver);
         super.onDestroy();
-        if (mIabHelper != null)
-            mIabHelper.dispose();
-        mIabHelper = null;
+        try {
+            if (mIabHelper != null)
+                mIabHelper.dispose();
+            mIabHelper = null;
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
+        }
     }
 
     public void onStartupInApp(boolean supported) {
@@ -154,7 +175,7 @@ public class DonateActivity extends BaseFragmentActivity {
             }
 
             Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, inAppName);
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, inAppName);
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             // Apply the adapter to the spinner
