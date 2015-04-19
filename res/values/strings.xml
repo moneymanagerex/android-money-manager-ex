@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -530,7 +530,7 @@
     <string name="action_settings">Settings</string>
     <string name="close">Close</string>
     <string name="tutorial_accounts_1">Multiple account types: checking, savings, credit, assets, and investments.</string>
-    <string name="tutorial_accounts_2">Swipe left to continue...</string>
+    <string name="tutorial_accounts_2">Swipe left to continue…</string>
     <string name="financial_overview">Financial Overview</string>
     <string name="tutorial_overview_1">Quick overview dashboard, budgets, reports with customizations.</string>
     <string name="global">Global</string>
@@ -550,4 +550,6 @@
     <string name="custom_dates">Custom Dates</string>
     <string name="pref_transaction_hide_reconciled_amounts_summary">Hide the reconciled amounts from the accounts on dashboard.</string>
     <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
+    <string name="warning">Warning</string>
+    <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
 </resources>

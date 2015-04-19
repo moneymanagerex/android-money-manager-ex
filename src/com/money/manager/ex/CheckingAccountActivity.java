@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -44,6 +45,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
+import com.money.manager.ex.checkingaccount.YesNoDialog;
+import com.money.manager.ex.checkingaccount.YesNoDialogListener;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -62,7 +65,6 @@ import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener
 import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.utils.DateUtils;
-import com.money.manager.ex.view.RobotoTextView;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -79,7 +81,7 @@ import java.util.Locale;
  * @version 1.0.1
  */
 public class CheckingAccountActivity extends BaseFragmentActivity
-        implements InputAmountDialogListener {
+        implements InputAmountDialogListener, YesNoDialogListener {
 
     public static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
     // ID REQUEST Data
@@ -87,6 +89,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     public static final int REQUEST_PICK_ACCOUNT = 2;
     public static final int REQUEST_PICK_CATEGORY = 3;
     public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
+
     // KEY INTENT per il passaggio dei dati
     public static final String KEY_TRANS_ID = "AllDataActivity:TransId";
     public static final String KEY_BDID_ID = "AllDataActivity:bdId";
@@ -151,10 +154,22 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     public TextView txtSelectDate, txtSelectPayee, txtSelectCategory, txtTotAmount, txtAmount, txtSplit;
 
     // object of the table
-    TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
+    private TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
     // list split transactions
-    ArrayList<TableSplitTransactions> mSplitTransactions = null;
-    ArrayList<TableSplitTransactions> mSplitTransactionsDeleted = null;
+    private ArrayList<TableSplitTransactions> mSplitTransactions = null;
+    private ArrayList<TableSplitTransactions> mSplitTransactionsDeleted = null;
+
+    /**
+     * When cancelling changing the transaction type to Tranfer, revert back to the
+     * previous transaction type.
+     */
+    private void cancelChangingTransactionToTransfer() {
+        // Select the previous transaction type.
+        @SuppressWarnings("unchecked")
+        ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) SpinTransCode.getAdapter();
+        int originalPosition = adapterTrans.getPosition(mTransCode);
+        SpinTransCode.setSelection(originalPosition);
+    }
 
     /**
      * getCategoryFromPayee set last category used from payee
@@ -188,7 +203,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                     // return true
                     ret = true;
                 }
+                if (curCategory != null) {
+                    curCategory.close();
+                }
             }
+        }
+
+        if (curPayee != null) {
+            curPayee.close();
         }
 
         return ret;
@@ -250,6 +272,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                     // refresh UI category
                     refreshCategoryName();
                 }
+                break;
             case REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
@@ -266,6 +289,31 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                     }
                 }
                 break;
+        }
+    }
+
+    /**
+     * After the user accepts, remove any split categories.
+     */
+    private void removeAllSplitCategories() {
+        for(int i = 0; i < mSplitTransactions.size(); i++) {
+            TableSplitTransactions split = mSplitTransactions.get(i);
+            int id = split.getSplitTransId();
+            ArrayList<TableSplitTransactions> deletedSplits = getDeletedSplitCategories();
+
+            if(id == -1) {
+                // Remove any newly created splits.
+                // transaction id == -1
+                mSplitTransactions.remove(i);
+                i--;
+            } else {
+                // Delete any splits already in the database.
+                // transaction id != -1
+                // avoid adding duplicate records.
+                if(!deletedSplits.contains(split)) {
+                    deletedSplits.add(split);
+                }
+            }
         }
     }
 
@@ -313,22 +361,21 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         }
 
         // Controls need to be at the beginning as they are referenced throughout the code.
-        SpinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
-        chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) findViewById(R.id.checkBoxSplitTransaction);
-        txtSelectCategory = (TextView) findViewById(R.id.textViewCategory);
-        txtSplit = (TextView) findViewById(R.id.splitTextView);
+
+        findControls();
 
         // manage intent
+
         if (getIntent() != null) {
             if (savedInstanceState == null) {
                 mAccountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, -1);
                 if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     mTransId = getIntent().getIntExtra(KEY_TRANS_ID, -1);
                     // select data transaction
-                    getCheckingAccount(mTransId, false);
+                    loadCheckingAccount(mTransId, false);
                 } else if (getIntent().getAction() != null && Intent.ACTION_PASTE.equals(getIntent().getAction())) {
                     // select data transaction
-                    getCheckingAccount(getIntent().getIntExtra(KEY_TRANS_ID, -1), true);
+                    loadCheckingAccount(getIntent().getIntExtra(KEY_TRANS_ID, -1), true);
                 } else {
                     if (getIntent().getIntExtra(KEY_BDID_ID, -1) > -1) {
                         mRecurringTransactionId = getIntent().getIntExtra(KEY_BDID_ID, -1);
@@ -388,7 +435,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         }
         // take a reference view into layout
         // account
-        spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         // accountlist <> to populate the spin
         mAccountList = MoneyManagerOpenHelper.getInstance(getApplicationContext()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
@@ -423,7 +469,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         });
 
         // to account
-        spinToAccount = (Spinner) findViewById(R.id.spinnerToAccount);
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinToAccount.setAdapter(adapterAccount);
         if (mToAccountId != -1) {
@@ -431,7 +476,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 spinToAccount.setSelection(mAccountIdList.indexOf(mToAccountId), true);
             }
         }
-
         spinToAccount.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -449,10 +493,10 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         });
 
         // Transaction code
+
         initTransactionTypeSelector();
 
         // status
-        spinStatus = (Spinner) findViewById(R.id.spinnerStatus);
         // arrays to manage Status
         mStatusItems = getResources().getStringArray(R.array.status_items);
         mStatusValues = getResources().getStringArray(R.array.status_values);
@@ -565,18 +609,11 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             }
         });
         // mark checked if there are existing split categories.
-        chbSplitTransaction.post(new Runnable() {
-            @Override
-            public void run() {
-                boolean hasSplit = hasSplitCategories();
-                chbSplitTransaction.setChecked(hasSplit);
+        boolean hasSplit = hasSplitCategories();
+        setSplit(hasSplit);
 
-                splitSet();
-            }
-        });
         // split text is a separate control.
-        final RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
-        splitText.setOnClickListener(new OnClickListener() {
+        txtSplit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
@@ -668,9 +705,28 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         }
 
         // refresh user interface
-        refreshTransactionCode();
+        refreshAfterTransactionCodeChange();
         refreshPayeeName();
         refreshCategoryName();
+    }
+
+    private void findControls() {
+        spinStatus = (Spinner) findViewById(R.id.spinnerStatus);
+        SpinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
+        chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) findViewById(R.id.checkBoxSplitTransaction);
+        txtSelectCategory = (TextView) findViewById(R.id.textViewCategory);
+        txtSplit = (TextView) findViewById(R.id.splitTextView);
+//        final RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
+        spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
+        spinToAccount = (Spinner) findViewById(R.id.spinnerToAccount);
+
+    }
+
+    public ArrayList<TableSplitTransactions> getDeletedSplitCategories() {
+        if(mSplitTransactionsDeleted == null){
+            mSplitTransactionsDeleted = new ArrayList<>();
+        }
+        return mSplitTransactionsDeleted;
     }
 
     private void initTransactionTypeSelector() {
@@ -678,7 +734,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
         mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
         // create adapter for TransCode
-        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+        final ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 mTransCodeItems);
         adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpinTransCode.setAdapter(adapterTrans);
@@ -694,16 +750,80 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if ((position >= 0) && (position <= mTransCodeValues.length)) {
-                    mTransCode = mTransCodeValues[position];
+                    String selectedValue = mTransCodeValues[position];
+
+                    // Prevent selection if there are split transactions and the type is being
+                    // set to Transfer.
+                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
+                        handleSwitchingTransactionTypeToTransfer();
+                        return;
+                    }
+
+                    mTransCode = selectedValue;
                 }
                 // aggiornamento dell'interfaccia grafica
-                refreshTransactionCode();
+                refreshAfterTransactionCodeChange();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    private void handleSwitchingTransactionTypeToTransfer() {
+        // The user is switching to Transfer transaction type.
+
+        if(hasSplitCategories()) {
+            // Prompt the user to confirm deleting split categories.
+            // Use DialogFragment in order to redraw the dialog when switching device orientation.
+
+            DialogFragment dialog = new YesNoDialog();
+            Bundle args = new Bundle();
+            args.putString("title", getString(R.string.warning));
+            args.putString("message", getString(R.string.no_transfer_splits));
+            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
+            dialog.setArguments(args);
+//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
+            dialog.show(getSupportFragmentManager(), "tag");
+
+            // Dialog result is handled in onDialogPositiveClick.
+            return;
+        }
+
+        // un-check split.
+        setSplit(false);
+
+        mTransCode = getString(R.string.transfer);
+        refreshAfterTransactionCodeChange();
+    }
+
+    /**
+     * Handle user's confirmation to delete any Split Categories when switching to
+     * Transfer transaction type.
+     * @param dialog The dialog that is returning the value.
+     */
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+//        YesNoDialog yesNoDialog = (YesNoDialog) dialog;
+//        String purpose = yesNoDialog.getPurpose();
+        // for now ignore the purpose as we only have one yes-no dialog.
+
+        removeAllSplitCategories();
+
+        setSplit(false);
+
+        mTransCode = getString(R.string.transfer);
+        refreshAfterTransactionCodeChange();
+    }
+
+    /**
+     * The user stopped switching to Transfer. Restore previous state.
+     * @param dialog The dialog that is returning the value.
+     */
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog){
+        cancelChangingTransactionToTransfer();
     }
 
     @Override
@@ -835,7 +955,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
      */
     public boolean getAccountName(int accountId) {
         TableAccountList account = new TableAccountList();
-        Cursor cursor = getContentResolver().query(account.getUri(), account.getAllColumns(), TableAccountList.ACCOUNTID + "=?",
+        Cursor cursor = getContentResolver().query(account.getUri(), account.getAllColumns(),
+                TableAccountList.ACCOUNTID + "=?",
                 new String[]{Integer.toString(accountId)}, null);
         // check if cursor is valid and open
         if ((cursor == null) || (!cursor.moveToFirst())) {
@@ -844,6 +965,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
         // set payeename
         mToAccountName = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
+
+        cursor.close();
 
         return true;
     }
@@ -872,7 +995,12 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         } else {
             mCategoryName = null;
         }
+        if (cursor != null) {
+            cursor.close();
+        }
+
         // sub-category
+
         cursor = getContentResolver().query(subCategory.getUri(), subCategory.getAllColumns(),
                 TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
@@ -880,6 +1008,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             mSubCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
         } else {
             mSubCategoryName = null;
+        }
+        if (cursor != null) {
+            cursor.close();
         }
 
         return true;
@@ -891,13 +1022,13 @@ public class CheckingAccountActivity extends BaseFragmentActivity
      * @param transId transaction id
      * @return true if data selected, false nothing
      */
-    public boolean getCheckingAccount(int transId, boolean duplicate) {
+    public boolean loadCheckingAccount(int transId, boolean duplicate) {
         Cursor cursor = getContentResolver().query(mCheckingAccount.getUri(),
                 mCheckingAccount.getAllColumns(),
                 TableCheckingAccount.TRANSID + "=?",
                 new String[]{Integer.toString(transId)}, null);
         // check if cursor is valid and open
-        if ((cursor == null) || (cursor.moveToFirst() == false)) {
+        if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
         }
 
@@ -908,8 +1039,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         mToAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TOACCOUNTID));
         mTransCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
         mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
-        mAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
-        mTotAmount = (double) cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
+        mAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+        mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
         mPayeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
         mCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
         mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
@@ -923,8 +1054,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         }
 
         // convert status in uppercase string
-        if (!TextUtils.isEmpty(mStatus))
-            mStatus = mStatus.toUpperCase();
+        if (!TextUtils.isEmpty(mStatus)) mStatus = mStatus.toUpperCase();
+
+        cursor.close();
 
         getAccountName(mToAccountId);
         getPayeeName(mPayeeId);
@@ -946,12 +1078,14 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 TablePayee.PAYEEID + "=?",
                 new String[]{Integer.toString(payeeId)}, null);
         // check if cursor is valid and open
-        if ((cursor == null) || (cursor.moveToFirst() == false)) {
+        if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
         }
 
         // set payeename
         mPayeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
+
+        cursor.close();
 
         return true;
     }
@@ -986,6 +1120,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         mNotes = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NOTES));
         mDate = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
         mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
+
+        cursor.close();
 
         getAccountName(mToAccountId);
         getPayeeName(mPayeeId);
@@ -1026,8 +1162,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     }
 
     public boolean hasSplitCategories() {
-        boolean hasSplit = mSplitTransactions != null && mSplitTransactions.size() >= 0;
-        return hasSplit;
+        return mSplitTransactions != null && !mSplitTransactions.isEmpty();
     }
 
     public void refreshCategoryName() {
@@ -1061,7 +1196,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     /**
      * Handle transaction type change.
      */
-    public void refreshTransactionCode() {
+    public void refreshAfterTransactionCodeChange() {
         // check type of transaction
         TextView txtFromAccount = (TextView) findViewById(R.id.textViewFromAccount);
         TextView txtToAccount = (TextView) findViewById(R.id.textViewToAccount);
@@ -1075,7 +1210,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         tableRowAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
         // hide split controls
-//        chbSplitTransaction.setEnabled(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? false : true);
         chbSplitTransaction.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.GONE : View.VISIBLE);
         txtSplit.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.GONE : View.VISIBLE);
 
@@ -1151,6 +1285,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         if (!validateData()) {
             return false;
         }
+
         // content value for insert or update data
         ContentValues values = new ContentValues();
 
@@ -1196,11 +1331,26 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 return false;
             }
         }
-        // has split transaction
-        boolean hasSplitTransaction = mSplitTransactions != null && mSplitTransactions.size() > 0;
+
+        // Split Categories
+
+        // Delete any split categories if split is unchecked.
+        if(!chbSplitTransaction.isCheck()) {
+            removeAllSplitCategories();
+        }
+
+        // has split categories
+        boolean hasSplitCategories = hasSplitCategories();
         // update split transaction
-        if (hasSplitTransaction) {
+        if (hasSplitCategories) {
             for (int i = 0; i < mSplitTransactions.size(); i++) {
+                TableSplitTransactions split = mSplitTransactions.get(i);
+                // do nothing if the split is marked for deletion.
+                ArrayList<TableSplitTransactions> deletedSplits = getDeletedSplitCategories();
+                if(deletedSplits.contains(split)) {
+                    continue;
+                }
+
                 values.clear();
                 //put value
                 values.put(TableSplitTransactions.CATEGID, mSplitTransactions.get(i).getCategId());
@@ -1226,7 +1376,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             }
         }
         // deleted old split transaction
-        if (mSplitTransactionsDeleted != null && mSplitTransactionsDeleted.size() > 0) {
+        if (mSplitTransactionsDeleted != null && !mSplitTransactionsDeleted.isEmpty()) {
             for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
                 //put value
@@ -1240,8 +1390,9 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 }
             }
         }
+
         // update category and subcategory payee
-        if ((!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode))) && (mPayeeId > 0) && (!hasSplitTransaction)) {
+        if ((!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode))) && (mPayeeId > 0) && !hasSplitCategories) {
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
@@ -1302,13 +1453,23 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
     private void splitSet() {
         // update category field
-        CheckingAccountActivity.this.refreshCategoryName();
+        refreshCategoryName();
 
-//        boolean isSplit = hasSplitCategories();
         boolean isSplit = chbSplitTransaction.isCheck();
 
         // enable/disable Amount field.
         txtAmount.setEnabled(!isSplit);
         txtTotAmount.setEnabled(!isSplit);
+    }
+
+    public void setSplit(final boolean checked) {
+        chbSplitTransaction.post(new Runnable() {
+            @Override
+            public void run() {
+                chbSplitTransaction.setChecked(checked);
+
+                splitSet();
+            }
+        });
     }
 }

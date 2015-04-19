@@ -83,7 +83,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
      * returns all the split transactions visible on the screen
      * @return list of split transactions
      */
-    public ArrayList<ISplitTransactionsDataset> getAllTableSplitTransaction() {
+    public ArrayList<ISplitTransactionsDataset> getAllSplitCategories() {
         ArrayList<ISplitTransactionsDataset> splitTransactions = new ArrayList<>();
         for (int i = 0; i < mIdTag; i++) {
             String nameFragment = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(i);
@@ -105,11 +105,11 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
     @Override
     public boolean onActionDoneClick() {
-        ArrayList<ISplitTransactionsDataset> allSplitTransactions = getAllTableSplitTransaction();
+        ArrayList<ISplitTransactionsDataset> allSplitTransactions = getAllSplitCategories();
         // check data
         for (int i = 0; i < allSplitTransactions.size(); i++) {
             ISplitTransactionsDataset splitTransactions = allSplitTransactions.get(i);
-            if (splitTransactions.getCategId() == -1 && splitTransactions.getCategId() == -1) {
+            if (splitTransactions.getCategId() == -1 && splitTransactions.getSubCategId() == -1) {
                 Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected).show();
                 return false;
             }
@@ -138,7 +138,13 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
         // load deleted item
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
+            // todo: is this the correct variable?
             mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
+        }
+
+        // If this is a new split (no existing split categories), then create the first one.
+        if(mSplitTransactions == null || mSplitTransactions.isEmpty()) {
+            addSplitTransaction();
         }
 
         // set view
@@ -169,8 +175,10 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             mSplitDeleted = new ArrayList<>();
         }
         // add item to delete
-        if (object.getSplitTransId() != -1) // not new split transaction
+        if (object.getSplitTransId() != -1) {
+            // not new split transaction
             mSplitDeleted.add(object);
+        }
     }
 
     @Override
