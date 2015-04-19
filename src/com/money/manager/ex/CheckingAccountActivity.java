@@ -532,7 +532,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         txtSelectDate = (TextView) findViewById(R.id.textViewDate);
         if (!(TextUtils.isEmpty(mDate))) {
             try {
-                txtSelectDate.setTag(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mDate));
+                txtSelectDate.setTag(new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale).parse(mDate));
             } catch (ParseException e) {
                 Log.e(LOGCAT, e.getMessage());
             }
@@ -555,7 +555,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     try {
-                        Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                        Date date = new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale)
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         txtSelectDate.setTag(date);
                         formatExtendedDate(txtSelectDate);
@@ -836,7 +836,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         outState.putInt(KEY_ACCOUNT_ID, mAccountId);
         outState.putInt(KEY_TO_ACCOUNT_ID, mToAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
-        outState.putString(KEY_TRANS_DATE, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(txtSelectDate.getTag()));
+        outState.putString(KEY_TRANS_DATE, new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale).format(txtSelectDate.getTag()));
         outState.putString(KEY_TRANS_CODE, mTransCode);
         outState.putString(KEY_TRANS_STATUS, mStatus);
         outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double) txtTotAmount.getTag());
@@ -1137,7 +1137,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
     public void formatExtendedDate(TextView dateTextView) {
         try {
-            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", Locale.US).format((Date) dateTextView.getTag()));
+            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", getResources().getConfiguration().locale).format((Date) dateTextView.getTag()));
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
         }
