@@ -36,7 +36,6 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
@@ -48,12 +47,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 @SuppressLint("UseSparseArrays")
 public class AllDataAdapter extends CursorAdapter {
     // type cursor
     private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
-    ;
+
     // define cursor field
     private String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE, TOACCOUNTID, TOTRANSAMOUNT, CURRENCYID, PAYEE,
             ACCOUNTNAME, TOACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES, TOCURRENCYID;
@@ -72,19 +72,17 @@ public class AllDataAdapter extends CursorAdapter {
     private SQLiteDatabase mDatabase;
     // core and context
     private Context mContext;
-    private Core mCore;
 
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
         super(context, c, -1);
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         // create hash map
-        mHeadersAccountIndex = new HashMap<Integer, Integer>();
+        mHeadersAccountIndex = new HashMap<>();
         // create sparse array boolean checked
         mCheckedPosition = new SparseBooleanArray();
 
         mTypeCursor = typeCursor;
 
-        mCore = new Core(context);
         mContext = context;
 
         setFieldFromTypeCursor();
@@ -107,10 +105,10 @@ public class AllDataAdapter extends CursorAdapter {
         holder.txtStatus.setTextColor(Color.GRAY);
         // date group
         try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(cursor.getString(cursor.getColumnIndex(DATE)));
-            holder.txtMonth.setText(new SimpleDateFormat("MMM").format(date));
-            holder.txtYear.setText(new SimpleDateFormat("yyyy").format(date));
-            holder.txtDay.setText(new SimpleDateFormat("dd").format(date));
+            Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(cursor.getString(cursor.getColumnIndex(DATE)));
+            holder.txtMonth.setText(new SimpleDateFormat("MMM", Locale.US).format(date));
+            holder.txtYear.setText(new SimpleDateFormat("yyyy", Locale.US).format(date));
+            holder.txtDay.setText(new SimpleDateFormat("dd", Locale.US).format(date));
         } catch (ParseException e) {
             Log.e(AllDataAdapter.class.getSimpleName(), e.getMessage());
         }
@@ -245,9 +243,6 @@ public class AllDataAdapter extends CursorAdapter {
 
     /**
      * Set checked in position
-     *
-     * @param position
-     * @param checked
      */
     public void setPositionChecked(int position, boolean checked) {
         mCheckedPosition.put(position, checked);
@@ -393,14 +388,18 @@ public class AllDataAdapter extends CursorAdapter {
                     cursor.moveToNext();
                 }
             }
-            cursor.close();
+            if (cursor != null) {
+                cursor.close();
+            }
             // calculate initial bal
             TableAccountList accountList = new TableAccountList();
             cursor = getDatabase().query(accountList.getSource(), accountList.getAllColumns(), TableAccountList.ACCOUNTID + "=" + Integer.toString(getAccountId()), null, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 total += cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
             }
-            cursor.close();
+            if (cursor != null) {
+                cursor.close();
+            }
             return true;
         }
 
