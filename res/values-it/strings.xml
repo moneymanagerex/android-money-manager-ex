@@ -61,6 +61,7 @@
     <string name="select_currency">Seleziona valuta</string>
     <string name="checking">Conto Corrente</string>
     <string name="investment">Conto di Investimento</string>
+    <string name="investment_accounts">Conti di investimento</string>
     <string name="term">Conto Deposito a Termine</string>
     <string name="db_account_insert_failed">Errore nell\'inserimento del conto</string>
     <string name="db_account_update_failed">Errore nell\'aggiornamento del conto</string>
@@ -118,6 +119,7 @@
     <string name="error_toaccount_not_selected">Account di destino è richiesto</string>
     <string name="error_category_not_selected">Categoria è richiesta</string>
     <string name="error_totamount_empty">Importo totale è richiesto</string>
+    <string name="error_transfer_to_same_account">I due account per il trasferimento devono essere diversi</string>
     <string name="about">About</string>
     <string name="add">Aggiungi</string>
     <string name="confirmDelete">Sei sicuro di che voler eliminare?</string>
@@ -407,7 +409,7 @@
     <string name="action_settings">Impostazioni</string>
     <string name="close">Chiudi</string>
     <string name="tutorial_accounts_1">Tipi di conto multipli: bancari, di risparmio, di credito, azionari e di investimenti.</string>
-    <string name="tutorial_accounts_2">Scorri a sinistra per continuare...</string>
+    <string name="tutorial_accounts_2">Scorri a sinistra per continuare&#8230;</string>
     <string name="financial_overview">Riepilogo Finanziario</string>
     <string name="tutorial_overview_1">Dashboard per una rapida panoramica sui bilanci, budget con personalizzazioni.</string>
     <string name="global">Globale</string>
@@ -417,4 +419,16 @@
     <string name="transactions">Transazioni</string>
     <string name="tutorial_transactions_1">Depositi, prelievi, trasferimenti. Transazioni ricorrenti con promemoria.</string>
     <string name="split_category">-Categoria Suddivise-</string>
+    <string name="title_activity_currency_chart">Grafico del tasso di cambio valuta</string>
+    <string name="sort_by_ascending">Ordina per anno e mese crescente</string>
+    <string name="sort_by_desceding">Ordina per anno e mese decrescente</string>
+    <string name="years">Anni</string>
+    <string name="select_the_years_to_be_displayed">Seleziona gli anni da visualizzare</string>
+    <string name="to_date">Alla data</string>
+    <string name="from_date">Dalla Data</string>
+    <string name="custom_dates">Date personalizzate</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">Nascondere gli importi riconciliati dai conti nella home.</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Nascondere importi riconciliati</string>
+    <string name="warning">Avvertenza</string>
+    <string name="no_transfer_splits">Si è scelto di passare al trasferimento, ma ci sono categorie suddivise nella transazione. Si desidera procedere e rimuovere le categorie suddivise?</string>
 </resources>
