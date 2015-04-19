@@ -31,9 +31,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
- * Created by Alessandro Lazzari on 08/09/2014.
+ * Date utilities
  */
 public class DateUtils {
     private static final String LOGCAT = DateUtils.class.getSimpleName();
@@ -46,7 +47,7 @@ public class DateUtils {
      * @return date converted
      */
     public static Date getDateFromString(Context ctx, String date) {
-        return getDateFromString(ctx, date, getUserDatePattern(ctx));
+        return getDateFromString(date, getUserDatePattern(ctx));
     }
 
     /**
@@ -56,9 +57,9 @@ public class DateUtils {
      * @param pattern to use for convert
      * @return date object converted
      */
-    public static Date getDateFromString(Context ctx, String date, String pattern) {
+    public static Date getDateFromString(String date, String pattern) {
         try {
-            return new SimpleDateFormat(pattern).parse(date);
+            return new SimpleDateFormat(pattern, Locale.US).parse(date);
         } catch (ParseException e) {
             Log.e(LOGCAT, e.getMessage());
         }
@@ -68,20 +69,20 @@ public class DateUtils {
     /**
      * Convert date object to string from user pattern
      *
-     * @param date
-     * @return
+     * @param date date value
+     * @return string date representation
      */
     public static String getStringFromDate(Context ctx, Date date) {
-        return getStringFromDate(ctx, date, getUserDatePattern(ctx));
+        return getStringFromDate(date, getUserDatePattern(ctx));
     }
 
     /**
      * @param date    object to convert in string
      * @param pattern pattern to use to convert
-     * @return
+     * @return string representation of the date
      */
-    public static String getStringFromDate(Context ctx, Date date, String pattern) {
-        return new SimpleDateFormat(pattern).format(date);
+    public static String getStringFromDate(Date date, String pattern) {
+        return new SimpleDateFormat(pattern, Locale.US).format(date);
     }
 
     /**
@@ -90,9 +91,9 @@ public class DateUtils {
      * @param date to convert
      * @return string formatted date SQLite
      */
-    public static String getSQLiteStringDate(Context ctx, Date date) {
+    public static String getSQLiteStringDate(Date date) {
 
-        return getStringFromDate(ctx, date, Constants.PATTERN_DB_DATE);
+        return getStringFromDate(date, Constants.PATTERN_DB_DATE);
     }
 
     /**
@@ -103,16 +104,16 @@ public class DateUtils {
     public static String getUserDatePattern(Context ctx) {
         TableInfoTable infoTable = new TableInfoTable();
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(ctx);
-        Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[]{"DATEFORMAT"}, null, null, null);
+        Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null,
+                TableInfoTable.INFONAME + "=?", new String[]{"DATEFORMAT"}, null, null, null);
         String pattern = null;
         if (cursor != null && cursor.moveToFirst()) {
             pattern = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
             //replace part of pattern
             pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy").replace("'", "''");
+
+            cursor.close();
         }
-        //close cursor and helper
-        cursor.close();
-        //helper.close();
 
         return pattern;
     }
@@ -182,9 +183,9 @@ public class DateUtils {
     }
 
     /**
-     * This function from the datepicker returns a date in java
+     * This function from the date picker returns a date in java
      *
-     * @param datePicker
+     * @param datePicker date picker control
      * @return java date
      */
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker) {

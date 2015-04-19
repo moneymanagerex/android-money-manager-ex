@@ -125,8 +125,10 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
 
     /**
      * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
-     * It has no means to return any data (such as the number of affected rows). Instead, you're encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
-     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
+     * It has no means to return any data (such as the number of affected rows). Instead, you're encouraged to use
+     * insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
+     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set
+     * journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
      *
      * @param sql      the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
      * @param bindArgs only byte[], String, Long and Double are supported in bindArgs.
@@ -154,23 +156,23 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
         String sqlCreate = RawFileUtils.getRawAsString(mContext, rawId);
         String sqlStatment[] = sqlCreate.split(";");
         // process all statment
-        for (int i = 0; i < sqlStatment.length; i++) {
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, sqlStatment[i]);
+        for (String aSqlStatment : sqlStatment) {
+            if (BuildConfig.DEBUG) Log.d(LOGCAT, aSqlStatment);
 
             try {
-                db.execSQL(sqlStatment[i]);
+                db.execSQL(aSqlStatment);
             } catch (SQLException E) {
                 Log.e(LOGCAT, E.getMessage());
             }
         }
     }
 
-    /**
-     * @return List all accounts
-     */
-    public List<TableAccountList> getListAccounts() {
-        return getListAccounts(false, false);
-    }
+//    /**
+//     * @return List all accounts
+//     */
+//    public List<TableAccountList> getListAccounts() {
+//        return getListAccounts(false, false);
+//    }
 
     /**
      * @param open     show open accounts
@@ -179,7 +181,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
      */
     public List<TableAccountList> getListAccounts(boolean open, boolean favorite) {
         // create a return list
-        List<TableAccountList> listAccount = new ArrayList<TableAccountList>();
+        List<TableAccountList> listAccount = new ArrayList<>();
         // compose where clause
         String where = "";
 
@@ -196,7 +198,8 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
         TableAccountList tAccountList = new TableAccountList();
         SQLiteDatabase db = getReadableDatabase();
         if (db != null) {
-            Cursor cursor = db.query(tAccountList.getSource(), tAccountList.getAllColumns(), where, null, null, null, TableAccountList.ACCOUNTNAME);
+            Cursor cursor = db.query(tAccountList.getSource(), tAccountList.getAllColumns(),
+                    where, null, null, null, TableAccountList.ACCOUNTNAME);
             // populate list from data cursor
             if (cursor != null && cursor.moveToFirst()) {
                 while (!(cursor.isAfterLast())) {
@@ -220,10 +223,11 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
      */
     public List<TableCategory> getListCategories() {
         // create a return list
-        List<TableCategory> listCategories = new ArrayList<TableCategory>();
+        List<TableCategory> listCategories = new ArrayList<>();
         // data cursor
         //Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(), null, null, null, TableCategory.CATEGNAME);
-        Cursor cursor = this.getReadableDatabase().query(new TableCategory().getSource(), null, null, null, null, null, TableCategory.CATEGNAME);
+        Cursor cursor = this.getReadableDatabase().query(new TableCategory().getSource(),
+                null, null, null, null, null, TableCategory.CATEGNAME);
         // populate list from data cursor
         if ((cursor != null) && (cursor.moveToFirst())) {
             while (!(cursor.isAfterLast())) {
@@ -240,7 +244,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
     /**
      * Get SQLite Version installed
      *
-     * @return
+     * @return version of SQLite
      */
     public String getSQLiteVersion() {
         String sqliteVersion = null;
@@ -366,13 +370,13 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
                 SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, loc);
                 String pattern = sdf.toLocalizedPattern();
                 // replace date
-                if (pattern.indexOf("dd") >= 0) {
+                if (pattern.contains("dd")) {
                     pattern = pattern.replace("dd", "%d");
                 } else {
                     pattern = pattern.replace("d", "%d");
                 }
                 // replace month
-                if (pattern.indexOf("MM") >= 0) {
+                if (pattern.contains("MM")) {
                     pattern = pattern.replace("MM", "%m");
                 } else {
                     pattern = pattern.replace("M", "%m");
@@ -409,7 +413,11 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
             Cursor countCategories = database.rawQuery("SELECT * FROM CATEGORY_V1", null);
             if (countCategories != null && countCategories.getCount() <= 0) {
                 int keyCategory = 0;
-                String[] categories = new String[]{"1;1", "2;1", "3;1", "4;1", "5;1", "6;1", "7;1", "8;2", "9;2", "10;3", "11;3", "12;3", "13;4", "14;4", "15;4", "16;4", "17;5", "18;5", "19;5", "20;6", "21;6", "22;6", "23;7", "24;7", "25;7", "26;7", "27;7", "28;8", "29;8", "30;8", "31;8", "32;9", "33;9", "34;9", "35;10", "36;10", "37;10", "38;10", "39;13", "40;13", "41;13"};
+                String[] categories = new String[]{"1;1", "2;1", "3;1", "4;1", "5;1", "6;1", "7;1",
+                        "8;2", "9;2", "10;3", "11;3", "12;3", "13;4", "14;4", "15;4", "16;4", "17;5",
+                        "18;5", "19;5", "20;6", "21;6", "22;6", "23;7", "24;7", "25;7", "26;7", "27;7",
+                        "28;8", "29;8", "30;8", "31;8", "32;9", "33;9", "34;9", "35;10", "36;10",
+                        "37;10", "38;10", "39;13", "40;13", "41;13"};
                 final String tableCategory = new TableCategory().getSource();
                 final String tableSubcategory = new TableSubCategory().getSource();
                 for (String item : categories) {
@@ -434,6 +442,8 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
                         database.insert(tableSubcategory, null, contentValues);
                     }
                 }
+
+                countCategories.close();
             }
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());

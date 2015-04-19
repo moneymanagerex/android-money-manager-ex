@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.utils.DateUtils;
@@ -113,10 +112,9 @@ public class RecurringTransaction {
 
     public boolean setNextOccurrenceDate(Date nextOccurrenceDate) {
         // format the date into ISO
-        String stringDate = DateUtils.getSQLiteStringDate(this.Activity, nextOccurrenceDate);
+        String stringDate = DateUtils.getSQLiteStringDate(nextOccurrenceDate);
 
-        boolean result = this.setNextOccurrenceDate(stringDate);
-        return result;
+        return this.setNextOccurrenceDate(stringDate);
     }
 
     /**
@@ -125,8 +123,7 @@ public class RecurringTransaction {
     public void moveNextOccurrenceForward() {
         int repeats = this.getRepeats();
         String currentNextOccurrence = mCursor.getString(mCursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
-        Date newNextOccurrence = DateUtils.getDateFromString(this.Activity.getApplicationContext(),
-                currentNextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
+        Date newNextOccurrence = DateUtils.getDateFromString(currentNextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
         // calculate the next occurrence date
         newNextOccurrence = DateUtils.getDateNextOccurrence(newNextOccurrence, repeats);
 
@@ -137,36 +134,36 @@ public class RecurringTransaction {
 
     /**
      * Delete current recurring transaction record.
-     * @return
+     * @return success
      */
     public boolean delete() {
-        boolean result = false;
+        boolean result;
 
         // Delete any related split transactions.
         result = this.deleteSplitCategories();
         // Exit if the deletion of splits failed.
-        if(result == false) return false;
+        if(!result) return false;
 
         // Delete recurring transactions.
         int deleteResult = this.Activity.getContentResolver().delete(
                 new TableBillsDeposits().getUri(),
                 TableBillsDeposits.BDID + "=" + this.RecurringTransactionId, null);
-        if (deleteResult != 0) {
-            // result is true if deletion of related splits was successful.
-            // result = result;
-        } else {
+        if (deleteResult == 0) {
             Toast.makeText(this.Activity, R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
             Log.w(LOGCAT, "Deleting recurring transaction " +
                     this.RecurringTransactionId + " failed.");
             result = false;
         }
 
+        // result is true if deletion of related splits was successful.
+        // result = result;
+
         return result;
     }
 
     /**
      * Delete any split categories for the current recurring transaction.
-     * @return
+     * @return success
      */
     public boolean deleteSplitCategories() {
         boolean result = false;
@@ -220,11 +217,10 @@ public class RecurringTransaction {
      * @return cursor for all the related split transactions
      */
     private Cursor getCursorForSplitTransactions(){
-        Cursor curSplit = this.Activity.getContentResolver().query(
+
+        return this.Activity.getContentResolver().query(
                 mSplitCategories.getUri(), null,
                 TableBudgetSplitTransactions.TRANSID + "=" + Integer.toString(this.RecurringTransactionId), null,
                 TableBudgetSplitTransactions.SPLITTRANSID);
-
-        return curSplit;
     }
 }

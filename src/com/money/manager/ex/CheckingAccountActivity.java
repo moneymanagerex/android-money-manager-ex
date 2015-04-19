@@ -1305,7 +1305,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         values.put(TableCheckingAccount.STATUS, mStatus);
         values.put(TableCheckingAccount.CATEGID, !chbSplitTransaction.isCheck() ? mCategoryId : -1);
         values.put(TableCheckingAccount.SUBCATEGID, !chbSplitTransaction.isCheck() ? mSubCategoryId : -1);
-        String transactionDate = DateUtils.getSQLiteStringDate(getApplicationContext(), (Date) txtSelectDate.getTag());
+        String transactionDate = DateUtils.getSQLiteStringDate((Date) txtSelectDate.getTag());
         values.put(TableCheckingAccount.TRANSDATE, transactionDate);
         values.put(TableCheckingAccount.FOLLOWUPID, -1);
         values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) txtTotAmount.getTag());

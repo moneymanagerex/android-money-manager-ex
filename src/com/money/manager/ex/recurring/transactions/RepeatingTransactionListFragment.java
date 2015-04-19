@@ -119,13 +119,13 @@ public class RepeatingTransactionListFragment extends BaseListFragment
                 nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
                 repeats = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
                 bdId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
-                date = DateUtils.getDateFromString(getActivity().getApplicationContext(), nextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
+                date = DateUtils.getDateFromString(nextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
                 date = DateUtils.getDateNextOccurrence(date, repeats);
                 if (date != null) {
                     Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
                     intent.setAction(Constants.INTENT_ACTION_INSERT);
                     intent.putExtra(CheckingAccountActivity.KEY_BDID_ID, bdId);
-                    intent.putExtra(CheckingAccountActivity.KEY_NEXT_OCCURRENCE, DateUtils.getSQLiteStringDate(getActivity(), date));
+                    intent.putExtra(CheckingAccountActivity.KEY_NEXT_OCCURRENCE, DateUtils.getSQLiteStringDate(date));
                     // start for insert new transaction
                     startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
                 }

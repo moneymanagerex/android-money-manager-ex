@@ -48,7 +48,6 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
@@ -102,20 +101,20 @@ public class Core {
 
     }
 
-    /**
-     * Take a versioncode of this application
-     *
-     * @param context
-     * @return application version name
-     */
-    public static String getCurrentVersionName(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            return "";
-        }
-    }
+//    /**
+//     * Take a versioncode of this application
+//     *
+//     * @param context executing context
+//     * @return application version name
+//     */
+//    public static String getCurrentVersionName(Context context) {
+//        try {
+//            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+//            return packageInfo.versionName;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            return "";
+//        }
+//    }
 
     public static String getAppBase64() {
         try {
@@ -174,12 +173,11 @@ public class Core {
      */
     public File backupDatabase() {
         File database = new File(MoneyManagerApplication.getDatabasePath(context));
-        if (database == null || !database.exists())
-            return null;
+        if (!database.exists()) return null;
         //create folder to copy database
         File folderOutput = getExternalStorageDirectoryApplication();
         //take a folder of database
-        ArrayList<File> filesFromCopy = new ArrayList<File>();
+        ArrayList<File> filesFromCopy = new ArrayList<>();
         //add current database
         filesFromCopy.add(database);
         //get file journal
@@ -286,7 +284,7 @@ public class Core {
     /**
      * Return application theme choice from user
      *
-     * @return
+     * @return application theme id
      */
     public int getThemeApplication() {
         try {
@@ -305,8 +303,7 @@ public class Core {
 
     public boolean usingDarkTheme(){
         int currentTheme = this.getThemeApplication();
-        boolean isDarkTheme = currentTheme == R.style.Theme_Money_Manager;
-        return isDarkTheme;
+        return currentTheme == R.style.Theme_Money_Manager;
     }
 
     /**
@@ -331,6 +328,8 @@ public class Core {
             payee.setPayeeName(cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
             payee.setCategId(cursor.getInt(cursor.getColumnIndex(TablePayee.CATEGID)));
             payee.setSubCategId(cursor.getInt(cursor.getColumnIndex(TablePayee.SUBCATEGID)));
+
+            cursor.close();
         }
         //close database
         //helper.close();
@@ -438,25 +437,25 @@ public class Core {
 //        return getCategSubName(queryCategorySubCategory.getCategId(), queryCategorySubCategory.getSubCategId());
 //    }
 
-    /**
-     * Returns category and sub-category formatted
-     *
-     * @param category object
-     * @return category : sub-category
-     */
-    public String getCategSubName(TableCategory category) {
-        return getCategSubName(category.getCategId(), -1);
-    }
+//    /**
+//     * Returns category and sub-category formatted
+//     *
+//     * @param category object
+//     * @return category : sub-category
+//     */
+//    public String getCategSubName(TableCategory category) {
+//        return getCategSubName(category.getCategId(), -1);
+//    }
 
-    /**
-     * Returns category and sub-category formatted
-     *
-     * @param subCategory object
-     * @return category : sub-category
-     */
-    public String getCategSubName(TableSubCategory subCategory) {
-        return getCategSubName(subCategory.getCategId(), subCategory.getSubCategId());
-    }
+//    /**
+//     * Returns category and sub-category formatted
+//     *
+//     * @param subCategory object
+//     * @return category : sub-category
+//     */
+//    public String getCategSubName(TableSubCategory subCategory) {
+//        return getCategSubName(subCategory.getCategId(), subCategory.getSubCategId());
+//    }
 
     /**
      * Retrieve value of info
@@ -466,7 +465,7 @@ public class Core {
      */
     public String getInfoValue(String info) {
         TableInfoTable infoTable = new TableInfoTable();
-        MoneyManagerOpenHelper helper = null;
+        MoneyManagerOpenHelper helper;
         Cursor data = null;
         String ret = null;
 
@@ -551,7 +550,7 @@ public class Core {
         HashMap<String, String> symbols = getCurrenciesCodeAndSymbol();
 
         for (Locale locale : locales) {
-            Currency currency = null;
+            Currency currency;
             try {
                 currency = Currency.getInstance(locale);
 
@@ -596,15 +595,13 @@ public class Core {
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        }
-        return false;
+
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public boolean isPhone() {
-        return !(isTablet());
-    }
+//    public boolean isPhone() {
+//        return !(isTablet());
+//    }
 
     /**
      * Function that determines if the application is running on tablet
@@ -622,7 +619,7 @@ public class Core {
      * Change the application database
      *
      * @param path new database
-     * @return
+     * @return indicator whether the operation was successful
      */
     public boolean changeDatabase(String path) {
         File file = new File(path);
@@ -658,7 +655,7 @@ public class Core {
      * Resolve the id attribute into int value
      *
      * @param attr id attribute
-     * @return
+     * @return resource id
      */
     public int resolveIdAttribute(int attr) {
         TypedValue tv = new TypedValue();
@@ -672,14 +669,14 @@ public class Core {
      * Update value of info
      *
      * @param info  to be updated
-     * @param value
+     * @param value value to be used
      * @return true if update success otherwise false
      */
     public boolean setInfoValue(String info, String value) {
-        boolean ret = true;
+        boolean ret;
         TableInfoTable infoTable = new TableInfoTable();
-        MoneyManagerOpenHelper helper = null;
-        boolean exists = false;
+        MoneyManagerOpenHelper helper;
+        boolean exists;
         // check if exists info
         exists = !TextUtils.isEmpty(getInfoValue(info));
         // content values
@@ -689,7 +686,8 @@ public class Core {
         try {
             helper = MoneyManagerOpenHelper.getInstance(context);
             if (exists) {
-                ret = helper.getWritableDatabase().update(infoTable.getSource(), values, TableInfoTable.INFONAME + "=?", new String[]{info}) >= 0;
+                ret = helper.getWritableDatabase().update(infoTable.getSource(), values,
+                        TableInfoTable.INFONAME + "=?", new String[]{info}) >= 0;
             } else {
                 values.put(TableInfoTable.INFONAME, info);
                 ret = helper.getWritableDatabase().insert(infoTable.getSource(), null, values) >= 0;
@@ -697,8 +695,6 @@ public class Core {
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
             ret = false;
-        } finally {
-            //if (helper != null) helper.close();
         }
 
         return ret;
