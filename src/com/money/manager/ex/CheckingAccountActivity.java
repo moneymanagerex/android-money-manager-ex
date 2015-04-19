@@ -296,6 +296,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
      * After the user accepts, remove any split categories.
      */
     private void removeAllSplitCategories() {
+        if(mSplitTransactions == null) return;
+
         for(int i = 0; i < mSplitTransactions.size(); i++) {
             TableSplitTransactions split = mSplitTransactions.get(i);
             int id = split.getSplitTransId();
