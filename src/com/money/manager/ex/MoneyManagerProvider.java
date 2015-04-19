@@ -323,7 +323,7 @@ public class MoneyManagerProvider extends ContentProvider {
         Cursor cursorRet;
         // compose log verbose instruction
         String log;
-        // check type of instance dataset
+        // check type of instance data set
         if (Dataset.class.isInstance(ret)) {
             Dataset dataset = ((Dataset) ret);
             // compose log
@@ -340,7 +340,7 @@ public class MoneyManagerProvider extends ContentProvider {
                     log += " WHERE " + selection;
                 }
                 if (TextUtils.isEmpty(sortOrder) == false) {
-                    log += " OREDER BY " + sortOrder;
+                    log += " ORDER BY " + sortOrder;
                 }
                 if (selectionArgs != null) {
                     log += "; ARGS=" + Arrays.asList(selectionArgs).toString();
