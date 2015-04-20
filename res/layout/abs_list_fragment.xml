@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Copyright (C) 2012-2015 Alessandro Lazzari
   ~
@@ -17,7 +16,6 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -46,33 +44,33 @@
 
     </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/listContainer"
+    <FrameLayout
+        android:id="@+id/listContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@android:id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:drawSelectorOnTop="false" />
 
-            <ListView
-                android:id="@android:id/list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawSelectorOnTop="false" />
+        <ScrollView
+            android:id="@+id/emptyViewScroll"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true">
 
-            <ScrollView
-                android:id="@+id/emptyViewScroll"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:fillViewport="true">
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <TextView
-                android:id="@android:id/empty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            </ScrollView>
-        </FrameLayout>
+        </ScrollView>
+    </FrameLayout>
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
