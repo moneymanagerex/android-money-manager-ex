@@ -214,8 +214,10 @@ public abstract class BaseReportFragment extends BaseListFragment implements Loa
                         mFromDate = DateUtils.getDateFromDatePicker(fromDatePicker);
                         mToDate = DateUtils.getDateFromDatePicker(toDatePicker);
 
-                        String whereClause = ViewMobileData.Date + ">='" + DateUtils.getSQLiteStringDate(mFromDate) + "' AND " +
-                                ViewMobileData.Date + "<='" + DateUtils.getSQLiteStringDate(mToDate) + "'";
+                        String whereClause = ViewMobileData.Date + ">='" +
+                                DateUtils.getSQLiteStringDate(getActivity(), mFromDate) + "' AND " +
+                                ViewMobileData.Date + "<='" +
+                                DateUtils.getSQLiteStringDate(getActivity(), mToDate) + "'";
                         //compose bundle
                         Bundle args = new Bundle();
                         args.putString(KEY_WHERE_CLAUSE, whereClause);

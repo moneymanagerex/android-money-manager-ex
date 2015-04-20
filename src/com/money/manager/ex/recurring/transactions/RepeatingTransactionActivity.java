@@ -552,7 +552,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         if (!(TextUtils.isEmpty(mNextOccurrence))) {
             try {
-                txtNextOccurrence.setTag(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mNextOccurrence));
+                Locale locale = getResources().getConfiguration().locale;
+                txtNextOccurrence.setTag(new SimpleDateFormat("yyyy-MM-dd", locale).parse(mNextOccurrence));
             } catch (ParseException e) {
                 Log.e(LOGCAT, e.getMessage());
             }
@@ -575,7 +576,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     try {
-                        Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                        Locale locale = getResources().getConfiguration().locale;
+                        Date date = new SimpleDateFormat("yyyy-MM-dd", locale)
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         txtNextOccurrence.setTag(date);
                         formatExtendedDate(txtNextOccurrence);
@@ -644,7 +646,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransactions);
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
         outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
-        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(txtNextOccurrence.getTag()));
+        Locale locale = getResources().getConfiguration().locale;
+        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat("yyyy-MM-dd", locale)
+                .format(txtNextOccurrence.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
         if (!TextUtils.isEmpty(edtTimesRepeated.getText())) {
             outState.putInt(KEY_NUM_OCCURRENCE, Integer.parseInt(edtTimesRepeated.getText().toString()));
@@ -886,7 +890,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
     public void formatExtendedDate(TextView dateTextView) {
         try {
-            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", Locale.US).format((Date) dateTextView.getTag()));
+            Locale locale = getResources().getConfiguration().locale;
+            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", locale).format((Date) dateTextView.getTag()));
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
         }

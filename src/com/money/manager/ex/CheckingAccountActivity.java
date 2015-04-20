@@ -530,7 +530,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         txtSelectDate = (TextView) findViewById(R.id.textViewDate);
         if (!(TextUtils.isEmpty(mDate))) {
             try {
-                txtSelectDate.setTag(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mDate));
+                txtSelectDate.setTag(new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale)
+                        .parse(mDate));
             } catch (ParseException e) {
                 Log.e(LOGCAT, e.getMessage());
             }
@@ -553,7 +554,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     try {
-                        Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                        Date date = new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale)
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         txtSelectDate.setTag(date);
                         formatExtendedDate(txtSelectDate);
@@ -1135,7 +1136,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
 
     public void formatExtendedDate(TextView dateTextView) {
         try {
-            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", Locale.US).format((Date) dateTextView.getTag()));
+            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", getResources().getConfiguration().locale)
+                    .format((Date) dateTextView.getTag()));
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
         }
@@ -1305,7 +1307,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         values.put(TableCheckingAccount.STATUS, mStatus);
         values.put(TableCheckingAccount.CATEGID, !chbSplitTransaction.isCheck() ? mCategoryId : -1);
         values.put(TableCheckingAccount.SUBCATEGID, !chbSplitTransaction.isCheck() ? mSubCategoryId : -1);
-        String transactionDate = DateUtils.getSQLiteStringDate((Date) txtSelectDate.getTag());
+        String transactionDate = DateUtils.getSQLiteStringDate(this, (Date) txtSelectDate.getTag());
         values.put(TableCheckingAccount.TRANSDATE, transactionDate);
         values.put(TableCheckingAccount.FOLLOWUPID, -1);
         values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) txtTotAmount.getTag());

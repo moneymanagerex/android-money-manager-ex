@@ -268,11 +268,15 @@ public class SearchFragment extends Fragment implements InputAmountDialogListene
         }
         //from date
         if (!TextUtils.isEmpty(txtFromDate.getText())) {
-            whereClause.add(ViewMobileData.Date + ">='" + DateUtils.getSQLiteStringDate(DateUtils.getDateFromString(getActivity().getApplicationContext(), String.valueOf(txtFromDate.getText()))) + "'");
+            whereClause.add(ViewMobileData.Date + ">='" + DateUtils.getSQLiteStringDate(
+                    getActivity(), DateUtils.getDateFromString(
+                            getActivity().getApplicationContext(), String.valueOf(txtFromDate.getText()))) + "'");
         }
         //to date
         if (!TextUtils.isEmpty(txtToDate.getText())) {
-            whereClause.add(ViewMobileData.Date + "<='" + DateUtils.getSQLiteStringDate(DateUtils.getDateFromString(getActivity().getApplicationContext(), String.valueOf(txtToDate.getText()))) + "'");
+            whereClause.add(ViewMobileData.Date + "<='" + DateUtils.getSQLiteStringDate(
+                    getActivity(), DateUtils.getDateFromString(
+                            getActivity().getApplicationContext(), String.valueOf(txtToDate.getText()))) + "'");
         }
         //payee
         if (txtSelectPayee.getTag() != null) {

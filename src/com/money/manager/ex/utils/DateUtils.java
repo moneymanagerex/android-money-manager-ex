@@ -47,7 +47,7 @@ public class DateUtils {
      * @return date converted
      */
     public static Date getDateFromString(Context ctx, String date) {
-        return getDateFromString(date, getUserDatePattern(ctx));
+        return getDateFromString(ctx, date, getUserDatePattern(ctx));
     }
 
     /**
@@ -57,9 +57,10 @@ public class DateUtils {
      * @param pattern to use for convert
      * @return date object converted
      */
-    public static Date getDateFromString(String date, String pattern) {
+    public static Date getDateFromString(Context context, String date, String pattern) {
         try {
-            return new SimpleDateFormat(pattern, Locale.US).parse(date);
+            Locale locale = context.getResources().getConfiguration().locale;
+            return new SimpleDateFormat(pattern, locale).parse(date);
         } catch (ParseException e) {
             Log.e(LOGCAT, e.getMessage());
         }
@@ -73,7 +74,7 @@ public class DateUtils {
      * @return string date representation
      */
     public static String getStringFromDate(Context ctx, Date date) {
-        return getStringFromDate(date, getUserDatePattern(ctx));
+        return getStringFromDate(ctx, date, getUserDatePattern(ctx));
     }
 
     /**
@@ -81,8 +82,9 @@ public class DateUtils {
      * @param pattern pattern to use to convert
      * @return string representation of the date
      */
-    public static String getStringFromDate(Date date, String pattern) {
-        return new SimpleDateFormat(pattern, Locale.US).format(date);
+    public static String getStringFromDate(Context context, Date date, String pattern) {
+        Locale locale = context.getResources().getConfiguration().locale;
+        return new SimpleDateFormat(pattern, locale).format(date);
     }
 
     /**
@@ -91,9 +93,9 @@ public class DateUtils {
      * @param date to convert
      * @return string formatted date SQLite
      */
-    public static String getSQLiteStringDate(Date date) {
+    public static String getSQLiteStringDate(Context context, Date date) {
 
-        return getStringFromDate(date, Constants.PATTERN_DB_DATE);
+        return getStringFromDate(context, date, Constants.PATTERN_DB_DATE);
     }
 
     /**
