@@ -277,7 +277,7 @@
             android:label="@string/category" >
         </activity>
         <activity
-            android:name=".SearchActivity"
+            android:name=".search.SearchActivity"
             android:label="@string/search" >
         </activity>
         <activity
