@@ -61,7 +61,6 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.utils.CurrencyUtils;
-import com.money.manager.ex.view.RobotoTextView;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -71,6 +70,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Recurring transactions are stored in BillsDeposits table.
@@ -89,7 +89,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     public static final String KEY_TO_ACCOUNT_NAME = "RepeatingTransaction:ToAccountName";
     public static final String KEY_TRANS_CODE = "RepeatingTransaction:TransCode";
     public static final String KEY_TRANS_STATUS = "RepeatingTransaction:TransStatus";
-    public static final String KEY_TRANS_DATE = "RepeatingTransaction:TransDate";
+//    public static final String KEY_TRANS_DATE = "RepeatingTransaction:TransDate";
     public static final String KEY_TRANS_AMOUNT = "RepeatingTransaction:TransAmount";
     public static final String KEY_TRANS_TOTAMOUNT = "RepeatingTransaction:TransTotAmount";
     public static final String KEY_PAYEE_ID = "RepeatingTransaction:PayeeId";
@@ -161,7 +161,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         boolean ret = false;
         // take data of payee
         TablePayee payee = new TablePayee();
-        Cursor curPayee = getContentResolver().query(payee.getUri(), payee.getAllColumns(), "PAYEEID=" + Integer.toString(payeeId), null, null);
+        Cursor curPayee = getContentResolver().query(payee.getUri(), payee.getAllColumns(),
+                "PAYEEID=" + Integer.toString(payeeId), null, null);
         // check cursor is valid
         if ((curPayee != null) && (curPayee.moveToFirst())) {
             // chek if category is valid
@@ -172,7 +173,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 QueryCategorySubCategory category = new QueryCategorySubCategory(getApplicationContext());
                 // compose selection
                 String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
-                Cursor curCategory = getContentResolver().query(category.getUri(), category.getAllColumns(), where, null, null);
+                Cursor curCategory = getContentResolver().query(category.getUri(),
+                        category.getAllColumns(), where, null, null);
                 // check cursor is valid
                 if ((curCategory != null) && (curCategory.moveToFirst())) {
                     // take names of category and subcategory
@@ -180,8 +182,12 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
                     // return true
                     ret = true;
+
+                    curCategory.close();
                 }
             }
+
+            curPayee.close();
         }
 
         return ret;
@@ -297,6 +303,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
         txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
         txtSplit = (TextView) findViewById(R.id.splitTextView);
+//        RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
 
         // Account
         // account list <> to populate the spin
@@ -365,13 +372,13 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
         mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
         // create adapter for TransCode
-        ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 mTransCodeItems);
         adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinTransCode.setAdapter(adapterTrans);
         // select a current value
-        if (TextUtils.isEmpty(mTransCode) == false) {
+        if (!TextUtils.isEmpty(mTransCode)) {
             if (Arrays.asList(mTransCodeValues).indexOf(mTransCode) >= 0) {
                 spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mTransCode), true);
             }
@@ -399,7 +406,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         mStatusItems = getResources().getStringArray(R.array.status_items);
         mStatusValues = getResources().getStringArray(R.array.status_values);
         // create adapter for spinnerStatus
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStatusItems);
+        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mStatusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinStatus.setAdapter(adapterStatus);
         // select current value
@@ -476,8 +483,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         });
         // split text is a separate control.
-        RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
-        splitText.setOnClickListener(new OnClickListener() {
+        txtSplit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
@@ -495,7 +501,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                         && spinAccount.getSelectedItemPosition() < mAccountList.size()) {
                     currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
                 }
-                double amount = (Double) ((TextView) v).getTag();
+                double amount = (Double) v.getTag();
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
@@ -546,12 +552,13 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         if (!(TextUtils.isEmpty(mNextOccurrence))) {
             try {
-                txtNextOccurrence.setTag(new SimpleDateFormat("yyyy-MM-dd").parse(mNextOccurrence));
+                Locale locale = getResources().getConfiguration().locale;
+                txtNextOccurrence.setTag(new SimpleDateFormat("yyyy-MM-dd", locale).parse(mNextOccurrence));
             } catch (ParseException e) {
                 Log.e(LOGCAT, e.getMessage());
             }
         } else {
-            txtNextOccurrence.setTag((Date) Calendar.getInstance().getTime());
+            txtNextOccurrence.setTag(Calendar.getInstance().getTime());
         }
         formatExtendedDate(txtNextOccurrence);
         txtNextOccurrence.setOnClickListener(new OnClickListener() {
@@ -559,7 +566,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             public void onClick(View v) {
                 Calendar date = Calendar.getInstance();
                 date.setTime((Date) txtNextOccurrence.getTag());
-                DatePickerDialog dialog = new DatePickerDialog(RepeatingTransactionActivity.this, mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+                DatePickerDialog dialog = new DatePickerDialog(RepeatingTransactionActivity.this,
+                        mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
                 dialog.show();
             }
 
@@ -568,7 +576,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     try {
-                        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
+                        Locale locale = getResources().getConfiguration().locale;
+                        Date date = new SimpleDateFormat("yyyy-MM-dd", locale)
+                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         txtNextOccurrence.setTag(date);
                         formatExtendedDate(txtNextOccurrence);
                     } catch (Exception e) {
@@ -636,7 +646,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransactions);
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
         outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
-        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat("yyyy-MM-dd").format(txtNextOccurrence.getTag()));
+        Locale locale = getResources().getConfiguration().locale;
+        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat("yyyy-MM-dd", locale)
+                .format(txtNextOccurrence.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
         if (!TextUtils.isEmpty(edtTimesRepeated.getText())) {
             outState.putInt(KEY_NUM_OCCURRENCE, Integer.parseInt(edtTimesRepeated.getText().toString()));
@@ -758,12 +770,14 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 TableAccountList.ACCOUNTID + "=?",
                 new String[]{Integer.toString(accountId)}, null);
         // check if cursor is valid and open
-        if ((cursor == null) || (cursor.moveToFirst() == false)) {
+        if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
         }
 
         // set payeename
         mToAccountName = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
+
+        cursor.close();
 
         return true;
     }
@@ -771,9 +785,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     /**
      * Query info of Category and Subcategory
      *
-     * @param categoryId
-     * @param subCategoryId
-     * @return
+     * @param categoryId Id of the category
+     * @param subCategoryId Id of the sub-category
+     * @return indicator whether the operation was successful.
      */
     private boolean selectCategSubName(int categoryId, int subCategoryId) {
         TableCategory category = new TableCategory();
@@ -784,6 +798,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
             mCategoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
+            cursor.close();
         } else {
             mCategoryName = null;
         }
@@ -792,6 +807,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
             mSubCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
+            cursor.close();
         } else {
             mSubCategoryName = null;
         }
@@ -812,12 +828,14 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 TablePayee.PAYEEID + "=?",
                 new String[]{Integer.toString(payeeId)}, null);
         // check if cursor is valid and open
-        if ((cursor == null) || (cursor.moveToFirst() == false)) {
+        if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
         }
 
-        // set payeename
+        // set payee name
         mPayeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
+
+        cursor.close();
 
         return true;
     }
@@ -834,7 +852,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 TableBillsDeposits.BDID + "=?",
                 new String[]{Integer.toString(billId)}, null);
         // check if cursor is valid and open
-        if ((cursor == null) || (cursor.moveToFirst() == false)) {
+        if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
         }
 
@@ -861,6 +879,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             mSplitTransactions = recurringTransaction.loadSplitTransactions();
         }
 
+        cursor.close();
+
         selectAccountName(mToAccountId);
         selectPayeeName(mPayeeId);
         selectCategSubName(mCategoryId, mSubCategoryId);
@@ -870,15 +890,15 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
     public void formatExtendedDate(TextView dateTextView) {
         try {
-            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy").format((Date) dateTextView.getTag()));
+            Locale locale = getResources().getConfiguration().locale;
+            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", locale).format((Date) dateTextView.getTag()));
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
         }
     }
 
     public boolean hasSplitCategories() {
-        boolean hasSplit = mSplitTransactions != null && mSplitTransactions.size() >= 0;
-        return hasSplit;
+        return mSplitTransactions != null && !mSplitTransactions.isEmpty();
     }
 
     public void refreshCategoryName() {
@@ -904,7 +924,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
      */
     public void refreshPayeeName() {
         // write into text button payee name
-        txtSelectPayee.setText(TextUtils.isEmpty(mPayeeName) == false ? mPayeeName : mTextDefaultPayee);
+        txtSelectPayee.setText(!TextUtils.isEmpty(mPayeeName) ? mPayeeName : mTextDefaultPayee);
     }
 
     public void refreshTransactionCode() {
@@ -952,7 +972,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     /**
      * validate data insert in activity
      *
-     * @return
+     * @return validation result
      */
     private boolean validateData() {
         if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
@@ -966,7 +986,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         } else if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
             Core.alertDialog(this, R.string.error_payee_not_selected).show();
-            ;
+
             return false;
         }
         if (mCategoryId == -1 && (!chbSplitTransaction.isCheck())) {
@@ -980,7 +1000,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         if (TextUtils.isEmpty(txtTotAmount.getText())) {
             if (TextUtils.isEmpty(txtAmount.getText())) {
                 Core.alertDialog(this, R.string.error_totamount_empty).show();
-                ;
+
                 return false;
             } else {
                 txtTotAmount.setText(txtAmount.getText());
@@ -988,7 +1008,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         }
         if (TextUtils.isEmpty(txtNextOccurrence.getText().toString())) {
             Core.alertDialog(this, R.string.error_next_occurrence_not_populate).show();
-            ;
+
             return false;
         }
         return true;
@@ -1027,8 +1047,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) txtTotAmount.getTag());
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
         values.put(TableBillsDeposits.NOTES, edtNotes.getText().toString());
-        values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat("yyyy-MM-dd").format(txtNextOccurrence.getTag()));
-        values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat("yyyy-MM-dd").format(txtNextOccurrence.getTag()));
+        values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(txtNextOccurrence.getTag()));
+        values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(txtNextOccurrence.getTag()));
         values.put(TableBillsDeposits.REPEATS, mFrequencies);
         values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0 ? edtTimesRepeated.getText().toString() : null);
 

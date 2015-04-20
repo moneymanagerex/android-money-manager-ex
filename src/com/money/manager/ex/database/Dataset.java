@@ -55,7 +55,8 @@ public abstract class Dataset implements BaseColumns {
 		this.source = source;
 		this.type = type;
 		this.basepath = basepath;
-	};
+	}
+
 	/**
 	 * The default check in CheckingAccount. If checked to another table use canDelete(Context context, ContentValues values, String className)
 	 * @param context context from call
@@ -79,7 +80,7 @@ public abstract class Dataset implements BaseColumns {
 		}
 		// compose filter
 		String selection = "";
-		List<String> selectionArgs = new ArrayList<String>();
+		List<String> selectionArgs = new ArrayList<>();
 		
 		for(Entry<String, Object> entry : values.valueSet()) {
 			if (!(TextUtils.isEmpty(selection))) {
@@ -92,7 +93,7 @@ public abstract class Dataset implements BaseColumns {
 		@SuppressWarnings("rawtypes")
 		Class[] classParm = null;
 		Object[] objectParm = null;
-		Dataset dataset = null;
+		Dataset dataset;
 		try {
 			Class<?> cls = Class.forName(className);
 			Constructor<?> cnt = cls.getConstructor(classParm);
@@ -107,13 +108,15 @@ public abstract class Dataset implements BaseColumns {
 			return false;
 		}
 		// check if referenced
-		Cursor cursor = context.getContentResolver().query(dataset.getUri(), null, selection, selectionArgs.toArray(new String[selectionArgs.size()]), null);
+		Cursor cursor = context.getContentResolver().query(dataset.getUri(), null,
+				selection, selectionArgs.toArray(new String[selectionArgs.size()]), null);
 		if (cursor != null && cursor.getCount() <= 0) {
+			cursor.close();
 			return true;
 		} else {
 			return false;
 		}
-	};
+	}
 
 	/**
 	 * 
@@ -134,6 +137,7 @@ public abstract class Dataset implements BaseColumns {
 	public String getSource() {
 		return source;
 	}
+
 	/**
 	 * 
 	 * @return SQL statment
@@ -148,12 +152,14 @@ public abstract class Dataset implements BaseColumns {
 			return null;
 		}
 	}
+
 	/**
 	 * @return the type
 	 */
 	public DatasetType getType() {
 		return type;
 	}
+
 	/**
 	 * 
 	 * @return the Uri for the content provider
@@ -165,9 +171,13 @@ public abstract class Dataset implements BaseColumns {
 			//che tye of dataset
 			switch (this.type) {
 			case TABLE:
+				// todo: inspect what was the intention here. The result of the operation is ignored.
+
 				parse.concat("tables/");
 				break;
 			case QUERY:
+				// todo: inspect what was the intention here. The result of the operation is ignored.
+
 				parse.concat("queries/");
 				break;
 			default:
@@ -201,9 +211,7 @@ public abstract class Dataset implements BaseColumns {
 	}
 	/**
 	 * Populates the instance of the class to current record the cursor
-	 * @param c
+	 * @param c cursor
 	 */
-	protected void setValueFromCursor(Cursor c) {
-		return;
-	}
+	protected void setValueFromCursor(Cursor c) {	}
 }

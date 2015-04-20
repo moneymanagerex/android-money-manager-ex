@@ -61,9 +61,10 @@ public class AccountBillsDashExtension extends DashClockExtension {
                     // move to next row
                     cursor.moveToNext();
                 }
+
+                cursor.close();
             }
-            // close data
-            cursor.close();
+
             // show data
             publishUpdate(new ExtensionData()
                     .visible(true)

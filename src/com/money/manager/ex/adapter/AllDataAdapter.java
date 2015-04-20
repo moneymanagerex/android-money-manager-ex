@@ -105,10 +105,13 @@ public class AllDataAdapter extends CursorAdapter {
         holder.txtStatus.setTextColor(Color.GRAY);
         // date group
         try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(cursor.getString(cursor.getColumnIndex(DATE)));
-            holder.txtMonth.setText(new SimpleDateFormat("MMM", Locale.US).format(date));
-            holder.txtYear.setText(new SimpleDateFormat("yyyy", Locale.US).format(date));
-            holder.txtDay.setText(new SimpleDateFormat("dd", Locale.US).format(date));
+            Locale locale = mContext.getResources().getConfiguration().locale;
+
+            Date date = new SimpleDateFormat("yyyy-MM-dd", locale)
+                    .parse(cursor.getString(cursor.getColumnIndex(DATE)));
+            holder.txtMonth.setText(new SimpleDateFormat("MMM", locale).format(date));
+            holder.txtYear.setText(new SimpleDateFormat("yyyy", locale).format(date));
+            holder.txtDay.setText(new SimpleDateFormat("dd", locale).format(date));
         } catch (ParseException e) {
             Log.e(AllDataAdapter.class.getSimpleName(), e.getMessage());
         }

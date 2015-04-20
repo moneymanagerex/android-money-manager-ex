@@ -172,7 +172,7 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
                 TableCurrencyFormats.CURRENCYID + "=?",
                 new String[]{Integer.toString(currencyId)}, null);
         // check if cursor is valid and open
-        if ((cursor == null) || (cursor.moveToFirst() == false)) {
+        if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
         }
         // populate values
@@ -186,6 +186,8 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
         edtGroup.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.GROUP_SEPARATOR)));
         edtScale.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.SCALE)));
         edtConversion.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.BASECONVRATE)));
+
+        cursor.close();
 
         return true;
     }
@@ -209,9 +211,10 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
      * @return true if data is update into database
      */
     private boolean updateData() {
-        if (validateData() == false) {
+        if (!validateData()) {
             return false;
         }
+
         // create contentvalues for update data
         ContentValues values = new ContentValues();
         // set values

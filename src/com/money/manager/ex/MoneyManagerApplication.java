@@ -84,7 +84,7 @@ public class MoneyManagerApplication extends Application {
     }
 
     /**
-     * @param context
+     * @param context Executing context.
      * @return path database file
      */
     @SuppressLint("SdCardPath")
@@ -114,14 +114,15 @@ public class MoneyManagerApplication extends Application {
     }
 
     /**
-     * @param context
+     * @param context Executing context for which to get the preferences.
      * @param dbpath  path of database file to save
      */
     public static void setDatabasePath(Context context, String dbpath) {
-        // save a reference dbpath
+        // save a reference db path
         Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.putString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), dbpath);
-        editor.commit();
+//        editor.commit();
+        editor.apply();
     }
 
     public static float getTextSize() {
@@ -143,16 +144,18 @@ public class MoneyManagerApplication extends Application {
     /**
      * Shown database path with toast message
      *
-     * @param context
+     * @param context Executing context.
      */
     public static void showDatabasePathWork(Context context) {
         String currentPath = getDatabasePath(context);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lastPath = preferences.getString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), "");
         if (!lastPath.equals(currentPath)) {
-            preferences.edit().putString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), currentPath).commit();
+            preferences.edit().putString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), currentPath).apply();
+//                    .commit();
             try {
-                Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG)
+                        .show();
             } catch (Exception e) {
                 Log.e(LOGCAT, e.getMessage());
             }
@@ -160,7 +163,7 @@ public class MoneyManagerApplication extends Application {
     }
 
     /**
-     * @param context
+     * @param context Executing context.
      * @return the username
      */
     public String getFromDatabaseUserName(Context context) {
@@ -171,7 +174,9 @@ public class MoneyManagerApplication extends Application {
         if (data != null && data.moveToFirst()) {
             ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
         }
-        data.close();
+        if (data != null) {
+            data.close();
+        }
         //helper.close();
 
         return ret;
@@ -214,8 +219,8 @@ public class MoneyManagerApplication extends Application {
     /**
      * Compute account balance and returns balance
      *
-     * @param context
-     * @return
+     * @param context Executing context
+     * @return total
      */
     public double getSummaryAccounts(Context context) {
         Core core = new Core(context);
@@ -235,12 +240,14 @@ public class MoneyManagerApplication extends Application {
 
         if (data != null && data.moveToFirst()) {
             // calculate summary
-            while (data.isAfterLast() == false) {
+            while (!data.isAfterLast()) {
                 curTotal = curTotal + data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
                 data.moveToNext();
             }
         }
-        data.close();
+        if (data != null) {
+            data.close();
+        }
 
         return curTotal;
     }
@@ -268,7 +275,7 @@ public class MoneyManagerApplication extends Application {
         core.getExternalStorageDirectoryApplication();
 
         // create instance drobpox
-        DropboxHelper dropboxHelper = DropboxHelper.getInstance(getApplicationContext());
+//        DropboxHelper dropboxHelper = DropboxHelper.getInstance(getApplicationContext());
 
         // set default value
         setTextSize(new TextView(getApplicationContext()).getTextSize());
@@ -285,14 +292,15 @@ public class MoneyManagerApplication extends Application {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
     }
 
-    /**
-     * @param theme to save into preferences
-     */
-    public void setApplicationTheme(String theme) {
-        Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        editor.putString(getString(PreferencesConstant.PREF_THEME), theme);
-        editor.commit();
-    }
+//    /**
+//     * @param theme to save into preferences
+//     */
+//    public void setApplicationTheme(String theme) {
+//        Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+//        editor.putString(getString(PreferencesConstant.PREF_THEME), theme);
+////        editor.commit();
+//        editor.apply();
+//    }
 
     public boolean setUserName(String userName) {
         return this.setUserName(userName, false);
@@ -317,29 +325,30 @@ public class MoneyManagerApplication extends Application {
         editPreferences = appPreferences.edit();
         editPreferences.putString(getString(PreferencesConstant.PREF_USER_NAME), userName);
         // commit
-        editPreferences.commit();
+//        editPreferences.commit();
+        editPreferences.apply();
         // set the value
         MoneyManagerApplication.userName = userName;
         return true;
     }
 
-    /**
-     * update all widget of application
-     */
-    public void updateAllWidget() {
-        Class<?>[] classes = {AccountBillsWidgetProvider.class, SummaryWidgetProvider.class};
-        for (Class<?> cls : classes) {
-            try {
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
-                ComponentName componentName = new ComponentName(getApplicationContext(), cls);
-                int[] ids = appWidgetManager.getAppWidgetIds(componentName);
-                Intent update_widget = new Intent();
-                update_widget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-                update_widget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-                getApplicationContext().sendBroadcast(update_widget);
-            } catch (Exception e) {
-                Log.e(LOGCAT, "update All Widget:" + e.getMessage());
-            }
-        }
-    }
+//    /**
+//     * update all widget of application
+//     */
+//    public void updateAllWidget() {
+//        Class<?>[] classes = {AccountBillsWidgetProvider.class, SummaryWidgetProvider.class};
+//        for (Class<?> cls : classes) {
+//            try {
+//                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+//                ComponentName componentName = new ComponentName(getApplicationContext(), cls);
+//                int[] ids = appWidgetManager.getAppWidgetIds(componentName);
+//                Intent update_widget = new Intent();
+//                update_widget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+//                update_widget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+//                getApplicationContext().sendBroadcast(update_widget);
+//            } catch (Exception e) {
+//                Log.e(LOGCAT, "update All Widget:" + e.getMessage());
+//            }
+//        }
+//    }
 }

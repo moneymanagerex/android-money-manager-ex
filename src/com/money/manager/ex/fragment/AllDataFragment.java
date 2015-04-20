@@ -101,7 +101,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     /**
      * Export data to CSV file
      *
-     * @param prefixName
+     * @param prefixName prefix for the file
      */
     public void exportDataToCSVFile(String prefixName) {
         ExportToCsvFile csv = new ExportToCsvFile(getActivity(), (AllDataAdapter) getListAdapter());
@@ -109,12 +109,12 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         csv.execute();
     }
 
-    /**
-     * @return the mGroupId
-     */
-    public int getContextMenuGroupId() {
-        return mGroupId;
-    }
+//    /**
+//     * @return the mGroupId
+//     */
+//    public int getContextMenuGroupId() {
+//        return mGroupId;
+//    }
 
     /**
      * @param mGroupId the mGroupId to set
@@ -359,9 +359,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         return ret;
     }
 
-    private boolean setStatusCheckingAccount(int transId, String status) {
-        return setStatusCheckingAccount(new int[]{transId}, status);
-    }
+//    private boolean setStatusCheckingAccount(int transId, String status) {
+//        return setStatusCheckingAccount(new int[]{transId}, status);
+//    }
 
     private boolean setStatusCheckingAccount(int[] transId, String status) {
         // check if status = "U" convert to empty string
@@ -398,19 +398,21 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                for (int i = 0; i < transactionIds.length; i++) {
-                    int transactionId = transactionIds[i];
-
+                for (int transactionId : transactionIds) {
                     // First delete any splits.
                     // See if there are any split records.
                     TableSplitTransactions split = new TableSplitTransactions();
                     Cursor curSplit = getActivity().getContentResolver().query(split.getUri(), null,
-                            TableSplitTransactions.TRANSID + "=" + Integer.toString(transactionId), null, TableSplitTransactions.SPLITTRANSID);
+                            TableSplitTransactions.TRANSID + "=" + Integer.toString(transactionId),
+                            null, TableSplitTransactions.SPLITTRANSID);
                     int splitCount = curSplit.getCount();
-                    if(splitCount > 0) {
+                    curSplit.close();
+
+                    if (splitCount > 0) {
                         TableSplitTransactions splits = new TableSplitTransactions();
                         int deleteResult = getActivity().getContentResolver().delete(splits.getUri(),
-                                TableSplitTransactions.TRANSID + "=?", new String[]{Integer.toString(transactionIds[i])});
+                                TableSplitTransactions.TRANSID + "=?",
+                                new String[]{Integer.toString(transactionId)});
                         if (deleteResult != splitCount) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                             return;
@@ -421,7 +423,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
                     TableCheckingAccount trans = new TableCheckingAccount();
                     if (getActivity().getContentResolver().delete(
-                            trans.getUri(), TableCheckingAccount.TRANSID + "=?", new String[]{Integer.toString(transactionIds[i])}) == 0) {
+                            trans.getUri(), TableCheckingAccount.TRANSID + "=?",
+                            new String[]{Integer.toString(transactionId)}) == 0) {
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -504,11 +507,11 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
     // Interface for callback fragment
     public interface AllDataFragmentLoaderCallbacks {
-        public void onCallbackCreateLoader(int id, Bundle args);
+        void onCallbackCreateLoader(int id, Bundle args);
 
-        public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data);
+        void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data);
 
-        public void onCallbackLoaderReset(Loader<Cursor> loader);
+        void onCallbackLoaderReset(Loader<Cursor> loader);
     }
 
     // class to manage multi choice mode
@@ -537,7 +540,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, android.view.MenuItem item) {
-            final ArrayList<Integer> transIds = new ArrayList<Integer>();
+            final ArrayList<Integer> transIds = new ArrayList<>();
             if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                 AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
                 Cursor cursor = adapter.getCursor();

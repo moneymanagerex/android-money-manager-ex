@@ -46,6 +46,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -129,7 +132,7 @@ public class CurrencyUtils {
         if (fromCurrencyFormats == null || toCurrencyFormats == null)
             return null;
         // exchange
-        return (double) ((toAmount * toCurrencyFormats.getBaseConvRate()) / fromCurrencyFormats.getBaseConvRate());
+        return (toAmount * toCurrencyFormats.getBaseConvRate()) / fromCurrencyFormats.getBaseConvRate();
     }
 
     public boolean updateCurrencyRateFromBase(Integer toCurrencyId) {
@@ -157,6 +160,13 @@ public class CurrencyUtils {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        // new connection
+        // todo: use this
+//        URL urlObject = createUrl(url);
+//        HttpURLConnection urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+
         // compose connection
         StringBuilder stringBuilder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
@@ -178,7 +188,7 @@ public class CurrencyUtils {
                 // convert string builder in json object
                 JSONObject jsonObject = new JSONObject(stringBuilder.toString());
                 JSONObject jsonRate = jsonObject.getJSONObject(symbolRate);
-                Double rate = (double) jsonRate.getDouble("val");
+                Double rate = jsonRate.getDouble("val");
                 // update value on database
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(TableCurrencyFormats.BASECONVRATE, rate);
@@ -198,6 +208,17 @@ public class CurrencyUtils {
         return true;
     }
 
+//    private URL createUrl(String url) {
+//        URL result = null;
+//        try {
+//            result = new URL(url);
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return result;
+//    }
+
     /**
      * Get all currencies format
      *
@@ -205,7 +226,7 @@ public class CurrencyUtils {
      */
     public List<TableCurrencyFormats> getAllCurrencyFormats() {
         if (mCurrencies != null) {
-            return new ArrayList<TableCurrencyFormats>(mCurrencies.values());
+            return new ArrayList<>(mCurrencies.values());
         } else {
             return Collections.emptyList();
         }
@@ -228,13 +249,13 @@ public class CurrencyUtils {
         return this.getCurrencyFormatted(mBaseCurrencyId, value);
     }
 
-    /**
-     * @param value to format
-     * @return fomatted value
-     */
-    public String getBaseNumericFormatted(Double value) {
-        return getNumericFormatted(mBaseCurrencyId, value);
-    }
+//    /**
+//     * @param value to format
+//     * @return fomatted value
+//     */
+//    public String getBaseNumericFormatted(Double value) {
+//        return getNumericFormatted(mBaseCurrencyId, value);
+//    }
 
     /**
      * @param currencyId of the currency to be formatted
@@ -261,29 +282,29 @@ public class CurrencyUtils {
         }
     }
 
-    /**
-     * @param currencyId of the currency to be formatted
-     * @param value      value to format
-     * @return formatted value
-     */
-    public String getNumericFormatted(Integer currencyId, Double value) {
-        // check if value is null
-        if (value == null)
-            value = 0d;
-
-        // find currencyid
-        if (currencyId != null) {
-            TableCurrencyFormats tableCurrency = getCurrency(currencyId);
-
-            if (tableCurrency == null) {
-                return String.valueOf(value);
-            }
-            // formatted value
-            return tableCurrency.getValueFormatted(value, Boolean.FALSE);
-        } else {
-            return String.valueOf(value);
-        }
-    }
+//    /**
+//     * @param currencyId of the currency to be formatted
+//     * @param value      value to format
+//     * @return formatted value
+//     */
+//    public String getNumericFormatted(Integer currencyId, Double value) {
+//        // check if value is null
+//        if (value == null)
+//            value = 0d;
+//
+//        // find currencyid
+//        if (currencyId != null) {
+//            TableCurrencyFormats tableCurrency = getCurrency(currencyId);
+//
+//            if (tableCurrency == null) {
+//                return String.valueOf(value);
+//            }
+//            // formatted value
+//            return tableCurrency.getValueFormatted(value, Boolean.FALSE);
+//        } else {
+//            return String.valueOf(value);
+//        }
+//    }
 
     /**
      * @param currencyId of the currency to be get
@@ -320,8 +341,8 @@ public class CurrencyUtils {
         // ************************************************************
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
-        MoneyManagerOpenHelper helper = null;
-        Cursor cursor = null;
+        MoneyManagerOpenHelper helper;
+        Cursor cursor;
 
         try {
             // set table name
@@ -347,9 +368,6 @@ public class CurrencyUtils {
             }
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
-        } finally {
-            /*if (helper != null)
-                helper.close();*/
         }
 
         return ret;
@@ -369,8 +387,9 @@ public class CurrencyUtils {
         queryBuilder.setTables(tableInfo.getSource());
 
         // get cursor from query builder
-        MoneyManagerOpenHelper helper = null;
-        Cursor cursorInfo = null;
+        MoneyManagerOpenHelper helper;
+        Cursor cursorInfo;
+
         try {
             helper = MoneyManagerOpenHelper.getInstance(mContext);
             cursorInfo = queryBuilder.query(helper.getReadableDatabase(),
@@ -382,9 +401,6 @@ public class CurrencyUtils {
             }
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
-        } finally {
-			/*if (helper != null)
-				helper.close();*/
         }
 
         return currencyId;
@@ -395,7 +411,6 @@ public class CurrencyUtils {
         int baseCurrencyId = this.getBaseCurrencyId();
 
         TableCurrencyFormats currency = this.getCurrency(baseCurrencyId);
-        String symbol = currency.getCurrencySymbol();
-        return symbol;
+        return currency.getCurrencySymbol();
     }
 }

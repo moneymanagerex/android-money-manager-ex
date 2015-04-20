@@ -38,13 +38,11 @@ public class Passcode {
     /**
      * Constructor of class
      *
-     * @param context
+     * @param context executing context
      */
     public Passcode(Context context) {
         this.mContext = context;
     }
-
-    ;
 
     /**
      * Decrypt passcode
@@ -62,13 +60,11 @@ public class Passcode {
         return ret;
     }
 
-    ;
-
     /**
      * Encrypt clear passcode
      *
      * @param s clear passcode
-     * @return
+     * @return encrypted string
      */
     private String encrypt(String s) {
         String ret = null;
@@ -79,8 +75,6 @@ public class Passcode {
         }
         return ret;
     }
-
-    ;
 
     /**
      * Get decrypt passcode
@@ -96,18 +90,14 @@ public class Passcode {
         return ret;
     }
 
-    ;
-
     /**
      * Return true if passcode has set otherwise false
      *
-     * @return
+     * @return indicator whether there is a passcode or not.
      */
     public boolean hasPasscode() {
         return !(TextUtils.isEmpty(retrievePasscode()));
     }
-
-    ;
 
     private String retrievePasscode() {
         String ret = null;
@@ -115,21 +105,21 @@ public class Passcode {
 
         TableInfoTable infoTable = new TableInfoTable();
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
-        Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[]{INFONAME}, null, null, null);
+        Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null,
+                TableInfoTable.INFONAME + "=?", new String[]{INFONAME}, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             ret = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
+
+            cursor.close();
         }
-        // close connection
-        cursor.close();
-        //helper.close();
-        // return
+
         return ret;
     }
 
     /**
-     * Set a decrypt passcode
+     * Set a decrypt pass code
      *
-     * @param passcode
+     * @param passcode new pass code
      */
     public boolean setPasscode(String passcode) {
         return updatePasscode(encrypt(passcode));
@@ -138,7 +128,7 @@ public class Passcode {
     /**
      * Set a passcode into database
      *
-     * @param passcode
+     * @param passcode passcode to use
      */
     private boolean updatePasscode(String passcode) {
         // content values
