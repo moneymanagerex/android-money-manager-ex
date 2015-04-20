@@ -30,6 +30,8 @@ import com.money.manager.ex.R;
  */
 public class AppSettings {
 
+    public GeneralSettings General;
+
     public AppSettings(Activity activity) {
         mLinkedActivity = activity;
         init();
@@ -67,6 +69,8 @@ public class AppSettings {
         Context context = mLinkedActivity.getApplicationContext();
         mSettings = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mSettings.edit();
+
+        this.General = new GeneralSettings(mLinkedActivity);
     }
 
 }
