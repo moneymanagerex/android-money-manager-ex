@@ -48,7 +48,7 @@
     <string name="summary_show_tutorial">Показать учебник на следующий раз?</string>
     <string name="account">Счет</string>
     <string name="account_list">Список счетов</string>
-    <string name="account_empty_list">No accounts have been found. To create one, tap the green plus button.</string>
+    <string name="account_empty_list">Не найдено ни одной учетной записи. Чтобы создать её, нажмите на зеленый плюс.</string>
     <string name="account_balance">Баланс счета</string>
     <string name="account_reconciled_balance">Выверенный баланс</string>
     <string name="delete_account">Удалить счет</string>
@@ -61,6 +61,7 @@
     <string name="select_currency">Выберите валюту</string>
     <string name="checking">Чековый</string>
     <string name="investment">Инвестиционный</string>
+    <string name="investment_accounts">Инвестиционные счета</string>
     <string name="term">Вклад</string>
     <string name="db_account_insert_failed">Ошибка добавления счета</string>
     <string name="db_account_update_failed">Ошибка обновления счета</string>
@@ -74,12 +75,12 @@
     <string name="delete_payee">Удалить контрагента</string>
     <string name="payee">Контрагент</string>
     <string name="select_payee">Выбрать контрагента</string>
-    <string name="payee_empty_list">No payee has been found. To create one, tap the green plus button.</string>
+    <string name="payee_empty_list">Не найдено ни одного получателя. Чтобы создать его, нажмите на зеленый плюс.</string>
     <string name="from">Из</string>
     <string name="db_payee_update_failed">Ошибка обновления контрагента</string>
     <string name="category">Категория</string>
     <string name="subcategory">Подкатегория</string>
-    <string name="category_empty_list">No category has been found. To create one, tap the green plus button.</string>
+    <string name="category_empty_list">Не найдено ни одной категории. Чтобы создать её, нажмите на зеленый плюс.</string>
     <string name="select_category">Выбрать категорию</string>
     <string name="add_category">Добавить категорию</string>
     <string name="add_subcategory">Добавить подкатегорию</string>
@@ -118,6 +119,7 @@
     <string name="error_toaccount_not_selected">Требуется указать счет получателя</string>
     <string name="error_category_not_selected">Требуется указать категорию</string>
     <string name="error_totamount_empty">Требуется указать полную сумму</string>
+    <string name="error_transfer_to_same_account">Два счета для операции перевода должны быть различны</string>
     <string name="about">О программе</string>
     <string name="add">Добавить</string>
     <string name="confirmDelete">Вы уверены, что хотите удалить ?</string>
@@ -168,7 +170,7 @@
     <string name="widget_summary">Money Manager Ex Сводка</string>
     <string name="widget_all_accounts">Money Manager Ex Счета</string>
     <string name="widget_add_transaction">Money Manager Ex Создать проводку</string>
-    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
+    <string name="repeating_empty_transaction">Не найдено ни одного перевода. Чтобы создать его, нажмите на зеленый плюс.</string>
     <string name="none">Нет</string>
     <string name="weekly">Еженедельно</string>
     <string name="bi_weekly">Каждые две недели</string>
@@ -214,7 +216,7 @@
     <string name="income">Доход</string>
     <string name="expenses">Расход</string>
     <string name="difference">Разница</string>
-    <string name="no_data">No records were found. To create one, tap the green plus button. </string>
+    <string name="no_data">Не найдено ни одной записи. Чтобы создать её, нажмите на зеленый плюс. </string>
     <string name="month">Месяц</string>
     <string name="year">Год</string>
     <string name="menu_reports">Отчеты</string>
@@ -407,7 +409,7 @@
     <string name="action_settings">Настройки</string>
     <string name="close">Закрыть</string>
     <string name="tutorial_accounts_1">Различные типы счетов: текущий, сберегательный, кредитный, активов и инвестиционный.</string>
-    <string name="tutorial_accounts_2">Проведите влево для продолжения...</string>
+    <string name="tutorial_accounts_2">Пролистните влево для продолжения&#8230;</string>
     <string name="financial_overview">Финансовый обзор</string>
     <string name="tutorial_overview_1">Обзорная панель, бюджеты, настраиваемые отчеты.</string>
     <string name="global">Глобальная</string>
@@ -416,5 +418,17 @@
     <string name="tutorial_sync_1">Поддержка нескольких платформ, синхронизация через Dropbox. Импорта и экспорта данных в другие приложения.</string>
     <string name="transactions">Транзакции</string>
     <string name="tutorial_transactions_1">Поплнения, снятия, переводы. Повторяющиеся транзакции с напоминаниями.</string>
-    <string name="split_category">-Split Category-</string>
+    <string name="split_category">-Разделить Категорию-</string>
+    <string name="title_activity_currency_chart">Диаграмма обменного курса валюты</string>
+    <string name="sort_by_ascending">Сортировка по годам и месяцам по возрастанию</string>
+    <string name="sort_by_desceding">Сортировка по годам и месяцам по убыванию</string>
+    <string name="years">Годы</string>
+    <string name="select_the_years_to_be_displayed">Выберите годы для отображения</string>
+    <string name="to_date">По дату</string>
+    <string name="from_date">С даты</string>
+    <string name="custom_dates">Настраиваемые даты</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">Скрыть подтвержденные суммы со счетов на основной панели.</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Скрыть подтвержденные суммы</string>
+    <string name="warning">Предупреждение</string>
+    <string name="no_transfer_splits">Вы выбрали операцию перевода между счетами вместо текущей операции, но в текущей транзакции присутствуют разделенные [Split] категории. Вы хотите продолжить и удалить разделенные [Split] категории ?</string>
 </resources>

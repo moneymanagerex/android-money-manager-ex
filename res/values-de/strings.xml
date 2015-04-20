@@ -61,6 +61,7 @@
     <string name="select_currency">Währung auswählen</string>
     <string name="checking">Überprüfe</string>
     <string name="investment">Investition</string>
+    <string name="investment_accounts">Anlagekonten</string>
     <string name="term">Laufzeit</string>
     <string name="db_account_insert_failed">Fehler beim Einfügen des Kontos</string>
     <string name="db_account_update_failed">Fehler beim Aktualisieren des Kontos</string>
@@ -118,6 +119,7 @@
     <string name="error_toaccount_not_selected">Konto ist erforderlich</string>
     <string name="error_category_not_selected">Kategorie ist erforderlich</string>
     <string name="error_totamount_empty">Gesamtbetrag ist erforderlich</string>
+    <string name="error_transfer_to_same_account">Die beiden Konten den Transfer müssen verschieden sein</string>
     <string name="about">Über</string>
     <string name="add">Hinzufügen</string>
     <string name="confirmDelete">Sind Sie sich sicher, dass Sie das löschen möchten?</string>
@@ -168,7 +170,7 @@
     <string name="widget_summary">Money Manager Ex - Zusammenfassung</string>
     <string name="widget_all_accounts">Money Manager Ex - alle Konten</string>
     <string name="widget_add_transaction">Money Manager Ex - Transaktion hinzufügen</string>
-    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
+    <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf das grüne plus -Taste.</string>
     <string name="none">Nichts</string>
     <string name="weekly">Wöchentlich</string>
     <string name="bi_weekly">Zweiwöchentlich</string>
@@ -407,7 +409,7 @@
     <string name="action_settings">Einstellungen</string>
     <string name="close">Schliessen</string>
     <string name="tutorial_accounts_1">Multiple Kontotypen: Girokonto, Sparkonto, Kreditkonto, Bestandskonto, Investmentkonto.</string>
-    <string name="tutorial_accounts_2">Nach links wischen um fortzufahren...</string>
+    <string name="tutorial_accounts_2">Wischen Sie nach links um fortzufahren&#8230;</string>
     <string name="financial_overview">Finanzübersicht</string>
     <string name="tutorial_overview_1">Anzeigetafel für schnelle Übersicht, angepasste Berichte.</string>
     <string name="global">Global</string>
@@ -416,5 +418,17 @@
     <string name="tutorial_sync_1">Unterstützung für unterschiedliche Plattformen, Synchronisation über Dropbox, Import und Export Ihrer Daten von  und zu anderen Anwendungen.</string>
     <string name="transactions">Transaktionen</string>
     <string name="tutorial_transactions_1">Depots, Abhebungen, Überträge, wiederkehrende Transaktionen mit Erinnerungen.</string>
-    <string name="split_category">-Split Category-</string>
+    <string name="split_category">Splitkategorie</string>
+    <string name="title_activity_currency_chart">Wechselkursdiagramm</string>
+    <string name="sort_by_ascending">Nach Jahr und Monat aufsteigend ordnen</string>
+    <string name="sort_by_desceding">Nach Jahr und Monat absteigend ordnen</string>
+    <string name="years">Jahre</string>
+    <string name="select_the_years_to_be_displayed">Wählen Sie die Jahre angezeigt werden sollen</string>
+    <string name="to_date">Bis heute</string>
+    <string name="from_date">Ab Datum</string>
+    <string name="custom_dates">Benutzerdefinierte Daten</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">Verstecken Sie die bereinigten Beträge von den Konten auf Armaturenbrett.</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Bereinigte Beträge ausblenden</string>
+    <string name="warning">Warnung</string>
+    <string name="no_transfer_splits">Sie haben sich entschieden, zur Übertragung zu wechseln, aber es gibt Splitkategorien für die Transaktion. Möchten Sie fortfahren und die Splitkategorien zu entfernen?</string>
 </resources>

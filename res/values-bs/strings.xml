@@ -61,6 +61,7 @@
     <string name="select_currency">Odaberite valutu</string>
     <string name="checking">Tekući</string>
     <string name="investment">Investicije</string>
+    <string name="investment_accounts">Investicioni računi</string>
     <string name="term">Štedni</string>
     <string name="db_account_insert_failed">Greška pri kreiranju računa</string>
     <string name="db_account_update_failed">Greška prilikom ažuriranja računa</string>
@@ -118,6 +119,7 @@
     <string name="error_toaccount_not_selected">Na račun je neophodan</string>
     <string name="error_category_not_selected">Kategorija je neophodna</string>
     <string name="error_totamount_empty">Ukupan iznos je neophodan</string>
+    <string name="error_transfer_to_same_account">Računi za transfer moraju biti različiti</string>
     <string name="about">O programu</string>
     <string name="add">Dodaj</string>
     <string name="confirmDelete">Jeste li sigurni da želite obrisati?</string>
@@ -125,7 +127,7 @@
     <string name="delete">Obriši</string>
     <string name="download">Preuzmite</string>
     <string name="edit">Izmjeni</string>
-    <string name="home">Dom</string>
+    <string name="home">Početna</string>
     <string name="logo">Logotip</string>
     <string name="new_edit_transaction">Nova/izmjena transakcije</string>
     <string name="refresh">Osvježi</string>
@@ -168,7 +170,7 @@
     <string name="widget_summary">Money Manager Ex sažetak</string>
     <string name="widget_all_accounts">Money Manager Ex Svi računi</string>
     <string name="widget_add_transaction">Money Manager Ex Dodaj transakciju</string>
-    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
+    <string name="repeating_empty_transaction">Ponavljajuće transakcije nisu pronađene. Da biste kreirali novu, dodirnite zeleno plus dugme.</string>
     <string name="none">Nijedan</string>
     <string name="weekly">Sedmično</string>
     <string name="bi_weekly">Dvo-sedmično</string>
@@ -356,7 +358,7 @@
     <string name="locale_es">Španski</string>
     <string name="locale_fr">Francuski</string>
     <string name="locale_he">Hebrejski</string>
-    <string name="locale_it">Talijanski</string>
+    <string name="locale_it">Italijanski</string>
     <string name="locale_pt">Portugalski</string>
     <string name="locale_pt_BR">Portugalski, Brazilski</string>
     <string name="locale_ru">Ruski</string>
@@ -407,7 +409,7 @@
     <string name="action_settings">Postavke</string>
     <string name="close">Zatvori</string>
     <string name="tutorial_accounts_1">Više vrsta računa: tekući, štedni, kreditni, imovina i investicije.</string>
-    <string name="tutorial_accounts_2">Prevucite lijevo da biste nastavili...</string>
+    <string name="tutorial_accounts_2">Prevucite lijevo za nastavak&#8230;</string>
     <string name="financial_overview">Finansijski pregled</string>
     <string name="tutorial_overview_1">Nadzorna ploča za brzi pregled, budžeti, izvještaji sa prilagođavanjem.</string>
     <string name="global">Globalno</string>
@@ -416,5 +418,17 @@
     <string name="tutorial_sync_1">Podrška za više platformi, sinhronizacija putem Dropbox-a. Uvoz i izvoz podataka s drugim aplikacijama.</string>
     <string name="transactions">Transakcije</string>
     <string name="tutorial_transactions_1">Depoziti, povlačenja, prenosi. Ponavljajuće transakcije s podsjetnicima.</string>
-    <string name="split_category">-Split Category-</string>
+    <string name="split_category">-Podijeljena kategorija-</string>
+    <string name="title_activity_currency_chart">Grafikon kursa valute</string>
+    <string name="sort_by_ascending">Sortiraj po godini i mjesecu uzlazno</string>
+    <string name="sort_by_desceding">Sortiraj po godini i mjesecu opadajuće</string>
+    <string name="years">Godine</string>
+    <string name="select_the_years_to_be_displayed">Odaberite godine za prikaz</string>
+    <string name="to_date">Datum do</string>
+    <string name="from_date">Datum od</string>
+    <string name="custom_dates">Vlastiti datumi</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">Sakrij poravnate iznose s računa na početnom prozoru.</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Sakrij poravnate iznose</string>
+    <string name="warning">Upozorenje</string>
+    <string name="no_transfer_splits">Odabrali ste promjenu na Transfer ali postoje podijeljene kategorije na transakciji. Želite li nastaviti i ukloniti podijeljene kategorije?</string>
 </resources>

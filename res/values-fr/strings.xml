@@ -33,7 +33,7 @@
     <string name="dropbox_unlink">Dissocier de Dropbox</string>
     <string name="dropbox_syncProgress">Synchronisation du fichier en cours. Patientez s\'il vous plaît...</string>
     <string name="dropbox_downloadProgress">Téléchargement du fichier depuis Dropbox. Patientez s\'il vous plaît...</string>
-    <string name="dropbox_uploadProgress">Téléchargement du fichier vers Dropbox. Patientez s\'il vous plaît...</string>
+    <string name="dropbox_uploadProgress">Envoi du fichier vers Dropbox. Veuillez patienter&#8230;</string>
     <string name="dropbox_linkedFile">Fichier Dropbox</string>
     <string name="preferences_general">Général</string>
     <string name="preferences_dispaly">Affichage</string>
@@ -61,6 +61,7 @@
     <string name="select_currency">Choisir la devise</string>
     <string name="checking">Chèque/Epargne</string>
     <string name="investment">Titres</string>
+    <string name="investment_accounts">Investment Accounts</string>
     <string name="term">Terme</string>
     <string name="db_account_insert_failed">Erreur d\'insertion du compte</string>
     <string name="db_account_update_failed">Erreur de mise à jour du compte</string>
@@ -118,6 +119,7 @@
     <string name="error_toaccount_not_selected">Vers Compte est obligatoire</string>
     <string name="error_category_not_selected">La catégorie est obligatoire</string>
     <string name="error_totamount_empty">Le montant total est obligatoire</string>
+    <string name="error_transfer_to_same_account">The two accounts for the transfer must be distinct</string>
     <string name="about">A propos</string>
     <string name="add">Ajouter</string>
     <string name="confirmDelete">Êtes-vous sûr de vouloir supprimer ?</string>
@@ -136,7 +138,7 @@
     <string name="synchronize">Synchroniser</string>
     <string name="open">Ouvert</string>
     <string name="user">Utilisateur</string>
-    <string name="upload">Téléchager vers</string>
+    <string name="upload">Envoyer vers</string>
     <string name="username">Nom de l\'utilisateur</string>
     <string name="to">De</string>
     <string name="website">Site web</string>
@@ -168,7 +170,7 @@
     <string name="widget_summary">Money Manager Ex Résumé</string>
     <string name="widget_all_accounts">Money Manager Ex Tous les comptes</string>
     <string name="widget_add_transaction">Money Manager Ex Ajouter une transaction</string>
-    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
+    <string name="repeating_empty_transaction">Aucune opération périodique n\'a été trouvée. Pour en créer une, appuyez sur le bouton plus vert.</string>
     <string name="none">Aucun</string>
     <string name="weekly">Hebdomadaire</string>
     <string name="bi_weekly">Bi-hebdomadaire</string>
@@ -270,8 +272,8 @@
     <string name="synchronization_interval">Intervalle de synchronisation</string>
     <string name="summary_synchronization_interval">Quelle fréquence de synchronisation ?</string>
     <string name="tips_new_version_dropbox">Depuis la version 1.2.0, Money Manager Ex pour Android a changé la gestion de la synchronisation avec Dropbox. Pour les utilisateurs qui utilisent déjà la synchro avec Dropbox, vous devez refaire la configuration. \nLa synchronisation avec Dropbox et la sélection de la base de données, se trouve dans les réglages. \nDepuis la version 1.2.0, Money Manager Ex pour Android peut synchroniser automatiquement la base de données avec Dropbox</string>
-    <string name="title_dropbox_upload_immediate">Télécharger immédiate de base de données à chaque changement</string>
-    <string name="summary_dropbox_upload_immediate">Cette option permet de télécharger automatiquement dès que vous modifiez la base de données</string>
+    <string name="title_dropbox_upload_immediate">Envoyer immédiatement la base de données à chaque changement</string>
+    <string name="summary_dropbox_upload_immediate">Cette option permet d\'envoyer automatiquement la base de données dès qu\'elle est modifiée</string>
     <string name="title_transaction_shown_balance">Affiche le solde pour chaque transaction</string>
     <string name="summary_transaction_shown_balance">Affiche le solde pour chaque transaction. L\'affichage du solde pourrait rendre l\'application plus lente</string>
     <string name="menu_open_database">Ouvrir la base de données</string>
@@ -407,7 +409,7 @@
     <string name="action_settings">Paramètres</string>
     <string name="close">Fermer</string>
     <string name="tutorial_accounts_1">Plusieurs types de comptes : compte courant, épargne, actifs et placements.</string>
-    <string name="tutorial_accounts_2">Glisser vers la gauche pour continuer...</string>
+    <string name="tutorial_accounts_2">Swipe left to continue&#8230;</string>
     <string name="financial_overview">Vue d\'ensemble</string>
     <string name="tutorial_overview_1">Vue d\'ensemble rapide, budgets, rapports personnalisables.</string>
     <string name="global">Mondial</string>
@@ -416,5 +418,17 @@
     <string name="tutorial_sync_1">Disponible sur de nombreuses plates-formes, synchronisation via Dropbox. Importez et exportez vos données vers d\'autres applications.</string>
     <string name="transactions">Opérations</string>
     <string name="tutorial_transactions_1">Dépôts, retraits et transferts. Transactions récurrentes avec rappels.</string>
-    <string name="split_category">-Split Category-</string>
+    <string name="split_category">-Catégorie fractionnée-</string>
+    <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
+    <string name="sort_by_ascending">Sort by year and month ascending</string>
+    <string name="sort_by_desceding">Sort by year and month descending</string>
+    <string name="years">Years</string>
+    <string name="select_the_years_to_be_displayed">Select the years to be displayed</string>
+    <string name="to_date">To Date</string>
+    <string name="from_date">From Date</string>
+    <string name="custom_dates">Custom Dates</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">Hide the reconciled amounts from the accounts on dashboard.</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
+    <string name="warning">Warning</string>
+    <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
 </resources>

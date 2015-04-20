@@ -61,6 +61,7 @@
     <string name="select_currency">Selecteer Munteenheid</string>
     <string name="checking">Zichtrekening</string>
     <string name="investment">InvesteringsRekening</string>
+    <string name="investment_accounts">Investment Accounts</string>
     <string name="term">Termijn (Spaar) Rekening</string>
     <string name="db_account_insert_failed">Fout bij het ingeven van een Rekening</string>
     <string name="db_account_update_failed">Fout bij het actualiseren van een Rekening</string>
@@ -118,6 +119,7 @@
     <string name="error_toaccount_not_selected">\"Naar Rekening\" is vereist</string>
     <string name="error_category_not_selected">Categorie is vereist</string>
     <string name="error_totamount_empty">\"Totaal Bedrag\" is vereist</string>
+    <string name="error_transfer_to_same_account">The two accounts for the transfer must be distinct</string>
     <string name="about">Over</string>
     <string name="add">Voeg toe</string>
     <string name="confirmDelete">Ben je zeker dat je wil verwijderen ?</string>
@@ -168,7 +170,7 @@
     <string name="widget_summary">Money Manager Ex - Samenvatting</string>
     <string name="widget_all_accounts">Money Manager Ex - Alle Rekeningen</string>
     <string name="widget_add_transaction">Money Manager Ex - Transactie Toevoegen</string>
-    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
+    <string name="repeating_empty_transaction">Geen terugkerende transacties gevonden. Om deze te maken, tik op de groene plus knop.</string>
     <string name="none">Geen</string>
     <string name="weekly">Wekelijks</string>
     <string name="bi_weekly">2-Wekelijks</string>
@@ -407,7 +409,7 @@
     <string name="action_settings">Instellingen</string>
     <string name="close">Sluiten</string>
     <string name="tutorial_accounts_1">Meerdere rekening types: bankrekening, spaarrekening, credit en investeringen.</string>
-    <string name="tutorial_accounts_2">Veeg naar links om door te gaan...</string>
+    <string name="tutorial_accounts_2">Swipe left to continue&#8230;</string>
     <string name="financial_overview">Financieel overzicht</string>
     <string name="tutorial_overview_1">Snel overzicht dashboard, begrotingen, rapporten met aanpassingen.</string>
     <string name="global">Wereldwijd</string>
@@ -416,5 +418,17 @@
     <string name="tutorial_sync_1">Ondersteuning voor meerdere platforms, synchronisatie via Dropbox. Importeren en exporteren van uw gegevens aan andere applicaties.</string>
     <string name="transactions">Transacties</string>
     <string name="tutorial_transactions_1">Stortingen, uitbetalingen, overdrachten. Terugkerende transacties met herinneringen.</string>
-    <string name="split_category">-Split Category-</string>
+    <string name="split_category">-Categorie opdelen-</string>
+    <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
+    <string name="sort_by_ascending">Sort by year and month ascending</string>
+    <string name="sort_by_desceding">Sort by year and month descending</string>
+    <string name="years">Years</string>
+    <string name="select_the_years_to_be_displayed">Select the years to be displayed</string>
+    <string name="to_date">To Date</string>
+    <string name="from_date">From Date</string>
+    <string name="custom_dates">Custom Dates</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">Hide the reconciled amounts from the accounts on dashboard.</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
+    <string name="warning">Warning</string>
+    <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
 </resources>

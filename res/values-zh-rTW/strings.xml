@@ -61,6 +61,7 @@
     <string name="select_currency">選擇貨幣</string>
     <string name="checking">支票/存款/信用卡</string>
     <string name="investment">投資</string>
+    <string name="investment_accounts">投資帳戶</string>
     <string name="term">限期</string>
     <string name="db_account_insert_failed">新增帳戶失敗</string>
     <string name="db_account_update_failed">更新帳戶失敗</string>
@@ -118,6 +119,7 @@
     <string name="error_toaccount_not_selected">需要轉帳帳戶</string>
     <string name="error_category_not_selected">需要類型</string>
     <string name="error_totamount_empty">需要總金額</string>
+    <string name="error_transfer_to_same_account">轉帳的兩個帳戶必須不同</string>
     <string name="about">關於</string>
     <string name="add">新增</string>
     <string name="confirmDelete">你確定要刪除？</string>
@@ -168,7 +170,7 @@
     <string name="widget_summary">Money Manager Ex 摘要</string>
     <string name="widget_all_accounts">Money Manager Ex 全部帳戶</string>
     <string name="widget_add_transaction">Money Manager Ex 新增交易</string>
-    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
+    <string name="repeating_empty_transaction">發現任何循環交易，請點擊綠色加號按鈕新增。</string>
     <string name="none">無</string>
     <string name="weekly">每週</string>
     <string name="bi_weekly">雙週</string>
@@ -416,5 +418,17 @@
     <string name="tutorial_sync_1">支援多種平臺，透過 Dropbox 同步資料。匯入及匯出資料到其他應用程式。</string>
     <string name="transactions">交易紀錄</string>
     <string name="tutorial_transactions_1">存款、 取款、 轉帳。提醒定期交易。</string>
-    <string name="split_category">-Split Category-</string>
+    <string name="split_category">-多類別-</string>
+    <string name="title_activity_currency_chart">貨幣匯率表</string>
+    <string name="sort_by_ascending">按年份和月份昇冪排序</string>
+    <string name="sort_by_desceding">按年份和月份降冪排序</string>
+    <string name="years">年</string>
+    <string name="select_the_years_to_be_displayed">選擇要顯示的年</string>
+    <string name="to_date">終止日</string>
+    <string name="from_date">啟始日</string>
+    <string name="custom_dates">自訂日期</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">隱藏各帳戶儀表板上的已確認金額。</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">隱藏已確認的金額</string>
+    <string name="warning">警告</string>
+    <string name="no_transfer_splits">您已經選擇變更為轉帳，但此交易紀錄有多重類別。要繼續並刪除多重類別嗎？</string>
 </resources>
