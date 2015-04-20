@@ -243,6 +243,7 @@
     <!-- Locale -->
     <string-array name="application_locale_entries">
         <item>@string/Default</item>
+        <item>@string/locale_bs</item>
         <item>@string/locale_cs</item>
         <item>@string/locale_de</item>
         <item>@string/locale_en</item>
@@ -263,6 +264,7 @@
     </string-array>
     <string-array name="application_locale_values">
         <item></item>
+        <item>bs</item>
         <item>cs</item>
         <item>de</item>
         <item>en</item>
