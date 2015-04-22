@@ -73,11 +73,12 @@ import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
-import com.money.manager.ex.search.SearchActivity;
-import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.recurring.transactions.RepeatingTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
+import com.money.manager.ex.reports.PayeesReportActivity;
+import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
@@ -897,6 +898,10 @@ public class MainActivity extends BaseFragmentActivity {
             return true;
         } else if (item.getId() == R.id.menu_reports) {
             final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+            // payee
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
+                    .withText(getString(R.string.payees))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
             // where money goes
             adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)
                     .withText(getString(R.string.menu_report_where_money_goes))
@@ -914,6 +919,10 @@ public class MainActivity extends BaseFragmentActivity {
                     .withText(getString(R.string.menu_report_income_vs_expenses))
                     .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
             onDrawerItemSubDialogs(adapter, item.getText(), isDarkTheme);
+            return true;
+        } else if (item.getId() == R.id.menu_report_payees) {
+            intent = new Intent(this, PayeesReportActivity.class);
+            startActivity(intent);
             return true;
         } else if (item.getId() == R.id.menu_report_where_money_goes) {
             intent = new Intent(this, CategoriesReportActivity.class);

@@ -213,11 +213,13 @@ public class PayeesReportActivity extends BaseFragmentActivity {
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
-            //pie chart
+
+            Core core = new Core(getActivity());
+            // pie chart
             MenuItem itemChart = menu.findItem(R.id.menu_chart);
             if (itemChart != null) {
-                itemChart.setVisible(!((PayeesReportActivity) getActivity()).mIsDualPanel);
-                itemChart.setIcon(new Core(getActivity().getApplicationContext()).resolveIdAttribute(R.attr.ic_action_pie_chart));
+                itemChart.setVisible(!(((PayeesReportActivity) getActivity()).mIsDualPanel));
+                itemChart.setIcon(core.resolveIdAttribute(R.attr.ic_action_pie_chart));
             }
         }
 
