@@ -248,12 +248,12 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
             }
 
             if (!TextUtils.isEmpty(whereClause)) {
-                whereClause += " AND ";
+                whereClause += " /** */AND ";
             } else {
-                whereClause = "";
+                whereClause = "/** */";
             }
             // use token to replace criteria
-            whereClause += " /** */(" + ViewMobileData.Category + " Like '%" + newText + "%' OR " + ViewMobileData.Subcategory + " Like '%" + newText + "%')/** */";
+            whereClause += "(" + ViewMobileData.Category + " Like '%" + newText + "%' OR " + ViewMobileData.Subcategory + " Like '%" + newText + "%')/** */";
 
             //create arguments
             Bundle args = new Bundle();
