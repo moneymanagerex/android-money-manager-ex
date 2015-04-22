@@ -122,6 +122,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             setListAdapter(null);
+            setShowMenuItemSearch(true);
             //create header view
             mHeaderListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
             TextView txtColumn1 = (TextView) mHeaderListView.findViewById(R.id.textViewColumn1);
@@ -149,6 +150,36 @@ public class PayeesReportActivity extends BaseFragmentActivity {
             setListAdapter(adapter);
 
             super.onActivityCreated(savedInstanceState);
+        }
+
+        @Override
+        protected boolean onQueryTextChange(String newText) {
+            //recall last where clause
+            String whereClause = getWhereClause();
+            if (whereClause == null) whereClause = "";
+
+            int start = whereClause.indexOf("/** */");
+            if (start > 0) {
+                int end = whereClause.indexOf("/** */", start + 1) + "/** */".length();
+                whereClause = whereClause.substring(0, start) + whereClause.substring(end);
+                // trim some space
+                whereClause = whereClause.trim();
+            }
+
+            if (!TextUtils.isEmpty(whereClause)) {
+                whereClause += " /** */AND ";
+            } else {
+                whereClause = "/** */";
+            }
+            // use token to replace criteria
+            whereClause += "(" + ViewMobileData.Payee + " Like '%" + newText + "%')/** */";
+
+            //create arguments
+            Bundle args = new Bundle();
+            args.putString(KEY_WHERE_CLAUSE, whereClause);
+            //starts loader
+            startLoader(args);
+            return super.onQueryTextChange(newText);
         }
 
         @Override
@@ -213,11 +244,13 @@ public class PayeesReportActivity extends BaseFragmentActivity {
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
-            //pie chart
+
+            Core core = new Core(getActivity());
+            // pie chart
             MenuItem itemChart = menu.findItem(R.id.menu_chart);
             if (itemChart != null) {
-                itemChart.setVisible(!((PayeesReportActivity) getActivity()).mIsDualPanel);
-                itemChart.setIcon(new Core(getActivity().getApplicationContext()).resolveIdAttribute(R.attr.ic_action_pie_chart));
+                itemChart.setVisible(!(((PayeesReportActivity) getActivity()).mIsDualPanel));
+                itemChart.setIcon(core.resolveIdAttribute(R.attr.ic_action_pie_chart));
             }
         }
 
