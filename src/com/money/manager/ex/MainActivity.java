@@ -484,6 +484,11 @@ public class MainActivity extends BaseFragmentActivity {
         }
     }
 
+    public void onClickCardViewIncomesVsExpenses(View v) {
+        startActivity(new Intent(this, IncomeVsExpensesActivity.class));
+        return;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
