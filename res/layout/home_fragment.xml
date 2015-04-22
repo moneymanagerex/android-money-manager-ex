@@ -124,9 +124,10 @@
                 cardview:cardBackgroundColor="?attr/cardViewBackgroundColor"
                 android:layout_marginLeft="@dimen/money_margin"
                 android:layout_marginRight="@dimen/money_margin"
-                android:padding="@dimen/money_padding">
+                android:padding="@dimen/money_padding"
+                android:onClick="onClickCardViewIncomesVsExpenses">
 
-                <LinearLayout
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
