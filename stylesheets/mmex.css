@@ -11,6 +11,10 @@ body {
     color: #606c71;
 }
 
+.navbar-brand {
+    padding: 10px;
+}
+
 .page-header {
     background-image: url('../images/mmex_r3.png');
     background-color: #069278;
@@ -24,3 +28,4 @@ body {
 .main-content {
     max-width: 90rem;
 }
+
