@@ -26,8 +26,6 @@ import android.view.KeyEvent;
 import com.money.manager.ex.fragment.AccountLoaderListFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
-//
-
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.0

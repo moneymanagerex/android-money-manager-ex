@@ -158,7 +158,7 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
     }
 
     protected void onMenuItemSearchClick(MenuItem item) {
-        View searchView = ((FragmentActivity) getActivity()).getActionBar().getCustomView();
+        View searchView = getActivity().getActionBar().getCustomView();
         final EditText edtSearch = (EditText) searchView.findViewById(R.id.editTextSearchView);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         // se in visualizzazione prendo l'edittext
