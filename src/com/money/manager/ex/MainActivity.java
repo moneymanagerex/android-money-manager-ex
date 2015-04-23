@@ -187,33 +187,33 @@ public class MainActivity extends BaseFragmentActivity {
         showFragment(fragment, tagFragment);
     }
 
-    /**
-     * Dialog to choose exit from application
-     */
-    public void exitApplication() {
-        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext());
-        exitDialog.setTitle(R.string.close_application);
-        exitDialog.setMessage(R.string.question_close_application);
-        exitDialog.setIcon(R.drawable.ic_launcher);
-        exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                MoneyManagerApplication.killApplication();
-            }
-        });
-        exitDialog.setNegativeButton(android.R.string.no, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        // show dialog
-        exitDialog.create().show();
-    }
+//    /**
+//     * Dialog to choose exit from application
+//     */
+//    public void exitApplication() {
+//        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext());
+//        exitDialog.setTitle(R.string.close_application);
+//        exitDialog.setMessage(R.string.question_close_application);
+//        exitDialog.setIcon(R.drawable.ic_launcher);
+//        exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                MoneyManagerApplication.killApplication();
+//            }
+//        });
+//        exitDialog.setNegativeButton(android.R.string.no, new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//        // show dialog
+//        exitDialog.create().show();
+//    }
 
-    public Fragment getFragmentDisplay() {
-        return getSupportFragmentManager().findFragmentById(isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent);
-    }
+//    public Fragment getFragmentDisplay() {
+//        return getSupportFragmentManager().findFragmentById(isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent);
+//    }
 
     /**
      * pick a file to use
@@ -273,17 +273,17 @@ public class MainActivity extends BaseFragmentActivity {
         setRestartActivity(false);
     }
 
-    /**
-     * show dashboard fragment
-     */
-    public void showDashboardFragment() {
-        DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager().findFragmentByTag(DashboardFragment.class.getSimpleName());
-        if (dashboardFragment == null || dashboardFragment.getId() != getResIdLayoutContent()) {
-            dashboardFragment = new DashboardFragment();
-        }
-        // fragment dashboard
-        showFragment(dashboardFragment, DashboardFragment.class.getSimpleName());
-    }
+//    /**
+//     * show dashboard fragment
+//     */
+//    public void showDashboardFragment() {
+//        DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager().findFragmentByTag(DashboardFragment.class.getSimpleName());
+//        if (dashboardFragment == null || dashboardFragment.getId() != getResIdLayoutContent()) {
+//            dashboardFragment = new DashboardFragment();
+//        }
+//        // fragment dashboard
+//        showFragment(dashboardFragment, DashboardFragment.class.getSimpleName());
+//    }
 
     /**
      * Show fragment using reflection from class
