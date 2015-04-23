@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Alessandro Lazzari
+ * Copyright (C) 2012-2015 Alessandro Lazzari
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,8 +17,6 @@
  */
 package com.money.manager.ex.fragment;
 
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -166,13 +164,13 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
         }
     }
 
-    public void forceRotateScreenActivity() {
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-    }
+//    public void forceRotateScreenActivity() {
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//        }
+//    }
 
     public boolean onActionCancelClick() {
         return true;
@@ -186,10 +184,10 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
         return mDialogMode;
     }
 
-    @Deprecated
-    public void setDialogMode(boolean mDialogMode) {
-        this.mDialogMode = mDialogMode;
-    }
+//    @Deprecated
+//    public void setDialogMode(boolean mDialogMode) {
+//        this.mDialogMode = mDialogMode;
+//    }
 
     public boolean isDisplayHomeAsUpEnabled() {
         return mDisplayHomeAsUpEnabled;
