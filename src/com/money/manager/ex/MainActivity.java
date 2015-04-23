@@ -661,6 +661,7 @@ public class MainActivity extends BaseFragmentActivity {
             try {
                 mDrawerToggle.syncState();
             } catch (Exception e) {
+                Log.w(LOGCAT, e.getMessage());
             }
         }
     }
