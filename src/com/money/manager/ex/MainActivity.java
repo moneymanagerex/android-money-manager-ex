@@ -43,6 +43,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -548,6 +550,14 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.default_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -705,7 +715,17 @@ public class MainActivity extends BaseFragmentActivity {
             }
             return true;
         }
-        return super.onOptionsItemSelected(item);
+
+        switch(item.getItemId()){
+            case R.id.action_search:
+                // todo: openSearch
+                return true;
+            case R.id.action_settings:
+                // todo: open settings
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
