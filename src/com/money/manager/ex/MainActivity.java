@@ -351,10 +351,8 @@ public class MainActivity extends BaseFragmentActivity {
 
     /**
      * Show tutorial on first run.
-     *
-     * @param savedInstanceState
      */
-    public void showTutorial(Bundle savedInstanceState) {
+    public void showTutorial() {
         Context context = getApplicationContext();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
@@ -539,12 +537,12 @@ public class MainActivity extends BaseFragmentActivity {
         if (!currencyUtils.isInit())
             currencyUtils.reInit();
 
-        // create a connection to dropbox
+        // create a connection to Dropbox
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
         // check type mode
         onCreateFragments(savedInstanceState);
         // show tutorial
-        showTutorial(savedInstanceState);
+        showTutorial();
         // show changelog dialog
         if (core.isToDisplayChangelog()) core.showChangelog();
 
