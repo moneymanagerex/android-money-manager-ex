@@ -22,8 +22,6 @@ import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -53,7 +51,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.about.AboutActivity;
@@ -107,7 +104,7 @@ public class MainActivity extends BaseFragmentActivity {
     // state if restart activity
     private static boolean mRestartActivity = false;
     // list of account visible
-    List<TableAccountList> mAccountList;
+//    List<TableAccountList> mAccountList;
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
     private boolean isShowTipsDropbox2 = false;
@@ -310,7 +307,7 @@ public class MainActivity extends BaseFragmentActivity {
     /**
      * Displays the fragment without indicating the tag. The tag will be the classname of the fragment
      *
-     * @param fragment
+     * @param fragment Fragment to display.
      */
     public void showFragment(Fragment fragment) {
         showFragment(fragment, fragment.getClass().getName());
@@ -342,10 +339,9 @@ public class MainActivity extends BaseFragmentActivity {
     /**
      * show a fragment select with position or account id
      *
-     * @param position  to page
      * @param accountId account id of the fragment to be loaded
      */
-    public void showFragmentAccount(int position, int accountId) {
+    public void showFragmentAccount(int accountId) {
         changeFragment(accountId);
     }
 
@@ -378,7 +374,7 @@ public class MainActivity extends BaseFragmentActivity {
 
                 @Override
                 protected void onPostExecute(Integer ret) {
-                    if (DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD == ret) {
+                    if (ret.equals(DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD)) {
                         Snackbar.with(getApplicationContext()) // context
                                 .text(getString(R.string.dropbox_database_can_be_updted))
                                 .actionLabel(getString(R.string.sync))
@@ -484,7 +480,6 @@ public class MainActivity extends BaseFragmentActivity {
 
     public void onClickCardViewIncomesVsExpenses(View v) {
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-        return;
     }
 
     @Override
@@ -581,14 +576,13 @@ public class MainActivity extends BaseFragmentActivity {
         // check if restart activity
         if (isRestartActivitySet()) {
             restartActivity(); // restart and exit
-            return;
         }
     }
 
     /**
      * this method call for classic method (show fragments)
      *
-     * @param savedInstanceState
+     * @param savedInstanceState saved instance state?
      */
     public void onCreateFragments(Bundle savedInstanceState) {
         Core core = new Core(getApplicationContext());

@@ -460,7 +460,8 @@ public class HomeFragment extends Fragment implements
 
                     MainActivity activity = (MainActivity) getActivity();
                     if (activity != null) {
-                        activity.showFragmentAccount(childPosition, selectedAccount.getAccountId());
+                        // childPosition
+                        activity.showFragmentAccount(selectedAccount.getAccountId());
                         return true;
                     }
                 }
