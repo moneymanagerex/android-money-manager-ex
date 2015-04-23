@@ -315,9 +315,6 @@ public class MainActivity extends BaseFragmentActivity {
 
     /**
      * Displays the fragment and associate the tag
-     *
-     * @param fragment
-     * @param tagFragment
      */
     public void showFragment(Fragment fragment, String tagFragment) {
         // transaction
@@ -581,13 +578,11 @@ public class MainActivity extends BaseFragmentActivity {
 
     /**
      * this method call for classic method (show fragments)
-     *
-     * @param savedInstanceState saved instance state?
      */
     public void onCreateFragments(Bundle savedInstanceState) {
-        Core core = new Core(getApplicationContext());
-
         setContentView(R.layout.main_fragments_activity);
+
+        Core core = new Core(getApplicationContext());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
