@@ -549,13 +549,13 @@ public class MainActivity extends BaseFragmentActivity {
         showSnackbarDropbox();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.default_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu items for use in the action bar.
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.default_menu, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     @Override
     protected void onStart() {

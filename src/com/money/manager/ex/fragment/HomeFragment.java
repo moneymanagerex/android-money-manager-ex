@@ -32,6 +32,8 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -106,6 +108,9 @@ public class HomeFragment extends Fragment implements
 
         AppSettings settings = new AppSettings(getActivity());
         mHideReconciled = settings.getHideReconciledAmounts();
+
+        // The fragment is using a custom option in the actionbar menu.
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -146,6 +151,11 @@ public class HomeFragment extends Fragment implements
             default:
                 return null;
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.default_menu, menu);
     }
 
     @Override
