@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.default_menu, menu);
+        inflater.inflate(R.menu.home_menu, menu);
     }
 
     @Override
