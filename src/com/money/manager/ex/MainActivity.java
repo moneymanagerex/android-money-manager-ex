@@ -704,6 +704,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle physical menu button.
         // quick-fix convert 'switch' to 'if-else'
         if (item.getItemId() == android.R.id.home) {
             if (mDrawer != null) {
@@ -716,9 +717,11 @@ public class MainActivity extends BaseFragmentActivity {
             return true;
         }
 
+        // handle action bar option click.
+
         switch(item.getItemId()){
             case R.id.action_search:
-                // todo: openSearch
+                openSearch();
                 return true;
             case R.id.action_settings:
                 // todo: open settings
@@ -835,7 +838,7 @@ public class MainActivity extends BaseFragmentActivity {
                 .withText(getString(R.string.about))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light));
 
-        // get drawerlist and set adapter
+        // get drawer list and set adapter
         if (mDrawerList != null)
             mDrawerList.setAdapter(adapter);
         // set listener on item click
@@ -902,7 +905,7 @@ public class MainActivity extends BaseFragmentActivity {
             showFragment(RepeatingTransactionListFragment.class);
             return true;
         } else if (item.getId() == R.id.menu_search_transaction) {
-            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            openSearch();
             return true;
         } else if (item.getId() == R.id.menu_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
@@ -986,6 +989,10 @@ public class MainActivity extends BaseFragmentActivity {
         }
 
         dialog.show();
+    }
+
+    private void openSearch(){
+        startActivity(new Intent(MainActivity.this, SearchActivity.class));
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
