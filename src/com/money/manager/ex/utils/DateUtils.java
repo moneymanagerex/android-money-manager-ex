@@ -24,8 +24,11 @@ import android.util.Log;
 import android.widget.DatePicker;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableInfoTable;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,6 +118,13 @@ public class DateUtils {
             pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy").replace("'", "''");
 
             cursor.close();
+        }
+
+        if (StringUtils.isEmpty(pattern)
+                && ctx.getResources().getStringArray(R.array.date_format_mask) != null
+                && ctx.getResources().getStringArray(R.array.date_format_mask).length > 0){
+            pattern= ctx.getResources().getStringArray(R.array.date_format_mask)[0];
+            pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy").replace("'", "''");
         }
 
         return pattern;
