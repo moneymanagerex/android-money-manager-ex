@@ -159,7 +159,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
             if (whereClause == null) whereClause = "";
 
             int start = whereClause.indexOf("/** */");
-            if (start > 0) {
+            if (start >= 0) {
                 int end = whereClause.indexOf("/** */", start + 1) + "/** */".length();
                 whereClause = whereClause.substring(0, start) + whereClause.substring(end);
                 // trim some space
