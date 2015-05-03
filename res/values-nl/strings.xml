@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2015 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -422,13 +422,13 @@
     <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
     <string name="sort_by_ascending">Sort by year and month ascending</string>
     <string name="sort_by_desceding">Sort by year and month descending</string>
-    <string name="years">Years</string>
+    <string name="years">Wrijf naar links om verder te gaan...</string>
     <string name="select_the_years_to_be_displayed">Select the years to be displayed</string>
     <string name="to_date">To Date</string>
     <string name="from_date">From Date</string>
     <string name="custom_dates">Custom Dates</string>
     <string name="pref_transaction_hide_reconciled_amounts_summary">Hide the reconciled amounts from the accounts on dashboard.</string>
     <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
-    <string name="warning">Warning</string>
+    <string name="warning">Waarschuwing</string>
     <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
 </resources>

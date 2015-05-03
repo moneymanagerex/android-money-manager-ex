@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2015 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -285,7 +285,7 @@
     <string name="summary_application_font_size">Wähle die Fontgröße für die Anwendung</string>
     <string name="micro">Mikro</string>
     <string name="small">Klein</string>
-    <string name="Default">Standad</string>
+    <string name="Default">Standard</string>
     <string name="medium">Mittel</string>
     <string name="large">Groß</string>
     <string name="dropbox_download_is_starting">Download von Dropbox. Bitte warten&#8230;</string>

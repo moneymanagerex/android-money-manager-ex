@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -44,9 +44,11 @@
     <string name="version">Verze</string>
     <string name="build">Build</string>
     <string name="path">Cesta k databázi</string>
+    <string name="title_show_tutorial">Show tutorial</string>
+    <string name="summary_show_tutorial">Show tutorial on the next run?</string>
     <string name="account">Účet</string>
     <string name="account_list">Seznam účtů</string>
-    <string name="account_empty_list">Nenalezeny žádné účty</string>
+    <string name="account_empty_list">No accounts have been found. To create one, tap the green plus button.</string>
     <string name="account_balance">Zůstatek na účtu</string>
     <string name="account_reconciled_balance">Ověřené bilance</string>
     <string name="delete_account">Odstranit účet</string>
@@ -59,6 +61,7 @@
     <string name="select_currency">Vyberte měnu</string>
     <string name="checking">Běžný</string>
     <string name="investment">Investiční</string>
+    <string name="investment_accounts">Investment Accounts</string>
     <string name="term">Vkladový</string>
     <string name="db_account_insert_failed">Chyba při vkládání účtu</string>
     <string name="db_account_update_failed">Chyba při aktualizaci účtu</string>
@@ -72,12 +75,12 @@
     <string name="delete_payee">Odstranit příjemce</string>
     <string name="payee">Příjemce</string>
     <string name="select_payee">Vybrat příjemce</string>
-    <string name="payee_empty_list">Nenalezen žádný příjemce</string>
+    <string name="payee_empty_list">No payee has been found. To create one, tap the green plus button.</string>
     <string name="from">Od</string>
     <string name="db_payee_update_failed">Aktualizace příjemce se nezdařila</string>
     <string name="category">Kategorie</string>
     <string name="subcategory">Podkategorie</string>
-    <string name="category_empty_list">Nenalezena žádná kategorie</string>
+    <string name="category_empty_list">No category has been found. To create one, tap the green plus button.</string>
     <string name="select_category">Vyberte kategorii</string>
     <string name="add_category">Přidejte kategorii</string>
     <string name="add_subcategory">Přidat podkategorii</string>
@@ -116,6 +119,7 @@
     <string name="error_toaccount_not_selected">Je vyžadován cílový účet</string>
     <string name="error_category_not_selected">Je vyžadována kategorie</string>
     <string name="error_totamount_empty">Je vyžadována celková částka</string>
+    <string name="error_transfer_to_same_account">The two accounts for the transfer must be distinct</string>
     <string name="about">O programu</string>
     <string name="add">Přidat</string>
     <string name="confirmDelete">Jste si jisti, že chcete odstranit?</string>
@@ -123,12 +127,14 @@
     <string name="delete">Odstranit</string>
     <string name="download">Stáhnout</string>
     <string name="edit">Upravit</string>
+    <string name="home">Domácnost</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Nová/úprava transakce</string>
     <string name="refresh">Aktualizovat</string>
     <string name="search">Hledat</string>
     <string name="settings">Nastavení</string>
     <string name="summary">Celkem</string>
+    <string name="sync">Sync</string>
     <string name="synchronize">Synchronizovat</string>
     <string name="open">Otevřít</string>
     <string name="user">Uživatel</string>
@@ -164,7 +170,7 @@
     <string name="widget_summary">Money Manager Ex - Souhrnný zůstatek</string>
     <string name="widget_all_accounts">Money Manager Ex - Zůstatky na účtech</string>
     <string name="widget_add_transaction">Money Manager Ex přidat transakci</string>
-    <string name="repeating_empty_transaction">Žádný trvalý příkaz</string>
+    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
     <string name="none">Žádný(á)</string>
     <string name="weekly">Týden</string>
     <string name="bi_weekly">2 týdny</string>
@@ -183,7 +189,7 @@
     <string name="inactive">Neaktivní</string>
     <string name="days_overdue">dny po splatnosti!</string>
     <string name="days_remaining">dnů zbývá</string>
-    <string name="new_edit_repeating_transaction">Nový/úprava trvalého příkazu</string>
+    <string name="new_edit_repeating_transaction">New/Edit Recurring Transaction</string>
     <string name="next_occurrence">Další výskyt</string>
     <string name="repeats">Periodicita</string>
     <string name="times_repeated">Počet opakování</string>
@@ -191,9 +197,9 @@
     <string name="activates">Aktivní</string>
     <string name="enter_next_occurrence">Zadejte další výskyt</string>
     <string name="skip_next_occurrence">Přeskočit další výskyt</string>
-    <string name="notification_repeating_transaction_expired">Existují propadlé trvalé příkazy</string>
+    <string name="notification_repeating_transaction_expired">There are expired recurring transactions</string>
     <string name="notification_click_to_check_repeating_transaction">Dotkněte se pro kontrolu splatnosti transakce</string>
-    <string name="num_repeating_transaction_expired">%1$d opakované transakce po splatnosti</string>
+    <string name="num_repeating_transaction_expired">%1$d recurring transaction overdue</string>
     <string name="send_feedback">Zašlete svůj názor</string>
     <string name="preferences_info_application">Informace</string>
     <string name="preferences_security">Zabezpečení</string>
@@ -210,7 +216,7 @@
     <string name="income">Příjmy</string>
     <string name="expenses">Výdaje</string>
     <string name="difference">Rozdíl</string>
-    <string name="no_data">Žádná data k zobrazení</string>
+    <string name="no_data">No records were found. To create one, tap the green plus button. </string>
     <string name="month">Měsíc</string>
     <string name="year">Rok</string>
     <string name="menu_reports">Sestavy</string>
@@ -289,7 +295,7 @@
     <string name="dashclock_extension_summary">Zobrazit přehled v Money Manager Ex pro Android</string>
     <string name="dashclock_extension_summary_all_account">Zobrazit Shrnutí každého účtu v Money Manager Ex pro Android</string>
     <string name="title_check_repeating_transaction">Čas kontroly</string>
-    <string name="summary_check_repeating_transaction">V kolik hodin chcete zkontrolovat, zda jsou zpožděné opakující se transakce? (výchozí 08:00)</string>
+    <string name="summary_check_repeating_transaction">What time would you check if there are recurring transactions overdue? (default 08:00)</string>
     <string name="credits">Poděkování</string>
     <string name="top_withdrawals_last_30_days">Největší výběry: Posledních 30 dní</string>
     <string name="top_payees_last_30_days">Největší příjemci: Posledních 30 dní</string>
@@ -302,7 +308,7 @@
     <string name="empty_category">Prázdná kategorie</string>
     <string name="empty_payee">Bez příjemce</string>
     <string name="help">Nápověda</string>
-    <string name="delete_repeating_transaction">Odstranit trvalý příkaz</string>
+    <string name="delete_repeating_transaction">Delete Recurring Transaction</string>
     <string name="last">Poslední</string>
     <string name="accounts">Účty</string>
     <string name="to_account">Na účet</string>
@@ -315,7 +321,7 @@
     <string name="categories">Kategorie</string>
     <string name="currencies">Měny</string>
     <string name="payees">Příjemci</string>
-    <string name="repeating_transactions">Trvalé příkazy</string>
+    <string name="repeating_transactions">Recurring Transactions</string>
     <string name="theme_holo_light">Holo světlé</string>
     <string name="new_account">Nový účet</string>
     <string name="import_all_currencies">Načíst měny</string>
@@ -323,8 +329,8 @@
     <string name="amount_greater_or_equal">Částka větší nebo rovna</string>
     <string name="amount_less_or_equal">Částka menší nebo rovna</string>
     <string name="result_search">Výsledek hledání</string>
-    <string name="new_repeating_transaction">Nový trvalý příkaz</string>
-    <string name="edit_repeating_transaction">Úprava trvalého příkazu</string>
+    <string name="new_repeating_transaction">New Recurring Transaction</string>
+    <string name="edit_repeating_transaction">Edit Recurring Transaction</string>
     <string name="every_5_minutes">Každých 5 minut</string>
     <string name="every_15_minutes">Každých 15 minut</string>
     <string name="every_30_minutes">Každých 30 minut</string>
@@ -370,8 +376,8 @@
     <string name="donate_in_app_already_donate">Již jste podporoval rozvoj MoneyManagerEx pro Android obdarováním! \n\nVývojový tým vám děkuje!</string>
     <string name="donate_in_app_retrieving_status">Načítání stavu vašich darů ze služby Google Play. Počkejte prosím&#8230;</string>
     <string name="donate_in_app_error">Nelze použít aplikaci in-fakturace. Zkontrolujte, zda je nainstalována nejnovější verze aplikace Play Store.</string>
-    <string name="title_notifications_repeating_transaction">Oznámení trvalých příkazů po splatnosti </string>
-    <string name="summary_notifications_repeating_transaction">Zobrazit upozornění pro trvaké příkazy po splatnosti</string>
+    <string name="title_notifications_repeating_transaction">Notification Recurring Transaction overdue </string>
+    <string name="summary_notifications_repeating_transaction">Show notification for recurring transaction overdue</string>
     <string name="tools">Nástroje</string>
     <string name="loading">Nahrávám&#8230;</string>
     <string name="grand_total">Celkový součet</string>
@@ -396,4 +402,33 @@
     <string name="keep_editing">Pokračovat v editaci</string>
     <string name="discard">Zrušit</string>
     <string name="invalid_expression">Neplatný výraz</string>
+    <string name="send_me_logcat">Logcat</string>
+    <string name="dropbox_database_can_be_updted">There is an update of the database on Dropbox</string>
+    <string name="due_today">Due Today</string>
+    <string name="issues_tracker">Issues Tracker on GitHub</string>
+    <string name="action_settings">Nastavení</string>
+    <string name="close">Close</string>
+    <string name="tutorial_accounts_1">Multiple account types: checking, savings, credit, assets, and investments.</string>
+    <string name="tutorial_accounts_2">Swipe left to continue&#8230;</string>
+    <string name="financial_overview">Financial Overview</string>
+    <string name="tutorial_overview_1">Quick overview dashboard, budgets, reports with customizations.</string>
+    <string name="global">Global</string>
+    <string name="tutorial_global_1">Multiple currencies and languages. Open Source. Join our translation team.</string>
+    <string name="synchronization">Synchronization</string>
+    <string name="tutorial_sync_1">Support for multiple platforms, synchronization via Dropbox. Import and export of your data to other applications.</string>
+    <string name="transactions">Transactions</string>
+    <string name="tutorial_transactions_1">Deposits, withdrawals, transfers. Recurring transactions with reminders.</string>
+    <string name="split_category">-Split Category-</string>
+    <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
+    <string name="sort_by_ascending">Sort by year and month ascending</string>
+    <string name="sort_by_desceding">Sort by year and month descending</string>
+    <string name="years">Years</string>
+    <string name="select_the_years_to_be_displayed">Select the years to be displayed</string>
+    <string name="to_date">To Date</string>
+    <string name="from_date">From Date</string>
+    <string name="custom_dates">Custom Dates</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">Hide the reconciled amounts from the accounts on dashboard.</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
+    <string name="warning">Warning</string>
+    <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
 </resources>

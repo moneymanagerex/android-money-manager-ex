@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2015 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -149,8 +149,8 @@
     <string name="closed">Zatvoreno</string>
     <string name="new_edit_currency">Nova/izmjena valute</string>
     <string name="theme_application">Tema</string>
-    <string name="theme_holo">Material Dark</string>
-    <string name="theme_light">Material Light</string>
+    <string name="theme_holo">Materijal, tamna</string>
+    <string name="theme_light">Materijal, svijetla</string>
     <string name="close_application">Zatvori program</string>
     <string name="question_close_application">Želite li zatvoriti aplikaciju?</string>
     <string name="error_intent_pick_file">Nije pronađena aktivnost koja upravlja s namjerom \'odabrati datoteku\'</string>
@@ -242,7 +242,7 @@
     <string name="export_file_complete">Podaci su uspješno izvezeni u datoteku %1$s</string>
     <string name="export_file_failed">Izvoz datoteke %1$s nije uspio</string>
     <string name="donate_header">MoneyManagerEx za Android je dostupan besplatno. Ako ovaj program odgovara vašim željama, možete podržati razvojni tim donacijom.</string>
-    <string name="donate_in_app_title">Google Play In-App Billing</string>
+    <string name="donate_in_app_title">Naplate unutar aplikacije Google Play</string>
     <string name="donate_in_app_description">Donirajte putem naplate unutar aplikacije Google Play.</string>
     <string name="donate_in_app_spinner_text">Odaberite iznos donacije</string>
     <string name="donate_in_app_button">Donirajte</string>
@@ -264,7 +264,7 @@
     <string name="summary_download_from_drobpox">Dodirnite da ručno preuzmete povezanu datoteku iz Dropbox mape</string>
     <string name="upload_to_drobpox">Upload na Dropbox</string>
     <string name="summary_upload_to_drobpox">Dodirnite da ručno pošaljete povezanu datoteku u Dropbox mapu</string>
-    <string name="upload_file_to_dropbox_complete">Vaša baza podataka je uspješno prenesena</string>
+    <string name="upload_file_to_dropbox_complete">Vaša baza podataka je uspješno uploadovana</string>
     <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
     <string name="dropbox_how_it_works">Kako Dropbox radi sa Money Manager Ex\?</string>
     <string name="dont_show_again">Ne prikazuj ponovo</string>
@@ -285,7 +285,7 @@
     <string name="summary_application_font_size">Odaberite veličinu fonta koju želite postaviti programu</string>
     <string name="micro">Mikro</string>
     <string name="small">Mali</string>
-    <string name="Default">Početne postavke</string>
+    <string name="Default">Početna opcija</string>
     <string name="medium">Srednje</string>
     <string name="large">Veliko</string>
     <string name="dropbox_download_is_starting">Preuzimanje sa Dropbox-a. Molim pričekajte&#8230;</string>

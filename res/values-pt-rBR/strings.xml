@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -44,9 +44,11 @@
     <string name="version">Versão</string>
     <string name="build">Compilaçāo</string>
     <string name="path">Destino do banco de dados</string>
+    <string name="title_show_tutorial">Mostrar o tutorial</string>
+    <string name="summary_show_tutorial">Mostrar tutorial na próxima execuação?</string>
     <string name="account">Conta</string>
     <string name="account_list">Lista de contas</string>
-    <string name="account_empty_list">Contas não encontradas</string>
+    <string name="account_empty_list">Não foram encontradas contas. Para criar uma, toque no botão verde +.</string>
     <string name="account_balance">Saldo da conta</string>
     <string name="account_reconciled_balance">Balanço Reconciliado</string>
     <string name="delete_account">Apagar Conta</string>
@@ -59,6 +61,7 @@
     <string name="select_currency">Selecione Moeda</string>
     <string name="checking">Verificando</string>
     <string name="investment">Investimento</string>
+    <string name="investment_accounts">Contas de investimento</string>
     <string name="term">Prazo</string>
     <string name="db_account_insert_failed">Erro inserindo conta</string>
     <string name="db_account_update_failed">Erro atualizando conta</string>
@@ -72,12 +75,12 @@
     <string name="delete_payee">Excluir Favorecido</string>
     <string name="payee">Favorecido</string>
     <string name="select_payee">Selecionar Favorecido</string>
-    <string name="payee_empty_list">Nenhum favorecido encontrado</string>
+    <string name="payee_empty_list">No payee has been found. To create one, tap the green plus button.</string>
     <string name="from">De</string>
     <string name="db_payee_update_failed">Atualização do favorecido falhou</string>
     <string name="category">Categoria</string>
     <string name="subcategory">Subcategoria</string>
-    <string name="category_empty_list">Nenhuma Categoria encontrada</string>
+    <string name="category_empty_list">No category has been found. To create one, tap the green plus button.</string>
     <string name="select_category">Selecionar Categoria</string>
     <string name="add_category">Adicionar Categoria</string>
     <string name="add_subcategory">Adicionar subcategoria</string>
@@ -116,6 +119,7 @@
     <string name="error_toaccount_not_selected">Para a Conta é necessário</string>
     <string name="error_category_not_selected">Categoria é necessária</string>
     <string name="error_totamount_empty">Montante total é necessário</string>
+    <string name="error_transfer_to_same_account">The two accounts for the transfer must be distinct</string>
     <string name="about">Sobre</string>
     <string name="add">Adicionar</string>
     <string name="confirmDelete">Tem certeza que deseja excluir?</string>
@@ -123,12 +127,14 @@
     <string name="delete">Excluir</string>
     <string name="download">Baixar</string>
     <string name="edit">Editar</string>
+    <string name="home">Lar</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Nova/Editar Transação</string>
     <string name="refresh">Atualizar</string>
     <string name="search">Pesquisar</string>
     <string name="settings">Configurações</string>
     <string name="summary">Resumo</string>
+    <string name="sync">Sincronização</string>
     <string name="synchronize">Sincronizar</string>
     <string name="open">Abrir</string>
     <string name="user">Usuário</string>
@@ -164,7 +170,7 @@
     <string name="widget_summary">Resumo do Money Manager Ex</string>
     <string name="widget_all_accounts">Todas as Contas do Money Manager Ex</string>
     <string name="widget_add_transaction">Adicionar Transação ao Money Manager Ex</string>
-    <string name="repeating_empty_transaction">Parar Transação Recorrente</string>
+    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
     <string name="none">Nenhum</string>
     <string name="weekly">Semanal</string>
     <string name="bi_weekly">Quinzenal</string>
@@ -183,7 +189,7 @@
     <string name="inactive">Inativo</string>
     <string name="days_overdue">dia(s) de atraso!</string>
     <string name="days_remaining">dia(s) restante(s)</string>
-    <string name="new_edit_repeating_transaction">Nova/Editar Transação Recorrente</string>
+    <string name="new_edit_repeating_transaction">Novo/editar transação recorrente</string>
     <string name="next_occurrence">Próxima ocorrência</string>
     <string name="repeats">Se repete</string>
     <string name="times_repeated">Vezes repetidas</string>
@@ -191,9 +197,9 @@
     <string name="activates">Ativa</string>
     <string name="enter_next_occurrence">Insira próxima ocorrência</string>
     <string name="skip_next_occurrence">Pular Próxima Ocorrência</string>
-    <string name="notification_repeating_transaction_expired">Existem transações recorrentes expiradas</string>
+    <string name="notification_repeating_transaction_expired">Há transações recorrentes expiradas</string>
     <string name="notification_click_to_check_repeating_transaction">Toque para verificar a transação em atraso</string>
-    <string name="num_repeating_transaction_expired">%1$d repetir transações em atraso</string>
+    <string name="num_repeating_transaction_expired">%1$d transação recorrente em atraso</string>
     <string name="send_feedback">Envie Comentários</string>
     <string name="preferences_info_application">Informações</string>
     <string name="preferences_security">Segurança</string>
@@ -210,7 +216,7 @@
     <string name="income">Receitas</string>
     <string name="expenses">Despesas</string>
     <string name="difference">Diferença</string>
-    <string name="no_data">Sem dados para exibir</string>
+    <string name="no_data">No records were found. To create one, tap the green plus button. </string>
     <string name="month">Mês</string>
     <string name="year">Ano</string>
     <string name="menu_reports">Relatórios</string>
@@ -289,7 +295,7 @@
     <string name="dashclock_extension_summary">Exibe o resumo do Money Manager Ex para o Android</string>
     <string name="dashclock_extension_summary_all_account">Exibir o resumo de cada conta de Money Manager Ex para o Android</string>
     <string name="title_check_repeating_transaction">Verificar o tempo</string>
-    <string name="summary_check_repeating_transaction">Que horas você pode verificar se há transações recorrentes em atraso? (padrão 08:00)</string>
+    <string name="summary_check_repeating_transaction">A que horas vai verificar se há transacções recorrentes em atraso? (padrão 08:00)</string>
     <string name="credits">Créditos</string>
     <string name="top_withdrawals_last_30_days">Principais Retiradas: Últimos 30 dias</string>
     <string name="top_payees_last_30_days">Principais Favorecidos: Últimos 30 dias</string>
@@ -302,7 +308,7 @@
     <string name="empty_category">Categoria vazia</string>
     <string name="empty_payee">Favorecido vazio</string>
     <string name="help">Ajuda</string>
-    <string name="delete_repeating_transaction">Excluir Transação Recorrente</string>
+    <string name="delete_repeating_transaction">Excluir transações recorrentes</string>
     <string name="last">Último/a</string>
     <string name="accounts">Contas</string>
     <string name="to_account">Para a Conta</string>
@@ -315,7 +321,7 @@
     <string name="categories">Categorias</string>
     <string name="currencies">Moedas</string>
     <string name="payees">Beneficiários</string>
-    <string name="repeating_transactions">Pagadores</string>
+    <string name="repeating_transactions">Transações recorrentes</string>
     <string name="theme_holo_light">Holo Claro</string>
     <string name="new_account">Nova Conta</string>
     <string name="import_all_currencies">Importar Moedas</string>
@@ -324,7 +330,7 @@
     <string name="amount_less_or_equal">Valor menor ou igual a</string>
     <string name="result_search">Resultado da pesquisa</string>
     <string name="new_repeating_transaction">Nova transação recorrente</string>
-    <string name="edit_repeating_transaction">Editar Transação Recorrente</string>
+    <string name="edit_repeating_transaction">Editar transação recorrente</string>
     <string name="every_5_minutes">Cada 5 minutos</string>
     <string name="every_15_minutes">Cada 15 minutos</string>
     <string name="every_30_minutes">Cada 30 minutos</string>
@@ -370,19 +376,59 @@
     <string name="donate_in_app_already_donate">Você já apoiou o desenvolvimento do MoneyManagerEx para o Android com a sua doação! \n\nMuito obrigado da equipe de desenvolvimento!</string>
     <string name="donate_in_app_retrieving_status">Recuperando o status de suas doações do Google Play. Aguarde&#8230;</string>
     <string name="donate_in_app_error">Não é possível usar o faturamento no aplicativo. Verifique se a versão mais recente do aplicativo Play Store está instalada.</string>
-    <string name="title_notifications_repeating_transaction">Notificação de transações recorrentes em atraso </string>
-    <string name="summary_notifications_repeating_transaction">Mostrar notificação para transação recorrente em atraso</string>
+    <string name="title_notifications_repeating_transaction">Notificação de transacção recorrente em atraso </string>
+    <string name="summary_notifications_repeating_transaction">Mostrar notificação para transacção recorrente em atraso</string>
     <string name="tools">Ferramentas</string>
-    <string name="loading">A carregar&#8230;</string>
-    <string name="grand_total">Total</string>
+    <string name="loading">Carregando...</string>
+    <string name="grand_total">Total Geral</string>
     <string name="change_status">Alterar estado</string>
     <string name="duplicate_selected_transactions">Duplicar as transações selecionadas</string>
     <string name="sort">Ordenar</string>
     <string name="sort_by_name">Ordenar por nome</string>
     <string name="sort_by_usage">Ordenar por uso</string>
     <string name="choose_sorting">Escolha a classificação</string>
-    <string name="credit_card">Cartões de crédito</string>
-    <string name="bank_accounts">Contas bancárias</string>
+    <string name="credit_card">Cartão de Crédito</string>
+    <string name="bank_accounts">Contas Bancárias</string>
     <string name="term_accounts">Contas a prazo</string>
-    <string name="credit_card_accounts">Contas de cartão de crédito</string>
+    <string name="credit_card_accounts">Contas de Cartão de Crédito</string>
+    <string name="locale_hu">Húngaro</string>
+    <string name="montly_last_days">Mensal (último dia)</string>
+    <string name="montly_last_bussines_day">Mensal (último dia útil)</string>
+    <string name="locale_de">Alemão</string>
+    <string name="locale_ja">Japonês</string>
+    <string name="locale_nl">Holandês</string>
+    <string name="locale_pl">Polonês</string>
+    <string name="transaction_cancel_confirm">Tem certeza que deseja eliminar esta transação?</string>
+    <string name="keep_editing">Manter edição</string>
+    <string name="discard">Eliminar</string>
+    <string name="invalid_expression">Expressão inválida</string>
+    <string name="send_me_logcat">Logcat</string>
+    <string name="dropbox_database_can_be_updted">Há uma atualização da base de dados no Dropbox</string>
+    <string name="due_today">Vencimentos hoje</string>
+    <string name="issues_tracker">Rastreador de problemas no GitHub</string>
+    <string name="action_settings">Configurações</string>
+    <string name="close">Fechar</string>
+    <string name="tutorial_accounts_1">Vários tipos de conta: cheques, poupanças, créditos, bens e investimentos.</string>
+    <string name="tutorial_accounts_2">Swipe left to continue&#8230;</string>
+    <string name="financial_overview">Visão geral financeira</string>
+    <string name="tutorial_overview_1">Painel de análise rápida, orçamentos, relatórios com personalizações.</string>
+    <string name="global">Global</string>
+    <string name="tutorial_global_1">Várias moedas e idiomas. Código-fonte aberto. Junte-se à nossa equipa de tradução.</string>
+    <string name="synchronization">Sincronização</string>
+    <string name="tutorial_sync_1">Suporte para múltiplas plataformas, sincronização via Dropbox. Importação e exportação de dados para outras aplicações.</string>
+    <string name="transactions">Transacções</string>
+    <string name="tutorial_transactions_1">Depósitos, levantamentos, transferências. Transacções recorrentes com lembretes.</string>
+    <string name="split_category">-Split Category-</string>
+    <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
+    <string name="sort_by_ascending">Sort by year and month ascending</string>
+    <string name="sort_by_desceding">Sort by year and month descending</string>
+    <string name="years">Years</string>
+    <string name="select_the_years_to_be_displayed">Select the years to be displayed</string>
+    <string name="to_date">To Date</string>
+    <string name="from_date">From Date</string>
+    <string name="custom_dates">Custom Dates</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">Hide the reconciled amounts from the accounts on dashboard.</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
+    <string name="warning">Warning</string>
+    <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
 </resources>

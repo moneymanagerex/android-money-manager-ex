@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2015 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -242,7 +242,7 @@
     <string name="export_file_complete">データはファイル %1$s にエクスポートされました</string>
     <string name="export_file_failed">ファイル %1$s のエクスポートに失敗しました</string>
     <string name="donate_header">MoneyManagerEx for Android はフリーで提供しています。このアプリケーションを気に入っていただいた方は、寄付によって開発チームをサポートすることができます。</string>
-    <string name="donate_in_app_title">Google Play In-App Billing</string>
+    <string name="donate_in_app_title">Google Play アプリ内課金</string>
     <string name="donate_in_app_description">Google Play アプリ内課金で寄付します。</string>
     <string name="donate_in_app_spinner_text">寄付金額を選択</string>
     <string name="donate_in_app_button">寄付</string>

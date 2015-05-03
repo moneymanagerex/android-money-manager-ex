@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2015 Alessandro Lazzari
+  ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -119,7 +119,7 @@
     <string name="error_toaccount_not_selected">Vers Compte est obligatoire</string>
     <string name="error_category_not_selected">La catégorie est obligatoire</string>
     <string name="error_totamount_empty">Le montant total est obligatoire</string>
-    <string name="error_transfer_to_same_account">The two accounts for the transfer must be distinct</string>
+    <string name="error_transfer_to_same_account">Les deux comptes lors du transfert doivent être distinct</string>
     <string name="about">A propos</string>
     <string name="add">Ajouter</string>
     <string name="confirmDelete">Êtes-vous sûr de vouloir supprimer ?</string>
@@ -127,7 +127,7 @@
     <string name="delete">Supprimer</string>
     <string name="download">Télécharger</string>
     <string name="edit">Modifier</string>
-    <string name="home">Domicile</string>
+    <string name="home">Accueil</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Créer/Modifier une opération</string>
     <string name="refresh">Actualiser</string>
@@ -149,8 +149,8 @@
     <string name="closed">Clôturé</string>
     <string name="new_edit_currency">Créer/Editer une devise</string>
     <string name="theme_application">Thème</string>
-    <string name="theme_holo">Material Dark</string>
-    <string name="theme_light">Material Light</string>
+    <string name="theme_holo">Matériel sombre</string>
+    <string name="theme_light">Matériel clair</string>
     <string name="close_application">Fermer l\'application</string>
     <string name="question_close_application">Voulez-vous fermer l\'application?</string>
     <string name="error_intent_pick_file">Aucune activité trouvée pour gérer le fichier choisi</string>
@@ -242,7 +242,7 @@
     <string name="export_file_complete">Les données ont correctement été exportées vers le fichier %1$s</string>
     <string name="export_file_failed">L\'exportation du fichier %1$s a échoué</string>
     <string name="donate_header">L\'application MoneyManagerEx pour Android est disponible gratuitement. Si vous en êtes satisfait, vous pouvez toujours contribuer à son développement en envoyant un don à notre équipe.</string>
-    <string name="donate_in_app_title">Google Play In-App Billing</string>
+    <string name="donate_in_app_title">Facturation via l\'application Google Play</string>
     <string name="donate_in_app_description">Faire un don via Google Play In-App Billing.</string>
     <string name="donate_in_app_spinner_text">Sélectionnez le montant du don</string>
     <string name="donate_in_app_button">Donner</string>
@@ -409,7 +409,7 @@
     <string name="action_settings">Paramètres</string>
     <string name="close">Fermer</string>
     <string name="tutorial_accounts_1">Plusieurs types de comptes : compte courant, épargne, actifs et placements.</string>
-    <string name="tutorial_accounts_2">Swipe left to continue&#8230;</string>
+    <string name="tutorial_accounts_2">Balayez vers la gauche pour continuer&#8230;</string>
     <string name="financial_overview">Vue d\'ensemble</string>
     <string name="tutorial_overview_1">Vue d\'ensemble rapide, budgets, rapports personnalisables.</string>
     <string name="global">Mondial</string>
@@ -420,15 +420,15 @@
     <string name="tutorial_transactions_1">Dépôts, retraits et transferts. Transactions récurrentes avec rappels.</string>
     <string name="split_category">-Catégorie fractionnée-</string>
     <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
-    <string name="sort_by_ascending">Sort by year and month ascending</string>
-    <string name="sort_by_desceding">Sort by year and month descending</string>
+    <string name="sort_by_ascending">Trier par date croissante</string>
+    <string name="sort_by_desceding">Trier par date décroissante</string>
     <string name="years">Years</string>
     <string name="select_the_years_to_be_displayed">Select the years to be displayed</string>
-    <string name="to_date">To Date</string>
-    <string name="from_date">From Date</string>
-    <string name="custom_dates">Custom Dates</string>
-    <string name="pref_transaction_hide_reconciled_amounts_summary">Hide the reconciled amounts from the accounts on dashboard.</string>
-    <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
-    <string name="warning">Warning</string>
+    <string name="to_date">De</string>
+    <string name="from_date">À</string>
+    <string name="custom_dates">Période personnalisée</string>
+    <string name="pref_transaction_hide_reconciled_amounts_summary">Cache les montants rapprochés des comptes du tableau de bord.</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Cacher les montants rapprochés</string>
+    <string name="warning">Attention</string>
     <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
 </resources>
