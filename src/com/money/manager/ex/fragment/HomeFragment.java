@@ -32,6 +32,9 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -57,9 +60,10 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
+import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
@@ -106,6 +110,15 @@ public class HomeFragment extends Fragment implements
 
         AppSettings settings = new AppSettings(getActivity());
         mHideReconciled = settings.getHideReconciledAmounts();
+
+        // The fragment is using a custom option in the actionbar menu.
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.home_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -376,6 +389,15 @@ public class HomeFragment extends Fragment implements
                     }
                 }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_search) {
+            startActivity(new Intent(getActivity(), SearchActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
