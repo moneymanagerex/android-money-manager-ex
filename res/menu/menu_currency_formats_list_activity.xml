@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    
+<!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/menu_update_exchange_rate"
         android:icon="?attr/ic_action_reload"
-        android:showAsAction="always"
-        android:title="@string/update_menu_currency_exchange_rates"/>
+        android:title="@string/update_menu_currency_exchange_rates"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/menu_import_all_currencies"
         android:icon="?attr/ic_action_download"
-        android:showAsAction="ifRoom"
-        android:title="@string/import_all_currencies"/>
-    <item
-        android:id="@+id/menu_add_currency"
-        android:icon="?attr/ic_action_add"
-        android:showAsAction="always"
-        android:title="@string/add"/>
-
-
+        android:title="@string/import_all_currencies"
+        app:showAsAction="ifRoom"/>
 </menu>

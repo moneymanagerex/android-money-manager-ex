@@ -1,9 +1,28 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.about;
 
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -17,50 +36,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
+import com.github.pedrovgs.lynx.LynxActivity;
+import com.github.pedrovgs.lynx.LynxConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.fragment.BaseFragmentActivity;
 
-public class AboutFragment extends SherlockFragment {
+public class AboutFragment extends Fragment {
     private static final String LOGCAT = AboutFragment.class.getSimpleName();
+    private static Fragment mInstance;
 
-    // implement a class to manage the opening of several url
-    private class OnClickListenerUrl implements OnClickListener {
-        private String mUrl;
-
-        @Override
-        public void onClick(View v) {
-            if (TextUtils.isEmpty(getUrl()))
-                return;
-            try {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()));
-                startActivity(intent);
-            } catch (Exception e) {
-                Toast.makeText(getSherlockActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            }
+    public static Fragment newInstance(int page) {
+        if (mInstance == null) {
+            mInstance = new AboutFragment();
         }
-
-        public String getUrl() {
-            return mUrl;
-        }
-
-        public void setUrl(String mUrl) {
-            this.mUrl = mUrl;
-        }
-
+        return mInstance;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         String text, version = "", build = "";
-        View view = inflater.inflate(R.layout.about_activity, container, false);
+        View view = inflater.inflate(R.layout.about_fragment, container, false);
 
-        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+        if (activity != null) {
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         // Version application
         TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
         try {
-            version = getSherlockActivity().getPackageManager().getPackageInfo(getSherlockActivity().getPackageName(), 0).versionName;
-            build = Integer.toString(getSherlockActivity().getPackageManager().getPackageInfo(getSherlockActivity().getPackageName(), 0).versionCode);
+            version = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+            build = Integer.toString(getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionCode);
             txtVersion.setText(txtVersion.getText() + " " + version + " (" + getString(R.string.build) + " " + build + ")");
         } catch (NameNotFoundException e) {
             Log.e(LOGCAT, e.getMessage());
@@ -80,8 +86,22 @@ public class AboutFragment extends SherlockFragment {
                 try {
                     startActivity(Intent.createChooser(intent, "Send mail..."));
                 } catch (Exception e) {
-                    Toast.makeText(getSherlockActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        // logcat
+        TextView txtLogcat = (TextView) view.findViewById(R.id.textViewLogcat);
+        text = "<u>" + txtLogcat.getText() + "</u>";
+        txtLogcat.setText(Html.fromHtml(text));
+        txtLogcat.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LynxConfig lynxConfig = new LynxConfig();
+                lynxConfig.setMaxNumberOfTracesToShow(4000);
+
+                Intent lynxActivityIntent = LynxActivity.getIntent(getActivity(), lynxConfig);
+                startActivity(lynxActivityIntent);
             }
         });
         // rate application
@@ -92,6 +112,14 @@ public class AboutFragment extends SherlockFragment {
         OnClickListenerUrl clickListenerRate = new OnClickListenerUrl();
         clickListenerRate.setUrl("http://play.google.com/store/apps/details?id=com.money.manager.ex");
         txtRate.setOnClickListener(clickListenerRate);
+        // issues tracker application
+        TextView txtIssues = (TextView) view.findViewById(R.id.textViewIssuesTracker);
+        text = "<u>" + txtIssues.getText() + "</u>";
+        txtIssues.setText(Html.fromHtml(text));
+        txtIssues.setMovementMethod(LinkMovementMethod.getInstance());
+        OnClickListenerUrl clickListenerIssuesTracker = new OnClickListenerUrl();
+        clickListenerIssuesTracker.setUrl("https://github.com/moneymanagerex/android-money-manager-ex/issues/");
+        txtIssues.setOnClickListener(clickListenerIssuesTracker);
         // report set link
         TextView txtReport = (TextView) view.findViewById(R.id.textViewLinkWebSite);
         text = "<u>" + txtReport.getText() + "</u>";
@@ -127,11 +155,37 @@ public class AboutFragment extends SherlockFragment {
         buttonDonate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getSherlockActivity(), DonateActivity.class));
+                startActivity(new Intent(getActivity(), DonateActivity.class));
             }
         });
 
         return view;
+    }
+
+    // implement a class to manage the opening of several url
+    private class OnClickListenerUrl implements OnClickListener {
+        private String mUrl;
+
+        @Override
+        public void onClick(View v) {
+            if (TextUtils.isEmpty(getUrl()))
+                return;
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()));
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+        public String getUrl() {
+            return mUrl;
+        }
+
+        public void setUrl(String mUrl) {
+            this.mUrl = mUrl;
+        }
+
     }
 
 }

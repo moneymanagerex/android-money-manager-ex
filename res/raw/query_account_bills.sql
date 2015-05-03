@@ -13,33 +13,33 @@ ACCOUNTLIST_V1.ACCOUNTTYPE,
 FROM ACCOUNTLIST_V1 LEFT OUTER JOIN ( 
 select accountid, ROUND(SUM(total), 2) as total, ROUND(SUM(reconciled), 2) as reconciled 
 from ( 
-select accountid, transcode, sum(case when status in ('R', 'F', 'D', '') then -transamount else 0 end) as total, sum(case when status = 'R' then -transamount else 0 end) as reconciled 
-from checkingaccount_v1 
-where transcode in ('Withdrawal') 
-group by accountid, transcode 
+    select accountid, transcode, sum(case when status in ('R', 'F', 'D', '') then -transamount else 0 end) as total, sum(case when status = 'R' then -transamount else 0 end) as reconciled
+    from checkingaccount_v1
+    where transcode in ('Withdrawal')
+    group by accountid, transcode
  
-union 
- 
-select accountid, transcode, sum(case when status in ('R', 'F', 'D', '')  then transamount else 0 end) as total, sum(case when status = 'R' then transamount else 0 end) as reconciled 
-from checkingaccount_v1 
-where transcode in ('Deposit') 
-group by accountid, transcode 
- 
-union 
- 
-select accountid, transcode, sum(case when status in ('R', 'F', 'D', '')  then -transamount else 0 end) as total, sum(case when status = 'R' then -transamount else 0 end) as reconciled 
-from checkingaccount_v1 
-where transcode in ('Transfer') 
-group by accountid, transcode 
- 
-union 
- 
-select toaccountid AS accountid, transcode, sum(case when status in ('R', 'F', 'D', '')  then totransamount else 0 end) as total, sum(case when status = 'R' then totransamount else 0 end) as reconciled 
-from checkingaccount_v1 
-where transcode in ('Transfer') and toaccountid <> -1 
-group by toaccountid, transcode 
+    union
+
+    select accountid, transcode, sum(case when status in ('R', 'F', 'D', '')  then transamount else 0 end) as total, sum(case when status = 'R' then transamount else 0 end) as reconciled
+    from checkingaccount_v1
+    where transcode in ('Deposit')
+    group by accountid, transcode
+
+    union
+
+    select accountid, transcode, sum(case when status in ('R', 'F', 'D', '')  then -transamount else 0 end) as total, sum(case when status = 'R' then -transamount else 0 end) as reconciled
+    from checkingaccount_v1
+    where transcode in ('Transfer')
+    group by accountid, transcode
+
+    union
+
+    select toaccountid AS accountid, transcode, sum(case when status in ('R', 'F', 'D', '')  then totransamount else 0 end) as total, sum(case when status = 'R' then totransamount else 0 end) as reconciled
+    from checkingaccount_v1
+    where transcode in ('Transfer') and toaccountid <> -1
+    group by toaccountid, transcode
 )  t 
 group by accountid 
 ) T1 ON ACCOUNTLIST_V1.ACCOUNTID=T1.ACCOUNTID 
 LEFT OUTER JOIN CURRENCYFORMATS_V1 ON ACCOUNTLIST_V1.CURRENCYID=CURRENCYFORMATS_V1.CURRENCYID 
-WHERE ACCOUNTLIST_V1.ACCOUNTTYPE IN ('Checking', 'Term')
+WHERE ACCOUNTLIST_V1.ACCOUNTTYPE IN ('Checking', 'Term', 'Credit Card', 'Investment')

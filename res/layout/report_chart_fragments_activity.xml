@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (C) 2012 The Android Money Manager Ex Project
+  Copyright (C) 2012-2015 The Android Money Manager Ex Project
   
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -22,9 +22,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <include layout="@layout/toolbar" />
+
     <LinearLayout
         android:id="@+id/fragmentContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
 </LinearLayout>

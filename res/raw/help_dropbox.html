@@ -8,12 +8,16 @@ body {
 	font-size:small;
 	margin: 10px;
 }
-/* #lists {margin: 0;padding: 0; } */
-#lists {margin: 0;padding: 0px 0px 0px 13px; }
-#lists { list-style-type: disk}
-/* #lists li:before { content:'\2713'; } */
+
+.lists {
+	margin: 0;
+	padding: 0px 0px 0px 13px;
+	list-style-type: disk;
+}
+
+
 .warning {color:#FF0000;}
-/* a {color:#000;} */
+
 h2 { font-size:120%; }
 h3 { font-size:105%; }
 </style>
@@ -21,18 +25,18 @@ h3 { font-size:105%; }
 	<body>
 		<h2><b>MoneyManagerEx for Android: Database synchronization with the MoneyManagerEx for Windows/Linux/Mac using the Dropbox service.</b></h2>
 		<p><b>Prerequisite:</b> have a dropbox account. If you still do not have it go to www.dropbox.com and create a new account.</p>
-		<ul id="lists">
+		<ul class="lists">
 			<li>Connect MoneyManagerEx for Android with Dropbox. Select "Link to Dropbox." If your device has installed the Dropbox app, it automatically opens and asks you to authorize MoneyManagerEx for Android to access your Dropbox. If you have not installed the Dropbox app on your device, Android open the browser on the login page of Dropbox. After logging in, you will be asked to authorize MoneyManagerEx for Android to access your Dropbox.</li>
 			<li>If you authorize MoneyManagerEx for Android, the first time will be created automatically by Dropbox, the folder <i><i>/Apps/MoneyManagerEx Mobile</i></i> within your Dropbox space. The folder should never be created manually!</li>
 		</ul>
-		<div <!-- style="line-height:5px -->; margin: 13px" >
+		<div style="line-height:5px; margin: 13px" >
 			<p><strong><a href="#mmb_exists">I already use a database for the desktop version</a></strong></p>
 			<p><strong><a href="#mmb_not_exists">I've never used the desktop version and I want to synchronize the database on the device</a></strong></p>
 			<p><strong><a href="#other_settings">Other Settings</a></strong></p>
 			<p><strong><a href="#faq">FAQ</a></strong></p>
 		</div>
 		
-		<ul id="lists">
+		<ul class="lists">
 		<a name="mmb_exists" style="margin:0px 0px 0px 15px;"><h3><b>I already use a database for the desktop version</b></h3></a>
 			<li>If you already have a database (mmb) of MoneyManagerEx Desktop Version, you must copy or move the file (s) inside the folder <i>/Apps/MoneyManagerEx Mobile</i> (recommended use the computer for this operation).</li>
 			<li>From the Dropbox settings of MoneyManagerEx for Android, click "Dropbox linked file". Application will open a new window with all the files in the folder <i>/Apps/MoneyManagerEx Mobile</i>. Select the file you want to connect and come back.</li>

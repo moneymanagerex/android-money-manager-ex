@@ -1,38 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menu_open_database"
         android:icon="?attr/ic_action_folder_open"
         android:orderInCategory="1000"
-        android:showAsAction="always|withText"
-        android:title="@string/menu_open_database"/>
+        android:title="@string/menu_open_database"
+        app:showAsAction="always|withText"/>
     <item
         android:id="@+id/menu_add_transaction_account"
         android:icon="?attr/ic_action_add"
         android:orderInCategory="1001"
-        android:showAsAction="always|withText"
         android:title="@string/new_transaction"
-        android:visible="false"/>
+        android:visible="false"
+        app:showAsAction="always|withText"/>
     <item
         android:id="@+id/menu_sync_dropbox"
         android:icon="@drawable/ic_action_dropbox_dark"
         android:orderInCategory="1002"
-        android:showAsAction="always|withText"
-        android:title="@string/synchronize"/>
+        android:title="@string/synchronize"
+        app:showAsAction="always|withText"/>
     <item
         android:id="@+id/menu_search_transaction"
         android:icon="?attr/ic_action_search"
         android:orderInCategory="1003"
-        android:showAsAction="always|withText"
-        android:title="@string/search"/>
+        android:title="@string/search"
+        app:showAsAction="always|withText"/>
     <item
         android:id="@+id/menu_dashboard"
         android:icon="?attr/ic_action_business"
         android:orderInCategory="1004"
-        android:showAsAction="ifRoom|withText"
         android:title="@string/dashboard"
-        android:visible="false"/>
+        android:visible="false"
+        app:showAsAction="ifRoom|withText"/>
     <item
         android:id="@+id/menu_export_to_csv"
         android:orderInCategory="1005"
@@ -41,7 +60,7 @@
 
     <group
         android:id="@+id/menu_group_main"
-        android:orderInCategory="1006" >
+        android:orderInCategory="1006">
         <item
             android:id="@+id/menu_action_main"
             android:title="@string/menu_manage">
@@ -66,7 +85,7 @@
     </group>
     <group
         android:id="@+id/menu_group_reports"
-        android:orderInCategory="1007" >
+        android:orderInCategory="1007">
         <item
             android:id="@+id/menu_reports"
             android:title="@string/menu_reports">

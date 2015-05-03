@@ -1,8 +1,27 @@
+/*
+ * Copyright (C) 2012-2014 Alessandro Lazzari
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.money.manager.ex.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,168 +33,215 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 
-public class SplitItemFragment extends SherlockFragment implements InputAmountDialogListener {
-	public interface SplitItemFragmentCallbacks {
-		public void onRemoveItem(TableSplitTransactions object);
-	}
-	
-	private static final int REQUEST_PICK_CATEGORY = 1;
-	public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
-	
-	public static SplitItemFragment newIstance(TableSplitTransactions split) {
-		SplitItemFragment fragment = new SplitItemFragment();
-		fragment.mSplitObject = split;
-		return fragment;
-	}
-	private TableSplitTransactions mSplitObject;
-	
-	private SplitItemFragmentCallbacks mOnSplitItemCallback;
-	private TextView txtSelectCategory;
-	private TextView txtAmount;
-	
-	private Spinner spinTransCode;
+public class SplitItemFragment extends Fragment
+        implements InputAmountDialogListener {
 
-	/**
-	 * @return the splitItemCallback
-	 */
-	public SplitItemFragmentCallbacks getOnSplitItemCallback() {
-		return mOnSplitItemCallback;
-	}
-	
-	public TableSplitTransactions getTableSplitTransactions() {
-		String selectItem = spinTransCode.getSelectedItem().toString();
-		if (txtAmount.getTag() != null) {
-			mSplitObject.setSplitTransAmount((Double)txtAmount.getTag() * (selectItem.equals(getString(R.string.withdrawal)) ? 1 : -1));
-		} else {
-			mSplitObject.setSplitTransAmount(0);
-		}
-		return mSplitObject;
-	}
+    public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
+    private static final int REQUEST_PICK_CATEGORY = 1;
+    private ISplitTransactionsDataset mSplitTransaction;
+    private SplitItemFragmentCallbacks mOnSplitItemCallback;
+    private TextView txtSelectCategory;
+    private TextView txtAmount;
+    private Spinner spinTransCode;
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case REQUEST_PICK_CATEGORY:
-			TextView txtSelectCategory = (TextView) getView().findViewById(R.id.textViewCategory);
-			if (txtSelectCategory != null) {
-				txtSelectCategory.setText(null);
-				if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-					mSplitObject.setCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1));
-					mSplitObject.setSubCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1));
-					txtSelectCategory.setText(new Core(getSherlockActivity()).getCategSubName(mSplitObject.getCategId(), mSplitObject.getSubCategId()));
-				}
-			}
-		}
+    public static SplitItemFragment newInstance(ISplitTransactionsDataset split) {
+        SplitItemFragment fragment = new SplitItemFragment();
+        fragment.mSplitTransaction = split;
+        return fragment;
+    }
 
-		super.onActivityResult(requestCode, resultCode, data);
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (container == null)
-			return null;
-		
-		if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION)) {
-			mSplitObject = savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
-		}
-		
-		Core core = new Core(getSherlockActivity());
-		
-		final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.item_splittransaction, null);
-		if (layout != null) {
-			// amount
-			txtAmount = (TextView) layout.findViewById(R.id.editTextTotAmount);
-			if (!(mSplitObject.getSplitTransAmount() == 0)) {
-				core.formatAmountTextView(txtAmount, mSplitObject.getSplitTransAmount());
-			}
-			txtAmount.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Double amount = (Double)((TextView) v).getTag();
-					if (amount == null) 
-						amount = 0d;
-					
-					if (getSherlockActivity() instanceof SplitTransactionsActivity) {
-						SplitTransactionsActivity activity = (SplitTransactionsActivity)getSherlockActivity();
-						activity.setFragmentInputAmountClick(SplitItemFragment.this);
-					}
-					
-					InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
-					dialog.show(getSherlockActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
-				}
-			});
-			// type
-			spinTransCode = (Spinner) layout.findViewById(R.id.spinnerTransCode);
-			String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
-			ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getSherlockActivity(), R.layout.sherlock_spinner_item, transCodeItems);
-			adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			spinTransCode.setAdapter(adapterTrans);
-			spinTransCode.setSelection(mSplitObject.getSplitTransAmount() >= 0 ? 0 : 1, true);
+    /**
+     * @return the splitItemCallback
+     */
+    public SplitItemFragmentCallbacks getOnSplitItemCallback() {
+        return mOnSplitItemCallback;
+    }
 
-			// category and subcategory
-			txtSelectCategory = (TextView) layout.findViewById(R.id.textViewCategory);
-			String buttonText = core.getCategSubName(mSplitObject.getCategId(), mSplitObject.getSubCategId());
-			txtSelectCategory.setText(buttonText);
-			
-			txtSelectCategory.setOnClickListener(new OnClickListener() {
+    /**
+     * @param splitItemCallback the splitItemCallback to set
+     */
+    public void setOnSplitItemCallback(SplitItemFragmentCallbacks splitItemCallback) {
+        this.mOnSplitItemCallback = splitItemCallback;
+    }
 
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(getSherlockActivity(), CategorySubCategoryExpandableListActivity.class);
-					intent.setAction(Intent.ACTION_PICK);
-					startActivityForResult(intent, REQUEST_PICK_CATEGORY);
-				}
-			});
-			// image button to remove a item
-			ImageButton btnRemove = (ImageButton) layout.findViewById(R.id.imageButtonCancel);
-			btnRemove.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					FragmentTransaction transaction = getSherlockActivity().getSupportFragmentManager().beginTransaction();
-					transaction.remove(SplitItemFragment.this);
-					transaction.commit();
-					if (getOnSplitItemCallback() != null) {
-						getOnSplitItemCallback().onRemoveItem(mSplitObject);
-					}
-				}
-			});
-			// tag class
-			layout.setTag(mSplitObject);
-		}
+    /**
+     * Returns the Split Transaction created. Called from the activity that holds multiple
+     * split-fragments.
+     * @param parentTransactionType Parent transaction type. Required to determine the amount sign.
+     *                              If the parent is Deposit then Deposit here is +,
+     *                              Withdrawal is -.
+     * @return Split Transaction
+     */
+    public ISplitTransactionsDataset getSplitTransaction(String parentTransactionType) {
+        Object amount = txtAmount.getTag();
 
-		return layout;
-	}
+        // handle 0 values.
+        if(amount == null) {
+            mSplitTransaction.setSplitTransAmount(0);
+            return mSplitTransaction;
+        }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putParcelable(KEY_SPLIT_TRANSACTION, mSplitObject);
-	}
+        // otherwise figure out which sign to use for the amount.
 
-	/**
-	 * @param splitItemCallback the splitItemCallback to set
-	 */
-	public void setOnSplitItemCallback(SplitItemFragmentCallbacks splitItemCallback) {
-		this.mOnSplitItemCallback = splitItemCallback;
-	}
+        String transactionType = spinTransCode.getSelectedItem().toString();
+        if(!parentTransactionType.equals(transactionType)){
+            // parent transaction type is different. Invert the amount. What if the amount is already negative?
+            mSplitTransaction.setSplitTransAmount((double) amount * -1);
+        } else {
+            mSplitTransaction.setSplitTransAmount((double) amount);
+        }
 
-	@Override
-	public void onFinishedInputAmountDialog(int id, Double amount) {
-		Core core = new Core(getSherlockActivity());
-		if (txtAmount.getId() == id) {
-			txtAmount.setTag(amount);
-			mSplitObject.setSplitTransAmount(amount);
-			core.formatAmountTextView(txtAmount, amount);
-		}
-	}
+        return mSplitTransaction;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_PICK_CATEGORY:
+                TextView txtSelectCategory = (TextView) getView().findViewById(R.id.textViewCategory);
+                if (txtSelectCategory != null) {
+                    txtSelectCategory.setText(null);
+                    if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                        mSplitTransaction.setCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1));
+                        mSplitTransaction.setSubCategId(data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1));
+                        txtSelectCategory.setText(new Core(getActivity().getApplicationContext()).getCategSubName(mSplitTransaction.getCategId(), mSplitTransaction.getSubCategId()));
+                    }
+                }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (container == null)
+            return null;
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION)) {
+            mSplitTransaction = savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
+        }
+
+        Core core = new Core(getActivity().getApplicationContext());
+
+        final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.item_splittransaction, null);
+        if (layout != null) {
+            // amount
+            txtAmount = (TextView) layout.findViewById(R.id.editTextTotAmount);
+            double splitTransactionAmount = mSplitTransaction.getSplitTransAmount();
+            if (!(splitTransactionAmount == 0)) {
+                // Change the sign to positive.
+                if(splitTransactionAmount < 0) splitTransactionAmount = Math.abs(splitTransactionAmount);
+
+                core.formatAmountTextView(txtAmount, splitTransactionAmount);
+            }
+            txtAmount.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Double amount = (Double) ((TextView) v).getTag();
+                    if (amount == null)
+                        amount = 0d;
+
+                    if (getActivity() instanceof SplitTransactionsActivity) {
+                        SplitTransactionsActivity activity = (SplitTransactionsActivity) getActivity();
+                        activity.setFragmentInputAmountClick(SplitItemFragment.this);
+                    }
+
+                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+                    dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+                }
+            });
+
+            // type
+            spinTransCode = (Spinner) layout.findViewById(R.id.spinnerTransCode);
+            String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
+            ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
+            adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinTransCode.setAdapter(adapterTrans);
+            // find the split transaction type.
+//            SpinTransCode.setSelection(mSplitTransaction.getSplitTransAmount() >= 0 ? 0 : 1, true);
+            int transactionTypeSelection = getTransactionTypeSelection();
+            spinTransCode.setSelection(transactionTypeSelection);
+
+            // category and subcategory
+            txtSelectCategory = (TextView) layout.findViewById(R.id.textViewCategory);
+            String buttonText = core.getCategSubName(mSplitTransaction.getCategId(), mSplitTransaction.getSubCategId());
+            txtSelectCategory.setText(buttonText);
+
+            txtSelectCategory.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), CategorySubCategoryExpandableListActivity.class);
+                    intent.setAction(Intent.ACTION_PICK);
+                    startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+                }
+            });
+            // image button to remove an item
+            ImageButton btnRemove = (ImageButton) layout.findViewById(R.id.imageButtonCancel);
+            btnRemove.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.remove(SplitItemFragment.this);
+                    transaction.commit();
+                    if (getOnSplitItemCallback() != null) {
+                        getOnSplitItemCallback().onRemoveItem(mSplitTransaction);
+                    }
+                }
+            });
+            // tag class
+            layout.setTag(mSplitTransaction);
+        }
+
+        return layout;
+    }
+
+    private int getTransactionTypeSelection(){
+        // define the transaction type based on the amount and the parent type.
+
+        // 0 = withdrawal, 1 = deposit.
+        int transactionTypeSelection;
+
+        SplitTransactionsActivity splitActivity = (SplitTransactionsActivity) getActivity();
+        boolean parentIsWithdrawal = splitActivity.parentTransactionType.equals(getString(R.string.withdrawal));
+        double amount = mSplitTransaction.getSplitTransAmount();
+        if(parentIsWithdrawal){
+            // parent is Withdrawal.
+            transactionTypeSelection = amount >= 0 ? 0 : 1;
+        } else {
+            // parent is Deposit.
+            transactionTypeSelection = amount >= 0 ? 1 : 0;
+        }
+
+        return transactionTypeSelection;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_SPLIT_TRANSACTION, mSplitTransaction);
+    }
+
+    @Override
+    public void onFinishedInputAmountDialog(int id, Double amount) {
+        Core core = new Core(getActivity().getApplicationContext());
+        if (txtAmount.getId() == id) {
+            txtAmount.setTag(amount);
+            mSplitTransaction.setSplitTransAmount(amount);
+            core.formatAmountTextView(txtAmount, amount);
+        }
+    }
+
+    public interface SplitItemFragmentCallbacks {
+        void onRemoveItem(ISplitTransactionsDataset object);
+    }
 }

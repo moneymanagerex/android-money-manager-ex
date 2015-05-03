@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
 
+<resources>
     <string name="pref_last_version_key">preflastversioncodekey</string>
     <string name="pref_donate_last_version_key">prefdonatelastversioncodekey</string>
     <string name="pref_last_db_path_shown">preflastdbpathshown</string>
@@ -34,6 +51,7 @@
     <string name="pref_dropbox_times_repeat_service">dropbox2servicetimesrepeat</string>
     <string name="pref_dropbox_upload_immediate">dropbox2uploadimmediate</string>
     <string name="pref_transaction_shown_balance">transactionshownbalance</string>
+    <string name="pref_transaction_hide_reconciled_amounts">pref_transaction_hide_reconciled_amounts</string>
     <string name="pref_database_backup">prefdatabasebackup</string>
     <string name="pref_application_font">prefapplicationfont</string>
     <string name="pref_application_font_size">prefapplicationfontsize</string>
@@ -44,4 +62,11 @@
     <string name="pref_text_search_type">preftextsearchtype</string>
     <string name="pref_locale">preflocale</string>
     <string name="pref_repeating_transaction_notifications">prefrepeatingtransactionnotifications</string>
+    <string name="pref_general">prefgeneral</string>
+    <string name="pref_look_feel">preflookfeel</string>
+    <string name="pref_security">prefsecurity</string>
+    <string name="pref_database">prefdatabase</string>
+    <string name="pref_sort_payee">prefsortpayee</string>
+    <string name="pref_show_tutorial">prefshowtutorial</string>
+    <string name="pref_dashboard_group_visibility">pref-dashboard-group-visible</string>
 </resources>

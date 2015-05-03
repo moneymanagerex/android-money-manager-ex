@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2014 Alessandro Lazzari
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:icon="@null"
+        android:defaultValue=""
+        android:entries="@array/application_locale_entries"
+        android:entryValues="@array/application_locale_values"
+        android:key="@string/pref_locale"
+        android:title="@string/locale_application" />
+
+    <EditTextPreference
+        android:icon="@null"
+        android:key="@string/pref_user_name"
+        android:summary="@string/username"
+        android:title="@string/user" />
+
+    <ListPreference
+        android:icon="@null"
+        android:key="@string/pref_date_format"
+        android:title="@string/date_format" />
+
+    <ListPreference
+        android:icon="@null"
+        android:key="@string/pref_base_currency"
+        android:title="@string/base_currency" />
+
+    <ListPreference
+        android:icon="@null"
+        android:defaultValue=""
+        android:entries="@array/status_items"
+        android:entryValues="@array/status_values"
+        android:key="@string/pref_default_status"
+        android:title="@string/default_status" />
+
+    <ListPreference
+        android:icon="@null"
+        android:defaultValue="N"
+        android:entries="@array/new_transaction_dialog_items"
+        android:entryValues="@array/new_transaction_dialog_values"
+        android:key="@string/pref_default_payee"
+        android:title="@string/default_payee" />
+
+    <EditTextPreference
+        android:icon="@null"
+        android:key="@string/pref_financial_year_startdate"
+        android:title="@string/financial_year_start_day" />
+
+    <ListPreference
+        android:icon="@null"
+        android:key="@string/pref_financial_year_startmonth"
+        android:title="@string/financial_year_start_month" />
+
+    <CheckBoxPreference
+        android:icon="@null"
+        android:defaultValue="true"
+        android:key="@string/pref_text_search_type"
+        android:summary="@string/search_text_contain_summary"
+        android:title="@string/search_text_contain_title" />
+
+    <CheckBoxPreference
+        android:icon="@null"
+        android:defaultValue="true"
+        android:key="@string/pref_repeating_transaction_notifications"
+        android:summary="@string/summary_notifications_repeating_transaction"
+        android:title="@string/title_notifications_repeating_transaction" />
+
+    <com.money.manager.ex.settings.TimePreference
+        android:icon="@null"
+        android:defaultValue="08:00"
+        android:dependency="@string/pref_repeating_transaction_notifications"
+        android:key="@string/pref_repeating_transaction_check_time"
+        android:summary="@string/summary_check_repeating_transaction"
+        android:title="@string/title_check_repeating_transaction" />
+
+    <CheckBoxPreference
+        android:icon="@null"
+        android:defaultValue="true"
+        android:key="@string/pref_show_tutorial"
+        android:title="@string/title_show_tutorial"
+        android:summary="@string/summary_show_tutorial" />
+
+</PreferenceScreen>
