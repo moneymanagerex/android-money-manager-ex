@@ -27,3 +27,12 @@ For any question, bug report, suggestion please drop us a line  [android.money.m
 
 ####Translate####
 If you want to join our translation team: [MoneyManagerEx for Android on Crowdin.net](https://crowdin.net/project/android-money-manager-ex)
+
+
+####The Android Money Manager Ex Project Team####
+#####Project Manager#####
+Alessandro Lazzari
+#####Developers#####
+Alen Siljak
+Alessandro Lazzari
+Patrick Rannou
