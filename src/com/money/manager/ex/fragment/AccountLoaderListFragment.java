@@ -54,7 +54,7 @@ public class AccountLoaderListFragment extends BaseListFragment
 
     private static TableAccountList mAccount = new TableAccountList();
     // id menu item add
-    private static final int MENU_ITEM_ADD = 1;
+//    private static final int MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_ACCOUNT = 0;
     // filter
     private String mCurFilter;

@@ -22,8 +22,6 @@ import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -45,6 +43,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,7 +53,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.about.AboutActivity;
@@ -107,7 +106,7 @@ public class MainActivity extends BaseFragmentActivity {
     // state if restart activity
     private static boolean mRestartActivity = false;
     // list of account visible
-    List<TableAccountList> mAccountList;
+//    List<TableAccountList> mAccountList;
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
     private boolean isShowTipsDropbox2 = false;
@@ -187,33 +186,33 @@ public class MainActivity extends BaseFragmentActivity {
         showFragment(fragment, tagFragment);
     }
 
-    /**
-     * Dialog to choose exit from application
-     */
-    public void exitApplication() {
-        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext());
-        exitDialog.setTitle(R.string.close_application);
-        exitDialog.setMessage(R.string.question_close_application);
-        exitDialog.setIcon(R.drawable.ic_launcher);
-        exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                MoneyManagerApplication.killApplication();
-            }
-        });
-        exitDialog.setNegativeButton(android.R.string.no, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        // show dialog
-        exitDialog.create().show();
-    }
+//    /**
+//     * Dialog to choose exit from application
+//     */
+//    public void exitApplication() {
+//        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext());
+//        exitDialog.setTitle(R.string.close_application);
+//        exitDialog.setMessage(R.string.question_close_application);
+//        exitDialog.setIcon(R.drawable.ic_launcher);
+//        exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                MoneyManagerApplication.killApplication();
+//            }
+//        });
+//        exitDialog.setNegativeButton(android.R.string.no, new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//        // show dialog
+//        exitDialog.create().show();
+//    }
 
-    public Fragment getFragmentDisplay() {
-        return getSupportFragmentManager().findFragmentById(isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent);
-    }
+//    public Fragment getFragmentDisplay() {
+//        return getSupportFragmentManager().findFragmentById(isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent);
+//    }
 
     /**
      * pick a file to use
@@ -273,17 +272,17 @@ public class MainActivity extends BaseFragmentActivity {
         setRestartActivity(false);
     }
 
-    /**
-     * show dashboard fragment
-     */
-    public void showDashboardFragment() {
-        DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager().findFragmentByTag(DashboardFragment.class.getSimpleName());
-        if (dashboardFragment == null || dashboardFragment.getId() != getResIdLayoutContent()) {
-            dashboardFragment = new DashboardFragment();
-        }
-        // fragment dashboard
-        showFragment(dashboardFragment, DashboardFragment.class.getSimpleName());
-    }
+//    /**
+//     * show dashboard fragment
+//     */
+//    public void showDashboardFragment() {
+//        DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager().findFragmentByTag(DashboardFragment.class.getSimpleName());
+//        if (dashboardFragment == null || dashboardFragment.getId() != getResIdLayoutContent()) {
+//            dashboardFragment = new DashboardFragment();
+//        }
+//        // fragment dashboard
+//        showFragment(dashboardFragment, DashboardFragment.class.getSimpleName());
+//    }
 
     /**
      * Show fragment using reflection from class
@@ -310,7 +309,7 @@ public class MainActivity extends BaseFragmentActivity {
     /**
      * Displays the fragment without indicating the tag. The tag will be the classname of the fragment
      *
-     * @param fragment
+     * @param fragment Fragment to display.
      */
     public void showFragment(Fragment fragment) {
         showFragment(fragment, fragment.getClass().getName());
@@ -318,9 +317,6 @@ public class MainActivity extends BaseFragmentActivity {
 
     /**
      * Displays the fragment and associate the tag
-     *
-     * @param fragment
-     * @param tagFragment
      */
     public void showFragment(Fragment fragment, String tagFragment) {
         // transaction
@@ -342,19 +338,16 @@ public class MainActivity extends BaseFragmentActivity {
     /**
      * show a fragment select with position or account id
      *
-     * @param position  to page
      * @param accountId account id of the fragment to be loaded
      */
-    public void showFragmentAccount(int position, int accountId) {
+    public void showFragmentAccount(int accountId) {
         changeFragment(accountId);
     }
 
     /**
      * Show tutorial on first run.
-     *
-     * @param savedInstanceState
      */
-    public void showTutorial(Bundle savedInstanceState) {
+    public void showTutorial() {
         Context context = getApplicationContext();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
@@ -380,7 +373,7 @@ public class MainActivity extends BaseFragmentActivity {
 
                 @Override
                 protected void onPostExecute(Integer ret) {
-                    if (DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD == ret) {
+                    if (ret.equals(DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD)) {
                         Snackbar.with(getApplicationContext()) // context
                                 .text(getString(R.string.dropbox_database_can_be_updted))
                                 .actionLabel(getString(R.string.sync))
@@ -486,7 +479,6 @@ public class MainActivity extends BaseFragmentActivity {
 
     public void onClickCardViewIncomesVsExpenses(View v) {
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-        return;
     }
 
     @Override
@@ -539,12 +531,12 @@ public class MainActivity extends BaseFragmentActivity {
         if (!currencyUtils.isInit())
             currencyUtils.reInit();
 
-        // create a connection to dropbox
+        // create a connection to Dropbox
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
         // check type mode
         onCreateFragments(savedInstanceState);
         // show tutorial
-        showTutorial(savedInstanceState);
+        showTutorial();
         // show changelog dialog
         if (core.isToDisplayChangelog()) core.showChangelog();
 
@@ -556,6 +548,14 @@ public class MainActivity extends BaseFragmentActivity {
 
         showSnackbarDropbox();
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu items for use in the action bar.
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.home_menu, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     @Override
     protected void onStart() {
@@ -583,19 +583,16 @@ public class MainActivity extends BaseFragmentActivity {
         // check if restart activity
         if (isRestartActivitySet()) {
             restartActivity(); // restart and exit
-            return;
         }
     }
 
     /**
      * this method call for classic method (show fragments)
-     *
-     * @param savedInstanceState
      */
     public void onCreateFragments(Bundle savedInstanceState) {
-        Core core = new Core(getApplicationContext());
-
         setContentView(R.layout.main_fragments_activity);
+
+        Core core = new Core(getApplicationContext());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -663,6 +660,7 @@ public class MainActivity extends BaseFragmentActivity {
             try {
                 mDrawerToggle.syncState();
             } catch (Exception e) {
+                Log.w(LOGCAT, e.getMessage());
             }
         }
     }
@@ -706,6 +704,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle physical menu button.
         // quick-fix convert 'switch' to 'if-else'
         if (item.getItemId() == android.R.id.home) {
             if (mDrawer != null) {
@@ -717,7 +716,19 @@ public class MainActivity extends BaseFragmentActivity {
             }
             return true;
         }
-        return super.onOptionsItemSelected(item);
+
+        // handle action bar option click.
+
+        switch(item.getItemId()){
+            case R.id.action_search:
+                openSearch();
+                return true;
+            case R.id.action_settings:
+                // todo: open settings
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -827,7 +838,7 @@ public class MainActivity extends BaseFragmentActivity {
                 .withText(getString(R.string.about))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light));
 
-        // get drawerlist and set adapter
+        // get drawer list and set adapter
         if (mDrawerList != null)
             mDrawerList.setAdapter(adapter);
         // set listener on item click
@@ -894,7 +905,7 @@ public class MainActivity extends BaseFragmentActivity {
             showFragment(RepeatingTransactionListFragment.class);
             return true;
         } else if (item.getId() == R.id.menu_search_transaction) {
-            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            openSearch();
             return true;
         } else if (item.getId() == R.id.menu_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
@@ -978,6 +989,10 @@ public class MainActivity extends BaseFragmentActivity {
         }
 
         dialog.show();
+    }
+
+    private void openSearch(){
+        startActivity(new Intent(MainActivity.this, SearchActivity.class));
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
