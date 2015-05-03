@@ -33,8 +33,6 @@ If you want to join our translation team: [MoneyManagerEx for Android on Crowdin
 #####Project Manager#####
 Alessandro Lazzari
 #####Developers#####
-Alen Siljak
-
-Alessandro Lazzari
-
-Patrick Rannou
+Alen Siljak<br/>
+Alessandro Lazzari<br/>
+Patrick Rannou<br/>
