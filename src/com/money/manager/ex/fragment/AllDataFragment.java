@@ -323,6 +323,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                 } else {
                     setListShownNoAnimation(true);
                 }
+
+                // reset the transaction groups (account name collection)
+                adapter.resetAccountHeaderIndexes();
         }
     }
 
