@@ -373,7 +373,10 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             values.put(TableCheckingAccount.STATUS, status.toUpperCase());
 
             // update
-            if (getActivity().getContentResolver().update(new TableCheckingAccount().getUri(), values, TableCheckingAccount.TRANSID + "=?", new String[]{Integer.toString(id)}) <= 0) {
+            if (getActivity().getContentResolver().update(new TableCheckingAccount().getUri(),
+                    values,
+                    TableCheckingAccount.TRANSID + "=?",
+                    new String[]{Integer.toString(id)}) <= 0) {
                 Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -536,6 +539,12 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             return true;
         }
 
+        /**
+         * Handle the toolbar icon click (delete, copy, etc.)
+         * @param mode
+         * @param item
+         * @return
+         */
         @Override
         public boolean onActionItemClicked(ActionMode mode, android.view.MenuItem item) {
             final ArrayList<Integer> transIds = new ArrayList<>();
@@ -556,73 +565,16 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             }
             switch (item.getItemId()) {
                 case R.id.menu_change_status:
-                    final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
-                    final Core core = new Core(getActivity().getApplicationContext());
-                    final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
-                    // add status
-                    adapter.add(new DrawerMenuItem().withId(R.id.menu_none)
-                            .withText(getString(R.string.status_none))
-                            .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light)
-                            .withShortcut(""));
-                    adapter.add(new DrawerMenuItem().withId(R.id.menu_reconciled)
-                            .withText(getString(R.string.status_reconciled))
-                            .withIcon(isDarkTheme ? R.drawable.ic_action_done_dark : R.drawable.ic_action_done_light)
-                            .withShortcut("R"));
-                    adapter.add(new DrawerMenuItem().withId(R.id.menu_follow_up)
-                            .withText(getString(R.string.status_follow_up))
-                            .withIcon(isDarkTheme ? R.drawable.ic_action_alarm_on_dark : R.drawable.ic_action_alarm_on_light)
-                            .withShortcut("F"));
-                    adapter.add(new DrawerMenuItem().withId(R.id.menu_duplicate)
-                            .withText(getString(R.string.status_duplicate))
-                            .withIcon(isDarkTheme ? R.drawable.ic_action_copy_dark : R.drawable.ic_action_copy_light)
-                            .withShortcut("D"));
-                    adapter.add(new DrawerMenuItem().withId(R.id.menu_void)
-                            .withText(getString(R.string.status_void))
-                            .withIcon(isDarkTheme ? R.drawable.ic_action_halt_dark : R.drawable.ic_action_halt_light)
-                            .withShortcut("V"));
-
-                    // open dialog
-                    final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                            .title(getString(R.string.change_status))
-                            .adapter(adapter)
-                            .build();
-
-                    ListView listView = dialog.getListView();
-                    if (listView != null) listView.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            DrawerMenuItem item = adapter.getItem(position);
-                            switch (item.getId()) {
-                                case R.id.menu_none:
-                                case R.id.menu_reconciled:
-                                case R.id.menu_follow_up:
-                                case R.id.menu_duplicate:
-                                case R.id.menu_void:
-                                    String status = item.getShortcut();
-                                    if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-                                        ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-                                        startLoaderData();
-                                    }
-                            }
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
+                    changeTransactionStatus(transIds);
                     mode.finish();
                     break;
                 case R.id.menu_duplicate_transactions:
-                    int[] ids = convertArrayListToArray(transIds);
-                    Intent[] intents = new Intent[ids.length];
-                    for (int i = 0; i < ids.length; i++) {
-                        intents[i] = new Intent(getActivity(), CheckingAccountActivity.class);
-                        intents[i].putExtra(CheckingAccountActivity.KEY_TRANS_ID, ids[i]);
-                        intents[i].setAction(Intent.ACTION_PASTE);
-                    }
-                    getActivity().startActivities(intents);
+                    showDuplicateTransactionView(transIds);
                     mode.finish();
                     break;
                 case R.id.menu_delete:
                     showDialogDeleteCheckingAccount(convertArrayListToArray(transIds));
+                    mode.finish();
                     return true;
                 case R.id.menu_none:
                 case R.id.menu_reconciled:
@@ -638,6 +590,72 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     }
             }
             return false;
+        }
+
+        private void changeTransactionStatus(final ArrayList<Integer> transIds){
+            final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
+            final Core core = new Core(getActivity().getApplicationContext());
+            final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
+            // add status
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_none)
+                    .withText(getString(R.string.status_none))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light)
+                    .withShortcut(""));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_reconciled)
+                    .withText(getString(R.string.status_reconciled))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_done_dark : R.drawable.ic_action_done_light)
+                    .withShortcut("R"));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_follow_up)
+                    .withText(getString(R.string.status_follow_up))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_alarm_on_dark : R.drawable.ic_action_alarm_on_light)
+                    .withShortcut("F"));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_duplicate)
+                    .withText(getString(R.string.status_duplicate))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_copy_dark : R.drawable.ic_action_copy_light)
+                    .withShortcut("D"));
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_void)
+                    .withText(getString(R.string.status_void))
+                    .withIcon(isDarkTheme ? R.drawable.ic_action_halt_dark : R.drawable.ic_action_halt_light)
+                    .withShortcut("V"));
+
+            // open dialog
+            final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                    .title(getString(R.string.change_status))
+                    .adapter(adapter)
+                    .build();
+
+            ListView listView = dialog.getListView();
+            if (listView != null) listView.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    DrawerMenuItem item = adapter.getItem(position);
+                    switch (item.getId()) {
+                        case R.id.menu_none:
+                        case R.id.menu_reconciled:
+                        case R.id.menu_follow_up:
+                        case R.id.menu_duplicate:
+                        case R.id.menu_void:
+                            String status = item.getShortcut();
+                            if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
+                                ((AllDataAdapter) getListAdapter()).clearPositionChecked();
+                                startLoaderData();
+                            }
+                    }
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
+        private void showDuplicateTransactionView(ArrayList<Integer> transIds) {
+            int[] ids = convertArrayListToArray(transIds);
+            Intent[] intents = new Intent[ids.length];
+            for (int i = 0; i < ids.length; i++) {
+                intents[i] = new Intent(getActivity(), CheckingAccountActivity.class);
+                intents[i].putExtra(CheckingAccountActivity.KEY_TRANS_ID, ids[i]);
+                intents[i].setAction(Intent.ACTION_PASTE);
+            }
+            getActivity().startActivities(intents);
         }
 
         @Override
