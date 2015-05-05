@@ -307,9 +307,11 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (getSearResultFragmentLoaderCallbacks() != null) {
-            getSearResultFragmentLoaderCallbacks().onCallbackLoaderFinished(loader, data);
+        AllDataFragmentLoaderCallbacks parent = getSearResultFragmentLoaderCallbacks();
+        if (parent != null) {
+            parent.onCallbackLoaderFinished(loader, data);
         }
+
         switch (loader.getId()) {
             case ID_LOADER_ALL_DATA_DETAIL:
                 AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
