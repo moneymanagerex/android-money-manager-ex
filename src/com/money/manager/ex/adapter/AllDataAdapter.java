@@ -99,9 +99,10 @@ public class AllDataAdapter extends CursorAdapter {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
         // write status
-        holder.txtStatus.setText(TransactionStatus.getStatusAsString(mContext, cursor.getString(cursor.getColumnIndex(STATUS))));
+        String status = cursor.getString(cursor.getColumnIndex(STATUS));
+        holder.txtStatus.setText(TransactionStatus.getStatusAsString(mContext, status));
         // color status
-        int colorBackground = TransactionStatus.getBackgroundColorFromStatus(mContext, cursor.getString(cursor.getColumnIndex(STATUS)));
+        int colorBackground = TransactionStatus.getBackgroundColorFromStatus(mContext, status);
         holder.linDate.setBackgroundColor(colorBackground);
         holder.txtStatus.setTextColor(Color.GRAY);
         // date group
@@ -285,6 +286,10 @@ public class AllDataAdapter extends CursorAdapter {
      */
     public boolean isShowAccountName() {
         return mShowAccountName;
+    }
+
+    public void resetAccountHeaderIndexes() {
+        mHeadersAccountIndex.clear();
     }
 
     /**
