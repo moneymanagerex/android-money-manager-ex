@@ -94,8 +94,9 @@ public class AllDataAdapter extends CursorAdapter {
         // take a holder
         AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
         // header index
-        if (!mHeadersAccountIndex.containsKey(cursor.getInt(cursor.getColumnIndex(ACCOUNTID)))) {
-            mHeadersAccountIndex.put(cursor.getInt(cursor.getColumnIndex(ACCOUNTID)), cursor.getPosition());
+        int accountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
+        if (!mHeadersAccountIndex.containsKey(accountId)) {
+            mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
         // write status
         holder.txtStatus.setText(TransactionStatus.getStatusAsString(mContext, cursor.getString(cursor.getColumnIndex(STATUS))));
@@ -287,10 +288,10 @@ public class AllDataAdapter extends CursorAdapter {
     }
 
     /**
-     * @param mShowAccountName the mShowAccountName to set
+     * @param showAccountName the mShowAccountName to set
      */
-    public void setShowAccountName(boolean mShowAccountName) {
-        this.mShowAccountName = mShowAccountName;
+    public void setShowAccountName(boolean showAccountName) {
+        this.mShowAccountName = showAccountName;
     }
 
     /**
