@@ -201,7 +201,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                 }
             }
         });
-        // if header is not null add to listview
+        // if header is not null add to list view
         if (getListAdapter() == null) {
             if (mListHeader != null)
                 getListView().addHeaderView(mListHeader);
@@ -351,17 +351,13 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         return super.onOptionsItemSelected(item);
     }
 
-    private int[] convertArraryListToArray(ArrayList<Integer> list) {
+    private int[] convertArrayListToArray(ArrayList<Integer> list) {
         int[] ret = new int[list.size()];
         for (int i = 0; i < list.size(); i++) {
             ret[i] = list.get(i);
         }
         return ret;
     }
-
-//    private boolean setStatusCheckingAccount(int transId, String status) {
-//        return setStatusCheckingAccount(new int[]{transId}, status);
-//    }
 
     private boolean setStatusCheckingAccount(int[] transId, String status) {
         // check if status = "U" convert to empty string
@@ -601,7 +597,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                                 case R.id.menu_duplicate:
                                 case R.id.menu_void:
                                     String status = item.getShortcut();
-                                    if (setStatusCheckingAccount(convertArraryListToArray(transIds), status)) {
+                                    if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
                                         ((AllDataAdapter) getListAdapter()).clearPositionChecked();
                                         startLoaderData();
                                     }
@@ -613,7 +609,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     mode.finish();
                     break;
                 case R.id.menu_duplicate_transactions:
-                    int[] ids = convertArraryListToArray(transIds);
+                    int[] ids = convertArrayListToArray(transIds);
                     Intent[] intents = new Intent[ids.length];
                     for (int i = 0; i < ids.length; i++) {
                         intents[i] = new Intent(getActivity(), CheckingAccountActivity.class);
@@ -624,7 +620,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     mode.finish();
                     break;
                 case R.id.menu_delete:
-                    showDialogDeleteCheckingAccount(convertArraryListToArray(transIds));
+                    showDialogDeleteCheckingAccount(convertArrayListToArray(transIds));
                     return true;
                 case R.id.menu_none:
                 case R.id.menu_reconciled:
@@ -632,7 +628,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                 case R.id.menu_duplicate:
                 case R.id.menu_void:
                     String status = Character.toString(item.getAlphabeticShortcut());
-                    if (setStatusCheckingAccount(convertArraryListToArray(transIds), status)) {
+                    if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
                         ((AllDataAdapter) getListAdapter()).clearPositionChecked();
                         startLoaderData();
                         mode.finish();

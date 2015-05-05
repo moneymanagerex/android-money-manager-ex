@@ -30,7 +30,8 @@ import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallba
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 
-public class SearchActivity extends BaseFragmentActivity implements AllDataFragmentLoaderCallbacks, InputAmountDialogListener {
+public class SearchActivity extends BaseFragmentActivity
+        implements AllDataFragmentLoaderCallbacks, InputAmountDialogListener {
 	private boolean mIsDualPanel = false;
 
 	@Override
