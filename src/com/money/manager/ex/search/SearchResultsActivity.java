@@ -1,19 +1,27 @@
 package com.money.manager.ex.search;
 
-import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.fragment.BaseFragmentActivity;
 
-public class SearchResultsActivity extends Activity {
+public class SearchResultsActivity extends BaseFragmentActivity {
+    public static String WHERE_CLAUSE = "SearchResultActivity:WhereClause";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
+
+        // Get the where clause, if any.
+        Intent intent = getIntent();
+        if(intent != null) {
+            String whereClause = intent.getStringExtra(WHERE_CLAUSE);
+        }
+
     }
 
     @Override

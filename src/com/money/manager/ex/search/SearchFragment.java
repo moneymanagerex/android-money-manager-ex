@@ -232,11 +232,14 @@ public class SearchFragment extends Fragment
     public void executeSearch() {
         ArrayList<String> whereClause = assembleWhereClause();
 
-        // test
+        // For phone layouts, show the activity.
         Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
-        intent.setAction(Intent.ACTION_VIEW);
+//        intent.setAction(Intent.ACTION_VIEW);
+        intent.setAction(Intent.ACTION_SEARCH);
+        intent.putExtra(SearchResultsActivity.WHERE_CLAUSE, whereClause);
         startActivity(intent);
 
+        // todo: For tablet layout, show the fragment.
 //        showSearchResultsFragment(whereClause);
     }
 
