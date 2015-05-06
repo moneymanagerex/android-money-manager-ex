@@ -1,5 +1,6 @@
 package com.money.manager.ex.search;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,7 +8,7 @@ import android.view.MenuItem;
 
 import com.money.manager.ex.R;
 
-public class SearchResultsActivity extends ActionBarActivity {
+public class SearchResultsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

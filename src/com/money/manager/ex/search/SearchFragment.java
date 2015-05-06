@@ -26,8 +26,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -232,7 +230,19 @@ public class SearchFragment extends Fragment
      * Compose arguments and execute search
      */
     public void executeSearch() {
+        ArrayList<String> whereClause = assembleWhereClause();
+
+        // test
+        Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        startActivity(intent);
+
+//        showSearchResultsFragment(whereClause);
+    }
+
+    private ArrayList<String> assembleWhereClause() {
         ArrayList<String> whereClause = new ArrayList<>();
+
         // account
         if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
             whereClause.add(ViewMobileData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
@@ -286,6 +296,10 @@ public class SearchFragment extends Fragment
             whereClause.add(ViewMobileData.Notes + " LIKE '%" + txtNotes.getText() + "%'");
         }
 
+        return whereClause;
+    }
+
+    private void showSearchResultsFragment(ArrayList<String> whereClause) {
         //create a fragment search
         AllDataFragment searchResultsFragment;
         searchResultsFragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
@@ -293,6 +307,7 @@ public class SearchFragment extends Fragment
             getActivity().getSupportFragmentManager().beginTransaction().remove(searchResultsFragment).commit();
         }
         searchResultsFragment = AllDataFragment.newInstance(-1);
+
         //create bundle
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, whereClause);
@@ -301,6 +316,7 @@ public class SearchFragment extends Fragment
         searchResultsFragment.setArguments(args);
         searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
         searchResultsFragment.setShownHeader(true);
+
         //add fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         //animation
