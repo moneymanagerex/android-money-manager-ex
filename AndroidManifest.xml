@@ -15,7 +15,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  -->
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex" >
 
@@ -112,8 +112,8 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.money.manager.ex.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
@@ -348,6 +348,10 @@
             android:name=".currency.CurrencyChartActivity"
             android:label="@string/title_activity_currency_chart"
             android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".search.SearchResultsActivity"
+            android:label="@string/title_activity_search_results" >
         </activity>
     </application>
 
