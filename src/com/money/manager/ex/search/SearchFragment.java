@@ -285,7 +285,7 @@ public class SearchFragment extends Fragment
         if (!TextUtils.isEmpty(txtNotes.getText())) {
             whereClause.add(ViewMobileData.Notes + " LIKE '%" + txtNotes.getText() + "%'");
         }
-        
+
         //create a fragment search
         AllDataFragment searchResultsFragment;
         searchResultsFragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
