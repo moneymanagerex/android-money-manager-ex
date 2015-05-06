@@ -547,22 +547,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
          */
         @Override
         public boolean onActionItemClicked(ActionMode mode, android.view.MenuItem item) {
-            final ArrayList<Integer> transIds = new ArrayList<>();
-            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-                Cursor cursor = adapter.getCursor();
-                if (cursor != null) {
-                    SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
-                    for (int i = 0; i < getListView().getCheckedItemCount(); i++) {
-                        int position = positionChecked.keyAt(i);
-                        if (getListHeader() != null)
-                            position--;
-                        if (cursor.moveToPosition(position)) {
-                            transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-                        }
-                    }
-                }
-            }
+            ArrayList<Integer> transIds = getTransactionIds();
+
             switch (item.getItemId()) {
                 case R.id.menu_change_status:
                     changeTransactionStatus(transIds);
@@ -590,6 +576,28 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     }
             }
             return false;
+        }
+
+        private ArrayList<Integer> getTransactionIds(){
+            final ArrayList<Integer> transIds = new ArrayList<>();
+
+            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+                Cursor cursor = adapter.getCursor();
+                if (cursor != null) {
+                    SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
+                    for (int i = 0; i < getListView().getCheckedItemCount(); i++) {
+                        int position = positionChecked.keyAt(i);
+                        if (getListHeader() != null)
+                            position--;
+                        if (cursor.moveToPosition(position)) {
+                            transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+                        }
+                    }
+                }
+            }
+
+            return transIds;
         }
 
         private void changeTransactionStatus(final ArrayList<Integer> transIds){
