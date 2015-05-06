@@ -2,11 +2,17 @@ package com.money.manager.ex.search;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.HomeFragment;
+
+import java.util.ArrayList;
 
 public class SearchResultsActivity extends BaseFragmentActivity {
     public static String WHERE_CLAUSE = "SearchResultActivity:WhereClause";
@@ -16,12 +22,7 @@ public class SearchResultsActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
-        // Get the where clause, if any.
-        Intent intent = getIntent();
-        if(intent != null) {
-            String whereClause = intent.getStringExtra(WHERE_CLAUSE);
-        }
-
+        processSearchParameters();
     }
 
     @Override
@@ -29,6 +30,34 @@ public class SearchResultsActivity extends BaseFragmentActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search_results, menu);
         return true;
+    }
+
+    private void processSearchParameters() {
+        // Get the where clause, if any.
+        Intent intent = getIntent();
+        if(intent == null) return;
+
+        ArrayList<String> whereClause = intent.getStringArrayListExtra(WHERE_CLAUSE);
+
+        Bundle args = new Bundle();
+        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, whereClause);
+        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
+
+        // set the parameters on the Fragment.
+        FragmentManager fragmentManager = getSupportFragmentManager();
+//        Fragment searchResultsFragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
+//        AllDataFragment searchResultsFragment = (AllDataFragment) fragmentManager
+//                .findFragmentByTag(AllDataFragment.class.getSimpleName());
+        AllDataFragment searchResultsFragment = AllDataFragment.newInstance(-1);
+
+        //set arguments
+        searchResultsFragment.setArguments(args);
+//        searchResultsFragment.setSearResultFragmentLoaderCallbacks(this);
+        searchResultsFragment.setShownHeader(true);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContent, searchResultsFragment, AllDataFragment.class.getSimpleName())
+                .commit();
     }
 
     @Override

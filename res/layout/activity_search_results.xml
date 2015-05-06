@@ -8,15 +8,16 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.money.manager.ex.search.SearchResultsActivity">
 
-    <fragment android:name="com.money.manager.ex.fragment.AllDataFragment"
-        android:id="@+id/fragmentContainer"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+    <!--<fragment android:name="com.money.manager.ex.fragment.AllDataFragment"-->
+        <!--android:id="@+id/fragmentContainer"-->
+        <!--android:tag="AllDataFragment"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent" />-->
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/fragmentContent"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical" />-->
+    <LinearLayout
+        android:id="@+id/fragmentContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
 </LinearLayout>
