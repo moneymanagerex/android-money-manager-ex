@@ -92,6 +92,14 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         return fragment;
     }
 
+    private int[] convertArrayListToArray(ArrayList<Integer> list) {
+        int[] ret = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            ret[i] = list.get(i);
+        }
+        return ret;
+    }
+
     /**
      * Export data to CSV file
      */
@@ -110,12 +118,12 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         csv.execute();
     }
 
-//    /**
-//     * @return the mGroupId
-//     */
-//    public int getContextMenuGroupId() {
-//        return mGroupId;
-//    }
+    /**
+     * @return the mGroupId
+     */
+    public int getContextMenuGroupId() {
+        return mGroupId;
+    }
 
     /**
      * @param mGroupId the mGroupId to set
@@ -356,14 +364,6 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private int[] convertArrayListToArray(ArrayList<Integer> list) {
-        int[] ret = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            ret[i] = list.get(i);
-        }
-        return ret;
     }
 
     private boolean setStatusCheckingAccount(int[] transId, String status) {

@@ -49,6 +49,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ *
+ */
 @SuppressLint("UseSparseArrays")
 public class AllDataAdapter extends CursorAdapter {
     // type cursor
