@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.fragment;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -237,6 +238,13 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+//        setHasOptionsMenu(true);
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (getSearchResultFragmentLoaderCallbacks() != null)
             getSearchResultFragmentLoaderCallbacks().onCallbackCreateLoader(id, args);
@@ -266,14 +274,24 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         return null;
     }
 
+    /**
+     * Add options to the action bar of the host activity.
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (getActivity() != null) {
-            MenuItem itemExportToCsv = menu.findItem(R.id.menu_export_to_csv);
-            if (itemExportToCsv != null) itemExportToCsv.setVisible(true);
-            MenuItem itemSearch = menu.findItem(R.id.menu_search_transaction);
-            if (itemSearch != null) itemSearch.setVisible(!getActivity().getClass().getSimpleName().equals(SearchActivity.class.getSimpleName()));
+
+        Activity activity = getActivity();
+        if (activity == null) return;
+
+        MenuItem itemExportToCsv = menu.findItem(R.id.menu_export_to_csv);
+        if (itemExportToCsv != null) itemExportToCsv.setVisible(true);
+        MenuItem itemSearch = menu.findItem(R.id.menu_search_transaction);
+        if (itemSearch != null) {
+            itemSearch.setVisible(!activity.getClass().getSimpleName()
+                    .equals(SearchActivity.class.getSimpleName()));
         }
     }
 
@@ -282,7 +300,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    // This is just to test: http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
+    // This is just to test:
+    // http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
     @Override
     public void onDetach() {
         super.onDetach();

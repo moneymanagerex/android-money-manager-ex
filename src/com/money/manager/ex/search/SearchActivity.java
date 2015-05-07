@@ -39,16 +39,19 @@ public class SearchActivity extends BaseFragmentActivity
         setContentView(R.layout.search_activity);
         super.onCreate(savedInstanceState);
 
-        SearchFragment fragment = (SearchFragment) getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
-        if (fragment == null) {
+        SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
+                .findFragmentByTag(SearchFragment.class.getSimpleName());
+        if (searchFragment == null) {
             // fragment create
-            fragment = new SearchFragment();
+            searchFragment = new SearchFragment();
             // set dual panel
             LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
             mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
-            fragment.setDualPanel(mIsDualPanel);
+            searchFragment.setDualPanel(mIsDualPanel);
             // add to stack
-            getSupportFragmentManager().beginTransaction().add(R.id.fragmentContent, fragment, SearchFragment.class.getSimpleName()).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
+                    .commit();
         }
         // reconfigure the toolbar event
         setToolbarStandardAction(getToolbar(), R.id.action_cancel, R.id.action_search);
