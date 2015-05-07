@@ -30,6 +30,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -184,14 +185,13 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         setListShown(false);
         // option menu
         setHasOptionsMenu(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB);
+
         // create adapter
         AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
         adapter.setAccountId(mAccountId);
         adapter.setShowAccountName(isShownHeader());
         adapter.setShowBalanceAmount(isShownBalance());
-        /*if (isShownBalance()) {
-            adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getReadableDatabase());
-        }*/
+
         // set choice mode in list view
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
@@ -218,8 +218,6 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         }
         // set adapter
         setListAdapter(adapter);
-        // ref: http://stackoverflow.com/questions/19583961/cannot-add-header-view-to-list-setadapter-has-already-been-called
-        //adapter.notifyDataSetChanged();
 
         // register context menu
         registerForContextMenu(getListView());
@@ -240,8 +238,6 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        setHasOptionsMenu(true);
     }
 
     @Override
@@ -276,6 +272,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
     /**
      * Add options to the action bar of the host activity.
+     * This is not called in ActionBar Activity, i.e. Search.
      * @param menu
      * @param inflater
      */
