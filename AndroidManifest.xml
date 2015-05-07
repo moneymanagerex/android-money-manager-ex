@@ -349,10 +349,6 @@
             android:label="@string/title_activity_currency_chart"
             android:screenOrientation="landscape" >
         </activity>
-        <activity
-            android:name=".search.SearchResultsActivity"
-            android:label="@string/title_activity_search_results" >
-        </activity>
     </application>
 
 </manifest>
