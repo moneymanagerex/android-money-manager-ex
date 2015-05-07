@@ -41,6 +41,7 @@ import android.widget.TextView;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.LayoutHelper;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.core.Core;
@@ -232,15 +233,16 @@ public class SearchFragment extends Fragment
     public void executeSearch() {
         ArrayList<String> whereClause = assembleWhereClause();
 
-        // For phone layouts, show the activity.
-        Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
-//        intent.setAction(Intent.ACTION_VIEW);
-        intent.setAction(Intent.ACTION_SEARCH);
-        intent.putExtra(SearchResultsActivity.WHERE_CLAUSE, whereClause);
-        startActivity(intent);
+//        LayoutHelper layoutHelper = new LayoutHelper(getActivity());
 
-        // todo: For tablet layout, show the fragment.
-//        showSearchResultsFragment(whereClause);
+//        // For phone layouts, show the activity.
+//        Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
+//        intent.setAction(Intent.ACTION_SEARCH);
+//        intent.putExtra(SearchResultsActivity.WHERE_CLAUSE, whereClause);
+//        startActivity(intent);
+
+        // For tablet layout, show the fragment.
+        showSearchResultsFragment(whereClause);
     }
 
     private ArrayList<String> assembleWhereClause() {
@@ -305,9 +307,11 @@ public class SearchFragment extends Fragment
     private void showSearchResultsFragment(ArrayList<String> whereClause) {
         //create a fragment search
         AllDataFragment searchResultsFragment;
-        searchResultsFragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
+        searchResultsFragment = (AllDataFragment) getActivity().getSupportFragmentManager()
+                .findFragmentByTag(AllDataFragment.class.getSimpleName());
         if (searchResultsFragment != null) {
-            getActivity().getSupportFragmentManager().beginTransaction().remove(searchResultsFragment).commit();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .remove(searchResultsFragment).commit();
         }
         searchResultsFragment = AllDataFragment.newInstance(-1);
 
