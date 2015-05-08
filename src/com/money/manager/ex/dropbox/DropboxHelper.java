@@ -657,9 +657,11 @@ public class DropboxHelper {
             String localPath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
             String remotePath = getLinkedRemoteFile();
             // check if file is correct
-            if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath)) return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+            if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath))
+                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
             // check if remoteFile path is contain into localFile
-            if (!localPath.toLowerCase().contains(remotePath.toLowerCase())) return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+            if (!localPath.toLowerCase().contains(remotePath.toLowerCase()))
+                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
             // get File and Entry
             File localFile = new File(localPath);
             DropboxAPI.Entry remoteFile = getEntry(remotePath);
