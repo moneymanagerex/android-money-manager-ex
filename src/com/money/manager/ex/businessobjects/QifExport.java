@@ -26,6 +26,7 @@ import android.util.Log;
 import com.money.manager.ex.R;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -51,11 +52,18 @@ public class QifExport {
         try {
             this.export_internal();
         } catch (Exception e) {
-            String errorMessage = e.getMessage() == null
-                    ? "Error during qif export"
-                    : e.getMessage();
-            Log.e(this.getClass().getName(), errorMessage);
+//            String errorMessage = e.getMessage() == null
+//                    ? "Error during qif export"
+//                    : e.getMessage();
+//            Log.e(this.getClass().getName(), errorMessage);
+            e.printStackTrace();
         }
+    }
+
+    private void clearCache() {
+        // todo: delete all files in cache directory.
+        // fileList()
+        // deleteFile()
     }
 
     private void export_internal() {
@@ -64,16 +72,28 @@ public class QifExport {
 
         // todo: save into file?
         File file = createExportFile();
-        dumpTransactionsIntoFile(file);
+        dumpTransactionsIntoFile(content, file);
 
         // share file
         Uri contentUri = generateContentUri(file);
         offerFile(contentUri);
+
+        // delete local file
+        file.delete();
     }
 
-    private void dumpTransactionsIntoFile(File file) {
-        //file.
-//        this.context.openFileOutput()
+    private void dumpTransactionsIntoFile(String content, File file) {
+        // todo: files created this way are located in private files, not cache!
+        try {
+            FileOutputStream stream = this.context.openFileOutput(
+                    file.getName(), Context.MODE_APPEND);
+            // use Context.MODE_PRIVATE for private-only files.
+
+            stream.write(content.getBytes());
+            stream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private File createExportFile() {
@@ -84,6 +104,7 @@ public class QifExport {
         File filePath = new File(this.context.getCacheDir(), ExportDirectory);
 
         File newFile = new File(filePath, fileName);
+//        File.createTempFile();
 
         return newFile;
     }
