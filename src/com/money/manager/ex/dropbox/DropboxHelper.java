@@ -672,7 +672,11 @@ public class DropboxHelper {
                     localLastModified = new Date(localFile.lastModified());
                 remoteLastModified = getLastModifiedEntry(remoteFile);
             } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
+                String errorMessage = e.getMessage() == null
+                        ? "Error in retrieving the last modified date in checkIfFileIsSync."
+                        : e.getMessage();
+
+                Log.e(LOGCAT, errorMessage);
                 return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
             }
             if (remoteLastModified.after(localLastModified)) {
