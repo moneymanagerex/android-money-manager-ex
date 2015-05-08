@@ -17,12 +17,20 @@
  */
 package com.money.manager.ex.businessobjects;
 
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
+import com.money.manager.ex.R;
+
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Handles export of transactions from AllDataFragment into QIF format.
@@ -34,26 +42,71 @@ public class QifExport {
 
     private Context context;
 
+    /**
+     * Export the transactions into qif format and offer file for sharing.
+     */
     public void export() {
-        // get data into qif structure
-
-        // store into file?
-
-        // initiate share
-        Uri contentUri = generateContentUri();
-
-        Log.d(this.getClass().getName(), contentUri.toString());
+        // just handle errors here
+        try {
+            this.export_internal();
+        } catch (Exception e) {
+            String errorMessage = e.getMessage() == null
+                    ? "Error during qif export"
+                    : e.getMessage();
+            Log.e(this.getClass().getName(), errorMessage);
+        }
     }
 
-    private Uri generateContentUri() {
+    private void export_internal() {
+        String fileName = generateFileName();
+
+        // get data into qif structure
+
+        // save into file?
+
+        // share file
+        Uri contentUri = generateContentUri(fileName);
+        offerFile(contentUri);
+    }
+
+    private Uri generateContentUri(String fileName) {
         //File imagePath = new File(this.context.getFilesDir(), "export");
         //File file = new File(this.context.getExternalFilesDir(), "export");
         File filePath = new File(this.context.getCacheDir(), "export");
-        // todo: generate file name
-        File newFile = new File(filePath, "mmex.qif");
+        File newFile = new File(filePath, fileName);
+
         Uri contentUri = FileProvider.getUriForFile(this.context,
                 "com.money.manager.ex.fileprovider", newFile);
 
         return contentUri;
+    }
+
+    private String generateFileName() {
+        // use just the date for now?
+        Date today = new Date();
+        String format = "yyyy-MM-dd_HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String result = sdf.format(today);
+
+        // append file extension.
+        result += ".qif";
+
+        return result;
+    }
+
+    private void offerFile(Uri fileUri) {
+        String title = this.context.getString(R.string.qif_export);
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+//        ClipData clip = new ClipData("file uri", fileUri.toString());
+//        intent.setClipData();
+        intent.putExtra(Intent.EXTRA_TITLE, title);
+        intent.putExtra(Intent.EXTRA_STREAM, fileUri);
+
+        Intent chooser = Intent.createChooser(intent, title);
+        this.context.startActivity(chooser);
     }
 }
