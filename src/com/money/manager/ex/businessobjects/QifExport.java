@@ -86,8 +86,8 @@ public class QifExport {
         // todo: files created this way are located in private files, not cache!
         try {
             FileOutputStream stream = this.context.openFileOutput(
-                    file.getName(), Context.MODE_APPEND);
-            // use Context.MODE_PRIVATE for private-only files.
+                    file.getName(), Context.MODE_PRIVATE);
+            // use Context.MODE_PRIVATE for private-only files. Context.MODE_APPEND
 
             stream.write(content.getBytes());
             stream.close();
