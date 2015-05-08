@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex.businessobjects;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -27,7 +26,6 @@ import android.util.Log;
 import com.money.manager.ex.R;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -36,6 +34,9 @@ import java.util.Locale;
  * Handles export of transactions from AllDataFragment into QIF format.
  */
 public class QifExport {
+    private static final String ProviderAuthority = "com.money.manager.ex.fileprovider";
+    private static final String ExportDirectory = "export";
+
     public  QifExport(Context context) {
         this.context = context;
     }
@@ -58,25 +59,37 @@ public class QifExport {
     }
 
     private void export_internal() {
-        String fileName = generateFileName();
+        // todo: get data into qif structure
+        String content = "test";
 
-        // get data into qif structure
-
-        // save into file?
+        // todo: save into file?
+        File file = createExportFile();
+        dumpTransactionsIntoFile(file);
 
         // share file
-        Uri contentUri = generateContentUri(fileName);
+        Uri contentUri = generateContentUri(file);
         offerFile(contentUri);
     }
 
-    private Uri generateContentUri(String fileName) {
-        //File imagePath = new File(this.context.getFilesDir(), "export");
-        //File file = new File(this.context.getExternalFilesDir(), "export");
-        File filePath = new File(this.context.getCacheDir(), "export");
+    private void dumpTransactionsIntoFile(File file) {
+        //file.
+//        this.context.openFileOutput()
+    }
+
+    private File createExportFile() {
+        String fileName = generateFileName();
+
+        //File imagePath = new File(this.context.getFilesDir(), ExportDirectory);
+        //File file = new File(this.context.getExternalFilesDir(), ExportDirectory);
+        File filePath = new File(this.context.getCacheDir(), ExportDirectory);
+
         File newFile = new File(filePath, fileName);
 
-        Uri contentUri = FileProvider.getUriForFile(this.context,
-                "com.money.manager.ex.fileprovider", newFile);
+        return newFile;
+    }
+
+    private Uri generateContentUri(File file) {
+        Uri contentUri = FileProvider.getUriForFile(this.context, ProviderAuthority, file);
 
         return contentUri;
     }
@@ -84,7 +97,7 @@ public class QifExport {
     private String generateFileName() {
         // use just the date for now?
         Date today = new Date();
-        String format = "yyyy-MM-dd_HH:mm";
+        String format = "yyyy-MM-dd_HHmm";
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String result = sdf.format(today);
