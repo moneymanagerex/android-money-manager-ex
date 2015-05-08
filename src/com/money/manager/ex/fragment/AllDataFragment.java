@@ -55,6 +55,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.QifExport;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
@@ -122,6 +123,11 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         ExportToCsvFile csv = new ExportToCsvFile(getActivity(), (AllDataAdapter) getListAdapter());
         csv.setPrefixName(prefixName);
         csv.execute();
+    }
+
+    private void exportToQif(){
+        QifExport qif = new QifExport(getActivity());
+        qif.export();
     }
 
     /**
@@ -300,7 +306,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         }
 
         // Add default menu options.
-        // Menu option for .qif export
+        // Includes menu item for .qif export
         inflater.inflate(R.menu.menu_alldata_operations, menu);
     }
 
@@ -394,8 +400,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             return true;
         }
         if (itemId == R.id.menu_qif_export) {
-            // todo: export visible transactions.
-            Log.d("test", "qif export");
+            // export visible transactions.
+            exportToQif();
         }
 
         return super.onOptionsItemSelected(item);
