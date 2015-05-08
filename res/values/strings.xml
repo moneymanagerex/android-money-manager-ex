@@ -554,4 +554,5 @@
     <string name="warning">Warning</string>
     <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
+    <string name="qif_export">Qif Export</string>
 </resources>

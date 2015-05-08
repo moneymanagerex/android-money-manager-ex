@@ -22,6 +22,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,10 +36,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView.MultiChoiceModeListener;
@@ -183,8 +187,10 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         // set fragment
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
+
         // option menu
-        setHasOptionsMenu(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB);
+//        boolean hasOptionsMenu = Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
+//        setHasOptionsMenu(hasOptionsMenu);
 
         // create adapter
         AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
@@ -238,6 +244,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -290,6 +298,10 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             itemSearch.setVisible(!activity.getClass().getSimpleName()
                     .equals(SearchActivity.class.getSimpleName()));
         }
+
+        // Add default menu options.
+        // Menu option for .qif export
+        inflater.inflate(R.menu.menu_alldata_operations, menu);
     }
 
     @Override
@@ -375,10 +387,17 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_export_to_csv) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.menu_export_to_csv) {
             exportDataToCSVFile();
             return true;
         }
+        if (itemId == R.id.menu_qif_export) {
+            // todo: export visible transactions.
+            Log.d("test", "qif export");
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
