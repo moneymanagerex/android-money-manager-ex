@@ -18,14 +18,13 @@
 package com.money.manager.ex.businessobjects.qif;
 
 import android.database.Cursor;
-import android.util.Log;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.database.QueryAllData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -54,23 +53,52 @@ public class QifRecord {
 
         // Date
 
-        String dateValue = mCursor.getString(mCursor.getColumnIndex(QueryAllData.Date));
-        SimpleDateFormat savedFormat = new SimpleDateFormat(AllDataAdapter.DATE_FORMAT, Locale.US);
-        java.util.Date date = savedFormat.parse(dateValue);
-        // todo: format date
-        // todo: get Quicken date format from settings.
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM'dd/YY", Locale.US);
-        this.Date = date.toString();
+        this.Date = parseDate(mCursor);
+        builder.append("D");
         builder.append(this.Date);
+        builder.append(System.lineSeparator());
 
         // Amount
 
-        this.Amount = Double.toString(mCursor.getDouble(mCursor.getColumnIndex(QueryAllData.TOTRANSAMOUNT)));
+        this.Amount = parseAmount(mCursor);
+        builder.append("T");
+        builder.append(this.Amount);
+        builder.append(System.lineSeparator());
 
         // Payee
 
         this.Payee = mCursor.getString(mCursor.getColumnIndex(QueryAllData.Payee));
+        builder.append("P");
+        builder.append(this.Payee);
+        builder.append(System.lineSeparator());
 
         return builder.toString();
+    }
+
+    private String parseDate(Cursor cursor) throws ParseException {
+        String dateValue = cursor.getString(cursor.getColumnIndex(QueryAllData.Date));
+        SimpleDateFormat savedFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE, Locale.US);
+        java.util.Date date = savedFormat.parse(dateValue);
+        // todo: get Quicken date format from settings.
+        // ref: http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Format_Patterns
+        SimpleDateFormat qifFormat = new SimpleDateFormat("MM''dd/yy", Locale.US);
+        return qifFormat.format(date);
+    }
+
+    private String parseAmount(Cursor cursor) {
+        String amount = Double.toString(cursor.getDouble(cursor.getColumnIndex(QueryAllData.TOTRANSAMOUNT)));
+
+        // append sign
+        String type = cursor.getString(cursor.getColumnIndex(QueryAllData.TransactionType));
+        switch (type) {
+            case Constants.TRANSACTION_TYPE_WITHDRAWAL:
+                amount = "-" + amount;
+                break;
+            case Constants.TRANSACTION_TYPE_DEPOSIT:
+                break;
+            case Constants.TRANSACTION_TYPE_TRANSFER:
+                break;
+        }
+        return amount;
     }
 }

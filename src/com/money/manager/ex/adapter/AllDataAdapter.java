@@ -92,8 +92,6 @@ public class AllDataAdapter extends CursorAdapter {
         setFieldFromTypeCursor();
     }
 
-    public final static String DATE_FORMAT = "yyyy-MM-dd";
-
     @SuppressWarnings({})
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
@@ -115,7 +113,7 @@ public class AllDataAdapter extends CursorAdapter {
         try {
             Locale locale = mContext.getResources().getConfiguration().locale;
 
-            Date date = new SimpleDateFormat(DATE_FORMAT, locale)
+            Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, locale)
                     .parse(cursor.getString(cursor.getColumnIndex(DATE)));
             holder.txtMonth.setText(new SimpleDateFormat("MMM", locale).format(date));
             holder.txtYear.setText(new SimpleDateFormat("yyyy", locale).format(date));
