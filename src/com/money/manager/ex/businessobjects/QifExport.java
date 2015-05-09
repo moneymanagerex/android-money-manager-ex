@@ -25,8 +25,11 @@ import android.util.Log;
 
 import com.money.manager.ex.R;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -37,6 +40,7 @@ import java.util.Locale;
 public class QifExport {
     private static final String ProviderAuthority = "com.money.manager.ex.fileprovider";
     private static final String ExportDirectory = "export";
+    private static final String QifExtension = ".qif";
 
     public  QifExport(Context context) {
         this.context = context;
@@ -52,79 +56,111 @@ public class QifExport {
         try {
             this.export_internal();
         } catch (Exception e) {
-//            String errorMessage = e.getMessage() == null
-//                    ? "Error during qif export"
-//                    : e.getMessage();
-//            Log.e(this.getClass().getName(), errorMessage);
             e.printStackTrace();
         }
     }
 
-    private void clearCache() {
-        // todo: delete all files in cache directory.
-        // fileList()
-        // deleteFile()
-    }
-
-    private void export_internal() {
+    private void export_internal() throws IOException {
         // todo: get data into qif structure
         String content = "test";
 
-        // todo: save into file?
+        // save into temp file.
         File file = createExportFile();
-        dumpTransactionsIntoFile(content, file);
+        if (file == null) {
+            Log.e(this.getClass().getSimpleName(), "Error creating qif file in cache.");
+            return;
+        }
+        boolean saved = dumpTransactionsIntoFile(content, file);
+        if (!saved) {
+            Log.e(this.getClass().getSimpleName(), "Error saving data into qif file.");
+            return;
+        }
 
         // share file
-        Uri contentUri = generateContentUri(file);
+        Uri contentUri = FileProvider.getUriForFile(this.context, ProviderAuthority, file);
         offerFile(contentUri);
 
         // delete local file
-        file.delete();
+//        file.delete();
+        file.deleteOnExit();
     }
 
-    private void dumpTransactionsIntoFile(String content, File file) {
-        // todo: files created this way are located in private files, not cache!
-        try {
-            FileOutputStream stream = this.context.openFileOutput(
-                    file.getName(), Context.MODE_PRIVATE);
-            // use Context.MODE_PRIVATE for private-only files. Context.MODE_APPEND
+//    private void dumpTransactionsIntoFile(String content, File file) {
+//        // files created this way are located in private files, not cache!
+//        try {
+//            FileOutputStream stream = this.context.openFileOutput(
+//                    file.getName(), Context.MODE_PRIVATE);
+//            // use Context.MODE_PRIVATE for private-only files. Context.MODE_APPEND
+//
+//            stream.write(content.getBytes());
+//            stream.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-            stream.write(content.getBytes());
-            stream.close();
+//    private boolean dumpTransactionsIntoFile(String content, File file) {
+//        boolean result;
+//
+//        try {
+//            result = file.createNewFile();
+//            if(!result) {
+//                throw new Exception("Error creating file!");
+//            }
+//
+//            FileWriter writer = new FileWriter(file);
+//            writer.write(content);
+//            writer.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            result = false;
+//        }
+//
+//        return result;
+//    }
+
+    private boolean dumpTransactionsIntoFile(String content, File file) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(content);
+            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+
+        return true;
     }
 
-    private File createExportFile() {
+    private File createExportFile() throws IOException {
         String fileName = generateFileName();
 
         //File imagePath = new File(this.context.getFilesDir(), ExportDirectory);
         //File file = new File(this.context.getExternalFilesDir(), ExportDirectory);
-        File filePath = new File(this.context.getCacheDir(), ExportDirectory);
+//        File filePath = new File(this.context.getCacheDir(), ExportDirectory);
 
-        File newFile = new File(filePath, fileName);
-//        File.createTempFile();
+//        File newFile = new File(filePath, fileName);
 
-        return newFile;
-    }
+        File tempFile = null;
+        tempFile = File.createTempFile(fileName, ".qif", this.context.getCacheDir());
+//            Log.d(this.getClass().getSimpleName(), tempFile.toString());
+        tempFile.deleteOnExit();
 
-    private Uri generateContentUri(File file) {
-        Uri contentUri = FileProvider.getUriForFile(this.context, ProviderAuthority, file);
+        //tempFile.setWritable(true);
 
-        return contentUri;
+        return tempFile;
     }
 
     private String generateFileName() {
         // use just the date for now?
         Date today = new Date();
-        String format = "yyyy-MM-dd_HHmm";
+        String format = "yyyy-MM-dd_HHmmss";
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String result = sdf.format(today);
 
         // append file extension.
-        result += ".qif";
+//        result += ".qif";
 
         return result;
     }

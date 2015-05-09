@@ -5,5 +5,5 @@
     <!-- app's external storage area, Context.getExternalFilesDir() -->
     <external-path name="export" path="export/" />
     <!-- cache, getCacheDir() -->
-    <cache-path name="export" path="export/" />
+    <cache-path name="cache" path="/" />
 </paths>
