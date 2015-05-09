@@ -135,20 +135,20 @@ public class QifExport {
     private File createExportFile() throws IOException {
         String fileName = generateFileName();
 
-        //File imagePath = new File(this.context.getFilesDir(), ExportDirectory);
-        //File file = new File(this.context.getExternalFilesDir(), ExportDirectory);
-//        File filePath = new File(this.context.getCacheDir(), ExportDirectory);
+        //File path = new File(this.context.getFilesDir(), ExportDirectory);
+//        File path = new File(this.context.getExternalFilesDir(null), ExportDirectory);
+        File path = this.context.getExternalFilesDir(null);
+//        File path = new File(this.context.getCacheDir(), ExportDirectory);
 
-//        File newFile = new File(filePath, fileName);
+        File file;
+//        tempFile = File.createTempFile(fileName, ".qif", path);
 
-        File tempFile = null;
-        tempFile = File.createTempFile(fileName, ".qif", this.context.getCacheDir());
-//            Log.d(this.getClass().getSimpleName(), tempFile.toString());
-        tempFile.deleteOnExit();
+        file = new File(path, fileName);
+        file.createNewFile();
 
-        //tempFile.setWritable(true);
+        file.deleteOnExit();
 
-        return tempFile;
+        return file;
     }
 
     private String generateFileName() {
@@ -160,7 +160,7 @@ public class QifExport {
         String result = sdf.format(today);
 
         // append file extension.
-//        result += ".qif";
+        result += ".qif";
 
         return result;
     }
