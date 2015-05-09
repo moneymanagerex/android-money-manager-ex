@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.businessobjects;
+package com.money.manager.ex.businessobjects.qif;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,12 +24,11 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.adapter.AllDataAdapter;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -40,7 +39,7 @@ import java.util.Locale;
 public class QifExport {
     private static final String ProviderAuthority = "com.money.manager.ex.fileprovider";
     private static final String ExportDirectory = "export";
-    private static final String QifExtension = ".qif";
+//    private static final String QifExtension = ".qif";
 
     public  QifExport(Context context) {
         this.context = context;
@@ -49,26 +48,30 @@ public class QifExport {
 
     private Context context;
     private String Logcat;
+    // todo: remove direct dependency?
+    private AllDataAdapter DataAdapter;
 
     /**
      * Export the transactions into qif format and offer file for sharing.
      */
-    public void export() {
+    public void export(AllDataAdapter adapter) {
         // just handle errors here
         try {
-            this.export_internal();
+            this.export_internal(adapter);
         } catch (Exception e) {
             Log.e(this.Logcat, "Error in .qif export. See stack trace below...");
             e.printStackTrace();
         }
     }
 
-    private void export_internal() throws Exception {
+    private void export_internal(AllDataAdapter adapter)
+            throws Exception {
         // clear previously exported files.
         this.clearCache();
 
-        // todo: get data into qif structure
-        String content = "test";
+        // get data into qif structure
+        IQifGenerator generator = getQifGenerator();
+        String content = generator.createFromAdapter(adapter);
 
         // save into temp file.
         File file = createExportFile();
@@ -198,6 +201,14 @@ public class QifExport {
         result += ".qif";
 
         return result;
+    }
+
+    /**
+     * factory method for Qif generator.
+     * @return implementation of Qif generator interface.
+     */
+    private IQifGenerator getQifGenerator() {
+        return new QifGenerator();
     }
 
     private void offerFile(Uri fileUri) {

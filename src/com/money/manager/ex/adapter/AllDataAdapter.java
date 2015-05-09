@@ -54,6 +54,7 @@ import java.util.Locale;
  */
 @SuppressLint("UseSparseArrays")
 public class AllDataAdapter extends CursorAdapter {
+
     // type cursor
     private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
 
@@ -91,6 +92,8 @@ public class AllDataAdapter extends CursorAdapter {
         setFieldFromTypeCursor();
     }
 
+    public final static String DATE_FORMAT = "yyyy-MM-dd";
+
     @SuppressWarnings({})
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
@@ -112,7 +115,7 @@ public class AllDataAdapter extends CursorAdapter {
         try {
             Locale locale = mContext.getResources().getConfiguration().locale;
 
-            Date date = new SimpleDateFormat("yyyy-MM-dd", locale)
+            Date date = new SimpleDateFormat(DATE_FORMAT, locale)
                     .parse(cursor.getString(cursor.getColumnIndex(DATE)));
             holder.txtMonth.setText(new SimpleDateFormat("MMM", locale).format(date));
             holder.txtYear.setText(new SimpleDateFormat("yyyy", locale).format(date));

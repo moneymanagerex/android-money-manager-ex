@@ -22,7 +22,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,18 +30,14 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView.MultiChoiceModeListener;
@@ -55,7 +50,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.QifExport;
+import com.money.manager.ex.businessobjects.qif.QifExport;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
@@ -126,8 +121,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     }
 
     private void exportToQif(){
+        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
         QifExport qif = new QifExport(getActivity());
-        qif.export();
+        qif.export(adapter);
     }
 
     /**
@@ -305,9 +301,12 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     .equals(SearchActivity.class.getSimpleName()));
         }
 
-        // Add default menu options.
+        // Add default menu options. todo: check why this is called twice.
         // Includes menu item for .qif export
-        inflater.inflate(R.menu.menu_alldata_operations, menu);
+        MenuItem qifExport = menu.findItem(R.id.menu_qif_export);
+        if (qifExport == null) {
+            inflater.inflate(R.menu.menu_alldata_operations, menu);
+        }
     }
 
     @Override
