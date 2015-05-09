@@ -44,9 +44,11 @@ public class QifExport {
 
     public  QifExport(Context context) {
         this.context = context;
+        this.Logcat = this.getClass().getSimpleName();
     }
 
     private Context context;
+    private String Logcat;
 
     /**
      * Export the transactions into qif format and offer file for sharing.
@@ -56,23 +58,27 @@ public class QifExport {
         try {
             this.export_internal();
         } catch (Exception e) {
+            Log.e(this.Logcat, "Error in .qif export. See stack trace below...");
             e.printStackTrace();
         }
     }
 
-    private void export_internal() throws IOException {
+    private void export_internal() throws Exception {
+        // clear previously exported files.
+        this.clearCache();
+
         // todo: get data into qif structure
         String content = "test";
 
         // save into temp file.
         File file = createExportFile();
         if (file == null) {
-            Log.e(this.getClass().getSimpleName(), "Error creating qif file in cache.");
+            Log.e(this.Logcat, "Error creating qif file in cache.");
             return;
         }
         boolean saved = dumpTransactionsIntoFile(content, file);
         if (!saved) {
-            Log.e(this.getClass().getSimpleName(), "Error saving data into qif file.");
+            Log.e(this.Logcat, "Error saving data into qif file.");
             return;
         }
 
@@ -82,7 +88,7 @@ public class QifExport {
 
         // delete local file
 //        file.delete();
-        file.deleteOnExit();
+//        file.deleteOnExit();
     }
 
 //    private void dumpTransactionsIntoFile(String content, File file) {
@@ -119,6 +125,15 @@ public class QifExport {
 //        return result;
 //    }
 
+    private void clearCache() throws Exception {
+        // delete all cached files.
+        File path = getExportDirectory();
+        File[] files = path.listFiles();
+        for(File file : files) {
+            file.delete();
+        }
+    }
+
     private boolean dumpTransactionsIntoFile(String content, File file) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -132,23 +147,43 @@ public class QifExport {
         return true;
     }
 
-    private File createExportFile() throws IOException {
+    private File createExportFile() throws Exception {
+        File path = getExportDirectory();
         String fileName = generateFileName();
 
-        //File path = new File(this.context.getFilesDir(), ExportDirectory);
-//        File path = new File(this.context.getExternalFilesDir(null), ExportDirectory);
-        File path = this.context.getExternalFilesDir(null);
-//        File path = new File(this.context.getCacheDir(), ExportDirectory);
-
-        File file;
 //        tempFile = File.createTempFile(fileName, ".qif", path);
 
-        file = new File(path, fileName);
-        file.createNewFile();
+        File file = new File(path, fileName);
+        boolean fileCreated = file.createNewFile();
+        if (!fileCreated) {
+            throw new Exception("Could not create export file!");
+        }
 
         file.deleteOnExit();
 
         return file;
+    }
+
+    /**
+     * Generates the name of the export directory. Creates the directory if it does not exist.
+     * @return A directory into which to temporarily export .qif file.
+     * @throws Exception
+     */
+    private File getExportDirectory() throws Exception {
+        File path = new File(this.context.getFilesDir(), ExportDirectory);
+//        File path = new File(this.context.getExternalFilesDir(null), ExportDirectory);
+//        File path = this.context.getExternalFilesDir(null);
+//        File path = new File(this.context.getCacheDir(), ExportDirectory);
+
+        // Create output directory if it does not exist.
+        if (!path.exists()) {
+            boolean directoryCreated = path.mkdir();
+            if(!directoryCreated) {
+                throw new Exception("Could not create export directory!");
+            }
+        }
+
+        return path;
     }
 
     private String generateFileName() {
