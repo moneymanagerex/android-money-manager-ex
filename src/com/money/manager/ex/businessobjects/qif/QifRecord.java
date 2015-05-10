@@ -104,7 +104,7 @@ public class QifRecord {
         java.util.Date date = savedFormat.parse(dateValue);
         // todo: get Quicken date format from settings.
         // ref: http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Format_Patterns
-        SimpleDateFormat qifFormat = new SimpleDateFormat("MM''dd/yy", Locale.US);
+        SimpleDateFormat qifFormat = new SimpleDateFormat("MM/dd''yy", Locale.US);
         return qifFormat.format(date);
     }
 
