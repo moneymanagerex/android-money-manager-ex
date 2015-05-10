@@ -84,9 +84,9 @@ public class QifRecord {
             builder.append(System.lineSeparator());
         }
 
-        // handle transfers
+        // Categories / Transfers
         String category;
-        String transactionType = parseTransactionType(cursor);
+        String transactionType = getTransactionType(cursor);
         if (transactionType.equals(Constants.TRANSACTION_TYPE_TRANSFER)) {
             // Category is the destination account name.
             category = cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName));
@@ -98,7 +98,7 @@ public class QifRecord {
         builder.append(category);
         builder.append(System.lineSeparator());
 
-        // handle splits
+        // Split Categories
         int splitCategory = cursor.getInt(cursor.getColumnIndex(QueryAllData.Splitted));
         if (splitCategory == 1) {
             String splits = getSplitCategories(cursor);
@@ -106,7 +106,7 @@ public class QifRecord {
             builder.append(System.lineSeparator());
         }
 
-        // Notes
+        // Memo
         String memo = parseMemo(cursor);
         if (!TextUtils.isEmpty(memo)) {
             builder.append("M");
@@ -133,15 +133,17 @@ public class QifRecord {
         int transactionId = getTransactionId(cursor);
         ArrayList<TableSplitTransactions> splits = repo.loadSplitCategoriesFor(transactionId);
 
+        String transactionType = getTransactionType(cursor);
+
         for(TableSplitTransactions split : splits) {
-            String splitRecord = getSplitCategory(split);
+            String splitRecord = getSplitCategory(split, transactionType);
             builder.append(splitRecord);
         }
 
         return builder.toString();
     }
 
-    private String getSplitCategory(TableSplitTransactions split) {
+    private String getSplitCategory(TableSplitTransactions split, String transactionType) {
         StringBuilder builder = new StringBuilder();
         Core core = new Core(mContext);
 
@@ -150,8 +152,6 @@ public class QifRecord {
         // E = memo in split
 
         // category
-//        int categoryId = split.getCategId();
-//        int subCategoryId = split.getSubCategId();
         String category = core.getCategSubName(split.getCategId(), split.getSubCategId());
         builder.append("S");
         builder.append(category);
@@ -159,11 +159,18 @@ public class QifRecord {
 
         // amount
         double amount = split.getSplitTransAmount();
+        // handle sign
+        if (transactionType.equals(Constants.TRANSACTION_TYPE_WITHDRAWAL)) {
+            amount = amount * (-1);
+        }
+        if (transactionType.equals(Constants.TRANSACTION_TYPE_DEPOSIT)) {
+            // leave positive?
+        }
         builder.append("$");
         builder.append(amount);
         builder.append(System.lineSeparator());
 
-        // memo
+        // memo - currently we don't have a field for it.
 //        String memo = split.get
 
         return builder.toString();
@@ -197,7 +204,7 @@ public class QifRecord {
         Double amountDouble = cursor.getDouble(cursor.getColumnIndex(QueryAllData.Amount));
 
         // append sign
-        String type = parseTransactionType(cursor);
+        String type = getTransactionType(cursor);
         switch (type) {
 //            case Constants.TRANSACTION_TYPE_WITHDRAWAL:
 //                amount = "-" + amount;
@@ -229,7 +236,7 @@ public class QifRecord {
         return cursor.getString(cursor.getColumnIndex(QueryAllData.Notes));
     }
 
-    private String parseTransactionType(Cursor cursor) {
+    private String getTransactionType(Cursor cursor) {
         String type = cursor.getString(cursor.getColumnIndex(QueryAllData.TransactionType));
         return type;
     }
