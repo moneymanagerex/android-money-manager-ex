@@ -2,9 +2,9 @@ SELECT 	CANS.TransID AS ID,
 	CANS.TransCode AS TransactionType,
 	date( CANS.TransDate ) AS Date,
 	d.userdate AS UserDate,
-	coalesce( CAT.CategName, SCAT.CategName ) AS Category,
-	coalesce( SUBCAT.SUBCategName, SSCAT.SUBCategName, '' ) AS Subcategory,
-	ROUND( ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  ( CASE CANS.CATEGID WHEN -1 THEN st.splittransamount ELSE CANS.TRANSAMOUNT END) , 2 ) AS Amount,
+	CAT.CategName as Category,
+	SUBCAT.SUBCategName as Subcategory,
+	ROUND( ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.TRANSAMOUNT, 2 ) AS Amount,
 	cf.currency_symbol AS currency,
 	CANS.Status AS Status,
 	CANS.NOTES AS Notes,
@@ -17,23 +17,21 @@ SELECT 	CANS.TransID AS ID,
 	CANS.ToTransAmount ToTransAmount,
 	ifnull( TOACC.CURRENCYID, -1 ) AS ToCurrencyID,
 	( CASE ifnull( CANS.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS Splitted,
-	ifnull( CAT.CategId, st.CategId ) AS CategID,
-	ifnull( ifnull( SUBCAT.SubCategID, st.subCategId ) , -1 ) AS SubCategID,
-	ifnull( PAYEE.PayeeName, '' ) AS Payee,
+	ifnull( CAT.CategId, -1 ) AS CategID,
+	ifnull( SUBCAT.SubCategID, -1 ) AS SubCategID,
+	ifnull( PAYEE.PayeeName, '') AS Payee,
 	ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
 	CANS.TRANSACTIONNUMBER AS TransactionNumber,
 	d.year AS Year,
 	d.month AS Month,
 	d.day AS Day,
 	d.finyear AS FinYear
-FROM 	CHECKINGACCOUNT_V1 CANS LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = CANS.CATEGID
+FROM 	CHECKINGACCOUNT_V1 CANS 
+	LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = CANS.CATEGID
 	LEFT JOIN SUBCATEGORY_V1 SUBCAT ON SUBCAT.SUBCATEGID = CANS.SUBCATEGID AND SUBCAT.CATEGID = CANS.CATEGID
 	LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = CANS.PAYEEID 
 	LEFT JOIN ACCOUNTLIST_V1 FROMACC ON FROMACC.ACCOUNTID = CANS.ACCOUNTID
 	LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = CANS.TOACCOUNTID
-	LEFT JOIN splittransactions_v1 st ON CANS.transid = st.transid
-	LEFT JOIN CATEGORY_V1 SCAT ON SCAT.CATEGID = st.CATEGID AND CANS.TransId = st.transid
-	LEFT JOIN SUBCATEGORY_V1 SSCAT ON SSCAT.SUBCATEGID = st.SUBCATEGID AND SSCAT.CATEGID = st.CATEGID AND CANS.TransId = st.transid
 	LEFT JOIN currencyformats_v1 cf ON cf.currencyid = FROMACC.currencyid
 	LEFT JOIN  ( 
            SELECT	transid AS id,
