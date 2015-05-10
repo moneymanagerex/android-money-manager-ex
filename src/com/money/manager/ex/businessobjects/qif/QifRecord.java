@@ -69,9 +69,11 @@ public class QifRecord {
 
         // Payee
         String payee = cursor.getString(cursor.getColumnIndex(QueryAllData.Payee));
-        builder.append("P");
-        builder.append(payee);
-        builder.append(System.lineSeparator());
+        if (!TextUtils.isEmpty(payee)) {
+            builder.append("P");
+            builder.append(payee);
+            builder.append(System.lineSeparator());
+        }
 
         // handle transfers
         String category;
@@ -88,6 +90,9 @@ public class QifRecord {
         builder.append(System.lineSeparator());
 
         // todo: handle splits - for splits we need to sort out the split transactions #81!
+        // $ = amount in split
+        // S = category in split
+        // E = memo in split
 
         // Notes
         String memo = parseMemo(cursor);
@@ -129,19 +134,23 @@ public class QifRecord {
         // which may be in a different currency.
 //        String amount = Double.toString(cursor.getDouble(cursor.getColumnIndex(QueryAllData.TOTRANSAMOUNT)));
 
-        String amount = Double.toString(cursor.getDouble(cursor.getColumnIndex(QueryAllData.Amount)));
+        Double amountDouble = cursor.getDouble(cursor.getColumnIndex(QueryAllData.Amount));
 
         // append sign
         String type = parseTransactionType(cursor);
         switch (type) {
-            case Constants.TRANSACTION_TYPE_WITHDRAWAL:
-                amount = "-" + amount;
-                break;
-            case Constants.TRANSACTION_TYPE_DEPOSIT:
-                break;
+//            case Constants.TRANSACTION_TYPE_WITHDRAWAL:
+//                amount = "-" + amount;
+//                break;
+//            case Constants.TRANSACTION_TYPE_DEPOSIT:
+//                break;
             case Constants.TRANSACTION_TYPE_TRANSFER:
+                // transfers are somehow positive.
+                amountDouble = amountDouble * (-1);
                 break;
         }
+
+        String amount = Double.toString(amountDouble);
         return amount;
     }
 
@@ -150,7 +159,7 @@ public class QifRecord {
         String subCategory = cursor.getString(cursor.getColumnIndex(QueryAllData.Subcategory));
 
         if (!TextUtils.isEmpty(subCategory)) {
-            return subCategory;
+            return category + ":" + subCategory;
         } else {
             return category;
         }
