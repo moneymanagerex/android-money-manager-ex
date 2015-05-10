@@ -17,14 +17,19 @@
  */
 package com.money.manager.ex.businessobjects.qif;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.SplitCategoriesRepository;
+import com.money.manager.ex.database.TableSplitTransactions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -36,7 +41,11 @@ import java.util.Locale;
  * http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Format_Patterns
  */
 public class QifRecord {
-    public QifRecord() { }
+    public QifRecord(Context context) {
+        mContext = context;
+    }
+
+    private Context mContext;
 
     /**
      * Returns a string representing one QIF record.
@@ -89,10 +98,13 @@ public class QifRecord {
         builder.append(category);
         builder.append(System.lineSeparator());
 
-        // todo: handle splits - for splits we need to sort out the split transactions #81!
-        // $ = amount in split
-        // S = category in split
-        // E = memo in split
+        // handle splits
+        int splitCategory = cursor.getInt(cursor.getColumnIndex(QueryAllData.Splitted));
+        if (splitCategory == 1) {
+            String splits = getSplitCategories(cursor);
+            builder.append(splits);
+            builder.append(System.lineSeparator());
+        }
 
         // Notes
         String memo = parseMemo(cursor);
@@ -111,6 +123,50 @@ public class QifRecord {
     public int getAccountId(Cursor cursor) {
         int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
         return accountId;
+    }
+
+    public String getSplitCategories(Cursor cursor) {
+        StringBuilder builder = new StringBuilder();
+
+        // todo: retrieve splits
+        int accountId = getAccountId(cursor);
+        SplitCategoriesRepository repo = new SplitCategoriesRepository(mContext);
+        ArrayList<TableSplitTransactions> splits = repo.loadSplitCategoriesFor(accountId);
+
+        for(TableSplitTransactions split : splits) {
+            String splitRecord = getSplitCategory(split);
+            builder.append(splitRecord);
+        }
+
+        return builder.toString();
+    }
+
+    private String getSplitCategory(TableSplitTransactions split) {
+        StringBuilder builder = new StringBuilder();
+        Core core = new Core(mContext);
+
+        // S = category in split
+        // $ = amount in split
+        // E = memo in split
+
+        // category
+//        int categoryId = split.getCategId();
+//        int subCategoryId = split.getSubCategId();
+        String category = core.getCategSubName(split.getCategId(), split.getSubCategId());
+        builder.append("S");
+        builder.append(category);
+        builder.append(System.lineSeparator());
+
+        // amount
+        double amount = split.getSplitTransAmount();
+        builder.append("$");
+        builder.append(amount);
+        builder.append(System.lineSeparator());
+
+        // memo
+//        String memo = split.get
+
+        return builder.toString();
     }
 
     private String parseCleared(Cursor cursor) {
