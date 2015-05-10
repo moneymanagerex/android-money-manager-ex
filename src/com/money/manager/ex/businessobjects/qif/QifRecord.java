@@ -30,20 +30,13 @@ import java.util.Locale;
 /**
  * A .qif file record. Represents a single transaction or account header record.
  * References:
+ * QIF format
  * http://en.wikipedia.org/wiki/Quicken_Interchange_Format
+ * Date formats inside qif file
+ * http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Format_Patterns
  */
 public class QifRecord {
-    public QifRecord() {
-    }
-
-//    public String Date;
-//    public String Amount;
-//    public String Payee;
-//    public String Category;
-//    public String Memo;
-
-//    private Cursor mCursor;
-//    private String Logcat;
+    public QifRecord() { }
 
     /**
      * Returns a string representing one QIF record.
@@ -80,14 +73,21 @@ public class QifRecord {
         builder.append(payee);
         builder.append(System.lineSeparator());
 
-        // Category
-        String category = parseCategory(cursor);
+        // handle transfers
+        String category;
+        String transactionType = parseTransactionType(cursor);
+        if (transactionType.equals(Constants.TRANSACTION_TYPE_TRANSFER)) {
+            // Category is the destination account name.
+            category = cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName));
+        } else {
+            // Category
+            category = parseCategory(cursor);
+        }
         builder.append("L");
         builder.append(category);
         builder.append(System.lineSeparator());
 
-        // todo: handle splits
-        // todo: handle transfers
+        // todo: handle splits - for splits we need to sort out the split transactions #81!
 
         // Notes
         String memo = parseMemo(cursor);
@@ -120,16 +120,19 @@ public class QifRecord {
         SimpleDateFormat savedFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE, Locale.US);
         java.util.Date date = savedFormat.parse(dateValue);
         // todo: get Quicken date format from settings.
-        // ref: http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Format_Patterns
         SimpleDateFormat qifFormat = new SimpleDateFormat("MM/dd''yy", Locale.US);
         return qifFormat.format(date);
     }
 
     private String parseAmount(Cursor cursor) {
-        String amount = Double.toString(cursor.getDouble(cursor.getColumnIndex(QueryAllData.TOTRANSAMOUNT)));
+        // To-amount is wrong in case of transfers as it shows the destination amount,
+        // which may be in a different currency.
+//        String amount = Double.toString(cursor.getDouble(cursor.getColumnIndex(QueryAllData.TOTRANSAMOUNT)));
+
+        String amount = Double.toString(cursor.getDouble(cursor.getColumnIndex(QueryAllData.Amount)));
 
         // append sign
-        String type = cursor.getString(cursor.getColumnIndex(QueryAllData.TransactionType));
+        String type = parseTransactionType(cursor);
         switch (type) {
             case Constants.TRANSACTION_TYPE_WITHDRAWAL:
                 amount = "-" + amount;
@@ -155,5 +158,10 @@ public class QifRecord {
 
     private String parseMemo(Cursor cursor) {
         return cursor.getString(cursor.getColumnIndex(QueryAllData.Notes));
+    }
+
+    private String parseTransactionType(Cursor cursor) {
+        String type = cursor.getString(cursor.getColumnIndex(QueryAllData.TransactionType));
+        return type;
     }
 }
