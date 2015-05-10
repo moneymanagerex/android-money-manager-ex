@@ -128,10 +128,10 @@ public class QifRecord {
     public String getSplitCategories(Cursor cursor) {
         StringBuilder builder = new StringBuilder();
 
-        // todo: retrieve splits
-        int accountId = getAccountId(cursor);
+        // retrieve splits
         SplitCategoriesRepository repo = new SplitCategoriesRepository(mContext);
-        ArrayList<TableSplitTransactions> splits = repo.loadSplitCategoriesFor(accountId);
+        int transactionId = getTransactionId(cursor);
+        ArrayList<TableSplitTransactions> splits = repo.loadSplitCategoriesFor(transactionId);
 
         for(TableSplitTransactions split : splits) {
             String splitRecord = getSplitCategory(split);
@@ -167,6 +167,10 @@ public class QifRecord {
 //        String memo = split.get
 
         return builder.toString();
+    }
+
+    private int getTransactionId(Cursor cursor){
+        return cursor.getInt(cursor.getColumnIndex(QueryAllData.ID));
     }
 
     private String parseCleared(Cursor cursor) {
