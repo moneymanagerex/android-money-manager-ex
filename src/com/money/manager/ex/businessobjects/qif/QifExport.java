@@ -39,6 +39,8 @@ import java.util.Locale;
 
 /**
  * Handles export of transactions from AllDataFragment into QIF format.
+ * References:
+ * http://en.wikipedia.org/wiki/Quicken_Interchange_Format
  */
 public class QifExport {
     private static final String ProviderAuthority = "com.money.manager.ex.fileprovider";
@@ -212,7 +214,7 @@ public class QifExport {
      * @return implementation of Qif generator interface.
      */
     private IQifGenerator getQifGenerator() {
-        return new QifGenerator();
+        return new QifGenerator(this.context);
     }
 
     /**

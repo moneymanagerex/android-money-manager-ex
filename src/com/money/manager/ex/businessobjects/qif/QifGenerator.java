@@ -17,10 +17,10 @@
  */
 package com.money.manager.ex.businessobjects.qif;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.adapter.AllDataAdapter;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 
 import java.text.ParseException;
 
@@ -31,6 +31,12 @@ import java.text.ParseException;
  * http://www.respmech.com/mym2qifw/qif_new.htm
  */
 public class QifGenerator implements IQifGenerator {
+    public QifGenerator(Context context) {
+        mContext = context;
+    }
+
+    private Context mContext;
+
     public String createFromAdapter(AllDataAdapter adapter)
             throws ParseException {
         StringBuilder builder = new StringBuilder();
@@ -39,7 +45,7 @@ public class QifGenerator implements IQifGenerator {
         cursor.moveToFirst();
 
         int previousAccountId = 0;
-        QifHeader header = new QifHeader();
+        QifHeader header = new QifHeader(mContext);
         QifRecord record = new QifRecord();
 
         while (!cursor.isAfterLast()) {

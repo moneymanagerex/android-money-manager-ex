@@ -17,21 +17,33 @@
  */
 package com.money.manager.ex.businessobjects.qif;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.TableAccountList;
+
+import java.util.HashMap;
 
 /**
  * Represents qif header record.
  */
 public class QifHeader {
+    public QifHeader(Context context) {
+        mContext = context;
+    }
+
+    private Context mContext;
 
     public String parse(Cursor cursor) {
-        // todo: implement
         StringBuilder builder = new StringBuilder();
+        TableAccountList account = loadAccount(cursor);
 
-        /*
-        !Account
+        /* header from mmex desktop:
+!Account
 NCash (EUR)
 TBank
 D[EUR]
@@ -40,38 +52,66 @@ $57.300000
 !Type:Cash
          */
 
-        // todo: header depends on the account type.
+        // header depends on the account type.
 
         builder.append("!Account");
         builder.append(System.lineSeparator());
 
         // name
-
         builder.append("N");
-        String name = cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName));
+        String name = account.getAccountName();
         builder.append(name);
         builder.append(System.lineSeparator());
 
         // description
+        String description = account.getNotes();
+        if (!TextUtils.isEmpty(description)) {
+            builder.append("D");
+            builder.append(description);
+            builder.append(System.lineSeparator());
+        }
 
-        builder.append("D");
-        // todo: description
-        builder.append(System.lineSeparator());
-
-        // todo: account type
-
+        // account type
+        String accountType = getAccountType(account);
         builder.append("T");
+        builder.append(accountType);
         builder.append(System.lineSeparator());
 
+        // Limit, for credit cards only.
+//        if (accountType.equals(Constants.ACCOUNT_TYPE_CREDIT_CARD)) {
+//            builder.append("L");
+//            builder.append();
+//        builder.append(System.lineSeparator());
+//        }
+
+        // Header separator.
         builder.append("^");
         builder.append(System.lineSeparator());
 
-        // todo: also add the first line
-        builder.append("!Type:Bank");
-        // !Type:Invst
+        // also add the first line for transaction list.
+        builder.append("!Type:");
+        builder.append(accountType);
         builder.append(System.lineSeparator());
 
         return builder.toString();
+    }
+
+    private String getAccountType(TableAccountList account) {
+        String accountType = account.getAccountType();
+
+        // Translation table:
+        HashMap<String, String> accountDictionary = new HashMap<>();
+        accountDictionary.put(Constants.ACCOUNT_TYPE_CHECKING, "Bank");
+        accountDictionary.put(Constants.ACCOUNT_TYPE_TERM, "Bank");
+        accountDictionary.put(Constants.ACCOUNT_TYPE_CREDIT_CARD, "CCard");
+        // !Type:Invst
+        // Newer versions use Port instead of Invst.
+        accountDictionary.put(Constants.ACCOUNT_TYPE_INVESTMENT, "Port");
+        // Cash?
+
+        String result = accountDictionary.get(accountType);
+
+        return result;
     }
 
     private String createCreditCardHeader() {
@@ -87,28 +127,11 @@ L5,000.00
 
         return "not implemented";
     }
-    private String createBankHeader() {
-        /*
-NWestpac eSaver
-TBank
-^
-         */
-        return "not implemented";
-    }
-    private String createCashHeader() {
-        /*
-NCash (EUR)
-TCash
-^
-         */
-        return "not implemented";
-    }
-    private String createPortfolioHeader() {
-        /*
-NBawag Brokerage
-TPort
-^
-         */
-        return "not implemented";
+
+    private TableAccountList loadAccount(Cursor cursor) {
+        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
+        TableAccountList account = MoneyManagerOpenHelper.getInstance(mContext)
+                .getTableAccountList(accountId);
+        return account;
     }
 }

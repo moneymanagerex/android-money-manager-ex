@@ -275,7 +275,8 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
         String selection = TableAccountList.ACCOUNTID + "=?";
         SQLiteDatabase database = getReadableDatabase();
         if (database != null) {
-            Cursor cursor = database.query(new TableAccountList().getSource(), null, selection, new String[]{Integer.toString(id)}, null, null, null);
+            Cursor cursor = database.query(new TableAccountList().getSource(), null, selection,
+                    new String[]{Integer.toString(id)}, null, null, null);
             // check if cursor is valid
             if (cursor != null && cursor.moveToFirst()) {
                 TableAccountList account = new TableAccountList();

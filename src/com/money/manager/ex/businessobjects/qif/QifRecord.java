@@ -29,6 +29,8 @@ import java.util.Locale;
 
 /**
  * A .qif file record. Represents a single transaction or account header record.
+ * References:
+ * http://en.wikipedia.org/wiki/Quicken_Interchange_Format
  */
 public class QifRecord {
     public QifRecord() {
@@ -65,6 +67,13 @@ public class QifRecord {
         builder.append(amount);
         builder.append(System.lineSeparator());
 
+        // Cleared status
+        String cleared = parseCleared(cursor);
+        if (!TextUtils.isEmpty(cleared)) {
+            builder.append("C");
+            builder.append(cleared);
+        }
+
         // Payee
         String payee = cursor.getString(cursor.getColumnIndex(QueryAllData.Payee));
         builder.append("P");
@@ -78,6 +87,7 @@ public class QifRecord {
         builder.append(System.lineSeparator());
 
         // todo: handle splits
+        // todo: handle transfers
 
         // Notes
         String memo = parseMemo(cursor);
@@ -96,6 +106,13 @@ public class QifRecord {
     public int getAccountId(Cursor cursor) {
         int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
         return accountId;
+    }
+
+    private String parseCleared(Cursor cursor) {
+        // todo: handle other statuses?
+        // Cleared: * or c
+        // Reconciled: X or R
+        return cursor.getString(cursor.getColumnIndex(QueryAllData.Status));
     }
 
     private String parseDate(Cursor cursor) throws ParseException {
