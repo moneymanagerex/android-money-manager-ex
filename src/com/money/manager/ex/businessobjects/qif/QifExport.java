@@ -25,12 +25,16 @@ import android.util.Log;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.TableAccountList;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -49,7 +53,7 @@ public class QifExport {
     private Context context;
     private String Logcat;
     // todo: remove direct dependency?
-    private AllDataAdapter DataAdapter;
+//    private AllDataAdapter DataAdapter;
 
     /**
      * Export the transactions into qif format and offer file for sharing.
@@ -210,6 +214,28 @@ public class QifExport {
     private IQifGenerator getQifGenerator() {
         return new QifGenerator();
     }
+
+    /**
+     * todo: load each account separately in the header itself.
+     * @return
+     */
+    private List<TableAccountList> loadAccounts() {
+//        Core core = new Core(this.context);
+
+        // load all accounts for now
+        List<TableAccountList> accountList = MoneyManagerOpenHelper
+                .getInstance(this.context)
+                .getListAccounts(false, false);
+        // core.getAccountsOpenVisible(), core.getAccountFavoriteVisible()
+
+//        for (int i = 0; i <= mAccountList.size() - 1; i++) {
+//            mAccountNameList.add(mAccountList.get(i).getAccountName());
+//            mAccountIdList.add(mAccountList.get(i).getAccountId());
+//        }
+
+        return accountList;
+    }
+
 
     private void offerFile(Uri fileUri) {
         String title = this.context.getString(R.string.qif_export);

@@ -18,9 +18,9 @@
 package com.money.manager.ex.businessobjects.qif;
 
 import android.database.Cursor;
+import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.database.QueryAllData;
 
 import java.text.ParseException;
@@ -31,48 +31,71 @@ import java.util.Locale;
  * A .qif file record. Represents a single transaction or account header record.
  */
 public class QifRecord {
-    public QifRecord(Cursor cursor) {
-        mCursor = cursor;
+    public QifRecord() {
     }
 
-    public String Date;
-    public String Amount;
-    public String Payee;
-    public String Remarks;
+//    public String Date;
+//    public String Amount;
+//    public String Payee;
+//    public String Category;
+//    public String Memo;
 
-    private Cursor mCursor;
+//    private Cursor mCursor;
 //    private String Logcat;
 
     /**
      * Returns a string representing one QIF record.
      * @return
      */
-    public String getString() throws ParseException {
-        // todo: implement
+    public String parse(Cursor cursor) throws ParseException {
         StringBuilder builder = new StringBuilder();
 
         // Date
-
-        this.Date = parseDate(mCursor);
+        String date = parseDate(cursor);
         builder.append("D");
-        builder.append(this.Date);
+        builder.append(date);
         builder.append(System.lineSeparator());
 
         // Amount
-
-        this.Amount = parseAmount(mCursor);
+        String amount = parseAmount(cursor);
+//        builder.append("U");
+//        builder.append(this.Amount);
+//        builder.append(System.lineSeparator());
         builder.append("T");
-        builder.append(this.Amount);
+        builder.append(amount);
         builder.append(System.lineSeparator());
 
         // Payee
-
-        this.Payee = mCursor.getString(mCursor.getColumnIndex(QueryAllData.Payee));
+        String payee = cursor.getString(cursor.getColumnIndex(QueryAllData.Payee));
         builder.append("P");
-        builder.append(this.Payee);
+        builder.append(payee);
+        builder.append(System.lineSeparator());
+
+        // Category
+        String category = parseCategory(cursor);
+        builder.append("L");
+        builder.append(category);
+        builder.append(System.lineSeparator());
+
+        // todo: handle splits
+
+        // Notes
+        String memo = parseMemo(cursor);
+        if (!TextUtils.isEmpty(memo)) {
+            builder.append("M");
+            builder.append(memo);
+            builder.append(System.lineSeparator());
+        }
+
+        builder.append("^");
         builder.append(System.lineSeparator());
 
         return builder.toString();
+    }
+
+    public int getAccountId(Cursor cursor) {
+        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
+        return accountId;
     }
 
     private String parseDate(Cursor cursor) throws ParseException {
@@ -100,5 +123,20 @@ public class QifRecord {
                 break;
         }
         return amount;
+    }
+
+    private String parseCategory(Cursor cursor) {
+        String category = cursor.getString(cursor.getColumnIndex(QueryAllData.Category));
+        String subCategory = cursor.getString(cursor.getColumnIndex(QueryAllData.Subcategory));
+
+        if (!TextUtils.isEmpty(subCategory)) {
+            return subCategory;
+        } else {
+            return category;
+        }
+    }
+
+    private String parseMemo(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(QueryAllData.Notes));
     }
 }

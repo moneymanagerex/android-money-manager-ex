@@ -20,6 +20,7 @@ package com.money.manager.ex.businessobjects.qif;
 import android.database.Cursor;
 
 import com.money.manager.ex.adapter.AllDataAdapter;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 
 import java.text.ParseException;
 
@@ -36,19 +37,30 @@ public class QifGenerator implements IQifGenerator {
 
         Cursor cursor = adapter.getCursor();
         cursor.moveToFirst();
+
+        int previousAccountId = 0;
+        QifHeader header = new QifHeader();
+        QifRecord record = new QifRecord();
+
         while (!cursor.isAfterLast()) {
-            String row = createRow(cursor);
+            int accountId = record.getAccountId(cursor);
+            if (accountId != previousAccountId) {
+                previousAccountId = accountId;
+                // add header record
+                String headerRecord = header.parse(cursor);
+                builder.append(headerRecord);
+            }
+
+            // add transaction record
+            String row = record.parse(cursor);
+
             builder.append(row);
             cursor.moveToNext();
         }
-        cursor.close();
+        // No need to close the cursor here. It is used in the fragment.
+//        cursor.close();
 
         return builder.toString();
     }
 
-    private String createRow(Cursor cursor)
-            throws ParseException {
-        QifRecord record = new QifRecord(cursor);
-        return record.getString();
-    }
 }
