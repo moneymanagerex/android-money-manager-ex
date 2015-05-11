@@ -44,6 +44,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -1024,6 +1025,16 @@ public class MainActivity extends BaseFragmentActivity {
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mDrawer.isDrawerOpen(Gravity.LEFT)){
+            mDrawer.closeDrawer(Gravity.LEFT);
+        }else{
+            super.onBackPressed();
         }
     }
 }
