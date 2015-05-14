@@ -56,13 +56,15 @@ public class StockRepository
     public static final String HELDAT = "HELDAT";
     public static final String PURCHASEDATE = "PURCHASEDATE";
     public static final String STOCKNAME = "STOCKNAME";
+    public static final String SYMBOL = "SYMBOL";
+    public static final String CURRENTPRICE = "CURRENTPRICE";
 
     private Context mContext;
 
     @Override
     public String[] getAllColumns() {
         return new String[] {
-                "STOCKID AS _id", STOCKID, HELDAT, PURCHASEDATE
+                "STOCKID AS _id", STOCKID, HELDAT, PURCHASEDATE, STOCKNAME, SYMBOL, CURRENTPRICE
         };
     }
 

@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -63,12 +64,12 @@ public class WatchlistFragment extends Fragment
     private Integer mAccountId = null;
     private String mAccountName;
 
-    private double mAccountBalance = 0;
-    private double mAccountReconciled = 0;
+//    private double mAccountBalance = 0;
+//    private double mAccountReconciled = 0;
 
     private TableAccountList mAccount;
 
-    private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
+//    private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
 
     private Context mContext;
@@ -111,12 +112,15 @@ public class WatchlistFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader result = null;
+
         switch (id) {
             case ID_LOADER_SUMMARY:
                 StockRepository stocks = new StockRepository(mContext);
-                return stocks.getCursorLoader(mAccountId);
+                result = stocks.getCursorLoader(mAccountId);
         }
-        return null;
+
+        return result;
     }
 
     @Override
@@ -247,14 +251,6 @@ public class WatchlistFragment extends Fragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_LOADER_SUMMARY:
-                if (data != null && data.moveToFirst()) {
-//                    mAccountBalance = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL));
-//                    mAccountReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED));
-                } else {
-                    mAccountBalance = 0;
-                    mAccountReconciled = 0;
-                }
-
                 // set titles
                 BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
                 if (activity != null) {
@@ -299,6 +295,9 @@ public class WatchlistFragment extends Fragment
     private Bundle prepareArgsForChildFragment() {
         // compose selection and sort
         ArrayList<String> selection = new ArrayList<>();
+
+        selection.add(StockRepository.HELDAT + "=" + Integer.toString(mAccountId));
+
 //        selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountID + "="
 //                + Integer.toString(mAccountId) + ")");
 //        if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {

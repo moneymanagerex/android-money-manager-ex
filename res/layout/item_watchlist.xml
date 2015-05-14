@@ -39,6 +39,20 @@
         android:baselineAligned="false"
         android:orientation="horizontal" >
 
+        <!-- symbol -->
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="fill_parent">
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/symbolTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true" />
+
+        </LinearLayout>
+
         <!-- date box -->
         <LinearLayout
             android:id="@+id/linearLayoutDate"

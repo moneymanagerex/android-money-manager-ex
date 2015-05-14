@@ -24,6 +24,8 @@ import android.widget.TextView;
  *
  */
 public class StocksDataViewHolder {
+    TextView symbolTextView;
+
     LinearLayout linDate;
     TextView txtDay;
     TextView txtMonth;

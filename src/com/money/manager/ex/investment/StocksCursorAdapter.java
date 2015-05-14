@@ -74,6 +74,9 @@ public class StocksCursorAdapter
 
         // holder
         StocksDataViewHolder holder = new StocksDataViewHolder();
+
+        holder.symbolTextView = (TextView) view.findViewById(R.id.symbolTextView);
+
         // take a pointer of object UI
         holder.linDate = (LinearLayout) view.findViewById(R.id.linearLayoutDate);
         holder.txtDay = (TextView) view.findViewById(R.id.textViewDay);
@@ -101,6 +104,10 @@ public class StocksCursorAdapter
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
+
+        // symbol
+        String symbol = cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL));
+        holder.symbolTextView.setText(symbol);
 
 //        // write status
 //        String status = cursor.getString(cursor.getColumnIndex(STATUS));
