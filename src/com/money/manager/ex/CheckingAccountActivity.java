@@ -520,8 +520,6 @@ public class CheckingAccountActivity
                 }
             }
         });
-        // display the current value.
-        txtSelectCategory.setText(mCategoryName);
 
         // Split Categories
 
@@ -711,12 +709,16 @@ public class CheckingAccountActivity
                 : R.string.edit_transaction);
     }
 
+    /**
+     * Get any parameters, if sent, when intent was raised. This is used when called
+     * from Tasker or any external caller.
+     * @param intent
+     */
     public void externalIntegration(Intent intent) {
-        // Get any parameters, if sent, when intent was raised. This is used when called
-        // from Tasker or any external caller.
+        Uri data = intent.getData();
+        if (data == null) return;
 
         DataParser dataParser = new DataParser(this);
-        Uri data = intent.getData();
         IntentDataParameters parameters = dataParser.parseData(data);
 
         // todo: transaction type
@@ -1188,21 +1190,21 @@ public class CheckingAccountActivity
     }
 
     public void refreshCategoryName() {
-        if (txtSelectCategory == null)
-            return;
+        // validation
+        if (txtSelectCategory == null) return;
 
         txtSelectCategory.setText("");
 
-        if (!chbSplitTransaction.isCheck()) {
+        if (chbSplitTransaction.isCheck()) {
+            // Split transaction. Show ...
+            txtSelectCategory.setText("\u2026");
+        } else {
             if (!TextUtils.isEmpty(mCategoryName)) {
                 txtSelectCategory.setText(mCategoryName);
                 if (!TextUtils.isEmpty(mSubCategoryName)) {
                     txtSelectCategory.setText(Html.fromHtml(txtSelectCategory.getText() + " : <i>" + mSubCategoryName + "</i>"));
                 }
             }
-        } else {
-            // Split transaction.
-            txtSelectCategory.setText("\u2026");
         }
     }
 
