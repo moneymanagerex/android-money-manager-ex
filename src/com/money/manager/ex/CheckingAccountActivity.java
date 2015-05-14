@@ -44,12 +44,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.businessobjects.Payee;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
+import com.money.manager.ex.checkingaccount.NewTransactionContentProvider;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.checkingaccount.YesNoDialogListener;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.TaskerIntegration;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SplitCategoriesRepository;
@@ -699,11 +698,7 @@ public class CheckingAccountActivity
                 task.execute();
             }
 
-            TaskerIntegration integration = new TaskerIntegration(this);
-            integration.parseIntent(intent);
-            this.mPayeeId = integration.PayeeId;
-            this.mTotAmount = integration.TotalAmount;
-
+            contentIntegration(intent);
         }
 
         // set title
@@ -711,6 +706,21 @@ public class CheckingAccountActivity
                 ? R.string.new_transaction
                 : R.string.edit_transaction);
     }
+
+    public void contentIntegration(Intent intent) {
+        // Get any parameters, if sent, when intent was raised. This is used when called
+        // from Tasker or any external caller.
+
+        // account
+        //this.mAccountId =
+
+        //this.mAmount = intent.getDoubleExtra(PARAM_AMOUNT, 0);
+        this.mTotAmount = intent.getDoubleExtra(NewTransactionContentProvider.PARAM_AMOUNT, 0);
+
+        // payee
+        this.mPayeeId = intent.getIntExtra(NewTransactionContentProvider.PARAM_PAYEE, -1);
+    }
+
 
     private void findControls() {
         spinStatus = (Spinner) findViewById(R.id.spinnerStatus);
