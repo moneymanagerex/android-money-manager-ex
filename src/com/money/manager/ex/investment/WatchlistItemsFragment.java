@@ -19,6 +19,7 @@ package com.money.manager.ex.investment;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -50,13 +51,10 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.AllDataAdapter;
-import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
 import com.money.manager.ex.adapter.DrawerMenuItem;
 import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
-import com.money.manager.ex.businessobjects.qif.QifExport;
+import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
@@ -81,8 +79,9 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
     private boolean mShownBalance = false;
     private int mGroupId = 0;
     private int mAccountId = -1;
-    private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
+    private WatchlistMultiChoiceModeListener mMultiChoiceModeListener;
     private View mListHeader = null;
+    private Context mContext;
 
     /**
      * Create a new instance of AllDataFragment with accountId params
@@ -102,30 +101,6 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
             ret[i] = list.get(i);
         }
         return ret;
-    }
-
-    /**
-     * Export data to CSV file
-     */
-    public void exportDataToCSVFile() {
-        exportDataToCSVFile("");
-    }
-
-    /**
-     * Export data to CSV file
-     *
-     * @param prefixName prefix for the file
-     */
-    public void exportDataToCSVFile(String prefixName) {
-        ExportToCsvFile csv = new ExportToCsvFile(getActivity(), (AllDataAdapter) getListAdapter());
-        csv.setPrefixName(prefixName);
-        csv.execute();
-    }
-
-    private void exportToQif(){
-        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-        QifExport qif = new QifExport(getActivity());
-        qif.export(adapter);
     }
 
     /**
@@ -197,14 +172,14 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
 //        setHasOptionsMenu(hasOptionsMenu);
 
         // create adapter
-        AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
+        StocksCursorAdapter adapter = new StocksCursorAdapter(mContext, null);
         adapter.setAccountId(mAccountId);
         adapter.setShowAccountName(isShownHeader());
         adapter.setShowBalanceAmount(isShownBalance());
 
         // set choice mode in list view
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
+            mMultiChoiceModeListener = new WatchlistMultiChoiceModeListener();
             getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
             getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
         }
@@ -213,8 +188,8 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                    Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
+                if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
+                    Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
                     if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
                         startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
                     }
@@ -249,6 +224,8 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mContext = getActivity();
+
         setHasOptionsMenu(true);
     }
 
@@ -261,7 +238,7 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
 
         switch (id) {
             case ID_LOADER_ALL_DATA_DETAIL:
-                QueryAllData allData = new QueryAllData(getActivity());
+                StockRepository allData = new StockRepository(mContext);
                 // compose selection and sort
                 String selection = "", sort = "";
                 if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
@@ -277,7 +254,7 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
                     sort = args.getString(KEY_ARGUMENTS_SORT);
                 }
                 // create loader
-                return new CursorLoader(getActivity(), allData.getUri(), allData.getAllColumns(),
+                return new CursorLoader(mContext, allData.getUri(), allData.getAllColumns(),
                         selection, null, sort);
         }
         return null;
@@ -360,9 +337,10 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
 
         switch (loader.getId()) {
             case ID_LOADER_ALL_DATA_DETAIL:
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+                StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
                 if (isShownBalance()) {
-                    adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getReadableDatabase());
+                    adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
+                            .getReadableDatabase());
                 }
                 adapter.swapCursor(data);
                 if (isResumed()) {
@@ -399,16 +377,16 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
+//        int itemId = item.getItemId();
 
-        if (itemId == R.id.menu_export_to_csv) {
-            exportDataToCSVFile();
-            return true;
-        }
-        if (itemId == R.id.menu_qif_export) {
-            // export visible transactions.
-            exportToQif();
-        }
+//        if (itemId == R.id.menu_export_to_csv) {
+//            exportDataToCSVFile();
+//            return true;
+//        }
+//        if (itemId == R.id.menu_qif_export) {
+//            // export visible transactions.
+//            exportToQif();
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -568,7 +546,7 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
     }
 
     // class to manage multi choice mode
-    public class AllDataMultiChoiceModeListener implements MultiChoiceModeListener {
+    public class WatchlistMultiChoiceModeListener implements MultiChoiceModeListener {
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
@@ -578,8 +556,8 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
+                StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
                 adapter.clearPositionChecked();
                 adapter.notifyDataSetChanged();
             }
@@ -621,7 +599,7 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
                 case R.id.menu_void:
                     String status = Character.toString(item.getAlphabeticShortcut());
                     if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-                        ((AllDataAdapter) getListAdapter()).clearPositionChecked();
+                        ((StocksCursorAdapter) getListAdapter()).clearPositionChecked();
                         startLoaderData();
                         mode.finish();
                         return true;
@@ -633,8 +611,8 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
         private ArrayList<Integer> getTransactionIds(){
             final ArrayList<Integer> transIds = new ArrayList<>();
 
-            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
+                StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
                 Cursor cursor = adapter.getCursor();
                 if (cursor != null) {
                     SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
@@ -697,7 +675,7 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
                         case R.id.menu_void:
                             String status = item.getShortcut();
                             if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-                                ((AllDataAdapter) getListAdapter()).clearPositionChecked();
+                                ((StocksCursorAdapter) getListAdapter()).clearPositionChecked();
                                 startLoaderData();
                             }
                     }
@@ -723,8 +701,8 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
             if (getListHeader() != null)
                 position--;
 
-            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
+                StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
                 adapter.setPositionChecked(position, checked);
                 adapter.notifyDataSetChanged();
             }

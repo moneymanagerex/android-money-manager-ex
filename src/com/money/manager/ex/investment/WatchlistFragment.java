@@ -18,6 +18,7 @@
 package com.money.manager.ex.investment;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -25,7 +26,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,13 +43,12 @@ import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.StockAccount;
+import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.fragment.AllDataFragment;
-import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.utils.CurrencyUtils;
@@ -76,10 +75,12 @@ public class WatchlistFragment extends Fragment
     private double mAccountBalance = 0;
     private double mAccountReconciled = 0;
 
-    private TableAccountList mAccountList;
+    private TableAccountList mAccount;
 
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
+
+    private Context mContext;
 
     // setting for shown open database item menu
 //    private boolean mShownOpenDatabaseItemMenu = false;
@@ -118,13 +119,15 @@ public class WatchlistFragment extends Fragment
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mAccountId = savedInstanceState.getInt(KEY_CONTENT);
         }
+
+        mContext = getActivity();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case ID_LOADER_SUMMARY:
-                StockAccount stocks = new StockAccount(getActivity());
+                StockRepository stocks = new StockRepository(mContext);
                 return stocks.getCursorLoader(mAccountId);
         }
         return null;
@@ -181,8 +184,8 @@ public class WatchlistFragment extends Fragment
         // inflate layout
         View view = inflater.inflate(R.layout.account_fragment, container, false);
         // take object AccountList
-        if (mAccountList == null) {
-            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
+        if (mAccount == null) {
+            mAccount = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
                     .getTableAccountList(mAccountId);
         }
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
@@ -196,12 +199,12 @@ public class WatchlistFragment extends Fragment
         imgAccountFav.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 // set status account
-                mAccountList.setFavoriteAcct(!(mAccountList.isFavoriteAcct()));
+                mAccount.setFavoriteAcct(!(mAccount.isFavoriteAcct()));
                 // populate contentvalues for update
                 ContentValues values = new ContentValues();
-                values.put(TableAccountList.FAVORITEACCT, mAccountList.getFavoriteAcct());
+                values.put(TableAccountList.FAVORITEACCT, mAccount.getFavoriteAcct());
                 // update
-                if (getActivity().getContentResolver().update(mAccountList.getUri(), values, TableAccountList.ACCOUNTID + "=?",
+                if (getActivity().getContentResolver().update(mAccount.getUri(), values, TableAccountList.ACCOUNTID + "=?",
                         new String[]{Integer.toString(mAccountId)}) != 1) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
                 } else {
@@ -238,8 +241,8 @@ public class WatchlistFragment extends Fragment
         transaction.commit();
 
         // refresh user interface
-        if (mAccountList != null) {
-            mAccountName = mAccountList.getAccountName();
+        if (mAccount != null) {
+            mAccountName = mAccount.getAccountName();
             setImageViewFavorite();
         }
         // set has option menu
@@ -277,14 +280,14 @@ public class WatchlistFragment extends Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_add_transaction_account) {
-            startCheckingAccountActivity();
-            return true;
-        } else if (item.getItemId() == R.id.menu_export_to_csv) {
-            if (mDataFragment != null && mAccountList != null)
-                mDataFragment.exportDataToCSVFile(mAccountList.getAccountName());
-            return true;
-        }
+//        if (item.getItemId() == R.id.menu_add_transaction_account) {
+//            startCheckingAccountActivity();
+//            return true;
+//        } else if (item.getItemId() == R.id.menu_export_to_csv) {
+//            if (mDataFragment != null && mAccount != null)
+//                mDataFragment.exportDataToCSVFile(mAccount.getAccountName());
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -338,7 +341,7 @@ public class WatchlistFragment extends Fragment
      * refresh UI, show favorite icome
      */
     private void setImageViewFavorite() {
-        if (mAccountList.isFavoriteAcct()) {
+        if (mAccount.isFavoriteAcct()) {
             imgAccountFav.setBackgroundResource(R.drawable.ic_star);
         } else {
             imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
@@ -350,21 +353,14 @@ public class WatchlistFragment extends Fragment
      */
     private void setTextViewBalance() {
         // write account balance
-        if (mAccountList != null) {
+        if (mAccount != null) {
             CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
-            int currencyId = mAccountList.getCurrencyId();
+            int currencyId = mAccount.getCurrencyId();
 
             txtAccountBalance.setText(currencyUtils.getCurrencyFormatted(currencyId, mAccountBalance));
             txtAccountReconciled.setText(currencyUtils.getCurrencyFormatted(currencyId, mAccountReconciled));
             txtAccountDifference.setText(currencyUtils.getCurrencyFormatted(currencyId, mAccountReconciled - mAccountBalance));
         }
-    }
-
-    /**
-     * start the activity of transaction management
-     */
-    private void startCheckingAccountActivity() {
-        this.startCheckingAccountActivity(null);
     }
 
     /**

@@ -18,6 +18,8 @@
 package com.money.manager.ex.businessobjects;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.CursorLoader;
 
 import com.money.manager.ex.R;
@@ -31,7 +33,7 @@ import com.money.manager.ex.utils.RawFileUtils;
 /**
  * Stocks account
  */
-public class StockAccount
+public class StockRepository
     extends Dataset {
 
     /**
@@ -41,7 +43,7 @@ public class StockAccount
      * type     of dataset
      * basepath for match uri
      */
-    public StockAccount(Context context) {
+    public StockRepository(Context context) {
         super(TABLE_NAME, DatasetType.TABLE, "stock");
 
         mContext = context;
@@ -49,39 +51,41 @@ public class StockAccount
 
     private static final String TABLE_NAME = "stock_v1";
 
+    // fields
+    public static final String HELDAT = "HELDAT";
+
     private Context mContext;
 
-//    public void load(int accountId) {
-//        String selection = TableAccountList.ACCOUNTID + "=?";
-//        SQLiteDatabase database = MoneyManagerOpenHelper..getReadableDatabase();
-//        if (database != null) {
-//            Cursor cursor = database.query(new TableAccountList().getSource(), null, selection,
-//                    new String[]{Integer.toString(id)}, null, null, null);
-//            // check if cursor is valid
-//            if (cursor != null && cursor.moveToFirst()) {
-//                TableAccountList account = new TableAccountList();
-//                account.setValueFromCursor(cursor);
-//
-//                cursor.close();
-//                return account;
-//            }
-//            database.close();
-//            //close();
-//        }
-//        // find is false then return null
-//        return null;
-//
-//    }
+    public boolean load(int accountId) {
+        boolean result = false;
+
+        String selection = TableAccountList.ACCOUNTID + "=?";
+        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext).getReadableDatabase();
+        if (database == null) return result;
+
+        Cursor cursor = database.query(this.getSource(), null, selection,
+                new String[]{Integer.toString(accountId)}, null, null, null);
+        // check if cursor is valid
+        if (cursor != null && cursor.moveToFirst()) {
+            this.setValueFromCursor(cursor);
+
+            cursor.close();
+            result = true;
+        }
+        database.close();
+
+        return result;
+    }
 
     public CursorLoader getCursorLoader(int accountId) {
-        String selection = QueryAccountBills.ACCOUNTID + "=?";
+        String selection = HELDAT + "=?";
 
-        CursorLoader loader = new CursorLoader(mContext,
-                new QueryAccountBills(mContext).getUri(),
+        CursorLoader loader = new CursorLoader(mContext, getUri(),
                 null,
                 selection,
                 new String[] { Integer.toString(accountId) }, null);
 
         return loader;
     }
+
 }
