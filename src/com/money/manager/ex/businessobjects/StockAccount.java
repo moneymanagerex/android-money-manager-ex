@@ -17,16 +17,40 @@
  */
 package com.money.manager.ex.businessobjects;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Context;
+import android.support.v4.content.CursorLoader;
 
+import com.money.manager.ex.R;
+import com.money.manager.ex.database.Dataset;
+import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.utils.RawFileUtils;
 
 /**
  * Stocks account
  */
-public class StockAccount {
+public class StockAccount
+    extends Dataset {
+
+    /**
+     * Constructor for Stock dataset.
+     *
+     * source   table/view/query
+     * type     of dataset
+     * basepath for match uri
+     */
+    public StockAccount(Context context) {
+        super(TABLE_NAME, DatasetType.TABLE, "stock");
+
+        mContext = context;
+    }
+
+    private static final String TABLE_NAME = "stock_v1";
+
+    private Context mContext;
+
 //    public void load(int accountId) {
 //        String selection = TableAccountList.ACCOUNTID + "=?";
 //        SQLiteDatabase database = MoneyManagerOpenHelper..getReadableDatabase();
@@ -48,4 +72,16 @@ public class StockAccount {
 //        return null;
 //
 //    }
+
+    public CursorLoader getCursorLoader(int accountId) {
+        String selection = QueryAccountBills.ACCOUNTID + "=?";
+
+        CursorLoader loader = new CursorLoader(mContext,
+                new QueryAccountBills(mContext).getUri(),
+                null,
+                selection,
+                new String[] { Integer.toString(accountId) }, null);
+
+        return loader;
+    }
 }

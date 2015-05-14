@@ -35,7 +35,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +43,7 @@ import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.StockAccount;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
@@ -61,16 +61,17 @@ import java.util.Calendar;
  *
  */
 public class WatchlistFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, AllDataFragmentLoaderCallbacks {
+        implements LoaderManager.LoaderCallbacks<Cursor>,
+            WatchlistItemsFragment.WatchlistItemsFragmentLoaderCallbacks {
 
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
 
-    AllDataFragment mAllDataFragment;
+    private WatchlistItemsFragment mDataFragment;
+    private String mNameFragment;
 
     private Integer mAccountId = null;
-
-    private String mNameFragment;
+    private String mAccountName;
 
     private double mAccountBalance = 0;
     private double mAccountReconciled = 0;
@@ -80,9 +81,8 @@ public class WatchlistFragment extends Fragment
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
 
-    private String mAccountName;
     // setting for shown open database item menu
-    private boolean mShownOpenDatabaseItemMenu = false;
+//    private boolean mShownOpenDatabaseItemMenu = false;
 
     /**
      * @param accountid ID Account to be display
@@ -122,15 +122,10 @@ public class WatchlistFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String selection = "";
         switch (id) {
             case ID_LOADER_SUMMARY:
-                selection = QueryAccountBills.ACCOUNTID + "=?";
-                return new CursorLoader(getActivity(),
-                        new QueryAccountBills(getActivity()).getUri(),
-                        null,
-                        selection,
-                        new String[] { Integer.toString(mAccountId) }, null);
+                StockAccount stocks = new StockAccount(getActivity());
+                return stocks.getCursorLoader(mAccountId);
         }
         return null;
     }
@@ -140,7 +135,7 @@ public class WatchlistFragment extends Fragment
         super.onCreateOptionsMenu(menu, inflater);
 
         // call create option menu of fragment
-        mAllDataFragment.onCreateOptionsMenu(menu, inflater);
+        mDataFragment.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -227,16 +222,19 @@ public class WatchlistFragment extends Fragment
         });
         // manage fragment
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        mAllDataFragment = AllDataFragment.newInstance(mAccountId);
+
+        mDataFragment = WatchlistItemsFragment.newInstance(mAccountId);
         // set arguments and settings of fragment
-        mAllDataFragment.setArguments(prepareArgsForChildFragment());
-        mAllDataFragment.setListHeader(header);
-        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE), false));
-        mAllDataFragment.setAutoStarLoader(false);
-        mAllDataFragment.setContextMenuGroupId(mAccountId);
-        mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
+        mDataFragment.setArguments(prepareArgsForChildFragment());
+        mDataFragment.setListHeader(header);
+        mDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(getString(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE), false));
+        mDataFragment.setAutoStarLoader(false);
+        mDataFragment.setContextMenuGroupId(mAccountId);
+        mDataFragment.setSearResultFragmentLoaderCallbacks(this);
+
         // add fragment
-        transaction.replace(R.id.fragmentContent, mAllDataFragment, getNameFragment());
+        transaction.replace(R.id.fragmentContent, mDataFragment, getNameFragment());
         transaction.commit();
 
         // refresh user interface
@@ -283,8 +281,8 @@ public class WatchlistFragment extends Fragment
             startCheckingAccountActivity();
             return true;
         } else if (item.getItemId() == R.id.menu_export_to_csv) {
-            if (mAllDataFragment != null && mAccountList != null)
-                mAllDataFragment.exportDataToCSVFile(mAccountList.getAccountName());
+            if (mDataFragment != null && mAccountList != null)
+                mDataFragment.exportDataToCSVFile(mAccountList.getAccountName());
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -393,16 +391,9 @@ public class WatchlistFragment extends Fragment
      * Start Loader to retrive data
      */
     public void startLoaderData() {
-        if (mAllDataFragment != null) {
-            mAllDataFragment.startLoaderData();
+        if (mDataFragment != null) {
+            mDataFragment.startLoaderData();
         }
-    }
-
-    /**
-     * @param mShownOpenDatabaseItemMenu the mShownOpenDatabaseItemMenu to set
-     */
-    public void setShownOpenDatabaseItemMenu(boolean mShownOpenDatabaseItemMenu) {
-        this.mShownOpenDatabaseItemMenu = mShownOpenDatabaseItemMenu;
     }
 
     public String getNameFragment() {

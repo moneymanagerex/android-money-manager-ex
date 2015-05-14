@@ -148,10 +148,10 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     }
 
     /**
-     * @param mSearResultFragmentLoaderCallbacks the mSearResultFragmentLoaderCallbacks to set
+     * @param searResultFragmentLoaderCallbacks the searResultFragmentLoaderCallbacks to set
      */
-    public void setSearResultFragmentLoaderCallbacks(AllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks) {
-        this.mSearResultFragmentLoaderCallbacks = mSearResultFragmentLoaderCallbacks;
+    public void setSearResultFragmentLoaderCallbacks(AllDataFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
+        this.mSearResultFragmentLoaderCallbacks = searResultFragmentLoaderCallbacks;
     }
 
     /**

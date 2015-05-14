@@ -354,7 +354,7 @@ public class MainActivity extends BaseFragmentActivity {
             fragment = WatchlistFragment.newInstance(accountId);
         }
         // set if shown open menu
-        fragment.setShownOpenDatabaseItemMenu(isDualPanel());
+//        fragment.setShownOpenDatabaseItemMenu(isDualPanel());
         // show fragment
         showFragment(fragment, tagFragment);
     }
