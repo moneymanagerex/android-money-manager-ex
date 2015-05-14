@@ -51,7 +51,8 @@ import com.money.manager.ex.settings.PreferencesConstant;
 /**
  *
  */
-public class PayeeLoaderListFragment extends BaseListFragment
+public class PayeeLoaderListFragment
+        extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static String mAction = Intent.ACTION_EDIT;

@@ -44,6 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.businessobjects.Payee;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.checkingaccount.YesNoDialogListener;
@@ -81,7 +82,8 @@ import java.util.Locale;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.1
  */
-public class CheckingAccountActivity extends BaseFragmentActivity
+public class CheckingAccountActivity
+        extends BaseFragmentActivity
         implements InputAmountDialogListener, YesNoDialogListener {
 
     public static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
@@ -114,6 +116,11 @@ public class CheckingAccountActivity extends BaseFragmentActivity
     public static final String KEY_SPLIT_TRANSACTION = "AllDataActivity:SplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "AllDataActivity:SplitTransactionDeleted";
     public static final String KEY_ACTION = "AllDataActivity:Action";
+
+    // Keys for extra parameters in the Intent.
+    public static final String PARAM_ACCOUNT = "account";
+    public static final String PARAM_AMOUNT = "amount";
+    public static final String PARAM_PAYEE = "payee";
 
     // action type intent
     public String mIntentAction;
@@ -346,71 +353,7 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         // manage intent
 
         if (getIntent() != null) {
-            if (savedInstanceState == null) {
-                mAccountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, -1);
-                if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                    mTransId = getIntent().getIntExtra(KEY_TRANS_ID, -1);
-                    // select data transaction
-                    loadCheckingAccount(mTransId, false);
-                } else if (getIntent().getAction() != null && Intent.ACTION_PASTE.equals(getIntent().getAction())) {
-                    // select data transaction
-                    loadCheckingAccount(getIntent().getIntExtra(KEY_TRANS_ID, -1), true);
-                } else {
-                    if (getIntent().getIntExtra(KEY_BDID_ID, -1) > -1) {
-                        mRecurringTransactionId = getIntent().getIntExtra(KEY_BDID_ID, -1);
-                        mNextOccurrence = getIntent().getStringExtra(KEY_NEXT_OCCURRENCE);
-                        loadRecurringTransaction(mRecurringTransactionId);
-                    }
-                }
-            }
-            mIntentAction = getIntent().getAction();
-            if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
-                if (mStatus == null)
-                    mStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_DEFAULT_STATUS), "");
-
-                if ("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_DEFAULT_PAYEE), "N"))) {
-                    AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
-                        @Override
-                        protected Boolean doInBackground(Void... params) {
-                            try {
-                                Core core = new Core(getApplicationContext());
-                                TablePayee payee = core.getLastPayeeUsed();
-                                if (payee != null && mPayeeId == -1) {
-                                    // get id payee and category
-                                    mPayeeId = payee.getPayeeId();
-                                    mPayeeName = payee.getPayeeName();
-                                    mCategoryId = payee.getCategId();
-                                    mSubCategoryId = payee.getSubCategId();
-                                    // load category and subcategory name
-                                    loadCategorySubName(mCategoryId, mSubCategoryId);
-                                    return Boolean.TRUE;
-                                }
-                            } catch (Exception e) {
-                                Log.e(LOGCAT, e.getMessage());
-                            }
-                            return Boolean.FALSE;
-                        }
-
-                        @Override
-                        protected void onPostExecute(Boolean result) {
-                            super.onPostExecute(result);
-                            if (result) {
-                                try {
-                                    // refresh field
-                                    refreshPayeeName();
-                                    refreshCategoryName();
-                                } catch (Exception e) {
-                                    Log.e(LOGCAT, e.getMessage());
-                                }
-                            }
-                        }
-                    };
-                    task.execute();
-                }
-            }
-
-            // set title
-            getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_transaction : R.string.edit_transaction);
+            handleIntent(savedInstanceState);
         }
         // take a reference view into layout
         // account
@@ -689,6 +632,96 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         refreshAfterTransactionCodeChange();
         refreshPayeeName();
         refreshCategoryName();
+    }
+
+    private void handleIntent(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        mIntentAction = intent.getAction();
+
+        if (savedInstanceState == null) {
+            mAccountId = intent.getIntExtra(KEY_ACCOUNT_ID, -1);
+            if (mIntentAction != null && Intent.ACTION_EDIT.equals(mIntentAction)) {
+                mTransId = intent.getIntExtra(KEY_TRANS_ID, -1);
+                // select data transaction
+                loadCheckingAccount(mTransId, false);
+            } else if (mIntentAction != null && Intent.ACTION_PASTE.equals(mIntentAction)) {
+                // select data transaction
+                loadCheckingAccount(intent.getIntExtra(KEY_TRANS_ID, -1), true);
+            } else {
+                if (intent.getIntExtra(KEY_BDID_ID, -1) > -1) {
+                    mRecurringTransactionId = intent.getIntExtra(KEY_BDID_ID, -1);
+                    mNextOccurrence = intent.getStringExtra(KEY_NEXT_OCCURRENCE);
+                    loadRecurringTransaction(mRecurringTransactionId);
+                }
+            }
+        }
+
+        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
+            if (mStatus == null) {
+                mStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                        .getString(getString(PreferencesConstant.PREF_DEFAULT_STATUS), "");
+            }
+
+            if ("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .getString(getString(PreferencesConstant.PREF_DEFAULT_PAYEE), "N"))) {
+                AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
+                    @Override
+                    protected Boolean doInBackground(Void... params) {
+                        try {
+                            Core core = new Core(getApplicationContext());
+                            TablePayee payee = core.getLastPayeeUsed();
+                            if (payee != null && mPayeeId == -1) {
+                                // get id payee and category
+                                mPayeeId = payee.getPayeeId();
+                                mPayeeName = payee.getPayeeName();
+                                mCategoryId = payee.getCategId();
+                                mSubCategoryId = payee.getSubCategId();
+                                // load category and subcategory name
+                                loadCategorySubName(mCategoryId, mSubCategoryId);
+                                return Boolean.TRUE;
+                            }
+                        } catch (Exception e) {
+                            Log.e(LOGCAT, e.getMessage());
+                        }
+                        return Boolean.FALSE;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        super.onPostExecute(result);
+                        if (result) {
+                            try {
+                                // refresh field
+                                refreshPayeeName();
+                                refreshCategoryName();
+                            } catch (Exception e) {
+                                Log.e(LOGCAT, e.getMessage());
+                            }
+                        }
+                    }
+                };
+                task.execute();
+            }
+
+            // Get any parameters, if sent, when intent was raised. This is used when called
+            // from Tasker or any external caller.
+            //this.mAccountId =
+            //this.mAmount = intent.getDoubleExtra(PARAM_AMOUNT, 0);
+            this.mTotAmount = intent.getDoubleExtra(PARAM_AMOUNT, 0);
+
+            // payee
+            String payeeName = intent.getStringExtra(PARAM_PAYEE);
+            Payee payee = new Payee(this);
+            this.mPayeeId = payee.loadIdByName(payeeName);
+
+            Uri data = intent.getData();
+            Log.d(this.LOGCAT, data.toString());
+        }
+
+        // set title
+        getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction)
+                ? R.string.new_transaction
+                : R.string.edit_transaction);
     }
 
     private void findControls() {
