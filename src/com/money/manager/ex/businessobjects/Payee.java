@@ -19,9 +19,8 @@ package com.money.manager.ex.businessobjects;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.content.CursorLoader;
+import android.text.TextUtils;
 
-import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TablePayee;
 
 /**
@@ -37,12 +36,6 @@ public class Payee {
     private TablePayee mPayee;
 
     public TablePayee loadByName(String name) {
-//        String whereClause = TablePayee.PAYEENAME + " LIKE ?";// + mCurFilter + "%'";
-//        String [] selectionArgs = new String[]{ "%" };
-//        CursorLoader loader = new CursorLoader(mContext, mPayee.getUri(), mPayee.getAllColumns(),
-//                whereClause, selectionArgs, mSort == 1
-//                ? SORT_BY_USAGE : SORT_BY_NAME);
-
         String selection = TablePayee.PAYEENAME + "='" + name + "'";
 
         Cursor cursor = mContext.getContentResolver().query(
@@ -52,21 +45,24 @@ public class Payee {
                 null,
                 null);
 
-        if(!cursor.moveToFirst()) return null;
-
-        //TablePayee.PAYEEID + "=" + Integer.toString(this.RecurringTransactionId),
-        mPayee.setValueFromCursor(cursor);
+        if(cursor.moveToFirst()) {
+            mPayee.setValueFromCursor(cursor);
+        }
 
         cursor.close();
 
         return mPayee;
     }
 
-    public int getId() {
-        return mPayee.getPayeeId();
-    }
+//    public int getId() {
+//        return mPayee.getPayeeId();
+//    }
 
     public int loadIdByName(String name) {
+        int result = -1;
+
+        if(TextUtils.isEmpty(name)) { return result; }
+
         String selection = TablePayee.PAYEENAME + "=?";
 
         Cursor cursor = mContext.getContentResolver().query(
@@ -76,12 +72,12 @@ public class Payee {
                 new String[] { name },
                 null);
 
-        if(!cursor.moveToFirst()) return -1;
-
-        int id = cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID));
+        if(cursor.moveToFirst()) {
+            result = cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID));
+        }
 
         cursor.close();
 
-        return id;
+        return result;
     }
 }

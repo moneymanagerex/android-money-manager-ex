@@ -49,6 +49,7 @@ import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.checkingaccount.YesNoDialogListener;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.TaskerIntegration;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SplitCategoriesRepository;
@@ -116,11 +117,6 @@ public class CheckingAccountActivity
     public static final String KEY_SPLIT_TRANSACTION = "AllDataActivity:SplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "AllDataActivity:SplitTransactionDeleted";
     public static final String KEY_ACTION = "AllDataActivity:Action";
-
-    // Keys for extra parameters in the Intent.
-    public static final String PARAM_ACCOUNT = "account";
-    public static final String PARAM_AMOUNT = "amount";
-    public static final String PARAM_PAYEE = "payee";
 
     // action type intent
     public String mIntentAction;
@@ -703,19 +699,11 @@ public class CheckingAccountActivity
                 task.execute();
             }
 
-            // Get any parameters, if sent, when intent was raised. This is used when called
-            // from Tasker or any external caller.
-            //this.mAccountId =
-            //this.mAmount = intent.getDoubleExtra(PARAM_AMOUNT, 0);
-            this.mTotAmount = intent.getDoubleExtra(PARAM_AMOUNT, 0);
+            TaskerIntegration integration = new TaskerIntegration(this);
+            integration.parseIntent(intent);
+            this.mPayeeId = integration.PayeeId;
+            this.mTotAmount = integration.TotalAmount;
 
-            // payee
-            String payeeName = intent.getStringExtra(PARAM_PAYEE);
-            Payee payee = new Payee(this);
-            this.mPayeeId = payee.loadIdByName(payeeName);
-
-//            Uri data = intent.getData();
-//            Log.d(this.LOGCAT, data.toString());
         }
 
         // set title
