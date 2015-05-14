@@ -42,10 +42,9 @@ import java.util.Locale;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.1
  */
-public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
+public class MoneyManagerOpenHelper
+        extends SQLiteOpenHelper {
     private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
-    // database name, database version
-    //private static final String databaseName = "data.mmb";
     private static final int databaseCurrentVersion = 1;
     // singleton
     private static MoneyManagerOpenHelper mInstance;
@@ -167,13 +166,6 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
         }
     }
 
-//    /**
-//     * @return List all accounts
-//     */
-//    public List<TableAccountList> getListAccounts() {
-//        return getListAccounts(false, false);
-//    }
-
     /**
      * @param open     show open accounts
      * @param favorite show favorite account
@@ -281,6 +273,7 @@ public class MoneyManagerOpenHelper extends SQLiteOpenHelper {
             if (cursor != null && cursor.moveToFirst()) {
                 TableAccountList account = new TableAccountList();
                 account.setValueFromCursor(cursor);
+
                 cursor.close();
                 return account;
             }

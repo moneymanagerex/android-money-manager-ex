@@ -86,7 +86,7 @@ public class AccountFragment extends Fragment
      * @param accountid ID Account to be display
      * @return
      */
-    public static AccountFragment newIstance(int accountid) {
+    public static AccountFragment newInstance(int accountid) {
         AccountFragment fragment = new AccountFragment();
         fragment.mAccountId = accountid;
         // set name of child fragment
