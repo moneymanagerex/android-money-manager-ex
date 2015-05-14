@@ -52,9 +52,19 @@ public class StockRepository
     private static final String TABLE_NAME = "stock_v1";
 
     // fields
+    public static final String STOCKID = "STOCKID";
     public static final String HELDAT = "HELDAT";
+    public static final String PURCHASEDATE = "PURCHASEDATE";
+    public static final String STOCKNAME = "STOCKNAME";
 
     private Context mContext;
+
+    @Override
+    public String[] getAllColumns() {
+        return new String[] {
+                "STOCKID AS _id", STOCKID, HELDAT, PURCHASEDATE
+        };
+    }
 
     public boolean load(int accountId) {
         boolean result = false;

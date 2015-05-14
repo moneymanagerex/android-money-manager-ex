@@ -56,9 +56,7 @@ import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
-import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 import com.money.manager.ex.search.SearchActivity;
@@ -84,7 +82,7 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
     private Context mContext;
 
     /**
-     * Create a new instance of AllDataFragment with accountId params
+     * Create a new instance of the fragment with accountId params
      *
      * @param accountId Id of account to display. If generic shown set -1
      * @return new instance AllDataFragment
@@ -191,7 +189,7 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
                 if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
                     Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
                     if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-                        startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+                        startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(StockRepository.STOCKID)));
                     }
                 }
             }
@@ -415,69 +413,6 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
     }
 
     /**
-     * @param transactionIds primary key of transation
-     */
-    private void showDialogDeleteCheckingAccount(final int[] transactionIds) {
-        // create alert dialog and set title and message
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-
-        alertDialog.setTitle(R.string.delete_transaction);
-        alertDialog.setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions, transactionIds.length, transactionIds.length));
-        alertDialog.setIcon(R.drawable.ic_action_warning_light);
-
-        // set listener button positive
-        alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                for (int transactionId : transactionIds) {
-                    // First delete any splits.
-                    // See if there are any split records.
-                    TableSplitTransactions split = new TableSplitTransactions();
-                    Cursor curSplit = getActivity().getContentResolver().query(split.getUri(), null,
-                            TableSplitTransactions.TRANSID + "=" + Integer.toString(transactionId),
-                            null, TableSplitTransactions.SPLITTRANSID);
-                    int splitCount = curSplit.getCount();
-                    curSplit.close();
-
-                    if (splitCount > 0) {
-                        TableSplitTransactions splits = new TableSplitTransactions();
-                        int deleteResult = getActivity().getContentResolver().delete(splits.getUri(),
-                                TableSplitTransactions.TRANSID + "=?",
-                                new String[]{Integer.toString(transactionId)});
-                        if (deleteResult != splitCount) {
-                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-
-                    // Delete the transaction.
-
-                    TableCheckingAccount trans = new TableCheckingAccount();
-                    if (getActivity().getContentResolver().delete(
-                            trans.getUri(), TableCheckingAccount.TRANSID + "=?",
-                            new String[]{Integer.toString(transactionId)}) == 0) {
-                        Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-                // restart loader
-                startLoaderData();
-            }
-        });
-        // set listener negative button
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // close dialog
-                dialog.cancel();
-            }
-        });
-
-        alertDialog.create();
-        alertDialog.show();
-    }
-
-    /**
      * start the activity of transaction management
      *
      * @param transId null set if you want to do a new transaction, or transaction id
@@ -589,7 +524,7 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
                     mode.finish();
                     break;
                 case R.id.menu_delete:
-                    showDialogDeleteCheckingAccount(convertArrayListToArray(transIds));
+//                    showDialogDeleteCheckingAccount(convertArrayListToArray(transIds));
                     mode.finish();
                     return true;
                 case R.id.menu_none:
@@ -621,7 +556,7 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
                         if (getListHeader() != null)
                             position--;
                         if (cursor.moveToPosition(position)) {
-                            transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+                            transIds.add(cursor.getInt(cursor.getColumnIndex(StockRepository.STOCKID)));
                         }
                     }
                 }

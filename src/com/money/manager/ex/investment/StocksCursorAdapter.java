@@ -56,7 +56,7 @@ public class StocksCursorAdapter extends CursorAdapter {
     }
 
     public void clearPositionChecked() {
-        mCheckedPosition.clear();
+        if (mCheckedPosition != null) mCheckedPosition.clear();
     }
 
     public void setDatabase(SQLiteDatabase mDatabase) {
@@ -64,7 +64,7 @@ public class StocksCursorAdapter extends CursorAdapter {
     }
 
     public void resetAccountHeaderIndexes() {
-        mHeadersAccountIndex.clear();
+        if (mHeadersAccountIndex != null) mHeadersAccountIndex.clear();
     }
 
     public void setAccountId(int mAccountId) {

@@ -41,12 +41,9 @@ import android.widget.Toast;
 import com.money.manager.ex.AccountListEditActivity;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -54,7 +51,6 @@ import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  *
@@ -63,7 +59,7 @@ public class WatchlistFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>,
             WatchlistItemsFragment.WatchlistItemsFragmentLoaderCallbacks {
 
-    private static final String KEY_CONTENT = "AccountFragment:AccountId";
+    private static final String KEY_CONTENT = "WatchlistFragment:StockId";
     private static final int ID_LOADER_SUMMARY = 2;
 
     private WatchlistItemsFragment mDataFragment;
@@ -81,9 +77,6 @@ public class WatchlistFragment extends Fragment
     private ImageView imgAccountFav, imgGotoAccount;
 
     private Context mContext;
-
-    // setting for shown open database item menu
-//    private boolean mShownOpenDatabaseItemMenu = false;
 
     /**
      * @param accountid ID Account to be display
@@ -161,7 +154,9 @@ public class WatchlistFragment extends Fragment
                 MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
                 if (itemOpenDatabase != null) {
                     //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
-                    itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible() ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+                    itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible()
+                            ? MenuItem.SHOW_AS_ACTION_ALWAYS
+                            : MenuItem.SHOW_AS_ACTION_NEVER);
                 }
 
                 //hide dash board
@@ -204,7 +199,7 @@ public class WatchlistFragment extends Fragment
                 ContentValues values = new ContentValues();
                 values.put(TableAccountList.FAVORITEACCT, mAccount.getFavoriteAcct());
                 // update
-                if (getActivity().getContentResolver().update(mAccount.getUri(), values, TableAccountList.ACCOUNTID + "=?",
+                if (mContext.getContentResolver().update(mAccount.getUri(), values, TableAccountList.ACCOUNTID + "=?",
                         new String[]{Integer.toString(mAccountId)}) != 1) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
                 } else {
@@ -217,7 +212,7 @@ public class WatchlistFragment extends Fragment
         imgGotoAccount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AccountListEditActivity.class);
+                Intent intent = new Intent(mContext, AccountListEditActivity.class);
                 intent.putExtra(AccountListEditActivity.KEY_ACCOUNT_ID, mAccountId);
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
@@ -261,8 +256,8 @@ public class WatchlistFragment extends Fragment
         switch (loader.getId()) {
             case ID_LOADER_SUMMARY:
                 if (data != null && data.moveToFirst()) {
-                    mAccountBalance = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL));
-                    mAccountReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED));
+//                    mAccountBalance = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL));
+//                    mAccountReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED));
                 } else {
                     mAccountBalance = 0;
                     mAccountReconciled = 0;
@@ -313,26 +308,27 @@ public class WatchlistFragment extends Fragment
     private Bundle prepareArgsForChildFragment() {
         // compose selection and sort
         ArrayList<String> selection = new ArrayList<>();
-        selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountID + "="
-                + Integer.toString(mAccountId) + ")");
-        if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
-        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
-        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
-            selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
-            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
-        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
-        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
-            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-        }
+//        selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountID + "="
+//                + Integer.toString(mAccountId) + ")");
+//        if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
+//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
+//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
+//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
+//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
+//            selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
+//            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
+//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
+//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
+//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
+//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
+//            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+//        }
         // create a bundle to returns
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
-        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.Date + " DESC, " + QueryAllData.ID + " DESC");
+        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
+                StockRepository.PURCHASEDATE + " DESC, " + StockRepository.STOCKID + " DESC");
 
         return args;
     }
