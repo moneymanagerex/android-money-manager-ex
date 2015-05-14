@@ -237,27 +237,6 @@ public class WatchlistItemsFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        Activity activity = getActivity();
-        if (activity == null) return;
-
-        MenuItem itemExportToCsv = menu.findItem(R.id.menu_export_to_csv);
-        if (itemExportToCsv != null) itemExportToCsv.setVisible(true);
-        MenuItem itemSearch = menu.findItem(R.id.menu_search_transaction);
-        if (itemSearch != null) {
-            itemSearch.setVisible(!activity.getClass().getSimpleName()
-                    .equals(SearchActivity.class.getSimpleName()));
-        }
-
-        // show this on all transactions lists later?
-        // show this menu only when on Search Activity for now.
-        if (activity.getClass().getSimpleName().equals(SearchActivity.class.getSimpleName())) {
-            // Add default menu options. todo: check why this is executed twice.
-            // Includes menu item for .qif export
-            MenuItem qifExport = menu.findItem(R.id.menu_qif_export);
-            if (qifExport == null) {
-                inflater.inflate(R.menu.menu_alldata_operations, menu);
-            }
-        }
     }
 
     @Override

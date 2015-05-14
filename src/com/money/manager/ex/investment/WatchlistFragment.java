@@ -170,21 +170,21 @@ public class WatchlistFragment extends Fragment
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mAccountId = savedInstanceState.getInt(KEY_CONTENT);
         }
-        if (container == null) {
-            return null;
-        }
-        // inflate layout
+
+        if (container == null) return null;
         View view = inflater.inflate(R.layout.account_fragment, container, false);
-        // take object AccountList
+
         if (mAccount == null) {
             mAccount = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
                     .getTableAccountList(mAccountId);
         }
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
-        // take reference textview from layout
+
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.fragment_watchlist_header, null, false);
+
         txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
         txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
         txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
+
         // favorite icon
         imgAccountFav = (ImageView) header.findViewById(R.id.imageViewAccountFav);
         // set listener click on favorite icon for change image
@@ -215,6 +215,7 @@ public class WatchlistFragment extends Fragment
                 startActivity(intent);
             }
         });
+
         // manage fragment
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
@@ -259,8 +260,7 @@ public class WatchlistFragment extends Fragment
                     mAccountBalance = 0;
                     mAccountReconciled = 0;
                 }
-                // show balance values
-                setTextViewBalance();
+
                 // set titles
                 BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
                 if (activity != null) {
@@ -338,21 +338,6 @@ public class WatchlistFragment extends Fragment
             imgAccountFav.setBackgroundResource(R.drawable.ic_star);
         } else {
             imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
-        }
-    }
-
-    /**
-     * refresh user interface with total
-     */
-    private void setTextViewBalance() {
-        // write account balance
-        if (mAccount != null) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
-            int currencyId = mAccount.getCurrencyId();
-
-            txtAccountBalance.setText(currencyUtils.getCurrencyFormatted(currencyId, mAccountBalance));
-            txtAccountReconciled.setText(currencyUtils.getCurrencyFormatted(currencyId, mAccountReconciled));
-            txtAccountDifference.setText(currencyUtils.getCurrencyFormatted(currencyId, mAccountReconciled - mAccountBalance));
         }
     }
 
