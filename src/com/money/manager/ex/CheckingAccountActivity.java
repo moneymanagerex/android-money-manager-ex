@@ -45,6 +45,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
+import com.money.manager.ex.checkingaccount.DataParser;
+import com.money.manager.ex.checkingaccount.IntentDataParameters;
 import com.money.manager.ex.checkingaccount.NewTransactionContentProvider;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.checkingaccount.YesNoDialogListener;
@@ -518,6 +520,8 @@ public class CheckingAccountActivity
                 }
             }
         });
+        // display the current value.
+        txtSelectCategory.setText(mCategoryName);
 
         // Split Categories
 
@@ -698,7 +702,7 @@ public class CheckingAccountActivity
                 task.execute();
             }
 
-            contentIntegration(intent);
+            externalIntegration(intent);
         }
 
         // set title
@@ -707,18 +711,22 @@ public class CheckingAccountActivity
                 : R.string.edit_transaction);
     }
 
-    public void contentIntegration(Intent intent) {
+    public void externalIntegration(Intent intent) {
         // Get any parameters, if sent, when intent was raised. This is used when called
         // from Tasker or any external caller.
 
-        // account
-        //this.mAccountId =
+        DataParser dataParser = new DataParser(this);
+        Uri data = intent.getData();
+        IntentDataParameters parameters = dataParser.parseData(data);
 
-        //this.mAmount = intent.getDoubleExtra(PARAM_AMOUNT, 0);
-        this.mTotAmount = intent.getDoubleExtra(NewTransactionContentProvider.PARAM_AMOUNT, 0);
+        // todo: transaction type
 
-        // payee
-        this.mPayeeId = intent.getIntExtra(NewTransactionContentProvider.PARAM_PAYEE, -1);
+        this.mAccountId = parameters.accountId;
+        this.mTotAmount = parameters.amount;
+        this.mPayeeId = parameters.payeeId;
+        this.mPayeeName = parameters.payeeName;
+        this.mCategoryId = parameters.categoryId;
+        this.mCategoryName = parameters.categoryName;
     }
 
 

@@ -34,6 +34,7 @@ import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.businessobjects.Payee;
 
 /**
+ * Not used!
  * Content provider for creation of new transaction.
  * References:
  * http://tasker.dinglisch.net/userguide/en/intents.html
@@ -49,11 +50,6 @@ public class NewTransactionContentProvider
      */
 
     public static String mLogcat;
-
-    // Keys for extra parameters in the Intent.
-    public static final String PARAM_ACCOUNT = "account";
-    public static final String PARAM_AMOUNT = "amount";
-    public static final String PARAM_PAYEE = "payee";
 
     public static final String Authority = "com.money.manager.ex.NewTransaction";
 
@@ -83,7 +79,7 @@ public class NewTransactionContentProvider
         builder.append(".");
         builder.append("transaction");
 
-        this.openForm(uri);
+//        this.openForm(uri);
 
         return builder.toString();
     }
@@ -108,27 +104,27 @@ public class NewTransactionContentProvider
      * Start the new transaction activity.
      * @param data
      */
-    private void openForm(Uri data) {
-        Context context = getContext();
-
-        Intent intent = new Intent(context, CheckingAccountActivity.class);
-        intent.setAction(Intent.ACTION_INSERT);
-
-        Bundle parameters = new Bundle();
-
-        String account = data.getQueryParameter(PARAM_ACCOUNT);
-        parameters.putString(PARAM_ACCOUNT, account);
-
-        // payee
-
-        String payeeName = data.getQueryParameter(PARAM_PAYEE);
-        Payee payee = new Payee(context);
-        int payeeId = payee.loadIdByName(payeeName);
-        parameters.putInt(PARAM_PAYEE, payeeId);
-
-        String amount = data.getQueryParameter(PARAM_AMOUNT);
-        parameters.putString(PARAM_AMOUNT, amount);
-
-        context.startActivity(intent);
-    }
+//    private void openForm(Uri data) {
+//        Context context = getContext();
+//
+//        Intent intent = new Intent(context, CheckingAccountActivity.class);
+//        intent.setAction(Intent.ACTION_INSERT);
+//
+//        Bundle parameters = new Bundle();
+//
+//        String account = data.getQueryParameter(PARAM_ACCOUNT);
+//        parameters.putString(PARAM_ACCOUNT, account);
+//
+//        // payee
+//
+//        String payeeName = data.getQueryParameter(PARAM_PAYEE);
+//        Payee payee = new Payee(context);
+//        int payeeId = payee.loadIdByName(payeeName);
+//        parameters.putInt(PARAM_PAYEE, payeeId);
+//
+//        String amount = data.getQueryParameter(PARAM_AMOUNT);
+//        parameters.putString(PARAM_AMOUNT, amount);
+//
+//        context.startActivity(intent);
+//    }
 }
