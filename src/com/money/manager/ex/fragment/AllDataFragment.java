@@ -190,10 +190,6 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
 
-        // option menu
-//        boolean hasOptionsMenu = Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
-//        setHasOptionsMenu(hasOptionsMenu);
-
         // create adapter
         AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
         adapter.setAccountId(mAccountId);

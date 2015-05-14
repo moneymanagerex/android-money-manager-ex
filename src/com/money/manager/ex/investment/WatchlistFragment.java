@@ -56,8 +56,7 @@ import java.util.ArrayList;
  *
  */
 public class WatchlistFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>,
-            WatchlistItemsFragment.WatchlistItemsFragmentLoaderCallbacks {
+        implements LoaderManager.LoaderCallbacks<Cursor>, WatchlistItemsFragmentLoaderCallbacks {
 
     private static final String KEY_CONTENT = "WatchlistFragment:StockId";
     private static final int ID_LOADER_SUMMARY = 2;
@@ -80,7 +79,7 @@ public class WatchlistFragment extends Fragment
 
     /**
      * @param accountid ID Account to be display
-     * @return
+     * @return instance of Wathchlist fragment with transactions for the given account.
      */
     public static WatchlistFragment newInstance(int accountid) {
         WatchlistFragment fragment = new WatchlistFragment();
@@ -93,7 +92,6 @@ public class WatchlistFragment extends Fragment
 
     @Override
     public void onCallbackCreateLoader(int id, Bundle args) {
-        return;
     }
 
     @Override
@@ -103,7 +101,6 @@ public class WatchlistFragment extends Fragment
 
     @Override
     public void onCallbackLoaderReset(Loader<Cursor> loader) {
-        return;
     }
 
     @Override
@@ -360,27 +357,7 @@ public class WatchlistFragment extends Fragment
     }
 
     /**
-     * start the activity of transaction management
-     *
-     * @param transId null set if you want to do a new transaction, or transaction id
-     */
-    private void startCheckingAccountActivity(Integer transId) {
-        // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
-        intent.putExtra(CheckingAccountActivity.KEY_ACCOUNT_ID, mAccountId);
-        // check transId not null
-        if (transId != null) {
-            intent.putExtra(CheckingAccountActivity.KEY_TRANS_ID, transId);
-            intent.setAction(Intent.ACTION_EDIT);
-        } else {
-            intent.setAction(Intent.ACTION_INSERT);
-        }
-        // launch activity
-        startActivity(intent);
-    }
-
-    /**
-     * Start Loader to retrive data
+     * Start Loader to retrieve data
      */
     public void startLoaderData() {
         if (mDataFragment != null) {

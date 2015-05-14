@@ -304,7 +304,7 @@ public class AccountFragment extends Fragment
 
     private Bundle prepareArgsForChildFragment() {
         // compose selection and sort
-        ArrayList<String> selection = new ArrayList<String>();
+        ArrayList<String> selection = new ArrayList<>();
         selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountID + "="
                 + Integer.toString(mAccountId) + ")");
         if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {

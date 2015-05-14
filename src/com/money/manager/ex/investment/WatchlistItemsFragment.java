@@ -64,7 +64,9 @@ import com.money.manager.ex.search.SearchActivity;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-public class WatchlistItemsFragment extends BaseListFragment implements LoaderCallbacks<Cursor> {
+public class WatchlistItemsFragment
+        extends BaseListFragment
+        implements LoaderCallbacks<Cursor> {
     // ID Loader
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
     // KEY Arguments
@@ -77,7 +79,6 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
     private boolean mShownBalance = false;
     private int mGroupId = 0;
     private int mAccountId = -1;
-    private WatchlistMultiChoiceModeListener mMultiChoiceModeListener;
     private View mListHeader = null;
     private Context mContext;
 
@@ -91,21 +92,6 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
         WatchlistItemsFragment fragment = new WatchlistItemsFragment();
         fragment.mAccountId = accountId;
         return fragment;
-    }
-
-    private int[] convertArrayListToArray(ArrayList<Integer> list) {
-        int[] ret = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            ret[i] = list.get(i);
-        }
-        return ret;
-    }
-
-    /**
-     * @return the mGroupId
-     */
-    public int getContextMenuGroupId() {
-        return mGroupId;
     }
 
     /**
@@ -150,13 +136,6 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
         return mShownHeader;
     }
 
-    /**
-     * @param mShownHeader the mShownHeader to set
-     */
-    public void setShownHeader(boolean mShownHeader) {
-        this.mShownHeader = mShownHeader;
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -165,22 +144,12 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
 
-        // option menu
-//        boolean hasOptionsMenu = Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
-//        setHasOptionsMenu(hasOptionsMenu);
-
         // create adapter
         StocksCursorAdapter adapter = new StocksCursorAdapter(mContext, null);
         adapter.setAccountId(mAccountId);
         adapter.setShowAccountName(isShownHeader());
         adapter.setShowBalanceAmount(isShownBalance());
 
-        // set choice mode in list view
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            mMultiChoiceModeListener = new WatchlistMultiChoiceModeListener();
-            getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-            getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
-        }
         // click item
         getListView().setOnItemClickListener(new OnItemClickListener() {
 
@@ -189,7 +158,7 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
                 if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
                     Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
                     if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-                        startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(StockRepository.STOCKID)));
+//                        startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(StockRepository.STOCKID)));
                     }
                 }
             }
@@ -209,8 +178,8 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
         setListShown(false);
 
         // floating action button
-        setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+//        setFloatingActionButtonVisible(true);
+//        setFloatingActionButtonAttachListView(true);
 
         // start loader
         if (isAutoStarLoader()) {
@@ -315,8 +284,6 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
 
     @Override
     public void onDestroy() {
-        if (mMultiChoiceModeListener != null)
-            mMultiChoiceModeListener.onDestroyActionMode(null);
         super.onDestroy();
     }
 
@@ -389,49 +356,6 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean setStatusCheckingAccount(int[] transId, String status) {
-        // check if status = "U" convert to empty string
-        if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status))
-            status = "";
-
-        for (int id : transId) {
-            // content value for updates
-            ContentValues values = new ContentValues();
-            // set new state
-            values.put(TableCheckingAccount.STATUS, status.toUpperCase());
-
-            // update
-            if (getActivity().getContentResolver().update(new TableCheckingAccount().getUri(),
-                    values,
-                    TableCheckingAccount.TRANSID + "=?",
-                    new String[]{Integer.toString(id)}) <= 0) {
-                Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * start the activity of transaction management
-     *
-     * @param transId null set if you want to do a new transaction, or transaction id
-     */
-    private void startCheckingAccountActivity(Integer transId) {
-        // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
-        // check transId not null
-        if (transId != null) {
-            intent.putExtra(CheckingAccountActivity.KEY_TRANS_ID, transId);
-            intent.setAction(Intent.ACTION_EDIT);
-        } else {
-            intent.putExtra(CheckingAccountActivity.KEY_ACCOUNT_ID, mAccountId);
-            intent.setAction(Intent.ACTION_INSERT);
-        }
-        // launch activity
-        startActivity(intent);
-    }
-
     /**
      * Start loader into fragment
      */
@@ -460,187 +384,10 @@ public class WatchlistItemsFragment extends BaseListFragment implements LoaderCa
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        startCheckingAccountActivity(null);
-    }
-
-    public View getListHeader() {
-        return mListHeader;
+//        startCheckingAccountActivity(null);
     }
 
     public void setListHeader(View mHeaderList) {
         this.mListHeader = mHeaderList;
-    }
-
-    // Interface for callback fragment
-    public interface WatchlistItemsFragmentLoaderCallbacks {
-        void onCallbackCreateLoader(int id, Bundle args);
-
-        void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data);
-
-        void onCallbackLoaderReset(Loader<Cursor> loader);
-    }
-
-    // class to manage multi choice mode
-    public class WatchlistMultiChoiceModeListener implements MultiChoiceModeListener {
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-
-            return false;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
-                StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
-                adapter.clearPositionChecked();
-                adapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            getActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
-            return true;
-        }
-
-        /**
-         * Handle the toolbar icon click (delete, copy, etc.)
-         * @param mode
-         * @param item
-         * @return
-         */
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            ArrayList<Integer> transIds = getTransactionIds();
-
-            switch (item.getItemId()) {
-                case R.id.menu_change_status:
-                    changeTransactionStatus(transIds);
-                    mode.finish();
-                    break;
-                case R.id.menu_duplicate_transactions:
-                    showDuplicateTransactionView(transIds);
-                    mode.finish();
-                    break;
-                case R.id.menu_delete:
-//                    showDialogDeleteCheckingAccount(convertArrayListToArray(transIds));
-                    mode.finish();
-                    return true;
-                case R.id.menu_none:
-                case R.id.menu_reconciled:
-                case R.id.menu_follow_up:
-                case R.id.menu_duplicate:
-                case R.id.menu_void:
-                    String status = Character.toString(item.getAlphabeticShortcut());
-                    if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-                        ((StocksCursorAdapter) getListAdapter()).clearPositionChecked();
-                        startLoaderData();
-                        mode.finish();
-                        return true;
-                    }
-            }
-            return false;
-        }
-
-        private ArrayList<Integer> getTransactionIds(){
-            final ArrayList<Integer> transIds = new ArrayList<>();
-
-            if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
-                StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
-                Cursor cursor = adapter.getCursor();
-                if (cursor != null) {
-                    SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
-                    for (int i = 0; i < getListView().getCheckedItemCount(); i++) {
-                        int position = positionChecked.keyAt(i);
-                        if (getListHeader() != null)
-                            position--;
-                        if (cursor.moveToPosition(position)) {
-                            transIds.add(cursor.getInt(cursor.getColumnIndex(StockRepository.STOCKID)));
-                        }
-                    }
-                }
-            }
-
-            return transIds;
-        }
-
-        private void changeTransactionStatus(final ArrayList<Integer> transIds){
-            final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
-            final Core core = new Core(getActivity().getApplicationContext());
-            final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
-            // add status
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_none)
-                    .withText(getString(R.string.status_none))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light)
-                    .withShortcut(""));
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_reconciled)
-                    .withText(getString(R.string.status_reconciled))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_done_dark : R.drawable.ic_action_done_light)
-                    .withShortcut("R"));
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_follow_up)
-                    .withText(getString(R.string.status_follow_up))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_alarm_on_dark : R.drawable.ic_action_alarm_on_light)
-                    .withShortcut("F"));
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_duplicate)
-                    .withText(getString(R.string.status_duplicate))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_copy_dark : R.drawable.ic_action_copy_light)
-                    .withShortcut("D"));
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_void)
-                    .withText(getString(R.string.status_void))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_halt_dark : R.drawable.ic_action_halt_light)
-                    .withShortcut("V"));
-
-            // open dialog
-            final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                    .title(getString(R.string.change_status))
-                    .adapter(adapter)
-                    .build();
-
-            ListView listView = dialog.getListView();
-            if (listView != null) listView.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    DrawerMenuItem item = adapter.getItem(position);
-                    switch (item.getId()) {
-                        case R.id.menu_none:
-                        case R.id.menu_reconciled:
-                        case R.id.menu_follow_up:
-                        case R.id.menu_duplicate:
-                        case R.id.menu_void:
-                            String status = item.getShortcut();
-                            if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-                                ((StocksCursorAdapter) getListAdapter()).clearPositionChecked();
-                                startLoaderData();
-                            }
-                    }
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
-        }
-
-        private void showDuplicateTransactionView(ArrayList<Integer> transIds) {
-            int[] ids = convertArrayListToArray(transIds);
-            Intent[] intents = new Intent[ids.length];
-            for (int i = 0; i < ids.length; i++) {
-                intents[i] = new Intent(getActivity(), CheckingAccountActivity.class);
-                intents[i].putExtra(CheckingAccountActivity.KEY_TRANS_ID, ids[i]);
-                intents[i].setAction(Intent.ACTION_PASTE);
-            }
-            getActivity().startActivities(intents);
-        }
-
-        @Override
-        public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-            if (getListHeader() != null)
-                position--;
-
-            if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
-                StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
-                adapter.setPositionChecked(position, checked);
-                adapter.notifyDataSetChanged();
-            }
-        }
     }
 }

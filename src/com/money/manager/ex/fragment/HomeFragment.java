@@ -486,10 +486,10 @@ public class HomeFragment extends Fragment implements
                 String accountType = mAccountTypes.get(groupPosition);
                 if (accountType.equalsIgnoreCase(getString(R.string.investment))) {
                     activity.showWatchlistFragment(accountId);
+                } else {
+                    // default
+                    activity.showAccountFragment(accountId);
                 }
-
-                // default
-                activity.showAccountFragment(accountId);
                 return true;
             }
         });
