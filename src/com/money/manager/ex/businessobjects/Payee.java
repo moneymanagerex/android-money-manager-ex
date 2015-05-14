@@ -52,6 +52,8 @@ public class Payee {
                 null,
                 null);
 
+        if(!cursor.moveToFirst()) return null;
+
         //TablePayee.PAYEEID + "=" + Integer.toString(this.RecurringTransactionId),
         mPayee.setValueFromCursor(cursor);
 
@@ -65,14 +67,16 @@ public class Payee {
     }
 
     public int loadIdByName(String name) {
-        String selection = TablePayee.PAYEENAME + "='" + name + "'";
+        String selection = TablePayee.PAYEENAME + "=?";
 
         Cursor cursor = mContext.getContentResolver().query(
                 mPayee.getUri(),
-                mPayee.getAllColumns(),
+                new String[]{TablePayee.PAYEEID},
                 selection,
-                null,
+                new String[] { name },
                 null);
+
+        if(!cursor.moveToFirst()) return -1;
 
         int id = cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID));
 

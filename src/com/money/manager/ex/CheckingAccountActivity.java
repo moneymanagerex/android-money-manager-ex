@@ -714,8 +714,8 @@ public class CheckingAccountActivity
             Payee payee = new Payee(this);
             this.mPayeeId = payee.loadIdByName(payeeName);
 
-            Uri data = intent.getData();
-            Log.d(this.LOGCAT, data.toString());
+//            Uri data = intent.getData();
+//            Log.d(this.LOGCAT, data.toString());
         }
 
         // set title
