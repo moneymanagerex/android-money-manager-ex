@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -39,7 +38,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.AccountListEditActivity;
-import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
@@ -47,8 +45,6 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.settings.PreferencesConstant;
-import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
 
@@ -181,9 +177,9 @@ public class WatchlistFragment extends Fragment
 
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.fragment_watchlist_header, null, false);
 
-        txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
-        txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
-        txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
+//        txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
+//        txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
+//        txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
 
         // favorite icon
         imgAccountFav = (ImageView) header.findViewById(R.id.imageViewAccountFav);
@@ -223,8 +219,6 @@ public class WatchlistFragment extends Fragment
         // set arguments and settings of fragment
         mDataFragment.setArguments(prepareArgsForChildFragment());
         mDataFragment.setListHeader(header);
-        mDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(getString(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE), false));
         mDataFragment.setAutoStarLoader(false);
         mDataFragment.setContextMenuGroupId(mAccountId);
         mDataFragment.setSearResultFragmentLoaderCallbacks(this);

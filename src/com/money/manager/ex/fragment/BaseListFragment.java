@@ -42,7 +42,8 @@ import com.money.manager.ex.settings.PreferencesConstant;
 /**
  *
  */
-public abstract class BaseListFragment extends AbsListFragment {
+public abstract class BaseListFragment
+        extends AbsListFragment {
     // saved instance
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
     // FloatingActionButton

@@ -67,11 +67,11 @@ public class StocksCursorAdapter
     private int mAccountId = -1;
 
     private boolean mShowAccountName = false;
-    private boolean mShowBalanceAmount = false;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = mInflater.inflate(R.layout.item_alldata_account, parent, false);
+        View view = mInflater.inflate(R.layout.item_watchlist, parent, false);
+
         // holder
         StocksDataViewHolder holder = new StocksDataViewHolder();
         // take a pointer of object UI
@@ -231,9 +231,4 @@ public class StocksCursorAdapter
     public void setShowAccountName(boolean showAccountName) {
         this.mShowAccountName = showAccountName;
     }
-
-    public void setShowBalanceAmount(boolean mShowBalanceAmount) {
-        this.mShowBalanceAmount = mShowBalanceAmount;
-    }
-
 }

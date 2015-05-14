@@ -17,13 +17,8 @@
  */
 package com.money.manager.ex.investment;
 
-import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -33,33 +28,19 @@ import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.DrawerMenuItem;
-import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.businessobjects.StockRepository;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
-import com.money.manager.ex.search.SearchActivity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -76,7 +57,6 @@ public class WatchlistItemsFragment
     private WatchlistItemsFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
     private boolean mShownHeader = false;
-    private boolean mShownBalance = false;
     private int mGroupId = 0;
     private int mAccountId = -1;
     private View mListHeader = null;
@@ -148,7 +128,6 @@ public class WatchlistItemsFragment
         StocksCursorAdapter adapter = new StocksCursorAdapter(mContext, null);
         adapter.setAccountId(mAccountId);
         adapter.setShowAccountName(isShownHeader());
-        adapter.setShowBalanceAmount(isShownBalance());
 
         // click item
         getListView().setOnItemClickListener(new OnItemClickListener() {
@@ -165,8 +144,7 @@ public class WatchlistItemsFragment
         });
         // if header is not null add to list view
         if (getListAdapter() == null) {
-            if (mListHeader != null)
-                getListView().addHeaderView(mListHeader);
+            if (mListHeader != null) getListView().addHeaderView(mListHeader);
         }
         // set adapter
         setListAdapter(adapter);
@@ -241,7 +219,8 @@ public class WatchlistItemsFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+//        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.fragment_watchlist_item_list, container, false);
     }
 
     // This is just to test:
@@ -282,10 +261,6 @@ public class WatchlistItemsFragment
         switch (loader.getId()) {
             case ID_LOADER_ALL_DATA_DETAIL:
                 StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
-                if (isShownBalance()) {
-                    adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
-                            .getReadableDatabase());
-                }
                 adapter.swapCursor(data);
                 if (isResumed()) {
                     setListShown(true);
@@ -340,20 +315,6 @@ public class WatchlistItemsFragment
      */
     public void startLoaderData() {
         getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getArguments(), this);
-    }
-
-    /**
-     * @return the mShownBalance
-     */
-    public boolean isShownBalance() {
-        return mShownBalance;
-    }
-
-    /**
-     * @param mShownBalance the mShownBalance to set
-     */
-    public void setShownBalance(boolean mShownBalance) {
-        this.mShownBalance = mShownBalance;
     }
 
     @Override
