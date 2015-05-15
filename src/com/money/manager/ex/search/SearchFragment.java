@@ -214,29 +214,6 @@ public class SearchFragment extends Fragment
         }
     }
 
-//    public void onDoneClick() {
-//        getActivity().finish();
-//    }
-//
-//    public void onSearchClick() {
-//        executeSearch();
-//    }
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        /*super.onCreateOptionsMenu(menu, inflater);
-//        Core core = new Core(getActivity().getApplicationContext());
-//        if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//            inflater.inflate(R.menu.menu_button_cancel_done, menu);
-//            // change item ok in search
-//            MenuItem doneItem = menu.findItem(R.id.menu_done);
-//            if (doneItem != null) {
-//                doneItem.setIcon(core.resolveIdAttribute(R.attr.ic_action_search));
-//                doneItem.setTitle(R.string.search);
-//            }
-//        }*/
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
