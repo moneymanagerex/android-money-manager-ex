@@ -316,7 +316,11 @@ public class SearchFragment extends Fragment
         //set arguments
         searchResultsFragment.setArguments(args);
         searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
-        searchResultsFragment.setShownHeader(true);
+//        searchResultsFragment.setShownHeader(true);
+        if (getActivity() instanceof SearchActivity) {
+            SearchActivity activity = (SearchActivity) getActivity();
+            activity.ShowAccountHeaders = true;
+        }
 
         //add fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
