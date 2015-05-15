@@ -63,6 +63,7 @@
         <attr name="ic_label_outline" format="reference"/>
         <attr name="ic_plusone" format="reference"/>
         <attr name="ic_paste" format="reference"/>
+        <attr name="ic_menu_selectall_holo_dark" format="reference" />
 
         <attr name="sym_keyboard_delete" format="reference"/>
         <attr name="holo_blue_color_theme" format="color|reference"/>
