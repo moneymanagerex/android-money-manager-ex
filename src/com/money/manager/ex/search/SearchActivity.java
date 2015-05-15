@@ -32,6 +32,12 @@ import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener
 
 public class SearchActivity extends BaseFragmentActivity
         implements AllDataFragmentLoaderCallbacks, InputAmountDialogListener {
+
+    /**
+     * Indicates whether to show the account headers in search results.
+     */
+    public boolean ShowAccountHeaders = true;
+
 	private boolean mIsDualPanel = false;
 
 	@Override
