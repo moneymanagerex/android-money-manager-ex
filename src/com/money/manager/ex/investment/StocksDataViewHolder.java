@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex.investment;
 
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -25,16 +24,6 @@ import android.widget.TextView;
  */
 public class StocksDataViewHolder {
     TextView symbolTextView;
-
-    LinearLayout linDate;
-    TextView txtDay;
-    TextView txtMonth;
-    TextView txtYear;
-    TextView txtStatus;
-    TextView txtAmount;
-    TextView txtPayee;
-    TextView txtAccountName;
-    TextView txtCategorySub;
-    TextView txtNotes;
-    TextView txtBalance;
+    TextView nameTextView;
+    TextView priceTextView;
 }
