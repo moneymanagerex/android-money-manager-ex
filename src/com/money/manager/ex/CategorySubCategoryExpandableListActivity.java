@@ -52,7 +52,7 @@ import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
-import com.money.manager.ex.database.SQLTypeTransacion;
+import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.fragment.BaseExpandableListFragment;
@@ -243,9 +243,9 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
             switch (item.getItemId()) {
                 case 0: //EDIT
                     if (subCategId == ExpandableListView.INVALID_POSITION) {
-                        showDialogEditCategName(SQLTypeTransacion.UPDATE, categId, categName);
+                        showDialogEditCategName(SQLTypeTransaction.UPDATE, categId, categName);
                     } else {
-                        showDialogEditSubCategName(SQLTypeTransacion.UPDATE, categId, subCategId, subCategName);
+                        showDialogEditSubCategName(SQLTypeTransaction.UPDATE, categId, subCategId, subCategName);
                     }
                     break;
                 case 1: //DELETE
@@ -404,10 +404,10 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
         public boolean onOptionsItemSelected(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_add_category:
-                    showDialogEditCategName(SQLTypeTransacion.INSERT, -1, null);
+                    showDialogEditCategName(SQLTypeTransaction.INSERT, -1, null);
                     break;
                 case R.id.menu_add_subcategory:
-                    showDialogEditSubCategName(SQLTypeTransacion.INSERT, -1, -1, null);
+                    showDialogEditSubCategName(SQLTypeTransaction.INSERT, -1, -1, null);
             }
             return super.onOptionsItemSelected(item);
         }
@@ -545,7 +545,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
         /**
          * Show alter dialog, for create or edit new category
          */
-        private void showDialogEditCategName(final SQLTypeTransacion type, final int categoryId, final CharSequence categName) {
+        private void showDialogEditCategName(final SQLTypeTransaction type, final int categoryId, final CharSequence categName) {
             final TableCategory category = new TableCategory();
             // inflate view
             View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
@@ -600,7 +600,7 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
         /**
          * Show alter dialog, for create or edit new category
          */
-        private void showDialogEditSubCategName(final SQLTypeTransacion type, final int categoryId, final int subCategoryId, final CharSequence subCategName) {
+        private void showDialogEditSubCategName(final SQLTypeTransaction type, final int categoryId, final int subCategoryId, final CharSequence subCategName) {
             final TableSubCategory subCategory = new TableSubCategory();
             // inflate view
             View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);

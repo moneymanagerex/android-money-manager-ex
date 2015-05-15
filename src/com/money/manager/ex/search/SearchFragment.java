@@ -240,8 +240,6 @@ public class SearchFragment extends Fragment
     private ArrayList<String> assembleWhereClause() {
         ArrayList<String> whereClause = new ArrayList<>();
 
-        //todo: use QueryAllData.* fields
-
         // account
         if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
             whereClause.add(QueryAllData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));

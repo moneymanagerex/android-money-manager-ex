@@ -48,8 +48,10 @@ public class PayeeActivity extends BaseFragmentActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // process intent
         Intent intent = getIntent();
-        if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-            listFragment.mAction = intent.getAction();
+        String action = intent.getAction();
+
+        if (!TextUtils.isEmpty(action)) {
+            PayeeLoaderListFragment.mAction = action;
         }
         FragmentManager fm = getSupportFragmentManager();
         // attach fragment activity
@@ -62,7 +64,8 @@ public class PayeeActivity extends BaseFragmentActivity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // set result
-            BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+            BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager()
+                    .findFragmentByTag(FRAGMENTTAG);
             if (fragment != null) {
                 fragment.getActivity().setResult(RESULT_CANCELED);
                 fragment.getActivity().finish();
