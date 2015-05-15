@@ -27,15 +27,15 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/menu_change_status"
-        android:icon="@drawable/ic_tag_text_outline_dark"
-        android:title="@string/change_status"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/menu_duplicate_transactions"
         android:icon="?attr/ic_action_copy"
         android:title="@string/duplicate_selected_transactions"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_change_status"
+        android:icon="@drawable/ic_tag_text_outline_dark"
+        android:title="@string/change_status"
         app:showAsAction="ifRoom"/>
 
     <item
