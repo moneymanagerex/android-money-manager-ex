@@ -50,6 +50,7 @@ import com.money.manager.ex.checkingaccount.YesNoDialogListener;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
+import com.money.manager.ex.database.SplitCategoriesRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
@@ -214,30 +215,6 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         }
 
         return ret;
-    }
-
-    /**
-     * Loads split transactions for the given transaction id.
-     * @param transId Id of the main transaction for which to load the splits.
-     * @return list of split categories for the given transaction.
-     */
-    public ArrayList<TableSplitTransactions> loadSplitTransaction(int transId) {
-        ArrayList<TableSplitTransactions> listSplitTrans = null;
-
-        TableSplitTransactions split = new TableSplitTransactions();
-        Cursor curSplit = getContentResolver().query(split.getUri(), null,
-                TableSplitTransactions.TRANSID + "=" + Integer.toString(transId), null, TableSplitTransactions.SPLITTRANSID);
-        if (curSplit != null && curSplit.moveToFirst()) {
-            listSplitTrans = new ArrayList<>();
-            while (!curSplit.isAfterLast()) {
-                TableSplitTransactions obj = new TableSplitTransactions();
-                obj.setValueFromCursor(curSplit);
-                listSplitTrans.add(obj);
-                curSplit.moveToNext();
-            }
-        }
-
-        return listSplitTrans;
     }
 
     @Override
@@ -1054,7 +1031,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
             mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
 
         if (mSplitTransactions == null) {
-            mSplitTransactions = loadSplitTransaction(transId);
+            SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
+            mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
         }
 
         // convert status in uppercase string

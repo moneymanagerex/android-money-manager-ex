@@ -46,7 +46,7 @@ public class QifGenerator implements IQifGenerator {
 
         int previousAccountId = 0;
         QifHeader header = new QifHeader(mContext);
-        QifRecord record = new QifRecord();
+        QifRecord record = new QifRecord(mContext);
 
         while (!cursor.isAfterLast()) {
             int accountId = record.getAccountId(cursor);
@@ -63,7 +63,7 @@ public class QifGenerator implements IQifGenerator {
             builder.append(row);
             cursor.moveToNext();
         }
-        // No need to close the cursor here. It is used in the fragment.
+        // No need to close the cursor here because it is used in the parent fragment.
 //        cursor.close();
 
         return builder.toString();
