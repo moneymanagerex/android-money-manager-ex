@@ -45,7 +45,7 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
 
 /**
- *
+ * Account list
  */
 public class AccountLoaderListFragment extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
