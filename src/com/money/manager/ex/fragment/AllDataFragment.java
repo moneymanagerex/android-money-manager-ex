@@ -43,6 +43,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -562,7 +563,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     }
 
     // class to manage multi choice mode
-    public class AllDataMultiChoiceModeListener implements MultiChoiceModeListener {
+    public class AllDataMultiChoiceModeListener
+            implements MultiChoiceModeListener {
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
@@ -596,6 +598,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             ArrayList<Integer> transIds = getTransactionIds();
 
             switch (item.getItemId()) {
+                case R.id.menu_select_all:
+                    selectAllRecords();
+                    break;
                 case R.id.menu_change_status:
                     changeTransactionStatus(transIds);
                     mode.finish();
@@ -622,6 +627,21 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     }
             }
             return false;
+        }
+
+        /**
+         * This probably belongs on the parent fragment.
+         */
+        private void selectAllRecords() {
+            ListAdapter listAdapter = getListAdapter();
+            if (listAdapter != null && listAdapter instanceof AllDataAdapter) {
+                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+                int numRecords = adapter.getCount();
+                for (int i = 0; i < numRecords; i++) {
+                    adapter.setPositionChecked(i, true);
+                }
+                adapter.notifyDataSetChanged();
+            }
         }
 
         private ArrayList<Integer> getTransactionIds(){

@@ -21,8 +21,8 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_change_status"
-        android:icon="@drawable/ic_tag_text_outline_dark"
+        android:id="@+id/menu_select_all"
+        android:icon="@drawable/ic_menu_selectall_holo_dark"
         android:title="@string/change_status"
         app:showAsAction="always"/>
 
@@ -31,6 +31,12 @@
         android:icon="?attr/ic_action_copy"
         android:title="@string/duplicate_selected_transactions"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_change_status"
+        android:icon="@drawable/ic_tag_text_outline_dark"
+        android:title="@string/change_status"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/menu_delete"
