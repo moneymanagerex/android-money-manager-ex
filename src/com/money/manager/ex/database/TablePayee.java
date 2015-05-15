@@ -19,7 +19,13 @@ package com.money.manager.ex.database;
 
 import android.database.Cursor;
 
-public class TablePayee extends Dataset {
+public class TablePayee
+		extends Dataset {
+
+    public TablePayee() {
+        super("payee_v1", DatasetType.TABLE, "payee");
+    }
+
 	// definizione dei nomi dei campi
 	public static final String PAYEEID = "PAYEEID";
 	public static final String PAYEENAME = "PAYEENAME";
@@ -30,14 +36,12 @@ public class TablePayee extends Dataset {
 	private String payeeName;
 	private int categId;
 	private int subCategId;
-	// costruttore
-	public TablePayee() {
-		super("payee_v1", DatasetType.TABLE, "payee");
-	}
-	@Override
+
+    @Override
 	public String[] getAllColumns() {
 		return new String[] { "PAYEEID AS _id", PAYEEID, PAYEENAME, CATEGID, SUBCATEGID };
 	}
+
 	@Override
 	public void setValueFromCursor(Cursor c) {
 		// controllo che non sia null il cursore
