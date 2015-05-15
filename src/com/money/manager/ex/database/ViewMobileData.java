@@ -17,7 +17,9 @@
  */
 package com.money.manager.ex.database;
 
-
+/**
+ * This has been migrated to QueryAllData.
+ */
 public class ViewMobileData extends Dataset {
 	public static final String mobiledata =  
 		"( " + 
@@ -110,6 +112,10 @@ public class ViewMobileData extends Dataset {
 	
 	@Override
 	public String[] getAllColumns() {
-		return new String[] {"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day, Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID, ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CategID, SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes, currency, finyear, AmountBaseConvRate};
+		return new String[] {"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day,
+				Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
+                ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CategID,
+                SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes, currency, finyear,
+                AmountBaseConvRate};
 	}
 }
