@@ -642,7 +642,7 @@ public class HomeFragment extends Fragment implements
                 } else if (Constants.ACCOUNT_TYPE_CREDIT_CARD.equalsIgnoreCase(accountType)) {
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_credit_card));
                 } else if (Constants.ACCOUNT_TYPE_INVESTMENT.equalsIgnoreCase(accountType)) {
-                    holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
+                    holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.portfolio));
                 }
             }
 
