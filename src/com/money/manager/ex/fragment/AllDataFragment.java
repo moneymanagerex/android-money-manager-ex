@@ -198,11 +198,10 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         adapter.setShowBalanceAmount(isShownBalance());
 
         // set choice mode in list view
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
-            getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-            getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
-        }
+        mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
+        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
+
         // click item
         getListView().setOnItemClickListener(new OnItemClickListener() {
 
@@ -371,6 +370,12 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                 // reset the transaction groups (account name collection)
                 adapter.resetAccountHeaderIndexes();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     @Override
