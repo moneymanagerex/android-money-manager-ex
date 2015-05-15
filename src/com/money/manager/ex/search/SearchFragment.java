@@ -317,8 +317,8 @@ public class SearchFragment extends Fragment
         searchResultsFragment.setArguments(args);
         searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
 //        searchResultsFragment.setShownHeader(true);
-        SearchActivity activity = (SearchActivity) getActivity();
-        if (activity != null) {
+        if (getActivity() instanceof SearchActivity) {
+            SearchActivity activity = (SearchActivity) getActivity();
             activity.ShowAccountHeaders = true;
         }
 

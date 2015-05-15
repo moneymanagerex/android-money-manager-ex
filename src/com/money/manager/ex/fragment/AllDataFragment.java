@@ -192,11 +192,10 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         setListShown(false);
 
         // Read header indicator directly from the activity.
-        SearchActivity activity = (SearchActivity) getActivity();
-        if (activity != null) {
+        if (getActivity() instanceof SearchActivity) {
+            SearchActivity activity = (SearchActivity) getActivity();
             setShownHeader(activity.ShowAccountHeaders);
         }
-
 
         // create adapter
         AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
