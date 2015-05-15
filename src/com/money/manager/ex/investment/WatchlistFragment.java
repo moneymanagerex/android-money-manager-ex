@@ -19,6 +19,7 @@ package com.money.manager.ex.investment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.AccountListEditActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
@@ -64,12 +66,8 @@ public class WatchlistFragment extends Fragment
     private Integer mAccountId = null;
     private String mAccountName;
 
-//    private double mAccountBalance = 0;
-//    private double mAccountReconciled = 0;
-
     private TableAccountList mAccount;
 
-//    private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
 
     private Context mContext;
@@ -81,7 +79,6 @@ public class WatchlistFragment extends Fragment
     public static WatchlistFragment newInstance(int accountid) {
         WatchlistFragment fragment = new WatchlistFragment();
         fragment.mAccountId = accountid;
-        // set name of child fragment
         fragment.setNameFragment(WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountid));
 
         return fragment;
@@ -126,6 +123,9 @@ public class WatchlistFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
+        // add options menu for watchlist
+        inflater.inflate(R.menu.menu_watchlist, menu);
 
         // call create option menu of fragment
         mDataFragment.onCreateOptionsMenu(menu, inflater);
@@ -181,10 +181,6 @@ public class WatchlistFragment extends Fragment
 
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.fragment_watchlist_header, null, false);
 
-//        txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
-//        txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
-//        txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
-
         // favorite icon
         imgAccountFav = (ImageView) header.findViewById(R.id.imageViewAccountFav);
         // set listener click on favorite icon for change image
@@ -192,7 +188,7 @@ public class WatchlistFragment extends Fragment
             public void onClick(View v) {
                 // set status account
                 mAccount.setFavoriteAcct(!(mAccount.isFavoriteAcct()));
-                // populate contentvalues for update
+                // populate content values for update
                 ContentValues values = new ContentValues();
                 values.put(TableAccountList.FAVORITEACCT, mAccount.getFavoriteAcct());
                 // update
@@ -244,7 +240,6 @@ public class WatchlistFragment extends Fragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        return;
     }
 
     @Override
@@ -262,15 +257,38 @@ public class WatchlistFragment extends Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.menu_add_transaction_account) {
-//            startCheckingAccountActivity();
-//            return true;
-//        } else if (item.getItemId() == R.id.menu_export_to_csv) {
-//            if (mDataFragment != null && mAccount != null)
-//                mDataFragment.exportDataToCSVFile(mAccount.getAccountName());
-//            return true;
-//        }
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case R.id.menu_update_prices:
+                confirmPriceUpdate();
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void confirmPriceUpdate() {
+        new AlertDialogWrapper.Builder(getActivity())
+                .setTitle(R.string.download)
+                .setMessage(R.string.confirm_price_download)
+                .setIcon(R.drawable.ic_action_help_light)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // update security prices
+                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance();
+                        updater.updatePrices();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create()
+                .show();
     }
 
     @Override
@@ -293,28 +311,10 @@ public class WatchlistFragment extends Fragment
     }
 
     private Bundle prepareArgsForChildFragment() {
-        // compose selection and sort
         ArrayList<String> selection = new ArrayList<>();
 
         selection.add(StockRepository.HELDAT + "=" + Integer.toString(mAccountId));
 
-//        selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountID + "="
-//                + Integer.toString(mAccountId) + ")");
-//        if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
-//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
-//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
-//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
-//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
-//            selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
-//            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
-//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
-//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
-//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
-//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
-//            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-//        }
-        // create a bundle to returns
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
         args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
