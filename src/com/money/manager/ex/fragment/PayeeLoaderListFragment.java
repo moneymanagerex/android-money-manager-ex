@@ -355,11 +355,13 @@ public class PayeeLoaderListFragment
                             case INSERT:
                                 Uri insertResult = resolver.insert(mPayee.getUri(), values);
                                 if (insertResult != null) {
-                                    // Created a new payee.
-                                    // Select it and close.
-                                    int newId = (int) ContentUris.parseId(insertResult);
-                                    sendResultToActivity(newId, name);
-                                    return;
+                                    // Created a new payee. But only if picking a payee for another activity.
+                                    if (mAction.equalsIgnoreCase(Intent.ACTION_PICK)) {
+                                        // Select it and close.
+                                        int newId = (int) ContentUris.parseId(insertResult);
+                                        sendResultToActivity(newId, name);
+                                        return;
+                                    }
                                 } else {
                                     // error inserting.
                                     Toast.makeText(mContext, R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
@@ -417,6 +419,9 @@ public class PayeeLoaderListFragment
                     setResultAndFinish();
                 }
             }
+        } else {
+            // No calling activity, this is the independent Payees view. Show options.
+            getActivity().openContextMenu(v);
         }
     }
 }
