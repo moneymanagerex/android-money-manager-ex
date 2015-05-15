@@ -41,14 +41,12 @@ import android.widget.TextView;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.LayoutHelper;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.utils.DateUtils;
 
@@ -59,6 +57,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The search form with search parameter input fields.
+ */
 public class SearchFragment extends Fragment
         implements InputAmountDialogListener {
     // LOGCAT
@@ -239,64 +240,67 @@ public class SearchFragment extends Fragment
     private ArrayList<String> assembleWhereClause() {
         ArrayList<String> whereClause = new ArrayList<>();
 
+        //todo: use QueryAllData.* fields
+
         // account
         if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
-            whereClause.add(ViewMobileData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
+            whereClause.add(QueryAllData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
         }
         // transaction type
         if (cbxDeposit.isChecked() || cbxTransfer.isChecked() || cbxWithdrawal.isChecked()) {
-            whereClause.add(ViewMobileData.TransactionType + " IN (" + (cbxDeposit.isChecked() ? "'Deposit'" : "''") + "," + (cbxTransfer.isChecked() ? "'Transfer'" : "''")
+            whereClause.add(QueryAllData.TransactionType + " IN (" +
+                    (cbxDeposit.isChecked() ? "'Deposit'" : "''") + "," + (cbxTransfer.isChecked() ? "'Transfer'" : "''")
                     + "," + (cbxWithdrawal.isChecked() ? "'Withdrawal'" : "''") + ")");
         }
         // status
         if (spinStatus.getSelectedItemPosition() > 0) {
-            whereClause.add(ViewMobileData.Status + "='" + mStatusValues.get(spinStatus.getSelectedItemPosition()) + "'");
+            whereClause.add(QueryAllData.Status + "='" + mStatusValues.get(spinStatus.getSelectedItemPosition()) + "'");
         }
         // from date
         if (!TextUtils.isEmpty(txtFromDate.getText())) {
-            whereClause.add(ViewMobileData.Date + ">='" + DateUtils.getSQLiteStringDate(
+            whereClause.add(QueryAllData.Date + ">='" + DateUtils.getSQLiteStringDate(
                     getActivity(), DateUtils.getDateFromString(
                             getActivity().getApplicationContext(), String.valueOf(txtFromDate.getText()))) + "'");
         }
         // to date
         if (!TextUtils.isEmpty(txtToDate.getText())) {
-            whereClause.add(ViewMobileData.Date + "<='" + DateUtils.getSQLiteStringDate(
+            whereClause.add(QueryAllData.Date + "<='" + DateUtils.getSQLiteStringDate(
                     getActivity(), DateUtils.getDateFromString(
                             getActivity().getApplicationContext(), String.valueOf(txtToDate.getText()))) + "'");
         }
         // payee
         if (txtSelectPayee.getTag() != null) {
-            whereClause.add(ViewMobileData.PayeeID + "=" + String.valueOf(txtSelectPayee.getTag()));
+            whereClause.add(QueryAllData.PayeeID + "=" + String.valueOf(txtSelectPayee.getTag()));
         }
         // category
         if (txtSelectCategory.getTag() != null) {
             CategorySub categorySub = (CategorySub) txtSelectCategory.getTag();
-            whereClause.add(ViewMobileData.CategID + "=" + categorySub.categId);
+            whereClause.add(QueryAllData.CategID + "=" + categorySub.categId);
             if (categorySub.subCategId != -1)
-                whereClause.add(ViewMobileData.SubcategID + "=" + categorySub.subCategId);
+                whereClause.add(QueryAllData.SubcategID + "=" + categorySub.subCategId);
         }
-        // from amount
+        // from amount: Trans Amount <= parameter
         if (txtFromAmount.getTag() != null) {
-            whereClause.add(ViewMobileData.Amount + ">=" + String.valueOf(txtFromAmount.getTag()));
+            whereClause.add(QueryAllData.Amount + "<=" + String.valueOf(txtFromAmount.getTag()));
         }
-        // to amount
+        // to amount: Trans Amount >= parameter
         if (txtToAmount.getTag() != null) {
-            whereClause.add(ViewMobileData.Amount + "<=" + String.valueOf(txtToAmount.getTag()));
+            whereClause.add(QueryAllData.Amount + ">=" + String.valueOf(txtToAmount.getTag()));
         }
         // transaction number
         if (!TextUtils.isEmpty(edtTransNumber.getText())) {
-            whereClause.add(ViewMobileData.TransactionNumber + " LIKE '" + edtTransNumber.getText() + "'");
+            whereClause.add(QueryAllData.TransactionNumber + " LIKE '" + edtTransNumber.getText() + "'");
         }
         // notes
         if (!TextUtils.isEmpty(txtNotes.getText())) {
-            whereClause.add(ViewMobileData.Notes + " LIKE '%" + txtNotes.getText() + "%'");
+            whereClause.add(QueryAllData.Notes + " LIKE '%" + txtNotes.getText() + "%'");
         }
 
         return whereClause;
     }
 
     private void showSearchResultsFragment(ArrayList<String> whereClause) {
-        //create a fragment search
+        //create a fragment for search results.
         AllDataFragment searchResultsFragment;
         searchResultsFragment = (AllDataFragment) getActivity().getSupportFragmentManager()
                 .findFragmentByTag(AllDataFragment.class.getSimpleName());
@@ -304,6 +308,7 @@ public class SearchFragment extends Fragment
             getActivity().getSupportFragmentManager().beginTransaction()
                     .remove(searchResultsFragment).commit();
         }
+
         searchResultsFragment = AllDataFragment.newInstance(-1);
 
         //create bundle
@@ -318,7 +323,8 @@ public class SearchFragment extends Fragment
         //add fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         //animation
-        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
+        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
+                R.anim.slide_in_right, R.anim.slide_out_left);
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack.
         if (isDualPanel()) {
