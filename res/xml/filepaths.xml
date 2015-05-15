@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- internal storage area files, Context.getFilesDir() -->
+    <files-path name="export" path="export/" />
+    <!-- app's external storage area, Context.getExternalFilesDir() -->
+    <external-path name="external" path="/" />
+    <!-- cache, getCacheDir() -->
+    <cache-path name="cache" path="/" />
+</paths>

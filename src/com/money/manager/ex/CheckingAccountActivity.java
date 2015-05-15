@@ -438,7 +438,8 @@ public class CheckingAccountActivity extends BaseFragmentActivity
         // take a reference view into layout
         // account
         // accountlist <> to populate the spin
-        mAccountList = MoneyManagerOpenHelper.getInstance(getApplicationContext()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
+        mAccountList = MoneyManagerOpenHelper.getInstance(getApplicationContext())
+                .getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());

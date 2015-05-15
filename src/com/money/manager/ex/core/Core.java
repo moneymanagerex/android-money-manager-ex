@@ -399,7 +399,8 @@ public class Core {
         Cursor cursor;
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
         // category
-        cursor = helper.getReadableDatabase().query(category.getSource(), null, TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null, null, null);
+        cursor = helper.getReadableDatabase().query(category.getSource(), null,
+                TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null, null, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
             categoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
@@ -410,7 +411,8 @@ public class Core {
             cursor.close();
         }
         // sub-category
-        cursor = helper.getReadableDatabase().query(subCategory.getSource(), null, TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null, null, null);
+        cursor = helper.getReadableDatabase().query(subCategory.getSource(), null,
+                TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null, null, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
             subCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
@@ -471,7 +473,8 @@ public class Core {
 
         try {
             helper = MoneyManagerOpenHelper.getInstance(context);
-            data = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[]{info}, null, null, null);
+            data = helper.getReadableDatabase().query(infoTable.getSource(), null,
+                    TableInfoTable.INFONAME + "=?", new String[]{info}, null, null, null);
             if (data != null && data.moveToFirst()) {
                 ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
             }
@@ -521,7 +524,8 @@ public class Core {
             return originalText;
         // ignore case and accents
         // the same thing should have been done for the search text
-        String normalizedText = Normalizer.normalize(originalText, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
+        String normalizedText = Normalizer.normalize(originalText, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
 
         int start = normalizedText.indexOf(search.toLowerCase());
         if (start < 0) {
@@ -702,14 +706,16 @@ public class Core {
 
     public boolean isToDisplayChangelog() {
         int currentVersionCode = getCurrentVersionCode(context);
-        int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(context).getInt(context.getString(PreferencesConstant.PREF_LAST_VERSION_KEY), -1);
+        int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(context)
+                .getInt(context.getString(PreferencesConstant.PREF_LAST_VERSION_KEY), -1);
 
         return lastVersionCode != currentVersionCode;
     }
 
     public boolean showChangelog() {
         int currentVersionCode = getCurrentVersionCode(context);
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(context.getString(PreferencesConstant.PREF_LAST_VERSION_KEY), currentVersionCode).commit();
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+                .putInt(context.getString(PreferencesConstant.PREF_LAST_VERSION_KEY), currentVersionCode).commit();
 
         // create layout
         View view = LayoutInflater.from(context).inflate(R.layout.changelog_layout, null);
@@ -736,13 +742,15 @@ public class Core {
      * @return preferences account fav visible
      */
     public boolean getAccountFavoriteVisible() {
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE), false);
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(context.getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE), false);
     }
 
     /**
      * @return preferences accounts visible
      */
     public boolean getAccountsOpenVisible() {
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE), false);
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(context.getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE), false);
     }
 }

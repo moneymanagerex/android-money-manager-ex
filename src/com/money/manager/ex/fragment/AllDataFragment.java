@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.fragment;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -48,6 +50,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.qif.QifExport;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
@@ -91,6 +94,14 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         return fragment;
     }
 
+    private int[] convertArrayListToArray(ArrayList<Integer> list) {
+        int[] ret = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            ret[i] = list.get(i);
+        }
+        return ret;
+    }
+
     /**
      * Export data to CSV file
      */
@@ -109,12 +120,18 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         csv.execute();
     }
 
-//    /**
-//     * @return the mGroupId
-//     */
-//    public int getContextMenuGroupId() {
-//        return mGroupId;
-//    }
+    private void exportToQif(){
+        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+        QifExport qif = new QifExport(getActivity());
+        qif.export(adapter);
+    }
+
+    /**
+     * @return the mGroupId
+     */
+    public int getContextMenuGroupId() {
+        return mGroupId;
+    }
 
     /**
      * @param mGroupId the mGroupId to set
@@ -172,16 +189,17 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         // set fragment
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
+
         // option menu
-        setHasOptionsMenu(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB);
+//        boolean hasOptionsMenu = Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
+//        setHasOptionsMenu(hasOptionsMenu);
+
         // create adapter
         AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
         adapter.setAccountId(mAccountId);
         adapter.setShowAccountName(isShownHeader());
         adapter.setShowBalanceAmount(isShownBalance());
-        /*if (isShownBalance()) {
-            adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getReadableDatabase());
-        }*/
+
         // set choice mode in list view
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
@@ -208,8 +226,6 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         }
         // set adapter
         setListAdapter(adapter);
-        // ref: http://stackoverflow.com/questions/19583961/cannot-add-header-view-to-list-setadapter-has-already-been-called
-        //adapter.notifyDataSetChanged();
 
         // register context menu
         registerForContextMenu(getListView());
@@ -225,6 +241,13 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         if (isAutoStarLoader()) {
             startLoaderData();
         }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -257,14 +280,32 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         return null;
     }
 
+    /**
+     * Add options to the action bar of the host activity.
+     * This is not called in ActionBar Activity, i.e. Search.
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (getActivity() != null) {
-            MenuItem itemExportToCsv = menu.findItem(R.id.menu_export_to_csv);
-            if (itemExportToCsv != null) itemExportToCsv.setVisible(true);
-            MenuItem itemSearch = menu.findItem(R.id.menu_search_transaction);
-            if (itemSearch != null) itemSearch.setVisible(!getActivity().getClass().getSimpleName().equals(SearchActivity.class.getSimpleName()));
+
+        Activity activity = getActivity();
+        if (activity == null) return;
+
+        MenuItem itemExportToCsv = menu.findItem(R.id.menu_export_to_csv);
+        if (itemExportToCsv != null) itemExportToCsv.setVisible(true);
+        MenuItem itemSearch = menu.findItem(R.id.menu_search_transaction);
+        if (itemSearch != null) {
+            itemSearch.setVisible(!activity.getClass().getSimpleName()
+                    .equals(SearchActivity.class.getSimpleName()));
+        }
+
+        // Add default menu options. todo: check why this is called twice.
+        // Includes menu item for .qif export
+        MenuItem qifExport = menu.findItem(R.id.menu_qif_export);
+        if (qifExport == null) {
+            inflater.inflate(R.menu.menu_alldata_operations, menu);
         }
     }
 
@@ -273,7 +314,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    // This is just to test: http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
+    // This is just to test:
+    // http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
     @Override
     public void onDetach() {
         super.onDetach();
@@ -335,8 +377,12 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         try {
             BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
             if (activity != null) {
-                if (activity.getSupportActionBar().getCustomView() != null) {
-                    activity.getSupportActionBar().setCustomView(null);
+                ActionBar actionBar = activity.getSupportActionBar();
+                if(actionBar != null) {
+                    View customView = actionBar.getCustomView();
+                    if (customView != null) {
+                        actionBar.setCustomView(null);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -346,19 +392,18 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_export_to_csv) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.menu_export_to_csv) {
             exportDataToCSVFile();
             return true;
         }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private int[] convertArrayListToArray(ArrayList<Integer> list) {
-        int[] ret = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            ret[i] = list.get(i);
+        if (itemId == R.id.menu_qif_export) {
+            // export visible transactions.
+            exportToQif();
         }
-        return ret;
+
+        return super.onOptionsItemSelected(item);
     }
 
     private boolean setStatusCheckingAccount(int[] transId, String status) {

@@ -49,8 +49,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ *
+ */
 @SuppressLint("UseSparseArrays")
 public class AllDataAdapter extends CursorAdapter {
+
     // type cursor
     private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
 
@@ -109,7 +113,7 @@ public class AllDataAdapter extends CursorAdapter {
         try {
             Locale locale = mContext.getResources().getConfiguration().locale;
 
-            Date date = new SimpleDateFormat("yyyy-MM-dd", locale)
+            Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, locale)
                     .parse(cursor.getString(cursor.getColumnIndex(DATE)));
             holder.txtMonth.setText(new SimpleDateFormat("MMM", locale).format(date));
             holder.txtYear.setText(new SimpleDateFormat("yyyy", locale).format(date));

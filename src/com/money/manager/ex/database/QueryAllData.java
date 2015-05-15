@@ -62,6 +62,9 @@ public class QueryAllData extends Dataset {
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day, Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID, ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted, CategID, SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes, currency, finyear};
+        return new String[]{"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day,
+                Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
+                ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted, CategID,
+                SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes, currency, finyear};
     }
 }

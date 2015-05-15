@@ -155,7 +155,8 @@ public class AccountLoaderListFragment extends BaseListFragment
                     whereClause = TableAccountList.ACCOUNTNAME + " LIKE ?";
                     selectionArgs = new String[]{mCurFilter + "%"};
                 }
-                return new CursorLoader(getActivity(), mAccount.getUri(), mAccount.getAllColumns(), whereClause, selectionArgs, "upper(" + TableAccountList.ACCOUNTNAME + ")");
+                return new CursorLoader(getActivity(), mAccount.getUri(), mAccount.getAllColumns(),
+                        whereClause, selectionArgs, "upper(" + TableAccountList.ACCOUNTNAME + ")");
         }
 
         return null;

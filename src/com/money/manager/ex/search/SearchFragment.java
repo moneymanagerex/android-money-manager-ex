@@ -26,8 +26,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,6 +41,7 @@ import android.widget.TextView;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.LayoutHelper;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.core.Core;
@@ -232,7 +231,14 @@ public class SearchFragment extends Fragment
      * Compose arguments and execute search
      */
     public void executeSearch() {
+        ArrayList<String> whereClause = assembleWhereClause();
+
+        showSearchResultsFragment(whereClause);
+    }
+
+    private ArrayList<String> assembleWhereClause() {
         ArrayList<String> whereClause = new ArrayList<>();
+
         // account
         if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
             whereClause.add(ViewMobileData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
@@ -285,31 +291,40 @@ public class SearchFragment extends Fragment
         if (!TextUtils.isEmpty(txtNotes.getText())) {
             whereClause.add(ViewMobileData.Notes + " LIKE '%" + txtNotes.getText() + "%'");
         }
+
+        return whereClause;
+    }
+
+    private void showSearchResultsFragment(ArrayList<String> whereClause) {
         //create a fragment search
-        AllDataFragment fragment;
-        fragment = (AllDataFragment) getActivity().getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
-        if (fragment != null) {
-            getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        AllDataFragment searchResultsFragment;
+        searchResultsFragment = (AllDataFragment) getActivity().getSupportFragmentManager()
+                .findFragmentByTag(AllDataFragment.class.getSimpleName());
+        if (searchResultsFragment != null) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .remove(searchResultsFragment).commit();
         }
-        fragment = AllDataFragment.newInstance(-1);
+        searchResultsFragment = AllDataFragment.newInstance(-1);
+
         //create bundle
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, whereClause);
         args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
         //set arguments
-        fragment.setArguments(args);
-        fragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
-        fragment.setShownHeader(true);
+        searchResultsFragment.setArguments(args);
+        searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
+        searchResultsFragment.setShownHeader(true);
+
         //add fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         //animation
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
         // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack
+        // and add the transaction to the back stack.
         if (isDualPanel()) {
-            transaction.add(R.id.fragmentDetail, fragment, AllDataFragment.class.getSimpleName());
+            transaction.add(R.id.fragmentDetail, searchResultsFragment, AllDataFragment.class.getSimpleName());
         } else {
-            transaction.replace(R.id.fragmentContent, fragment, AllDataFragment.class.getSimpleName());
+            transaction.replace(R.id.fragmentContent, searchResultsFragment, AllDataFragment.class.getSimpleName());
             transaction.addToBackStack(null);
         }
         // Commit the transaction
