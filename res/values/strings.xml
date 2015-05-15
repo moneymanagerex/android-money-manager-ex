@@ -558,5 +558,6 @@
     <string name="title_activity_search_results">SearchResultsActivity</string>
     <string name="qif_export">Qif Export</string>
     <string name="update_prices">Update prices</string>
+    <string name="update_price">Update price</string>
     <string name="confirm_price_download">Do you want to update security prices online?</string>
 </resources>

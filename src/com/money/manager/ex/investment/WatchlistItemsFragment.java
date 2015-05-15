@@ -25,9 +25,11 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,9 +38,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
+import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 
@@ -129,16 +133,16 @@ public class WatchlistItemsFragment
         adapter.setAccountId(mAccountId);
         adapter.setShowAccountName(isShownHeader());
 
-        // click item
+        // handle list item click.
         getListView().setOnItemClickListener(new OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
-                    Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
-                    if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
+                    getActivity().openContextMenu(view);
+//                    Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
+//                    if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
 //                        startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(StockRepository.STOCKID)));
-                    }
+//                    }
                 }
             }
         });
@@ -171,7 +175,35 @@ public class WatchlistItemsFragment
 
         mContext = getActivity();
 
-        setHasOptionsMenu(true);
+//        setHasOptionsMenu(true);
+    }
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+        cursor.moveToPosition(info.position);
+
+        int itemId = item.getItemId();
+
+        // todo: handle
+
+        return false;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
+        cursor.moveToPosition(info.position);
+
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL)));
+
+        String[] menuItems = getResources().getStringArray(R.array.context_menu_watchlist);
+        for (int i = 0; i < menuItems.length; i++) {
+            menu.add(Menu.NONE, i, i, menuItems[i]);
+        }
     }
 
     @Override
