@@ -275,7 +275,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     sort = args.getString(KEY_ARGUMENTS_SORT);
                 }
                 // create loader
-                return new CursorLoader(getActivity(), allData.getUri(), allData.getAllColumns(), selection, null, sort);
+                return new CursorLoader(getActivity(), allData.getUri(), allData.getAllColumns(),
+                        selection, null, sort);
         }
         return null;
     }
