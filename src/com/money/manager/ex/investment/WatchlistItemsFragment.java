@@ -121,7 +121,7 @@ public class WatchlistItemsFragment
         super.onActivityCreated(savedInstanceState);
 
         // set fragment
-        setEmptyText(getString(R.string.no_data));
+        setEmptyText(getString(R.string.no_stock_data));
         setListShown(false);
 
         // create adapter
