@@ -238,8 +238,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             case ID_LOADER_ALL_DATA_DETAIL:
                 QueryAllData allData = new QueryAllData(getActivity());
                 // compose selection and sort
-                String selection = "",
-                        sort = "";
+                String selection = "", sort = "";
                 if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
                     ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
                     if (whereClause != null) {
