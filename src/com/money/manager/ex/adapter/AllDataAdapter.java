@@ -94,13 +94,15 @@ public class AllDataAdapter extends CursorAdapter {
         // take a holder
         AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
         // header index
-        if (!mHeadersAccountIndex.containsKey(cursor.getInt(cursor.getColumnIndex(ACCOUNTID)))) {
-            mHeadersAccountIndex.put(cursor.getInt(cursor.getColumnIndex(ACCOUNTID)), cursor.getPosition());
+        int accountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
+        if (!mHeadersAccountIndex.containsKey(accountId)) {
+            mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
         // write status
-        holder.txtStatus.setText(TransactionStatus.getStatusAsString(mContext, cursor.getString(cursor.getColumnIndex(STATUS))));
+        String status = cursor.getString(cursor.getColumnIndex(STATUS));
+        holder.txtStatus.setText(TransactionStatus.getStatusAsString(mContext, status));
         // color status
-        int colorBackground = TransactionStatus.getBackgroundColorFromStatus(mContext, cursor.getString(cursor.getColumnIndex(STATUS)));
+        int colorBackground = TransactionStatus.getBackgroundColorFromStatus(mContext, status);
         holder.linDate.setBackgroundColor(colorBackground);
         holder.txtStatus.setTextColor(Color.GRAY);
         // date group
@@ -286,11 +288,15 @@ public class AllDataAdapter extends CursorAdapter {
         return mShowAccountName;
     }
 
+    public void resetAccountHeaderIndexes() {
+        mHeadersAccountIndex.clear();
+    }
+
     /**
-     * @param mShowAccountName the mShowAccountName to set
+     * @param showAccountName the mShowAccountName to set
      */
-    public void setShowAccountName(boolean mShowAccountName) {
-        this.mShowAccountName = mShowAccountName;
+    public void setShowAccountName(boolean showAccountName) {
+        this.mShowAccountName = showAccountName;
     }
 
     /**

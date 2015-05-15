@@ -126,7 +126,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     /**
      * @return the mSearResultFragmentLoaderCallbacks
      */
-    public AllDataFragmentLoaderCallbacks getSearResultFragmentLoaderCallbacks() {
+    public AllDataFragmentLoaderCallbacks getSearchResultFragmentLoaderCallbacks() {
         return mSearResultFragmentLoaderCallbacks;
     }
 
@@ -182,7 +182,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         /*if (isShownBalance()) {
             adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getReadableDatabase());
         }*/
-        // set choice mode in listview
+        // set choice mode in list view
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
             getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -229,8 +229,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (getSearResultFragmentLoaderCallbacks() != null)
-            getSearResultFragmentLoaderCallbacks().onCallbackCreateLoader(id, args);
+        if (getSearchResultFragmentLoaderCallbacks() != null)
+            getSearchResultFragmentLoaderCallbacks().onCallbackCreateLoader(id, args);
         //animation
         setListShown(false);
 
@@ -238,8 +238,7 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
             case ID_LOADER_ALL_DATA_DETAIL:
                 QueryAllData allData = new QueryAllData(getActivity());
                 // compose selection and sort
-                String selection = "",
-                        sort = "";
+                String selection = "", sort = "";
                 if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
                     ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
                     if (whereClause != null) {
@@ -299,18 +298,16 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        if (getSearResultFragmentLoaderCallbacks() != null)
-            getSearResultFragmentLoaderCallbacks().onCallbackLoaderReset(loader);
+        AllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
+        if (parent != null) parent.onCallbackLoaderReset(loader);
 
         ((CursorAdapter) getListAdapter()).swapCursor(null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        AllDataFragmentLoaderCallbacks parent = getSearResultFragmentLoaderCallbacks();
-        if (parent != null) {
-            parent.onCallbackLoaderFinished(loader, data);
-        }
+        AllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
+        if (parent != null) parent.onCallbackLoaderFinished(loader, data);
 
         switch (loader.getId()) {
             case ID_LOADER_ALL_DATA_DETAIL:
@@ -326,6 +323,9 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                 } else {
                     setListShownNoAnimation(true);
                 }
+
+                // reset the transaction groups (account name collection)
+                adapter.resetAccountHeaderIndexes();
         }
     }
 
@@ -547,22 +547,8 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
          */
         @Override
         public boolean onActionItemClicked(ActionMode mode, android.view.MenuItem item) {
-            final ArrayList<Integer> transIds = new ArrayList<>();
-            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-                Cursor cursor = adapter.getCursor();
-                if (cursor != null) {
-                    SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
-                    for (int i = 0; i < getListView().getCheckedItemCount(); i++) {
-                        int position = positionChecked.keyAt(i);
-                        if (getListHeader() != null)
-                            position--;
-                        if (cursor.moveToPosition(position)) {
-                            transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-                        }
-                    }
-                }
-            }
+            ArrayList<Integer> transIds = getTransactionIds();
+
             switch (item.getItemId()) {
                 case R.id.menu_change_status:
                     changeTransactionStatus(transIds);
@@ -590,6 +576,28 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
                     }
             }
             return false;
+        }
+
+        private ArrayList<Integer> getTransactionIds(){
+            final ArrayList<Integer> transIds = new ArrayList<>();
+
+            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+                Cursor cursor = adapter.getCursor();
+                if (cursor != null) {
+                    SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
+                    for (int i = 0; i < getListView().getCheckedItemCount(); i++) {
+                        int position = positionChecked.keyAt(i);
+                        if (getListHeader() != null)
+                            position--;
+                        if (cursor.moveToPosition(position)) {
+                            transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+                        }
+                    }
+                }
+            }
+
+            return transIds;
         }
 
         private void changeTransactionStatus(final ArrayList<Integer> transIds){
