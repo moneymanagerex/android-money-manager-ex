@@ -351,15 +351,15 @@ public class MoneyManagerProvider extends ContentProvider {
                     cursorRet = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
                     break;
                 default:
-                    throw new IllegalArgumentException("Type of dataset not definied");
+                    throw new IllegalArgumentException("Type of dataset not defined");
             }
         } else {
-            throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
+            throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
         // notify listeners waiting for the data is ready
         cursorRet.setNotificationUri(getContext().getContentResolver(), uri);
 
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Rows number returned: " + cursorRet.getCount());
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Rows returned: " + cursorRet.getCount());
 
         return cursorRet;
     }

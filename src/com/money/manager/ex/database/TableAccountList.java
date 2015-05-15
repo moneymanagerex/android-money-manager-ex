@@ -52,12 +52,14 @@ public class TableAccountList extends Dataset {
 	public TableAccountList() {
 		super("accountlist_v1", DatasetType.TABLE, "accountlist");
 	}
-	@Override
+
+    @Override
 	public String[] getAllColumns() {
 		return new String[] { "ACCOUNTID AS _id", ACCOUNTID, ACCOUNTNAME,
 				ACCOUNTTYPE, ACCOUNTNUM, STATUS, NOTES, HELDAT, WEBSITE,
 				CONTACTINFO, ACCESSINFO, INITIALBAL, FAVORITEACCT, CURRENCYID };
 	}
+
 	@Override
 	public void setValueFromCursor(Cursor c) {
 		// controllo che non sia null il cursore
@@ -79,6 +81,7 @@ public class TableAccountList extends Dataset {
 		this.setFavoriteAcct(c.getString(c.getColumnIndex(FAVORITEACCT)));
 		this.setCurrencyId(c.getInt(c.getColumnIndex(CURRENCYID)));
 	}
+
 	/**
 	 * @return the accountId
 	 */

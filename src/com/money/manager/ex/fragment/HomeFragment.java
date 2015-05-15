@@ -471,22 +471,26 @@ public class HomeFragment extends Fragment implements
 
         mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
-                if (selectedAccount != null) {
-                    // do not show investment accounts until a separate view is created for them.
-                    String accountType = mAccountTypes.get(groupPosition);
-                    if(accountType.equalsIgnoreCase(getString(R.string.investment))) {
-                        return false;
-                    }
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+                                        int childPosition, long id) {
+                QueryAccountBills selectedAccount = mAccountsByType.get(mAccountTypes.get(groupPosition))
+                        .get(childPosition);
+                if (selectedAccount == null) return false;
 
-                    MainActivity activity = (MainActivity) getActivity();
-                    if (activity != null) {
-                        activity.showFragmentAccount(childPosition, selectedAccount.getAccountId());
-                        return true;
-                    }
+                int accountId = selectedAccount.getAccountId();
+
+                MainActivity activity = (MainActivity) getActivity();
+                if (activity == null) return false;
+
+                // do not show investment accounts until a separate view is created for them.
+                String accountType = mAccountTypes.get(groupPosition);
+                if (accountType.equalsIgnoreCase(getString(R.string.investment))) {
+                    activity.showWatchlistFragment(accountId);
+                } else {
+                    // default
+                    activity.showAccountFragment(accountId);
                 }
-                return false;
+                return true;
             }
         });
         // store settings when groups are collapsed/expanded

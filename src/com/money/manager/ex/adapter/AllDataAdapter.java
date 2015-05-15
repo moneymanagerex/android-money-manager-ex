@@ -79,6 +79,7 @@ public class AllDataAdapter extends CursorAdapter {
 
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
         super(context, c, -1);
+
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         // create hash map
         mHeadersAccountIndex = new HashMap<>();

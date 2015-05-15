@@ -148,10 +148,10 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
     }
 
     /**
-     * @param mSearResultFragmentLoaderCallbacks the mSearResultFragmentLoaderCallbacks to set
+     * @param searResultFragmentLoaderCallbacks the searResultFragmentLoaderCallbacks to set
      */
-    public void setSearResultFragmentLoaderCallbacks(AllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks) {
-        this.mSearResultFragmentLoaderCallbacks = mSearResultFragmentLoaderCallbacks;
+    public void setSearResultFragmentLoaderCallbacks(AllDataFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
+        this.mSearResultFragmentLoaderCallbacks = searResultFragmentLoaderCallbacks;
     }
 
     /**
@@ -189,10 +189,6 @@ public class AllDataFragment extends BaseListFragment implements LoaderCallbacks
         // set fragment
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
-
-        // option menu
-//        boolean hasOptionsMenu = Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
-//        setHasOptionsMenu(hasOptionsMenu);
 
         // create adapter
         AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);

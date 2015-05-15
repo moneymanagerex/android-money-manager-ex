@@ -73,6 +73,7 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
+import com.money.manager.ex.investment.WatchlistFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
 import com.money.manager.ex.recurring.transactions.RepeatingTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
@@ -175,19 +176,6 @@ public class MainActivity extends BaseFragmentActivity {
         restartActivity();
     }
 
-    public void changeFragment(int accountId) {
-        String tagFragment = AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
-        AccountFragment fragment;
-        fragment = (AccountFragment) getSupportFragmentManager().findFragmentByTag(tagFragment);
-        if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
-            fragment = AccountFragment.newIstance(accountId);
-        }
-        // set if shown open menu
-        fragment.setShownOpenDatabaseItemMenu(isDualPanel());
-        // show fragment
-        showFragment(fragment, tagFragment);
-    }
-
     /**
      * Dialog to choose exit from application
      */
@@ -278,7 +266,8 @@ public class MainActivity extends BaseFragmentActivity {
      * show dashboard fragment
      */
     public void showDashboardFragment() {
-        DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager().findFragmentByTag(DashboardFragment.class.getSimpleName());
+        DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager()
+                .findFragmentByTag(DashboardFragment.class.getSimpleName());
         if (dashboardFragment == null || dashboardFragment.getId() != getResIdLayoutContent()) {
             dashboardFragment = new DashboardFragment();
         }
@@ -341,13 +330,34 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     /**
-     * show a fragment select with position or account id
+     * show a fragment select with account id
      *
-     * @param position  to page
      * @param accountId account id of the fragment to be loaded
      */
-    public void showFragmentAccount(int position, int accountId) {
-        changeFragment(accountId);
+    public void showAccountFragment(int accountId) {
+        String tagFragment = AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        AccountFragment fragment;
+        fragment = (AccountFragment) getSupportFragmentManager().findFragmentByTag(tagFragment);
+        if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
+            fragment = AccountFragment.newInstance(accountId);
+        }
+        // set if shown open menu
+        fragment.setShownOpenDatabaseItemMenu(isDualPanel());
+        // show fragment
+        showFragment(fragment, tagFragment);
+    }
+
+    public void showWatchlistFragment(int accountId) {
+        String tagFragment = WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager()
+                .findFragmentByTag(tagFragment);
+        if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
+            fragment = WatchlistFragment.newInstance(accountId);
+        }
+        // set if shown open menu
+//        fragment.setShownOpenDatabaseItemMenu(isDualPanel());
+        // show fragment
+        showFragment(fragment, tagFragment);
     }
 
     /**
@@ -623,7 +633,7 @@ public class MainActivity extends BaseFragmentActivity {
             if (TextUtils.isEmpty(className))
                 className = HomeFragment.class.getName();
             if (className.contains(AccountFragment.class.getSimpleName())) {
-                changeFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+                showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
             } else {
                 try {
                     showFragment(Class.forName(className));
