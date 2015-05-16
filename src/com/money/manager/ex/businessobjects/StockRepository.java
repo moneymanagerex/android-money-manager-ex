@@ -82,10 +82,10 @@ public class StockRepository
     public boolean load(int accountId) {
         boolean result = false;
 
-        String selection = TableAccountList.ACCOUNTID + "=?";
-        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext).getReadableDatabase();
+        SQLiteDatabase database = getDatabase();
         if (database == null) return result;
 
+        String selection = TableAccountList.ACCOUNTID + "=?";
         Cursor cursor = database.query(this.getSource(), null, selection,
                 new String[]{Integer.toString(accountId)}, null, null, null);
         // check if cursor is valid
@@ -111,7 +111,9 @@ public class StockRepository
         return loader;
     }
 
-//    public int findIdBySymbol
+    public int findIdBySymbol() {
+
+    }
 
     /**
      * Update price for the security id.
@@ -129,5 +131,10 @@ public class StockRepository
                 new String[] { Integer.toString(id) }
         );
         Log.d(LOGCAT, Integer.toString(updateResult));
+    }
+
+    private SQLiteDatabase getDatabase() {
+        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext).getReadableDatabase();
+        return database;
     }
 }
