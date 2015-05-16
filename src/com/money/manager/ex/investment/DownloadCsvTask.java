@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.investment;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
@@ -36,6 +37,19 @@ public class DownloadCsvTask
     extends AsyncTask<String, String, String>{
 
     public static final int progress_bar_type = 0;
+
+    public DownloadCsvTask() {
+        // Context context
+//        mContext = context;
+    }
+
+//    private Context mContext;
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+//        showDialog(progress_bar_type);
+    }
 
     @Override
     protected String doInBackground(String... strings) {
@@ -59,7 +73,6 @@ public class DownloadCsvTask
                     + "/2011.kml");
 
             byte data[] = new byte[1024];
-
             long total = 0;
 
             while ((count = input.read(data)) != -1) {
@@ -84,12 +97,6 @@ public class DownloadCsvTask
         }
 
         return null;    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-//        showDialog(progress_bar_type);
-    }
 
     /**
      * After completing background task Dismiss the progress dialog

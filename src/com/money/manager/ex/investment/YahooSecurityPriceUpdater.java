@@ -24,16 +24,14 @@ import android.util.Log;
  * Updates security prices from Yahoo Finance.
  */
 public class YahooSecurityPriceUpdater
-        implements ISecurityPriceUpdater {
+        implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
 
     private final String LOGCAT = this.getClass().getSimpleName();
 
     private String mUrlPrefix = "http://download.finance.yahoo.com/d/quotes.csv?s=";
-    private String mUrlOptions = "&f=l1&e=.csv";
+    private String mUrlSuffix = "&f=l1&e=.csv";
 
-    public boolean updatePrices() {
-        boolean result = false;
-
+    public void updatePrices() {
         // todo: implementation
 
         // iterate through list
@@ -42,29 +40,22 @@ public class YahooSecurityPriceUpdater
 //        foreach
 //        String symbol = "";
 //        updatePrice(symbol);
-
-        return result;
     }
 
     @Override
-    public boolean updatePrice(String symbol) {
-        boolean result = false;
-
+    public void updatePrice(String symbol) {
         // validation
         if (TextUtils.isEmpty(symbol)) {
             Log.w(LOGCAT, "updatePrice called with an empty symbol.");
-            return result;
+            return;
         }
 
         // download individual price.
         String url = getPriceUrl(symbol);
-        new DownloadCsvTask().execute(url);
+//        new DownloadCsvTask().execute(url);
+        new DownloadCsvToStringTask(this).execute(url);
 
-        // update the price in database.
-
-        // save history record.
-
-        return result;
+        // Async call. The prices are updated in onCsvDownloaded.
     }
 
     private String getPriceUrl(String symbol) {
@@ -72,8 +63,32 @@ public class YahooSecurityPriceUpdater
 
         builder.append(mUrlPrefix);
         builder.append(symbol);
-        builder.append(mUrlOptions);
+        builder.append(mUrlSuffix);
 
         return builder.toString();
+    }
+
+    /**
+     * Called from CSV downloader on progress update.
+     * @param progress
+     */
+    @Override
+    public void onProgressUpdate(String progress) {
+        // progress is a number, percentage probably.
+        Log.d(LOGCAT, progress);
+    }
+
+    /**
+     * Called from the CSV downloader when the file is downloaded and the contents read.
+     * @param contents
+     */
+    @Override
+    public void onCsvDownloaded(String contents) {
+        Log.d(LOGCAT, contents);
+
+        // todo: update the price in database.
+
+        // todo: save price history record.
+
     }
 }
