@@ -17,30 +17,61 @@
  */
 package com.money.manager.ex.investment;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 /**
  * Updates security prices from Yahoo Finance.
  */
 public class YahooSecurityPriceUpdater
         implements ISecurityPriceUpdater {
 
-    @Override
-    public void updatePrices() {
+    private final String LOGCAT = this.getClass().getSimpleName();
+
+    private String mUrlPrefix = "http://download.finance.yahoo.com/d/quotes.csv?s=";
+    private String mUrlOptions = "&f=l1&e=.csv";
+
+    public boolean updatePrices() {
+        boolean result = false;
+
         // todo: implementation
 
         // iterate through list
 
         // download one by one.
-        String symbol = "";
-        updatePrice(symbol);
+//        foreach
+//        String symbol = "";
+//        updatePrice(symbol);
+
+        return result;
     }
 
     @Override
-    public void updatePrice(String symbol) {
+    public boolean updatePrice(String symbol) {
+        boolean result = false;
+
+        // validation
+        if (TextUtils.isEmpty(symbol)) {
+            Log.w(LOGCAT, "updatePrice called with an empty symbol.");
+            return result;
+        }
+
         // download individual price.
 
         // update the price in database.
 
         // save history record.
 
+        return result;
+    }
+
+    private String getPriceUrl(String symbol) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(mUrlPrefix);
+        builder.append(symbol);
+        builder.append(mUrlOptions);
+
+        return builder.toString();
     }
 }

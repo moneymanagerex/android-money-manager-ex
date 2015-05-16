@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.businessobjects;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -35,6 +36,12 @@ import com.money.manager.ex.utils.RawFileUtils;
  */
 public class StockRepository
     extends Dataset {
+
+    public static ContentValues getContentValues() {
+        ContentValues result = new ContentValues();
+        //result.put(STOCKID);
+        return result;
+    }
 
     /**
      * Constructor for Stock dataset.

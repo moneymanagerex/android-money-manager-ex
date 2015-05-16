@@ -398,8 +398,9 @@ public class Core {
         TableSubCategory subCategory = new TableSubCategory();
         Cursor cursor;
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
         // category
-        cursor = helper.getReadableDatabase().query(category.getSource(), null,
+        cursor = db.query(category.getSource(), null,
                 TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null, null, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
@@ -411,7 +412,7 @@ public class Core {
             cursor.close();
         }
         // sub-category
-        cursor = helper.getReadableDatabase().query(subCategory.getSource(), null,
+        cursor = db.query(subCategory.getSource(), null,
                 TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null, null, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
@@ -424,7 +425,10 @@ public class Core {
         }
         ////helper.close();
 
-        ret = (!TextUtils.isEmpty(categoryName) ? categoryName : "") + (!TextUtils.isEmpty(subCategoryName) ? ":" + subCategoryName : "");
+        ret = (!TextUtils.isEmpty(categoryName) ? categoryName : "") +
+                (!TextUtils.isEmpty(subCategoryName) ? ":" + subCategoryName : "");
+
+        db.close();
 
         return ret;
     }
@@ -539,7 +543,8 @@ public class Core {
                 int spanStart = Math.min(start, originalText.length());
                 int spanEnd = Math.min(start + search.length(), originalText.length());
 
-                highlighted.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), spanStart, spanEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                highlighted.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), spanStart,
+                        spanEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 start = normalizedText.indexOf(search, spanEnd);
             }

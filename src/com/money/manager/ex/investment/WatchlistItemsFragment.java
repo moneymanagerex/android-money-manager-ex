@@ -17,15 +17,17 @@
  */
 package com.money.manager.ex.investment;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,11 +40,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 
@@ -52,15 +53,17 @@ import java.util.ArrayList;
 public class WatchlistItemsFragment
         extends BaseListFragment
         implements LoaderCallbacks<Cursor> {
+
     // ID Loader
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
     // KEY Arguments
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
     private static final String LOGCAT = WatchlistItemsFragment.class.getSimpleName();
+
     private WatchlistItemsFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
-    private boolean mShownHeader = false;
+//    private boolean mShownHeader = false;
     private int mGroupId = 0;
     private int mAccountId = -1;
     private View mListHeader = null;
@@ -113,13 +116,6 @@ public class WatchlistItemsFragment
         this.mAutoStarLoader = mAutoStarLoader;
     }
 
-    /**
-     * @return the mShownHeader
-     */
-    public boolean isShownHeader() {
-        return mShownHeader;
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -131,7 +127,6 @@ public class WatchlistItemsFragment
         // create adapter
         StocksCursorAdapter adapter = new StocksCursorAdapter(mContext, null);
         adapter.setAccountId(mAccountId);
-        adapter.setShowAccountName(isShownHeader());
 
         // handle list item click.
         getListView().setOnItemClickListener(new OnItemClickListener() {
@@ -181,14 +176,29 @@ public class WatchlistItemsFragment
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-        cursor.moveToPosition(info.position);
+        Log.d(LOGCAT, "Context item selected at position: " + info.position);
 
+        Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
+        boolean cursorMoved = cursor.moveToPosition(info.position - 1);
+
+        ContentValues contents = StockRepository.getContentValues();
+        DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, contents, StockRepository.SYMBOL);
+
+        boolean result = false;
         int itemId = item.getItemId();
+//        String itemTitle = item.getTitle();
 
-        // todo: handle
+        switch (itemId) {
+            case 0:
+                // Update price
+                ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance();
+                String symbol = contents.getAsString(StockRepository.SYMBOL);
+                updater.updatePrice(symbol);
+                result = true;
+                break;
+        }
 
-        return false;
+        return result;
     }
 
     @Override
@@ -196,7 +206,12 @@ public class WatchlistItemsFragment
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
-        cursor.moveToPosition(info.position);
+
+//        int columns = cursor.getColumnCount();
+//        int rows = cursor.getCount();
+//        DatabaseUtils.dumpCursor(cursor);
+
+        boolean cursorMoved = cursor.moveToPosition(info.position - 1);
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL)));
 

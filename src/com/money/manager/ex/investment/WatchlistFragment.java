@@ -84,6 +84,30 @@ public class WatchlistFragment extends Fragment
         return fragment;
     }
 
+    private void confirmPriceUpdate() {
+        new AlertDialogWrapper.Builder(getActivity())
+                .setTitle(R.string.download)
+                .setMessage(R.string.confirm_price_download)
+                .setIcon(R.drawable.ic_action_help_light)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // update security prices
+                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance();
+                        updater.updatePrices();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
     @Override
     public void onCallbackCreateLoader(int id, Bundle args) {
     }
@@ -255,40 +279,23 @@ public class WatchlistFragment extends Fragment
         }
     }
 
+    /**
+     * Handle menu item click.
+     * Update prices.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.menu_update_prices:
+                // Update price
                 confirmPriceUpdate();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void confirmPriceUpdate() {
-        new AlertDialogWrapper.Builder(getActivity())
-                .setTitle(R.string.download)
-                .setMessage(R.string.confirm_price_download)
-                .setIcon(R.drawable.ic_action_help_light)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // update security prices
-                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance();
-                        updater.updatePrices();
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create()
-                .show();
     }
 
     @Override
