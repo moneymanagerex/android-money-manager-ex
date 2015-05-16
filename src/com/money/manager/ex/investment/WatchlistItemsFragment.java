@@ -46,7 +46,9 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class WatchlistItemsFragment
         extends BaseListFragment
@@ -66,6 +68,8 @@ public class WatchlistItemsFragment
     private int mAccountId = -1;
     private View mListHeader = null;
     private Context mContext;
+    private StockRepository mStockRepository;
+
 
     /**
      * Create a new instance of the fragment with accountId params
@@ -118,9 +122,13 @@ public class WatchlistItemsFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        mContext = getActivity();
+
         // set fragment
         setEmptyText(getString(R.string.no_stock_data));
         setListShown(false);
+
+        mStockRepository =  new StockRepository(mContext);
 
         // create adapter
         StocksCursorAdapter adapter = new StocksCursorAdapter(mContext, null);
@@ -166,8 +174,6 @@ public class WatchlistItemsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = getActivity();
-
 //        setHasOptionsMenu(true);
     }
 
@@ -180,7 +186,7 @@ public class WatchlistItemsFragment
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-        Log.d(LOGCAT, "Context item selected at position: " + info.position);
+//        Log.d(LOGCAT, "Context item selected at position: " + info.position);
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
         boolean cursorMoved = cursor.moveToPosition(info.position - 1);
@@ -235,7 +241,6 @@ public class WatchlistItemsFragment
 
         switch (id) {
             case ID_LOADER_ALL_DATA_DETAIL:
-                StockRepository allData = new StockRepository(mContext);
                 // compose selection and sort
                 String selection = "", sort = "";
                 if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
@@ -251,7 +256,8 @@ public class WatchlistItemsFragment
                     sort = args.getString(KEY_ARGUMENTS_SORT);
                 }
                 // create loader
-                return new CursorLoader(mContext, allData.getUri(), allData.getAllColumns(),
+                return new CursorLoader(mContext, mStockRepository.getUri(),
+                        mStockRepository.getAllColumns(),
                         selection, null, sort);
         }
         return null;
@@ -384,11 +390,13 @@ public class WatchlistItemsFragment
     }
 
     @Override
-    public void priceDownloadedFromYahoo(String symbol, String price) {
+    public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
+
         // todo: update the price in database.
+        //mStockRepository.updatePrice();
 
         // todo: save price history record.
 
-        Log.d(LOGCAT, symbol + price);
+        Log.d(LOGCAT, symbol + ", " + price + ", " + date);
     }
 }

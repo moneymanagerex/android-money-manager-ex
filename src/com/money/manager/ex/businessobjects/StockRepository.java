@@ -22,6 +22,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.CursorLoader;
+import android.util.Log;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.Dataset;
@@ -30,6 +31,8 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.utils.RawFileUtils;
+
+import java.math.BigDecimal;
 
 /**
  * Stocks account
@@ -67,6 +70,7 @@ public class StockRepository
     public static final String CURRENTPRICE = "CURRENTPRICE";
 
     private Context mContext;
+    private String LOGCAT = this.getClass().getSimpleName();
 
     @Override
     public String[] getAllColumns() {
@@ -107,4 +111,23 @@ public class StockRepository
         return loader;
     }
 
+//    public int findIdBySymbol
+
+    /**
+     * Update price for the security id.
+     */
+    public void updatePrice(int id, BigDecimal price) {
+        // if (getContentResolver().update(mAccountList.getUri(), values,
+        // TableAccountList.ACCOUNTID + "=?", new String[]{Integer.toString(mAccountId)}) <= 0) {
+
+        ContentValues values = getContentValues();
+//        values.put(STOCKID, id);
+        values.put(CURRENTPRICE, price.doubleValue());
+
+        int updateResult = mContext.getContentResolver().update(getUri(), values,
+                STOCKID + "=?",
+                new String[] { Integer.toString(id) }
+        );
+        Log.d(LOGCAT, Integer.toString(updateResult));
+    }
 }

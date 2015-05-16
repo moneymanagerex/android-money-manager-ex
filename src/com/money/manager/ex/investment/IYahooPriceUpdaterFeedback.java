@@ -17,9 +17,12 @@
  */
 package com.money.manager.ex.investment;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 /**
  * Interface for feedback from Yahoo security price updater.
  */
 public interface IYahooPriceUpdaterFeedback {
-    void priceDownloadedFromYahoo(String symbol, String price);
+    void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date);
 }

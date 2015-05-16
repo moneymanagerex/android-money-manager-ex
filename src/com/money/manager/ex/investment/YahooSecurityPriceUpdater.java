@@ -21,6 +21,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import au.com.bytecode.opencsv.CSVParser;
 
@@ -67,7 +71,7 @@ public class YahooSecurityPriceUpdater
         // download individual price.
         String url = getPriceUrl(symbol);
 //        new DownloadCsvTask().execute(url);
-        new DownloadCsvToStringTask(this).execute(symbol, url);
+        new DownloadCsvToStringTask(this).execute(url);
 
         // Async call. The prices are updated in onCsvDownloaded.
     }
@@ -94,7 +98,6 @@ public class YahooSecurityPriceUpdater
 
     /**
      * Called from the CSV downloader when the file is downloaded and the contents read.
-     * @param symbol Stock symbol
      * @param csvContents retrieved price
      */
     @Override
@@ -105,13 +108,25 @@ public class YahooSecurityPriceUpdater
         try {
             values = csvParser.parseLineMulti(csvContents);
         } catch (IOException e) {
+            Log.e(LOGCAT, "Error parsing downloaded CSV contents.");
             e.printStackTrace();
             return;
         }
 
-        Log.d(LOGCAT, csvContents);
+        // convert csv values to their original type.
 
-        mFeedback.priceDownloadedFromYahoo(null, null);
+        String symbol = values[0];
+        BigDecimal price = new BigDecimal(values[1]);
+        // date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date date = null;
+        try {
+            date = dateFormat.parse(values[2]);
+        } catch (ParseException e) {
+            Log.e(LOGCAT, "Error parsing date from CSV.");
+            e.printStackTrace();
+        }
 
+        mFeedback.priceDownloadedFromYahoo(symbol, price, date);
     }
 }

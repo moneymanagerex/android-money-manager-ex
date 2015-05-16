@@ -49,7 +49,9 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -361,7 +363,7 @@ public class WatchlistFragment extends Fragment
     }
 
     @Override
-    public void priceDownloadedFromYahoo(String symbol, String price) {
+    public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
         // update prices from yahoo.
     }
 }
