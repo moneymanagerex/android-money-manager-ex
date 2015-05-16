@@ -57,6 +57,8 @@ public class YahooSecurityPriceUpdater
         }
 
         // download individual price.
+        String url = getPriceUrl(symbol);
+        new DownloadCsvTask().execute(url);
 
         // update the price in database.
 

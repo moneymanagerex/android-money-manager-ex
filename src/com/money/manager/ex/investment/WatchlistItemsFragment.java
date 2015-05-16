@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.investment;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
