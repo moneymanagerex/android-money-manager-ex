@@ -20,16 +20,30 @@ package com.money.manager.ex.investment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.IOException;
+
+import au.com.bytecode.opencsv.CSVParser;
+
 /**
  * Updates security prices from Yahoo Finance.
+ * References:
+ * http://www.jarloo.com/yahoo_finance/
  */
 public class YahooSecurityPriceUpdater
         implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
 
+    public YahooSecurityPriceUpdater(IYahooPriceUpdaterFeedback feedback) {
+        mFeedback = feedback;
+    }
+
     private final String LOGCAT = this.getClass().getSimpleName();
 
+    // "http://download.finance.yahoo.com/d/quotes.csv?s=", A2, "&f=l1d1&e=.csv"
     private String mUrlPrefix = "http://download.finance.yahoo.com/d/quotes.csv?s=";
-    private String mUrlSuffix = "&f=l1&e=.csv";
+    // get symbol, last trade price, last trade date
+    private String mUrlSuffix = "&f=sl1d1&e=.csv";
+    // "&f=l1&e=.csv";
+    private IYahooPriceUpdaterFeedback mFeedback;
 
     public void updatePrices() {
         // todo: implementation
@@ -53,7 +67,7 @@ public class YahooSecurityPriceUpdater
         // download individual price.
         String url = getPriceUrl(symbol);
 //        new DownloadCsvTask().execute(url);
-        new DownloadCsvToStringTask(this).execute(url);
+        new DownloadCsvToStringTask(this).execute(symbol, url);
 
         // Async call. The prices are updated in onCsvDownloaded.
     }
@@ -75,20 +89,29 @@ public class YahooSecurityPriceUpdater
     @Override
     public void onProgressUpdate(String progress) {
         // progress is a number, percentage probably.
-        Log.d(LOGCAT, progress);
+//        Log.d(LOGCAT, progress);
     }
 
     /**
      * Called from the CSV downloader when the file is downloaded and the contents read.
-     * @param contents
+     * @param symbol Stock symbol
+     * @param csvContents retrieved price
      */
     @Override
-    public void onCsvDownloaded(String contents) {
-        Log.d(LOGCAT, contents);
+    public void onCsvDownloaded(String csvContents) {
+        // parse CSV contents to get proper fields that can be saved to the database.
+        CSVParser csvParser = new CSVParser();
+        String[] values;
+        try {
+            values = csvParser.parseLineMulti(csvContents);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
 
-        // todo: update the price in database.
+        Log.d(LOGCAT, csvContents);
 
-        // todo: save price history record.
+        mFeedback.priceDownloadedFromYahoo(null, null);
 
     }
 }

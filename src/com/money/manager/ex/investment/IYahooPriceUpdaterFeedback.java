@@ -18,9 +18,8 @@
 package com.money.manager.ex.investment;
 
 /**
- * Interface implemented by an object that instantiates an async task for download of prices.
+ * Interface for feedback from Yahoo security price updater.
  */
-public interface IDownloadAsyncTaskFeedback {
-    void onProgressUpdate(String progress);
-    void onCsvDownloaded(String csvContent);
+public interface IYahooPriceUpdaterFeedback {
+    void priceDownloadedFromYahoo(String symbol, String price);
 }

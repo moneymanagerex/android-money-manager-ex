@@ -17,10 +17,8 @@
  */
 package com.money.manager.ex.investment;
 
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Bundle;
@@ -42,7 +40,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -53,7 +50,7 @@ import java.util.ArrayList;
 
 public class WatchlistItemsFragment
         extends BaseListFragment
-        implements LoaderCallbacks<Cursor> {
+        implements LoaderCallbacks<Cursor>, IYahooPriceUpdaterFeedback {
 
     // ID Loader
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
@@ -173,6 +170,12 @@ public class WatchlistItemsFragment
 
 //        setHasOptionsMenu(true);
     }
+
+    /**
+     * Context menu click handler. Update individual price.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -192,7 +195,8 @@ public class WatchlistItemsFragment
         switch (itemId) {
             case 0:
                 // Update price
-                ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance();
+                ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+                        .getUpdaterInstance(this);
                 String symbol = contents.getAsString(StockRepository.SYMBOL);
                 updater.updatePrice(symbol);
                 result = true;
@@ -377,5 +381,14 @@ public class WatchlistItemsFragment
 
     public void setListHeader(View mHeaderList) {
         this.mListHeader = mHeaderList;
+    }
+
+    @Override
+    public void priceDownloadedFromYahoo(String symbol, String price) {
+        // todo: update the price in database.
+
+        // todo: save price history record.
+
+        Log.d(LOGCAT, symbol + price);
     }
 }

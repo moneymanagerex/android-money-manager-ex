@@ -17,10 +17,11 @@
  */
 package com.money.manager.ex.investment;
 
+import android.content.ContentValues;
+
 /**
- * Interface implemented by an object that instantiates an async task for download of prices.
+ * Parses to and from CSV format and Content Values?
  */
-public interface IDownloadAsyncTaskFeedback {
-    void onProgressUpdate(String progress);
-    void onCsvDownloaded(String csvContent);
+public class CsvParser {
+    private ContentValues mValues;
 }

@@ -55,7 +55,8 @@ import java.util.ArrayList;
  *
  */
 public class WatchlistFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, WatchlistItemsFragmentLoaderCallbacks {
+        implements LoaderManager.LoaderCallbacks<Cursor>, WatchlistItemsFragmentLoaderCallbacks,
+    IYahooPriceUpdaterFeedback {
 
     private static final String KEY_CONTENT = "WatchlistFragment:StockId";
     private static final int ID_LOADER_SUMMARY = 2;
@@ -93,7 +94,8 @@ public class WatchlistFragment extends Fragment
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // update security prices
-                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance();
+                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+                                .getUpdaterInstance(WatchlistFragment.this);
                         updater.updatePrices();
                         dialog.dismiss();
                     }
@@ -356,5 +358,10 @@ public class WatchlistFragment extends Fragment
 
     public void setNameFragment(String mNameFragment) {
         this.mNameFragment = mNameFragment;
+    }
+
+    @Override
+    public void priceDownloadedFromYahoo(String symbol, String price) {
+        // update prices from yahoo.
     }
 }

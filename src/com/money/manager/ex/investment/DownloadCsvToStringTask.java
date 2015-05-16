@@ -19,12 +19,9 @@ package com.money.manager.ex.investment;
 
 import android.os.AsyncTask;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -50,8 +47,10 @@ public class DownloadCsvToStringTask
 
     @Override
     protected String doInBackground(String... params) {
+        String url = params[0];
+
         try {
-            URL urlConnection = new URL(params[0]);
+            URL urlConnection = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) urlConnection
                     .openConnection();
             connection.setDoInput(true);
