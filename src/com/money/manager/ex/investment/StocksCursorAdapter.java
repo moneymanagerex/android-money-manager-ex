@@ -67,9 +67,6 @@ public class StocksCursorAdapter
     private LayoutInflater mInflater;
     private HashMap<Integer, Integer> mHeadersAccountIndex;
     private SparseBooleanArray mCheckedPosition;
-    private int mAccountId = -1;
-
-    private boolean mShowAccountName = false;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -121,18 +118,5 @@ public class StocksCursorAdapter
     public void setDatabase(SQLiteDatabase mDatabase) {
         this.mDatabase = mDatabase;
     }
-
-    public void resetAccountHeaderIndexes() {
-        if (mHeadersAccountIndex != null) mHeadersAccountIndex.clear();
-    }
-
-    public void setAccountId(int mAccountId) {
-        this.mAccountId = mAccountId;
-    }
-
-    public void setShowAccountName(boolean showAccountName) {
-        this.mShowAccountName = showAccountName;
-    }
-
 
 }

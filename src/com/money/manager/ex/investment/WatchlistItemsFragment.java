@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -39,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
@@ -61,7 +63,7 @@ public class WatchlistItemsFragment
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
     private static final String LOGCAT = WatchlistItemsFragment.class.getSimpleName();
 
-    private WatchlistItemsFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
+    private LoaderManager.LoaderCallbacks<Cursor> mParentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
 //    private boolean mShownHeader = false;
     private int mGroupId = 0;
@@ -70,6 +72,7 @@ public class WatchlistItemsFragment
     private Context mContext;
     private StockRepository mStockRepository;
     private StockHistoryRepository mStockHistoryRepository;
+    private Bundle mLoaderArgs;
 
     /**
      * Create a new instance of the fragment with accountId params
@@ -91,17 +94,17 @@ public class WatchlistItemsFragment
     }
 
     /**
-     * @return the mSearResultFragmentLoaderCallbacks
+     * @return the mParentLoaderCallbacks
      */
-    public WatchlistItemsFragmentLoaderCallbacks getSearchResultFragmentLoaderCallbacks() {
-        return mSearResultFragmentLoaderCallbacks;
+    public LoaderManager.LoaderCallbacks<Cursor> getParentLoaderCallbacks() {
+        return mParentLoaderCallbacks;
     }
 
     /**
      *
      */
-    public void setSearResultFragmentLoaderCallbacks(WatchlistItemsFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
-        this.mSearResultFragmentLoaderCallbacks = searResultFragmentLoaderCallbacks;
+    public void setSearResultFragmentLoaderCallbacks(LoaderCallbacks<Cursor> searResultFragmentLoaderCallbacks) {
+        this.mParentLoaderCallbacks = searResultFragmentLoaderCallbacks;
     }
 
     /**
@@ -132,7 +135,7 @@ public class WatchlistItemsFragment
 
         // create adapter
         StocksCursorAdapter adapter = new StocksCursorAdapter(mContext, null);
-        adapter.setAccountId(mAccountId);
+//        adapter.setAccountId(mAccountId);
 
         // handle list item click.
         getListView().setOnItemClickListener(new OnItemClickListener() {
@@ -232,37 +235,6 @@ public class WatchlistItemsFragment
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (getSearchResultFragmentLoaderCallbacks() != null)
-            getSearchResultFragmentLoaderCallbacks().onCallbackCreateLoader(id, args);
-        //animation
-        setListShown(false);
-
-        switch (id) {
-            case ID_LOADER_ALL_DATA:
-                // compose selection and sort
-                String selection = "", sort = "";
-                if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
-                    ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
-                    if (whereClause != null) {
-                        for (int i = 0; i < whereClause.size(); i++) {
-                            selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
-                        }
-                    }
-                }
-                // set sort
-                if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
-                    sort = args.getString(KEY_ARGUMENTS_SORT);
-                }
-                // create loader
-                return new CursorLoader(mContext, mStockRepository.getUri(),
-                        mStockRepository.getAllColumns(),
-                        selection, null, sort);
-        }
-        return null;
-    }
-
     /**
      * Add options to the action bar of the host activity.
      * This is not called in ActionBar Activity, i.e. Search.
@@ -303,18 +275,53 @@ public class WatchlistItemsFragment
         super.onDestroy();
     }
 
+    // Loader callbacks
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (getParentLoaderCallbacks() != null) getParentLoaderCallbacks().onCreateLoader(id, args);
+        // store the arguments for later. This is the WHERE filter.
+        mLoaderArgs = args;
+
+        //animation
+        setListShown(false);
+
+        switch (id) {
+            case ID_LOADER_ALL_DATA:
+                // compose selection and sort
+                String selection = "", sort = "";
+                if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
+                    ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
+                    if (whereClause != null) {
+                        for (int i = 0; i < whereClause.size(); i++) {
+                            selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
+                        }
+                    }
+                }
+                // set sort
+                if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
+                    sort = args.getString(KEY_ARGUMENTS_SORT);
+                }
+                // create loader
+                return new CursorLoader(mContext, mStockRepository.getUri(),
+                        mStockRepository.getAllColumns(),
+                        selection, null, sort);
+        }
+        return null;
+    }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        WatchlistItemsFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
-        if (parent != null) parent.onCallbackLoaderReset(loader);
+        LoaderManager.LoaderCallbacks<Cursor> parent = getParentLoaderCallbacks();
+        if (parent != null) parent.onLoaderReset(loader);
 
         ((CursorAdapter) getListAdapter()).swapCursor(null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        WatchlistItemsFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
-        if (parent != null) parent.onCallbackLoaderFinished(loader, data);
+        LoaderManager.LoaderCallbacks<Cursor> parent = getParentLoaderCallbacks();
+        if (parent != null) parent.onLoadFinished(loader, data);
 
         switch (loader.getId()) {
             case ID_LOADER_ALL_DATA:
@@ -322,14 +329,9 @@ public class WatchlistItemsFragment
                 adapter.swapCursor(data);
                 if (isResumed()) {
                     setListShown(true);
-                    if (data.getCount() <= 0 && getFloatingActionButton() != null)
-                        getFloatingActionButton().show(true);
                 } else {
                     setListShownNoAnimation(true);
                 }
-
-                // reset the transaction groups (account name collection)
-                adapter.resetAccountHeaderIndexes();
         }
     }
 
@@ -391,7 +393,6 @@ public class WatchlistItemsFragment
 
     @Override
     public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
-
         // update the price in database.
         mStockRepository.updateCurrentPrice(symbol, price);
 
@@ -400,9 +401,11 @@ public class WatchlistItemsFragment
         historyRepo.addStockHistoryRecord(symbol, price, date);
 
         // refresh the data.
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, null, this);
+        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, mLoaderArgs, getParentLoaderCallbacks());
 
-//        Log.d(LOGCAT, symbol + ", " + price + ", " + date);
+        // notify the user.
+        Toast.makeText(getActivity(), R.string.price_updated + ":" + symbol, Toast.LENGTH_SHORT)
+                .show();
     }
 
     private StockHistoryRepository getStockHistoryRepository() {

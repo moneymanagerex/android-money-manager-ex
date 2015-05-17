@@ -28,6 +28,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,11 +57,9 @@ import java.util.Date;
  *
  */
 public class WatchlistFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, WatchlistItemsFragmentLoaderCallbacks,
-        IPriceUpdaterFeedback {
+        implements IPriceUpdaterFeedback, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String KEY_CONTENT = "WatchlistFragment:StockId";
-    private static final int ID_LOADER_SUMMARY = 2;
 
     private WatchlistItemsFragment mDataFragment;
     private String mNameFragment;
@@ -73,6 +72,7 @@ public class WatchlistFragment extends Fragment
     private ImageView imgAccountFav, imgGotoAccount;
 
     private Context mContext;
+    private String LOGCAT = this.getClass().getSimpleName();
 
     /**
      * @param accountid ID Account to be display
@@ -112,19 +112,6 @@ public class WatchlistFragment extends Fragment
     }
 
     @Override
-    public void onCallbackCreateLoader(int id, Bundle args) {
-    }
-
-    @Override
-    public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data) {
-        getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
-    }
-
-    @Override
-    public void onCallbackLoaderReset(Loader<Cursor> loader) {
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
@@ -132,19 +119,6 @@ public class WatchlistFragment extends Fragment
         }
 
         mContext = getActivity();
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader result = null;
-
-        switch (id) {
-            case ID_LOADER_SUMMARY:
-                StockRepository stocks = new StockRepository(mContext);
-                result = stocks.getCursorLoader(mAccountId);
-        }
-
-        return result;
     }
 
     @Override
@@ -265,14 +239,33 @@ public class WatchlistFragment extends Fragment
         return view;
     }
 
+    // Loader callbacks
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader result = null;
+
+        switch (id) {
+            case WatchlistItemsFragment.ID_LOADER_ALL_DATA:
+//                StockRepository stocks = new StockRepository(mContext);
+//                result = stocks.getCursorLoader(mAccountId);
+                // just update the arguments.
+                args = prepareArgsForChildFragment();
+        }
+
+        return result;
+    }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        // test
+        Log.d(LOGCAT, "loader reset");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
-            case ID_LOADER_SUMMARY:
+            case WatchlistItemsFragment.ID_LOADER_ALL_DATA:
                 // set titles
                 BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
                 if (activity != null) {
@@ -281,6 +274,8 @@ public class WatchlistFragment extends Fragment
                 break;
         }
     }
+
+    // End loader callbacks
 
     /**
      * Handle menu item click.

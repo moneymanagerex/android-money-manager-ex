@@ -24,7 +24,7 @@ import android.support.v4.content.Loader;
 /**
  *
  */
-public interface WatchlistItemsFragmentLoaderCallbacks {
+public interface FragmentLoaderCallbacks {
     void onCallbackCreateLoader(int id, Bundle args);
 
     void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data);
