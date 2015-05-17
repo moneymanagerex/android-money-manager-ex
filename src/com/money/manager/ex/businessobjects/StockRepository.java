@@ -30,6 +30,7 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Stocks account
@@ -79,7 +80,8 @@ public class StockRepository
     public boolean load(int accountId) {
         boolean result = false;
 
-        SQLiteDatabase database = getReadableDatabase();
+        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext)
+                .getReadableDatabase();
         if (database == null) return result;
 
         String selection = TableAccountList.ACCOUNTID + "=?";
@@ -122,7 +124,8 @@ public class StockRepository
     public int[] findIdsBySymbol(String symbol) {
         int[] result = null;
 
-        SQLiteDatabase db = getReadableDatabase();
+        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+                .getReadableDatabase();
         Cursor cursor = db.query(this.getSource(),
                 new String[]{STOCKID},
                 SYMBOL + "=?", new String[]{symbol},
@@ -148,11 +151,10 @@ public class StockRepository
     /**
      * Update price for the security id.
      */
-    public void updatePrice(int id, BigDecimal price) {
-        // if (getContentResolver().update(mAccountList.getUri(), values,
-        // TableAccountList.ACCOUNTID + "=?", new String[]{Integer.toString(mAccountId)}) <= 0) {
-
-        SQLiteDatabase db = getWritableDatabase();
+    public boolean updatePrice(int id, BigDecimal price) {
+        boolean result = false;
+        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+                .getWritableDatabase();
 
         ContentValues values = getContentValues();
 //        values.put(STOCKID, id);
@@ -163,10 +165,14 @@ public class StockRepository
                 values,
                 STOCKID + "=?", new String[]{Integer.toString(id)}
         );
+        if (updateResult != 0) {
+            result = true;
+        } else {
+            Log.w(LOGCAT, "Price update failed for stock id:" + id);
+        }
 
         db.close();
-
-        Log.d(LOGCAT, Integer.toString(updateResult));
+        return  result;
     }
 
     /**
@@ -180,17 +186,5 @@ public class StockRepository
         for (int id : ids) {
             updatePrice(id, price);
         }
-    }
-
-    private SQLiteDatabase getReadableDatabase() {
-        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext)
-                .getReadableDatabase();
-        return database;
-    }
-
-    private SQLiteDatabase getWritableDatabase() {
-        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext)
-                .getWritableDatabase();
-        return database;
     }
 }

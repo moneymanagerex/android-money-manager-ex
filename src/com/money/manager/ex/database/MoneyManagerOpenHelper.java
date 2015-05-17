@@ -44,6 +44,7 @@ import java.util.Locale;
  */
 public class MoneyManagerOpenHelper
         extends SQLiteOpenHelper {
+
     private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
     private static final int databaseCurrentVersion = 1;
     // singleton

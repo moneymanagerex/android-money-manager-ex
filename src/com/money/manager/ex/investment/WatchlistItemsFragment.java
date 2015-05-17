@@ -55,7 +55,7 @@ public class WatchlistItemsFragment
         implements LoaderCallbacks<Cursor>, IPriceUpdaterFeedback {
 
     // ID Loader
-    public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
+    public static final int ID_LOADER_ALL_DATA = 1;
     // KEY Arguments
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
@@ -69,7 +69,7 @@ public class WatchlistItemsFragment
     private View mListHeader = null;
     private Context mContext;
     private StockRepository mStockRepository;
-
+    private StockHistoryRepository mStockHistoryRepository;
 
     /**
      * Create a new instance of the fragment with accountId params
@@ -240,7 +240,7 @@ public class WatchlistItemsFragment
         setListShown(false);
 
         switch (id) {
-            case ID_LOADER_ALL_DATA_DETAIL:
+            case ID_LOADER_ALL_DATA:
                 // compose selection and sort
                 String selection = "", sort = "";
                 if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
@@ -317,7 +317,7 @@ public class WatchlistItemsFragment
         if (parent != null) parent.onCallbackLoaderFinished(loader, data);
 
         switch (loader.getId()) {
-            case ID_LOADER_ALL_DATA_DETAIL:
+            case ID_LOADER_ALL_DATA:
                 StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
                 adapter.swapCursor(data);
                 if (isResumed()) {
@@ -372,7 +372,7 @@ public class WatchlistItemsFragment
      * Start loader into fragment
      */
     public void startLoaderData() {
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getArguments(), this);
+        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, getArguments(), this);
     }
 
     @Override
@@ -395,8 +395,20 @@ public class WatchlistItemsFragment
         // update the price in database.
         mStockRepository.updateCurrentPrice(symbol, price);
 
-        // todo: save price history record.
+        // save price history record.
+        StockHistoryRepository historyRepo = getStockHistoryRepository();
+        historyRepo.addStockHistoryRecord(symbol, price, date);
 
-        Log.d(LOGCAT, symbol + ", " + price + ", " + date);
+        // refresh the data.
+        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, null, this);
+
+//        Log.d(LOGCAT, symbol + ", " + price + ", " + date);
+    }
+
+    private StockHistoryRepository getStockHistoryRepository() {
+        if (mStockHistoryRepository == null) {
+            mStockHistoryRepository = new StockHistoryRepository(mContext);
+        }
+        return mStockHistoryRepository;
     }
 }
