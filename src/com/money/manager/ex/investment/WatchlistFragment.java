@@ -249,8 +249,6 @@ public class WatchlistFragment extends Fragment
             case WatchlistItemsFragment.ID_LOADER_ALL_DATA:
 //                StockRepository stocks = new StockRepository(mContext);
 //                result = stocks.getCursorLoader(mAccountId);
-                // just update the arguments.
-                args = prepareArgsForChildFragment();
         }
 
         return result;

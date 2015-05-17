@@ -404,7 +404,8 @@ public class WatchlistItemsFragment
         getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, mLoaderArgs, getParentLoaderCallbacks());
 
         // notify the user.
-        Toast.makeText(getActivity(), R.string.price_updated + ":" + symbol, Toast.LENGTH_SHORT)
+        String message = getString(R.string.price_updated) + ": " + symbol;
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
                 .show();
     }
 
