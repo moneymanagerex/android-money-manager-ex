@@ -44,6 +44,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
+import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 
@@ -382,11 +383,6 @@ public class WatchlistItemsFragment
         return null;
     }
 
-    @Override
-    public void onFloatingActionButtonClickListener() {
-//        startCheckingAccountActivity(null);
-    }
-
     public void setListHeader(View mHeaderList) {
         this.mListHeader = mHeaderList;
     }
@@ -407,6 +403,9 @@ public class WatchlistItemsFragment
         String message = getString(R.string.price_updated) + ": " + symbol;
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
                 .show();
+
+        // notify about db file change.
+        DropboxHelper.notifyDataChanged();
     }
 
     private StockHistoryRepository getStockHistoryRepository() {
