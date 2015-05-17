@@ -125,8 +125,9 @@ public class WatchlistFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
+        // todo: enable this for update of all prices
         // add options menu for watchlist
-        inflater.inflate(R.menu.menu_watchlist, menu);
+        //inflater.inflate(R.menu.menu_watchlist, menu);
 
         // call create option menu of fragment
         mDataFragment.onCreateOptionsMenu(menu, inflater);
