@@ -58,8 +58,6 @@ public class DownloadCsvToStringTask
 
             InputStream input = connection.getInputStream();
             // Read returned value.
-//            BufferedInputStream inputStream = new BufferedInputStream(input);
-//            StringWriter writer = new StringWriter();
             InputStreamReader streamReader = new InputStreamReader(input);
             BufferedReader bufferedReader = new BufferedReader(streamReader);
             String line;
@@ -84,7 +82,6 @@ public class DownloadCsvToStringTask
     @Override
     protected void onProgressUpdate(String... progress) {
         // setting progress percentage.
-        // progress[0]
 //        pDialog.setProgress(Integer.parseInt(progress[0]));
         mCaller.onProgressUpdate(progress[0]);
     }

@@ -36,7 +36,7 @@ import au.com.bytecode.opencsv.CSVParser;
 public class YahooSecurityPriceUpdater
         implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
 
-    public YahooSecurityPriceUpdater(IYahooPriceUpdaterFeedback feedback) {
+    public YahooSecurityPriceUpdater(IPriceUpdaterFeedback feedback) {
         mFeedback = feedback;
     }
 
@@ -47,7 +47,7 @@ public class YahooSecurityPriceUpdater
     // get symbol, last trade price, last trade date
     private String mUrlSuffix = "&f=sl1d1&e=.csv";
     // "&f=l1&e=.csv";
-    private IYahooPriceUpdaterFeedback mFeedback;
+    private IPriceUpdaterFeedback mFeedback;
 
     public void updatePrices() {
         // todo: implementation
@@ -102,6 +102,11 @@ public class YahooSecurityPriceUpdater
      */
     @Override
     public void onCsvDownloaded(String csvContents) {
+        // validation
+        if (TextUtils.isEmpty(csvContents)) {
+            throw new IllegalArgumentException("Downloaded CSV contents are empty");
+        }
+
         // parse CSV contents to get proper fields that can be saved to the database.
         CSVParser csvParser = new CSVParser();
         String[] values;

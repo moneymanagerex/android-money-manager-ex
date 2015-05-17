@@ -24,13 +24,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.utils.RawFileUtils;
 
 import java.math.BigDecimal;
 
@@ -82,12 +79,19 @@ public class StockRepository
     public boolean load(int accountId) {
         boolean result = false;
 
-        SQLiteDatabase database = getDatabase();
+        SQLiteDatabase database = getReadableDatabase();
         if (database == null) return result;
 
         String selection = TableAccountList.ACCOUNTID + "=?";
-        Cursor cursor = database.query(this.getSource(), null, selection,
-                new String[]{Integer.toString(accountId)}, null, null, null);
+        Cursor cursor = database.query(
+                // table
+                this.getSource(),
+                // columns
+                null,
+                // selection, arguments
+                selection, new String[] { Integer.toString(accountId) },
+                // group by, having, order by
+                null, null, null);
         // check if cursor is valid
         if (cursor != null && cursor.moveToFirst()) {
             this.setValueFromCursor(cursor);
@@ -111,8 +115,34 @@ public class StockRepository
         return loader;
     }
 
-    public int findIdBySymbol() {
+    /**
+     * Retrieves all record ids which refer the given symbol.
+     * @return array of ids of records which contain the symbol.
+     */
+    public int[] findIdsBySymbol(String symbol) {
+        int[] result = null;
 
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(this.getSource(),
+                new String[]{STOCKID},
+                SYMBOL + "=?", new String[]{symbol},
+                null, null, null
+        );
+
+        if (cursor != null) {
+            int records = cursor.getCount();
+            result = new int[records];
+
+            for (int i = 0; i < records; i++) {
+                cursor.moveToNext();
+                result[i] = cursor.getInt(cursor.getColumnIndex(STOCKID));
+            }
+            cursor.close();
+        }
+
+        db.close();
+
+        return result;
     }
 
     /**
@@ -122,19 +152,45 @@ public class StockRepository
         // if (getContentResolver().update(mAccountList.getUri(), values,
         // TableAccountList.ACCOUNTID + "=?", new String[]{Integer.toString(mAccountId)}) <= 0) {
 
+        SQLiteDatabase db = getWritableDatabase();
+
         ContentValues values = getContentValues();
 //        values.put(STOCKID, id);
         values.put(CURRENTPRICE, price.doubleValue());
 
-        int updateResult = mContext.getContentResolver().update(getUri(), values,
-                STOCKID + "=?",
-                new String[] { Integer.toString(id) }
+        int updateResult = db.update(
+                getSource(),
+                values,
+                STOCKID + "=?", new String[]{Integer.toString(id)}
         );
+
+        db.close();
+
         Log.d(LOGCAT, Integer.toString(updateResult));
     }
 
-    private SQLiteDatabase getDatabase() {
-        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext).getReadableDatabase();
+    /**
+     * Update price for all the records with this symbol.
+     * @param symbol
+     * @param price
+     */
+    public void updateCurrentPrice(String symbol, BigDecimal price) {
+        int[] ids = findIdsBySymbol(symbol);
+
+        for (int id : ids) {
+            updatePrice(id, price);
+        }
+    }
+
+    private SQLiteDatabase getReadableDatabase() {
+        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext)
+                .getReadableDatabase();
+        return database;
+    }
+
+    private SQLiteDatabase getWritableDatabase() {
+        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext)
+                .getWritableDatabase();
         return database;
     }
 }

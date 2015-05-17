@@ -52,7 +52,7 @@ import java.util.Date;
 
 public class WatchlistItemsFragment
         extends BaseListFragment
-        implements LoaderCallbacks<Cursor>, IYahooPriceUpdaterFeedback {
+        implements LoaderCallbacks<Cursor>, IPriceUpdaterFeedback {
 
     // ID Loader
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
@@ -392,8 +392,8 @@ public class WatchlistItemsFragment
     @Override
     public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
 
-        // todo: update the price in database.
-        //mStockRepository.updatePrice();
+        // update the price in database.
+        mStockRepository.updateCurrentPrice(symbol, price);
 
         // todo: save price history record.
 

@@ -23,6 +23,6 @@ import java.util.Date;
 /**
  * Interface for feedback from Yahoo security price updater.
  */
-public interface IYahooPriceUpdaterFeedback {
+public interface IPriceUpdaterFeedback {
     void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date);
 }
