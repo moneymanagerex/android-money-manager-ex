@@ -186,7 +186,8 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                     whereClause = TableCurrencyFormats.CURRENCYNAME + " LIKE ?";
                     selectionArgs = new String[]{mCurFilter + "%"};
                 }
-                return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(), whereClause, selectionArgs, "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
+                return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(),
+                        whereClause, selectionArgs, "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
         }
 
         return null;

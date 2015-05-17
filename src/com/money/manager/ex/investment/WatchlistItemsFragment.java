@@ -17,10 +17,13 @@
  */
 package com.money.manager.ex.investment;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -28,6 +31,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,31 +40,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
+import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class WatchlistItemsFragment
         extends BaseListFragment
-        implements LoaderCallbacks<Cursor> {
+        implements LoaderCallbacks<Cursor>, IPriceUpdaterFeedback {
+
     // ID Loader
-    public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
+    public static final int ID_LOADER_ALL_DATA = 1;
     // KEY Arguments
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
     private static final String LOGCAT = WatchlistItemsFragment.class.getSimpleName();
-    private WatchlistItemsFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
+
+    private LoaderManager.LoaderCallbacks<Cursor> mParentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
-    private boolean mShownHeader = false;
+//    private boolean mShownHeader = false;
     private int mGroupId = 0;
     private int mAccountId = -1;
     private View mListHeader = null;
     private Context mContext;
+    private StockRepository mStockRepository;
+    private StockHistoryRepository mStockHistoryRepository;
+    private Bundle mLoaderArgs;
 
     /**
      * Create a new instance of the fragment with accountId params
@@ -82,17 +95,17 @@ public class WatchlistItemsFragment
     }
 
     /**
-     * @return the mSearResultFragmentLoaderCallbacks
+     * @return the mParentLoaderCallbacks
      */
-    public WatchlistItemsFragmentLoaderCallbacks getSearchResultFragmentLoaderCallbacks() {
-        return mSearResultFragmentLoaderCallbacks;
+    public LoaderManager.LoaderCallbacks<Cursor> getParentLoaderCallbacks() {
+        return mParentLoaderCallbacks;
     }
 
     /**
      *
      */
-    public void setSearResultFragmentLoaderCallbacks(WatchlistItemsFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
-        this.mSearResultFragmentLoaderCallbacks = searResultFragmentLoaderCallbacks;
+    public void setSearResultFragmentLoaderCallbacks(LoaderCallbacks<Cursor> searResultFragmentLoaderCallbacks) {
+        this.mParentLoaderCallbacks = searResultFragmentLoaderCallbacks;
     }
 
     /**
@@ -109,36 +122,32 @@ public class WatchlistItemsFragment
         this.mAutoStarLoader = mAutoStarLoader;
     }
 
-    /**
-     * @return the mShownHeader
-     */
-    public boolean isShownHeader() {
-        return mShownHeader;
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mContext = getActivity();
 
         // set fragment
         setEmptyText(getString(R.string.no_stock_data));
         setListShown(false);
 
+        mStockRepository =  new StockRepository(mContext);
+
         // create adapter
         StocksCursorAdapter adapter = new StocksCursorAdapter(mContext, null);
-        adapter.setAccountId(mAccountId);
-        adapter.setShowAccountName(isShownHeader());
+//        adapter.setAccountId(mAccountId);
 
-        // click item
+        // handle list item click.
         getListView().setOnItemClickListener(new OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
-                    Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
-                    if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
+                    getActivity().openContextMenu(view);
+//                    Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
+//                    if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
 //                        startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(StockRepository.STOCKID)));
-                    }
+//                    }
                 }
             }
         });
@@ -169,40 +178,62 @@ public class WatchlistItemsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = getActivity();
+//        setHasOptionsMenu(true);
+    }
 
-        setHasOptionsMenu(true);
+    /**
+     * Context menu click handler. Update individual price.
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+//        Log.d(LOGCAT, "Context item selected at position: " + info.position);
+
+        Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
+        boolean cursorMoved = cursor.moveToPosition(info.position - 1);
+
+        ContentValues contents = StockRepository.getContentValues();
+        DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, contents, StockRepository.SYMBOL);
+
+        boolean result = false;
+        int itemId = item.getItemId();
+//        String itemTitle = item.getTitle();
+
+        switch (itemId) {
+            case 0:
+                // Update price
+                ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+                        .getUpdaterInstance(this);
+                String symbol = contents.getAsString(StockRepository.SYMBOL);
+                updater.updatePrice(symbol);
+                result = true;
+                break;
+        }
+
+        return result;
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (getSearchResultFragmentLoaderCallbacks() != null)
-            getSearchResultFragmentLoaderCallbacks().onCallbackCreateLoader(id, args);
-        //animation
-        setListShown(false);
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        switch (id) {
-            case ID_LOADER_ALL_DATA_DETAIL:
-                StockRepository allData = new StockRepository(mContext);
-                // compose selection and sort
-                String selection = "", sort = "";
-                if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
-                    ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
-                    if (whereClause != null) {
-                        for (int i = 0; i < whereClause.size(); i++) {
-                            selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
-                        }
-                    }
-                }
-                // set sort
-                if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
-                    sort = args.getString(KEY_ARGUMENTS_SORT);
-                }
-                // create loader
-                return new CursorLoader(mContext, allData.getUri(), allData.getAllColumns(),
-                        selection, null, sort);
+        Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
+
+//        int columns = cursor.getColumnCount();
+//        int rows = cursor.getCount();
+//        DatabaseUtils.dumpCursor(cursor);
+
+        boolean cursorMoved = cursor.moveToPosition(info.position - 1);
+
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL)));
+
+        String[] menuItems = getResources().getStringArray(R.array.context_menu_watchlist);
+        for (int i = 0; i < menuItems.length; i++) {
+            menu.add(Menu.NONE, i, i, menuItems[i]);
         }
-        return null;
     }
 
     /**
@@ -245,33 +276,63 @@ public class WatchlistItemsFragment
         super.onDestroy();
     }
 
+    // Loader callbacks
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (getParentLoaderCallbacks() != null) getParentLoaderCallbacks().onCreateLoader(id, args);
+        // store the arguments for later. This is the WHERE filter.
+        mLoaderArgs = args;
+
+        //animation
+        setListShown(false);
+
+        switch (id) {
+            case ID_LOADER_ALL_DATA:
+                // compose selection and sort
+                String selection = "", sort = "";
+                if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
+                    ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
+                    if (whereClause != null) {
+                        for (int i = 0; i < whereClause.size(); i++) {
+                            selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
+                        }
+                    }
+                }
+                // set sort
+                if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
+                    sort = args.getString(KEY_ARGUMENTS_SORT);
+                }
+                // create loader
+                return new CursorLoader(mContext, mStockRepository.getUri(),
+                        mStockRepository.getAllColumns(),
+                        selection, null, sort);
+        }
+        return null;
+    }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        WatchlistItemsFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
-        if (parent != null) parent.onCallbackLoaderReset(loader);
+        LoaderManager.LoaderCallbacks<Cursor> parent = getParentLoaderCallbacks();
+        if (parent != null) parent.onLoaderReset(loader);
 
         ((CursorAdapter) getListAdapter()).swapCursor(null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        WatchlistItemsFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
-        if (parent != null) parent.onCallbackLoaderFinished(loader, data);
+        LoaderManager.LoaderCallbacks<Cursor> parent = getParentLoaderCallbacks();
+        if (parent != null) parent.onLoadFinished(loader, data);
 
         switch (loader.getId()) {
-            case ID_LOADER_ALL_DATA_DETAIL:
+            case ID_LOADER_ALL_DATA:
                 StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
                 adapter.swapCursor(data);
                 if (isResumed()) {
                     setListShown(true);
-                    if (data.getCount() <= 0 && getFloatingActionButton() != null)
-                        getFloatingActionButton().show(true);
                 } else {
                     setListShownNoAnimation(true);
                 }
-
-                // reset the transaction groups (account name collection)
-                adapter.resetAccountHeaderIndexes();
         }
     }
 
@@ -314,7 +375,7 @@ public class WatchlistItemsFragment
      * Start loader into fragment
      */
     public void startLoaderData() {
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getArguments(), this);
+        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, getArguments(), this);
     }
 
     @Override
@@ -322,12 +383,35 @@ public class WatchlistItemsFragment
         return null;
     }
 
-    @Override
-    public void onFloatingActionButtonClickListener() {
-//        startCheckingAccountActivity(null);
-    }
-
     public void setListHeader(View mHeaderList) {
         this.mListHeader = mHeaderList;
+    }
+
+    @Override
+    public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
+        // update the price in database.
+        mStockRepository.updateCurrentPrice(symbol, price);
+
+        // save price history record.
+        StockHistoryRepository historyRepo = getStockHistoryRepository();
+        historyRepo.addStockHistoryRecord(symbol, price, date);
+
+        // refresh the data.
+        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, mLoaderArgs, getParentLoaderCallbacks());
+
+        // notify the user.
+        String message = getString(R.string.price_updated) + ": " + symbol;
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
+                .show();
+
+        // notify about db file change.
+        DropboxHelper.notifyDataChanged();
+    }
+
+    private StockHistoryRepository getStockHistoryRepository() {
+        if (mStockHistoryRepository == null) {
+            mStockHistoryRepository = new StockHistoryRepository(mContext);
+        }
+        return mStockHistoryRepository;
     }
 }

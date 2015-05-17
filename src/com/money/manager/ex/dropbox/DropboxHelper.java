@@ -109,10 +109,14 @@ public class DropboxHelper {
         return mHelper;
     }
 
+    /**
+     * called whenever the database has changed and should be resynchronized.
+     */
     public static void notifyDataChanged() {
         if (mHelper == null) return;
         if (!mHelper.isLinked()) return;
         if (isDisableAutoUpload()) return;
+
         // save the last modified date
         File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
         mHelper.setDateLastModified(database.getName(), Calendar.getInstance().getTime());

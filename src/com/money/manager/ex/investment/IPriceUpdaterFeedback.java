@@ -17,17 +17,12 @@
  */
 package com.money.manager.ex.investment;
 
-import android.database.Cursor;
-import android.os.Bundle;
-import android.support.v4.content.Loader;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
- *
+ * Interface for feedback from Yahoo security price updater.
  */
-public interface WatchlistItemsFragmentLoaderCallbacks {
-    void onCallbackCreateLoader(int id, Bundle args);
-
-    void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data);
-
-    void onCallbackLoaderReset(Loader<Cursor> loader);
+public interface IPriceUpdaterFeedback {
+    void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date);
 }

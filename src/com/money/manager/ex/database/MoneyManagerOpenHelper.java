@@ -44,6 +44,7 @@ import java.util.Locale;
  */
 public class MoneyManagerOpenHelper
         extends SQLiteOpenHelper {
+
     private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
     private static final int databaseCurrentVersion = 1;
     // singleton
@@ -85,8 +86,10 @@ public class MoneyManagerOpenHelper
 
     /**
      * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
-     * It has no means to return any data (such as the number of affected rows). Instead, you're encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
-     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
+     * It has no means to return any data (such as the number of affected rows). Instead, you're
+     * encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
+     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class.
+     * So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
      *
      * @param db  the database
      * @param sql the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
@@ -98,8 +101,10 @@ public class MoneyManagerOpenHelper
 
     /**
      * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
-     * It has no means to return any data (such as the number of affected rows). Instead, you're encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
-     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
+     * It has no means to return any data (such as the number of affected rows). Instead, you're
+     * encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
+     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class.
+     * So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
      *
      * @param db       the database
      * @param sql      the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
@@ -112,8 +117,10 @@ public class MoneyManagerOpenHelper
 
     /**
      * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
-     * It has no means to return any data (such as the number of affected rows). Instead, you're encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
-     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
+     * It has no means to return any data (such as the number of affected rows). Instead, you're
+     * encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
+     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class.
+     * So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
      *
      * @param sql the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
      * @since versionCode = 12 Version = 0.5.2

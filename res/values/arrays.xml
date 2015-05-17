@@ -92,6 +92,11 @@
         <item>@string/delete</item>
     </string-array>
 
+    <!-- context menu for watchlist entries -->
+    <string-array name="context_menu_watchlist">
+        <item>@string/update_price</item>
+    </string-array>
+
     <!-- context menu options for currency list -->
     <string-array name="context_menu_currencies">
         <item>@string/edit</item>

@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
@@ -66,9 +67,6 @@ public class StocksCursorAdapter
     private LayoutInflater mInflater;
     private HashMap<Integer, Integer> mHeadersAccountIndex;
     private SparseBooleanArray mCheckedPosition;
-    private int mAccountId = -1;
-
-    private boolean mShowAccountName = false;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -121,15 +119,4 @@ public class StocksCursorAdapter
         this.mDatabase = mDatabase;
     }
 
-    public void resetAccountHeaderIndexes() {
-        if (mHeadersAccountIndex != null) mHeadersAccountIndex.clear();
-    }
-
-    public void setAccountId(int mAccountId) {
-        this.mAccountId = mAccountId;
-    }
-
-    public void setShowAccountName(boolean showAccountName) {
-        this.mShowAccountName = showAccountName;
-    }
 }

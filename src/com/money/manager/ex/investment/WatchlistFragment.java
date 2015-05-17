@@ -19,6 +19,7 @@ package com.money.manager.ex.investment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,9 +37,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.AccountListEditActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
@@ -47,16 +49,17 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
  */
 public class WatchlistFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, WatchlistItemsFragmentLoaderCallbacks {
+        implements IPriceUpdaterFeedback, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String KEY_CONTENT = "WatchlistFragment:StockId";
-    private static final int ID_LOADER_SUMMARY = 2;
 
     private WatchlistItemsFragment mDataFragment;
     private String mNameFragment;
@@ -64,15 +67,12 @@ public class WatchlistFragment extends Fragment
     private Integer mAccountId = null;
     private String mAccountName;
 
-//    private double mAccountBalance = 0;
-//    private double mAccountReconciled = 0;
-
     private TableAccountList mAccount;
 
-//    private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
 
     private Context mContext;
+    private String LOGCAT = this.getClass().getSimpleName();
 
     /**
      * @param accountid ID Account to be display
@@ -81,23 +81,34 @@ public class WatchlistFragment extends Fragment
     public static WatchlistFragment newInstance(int accountid) {
         WatchlistFragment fragment = new WatchlistFragment();
         fragment.mAccountId = accountid;
-        // set name of child fragment
         fragment.setNameFragment(WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountid));
 
         return fragment;
     }
 
-    @Override
-    public void onCallbackCreateLoader(int id, Bundle args) {
-    }
-
-    @Override
-    public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data) {
-        getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
-    }
-
-    @Override
-    public void onCallbackLoaderReset(Loader<Cursor> loader) {
+    private void confirmPriceUpdate() {
+        new AlertDialogWrapper.Builder(getActivity())
+                .setTitle(R.string.download)
+                .setMessage(R.string.confirm_price_download)
+                .setIcon(R.drawable.ic_action_help_light)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // update security prices
+                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+                                .getUpdaterInstance(WatchlistFragment.this);
+                        updater.updatePrices();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create()
+                .show();
     }
 
     @Override
@@ -111,21 +122,12 @@ public class WatchlistFragment extends Fragment
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader result = null;
-
-        switch (id) {
-            case ID_LOADER_SUMMARY:
-                StockRepository stocks = new StockRepository(mContext);
-                result = stocks.getCursorLoader(mAccountId);
-        }
-
-        return result;
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
+        // todo: enable this for update of all prices
+        // add options menu for watchlist
+        //inflater.inflate(R.menu.menu_watchlist, menu);
 
         // call create option menu of fragment
         mDataFragment.onCreateOptionsMenu(menu, inflater);
@@ -181,10 +183,6 @@ public class WatchlistFragment extends Fragment
 
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.fragment_watchlist_header, null, false);
 
-//        txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
-//        txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
-//        txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
-
         // favorite icon
         imgAccountFav = (ImageView) header.findViewById(R.id.imageViewAccountFav);
         // set listener click on favorite icon for change image
@@ -192,7 +190,7 @@ public class WatchlistFragment extends Fragment
             public void onClick(View v) {
                 // set status account
                 mAccount.setFavoriteAcct(!(mAccount.isFavoriteAcct()));
-                // populate contentvalues for update
+                // populate content values for update
                 ContentValues values = new ContentValues();
                 values.put(TableAccountList.FAVORITEACCT, mAccount.getFavoriteAcct());
                 // update
@@ -242,15 +240,31 @@ public class WatchlistFragment extends Fragment
         return view;
     }
 
+    // Loader callbacks
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader result = null;
+
+        switch (id) {
+            case WatchlistItemsFragment.ID_LOADER_ALL_DATA:
+//                StockRepository stocks = new StockRepository(mContext);
+//                result = stocks.getCursorLoader(mAccountId);
+        }
+
+        return result;
+    }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        return;
+        // test
+        Log.d(LOGCAT, "loader reset");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
-            case ID_LOADER_SUMMARY:
+            case WatchlistItemsFragment.ID_LOADER_ALL_DATA:
                 // set titles
                 BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
                 if (activity != null) {
@@ -260,16 +274,24 @@ public class WatchlistFragment extends Fragment
         }
     }
 
+    // End loader callbacks
+
+    /**
+     * Handle menu item click.
+     * Update prices.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.menu_add_transaction_account) {
-//            startCheckingAccountActivity();
-//            return true;
-//        } else if (item.getItemId() == R.id.menu_export_to_csv) {
-//            if (mDataFragment != null && mAccount != null)
-//                mDataFragment.exportDataToCSVFile(mAccount.getAccountName());
-//            return true;
-//        }
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case R.id.menu_update_prices:
+                // Update price
+                confirmPriceUpdate();
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -293,28 +315,10 @@ public class WatchlistFragment extends Fragment
     }
 
     private Bundle prepareArgsForChildFragment() {
-        // compose selection and sort
         ArrayList<String> selection = new ArrayList<>();
 
         selection.add(StockRepository.HELDAT + "=" + Integer.toString(mAccountId));
 
-//        selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountID + "="
-//                + Integer.toString(mAccountId) + ")");
-//        if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
-//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
-//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
-//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
-//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
-//            selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
-//            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
-//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
-//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
-//            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
-//        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
-//            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-//        }
-        // create a bundle to returns
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
         args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
@@ -349,5 +353,10 @@ public class WatchlistFragment extends Fragment
 
     public void setNameFragment(String mNameFragment) {
         this.mNameFragment = mNameFragment;
+    }
+
+    @Override
+    public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
+        // update prices from yahoo.
     }
 }
