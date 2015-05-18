@@ -1035,7 +1035,12 @@ public class MainActivity extends BaseFragmentActivity {
         if(mDrawer.isDrawerOpen(Gravity.LEFT)){
             mDrawer.closeDrawer(Gravity.LEFT);
         }else{
-            super.onBackPressed();
+            try {
+                super.onBackPressed();
+            } catch (IllegalStateException illegal) {
+                Log.e(LOGCAT, "Error on back pressed:" + illegal.getMessage());
+//                illegal.printStackTrace();
+            }
         }
     }
 }
