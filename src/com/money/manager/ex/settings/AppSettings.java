@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 
 import com.money.manager.ex.R;
 
@@ -32,21 +33,26 @@ public class AppSettings {
 
     public GeneralSettings General;
 
-    public AppSettings(Activity activity) {
-        mLinkedActivity = activity;
+    public AppSettings(Context context) {
+        mContext = context;
         init();
     }
 
-    private Activity mLinkedActivity;
+    private Context mContext;
     private SharedPreferences mSettings;
     private SharedPreferences.Editor mEditor;
+    private DatabaseSettings mDatabase;
 
     public boolean get(String key, boolean defaultValue) {
         return mSettings.getBoolean(key, defaultValue);
     }
 
+    public String get(String key, String defaultValue) {
+        return mSettings.getString(key, defaultValue);
+    }
+
     public boolean getHideReconciledAmounts() {
-        String key = mLinkedActivity.getString(R.string.pref_transaction_hide_reconciled_amounts);
+        String key = mContext.getString(R.string.pref_transaction_hide_reconciled_amounts);
         return this.get(key, false);
     }
 
@@ -66,11 +72,21 @@ public class AppSettings {
     }
 
     private void init() {
-        Context context = mLinkedActivity.getApplicationContext();
+        Context context = mContext.getApplicationContext();
         mSettings = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mSettings.edit();
 
-        this.General = new GeneralSettings(mLinkedActivity);
+        this.General = new GeneralSettings(mContext);
     }
 
+    public DatabaseSettings getDatabaseSettings() {
+        if (mDatabase == null) {
+            mDatabase = new DatabaseSettings(this);
+        }
+        return mDatabase;
+    }
+
+    public Context getContext() {
+        return mContext;
+    }
 }
