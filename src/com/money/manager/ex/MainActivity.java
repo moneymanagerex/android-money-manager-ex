@@ -612,9 +612,13 @@ public class MainActivity extends BaseFragmentActivity {
             // fragment create
             fragment = new HomeFragment();
             // add to stack
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    .commit();
         } else if (core.isTablet()) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    .commit();
         }
 
         // manage fragment

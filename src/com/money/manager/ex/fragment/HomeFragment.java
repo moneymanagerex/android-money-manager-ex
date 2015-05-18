@@ -56,6 +56,7 @@ import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
@@ -65,6 +66,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.view.RobotoTextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -199,6 +201,30 @@ public class HomeFragment extends Fragment implements
                     startActivity(intent);
                 }
             });
+        }
+
+        // Database migration v1.4 -> v2.0 location.
+        Button migrateDatabaseButton = (Button) view.findViewById(R.id.buttonMigrateDatabase);
+        if (migrateDatabaseButton != null) {
+            final DatabaseMigrator14To20 migrator = new DatabaseMigrator14To20(getActivity());
+            if (!migrator.legacyDataExists()) {
+
+                // add handler
+                OnClickListener migrateClickListener = new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean migrationSuccess = migrator.migrateLegacyDatabase();
+                    }
+                };
+                migrateDatabaseButton.setOnClickListener(migrateClickListener);
+            } else {
+                // hide migration notification.
+                RobotoTextView textMigrate = (RobotoTextView) view.findViewById(R.id.textMigrateDatabase);
+                textMigrate.setVisibility(View.GONE);
+
+                migrateDatabaseButton.setVisibility(View.GONE);
+            }
+
         }
 
         txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
