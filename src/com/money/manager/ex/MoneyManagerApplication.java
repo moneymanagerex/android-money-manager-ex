@@ -89,7 +89,8 @@ public class MoneyManagerApplication extends Application {
      */
     @SuppressLint("SdCardPath")
     public static String getDatabasePath(Context context) {
-        String databasePath = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), null);
+        String databasePath = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), null);
         if (databasePath != null) {
             File databaseFile = new File(databasePath);
             if (databaseFile.getAbsoluteFile().exists()) return databaseFile.toString();

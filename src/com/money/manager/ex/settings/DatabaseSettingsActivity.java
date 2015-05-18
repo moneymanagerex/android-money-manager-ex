@@ -43,47 +43,4 @@ public class DatabaseSettingsActivity extends BaseSettingsFragmentActivity {
         setSettingFragment(new DatabaseFragment());
     }
 
-    public static class DatabaseFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.database_settings);
-            PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-            final Preference pMoveDatabase = findPreference(getString(PreferencesConstant.PREF_DATABASE_BACKUP));
-            if (pMoveDatabase != null) {
-                pMoveDatabase.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        // copy files
-                        Core core = new Core(getActivity().getApplicationContext());
-                        File newDatabases = core.backupDatabase();
-                        if (newDatabases != null) {
-                            Toast.makeText(getActivity(), Html.fromHtml(getString(R.string.database_has_been_moved, "<b>" + newDatabases.getAbsolutePath() + "</b>")), Toast.LENGTH_LONG).show();
-                            //MainActivity.changeDatabase(newDatabases.getAbsolutePath());
-                            // save the database file
-                            MoneyManagerApplication.setDatabasePath(getActivity().getApplicationContext(), newDatabases.getAbsolutePath());
-                            DonateDialogUtils.resetDonateDialog(getActivity().getApplicationContext());
-                            // set to restart activity
-                            MainActivity.setRestartActivity(true);
-                        } else {
-                            Toast.makeText(getActivity(), R.string.copy_database_on_external_storage_failed, Toast.LENGTH_LONG).show();
-                        }
-                        return false;
-                    }
-                });
-                pMoveDatabase.setEnabled(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()).startsWith("/data/"));
-            }
-            final Preference pDatabasePath = findPreference(getActivity().getString(PreferencesConstant.PREF_DATABASE_PATH));
-            pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
-            //sqlite version
-            Preference pSQLiteVersion = findPreference(getString(PreferencesConstant.PREF_SQLITE_VERSION));
-            if (pSQLiteVersion != null) {
-                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
-                String sqliteVersion = helper.getSQLiteVersion();
-                if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
-            }
-        }
-    }
 }

@@ -53,6 +53,7 @@
     <string name="pref_transaction_shown_balance">transactionshownbalance</string>
     <string name="pref_transaction_hide_reconciled_amounts">pref_transaction_hide_reconciled_amounts</string>
     <string name="pref_database_backup">prefdatabasebackup</string>
+    <string name="pref_database_migrate_14_to_20">pref_database_migrate_14_to_20</string>
     <string name="pref_application_font">prefapplicationfont</string>
     <string name="pref_application_font_size">prefapplicationfontsize</string>
     <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>
