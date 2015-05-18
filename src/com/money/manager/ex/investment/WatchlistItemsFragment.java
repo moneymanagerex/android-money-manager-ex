@@ -336,6 +336,8 @@ public class WatchlistItemsFragment
         }
     }
 
+    // End loader handlers.
+
     @Override
     public void onStop() {
         super.onStop();
@@ -397,7 +399,8 @@ public class WatchlistItemsFragment
         historyRepo.addStockHistoryRecord(symbol, price, date);
 
         // refresh the data.
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, mLoaderArgs, getParentLoaderCallbacks());
+        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, mLoaderArgs, this);
+        // getParentLoaderCallbacks()
 
         // notify the user.
         String message = getString(R.string.price_updated) + ": " + symbol;
