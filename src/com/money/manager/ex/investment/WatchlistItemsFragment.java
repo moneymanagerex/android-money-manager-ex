@@ -394,9 +394,11 @@ public class WatchlistItemsFragment
         // update the price in database.
         mStockRepository.updateCurrentPrice(symbol, price);
 
+        // Do not store price history for now.
+        // todo: Once the viewer is implemented, then enable this functionality.
         // save price history record.
-        StockHistoryRepository historyRepo = getStockHistoryRepository();
-        historyRepo.addStockHistoryRecord(symbol, price, date);
+//        StockHistoryRepository historyRepo = getStockHistoryRepository();
+//        historyRepo.addStockHistoryRecord(symbol, price, date);
 
         // refresh the data.
         getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, mLoaderArgs, this);
