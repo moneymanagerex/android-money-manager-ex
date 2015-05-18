@@ -389,6 +389,15 @@ public class WatchlistItemsFragment
         this.mListHeader = mHeaderList;
     }
 
+    /**
+     * Called from price updater.
+     * @return
+     */
+    @Override
+    public Context getContext() {
+        return mContext;
+    }
+
     @Override
     public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
         // update the price in database.

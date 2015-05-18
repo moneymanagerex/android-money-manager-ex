@@ -97,6 +97,7 @@ public class WatchlistFragment extends Fragment
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
                                 .getUpdaterInstance(WatchlistFragment.this);
+                        // todo: get the list of symbols
                         updater.updatePrices();
                         dialog.dismiss();
                     }
@@ -125,9 +126,8 @@ public class WatchlistFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        // todo: enable this for update of all prices
         // add options menu for watchlist
-        //inflater.inflate(R.menu.menu_watchlist, menu);
+        inflater.inflate(R.menu.menu_watchlist, menu);
 
         // call create option menu of fragment
         mDataFragment.onCreateOptionsMenu(menu, inflater);
@@ -136,34 +136,6 @@ public class WatchlistFragment extends Fragment
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-
-        //force show add transaction
-        MenuItem itemAddTransaction = menu.findItem(R.id.menu_add_transaction_account);
-        if (itemAddTransaction != null)
-            itemAddTransaction.setVisible(true);
-        //manage dual panel
-        if (getActivity() != null && getActivity() instanceof MainActivity) {
-            MainActivity activity = (MainActivity) getActivity();
-            if (!activity.isDualPanel()) {
-                //hide dropbox toolbar
-                MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
-                if (itemDropbox != null)
-                    itemDropbox.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-                // hide menu open database
-                MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
-                if (itemOpenDatabase != null) {
-                    //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
-                    itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible()
-                            ? MenuItem.SHOW_AS_ACTION_ALWAYS
-                            : MenuItem.SHOW_AS_ACTION_NEVER);
-                }
-
-                //hide dash board
-                MenuItem itemDashboard = menu.findItem(R.id.menu_dashboard);
-                if (itemDashboard != null)
-                    itemDashboard.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-            }
-        }
 
     }
 
@@ -258,7 +230,7 @@ public class WatchlistFragment extends Fragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // test
-        Log.d(LOGCAT, "loader reset");
+//        Log.d(LOGCAT, "loader reset");
     }
 
     @Override
@@ -353,6 +325,15 @@ public class WatchlistFragment extends Fragment
 
     public void setNameFragment(String mNameFragment) {
         this.mNameFragment = mNameFragment;
+    }
+
+    /**
+     * Called from Price updater
+     * @return
+     */
+    @Override
+    public Context getContext() {
+        return mContext;
     }
 
     @Override

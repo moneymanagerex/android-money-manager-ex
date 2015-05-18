@@ -17,8 +17,13 @@
  */
 package com.money.manager.ex.investment;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.money.manager.ex.R;
+import com.money.manager.ex.dropbox.DropboxHelper;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -49,15 +54,16 @@ public class YahooSecurityPriceUpdater
     // "&f=l1&e=.csv";
     private IPriceUpdaterFeedback mFeedback;
 
-    public void updatePrices() {
-        // todo: implementation
+    /**
+     * Update prices for all the symbols in the list.
+     */
+    public void updatePrices(String... symbols) {
+        if (symbols == null) {
+            return;
+        }
 
-        // iterate through list
-
-        // download one by one.
-//        foreach
-//        String symbol = "";
-//        updatePrice(symbol);
+        YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(mFeedback.getContext());
+        downloader.execute(symbols);
     }
 
     @Override
