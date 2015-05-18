@@ -47,6 +47,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.AccountListEditActivity;
@@ -214,6 +215,13 @@ public class HomeFragment extends Fragment implements
                     @Override
                     public void onClick(View view) {
                         boolean migrationSuccess = migrator.migrateLegacyDatabase();
+                        if (migrationSuccess) {
+                            Toast.makeText(getActivity(), R.string.database_migrate_14_to_20_success,
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), R.string.database_migrate_14_to_20_failure,
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                 };
                 migrateDatabaseButton.setOnClickListener(migrateClickListener);
