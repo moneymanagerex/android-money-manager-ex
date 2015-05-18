@@ -152,7 +152,9 @@ public class MoneyManagerApplication extends Application {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lastPath = preferences.getString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), "");
         if (!lastPath.equals(currentPath)) {
-            preferences.edit().putString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), currentPath).apply();
+            preferences.edit()
+                    .putString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), currentPath)
+                    .apply();
 //                    .commit();
             try {
                 Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG)
