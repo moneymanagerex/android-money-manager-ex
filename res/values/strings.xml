@@ -561,4 +561,9 @@
     <string name="update_price">Update price</string>
     <string name="price_updated">Price updated</string>
     <string name="confirm_price_download">Do you want to update security prices online?</string>
+    <string name="database_migrate_14_to_20">Migrate database from v1.4</string>
+    <string name="database_migrate_14_to_20_explanation">Old data was found. Tap here to use your previous database.</string>
+    <string name="database_migrate_14_to_20_failure">Database migration failed. Please contact support.</string>
+    <string name="database_migrate_14_to_20_success">Database migration succeeded.</string>
+    <string name="database_migrate_14_to_20_complete">Migration completed. Please close the settings to start using this database.</string>
 </resources>

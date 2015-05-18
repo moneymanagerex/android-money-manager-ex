@@ -29,4 +29,9 @@
         android:icon="@null"
         android:key="@string/pref_database_backup"
         android:title="@string/menu_move_database_to_external_storage" />
+
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_database_migrate_14_to_20"
+        android:title="@string/database_migrate_14_to_20" />
 </PreferenceScreen>

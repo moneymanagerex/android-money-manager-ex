@@ -15,26 +15,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
 
 /**
- * Settings in the General category.
+ * Manipulates database settings/preferences.
  */
-public class GeneralSettings {
-    public GeneralSettings(Context context) {
-        this.mContext = context;
+public class DatabaseSettings {
+    public DatabaseSettings(AppSettings mainSettings) {
+        mSettings = mainSettings;
+//        mContext = context;
+//        mApplicationContext = context.getApplicationContext();
     }
 
-    private final Context mContext;
+    private AppSettings mSettings;
 
-    public String getApplicationLocale() {
-        String result = PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext())
-                .getString(mContext.getString(PreferencesConstant.PREF_LOCALE), "");
-        return result;
+    public String getDatabasePath() {
+//        String path = PreferenceManager.getDefaultSharedPreferences(mApplicationContext)
+//                .getString(mContext.getString(PreferencesConstant.PREF_DATABASE_PATH), "");
+        Context context = mSettings.getContext();
+        String key = context.getString(PreferencesConstant.PREF_DATABASE_PATH);
+        String path = mSettings.get(key, "");
+        return path;
     }
 
+    public void setDatabasePath(String path) {
+        Context context = mSettings.getContext();
+        String key = context.getString(PreferencesConstant.PREF_DATABASE_PATH);
+        mSettings.set(key, path);
+    }
 }

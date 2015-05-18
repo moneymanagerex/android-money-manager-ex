@@ -512,6 +512,7 @@ public class MainActivity extends BaseFragmentActivity {
 
         // check intent is valid
         if (getIntent() != null && getIntent().getData() != null) {
+            // todo: try to use this file as the current database!
             String pathFile = getIntent().getData().getEncodedPath();
             // decode
             try {
