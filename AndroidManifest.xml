@@ -15,7 +15,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  -->
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex" >
 
@@ -109,6 +109,24 @@
             android:authorities="com.money.manager.ex.provider"
             android:exported="true" >
         </provider>
+        <!-- used for qif export -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.money.manager.ex.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+        <!-- provider for tasker integration -->
+        <!--<provider android:name=".checkingaccount.NewTransactionContentProvider"-->
+            <!--android:authorities="com.money.manager.ex.NewTransaction"-->
+            <!--android:label="NewTransaction"-->
+            <!--android:grantUriPermissions="true"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true">-->
+        <!--</provider>-->
 
         <service
             android:name=".widget.SummaryDashExtension"
@@ -200,6 +218,10 @@
             android:label="@string/new_edit_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <!--<data android:scheme="content" />-->
+            </intent-filter>
         </activity>
         <activity
             android:name=".PayeeActivity"
@@ -219,40 +241,32 @@
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity
-            android:name=".about.AboutActivity"
+        <activity android:name=".about.AboutActivity"
             android:label="@string/about" >
         </activity>
-        <activity
-            android:name=".currency.CurrencyFormatsActivity"
+        <activity android:name=".currency.CurrencyFormatsActivity"
             android:label="@string/new_edit_currency" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity
-            android:name=".AccountListEditActivity"
+        <activity android:name=".AccountListEditActivity"
             android:label="@string/account_list" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
         <activity android:name=".recurring.transactions.RepeatingTransactionListActivity" />
-        <activity
-            android:name=".recurring.transactions.RepeatingTransactionActivity"
+        <activity android:name=".recurring.transactions.RepeatingTransactionActivity"
             android:label="@string/new_edit_repeating_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity
-            android:name=".settings.SettingsActivity"
+        <activity android:name=".settings.SettingsActivity"
             android:label="@string/settings" />
-        <activity
-            android:name=".settings.GeneralSettingsActivity"
+        <activity android:name=".settings.GeneralSettingsActivity"
             android:label="@string/preferences_general" />
-        <activity
-            android:name=".settings.LookFeelSettingsActivity"
+        <activity android:name=".settings.LookFeelSettingsActivity"
             android:label="@string/preferences_dispaly" />
-        <activity
-            android:name=".settings.SecuritySettingsActivity"
+        <activity android:name=".settings.SecuritySettingsActivity"
             android:label="@string/preferences_security" />
         <activity
             android:name=".settings.DatabaseSettingsActivity"

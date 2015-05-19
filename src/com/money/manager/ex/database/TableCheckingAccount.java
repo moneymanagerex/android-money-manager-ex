@@ -54,6 +54,7 @@ public class TableCheckingAccount extends Dataset {
 	public TableCheckingAccount() {
 		super("checkingaccount_v1", DatasetType.TABLE, "checkingaccount");
 	}
+
 	@Override
 	public String[] getAllColumns() {
 		return new String[] {

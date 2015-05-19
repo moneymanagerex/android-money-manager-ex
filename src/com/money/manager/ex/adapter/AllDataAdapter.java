@@ -49,8 +49,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ *
+ */
 @SuppressLint("UseSparseArrays")
 public class AllDataAdapter extends CursorAdapter {
+
     // type cursor
     private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
 
@@ -75,6 +79,7 @@ public class AllDataAdapter extends CursorAdapter {
 
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
         super(context, c, -1);
+
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         // create hash map
         mHeadersAccountIndex = new HashMap<>();
@@ -94,20 +99,22 @@ public class AllDataAdapter extends CursorAdapter {
         // take a holder
         AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
         // header index
-        if (!mHeadersAccountIndex.containsKey(cursor.getInt(cursor.getColumnIndex(ACCOUNTID)))) {
-            mHeadersAccountIndex.put(cursor.getInt(cursor.getColumnIndex(ACCOUNTID)), cursor.getPosition());
+        int accountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
+        if (!mHeadersAccountIndex.containsKey(accountId)) {
+            mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
         // write status
-        holder.txtStatus.setText(TransactionStatus.getStatusAsString(mContext, cursor.getString(cursor.getColumnIndex(STATUS))));
+        String status = cursor.getString(cursor.getColumnIndex(STATUS));
+        holder.txtStatus.setText(TransactionStatus.getStatusAsString(mContext, status));
         // color status
-        int colorBackground = TransactionStatus.getBackgroundColorFromStatus(mContext, cursor.getString(cursor.getColumnIndex(STATUS)));
+        int colorBackground = TransactionStatus.getBackgroundColorFromStatus(mContext, status);
         holder.linDate.setBackgroundColor(colorBackground);
         holder.txtStatus.setTextColor(Color.GRAY);
         // date group
         try {
             Locale locale = mContext.getResources().getConfiguration().locale;
 
-            Date date = new SimpleDateFormat("yyyy-MM-dd", locale)
+            Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, locale)
                     .parse(cursor.getString(cursor.getColumnIndex(DATE)));
             holder.txtMonth.setText(new SimpleDateFormat("MMM", locale).format(date));
             holder.txtYear.setText(new SimpleDateFormat("yyyy", locale).format(date));
@@ -286,11 +293,15 @@ public class AllDataAdapter extends CursorAdapter {
         return mShowAccountName;
     }
 
+    public void resetAccountHeaderIndexes() {
+        mHeadersAccountIndex.clear();
+    }
+
     /**
-     * @param mShowAccountName the mShowAccountName to set
+     * @param showAccountName the mShowAccountName to set
      */
-    public void setShowAccountName(boolean mShowAccountName) {
-        this.mShowAccountName = mShowAccountName;
+    public void setShowAccountName(boolean showAccountName) {
+        this.mShowAccountName = showAccountName;
     }
 
     /**

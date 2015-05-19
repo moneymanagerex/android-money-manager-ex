@@ -67,7 +67,8 @@ import java.util.Map;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.1.0
  */
-public class MoneyManagerProvider extends ContentProvider {
+public class MoneyManagerProvider
+        extends ContentProvider {
     // tag LOGCAT
     private static final String LOGCAT = MoneyManagerProvider.class.getSimpleName();
     // object definition for the call to check the content
@@ -78,8 +79,6 @@ public class MoneyManagerProvider extends ContentProvider {
     private static String mAuthority;
 
     private List<Dataset> objMoneyManager;
-
-    //public static final String AUTHORITY = "com.money.manager.ex.provider";
 
     public MoneyManagerProvider() {
         super();
@@ -187,6 +186,7 @@ public class MoneyManagerProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Update Uri: " + uri);
+
         // find object from uri
         Object ret = getObjectFromUri(uri);
         // Instance of database
@@ -303,65 +303,75 @@ public class MoneyManagerProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Query URI: " + uri);
+
         // find object from uri
-        Object ret = getObjectFromUri(uri);
+        Object sourceObject = getObjectFromUri(uri);
         // take a database reference
         MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
-        Cursor cursorRet;
-        // compose log verbose instruction
-        String log;
+        Cursor cursor;
+
         // check type of instance data set
-        if (Dataset.class.isInstance(ret)) {
-            Dataset dataset = ((Dataset) ret);
-            // compose log
-            if (dataset.getType() == DatasetType.SQL) {
-                log = selection;
-            } else {
-                if (projection != null) {
-                    log = "SELECT " + Arrays.asList(projection).toString();
-                } else {
-                    log = "SELECT *";
-                }
-                log += " FROM " + dataset.getSource();
-                if (!TextUtils.isEmpty(selection)) {
-                    log += " WHERE " + selection;
-                }
-                if (!TextUtils.isEmpty(sortOrder)) {
-                    log += " ORDER BY " + sortOrder;
-                }
-                if (selectionArgs != null) {
-                    log += "; ARGS=" + Arrays.asList(selectionArgs).toString();
-                }
-            }
-            // log
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+        if (Dataset.class.isInstance(sourceObject)) {
+            Dataset dataset = ((Dataset) sourceObject);
+
+            logQuery(dataset, projection, selection, selectionArgs, sortOrder);
+
             switch (dataset.getType()) {
                 case QUERY:
                     String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
-                    cursorRet = database.rawQuery(query, selectionArgs);
+                    cursor = database.rawQuery(query, selectionArgs);
                     break;
                 case SQL:
-                    cursorRet = database.rawQuery(selection, selectionArgs);
+                    cursor = database.rawQuery(selection, selectionArgs);
                     break;
                 case TABLE:
                 case VIEW:
                     SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
                     queryBuilder.setTables(dataset.getSource());
-                    cursorRet = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
+                    cursor = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
                     break;
                 default:
-                    throw new IllegalArgumentException("Type of dataset not definied");
+                    throw new IllegalArgumentException("Type of dataset not defined");
             }
         } else {
-            throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
+            throw new IllegalArgumentException("Object sourceObject of mapContent is not instance of dataset");
         }
+
         // notify listeners waiting for the data is ready
-        cursorRet.setNotificationUri(getContext().getContentResolver(), uri);
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Rows number returned: " + cursorRet.getCount());
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Rows returned: " + cursor.getCount());
 
-        return cursorRet;
+        return cursor;
+    }
+
+    private void logQuery(Dataset dataset, String[] projection, String selection,
+                          String[] selectionArgs, String sortOrder) {
+        // compose log verbose instruction
+        String log;
+        // compose log
+        if (dataset.getType() == DatasetType.SQL) {
+            log = selection;
+        } else {
+            if (projection != null) {
+                log = "SELECT " + Arrays.asList(projection).toString();
+            } else {
+                log = "SELECT *";
+            }
+            log += " FROM " + dataset.getSource();
+            if (!TextUtils.isEmpty(selection)) {
+                log += " WHERE " + selection;
+            }
+            if (!TextUtils.isEmpty(sortOrder)) {
+                log += " ORDER BY " + sortOrder;
+            }
+            if (selectionArgs != null) {
+                log += "; ARGS=" + Arrays.asList(selectionArgs).toString();
+            }
+        }
+        // log
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
     }
 
     /**

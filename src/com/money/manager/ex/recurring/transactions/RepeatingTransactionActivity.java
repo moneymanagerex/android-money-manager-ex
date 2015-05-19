@@ -32,6 +32,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -468,7 +469,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         // Set checked on start if we are editing a tx with split categories.
         chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
             @Override
-            public void onCheck(boolean b) {
+            public void onCheck(com.gc.materialdesign.views.CheckBox checkBox, boolean b) {
                 splitSet();
             }
         });

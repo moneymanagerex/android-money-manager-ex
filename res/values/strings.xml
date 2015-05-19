@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -294,6 +295,7 @@
     <string name="expenses">Expenses</string>
     <string name="difference">Difference</string>
     <string name="no_data">No records were found. To create one, tap the green plus button. </string>
+    <string name="no_stock_data">No stock data available for this account.</string>
     <string name="month">Month</string>
     <string name="year">Year</string>
     <string name="menu_reports">Reports</string>
@@ -553,10 +555,20 @@
     <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
     <string name="warning">Warning</string>
     <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
+    <string name="title_activity_search_results">SearchResultsActivity</string>
+    <string name="qif_export">Qif Export</string>
+    <string name="update_prices">Update prices</string>
+    <string name="update_price">Update price</string>
+    <string name="price_updated">Price updated</string>
+    <string name="all_prices_updated">All prices have been updated.</string>
+    <string name="confirm_price_download">Do you want to update security prices online?</string>
+    <string name="starting_price_update">Downloading prices, please wait…</string>
     <string name="database_migrate_14_to_20">Migrate database from v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Old data was found. Tap here to use your previous database.</string>
     <string name="database_migrate_14_to_20_failure">Database migration failed. Please contact support.</string>
     <string name="database_migrate_14_to_20_success">Database migration succeeded.</string>
     <string name="database_migrate_14_to_20_complete">Migration completed. Please close the settings to start using this database.</string>
     <string name="database_migrate_14_to_20_intro">A database has been detected at the old location. Tap the button below to migrate to SD card and use.</string>
+
+    <string name="export_prices">Export prices</string>
 </resources>

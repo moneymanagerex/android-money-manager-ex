@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package com.money.manager.ex.currency;
 
 import android.graphics.Bitmap;
@@ -31,7 +30,9 @@ import java.net.URL;
  * Task to asynchronously load chart image from the web.
  * See http://stackoverflow.com/questions/18953632/how-to-set-image-from-url-for-imageview
  */
-public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
+public class ImageLoadTask
+        extends AsyncTask<Void, Void, Bitmap> {
+
     private String url;
     private ImageView imageView;
 

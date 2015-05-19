@@ -30,7 +30,14 @@ import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallba
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 
-public class SearchActivity extends BaseFragmentActivity implements AllDataFragmentLoaderCallbacks, InputAmountDialogListener {
+public class SearchActivity extends BaseFragmentActivity
+        implements AllDataFragmentLoaderCallbacks, InputAmountDialogListener {
+
+    /**
+     * Indicates whether to show the account headers in search results.
+     */
+    public boolean ShowAccountHeaders = true;
+
 	private boolean mIsDualPanel = false;
 
 	@Override
@@ -38,16 +45,19 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
         setContentView(R.layout.search_activity);
         super.onCreate(savedInstanceState);
 
-        SearchFragment fragment = (SearchFragment) getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
-        if (fragment == null) {
+        SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
+                .findFragmentByTag(SearchFragment.class.getSimpleName());
+        if (searchFragment == null) {
             // fragment create
-            fragment = new SearchFragment();
+            searchFragment = new SearchFragment();
             // set dual panel
             LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
             mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
-            fragment.setDualPanel(mIsDualPanel);
+            searchFragment.setDualPanel(mIsDualPanel);
             // add to stack
-            getSupportFragmentManager().beginTransaction().add(R.id.fragmentContent, fragment, SearchFragment.class.getSimpleName()).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
+                    .commit();
         }
         // reconfigure the toolbar event
         setToolbarStandardAction(getToolbar(), R.id.action_cancel, R.id.action_search);
@@ -57,27 +67,7 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
     public void onCallbackCreateLoader(int id, Bundle args) {	}
 
 	@Override
-	public void onCallbackLoaderFinished(Loader<Cursor> loader, final Cursor data) {
-//		if (loader != null && loader.getId() == AllDataFragment.ID_LOADER_ALL_DATA_DETAIL && data != null) {
-//			// getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));
-//			// custom view count
-//			/*LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            final TextView txtCount = (TextView) inflater.inflate(R.layout.actionbar_textview_count, null);
-//
-//			txtCount.setText(Integer.toString(data.getCount()));
-//			// set the actionbar to use the custom view (can also be done with a style)
-//			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_TITLE);
-//
-//			// set the custom view to use
-//			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-//			getSupportActionBar().setCustomView(txtCount, lp);
-//			// set action bar
-//			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-//			getSupportActionBar().setTitle(R.string.result_search);
-//			getSupportActionBar().setSubtitle(getString(R.string.number_transaction_found, data.getCount()));*/
-//        }
-//		return;
-	}
+	public void onCallbackLoaderFinished(Loader<Cursor> loader, final Cursor data) { }
 
 	@Override
 	public void onCallbackLoaderReset(Loader<Cursor> loader) {	}
@@ -97,14 +87,6 @@ public class SearchActivity extends BaseFragmentActivity implements AllDataFragm
 		SearchFragment fragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
 		if (fragment != null) fragment.onFinishedInputAmountDialog(id, amount);
 	}
-
-//    public void onClickActionSearch(View v) {
-//        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContent);
-//        if (fragment != null && fragment instanceof SearchFragment) {
-//            SearchFragment searchFragment = (SearchFragment) fragment;
-//            searchFragment.executeSearch();
-//        }
-//    }
 
     @Override
     public boolean onActionCancelClick() {

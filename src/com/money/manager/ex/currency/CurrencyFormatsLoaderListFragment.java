@@ -186,7 +186,8 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                     whereClause = TableCurrencyFormats.CURRENCYNAME + " LIKE ?";
                     selectionArgs = new String[]{mCurFilter + "%"};
                 }
-                return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(), whereClause, selectionArgs, "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
+                return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(),
+                        whereClause, selectionArgs, "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
         }
 
         return null;
@@ -424,12 +425,10 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                 //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
                 dialog = new ProgressDialog(getActivity());
-                // setting dialog
                 dialog.setMessage(getString(R.string.start_currency_exchange_rates));
                 dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 dialog.setCancelable(false);
                 dialog.setCanceledOnTouchOutside(false);
-                // show dialog
                 dialog.show();
             }
 
@@ -441,7 +440,7 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                 for (int i = 0; i < currencyFormats.size(); i++) {
                     mCurrencyFormat = currencyFormats.get(i);
                     currencyUtils.updateCurrencyRateFromBase(mCurrencyFormat.getCurrencyId());
-                    publishProgress(new Integer[]{i});
+                    publishProgress(i);
                 }
                 return Boolean.TRUE;
             }

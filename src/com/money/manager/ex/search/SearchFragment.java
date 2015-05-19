@@ -26,8 +26,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,7 +41,6 @@ import android.widget.TextView;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.core.Core;
@@ -217,29 +214,6 @@ public class SearchFragment extends Fragment
         }
     }
 
-//    public void onDoneClick() {
-//        getActivity().finish();
-//    }
-//
-//    public void onSearchClick() {
-//        executeSearch();
-//    }
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        /*super.onCreateOptionsMenu(menu, inflater);
-//        Core core = new Core(getActivity().getApplicationContext());
-//        if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//            inflater.inflate(R.menu.menu_button_cancel_done, menu);
-//            // change item ok in search
-//            MenuItem doneItem = menu.findItem(R.id.menu_done);
-//            if (doneItem != null) {
-//                doneItem.setIcon(core.resolveIdAttribute(R.attr.ic_action_search));
-//                doneItem.setTitle(R.string.search);
-//            }
-//        }*/
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -258,9 +232,13 @@ public class SearchFragment extends Fragment
      * Compose arguments and execute search
      */
     public void executeSearch() {
-        ArrayList<String> whereClause = new ArrayList<>();
+        ArrayList<String> whereClause = assembleWhereClause();
 
-        //todo: use QueryAllData.* fields
+        showSearchResultsFragment(whereClause);
+    }
+
+    private ArrayList<String> assembleWhereClause() {
+        ArrayList<String> whereClause = new ArrayList<>();
 
         // account
         if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
@@ -316,34 +294,45 @@ public class SearchFragment extends Fragment
             whereClause.add(QueryAllData.Notes + " LIKE '%" + txtNotes.getText() + "%'");
         }
 
+        return whereClause;
+    }
+
+    private void showSearchResultsFragment(ArrayList<String> whereClause) {
         //create a fragment for search results.
-        AllDataFragment fragment;
-        fragment = (AllDataFragment) getActivity().getSupportFragmentManager()
+        AllDataFragment searchResultsFragment;
+        searchResultsFragment = (AllDataFragment) getActivity().getSupportFragmentManager()
                 .findFragmentByTag(AllDataFragment.class.getSimpleName());
-        if (fragment != null) {
-            getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        if (searchResultsFragment != null) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .remove(searchResultsFragment).commit();
         }
 
-        fragment = AllDataFragment.newInstance(-1);
+        searchResultsFragment = AllDataFragment.newInstance(-1);
+
         //create bundle
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, whereClause);
         args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
         //set arguments
-        fragment.setArguments(args);
-        fragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
-        fragment.setShownHeader(true);
+        searchResultsFragment.setArguments(args);
+        searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
+//        searchResultsFragment.setShownHeader(true);
+        if (getActivity() instanceof SearchActivity) {
+            SearchActivity activity = (SearchActivity) getActivity();
+            activity.ShowAccountHeaders = true;
+        }
+
         //add fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         //animation
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
                 R.anim.slide_in_right, R.anim.slide_out_left);
         // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack
+        // and add the transaction to the back stack.
         if (isDualPanel()) {
-            transaction.add(R.id.fragmentDetail, fragment, AllDataFragment.class.getSimpleName());
+            transaction.add(R.id.fragmentDetail, searchResultsFragment, AllDataFragment.class.getSimpleName());
         } else {
-            transaction.replace(R.id.fragmentContent, fragment, AllDataFragment.class.getSimpleName());
+            transaction.replace(R.id.fragmentContent, searchResultsFragment, AllDataFragment.class.getSimpleName());
             transaction.addToBackStack(null);
         }
         // Commit the transaction

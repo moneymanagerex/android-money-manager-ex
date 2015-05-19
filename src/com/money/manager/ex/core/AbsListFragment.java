@@ -36,7 +36,9 @@ import com.money.manager.ex.R;
 /**
  *
  */
-public class AbsListFragment extends Fragment {
+public class AbsListFragment
+        extends Fragment {
+
     final private Handler mHandler = new Handler();
     final private AdapterView.OnItemClickListener mOnClickListener
             = new AdapterView.OnItemClickListener() {
@@ -79,8 +81,7 @@ public class AbsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.abs_list_fragment,
-                container, false);
+        return inflater.inflate(R.layout.abs_list_fragment, container, false);
     }
 
     /**
