@@ -45,6 +45,7 @@ import android.widget.Toast;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.BaseListFragment;
 
@@ -59,9 +60,6 @@ public class WatchlistItemsFragment
 
     // ID Loader
     public static final int ID_LOADER_ALL_DATA = 1;
-    // KEY Arguments
-    public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
-    public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
     private static final String LOGCAT = WatchlistItemsFragment.class.getSimpleName();
 
     private LoaderManager.LoaderCallbacks<Cursor> mParentLoaderCallbacks;
@@ -291,8 +289,8 @@ public class WatchlistItemsFragment
             case ID_LOADER_ALL_DATA:
                 // compose selection and sort
                 String selection = "", sort = "";
-                if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
-                    ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
+                if (args != null && args.containsKey(AllDataFragment.KEY_ARGUMENTS_WHERE)) {
+                    ArrayList<String> whereClause = args.getStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE);
                     if (whereClause != null) {
                         for (int i = 0; i < whereClause.size(); i++) {
                             selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
@@ -300,8 +298,8 @@ public class WatchlistItemsFragment
                     }
                 }
                 // set sort
-                if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
-                    sort = args.getString(KEY_ARGUMENTS_SORT);
+                if (args != null && args.containsKey(AllDataFragment.KEY_ARGUMENTS_SORT)) {
+                    sort = args.getString(AllDataFragment.KEY_ARGUMENTS_SORT);
                 }
                 // create loader
                 return new CursorLoader(mContext, mStockRepository.getUri(),

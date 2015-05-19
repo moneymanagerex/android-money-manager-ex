@@ -296,8 +296,7 @@ public class WatchlistFragment extends Fragment
 
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
-        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
-                StockRepository.PURCHASEDATE + " DESC, " + StockRepository.STOCKID + " DESC");
+        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, StockRepository.SYMBOL + " ASC");
 
         return args;
     }
