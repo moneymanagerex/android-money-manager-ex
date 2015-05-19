@@ -41,6 +41,7 @@ import android.widget.TextView;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.core.Core;
@@ -124,7 +125,9 @@ public class SearchFragment extends Fragment
         // account list <> to populate the spin
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         if (mAccountList == null) {
-            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
+            AccountRepository accountRepository = new AccountRepository(getActivity().getApplicationContext());
+            mAccountList = accountRepository.getListAccounts(core.getAccountsOpenVisible(),
+                    core.getAccountFavoriteVisible());
             mAccountList.add(0, null);
             for (int i = 0; i <= mAccountList.size() - 1; i++) {
                 if (mAccountList.get(i) != null) {

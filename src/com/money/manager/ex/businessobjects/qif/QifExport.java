@@ -17,11 +17,13 @@
  */
 package com.money.manager.ex.businessobjects.qif;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.util.Log;
 
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.core.file.TextFileExport;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 
@@ -127,26 +129,4 @@ public class QifExport
     private IQifGenerator getQifGenerator() {
         return new QifGenerator(this.mContext);
     }
-
-    /**
-     * todo: load each account separately in the header itself.
-     * @return
-     */
-    private List<TableAccountList> loadAccounts() {
-//        Core core = new Core(this.context);
-
-        // load all accounts for now
-        List<TableAccountList> accountList = MoneyManagerOpenHelper
-                .getInstance(mContext)
-                .getListAccounts(false, false);
-        // core.getAccountsOpenVisible(), core.getAccountFavoriteVisible()
-
-//        for (int i = 0; i <= mAccountList.size() - 1; i++) {
-//            mAccountNameList.add(mAccountList.get(i).getAccountName());
-//            mAccountIdList.add(mAccountList.get(i).getAccountId());
-//        }
-
-        return accountList;
-    }
-
 }
