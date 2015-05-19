@@ -23,6 +23,7 @@ import android.util.Log;
 import android.widget.ListAdapter;
 
 import com.money.manager.ex.businessobjects.StockRepository;
+import com.money.manager.ex.core.file.TextFileExport;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -33,8 +34,11 @@ import au.com.bytecode.opencsv.CSVWriter;
 /**
  * Export of security prices to CSV file.
  */
-public class PriceCsvExport {
+public class PriceCsvExport
+        extends TextFileExport {
     public PriceCsvExport(Context context) {
+        super(context);
+        
         mContext = context;
     }
 
@@ -52,8 +56,23 @@ public class PriceCsvExport {
      */
     public void exportPrices(ListAdapter adapter, String filePrefix)
             throws IOException {
+        String content = this.getContent(adapter);
+
+//        CSVWriter writer = new CSVWriter(new FileWriter(getTempFile(filePrefix)));
+        String filename = "temp.csv";
+
+        try {
+            this.export(filename, content);
+        } catch (IOException ioex) {
+            Log.e(LOGCAT, "Error exporting prices: " + ioex.getMessage());
+        }
+    }
+
+    private String getContent(ListAdapter adapter) {
+        StringBuilder builder = new StringBuilder();
+        char separator = ',';
+
         int itemCount = adapter.getCount();
-        CSVWriter writer = new CSVWriter(new FileWriter(getTempFile(filePrefix)));
 
         for(int i = 0; i < itemCount; i++) {
             Cursor cursor = (Cursor) adapter.getItem(i);
@@ -62,14 +81,14 @@ public class PriceCsvExport {
             String date = cursor.getString(cursor.getColumnIndex(StockRepository.PURCHASEDATE));
             String price = cursor.getString(cursor.getColumnIndex(StockRepository.CURRENTPRICE));
 
-            Log.d(LOGCAT, symbol);
+            builder.append(symbol);
+            builder.append(separator);
+            builder.append(date);
+            builder.append(separator);
+            builder.append(price);
+            builder.append(System.lineSeparator());
         }
 
+        return builder.toString();
     }
-
-    private File getTempFile(String prefix) {
-        // todo: complete
-        return null;
-    }
-
 }
