@@ -103,11 +103,11 @@ $57.300000
         // Translation table:
         HashMap<String, String> accountDictionary = new HashMap<>();
         accountDictionary.put(AccountTypes.CHECKING.toString(), "Bank");
-        accountDictionary.put(Constants.ACCOUNT_TYPE_TERM, "Bank");
-        accountDictionary.put(Constants.ACCOUNT_TYPE_CREDIT_CARD, "CCard");
+        accountDictionary.put(AccountTypes.TERM.toString(), "Bank");
+        accountDictionary.put(AccountTypes.CREDIT_CARD.toString(), "CCard");
         // !Type:Invst
         // Newer versions use Port instead of Invst.
-        accountDictionary.put(Constants.ACCOUNT_TYPE_INVESTMENT, "Port");
+        accountDictionary.put(AccountTypes.INVESTMENT.toString(), "Port");
         // Cash?
 
         String result = accountDictionary.get(accountType);

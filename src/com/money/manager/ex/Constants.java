@@ -28,11 +28,6 @@ public class Constants {
     public static final String TRANSACTION_TYPE_WITHDRAWAL = "Withdrawal";
     public static final String TRANSACTION_TYPE_DEPOSIT = "Deposit";
     public static final String TRANSACTION_TYPE_TRANSFER = "Transfer";
-    // Account Type
-//    public static final String ACCOUNT_TYPE_CHECKING = "Checking";
-    public static final String ACCOUNT_TYPE_TERM = "Term";
-    public static final String ACCOUNT_TYPE_CREDIT_CARD = "Credit Card";
-    public static final String ACCOUNT_TYPE_INVESTMENT = "Investment";
     // Transaction Status
     public static final String TRANSACTION_STATUS_UNRECONCILED = "";
     public static final String TRANSACTION_STATUS_RECONCILED = "R";

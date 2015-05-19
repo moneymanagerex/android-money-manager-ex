@@ -335,11 +335,11 @@ public class HomeFragment extends Fragment implements
                             // set group title
                             if (AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.bank_accounts));
-                            } else if (Constants.ACCOUNT_TYPE_TERM.equalsIgnoreCase(accountType)) {
+                            } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.term_accounts));
-                            } else if (Constants.ACCOUNT_TYPE_CREDIT_CARD.equalsIgnoreCase(accountType)) {
+                            } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.credit_card_accounts));
-                            } else if (Constants.ACCOUNT_TYPE_INVESTMENT.equalsIgnoreCase(accountType)) {
+                            } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.investment_accounts));
                             }
                             totals.setReconciledBaseConvRate(.0);
@@ -672,11 +672,11 @@ public class HomeFragment extends Fragment implements
             if (!TextUtils.isEmpty(accountType)) {
                 if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_safe));
-                } else if (Constants.ACCOUNT_TYPE_TERM.equalsIgnoreCase(accountType)) {
+                } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
-                } else if (Constants.ACCOUNT_TYPE_CREDIT_CARD.equalsIgnoreCase(accountType)) {
+                } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_credit_card));
-                } else if (Constants.ACCOUNT_TYPE_INVESTMENT.equalsIgnoreCase(accountType)) {
+                } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.portfolio));
                 }
             }
