@@ -49,6 +49,7 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -132,6 +133,11 @@ public class WatchlistFragment extends Fragment
         mUpdateCounter = 0;
     }
 
+    /**
+     * Called once when the menu is created.
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -143,6 +149,10 @@ public class WatchlistFragment extends Fragment
         mDataFragment.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * Called every time the menu is displayed.
+     * @param menu
+     */
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -271,6 +281,10 @@ public class WatchlistFragment extends Fragment
             case R.id.menu_update_prices:
                 // Update price
                 confirmPriceUpdate();
+                break;
+            case R.id.menu_export_prices:
+                // export prices to CSV
+                exportPrices();
                 break;
         }
 
@@ -401,5 +415,14 @@ public class WatchlistFragment extends Fragment
         }
 
         return result;
+    }
+
+    private void exportPrices() {
+        PriceCsvExport export = new PriceCsvExport(mContext);
+        try {
+            export.exportPrices(mDataFragment.getListAdapter(), mAccountName);
+        } catch (IOException ioex) {
+            Log.e(LOGCAT, "Error exporting prices:" + ioex.getMessage());
+        }
     }
 }

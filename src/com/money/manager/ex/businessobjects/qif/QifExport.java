@@ -54,8 +54,6 @@ public class QifExport {
 
     private Context context;
     private String Logcat;
-    // todo: remove direct dependency?
-//    private AllDataAdapter DataAdapter;
 
     /**
      * Export the transactions into qif format and offer file for sharing.
