@@ -32,6 +32,7 @@ import com.money.manager.ex.database.TableAccountList;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -45,9 +46,8 @@ import java.util.Locale;
 public class QifExport {
     private static final String ProviderAuthority = "com.money.manager.ex.fileprovider";
     private static final String ExportDirectory = "export";
-//    private static final String QifExtension = ".qif";
 
-    public  QifExport(Context context) {
+    public QifExport(Context context) {
         this.context = context;
         this.Logcat = this.getClass().getSimpleName();
     }
@@ -154,7 +154,8 @@ public class QifExport {
         return true;
     }
 
-    private File createExportFile() throws Exception {
+    private File createExportFile()
+            throws Exception {
         File path = getExportDirectory();
         String fileName = generateFileName();
 
@@ -174,9 +175,10 @@ public class QifExport {
     /**
      * Generates the name of the export directory. Creates the directory if it does not exist.
      * @return A directory into which to temporarily export .qif file.
-     * @throws Exception
+     * @throws IOException
      */
-    private File getExportDirectory() throws Exception {
+    private File getExportDirectory()
+            throws IOException {
         File path = new File(this.context.getFilesDir(), ExportDirectory);
 //        File path = new File(this.context.getExternalFilesDir(null), ExportDirectory);
 //        File path = this.context.getExternalFilesDir(null);
@@ -186,7 +188,7 @@ public class QifExport {
         if (!path.exists()) {
             boolean directoryCreated = path.mkdir();
             if(!directoryCreated) {
-                throw new Exception("Could not create export directory!");
+                throw new IOException("Could not create export directory!");
             }
         }
 
@@ -235,7 +237,6 @@ public class QifExport {
 
         return accountList;
     }
-
 
     private void offerFile(Uri fileUri) {
         String title = this.context.getString(R.string.qif_export);

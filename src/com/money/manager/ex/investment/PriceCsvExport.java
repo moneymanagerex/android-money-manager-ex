@@ -39,6 +39,7 @@ public class PriceCsvExport {
     }
 
     private final String LOGCAT = this.getClass().getSimpleName();
+    private static final String ExportDirectory = "export";
 
     private Context mContext;
 
@@ -67,7 +68,8 @@ public class PriceCsvExport {
     }
 
     private File getTempFile(String prefix) {
-
+        // todo: complete
+        return null;
     }
 
 }
