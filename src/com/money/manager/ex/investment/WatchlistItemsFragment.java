@@ -125,6 +125,7 @@ public class WatchlistItemsFragment
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity();
+        mLoaderArgs = getArguments();
 
         // set fragment
         setEmptyText(getString(R.string.no_stock_data));
@@ -168,7 +169,7 @@ public class WatchlistItemsFragment
 
         // start loader
         if (isAutoStarLoader()) {
-            startLoaderData();
+            reloadData();
         }
     }
 
@@ -374,8 +375,9 @@ public class WatchlistItemsFragment
     /**
      * Start loader into fragment
      */
-    public void startLoaderData() {
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, getArguments(), this);
+    public void reloadData() {
+        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, mLoaderArgs, this);
+//        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, getArguments(), this);
     }
 
     @Override
@@ -408,7 +410,7 @@ public class WatchlistItemsFragment
 //        historyRepo.addStockHistoryRecord(symbol, price, date);
 
         // refresh the data.
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, mLoaderArgs, this);
+        reloadData();
 
         // notify the user.
         String message = getString(R.string.price_updated) + ": " + symbol;

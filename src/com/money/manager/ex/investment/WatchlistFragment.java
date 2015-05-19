@@ -41,11 +41,11 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.AccountListEditActivity;
-import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
@@ -73,6 +73,9 @@ public class WatchlistFragment extends Fragment
 
     private Context mContext;
     private String LOGCAT = this.getClass().getSimpleName();
+    // price update counter. Used to know when all the prices are done.
+    private int mUpdateCounter;
+    private int mToUpdateTotal;
 
     /**
      * @param accountid ID Account to be display
@@ -101,7 +104,10 @@ public class WatchlistFragment extends Fragment
                                 .getUpdaterInstance(WatchlistFragment.this);
                         // get the list of symbols
                         String[] symbols = getAllShownSymbols();
+                        mToUpdateTotal = symbols.length;
+
                         updater.updatePrices(symbols);
+
                         dialog.dismiss();
                     }
                 })
@@ -123,6 +129,7 @@ public class WatchlistFragment extends Fragment
         }
 
         mContext = getActivity();
+        mUpdateCounter = 0;
     }
 
     @Override
@@ -317,7 +324,7 @@ public class WatchlistFragment extends Fragment
      */
     public void startLoaderData() {
         if (mDataFragment != null) {
-            mDataFragment.startLoaderData();
+            mDataFragment.reloadData();
         }
     }
 
@@ -338,9 +345,48 @@ public class WatchlistFragment extends Fragment
         return mContext;
     }
 
+
+    /**
+     * Called from asynchronous task when a single price is downloaded.
+     * @param symbol
+     * @param price
+     * @param date
+     */
     @Override
     public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
-        // update prices from yahoo.
+        // prices updated.
+
+        // update the price in database.
+        StockRepository repo = getStockRepository();
+        repo.updateCurrentPrice(symbol, price);
+
+        mUpdateCounter += 1;
+        if (mUpdateCounter == mToUpdateTotal) {
+            completePriceUpdate();
+        }
+    }
+
+    private void completePriceUpdate() {
+        // this call is made from async task so have to get back to the main thread.
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // refresh the data.
+                mDataFragment.reloadData();
+
+                // notify about db file change.
+                DropboxHelper.notifyDataChanged();
+            }
+        });
+    }
+
+    private StockRepository mStockRepository;
+
+    private StockRepository getStockRepository() {
+        if (mStockRepository == null) {
+            mStockRepository = new StockRepository(mContext);
+        }
+        return mStockRepository;
     }
 
     private String[] getAllShownSymbols() {

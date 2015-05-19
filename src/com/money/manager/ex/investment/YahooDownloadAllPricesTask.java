@@ -58,6 +58,7 @@ public class YahooDownloadAllPricesTask
 
         DropboxHelper.setDisableAutoUpload(true);
 
+        // Check if the context still exists to avoid exceptions.
         showProgressDialog();
     }
 
