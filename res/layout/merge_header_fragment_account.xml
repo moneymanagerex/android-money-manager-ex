@@ -24,8 +24,8 @@
              android:stretchColumns="1"
     >
 
-    <TableRow
-        android:layout_marginLeft="55dp">
+    <!-- android:layout_marginLeft="55dp" -->
+    <TableRow>
 
         <com.money.manager.ex.view.RobotoTextView
             style="@style/Money.TextView.Body2.Inverse"
@@ -49,8 +49,8 @@
             android:textStyle="bold"/>
     </TableRow>
 
-    <TableRow
-        android:layout_marginLeft="55dp">
+    <!-- android:layout_marginLeft="55dp" -->
+    <TableRow>
 
         <com.money.manager.ex.view.RobotoTextView
             style="@style/Money.TextView.Body2.Inverse"
