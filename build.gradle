@@ -52,7 +52,7 @@ dependencies {
     // androidSVG
     compile project(':androidSVG_12')
     // Material Design library, used for checkboxes
-    compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
+    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
 }
 // MPChartAndroid
 repositories {
@@ -71,8 +71,8 @@ android {
         applicationId "com.money.manager.ex"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 616
-        versionName '2.0.5'
+        versionCode 617
+        versionName '2.1.0-alpha2'
         // 616 = 2.0.5
         // 612 = 2.1.0-alpha1
     }

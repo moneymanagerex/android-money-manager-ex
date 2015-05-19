@@ -44,6 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.gc.materialdesign.views.CheckBox;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.checkingaccount.DataParser;
 import com.money.manager.ex.checkingaccount.IntentDataParameters;
@@ -525,7 +526,7 @@ public class CheckingAccountActivity
 
         chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
             @Override
-            public void onCheck(boolean b) {
+            public void onCheck(CheckBox checkBox, boolean b) {
                 splitSet();
             }
         });
