@@ -48,6 +48,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -308,7 +309,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
         // Account
         // account list <> to populate the spin
-        mAccountList = MoneyManagerOpenHelper.getInstance(getApplicationContext()).getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
+        AccountRepository accountRepository = new AccountRepository(getApplicationContext());
+        mAccountList = accountRepository.getListAccounts(core.getAccountsOpenVisible(),
+                core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());

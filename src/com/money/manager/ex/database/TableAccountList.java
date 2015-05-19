@@ -33,7 +33,8 @@ public class TableAccountList extends Dataset {
 	public static final String ACCESSINFO = "ACCESSINFO"; 
 	public static final String INITIALBAL = "INITIALBAL";
 	public static final String FAVORITEACCT = "FAVORITEACCT";
-	public static final String CURRENCYID = "CURRENCYID"; 
+	public static final String CURRENCYID = "CURRENCYID";
+
 	// definizione dei campi
 	private int accountId;
 	private String accountName;

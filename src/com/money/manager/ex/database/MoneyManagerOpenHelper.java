@@ -61,6 +61,11 @@ public class MoneyManagerOpenHelper
         Log.v(LOGCAT, "event onCreate( )");
     }
 
+    /**
+     * Returns the singleton instance of the helper for database access.
+     * @param context Use Application context for database access (?)
+     * @return
+     */
     public static synchronized MoneyManagerOpenHelper getInstance(Context context) {
         if (mInstance == null) {
             Log.v(LOGCAT, "MoneyManagerOpenHelper.getInstance()");
@@ -171,47 +176,6 @@ public class MoneyManagerOpenHelper
                 Log.e(LOGCAT, E.getMessage());
             }
         }
-    }
-
-    /**
-     * @param open     show open accounts
-     * @param favorite show favorite account
-     * @return List<TableAccountList> list of accounts selected
-     */
-    public List<TableAccountList> getListAccounts(boolean open, boolean favorite) {
-        // create a return list
-        List<TableAccountList> listAccount = new ArrayList<>();
-        // compose where clause
-        String where = "";
-
-        if (open) {
-            where = "LOWER(STATUS)='open'";
-        }
-        if (favorite) {
-            where = "LOWER(FAVORITEACCT)='true'";
-        }
-        // data cursor
-        /*Cursor cursor = mContext.getContentResolver().query(
-                new TableAccountList().getUri(), null, where, null,
-				"upper(" + TableAccountList.ACCOUNTNAME + ")");*/
-        TableAccountList tAccountList = new TableAccountList();
-        SQLiteDatabase db = getReadableDatabase();
-        if (db != null) {
-            Cursor cursor = db.query(tAccountList.getSource(), tAccountList.getAllColumns(),
-                    where, null, null, null, TableAccountList.ACCOUNTNAME);
-            // populate list from data cursor
-            if (cursor != null && cursor.moveToFirst()) {
-                while (!(cursor.isAfterLast())) {
-                    TableAccountList account = new TableAccountList();
-                    account.setValueFromCursor(cursor);
-                    listAccount.add(account);
-                    cursor.moveToNext();
-                }
-                cursor.close();
-            }
-            db.close();
-        }
-        return listAccount;
     }
 
     /**

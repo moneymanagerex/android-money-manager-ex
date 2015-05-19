@@ -20,16 +20,15 @@ package com.money.manager.ex.checkingaccount;
 import android.content.Context;
 import android.net.Uri;
 
-import com.money.manager.ex.businessobjects.Account;
 import com.money.manager.ex.businessobjects.Category;
 import com.money.manager.ex.businessobjects.Payee;
+import com.money.manager.ex.database.AccountRepository;
 
 /**
  * Used to get parameters from intent.getData
  * Tasker integration via intent.
  */
 public class DataParser {
-
     public DataParser(Context context) {
         mContext = context;
     }
@@ -47,7 +46,7 @@ public class DataParser {
 
         // account
         String accountName = data.getQueryParameter(PARAM_ACCOUNT);
-        Account account = new Account(mContext);
+        AccountRepository account = new AccountRepository(mContext);
         int accountId = account.loadIdByName(accountName);
         parameters.accountId = accountId;
 

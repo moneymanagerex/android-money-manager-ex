@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
@@ -52,6 +53,7 @@ import com.money.manager.ex.checkingaccount.NewTransactionContentProvider;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.checkingaccount.YesNoDialogListener;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SplitCategoriesRepository;
@@ -356,8 +358,10 @@ public class CheckingAccountActivity
         // take a reference view into layout
         // account
         // accountlist <> to populate the spin
-        mAccountList = MoneyManagerOpenHelper.getInstance(getApplicationContext())
-                .getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
+        AccountRepository accountRepository = new AccountRepository(getApplicationContext());
+        // MoneyManagerOpenHelper.getInstance(getApplicationContext())
+        mAccountList = accountRepository.getTransactionAccounts(core.getAccountsOpenVisible(),
+                core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());
