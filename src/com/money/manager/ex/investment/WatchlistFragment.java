@@ -97,8 +97,9 @@ public class WatchlistFragment extends Fragment
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
                                 .getUpdaterInstance(WatchlistFragment.this);
-                        // todo: get the list of symbols
-                        updater.updatePrices();
+                        // get the list of symbols
+                        String[] symbols = getAllShownSymbols();
+                        updater.updatePrices(symbols);
                         dialog.dismiss();
                     }
                 })
@@ -339,5 +340,19 @@ public class WatchlistFragment extends Fragment
     @Override
     public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
         // update prices from yahoo.
+    }
+
+    private String[] getAllShownSymbols() {
+        int itemCount = mDataFragment.getListAdapter().getCount();
+        String[] result = new String[itemCount];
+
+        for(int i = 0; i < itemCount; i++) {
+            Cursor cursor = (Cursor) mDataFragment.getListAdapter().getItem(i);
+            String symbol = cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL));
+
+            result[i] = symbol;
+        }
+
+        return result;
     }
 }

@@ -48,35 +48,15 @@ public class DownloadCsvToStringTask
     @Override
     protected String doInBackground(String... params) {
         String url = params[0];
+        String result = null;
 
         try {
-            URL urlConnection = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) urlConnection
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-
-            InputStream input = connection.getInputStream();
-            // Read returned value.
-            InputStreamReader streamReader = new InputStreamReader(input);
-            BufferedReader bufferedReader = new BufferedReader(streamReader);
-            String line;
-            StringBuilder builder = new StringBuilder();
-            while ((line = bufferedReader.readLine()) != null) {
-                // return contents as string.
-                builder.append(line);
-            }
-
-            // close all in reverse order.
-            bufferedReader.close();
-            streamReader.close();
-            input.close();
-
-            return builder.toString();
+            TextDownloader downloader = new TextDownloader();
+            result = downloader.downloadAsText(url);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return result;
     }
 
     @Override

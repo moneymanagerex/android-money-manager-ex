@@ -31,6 +31,7 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.CurrencyUtils;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -39,12 +40,17 @@ import java.util.List;
 public class YahooDownloadAllPricesTask
     extends AsyncTask<String, Integer, Boolean> {
 
-    public YahooDownloadAllPricesTask(Context context) {
+    public YahooDownloadAllPricesTask(Context context, IDownloadAsyncTaskFeedback feedback) {
+        mFeedback = feedback;
         mContext = context;
     }
 
+    private final String LOGCAT = this.getClass().getSimpleName();
+
     private Context mContext;
     private ProgressDialog mDialog = null;
+    private IDownloadAsyncTaskFeedback mFeedback;
+    private int mProgressCount = 0;
 
     @Override
     protected void onPreExecute() {
@@ -53,29 +59,38 @@ public class YahooDownloadAllPricesTask
         DropboxHelper.setDisableAutoUpload(true);
 
         showProgressDialog();
-
     }
 
     @Override
-    protected Boolean doInBackground(String... strings) {
-        // todo: implement
+    protected Boolean doInBackground(String... symbols) {
+        TextDownloader downloader = new TextDownloader();
+        mDialog.setMax(symbols.length);
 
-//        CurrencyUtils currencyUtils = getCurrencyUtils();
-//        List<TableCurrencyFormats> currencyFormats = currencyUtils.getAllCurrencyFormats();
-//        mCountCurrencies = currencyFormats.size();
-//        for (int i = 0; i < currencyFormats.size(); i++) {
-//            mCurrencyFormat = currencyFormats.get(i);
-//            currencyUtils.updateCurrencyRateFromBase(mCurrencyFormat.getCurrencyId());
-//            publishProgress(i);
-//        }
+        for (String symbol:symbols) {
+            String url = mFeedback.getUrlForSymbol(symbol);
+            String csv = null;
+            try {
+                csv = downloader.downloadAsText(url);
+            } catch (IOException iox) {
+                Log.e(LOGCAT, iox.getMessage());
+                iox.printStackTrace();
+                return false;
+            }
+            // notify parent about the price update
+            mFeedback.onCsvDownloaded(csv);
+
+            mProgressCount += 1;
+            publishProgress(mProgressCount);
+        }
+
         return Boolean.TRUE;
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
+
         if (mDialog != null) {
-            // todo: set max
             //mDialog.setMax(mCountCurrencies);
 
             mDialog.setProgress(values[0]);

@@ -54,15 +54,22 @@ public class YahooSecurityPriceUpdater
     // "&f=l1&e=.csv";
     private IPriceUpdaterFeedback mFeedback;
 
+    // All the symbols to be updated.
+    private String[] mSymbolsToUpdate;
+    // The update progress counter.
+    private int mFetchedCount;
+
     /**
      * Update prices for all the symbols in the list.
      */
     public void updatePrices(String... symbols) {
-        if (symbols == null) {
-            return;
-        }
+        if (symbols == null) return;
 
-        YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(mFeedback.getContext());
+        mSymbolsToUpdate = symbols;
+        mFetchedCount = 0;
+
+        YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(
+                mFeedback.getContext(), this);
         downloader.execute(symbols);
     }
 
@@ -74,9 +81,11 @@ public class YahooSecurityPriceUpdater
             return;
         }
 
+        mSymbolsToUpdate = new String[] { symbol };
+        mFetchedCount = 0;
+
         // download individual price.
         String url = getPriceUrl(symbol);
-//        new DownloadCsvTask().execute(url);
         new DownloadCsvToStringTask(this).execute(url);
 
         // Async call. The prices are updated in onCsvDownloaded.
@@ -90,6 +99,12 @@ public class YahooSecurityPriceUpdater
         builder.append(mUrlSuffix);
 
         return builder.toString();
+    }
+
+    @Override
+    public String getUrlForSymbol(String symbol) {
+        String result = getPriceUrl(symbol);
+        return result;
     }
 
     /**
@@ -138,6 +153,10 @@ public class YahooSecurityPriceUpdater
             e.printStackTrace();
         }
 
-        mFeedback.priceDownloadedFromYahoo(symbol, price, date);
+        mFetchedCount += 1;
+        // Notify the parent (to update any lists, etc.) once all the prices
+        if (mFetchedCount == mSymbolsToUpdate.length) {
+            mFeedback.priceDownloadedFromYahoo(symbol, price, date);
+        }
     }
 }
