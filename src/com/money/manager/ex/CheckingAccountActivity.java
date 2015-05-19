@@ -732,7 +732,6 @@ public class CheckingAccountActivity
         this.mCategoryName = parameters.categoryName;
     }
 
-
     private void findControls() {
         spinStatus = (Spinner) findViewById(R.id.spinnerStatus);
         SpinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
@@ -1269,6 +1268,7 @@ public class CheckingAccountActivity
      * @return a boolean indicating whether the data is valid.
      */
     public boolean validateData() {
+        // Transfers.
         if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
             if (mToAccountId == -1) {
                 Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
@@ -1278,10 +1278,12 @@ public class CheckingAccountActivity
                 Core.alertDialog(this, R.string.error_transfer_to_same_account).show();
                 return false;
             }
-        } else if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
-            Core.alertDialog(this, R.string.error_payee_not_selected).show();
-            return false;
         }
+        // Payee is optional.
+//        if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
+//            Core.alertDialog(this, R.string.error_payee_not_selected).show();
+//            return false;
+//        }
         if (mCategoryId == -1 && (!chbSplitTransaction.isCheck())) {
             Core.alertDialog(this, R.string.error_category_not_selected).show();
             return false;
