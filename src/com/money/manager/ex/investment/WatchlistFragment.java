@@ -94,6 +94,8 @@ public class WatchlistFragment extends Fragment
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
+
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
                                 .getUpdaterInstance(WatchlistFragment.this);
@@ -338,7 +340,7 @@ public class WatchlistFragment extends Fragment
     }
 
     @Override
-    public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
+    public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
         // update prices from yahoo.
     }
 

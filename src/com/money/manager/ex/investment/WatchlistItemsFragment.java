@@ -399,7 +399,7 @@ public class WatchlistItemsFragment
     }
 
     @Override
-    public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
+    public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
         // update the price in database.
         mStockRepository.updateCurrentPrice(symbol, price);
 
@@ -411,7 +411,6 @@ public class WatchlistItemsFragment
 
         // refresh the data.
         getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, mLoaderArgs, this);
-        // getParentLoaderCallbacks()
 
         // notify the user.
         String message = getString(R.string.price_updated) + ": " + symbol;
@@ -422,10 +421,10 @@ public class WatchlistItemsFragment
         DropboxHelper.notifyDataChanged();
     }
 
-    private StockHistoryRepository getStockHistoryRepository() {
-        if (mStockHistoryRepository == null) {
-            mStockHistoryRepository = new StockHistoryRepository(mContext);
-        }
-        return mStockHistoryRepository;
-    }
+//    private StockHistoryRepository getStockHistoryRepository() {
+//        if (mStockHistoryRepository == null) {
+//            mStockHistoryRepository = new StockHistoryRepository(mContext);
+//        }
+//        return mStockHistoryRepository;
+//    }
 }

@@ -17,13 +17,8 @@
  */
 package com.money.manager.ex.investment;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-
-import com.money.manager.ex.R;
-import com.money.manager.ex.dropbox.DropboxHelper;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -153,10 +148,10 @@ public class YahooSecurityPriceUpdater
             e.printStackTrace();
         }
 
-        mFetchedCount += 1;
-        // Notify the parent (to update any lists, etc.) once all the prices
-        if (mFetchedCount == mSymbolsToUpdate.length) {
-            mFeedback.priceDownloadedFromYahoo(symbol, price, date);
-        }
+//        mFetchedCount += 1;
+//        // Notify the parent (to update any lists, etc.) once all the prices
+//        if (mFetchedCount == mSymbolsToUpdate.length) {
+        mFeedback.onPriceDownloaded(symbol, price, date);
+//        }
     }
 }

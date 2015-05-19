@@ -27,5 +27,5 @@ import java.util.Date;
  */
 public interface IPriceUpdaterFeedback {
     Context getContext();
-    void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date);
+    void onPriceDownloaded(String symbol, BigDecimal price, Date date);
 }

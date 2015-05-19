@@ -68,7 +68,7 @@ public class YahooDownloadAllPricesTask
 
         for (String symbol:symbols) {
             String url = mFeedback.getUrlForSymbol(symbol);
-            String csv = null;
+            String csv;
             try {
                 csv = downloader.downloadAsText(url);
             } catch (IOException iox) {
@@ -91,8 +91,6 @@ public class YahooDownloadAllPricesTask
         super.onProgressUpdate(values);
 
         if (mDialog != null) {
-            //mDialog.setMax(mCountCurrencies);
-
             mDialog.setProgress(values[0]);
 
             // todo: check what this does.
@@ -106,19 +104,19 @@ public class YahooDownloadAllPricesTask
     @Override
     protected void onPostExecute(Boolean result) {
         try {
-            if (mDialog != null) mDialog.hide();
+            if (mDialog != null) {
+                mDialog.hide();
+                mDialog.dismiss();
+            }
         } catch (Exception e) {
             Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
         }
         if (result) {
-            // todo: update text
-            Toast.makeText(mContext, R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();
         }
 
         DropboxHelper.setDisableAutoUpload(false);
         DropboxHelper.notifyDataChanged();
-
-//        ActivityUtils.restoreOrientation(getActivity(), mPrevOrientation);
 
         super.onPostExecute(result);
     }
@@ -128,9 +126,7 @@ public class YahooDownloadAllPricesTask
 
         mDialog = new ProgressDialog(context);
 
-        // todo: update text
-        mDialog.setMessage(context.getString(R.string.start_currency_exchange_rates));
-
+        mDialog.setMessage(context.getString(R.string.starting_price_update));
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setCancelable(false);
         mDialog.setCanceledOnTouchOutside(false);
