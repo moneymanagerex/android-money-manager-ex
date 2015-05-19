@@ -18,20 +18,17 @@
 package com.money.manager.ex.businessobjects.qif;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.file.TextFileExport;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -42,20 +39,14 @@ import java.util.Locale;
  * References:
  * http://en.wikipedia.org/wiki/Quicken_Interchange_Format
  */
-public class QifExport {
-    private static final String ProviderAuthority = "com.money.manager.ex.fileprovider";
-    private static final String ExportDirectory = "export";
-//    private static final String QifExtension = ".qif";
+public class QifExport
+        extends TextFileExport {
 
-    public  QifExport(Context context) {
-        this.context = context;
-        this.Logcat = this.getClass().getSimpleName();
+    public QifExport(Context context) {
+        super(context);
+
+        mContext = context;
     }
-
-    private Context context;
-    private String Logcat;
-    // todo: remove direct dependency?
-//    private AllDataAdapter DataAdapter;
 
     /**
      * Export the transactions into qif format and offer file for sharing.
@@ -65,42 +56,23 @@ public class QifExport {
         try {
             this.export_internal(adapter);
         } catch (Exception e) {
-            Log.e(this.Logcat, "Error in .qif export. See stack trace below...");
+            Log.e(this.LOGCAT, "Error in .qif export. See stack trace below...");
             e.printStackTrace();
         }
     }
 
     private void export_internal(AllDataAdapter adapter)
             throws Exception {
-        // clear previously exported files.
-        this.clearCache();
+        String fileName = generateFileName();
 
         // get data into qif structure
         IQifGenerator generator = getQifGenerator();
         String content = generator.createFromAdapter(adapter);
 
-        // save into temp file.
-        File file = createExportFile();
-        if (file == null) {
-            Log.e(this.Logcat, "Error creating qif file in cache.");
-            return;
-        }
-        boolean saved = dumpTransactionsIntoFile(content, file);
-        if (!saved) {
-            Log.e(this.Logcat, "Error saving data into qif file.");
-            return;
-        }
-
-        // share file
-        Uri contentUri = FileProvider.getUriForFile(this.context, ProviderAuthority, file);
-        offerFile(contentUri);
-
-        // delete local file
-//        file.delete();
-//        file.deleteOnExit();
+        boolean success = this.export(fileName, content);
     }
 
-//    private void dumpTransactionsIntoFile(String content, File file) {
+//    private void dumpContentIntoFile(String content, File file) {
 //        // files created this way are located in private files, not cache!
 //        try {
 //            FileOutputStream stream = this.context.openFileOutput(
@@ -114,7 +86,7 @@ public class QifExport {
 //        }
 //    }
 
-//    private boolean dumpTransactionsIntoFile(String content, File file) {
+//    private boolean dumpContentIntoFile(String content, File file) {
 //        boolean result;
 //
 //        try {
@@ -133,67 +105,6 @@ public class QifExport {
 //
 //        return result;
 //    }
-
-    private void clearCache() throws Exception {
-        // delete all cached files.
-        File path = getExportDirectory();
-        File[] files = path.listFiles();
-        for(File file : files) {
-            file.delete();
-        }
-    }
-
-    private boolean dumpTransactionsIntoFile(String content, File file) {
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            writer.write(content);
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-
-    private File createExportFile() throws Exception {
-        File path = getExportDirectory();
-        String fileName = generateFileName();
-
-//        tempFile = File.createTempFile(fileName, ".qif", path);
-
-        File file = new File(path, fileName);
-        boolean fileCreated = file.createNewFile();
-        if (!fileCreated) {
-            throw new Exception("Could not create export file!");
-        }
-
-        file.deleteOnExit();
-
-        return file;
-    }
-
-    /**
-     * Generates the name of the export directory. Creates the directory if it does not exist.
-     * @return A directory into which to temporarily export .qif file.
-     * @throws Exception
-     */
-    private File getExportDirectory() throws Exception {
-        File path = new File(this.context.getFilesDir(), ExportDirectory);
-//        File path = new File(this.context.getExternalFilesDir(null), ExportDirectory);
-//        File path = this.context.getExternalFilesDir(null);
-//        File path = new File(this.context.getCacheDir(), ExportDirectory);
-
-        // Create output directory if it does not exist.
-        if (!path.exists()) {
-            boolean directoryCreated = path.mkdir();
-            if(!directoryCreated) {
-                throw new Exception("Could not create export directory!");
-            }
-        }
-
-        return path;
-    }
 
     private String generateFileName() {
         // use just the date for now?
@@ -214,7 +125,7 @@ public class QifExport {
      * @return implementation of Qif generator interface.
      */
     private IQifGenerator getQifGenerator() {
-        return new QifGenerator(this.context);
+        return new QifGenerator(this.mContext);
     }
 
     /**
@@ -226,7 +137,7 @@ public class QifExport {
 
         // load all accounts for now
         List<TableAccountList> accountList = MoneyManagerOpenHelper
-                .getInstance(this.context)
+                .getInstance(mContext)
                 .getListAccounts(false, false);
         // core.getAccountsOpenVisible(), core.getAccountFavoriteVisible()
 
@@ -238,19 +149,4 @@ public class QifExport {
         return accountList;
     }
 
-
-    private void offerFile(Uri fileUri) {
-        String title = this.context.getString(R.string.qif_export);
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-//        ClipData clip = new ClipData("file uri", fileUri.toString());
-//        intent.setClipData();
-        intent.putExtra(Intent.EXTRA_TITLE, title);
-        intent.putExtra(Intent.EXTRA_STREAM, fileUri);
-
-        Intent chooser = Intent.createChooser(intent, title);
-        this.context.startActivity(chooser);
-    }
 }
