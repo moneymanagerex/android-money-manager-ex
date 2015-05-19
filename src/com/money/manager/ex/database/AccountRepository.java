@@ -19,6 +19,7 @@ package com.money.manager.ex.database;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
@@ -91,9 +92,9 @@ public class AccountRepository {
         // compose where clause
         String where = getWhereFilterFor(open,favorite);
 
-        // filter only transaction accounts.
+        // filter accounts.
         if (accountTypes != null && accountTypes.size() > 0) {
-            where += getWherePartFor(accountTypes);
+            where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
         }
 
         // data cursor
@@ -142,7 +143,10 @@ public class AccountRepository {
             if (accountTypes.indexOf(type) > 0) {
                 where.append(',');
             }
+
+            where.append("'");
             where.append(type);
+            where.append("'");
         }
         where.append(")");
 

@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
@@ -101,7 +102,7 @@ $57.300000
 
         // Translation table:
         HashMap<String, String> accountDictionary = new HashMap<>();
-        accountDictionary.put(Constants.ACCOUNT_TYPE_CHECKING, "Bank");
+        accountDictionary.put(AccountTypes.CHECKING.toString(), "Bank");
         accountDictionary.put(Constants.ACCOUNT_TYPE_TERM, "Bank");
         accountDictionary.put(Constants.ACCOUNT_TYPE_CREDIT_CARD, "CCard");
         // !Type:Invst

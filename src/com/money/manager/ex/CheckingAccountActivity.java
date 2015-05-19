@@ -360,8 +360,8 @@ public class CheckingAccountActivity
         // accountlist <> to populate the spin
         AccountRepository accountRepository = new AccountRepository(getApplicationContext());
         // MoneyManagerOpenHelper.getInstance(getApplicationContext())
-        mAccountList = accountRepository
-                .getListAccounts(core.getAccountsOpenVisible(), core.getAccountFavoriteVisible());
+        mAccountList = accountRepository.getTransactionAccounts(core.getAccountsOpenVisible(),
+                core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
             mAccountIdList.add(mAccountList.get(i).getAccountId());

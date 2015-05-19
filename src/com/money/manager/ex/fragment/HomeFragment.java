@@ -56,6 +56,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -332,7 +333,7 @@ public class HomeFragment extends Fragment implements
                             totals = new QueryAccountBills(getActivity());
                             totals.setAccountType(accountType);
                             // set group title
-                            if (Constants.ACCOUNT_TYPE_CHECKING.equalsIgnoreCase(accountType)) {
+                            if (AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.bank_accounts));
                             } else if (Constants.ACCOUNT_TYPE_TERM.equalsIgnoreCase(accountType)) {
                                 totals.setAccountName(getString(R.string.term_accounts));
@@ -669,7 +670,7 @@ public class HomeFragment extends Fragment implements
             }
             // set imageview account type
             if (!TextUtils.isEmpty(accountType)) {
-                if(Constants.ACCOUNT_TYPE_CHECKING.equalsIgnoreCase(accountType)){
+                if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_safe));
                 } else if (Constants.ACCOUNT_TYPE_TERM.equalsIgnoreCase(accountType)) {
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
