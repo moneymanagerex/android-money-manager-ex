@@ -28,6 +28,9 @@ import com.money.manager.ex.core.file.TextFileExport;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -38,12 +41,11 @@ public class PriceCsvExport
         extends TextFileExport {
     public PriceCsvExport(Context context) {
         super(context);
-        
+
         mContext = context;
     }
 
     private final String LOGCAT = this.getClass().getSimpleName();
-    private static final String ExportDirectory = "export";
 
     private Context mContext;
 
@@ -54,18 +56,19 @@ public class PriceCsvExport
      * @param adapter Adapter containing the data records (in the visible list, for example)
      * @param filePrefix Prefix for the exported file name.
      */
-    public void exportPrices(ListAdapter adapter, String filePrefix)
+    public boolean exportPrices(ListAdapter adapter, String filePrefix)
             throws IOException {
+        boolean result = false;
         String content = this.getContent(adapter);
-
-//        CSVWriter writer = new CSVWriter(new FileWriter(getTempFile(filePrefix)));
-        String filename = "temp.csv";
+        String filename = generateFileName(filePrefix);
 
         try {
-            this.export(filename, content);
+            result = this.export(filename, content);
         } catch (IOException ioex) {
             Log.e(LOGCAT, "Error exporting prices: " + ioex.getMessage());
         }
+
+        return result;
     }
 
     private String getContent(ListAdapter adapter) {
@@ -91,4 +94,22 @@ public class PriceCsvExport
 
         return builder.toString();
     }
+
+    private String generateFileName(String filePrefix) {
+        String result = filePrefix;
+
+        // get the date string.
+        Date today = new Date();
+        String format = "yyyy-MM-dd_HHmmss";
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        result += sdf.format(today);
+
+        // append file extension.
+        result += ".csv";
+
+        return result;
+    }
+
 }

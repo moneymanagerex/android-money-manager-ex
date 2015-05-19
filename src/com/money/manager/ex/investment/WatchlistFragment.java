@@ -419,10 +419,15 @@ public class WatchlistFragment extends Fragment
 
     private void exportPrices() {
         PriceCsvExport export = new PriceCsvExport(mContext);
+        boolean result = false;
+
         try {
-            export.exportPrices(mDataFragment.getListAdapter(), mAccountName);
+            result = export.exportPrices(mDataFragment.getListAdapter(), mAccountName);
         } catch (IOException ioex) {
             Log.e(LOGCAT, "Error exporting prices:" + ioex.getMessage());
         }
+
+        // todo: handle result.
+
     }
 }
