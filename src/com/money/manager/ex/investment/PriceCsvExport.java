@@ -94,10 +94,10 @@ public class PriceCsvExport
             builder.append(separator);
             // price
             builder.append(price);
-            builder.append(System.lineSeparator());
+            builder.append(separator);
             // date
             builder.append(csvDate);
-            builder.append(separator);
+            builder.append(System.lineSeparator());
         }
 
         return builder.toString();
