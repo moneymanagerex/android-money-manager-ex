@@ -8,7 +8,7 @@ public interface ISecurityPriceUpdater {
      * Download prices for all the securities and update the values.
      * Store the values in the history table.
      */
-    void updatePrices();
+    void updatePrices(String... symbols);
 
     /**
      * Update individual price

@@ -425,12 +425,10 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                 //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
                 dialog = new ProgressDialog(getActivity());
-                // setting dialog
                 dialog.setMessage(getString(R.string.start_currency_exchange_rates));
                 dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 dialog.setCancelable(false);
                 dialog.setCanceledOnTouchOutside(false);
-                // show dialog
                 dialog.show();
             }
 
@@ -442,7 +440,7 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                 for (int i = 0; i < currencyFormats.size(); i++) {
                     mCurrencyFormat = currencyFormats.get(i);
                     currencyUtils.updateCurrencyRateFromBase(mCurrencyFormat.getCurrencyId());
-                    publishProgress(new Integer[]{i});
+                    publishProgress(i);
                 }
                 return Boolean.TRUE;
             }

@@ -17,6 +17,8 @@
  */
 package com.money.manager.ex.investment;
 
+import android.content.Context;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -24,5 +26,6 @@ import java.util.Date;
  * Interface for feedback from Yahoo security price updater.
  */
 public interface IPriceUpdaterFeedback {
-    void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date);
+    Context getContext();
+    void onPriceDownloaded(String symbol, BigDecimal price, Date date);
 }

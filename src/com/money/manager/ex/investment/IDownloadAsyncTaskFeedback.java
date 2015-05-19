@@ -21,6 +21,7 @@ package com.money.manager.ex.investment;
  * Interface implemented by an object that instantiates an async task for download of prices.
  */
 public interface IDownloadAsyncTaskFeedback {
+    String getUrlForSymbol(String symbol);
     void onProgressUpdate(String progress);
     void onCsvDownloaded(String csvContent);
 }

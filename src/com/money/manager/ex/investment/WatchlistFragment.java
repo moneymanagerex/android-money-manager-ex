@@ -94,10 +94,14 @@ public class WatchlistFragment extends Fragment
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
+
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
                                 .getUpdaterInstance(WatchlistFragment.this);
-                        updater.updatePrices();
+                        // get the list of symbols
+                        String[] symbols = getAllShownSymbols();
+                        updater.updatePrices(symbols);
                         dialog.dismiss();
                     }
                 })
@@ -125,9 +129,8 @@ public class WatchlistFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        // todo: enable this for update of all prices
         // add options menu for watchlist
-        //inflater.inflate(R.menu.menu_watchlist, menu);
+        inflater.inflate(R.menu.menu_watchlist, menu);
 
         // call create option menu of fragment
         mDataFragment.onCreateOptionsMenu(menu, inflater);
@@ -136,34 +139,6 @@ public class WatchlistFragment extends Fragment
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-
-        //force show add transaction
-        MenuItem itemAddTransaction = menu.findItem(R.id.menu_add_transaction_account);
-        if (itemAddTransaction != null)
-            itemAddTransaction.setVisible(true);
-        //manage dual panel
-        if (getActivity() != null && getActivity() instanceof MainActivity) {
-            MainActivity activity = (MainActivity) getActivity();
-            if (!activity.isDualPanel()) {
-                //hide dropbox toolbar
-                MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
-                if (itemDropbox != null)
-                    itemDropbox.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-                // hide menu open database
-                MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
-                if (itemOpenDatabase != null) {
-                    //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
-                    itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible()
-                            ? MenuItem.SHOW_AS_ACTION_ALWAYS
-                            : MenuItem.SHOW_AS_ACTION_NEVER);
-                }
-
-                //hide dash board
-                MenuItem itemDashboard = menu.findItem(R.id.menu_dashboard);
-                if (itemDashboard != null)
-                    itemDashboard.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-            }
-        }
 
     }
 
@@ -258,7 +233,7 @@ public class WatchlistFragment extends Fragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // test
-        Log.d(LOGCAT, "loader reset");
+//        Log.d(LOGCAT, "loader reset");
     }
 
     @Override
@@ -321,8 +296,7 @@ public class WatchlistFragment extends Fragment
 
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
-        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
-                StockRepository.PURCHASEDATE + " DESC, " + StockRepository.STOCKID + " DESC");
+        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, StockRepository.SYMBOL + " ASC");
 
         return args;
     }
@@ -355,8 +329,31 @@ public class WatchlistFragment extends Fragment
         this.mNameFragment = mNameFragment;
     }
 
+    /**
+     * Called from Price updater
+     * @return
+     */
     @Override
-    public void priceDownloadedFromYahoo(String symbol, BigDecimal price, Date date) {
+    public Context getContext() {
+        return mContext;
+    }
+
+    @Override
+    public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
         // update prices from yahoo.
+    }
+
+    private String[] getAllShownSymbols() {
+        int itemCount = mDataFragment.getListAdapter().getCount();
+        String[] result = new String[itemCount];
+
+        for(int i = 0; i < itemCount; i++) {
+            Cursor cursor = (Cursor) mDataFragment.getListAdapter().getItem(i);
+            String symbol = cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL));
+
+            result[i] = symbol;
+        }
+
+        return result;
     }
 }
