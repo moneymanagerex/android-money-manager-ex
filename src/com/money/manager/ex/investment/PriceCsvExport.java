@@ -73,6 +73,13 @@ public class PriceCsvExport
         return result;
     }
 
+    private String getTodayAsString() {
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
+        Date now = new Date();
+        String result = sdf.format(now);
+        return result;
+    }
+
     private String getContent(ListAdapter adapter) {
         StringBuilder builder = new StringBuilder();
         char separator = ',';
@@ -83,7 +90,10 @@ public class PriceCsvExport
             Cursor cursor = (Cursor) adapter.getItem(i);
 
             String symbol = cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL));
-            String date = cursor.getString(cursor.getColumnIndex(StockRepository.PURCHASEDATE));
+            // use today's date for now
+            String date = getTodayAsString();
+            // todo: use the latest price date here.
+            //String date = cursor.getString(cursor.getColumnIndex(StockRepository.PURCHASEDATE));
             String price = cursor.getString(cursor.getColumnIndex(StockRepository.CURRENTPRICE));
 
             // format date
