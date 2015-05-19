@@ -22,12 +22,14 @@ import android.database.Cursor;
 import android.util.Log;
 import android.widget.ListAdapter;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.core.file.TextFileExport;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -84,19 +86,51 @@ public class PriceCsvExport
             String date = cursor.getString(cursor.getColumnIndex(StockRepository.PURCHASEDATE));
             String price = cursor.getString(cursor.getColumnIndex(StockRepository.CURRENTPRICE));
 
+            // format date
+            String csvDate = getDateInCsvFormat(date);
+
+            // code
             builder.append(symbol);
             builder.append(separator);
-            builder.append(date);
-            builder.append(separator);
+            // price
             builder.append(price);
             builder.append(System.lineSeparator());
+            // date
+            builder.append(csvDate);
+            builder.append(separator);
         }
 
         return builder.toString();
     }
 
+    /**
+     * Convert between different date formats.
+     * @param listDate The string of date as stored in the database.
+     * @return The string of date the way it is to be stored in the CSV file.
+     */
+    private String getDateInCsvFormat(String listDate) {
+
+        SimpleDateFormat listFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
+        Date priceDate;
+        try {
+            priceDate = listFormat.parse(listDate);
+        } catch (ParseException pex) {
+            Log.e(LOGCAT, "Error converting list date: " + pex.getMessage());
+            return "error";
+        }
+
+        // now convert this date into the CSV format date.
+
+        // todo: make this configurable.
+        String csvFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(csvFormat, Locale.US);
+        String result = sdf.format(priceDate);
+        return  result;
+    }
+
     private String generateFileName(String filePrefix) {
-        String result = filePrefix;
+        StringBuilder fileName = new StringBuilder(filePrefix);
+        fileName.append('_');
 
         // get the date string.
         Date today = new Date();
@@ -104,12 +138,12 @@ public class PriceCsvExport
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        result += sdf.format(today);
+        fileName.append(sdf.format(today));
 
         // append file extension.
-        result += ".csv";
+        fileName.append(".csv");
 
-        return result;
+        return fileName.toString();
     }
 
 }
