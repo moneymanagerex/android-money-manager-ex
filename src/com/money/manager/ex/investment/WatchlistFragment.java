@@ -58,7 +58,8 @@ import java.util.Date;
  *
  */
 public class WatchlistFragment extends Fragment
-        implements IPriceUpdaterFeedback, LoaderManager.LoaderCallbacks<Cursor> {
+        implements IPriceUpdaterFeedback, LoaderManager.LoaderCallbacks<Cursor>,
+    IWatchlistItemsFragmentEventHandler {
 
     private static final String KEY_CONTENT = "WatchlistFragment:StockId";
 
@@ -209,7 +210,7 @@ public class WatchlistFragment extends Fragment
         // manage fragment
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        mDataFragment = WatchlistItemsFragment.newInstance(mAccountId);
+        mDataFragment = WatchlistItemsFragment.newInstance(mAccountId, this);
         // set arguments and settings of fragment
         mDataFragment.setArguments(prepareArgsForChildFragment());
         mDataFragment.setListHeader(header);
@@ -374,6 +375,14 @@ public class WatchlistFragment extends Fragment
         StockRepository repo = getStockRepository();
         repo.updateCurrentPrice(symbol, price);
 
+        // save price history record.
+        StockHistoryRepository historyRepo = mDataFragment.getStockHistoryRepository();
+        historyRepo.addStockHistoryRecord(symbol, price, date);
+
+        String message = getString(R.string.price_updated) + ": " + symbol;
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
+                .show();
+
         mUpdateCounter += 1;
         if (mUpdateCounter == mToUpdateTotal) {
             completePriceUpdate();
@@ -427,7 +436,20 @@ public class WatchlistFragment extends Fragment
             Log.e(LOGCAT, "Error exporting prices:" + ioex.getMessage());
         }
 
-        // todo: handle result.
+        // todo: handle result. (?)
+    }
 
+    /**
+     * Price update requested from the securities list context menu.
+     * @param symbol
+     */
+    @Override
+    public void onPriceUpdateRequested(String symbol) {
+        // reset counter & max.
+        mToUpdateTotal = 1;
+        mUpdateCounter = 0;
+
+        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(this);
+        updater.updatePrice(symbol);
     }
 }

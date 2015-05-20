@@ -56,12 +56,30 @@ import java.util.Date;
 
 public class WatchlistItemsFragment
         extends BaseListFragment
-        implements LoaderCallbacks<Cursor>, IPriceUpdaterFeedback {
+        implements LoaderCallbacks<Cursor> {
 
     // ID Loader
     public static final int ID_LOADER_ALL_DATA = 1;
+
+    /**
+     * Create a new instance of the fragment with accountId params
+     *
+     * @param accountId Id of account to display. If generic shown set -1
+     * @return new instance AllDataFragment
+     */
+    public static WatchlistItemsFragment newInstance(
+            int accountId, IWatchlistItemsFragmentEventHandler eventHandler) {
+        WatchlistItemsFragment fragment = new WatchlistItemsFragment();
+        fragment.mAccountId = accountId;
+        fragment.mEventHandler = eventHandler;
+        return fragment;
+    }
+
     private static final String LOGCAT = WatchlistItemsFragment.class.getSimpleName();
 
+    // non-static
+
+    private IWatchlistItemsFragmentEventHandler mEventHandler;
     private LoaderManager.LoaderCallbacks<Cursor> mParentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
 //    private boolean mShownHeader = false;
@@ -72,18 +90,6 @@ public class WatchlistItemsFragment
     private StockRepository mStockRepository;
     private StockHistoryRepository mStockHistoryRepository;
     private Bundle mLoaderArgs;
-
-    /**
-     * Create a new instance of the fragment with accountId params
-     *
-     * @param accountId Id of account to display. If generic shown set -1
-     * @return new instance AllDataFragment
-     */
-    public static WatchlistItemsFragment newInstance(int accountId) {
-        WatchlistItemsFragment fragment = new WatchlistItemsFragment();
-        fragment.mAccountId = accountId;
-        return fragment;
-    }
 
     /**
      * @param mGroupId the mGroupId to set
@@ -143,10 +149,6 @@ public class WatchlistItemsFragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
                     getActivity().openContextMenu(view);
-//                    Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
-//                    if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-//                        startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(StockRepository.STOCKID)));
-//                    }
                 }
             }
         });
@@ -204,10 +206,8 @@ public class WatchlistItemsFragment
         switch (itemId) {
             case 0:
                 // Update price
-                ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
-                        .getUpdaterInstance(this);
                 String symbol = contents.getAsString(StockRepository.SYMBOL);
-                updater.updatePrice(symbol);
+                mEventHandler.onPriceUpdateRequested(symbol);
                 result = true;
                 break;
         }
@@ -393,38 +393,36 @@ public class WatchlistItemsFragment
      * Called from price updater.
      * @return
      */
-    @Override
-    public Context getContext() {
-        return mContext;
-    }
+//    @Override
+//    public Context getContext() {
+//        return mContext;
+//    }
 
-    @Override
-    public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
-        // update the price in database.
-        mStockRepository.updateCurrentPrice(symbol, price);
-
-        // Do not store price history for now.
-        // todo: Once the viewer is implemented, then enable this functionality.
-        // save price history record.
+//    @Override
+//    public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
+//        // update the price in database.
+//        mStockRepository.updateCurrentPrice(symbol, price);
+//
+//        // save price history record.
 //        StockHistoryRepository historyRepo = getStockHistoryRepository();
 //        historyRepo.addStockHistoryRecord(symbol, price, date);
-
-        // refresh the data.
-        reloadData();
-
-        // notify the user.
-        String message = getString(R.string.price_updated) + ": " + symbol;
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
-                .show();
-
-        // notify about db file change.
-        DropboxHelper.notifyDataChanged();
-    }
-
-//    private StockHistoryRepository getStockHistoryRepository() {
-//        if (mStockHistoryRepository == null) {
-//            mStockHistoryRepository = new StockHistoryRepository(mContext);
-//        }
-//        return mStockHistoryRepository;
+//
+//        // refresh the data.
+//        reloadData();
+//
+//        // notify the user.
+//        String message = getString(R.string.price_updated) + ": " + symbol;
+//        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
+//                .show();
+//
+//        // notify about db file change.
+//        DropboxHelper.notifyDataChanged();
 //    }
+
+    public StockHistoryRepository getStockHistoryRepository() {
+        if (mStockHistoryRepository == null) {
+            mStockHistoryRepository = new StockHistoryRepository(mContext);
+        }
+        return mStockHistoryRepository;
+    }
 }

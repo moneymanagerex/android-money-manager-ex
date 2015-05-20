@@ -149,4 +149,12 @@ public class StockHistoryRepository
 
         return values;
     }
+
+    /*
+    select histid, symbol, date, value
+    from stockhistory_v1
+    group by symbol
+     */
+
+
 }

@@ -804,7 +804,9 @@ public class MainActivity extends BaseFragmentActivity {
         // open database
         adapter.add(new DrawerMenuItem().withId(R.id.menu_open_database)
                 .withText(getString(R.string.open_database))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_folder_open_dark : R.drawable.ic_action_folder_open_light));
+                .withIcon(isDarkTheme
+                        ? R.drawable.ic_action_folder_open_dark
+                        : R.drawable.ic_action_folder_open_light));
         // dropbox synchronize
         if (mDropboxHelper != null && mDropboxHelper.isLinked())
             adapter.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
