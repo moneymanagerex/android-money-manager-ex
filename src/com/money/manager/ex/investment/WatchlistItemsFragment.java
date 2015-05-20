@@ -143,17 +143,13 @@ public class WatchlistItemsFragment
         // set adapter
         setListAdapter(adapter);
         // start loader
-        getLoaderManager().initLoader(ID_LOADER_WATCHLIST, null, this);
+        getLoaderManager().initLoader(ID_LOADER_WATCHLIST, mLoaderArgs, this);
 
         // register context menu
         registerForContextMenu(getListView());
 
         // set animation progress
         setListShown(false);
-
-        // floating action button
-//        setFloatingActionButtonVisible(true);
-//        setFloatingActionButtonAttachListView(true);
 
         // start loader
         if (isAutoStarLoader()) {
@@ -291,6 +287,7 @@ public class WatchlistItemsFragment
                 result = new CursorLoader(mContext, mStockRepository.getUri(),
                         mStockRepository.getAllColumns(),
                         selection, null, sort);
+                break;
             default:
                 result = null;
         }
