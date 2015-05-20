@@ -51,8 +51,6 @@ public class YahooSecurityPriceUpdater
 
     // All the symbols to be updated.
     private String[] mSymbolsToUpdate;
-    // The update progress counter.
-    private int mFetchedCount;
 
     /**
      * Update prices for all the symbols in the list.
@@ -61,27 +59,10 @@ public class YahooSecurityPriceUpdater
         if (symbols == null) return;
 
         mSymbolsToUpdate = symbols;
-        mFetchedCount = 0;
 
         YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(
                 mFeedback.getContext(), this);
         downloader.execute(symbols);
-    }
-
-    @Override
-    public void updatePrice(String symbol) {
-        // validation
-        if (TextUtils.isEmpty(symbol)) {
-            Log.w(LOGCAT, "updatePrice called with an empty symbol.");
-            return;
-        }
-
-        mSymbolsToUpdate = new String[] { symbol };
-        mFetchedCount = 0;
-
-        // download individual price.
-        String url = getPriceUrl(symbol);
-        new DownloadCsvToStringTask(this).execute(url);
 
         // Async call. The prices are updated in onCsvDownloaded.
     }
@@ -148,10 +129,7 @@ public class YahooSecurityPriceUpdater
             e.printStackTrace();
         }
 
-//        mFetchedCount += 1;
-//        // Notify the parent (to update any lists, etc.) once all the prices
-//        if (mFetchedCount == mSymbolsToUpdate.length) {
+        // Notify the caller by invoking the interface method.
         mFeedback.onPriceDownloaded(symbol, price, date);
-//        }
     }
 }

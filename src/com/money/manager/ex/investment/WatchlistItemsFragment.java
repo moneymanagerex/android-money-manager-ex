@@ -191,8 +191,6 @@ public class WatchlistItemsFragment
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-//        Log.d(LOGCAT, "Context item selected at position: " + info.position);
-
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
         boolean cursorMoved = cursor.moveToPosition(info.position - 1);
 

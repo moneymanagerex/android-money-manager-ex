@@ -99,15 +99,16 @@ public class WatchlistFragment extends Fragment
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
+//                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
+
+                        // get the list of symbols
+                        String[] symbols = getAllShownSymbols();
+                        mToUpdateTotal = symbols.length;
+                        mUpdateCounter = 0;
 
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
                                 .getUpdaterInstance(WatchlistFragment.this);
-                        // get the list of symbols
-                        String[] symbols = getAllShownSymbols();
-                        mToUpdateTotal = symbols.length;
-
                         updater.updatePrices(symbols);
 
                         dialog.dismiss();
@@ -450,6 +451,6 @@ public class WatchlistFragment extends Fragment
         mUpdateCounter = 0;
 
         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(this);
-        updater.updatePrice(symbol);
+        updater.updatePrices(symbol);
     }
 }
