@@ -59,7 +59,7 @@ public class WatchlistItemsFragment
         implements LoaderCallbacks<Cursor> {
 
     // ID Loader
-    public static final int ID_LOADER_ALL_DATA = 1;
+    public static final int ID_LOADER_WATCHLIST = 1;
 
     /**
      * Create a new instance of the fragment with accountId params
@@ -80,9 +80,7 @@ public class WatchlistItemsFragment
     // non-static
 
     private IWatchlistItemsFragmentEventHandler mEventHandler;
-    private LoaderManager.LoaderCallbacks<Cursor> mParentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
-//    private boolean mShownHeader = false;
     private int mGroupId = 0;
     private int mAccountId = -1;
     private View mListHeader = null;
@@ -96,20 +94,6 @@ public class WatchlistItemsFragment
      */
     public void setContextMenuGroupId(int mGroupId) {
         this.mGroupId = mGroupId;
-    }
-
-    /**
-     * @return the mParentLoaderCallbacks
-     */
-    public LoaderManager.LoaderCallbacks<Cursor> getParentLoaderCallbacks() {
-        return mParentLoaderCallbacks;
-    }
-
-    /**
-     *
-     */
-    public void setSearResultFragmentLoaderCallbacks(LoaderCallbacks<Cursor> searResultFragmentLoaderCallbacks) {
-        this.mParentLoaderCallbacks = searResultFragmentLoaderCallbacks;
     }
 
     /**
@@ -158,6 +142,8 @@ public class WatchlistItemsFragment
         }
         // set adapter
         setListAdapter(adapter);
+        // start loader
+        getLoaderManager().initLoader(ID_LOADER_WATCHLIST, null, this);
 
         // register context menu
         registerForContextMenu(getListView());
@@ -277,7 +263,8 @@ public class WatchlistItemsFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (getParentLoaderCallbacks() != null) getParentLoaderCallbacks().onCreateLoader(id, args);
+        CursorLoader result = null;
+
         // store the arguments for later. This is the WHERE filter.
         mLoaderArgs = args;
 
@@ -285,7 +272,7 @@ public class WatchlistItemsFragment
         setListShown(false);
 
         switch (id) {
-            case ID_LOADER_ALL_DATA:
+            case ID_LOADER_WATCHLIST:
                 // compose selection and sort
                 String selection = "", sort = "";
                 if (args != null && args.containsKey(AllDataFragment.KEY_ARGUMENTS_WHERE)) {
@@ -301,28 +288,24 @@ public class WatchlistItemsFragment
                     sort = args.getString(AllDataFragment.KEY_ARGUMENTS_SORT);
                 }
                 // create loader
-                return new CursorLoader(mContext, mStockRepository.getUri(),
+                result = new CursorLoader(mContext, mStockRepository.getUri(),
                         mStockRepository.getAllColumns(),
                         selection, null, sort);
+            default:
+                result = null;
         }
-        return null;
+        return result;
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        LoaderManager.LoaderCallbacks<Cursor> parent = getParentLoaderCallbacks();
-        if (parent != null) parent.onLoaderReset(loader);
-
         ((CursorAdapter) getListAdapter()).swapCursor(null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        LoaderManager.LoaderCallbacks<Cursor> parent = getParentLoaderCallbacks();
-        if (parent != null) parent.onLoadFinished(loader, data);
-
         switch (loader.getId()) {
-            case ID_LOADER_ALL_DATA:
+            case ID_LOADER_WATCHLIST:
                 StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
                 adapter.swapCursor(data);
                 if (isResumed()) {
@@ -374,8 +357,7 @@ public class WatchlistItemsFragment
      * Start loader into fragment
      */
     public void reloadData() {
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, mLoaderArgs, this);
-//        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA, getArguments(), this);
+        getLoaderManager().restartLoader(ID_LOADER_WATCHLIST, mLoaderArgs, this);
     }
 
     @Override
@@ -386,36 +368,6 @@ public class WatchlistItemsFragment
     public void setListHeader(View mHeaderList) {
         this.mListHeader = mHeaderList;
     }
-
-    /**
-     * Called from price updater.
-     * @return
-     */
-//    @Override
-//    public Context getContext() {
-//        return mContext;
-//    }
-
-//    @Override
-//    public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
-//        // update the price in database.
-//        mStockRepository.updateCurrentPrice(symbol, price);
-//
-//        // save price history record.
-//        StockHistoryRepository historyRepo = getStockHistoryRepository();
-//        historyRepo.addStockHistoryRecord(symbol, price, date);
-//
-//        // refresh the data.
-//        reloadData();
-//
-//        // notify the user.
-//        String message = getString(R.string.price_updated) + ": " + symbol;
-//        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
-//                .show();
-//
-//        // notify about db file change.
-//        DropboxHelper.notifyDataChanged();
-//    }
 
     public StockHistoryRepository getStockHistoryRepository() {
         if (mStockHistoryRepository == null) {

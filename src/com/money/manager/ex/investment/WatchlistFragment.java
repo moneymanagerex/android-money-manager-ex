@@ -58,7 +58,7 @@ import java.util.Date;
  *
  */
 public class WatchlistFragment extends Fragment
-        implements IPriceUpdaterFeedback, LoaderManager.LoaderCallbacks<Cursor>,
+        implements IPriceUpdaterFeedback,
     IWatchlistItemsFragmentEventHandler {
 
     private static final String KEY_CONTENT = "WatchlistFragment:StockId";
@@ -217,7 +217,7 @@ public class WatchlistFragment extends Fragment
         mDataFragment.setListHeader(header);
         mDataFragment.setAutoStarLoader(false);
         mDataFragment.setContextMenuGroupId(mAccountId);
-        mDataFragment.setSearResultFragmentLoaderCallbacks(this);
+//        mDataFragment.setSearResultFragmentLoaderCallbacks(this);
 
         // add fragment
         transaction.replace(R.id.fragmentContent, mDataFragment, getNameFragment());
@@ -236,37 +236,37 @@ public class WatchlistFragment extends Fragment
 
     // Loader callbacks
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader result = null;
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        CursorLoader result = null;
+//
+//        switch (id) {
+//            case WatchlistItemsFragment.ID_LOADER_WATCHLIST:
+////                StockRepository stocks = new StockRepository(mContext);
+////                result = stocks.getCursorLoader(mAccountId);
+//        }
+//
+//        return result;
+//    }
 
-        switch (id) {
-            case WatchlistItemsFragment.ID_LOADER_ALL_DATA:
-//                StockRepository stocks = new StockRepository(mContext);
-//                result = stocks.getCursorLoader(mAccountId);
-        }
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//        // test
+////        Log.d(LOGCAT, "loader reset");
+//    }
 
-        return result;
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        // test
-//        Log.d(LOGCAT, "loader reset");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case WatchlistItemsFragment.ID_LOADER_ALL_DATA:
-                // set titles
-                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-                if (activity != null) {
-                    activity.getSupportActionBar().setSubtitle(mAccountName);
-                }
-                break;
-        }
-    }
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//        switch (loader.getId()) {
+//            case WatchlistItemsFragment.ID_LOADER_WATCHLIST:
+//                // set titles
+//                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+//                if (activity != null) {
+//                    activity.getSupportActionBar().setSubtitle(mAccountName);
+//                }
+//                break;
+//        }
+//    }
 
     // End loader callbacks
 
@@ -361,7 +361,6 @@ public class WatchlistFragment extends Fragment
         return mContext;
     }
 
-
     /**
      * Called from asynchronous task when a single price is downloaded.
      * @param symbol
@@ -380,14 +379,25 @@ public class WatchlistFragment extends Fragment
         StockHistoryRepository historyRepo = mDataFragment.getStockHistoryRepository();
         historyRepo.addStockHistoryRecord(symbol, price, date);
 
-        String message = getString(R.string.price_updated) + ": " + symbol;
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
-                .show();
+        showUpdateMessage(symbol);
 
         mUpdateCounter += 1;
         if (mUpdateCounter == mToUpdateTotal) {
             completePriceUpdate();
         }
+    }
+
+    private void showUpdateMessage(final String symbol) {
+        // this call is made from async task so have to get back to the main thread.
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                String message = getString(R.string.price_updated) + ": " + symbol;
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     private void completePriceUpdate() {
