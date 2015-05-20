@@ -29,6 +29,7 @@ import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.investment.StockHistoryRepository;
 import com.money.manager.ex.utils.RawFileUtils;
 
 import java.math.BigDecimal;
@@ -187,25 +188,5 @@ public class StockRepository
         for (int id : ids) {
             updatePrice(id, price);
         }
-    }
-
-    /**
-     * Loads watchlist data for given account id, including the latest price.
-     * stock id, symbol, date, price
-     * @param accountId
-     */
-    public void loadWatchlist(int accountId) {
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-                .getReadableDatabase();
-
-        String sql = RawFileUtils.getRawAsString(mContext, R.raw.query_watchlist);
-
-        Cursor cursor = db.rawQuery(sql,
-                new String[] { Integer.toString(accountId) });
-
-        // todo: do something with the data?
-
-        cursor.close();
-        db.close();
     }
 }

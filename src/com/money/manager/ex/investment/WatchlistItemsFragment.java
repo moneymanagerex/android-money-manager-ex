@@ -44,6 +44,8 @@ import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
+import com.money.manager.ex.database.SQLDataSet;
+import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -143,7 +145,7 @@ public class WatchlistItemsFragment
         // set adapter
         setListAdapter(adapter);
         // start loader
-        getLoaderManager().initLoader(ID_LOADER_WATCHLIST, mLoaderArgs, this);
+//        getLoaderManager().initLoader(ID_LOADER_WATCHLIST, mLoaderArgs, this);
 
         // register context menu
         registerForContextMenu(getListView());
@@ -270,23 +272,43 @@ public class WatchlistItemsFragment
         switch (id) {
             case ID_LOADER_WATCHLIST:
                 // compose selection and sort
-                String selection = "", sort = "";
+                String selection = "";
+                ArrayList<String> whereClause = null;
                 if (args != null && args.containsKey(AllDataFragment.KEY_ARGUMENTS_WHERE)) {
-                    ArrayList<String> whereClause = args.getStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE);
+                    whereClause = args.getStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE);
                     if (whereClause != null) {
                         for (int i = 0; i < whereClause.size(); i++) {
                             selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
                         }
                     }
                 }
+
                 // set sort
+                String sort = "";
                 if (args != null && args.containsKey(AllDataFragment.KEY_ARGUMENTS_SORT)) {
                     sort = args.getString(AllDataFragment.KEY_ARGUMENTS_SORT);
                 }
-                // create loader
-                result = new CursorLoader(mContext, mStockRepository.getUri(),
+
+                // Custom SQL
+//                WatchlistDataset watchlistDataset = new WatchlistDataset(mContext.getApplicationContext());
+////                selection = watchlistDataset.getWatchlistSqlQuery();
+//                String where = whereClause.get(0);
+//                String [] whereArgs = where.split("=");
+//                String[] queryAttributes = new String[] { whereArgs[1] };
+//
+//                // create loader
+//                result = new CursorLoader(mContext,
+//                        watchlistDataset.getUri(),
+//                        watchlistDataset.getAllColumns(),
+//                        selection,
+//                        queryAttributes,
+//                        sort);
+                result = new CursorLoader(mContext,
+                        mStockRepository.getUri(),
                         mStockRepository.getAllColumns(),
-                        selection, null, sort);
+                        selection,
+                        null,
+                        sort);
                 break;
             default:
                 result = null;
@@ -296,6 +318,9 @@ public class WatchlistItemsFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        // reset the cursor reference to reduce memory leaks
+//        ((CursorAdapter) getListAdapter()).changeCursor(null);
+
         ((CursorAdapter) getListAdapter()).swapCursor(null);
     }
 
@@ -303,6 +328,7 @@ public class WatchlistItemsFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_LOADER_WATCHLIST:
+                // send the data to the view adapter.
                 StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
                 adapter.swapCursor(data);
                 if (isResumed()) {
