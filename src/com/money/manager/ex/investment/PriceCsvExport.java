@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.investment;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -26,15 +27,11 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.core.file.TextFileExport;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import au.com.bytecode.opencsv.CSVWriter;
 
 /**
  * Export of security prices to CSV file.
@@ -83,21 +80,27 @@ public class PriceCsvExport
     private String getContent(ListAdapter adapter) {
         StringBuilder builder = new StringBuilder();
         char separator = ',';
+        StockHistoryRepository historyRepository = new StockHistoryRepository(mContext.getApplicationContext());
 
         int itemCount = adapter.getCount();
 
         for(int i = 0; i < itemCount; i++) {
             Cursor cursor = (Cursor) adapter.getItem(i);
 
+            // symbol.
             String symbol = cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL));
-            // use today's date for now
-            String date = getTodayAsString();
-            // todo: use the latest price date here.
-            //String date = cursor.getString(cursor.getColumnIndex(StockRepository.PURCHASEDATE));
-            String price = cursor.getString(cursor.getColumnIndex(StockRepository.CURRENTPRICE));
-
+            // use the latest price date here.
+            String date;
+            ContentValues latestPrice = historyRepository.getLatestPriceFor(symbol);
+            if(latestPrice.containsKey(StockHistoryRepository.DATE)) {
+                date = (String) latestPrice.get(StockHistoryRepository.DATE);
+            } else {
+                date = getTodayAsString();
+            }
             // format date
             String csvDate = getDateInCsvFormat(date);
+            // price.
+            String price = cursor.getString(cursor.getColumnIndex(StockRepository.CURRENTPRICE));
 
             // code
             builder.append(symbol);
@@ -119,7 +122,6 @@ public class PriceCsvExport
      * @return The string of date the way it is to be stored in the CSV file.
      */
     private String getDateInCsvFormat(String listDate) {
-
         SimpleDateFormat listFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
         Date priceDate;
         try {
@@ -130,11 +132,15 @@ public class PriceCsvExport
         }
 
         // now convert this date into the CSV format date.
+        String result = getDateInCsvFormat(priceDate);
+        return result;
+    }
 
+    public String getDateInCsvFormat(Date date) {
         // todo: make this configurable.
         String csvFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(csvFormat, Locale.US);
-        String result = sdf.format(priceDate);
+        String result = sdf.format(date);
         return  result;
     }
 

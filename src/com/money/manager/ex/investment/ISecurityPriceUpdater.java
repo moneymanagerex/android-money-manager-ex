@@ -9,10 +9,4 @@ public interface ISecurityPriceUpdater {
      * Store the values in the history table.
      */
     void updatePrices(String... symbols);
-
-    /**
-     * Update individual price
-     * @param symbol Symbol of the security to import. Provider specific.
-     */
-    void updatePrice(String symbol);
 }

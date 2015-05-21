@@ -25,9 +25,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,7 +55,8 @@ import java.util.Date;
  *
  */
 public class WatchlistFragment extends Fragment
-        implements IPriceUpdaterFeedback, LoaderManager.LoaderCallbacks<Cursor> {
+        implements IPriceUpdaterFeedback,
+    IWatchlistItemsFragmentEventHandler {
 
     private static final String KEY_CONTENT = "WatchlistFragment:StockId";
 
@@ -98,15 +96,16 @@ public class WatchlistFragment extends Fragment
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
+//                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
+
+                        // get the list of symbols
+                        String[] symbols = getAllShownSymbols();
+                        mToUpdateTotal = symbols.length;
+                        mUpdateCounter = 0;
 
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
                                 .getUpdaterInstance(WatchlistFragment.this);
-                        // get the list of symbols
-                        String[] symbols = getAllShownSymbols();
-                        mToUpdateTotal = symbols.length;
-
                         updater.updatePrices(symbols);
 
                         dialog.dismiss();
@@ -209,13 +208,13 @@ public class WatchlistFragment extends Fragment
         // manage fragment
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        mDataFragment = WatchlistItemsFragment.newInstance(mAccountId);
+        mDataFragment = WatchlistItemsFragment.newInstance(mAccountId, this);
         // set arguments and settings of fragment
         mDataFragment.setArguments(prepareArgsForChildFragment());
         mDataFragment.setListHeader(header);
         mDataFragment.setAutoStarLoader(false);
         mDataFragment.setContextMenuGroupId(mAccountId);
-        mDataFragment.setSearResultFragmentLoaderCallbacks(this);
+//        mDataFragment.setSearResultFragmentLoaderCallbacks(this);
 
         // add fragment
         transaction.replace(R.id.fragmentContent, mDataFragment, getNameFragment());
@@ -234,37 +233,37 @@ public class WatchlistFragment extends Fragment
 
     // Loader callbacks
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader result = null;
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        CursorLoader result = null;
+//
+//        switch (id) {
+//            case WatchlistItemsFragment.ID_LOADER_WATCHLIST:
+////                StockRepository stocks = new StockRepository(mContext);
+////                result = stocks.getCursorLoader(mAccountId);
+//        }
+//
+//        return result;
+//    }
 
-        switch (id) {
-            case WatchlistItemsFragment.ID_LOADER_ALL_DATA:
-//                StockRepository stocks = new StockRepository(mContext);
-//                result = stocks.getCursorLoader(mAccountId);
-        }
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//        // test
+////        Log.d(LOGCAT, "loader reset");
+//    }
 
-        return result;
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        // test
-//        Log.d(LOGCAT, "loader reset");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case WatchlistItemsFragment.ID_LOADER_ALL_DATA:
-                // set titles
-                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-                if (activity != null) {
-                    activity.getSupportActionBar().setSubtitle(mAccountName);
-                }
-                break;
-        }
-    }
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//        switch (loader.getId()) {
+//            case WatchlistItemsFragment.ID_LOADER_WATCHLIST:
+//                // set titles
+//                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+//                if (activity != null) {
+//                    activity.getSupportActionBar().setSubtitle(mAccountName);
+//                }
+//                break;
+//        }
+//    }
 
     // End loader callbacks
 
@@ -359,7 +358,6 @@ public class WatchlistFragment extends Fragment
         return mContext;
     }
 
-
     /**
      * Called from asynchronous task when a single price is downloaded.
      * @param symbol
@@ -374,10 +372,28 @@ public class WatchlistFragment extends Fragment
         StockRepository repo = getStockRepository();
         repo.updateCurrentPrice(symbol, price);
 
+        // save price history record.
+        StockHistoryRepository historyRepo = mDataFragment.getStockHistoryRepository();
+        historyRepo.addStockHistoryRecord(symbol, price, date);
+
+//        showUpdateMessage(symbol);
+
         mUpdateCounter += 1;
         if (mUpdateCounter == mToUpdateTotal) {
             completePriceUpdate();
         }
+    }
+
+    private void showUpdateMessage(final String symbol) {
+        // this call is made from async task so have to get back to the main thread.
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                String message = getString(R.string.price_updated) + ": " + symbol;
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void completePriceUpdate() {
@@ -427,7 +443,20 @@ public class WatchlistFragment extends Fragment
             Log.e(LOGCAT, "Error exporting prices:" + ioex.getMessage());
         }
 
-        // todo: handle result.
+        // todo: handle result. (?)
+    }
 
+    /**
+     * Price update requested from the securities list context menu.
+     * @param symbol
+     */
+    @Override
+    public void onPriceUpdateRequested(String symbol) {
+        // reset counter & max.
+        mToUpdateTotal = 1;
+        mUpdateCounter = 0;
+
+        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(this);
+        updater.updatePrices(symbol);
     }
 }

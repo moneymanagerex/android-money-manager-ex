@@ -63,7 +63,6 @@ public class StocksCursorAdapter
         mContext = context;
     }
 
-    private SQLiteDatabase mDatabase;
     private LayoutInflater mInflater;
     private HashMap<Integer, Integer> mHeadersAccountIndex;
     private SparseBooleanArray mCheckedPosition;
@@ -114,9 +113,4 @@ public class StocksCursorAdapter
             view.setBackgroundResource(android.R.color.transparent);
         }
     }
-
-    public void setDatabase(SQLiteDatabase mDatabase) {
-        this.mDatabase = mDatabase;
-    }
-
 }
