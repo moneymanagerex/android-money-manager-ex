@@ -19,7 +19,10 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.money.manager.ex.R;
 
 /**
  * Settings in the General category.
@@ -37,4 +40,14 @@ public class GeneralSettings {
         return result;
     }
 
+    public boolean getNotificationRecurringTransaction() {
+        SharedPreferences preferences = getSharedPreferences();
+        String key = mContext.getString(R.string.pref_repeating_transaction_notifications);
+        boolean notify = preferences.getBoolean(key, true);
+        return notify;
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
+    }
 }

@@ -61,7 +61,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
         final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferencesConstant.PREF_LOCALE));
         if (lstLocaleApp != null) {
             AppSettings settings = new AppSettings(getActivity());
-            String summary = settings.General.getApplicationLocale();
+            String summary = settings.getGeneralSettings().getApplicationLocale();
 //            String summary = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).getString(getString(PreferencesConstant.PREF_LOCALE), "");
             setSummaryListPreference(lstLocaleApp, summary, R.array.application_locale_values, R.array.application_locale_entries);
             lstLocaleApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

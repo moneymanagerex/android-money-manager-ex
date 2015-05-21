@@ -60,7 +60,8 @@ public class RepeatingTransactionNotifications {
             SQLiteDatabase db = databaseHelper.getReadableDatabase();
             if(db == null) return;
 
-            Cursor cursor = db.rawQuery(billDeposits.getSource() + " AND " + QueryBillDeposits.DAYSLEFT + "<=0 ORDER BY " + QueryBillDeposits.NEXTOCCURRENCEDATE, null);
+            Cursor cursor = db.rawQuery(billDeposits.getSource() + " AND " +
+                    QueryBillDeposits.DAYSLEFT + "<=0 ORDER BY " + QueryBillDeposits.NEXTOCCURRENCEDATE, null);
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
                     cursor.moveToFirst();
@@ -112,9 +113,11 @@ public class RepeatingTransactionNotifications {
                 }
                 // close cursor
                 cursor.close();
-            }
+            } //
+
             // close database helper
             //databaseHelper.close();
+            db.close();
         }
     }
 }

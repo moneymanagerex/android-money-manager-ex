@@ -31,8 +31,6 @@ import com.money.manager.ex.R;
  */
 public class AppSettings {
 
-    public GeneralSettings General;
-
     public AppSettings(Context context) {
         mContext = context;
         init();
@@ -41,7 +39,9 @@ public class AppSettings {
     private Context mContext;
     private SharedPreferences mSettings;
     private SharedPreferences.Editor mEditor;
+
     private DatabaseSettings mDatabase;
+    private GeneralSettings mGeneral;
 
     public boolean get(String key, boolean defaultValue) {
         return mSettings.getBoolean(key, defaultValue);
@@ -75,8 +75,6 @@ public class AppSettings {
         Context context = mContext.getApplicationContext();
         mSettings = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mSettings.edit();
-
-        this.General = new GeneralSettings(mContext);
     }
 
     public DatabaseSettings getDatabaseSettings() {
@@ -84,6 +82,13 @@ public class AppSettings {
             mDatabase = new DatabaseSettings(this);
         }
         return mDatabase;
+    }
+
+    public GeneralSettings getGeneralSettings() {
+        if (mGeneral == null) {
+            mGeneral = new GeneralSettings(mContext);
+        }
+        return mGeneral;
     }
 
     public Context getContext() {

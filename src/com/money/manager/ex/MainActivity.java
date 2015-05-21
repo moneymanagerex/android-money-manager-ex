@@ -80,6 +80,7 @@ import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferencesConstant;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
@@ -667,9 +668,13 @@ public class MainActivity extends BaseFragmentActivity {
         }
         // start notification for recurring transaction
         if (!isRecurringTransactionStarted) {
-            RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
-            notifications.notifyRepeatingTransaction();
-            isRecurringTransactionStarted = true;
+            AppSettings settings = new AppSettings(this);
+            boolean showNotification = settings.getGeneralSettings().getNotificationRecurringTransaction();
+            if (showNotification) {
+                RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
+                notifications.notifyRepeatingTransaction();
+                isRecurringTransactionStarted = true;
+            }
         }
     }
 
