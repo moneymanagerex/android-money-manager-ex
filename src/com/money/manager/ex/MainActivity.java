@@ -617,7 +617,8 @@ public class MainActivity extends BaseFragmentActivity {
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
         // show home fragment
-        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
+        HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
+                .findFragmentByTag(HomeFragment.class.getSimpleName());
         if (fragment == null) {
             // fragment create
             fragment = new HomeFragment();
@@ -679,6 +680,8 @@ public class MainActivity extends BaseFragmentActivity {
             try {
                 mDrawerToggle.syncState();
             } catch (Exception e) {
+                Log.w(LOGCAT, "Error on drawer sync state.");
+                e.printStackTrace();
             }
         }
     }
