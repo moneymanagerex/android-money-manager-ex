@@ -53,6 +53,7 @@ import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.investment.StockHistoryRepository;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -98,8 +99,7 @@ public class MoneyManagerProvider
         // create authority
         setAuthority(getContext().getApplicationContext().getPackageName() + ".provider");
         // create object provider
-        objMoneyManager = Arrays.asList(new Dataset[]{
-                new TableAccountList(),
+        objMoneyManager = Arrays.asList(new TableAccountList(),
                 new TableAssets(),
                 new TableBillsDeposits(),
                 new TableBudgetTable(),
@@ -119,7 +119,7 @@ public class MoneyManagerProvider
                 new QueryBillDeposits(getContext()),
                 new QueryReportIncomeVsExpenses(getContext()),
                 new ViewMobileData(),
-                new SQLDataSet()});
+                new SQLDataSet());
 
         // Cycle all data sets for the composition of UriMatcher
         for (int i = 0; i < objMoneyManager.size(); i++) {

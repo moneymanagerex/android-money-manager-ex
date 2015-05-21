@@ -24,6 +24,7 @@ import android.util.Log;
 import android.widget.ListAdapter;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.businessobjects.StockHistory;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.core.file.TextFileExport;
 
@@ -92,8 +93,8 @@ public class PriceCsvExport
             // use the latest price date here.
             String date;
             ContentValues latestPrice = historyRepository.getLatestPriceFor(symbol);
-            if(latestPrice.containsKey(StockHistoryRepository.DATE)) {
-                date = (String) latestPrice.get(StockHistoryRepository.DATE);
+            if(latestPrice.containsKey(StockHistory.DATE)) {
+                date = (String) latestPrice.get(StockHistory.DATE);
             } else {
                 date = getTodayAsString();
             }

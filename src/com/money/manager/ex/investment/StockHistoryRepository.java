@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.businessobjects.StockHistory;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -34,12 +35,6 @@ public class StockHistoryRepository
     }
 
     private static final String TABLE_NAME = "stockhistory_v1";
-    // fields
-    public static final String HISTID = "HISTID";
-    public static final String SYMBOL = "SYMBOL";
-    public static final String DATE = "DATE";
-    public static final String VALUE = "VALUE";
-    public static final String UPDTYPE = "UPDTYPE";
 
     // UpdateType: online = 1, manual = 2
     private enum UpdateType {
@@ -90,7 +85,7 @@ public class StockHistoryRepository
                 .getReadableDatabase();
 
         String isoDate = DateUtils.getSQLiteStringDate(mContext, date);
-        String selection = SYMBOL + "=? AND " + DATE + "=?";
+        String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
         Cursor cursor = db.query(getSource(), null,
                 selection,
@@ -123,9 +118,9 @@ public class StockHistoryRepository
         SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext).getWritableDatabase();
 
         ContentValues values = getContentValues(symbol, price, date);
-        String where = SYMBOL + "=?";
-        where = DatabaseUtils.concatenateWhere(where, DATE + "=?");
-        String[] whereArgs = new String[] { symbol, values.getAsString(DATE) };
+        String where = StockHistory.SYMBOL + "=?";
+        where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
+        String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
 
         int records = db.update(getSource(),
                 values,
@@ -143,25 +138,19 @@ public class StockHistoryRepository
         String isoDate = dateFormat.format(date);
 
         ContentValues values = new ContentValues();
-        values.put(SYMBOL, symbol);
-        values.put(DATE, isoDate);
-        values.put(VALUE, price.toPlainString());
-        values.put(UPDTYPE, UpdateType.Online.type);
+        values.put(StockHistory.SYMBOL, symbol);
+        values.put(StockHistory.DATE, isoDate);
+        values.put(StockHistory.VALUE, price.toPlainString());
+        values.put(StockHistory.UPDTYPE, UpdateType.Online.type);
 
         return values;
     }
-
-    /*
-    select histid, symbol, date, value
-    from stockhistory_v1
-    group by symbol
-     */
 
     public ContentValues getLatestPriceFor(String symbol) {
         SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
                 .getReadableDatabase();
 
-        String selection = SYMBOL + "=?";
+        String selection = StockHistory.SYMBOL + "=?";
 
         Cursor cursor = db.query(getSource(),
                 null,
@@ -170,7 +159,7 @@ public class StockHistoryRepository
                 null, // group by
                 null, // having
                 // order by
-                DATE + " DESC"
+                StockHistory.DATE + " DESC"
         );
 
         ContentValues result = new ContentValues();
@@ -183,13 +172,13 @@ public class StockHistoryRepository
 //            result = getContentValues(symbol, price, date);
 
             // keep the raw values for now
-            result.put(SYMBOL, symbol);
+            result.put(StockHistory.SYMBOL, symbol);
 
-            String dateString = cursor.getString(cursor.getColumnIndex(DATE));
-            result.put(DATE, dateString);
+            String dateString = cursor.getString(cursor.getColumnIndex(StockHistory.DATE));
+            result.put(StockHistory.DATE, dateString);
 
-            String priceString = cursor.getString(cursor.getColumnIndex(VALUE));
-            result.put(VALUE, priceString);
+            String priceString = cursor.getString(cursor.getColumnIndex(StockHistory.VALUE));
+            result.put(StockHistory.VALUE, priceString);
 
             cursor.close();
         }
@@ -200,7 +189,7 @@ public class StockHistoryRepository
     }
 
     public Date getDateFromCursor(Cursor cursor) {
-        String dateString = cursor.getString(cursor.getColumnIndex(DATE));
+        String dateString = cursor.getString(cursor.getColumnIndex(StockHistory.DATE));
         SimpleDateFormat format = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
         Date date = null;
         try {
@@ -213,9 +202,22 @@ public class StockHistoryRepository
     }
 
     public BigDecimal getPriceFromCursor(Cursor cursor) {
-        String priceString = cursor.getString(cursor.getColumnIndex(VALUE));
+        String priceString = cursor.getString(cursor.getColumnIndex(StockHistory.VALUE));
         BigDecimal result = new BigDecimal(priceString);
         return result;
     }
 
+    public int deletePriceHistory() {
+        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+                .getWritableDatabase();
+
+        int actionResult = db.delete(getSource(),
+                null,
+                null
+                );
+
+        db.close();
+
+        return actionResult;
+    }
 }

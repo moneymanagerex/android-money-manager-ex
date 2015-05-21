@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.StockHistory;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
@@ -34,8 +35,8 @@ public class WatchlistDataset
                 StockRepository.HELDAT,
                 StockRepository.STOCKNAME,
                 StockRepository.SYMBOL,
-                StockHistoryRepository.DATE,
-                StockHistoryRepository.VALUE
+                StockHistory.DATE,
+                StockHistory.VALUE
         };
     }
 

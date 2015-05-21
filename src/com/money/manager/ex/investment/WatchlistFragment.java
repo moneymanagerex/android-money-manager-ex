@@ -231,42 +231,6 @@ public class WatchlistFragment extends Fragment
         return view;
     }
 
-    // Loader callbacks
-
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        CursorLoader result = null;
-//
-//        switch (id) {
-//            case WatchlistItemsFragment.ID_LOADER_WATCHLIST:
-////                StockRepository stocks = new StockRepository(mContext);
-////                result = stocks.getCursorLoader(mAccountId);
-//        }
-//
-//        return result;
-//    }
-
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//        // test
-////        Log.d(LOGCAT, "loader reset");
-//    }
-
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//        switch (loader.getId()) {
-//            case WatchlistItemsFragment.ID_LOADER_WATCHLIST:
-//                // set titles
-//                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-//                if (activity != null) {
-//                    activity.getSupportActionBar().setSubtitle(mAccountName);
-//                }
-//                break;
-//        }
-//    }
-
-    // End loader callbacks
-
     /**
      * Handle menu item click.
      * Update prices.
@@ -278,12 +242,15 @@ public class WatchlistFragment extends Fragment
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.menu_update_prices:
-                // Update price
                 confirmPriceUpdate();
                 break;
             case R.id.menu_export_prices:
-                // export prices to CSV
                 exportPrices();
+                break;
+            case R.id.menu_purge_history:
+                purgePriceHistory();
+                break;
+            default:
                 break;
         }
 
@@ -458,5 +425,39 @@ public class WatchlistFragment extends Fragment
 
         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(this);
         updater.updatePrices(symbol);
+    }
+
+    private void purgePriceHistory() {
+        new AlertDialogWrapper.Builder(getActivity())
+                .setTitle(R.string.purge_history)
+                .setMessage(R.string.purge_history_confirmation)
+                .setIcon(R.drawable.ic_action_help_light)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        StockHistoryRepository history = new StockHistoryRepository(mContext);
+                        int deleted = history.deletePriceHistory();
+
+                        if (deleted > 0) {
+                            DropboxHelper.notifyDataChanged();
+                            Toast.makeText(mContext, mContext.getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
+                                    .show();
+                        } else {
+                            Toast.makeText(mContext, mContext.getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create()
+                .show();
+
     }
 }

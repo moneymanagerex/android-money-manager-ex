@@ -30,4 +30,9 @@
         android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
         android:title="@string/export_prices"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_purge_history"
+        android:icon="@drawable/abc_ic_menu_cut_mtrl_alpha"
+        android:title="@string/purge_history"
+        app:showAsAction="ifRoom"/>
 </menu>
