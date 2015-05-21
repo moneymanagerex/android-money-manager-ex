@@ -9,7 +9,6 @@ import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.utils.RawFileUtils;
 
 /**
@@ -20,7 +19,7 @@ public class WatchlistDataset
 
     public WatchlistDataset(Context context) {
         super(RawFileUtils.getRawAsString(context, R.raw.query_watchlist), DatasetType.QUERY,
-                WatchlistDataset.class.getSimpleName());
+                "watchlist");
 
         mContext = context;
     }

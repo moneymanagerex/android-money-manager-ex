@@ -2,6 +2,7 @@ package com.money.manager.ex.investment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,9 +12,11 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.StockHistory;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -156,5 +159,51 @@ public class StockHistoryRepository
     group by symbol
      */
 
+    public ContentValues getLatestPriceFor(String symbol) {
+        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+                .getReadableDatabase();
 
+        String selection = SYMBOL + "=?";
+
+        Cursor cursor = db.query(getSource(),
+                null,
+                selection,
+                new String[] { symbol },
+                null, null, null
+        );
+
+        ContentValues result = null;
+
+        if (cursor != null) {
+            //StockHistory history = new StockHistory();
+            Date date = getDateFromCursor(cursor);
+            BigDecimal price = getPriceFromCursor(cursor);
+            result = getContentValues(symbol, price, date);
+
+            cursor.close();
+        }
+
+        db.close();
+
+        return result;
+    }
+
+    public Date getDateFromCursor(Cursor cursor) {
+        String dateString = cursor.getString(cursor.getColumnIndex(DATE));
+        SimpleDateFormat format = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
+        Date date = null;
+        try {
+            date = format.parse(dateString);
+        } catch (ParseException pex) {
+            Log.e(LOGCAT, "Error parsing the date from stock history.");
+//            date = new Date();
+        }
+        return date;
+    }
+
+    public BigDecimal getPriceFromCursor(Cursor cursor) {
+        String priceString = cursor.getString(cursor.getColumnIndex(VALUE));
+        BigDecimal result = new BigDecimal(priceString);
+        return result;
+    }
 }

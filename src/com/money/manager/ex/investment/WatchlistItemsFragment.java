@@ -289,20 +289,6 @@ public class WatchlistItemsFragment
                     sort = args.getString(AllDataFragment.KEY_ARGUMENTS_SORT);
                 }
 
-                // Custom SQL
-//                WatchlistDataset watchlistDataset = new WatchlistDataset(mContext.getApplicationContext());
-////                selection = watchlistDataset.getWatchlistSqlQuery();
-//                String where = whereClause.get(0);
-//                String [] whereArgs = where.split("=");
-//                String[] queryAttributes = new String[] { whereArgs[1] };
-//
-//                // create loader
-//                result = new CursorLoader(mContext,
-//                        watchlistDataset.getUri(),
-//                        watchlistDataset.getAllColumns(),
-//                        selection,
-//                        queryAttributes,
-//                        sort);
                 result = new CursorLoader(mContext,
                         mStockRepository.getUri(),
                         mStockRepository.getAllColumns(),

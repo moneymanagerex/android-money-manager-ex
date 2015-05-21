@@ -83,6 +83,7 @@ public class PriceCsvExport
     private String getContent(ListAdapter adapter) {
         StringBuilder builder = new StringBuilder();
         char separator = ',';
+        StockHistoryRepository historyRepository = new StockHistoryRepository(mContext.getApplicationContext());
 
         int itemCount = adapter.getCount();
 
