@@ -25,9 +25,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -379,7 +376,7 @@ public class WatchlistFragment extends Fragment
         StockHistoryRepository historyRepo = mDataFragment.getStockHistoryRepository();
         historyRepo.addStockHistoryRecord(symbol, price, date);
 
-        showUpdateMessage(symbol);
+//        showUpdateMessage(symbol);
 
         mUpdateCounter += 1;
         if (mUpdateCounter == mToUpdateTotal) {
@@ -394,8 +391,7 @@ public class WatchlistFragment extends Fragment
             public void run() {
                 //
                 String message = getString(R.string.price_updated) + ": " + symbol;
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             }
         });
     }

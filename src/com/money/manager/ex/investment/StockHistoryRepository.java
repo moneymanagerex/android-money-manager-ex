@@ -2,7 +2,6 @@ package com.money.manager.ex.investment;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,7 +11,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.StockHistory;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.math.BigDecimal;
@@ -169,16 +167,29 @@ public class StockHistoryRepository
                 null,
                 selection,
                 new String[] { symbol },
-                null, null, null
+                null, // group by
+                null, // having
+                // order by
+                DATE + " DESC"
         );
 
-        ContentValues result = null;
+        ContentValues result = new ContentValues();
 
         if (cursor != null) {
-            //StockHistory history = new StockHistory();
-            Date date = getDateFromCursor(cursor);
-            BigDecimal price = getPriceFromCursor(cursor);
-            result = getContentValues(symbol, price, date);
+            cursor.moveToFirst();
+
+//            Date date = getDateFromCursor(cursor);
+//            BigDecimal price = getPriceFromCursor(cursor);
+//            result = getContentValues(symbol, price, date);
+
+            // keep the raw values for now
+            result.put(SYMBOL, symbol);
+
+            String dateString = cursor.getString(cursor.getColumnIndex(DATE));
+            result.put(DATE, dateString);
+
+            String priceString = cursor.getString(cursor.getColumnIndex(VALUE));
+            result.put(VALUE, priceString);
 
             cursor.close();
         }
@@ -206,4 +217,5 @@ public class StockHistoryRepository
         BigDecimal result = new BigDecimal(priceString);
         return result;
     }
+
 }
