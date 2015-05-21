@@ -493,6 +493,7 @@
     <string name="withdrawal_from">Withdrawal From %1$s</string>
     <string name="deposit_to">Deposit To %1$s</string>
     <string name="mmex_website">MoneyManagerEx Website</string>
+    <string name="android_website">MMEx for Android Website</string>
 
     <string name="donate_in_app_already_donate">You already supported the development of MoneyManagerEx for Android with your donation!\n\nThank you from development team!</string>
     <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
