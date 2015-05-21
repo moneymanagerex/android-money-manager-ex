@@ -71,10 +71,10 @@ android {
         applicationId "com.money.manager.ex"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 618
-        versionName '2.1.0-alpha3'
+        versionCode 619
+        versionName '2.1.0-beta1'
         // 616 = 2.0.5
-        // 612 = 2.1.0-alpha1
+        // 601 = 1.4.17
     }
 
     sourceSets {
