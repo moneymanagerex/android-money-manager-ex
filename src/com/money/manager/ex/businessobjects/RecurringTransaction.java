@@ -50,6 +50,7 @@ public class RecurringTransaction {
     }
 
     public static final String LOGCAT = RecurringTransaction.class.getSimpleName();
+
     public int RecurringTransactionId;
     public Context Context;
     private Cursor mCursor;
@@ -196,16 +197,17 @@ public class RecurringTransaction {
      */
     public ArrayList<TableBudgetSplitTransactions> loadSplitTransactions() {
 
-        ArrayList<TableBudgetSplitTransactions> listSplitTrans = null;
+        ArrayList<TableBudgetSplitTransactions> listSplitTrans = new ArrayList<>();
 
         Cursor curSplit = this.getCursorForSplitTransactions();
 
         if (curSplit != null && curSplit.moveToFirst()) {
-            listSplitTrans = new ArrayList<>();
             while (!curSplit.isAfterLast()) {
                 TableBudgetSplitTransactions obj = new TableBudgetSplitTransactions();
                 obj.setValueFromCursor(curSplit);
+
                 listSplitTrans.add(obj);
+
                 curSplit.moveToNext();
             }
         }
@@ -218,10 +220,10 @@ public class RecurringTransaction {
      * @return cursor for all the related split transactions
      */
     private Cursor getCursorForSplitTransactions(){
-
         return this.Context.getContentResolver().query(
                 mSplitCategories.getUri(), null,
-                TableBudgetSplitTransactions.TRANSID + "=" + Integer.toString(this.RecurringTransactionId), null,
+                TableBudgetSplitTransactions.TRANSID + "=" + Integer.toString(this.RecurringTransactionId),
+                null,
                 TableBudgetSplitTransactions.SPLITTRANSID);
     }
 }
