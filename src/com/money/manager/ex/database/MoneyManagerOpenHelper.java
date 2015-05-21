@@ -22,6 +22,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDiskIOException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -147,6 +148,18 @@ public class MoneyManagerOpenHelper
      */
     public void execSQL(String sql, Object[] bindArgs) throws SQLException {
         execSQL(this.getWritableDatabase(), sql, bindArgs);
+    }
+
+    @Override
+    public SQLiteDatabase getReadableDatabase() {
+        SQLiteDatabase db = null;
+        try {
+            db = super.getReadableDatabase();
+        } catch (SQLiteDiskIOException dex) {
+            Log.e(LOGCAT, "Error opening database: " + dex.getMessage());
+            dex.printStackTrace();
+        }
+        return db;
     }
 
     @Override

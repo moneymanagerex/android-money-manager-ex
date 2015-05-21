@@ -23,6 +23,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
@@ -56,7 +57,10 @@ public class RepeatingTransactionNotifications {
         MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(context);
 
         if (databaseHelper != null) {
-            Cursor cursor = databaseHelper.getReadableDatabase().rawQuery(billDeposits.getSource() + " AND " + QueryBillDeposits.DAYSLEFT + "<=0 ORDER BY " + QueryBillDeposits.NEXTOCCURRENCEDATE, null);
+            SQLiteDatabase db = databaseHelper.getReadableDatabase();
+            if(db == null) return;
+
+            Cursor cursor = db.rawQuery(billDeposits.getSource() + " AND " + QueryBillDeposits.DAYSLEFT + "<=0 ORDER BY " + QueryBillDeposits.NEXTOCCURRENCEDATE, null);
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
                     cursor.moveToFirst();
