@@ -142,6 +142,10 @@ public class PriceCsvExport
         String csvFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(csvFormat, Locale.US);
         String result = sdf.format(date);
+
+        // append quotes
+        result = "\"" + result + "\"";
+
         return  result;
     }
 
