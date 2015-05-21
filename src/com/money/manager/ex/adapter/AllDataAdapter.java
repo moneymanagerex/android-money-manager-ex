@@ -382,10 +382,14 @@ public class AllDataAdapter extends CursorAdapter {
         @Override
         protected Boolean doInBackground(Void... params) {
             TableCheckingAccount checkingAccount = new TableCheckingAccount();
-            String selection = "(" + TableCheckingAccount.ACCOUNTID + "=" + Integer.toString(getAccountId()) + " OR " + TableCheckingAccount.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " + "" +
-                    "AND (" + TableCheckingAccount.TRANSDATE + "<'" + getDate() + "' OR (" + TableCheckingAccount.TRANSDATE + "='" + getDate() + "' AND " + TableCheckingAccount.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
+            String selection = "(" + TableCheckingAccount.ACCOUNTID + "=" + Integer.toString(getAccountId()) +
+                    " OR " + TableCheckingAccount.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " + "" +
+                    "AND (" + TableCheckingAccount.TRANSDATE + "<'" + getDate() +
+                    "' OR (" + TableCheckingAccount.TRANSDATE + "='" + getDate() +
+                    "' AND " + TableCheckingAccount.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
                     "AND " + TableCheckingAccount.STATUS + "<>'V'";
-            Cursor cursor = getDatabase().query(checkingAccount.getSource(), checkingAccount.getAllColumns(), selection, null, null, null, null);
+            Cursor cursor = getDatabase().query(checkingAccount.getSource(),
+                    checkingAccount.getAllColumns(), selection, null, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     if (Constants.TRANSACTION_TYPE_WITHDRAWAL.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE)))) {
@@ -407,7 +411,8 @@ public class AllDataAdapter extends CursorAdapter {
             }
             // calculate initial bal
             TableAccountList accountList = new TableAccountList();
-            cursor = getDatabase().query(accountList.getSource(), accountList.getAllColumns(), TableAccountList.ACCOUNTID + "=" + Integer.toString(getAccountId()), null, null, null, null);
+            cursor = getDatabase().query(accountList.getSource(), accountList.getAllColumns(),
+                    TableAccountList.ACCOUNTID + "=" + Integer.toString(getAccountId()), null, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 total += cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
             }

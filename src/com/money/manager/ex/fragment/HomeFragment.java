@@ -128,12 +128,13 @@ public class HomeFragment extends Fragment implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Core core = new Core(getActivity().getApplicationContext());
+        CursorLoader result = null;
 
         switch (id) {
             case ID_LOADER_USER_NAME:
-                return new CursorLoader(getActivity(), infoTable.getUri(),
+                result = new CursorLoader(getActivity(), infoTable.getUri(),
                         new String[]{infoTable.INFONAME, infoTable.INFOVALUE}, null, null, null);
-
+                break;
             case ID_LOADER_ACCOUNT_BILLS:
                 setListViewAccountBillsVisible(false);
                 // compose whereClause
@@ -146,23 +147,27 @@ public class HomeFragment extends Fragment implements
                 if (core.getAccountFavoriteVisible()) {
                     where = "LOWER(FAVORITEACCT)='true'";
                 }
-                return new CursorLoader(getActivity(), accountBills.getUri(),
+                result = new CursorLoader(getActivity(), accountBills.getUri(),
                         accountBills.getAllColumns(), where, null,
                         accountBills.ACCOUNTTYPE + ", upper(" + accountBills.ACCOUNTNAME + ")");
+                break;
 
             case ID_LOADER_BILL_DEPOSITS:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
-                return new CursorLoader(getActivity(), billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
+                result = new CursorLoader(getActivity(), billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
+                break;
 
             case ID_LOADER_INCOME_EXPENSES:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), QueryReportIncomeVsExpenses.Month + "="
+                result = new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), QueryReportIncomeVsExpenses.Month + "="
                         + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
                         + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), null, null);
+                break;
 
             default:
-                return null;
+                result = null;
         }
+        return  result;
     }
 
     @Override
@@ -359,14 +364,15 @@ public class HomeFragment extends Fragment implements
 
                         data.moveToNext();
                     }
-                    // create adapter
-                    expandableAdapter = new AccountBillsExpandableAdapter(getActivity());
                 }
                 // write accounts total
-
                 addFooterExpandableListView(curTotal, curReconciled);
+
+                // create adapter
+                expandableAdapter = new AccountBillsExpandableAdapter(getActivity());
                 // set adapter and shown
                 mExpandableListView.setAdapter(expandableAdapter);
+
                 setVisibilityOfAccountGroups();
                 setListViewAccountBillsVisible(true);
 

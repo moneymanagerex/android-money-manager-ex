@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,8 +49,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DropboxBrowserActivity extends BaseFragmentActivity {
-    public static class DropboxBrowserFragment extends BaseListFragment {
+public class DropboxBrowserActivity
+        extends BaseFragmentActivity {
+
+    public static class DropboxBrowserFragment
+            extends BaseListFragment {
+
+        private final String LOGCAT = this.getClass().getSimpleName();
+
         //Define EntryAdapter
         private class EntryAdapter extends ArrayAdapter<Entry> {
             private int mLayoutId;
@@ -157,7 +164,15 @@ public class DropboxBrowserActivity extends BaseFragmentActivity {
                 result.putExtra(INTENT_DROBPOXFILE_PATH, (String)null);
             } else {
                 // set result and exit
-                result.putExtra(INTENT_DROBPOXFILE_PATH, mAdapter.getItem(getListView().getCheckedItemPosition()).path);
+                int position = getListView().getCheckedItemPosition();
+                int itemCount = mAdapter.getCount();
+                // sometimes the list here has size 0 and the position is out of bounds.
+                if(position > itemCount) {
+                    Log.e(LOGCAT, "Position is larger than the number if items in the list!");
+                    return;
+                }
+
+                result.putExtra(INTENT_DROBPOXFILE_PATH, mAdapter.getItem(position).path);
             }
             getActivity().setResult(RESULT_OK, result);
             // exit
