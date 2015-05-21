@@ -733,9 +733,13 @@ public class AllDataFragment extends BaseListFragment
         }
 
         private void showDuplicateTransactionView(ArrayList<Integer> transIds) {
+            // validation
+            int transactionCount = transIds.size();
+            if (transactionCount <= 0) return;
+
             int[] ids = convertArrayListToArray(transIds);
-            Intent[] intents = new Intent[ids.length];
-            for (int i = 0; i < ids.length; i++) {
+            Intent[] intents = new Intent[transactionCount];
+            for (int i = 0; i < transactionCount; i++) {
                 intents[i] = new Intent(getActivity(), CheckingAccountActivity.class);
                 intents[i].putExtra(CheckingAccountActivity.KEY_TRANS_ID, ids[i]);
                 intents[i].setAction(Intent.ACTION_PASTE);
