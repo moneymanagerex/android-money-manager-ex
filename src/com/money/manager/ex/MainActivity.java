@@ -559,7 +559,7 @@ public class MainActivity extends BaseFragmentActivity {
         // show tutorial
         showTutorial(savedInstanceState);
         // show changelog dialog
-        if (core.isToDisplayChangelog()) core.showChangelog();
+//        if (core.isToDisplayChangelog()) core.showChangelog();
 
         MoneyManagerApplication.showDatabasePathWork(getApplicationContext());
 
