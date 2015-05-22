@@ -47,4 +47,8 @@ public class Constants {
     public static final String INTENT_ACTION_PASTE = Intent.ACTION_PASTE;
     // Intent: Request
     public static final String INTENT_REQUEST_PREFERENCES_SCREEN = "SettingsActivity:PreferenceScreen";
+
+    // Themes
+    public static final String THEME_LIGHT = "Material Light";
+    public static final String THEME_DARK = "Material Dark";
 }

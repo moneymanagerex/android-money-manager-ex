@@ -76,6 +76,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * The fragment that contains the accounts groups with accounts and their balances.
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
 @SuppressWarnings("static-access")

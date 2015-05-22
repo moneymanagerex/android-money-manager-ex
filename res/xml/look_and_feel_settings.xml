@@ -69,7 +69,7 @@
         android:title="@string/title_application_font_size"/>
     <ListPreference
         android:defaultValue="@string/theme_light"
-        android:entries="@array/themes_values"
+        android:entries="@array/themes_names"
         android:entryValues="@array/themes_values"
         android:icon="@null"
         android:key="@string/pref_theme"

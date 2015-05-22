@@ -24,6 +24,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -35,7 +36,11 @@ import org.apache.commons.lang3.math.NumberUtils;
 /**
  * Look & feel settings.
  */
-public class LookFeelFragment extends PreferenceFragment {
+public class LookFeelFragment
+        extends PreferenceFragment {
+
+    private final String LOGCAT = this.getClass().getSimpleName();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +113,7 @@ public class LookFeelFragment extends PreferenceFragment {
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Log.d(LOGCAT, newValue.toString());
                     MainActivity.setRestartActivity(true);
                     return true;
                 }
