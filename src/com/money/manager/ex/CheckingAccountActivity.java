@@ -822,6 +822,8 @@ public class CheckingAccountActivity
 
         // Hide Category picker.
         txtSelectCategory.setVisibility(View.GONE);
+        // Clear category.
+        mCategoryId = -1;
 
         mTransCode = getString(R.string.transfer);
         refreshAfterTransactionCodeChange();

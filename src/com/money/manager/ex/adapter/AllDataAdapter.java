@@ -124,9 +124,11 @@ public class AllDataAdapter
         double amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
         // set currency id
         setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
+
         // manage transfer and change amount sign
-        if ((cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)) != null) &&
-                (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE))))) {
+        String transactionType = cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE));
+        boolean isTransfer = Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(transactionType);
+        if ((transactionType != null) && isTransfer) {
             if (getAccountId() != cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
                 amount = -(amount); // -total
             } else if (getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
@@ -134,6 +136,7 @@ public class AllDataAdapter
                 setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
             }
         }
+
         // check amount sign
         CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
         holder.txtAmount.setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), amount));
@@ -145,6 +148,7 @@ public class AllDataAdapter
         } else {
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_red_700));
         }
+
         // compose payee description
         holder.txtPayee.setText(cursor.getString(cursor.getColumnIndex(PAYEE)));
         // compose account name
@@ -158,12 +162,17 @@ public class AllDataAdapter
         } else {
             holder.txtAccountName.setVisibility(View.GONE);
         }
+
         // write ToAccountName
+        String toAccountName = "";
         if ((!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME))))) {
-            if (getAccountId() != cursor.getInt(cursor.getColumnIndex(TOACCOUNTID)))
-                holder.txtPayee.setText(cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME)));
-            else
-                holder.txtPayee.setText(cursor.getString(cursor.getColumnIndex(ACCOUNTNAME)));
+            if (getAccountId() != cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
+                toAccountName = cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME));
+            } else {
+                toAccountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+            }
+            toAccountName = "[%]".replace("%", toAccountName);
+            holder.txtPayee.setText(toAccountName);
         }
 
         // compose category description
@@ -177,8 +186,13 @@ public class AllDataAdapter
             // Display category/sub-category.
             holder.txtCategorySub.setText(Html.fromHtml(categorySub));
         } else {
-            // Must be a split category.
-            holder.txtCategorySub.setText(R.string.split_category);
+            // It is either a Transfer or a split category.
+            if (isTransfer) {
+                holder.txtCategorySub.setText(R.string.transfer);
+            } else {
+                // then it is a split? todo: improve this check to make it explicit.
+                holder.txtCategorySub.setText(R.string.split_category);
+            }
         }
 
         // notes
