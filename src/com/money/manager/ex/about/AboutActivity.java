@@ -80,8 +80,8 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.about_activity);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.about_activity);
         setDisplayHomeAsUpEnabled(true);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);

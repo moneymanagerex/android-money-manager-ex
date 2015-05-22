@@ -41,8 +41,8 @@ public class PayeeActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.base_toolbar_activity);
 
         // enable home button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

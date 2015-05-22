@@ -71,8 +71,8 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.base_toolbar_activity);
 
         // check if launch from notification
         if (getIntent() != null && getIntent().getBooleanExtra(INTENT_EXTRA_LAUNCH_NOTIFICATION, false)) {

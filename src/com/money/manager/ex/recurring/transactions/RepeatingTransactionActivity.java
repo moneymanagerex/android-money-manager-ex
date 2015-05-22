@@ -245,8 +245,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.repeatingtransaction_activity);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.repeatingtransaction_activity);
 
         setToolbarStandardAction(getToolbar());
 

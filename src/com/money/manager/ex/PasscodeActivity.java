@@ -48,6 +48,7 @@ public class PasscodeActivity extends FragmentActivity {
 		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.passcode_activity);
+
 		// create a listener for button
 		OnClickListener clickListener = new OnClickListener() {
 			@Override

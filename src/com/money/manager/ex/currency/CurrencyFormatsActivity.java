@@ -85,8 +85,8 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.currecyformats_activity);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.currecyformats_activity);
         setToolbarStandardAction(getToolbar());
         // take object
         edtCurrencyName = (EditText) findViewById(R.id.editTextCurrencyName);

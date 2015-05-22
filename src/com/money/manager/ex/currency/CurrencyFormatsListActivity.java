@@ -42,8 +42,8 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.base_toolbar_activity);
 
         // enabled home to come back
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

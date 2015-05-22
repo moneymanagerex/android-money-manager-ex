@@ -42,8 +42,8 @@ public class SearchActivity extends BaseFragmentActivity
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.search_activity);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.search_activity);
 
         SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
                 .findFragmentByTag(SearchFragment.class.getSimpleName());

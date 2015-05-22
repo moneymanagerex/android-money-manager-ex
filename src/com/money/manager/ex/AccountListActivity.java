@@ -42,8 +42,9 @@ public class AccountListActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.base_toolbar_activity);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // take intent send

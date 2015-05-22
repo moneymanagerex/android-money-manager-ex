@@ -32,7 +32,8 @@ import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 
-public class SettingsActivity extends BaseSettingsFragmentActivity {
+public class SettingsActivity
+        extends BaseSettingsFragmentActivity {
     private static String LOGCAT = SettingsActivity.class.getSimpleName();
 
     @Override

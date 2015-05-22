@@ -25,15 +25,16 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 
 /**
- * Created by Alessandro Lazzari on 15/03/2015.
+ *
  */
 public class BaseSettingsFragmentActivity extends BaseFragmentActivity {
     private static String LOGCAT = SettingsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstance) {
-        setContentView(R.layout.settings_activity);
         super.onCreate(savedInstance);
+
+        setContentView(R.layout.settings_activity);
         setDisplayHomeAsUpEnabled(true);
     }
 

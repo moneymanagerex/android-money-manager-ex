@@ -61,8 +61,10 @@ public class DonateActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        setContentView(R.layout.donate_activity);
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.donate_activity);
+
         // Set up SKUs
         if (1==2 && BuildConfig.DEBUG) {
             skus.add("android.test.purchased");

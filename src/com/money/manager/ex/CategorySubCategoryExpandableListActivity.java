@@ -84,8 +84,10 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.base_toolbar_activity);
+
         // enable home button into actionbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // get intent

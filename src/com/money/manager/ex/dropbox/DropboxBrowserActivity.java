@@ -219,8 +219,8 @@ public class DropboxBrowserActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.base_toolbar_activity);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.base_toolbar_activity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FragmentManager fm = getSupportFragmentManager();
         // intent
