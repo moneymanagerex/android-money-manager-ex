@@ -19,6 +19,7 @@ package com.money.manager.ex.fragment;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -362,7 +363,8 @@ public class AllDataFragment extends BaseListFragment
             case ID_LOADER_ALL_DATA_DETAIL:
                 AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
                 if (isShownBalance()) {
-                    adapter.setDatabase(MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getReadableDatabase());
+                    Context appContext = getActivity().getApplicationContext();
+                    adapter.setDatabase(MoneyManagerOpenHelper.getInstance(appContext).getReadableDatabase());
                 }
                 adapter.swapCursor(data);
                 if (isResumed()) {
