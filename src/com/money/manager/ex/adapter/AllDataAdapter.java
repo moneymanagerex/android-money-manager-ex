@@ -218,7 +218,7 @@ public class AllDataAdapter
                 balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
                 balanceAmount.setTextView(holder.txtBalance);
                 balanceAmount.setContext(mContext);
-                balanceAmount.setDatabase(getDatabase());
+//                balanceAmount.setDatabase(getDatabase());
                 balanceAmount.setCurrencyId(getCurrencyId());
                 balanceAmount.setTransId(transId);
                 // execute thread

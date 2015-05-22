@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.utils.CurrencyUtils;
@@ -177,6 +178,10 @@ public class BalanceAmountTask
      * @return the mDatabase
      */
     public SQLiteDatabase getDatabase() {
+        if (mDatabase == null) {
+            mDatabase = MoneyManagerOpenHelper.getInstance(mContext.getApplicationContext())
+                    .getReadableDatabase();
+        }
         return mDatabase;
     }
 
