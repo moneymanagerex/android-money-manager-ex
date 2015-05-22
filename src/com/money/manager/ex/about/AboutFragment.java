@@ -138,7 +138,7 @@ public class AboutFragment extends Fragment {
         txtWebsite.setMovementMethod(LinkMovementMethod.getInstance());
         OnClickListenerUrl clickListenerWebsite = new OnClickListenerUrl();
         clickListenerWebsite.setUrl("http://moneymanagerex.github.io/android-money-manager-ex/");
-        txtWebsite.setOnClickListener(clickListenerFeedback);
+        txtWebsite.setOnClickListener(clickListenerWebsite);
 
         // image view google plus
         OnClickListenerUrl clickListenerGooglePlus = new OnClickListenerUrl();
