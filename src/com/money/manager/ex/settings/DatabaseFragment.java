@@ -23,9 +23,10 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.text.Html;
-import android.util.Log;
+import android.text.InputType;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -49,7 +50,7 @@ public class DatabaseFragment
         addPreferencesFromResource(R.xml.database_settings);
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        final Preference pMoveDatabase = findPreference(getString(PreferencesConstant.PREF_DATABASE_BACKUP));
+        final Preference pMoveDatabase = findPreference(getString(PreferenceConstants.PREF_DATABASE_BACKUP));
         if (pMoveDatabase != null) {
             pMoveDatabase.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
@@ -80,11 +81,11 @@ public class DatabaseFragment
         }
 
         // Database path.
-        final Preference pDatabasePath = findPreference(getActivity().getString(PreferencesConstant.PREF_DATABASE_PATH));
+        final Preference pDatabasePath = findPreference(getActivity().getString(PreferenceConstants.PREF_DATABASE_PATH));
         pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
 
         //sqlite version
-        Preference pSQLiteVersion = findPreference(getString(PreferencesConstant.PREF_SQLITE_VERSION));
+        Preference pSQLiteVersion = findPreference(getString(PreferenceConstants.PREF_SQLITE_VERSION));
         if (pSQLiteVersion != null) {
             MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
             String sqliteVersion = helper.getSQLiteVersion();
@@ -93,10 +94,12 @@ public class DatabaseFragment
 
         // Migration of databases from version 1.4 to the location in 2.0.
         setVisibilityOfMigrationButton();
+
+        // Create database option.
+        setUpCreateDatabaseOption();
     }
 
     private void setVisibilityOfMigrationButton() {
-
         Preference migratePreference = findPreference(getString(R.string.pref_database_migrate_14_to_20));
         if (migratePreference == null) return;
 
@@ -116,7 +119,9 @@ public class DatabaseFragment
                 } else {
                     Toast.makeText(getActivity(), R.string.database_migrate_14_to_20_failure, Toast.LENGTH_LONG).show();
                 }
-                return success;
+                // The return value indicates whether to persist the preference,
+                // which is not used in this case.
+                return false;
             }
         };
 
@@ -131,4 +136,48 @@ public class DatabaseFragment
 
     }
 
+    private void setUpCreateDatabaseOption() {
+        Preference createDbPreference = findPreference(getString(R.string.pref_database_create));
+        if (createDbPreference == null) return;
+
+        createDbPreference.setSummary(getString(R.string.create_database_summary));
+
+        Preference.OnPreferenceClickListener createClicked = new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                promptForDatabaseFilename();
+                return false;
+            }
+        };
+
+        createDbPreference.setOnPreferenceClickListener(createClicked);
+    }
+
+    private void promptForDatabaseFilename() {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.create_database)
+                .content(R.string.create_database_dialog_content)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input("enter blah", "prefill", false, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                        createDatabase();
+                    }
+                })
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .show();
+    }
+
+    private void createDatabase(String filename) {
+        // todo: check if filename already contains the extension
+
+        // try to create the db file.
+
+        // initialize the database with this file
+
+        // store as the default database in settings
+
+        // show the result message.
+    }
 }

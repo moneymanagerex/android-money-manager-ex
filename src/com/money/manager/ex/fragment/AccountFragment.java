@@ -49,7 +49,7 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
@@ -224,7 +224,7 @@ public class AccountFragment extends Fragment
         // set arguments and settings of fragment
         mAllDataFragment.setArguments(prepareArgsForChildFragment());
         mAllDataFragment.setListHeader(header);
-        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TRANSACTION_SHOWN_BALANCE), false));
+        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
         mAllDataFragment.setAutoStarLoader(false);
         mAllDataFragment.setContextMenuGroupId(mAccountId);
         mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);

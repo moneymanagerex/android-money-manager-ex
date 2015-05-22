@@ -38,7 +38,7 @@ import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.SearchViewFormatter;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 
 public abstract class BaseExpandableListFragment extends ExpandableListFragment {
     // saved instance
@@ -89,7 +89,7 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
     public void onStart() {
         super.onStart();
         // check search type
-        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
+        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
         if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
             // show tooltip for wildcard
             TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getActivity().getApplicationContext(), "lookupswildcard");
@@ -189,7 +189,7 @@ public abstract class BaseExpandableListFragment extends ExpandableListFragment 
     }
 
     protected boolean onPreQueryTextChange(String newText) {
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
             newText = "%" + newText;
 
         return onQueryTextChange(newText);

@@ -27,7 +27,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.money.manager.ex.notifications.RepeatingTransactionReceiver;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 
 import java.util.Calendar;
 
@@ -36,13 +36,13 @@ public class MoneyManagerBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(PreferencesConstant.PREF_REPEATING_TRANSACTION_NOTIFICATIONS), true)) {
+            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS), true)) {
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 // compose intent
                 Intent i = new Intent(context, RepeatingTransactionReceiver.class);
                 PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
                 // take hour to start
-                String hour = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferencesConstant.PREF_REPEATING_TRANSACTION_CHECK), "08:00");
+                String hour = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_CHECK), "08:00");
                 // take a calendar and current time
                 Calendar calendar = Calendar.getInstance();
                 Calendar currentCalendar = Calendar.getInstance();

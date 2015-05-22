@@ -19,8 +19,6 @@ package com.money.manager.ex;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -38,11 +36,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
-import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.view.RobotoView;
-import com.money.manager.ex.widget.AccountBillsWidgetProvider;
-import com.money.manager.ex.widget.SummaryWidgetProvider;
 
 import java.io.File;
 
@@ -86,7 +81,7 @@ public class MoneyManagerApplication extends Application {
     @SuppressLint("SdCardPath")
     public static String getDatabasePath(Context context) {
         String databasePath = PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), null);
+                .getString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), null);
         if (databasePath != null) {
             File databaseFile = new File(databasePath);
             if (databaseFile.getAbsoluteFile().exists())  {
@@ -122,7 +117,7 @@ public class MoneyManagerApplication extends Application {
     public static void setDatabasePath(Context context, String dbpath) {
         // save a reference db path
         Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        editor.putString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), dbpath);
+        editor.putString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), dbpath);
 //        editor.commit();
         editor.apply();
     }
@@ -151,10 +146,10 @@ public class MoneyManagerApplication extends Application {
     public static void showDatabasePathWork(Context context) {
         String currentPath = getDatabasePath(context);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String lastPath = preferences.getString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), "");
+        String lastPath = preferences.getString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), "");
         if (!lastPath.equals(currentPath)) {
             preferences.edit()
-                    .putString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), currentPath)
+                    .putString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), currentPath)
                     .apply();
 //                    .commit();
             try {
@@ -208,7 +203,7 @@ public class MoneyManagerApplication extends Application {
      * @return the show transaction
      */
     public String getShowTransaction() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString(getString(PreferencesConstant.PREF_SHOW_TRANSACTION), getResources().getString(R.string.last7days));
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(getString(PreferenceConstants.PREF_SHOW_TRANSACTION), getResources().getString(R.string.last7days));
     }
 
     /**
@@ -277,8 +272,8 @@ public class MoneyManagerApplication extends Application {
         // preference
         if (appPreferences == null) {
             appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            RobotoView.setUserFont(Integer.parseInt(appPreferences.getString(getString(PreferencesConstant.PREF_APPLICATION_FONT), "-1")));
-            RobotoView.setUserFontSize(getApplicationContext(), appPreferences.getString(getString(PreferencesConstant.PREF_APPLICATION_FONT_SIZE), "default"));
+            RobotoView.setUserFont(Integer.parseInt(appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
+            RobotoView.setUserFontSize(getApplicationContext(), appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
         }
     }
 
@@ -308,7 +303,7 @@ public class MoneyManagerApplication extends Application {
         }
         // edit preferences
         Editor editPreferences = appPreferences.edit();
-        editPreferences.putString(getString(PreferencesConstant.PREF_USER_NAME), userName);
+        editPreferences.putString(getString(PreferenceConstants.PREF_USER_NAME), userName);
         // commit
 //        editPreferences.commit();
         editPreferences.apply();

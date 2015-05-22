@@ -36,7 +36,7 @@ public class GeneralSettings {
 
     public String getApplicationLocale() {
         String result = PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext())
-                .getString(mContext.getString(PreferencesConstant.PREF_LOCALE), "");
+                .getString(mContext.getString(PreferenceConstants.PREF_LOCALE), "");
         return result;
     }
 

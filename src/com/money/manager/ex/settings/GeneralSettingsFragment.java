@@ -58,11 +58,11 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 
         // Application Locale
 
-        final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferencesConstant.PREF_LOCALE));
+        final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferenceConstants.PREF_LOCALE));
         if (lstLocaleApp != null) {
             AppSettings settings = new AppSettings(getActivity());
             String summary = settings.getGeneralSettings().getApplicationLocale();
-//            String summary = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).getString(getString(PreferencesConstant.PREF_LOCALE), "");
+//            String summary = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).getString(getString(PreferenceConstants.PREF_LOCALE), "");
             setSummaryListPreference(lstLocaleApp, summary, R.array.application_locale_values, R.array.application_locale_entries);
             lstLocaleApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
@@ -77,7 +77,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 
         // Username
 
-        final Preference pUserName = findPreference(getString(PreferencesConstant.PREF_USER_NAME));
+        final Preference pUserName = findPreference(getString(PreferenceConstants.PREF_USER_NAME));
         if (pUserName != null) {
             pUserName.setSummary(MoneyManagerApplication.getInstanceApp().getUserName());
             pUserName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -91,7 +91,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
         }
 
         // list date format
-        final ListPreference lstDateFormat = (ListPreference) findPreference(getString(PreferencesConstant.PREF_DATE_FORMAT));
+        final ListPreference lstDateFormat = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DATE_FORMAT));
         if (lstDateFormat != null) {
             lstDateFormat.setEntries(getResources().getStringArray(R.array.date_format));
             lstDateFormat.setEntryValues(getResources().getStringArray(R.array.date_format_mask));
@@ -115,7 +115,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
         }
 
         // list preference base currency
-        final ListPreference lstBaseCurrency = (ListPreference) findPreference(getString(PreferencesConstant.PREF_BASE_CURRENCY));
+        final ListPreference lstBaseCurrency = (ListPreference) findPreference(getString(PreferenceConstants.PREF_BASE_CURRENCY));
         if (lstBaseCurrency != null) {
             List<TableCurrencyFormats> currencies = currencyUtils.getAllCurrencyFormats();
             // sort the currencies by name.
@@ -151,7 +151,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
         }
 
         // default status
-        final ListPreference lstDefaultStatus = (ListPreference) findPreference(getString(PreferencesConstant.PREF_DEFAULT_STATUS));
+        final ListPreference lstDefaultStatus = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_STATUS));
         if (lstDefaultStatus != null) {
             setSummaryListPreference(lstDefaultStatus, lstDefaultStatus.getValue(), R.array.status_values, R.array.status_items);
             lstDefaultStatus.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -164,7 +164,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
         }
 
         //default payee
-        final ListPreference lstDefaultPayee = (ListPreference) findPreference(getString(PreferencesConstant.PREF_DEFAULT_PAYEE));
+        final ListPreference lstDefaultPayee = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_PAYEE));
         if (lstDefaultPayee != null) {
             setSummaryListPreference(lstDefaultPayee, lstDefaultPayee.getValue(), R.array.new_transaction_dialog_values, R.array.new_transaction_dialog_items);
             lstDefaultPayee.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -177,7 +177,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
         }
 
         // financial day and month
-        final Preference pFinancialDay = findPreference(getString(PreferencesConstant.PREF_FINANCIAL_YEAR_STARTDATE));
+        final Preference pFinancialDay = findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_STARTDATE));
         if (pFinancialDay != null) {
             pFinancialDay.setSummary(core.getInfoValue(Constants.INFOTABLE_FINANCIAL_YEAR_START_DAY));
             if (pFinancialDay.getSummary() != null) {
@@ -204,7 +204,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
             });
         }
 
-        final ListPreference lstFinancialMonth = (ListPreference) findPreference(getString(PreferencesConstant.PREF_FINANCIAL_YEAR_STARTMONTH));
+        final ListPreference lstFinancialMonth = (ListPreference) findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_STARTMONTH));
         if (lstFinancialMonth != null) {
             lstFinancialMonth.setEntries(core.getListMonths());
             lstFinancialMonth.setEntryValues(new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"});

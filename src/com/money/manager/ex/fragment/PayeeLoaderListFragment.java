@@ -50,7 +50,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TablePayee;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 
 /**
  *
@@ -101,7 +101,7 @@ public class PayeeLoaderListFragment
 
         setListShown(false);
         // init sort
-        mSort = PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferencesConstant.PREF_SORT_PAYEE), 0);
+        mSort = PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0);
         // start loader
         getLoaderManager().initLoader(ID_LOADER_PAYEE, null, this);
         // set icon searched
@@ -117,7 +117,7 @@ public class PayeeLoaderListFragment
         inflater.inflate(R.menu.menu_payee, menu);
         //Check the default sort order
         final MenuItem item;
-        switch (PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferencesConstant.PREF_SORT_PAYEE), 0)) {
+        switch (PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0)) {
             case 0:
                 item = menu.findItem(R.id.menu_sort_name);
                 item.setChecked(true);
@@ -135,14 +135,14 @@ public class PayeeLoaderListFragment
             case R.id.menu_sort_name:
                 mSort = 0;
                 item.setChecked(true);
-                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferencesConstant.PREF_SORT_PAYEE), mSort).commit();
+                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferenceConstants.PREF_SORT_PAYEE), mSort).commit();
                 // restart search
                 restartLoader();
                 return true;
             case R.id.menu_sort_usage:
                 mSort = 1;
                 item.setChecked(true);
-                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferencesConstant.PREF_SORT_PAYEE), mSort).commit();
+                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferenceConstants.PREF_SORT_PAYEE), mSort).commit();
                 // restart search
                 restartLoader();
                 return true;

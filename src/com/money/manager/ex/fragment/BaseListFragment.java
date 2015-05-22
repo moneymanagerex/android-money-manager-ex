@@ -37,7 +37,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.AbsListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.SearchViewFormatter;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 
 /**
  *
@@ -116,7 +116,7 @@ public abstract class BaseListFragment
         // show tooltip wildcard
         // check search type
         Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(getString(PreferencesConstant.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
+                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
 
         if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
             // show tooltip for wildcard
@@ -184,7 +184,7 @@ public abstract class BaseListFragment
     }
 
     protected boolean onPreQueryTextChange(String newText) {
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferencesConstant.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
             newText = "%" + newText;
 
         return onQueryTextChange(newText);

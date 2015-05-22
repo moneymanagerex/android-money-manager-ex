@@ -345,7 +345,7 @@ public class CurrencyUtils {
             queryBuilder.setTables(tableCurrency.getSource());
             helper = MoneyManagerOpenHelper.getInstance(mContext);
             db = helper.getReadableDatabase();
-            
+
             cursor = queryBuilder.query(db,
                     tableCurrency.getAllColumns(),
                     null, null, null, null, null);

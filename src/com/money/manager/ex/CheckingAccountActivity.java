@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex;
 
-import android.accounts.Account;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
@@ -49,7 +48,6 @@ import com.gc.materialdesign.views.CheckBox;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.checkingaccount.DataParser;
 import com.money.manager.ex.checkingaccount.IntentDataParameters;
-import com.money.manager.ex.checkingaccount.NewTransactionContentProvider;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.checkingaccount.YesNoDialogListener;
 import com.money.manager.ex.core.Core;
@@ -69,7 +67,7 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.utils.DateUtils;
 
@@ -662,11 +660,11 @@ public class CheckingAccountActivity
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
             if (mStatus == null) {
                 mStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                        .getString(getString(PreferencesConstant.PREF_DEFAULT_STATUS), "");
+                        .getString(getString(PreferenceConstants.PREF_DEFAULT_STATUS), "");
             }
 
             if ("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                    .getString(getString(PreferencesConstant.PREF_DEFAULT_PAYEE), "N"))) {
+                    .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
                 AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
                     @Override
                     protected Boolean doInBackground(Void... params) {

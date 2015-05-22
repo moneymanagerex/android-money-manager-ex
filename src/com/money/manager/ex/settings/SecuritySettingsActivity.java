@@ -55,7 +55,7 @@ public class SecuritySettingsActivity extends BaseSettingsFragmentActivity {
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
             // active passcode
-            final PreferenceScreen psActivePasscode = (PreferenceScreen) findPreference(getString(PreferencesConstant.PREF_ACTIVE_PASSCODE));
+            final PreferenceScreen psActivePasscode = (PreferenceScreen) findPreference(getString(PreferenceConstants.PREF_ACTIVE_PASSCODE));
             psActivePasscode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
@@ -66,7 +66,7 @@ public class SecuritySettingsActivity extends BaseSettingsFragmentActivity {
                 }
             });
 
-            final PreferenceScreen psEditPasscode = (PreferenceScreen) findPreference(getString(PreferencesConstant.PREF_EDIT_PASSCODE));
+            final PreferenceScreen psEditPasscode = (PreferenceScreen) findPreference(getString(PreferenceConstants.PREF_EDIT_PASSCODE));
             psEditPasscode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
@@ -77,7 +77,7 @@ public class SecuritySettingsActivity extends BaseSettingsFragmentActivity {
                 }
             });
 
-            final PreferenceScreen psDisablePasscode = (PreferenceScreen) findPreference(getString(PreferencesConstant.PREF_DISABLE_PASSCODE));
+            final PreferenceScreen psDisablePasscode = (PreferenceScreen) findPreference(getString(PreferenceConstants.PREF_DISABLE_PASSCODE));
             psDisablePasscode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
@@ -152,12 +152,12 @@ public class SecuritySettingsActivity extends BaseSettingsFragmentActivity {
             // check if has passcode
             Passcode passcode = new Passcode(getActivity());
 
-            if (findPreference(getString(PreferencesConstant.PREF_ACTIVE_PASSCODE)) != null)
-                findPreference(getString(PreferencesConstant.PREF_ACTIVE_PASSCODE)).setEnabled(!passcode.hasPasscode());
-            if (findPreference(getString(PreferencesConstant.PREF_EDIT_PASSCODE)) != null)
-                findPreference(getString(PreferencesConstant.PREF_EDIT_PASSCODE)).setEnabled(passcode.hasPasscode());
-            if (findPreference(getString(PreferencesConstant.PREF_DISABLE_PASSCODE)) != null)
-                findPreference(getString(PreferencesConstant.PREF_DISABLE_PASSCODE)).setEnabled(passcode.hasPasscode());
+            if (findPreference(getString(PreferenceConstants.PREF_ACTIVE_PASSCODE)) != null)
+                findPreference(getString(PreferenceConstants.PREF_ACTIVE_PASSCODE)).setEnabled(!passcode.hasPasscode());
+            if (findPreference(getString(PreferenceConstants.PREF_EDIT_PASSCODE)) != null)
+                findPreference(getString(PreferenceConstants.PREF_EDIT_PASSCODE)).setEnabled(passcode.hasPasscode());
+            if (findPreference(getString(PreferenceConstants.PREF_DISABLE_PASSCODE)) != null)
+                findPreference(getString(PreferenceConstants.PREF_DISABLE_PASSCODE)).setEnabled(passcode.hasPasscode());
         }
 
         private void startActivityPasscode(CharSequence message, int request) {

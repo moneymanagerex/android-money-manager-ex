@@ -18,7 +18,6 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
 
 /**
  * Manipulates database settings/preferences.
@@ -34,16 +33,16 @@ public class DatabaseSettings {
 
     public String getDatabasePath() {
 //        String path = PreferenceManager.getDefaultSharedPreferences(mApplicationContext)
-//                .getString(mContext.getString(PreferencesConstant.PREF_DATABASE_PATH), "");
+//                .getString(mContext.getString(PreferenceConstants.PREF_DATABASE_PATH), "");
         Context context = mSettings.getContext();
-        String key = context.getString(PreferencesConstant.PREF_DATABASE_PATH);
+        String key = context.getString(PreferenceConstants.PREF_DATABASE_PATH);
         String path = mSettings.get(key, "");
         return path;
     }
 
     public void setDatabasePath(String path) {
         Context context = mSettings.getContext();
-        String key = context.getString(PreferencesConstant.PREF_DATABASE_PATH);
+        String key = context.getString(PreferenceConstants.PREF_DATABASE_PATH);
         mSettings.set(key, path);
     }
 }

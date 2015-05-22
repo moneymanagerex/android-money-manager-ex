@@ -31,7 +31,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 
 /**
  * Created by Alessandro Lazzari on 08/09/2014.
@@ -47,9 +47,9 @@ public class DonateDialogUtils {
     public static boolean showDonateDialog(final Context context, boolean forceShow) {
         int currentVersionCode = Core.getCurrentVersionCode(context);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int lastVersionCode = preferences.getInt(context.getString(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY), -1);
+        int lastVersionCode = preferences.getInt(context.getString(PreferenceConstants.PREF_DONATE_LAST_VERSION_KEY), -1);
         if (!(lastVersionCode == currentVersionCode) || forceShow) {
-            preferences.edit().putInt(context.getString(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY), currentVersionCode).commit();
+            preferences.edit().putInt(context.getString(PreferenceConstants.PREF_DONATE_LAST_VERSION_KEY), currentVersionCode).commit();
             Core core = new Core(context);
             if (TextUtils.isEmpty(core.getInfoValue(Constants.INFOTABLE_SKU_ORDER_ID))) {
                 //get text donate
@@ -88,6 +88,6 @@ public class DonateDialogUtils {
      */
     public static void resetDonateDialog(final Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putInt(context.getString(PreferencesConstant.PREF_DONATE_LAST_VERSION_KEY), -1).commit();
+        preferences.edit().putInt(context.getString(PreferenceConstants.PREF_DONATE_LAST_VERSION_KEY), -1).commit();
     }
 }

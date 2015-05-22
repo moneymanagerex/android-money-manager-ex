@@ -19,7 +19,6 @@
 package com.money.manager.ex.core;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -55,7 +54,7 @@ import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.io.File;
@@ -290,7 +289,7 @@ public class Core {
 //            String lightTheme = context.getString(R.string.theme_light);
             String lightTheme = Constants.THEME_LIGHT;
             String currentTheme = PreferenceManager.getDefaultSharedPreferences(context)
-                    .getString(context.getString(PreferencesConstant.PREF_THEME), lightTheme);
+                    .getString(context.getString(PreferenceConstants.PREF_THEME), lightTheme);
 
             if (currentTheme.endsWith(darkTheme)) {
                 return R.style.Theme_Money_Manager;
@@ -711,7 +710,7 @@ public class Core {
     public boolean isToDisplayChangelog() {
         int currentVersionCode = getCurrentVersionCode(context);
         int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(context)
-                .getInt(context.getString(PreferencesConstant.PREF_LAST_VERSION_KEY), -1);
+                .getInt(context.getString(PreferenceConstants.PREF_LAST_VERSION_KEY), -1);
 
         return lastVersionCode != currentVersionCode;
     }
@@ -719,7 +718,7 @@ public class Core {
     public boolean showChangelog() {
         int currentVersionCode = getCurrentVersionCode(context);
         PreferenceManager.getDefaultSharedPreferences(context).edit()
-                .putInt(context.getString(PreferencesConstant.PREF_LAST_VERSION_KEY), currentVersionCode).commit();
+                .putInt(context.getString(PreferenceConstants.PREF_LAST_VERSION_KEY), currentVersionCode).commit();
 
         // create layout
         View view = LayoutInflater.from(context).inflate(R.layout.changelog_layout, null);
@@ -747,7 +746,7 @@ public class Core {
      */
     public boolean getAccountFavoriteVisible() {
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(context.getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE), false);
+                .getBoolean(context.getString(PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE), false);
     }
 
     /**
@@ -755,6 +754,6 @@ public class Core {
      */
     public boolean getAccountsOpenVisible() {
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(context.getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE), false);
+                .getBoolean(context.getString(PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE), false);
     }
 }
