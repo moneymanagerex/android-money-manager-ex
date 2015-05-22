@@ -89,8 +89,13 @@ public class MoneyManagerApplication extends Application {
                 .getString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), null);
         if (databasePath != null) {
             File databaseFile = new File(databasePath);
-            if (databaseFile.getAbsoluteFile().exists()) return databaseFile.toString();
+            if (databaseFile.getAbsoluteFile().exists())  {
+                return databaseFile.toString();
+            }
         }
+
+        // otherwise try other paths or create the default database.
+
         Core core = new Core(context);
         File defaultFolder = core.getExternalStorageDirectoryApplication();
         if (defaultFolder.getAbsoluteFile().exists()) {

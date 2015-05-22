@@ -268,6 +268,10 @@ public class MoneyManagerOpenHelper
         return null;
     }
 
+    /**
+     * Called when the database is being created.
+     * @param db Database instance.
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onCreate method");
