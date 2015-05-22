@@ -305,8 +305,9 @@ public class CheckingAccountActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.checkingaccount_activity);
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.checkingaccount_activity);
 
         try {
             DropboxHelper.getInstance();

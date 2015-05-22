@@ -43,7 +43,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.afollestad:material-dialogs:0.7.4.2'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
-    compile 'com.github.pedrovgs:lynx:1.4'
+    compile 'com.github.pedrovgs:lynx:1.5'
     compile 'com.nispok:snackbar:2.10.2'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'de.hdodenhof:circleimageview:1.3.0'

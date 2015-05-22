@@ -21,6 +21,7 @@
     <style name="Theme.Money.Manager.Startup" parent="@android:style/Theme.Holo.NoActionBar">
         <item name="android:windowBackground">@color/money_manager_ex_sign_bg</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
     </style>
     <!-- This theme is not yet used. The purpose is to speed up rendering. Test. -->
     <style name="Theme.NoBackground" parent="android:Theme">
