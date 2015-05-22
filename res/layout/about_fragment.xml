@@ -54,20 +54,20 @@
             android:text="@string/application_copyright"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewLinkWebSite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:text="@string/mmex_website"/>
-
-        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewWebSite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
             android:text="@string/android_website"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/textViewLinkWebSite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="@string/mmex_website"/>
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewLinkRate"
