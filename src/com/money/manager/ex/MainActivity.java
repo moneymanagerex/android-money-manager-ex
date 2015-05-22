@@ -50,6 +50,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -989,7 +990,7 @@ public class MainActivity extends BaseFragmentActivity {
     public void onDrawerItemSubDialogs(final DrawerMenuItemAdapter adapter, CharSequence title, Boolean isDarkTheme) {
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title(title)
-                .adapter(adapter)
+                .adapter(adapter, null)
                 .build();
 
         ListView listView = dialog.getListView();

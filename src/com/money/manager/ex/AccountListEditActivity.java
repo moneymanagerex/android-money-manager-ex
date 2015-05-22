@@ -384,23 +384,23 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
 
         if (bCheck) {
             if (mCurrencyId == null) {
-                Core.alertDialog(this, R.string.error_currency_not_selected).show();
+                Core.alertDialog(this, R.string.error_currency_not_selected);
                 return false;
             }
             if (TextUtils.isEmpty(txtInitialBalance.getText().toString())) {
-                Core.alertDialog(this, R.string.error_initialbal_empty).show();
+                Core.alertDialog(this, R.string.error_initialbal_empty);
                 return false;
             }
             if (TextUtils.isEmpty(mAccountName)) {
-                Core.alertDialog(this, R.string.error_accountname_empty).show();
+                Core.alertDialog(this, R.string.error_accountname_empty);
                 return false;
             }
             if (TextUtils.isEmpty(mAccountType)) {
-                Core.alertDialog(this, R.string.error_accounttype_empty).show();
+                Core.alertDialog(this, R.string.error_accounttype_empty);
                 return false;
             }
             if (TextUtils.isEmpty(mStatus)) {
-                Core.alertDialog(this, R.string.error_status_empty).show();
+                Core.alertDialog(this, R.string.error_status_empty);
                 return false;
             }
         }
@@ -436,14 +436,15 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
             // insert
             if (getContentResolver().insert(mAccountList.getUri(), values) == null) {
-                Core.alertDialog(this, R.string.db_account_insert_failed).show();
+                Core.alertDialog(this, R.string.db_account_insert_failed);
                 Log.w(LOGCAT, "Error inserting account!");
                 return false;
             }
         } else {
             // update
-            if (getContentResolver().update(mAccountList.getUri(), values, TableAccountList.ACCOUNTID + "=?", new String[]{Integer.toString(mAccountId)}) <= 0) {
-                Core.alertDialog(this, R.string.db_account_update_failed).show();
+            if (getContentResolver().update(mAccountList.getUri(), values,
+                    TableAccountList.ACCOUNTID + "=?", new String[]{Integer.toString(mAccountId)}) <= 0) {
+                Core.alertDialog(this, R.string.db_account_update_failed);
                 Log.w(LOGCAT, "Error updating account!");
                 return false;
             }

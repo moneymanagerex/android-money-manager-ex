@@ -32,21 +32,21 @@ allprojects {
     }
 }
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.android.support:support-v4:22.0.0'
-    compile 'com.android.support:cardview-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.android.support:cardview-v7:22.1.1'
 //    compile 'com.github.gabrielemariotti.changeloglib:library:1.5.1'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'com.afollestad:material-dialogs:0.6.3.5'
+    compile 'com.afollestad:material-dialogs:0.7.4.2'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.github.pedrovgs:lynx:1.4'
     compile 'com.nispok:snackbar:2.10.2'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    compile 'de.hdodenhof:circleimageview:1.2.2'
+    compile 'de.hdodenhof:circleimageview:1.3.0'
     // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
     compile 'me.relex:circleindicator:1.1.2@aar'
     // androidSVG
@@ -54,6 +54,7 @@ dependencies {
     // Material Design library, used for checkboxes
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
 }
+
 // MPChartAndroid
 repositories {
     maven { url "https://jitpack.io" }

@@ -28,7 +28,8 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 
-public class DrawerMenuItemAdapter extends ArrayAdapter<DrawerMenuItem> {
+public class DrawerMenuItemAdapter
+		extends ArrayAdapter<DrawerMenuItem> {
 	
 	public DrawerMenuItemAdapter(Context context) {
 		super(context, 0);

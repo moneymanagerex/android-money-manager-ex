@@ -138,8 +138,8 @@ public class Core {
      * @param resId id of string
      * @return alert dialog
      */
-    public static AlertDialog alertDialog(Context ctx, int resId) {
-        return alertDialog(ctx, ctx.getString(resId));
+    public static void alertDialog(Context ctx, int resId) {
+        alertDialog(ctx, ctx.getString(resId));
     }
 
     /**
@@ -148,20 +148,19 @@ public class Core {
      * @param text to display
      * @return alert dialog
      */
-    public static AlertDialog alertDialog(Context ctx, String text) {
-        AlertDialogWrapper.Builder dialog = new AlertDialogWrapper.Builder(ctx);
+    public static void alertDialog(Context ctx, String text) {
+        new AlertDialogWrapper.Builder(ctx)
         // setting alert dialog
-        dialog.setIcon(R.drawable.ic_action_warning_light);
-        dialog.setTitle(R.string.attention);
-        dialog.setMessage(text);
-        dialog.setNeutralButton(android.R.string.ok, new OnClickListener() {
+        .setIcon(R.drawable.ic_action_warning_light)
+        .setTitle(R.string.attention)
+        .setMessage(text)
+        .setNeutralButton(android.R.string.ok, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        });
-        // show dialog
-        return dialog.create();
+        })
+                .show();
     }
 
     /**

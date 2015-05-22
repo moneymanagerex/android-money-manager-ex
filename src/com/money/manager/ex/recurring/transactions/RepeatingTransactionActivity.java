@@ -981,29 +981,29 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     private boolean validateData() {
         if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
             if (mToAccountId == -1) {
-                Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
+                Core.alertDialog(this, R.string.error_toaccount_not_selected);
                 return false;
             }
             if (mToAccountId == mAccountId) {
-                Core.alertDialog(this, R.string.error_transfer_to_same_account).show();
+                Core.alertDialog(this, R.string.error_transfer_to_same_account);
                 return false;
             }
         } else if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
-            Core.alertDialog(this, R.string.error_payee_not_selected).show();
+            Core.alertDialog(this, R.string.error_payee_not_selected);
 
             return false;
         }
         if (mCategoryId == -1 && (!chbSplitTransaction.isCheck())) {
-            Core.alertDialog(this, R.string.error_category_not_selected).show();
+            Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
         if (chbSplitTransaction.isCheck() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
-            Core.alertDialog(this, R.string.error_split_transaction_empty).show();
+            Core.alertDialog(this, R.string.error_split_transaction_empty);
             return false;
         }
         if (TextUtils.isEmpty(txtTotAmount.getText())) {
             if (TextUtils.isEmpty(txtAmount.getText())) {
-                Core.alertDialog(this, R.string.error_totamount_empty).show();
+                Core.alertDialog(this, R.string.error_totamount_empty);
 
                 return false;
             } else {
@@ -1011,7 +1011,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         }
         if (TextUtils.isEmpty(txtNextOccurrence.getText().toString())) {
-            Core.alertDialog(this, R.string.error_next_occurrence_not_populate).show();
+            Core.alertDialog(this, R.string.error_next_occurrence_not_populate);
 
             return false;
         }
@@ -1061,7 +1061,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             // insert
             Uri insert = getContentResolver().insert(mRepeatingTransaction.getUri(), values);
             if (insert == null) {
-                Core.alertDialog(this, R.string.db_checking_insert_failed).show();
+                Core.alertDialog(this, R.string.db_checking_insert_failed);
                 Log.w(LOGCAT, "Insert new repeating transaction failed!");
                 return false;
             }
@@ -1069,7 +1069,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         } else {
             // update
             if (getContentResolver().update(mRepeatingTransaction.getUri(), values, TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(mBillDepositsId)}) <= 0) {
-                Core.alertDialog(this, R.string.db_checking_update_failed).show();
+                Core.alertDialog(this, R.string.db_checking_update_failed);
                 Log.w(LOGCAT, "Update repeating  transaction failed!");
                 return false;
             }

@@ -351,9 +351,9 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 
             new MaterialDialog.Builder(getActivity())
                     .items(years.toArray(new String[years.size()]))
-                    .itemsCallbackMultiChoice(selected, new MaterialDialog.ListCallbackMulti() {
+                    .itemsCallbackMultiChoice(selected, new MaterialDialog.ListCallbackMultiChoice() {
                         @Override
-                        public void onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+                        public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
                             // reset to false all years
                             for (int i = 0; i < mYearsSelected.size(); i++) {
                                 mYearsSelected.put(mYearsSelected.keyAt(i), false);
@@ -363,6 +363,7 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                                 mYearsSelected.put(mYearsSelected.keyAt(index), true);
                             }
                             startLoader();
+                            return true;
                         }
                     })
                             //.alwaysCallMultiChoiceCallback()

@@ -1282,11 +1282,11 @@ public class CheckingAccountActivity
         // Transfers.
         if (isTransfer) {
             if (mToAccountId == -1) {
-                Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
+                Core.alertDialog(this, R.string.error_toaccount_not_selected);
                 return false;
             }
             if (mToAccountId == mAccountId) {
-                Core.alertDialog(this, R.string.error_transfer_to_same_account).show();
+                Core.alertDialog(this, R.string.error_transfer_to_same_account);
                 return false;
             }
         }
@@ -1298,18 +1298,18 @@ public class CheckingAccountActivity
 
         // Category is required if tx is not a split or transfer.
         if (mCategoryId == -1 && (!chbSplitTransaction.isCheck()) && !isTransfer) {
-            Core.alertDialog(this, R.string.error_category_not_selected).show();
+            Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
         // Splits.
         if (chbSplitTransaction.isCheck() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
-            Core.alertDialog(this, R.string.error_split_transaction_empty).show();
+            Core.alertDialog(this, R.string.error_split_transaction_empty);
             return false;
         }
         // Total amount.
         if ((Double) txtTotAmount.getTag() == 0) {
             if ((Double) txtAmount.getTag() == 0) {
-                Core.alertDialog(this, R.string.error_totamount_empty).show();
+                Core.alertDialog(this, R.string.error_totamount_empty);
                 return false;
             } else {
                 txtTotAmount.setTag(txtAmount.getTag());

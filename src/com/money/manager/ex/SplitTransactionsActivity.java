@@ -110,7 +110,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         for (int i = 0; i < allSplitTransactions.size(); i++) {
             ISplitTransactionsDataset splitTransactions = allSplitTransactions.get(i);
             if (splitTransactions.getCategId() == -1 && splitTransactions.getSubCategId() == -1) {
-                Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected).show();
+                Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected);
                 return false;
             }
         }

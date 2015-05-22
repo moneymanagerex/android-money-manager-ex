@@ -708,7 +708,7 @@ public class AllDataFragment extends BaseListFragment
             // open dialog
             final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                     .title(getString(R.string.change_status))
-                    .adapter(adapter)
+                    .adapter(adapter, null)
                     .build();
 
             ListView listView = dialog.getListView();
