@@ -550,8 +550,9 @@ public class MainActivity extends BaseFragmentActivity {
 
         // load base currency and compose hash currencies
         CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
-        if (!currencyUtils.isInit())
+        if (!currencyUtils.isInit()) {
             currencyUtils.reInit();
+        }
 
         // create a connection to dropbox
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());

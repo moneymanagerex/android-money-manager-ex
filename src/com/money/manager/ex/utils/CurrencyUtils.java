@@ -15,12 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package com.money.manager.ex.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.StrictMode;
 import android.text.TextUtils;
@@ -46,9 +46,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,11 +53,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class implements all the methods of utility for the management of currencies
+ * This class implements all the methods of utility for the management of currencies.
  *
  * @author lazzari.ale@gmail.com
  */
-
 public class CurrencyUtils {
     private static final String LOGCAT = CurrencyUtils.class.getSimpleName();
     private static final String URL_FREE_CURRENCY_CONVERT_API = "http://www.freecurrencyconverterapi.com/api/convert?q=SYMBOL&compact=y";
@@ -98,9 +94,8 @@ public class CurrencyUtils {
         // check if map currencies is create
         if (mCurrencies == null) {
             mCurrencies = new HashMap<>();
-
             // clear map for new populate
-            mCurrencies.clear();
+//            mCurrencies.clear();
 
             // load all currencies
             if (!loadCurrencies()) return Boolean.FALSE;
@@ -342,13 +337,18 @@ public class CurrencyUtils {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
         MoneyManagerOpenHelper helper;
+        SQLiteDatabase db = null;
         Cursor cursor;
 
         try {
             // set table name
             queryBuilder.setTables(tableCurrency.getSource());
             helper = MoneyManagerOpenHelper.getInstance(mContext);
-            cursor = queryBuilder.query(helper.getReadableDatabase(), tableCurrency.getAllColumns(), null, null, null, null, null);
+            db = helper.getReadableDatabase();
+            
+            cursor = queryBuilder.query(db,
+                    tableCurrency.getAllColumns(),
+                    null, null, null, null, null);
 
             // load data into map
             if (cursor != null && cursor.moveToFirst()) {
@@ -367,7 +367,11 @@ public class CurrencyUtils {
                 ret = Boolean.FALSE;
             }
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            Log.e(LOGCAT, "Error loading currencies: " + e.getMessage());
+        }
+
+        if (db != null) {
+            db.close();
         }
 
         return ret;
