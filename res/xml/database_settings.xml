@@ -38,5 +38,5 @@
     <Preference
         android:icon="@null"
         android:key="@string/pref_database_create"
-        android:title="@string/create_database" />
+        android:title="@string/create_db" />
 </PreferenceScreen>

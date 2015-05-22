@@ -140,7 +140,7 @@ public class DatabaseFragment
         Preference createDbPreference = findPreference(getString(R.string.pref_database_create));
         if (createDbPreference == null) return;
 
-        createDbPreference.setSummary(getString(R.string.create_database_summary));
+        createDbPreference.setSummary(getString(R.string.create_db_summary));
 
         Preference.OnPreferenceClickListener createClicked = new Preference.OnPreferenceClickListener() {
             @Override
@@ -155,10 +155,11 @@ public class DatabaseFragment
 
     private void promptForDatabaseFilename() {
         new MaterialDialog.Builder(getActivity())
-                .title(R.string.create_database)
-                .content(R.string.create_database_dialog_content)
+                .title(R.string.create_db)
+                .content(R.string.create_db_dialog_content)
                 .inputType(InputType.TYPE_CLASS_TEXT)
-                .input("enter blah", "prefill", false, new MaterialDialog.InputCallback() {
+                .input(getString(R.string.create_db_hint),
+                        null, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
                         createDatabase(charSequence.toString());
