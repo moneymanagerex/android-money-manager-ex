@@ -65,8 +65,8 @@ public class MoneyManagerApplication extends Application {
     ///////////////////////////////////////////////////////////////////////////
     //                         CONSTANTS VALUES                              //
     ///////////////////////////////////////////////////////////////////////////
-    public static final int TYPE_HOME_CLASSIC = R.layout.main_fragments_activity;
-    public static final int TYPE_HOME_ADVANCE = R.layout.main_pager_activity;
+//    public static final int TYPE_HOME_CLASSIC = R.layout.main_fragments_activity;
+//    public static final int TYPE_HOME_ADVANCE = R.layout.main_pager_activity;
     private static final String LOGCAT = "MoneyManagerApplication";
     public static String PATTERN_DB_DATE = "yyyy-MM-dd";
     private static MoneyManagerApplication myInstance;
@@ -74,10 +74,6 @@ public class MoneyManagerApplication extends Application {
     private static float mTextSize;
     // user name application
     private static String userName = "";
-    ///////////////////////////////////////////////////////////////////////////
-    //                           PREFERENCES                                 //
-    ///////////////////////////////////////////////////////////////////////////
-    private Editor editPreferences;
 
     public static MoneyManagerApplication getInstanceApp() {
         return myInstance;
@@ -204,15 +200,6 @@ public class MoneyManagerApplication extends Application {
     }
 
     /**
-     * Convert date object in string SQLite date format
-     * @param date to convert
-     * @return string formatted date SQLite
-     */
-    /*public String getSQLiteStringDate(Date date) {
-        return getStringFromDate(date, PATTERN_DB_DATE);
-	}*/
-
-    /**
      * @return the show transaction
      */
     public String getShowTransaction() {
@@ -295,16 +282,6 @@ public class MoneyManagerApplication extends Application {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
     }
 
-//    /**
-//     * @param theme to save into preferences
-//     */
-//    public void setApplicationTheme(String theme) {
-//        Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-//        editor.putString(getString(PreferencesConstant.PREF_THEME), theme);
-////        editor.commit();
-//        editor.apply();
-//    }
-
     public boolean setUserName(String userName) {
         return this.setUserName(userName, false);
     }
@@ -325,7 +302,7 @@ public class MoneyManagerApplication extends Application {
             }
         }
         // edit preferences
-        editPreferences = appPreferences.edit();
+        Editor editPreferences = appPreferences.edit();
         editPreferences.putString(getString(PreferencesConstant.PREF_USER_NAME), userName);
         // commit
 //        editPreferences.commit();

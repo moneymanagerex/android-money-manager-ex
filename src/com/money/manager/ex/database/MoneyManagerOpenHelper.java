@@ -178,15 +178,15 @@ public class MoneyManagerOpenHelper
      */
     private void executeRawSql(SQLiteDatabase db, int rawId) {
         String sqlCreate = RawFileUtils.getRawAsString(mContext, rawId);
-        String sqlStatment[] = sqlCreate.split(";");
-        // process all statment
-        for (String aSqlStatment : sqlStatment) {
+        String sqlStatement[] = sqlCreate.split(";");
+        // process all statements
+        for (String aSqlStatment : sqlStatement) {
             if (BuildConfig.DEBUG) Log.d(LOGCAT, aSqlStatment);
 
             try {
                 db.execSQL(aSqlStatment);
             } catch (SQLException E) {
-                Log.e(LOGCAT, E.getMessage());
+                Log.e(LOGCAT, "Error in executeRawSql: " + E.getMessage());
             }
         }
     }
