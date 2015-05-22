@@ -112,6 +112,7 @@ public class AboutFragment extends Fragment {
         OnClickListenerUrl clickListenerRate = new OnClickListenerUrl();
         clickListenerRate.setUrl("http://play.google.com/store/apps/details?id=com.money.manager.ex");
         txtRate.setOnClickListener(clickListenerRate);
+
         // issues tracker application
         TextView txtIssues = (TextView) view.findViewById(R.id.textViewIssuesTracker);
         text = "<u>" + txtIssues.getText() + "</u>";
@@ -120,6 +121,7 @@ public class AboutFragment extends Fragment {
         OnClickListenerUrl clickListenerIssuesTracker = new OnClickListenerUrl();
         clickListenerIssuesTracker.setUrl("https://github.com/moneymanagerex/android-money-manager-ex/issues/");
         txtIssues.setOnClickListener(clickListenerIssuesTracker);
+
         // report set link
         TextView txtReport = (TextView) view.findViewById(R.id.textViewLinkWebSite);
         text = "<u>" + txtReport.getText() + "</u>";
@@ -128,6 +130,16 @@ public class AboutFragment extends Fragment {
         OnClickListenerUrl clickListenerFeedback = new OnClickListenerUrl();
         clickListenerFeedback.setUrl("http://www.moneymanagerex.org/?utm_campaign=Application_Android&utm_medium=MMEX_" + version + "&utm_source=Website");
         txtReport.setOnClickListener(clickListenerFeedback);
+
+        // MMEX for Android web page
+        TextView txtWebsite = (TextView) view.findViewById(R.id.textViewWebSite);
+        text = "<u>" + txtWebsite.getText() + "</u>";
+        txtWebsite.setText(Html.fromHtml(text));
+        txtWebsite.setMovementMethod(LinkMovementMethod.getInstance());
+        OnClickListenerUrl clickListenerWebsite = new OnClickListenerUrl();
+        clickListenerWebsite.setUrl("http://moneymanagerex.github.io/android-money-manager-ex/");
+        txtWebsite.setOnClickListener(clickListenerFeedback);
+
         // image view google plus
         OnClickListenerUrl clickListenerGooglePlus = new OnClickListenerUrl();
         clickListenerGooglePlus.setUrl("http://goo.gl/R693Ih");
