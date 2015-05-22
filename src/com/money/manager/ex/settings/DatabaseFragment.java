@@ -161,7 +161,7 @@ public class DatabaseFragment
                 .input("enter blah", "prefill", false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-                        createDatabase();
+                        createDatabase(charSequence.toString());
                     }
                 })
                 .positiveText(android.R.string.ok)
