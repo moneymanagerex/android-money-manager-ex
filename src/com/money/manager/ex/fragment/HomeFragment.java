@@ -212,35 +212,7 @@ public class HomeFragment extends Fragment implements
         }
 
         // Database migration v1.4 -> v2.0 location.
-        Button migrateDatabaseButton = (Button) view.findViewById(R.id.buttonMigrateDatabase);
-        if (migrateDatabaseButton != null) {
-            final DatabaseMigrator14To20 migrator = new DatabaseMigrator14To20(getActivity());
-            if (!migrator.legacyDataExists()) {
-
-                // add handler
-                OnClickListener migrateClickListener = new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        boolean migrationSuccess = migrator.migrateLegacyDatabase();
-                        if (migrationSuccess) {
-                            Toast.makeText(getActivity(), R.string.database_migrate_14_to_20_success,
-                                    Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getActivity(), R.string.database_migrate_14_to_20_failure,
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                };
-                migrateDatabaseButton.setOnClickListener(migrateClickListener);
-            } else {
-                // hide migration notification.
-                RobotoTextView textMigrate = (RobotoTextView) view.findViewById(R.id.textMigrateDatabase);
-                textMigrate.setVisibility(View.GONE);
-
-                migrateDatabaseButton.setVisibility(View.GONE);
-            }
-
-        }
+        setUpMigrationButton(view);
 
         txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
 
@@ -583,6 +555,50 @@ public class HomeFragment extends Fragment implements
             if(expanded) {
                 mExpandableListView.expandGroup(i);
             }
+        }
+    }
+
+    private void setUpMigrationButton(View view) {
+        // check if there is a database at the old location.
+        final DatabaseMigrator14To20 migrator = new DatabaseMigrator14To20(getActivity());
+        boolean legacyDataExists = migrator.legacyDataExists();
+
+        // hide option if there is no old database.
+        if (!legacyDataExists) return;
+
+        // otherwise show the options
+        LinearLayout panel = (LinearLayout) view.findViewById(R.id.panelMigration);
+        panel.setVisibility(View.VISIBLE);
+
+        // handle events, etc.
+
+        Button migrateDatabaseButton = (Button) view.findViewById(R.id.buttonMigrateDatabase);
+        if (migrateDatabaseButton != null) {
+            if (!migrator.legacyDataExists()) {
+
+                // add handler
+                OnClickListener migrateClickListener = new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean migrationSuccess = migrator.migrateLegacyDatabase();
+                        if (migrationSuccess) {
+                            Toast.makeText(getActivity(), R.string.database_migrate_14_to_20_success,
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), R.string.database_migrate_14_to_20_failure,
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                };
+                migrateDatabaseButton.setOnClickListener(migrateClickListener);
+            } else {
+                // hide migration notification.
+                RobotoTextView textMigrate = (RobotoTextView) view.findViewById(R.id.textMigrateDatabase);
+                textMigrate.setVisibility(View.GONE);
+
+                migrateDatabaseButton.setVisibility(View.GONE);
+            }
+
         }
     }
 
