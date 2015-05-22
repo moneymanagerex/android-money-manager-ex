@@ -820,6 +820,9 @@ public class CheckingAccountActivity
         // un-check split.
         setSplit(false);
 
+        // Hide Category picker.
+        txtSelectCategory.setVisibility(View.GONE);
+
         mTransCode = getString(R.string.transfer);
         refreshAfterTransactionCodeChange();
     }
@@ -1272,8 +1275,10 @@ public class CheckingAccountActivity
      * @return a boolean indicating whether the data is valid.
      */
     public boolean validateData() {
+        boolean isTransfer = Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode);
+
         // Transfers.
-        if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
+        if (isTransfer) {
             if (mToAccountId == -1) {
                 Core.alertDialog(this, R.string.error_toaccount_not_selected).show();
                 return false;
@@ -1283,19 +1288,23 @@ public class CheckingAccountActivity
                 return false;
             }
         }
-        // Payee is optional.
+        // Payee is now optional.
 //        if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
 //            Core.alertDialog(this, R.string.error_payee_not_selected).show();
 //            return false;
 //        }
-        if (mCategoryId == -1 && (!chbSplitTransaction.isCheck())) {
+
+        // Category is required if tx is not a split or transfer.
+        if (mCategoryId == -1 && (!chbSplitTransaction.isCheck()) && !isTransfer) {
             Core.alertDialog(this, R.string.error_category_not_selected).show();
             return false;
         }
+        // Splits.
         if (chbSplitTransaction.isCheck() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
             Core.alertDialog(this, R.string.error_split_transaction_empty).show();
             return false;
         }
+        // Total amount.
         if ((Double) txtTotAmount.getTag() == 0) {
             if ((Double) txtAmount.getTag() == 0) {
                 Core.alertDialog(this, R.string.error_totamount_empty).show();
