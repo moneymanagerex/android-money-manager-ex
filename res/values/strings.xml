@@ -578,5 +578,5 @@
     <string name="create_db">Create database</string>
     <string name="create_db_summary">Create a new database file</string>
     <string name="create_db_hint">Please provide the file name</string>
-    <string name="create_db_dialog_content">The database will be created in the default database directory.</string>
+    <string name="create_db_dialog_content">The database will be created in the default database directory. You may omit the file extension (.mmb).</string>
 </resources>

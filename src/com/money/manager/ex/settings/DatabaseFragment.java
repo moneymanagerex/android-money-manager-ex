@@ -24,6 +24,7 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.text.Html;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,6 +37,7 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.utils.DonateDialogUtils;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 /**
  * Database settings fragment.
@@ -160,18 +162,38 @@ public class DatabaseFragment
                 .inputType(InputType.TYPE_CLASS_TEXT)
                 .input(getString(R.string.create_db_hint),
                         null, false, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-                        createDatabase(charSequence.toString());
-                    }
-                })
+                            @Override
+                            public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                                boolean success = createDatabase(charSequence.toString());
+                                if (success) {
+                                    // todo: handle result
+                                } else {
+//                                    Toast.makeText(R.string.failtu)
+                                }
+                            }
+                        })
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.cancel)
                 .show();
     }
 
-    private void createDatabase(String filename) {
-        // todo: check if filename already contains the extension
+    private boolean createDatabase(String filename) {
+        boolean result = false;
+
+        if (TextUtils.isEmpty(filename)) {
+            return result;
+        }
+
+        // trim any trailing or leading spaces
+        filename = filename.trim();
+
+        // check if filename already contains the extension
+        boolean containsExtension = Pattern.compile(Pattern.quote(".mmb"), Pattern.CASE_INSENSITIVE)
+                .matcher(filename)
+                .find();
+        if (!containsExtension) {
+            filename += ".mmb";
+        }
 
         // try to create the db file.
 
@@ -180,5 +202,9 @@ public class DatabaseFragment
         // store as the default database in settings
 
         // show the result message.
+
+        // todo: result = true;
+
+        return result;
     }
 }
