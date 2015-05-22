@@ -32,7 +32,7 @@ import com.money.manager.ex.utils.CurrencyUtils;
 /**
  * Async task that updates the balance amount.
  */
-public class BalanceAmount
+public class BalanceAmountTask
         extends AsyncTask<Void, Void, Boolean> {
     private int mAccountId;
     private int mCurrencyId = -1;

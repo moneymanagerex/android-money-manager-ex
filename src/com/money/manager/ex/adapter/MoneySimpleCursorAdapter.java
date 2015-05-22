@@ -28,7 +28,8 @@ import android.widget.TextView;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.view.RobotoView;
 
-public class MoneySimpleCursorAdapter extends SimpleCursorAdapter {
+public class MoneySimpleCursorAdapter
+        extends SimpleCursorAdapter {
     private static final String LOGCAT = MoneySimpleCursorAdapter.class.getSimpleName();
     private String mHighlight;
     private Core mCore;

@@ -199,7 +199,7 @@ public class AllDataAdapter
             if (isShowBalanceAmount() && getDatabase() != null) {
                 int transId = cursor.getInt(cursor.getColumnIndex(ID));
                 // create thread for calculate balance amount
-                BalanceAmount balanceAmount = new BalanceAmount();
+                BalanceAmountTask balanceAmount = new BalanceAmountTask();
                 balanceAmount.setAccountId(getAccountId());
                 balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
                 balanceAmount.setTextView(holder.txtBalance);
