@@ -28,6 +28,7 @@ import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -38,23 +39,33 @@ import com.money.manager.ex.utils.CurrencyUtils;
 public class RepeatingTransactionNotifications {
     private static final String LOGCAT = RepeatingTransactionNotifications.class.getSimpleName();
     private static final int ID_NOTIFICATION = 0x000A;
-    private Context context;
+    private Context mContext;
 
     public RepeatingTransactionNotifications(Context context) {
         super();
-        this.context = context;
+        mContext = context;
     }
 
     public void notifyRepeatingTransaction() {
+        try {
+            notifyRepeatingTransaction_Internal();
+        } catch (Exception ex) {
+            String error = "Error showing notification about recurring transactions";
+            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
+            Toast.makeText(mContext, error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void notifyRepeatingTransaction_Internal() {
         // create application
-        CurrencyUtils currencyUtils = new CurrencyUtils(context);
+        CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
         // init currencies
         if (!currencyUtils.isInit())
             currencyUtils.init();
 
         // select data
-        QueryBillDeposits billDeposits = new QueryBillDeposits(context);
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(context);
+        QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(mContext);
 
         if (databaseHelper != null) {
             SQLiteDatabase db = databaseHelper.getReadableDatabase();
@@ -81,28 +92,28 @@ public class RepeatingTransactionNotifications {
                         cursor.moveToNext();
                     }
 
-                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
                     // create pendig intent
-                    Intent intent = new Intent(context, RepeatingTransactionListActivity.class);
+                    Intent intent = new Intent(mContext, RepeatingTransactionListActivity.class);
                     // set launch from notification // check pin code
                     intent.putExtra(RepeatingTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
                     // create notification
                     Notification notification = null;
                     try {
-                        notification = new NotificationCompat.Builder(context)
+                        notification = new NotificationCompat.Builder(mContext)
                                 .setAutoCancel(true)
                                 .setContentIntent(pendingIntent)
-                                .setContentTitle(context.getString(R.string.application_name))
-                                .setContentText(context.getString(R.string.notification_repeating_transaction_expired))
-                                .setSubText(context.getString(R.string.notification_click_to_check_repeating_transaction))
+                                .setContentTitle(mContext.getString(R.string.application_name))
+                                .setContentText(mContext.getString(R.string.notification_repeating_transaction_expired))
+                                .setSubText(mContext.getString(R.string.notification_click_to_check_repeating_transaction))
                                 .setSmallIcon(R.drawable.ic_stat_notification)
-                                .setTicker(context.getString(R.string.notification_repeating_transaction_expired))
+                                .setTicker(mContext.getString(R.string.notification_repeating_transaction_expired))
                                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
                                 .setNumber(cursor.getCount())
                                 .setStyle(inboxStyle)
-                                .setColor(context.getResources().getColor(R.color.md_primary))
+                                .setColor(mContext.getResources().getColor(R.color.md_primary))
                                 .build();
                         // notify
                         notificationManager.cancel(ID_NOTIFICATION);
