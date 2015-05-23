@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.businessobjects.StockHistory;
@@ -147,6 +149,17 @@ public class StockHistoryRepository
     }
 
     public ContentValues getLatestPriceFor(String symbol) {
+        try {
+            return getLatestPriceFor_Internal(symbol);
+        } catch (SQLiteException sqlex) {
+            String error = "Error reading price for " + symbol;
+            Log.e(LOGCAT, error + ": " + sqlex.getLocalizedMessage());
+            Toast.makeText(mContext, error, Toast.LENGTH_SHORT).show();
+        }
+        return null;
+    }
+
+    private ContentValues getLatestPriceFor_Internal(String symbol) {
         SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
                 .getReadableDatabase();
 

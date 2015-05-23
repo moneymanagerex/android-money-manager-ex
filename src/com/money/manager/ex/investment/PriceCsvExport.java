@@ -93,6 +93,8 @@ public class PriceCsvExport
             // use the latest price date here.
             String date;
             ContentValues latestPrice = historyRepository.getLatestPriceFor(symbol);
+            if (latestPrice == null) continue;
+
             if(latestPrice.containsKey(StockHistory.DATE)) {
                 date = (String) latestPrice.get(StockHistory.DATE);
             } else {
