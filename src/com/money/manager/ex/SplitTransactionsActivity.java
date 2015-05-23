@@ -125,7 +125,6 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
             return false;
         }
 
-
         Intent result = new Intent();
         result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION, allSplitTransactions);
         result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION_DELETED, mSplitDeleted);

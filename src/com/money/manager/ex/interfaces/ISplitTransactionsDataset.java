@@ -21,29 +21,30 @@ package com.money.manager.ex.interfaces;
 import android.os.Parcelable;
 
 /**
- * Created by Alen on 28/03/2015.
+ * Interface for Split Category entity. Used by split categories on account transactions
+ * and on recurring transactions.
  */
 public interface ISplitTransactionsDataset extends Parcelable {
 
-    public int getCategId();
+    int getCategId();
 
     /**
      * @return the splitTransAmount
      */
-    public double getSplitTransAmount();
+    double getSplitTransAmount();
 
-    public int getSplitTransId();
+    int getSplitTransId();
 
-    public int getSubCategId();
+    int getSubCategId();
 
     // Setters
 
-    public void setCategId(int categId);
+    void setCategId(int categId);
 
     /**
      * @param splitTransAmount the splitTransAmount to set
      */
-    public void setSplitTransAmount(double splitTransAmount);
+    void setSplitTransAmount(double splitTransAmount);
 
-    public void setSubCategId(int subCategId);
+    void setSubCategId(int subCategId);
 }
