@@ -49,9 +49,9 @@ public class LookFeelFragment
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // checkbox on open and favorite account
-        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_ACCOUNT_OPEN_VISIBLE));
-        final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_ACCOUNT_FAV_VISIBLE));
-        final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(PreferencesConstant.PREF_HIDE_RECONCILED_AMOUNTS));
+        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE));
+        final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE));
+        final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(PreferenceConstants.PREF_HIDE_RECONCILED_AMOUNTS));
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override
@@ -66,7 +66,7 @@ public class LookFeelFragment
         chkHideReconciled.setOnPreferenceChangeListener(listener);
 
         // show transaction
-        final ListPreference lstShow = (ListPreference) findPreference(getString(PreferencesConstant.PREF_SHOW_TRANSACTION));
+        final ListPreference lstShow = (ListPreference) findPreference(getString(PreferenceConstants.PREF_SHOW_TRANSACTION));
         if (lstShow != null) {
             lstShow.setSummary(MoneyManagerApplication.getInstanceApp().getShowTransaction());
             lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -79,7 +79,7 @@ public class LookFeelFragment
         }
 
         // font type
-        final ListPreference lstFont = (ListPreference) findPreference(getString(PreferencesConstant.PREF_APPLICATION_FONT));
+        final ListPreference lstFont = (ListPreference) findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT));
         if (lstFont != null) {
             lstFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -94,7 +94,7 @@ public class LookFeelFragment
         }
 
         //font size
-        final ListPreference lstFontSize = (ListPreference) findPreference(getString(PreferencesConstant.PREF_APPLICATION_FONT_SIZE));
+        final ListPreference lstFontSize = (ListPreference) findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE));
         if (lstFontSize != null) {
             lstFontSize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
@@ -107,7 +107,7 @@ public class LookFeelFragment
         }
 
         //theme
-        final ListPreference lstTheme = (ListPreference) findPreference(getString(PreferencesConstant.PREF_THEME));
+        final ListPreference lstTheme = (ListPreference) findPreference(getString(PreferenceConstants.PREF_THEME));
         if (lstTheme != null) {
             lstTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 

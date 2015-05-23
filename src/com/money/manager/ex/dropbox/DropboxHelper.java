@@ -48,7 +48,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -154,9 +154,9 @@ public class DropboxHelper {
      * @return Array of [access_key, access_secret], or null if none stored
      */
     private String[] getKeysToken() {
-        SharedPreferences prefs = mContext.getSharedPreferences(PreferencesConstant.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
-        String key = prefs.getString(PreferencesConstant.PREF_DROPBOX_ACCESS_KEY_NAME, null);
-        String secret = prefs.getString(PreferencesConstant.PREF_DROPBOX_ACCESS_SECRET_NAME, null);
+        SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
+        String key = prefs.getString(PreferenceConstants.PREF_DROPBOX_ACCESS_KEY_NAME, null);
+        String secret = prefs.getString(PreferenceConstants.PREF_DROPBOX_ACCESS_SECRET_NAME, null);
         if (key != null && secret != null) {
             String[] ret = new String[2];
             ret[0] = key;
@@ -171,7 +171,7 @@ public class DropboxHelper {
      * Clear token from local store
      */
     private void clearKeysToken() {
-        SharedPreferences prefs = mContext.getSharedPreferences(PreferencesConstant.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
         Editor edit = prefs.edit();
         edit.clear();
         edit.commit();
@@ -179,10 +179,10 @@ public class DropboxHelper {
 
     private void storeKeysToken(String key, String secret) {
         // Save the access key for later
-        SharedPreferences prefs = mContext.getSharedPreferences(PreferencesConstant.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
         Editor edit = prefs.edit();
-        edit.putString(PreferencesConstant.PREF_DROPBOX_ACCESS_KEY_NAME, key);
-        edit.putString(PreferencesConstant.PREF_DROPBOX_ACCESS_SECRET_NAME, secret);
+        edit.putString(PreferenceConstants.PREF_DROPBOX_ACCESS_KEY_NAME, key);
+        edit.putString(PreferenceConstants.PREF_DROPBOX_ACCESS_SECRET_NAME, secret);
         edit.commit();
     }
 
@@ -268,7 +268,7 @@ public class DropboxHelper {
      * @throws ParseException
      */
     public Date getDateLastModified(String file) throws ParseException {
-        SharedPreferences prefs = mContext.getSharedPreferences(PreferencesConstant.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
         String stringDate = prefs.getString(file.toUpperCase(), null);
         if (TextUtils.isEmpty(stringDate)) return null;
         return new SimpleDateFormat(DATE_FORMAT).parse(stringDate);
@@ -284,7 +284,7 @@ public class DropboxHelper {
         if (BuildConfig.DEBUG)
             Log.d(LOGCAT, "Set Dropbox file: " + file + " last modification date " + new SimpleDateFormat().format(date));
 
-        SharedPreferences prefs = mContext.getSharedPreferences(PreferencesConstant.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
         if (!prefs.edit().putString(file.toUpperCase(), new SimpleDateFormat(DATE_FORMAT).format(date)).commit()) {
             Log.e(LOGCAT, "Dropbox: commit last modified date failed!");
         }
@@ -296,7 +296,7 @@ public class DropboxHelper {
      * @return
      */
     public String getLinkedRemoteFile() {
-        return mContext.getSharedPreferences(PreferencesConstant.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0).getString(PreferencesConstant.PREF_DROPBOX_REMOTE_FILE, null);
+        return mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0).getString(PreferenceConstants.PREF_DROPBOX_REMOTE_FILE, null);
     }
 
     /**
@@ -305,9 +305,9 @@ public class DropboxHelper {
      * @param fileDropbox
      */
     public void setLinkedRemoteFile(String fileDropbox) {
-        SharedPreferences prefs = mContext.getSharedPreferences(PreferencesConstant.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
-        prefs.edit().putString(mContext.getString(PreferencesConstant.PREF_DROPBOX_LINKED_FILE), fileDropbox)
-                .putString(PreferencesConstant.PREF_DROPBOX_REMOTE_FILE, fileDropbox)
+        SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
+        prefs.edit().putString(mContext.getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE), fileDropbox)
+                .putString(PreferenceConstants.PREF_DROPBOX_REMOTE_FILE, fileDropbox)
                 .commit();
     }
 
@@ -317,7 +317,7 @@ public class DropboxHelper {
     public boolean isActiveAutoUpload() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         if (prefs != null) {
-            return prefs.getBoolean(mContext.getString(PreferencesConstant.PREF_DROPBOX_UPLOAD_IMMEDIATE), true);
+            return prefs.getBoolean(mContext.getString(PreferenceConstants.PREF_DROPBOX_UPLOAD_IMMEDIATE), true);
         } else
             return false;
     }

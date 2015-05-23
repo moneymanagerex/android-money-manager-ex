@@ -148,7 +148,7 @@ public class BalanceAmountTask
     /**
      * @return the mContext
      */
-    @SuppressWarnings("unused")
+//    @SuppressWarnings("unused")
     public Context getContext() {
         return mContext;
     }
@@ -178,10 +178,11 @@ public class BalanceAmountTask
      * @return the mDatabase
      */
     public SQLiteDatabase getDatabase() {
-        if (mDatabase == null) {
+        if (mDatabase == null || !mDatabase.isOpen()) {
             mDatabase = MoneyManagerOpenHelper.getInstance(mContext.getApplicationContext())
                     .getReadableDatabase();
         }
+
         return mDatabase;
     }
 

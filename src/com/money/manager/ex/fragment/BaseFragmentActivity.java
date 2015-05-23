@@ -35,7 +35,7 @@ import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 
 public abstract class BaseFragmentActivity extends ActionBarActivity {
     private boolean mDialogMode = false;
@@ -63,7 +63,7 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
         // setTheme
         setTheme();
 
-        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferencesConstant.PREF_LOCALE), "");
+        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferenceConstants.PREF_LOCALE), "");
         Core.changeLocaleApp(getApplicationContext(), locale);
 
         super.onCreate(savedInstance);

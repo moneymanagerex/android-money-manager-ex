@@ -22,7 +22,12 @@
     <string name="pref_donate_last_version_key">prefdonatelastversioncodekey</string>
     <string name="pref_last_db_path_shown">preflastdbpathshown</string>
     <string name="pref_show_introduction">prefshowintroduction</string>
+    <!-- database -->
     <string name="pref_database_path">databasepath</string>
+    <string name="pref_database_create">createdatabase</string>
+    <string name="pref_database_backup">prefdatabasebackup</string>
+    <string name="pref_database_migrate_14_to_20">pref_database_migrate_14_to_20</string>
+    <!-- -->
     <string name="pref_user_name">username</string>
     <string name="pref_date_format">dateformat</string>
     <string name="pref_financial_year_startdate">financial_year_startday</string>
@@ -52,8 +57,6 @@
     <string name="pref_dropbox_upload_immediate">dropbox2uploadimmediate</string>
     <string name="pref_transaction_shown_balance">transactionshownbalance</string>
     <string name="pref_transaction_hide_reconciled_amounts">pref_transaction_hide_reconciled_amounts</string>
-    <string name="pref_database_backup">prefdatabasebackup</string>
-    <string name="pref_database_migrate_14_to_20">pref_database_migrate_14_to_20</string>
     <string name="pref_application_font">prefapplicationfont</string>
     <string name="pref_application_font_size">prefapplicationfontsize</string>
     <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>

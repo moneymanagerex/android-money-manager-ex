@@ -18,32 +18,35 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
+import android.widget.Toast;
+
+import com.money.manager.ex.R;
 
 /**
  * Manipulates database settings/preferences.
  */
 public class DatabaseSettings {
     public DatabaseSettings(AppSettings mainSettings) {
-        mSettings = mainSettings;
+        mAppSettings = mainSettings;
 //        mContext = context;
 //        mApplicationContext = context.getApplicationContext();
     }
 
-    private AppSettings mSettings;
+    private AppSettings mAppSettings;
 
     public String getDatabasePath() {
 //        String path = PreferenceManager.getDefaultSharedPreferences(mApplicationContext)
-//                .getString(mContext.getString(PreferencesConstant.PREF_DATABASE_PATH), "");
-        Context context = mSettings.getContext();
-        String key = context.getString(PreferencesConstant.PREF_DATABASE_PATH);
-        String path = mSettings.get(key, "");
+//                .getString(mContext.getString(PreferenceConstants.PREF_DATABASE_PATH), "");
+        Context context = mAppSettings.getContext();
+        String key = context.getString(PreferenceConstants.PREF_DATABASE_PATH);
+        String path = mAppSettings.get(key, "");
         return path;
     }
 
-    public void setDatabasePath(String path) {
-        Context context = mSettings.getContext();
-        String key = context.getString(PreferencesConstant.PREF_DATABASE_PATH);
-        mSettings.set(key, path);
+    public boolean setDatabasePath(String path) {
+        Context context = mAppSettings.getContext();
+        String key = context.getString(PreferenceConstants.PREF_DATABASE_PATH);
+        boolean pathSet = mAppSettings.set(key, path);
+        return pathSet;
     }
 }

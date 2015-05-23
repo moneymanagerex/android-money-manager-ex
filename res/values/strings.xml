@@ -575,4 +575,11 @@
     <string name="purge_history_confirmation">Do you want to delete the complete price history for all accounts?</string>
     <string name="purge_history_complete">Price history was purged.</string>
     <string name="purge_history_failed">Price history could not be purged.</string>
+    <string name="create_db">Create database</string>
+    <string name="create_db_summary">Create a new database file</string>
+    <string name="create_db_hint">Please provide the file name</string>
+    <string name="create_db_dialog_content">The database will be created in the default database directory. You may omit the file extension (.mmb).</string>
+    <string name="create_db_success">Database successfully created</string>
+    <string name="create_db_error">Could not create new database file</string>
+    <string name="create_db_exists">The database with this name already exists!</string>
 </resources>

@@ -29,7 +29,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -66,7 +66,7 @@ public class DropboxReceiver extends BroadcastReceiver {
         SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(context);
         // get minute
         if (preferenceManager != null) {
-            String preferenceMinute = preferenceManager.getString(context.getString(PreferencesConstant.PREF_DROPBOX_TIMES_REPEAT), "30");
+            String preferenceMinute = preferenceManager.getString(context.getString(PreferenceConstants.PREF_DROPBOX_TIMES_REPEAT), "30");
             if (NumberUtils.isNumber(preferenceMinute)) {
                 int minute = Integer.parseInt(preferenceMinute);
                 if (minute > 0) {

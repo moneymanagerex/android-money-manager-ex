@@ -17,24 +17,31 @@
  */
 package com.money.manager.ex.settings;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.text.Html;
-import android.util.Log;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
+import com.money.manager.ex.database.MmexDatabase;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.utils.DonateDialogUtils;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 /**
  * Database settings fragment.
@@ -49,7 +56,13 @@ public class DatabaseFragment
         addPreferencesFromResource(R.xml.database_settings);
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        final Preference pMoveDatabase = findPreference(getString(PreferencesConstant.PREF_DATABASE_BACKUP));
+        // Database path.
+        refreshDbPath();
+
+//        addListenerForDbPathChange();
+
+        // Export database.
+        final Preference pMoveDatabase = findPreference(getString(PreferenceConstants.PREF_DATABASE_BACKUP));
         if (pMoveDatabase != null) {
             pMoveDatabase.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
@@ -79,12 +92,8 @@ public class DatabaseFragment
                     .startsWith("/data/"));
         }
 
-        // Database path.
-        final Preference pDatabasePath = findPreference(getActivity().getString(PreferencesConstant.PREF_DATABASE_PATH));
-        pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
-
         //sqlite version
-        Preference pSQLiteVersion = findPreference(getString(PreferencesConstant.PREF_SQLITE_VERSION));
+        Preference pSQLiteVersion = findPreference(getString(PreferenceConstants.PREF_SQLITE_VERSION));
         if (pSQLiteVersion != null) {
             MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
             String sqliteVersion = helper.getSQLiteVersion();
@@ -93,10 +102,27 @@ public class DatabaseFragment
 
         // Migration of databases from version 1.4 to the location in 2.0.
         setVisibilityOfMigrationButton();
+
+        // Create database
+        setUpCreateDatabaseOption();
     }
 
-    private void setVisibilityOfMigrationButton() {
+//    private void addListenerForDbPathChange() {
+//        final Preference pDatabasePath = findPreference(getActivity().getString(PreferenceConstants.PREF_DATABASE_PATH));
+//
+//        // update displayed value when the preference is changed.
+//
+//        pDatabasePath.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+//            @Override
+//            public boolean onPreferenceChange(Preference preference, Object o) {
+//                pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
+//
+//                return true;
+//            }
+//        });
+//    }
 
+    private void setVisibilityOfMigrationButton() {
         Preference migratePreference = findPreference(getString(R.string.pref_database_migrate_14_to_20));
         if (migratePreference == null) return;
 
@@ -116,7 +142,9 @@ public class DatabaseFragment
                 } else {
                     Toast.makeText(getActivity(), R.string.database_migrate_14_to_20_failure, Toast.LENGTH_LONG).show();
                 }
-                return success;
+                // The return value indicates whether to persist the preference,
+                // which is not used in this case.
+                return false;
             }
         };
 
@@ -131,4 +159,73 @@ public class DatabaseFragment
 
     }
 
+    private void setUpCreateDatabaseOption() {
+        Preference createDbPreference = findPreference(getString(R.string.pref_database_create));
+        if (createDbPreference == null) return;
+
+        createDbPreference.setSummary(getString(R.string.create_db_summary));
+
+        Preference.OnPreferenceClickListener createClicked = new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                promptForDatabaseFilename();
+                return false;
+            }
+        };
+
+        createDbPreference.setOnPreferenceClickListener(createClicked);
+    }
+
+    private void promptForDatabaseFilename() {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.create_db)
+                .content(R.string.create_db_dialog_content)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(getString(R.string.create_db_hint),
+                        null, false, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                                boolean success = createDatabase(charSequence.toString());
+                                if (success) {
+                                    Toast.makeText(getActivity(), R.string.create_db_success,
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), R.string.create_db_error,
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .show();
+    }
+
+    private boolean createDatabase(String filename) {
+        boolean result = false;
+
+        if (TextUtils.isEmpty(filename)) {
+            return result;
+        }
+
+        // try to create the db file.
+        MmexDatabase db = new MmexDatabase(getActivity());
+        boolean created = db.createDatabase(filename);
+
+        if (created) {
+            // set main activity to reload, to open the new db file.
+            MainActivity.setRestartActivity(true);
+
+            // update the displayed value.
+            refreshDbPath();
+
+            result = true;
+        }
+
+        return result;
+    }
+
+    private void refreshDbPath() {
+        final Preference pDatabasePath = findPreference(getActivity().getString(PreferenceConstants.PREF_DATABASE_PATH));
+        pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
+    }
 }

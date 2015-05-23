@@ -50,7 +50,7 @@ public class SettingsActivity
             PreferenceManager.getDefaultSharedPreferences(getActivity());
 
             // find preferences
-            final Preference generalPreference = findPreference(getString(PreferencesConstant.PREF_GENERAL));
+            final Preference generalPreference = findPreference(getString(PreferenceConstants.PREF_GENERAL));
             if (generalPreference != null) {
                 generalPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
@@ -61,7 +61,7 @@ public class SettingsActivity
                 });
             }
 
-            final Preference lookAndFeelPreference = findPreference(getString(PreferencesConstant.PREF_LOOK_FEEL));
+            final Preference lookAndFeelPreference = findPreference(getString(PreferenceConstants.PREF_LOOK_FEEL));
             if (lookAndFeelPreference != null) {
                 lookAndFeelPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
@@ -72,7 +72,7 @@ public class SettingsActivity
                 });
             }
 
-            final Preference passcodePreference = findPreference(getString(PreferencesConstant.PREF_SECURITY));
+            final Preference passcodePreference = findPreference(getString(PreferenceConstants.PREF_SECURITY));
             if (passcodePreference != null) {
                 passcodePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
@@ -83,7 +83,7 @@ public class SettingsActivity
                 });
             }
 
-            final Preference databasesPreference = findPreference(getString(PreferencesConstant.PREF_DATABASE));
+            final Preference databasesPreference = findPreference(getString(PreferenceConstants.PREF_DATABASE));
             if (databasesPreference != null) {
                 databasesPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
@@ -94,7 +94,7 @@ public class SettingsActivity
                 });
             }
 
-            final Preference dropboxPreference = findPreference(getString(PreferencesConstant.PREF_DROPBOX_HOWITWORKS));
+            final Preference dropboxPreference = findPreference(getString(PreferenceConstants.PREF_DROPBOX_HOWITWORKS));
             if (dropboxPreference != null) {
                 dropboxPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
@@ -106,7 +106,7 @@ public class SettingsActivity
             }
 
             //donate
-            final Preference pDonate = findPreference(getString(PreferencesConstant.PREF_DONATE));
+            final Preference pDonate = findPreference(getString(PreferenceConstants.PREF_DONATE));
             if (pDonate != null) {
                 pDonate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
@@ -117,7 +117,7 @@ public class SettingsActivity
                 });
             }
 
-            final Preference infoPreference = findPreference(getString(PreferencesConstant.PREF_VERSION_NAME));
+            final Preference infoPreference = findPreference(getString(PreferenceConstants.PREF_VERSION_NAME));
             if (infoPreference != null) {
                 infoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 

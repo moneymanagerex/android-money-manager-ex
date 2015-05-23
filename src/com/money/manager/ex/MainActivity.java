@@ -50,7 +50,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,7 +81,7 @@ import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.CurrencyUtils;
@@ -370,7 +369,7 @@ public class MainActivity extends BaseFragmentActivity {
     public void showTutorial(Bundle savedInstanceState) {
         Context context = getApplicationContext();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
+        String key = context.getString(PreferenceConstants.PREF_SHOW_TUTORIAL);
         // The setting is always false when using the settings this way:
         //SharedPreferences settings = getSharedPreferences(key, 0);
         boolean showTutorial = settings.getBoolean(key, true);

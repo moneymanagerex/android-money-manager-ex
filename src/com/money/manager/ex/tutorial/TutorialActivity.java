@@ -19,7 +19,7 @@
 package com.money.manager.ex.tutorial;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -69,7 +69,7 @@ public class TutorialActivity extends FragmentActivity {
         // Mark tutorial as seen, in the settings.
         Context context = getApplicationContext();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        String key = context.getString(PreferencesConstant.PREF_SHOW_TUTORIAL);
+        String key = context.getString(PreferenceConstants.PREF_SHOW_TUTORIAL);
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(key, false);
         editor.commit();

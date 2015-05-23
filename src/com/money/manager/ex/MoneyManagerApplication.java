@@ -19,8 +19,6 @@ package com.money.manager.ex;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -38,11 +36,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
-import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.view.RobotoView;
-import com.money.manager.ex.widget.AccountBillsWidgetProvider;
-import com.money.manager.ex.widget.SummaryWidgetProvider;
 
 import java.io.File;
 
@@ -53,7 +48,8 @@ import java.io.File;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.1.0
  */
-public class MoneyManagerApplication extends Application {
+public class MoneyManagerApplication
+        extends Application {
     ///////////////////////////////////////////////////////////////////////////
     public static final String KEY = "8941ED03A52BF76CD48EF951CA623B0709564CA238DB7FE1BA3980E4F617CD52";
     ///////////////////////////////////////////////////////////////////////////
@@ -68,7 +64,6 @@ public class MoneyManagerApplication extends Application {
 //    public static final int TYPE_HOME_CLASSIC = R.layout.main_fragments_activity;
 //    public static final int TYPE_HOME_ADVANCE = R.layout.main_pager_activity;
     private static final String LOGCAT = "MoneyManagerApplication";
-    public static String PATTERN_DB_DATE = "yyyy-MM-dd";
     private static MoneyManagerApplication myInstance;
     private static SharedPreferences appPreferences;
     private static float mTextSize;
@@ -86,8 +81,9 @@ public class MoneyManagerApplication extends Application {
     @SuppressLint("SdCardPath")
     public static String getDatabasePath(Context context) {
         String databasePath = PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), null);
+                .getString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), null);
         if (databasePath != null) {
+            // Use the db path stored in the preferences.
             File databaseFile = new File(databasePath);
             if (databaseFile.getAbsoluteFile().exists())  {
                 return databaseFile.toString();
@@ -96,10 +92,25 @@ public class MoneyManagerApplication extends Application {
 
         // otherwise try other paths or create the default database.
 
+        String defaultDirectory = getDatabaseDirectory(context);
+        databasePath = defaultDirectory + "/data.mmb";
+
+        MoneyManagerApplication.setDatabasePath(context, databasePath);
+        return databasePath;
+    }
+
+    /**
+     * Returns only the directory name for the databases. This is where the new databases are
+     * created by default.
+     * @return String containing the path to the default directory for storing databases.
+     */
+    public static String getDatabaseDirectory(Context context) {
         Core core = new Core(context);
         File defaultFolder = core.getExternalStorageDirectoryApplication();
+        String databasePath;
+
         if (defaultFolder.getAbsoluteFile().exists()) {
-            databasePath = defaultFolder.toString() + "/data.mmb";
+            databasePath = defaultFolder.toString();
         } else {
             String internalFolder;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -108,21 +119,21 @@ public class MoneyManagerApplication extends Application {
                 internalFolder = "/data/data/" + context.getApplicationContext().getPackageName();
             }
             // add databases
-            internalFolder += "/databases/data.mmb";
+            internalFolder += "/databases"; // "/data.mmb";
             databasePath = internalFolder;
         }
-        MoneyManagerApplication.setDatabasePath(context, databasePath);
+
         return databasePath;
     }
 
     /**
-     * @param context Executing context for which to get the preferences.
+     * @param context Executing context for which to set the preferences.
      * @param dbpath  path of database file to save
      */
     public static void setDatabasePath(Context context, String dbpath) {
         // save a reference db path
         Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        editor.putString(context.getString(PreferencesConstant.PREF_DATABASE_PATH), dbpath);
+        editor.putString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), dbpath);
 //        editor.commit();
         editor.apply();
     }
@@ -151,10 +162,10 @@ public class MoneyManagerApplication extends Application {
     public static void showDatabasePathWork(Context context) {
         String currentPath = getDatabasePath(context);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String lastPath = preferences.getString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), "");
+        String lastPath = preferences.getString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), "");
         if (!lastPath.equals(currentPath)) {
             preferences.edit()
-                    .putString(context.getString(PreferencesConstant.PREF_LAST_DB_PATH_SHOWN), currentPath)
+                    .putString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), currentPath)
                     .apply();
 //                    .commit();
             try {
@@ -173,7 +184,8 @@ public class MoneyManagerApplication extends Application {
     public String getFromDatabaseUserName(Context context) {
         TableInfoTable infoTable = new TableInfoTable();
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
-        Cursor data = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[]{"USERNAME"}, null, null, null);
+        Cursor data = helper.getReadableDatabase().query(infoTable.getSource(), null,
+                TableInfoTable.INFONAME + "=?", new String[]{"USERNAME"}, null, null, null);
         String ret = "";
         if (data != null && data.moveToFirst()) {
             ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
@@ -208,7 +220,8 @@ public class MoneyManagerApplication extends Application {
      * @return the show transaction
      */
     public String getShowTransaction() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString(getString(PreferencesConstant.PREF_SHOW_TRANSACTION), getResources().getString(R.string.last7days));
+        return PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(getString(PreferenceConstants.PREF_SHOW_TRANSACTION), getResources().getString(R.string.last7days));
     }
 
     /**
@@ -277,8 +290,10 @@ public class MoneyManagerApplication extends Application {
         // preference
         if (appPreferences == null) {
             appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            RobotoView.setUserFont(Integer.parseInt(appPreferences.getString(getString(PreferencesConstant.PREF_APPLICATION_FONT), "-1")));
-            RobotoView.setUserFontSize(getApplicationContext(), appPreferences.getString(getString(PreferencesConstant.PREF_APPLICATION_FONT_SIZE), "default"));
+            RobotoView.setUserFont(Integer.parseInt(
+                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
+            RobotoView.setUserFontSize(getApplicationContext(),
+                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
         }
     }
 
@@ -308,7 +323,7 @@ public class MoneyManagerApplication extends Application {
         }
         // edit preferences
         Editor editPreferences = appPreferences.edit();
-        editPreferences.putString(getString(PreferencesConstant.PREF_USER_NAME), userName);
+        editPreferences.putString(getString(PreferenceConstants.PREF_USER_NAME), userName);
         // commit
 //        editPreferences.commit();
         editPreferences.apply();

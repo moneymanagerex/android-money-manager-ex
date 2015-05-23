@@ -20,15 +20,22 @@ package com.money.manager.ex.settings;
 
 import com.money.manager.ex.R;
 
-public class PreferencesConstant {
+public class PreferenceConstants {
     ///////////////////////////////////////////////////////////////////////////
     //                           PREFERENCES                                 //
     ///////////////////////////////////////////////////////////////////////////
+    public static final Integer PREF_GENERAL = R.string.pref_general;
+    public static final Integer PREF_LOOK_FEEL = R.string.pref_look_feel;
+    public static final Integer PREF_SECURITY = R.string.pref_security;
+    public static final Integer PREF_DATABASE = R.string.pref_database;
+    public static final Integer PREF_SORT_PAYEE = R.string.pref_sort_payee;
+
     public static final Integer PREF_LAST_VERSION_KEY = R.string.pref_last_version_key;
     public static final Integer PREF_DONATE_LAST_VERSION_KEY = R.string.pref_donate_last_version_key;
     public static final Integer PREF_LAST_DB_PATH_SHOWN = R.string.pref_last_db_path_shown;
 
     public static final Integer PREF_DATABASE_PATH = R.string.pref_database_path;
+
     public static final Integer PREF_USER_NAME = R.string.pref_user_name;
     public static final Integer PREF_DATE_FORMAT = R.string.pref_date_format;
     public static final Integer PREF_FINANCIAL_YEAR_STARTDATE = R.string.pref_financial_year_startdate;
@@ -75,12 +82,6 @@ public class PreferencesConstant {
     public static final Integer PREF_REPEATING_TRANSACTION_NOTIFICATIONS = R.string.pref_repeating_transaction_notifications;
     // Wiki dropbox
     public static final Integer PREF_DROPBOX_WIKI = R.string.pref_dropbox_wiki;
-
-    public static final Integer PREF_GENERAL = R.string.pref_general;
-    public static final Integer PREF_LOOK_FEEL = R.string.pref_look_feel;
-    public static final Integer PREF_SECURITY = R.string.pref_security;
-    public static final Integer PREF_DATABASE = R.string.pref_database;
-    public static final Integer PREF_SORT_PAYEE = R.string.pref_sort_payee;
 
     public static final Integer PREF_SHOW_TUTORIAL = R.string.pref_show_tutorial;
     public static final Integer PREF_DASHBOARD_GROUP_VISIBLE = R.string.pref_dashboard_group_visibility;

@@ -25,6 +25,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
@@ -164,12 +165,24 @@ public class MoneyManagerOpenHelper
 
     @Override
     public SQLiteDatabase getWritableDatabase() {
+        try {
+            return getWritableDatabase_Internal();
+        } catch (Exception ex) {
+            String error = "Error getting writable database";
+            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
+            Toast.makeText(mContext, error, Toast.LENGTH_SHORT).show();
+        }
+        return null;
+    }
+
+    private SQLiteDatabase getWritableDatabase_Internal() {
         SQLiteDatabase db = super.getWritableDatabase();
 
         if (db != null)
             db.rawQuery("PRAGMA journal_mode=OFF", null).close();
 
         return db;
+
     }
 
     /**

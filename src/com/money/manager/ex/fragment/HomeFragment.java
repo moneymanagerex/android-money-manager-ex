@@ -66,7 +66,7 @@ import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
-import com.money.manager.ex.settings.PreferencesConstant;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.view.RobotoTextView;
 
@@ -205,7 +205,7 @@ public class HomeFragment extends Fragment implements
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), DropboxSettingsActivity.class);
-                    //intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferencesConstant.PREF_DROPBOX_HOWITWORKS);
+                    //intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferenceConstants.PREF_DROPBOX_HOWITWORKS);
                     startActivity(intent);
                 }
             });
@@ -537,7 +537,7 @@ public class HomeFragment extends Fragment implements
     private String getSettingsKeyFromGroupPosition(int groupPosition) {
         // get group name from position
         String accountType = mAccountTypes.get(groupPosition);
-        String key = getActivity().getString(PreferencesConstant.PREF_DASHBOARD_GROUP_VISIBLE);
+        String key = getActivity().getString(PreferenceConstants.PREF_DASHBOARD_GROUP_VISIBLE);
         key += "-" + accountType;
 
         return key;
