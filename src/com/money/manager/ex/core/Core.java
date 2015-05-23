@@ -76,11 +76,11 @@ public class Core {
     private static final String base64 = "A346EA3CFF9C3F679946C4294AAF737D1E2708694B66A13D1A615F7C0752F4770664F8407DDCE84AB1DE2770DA62760D2ACF6F45F9DCDDB7E5018D9F5FCD561544C6F4BDFF7801BC1DF65A97C40AC293A3C097C4E3F3CDD5366EAB72B29CA78D234B69C30047201323D7070BCC42EA02A9903955783CC701FB3B3CCB9855B16D70EAC0931668FD33E1C7634EAEECAC93D1980D3B81DB10A50905815A54FFEAE951DDA6862561B971D1F439FE49A146F33FF661E79533F574F187377DE7229433ABBFF7ACEC1C05BC38520BB537D1418239077A696AA00E415980922AD575B39E83B70B04C836D2E9BD9398884469A27E5826DAF1FF77D6DE687BE17ACA2243F25901168FD37E14717D38737A963175E4131B819B475A700A3532F10CA5A3028ACC4061217B7CD0EF070FB9B0354BD8D0F95719E5C1F27BB227CA62EBE1B6C04BFB31A5592701F263023A14A2D27231D44B60A5D0B5394154C786C87D0911C566640C1F67A223A302BF19E47137CEBF2DDFC3594E1AE0962A135BBEF9355AADB28AD494AEA033CB9C877254676844D0F246AAE95F7D95932929A01675E8AEC76097E46702514A60FF6A3A7C72C848D002CD1EEEA424FACE609126134C2E24A8D93B2777F3DE24CE8C557ABA1B293DEC5119A62DAE6249EAD0EB88A9B4E1D8729968A8098AF61A2BD67446F692F665F891F1909B1CA66AA6872524E7F7C6EB7EF79D87D6FD6665149F5FC94362533D9AB7CB51BCB6B4599BA217F82220C5217F6AC6D138A3B8E5D8DAC4DE6618B435F006E8426065593347411CD6BE9CECA39A23D693C7A072F75937F5BE454119D780E9623E1424F14631EF693ECAD21438473E5813DF6D7B5984693441AD8C15EA4543BC958AEE8F8C0AF587D18893AA3584268091B606A04B0B099B5AD3D97D5347BFB09F64B3CA7F3836D11EDF2C56C436877658A54C86ABEDE5BB86E0C3324E52CCEDD1DD1F41D347ECEE8E8566FCF481EA4FD5841F3102AB25228AD93A7A89C9728E18A1315EA46CCD94BA84A62EDFB65A992DDC8BC87983AE9F11AA606DCE191E209073B94B40760820C024EBD717D2D4D66F459EF7A7C577371CD88864B8E94E48D4883D623EB1EB1CDB8109157C6B2444F79869F2FE56C0A4CCA491DBE6A69F";
     @SuppressWarnings("unused")
     private static final String token = "1E1380731503B92242AB2A5D8A41F8AE761A9ECD8BC7BBC9C229C5B49F8A032C59467A21872756BF85B7CB781DDB1DE6C1D1D77C9D5E7EBCA07CD01E2525CE4B186128463FAC8C99956BF102DC28A56647F15248624DF792B7D437699024102D24B48B5FAFDE18E690F29224A6C233493D60696A1CF018F002C9CC4A057548665829B552B2F42F2CAACC5F47F5EC6A01B4F525AC2E0E07AEF2D18B871E1145066D5AF20F32D69B0CEDE9D0B0CEC313E34DF0B55F2A7D66A7CEBF481F877BDF04C9E7CEF1BC1F230342EF07C952D8C9A584B2D4D572D470075F2F2306D3F07785340BB49D6FED77E7A1F0CC30F79F21C774B0C298637E23C2A9FD4ECAB9E74A53B074A25B6566D3995DF2D25998A818B439273761E9A911EF73A118C3FE22CCBA4E5FA461501EE9E0E5A6E99942758BC9D9A9D12672A70E388437F2374C48314D13E9205973B7A452EA9FE97CFFCF3A966F02931EFBB5CE3AB70D5AEF2E9670A8B1C3CFF91889D4CAA4A176495954F0F95D4B71562527AB9E596D1F8A7147E221FD6E6C434740CED20D9422AC6ED96A48";
-    private Context context;
+    private Context mContext;
 
     public Core(Context context) {
         super();
-        this.context = context;
+        this.mContext = context;
     }
 
     /**
@@ -168,7 +168,7 @@ public class Core {
      * @return new File database backup
      */
     public File backupDatabase() {
-        File database = new File(MoneyManagerApplication.getDatabasePath(context));
+        File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
         if (!database.exists()) return null;
         //create folder to copy database
         File folderOutput = getExternalStorageDirectoryApplication();
@@ -266,7 +266,7 @@ public class Core {
      * @param currencyId Id currency to be formatted
      */
     public void formatAmountTextView(TextView view, double amount, Integer currencyId) {
-        CurrencyUtils currencyUtils = new CurrencyUtils(context);
+        CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
 
         if (currencyId == null) {
             view.setText(currencyUtils.getBaseCurrencyFormatted(amount));
@@ -288,8 +288,8 @@ public class Core {
             String darkTheme = Constants.THEME_DARK;
 //            String lightTheme = context.getString(R.string.theme_light);
             String lightTheme = Constants.THEME_LIGHT;
-            String currentTheme = PreferenceManager.getDefaultSharedPreferences(context)
-                    .getString(context.getString(PreferenceConstants.PREF_THEME), lightTheme);
+            String currentTheme = PreferenceManager.getDefaultSharedPreferences(mContext)
+                    .getString(mContext.getString(PreferenceConstants.PREF_THEME), lightTheme);
 
             if (currentTheme.endsWith(darkTheme)) {
                 return R.style.Theme_Money_Manager;
@@ -313,7 +313,7 @@ public class Core {
      * @return last payee used
      */
     public TablePayee getLastPayeeUsed() {
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
+        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
         SQLiteDatabase database = helper.getReadableDatabase();
         TablePayee payee = null;
 
@@ -351,18 +351,18 @@ public class Core {
         externalStorage = Environment.getExternalStorageDirectory();
         if (externalStorage != null && externalStorage.exists() && externalStorage.isDirectory() && externalStorage.canWrite()) {
             //create folder to copy database
-            folderOutput = new File(externalStorage + "/" + context.getPackageName());
+            folderOutput = new File(externalStorage + File.separator + mContext.getPackageName());
             //make a directory
             if (!folderOutput.exists()) {
                 folderOutput = new File(externalStorage + "/MoneyManagerEx");
                 if (!folderOutput.exists()) {
-                    if (!folderOutput.mkdirs()) return context.getFilesDir();
+                    if (!folderOutput.mkdirs()) return mContext.getFilesDir();
                 }
             }
             //folder create
             return folderOutput;
         } else {
-            return context.getFilesDir();
+            return mContext.getFilesDir();
         }
     }
 
@@ -379,11 +379,11 @@ public class Core {
             File folderDropbox = new File(folder + "/dropbox");
             // check if folder exists otherwise create
             if (!folderDropbox.exists()) {
-                if (!folderDropbox.mkdirs()) return context.getFilesDir();
+                if (!folderDropbox.mkdirs()) return mContext.getFilesDir();
             }
             return folderDropbox;
         } else {
-            return context.getFilesDir();
+            return mContext.getFilesDir();
         }
     }
 
@@ -399,7 +399,7 @@ public class Core {
         TableCategory category = new TableCategory();
         TableSubCategory subCategory = new TableSubCategory();
         Cursor cursor;
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
+        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
         SQLiteDatabase db = helper.getReadableDatabase();
         // category
         cursor = db.query(category.getSource(), null,
@@ -478,7 +478,7 @@ public class Core {
         String ret = null;
 
         try {
-            helper = MoneyManagerOpenHelper.getInstance(context);
+            helper = MoneyManagerOpenHelper.getInstance(mContext);
             data = helper.getReadableDatabase().query(infoTable.getSource(), null,
                     TableInfoTable.INFONAME + "=?", new String[]{info}, null, null, null);
             if (data != null && data.moveToFirst()) {
@@ -508,8 +508,8 @@ public class Core {
     public HashMap<String, String> getCurrenciesCodeAndSymbol() {
         HashMap<String, String> map = new HashMap<>();
         // compose map
-        String[] codes = context.getResources().getStringArray(R.array.currencies_code);
-        String[] symbols = context.getResources().getStringArray(R.array.currencies_symbol);
+        String[] codes = mContext.getResources().getStringArray(R.array.currencies_code);
+        String[] symbols = mContext.getResources().getStringArray(R.array.currencies_symbol);
 
         for (int i = 0; i < codes.length; i++) {
             map.put(codes[i], symbols[i]);
@@ -566,7 +566,7 @@ public class Core {
                 currency = Currency.getInstance(locale);
 
                 // check if already exists currency symbol
-                Cursor cursor = context.getContentResolver().query(tableCurrencyFormats.getUri(), null,
+                Cursor cursor = mContext.getContentResolver().query(tableCurrencyFormats.getUri(), null,
                         TableCurrencyFormats.CURRENCY_SYMBOL + "=?", new String[]{currency.getCurrencyCode()}, null);
 
                 if (cursor != null && cursor.getCount() <= 0) {
@@ -587,7 +587,7 @@ public class Core {
                     cursor.close();
 
                     // insert and check error
-                    if (context.getContentResolver().insert(tableCurrencyFormats.getUri(), values) == null)
+                    if (mContext.getContentResolver().insert(tableCurrencyFormats.getUri(), values) == null)
                         return false;
                 }
             } catch (Exception e) {
@@ -604,7 +604,7 @@ public class Core {
      * @return true if is online otherwise false
      */
     public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
         return netInfo != null && netInfo.isConnectedOrConnecting();
@@ -617,7 +617,7 @@ public class Core {
      */
     @SuppressLint("InlinedApi")
     public boolean isTablet() {
-        int layout = context.getResources().getConfiguration().screenLayout;
+        int layout = mContext.getResources().getConfiguration().screenLayout;
         return ((layout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) ||
                 ((layout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE);
     }
@@ -632,18 +632,18 @@ public class Core {
         File file = new File(path);
         // check if database exists
         if (!file.exists()) {
-            Toast.makeText(context, R.string.path_database_not_exists, Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, R.string.path_database_not_exists, Toast.LENGTH_LONG).show();
             return false;
         }
         // check if database can be open in write mode
         if (!file.canWrite()) {
-            Toast.makeText(context, R.string.database_can_not_open_write, Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, R.string.database_can_not_open_write, Toast.LENGTH_LONG).show();
             return false;
         }
         // close connection
-        MoneyManagerOpenHelper.getInstance(context).close();
+        MoneyManagerOpenHelper.getInstance(mContext).close();
         // change database
-        MoneyManagerApplication.setDatabasePath(context, path);
+        MoneyManagerApplication.setDatabasePath(mContext, path);
 
         return true;
     }
@@ -655,7 +655,7 @@ public class Core {
      * @return color
      */
     public int resolveColorAttribute(int attr) {
-        return context.getResources().getColor(resolveIdAttribute(attr));
+        return mContext.getResources().getColor(resolveIdAttribute(attr));
     }
 
     /**
@@ -666,7 +666,7 @@ public class Core {
      */
     public int resolveIdAttribute(int attr) {
         TypedValue tv = new TypedValue();
-        if (context.getTheme().resolveAttribute(attr, tv, true))
+        if (mContext.getTheme().resolveAttribute(attr, tv, true))
             return tv.resourceId;
         else
             return INVALID_ATTRIBUTE;
@@ -691,7 +691,7 @@ public class Core {
         values.put(TableInfoTable.INFOVALUE, value);
 
         try {
-            helper = MoneyManagerOpenHelper.getInstance(context);
+            helper = MoneyManagerOpenHelper.getInstance(mContext);
             if (exists) {
                 ret = helper.getWritableDatabase().update(infoTable.getSource(), values,
                         TableInfoTable.INFONAME + "=?", new String[]{info}) >= 0;
@@ -708,22 +708,22 @@ public class Core {
     }
 
     public boolean isToDisplayChangelog() {
-        int currentVersionCode = getCurrentVersionCode(context);
-        int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(context)
-                .getInt(context.getString(PreferenceConstants.PREF_LAST_VERSION_KEY), -1);
+        int currentVersionCode = getCurrentVersionCode(mContext);
+        int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(mContext)
+                .getInt(mContext.getString(PreferenceConstants.PREF_LAST_VERSION_KEY), -1);
 
         return lastVersionCode != currentVersionCode;
     }
 
     public boolean showChangelog() {
-        int currentVersionCode = getCurrentVersionCode(context);
-        PreferenceManager.getDefaultSharedPreferences(context).edit()
-                .putInt(context.getString(PreferenceConstants.PREF_LAST_VERSION_KEY), currentVersionCode).commit();
+        int currentVersionCode = getCurrentVersionCode(mContext);
+        PreferenceManager.getDefaultSharedPreferences(mContext).edit()
+                .putInt(mContext.getString(PreferenceConstants.PREF_LAST_VERSION_KEY), currentVersionCode).commit();
 
         // create layout
-        View view = LayoutInflater.from(context).inflate(R.layout.changelog_layout, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.changelog_layout, null);
         //create dialog
-        AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(context);
+        AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(mContext);
         showDialog.setCancelable(false);
         showDialog.setTitle(R.string.changelog);
 
@@ -745,15 +745,15 @@ public class Core {
      * @return preferences account fav visible
      */
     public boolean getAccountFavoriteVisible() {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(context.getString(PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE), false);
+        return PreferenceManager.getDefaultSharedPreferences(mContext)
+                .getBoolean(mContext.getString(PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE), false);
     }
 
     /**
      * @return preferences accounts visible
      */
     public boolean getAccountsOpenVisible() {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(context.getString(PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE), false);
+        return PreferenceManager.getDefaultSharedPreferences(mContext)
+                .getBoolean(mContext.getString(PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE), false);
     }
 }

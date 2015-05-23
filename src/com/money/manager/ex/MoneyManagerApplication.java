@@ -83,6 +83,7 @@ public class MoneyManagerApplication extends Application {
         String databasePath = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), null);
         if (databasePath != null) {
+            // Use the db path stored in the preferences.
             File databaseFile = new File(databasePath);
             if (databaseFile.getAbsoluteFile().exists())  {
                 return databaseFile.toString();
@@ -91,10 +92,25 @@ public class MoneyManagerApplication extends Application {
 
         // otherwise try other paths or create the default database.
 
+        String defaultDirectory = getDatabaseLocation(context);
+        databasePath = defaultDirectory + "/data.mmb";
+
+        MoneyManagerApplication.setDatabasePath(context, databasePath);
+        return databasePath;
+    }
+
+    /**
+     * Returns only the directory name for the databases. This is where the new databases are
+     * created by default.
+     * @return String containing the path to the default directory for storing databases.
+     */
+    public static String getDatabaseLocation(Context context) {
         Core core = new Core(context);
         File defaultFolder = core.getExternalStorageDirectoryApplication();
+        String databasePath;
+
         if (defaultFolder.getAbsoluteFile().exists()) {
-            databasePath = defaultFolder.toString() + "/data.mmb";
+            databasePath = defaultFolder.toString();
         } else {
             String internalFolder;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -103,15 +119,15 @@ public class MoneyManagerApplication extends Application {
                 internalFolder = "/data/data/" + context.getApplicationContext().getPackageName();
             }
             // add databases
-            internalFolder += "/databases/data.mmb";
+            internalFolder += "/databases"; // "/data.mmb";
             databasePath = internalFolder;
         }
-        MoneyManagerApplication.setDatabasePath(context, databasePath);
+
         return databasePath;
     }
 
     /**
-     * @param context Executing context for which to get the preferences.
+     * @param context Executing context for which to set the preferences.
      * @param dbpath  path of database file to save
      */
     public static void setDatabasePath(Context context, String dbpath) {
@@ -168,7 +184,8 @@ public class MoneyManagerApplication extends Application {
     public String getFromDatabaseUserName(Context context) {
         TableInfoTable infoTable = new TableInfoTable();
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
-        Cursor data = helper.getReadableDatabase().query(infoTable.getSource(), null, TableInfoTable.INFONAME + "=?", new String[]{"USERNAME"}, null, null, null);
+        Cursor data = helper.getReadableDatabase().query(infoTable.getSource(), null,
+                TableInfoTable.INFONAME + "=?", new String[]{"USERNAME"}, null, null, null);
         String ret = "";
         if (data != null && data.moveToFirst()) {
             ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
@@ -203,7 +220,8 @@ public class MoneyManagerApplication extends Application {
      * @return the show transaction
      */
     public String getShowTransaction() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString(getString(PreferenceConstants.PREF_SHOW_TRANSACTION), getResources().getString(R.string.last7days));
+        return PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(getString(PreferenceConstants.PREF_SHOW_TRANSACTION), getResources().getString(R.string.last7days));
     }
 
     /**
@@ -272,8 +290,10 @@ public class MoneyManagerApplication extends Application {
         // preference
         if (appPreferences == null) {
             appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            RobotoView.setUserFont(Integer.parseInt(appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
-            RobotoView.setUserFontSize(getApplicationContext(), appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
+            RobotoView.setUserFont(Integer.parseInt(
+                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
+            RobotoView.setUserFontSize(getApplicationContext(),
+                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
         }
     }
 

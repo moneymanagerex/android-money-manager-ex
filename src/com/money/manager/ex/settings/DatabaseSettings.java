@@ -24,25 +24,25 @@ import android.content.Context;
  */
 public class DatabaseSettings {
     public DatabaseSettings(AppSettings mainSettings) {
-        mSettings = mainSettings;
+        mAppSettings = mainSettings;
 //        mContext = context;
 //        mApplicationContext = context.getApplicationContext();
     }
 
-    private AppSettings mSettings;
+    private AppSettings mAppSettings;
 
     public String getDatabasePath() {
 //        String path = PreferenceManager.getDefaultSharedPreferences(mApplicationContext)
 //                .getString(mContext.getString(PreferenceConstants.PREF_DATABASE_PATH), "");
-        Context context = mSettings.getContext();
+        Context context = mAppSettings.getContext();
         String key = context.getString(PreferenceConstants.PREF_DATABASE_PATH);
-        String path = mSettings.get(key, "");
+        String path = mAppSettings.get(key, "");
         return path;
     }
 
     public void setDatabasePath(String path) {
-        Context context = mSettings.getContext();
+        Context context = mAppSettings.getContext();
         String key = context.getString(PreferenceConstants.PREF_DATABASE_PATH);
-        mSettings.set(key, path);
+        mAppSettings.set(key, path);
     }
 }

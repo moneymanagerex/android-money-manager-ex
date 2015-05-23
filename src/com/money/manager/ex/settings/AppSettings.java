@@ -62,19 +62,18 @@ public class AppSettings {
      * @param value
      */
     public void set(String key, String value) {
-        mEditor.putString(key, value);
-        mEditor.commit();
+        getEditor().putString(key, value);
+        getEditor().commit();
     }
 
     public void set(String key, boolean value) {
-        mEditor.putBoolean(key, value);
-        mEditor.commit();
+        getEditor().putBoolean(key, value);
+        getEditor().commit();
     }
 
     private void init() {
         Context context = mContext.getApplicationContext();
         mSettings = PreferenceManager.getDefaultSharedPreferences(context);
-        mEditor = mSettings.edit();
     }
 
     public DatabaseSettings getDatabaseSettings() {
@@ -93,5 +92,12 @@ public class AppSettings {
 
     public Context getContext() {
         return mContext;
+    }
+
+    public SharedPreferences.Editor getEditor() {
+        if (mEditor == null) {
+            mEditor = mSettings.edit();
+        }
+        return mEditor;
     }
 }

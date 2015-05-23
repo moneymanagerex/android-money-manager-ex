@@ -17,6 +17,9 @@
  */
 package com.money.manager.ex.settings;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -33,6 +36,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
+import com.money.manager.ex.database.MmexDatabase;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.utils.DonateDialogUtils;
 
@@ -166,9 +170,11 @@ public class DatabaseFragment
                             public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
                                 boolean success = createDatabase(charSequence.toString());
                                 if (success) {
-                                    // todo: handle result
+                                    Toast.makeText(getActivity(), R.string.create_db_success,
+                                            Toast.LENGTH_SHORT).show();
                                 } else {
-//                                    Toast.makeText(R.string.failtu)
+                                    Toast.makeText(getActivity(), R.string.create_db_error,
+                                            Toast.LENGTH_SHORT).show();
                                 }
                             }
                         })
@@ -184,26 +190,13 @@ public class DatabaseFragment
             return result;
         }
 
-        // trim any trailing or leading spaces
-        filename = filename.trim();
-
-        // check if filename already contains the extension
-        boolean containsExtension = Pattern.compile(Pattern.quote(".mmb"), Pattern.CASE_INSENSITIVE)
-                .matcher(filename)
-                .find();
-        if (!containsExtension) {
-            filename += ".mmb";
-        }
-
         // try to create the db file.
+        MmexDatabase db = new MmexDatabase(getActivity());
+        db.createDatabase(filename);
 
-        // initialize the database with this file
+        MainActivity.setRestartActivity(true);
 
-        // store as the default database in settings
-
-        // show the result message.
-
-        // todo: result = true;
+        result = true;
 
         return result;
     }
