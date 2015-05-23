@@ -106,6 +106,8 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     @Override
     public boolean onActionDoneClick() {
         ArrayList<ISplitTransactionsDataset> allSplitTransactions = getAllSplitCategories();
+        double total = 0;
+
         // check data
         for (int i = 0; i < allSplitTransactions.size(); i++) {
             ISplitTransactionsDataset splitTransactions = allSplitTransactions.get(i);
@@ -113,7 +115,17 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
                 Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected);
                 return false;
             }
+
+            total += splitTransactions.getSplitTransAmount();
         }
+
+        // total amount must not be negative.
+        if (total < 0) {
+            Core.alertDialog(this, R.string.split_amount_negative);
+            return false;
+        }
+
+
         Intent result = new Intent();
         result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION, allSplitTransactions);
         result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
