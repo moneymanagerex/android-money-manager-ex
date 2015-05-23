@@ -18,6 +18,9 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
+import android.widget.Toast;
+
+import com.money.manager.ex.R;
 
 /**
  * Manipulates database settings/preferences.
@@ -40,9 +43,10 @@ public class DatabaseSettings {
         return path;
     }
 
-    public void setDatabasePath(String path) {
+    public boolean setDatabasePath(String path) {
         Context context = mAppSettings.getContext();
         String key = context.getString(PreferenceConstants.PREF_DATABASE_PATH);
-        mAppSettings.set(key, path);
+        boolean pathSet = mAppSettings.set(key, path);
+        return pathSet;
     }
 }

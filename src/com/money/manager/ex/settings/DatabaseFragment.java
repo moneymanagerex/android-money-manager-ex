@@ -56,6 +56,12 @@ public class DatabaseFragment
         addPreferencesFromResource(R.xml.database_settings);
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+        // Database path.
+        refreshDbPath();
+
+//        addListenerForDbPathChange();
+
+        // Export database.
         final Preference pMoveDatabase = findPreference(getString(PreferenceConstants.PREF_DATABASE_BACKUP));
         if (pMoveDatabase != null) {
             pMoveDatabase.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -86,10 +92,6 @@ public class DatabaseFragment
                     .startsWith("/data/"));
         }
 
-        // Database path.
-        final Preference pDatabasePath = findPreference(getActivity().getString(PreferenceConstants.PREF_DATABASE_PATH));
-        pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
-
         //sqlite version
         Preference pSQLiteVersion = findPreference(getString(PreferenceConstants.PREF_SQLITE_VERSION));
         if (pSQLiteVersion != null) {
@@ -101,9 +103,24 @@ public class DatabaseFragment
         // Migration of databases from version 1.4 to the location in 2.0.
         setVisibilityOfMigrationButton();
 
-        // Create database option.
+        // Create database
         setUpCreateDatabaseOption();
     }
+
+//    private void addListenerForDbPathChange() {
+//        final Preference pDatabasePath = findPreference(getActivity().getString(PreferenceConstants.PREF_DATABASE_PATH));
+//
+//        // update displayed value when the preference is changed.
+//
+//        pDatabasePath.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+//            @Override
+//            public boolean onPreferenceChange(Preference preference, Object o) {
+//                pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
+//
+//                return true;
+//            }
+//        });
+//    }
 
     private void setVisibilityOfMigrationButton() {
         Preference migratePreference = findPreference(getString(R.string.pref_database_migrate_14_to_20));
@@ -192,12 +209,23 @@ public class DatabaseFragment
 
         // try to create the db file.
         MmexDatabase db = new MmexDatabase(getActivity());
-        db.createDatabase(filename);
+        boolean created = db.createDatabase(filename);
 
-        MainActivity.setRestartActivity(true);
+        if (created) {
+            // set main activity to reload, to open the new db file.
+            MainActivity.setRestartActivity(true);
 
-        result = true;
+            // update the displayed value.
+            refreshDbPath();
+
+            result = true;
+        }
 
         return result;
+    }
+
+    private void refreshDbPath() {
+        final Preference pDatabasePath = findPreference(getActivity().getString(PreferenceConstants.PREF_DATABASE_PATH));
+        pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
     }
 }

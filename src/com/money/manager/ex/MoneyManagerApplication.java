@@ -48,7 +48,8 @@ import java.io.File;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.1.0
  */
-public class MoneyManagerApplication extends Application {
+public class MoneyManagerApplication
+        extends Application {
     ///////////////////////////////////////////////////////////////////////////
     public static final String KEY = "8941ED03A52BF76CD48EF951CA623B0709564CA238DB7FE1BA3980E4F617CD52";
     ///////////////////////////////////////////////////////////////////////////
@@ -63,7 +64,6 @@ public class MoneyManagerApplication extends Application {
 //    public static final int TYPE_HOME_CLASSIC = R.layout.main_fragments_activity;
 //    public static final int TYPE_HOME_ADVANCE = R.layout.main_pager_activity;
     private static final String LOGCAT = "MoneyManagerApplication";
-    public static String PATTERN_DB_DATE = "yyyy-MM-dd";
     private static MoneyManagerApplication myInstance;
     private static SharedPreferences appPreferences;
     private static float mTextSize;
@@ -92,7 +92,7 @@ public class MoneyManagerApplication extends Application {
 
         // otherwise try other paths or create the default database.
 
-        String defaultDirectory = getDatabaseLocation(context);
+        String defaultDirectory = getDatabaseDirectory(context);
         databasePath = defaultDirectory + "/data.mmb";
 
         MoneyManagerApplication.setDatabasePath(context, databasePath);
@@ -104,7 +104,7 @@ public class MoneyManagerApplication extends Application {
      * created by default.
      * @return String containing the path to the default directory for storing databases.
      */
-    public static String getDatabaseLocation(Context context) {
+    public static String getDatabaseDirectory(Context context) {
         Core core = new Core(context);
         File defaultFolder = core.getExternalStorageDirectoryApplication();
         String databasePath;

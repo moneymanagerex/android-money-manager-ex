@@ -18,15 +18,15 @@
 package com.money.manager.ex.database;
 
 import android.content.Context;
-import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
 
-import com.money.manager.ex.CheckingAccountActivity;
-import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 /**
@@ -37,6 +37,7 @@ public class MmexDatabase {
         mContext = context;
     }
 
+    private final String LOGCAT = this.getClass().getSimpleName();
     private Context mContext;
 
     /**
@@ -44,13 +45,37 @@ public class MmexDatabase {
      * @param filename File name for the new database. Extension .mmb will be appended if not
      *                 included in the filename.
      */
-    public void createDatabase(String filename) {
+    public boolean createDatabase(String filename) {
+        boolean result = false;
+
+        try {
+            result = createDatabase_Internal(filename);
+        } catch (Exception ex) {
+            String error = "Error creating database";
+            showToast(error, Toast.LENGTH_SHORT);
+            Log.e(LOGCAT, ": " + ex.getLocalizedMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    private boolean createDatabase_Internal(String filename)
+            throws IOException {
         filename = cleanupFilename(filename);
 
         // it might be enough simply to generate thenew filename and set this as the
         // default database.
-        String location = MoneyManagerApplication.getDatabaseLocation(mContext);
+        String location = MoneyManagerApplication.getDatabaseDirectory(mContext);
         String newFilePath = location + File.separator + filename;
+
+        // Create db file.
+        File dbFile = new File(newFilePath);
+        if (dbFile.exists()) {
+            showToast(R.string.create_db_exists, Toast.LENGTH_SHORT);
+            return false;
+        } else {
+            dbFile.createNewFile();
+        }
 
 //        Core core = new Core(mContext);
 //        core.changeDatabase(newFilePath);
@@ -61,7 +86,13 @@ public class MmexDatabase {
 
         // store as the default database in settings
         AppSettings settings = new AppSettings(mContext);
-        settings.getDatabaseSettings().setDatabasePath(newFilePath);
+        boolean pathSet = settings.getDatabaseSettings().setDatabasePath(newFilePath);
+        if (!pathSet) {
+            Log.e(LOGCAT, "Error setting the database path.");
+            showToast(R.string.create_db_error, Toast.LENGTH_SHORT);
+        }
+
+        return pathSet;
     }
 
     private String cleanupFilename(String filename) {
@@ -78,4 +109,13 @@ public class MmexDatabase {
 
         return filename;
     }
+
+    private void showToast(int resourceId, int duration) {
+        Toast.makeText(mContext, resourceId, duration).show();
+    }
+
+    private void showToast(String text, int duration) {
+        Toast.makeText(mContext, text, duration).show();
+    }
+
 }

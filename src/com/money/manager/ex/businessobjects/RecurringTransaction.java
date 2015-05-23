@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableBillsDeposits;
@@ -125,7 +126,7 @@ public class RecurringTransaction {
     public void moveNextOccurrenceForward() {
         int repeats = this.getRepeats();
         String currentNextOccurrence = mCursor.getString(mCursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
-        Date newNextOccurrence = DateUtils.getDateFromString(this.Context, currentNextOccurrence, MoneyManagerApplication.PATTERN_DB_DATE);
+        Date newNextOccurrence = DateUtils.getDateFromString(this.Context, currentNextOccurrence, Constants.PATTERN_DB_DATE);
         // calculate the next occurrence date
         newNextOccurrence = DateUtils.getDateNextOccurrence(newNextOccurrence, repeats);
 

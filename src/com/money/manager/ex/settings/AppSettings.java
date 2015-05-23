@@ -61,14 +61,17 @@ public class AppSettings {
      * @param key
      * @param value
      */
-    public void set(String key, String value) {
+    public boolean set(String key, String value) {
         getEditor().putString(key, value);
-        getEditor().commit();
+        boolean result =getEditor().commit();
+        return result;
     }
 
-    public void set(String key, boolean value) {
+    public boolean set(String key, boolean value) {
         getEditor().putBoolean(key, value);
-        getEditor().commit();
+        boolean result = getEditor().commit();
+
+        return result;
     }
 
     private void init() {
