@@ -18,6 +18,7 @@
 package com.money.manager.ex.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,8 +27,12 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
@@ -111,11 +116,93 @@ public class MmexDatabase {
         return filename;
     }
 
+    /**
+     * Runs SQLite pragma check on the database file.
+     * @return A boolean indicating whether the check was successfully completed.
+     */
     public boolean checkIntegrity() {
         SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
                 .getReadableDatabase();
 
         boolean result = db.isDatabaseIntegrityOk();
+        return result;
+    }
+
+    /**
+     * Checks if all the required tables are present.
+     * Should be expanded and improved to check for the whole schema.
+     * @return A boolean indicating whether the schema is correct.
+     */
+    public boolean checkSchema() {
+        boolean result = false;
+
+        // Get the names of all the tables from the generation script.
+        ArrayList<String> scriptTables = null;
+        try {
+            scriptTables = getAllTableNamesFromGenerationScript();
+        } catch (IOException ioex) {
+            String error = "Error reading table names from generation script";
+            Log.e(LOGCAT, error + ": " + ioex.getLocalizedMessage());
+            ioex.printStackTrace();
+            showToast(error, Toast.LENGTH_SHORT);
+
+            return false;
+        }
+
+        // get the list of all the tables from the database.
+        ArrayList<String[]> dbTables = getDbTableDetails();
+
+        // compare
+
+        return result;
+    }
+
+    private ArrayList<String> getAllTableNamesFromGenerationScript()
+            throws IOException {
+        InputStream inputStream = mContext.getResources().openRawResource(R.raw.database_create);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        String line = reader.readLine();
+        String textToMatch = "create table";
+        ArrayList<String> tableNames = new ArrayList<>();
+
+        while (line != null) {
+            boolean found = false;
+            if (line.contains(textToMatch)) found = true;
+            if (!found && line.contains(textToMatch.toUpperCase())) found = true;
+
+            if (found) {
+                // todo: extract the table name
+                tableNames.add(line);
+            }
+
+            line = reader.readLine();
+        }
+
+        return tableNames;
+    }
+
+    /**
+     * Get all table Details from teh sqlite_master table in Db.
+     *
+     * @return An ArrayList of table details.
+     */
+    public ArrayList<String[]> getDbTableDetails() {
+        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+                .getReadableDatabase();
+
+        Cursor c = db.rawQuery(
+                "SELECT name FROM sqlite_master WHERE type='table'", null);
+        ArrayList<String[]> result = new ArrayList<>();
+        int i = 0;
+        result.add(c.getColumnNames());
+        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+            String[] temp = new String[c.getColumnCount()];
+            for (i = 0; i < temp.length; i++) {
+                temp[i] = c.getString(i);
+            }
+            result.add(temp);
+        }
+
         return result;
     }
 

@@ -22,13 +22,6 @@
         android:icon="@null"
         android:key="@string/pref_database_path"
         android:title="@string/path" />
-    <!--<Preference
-        android:key="@string/pref_sqlite_version"
-        android:title="@string/android_sqlite_vesion" />-->
-    <Preference
-        android:icon="@null"
-        android:key="@string/pref_database_backup"
-        android:title="@string/menu_move_database_to_external_storage" />
 
     <Preference
         android:icon="@null"
@@ -37,11 +30,25 @@
 
     <Preference
         android:icon="@null"
+        android:key="@string/pref_database_backup"
+        android:title="@string/menu_move_database_to_external_storage" />
+
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_database_check_integrity"
         android:title="@string/db_check_integrity" />
 
     <Preference
         android:icon="@null"
+        android:key="@string/pref_db_check_schema"
+        android:title="@string/db_check_schema" />
+
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_database_create"
         android:title="@string/create_db" />
+
+    <Preference
+        android:key="@string/pref_sqlite_version"
+        android:title="@string/android_sqlite_vesion" />
 </PreferenceScreen>

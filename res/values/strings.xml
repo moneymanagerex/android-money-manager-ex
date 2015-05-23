@@ -339,7 +339,7 @@
     <string name="no_thanks">No, thanks</string>
     <string name="donate_exlamation">Donate!</string>
     <!-- 20130225 -->
-    <!--<string name="android_sqlite_vesion">SQLite Version</string>-->
+    <string name="android_sqlite_vesion">SQLite Version</string>
     <!-- 20130301 -->
     <!--<string name="sort">Sort</string>-->
     <string name="ascending">Ascending</string>
@@ -586,4 +586,8 @@
     <string name="db_check_integrity_summary">Performs database file integrity check</string>
     <string name="db_check_integrity_success">The database passed the integrity check successfully.</string>
     <string name="db_check_integrity_error">Error: database file is corrupt!</string>
+    <string name="db_check_schema">Check db schema</string>
+    <string name="db_check_schema_summary">Check if all the tables are present in the database.</string>
+    <string name="db_check_schema_success">All the required tables are present in the database.</string>
+    <string name="db_check_schema_error">Error: tables missing in the database!</string>
 </resources>

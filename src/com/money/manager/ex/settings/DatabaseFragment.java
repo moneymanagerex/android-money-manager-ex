@@ -56,6 +56,9 @@ public class DatabaseFragment
         // Database path.
         refreshDbPath();
 
+        // Check schema
+        initDbSchemaCheckOption();
+
         // Export database.
         initExportDbOption();
 
@@ -67,6 +70,7 @@ public class DatabaseFragment
             if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
         }
 
+        // Check integrity
         initDatabaseIntegrityOption();
 
         // Migration of databases from version 1.4 to the location in 2.0.
@@ -181,6 +185,29 @@ public class DatabaseFragment
     private void refreshDbPath() {
         final Preference pDatabasePath = findPreference(getActivity().getString(PreferenceConstants.PREF_DATABASE_PATH));
         pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
+    }
+
+    private void initDbSchemaCheckOption() {
+        Preference preference = findPreference(getString(R.string.pref_db_check_schema));
+        if (preference == null) return;
+
+        preference.setSummary(getString(R.string.db_check_integrity_summary));
+
+        Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                MmexDatabase db = new MmexDatabase(getActivity());
+                boolean result = db.checkSchema();
+                if (result) {
+                    showToast(R.string.db_check_schema_success, Toast.LENGTH_SHORT);
+                } else {
+                    showToast(R.string.db_check_schema_error, Toast.LENGTH_SHORT);
+                }
+                return false;
+            }
+        };
+
+        preference.setOnPreferenceClickListener(clickListener);
     }
 
     private void initDatabaseIntegrityOption() {
