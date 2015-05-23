@@ -18,6 +18,7 @@
 package com.money.manager.ex.database;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -108,6 +109,14 @@ public class MmexDatabase {
         }
 
         return filename;
+    }
+
+    public boolean checkIntegrity() {
+        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+                .getReadableDatabase();
+
+        boolean result = db.isDatabaseIntegrityOk();
+        return result;
     }
 
     private void showToast(int resourceId, int duration) {

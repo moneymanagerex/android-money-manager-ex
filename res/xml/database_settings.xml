@@ -37,6 +37,11 @@
 
     <Preference
         android:icon="@null"
+        android:key="@string/pref_database_check_integrity"
+        android:title="@string/db_check_integrity" />
+
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_database_create"
         android:title="@string/create_db" />
 </PreferenceScreen>
