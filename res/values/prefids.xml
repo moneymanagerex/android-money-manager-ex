@@ -24,6 +24,7 @@
     <string name="pref_show_introduction">prefshowintroduction</string>
     <!-- database -->
     <string name="pref_database_path">databasepath</string>
+    <string name="pref_database_check_integrity">pref_database_check_integrity</string>
     <string name="pref_database_create">createdatabase</string>
     <string name="pref_database_backup">prefdatabasebackup</string>
     <string name="pref_database_migrate_14_to_20">pref_database_migrate_14_to_20</string>

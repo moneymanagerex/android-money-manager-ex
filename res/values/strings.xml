@@ -582,4 +582,8 @@
     <string name="create_db_success">Database successfully created</string>
     <string name="create_db_error">Could not create new database file</string>
     <string name="create_db_exists">The database with this name already exists!</string>
+    <string name="db_check_integrity">Check db integrity</string>
+    <string name="db_check_integrity_summary">Performs database file integrity check</string>
+    <string name="db_check_integrity_success">The database passed the integrity check successfully.</string>
+    <string name="db_check_integrity_error">Error: database file is corrupt!</string>
 </resources>
