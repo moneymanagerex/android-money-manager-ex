@@ -150,9 +150,22 @@ public class MmexDatabase {
         }
 
         // get the list of all the tables from the database.
-        ArrayList<String[]> dbTables = getDbTableDetails();
+        ArrayList<String> existingTables = getTableNamesFromDb();
 
-        // compare
+        // compare. retainAll, remaveAll, addAll
+        scriptTables.removeAll(existingTables);
+        // If there is anything left, the script schema has more tables than the db.
+        if (!scriptTables.isEmpty()) {
+            StringBuilder message = new StringBuilder("Tables missing: ");
+            for(String table:scriptTables) {
+                message.append(table);
+                message.append(" ");
+            }
+            showToast(message.toString(), Toast.LENGTH_LONG);
+        } else {
+            // everything matches
+            result = true;
+        }
 
         return result;
     }
@@ -171,7 +184,13 @@ public class MmexDatabase {
             if (!found && line.contains(textToMatch.toUpperCase())) found = true;
 
             if (found) {
-                // todo: extract the table name
+                // extract the table name from the instruction
+                line = line.replace(textToMatch, "");
+                line = line.replace(textToMatch.toUpperCase(), "");
+                line = line.replace("(", "");
+                // remove any empty spaces.
+                line = line.trim();
+
                 tableNames.add(line);
             }
 
@@ -186,20 +205,21 @@ public class MmexDatabase {
      *
      * @return An ArrayList of table details.
      */
-    public ArrayList<String[]> getDbTableDetails() {
+    private ArrayList<String> getTableNamesFromDb() {
         SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
                 .getReadableDatabase();
 
         Cursor c = db.rawQuery(
                 "SELECT name FROM sqlite_master WHERE type='table'", null);
-        ArrayList<String[]> result = new ArrayList<>();
+        ArrayList<String> result = new ArrayList<>();
         int i = 0;
-        result.add(c.getColumnNames());
+//        result.add(c.getColumnNames());
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-            String[] temp = new String[c.getColumnCount()];
-            for (i = 0; i < temp.length; i++) {
-                temp[i] = c.getString(i);
-            }
+//            String[] temp = new String[c.getColumnCount()];
+//            for (i = 0; i < temp.length; i++) {
+//                temp[i] = c.getString(i);
+//            }
+            String temp = c.getString(i);
             result.add(temp);
         }
 

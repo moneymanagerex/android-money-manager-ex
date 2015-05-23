@@ -191,7 +191,7 @@ public class DatabaseFragment
         Preference preference = findPreference(getString(R.string.pref_db_check_schema));
         if (preference == null) return;
 
-        preference.setSummary(getString(R.string.db_check_integrity_summary));
+        preference.setSummary(getString(R.string.db_check_schema_summary));
 
         Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
             @Override
