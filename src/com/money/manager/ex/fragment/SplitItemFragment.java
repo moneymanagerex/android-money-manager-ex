@@ -212,7 +212,7 @@ public class SplitItemFragment extends Fragment
         int transactionTypeSelection;
 
         SplitTransactionsActivity splitActivity = (SplitTransactionsActivity) getActivity();
-        boolean parentIsWithdrawal = splitActivity.parentTransactionType.equals(getString(R.string.withdrawal));
+        boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(getString(R.string.withdrawal));
         double amount = mSplitTransaction.getSplitTransAmount();
         if(parentIsWithdrawal){
             // parent is Withdrawal.

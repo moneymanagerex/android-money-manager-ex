@@ -149,16 +149,17 @@ public class Core {
      */
     public static void alertDialog(Context ctx, String text) {
         new AlertDialogWrapper.Builder(ctx)
-        // setting alert dialog
-        .setIcon(R.drawable.ic_action_warning_light)
-        .setTitle(R.string.attention)
-        .setMessage(text)
-        .setNeutralButton(android.R.string.ok, new OnClickListener() {
+            // setting alert dialog
+            .setIcon(R.drawable.ic_action_warning_light)
+            .setTitle(R.string.attention)
+            .setMessage(text)
+//            .setNeutralButton()
+            .setPositiveButton(android.R.string.ok, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        })
+                    dialog.dismiss();
+                    }
+            })
                 .show();
     }
 

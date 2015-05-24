@@ -530,7 +530,7 @@ public class CheckingAccountActivity
         chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
             @Override
             public void onCheck(CheckBox checkBox, boolean b) {
-                splitSet();
+                onSplitSet();
             }
         });
         // mark checked if there are existing split categories.
@@ -543,7 +543,7 @@ public class CheckingAccountActivity
             public void onClick(View view) {
                 chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
 
-                splitSet();
+                onSplitSet();
             }
         });
 
@@ -1492,7 +1492,7 @@ public class CheckingAccountActivity
         return true;
     }
 
-    private void splitSet() {
+    private void onSplitSet() {
         // update category field
         refreshCategoryName();
 
@@ -1509,7 +1509,7 @@ public class CheckingAccountActivity
             public void run() {
                 chbSplitTransaction.setChecked(checked);
 
-                splitSet();
+                onSplitSet();
             }
         });
     }
