@@ -74,6 +74,7 @@ public class AllDataAdapter
     private SQLiteDatabase mDatabase;
     // core and context
     private Context mContext;
+    private final String LOGCAT = this.getClass().getSimpleName();
 
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
         super(context, c, -1);
@@ -211,18 +212,8 @@ public class AllDataAdapter
         // balance account or days left
         if (mTypeCursor == TypeCursor.ALLDATA) {
             if (isShowBalanceAmount() && getDatabase() != null) {
-                int transId = cursor.getInt(cursor.getColumnIndex(ID));
                 // create thread for calculate balance amount
-                BalanceAmountTask balanceAmount = new BalanceAmountTask();
-                balanceAmount.setAccountId(getAccountId());
-                balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
-                balanceAmount.setTextView(holder.txtBalance);
-                balanceAmount.setContext(mContext);
-//                balanceAmount.setDatabase(getDatabase());
-                balanceAmount.setCurrencyId(getCurrencyId());
-                balanceAmount.setTransId(transId);
-                // execute thread
-                balanceAmount.execute();
+                calculateBalanceAmount(cursor, holder);
             } else {
                 holder.txtBalance.setVisibility(View.GONE);
             }
@@ -372,5 +363,26 @@ public class AllDataAdapter
     // source type: AllData or RepeatingTransaction
     public enum TypeCursor {
         ALLDATA, REPEATINGTRANSACTION
+    }
+
+    private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
+        try {
+            int transId = cursor.getInt(cursor.getColumnIndex(ID));
+
+            BalanceAmountTask balanceAmount = new BalanceAmountTask();
+            balanceAmount.setAccountId(getAccountId());
+            balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
+            balanceAmount.setTextView(holder.txtBalance);
+            balanceAmount.setContext(mContext);
+//                balanceAmount.setDatabase(getDatabase());
+            balanceAmount.setCurrencyId(getCurrencyId());
+            balanceAmount.setTransId(transId);
+            // execute thread
+            balanceAmount.execute();
+        } catch (Exception ex) {
+            String error = "Error in balance amount";
+            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
+            ex.printStackTrace();
+        }
     }
 }
