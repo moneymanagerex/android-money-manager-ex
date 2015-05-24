@@ -83,7 +83,7 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
 
     /**
      * Returns all split categories created on the form.
-     * @return
+     * @return List of Split Transactions that are displayed.
      */
     public ArrayList<ISplitTransactionsDataset> getAllSplitCategories() {
         ArrayList<ISplitTransactionsDataset> splitCategories = new ArrayList<>();
