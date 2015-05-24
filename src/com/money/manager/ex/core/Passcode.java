@@ -138,7 +138,8 @@ public class Passcode {
 
         if (hasPasscode()) {
             // update data
-            if (mContext.getContentResolver().update(new TableInfoTable().getUri(), contentValues, TableInfoTable.INFONAME + "=?", new String[]{INFONAME}) <= 0) {
+            if (mContext.getContentResolver().update(new TableInfoTable().getUri(),
+                    contentValues, TableInfoTable.INFONAME + "=?", new String[]{INFONAME}) <= 0) {
                 Toast.makeText(mContext, R.string.db_update_failed, Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -154,7 +155,20 @@ public class Passcode {
     }
 
     public boolean cleanPasscode() {
-        if (mContext.getContentResolver().delete(new TableInfoTable().getUri(), TableInfoTable.INFONAME + "=?", new String[]{INFONAME}) <= 0) {
+        try {
+            return cleanPasscode_Internal();
+        } catch (Exception ex) {
+            String error = "Error clearing passcode";
+            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
+            ex.printStackTrace();
+            Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
+        }
+        return false;
+    }
+
+    private boolean cleanPasscode_Internal() {
+        if (mContext.getContentResolver().delete(new TableInfoTable().getUri(),
+                TableInfoTable.INFONAME + "=?", new String[]{INFONAME}) <= 0) {
             Toast.makeText(mContext, R.string.db_delete_failed, Toast.LENGTH_LONG).show();
             return false;
         } else
