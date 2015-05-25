@@ -27,6 +27,7 @@ import android.view.View;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -51,7 +52,8 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     private static final int MENU_ADD_SPLIT_TRANSACTION = 1;
     private static int mIdTag = 0x8000;
 
-    public String mParentTransactionType;
+//    public String mParentTransactionType;
+    public TransactionTypes mParentTransactionType;
 
     private SplitItemFragment mFragmentInputAmountClick;
 
@@ -146,7 +148,9 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         Intent intent = getIntent();
         if (intent != null) {
             this.EntityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
-            this.mParentTransactionType = intent.getStringExtra(KEY_TRANSACTION_TYPE);
+            //this.mParentTransactionType = intent.getStringExtra(KEY_TRANSACTION_TYPE);
+            int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
+            mParentTransactionType = TransactionTypes.values()[transactionType];
             mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
             mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
         }

@@ -51,6 +51,7 @@ import com.money.manager.ex.checkingaccount.IntentDataParameters;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.checkingaccount.YesNoDialogListener;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -127,7 +128,12 @@ public class CheckingAccountActivity
     public List<TableAccountList> mAccountList;
     public String mToAccountName;
     public int mTransId = -1;
-    public String mTransCode, mStatus = null;
+    // todo: do not use string transaction code. Use TransactionTypes enum.
+    public String mTransCode;
+    public TransactionTypes mTransactionType;
+
+    public String mStatus = null;
+
     // info payee
     public int mPayeeId = -1;
     public String mPayeeName;
@@ -517,7 +523,9 @@ public class CheckingAccountActivity
                     // select split categories.
                     Intent intent = new Intent(CheckingAccountActivity.this, SplitTransactionsActivity.class);
                     intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, TableSplitTransactions.class.getSimpleName());
-                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransCode);
+//                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransCode);
+                    int transactionType = TransactionTypes.valueOf(mTransCode).getCode();
+                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
                     startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
@@ -770,6 +778,7 @@ public class CheckingAccountActivity
             }
         } else {
             mTransCode = (String) SpinTransCode.getSelectedItem();
+            mTransactionType = TransactionTypes.values()[SpinTransCode.getSelectedItemPosition()];
         }
         SpinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
@@ -785,6 +794,7 @@ public class CheckingAccountActivity
                     }
 
                     mTransCode = selectedValue;
+                    mTransactionType = TransactionTypes.values()[position];
                 }
                 // aggiornamento dell'interfaccia grafica
                 refreshAfterTransactionCodeChange();
@@ -825,6 +835,8 @@ public class CheckingAccountActivity
         mCategoryId = -1;
 
         mTransCode = getString(R.string.transfer);
+        mTransactionType = TransactionTypes.Transfer;
+
         refreshAfterTransactionCodeChange();
     }
 

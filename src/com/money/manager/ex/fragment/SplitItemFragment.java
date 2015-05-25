@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package com.money.manager.ex.fragment;
 
 import android.app.Activity;
@@ -37,8 +36,11 @@ import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
+
+import java.util.Objects;
 
 public class SplitItemFragment extends Fragment
         implements InputAmountDialogListener {
@@ -79,7 +81,7 @@ public class SplitItemFragment extends Fragment
      *                              Withdrawal is -.
      * @return Split Transaction
      */
-    public ISplitTransactionsDataset getSplitTransaction(String parentTransactionType) {
+    public ISplitTransactionsDataset getSplitTransaction(TransactionTypes parentTransactionType) {
         Object amount = txtAmount.getTag();
 
         // handle 0 values.
@@ -90,7 +92,13 @@ public class SplitItemFragment extends Fragment
 
         // otherwise figure out which sign to use for the amount.
 
-        String transactionType = spinTransCode.getSelectedItem().toString();
+        // toString takes the localized text! Use value.
+//        Object selectedItem = spinTransCode.getSelectedItem();
+//        long id = spinTransCode.getSelectedItemId();
+        int position = spinTransCode.getSelectedItemPosition();
+//        String transactionType = spinTransCode.getSelectedItem().toString();
+        TransactionTypes transactionType = TransactionTypes.values()[position];
+
         if(!parentTransactionType.equals(transactionType)){
             // parent transaction type is different. Invert the amount. What if the amount is already negative?
             mSplitTransaction.setSplitTransAmount((double) amount * -1);
@@ -162,7 +170,7 @@ public class SplitItemFragment extends Fragment
             // type
             spinTransCode = (Spinner) layout.findViewById(R.id.spinnerTransCode);
             String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
-            ArrayAdapter<String> adapterTrans = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
+            ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
             adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinTransCode.setAdapter(adapterTrans);
             // find the split transaction type.
@@ -216,10 +224,14 @@ public class SplitItemFragment extends Fragment
         double amount = mSplitTransaction.getSplitTransAmount();
         if(parentIsWithdrawal){
             // parent is Withdrawal.
-            transactionTypeSelection = amount >= 0 ? 0 : 1;
+            transactionTypeSelection = amount >= 0
+                    ? TransactionTypes.Withdrawal.getCode() // 0
+                    : TransactionTypes.Deposit.getCode(); // 1;
         } else {
             // parent is Deposit.
-            transactionTypeSelection = amount >= 0 ? 1 : 0;
+            transactionTypeSelection = amount >= 0
+                    ? TransactionTypes.Deposit.getCode() // 1
+                    : TransactionTypes.Withdrawal.getCode(); // 0;
         }
 
         return transactionTypeSelection;
