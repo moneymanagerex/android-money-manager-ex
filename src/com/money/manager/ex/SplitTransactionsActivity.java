@@ -148,9 +148,10 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
         Intent intent = getIntent();
         if (intent != null) {
             this.EntityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
-            //this.mParentTransactionType = intent.getStringExtra(KEY_TRANSACTION_TYPE);
+
             int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
             mParentTransactionType = TransactionTypes.values()[transactionType];
+
             mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
             mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
         }

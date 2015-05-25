@@ -534,7 +534,7 @@ public class CheckingAccountActivity
                     intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, TableSplitTransactions.class.getSimpleName());
 //                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransCode);
 //                    int transactionType = TransactionTypes.valueOf(mTransCode).getCode();
-                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransactionType);
+                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransactionType.getCode());
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
                     startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);

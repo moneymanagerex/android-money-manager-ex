@@ -93,10 +93,7 @@ public class SplitItemFragment extends Fragment
         // otherwise figure out which sign to use for the amount.
 
         // toString takes the localized text! Use value.
-//        Object selectedItem = spinTransCode.getSelectedItem();
-//        long id = spinTransCode.getSelectedItemId();
         int position = spinTransCode.getSelectedItemPosition();
-//        String transactionType = spinTransCode.getSelectedItem().toString();
         TransactionTypes transactionType = TransactionTypes.values()[position];
 
         if(!parentTransactionType.equals(transactionType)){
@@ -220,7 +217,8 @@ public class SplitItemFragment extends Fragment
         int transactionTypeSelection;
 
         SplitTransactionsActivity splitActivity = (SplitTransactionsActivity) getActivity();
-        boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(getString(R.string.withdrawal));
+//        boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(getString(R.string.withdrawal));
+        boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(TransactionTypes.Withdrawal);
         double amount = mSplitTransaction.getSplitTransAmount();
         if(parentIsWithdrawal){
             // parent is Withdrawal.
