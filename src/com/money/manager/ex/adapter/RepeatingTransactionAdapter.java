@@ -34,6 +34,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.utils.CurrencyUtils;
 
@@ -104,8 +105,11 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
         // take transaction amount
         double amount = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
         // manage transfer and change amount sign
+        String transCode = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TRANSCODE));
+        boolean isTransfer = TransactionTypes.valueOf(transCode).equals(TransactionTypes.Transfer);
+
         if ((cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TRANSCODE)) != null)
-                && (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TRANSCODE))))) {
+                && isTransfer) {
             if (cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.ACCOUNTID)) != cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTID))) {
                 amount = -(amount); // -total
             } else if (cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTID)) == cursor.getInt(cursor
@@ -117,7 +121,9 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
         txtAmount.setText(currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), amount));
         // check amount sign
         Core core = new Core(context);
-        txtAmount.setTextColor(context.getResources().getColor(amount > 0 ? core.resolveIdAttribute(R.attr.holo_green_color_theme) : core.resolveIdAttribute(R.attr.holo_red_color_theme)));
+        txtAmount.setTextColor(context.getResources().getColor(amount > 0
+                ? core.resolveIdAttribute(R.attr.holo_green_color_theme)
+                : core.resolveIdAttribute(R.attr.holo_red_color_theme)));
         // compose payee description
         String payee = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
         // write payee

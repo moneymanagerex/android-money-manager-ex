@@ -23,6 +23,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.SplitCategoriesRepository;
 import com.money.manager.ex.database.TableSplitTransactions;
@@ -86,8 +87,9 @@ public class QifRecord {
 
         // Categories / Transfers
         String category;
-        String transactionType = getTransactionType(cursor);
-        if (transactionType.equals(Constants.TRANSACTION_TYPE_TRANSFER)) {
+        String transactionTypeName = getTransactionType(cursor);
+        TransactionTypes transactionType = TransactionTypes.valueOf(transactionTypeName);
+        if (transactionType.equals(TransactionTypes.Transfer)) {
             // Category is the destination account name.
             category = cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName));
         } else {
@@ -205,16 +207,9 @@ public class QifRecord {
 
         // append sign
         String type = getTransactionType(cursor);
-        switch (type) {
-//            case Constants.TRANSACTION_TYPE_WITHDRAWAL:
-//                amount = "-" + amount;
-//                break;
-//            case Constants.TRANSACTION_TYPE_DEPOSIT:
-//                break;
-            case Constants.TRANSACTION_TYPE_TRANSFER:
-                // transfers are somehow positive.
-                amountDouble = amountDouble * (-1);
-                break;
+        if (type.equals(TransactionTypes.Transfer.name())) {
+            // transfers are somehow positive.
+            amountDouble = amountDouble * (-1);
         }
 
         String amount = Double.toString(amountDouble);

@@ -36,6 +36,7 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
@@ -129,7 +130,9 @@ public class AllDataAdapter
 
         // manage transfer and change amount sign
         String transactionType = cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE));
-        boolean isTransfer = Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(transactionType);
+//        boolean isTransfer = Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(transactionType);
+        boolean isTransfer = TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Transfer);
+
         if ((transactionType != null) && isTransfer) {
             if (getAccountId() != cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
                 amount = -(amount); // -total
@@ -143,7 +146,7 @@ public class AllDataAdapter
         CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
         holder.txtAmount.setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), amount));
         // text color amount
-        if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)))) {
+        if (isTransfer) {
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_grey_700));
         } else if (Constants.TRANSACTION_TYPE_DEPOSIT.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)))) {
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_green_700));
