@@ -80,7 +80,8 @@ public class AllDataMultiChoiceModeListener
         switch (item.getItemId()) {
             case R.id.menu_select_all:
                 mCallbacks.onSelectAllRecordsClicked();
-                result = true;
+                // do not finish the selection mode after this!
+                result = false;
                 break;
             case R.id.menu_change_status:
                 mCallbacks.onChangeTransactionStatusClicked();
@@ -107,7 +108,10 @@ public class AllDataMultiChoiceModeListener
                 // nothing
                 result = false;
         }
-        mode.finish();
+
+        if (result) {
+            mode.finish();
+        }
 
         return result;
     }
