@@ -34,4 +34,8 @@ public enum TransactionTypes {
     public int getCode() {
         return this.code;
     }
+
+//    public TransactionTypes from(String name) {
+//
+//    }
 }

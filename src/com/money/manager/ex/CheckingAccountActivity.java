@@ -128,8 +128,8 @@ public class CheckingAccountActivity
     public List<TableAccountList> mAccountList;
     public String mToAccountName;
     public int mTransId = -1;
-    // todo: do not use string transaction code. Use TransactionTypes enum.
-    public String mTransCode;
+    // do not use string transaction code. Use TransactionTypes enum.
+    //public String mTransCode;
     public TransactionTypes mTransactionType;
 
     public String mStatus = null;
@@ -179,7 +179,7 @@ public class CheckingAccountActivity
         // Select the previous transaction type.
         @SuppressWarnings("unchecked")
         ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) SpinTransCode.getAdapter();
-        int originalPosition = adapterTrans.getPosition(mTransCode);
+        int originalPosition = adapterTrans.getPosition(getTransactionType());
         SpinTransCode.setSelection(originalPosition);
     }
 
@@ -228,6 +228,15 @@ public class CheckingAccountActivity
         return ret;
     }
 
+    public String getTransactionType() {
+        if (mTransactionType == null) {
+            return null;
+        }
+
+        // mTransType
+        return mTransactionType.name();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -269,7 +278,7 @@ public class CheckingAccountActivity
                         for (int i = 0; i < mSplitTransactions.size(); i++) {
                             totAmount += mSplitTransactions.get(i).getSplitTransAmount();
                         }
-                        formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
+                        formatAmount(txtTotAmount, totAmount, !mTransactionType.equals(TransactionTypes.Transfer) ? mAccountId : mToAccountId);
                     }
                     // deleted item
                     if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
@@ -331,7 +340,8 @@ public class CheckingAccountActivity
             mToAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
             mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
             mDate = savedInstanceState.getString(KEY_TRANS_DATE);
-            mTransCode = savedInstanceState.getString(KEY_TRANS_CODE);
+            String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
+            mTransactionType = TransactionTypes.valueOf(transCode);
             mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
             mAmount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
             mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
@@ -384,7 +394,7 @@ public class CheckingAccountActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     mAccountId = mAccountIdList.get(position);
-                    if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+                    if (mTransactionType.equals(TransactionTypes.Transfer)) {
                         formatAmount(txtAmount, (Double) txtAmount.getTag(), mAccountId);
                     } else {
                         formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), mAccountId);
@@ -475,7 +485,8 @@ public class CheckingAccountActivity
             public void onClick(View v) {
                 Calendar date = Calendar.getInstance();
                 date.setTime((Date) txtSelectDate.getTag());
-                DatePickerDialog dialog = new DatePickerDialog(CheckingAccountActivity.this, mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+                DatePickerDialog dialog = new DatePickerDialog(CheckingAccountActivity.this,
+                        mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
                 dialog.show();
             }
 
@@ -491,10 +502,8 @@ public class CheckingAccountActivity
                     } catch (Exception e) {
                         Log.e(LOGCAT, e.getMessage());
                     }
-
                 }
             };
-
         });
 
         // Payee
@@ -524,8 +533,8 @@ public class CheckingAccountActivity
                     Intent intent = new Intent(CheckingAccountActivity.this, SplitTransactionsActivity.class);
                     intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, TableSplitTransactions.class.getSimpleName());
 //                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransCode);
-                    int transactionType = TransactionTypes.valueOf(mTransCode).getCode();
-                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType);
+//                    int transactionType = TransactionTypes.valueOf(mTransCode).getCode();
+                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransactionType);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
                     startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
@@ -565,7 +574,7 @@ public class CheckingAccountActivity
                 Integer currencyId = null;
                 if (txtTotAmount.equals(v)) {
                     if (spinAccount.getSelectedItemPosition() >= 0 && spinAccount.getSelectedItemPosition() < mAccountList.size()) {
-                        if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+                        if (mTransactionType.equals(TransactionTypes.Transfer)) {
                             currencyId = mAccountList.get(spinToAccount.getSelectedItemPosition()).getCurrencyId();
                         } else {
                             currencyId = mAccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
@@ -585,14 +594,16 @@ public class CheckingAccountActivity
         // total amount
 
         txtTotAmount = (TextView) findViewById(R.id.textViewTotAmount);
-        formatAmount(txtTotAmount, mTotAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
+        formatAmount(txtTotAmount, mTotAmount, !mTransactionType.equals(TransactionTypes.Transfer)
+                ? mAccountId : mToAccountId);
 
         // on click open dialog
         txtTotAmount.setOnClickListener(onClickAmount);
 
         // amount
         txtAmount = (TextView) findViewById(R.id.textViewAmount);
-        formatAmount(txtAmount, mAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mToAccountId : mAccountId);
+        formatAmount(txtAmount, mAmount, !mTransactionType.equals(TransactionTypes.Transfer)
+                ? mToAccountId : mAccountId);
 
         // on click open dialog
         txtAmount.setOnClickListener(onClickAmount);
@@ -771,13 +782,14 @@ public class CheckingAccountActivity
                 mTransCodeItems);
         adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpinTransCode.setAdapter(adapterTrans);
-        // select a current value
-        if (!TextUtils.isEmpty(mTransCode)) {
-            if (Arrays.asList(mTransCodeValues).indexOf(mTransCode) >= 0) {
-                SpinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mTransCode), true);
+        // select the current value
+        if (mTransactionType != null) {
+//        if (!TextUtils.isEmpty(getTransactionType())) {
+            if (Arrays.asList(mTransCodeValues).indexOf(getTransactionType()) >= 0) {
+                SpinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(getTransactionType()), true);
             }
         } else {
-            mTransCode = (String) SpinTransCode.getSelectedItem();
+//            mTransCode = (String) SpinTransCode.getSelectedItem();
             mTransactionType = TransactionTypes.values()[SpinTransCode.getSelectedItemPosition()];
         }
         SpinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -793,7 +805,7 @@ public class CheckingAccountActivity
                         return;
                     }
 
-                    mTransCode = selectedValue;
+//                    mTransCode = selectedValue;
                     mTransactionType = TransactionTypes.values()[position];
                 }
                 // aggiornamento dell'interfaccia grafica
@@ -834,7 +846,7 @@ public class CheckingAccountActivity
         // Clear category.
         mCategoryId = -1;
 
-        mTransCode = getString(R.string.transfer);
+//        mTransCode = getString(R.string.transfer);
         mTransactionType = TransactionTypes.Transfer;
 
         refreshAfterTransactionCodeChange();
@@ -855,7 +867,9 @@ public class CheckingAccountActivity
 
         setSplit(false);
 
-        mTransCode = getString(R.string.transfer);
+//        mTransCode = getString(R.string.transfer);
+        mTransactionType = TransactionTypes.Transfer;
+
         refreshAfterTransactionCodeChange();
     }
 
@@ -877,7 +891,7 @@ public class CheckingAccountActivity
         outState.putInt(KEY_TO_ACCOUNT_ID, mToAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
         outState.putString(KEY_TRANS_DATE, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(txtSelectDate.getTag()));
-        outState.putString(KEY_TRANS_CODE, mTransCode);
+        outState.putString(KEY_TRANS_CODE, getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mStatus);
         outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double) txtTotAmount.getTag());
         outState.putDouble(KEY_TRANS_AMOUNT, (Double) txtAmount.getTag());
@@ -904,7 +918,7 @@ public class CheckingAccountActivity
         int accountId;
         if (view != null && view instanceof TextView) {
             CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
-            if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+            if (mTransactionType.equals(TransactionTypes.Transfer)) {
                 Double originalAmount;
                 try {
                     /*Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(mAccountId)).getCurrencyId();
@@ -933,7 +947,8 @@ public class CheckingAccountActivity
                 }
             }
             if (txtTotAmount.equals(view)) {
-                if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+//                if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
+                if (mTransactionType.equals(TransactionTypes.Transfer)) {
                     accountId = mToAccountId;
                 } else {
                     accountId = mAccountId;
@@ -1079,7 +1094,8 @@ public class CheckingAccountActivity
             mTransId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TRANSID));
         mAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.ACCOUNTID));
         mToAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TOACCOUNTID));
-        mTransCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
+        String transCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
+        mTransactionType = TransactionTypes.valueOf(transCode);
         mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
         mAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
         mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
@@ -1152,7 +1168,8 @@ public class CheckingAccountActivity
         // take a data
         mAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.ACCOUNTID));
         mToAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
-        mTransCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
+        String transCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
+        mTransactionType = TransactionTypes.valueOf(transCode);
         mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
         mAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
         mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
@@ -1248,14 +1265,15 @@ public class CheckingAccountActivity
         ViewGroup tableRowAmount = (ViewGroup) findViewById(R.id.tableRowAmount);
 
         // hide and show
-        txtFromAccount.setText(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? R.string.from_account : R.string.account);
-        txtToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
-        tableRowPayee.setVisibility(!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) ? View.VISIBLE : View.GONE);
-        tableRowAmount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
-        spinToAccount.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.VISIBLE : View.GONE);
+        boolean isTransfer = mTransactionType.equals(TransactionTypes.Transfer);
+        txtFromAccount.setText(isTransfer ? R.string.from_account : R.string.account);
+        txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+        tableRowAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls
-        chbSplitTransaction.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.GONE : View.VISIBLE);
-        txtSplit.setVisibility(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode) ? View.GONE : View.VISIBLE);
+        chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+        txtSplit.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         refreshHeaderAmount();
     }
@@ -1267,7 +1285,7 @@ public class CheckingAccountActivity
         if (txtHeaderAmount == null || txtHeaderTotAmount == null)
             return;
 
-        if (!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
+        if (!mTransactionType.equals(TransactionTypes.Transfer)) {
             txtHeaderTotAmount.setText(R.string.total_amount);
             txtHeaderAmount.setText(R.string.amount);
         } else {
@@ -1288,7 +1306,7 @@ public class CheckingAccountActivity
      * @return a boolean indicating whether the data is valid.
      */
     public boolean validateData() {
-        boolean isTransfer = Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode);
+        boolean isTransfer = mTransactionType.equals(TransactionTypes.Transfer);
 
         // Transfers.
         if (isTransfer) {
@@ -1342,15 +1360,17 @@ public class CheckingAccountActivity
         // content value for insert or update data
         ContentValues values = new ContentValues();
 
+        boolean isTransfer = mTransactionType.equals(TransactionTypes.Transfer);
+
         values.put(TableCheckingAccount.ACCOUNTID, mAccountId);
-        if (Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) {
+        if (isTransfer) {
             values.put(TableCheckingAccount.TOACCOUNTID, mToAccountId);
             values.put(TableCheckingAccount.PAYEEID, -1);
         } else {
             values.put(TableCheckingAccount.PAYEEID, mPayeeId);
         }
-        values.put(TableCheckingAccount.TRANSCODE, mTransCode);
-        if (TextUtils.isEmpty(txtAmount.getText().toString()) || (!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)))) {
+        values.put(TableCheckingAccount.TRANSCODE, getTransactionType());
+        if (TextUtils.isEmpty(txtAmount.getText().toString()) || (!isTransfer)) {
             values.put(TableCheckingAccount.TRANSAMOUNT, (Double) txtTotAmount.getTag());
         } else {
             values.put(TableCheckingAccount.TRANSAMOUNT, (Double) txtAmount.getTag());
@@ -1445,7 +1465,7 @@ public class CheckingAccountActivity
         }
 
         // update category and subcategory payee
-        if ((!(Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode))) && (mPayeeId > 0) && !hasSplitCategories) {
+        if ((!isTransfer) && (mPayeeId > 0) && !hasSplitCategories) {
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
