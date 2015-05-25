@@ -256,6 +256,14 @@ public class AllDataAdapter
         mCheckedPosition.clear();
     }
 
+    public int getCheckedCount() {
+        return mCheckedPosition.size();
+    }
+
+    public boolean getPositionChecked(int position) {
+        return mCheckedPosition.get(position);
+    }
+
     /**
      * Set checked in position
      */

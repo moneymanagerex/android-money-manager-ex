@@ -26,12 +26,13 @@ import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.AllDataFragment;
-import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.IAllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 
-public class SearchActivity extends BaseFragmentActivity
-        implements AllDataFragmentLoaderCallbacks, InputAmountDialogListener {
+public class SearchActivity
+        extends BaseFragmentActivity
+        implements IAllDataFragmentLoaderCallbacks, InputAmountDialogListener {
 
     /**
      * Indicates whether to show the account headers in search results.

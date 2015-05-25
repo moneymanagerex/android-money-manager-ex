@@ -68,14 +68,14 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class AllDataFragment extends BaseListFragment
-        implements LoaderCallbacks<Cursor> {
+        implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
     // ID Loader
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
     // KEY Arguments
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
     private static final String LOGCAT = AllDataFragment.class.getSimpleName();
-    private AllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
+    private IAllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
     private boolean mShownHeader = false;
     private boolean mShownBalance = false;
@@ -97,11 +97,11 @@ public class AllDataFragment extends BaseListFragment
     }
 
     private int[] convertArrayListToArray(ArrayList<Integer> list) {
-        int[] ret = new int[list.size()];
+        int[] result = new int[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            ret[i] = list.get(i);
+            result[i] = list.get(i);
         }
-        return ret;
+        return result;
     }
 
     /**
@@ -145,14 +145,14 @@ public class AllDataFragment extends BaseListFragment
     /**
      * @return the mSearResultFragmentLoaderCallbacks
      */
-    public AllDataFragmentLoaderCallbacks getSearchResultFragmentLoaderCallbacks() {
+    public IAllDataFragmentLoaderCallbacks getSearchResultFragmentLoaderCallbacks() {
         return mSearResultFragmentLoaderCallbacks;
     }
 
     /**
      * @param searResultFragmentLoaderCallbacks the searResultFragmentLoaderCallbacks to set
      */
-    public void setSearResultFragmentLoaderCallbacks(AllDataFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
+    public void setSearResultFragmentLoaderCallbacks(IAllDataFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
         this.mSearResultFragmentLoaderCallbacks = searResultFragmentLoaderCallbacks;
     }
 
@@ -206,6 +206,7 @@ public class AllDataFragment extends BaseListFragment
 
         // set choice mode in list view
         mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
+        mMultiChoiceModeListener.setListener(this);
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
 
@@ -348,7 +349,7 @@ public class AllDataFragment extends BaseListFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        AllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
+        IAllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
         if (parent != null) parent.onCallbackLoaderReset(loader);
 
         ((CursorAdapter) getListAdapter()).swapCursor(null);
@@ -356,7 +357,7 @@ public class AllDataFragment extends BaseListFragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        AllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
+        IAllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
         if (parent != null) parent.onCallbackLoaderFinished(loader, data);
 
         switch (loader.getId()) {
@@ -447,12 +448,13 @@ public class AllDataFragment extends BaseListFragment
     /**
      * @param transactionIds primary key of transation
      */
-    private void showDialogDeleteCheckingAccount(final int[] transactionIds) {
+    private void showDialogDeleteCheckingAccount(final ArrayList<Integer> transactionIds) {
         // create alert dialog and set title and message
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
 
         alertDialog.setTitle(R.string.delete_transaction);
-        alertDialog.setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions, transactionIds.length, transactionIds.length));
+        alertDialog.setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
+                transactionIds.size(), transactionIds.size()));
         alertDialog.setIcon(R.drawable.ic_action_warning_light);
 
         // set listener button positive
@@ -566,199 +568,177 @@ public class AllDataFragment extends BaseListFragment
         this.mListHeader = mHeaderList;
     }
 
-    // Interface for callback fragment
-    public interface AllDataFragmentLoaderCallbacks {
-        void onCallbackCreateLoader(int id, Bundle args);
+    // Begin multi-choice-mode listener callback handlers.
 
-        void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data);
-
-        void onCallbackLoaderReset(Loader<Cursor> loader);
+    /**
+     * handler for multi-choice-mode listener
+     */
+    @Override
+    public void onMultiChoiceCreated(android.view.Menu menu) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
     }
 
-    // class to manage multi choice mode
-    public class AllDataMultiChoiceModeListener
-            implements MultiChoiceModeListener {
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
-
-            return false;
+    @Override
+    public void onDestroyActionMode() {
+        if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            adapter.clearPositionChecked();
+            adapter.notifyDataSetChanged();
         }
+    }
 
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-                adapter.clearPositionChecked();
-                adapter.notifyDataSetChanged();
+    @Override
+    public void onDeleteClicked() {
+        ArrayList<Integer> transIds = getTransactionIds();
+
+        showDialogDeleteCheckingAccount(transIds);
+    }
+
+    @Override
+    public void onChangeTransactionStatusClicked() {
+        ArrayList<Integer> transIds = getTransactionIds();
+        changeTransactionStatus(transIds);
+    }
+
+    @Override
+    public void onTransactionStatusClicked(String status) {
+        ArrayList<Integer> transIds = getTransactionIds();
+
+        if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
+            ((AllDataAdapter) getListAdapter()).clearPositionChecked();
+            startLoaderData();
+        }
+    }
+
+    @Override
+    public void onSelectAllRecordsClicked() {
+        selectAllRecords();
+    }
+
+    @Override
+    public void onDuplicateTransactionsClicked() {
+        ArrayList<Integer> transIds = getTransactionIds();
+        showDuplicateTransactionView(transIds);
+    }
+
+    @Override
+    public void onItemCheckedStateChanged(int position, boolean checked) {
+        if (getListHeader() != null)
+            position--;
+
+        if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            adapter.setPositionChecked(position, checked);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void selectAllRecords() {
+        ListAdapter listAdapter = getListAdapter();
+        if (listAdapter != null && listAdapter instanceof AllDataAdapter) {
+            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            int numRecords = adapter.getCount();
+            for (int i = 0; i < numRecords; i++) {
+                adapter.setPositionChecked(i, true);
             }
+            adapter.notifyDataSetChanged();
         }
+    }
 
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, android.view.Menu menu) {
-            getActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
-            return true;
-        }
+    private ArrayList<Integer> getTransactionIds(){
+        final ArrayList<Integer> transIds = new ArrayList<>();
 
-        /**
-         * Handle the toolbar icon click (delete, copy, etc.)
-         * @param mode
-         * @param item
-         * @return
-         */
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, android.view.MenuItem item) {
-            ArrayList<Integer> transIds = getTransactionIds();
+        if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            Cursor cursor = adapter.getCursor();
+            if (cursor != null) {
+                // todo: get checked items & count from adapter, not from list view.
+                SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
+                int checkedItemsCount = getListView().getCheckedItemCount();
 
-            switch (item.getItemId()) {
-                case R.id.menu_select_all:
-                    selectAllRecords();
-                    break;
-                case R.id.menu_change_status:
-                    changeTransactionStatus(transIds);
-                    mode.finish();
-                    break;
-                case R.id.menu_duplicate_transactions:
-                    showDuplicateTransactionView(transIds);
-                    mode.finish();
-                    break;
-                case R.id.menu_delete:
-                    showDialogDeleteCheckingAccount(convertArrayListToArray(transIds));
-                    mode.finish();
-                    return true;
-                case R.id.menu_none:
-                case R.id.menu_reconciled:
-                case R.id.menu_follow_up:
-                case R.id.menu_duplicate:
-                case R.id.menu_void:
-                    String status = Character.toString(item.getAlphabeticShortcut());
-                    if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-                        ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-                        startLoaderData();
-                        mode.finish();
-                        return true;
+                for (int i = 0; i < checkedItemsCount; i++) {
+                    int position = positionChecked.keyAt(i);
+                    if (getListHeader() != null)
+                        position--;
+                    if (cursor.moveToPosition(position)) {
+                        transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
                     }
-            }
-            return false;
-        }
-
-        /**
-         * This probably belongs on the parent fragment.
-         */
-        private void selectAllRecords() {
-            ListAdapter listAdapter = getListAdapter();
-            if (listAdapter != null && listAdapter instanceof AllDataAdapter) {
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-                int numRecords = adapter.getCount();
-                for (int i = 0; i < numRecords; i++) {
-                    adapter.setPositionChecked(i, true);
                 }
-                adapter.notifyDataSetChanged();
             }
         }
 
-        private ArrayList<Integer> getTransactionIds(){
-            final ArrayList<Integer> transIds = new ArrayList<>();
+        return transIds;
+    }
 
-            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-                Cursor cursor = adapter.getCursor();
-                if (cursor != null) {
-                    SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
-                    for (int i = 0; i < getListView().getCheckedItemCount(); i++) {
-                        int position = positionChecked.keyAt(i);
-                        if (getListHeader() != null)
-                            position--;
-                        if (cursor.moveToPosition(position)) {
-                            transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+    private void changeTransactionStatus(final ArrayList<Integer> transIds){
+        final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
+        final Core core = new Core(getActivity().getApplicationContext());
+        final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
+        // add status
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_none)
+                .withText(getString(R.string.status_none))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light)
+                .withShortcut(""));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_reconciled)
+                .withText(getString(R.string.status_reconciled))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_done_dark : R.drawable.ic_action_done_light)
+                .withShortcut("R"));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_follow_up)
+                .withText(getString(R.string.status_follow_up))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_alarm_on_dark : R.drawable.ic_action_alarm_on_light)
+                .withShortcut("F"));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_duplicate)
+                .withText(getString(R.string.status_duplicate))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_copy_dark : R.drawable.ic_action_copy_light)
+                .withShortcut("D"));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_void)
+                .withText(getString(R.string.status_void))
+                .withIcon(isDarkTheme ? R.drawable.ic_action_halt_dark : R.drawable.ic_action_halt_light)
+                .withShortcut("V"));
+
+        // open dialog
+        final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                .title(getString(R.string.change_status))
+                .adapter(adapter, null)
+                .build();
+
+        ListView listView = dialog.getListView();
+        if (listView != null) listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DrawerMenuItem item = adapter.getItem(position);
+                switch (item.getId()) {
+                    case R.id.menu_none:
+                    case R.id.menu_reconciled:
+                    case R.id.menu_follow_up:
+                    case R.id.menu_duplicate:
+                    case R.id.menu_void:
+                        String status = item.getShortcut();
+                        if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
+                            ((AllDataAdapter) getListAdapter()).clearPositionChecked();
+                            startLoaderData();
                         }
-                    }
                 }
+                dialog.dismiss();
             }
-
-            return transIds;
-        }
-
-        private void changeTransactionStatus(final ArrayList<Integer> transIds){
-            final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
-            final Core core = new Core(getActivity().getApplicationContext());
-            final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
-            // add status
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_none)
-                    .withText(getString(R.string.status_none))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light)
-                    .withShortcut(""));
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_reconciled)
-                    .withText(getString(R.string.status_reconciled))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_done_dark : R.drawable.ic_action_done_light)
-                    .withShortcut("R"));
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_follow_up)
-                    .withText(getString(R.string.status_follow_up))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_alarm_on_dark : R.drawable.ic_action_alarm_on_light)
-                    .withShortcut("F"));
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_duplicate)
-                    .withText(getString(R.string.status_duplicate))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_copy_dark : R.drawable.ic_action_copy_light)
-                    .withShortcut("D"));
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_void)
-                    .withText(getString(R.string.status_void))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_halt_dark : R.drawable.ic_action_halt_light)
-                    .withShortcut("V"));
-
-            // open dialog
-            final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                    .title(getString(R.string.change_status))
-                    .adapter(adapter, null)
-                    .build();
-
-            ListView listView = dialog.getListView();
-            if (listView != null) listView.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    DrawerMenuItem item = adapter.getItem(position);
-                    switch (item.getId()) {
-                        case R.id.menu_none:
-                        case R.id.menu_reconciled:
-                        case R.id.menu_follow_up:
-                        case R.id.menu_duplicate:
-                        case R.id.menu_void:
-                            String status = item.getShortcut();
-                            if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-                                ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-                                startLoaderData();
-                            }
-                    }
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
-        }
-
-        private void showDuplicateTransactionView(ArrayList<Integer> transIds) {
-            // validation
-            int transactionCount = transIds.size();
-            if (transactionCount <= 0) return;
-
-            int[] ids = convertArrayListToArray(transIds);
-            Intent[] intents = new Intent[transactionCount];
-            for (int i = 0; i < transactionCount; i++) {
-                intents[i] = new Intent(getActivity(), CheckingAccountActivity.class);
-                intents[i].putExtra(CheckingAccountActivity.KEY_TRANS_ID, ids[i]);
-                intents[i].setAction(Intent.ACTION_PASTE);
-            }
-            getActivity().startActivities(intents);
-        }
-
-        @Override
-        public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-            if (getListHeader() != null)
-                position--;
-
-            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-                adapter.setPositionChecked(position, checked);
-                adapter.notifyDataSetChanged();
-            }
-        }
+        });
+        dialog.show();
     }
+
+    private void showDuplicateTransactionView(ArrayList<Integer> transIds) {
+        // validation
+        int transactionCount = transIds.size();
+        if (transactionCount <= 0) return;
+
+        int[] ids = convertArrayListToArray(transIds);
+        Intent[] intents = new Intent[transactionCount];
+        for (int i = 0; i < transactionCount; i++) {
+            intents[i] = new Intent(getActivity(), CheckingAccountActivity.class);
+            intents[i].putExtra(CheckingAccountActivity.KEY_TRANS_ID, ids[i]);
+            intents[i].setAction(Intent.ACTION_PASTE);
+        }
+        getActivity().startActivities(intents);
+    }
+
+    // end multi-choice-mode listener callback handlers.
 }

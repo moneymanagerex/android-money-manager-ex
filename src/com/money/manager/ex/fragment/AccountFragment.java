@@ -48,7 +48,6 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.fragment.AllDataFragment.AllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 
@@ -59,7 +58,7 @@ import java.util.Calendar;
  * @author a.lazzari
  */
 public class AccountFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, AllDataFragmentLoaderCallbacks {
+        implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataFragmentLoaderCallbacks {
 
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
