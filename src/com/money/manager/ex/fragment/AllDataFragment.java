@@ -215,6 +215,11 @@ public class AllDataFragment extends BaseListFragment
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if (isShownHeader() && (position == 0)) {
+//                    // Ignore the header row.
+//                    Log.d(LOGCAT, "test");
+//                }
+
                 if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                     Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
                     if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
@@ -575,6 +580,7 @@ public class AllDataFragment extends BaseListFragment
      */
     @Override
     public void onMultiChoiceCreated(android.view.Menu menu) {
+//        int selectedItemPosition = getListView().getSelectedItemPosition();
         getActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
     }
 
@@ -623,8 +629,9 @@ public class AllDataFragment extends BaseListFragment
 
     @Override
     public void onItemCheckedStateChanged(int position, boolean checked) {
-        if (getListHeader() != null)
+        if (getListHeader() != null) {
             position--;
+        }
 
         if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
             AllDataAdapter adapter = (AllDataAdapter) getListAdapter();

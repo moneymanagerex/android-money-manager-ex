@@ -204,6 +204,9 @@ public class WatchlistItemsFragment
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
+        // ignore the header row.
+        if (info.position == 0) return;
+
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
 
 //        int columns = cursor.getColumnCount();
