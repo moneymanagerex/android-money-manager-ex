@@ -637,10 +637,15 @@ public class AllDataFragment extends BaseListFragment
         ListAdapter listAdapter = getListAdapter();
         if (listAdapter != null && listAdapter instanceof AllDataAdapter) {
             AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+
+            // Clear selection first.
+            adapter.clearPositionChecked();
+
             int numRecords = adapter.getCount();
             for (int i = 0; i < numRecords; i++) {
                 adapter.setPositionChecked(i, true);
             }
+
             adapter.notifyDataSetChanged();
         }
     }
@@ -652,14 +657,18 @@ public class AllDataFragment extends BaseListFragment
             AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
             Cursor cursor = adapter.getCursor();
             if (cursor != null) {
-                // todo: get checked items & count from adapter, not from list view.
-                SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
-                int checkedItemsCount = getListView().getCheckedItemCount();
+                // get checked items & count from the adapter, not from the list view.
+                // List view only contains the one that was tapped, ignoring the Select All.
+//                SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
+                SparseBooleanArray positionChecked = adapter.getPositionsChecked();
+//                int checkedItemsCount = getListView().getCheckedItemCount();
+                int checkedItemsCount = positionChecked.size();
 
                 for (int i = 0; i < checkedItemsCount; i++) {
                     int position = positionChecked.keyAt(i);
-                    if (getListHeader() != null)
-                        position--;
+                    // This screws up the selection?
+//                    if (getListHeader() != null)
+//                        position--;
                     if (cursor.moveToPosition(position)) {
                         transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
                     }

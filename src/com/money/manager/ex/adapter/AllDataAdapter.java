@@ -260,6 +260,10 @@ public class AllDataAdapter
         return mCheckedPosition.size();
     }
 
+    public SparseBooleanArray getPositionsChecked() {
+        return mCheckedPosition;
+    }
+
     public boolean getPositionChecked(int position) {
         return mCheckedPosition.get(position);
     }
