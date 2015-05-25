@@ -41,6 +41,7 @@ public class TableCurrencyFormats extends Dataset {
 	public static final String SCALE = "SCALE";
 	public static final String BASECONVRATE = "BASECONVRATE";
 	public static final String CURRENCY_SYMBOL = "CURRENCY_SYMBOL";
+
 	// class member
 	private int currencyId;
 	private String currencyName;
