@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
@@ -380,9 +381,11 @@ public class AllDataAdapter
             // execute thread
             balanceAmount.execute();
         } catch (Exception ex) {
-            String error = "Error in balance amount";
-            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
-            ex.printStackTrace();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "Error in balance amount");
+//            String error = ;
+//            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
+//            ex.printStackTrace();
         }
     }
 }

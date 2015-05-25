@@ -128,7 +128,7 @@ public class RepeatingTransactionNotifications {
 
             // close database helper
             //databaseHelper.close();
-            db.close();
+//            db.close();
         }
     }
 }

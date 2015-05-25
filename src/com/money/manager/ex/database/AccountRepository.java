@@ -114,7 +114,7 @@ public class AccountRepository {
                 }
                 cursor.close();
             }
-            db.close();
+//            db.close();
         }
         return listAccount;
     }

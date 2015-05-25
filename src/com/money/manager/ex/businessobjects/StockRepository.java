@@ -145,7 +145,7 @@ public class StockRepository
             cursor.close();
         }
 
-        db.close();
+//        db.close();
 
         return result;
     }

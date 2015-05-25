@@ -370,9 +370,9 @@ public class CurrencyUtils {
             Log.e(LOGCAT, "Error loading currencies: " + e.getMessage());
         }
 
-        if (db != null) {
-            db.close();
-        }
+//        if (db != null) {
+//            db.close();
+//        }
 
         return ret;
     }

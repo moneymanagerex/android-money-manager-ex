@@ -79,8 +79,6 @@ public class MoneyManagerProvider
     // authority of application
     private static String mAuthority;
 
-    private List<Dataset> objMoneyManager;
-
     public MoneyManagerProvider() {
         super();
 
@@ -99,7 +97,7 @@ public class MoneyManagerProvider
         // create authority
         setAuthority(getContext().getApplicationContext().getPackageName() + ".provider");
         // create object provider
-        objMoneyManager = Arrays.asList(new TableAccountList(),
+        List<Dataset> objMoneyManager = Arrays.asList(new TableAccountList(),
                 new TableAssets(),
                 new TableBillsDeposits(),
                 new TableBudgetTable(),
@@ -134,6 +132,7 @@ public class MoneyManagerProvider
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Insert Uri: " + uri);
+
         // find object from uri
         Object ret = getObjectFromUri(uri);
         // database reference
@@ -156,6 +155,7 @@ public class MoneyManagerProvider
                     //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
                     try {
                         if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+
                         id = database.insert(dataset.getSource(), null, values);
                         // committed
                         ////if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
@@ -213,9 +213,11 @@ public class MoneyManagerProvider
                     // open transaction
                     //database.beginTransaction();
                     if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
+
                     // update
                     try {
                         if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+
                         rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
                         // committed
                         ////if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
@@ -245,6 +247,7 @@ public class MoneyManagerProvider
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Delete URI: " + uri);
+
         // find object from uri
         Object ret = getObjectFromUri(uri);
         // safety control of having the where if not clean the table
@@ -274,6 +277,7 @@ public class MoneyManagerProvider
                     if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
                     try {
                         if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+
                         rowsDelete = database.delete(dataset.getSource(), selection, selectionArgs);
                         // committed
                         //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
@@ -432,6 +436,7 @@ public class MoneyManagerProvider
         // match dell'uri
         int uriMatch = sUriMatcher.match(uri);
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Uri Match Result: " + Integer.toString(uriMatch));
+
         // find key into hash map
         Object objectRet = mapContent.get(uriMatch);
         if (objectRet == null) {

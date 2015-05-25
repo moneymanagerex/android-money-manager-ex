@@ -431,7 +431,7 @@ public class Core {
         ret = (!TextUtils.isEmpty(categoryName) ? categoryName : "") +
                 (!TextUtils.isEmpty(subCategoryName) ? ":" + subCategoryName : "");
 
-        db.close();
+//        db.close();
 
         return ret;
     }

@@ -81,7 +81,9 @@ public class BalanceAmountTask
         // calculate initial bal
         TableAccountList accountList = new TableAccountList();
         cursor = getDatabase().query(accountList.getSource(), accountList.getAllColumns(),
-                TableAccountList.ACCOUNTID + "=" + Integer.toString(getAccountId()), null, null, null, null);
+                TableAccountList.ACCOUNTID + "=?",
+                new String[] { Integer.toString(getAccountId()) },
+                null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             total += cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
         }
