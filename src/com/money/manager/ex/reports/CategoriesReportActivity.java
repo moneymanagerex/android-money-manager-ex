@@ -43,6 +43,7 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
@@ -277,7 +278,8 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
             String groupBy = ViewMobileData.CategID + ", " + ViewMobileData.Category + ", " + ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
             String having = null;
             if (!TextUtils.isEmpty(((CategoriesReportActivity) getActivity()).mFilter)) {
-                if (Constants.TRANSACTION_TYPE_WITHDRAWAL.equalsIgnoreCase(((CategoriesReportActivity) getActivity()).mFilter)) {
+                String filter = ((CategoriesReportActivity) getActivity()).mFilter;
+                if (TransactionTypes.valueOf(filter).equals(TransactionTypes.Withdrawal)) {
                     having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") < 0";
                 } else {
                     having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") > 0";

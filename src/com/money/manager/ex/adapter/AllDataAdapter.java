@@ -145,10 +145,12 @@ public class AllDataAdapter
         // check amount sign
         CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
         holder.txtAmount.setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), amount));
+
+        String transType = cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE));
         // text color amount
         if (isTransfer) {
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_grey_700));
-        } else if (Constants.TRANSACTION_TYPE_DEPOSIT.equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE)))) {
+        } else if (TransactionTypes.valueOf(transType).equals(TransactionTypes.Deposit)) {
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_green_700));
         } else {
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_red_700));

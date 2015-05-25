@@ -63,6 +63,7 @@ import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyFormatsListActivity;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxHelper;
@@ -958,13 +959,13 @@ public class MainActivity extends BaseFragmentActivity {
             return true;
         } else if (item.getId() == R.id.menu_report_where_money_goes) {
             intent = new Intent(this, CategoriesReportActivity.class);
-            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, Constants.TRANSACTION_TYPE_WITHDRAWAL);
+            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Withdrawal.name());
             intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_goes));
             startActivity(intent);
             return true;
         } else if (item.getId() == R.id.menu_report_where_money_comes_from) {
             intent = new Intent(this, CategoriesReportActivity.class);
-            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, Constants.TRANSACTION_TYPE_DEPOSIT);
+            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Deposit.name());
             intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_comes_from));
             startActivity(intent);
             return true;

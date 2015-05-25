@@ -24,11 +24,6 @@ public class Constants {
     public static final String EMPTY_STRING = "";
     // Database
     public static final String PATTERN_DB_DATE = "yyyy-MM-dd";
-    // todo: use TransactionTypes enum instead of these strings!
-    // Transaction Type
-    public static final String TRANSACTION_TYPE_WITHDRAWAL = "Withdrawal";
-    public static final String TRANSACTION_TYPE_DEPOSIT = "Deposit";
-//    public static final String TRANSACTION_TYPE_TRANSFER = "Transfer";
     // Transaction Status
     public static final String TRANSACTION_STATUS_UNRECONCILED = "";
     public static final String TRANSACTION_STATUS_RECONCILED = "R";

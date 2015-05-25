@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
@@ -59,13 +60,14 @@ public class BalanceAmountTask
 
         if (cursor != null && cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                if (Constants.TRANSACTION_TYPE_WITHDRAWAL.equalsIgnoreCase(
-                        cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE)))) {
+                String transType = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
+
+                if (TransactionTypes.valueOf(transType).equals(TransactionTypes.Withdrawal)) {
                     total -= cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
-                } else if (Constants.TRANSACTION_TYPE_DEPOSIT.equalsIgnoreCase(
-                        cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE)))) {
+                } else if (TransactionTypes.valueOf(transType).equals(TransactionTypes.Deposit)) {
                     total += cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
                 } else {
+                    // transfer
                     if (cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.ACCOUNTID)) == getAccountId()) {
                         total -= cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
                     } else {

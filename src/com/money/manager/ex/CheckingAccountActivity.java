@@ -784,12 +784,10 @@ public class CheckingAccountActivity
         SpinTransCode.setAdapter(adapterTrans);
         // select the current value
         if (mTransactionType != null) {
-//        if (!TextUtils.isEmpty(getTransactionType())) {
             if (Arrays.asList(mTransCodeValues).indexOf(getTransactionType()) >= 0) {
                 SpinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(getTransactionType()), true);
             }
         } else {
-//            mTransCode = (String) SpinTransCode.getSelectedItem();
             mTransactionType = TransactionTypes.values()[SpinTransCode.getSelectedItemPosition()];
         }
         SpinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -805,7 +803,6 @@ public class CheckingAccountActivity
                         return;
                     }
 
-//                    mTransCode = selectedValue;
                     mTransactionType = TransactionTypes.values()[position];
                 }
                 // aggiornamento dell'interfaccia grafica
@@ -947,7 +944,6 @@ public class CheckingAccountActivity
                 }
             }
             if (txtTotAmount.equals(view)) {
-//                if (Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode)) {
                 if (mTransactionType.equals(TransactionTypes.Transfer)) {
                     accountId = mToAccountId;
                 } else {

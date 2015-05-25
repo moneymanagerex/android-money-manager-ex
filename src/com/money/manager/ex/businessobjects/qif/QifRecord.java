@@ -162,10 +162,10 @@ public class QifRecord {
         // amount
         double amount = split.getSplitTransAmount();
         // handle sign
-        if (transactionType.equals(Constants.TRANSACTION_TYPE_WITHDRAWAL)) {
+        if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Withdrawal)) {
             amount = amount * (-1);
         }
-        if (transactionType.equals(Constants.TRANSACTION_TYPE_DEPOSIT)) {
+        if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Deposit)) {
             // leave positive?
         }
         builder.append("$");
