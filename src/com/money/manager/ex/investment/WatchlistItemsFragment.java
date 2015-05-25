@@ -133,6 +133,9 @@ public class WatchlistItemsFragment
         getListView().setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Ignore the header row.
+                if (position == 0) return;
+
                 if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
                     getActivity().openContextMenu(view);
                 }
