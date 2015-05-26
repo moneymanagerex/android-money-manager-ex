@@ -24,7 +24,6 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;

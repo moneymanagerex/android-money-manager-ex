@@ -72,9 +72,9 @@ public class ExportToCsvFile extends AsyncTask<Void, Void, Boolean> {
 				if (!TextUtils.isEmpty(data.getString(data.getColumnIndex(QueryAllData.Payee)))) {
 					record[1] = data.getString(data.getColumnIndex(QueryAllData.Payee));
 				} else {
-					record[1] = data.getString(data.getColumnIndex(QueryAllData.ToAccountName));
+					record[1] = data.getString(data.getColumnIndex(QueryAllData.AccountName));
 				}
-				record[2] = Double.toString(data.getDouble(data.getColumnIndex(QueryAllData.TOTRANSAMOUNT)));
+				record[2] = Double.toString(data.getDouble(data.getColumnIndex(QueryAllData.Amount)));
 				record[3] = data.getString(data.getColumnIndex(QueryAllData.Category));
 				record[4] = data.getString(data.getColumnIndex(QueryAllData.Subcategory));
 				record[5] = Integer.toString(data.getInt(data.getColumnIndex(QueryAllData.TransactionNumber)));

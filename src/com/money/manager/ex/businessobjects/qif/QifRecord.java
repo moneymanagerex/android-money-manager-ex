@@ -91,7 +91,7 @@ public class QifRecord {
         TransactionTypes transactionType = TransactionTypes.valueOf(transactionTypeName);
         if (transactionType.equals(TransactionTypes.Transfer)) {
             // Category is the destination account name.
-            category = cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName));
+            category = cursor.getString(cursor.getColumnIndex(QueryAllData.FromAccountName));
             // in square brackets
             category = "[%]".replace("%", category);
         } else {
@@ -202,18 +202,7 @@ public class QifRecord {
     }
 
     private String parseAmount(Cursor cursor) {
-        // To-amount is wrong in case of transfers as it shows the destination amount,
-        // which may be in a different currency.
-//        String amount = Double.toString(cursor.getDouble(cursor.getColumnIndex(QueryAllData.TOTRANSAMOUNT)));
-
         Double amountDouble = cursor.getDouble(cursor.getColumnIndex(QueryAllData.Amount));
-
-        // append sign
-        String type = getTransactionType(cursor);
-        if (type.equals(TransactionTypes.Transfer.name())) {
-            // transfers are somehow positive.
-            amountDouble = amountDouble * (-1);
-        }
 
         String amount = Double.toString(amountDouble);
         return amount;
