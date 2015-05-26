@@ -59,8 +59,9 @@ public class AllDataAdapter
     private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
 
     // define cursor field
-    private String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE, TOACCOUNTID, TOTRANSAMOUNT,
-            CURRENCYID, PAYEE, ACCOUNTNAME, TOACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES, TOCURRENCYID;
+    private String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
+        CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
+        FROMCURRENCYID, FROMACCOUNTID, FROMAMOUNT, FROMACCOUNTNAME;
     private LayoutInflater mInflater;
     // hash map for group
     private HashMap<Integer, Integer> mHeadersAccountIndex;
@@ -99,11 +100,13 @@ public class AllDataAdapter
     public void bindView(View view, Context context, Cursor cursor) {
         // take a holder
         AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
+
         // header index
         int accountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
+
         // write status
         String status = cursor.getString(cursor.getColumnIndex(STATUS));
         holder.txtStatus.setText(TransactionStatus.getStatusAsString(mContext, status));
@@ -130,15 +133,12 @@ public class AllDataAdapter
 
         // manage transfer and change amount sign
         String transactionType = cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE));
-//        boolean isTransfer = Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(transactionType);
         boolean isTransfer = TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Transfer);
 
         if ((transactionType != null) && isTransfer) {
-            if (getAccountId() != cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
-                amount = -(amount); // -total
-            } else if (getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
-                amount = cursor.getDouble(cursor.getColumnIndex(TOTRANSAMOUNT)); // to account = account
-                setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
+            if (getAccountId() == cursor.getInt(cursor.getColumnIndex(FROMACCOUNTID))) {
+                amount = cursor.getDouble(cursor.getColumnIndex(FROMAMOUNT)); // to account = account
+                setCurrencyId(cursor.getInt(cursor.getColumnIndex(FROMCURRENCYID)));
             }
         }
 
@@ -156,8 +156,6 @@ public class AllDataAdapter
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_red_700));
         }
 
-        // compose payee description
-        holder.txtPayee.setText(cursor.getString(cursor.getColumnIndex(PAYEE)));
         // compose account name
         if (isShowAccountName()) {
             if (mHeadersAccountIndex.containsValue(cursor.getPosition())) {
@@ -170,16 +168,22 @@ public class AllDataAdapter
             holder.txtAccountName.setVisibility(View.GONE);
         }
 
-        // write ToAccountName
-        String toAccountName = "";
-        if ((!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME))))) {
-            if (getAccountId() != cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
-                toAccountName = cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME));
+        // Payee
+        if (isTransfer) {
+            // write ToAccountName instead of payee on transfers.
+            String fromAccountName;
+            if (getAccountId() != cursor.getInt(cursor.getColumnIndex(ACCOUNTID))) {
+                // This is in account transactions list where we display transfers to and from.
+                fromAccountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
             } else {
-                toAccountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+                // Search results, where we display only incoming transactions.
+                fromAccountName = cursor.getString(cursor.getColumnIndex(FROMACCOUNTNAME));
             }
-            toAccountName = "[%]".replace("%", toAccountName);
-            holder.txtPayee.setText(toAccountName);
+            fromAccountName = "[%]".replace("%", fromAccountName);
+            holder.txtPayee.setText(fromAccountName);
+        } else {
+            // compose payee description
+            holder.txtPayee.setText(cursor.getString(cursor.getColumnIndex(PAYEE)));
         }
 
         // compose category description
@@ -215,6 +219,7 @@ public class AllDataAdapter
         } else {
             view.setBackgroundResource(android.R.color.transparent);
         }
+
         // balance account or days left
         if (mTypeCursor == TypeCursor.ALLDATA) {
             if (isShowBalanceAmount() && getDatabase() != null) {
@@ -362,17 +367,21 @@ public class AllDataAdapter
     public void setFieldFromTypeCursor() {
         ID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ID : QueryBillDeposits.BDID;
         DATE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Date : QueryBillDeposits.NEXTOCCURRENCEDATE;
-        ACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ACCOUNTID : QueryBillDeposits.ACCOUNTID;
+        ACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ACCOUNTID : QueryBillDeposits.TOACCOUNTID;
         STATUS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Status : QueryBillDeposits.STATUS;
         AMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Amount : QueryBillDeposits.AMOUNT;
-        TRANSACTIONTYPE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TransactionType : QueryBillDeposits.TRANSCODE;
-        TOACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountID : QueryBillDeposits.TOACCOUNTID;
-        TOTRANSAMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TOTRANSAMOUNT : QueryBillDeposits.TOTRANSAMOUNT;
-        CURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.CURRENCYID : QueryBillDeposits.CURRENCYID;
-        TOCURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToCurrencyID : QueryBillDeposits.CURRENCYID;
         PAYEE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Payee : QueryBillDeposits.PAYEENAME;
+        TRANSACTIONTYPE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TransactionType : QueryBillDeposits.TRANSCODE;
+        CURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.CURRENCYID : QueryBillDeposits.CURRENCYID;
+//        TOACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountID : QueryBillDeposits.TOACCOUNTID;
+        FROMACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAccountId : QueryBillDeposits.ACCOUNTID;
+//        TOTRANSAMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TOTRANSAMOUNT : QueryBillDeposits.TOTRANSAMOUNT;
+        FROMAMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAmount : QueryBillDeposits.TRANSAMOUNT;
+//        TOCURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToCurrencyID : QueryBillDeposits.CURRENCYID;
+        FROMCURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromCurrencyId : QueryBillDeposits.CURRENCYID;
+//        TOACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountName : QueryBillDeposits.TOACCOUNTNAME;
+        FROMACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAccountName : QueryBillDeposits.ACCOUNTNAME;
         ACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.AccountName : QueryBillDeposits.ACCOUNTNAME;
-        TOACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountName : QueryBillDeposits.TOACCOUNTNAME;
         CATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Category : QueryBillDeposits.CATEGNAME;
         SUBCATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Subcategory : QueryBillDeposits.SUBCATEGNAME;
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
@@ -392,7 +401,6 @@ public class AllDataAdapter
             balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
             balanceAmount.setTextView(holder.txtBalance);
             balanceAmount.setContext(mContext);
-//                balanceAmount.setDatabase(getDatabase());
             balanceAmount.setCurrencyId(getCurrencyId());
             balanceAmount.setTransId(transId);
             // execute thread
@@ -400,9 +408,6 @@ public class AllDataAdapter
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "Error in balance amount");
-//            String error = ;
-//            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
-//            ex.printStackTrace();
         }
     }
 }
