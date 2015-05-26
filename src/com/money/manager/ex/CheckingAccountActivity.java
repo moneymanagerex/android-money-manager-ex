@@ -532,8 +532,6 @@ public class CheckingAccountActivity
                     // select split categories.
                     Intent intent = new Intent(CheckingAccountActivity.this, SplitTransactionsActivity.class);
                     intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, TableSplitTransactions.class.getSimpleName());
-//                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransCode);
-//                    int transactionType = TransactionTypes.valueOf(mTransCode).getCode();
                     intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransactionType.getCode());
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);

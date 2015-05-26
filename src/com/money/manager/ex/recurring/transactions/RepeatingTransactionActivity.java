@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -46,6 +47,7 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
+import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
@@ -108,6 +110,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     public static final String KEY_SPLIT_TRANSACTION = "RepeatingTransaction:SplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "RepeatingTransaction:SplitTransactionDeleted";
     public static final String KEY_ACTION = "RepeatingTransaction:Action";
+
     // action type intent
     private String mIntentAction;
     // id account from and id ToAccount
@@ -115,7 +118,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     private List<TableAccountList> mAccountList;
     private String mToAccountName;
     private int mBillDepositsId = -1;
-    private String mTransCode, mStatus;
+//    private String mTransCode;
+    public TransactionTypes mTransactionType;
+    private String mStatus;
     // info payee
     private int mPayeeId = -1;
     private String mPayeeName, mTextDefaultPayee;
@@ -126,8 +131,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     private String[] mTransCodeItems, mStatusItems;
     private String[] mTransCodeValues, mStatusValues;
     // arrays list account name and account id
-    private ArrayList<String> mAccountNameList = new ArrayList<String>();
-    private ArrayList<Integer> mAccountIdList = new ArrayList<Integer>();
+    private ArrayList<String> mAccountNameList = new ArrayList<>();
+    private ArrayList<Integer> mAccountIdList = new ArrayList<>();
     // amount
     private double mTotAmount = 0, mAmount = 0;
     // notes
@@ -258,7 +263,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
             mToAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
             mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
-            mTransCode = savedInstanceState.getString(KEY_TRANS_CODE);
+            String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
+            mTransactionType = TransactionTypes.valueOf(transCode);
             mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
             mAmount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
             mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
@@ -285,7 +291,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     mBillDepositsId = getIntent().getIntExtra(KEY_BILL_DEPOSITS_ID, -1);
                     // select data transaction
-                    loadRepeatingTransaction(mBillDepositsId);
+                    loadRecurringTransaction(mBillDepositsId);
                 }
             }
             mIntentAction = getIntent().getAction();
@@ -376,39 +382,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         });
 
-        // trans-code
-        spinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
-        // populate arrays TransCode
-        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
-        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
-        // create adapter for TransCode
-        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                mTransCodeItems);
-        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinTransCode.setAdapter(adapterTrans);
-        // select a current value
-        if (!TextUtils.isEmpty(mTransCode)) {
-            if (Arrays.asList(mTransCodeValues).indexOf(mTransCode) >= 0) {
-                spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mTransCode), true);
-            }
-        } else {
-            mTransCode = (String) spinTransCode.getSelectedItem();
-        }
-        spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mTransCodeValues.length)) {
-                    mTransCode = mTransCodeValues[position];
-                }
-                // aggiornamento dell'interfaccia grafica
-                refreshTransactionCode();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        // Transaction type
+        initTransactionTypeSelector();
 
         // status
         spinStatus = (Spinner) findViewById(R.id.spinnerStatus);
@@ -468,7 +443,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     // Pass the name of the entity/data set.
                     intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE,
                             TableBudgetSplitTransactions.class.getSimpleName());
-                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransCode);
+                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mTransactionType.getCode());
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION,
                             mSplitTransactions);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED,
@@ -636,7 +611,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         });
         // refresh user interface
-        refreshTransactionCode();
+        refreshAfterTransactionCodeChange();
         refreshPayeeName();
         refreshCategoryName();
         refreshTimesRepeated();
@@ -650,7 +625,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         outState.putInt(KEY_ACCOUNT_ID, mAccountId);
         outState.putInt(KEY_TO_ACCOUNT_ID, mToAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
-        outState.putString(KEY_TRANS_CODE, mTransCode);
+        outState.putString(KEY_TRANS_CODE, getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mStatus);
         outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double) txtTotAmount.getTag());
         outState.putDouble(KEY_TRANS_AMOUNT, (Double) txtAmount.getTag());
@@ -869,7 +844,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
      * @param billId transaction id
      * @return true if data selected, false nothing
      */
-    private boolean loadRepeatingTransaction(int billId) {
+    private boolean loadRecurringTransaction(int billId) {
         Cursor cursor = getContentResolver().query(mRepeatingTransaction.getUri(),
                 mRepeatingTransaction.getAllColumns(),
                 TableBillsDeposits.BDID + "=?",
@@ -883,7 +858,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         mBillDepositsId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
         mAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.ACCOUNTID));
         mToAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
-        mTransCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
+        String transCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
+        mTransactionType = TransactionTypes.valueOf(transCode);
         mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
         mAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
         mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
@@ -950,7 +926,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         txtSelectPayee.setText(!TextUtils.isEmpty(mPayeeName) ? mPayeeName : mTextDefaultPayee);
     }
 
-    public void refreshTransactionCode() {
+    public void refreshAfterTransactionCodeChange() {
         TextView txtFromAccount = (TextView) findViewById(R.id.textViewFromAccount);
         TextView txtToAccount = (TextView) findViewById(R.id.textViewToAccount);
 
@@ -960,10 +936,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         txtCaptionAmount.setVisibility(isTransfer() ? View.VISIBLE : View.GONE);
         txtAmount.setVisibility(isTransfer() ? View.VISIBLE : View.GONE);
         spinToAccount.setVisibility(isTransfer() ? View.VISIBLE : View.GONE);
-        //txtPayee.setVisibility(!isTransfer() ? View.VISIBLE : View.GONE);
         txtSelectPayee.setVisibility(!isTransfer() ? View.VISIBLE : View.GONE);
         // hide split controls
-//        chbSplitTransaction.setEnabled(isTransfer() ? false : true);
         chbSplitTransaction.setVisibility(isTransfer() ? View.GONE : View.VISIBLE);
         txtSplit.setVisibility(isTransfer() ? View.GONE : View.VISIBLE);
 
@@ -1057,7 +1031,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         } else {
             values.put(TableBillsDeposits.PAYEEID, mPayeeId);
         }
-        values.put(TableBillsDeposits.TRANSCODE, mTransCode);
+        values.put(TableBillsDeposits.TRANSCODE, getTransactionType());
         if (TextUtils.isEmpty(txtAmount.getText().toString()) || (!(isTransfer()))) {
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) txtTotAmount.getTag());
         } else {
@@ -1166,7 +1140,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
     }
 
     public boolean isTransfer() {
-        boolean isTransfer = TransactionTypes.valueOf(mTransCode).equals(TransactionTypes.Transfer);
+        boolean isTransfer = TransactionTypes.valueOf(getTransactionType()).equals(TransactionTypes.Transfer);
         return isTransfer;
     }
 
@@ -1181,4 +1155,114 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         txtTotAmount.setEnabled(!isSplit);
     }
 
+    private void initTransactionTypeSelector() {
+        // trans-code
+        spinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
+        // populate arrays TransCode
+        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
+        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
+        // create adapter for TransCode
+        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+                mTransCodeItems);
+        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinTransCode.setAdapter(adapterTrans);
+        // select a current value
+        if (mTransactionType != null) {
+            if (Arrays.asList(mTransCodeValues).indexOf(getTransactionType()) >= 0) {
+                spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(getTransactionType()), true);
+            }
+        } else {
+            mTransactionType = TransactionTypes.values()[spinTransCode.getSelectedItemPosition()];
+        }
+        spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position >= 0) && (position <= mTransCodeValues.length)) {
+                    String selectedValue = mTransCodeValues[position];
+
+                    // Prevent selection if there are split transactions and the type is being
+                    // set to Transfer.
+                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
+                        handleSwitchingTransactionTypeToTransfer();
+                        return;
+                    }
+
+                    mTransactionType = TransactionTypes.values()[position];
+                }
+                // aggiornamento dell'interfaccia grafica
+                refreshAfterTransactionCodeChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void handleSwitchingTransactionTypeToTransfer() {
+        // The user is switching to Transfer transaction type.
+
+        if(hasSplitCategories()) {
+            // Prompt the user to confirm deleting split categories.
+            // Use DialogFragment in order to redraw the dialog when switching device orientation.
+
+            DialogFragment dialog = new YesNoDialog();
+            Bundle args = new Bundle();
+            args.putString("title", getString(R.string.warning));
+            args.putString("message", getString(R.string.no_transfer_splits));
+            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
+            dialog.setArguments(args);
+//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
+            dialog.show(getSupportFragmentManager(), "tag");
+
+            // Dialog result is handled in onDialogPositiveClick.
+            return;
+        }
+
+        // un-check split.
+        setSplit(false);
+
+        // Hide Category picker.
+        txtSelectCategory.setVisibility(View.GONE);
+        // Clear category.
+        mCategoryId = -1;
+
+//        mTransCode = getString(R.string.transfer);
+        mTransactionType = TransactionTypes.Transfer;
+
+        refreshAfterTransactionCodeChange();
+    }
+
+    public void setSplit(final boolean checked) {
+        chbSplitTransaction.post(new Runnable() {
+            @Override
+            public void run() {
+                chbSplitTransaction.setChecked(checked);
+
+                onSplitSet();
+            }
+        });
+    }
+
+    private void onSplitSet() {
+        // update category field
+        refreshCategoryName();
+
+        boolean isSplit = chbSplitTransaction.isCheck();
+
+        // enable/disable Amount field.
+        txtAmount.setEnabled(!isSplit);
+        txtTotAmount.setEnabled(!isSplit);
+    }
+
+    public String getTransactionType() {
+        if (mTransactionType == null) {
+            return null;
+        }
+
+        // mTransType
+        return mTransactionType.name();
+    }
+
 }
+
