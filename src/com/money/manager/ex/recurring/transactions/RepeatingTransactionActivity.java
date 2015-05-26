@@ -32,7 +32,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -312,7 +311,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         // Account
         // account list <> to populate the spin
         AccountRepository accountRepository = new AccountRepository(getApplicationContext());
-        mAccountList = accountRepository.getListAccounts(core.getAccountsOpenVisible(),
+        mAccountList = accountRepository.getTransactionAccounts(core.getAccountsOpenVisible(),
                 core.getAccountFavoriteVisible());
         for (int i = 0; i <= mAccountList.size() - 1; i++) {
             mAccountNameList.add(mAccountList.get(i).getAccountName());
