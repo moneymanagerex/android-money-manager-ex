@@ -96,16 +96,17 @@ public class QifRecord {
             // Category
             category = parseCategory(cursor);
         }
-        builder.append("L");
-        builder.append(category);
-        builder.append(System.lineSeparator());
+        if (category != null) {
+            builder.append("L");
+            builder.append(category);
+            builder.append(System.lineSeparator());
+        }
 
         // Split Categories
         int splitCategory = cursor.getInt(cursor.getColumnIndex(QueryAllData.Splitted));
         if (splitCategory == 1) {
             String splits = getSplitCategories(cursor);
             builder.append(splits);
-            builder.append(System.lineSeparator());
         }
 
         // Memo
