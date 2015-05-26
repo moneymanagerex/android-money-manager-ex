@@ -296,7 +296,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
             mIntentAction = getIntent().getAction();
             // set title
-            getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction) ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
+            getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction)
+                    ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
         }
 
         // Controls
@@ -1063,7 +1064,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat("yyyy-MM-dd")
                 .format(txtNextOccurrence.getTag()));
         values.put(TableBillsDeposits.REPEATS, mFrequencies);
-        values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0 ? edtTimesRepeated.getText().toString() : null);
+        values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0
+                ? edtTimesRepeated.getText().toString() : null);
 
         // check whether the application should do the update or insert
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
@@ -1077,7 +1079,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             mBillDepositsId = Integer.parseInt(insert.getPathSegments().get(1));
         } else {
             // update
-            if (getContentResolver().update(mRepeatingTransaction.getUri(), values, TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(mBillDepositsId)}) <= 0) {
+            if (getContentResolver().update(mRepeatingTransaction.getUri(), values,
+                    TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(mBillDepositsId)}) <= 0) {
                 Core.alertDialog(this, R.string.db_checking_update_failed);
                 Log.w(LOGCAT, "Update repeating  transaction failed!");
                 return false;
@@ -1103,7 +1106,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                     }
                 } else {
                     // update data
-                    if (getContentResolver().update(mSplitTransactions.get(i).getUri(), values, TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
+                    if (getContentResolver().update(mSplitTransactions.get(i).getUri(), values,
+                            TableSplitTransactions.SPLITTRANSID + "=?",
+                            new String[]{Integer.toString(mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Update split transaction failed!");
                         return false;
@@ -1121,7 +1126,8 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
 
                 // update data
                 if (getContentResolver().delete(mSplitTransactionsDeleted.get(i).getUri(),
-                        TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
+                        TableSplitTransactions.SPLITTRANSID + "=?",
+                        new String[]{Integer.toString(mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(LOGCAT, "Delete split transaction failed!");
                     return false;
@@ -1138,7 +1144,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             // create instance TablePayee for update
             TablePayee payee = new TablePayee();
             // update data
-            if (getContentResolver().update(payee.getUri(), values, TablePayee.PAYEEID + "=" + Integer.toString(mPayeeId), null) <= 0) {
+            if (getContentResolver().update(payee.getUri(),
+                    values,
+                    TablePayee.PAYEEID + "=" + Integer.toString(mPayeeId),
+                    null) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mPayeeId) + " return <= 0");
             }
