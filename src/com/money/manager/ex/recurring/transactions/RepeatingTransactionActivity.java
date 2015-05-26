@@ -237,7 +237,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                         }
                         Core core = new Core(getBaseContext());
 //                        formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
-                        int accountId = !isTransfer() ? mAccountId : mToAccountId;
+                        int accountId = !mTransactionType.equals(TransactionTypes.Transfer) ? mAccountId : mToAccountId;
                         core.formatAmountTextView(txtTotAmount, totAmount, getCurrencyIdFromAccountId(accountId));
                     }
                     // deleted item
@@ -339,7 +339,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 Core core = new Core(getBaseContext());
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     mAccountId = mAccountIdList.get(position);
-                    if (isTransfer()) {
+                    if (mTransactionType.equals(TransactionTypes.Transfer)) {
                         core.formatAmountTextView(txtAmount, (Double) txtAmount.getTag(),
                                 getCurrencyIdFromAccountId(mAccountId));
                     } else {
@@ -497,14 +497,16 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         };
 
+        boolean isTransfer = mTransactionType.equals(TransactionTypes.Transfer);
+
         // total amount
         core.formatAmountTextView(txtTotAmount, mTotAmount,
-                getCurrencyIdFromAccountId(!isTransfer() ? mAccountId : mToAccountId));
+                getCurrencyIdFromAccountId(!isTransfer ? mAccountId : mToAccountId));
         txtTotAmount.setOnClickListener(onClickAmount);
 
         // amount
         core.formatAmountTextView(txtAmount, mAmount,
-                getCurrencyIdFromAccountId(!isTransfer() ? mToAccountId : mAccountId));
+                getCurrencyIdFromAccountId(!isTransfer ? mToAccountId : mAccountId));
         txtAmount.setOnClickListener(onClickAmount);
 
         // transaction number
@@ -658,8 +660,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         View view = findViewById(id);
         int accountId;
         if (view != null && view instanceof TextView) {
+            boolean isTransfer = mTransactionType.equals(TransactionTypes.Transfer);
             CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
-            if (isTransfer()) {
+            if (isTransfer) {
                 Double originalAmount;
                 try {
                     Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(id == R.id.textViewTotAmount
@@ -689,7 +692,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 }
             }
             if (txtTotAmount.equals(view)) {
-                if (isTransfer()) {
+                if (isTransfer) {
                     accountId = mToAccountId;
                 } else {
                     accountId = mAccountId;
@@ -930,16 +933,19 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         TextView txtFromAccount = (TextView) findViewById(R.id.textViewFromAccount);
         TextView txtToAccount = (TextView) findViewById(R.id.textViewToAccount);
 
-        txtFromAccount.setText(isTransfer() ? R.string.from_account : R.string.account);
-        txtToAccount.setVisibility(isTransfer() ? View.VISIBLE : View.GONE);
+        // hide and show
+        boolean isTransfer = mTransactionType.equals(TransactionTypes.Transfer);
 
-        txtCaptionAmount.setVisibility(isTransfer() ? View.VISIBLE : View.GONE);
-        txtAmount.setVisibility(isTransfer() ? View.VISIBLE : View.GONE);
-        spinToAccount.setVisibility(isTransfer() ? View.VISIBLE : View.GONE);
-        txtSelectPayee.setVisibility(!isTransfer() ? View.VISIBLE : View.GONE);
+        txtFromAccount.setText(isTransfer ? R.string.from_account : R.string.account);
+        txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+
+        txtCaptionAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        txtAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        txtSelectPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls
-        chbSplitTransaction.setVisibility(isTransfer() ? View.GONE : View.VISIBLE);
-        txtSplit.setVisibility(isTransfer() ? View.GONE : View.VISIBLE);
+        chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+        txtSplit.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         refreshHeaderAmount();
     }
@@ -951,7 +957,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         if (txtHeaderAmount == null || txtHeaderTotAmount == null)
             return;
 
-        if (!isTransfer()) {
+        if (!mTransactionType.equals(TransactionTypes.Transfer)) {
             txtHeaderTotAmount.setText(R.string.total_amount);
             txtHeaderAmount.setText(R.string.amount);
         } else {
@@ -972,7 +978,9 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
      * @return validation result
      */
     private boolean validateData() {
-        if (isTransfer()) {
+        boolean isTransfer = mTransactionType.equals(TransactionTypes.Transfer);
+
+        if (isTransfer) {
             if (mToAccountId == -1) {
                 Core.alertDialog(this, R.string.error_toaccount_not_selected);
                 return false;
@@ -981,12 +989,16 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
                 Core.alertDialog(this, R.string.error_transfer_to_same_account);
                 return false;
             }
-        } else if ((!isTransfer()) && (mPayeeId == -1)) {
-            Core.alertDialog(this, R.string.error_payee_not_selected);
-
-            return false;
         }
-        if (mCategoryId == -1 && (!chbSplitTransaction.isCheck())) {
+        // Payee is now optional.
+//        else if ((!isTransfer()) && (mPayeeId == -1)) {
+//            Core.alertDialog(this, R.string.error_payee_not_selected);
+//
+//            return false;
+//        }
+
+        // Category is required if tx is not a split or transfer.
+        if (mCategoryId == -1 && (!chbSplitTransaction.isCheck()) && !isTransfer) {
             Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
@@ -1024,15 +1036,17 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         // content value for insert or update data
         ContentValues values = new ContentValues();
 
+        boolean isTransfer = mTransactionType.equals(TransactionTypes.Transfer);
+
         values.put(TableBillsDeposits.ACCOUNTID, mAccountId);
         values.put(TableBillsDeposits.TOACCOUNTID, mToAccountId);
-        if (isTransfer()) {
+        if (isTransfer) {
             values.put(TableBillsDeposits.PAYEEID, -1);
         } else {
             values.put(TableBillsDeposits.PAYEEID, mPayeeId);
         }
         values.put(TableBillsDeposits.TRANSCODE, getTransactionType());
-        if (TextUtils.isEmpty(txtAmount.getText().toString()) || (!(isTransfer()))) {
+        if (TextUtils.isEmpty(txtAmount.getText().toString()) || (!(isTransfer))) {
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) txtTotAmount.getTag());
         } else {
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) txtAmount.getTag());
@@ -1044,8 +1058,10 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) txtTotAmount.getTag());
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
         values.put(TableBillsDeposits.NOTES, edtNotes.getText().toString());
-        values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(txtNextOccurrence.getTag()));
-        values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(txtNextOccurrence.getTag()));
+        values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat("yyyy-MM-dd")
+                .format(txtNextOccurrence.getTag()));
+        values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat("yyyy-MM-dd")
+                .format(txtNextOccurrence.getTag()));
         values.put(TableBillsDeposits.REPEATS, mFrequencies);
         values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0 ? edtTimesRepeated.getText().toString() : null);
 
@@ -1113,7 +1129,7 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
             }
         }
         // update category and subcategory payee
-        if ((!(isTransfer())) && (mPayeeId > 0) && (!hasSplitTransaction)) {
+        if ((!(isTransfer)) && (mPayeeId > 0) && (!hasSplitTransaction)) {
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
@@ -1137,11 +1153,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         } catch (ArrayIndexOutOfBoundsException e) {
             return null;
         }
-    }
-
-    public boolean isTransfer() {
-        boolean isTransfer = TransactionTypes.valueOf(getTransactionType()).equals(TransactionTypes.Transfer);
-        return isTransfer;
     }
 
     private void splitSet() {
