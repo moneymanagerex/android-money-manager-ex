@@ -121,7 +121,7 @@ public class CurrencyUtils {
         return init();
     }
 
-    public Double doCurrencyExchange(Integer toCurrencyId, double toAmount, Integer fromCurrencyId) {
+    public Double doCurrencyExchange(Integer toCurrencyId, double amount, Integer fromCurrencyId) {
         TableCurrencyFormats fromCurrencyFormats = getCurrency(fromCurrencyId);
         TableCurrencyFormats toCurrencyFormats = getCurrency(toCurrencyId);
         // check if exists from and to currencies
@@ -130,7 +130,8 @@ public class CurrencyUtils {
         // exchange
         double toConversionRate = toCurrencyFormats.getBaseConvRate();
         double fromConversionRate = fromCurrencyFormats.getBaseConvRate();
-        double result = (toAmount * toConversionRate) / fromConversionRate;
+//        double result = (amount * toConversionRate) / fromConversionRate;
+        double result = (amount * fromConversionRate) / toConversionRate;
         return result;
     }
 
