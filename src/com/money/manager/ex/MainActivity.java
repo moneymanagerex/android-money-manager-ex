@@ -111,7 +111,7 @@ public class MainActivity extends BaseFragmentActivity {
     // state if restart activity
     private static boolean mRestartActivity = false;
     // list of account visible
-    List<TableAccountList> mAccountList;
+//    List<TableAccountList> mAccountList;
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
     private boolean isShowTipsDropbox2 = false;

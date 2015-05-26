@@ -64,6 +64,7 @@ public class CurrencyUtils {
     private static Integer mBaseCurrencyId = null;
     // hash map of all currencies
     private static Map<Integer, TableCurrencyFormats> mCurrencies;
+
     // context
     private Context mContext;
     // TableInfoTable
@@ -203,17 +204,6 @@ public class CurrencyUtils {
         return true;
     }
 
-//    private URL createUrl(String url) {
-//        URL result = null;
-//        try {
-//            result = new URL(url);
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return result;
-//    }
-
     /**
      * Get all currencies format
      *
@@ -244,14 +234,6 @@ public class CurrencyUtils {
         return this.getCurrencyFormatted(mBaseCurrencyId, value);
     }
 
-//    /**
-//     * @param value to format
-//     * @return fomatted value
-//     */
-//    public String getBaseNumericFormatted(Double value) {
-//        return getNumericFormatted(mBaseCurrencyId, value);
-//    }
-
     /**
      * @param currencyId of the currency to be formatted
      * @param value      value to format
@@ -277,35 +259,20 @@ public class CurrencyUtils {
         }
     }
 
-//    /**
-//     * @param currencyId of the currency to be formatted
-//     * @param value      value to format
-//     * @return formatted value
-//     */
-//    public String getNumericFormatted(Integer currencyId, Double value) {
-//        // check if value is null
-//        if (value == null)
-//            value = 0d;
-//
-//        // find currencyid
-//        if (currencyId != null) {
-//            TableCurrencyFormats tableCurrency = getCurrency(currencyId);
-//
-//            if (tableCurrency == null) {
-//                return String.valueOf(value);
-//            }
-//            // formatted value
-//            return tableCurrency.getValueFormatted(value, Boolean.FALSE);
-//        } else {
-//            return String.valueOf(value);
-//        }
-//    }
-
     /**
      * @param currencyId of the currency to be get
      * @return an instance of class TableCurrencyFormats. Null if fail
      */
     public TableCurrencyFormats getCurrency(Integer currencyId) {
+        // todo: test using content resolver.
+//        TableCurrencyFormats currency = new TableCurrencyFormats();
+//        String selection = TableCurrencyFormats.CURRENCYID + "=?";
+//        mContext.getContentResolver().query(currency.getUri(),
+//                currency.getAllColumns(),
+//                selection,
+//                new String[] { Integer.toString(currencyId) },
+//                null);
+
         if (mCurrencies != null && currencyId != null) {
             return mCurrencies.get(currencyId);
         } else {
