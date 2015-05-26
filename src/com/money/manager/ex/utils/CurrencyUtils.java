@@ -128,7 +128,10 @@ public class CurrencyUtils {
         if (fromCurrencyFormats == null || toCurrencyFormats == null)
             return null;
         // exchange
-        return (toAmount * toCurrencyFormats.getBaseConvRate()) / fromCurrencyFormats.getBaseConvRate();
+        double toConversionRate = toCurrencyFormats.getBaseConvRate();
+        double fromConversionRate = fromCurrencyFormats.getBaseConvRate();
+        double result = (toAmount * toConversionRate) / fromConversionRate;
+        return result;
     }
 
     public boolean updateCurrencyRateFromBase(Integer toCurrencyId) {
