@@ -38,8 +38,11 @@ import java.util.Map.Entry;
  * @version 1.0.0
  */
 @SuppressWarnings("unused")
-public abstract class Dataset implements BaseColumns {
+public abstract class Dataset
+		implements BaseColumns {
+
 	private static final String LOGCAT = Dataset.class.getSimpleName();
+
 	// member private of class
 	private String source = "";
 	private DatasetType type;
@@ -125,6 +128,7 @@ public abstract class Dataset implements BaseColumns {
 	public String[] getAllColumns() {
 		return new String[] {""};
 	}
+
 	/**
 	 * @return the basepath
 	 */

@@ -92,6 +92,8 @@ public class QifRecord {
         if (transactionType.equals(TransactionTypes.Transfer)) {
             // Category is the destination account name.
             category = cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName));
+            // in square brackets
+            category = "[%]".replace("%", category);
         } else {
             // Category
             category = parseCategory(cursor);

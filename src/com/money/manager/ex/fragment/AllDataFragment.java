@@ -259,6 +259,8 @@ public class AllDataFragment extends BaseListFragment
         setHasOptionsMenu(true);
     }
 
+    // Loader event handlers
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (getSearchResultFragmentLoaderCallbacks() != null)
@@ -284,11 +286,50 @@ public class AllDataFragment extends BaseListFragment
                     sort = args.getString(KEY_ARGUMENTS_SORT);
                 }
                 // create loader
-                return new CursorLoader(getActivity(), allData.getUri(), allData.getAllColumns(),
-                        selection, null, sort);
+                return new CursorLoader(getActivity(), allData.getUri(),
+                        allData.getAllColumns(),
+                        selection,
+                        null,
+                        sort);
         }
         return null;
     }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        IAllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
+        if (parent != null) parent.onCallbackLoaderReset(loader);
+
+        ((CursorAdapter) getListAdapter()).swapCursor(null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        IAllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
+        if (parent != null) parent.onCallbackLoaderFinished(loader, data);
+
+        switch (loader.getId()) {
+            case ID_LOADER_ALL_DATA_DETAIL:
+                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+                if (isShownBalance()) {
+                    Context appContext = getActivity().getApplicationContext();
+                    adapter.setDatabase(MoneyManagerOpenHelper.getInstance(appContext).getReadableDatabase());
+                }
+                adapter.swapCursor(data);
+                if (isResumed()) {
+                    setListShown(true);
+                    if (data.getCount() <= 0 && getFloatingActionButton() != null)
+                        getFloatingActionButton().show(true);
+                } else {
+                    setListShownNoAnimation(true);
+                }
+
+                // reset the transaction groups (account name collection)
+                adapter.resetAccountHeaderIndexes();
+        }
+    }
+
+    // End loader event handlers
 
     /**
      * Add options to the action bar of the host activity.
@@ -350,40 +391,6 @@ public class AllDataFragment extends BaseListFragment
         if (mMultiChoiceModeListener != null)
             mMultiChoiceModeListener.onDestroyActionMode(null);
         super.onDestroy();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        IAllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
-        if (parent != null) parent.onCallbackLoaderReset(loader);
-
-        ((CursorAdapter) getListAdapter()).swapCursor(null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        IAllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
-        if (parent != null) parent.onCallbackLoaderFinished(loader, data);
-
-        switch (loader.getId()) {
-            case ID_LOADER_ALL_DATA_DETAIL:
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-                if (isShownBalance()) {
-                    Context appContext = getActivity().getApplicationContext();
-                    adapter.setDatabase(MoneyManagerOpenHelper.getInstance(appContext).getReadableDatabase());
-                }
-                adapter.swapCursor(data);
-                if (isResumed()) {
-                    setListShown(true);
-                    if (data.getCount() <= 0 && getFloatingActionButton() != null)
-                        getFloatingActionButton().show(true);
-                } else {
-                    setListShownNoAnimation(true);
-                }
-
-                // reset the transaction groups (account name collection)
-                adapter.resetAccountHeaderIndexes();
-        }
     }
 
     @Override
