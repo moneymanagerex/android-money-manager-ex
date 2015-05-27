@@ -177,7 +177,8 @@ public class AllDataAdapter
                 // We are on search results. Account id is always reset (-1).
                 fromAccountName = cursor.getString(cursor.getColumnIndex(FROMACCOUNTNAME));
             } else {
-                // Standard checking account.
+                // Standard checking account. See whether the other account is the source
+                // or the destination of the transfer.
                 if (mAccountId != cursorAccountId) {
                     // This is in account transactions list where we display transfers to and from.
                     fromAccountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
