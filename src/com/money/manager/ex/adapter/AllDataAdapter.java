@@ -172,12 +172,19 @@ public class AllDataAdapter
         if (isTransfer) {
             // write ToAccountName instead of payee on transfers.
             String fromAccountName;
-            if (getAccountId() != cursor.getInt(cursor.getColumnIndex(ACCOUNTID))) {
-                // This is in account transactions list where we display transfers to and from.
-                fromAccountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
-            } else {
-                // Search results, where we display only incoming transactions.
+            int cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
+            if (mAccountId == -1) {
+                // We are on search results. Account id is always reset (-1).
                 fromAccountName = cursor.getString(cursor.getColumnIndex(FROMACCOUNTNAME));
+            } else {
+                // Standard checking account.
+                if (mAccountId != cursorAccountId) {
+                    // This is in account transactions list where we display transfers to and from.
+                    fromAccountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+                } else {
+                    // Search results, where we display only incoming transactions.
+                    fromAccountName = cursor.getString(cursor.getColumnIndex(FROMACCOUNTNAME));
+                }
             }
             fromAccountName = "[%]".replace("%", fromAccountName);
             holder.txtPayee.setText(fromAccountName);
