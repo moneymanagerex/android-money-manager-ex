@@ -49,6 +49,7 @@
         android:title="@string/create_db" />
 
     <Preference
+        android:icon="@null"
         android:key="@string/pref_sqlite_version"
         android:title="@string/android_sqlite_vesion" />
 </PreferenceScreen>
