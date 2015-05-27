@@ -496,12 +496,10 @@ public class HomeFragment extends Fragment implements
                 MainActivity activity = (MainActivity) getActivity();
                 if (activity == null) return false;
 
-                // do not show investment accounts until a separate view is created for them.
                 String accountType = mAccountTypes.get(groupPosition);
                 if (accountType.equalsIgnoreCase(getString(R.string.investment))) {
                     activity.showWatchlistFragment(accountId);
                 } else {
-                    // default
                     activity.showAccountFragment(accountId);
                 }
                 return true;

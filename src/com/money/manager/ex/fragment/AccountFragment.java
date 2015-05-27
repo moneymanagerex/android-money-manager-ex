@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
+ * Checking account fragment. Includes list of transactions, etc.
  * @author a.lazzari
  */
 public class AccountFragment extends Fragment
