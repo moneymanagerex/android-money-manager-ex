@@ -28,7 +28,14 @@ public class StockHistoryRepository
         extends Dataset {
 
     /**
-     *
+     * Constructor for content provider.
+     */
+    public StockHistoryRepository() {
+        super(TABLE_NAME, DatasetType.TABLE, "stockhistory");
+    }
+
+    /**
+     * Constructor that is used when instantiating manually.
      */
     public StockHistoryRepository(Context context) {
         super(TABLE_NAME, DatasetType.TABLE, "stockhistory");
@@ -220,6 +227,10 @@ public class StockHistoryRepository
         return result;
     }
 
+    /**
+     * deletes all price history
+     * @return number of deleted records
+     */
     public int deletePriceHistory() {
         SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
                 .getWritableDatabase();

@@ -110,6 +110,7 @@ public class MoneyManagerProvider
                 new TablePayee(),
                 new TableSplitTransactions(),
                 new TableStock(),
+                new StockHistoryRepository(),
                 new TableSubCategory(),
                 new QueryAccountBills(getContext()),
                 new QueryCategorySubCategory(getContext()),
