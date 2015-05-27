@@ -446,4 +446,23 @@ public class MoneyManagerOpenHelper
 
         return true;
     }
+
+    /**
+     * Try to close everything when destroyed.
+     * @throws Throwable
+     * reference:
+     * http://stackoverflow.com/questions/4557154/android-sqlite-db-when-to-close
+     */
+    @Override
+    public void finalize() throws Throwable {
+        if (mInstance != null) {
+            mInstance.close();
+        }
+        SQLiteDatabase db = mInstance.getReadableDatabase();
+        if (db != null) {
+            db.close();
+        }
+
+        super.finalize();
+    }
 }
