@@ -299,6 +299,8 @@ public class MoneyManagerApplication
 
     @Override
     public void onTerminate() {
+        // on terminate is never called
+        // ref: http://stackoverflow.com/questions/15162562/application-lifecycle
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
     }
 
