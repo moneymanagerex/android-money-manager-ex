@@ -24,6 +24,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import com.caverock.androidsvg.IntegerParser;
 import com.money.manager.ex.core.AccountTypes;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class AccountRepository {
 
         Cursor cursor = mContext.getContentResolver().query(
                 mAccount.getUri(),
-                new String[] { TableAccountList.ACCOUNTNAME },
+                mAccount.getAllColumns(),
                 selection,
                 new String[] { Integer.toString(accountId) },
                 null);
@@ -83,6 +84,48 @@ public class AccountRepository {
         cursor.close();
 
         return result;
+    }
+
+//    public String loadNameById(int id) {
+//        String result = null;
+//
+//        String selection = TableAccountList.ACCOUNTID + "=?";
+//
+//        Cursor cursor = mContext.getContentResolver().query(
+//                mAccount.getUri(),
+//                new String[] { TableAccountList.ACCOUNTNAME },
+//                selection,
+//                new String[] { Integer.toString(id) },
+//                null);
+//
+//        if(cursor.moveToFirst()) {
+//            result = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
+//        }
+//
+//        cursor.close();
+//
+//        return result;
+//    }
+
+    public String loadName(int id) {
+        String name = null;
+
+        Cursor cursor = mContext.getContentResolver().query(mAccount.getUri(),
+                new String[] { TableAccountList.ACCOUNTNAME },
+                TableAccountList.ACCOUNTID + "=?",
+                new String[]{Integer.toString(id)},
+                null);
+        // check if cursor is valid and open
+        if ((cursor == null) || (!cursor.moveToFirst())) {
+            return name;
+        }
+
+        // set payee name
+        name = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
+
+        cursor.close();
+
+        return name;
     }
 
     /**
