@@ -452,6 +452,7 @@ public class MoneyManagerOpenHelper
      * @throws Throwable
      * reference:
      * http://stackoverflow.com/questions/4557154/android-sqlite-db-when-to-close
+     * http://stackoverflow.com/questions/14469782/android-sqlite-right-way-to-open-close-db
      */
     @Override
     public void finalize() throws Throwable {
