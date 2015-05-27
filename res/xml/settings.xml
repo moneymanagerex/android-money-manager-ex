@@ -18,6 +18,11 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<Preference-->
+        <!--android:icon="@null"-->
+        <!--android:key="portable"-->
+        <!--android:title="Portable" />-->
+
     <Preference
         android:icon="@null"
         android:key="@string/pref_general"
