@@ -76,7 +76,7 @@ public class StockHistoryRepository
             success = updateHistory(symbol, price, date);
         }
 
-        db.close();
+//        db.close();
 
         return success;
     }
@@ -102,7 +102,7 @@ public class StockHistoryRepository
             cursor.close();
         }
 
-        db.close();
+//        db.close();
 
         return result;
     }
@@ -130,7 +130,7 @@ public class StockHistoryRepository
 
         result = records > 0;
 
-        db.close();
+//        db.close();
 
         return result;
     }
@@ -196,7 +196,7 @@ public class StockHistoryRepository
             cursor.close();
         }
 
-        db.close();
+//        db.close();
 
         return result;
     }
@@ -229,7 +229,7 @@ public class StockHistoryRepository
                 null
                 );
 
-        db.close();
+//        db.close();
 
         return actionResult;
     }

@@ -63,7 +63,7 @@ public class WatchlistDataset
         // todo: do something with the data?
 
         cursor.close();
-        db.close();
+//        db.close();
     }
 
 }

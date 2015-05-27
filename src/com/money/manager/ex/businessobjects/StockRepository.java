@@ -103,7 +103,7 @@ public class StockRepository
             cursor.close();
             result = true;
         }
-        database.close();
+//        database.close();
 
         return result;
     }
@@ -173,7 +173,7 @@ public class StockRepository
             Log.w(LOGCAT, "Price update failed for stock id:" + id);
         }
 
-        db.close();
+//        db.close();
         return  result;
     }
 

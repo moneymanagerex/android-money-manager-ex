@@ -251,7 +251,7 @@ public class MoneyManagerOpenHelper
             Log.e(LOGCAT, e.getMessage());
         } finally {
             if (cursor != null) cursor.close();
-            if (database != null) database.close();
+//            if (database != null) database.close();
         }
         return sqliteVersion;
     }
@@ -274,7 +274,7 @@ public class MoneyManagerOpenHelper
                 cursor.close();
                 return account;
             }
-            database.close();
+//            database.close();
             //close();
         }
         // find is false then return null

@@ -474,13 +474,13 @@ public class Core {
      */
     public String getInfoValue(String info) {
         TableInfoTable infoTable = new TableInfoTable();
-        MoneyManagerOpenHelper helper;
-        Cursor data = null;
+//        MoneyManagerOpenHelper helper;
+        Cursor data;
         String ret = null;
 
         try {
-            helper = MoneyManagerOpenHelper.getInstance(mContext);
-            data = helper.getReadableDatabase().query(infoTable.getSource(), null,
+            data = MoneyManagerOpenHelper.getInstance(mContext)
+                .getReadableDatabase().query(infoTable.getSource(), null,
                     TableInfoTable.INFONAME + "=?", new String[]{info}, null, null, null);
             if (data != null && data.moveToFirst()) {
                 ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
@@ -488,9 +488,9 @@ public class Core {
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
         } finally {
-            // close data
-            if (data != null)
-                data.close();
+//            // close data
+//            if (data != null)
+//                data.close();
             //if (helper != null) helper.close();
         }
 
