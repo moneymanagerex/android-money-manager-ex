@@ -56,7 +56,12 @@ import com.money.manager.ex.view.RobotoTextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class DashboardFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+/**
+ * This fragment is not used (?).
+ */
+public class DashboardFragment
+        extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
     @SuppressWarnings("unused")
     private static final String LOGCAT = DashboardFragment.class.getSimpleName();
     // ID LOADER
@@ -81,8 +86,8 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (container == null)
-            return null;
+        if (container == null) return null;
+
         // parse layout
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.dashboard_fragment, container, false);
         if (layout == null)

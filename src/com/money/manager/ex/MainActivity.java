@@ -264,9 +264,6 @@ public class MainActivity extends BaseFragmentActivity {
         setRestartActivity(false);
     }
 
-    /**
-     * show dashboard fragment
-     */
     public void showDashboardFragment() {
         DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager()
                 .findFragmentByTag(DashboardFragment.class.getSimpleName());
