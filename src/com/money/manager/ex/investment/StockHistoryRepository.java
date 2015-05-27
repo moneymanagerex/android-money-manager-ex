@@ -59,6 +59,14 @@ public class StockHistoryRepository
     private Context mContext;
     private String LOGCAT = this.getClass().getSimpleName();
 
+    @Override
+    public String[] getAllColumns() {
+        return new String[] { "HISTID AS _id",
+                StockHistory.HISTID, StockHistory.SYMBOL, StockHistory.DATE,
+                StockHistory.VALUE, StockHistory.UPDTYPE
+        };
+    }
+
     public boolean addStockHistoryRecord(String symbol, BigDecimal price, Date date) {
         boolean success = false;
 
