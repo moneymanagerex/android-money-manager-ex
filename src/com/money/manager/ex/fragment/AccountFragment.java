@@ -178,13 +178,16 @@ public class AccountFragment extends Fragment
             return null;
         }
         // inflate layout
-        View view = (LinearLayout) inflater.inflate(R.layout.account_fragment, container, false);
+        View view = inflater.inflate(R.layout.account_fragment, container, false);
+
         // take object AccountList
         if (mAccountList == null) {
-            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext()).getTableAccountList(mAccountId);
+            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
+                    .getTableAccountList(mAccountId);
         }
+
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
-        // take reference textview from layout
+        // take reference text view from layout
         txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
         txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
         txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
@@ -218,7 +221,8 @@ public class AccountFragment extends Fragment
                 startActivity(intent);
             }
         });
-        // manage fragment
+
+        // Transactions
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         mAllDataFragment = AllDataFragment.newInstance(mAccountId);
         // set arguments and settings of fragment
@@ -237,7 +241,7 @@ public class AccountFragment extends Fragment
             mAccountName = mAccountList.getAccountName();
             setImageViewFavorite();
         }
-        // set has optionmenu
+
         setHasOptionsMenu(true);
 
         return view;
