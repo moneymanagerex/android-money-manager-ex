@@ -83,7 +83,8 @@ public class RepeatingTransactionListFragment extends BaseListFragment
         setHasOptionsMenu(true);
         registerForContextMenu(getListView());
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        getListView().setDivider(new ColorDrawable(new Core(getActivity().getApplicationContext()).resolveIdAttribute(R.attr.theme_background_color)));
+        getListView().setDivider(new ColorDrawable(new Core(getActivity().getApplicationContext())
+                .resolveIdAttribute(R.attr.theme_background_color)));
 
         setListShown(false);
         // start loaderapplication.getSQLiteStringDate(date)

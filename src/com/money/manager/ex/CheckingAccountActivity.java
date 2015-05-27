@@ -330,7 +330,6 @@ public class CheckingAccountActivity
             DropboxHelper.getInstance(getApplicationContext());
         }
 
-        Core core = new Core(getApplicationContext());
         setToolbarStandardAction(getToolbar());
 
         // manage save instance
@@ -370,67 +369,9 @@ public class CheckingAccountActivity
         if (getIntent() != null) {
             handleIntent(savedInstanceState);
         }
-        // take a reference view into layout
-        // account
-        // accountlist <> to populate the spin
-        AccountRepository accountRepository = new AccountRepository(getApplicationContext());
-        // MoneyManagerOpenHelper.getInstance(getApplicationContext())
-        mAccountList = accountRepository.getTransactionAccounts(core.getAccountsOpenVisible(),
-                core.getAccountFavoriteVisible());
-        for (int i = 0; i <= mAccountList.size() - 1; i++) {
-            mAccountNameList.add(mAccountList.get(i).getAccountName());
-            mAccountIdList.add(mAccountList.get(i).getAccountId());
-        }
-        // create adapter for spinAccount
-        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountNameList);
-        adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinAccount.setAdapter(adapterAccount);
-        // select current value
-        if (mAccountIdList.indexOf(mAccountId) >= 0) {
-            spinAccount.setSelection(mAccountIdList.indexOf(mAccountId), true);
-        }
-        spinAccount.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mAccountIdList.size())) {
-                    mAccountId = mAccountIdList.get(position);
-                    if (mTransactionType.equals(TransactionTypes.Transfer)) {
-                        formatAmount(txtAmount, (Double) txtAmount.getTag(), mAccountId);
-                    } else {
-                        formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), mAccountId);
-                    }
-                    refreshHeaderAmount();
-                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        // to account
-        adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinToAccount.setAdapter(adapterAccount);
-        if (mToAccountId != -1) {
-            if (mAccountIdList.indexOf(mToAccountId) >= 0) {
-                spinToAccount.setSelection(mAccountIdList.indexOf(mToAccountId), true);
-            }
-        }
-        spinToAccount.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mAccountIdList.size())) {
-                    mToAccountId = mAccountIdList.get(position);
-                    formatAmount(txtAmount, (Double) txtAmount.getTag(), mAccountId);
-                    formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), mToAccountId);
-                    refreshHeaderAmount();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        // account(s)
+        initAccountSelectors();
 
         // Transaction code
 
@@ -1536,6 +1477,90 @@ public class CheckingAccountActivity
                 chbSplitTransaction.setChecked(checked);
 
                 onSplitSet();
+            }
+        });
+    }
+
+    /**
+     * Initialize account dropdowns.
+     */
+    private void initAccountSelectors() {
+        Core core = new Core(getApplicationContext());
+
+        // account list to populate the spin
+        AccountRepository accountRepository = new AccountRepository(getApplicationContext());
+        // MoneyManagerOpenHelper.getInstance(getApplicationContext())
+        mAccountList = accountRepository.getTransactionAccounts(core.getAccountsOpenVisible(),
+                core.getAccountFavoriteVisible());
+
+        // #316. In case the account from recurring transaction is not in the visible list,
+        // load it separately.
+        TableAccountList savedAccount;
+        // Account Id (from)
+        if (!mAccountIdList.contains(mAccountId)) {
+            savedAccount = accountRepository.load(mAccountId);
+            mAccountList.add(savedAccount);
+        }
+        // ToAccountId
+        if (!mAccountIdList.contains(mToAccountId)) {
+            savedAccount = accountRepository.load(mToAccountId);
+            mAccountList.add(savedAccount);
+        }
+        ///////
+
+        for(TableAccountList account : mAccountList) {
+            mAccountNameList.add(account.getAccountName());
+            mAccountIdList.add(account.getAccountId());
+        }
+
+        // create adapter for spinAccount
+        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountNameList);
+        adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinAccount.setAdapter(adapterAccount);
+        // select current value
+        if (mAccountIdList.indexOf(mAccountId) >= 0) {
+            spinAccount.setSelection(mAccountIdList.indexOf(mAccountId), true);
+        }
+        spinAccount.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position >= 0) && (position <= mAccountIdList.size())) {
+                    mAccountId = mAccountIdList.get(position);
+                    if (mTransactionType.equals(TransactionTypes.Transfer)) {
+                        formatAmount(txtAmount, (Double) txtAmount.getTag(), mAccountId);
+                    } else {
+                        formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), mAccountId);
+                    }
+                    refreshHeaderAmount();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        // to account
+        adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinToAccount.setAdapter(adapterAccount);
+        if (mToAccountId != -1) {
+            if (mAccountIdList.indexOf(mToAccountId) >= 0) {
+                spinToAccount.setSelection(mAccountIdList.indexOf(mToAccountId), true);
+            }
+        }
+        spinToAccount.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position >= 0) && (position <= mAccountIdList.size())) {
+                    mToAccountId = mAccountIdList.get(position);
+                    formatAmount(txtAmount, (Double) txtAmount.getTag(), mAccountId);
+                    formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), mToAccountId);
+                    refreshHeaderAmount();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
     }

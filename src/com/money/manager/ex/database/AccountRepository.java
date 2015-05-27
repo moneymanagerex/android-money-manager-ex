@@ -18,6 +18,7 @@
 package com.money.manager.ex.database;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,6 +40,27 @@ public class AccountRepository {
 
     private Context mContext;
     private TableAccountList mAccount;
+
+    public TableAccountList load(int accountId) {
+        TableAccountList result = new TableAccountList();
+
+        String selection = TableAccountList.ACCOUNTID + "=?";
+
+        Cursor cursor = mContext.getContentResolver().query(
+                mAccount.getUri(),
+                new String[] { TableAccountList.ACCOUNTNAME },
+                selection,
+                new String[] { Integer.toString(accountId) },
+                null);
+
+        if (cursor.moveToFirst()) {
+            result.setValueFromCursor(cursor);
+        }
+
+        cursor.close();
+
+        return result;
+    }
 
     public int loadIdByName(String name) {
         int result = -1;

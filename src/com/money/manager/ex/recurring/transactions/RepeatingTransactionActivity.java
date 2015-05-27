@@ -313,7 +313,6 @@ public class RepeatingTransactionActivity extends BaseFragmentActivity implement
         txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
         txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
         txtSplit = (TextView) findViewById(R.id.splitTextView);
-//        RobotoTextView splitText = (RobotoTextView) findViewById(R.id.splitTextView);
 
         // Account
         // account list <> to populate the spin
