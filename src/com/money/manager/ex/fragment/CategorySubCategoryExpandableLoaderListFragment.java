@@ -639,7 +639,8 @@ public class CategorySubCategoryExpandableLoaderListFragment
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        showTypeSelectorDialog();
+//        showTypeSelectorDialog();
+        showNameEntryDialog();
     }
 
     private void addListClickHandlers() {
@@ -735,11 +736,29 @@ public class CategorySubCategoryExpandableLoaderListFragment
                 .input(R.string.create_db, R.string.create_db_error, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        // Do something
+                        // Do something. Happens after positive handler.
+                        dialog.setIcon(android.R.drawable.btn_radio);
+                    }
+                })
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        dialog.setIcon(android.R.drawable.btn_plus);
+                    }
+
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        dialog.setIcon(android.R.drawable.btn_minus);
+                    }
+
+                    @Override
+                    public void onNeutral(MaterialDialog dialog) {
+                        dialog.setIcon(android.R.drawable.btn_star);
+//                        dialog.dismiss();
                     }
                 })
                 .positiveText(android.R.string.ok)
-//                .negativeText(R.string.subcategory)
+                .negativeText(R.string.subcategory)
                 .neutralText(android.R.string.cancel)
                 .show();
     }
