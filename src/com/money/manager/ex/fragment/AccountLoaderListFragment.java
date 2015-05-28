@@ -89,7 +89,7 @@ public class AccountLoaderListFragment
         // start loader
         getLoaderManager().initLoader(ID_LOADER_ACCOUNT, null, this);
 
-        // set incon searched
+        // set icon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);

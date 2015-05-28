@@ -30,7 +30,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -205,7 +205,8 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                 mYearsSelected.put(Calendar.getInstance().get(Calendar.YEAR), true);
             }
             // set home button
-            ActionBarActivity activity = (ActionBarActivity) getActivity();
+//            ActionBarActivity activity = (ActionBarActivity) getActivity();
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
             if (activity != null) {
                 //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }

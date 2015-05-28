@@ -23,7 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -79,7 +79,8 @@ public abstract class BaseExpandableListFragment
         // set subtitle in actionbar
         if (!(TextUtils.isEmpty(getSubTitle()))) {
             //getActivity().getActionBar().setSubtitle(getSubTitle());
-            ActionBarActivity activity = (ActionBarActivity) getActivity();
+            //ActionBarActivity activity = (ActionBarActivity) getActivity();
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
             if (activity != null) {
                 activity.getSupportActionBar().setSubtitle(getSubTitle());
             }
@@ -105,12 +106,13 @@ public abstract class BaseExpandableListFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (isShowMenuItemSearch() && getActivity() != null && getActivity() instanceof ActionBarActivity) {
+        if (isShowMenuItemSearch() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
 
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            ActionBarActivity activity = (ActionBarActivity) getActivity();
+//            ActionBarActivity activity = (ActionBarActivity) getActivity();
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
 
             SearchView searchView = new SearchView(getActivity());
             if (searchView != null) {
