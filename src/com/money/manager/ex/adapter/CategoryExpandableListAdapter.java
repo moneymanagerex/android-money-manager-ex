@@ -188,8 +188,13 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 	}
 	
 	public void setIdGroupChecked(int idGroup) {
-		mIdGroupChecked = idGroup;
-		mIdChildChecked = ExpandableListView.INVALID_POSITION;
+		// If an existing group is clicked, collapse it. Reset the expanded id.
+        if (mIdGroupChecked == idGroup) {
+            mIdGroupChecked = ListView.INVALID_POSITION;
+        } else {
+            mIdGroupChecked = idGroup;
+            mIdChildChecked = ExpandableListView.INVALID_POSITION;
+        }
 	}
 	
 	public void setIdChildChecked(int idGroup, int idChild) {
