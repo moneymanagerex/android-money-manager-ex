@@ -127,71 +127,14 @@ public class CategorySubCategoryExpandableLoaderListFragment
                     : android.R.layout.simple_expandable_list_item_2;
         }
 
-        // associate adapter
-        //CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(), null, null);
-        //setListAdapter(adapter);
         // manage context menu
         registerForContextMenu(getExpandableListView());
 
         getExpandableListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setListShown(false);
 
-        if (Intent.ACTION_PICK.equals(mAction)) {
-            getExpandableListView().setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        addListClickHandlers();
 
-                @Override
-                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                    if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
-                        CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-
-                        QueryCategorySubCategory data = mSubCategories.get(mCategories.get(groupPosition)).get(childPosition);
-
-                        adapter.setIdChildChecked(data.getCategId(), data.getSubCategId());
-                        adapter.notifyDataSetChanged();
-                    }
-                    return false;
-                }
-            });
-
-            getExpandableListView().setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-
-                @Override
-                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                    if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
-                        CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                        adapter.setIdGroupChecked(mCategories.get(groupPosition).getCategId());
-                        adapter.notifyDataSetChanged();
-                    }
-                    return false;
-                }
-            });
-
-            // Long-click selects the category.
-            getExpandableListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    // i = position, l = id
-                    Object selectedItem = adapterView.getItemAtPosition(i);
-                    CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                    if (selectedItem instanceof TableCategory) {
-                        // this is a category
-                        TableCategory category = (TableCategory) selectedItem;
-                        adapter.setIdGroupChecked(category.getCategId());
-                    } else {
-                        // subcategory
-                        QueryCategorySubCategory subCategory = (QueryCategorySubCategory) selectedItem;
-                        adapter.setIdChildChecked(subCategory.getCategId(), subCategory.getSubCategId());
-                    }
-
-                    CategorySubCategoryExpandableLoaderListFragment fragment =
-                            (CategorySubCategoryExpandableLoaderListFragment) getActivity()
-                                    .getSupportFragmentManager().findFragmentByTag(CategorySubCategoryExpandableListActivity.FRAGMENTTAG);
-                    fragment.setResultAndFinish();
-                    return true;
-                }
-            });
-
-        }
         // start loader
         getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
 
@@ -258,34 +201,6 @@ public class CategorySubCategoryExpandableLoaderListFragment
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case ID_LOADER_CATEGORYSUB:
-                // save id selected
-                if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
-                    CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                    mIdGroupChecked = adapter.getIdGroupChecked();
-                    mIdChildChecked = adapter.getIdChildChecked();
-                }
-                // clear arraylist and hashmap
-                mCategories.clear();
-                mSubCategories.clear();
-                // load data
-
-                String whereClause = null;
-                String selectionArgs[] = null;
-                if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause = QueryCategorySubCategory.CATEGNAME + " LIKE ? OR "
-                            + QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
-                    selectionArgs = new String[]{mCurFilter + "%", mCurFilter + "%"};
-                }
-                return new CursorLoader(getActivity(), mCategorySub.getUri(), mCategorySub.getAllColumns(), whereClause,
-                        selectionArgs, QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
-        }
-        return null;
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
@@ -294,16 +209,6 @@ public class CategorySubCategoryExpandableLoaderListFragment
             menu.addSubMenu(0, SUBMENU_ITEM_ADD_SUBCATEGORY, SUBMENU_ITEM_ADD_SUBCATEGORY, R.string.add_subcategory);*/
         inflater.inflate(R.menu.menu_category_sub_category_expandable_list, menu);
 
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case ID_LOADER_CATEGORYSUB:
-                // clear arraylist and hashmap
-                mCategories.clear();
-                mSubCategories.clear();
-        }
     }
 
     public CategoryExpandableListAdapter getAdapter(Cursor data) {
@@ -364,24 +269,6 @@ public class CategorySubCategoryExpandableLoaderListFragment
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case ID_LOADER_CATEGORYSUB:
-                setListAdapter(getAdapter(data));
-
-                if (isResumed()) {
-                    setListShown(true);
-                } else {
-                    setListShownNoAnimation(true);
-                }
-
-                for (int i = 0; i < mPositionToExpand.size(); i++) {
-                    getExpandableListView().expandGroup(mPositionToExpand.get(i));
-                }
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add_category:
@@ -403,12 +290,75 @@ public class CategorySubCategoryExpandableLoaderListFragment
         return true;
     }
 
+    // Data loader
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case ID_LOADER_CATEGORYSUB:
+                // save id selected
+                if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
+                    CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
+                    mIdGroupChecked = adapter.getIdGroupChecked();
+                    mIdChildChecked = adapter.getIdChildChecked();
+                }
+                // clear arraylist and hashmap
+                mCategories.clear();
+                mSubCategories.clear();
+
+                // load data
+                String whereClause = null;
+                String selectionArgs[] = null;
+                if (!TextUtils.isEmpty(mCurFilter)) {
+                    whereClause = QueryCategorySubCategory.CATEGNAME + " LIKE ? OR "
+                            + QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
+                    selectionArgs = new String[]{mCurFilter + "%", mCurFilter + "%"};
+                }
+                return new CursorLoader(getActivity(), mCategorySub.getUri(),
+                        mCategorySub.getAllColumns(),
+                        whereClause,
+                        selectionArgs,
+                        QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
+        }
+        return null;
+    }
+
     /**
      * Restart loader to view data
      */
     private void restartLoader() {
         getLoaderManager().restartLoader(ID_LOADER_CATEGORYSUB, null, this);
     }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()) {
+            case ID_LOADER_CATEGORYSUB:
+                // clear arraylist and hashmap
+                mCategories.clear();
+                mSubCategories.clear();
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId()) {
+            case ID_LOADER_CATEGORYSUB:
+                setListAdapter(getAdapter(data));
+
+                if (isResumed()) {
+                    setListShown(true);
+                } else {
+                    setListShownNoAnimation(true);
+                }
+
+                for (int i = 0; i < mPositionToExpand.size(); i++) {
+                    getExpandableListView().expandGroup(mPositionToExpand.get(i));
+                }
+        }
+    }
+
+    // End data loader
 
     @Override
     protected void setResult() {
@@ -673,5 +623,65 @@ public class CategorySubCategoryExpandableLoaderListFragment
     @Override
     public String getSubTitle() {
         return getString(R.string.categories);
+    }
+
+    private void addListClickHandlers() {
+        // the list handlers available only when selecting a category.
+        if (Intent.ACTION_PICK.equals(mAction)) {
+            getExpandableListView().setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                    if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
+                        CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
+
+                        QueryCategorySubCategory data = mSubCategories.get(mCategories.get(groupPosition)).get(childPosition);
+
+                        adapter.setIdChildChecked(data.getCategId(), data.getSubCategId());
+                        adapter.notifyDataSetChanged();
+                    }
+                    return false;
+                }
+            });
+
+            getExpandableListView().setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+                @Override
+                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                    if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
+                        CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
+                        adapter.setIdGroupChecked(mCategories.get(groupPosition).getCategId());
+                        adapter.notifyDataSetChanged();
+                    }
+                    return false;
+                }
+            });
+
+            // Long-click selects the category.
+            getExpandableListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    // i = position, l = id
+                    Object selectedItem = adapterView.getItemAtPosition(i);
+                    CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
+                    if (selectedItem instanceof TableCategory) {
+                        // this is a category
+                        TableCategory category = (TableCategory) selectedItem;
+                        adapter.setIdGroupChecked(category.getCategId());
+                    } else {
+                        // subcategory
+                        QueryCategorySubCategory subCategory = (QueryCategorySubCategory) selectedItem;
+                        adapter.setIdChildChecked(subCategory.getCategId(), subCategory.getSubCategId());
+                    }
+
+                    CategorySubCategoryExpandableLoaderListFragment fragment =
+                            (CategorySubCategoryExpandableLoaderListFragment) getActivity()
+                                    .getSupportFragmentManager().findFragmentByTag(CategorySubCategoryExpandableListActivity.FRAGMENTTAG);
+                    fragment.setResultAndFinish();
+                    return true;
+                }
+            });
+
+        }
     }
 }
