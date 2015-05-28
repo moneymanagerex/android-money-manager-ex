@@ -174,9 +174,9 @@ public class CategorySubCategoryExpandableLoaderListFragment
         switch (item.getItemId()) {
             case 0: //EDIT
                 if (subCategId == ExpandableListView.INVALID_POSITION) {
-                    showDialogEditCategName(SQLTypeTransaction.UPDATE, categId, categName);
+                    showDialogEditCategoryName(SQLTypeTransaction.UPDATE, categId, categName);
                 } else {
-                    showDialogEditSubCategName(SQLTypeTransaction.UPDATE, categId, subCategId, subCategName);
+                    showDialogEditSubCategoryName(SQLTypeTransaction.UPDATE, categId, subCategId, subCategName);
                 }
                 break;
             case 1: //DELETE
@@ -276,10 +276,10 @@ public class CategorySubCategoryExpandableLoaderListFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add_category:
-                showDialogEditCategName(SQLTypeTransaction.INSERT, -1, null);
+                showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
                 break;
             case R.id.menu_add_subcategory:
-                showDialogEditSubCategName(SQLTypeTransaction.INSERT, -1, -1, null);
+                showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -486,8 +486,8 @@ public class CategorySubCategoryExpandableLoaderListFragment
     /**
      * Show alter dialog, for create or edit new category
      */
-    private void showDialogEditCategName(final SQLTypeTransaction type, final int categoryId,
-                                         final CharSequence categName) {
+    private void showDialogEditCategoryName(final SQLTypeTransaction type, final int categoryId,
+                                            final CharSequence categName) {
         final TableCategory category = new TableCategory();
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
@@ -498,10 +498,15 @@ public class CategorySubCategoryExpandableLoaderListFragment
         if (!TextUtils.isEmpty(categName)) {
             edtCategName.setSelection(categName.length());
         }
+
+        int titleId = type.equals(SQLTypeTransaction.INSERT)
+                ? R.string.add_category
+                : R.string.edit_categoryName;
+
         // create alter dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
         alertDialog.setView(viewDialog);
-        alertDialog.setTitle(R.string.edit_categoryName);
+        alertDialog.setTitle(titleId);
         // listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -543,8 +548,8 @@ public class CategorySubCategoryExpandableLoaderListFragment
     /**
      * Show alter dialog, for create or edit new category
      */
-    private void showDialogEditSubCategName(final SQLTypeTransaction type, final int categoryId,
-                                            final int subCategoryId, final CharSequence subCategName) {
+    private void showDialogEditSubCategoryName(final SQLTypeTransaction type, final int categoryId,
+                                               final int subCategoryId, final CharSequence subCategName) {
         final TableSubCategory subCategory = new TableSubCategory();
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
@@ -578,10 +583,14 @@ public class CategorySubCategoryExpandableLoaderListFragment
             spnCategory.setSelection(categId.indexOf(categoryId), true);
         }
 
+        int titleId = type.equals(SQLTypeTransaction.INSERT)
+                ? R.string.add_subcategory
+                : R.string.edit_categoryName;
+
         // create alter dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
         alertDialog.setView(viewDialog);
-        alertDialog.setTitle(R.string.edit_categoryName);
+        alertDialog.setTitle(titleId);
         // listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -639,8 +648,8 @@ public class CategorySubCategoryExpandableLoaderListFragment
 
     @Override
     public void onFloatingActionButtonClickListener() {
-//        showTypeSelectorDialog();
-        showNameEntryDialog();
+        showTypeSelectorDialog();
+//        showNameEntryDialog();
     }
 
     private void addListClickHandlers() {
@@ -708,8 +717,8 @@ public class CategorySubCategoryExpandableLoaderListFragment
      */
     private void showTypeSelectorDialog() {
         new MaterialDialog.Builder(getActivity())
-                .title(R.string.donate)
-                .items(R.array.transcode_values)
+                .title(R.string.choose_type)
+                .items(R.array.category_type)
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -717,14 +726,22 @@ public class CategorySubCategoryExpandableLoaderListFragment
                          * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
                          * returning false here won't allow the newly selected radio button to actually be selected.
                          **/
-                        showNameEntryDialog();
+//                        showNameEntryDialog();
+
+                        // todo: depending on the choice, show the edit dialog. 0-based
+                        if (which == 0) {
+                            showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
+                        } else {
+                            showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
+                        }
+
                         return true;
                     }
                 })
-                .positiveText(R.string.category)
-                .negativeText(R.string.subcategory)
+                .positiveText(android.R.string.ok)
+//                .negativeText(android.R.string.cancel)
+                .neutralText(android.R.string.cancel)
                 .show();
-
     }
 
     private void showNameEntryDialog() {
@@ -737,6 +754,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
                         // Do something. Happens after positive handler.
+                        String category = input.toString();
                         dialog.setIcon(android.R.drawable.btn_radio);
                     }
                 })
@@ -748,18 +766,19 @@ public class CategorySubCategoryExpandableLoaderListFragment
 
                     @Override
                     public void onNegative(MaterialDialog dialog) {
+                        String input = dialog.getInputEditText().getText().toString();
                         dialog.setIcon(android.R.drawable.btn_minus);
                     }
 
-                    @Override
-                    public void onNeutral(MaterialDialog dialog) {
-                        dialog.setIcon(android.R.drawable.btn_star);
-//                        dialog.dismiss();
-                    }
+//                    @Override
+//                    public void onNeutral(MaterialDialog dialog) {
+//                        dialog.setIcon(android.R.drawable.btn_star);
+////                        dialog.dismiss();
+//                    }
                 })
-                .positiveText(android.R.string.ok)
+                .positiveText(R.string.category)
                 .negativeText(R.string.subcategory)
-                .neutralText(android.R.string.cancel)
+//                .neutralText(android.R.string.cancel)
                 .show();
     }
 }

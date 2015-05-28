@@ -341,4 +341,8 @@
         <item>@string/sort_by_name</item>
         <item>@string/sort_by_usage</item>
     </string-array>
+    <string-array name="category_type">
+        <item>@string/category</item>
+        <item>@string/subcategory</item>
+    </string-array>
 </resources>
