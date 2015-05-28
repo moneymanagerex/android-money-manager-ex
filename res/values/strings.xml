@@ -593,4 +593,5 @@
     <string name="select_all">Select all</string>
     <string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>
     <string name="checking_dropbox_for_changes">Checking Dropbox for database modifications.</string>
+    <string name="choose_type">Choose a type</string>
 </resources>

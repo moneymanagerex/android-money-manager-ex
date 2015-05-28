@@ -17,12 +17,13 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:mode="twoLine"
     android:orientation="vertical"
     android:paddingBottom="2dip"
-    android:paddingTop="2dip" >
+    android:paddingTop="2dip">
 
     <CheckedTextView
         android:id="@android:id/text1"
@@ -32,6 +33,7 @@
         android:layout_marginTop="6dip"
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:textAlignment="viewStart"
+        android:layout_gravity="start"
         android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
@@ -42,6 +44,7 @@
         android:layout_below="@android:id/text1"
         android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textAlignment="viewStart"
+        android:layout_gravity="start"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

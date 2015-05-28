@@ -29,7 +29,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -418,7 +418,8 @@ public class HomeFragment extends Fragment implements
     public void onResume() {
         super.onResume();
         // clear subTitle of ActionBar
-        ActionBarActivity activity = (ActionBarActivity) getActivity();
+//        ActionBarActivity activity = (ActionBarActivity) getActivity();
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null)
             activity.getSupportActionBar().setSubtitle(null);
         // start loader data

@@ -20,7 +20,7 @@ package com.money.manager.ex.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -125,7 +125,8 @@ public class IncomeVsExpensesChartFragment extends Fragment implements
         mTextColor = new Core(getActivity()).resolveIdAttribute(R.attr.chartTextColor);
 
         // enabled display as home
-        ActionBarActivity activity = (ActionBarActivity) getActivity();
+//        ActionBarActivity activity = (ActionBarActivity) getActivity();
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null && activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(isDisplayHomeAsUpEnabled());
         }

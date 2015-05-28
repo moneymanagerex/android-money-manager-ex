@@ -22,7 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -46,7 +46,6 @@ public abstract class BaseListFragment
         extends AbsListFragment {
     // saved instance
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
-    // FloatingActionButton
     FloatingActionButton mFloatingActionButton;
     // menu items
 //    private boolean mDisplayShowCustomEnabled = false;
@@ -101,8 +100,9 @@ public abstract class BaseListFragment
         }
         // set subtitle in actionbar
         if (!(TextUtils.isEmpty(getSubTitle()))) {
-            if (getActivity() instanceof ActionBarActivity) {
-                ActionBarActivity activity = (ActionBarActivity) getActivity();
+            if (getActivity() instanceof AppCompatActivity) {
+//                ActionBarActivity activity = (ActionBarActivity) getActivity();
+                AppCompatActivity activity = (AppCompatActivity) getActivity();
                 if (activity != null) {
                     activity.getSupportActionBar().setSubtitle(getSubTitle());
                 }
@@ -132,7 +132,7 @@ public abstract class BaseListFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (isShowMenuItemSearch() && getActivity() != null && getActivity() instanceof ActionBarActivity) {
+        if (isShowMenuItemSearch() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
 
@@ -184,7 +184,8 @@ public abstract class BaseListFragment
     }
 
     protected boolean onPreQueryTextChange(String newText) {
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
             newText = "%" + newText;
 
         return onQueryTextChange(newText);
@@ -241,6 +242,8 @@ public abstract class BaseListFragment
         this.mSearchHint = mSearchHint;
     }
 
+    // Floating button methods
+
     public FloatingActionButton getFloatingActionButton() {
         return mFloatingActionButton;
     }
@@ -260,4 +263,6 @@ public abstract class BaseListFragment
     public void onFloatingActionButtonClickListener() {
         return;
     }
+
+    // End floating button methods.
 }

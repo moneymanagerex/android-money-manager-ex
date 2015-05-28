@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
@@ -122,9 +124,11 @@ public class CategorySubCategoryExpandableLoaderListFragment
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             mLayout = android.R.layout.simple_expandable_list_item_2;
         } else {
-            mLayout = Intent.ACTION_PICK.equals(mAction)
-                    ? R.layout.simple_expandable_list_item_multiple_choice_2
-                    : android.R.layout.simple_expandable_list_item_2;
+            if (Intent.ACTION_PICK.equals(mAction)) {
+                mLayout = R.layout.simple_expandable_list_item_multiple_choice_2;
+            } else {
+                mLayout = android.R.layout.simple_expandable_list_item_2;
+            }
         }
 
         // manage context menu
@@ -138,8 +142,11 @@ public class CategorySubCategoryExpandableLoaderListFragment
         // start loader
         getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
 
-        // set iconfied searched
+        // set icon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
+
+        setFloatingActionButtonVisible(true);
+        setFloatingActionButtonAttachListView(true);
     }
 
     @Override
@@ -167,9 +174,9 @@ public class CategorySubCategoryExpandableLoaderListFragment
         switch (item.getItemId()) {
             case 0: //EDIT
                 if (subCategId == ExpandableListView.INVALID_POSITION) {
-                    showDialogEditCategName(SQLTypeTransaction.UPDATE, categId, categName);
+                    showDialogEditCategoryName(SQLTypeTransaction.UPDATE, categId, categName);
                 } else {
-                    showDialogEditSubCategName(SQLTypeTransaction.UPDATE, categId, subCategId, subCategName);
+                    showDialogEditSubCategoryName(SQLTypeTransaction.UPDATE, categId, subCategId, subCategName);
                 }
                 break;
             case 1: //DELETE
@@ -200,16 +207,29 @@ public class CategorySubCategoryExpandableLoaderListFragment
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    // toolbar menu
 
-        // create submenu from item add
-            /*menu.addSubMenu(0, SUBMENU_ITEM_ADD_CATEGORY, SUBMENU_ITEM_ADD_CATEGORY, R.string.add_category);
-            menu.addSubMenu(0, SUBMENU_ITEM_ADD_SUBCATEGORY, SUBMENU_ITEM_ADD_SUBCATEGORY, R.string.add_subcategory);*/
-        inflater.inflate(R.menu.menu_category_sub_category_expandable_list, menu);
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//
+//        // create submenu from item add
+//        inflater.inflate(R.menu.menu_category_sub_category_expandable_list, menu);
+//    }
 
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.menu_add_category:
+//                showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
+//                break;
+//            case R.id.menu_add_subcategory:
+//                showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
+    // end toolbar menu
 
     public CategoryExpandableListAdapter getAdapter(Cursor data) {
         mCategories.clear();
@@ -266,18 +286,6 @@ public class CategorySubCategoryExpandableLoaderListFragment
         CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(), mLayout, mCategories, mSubCategories);
         adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
         return adapter;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_add_category:
-                showDialogEditCategName(SQLTypeTransaction.INSERT, -1, null);
-                break;
-            case R.id.menu_add_subcategory:
-                showDialogEditSubCategName(SQLTypeTransaction.INSERT, -1, -1, null);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -348,6 +356,10 @@ public class CategorySubCategoryExpandableLoaderListFragment
 
                 if (isResumed()) {
                     setListShown(true);
+
+                    if (data.getCount() <= 0 && getFloatingActionButton() != null) {
+                        getFloatingActionButton().show(true);
+                    }
                 } else {
                     setListShownNoAnimation(true);
                 }
@@ -451,9 +463,11 @@ public class CategorySubCategoryExpandableLoaderListFragment
                     public void onClick(DialogInterface dialog, int which) {
                         int rowsDelete = 0;
                         if (subCategId <= 0) {
-                            rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(), TableCategory.CATEGID + "=" + categId, null);
+                            rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(),
+                                    TableCategory.CATEGID + "=" + categId, null);
                         } else {
-                            rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(), TableSubCategory.CATEGID + "=" + categId + " AND " + TableSubCategory.SUBCATEGID + "=" + subCategId, null);
+                            rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(),
+                                    TableSubCategory.CATEGID + "=" + categId + " AND " + TableSubCategory.SUBCATEGID + "=" + subCategId, null);
                         }
                         if (rowsDelete == 0) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
@@ -476,21 +490,27 @@ public class CategorySubCategoryExpandableLoaderListFragment
     /**
      * Show alter dialog, for create or edit new category
      */
-    private void showDialogEditCategName(final SQLTypeTransaction type, final int categoryId,
-                                         final CharSequence categName) {
+    private void showDialogEditCategoryName(final SQLTypeTransaction type, final int categoryId,
+                                            final CharSequence categName) {
         final TableCategory category = new TableCategory();
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
+
         final EditText edtCategName = (EditText) viewDialog.findViewById(R.id.editTextCategName);
         // set category description
         edtCategName.setText(categName);
         if (!TextUtils.isEmpty(categName)) {
             edtCategName.setSelection(categName.length());
         }
+
+        int titleId = type.equals(SQLTypeTransaction.INSERT)
+                ? R.string.add_category
+                : R.string.edit_categoryName;
+
         // create alter dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
         alertDialog.setView(viewDialog);
-        alertDialog.setTitle(R.string.edit_categoryName);
+        alertDialog.setTitle(titleId);
         // listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -532,11 +552,12 @@ public class CategorySubCategoryExpandableLoaderListFragment
     /**
      * Show alter dialog, for create or edit new category
      */
-    private void showDialogEditSubCategName(final SQLTypeTransaction type, final int categoryId,
-                                            final int subCategoryId, final CharSequence subCategName) {
+    private void showDialogEditSubCategoryName(final SQLTypeTransaction type, final int categoryId,
+                                               final int subCategoryId, final CharSequence subCategName) {
         final TableSubCategory subCategory = new TableSubCategory();
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
+
         final EditText edtSubCategName = (EditText) viewDialog.findViewById(R.id.editTextCategName);
         final Spinner spnCategory = (Spinner) viewDialog.findViewById(R.id.spinnerCategory);
         // set category description
@@ -566,10 +587,14 @@ public class CategorySubCategoryExpandableLoaderListFragment
             spnCategory.setSelection(categId.indexOf(categoryId), true);
         }
 
+        int titleId = type.equals(SQLTypeTransaction.INSERT)
+                ? R.string.add_subcategory
+                : R.string.edit_categoryName;
+
         // create alter dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
         alertDialog.setView(viewDialog);
-        alertDialog.setTitle(R.string.edit_categoryName);
+        alertDialog.setTitle(titleId);
         // listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -623,6 +648,12 @@ public class CategorySubCategoryExpandableLoaderListFragment
     @Override
     public String getSubTitle() {
         return getString(R.string.categories);
+    }
+
+    @Override
+    public void onFloatingActionButtonClickListener() {
+        showTypeSelectorDialog();
+//        showNameEntryDialog();
     }
 
     private void addListClickHandlers() {
@@ -683,5 +714,75 @@ public class CategorySubCategoryExpandableLoaderListFragment
             });
 
         }
+    }
+
+    /**
+     * Choose the item type: category / subcategory.
+     */
+    private void showTypeSelectorDialog() {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.choose_type)
+                .items(R.array.category_type)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        /**
+                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                         * returning false here won't allow the newly selected radio button to actually be selected.
+                         **/
+//                        showNameEntryDialog();
+
+                        // todo: depending on the choice, show the edit dialog. 0-based
+                        if (which == 0) {
+                            showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
+                        } else {
+                            showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
+                        }
+
+                        return true;
+                    }
+                })
+                .positiveText(android.R.string.ok)
+//                .negativeText(android.R.string.cancel)
+                .neutralText(android.R.string.cancel)
+                .show();
+    }
+
+    private void showNameEntryDialog() {
+        // todo: customize dialog.
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.donate)
+                .content(R.string.create_db_dialog_content)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(R.string.create_db, R.string.create_db_error, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        // Do something. Happens after positive handler.
+                        String category = input.toString();
+                        dialog.setIcon(android.R.drawable.btn_radio);
+                    }
+                })
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        dialog.setIcon(android.R.drawable.btn_plus);
+                    }
+
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        String input = dialog.getInputEditText().getText().toString();
+                        dialog.setIcon(android.R.drawable.btn_minus);
+                    }
+
+//                    @Override
+//                    public void onNeutral(MaterialDialog dialog) {
+//                        dialog.setIcon(android.R.drawable.btn_star);
+////                        dialog.dismiss();
+//                    }
+                })
+                .positiveText(R.string.category)
+                .negativeText(R.string.subcategory)
+//                .neutralText(android.R.string.cancel)
+                .show();
     }
 }

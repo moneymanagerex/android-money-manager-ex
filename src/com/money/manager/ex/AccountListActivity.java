@@ -32,7 +32,9 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.0
  */
-public class AccountListActivity extends BaseFragmentActivity {
+public class AccountListActivity
+        extends BaseFragmentActivity {
+
     public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
     @SuppressWarnings("unused")
