@@ -148,7 +148,8 @@ public abstract class Dataset
 	 */
 	public String getSQL() {
 		switch (type) {
-		case TABLE: case VIEW:
+		case TABLE:
+		case VIEW:
 			return "SELECT " + getAllColumns() + " FROM " + source;
 		case QUERY:
 			return source;

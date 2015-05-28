@@ -279,25 +279,25 @@ public class SearchFragment extends Fragment
         if (txtSelectCategory.getTag() != null) {
             CategorySub categorySub = (CategorySub) txtSelectCategory.getTag();
             // Category. Also check the splits.
-            where.Clause.add(QueryAllData.CategID + "=?");
-//            whereClause.add("(" +
-//                    QueryAllData.CategID + "=" + categorySub.categId +
-//                    " OR " + categorySub.categId + " IN (select " + QueryAllData.CategID +
-//                        " FROM " + TableSplitTransactions.TABLE_NAME +
-//                        " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + ")" +
-//                    ")");
+//            where.Clause.add(QueryAllData.CategID + "=?");
+            where.Clause.add("(" +
+                    "(" + QueryAllData.CategID + "=?" + ") " +
+                    " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
+                        " FROM " + TableSplitTransactions.TABLE_NAME +
+                        " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + "))" +
+                    ")");
             where.Params.add(Integer.toString(categorySub.categId));
 
             // subcategory
             if (categorySub.subCategId != -1) {
                 // Subcategory. Also check the splits.
-                where.Clause.add(QueryAllData.SubcategID + "=?");
-//                whereClause.add("(" +
-//                        QueryAllData.SubcategID + "=?" + categorySub.subCategId +
-//                            " OR " + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
-//                                " FROM " + TableSplitTransactions.TABLE_NAME +
-//                                " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + ")" +
-//                        ")");
+//                where.Clause.add(QueryAllData.SubcategID + "=?");
+                where.Clause.add("(" +
+                        QueryAllData.SubcategID + "=?" +
+                            " OR " + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
+                                " FROM " + TableSplitTransactions.TABLE_NAME +
+                                " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + ")" +
+                        ")");
                 where.Params.add(Integer.toString(categorySub.subCategId));
             }
         }
