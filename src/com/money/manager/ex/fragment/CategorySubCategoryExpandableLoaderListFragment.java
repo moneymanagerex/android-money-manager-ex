@@ -59,10 +59,14 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Categories list fragment
+ * Categories list fragment. Used in Main Activity for editing of categories, and own activity
+ * when selecting the category for a transaction.
  */
-public class CategorySubCategoryExpandableLoaderListFragment extends BaseExpandableListFragment
+public class CategorySubCategoryExpandableLoaderListFragment
+        extends BaseExpandableListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    public String mAction = Intent.ACTION_EDIT;
 
     private static final int ID_LOADER_CATEGORYSUB = 0;
 
@@ -79,7 +83,6 @@ public class CategorySubCategoryExpandableLoaderListFragment extends BaseExpanda
 
     private ArrayList<Integer> mPositionToExpand;
     private String mCurFilter;
-    private CategorySubCategoryExpandableListActivity mParent;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -94,8 +97,6 @@ public class CategorySubCategoryExpandableLoaderListFragment extends BaseExpanda
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mParent = (CategorySubCategoryExpandableListActivity) getActivity();
 
         // create category adapter
         mCategorySub = new QueryCategorySubCategory(getActivity());
@@ -121,7 +122,7 @@ public class CategorySubCategoryExpandableLoaderListFragment extends BaseExpanda
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             mLayout = android.R.layout.simple_expandable_list_item_2;
         } else {
-            mLayout = Intent.ACTION_PICK.equals(mParent.mAction)
+            mLayout = Intent.ACTION_PICK.equals(mAction)
                     ? R.layout.simple_expandable_list_item_multiple_choice_2
                     : android.R.layout.simple_expandable_list_item_2;
         }
@@ -135,7 +136,7 @@ public class CategorySubCategoryExpandableLoaderListFragment extends BaseExpanda
         getExpandableListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setListShown(false);
 
-        if (Intent.ACTION_PICK.equals(mParent.mAction)) {
+        if (Intent.ACTION_PICK.equals(mAction)) {
             getExpandableListView().setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
                 @Override
@@ -195,7 +196,7 @@ public class CategorySubCategoryExpandableLoaderListFragment extends BaseExpanda
         getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
 
         // set iconfied searched
-        setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mParent.mAction));
+        setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
     }
 
     @Override
@@ -411,7 +412,7 @@ public class CategorySubCategoryExpandableLoaderListFragment extends BaseExpanda
 
     @Override
     protected void setResult() {
-        if (Intent.ACTION_PICK.equals(mParent.mAction)) {
+        if (Intent.ACTION_PICK.equals(mAction)) {
             Intent result = null;
 
             if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {

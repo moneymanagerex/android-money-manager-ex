@@ -79,9 +79,6 @@ public class CategorySubCategoryExpandableListActivity
     @SuppressWarnings("unused")
 
     public static final String FRAGMENTTAG = CategorySubCategoryExpandableListActivity.class.getSimpleName() + "_Fragment";
-
-    public String mAction = Intent.ACTION_EDIT;
-
     private static final String LOGCAT = CategorySubCategoryExpandableListActivity.class.getSimpleName();
 
     CategorySubCategoryExpandableLoaderListFragment listFragment = new CategorySubCategoryExpandableLoaderListFragment();
@@ -98,7 +95,7 @@ public class CategorySubCategoryExpandableListActivity
         Intent intent = getIntent();
 
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-            mAction = intent.getAction();
+            listFragment.mAction = intent.getAction();
         }
 
         // management fragment
