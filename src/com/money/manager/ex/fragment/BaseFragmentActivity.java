@@ -23,7 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +37,9 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.PreferenceConstants;
 
-public abstract class BaseFragmentActivity extends ActionBarActivity {
+public abstract class BaseFragmentActivity
+        extends AppCompatActivity {
+
     private boolean mDialogMode = false;
     private boolean mDisplayHomeAsUpEnabled = false;
     private Toolbar mToolbar;
@@ -63,7 +65,8 @@ public abstract class BaseFragmentActivity extends ActionBarActivity {
         // setTheme
         setTheme();
 
-        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(PreferenceConstants.PREF_LOCALE), "");
+        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                .getString(getString(PreferenceConstants.PREF_LOCALE), "");
         Core.changeLocaleApp(getApplicationContext(), locale);
 
         super.onCreate(savedInstance);
