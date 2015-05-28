@@ -459,10 +459,10 @@ public class MoneyManagerOpenHelper
         if (mInstance != null) {
             mInstance.close();
         }
-        SQLiteDatabase db = mInstance.getReadableDatabase();
-        if (db != null) {
-            db.close();
-        }
+//        SQLiteDatabase db = mInstance.getReadableDatabase();
+//        if (db != null) {
+//            db.close();
+//        }
 
         super.finalize();
     }
