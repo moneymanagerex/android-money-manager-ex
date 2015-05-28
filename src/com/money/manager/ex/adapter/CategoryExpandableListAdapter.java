@@ -56,7 +56,8 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 		TextView text2;
 	}
 	
-	public CategoryExpandableListAdapter(Context context, int layout, List<TableCategory> categories, HashMap<TableCategory, List<QueryCategorySubCategory>> subCategories) {
+	public CategoryExpandableListAdapter(Context context, int layout, List<TableCategory> categories,
+                                         HashMap<TableCategory, List<QueryCategorySubCategory>> subCategories) {
 		mContext = context;
 		mLayout = layout;
 		mCategories = categories;
@@ -106,7 +107,8 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 			if (holder.text1 instanceof CheckedTextView) {
 				((CheckedTextView)holder.text1).setChecked(isChildSelected);
 			} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-				convertView.setBackgroundColor(mContext.getResources().getColor(isChildSelected ? R.color.holo_blue_light : android.R.color.transparent));
+				convertView.setBackgroundColor(mContext.getResources().getColor(isChildSelected
+                        ? R.color.holo_blue_light : android.R.color.transparent));
 			}
 		}
 		
@@ -159,7 +161,8 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 					((ExpandableListView)parent).expandGroup(groupPosition, true);
 				}
 			} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-				convertView.setBackgroundColor(mContext.getResources().getColor(isGroupChecked && mIdChildChecked == ExpandableListView.INVALID_POSITION ? R.color.holo_blue_light : android.R.color.transparent));
+				convertView.setBackgroundColor(mContext.getResources().getColor(isGroupChecked &&
+                        mIdChildChecked == ExpandableListView.INVALID_POSITION ? R.color.holo_blue_light : android.R.color.transparent));
 			}
 		}
 		

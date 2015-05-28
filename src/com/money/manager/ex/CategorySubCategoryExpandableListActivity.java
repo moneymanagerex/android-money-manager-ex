@@ -38,6 +38,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -108,7 +109,8 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // set result and terminate activity
-            CategorySubCategoryExpandableLoaderListFragment fragment = (CategorySubCategoryExpandableLoaderListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+            CategorySubCategoryExpandableLoaderListFragment fragment =
+                    (CategorySubCategoryExpandableLoaderListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
             if (fragment != null) {
                 fragment.setResultAndFinish();
             }
@@ -212,6 +214,35 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
                         return false;
                     }
                 });
+
+                // Long-click selects the category.
+                getExpandableListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        // i = position, l = id
+                        Object selectedItem = adapterView.getItemAtPosition(i);
+                        CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
+                        if (selectedItem instanceof TableCategory) {
+                            // this is a category
+                            TableCategory category = (TableCategory) selectedItem;
+                            adapter.setIdGroupChecked(category.getCategId());
+                        } else {
+                            // subcategory
+                            QueryCategorySubCategory subCategory = (QueryCategorySubCategory) selectedItem;
+                            adapter.setIdChildChecked(subCategory.getCategId(), subCategory.getSubCategId());
+                        }
+
+                        CategorySubCategoryExpandableLoaderListFragment fragment =
+                                (CategorySubCategoryExpandableLoaderListFragment) getActivity()
+                                        .getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+                        fragment.setResultAndFinish();
+//                        Toast.makeText(getActivity(),
+//                                "position=" + Integer.toString(i) + ", id=" + Long.toString(l),
+//                                Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+
             }
             // start loader
             getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
@@ -547,7 +578,8 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
         /**
          * Show alter dialog, for create or edit new category
          */
-        private void showDialogEditCategName(final SQLTypeTransaction type, final int categoryId, final CharSequence categName) {
+        private void showDialogEditCategName(final SQLTypeTransaction type, final int categoryId,
+                                             final CharSequence categName) {
             final TableCategory category = new TableCategory();
             // inflate view
             View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
@@ -602,7 +634,8 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
         /**
          * Show alter dialog, for create or edit new category
          */
-        private void showDialogEditSubCategName(final SQLTypeTransaction type, final int categoryId, final int subCategoryId, final CharSequence subCategName) {
+        private void showDialogEditSubCategName(final SQLTypeTransaction type, final int categoryId,
+                                                final int subCategoryId, final CharSequence subCategName) {
             final TableSubCategory subCategory = new TableSubCategory();
             // inflate view
             View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
