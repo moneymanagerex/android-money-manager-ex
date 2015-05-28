@@ -45,7 +45,8 @@ import android.widget.TextView;
  *
  * All ASLv2 licensed.
  */
-public class ExpandableListFragment extends Fragment
+public class ExpandableListFragment
+        extends Fragment
         implements OnCreateContextMenuListener, ExpandableListView.OnChildClickListener,
         ExpandableListView.OnGroupCollapseListener, ExpandableListView.OnGroupExpandListener {
 

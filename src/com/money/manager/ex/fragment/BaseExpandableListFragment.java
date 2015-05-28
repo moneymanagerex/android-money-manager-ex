@@ -40,7 +40,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.settings.PreferenceConstants;
 
-public abstract class BaseExpandableListFragment extends ExpandableListFragment {
+public abstract class BaseExpandableListFragment
+        extends ExpandableListFragment {
     // saved instance
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
     // menu items

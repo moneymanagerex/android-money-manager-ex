@@ -47,7 +47,8 @@ import com.money.manager.ex.database.TablePayee;
 /**
  * Account list
  */
-public class AccountLoaderListFragment extends BaseListFragment
+public class AccountLoaderListFragment
+        extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public String mAction = Intent.ACTION_EDIT;
