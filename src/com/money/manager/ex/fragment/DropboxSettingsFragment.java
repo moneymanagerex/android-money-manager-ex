@@ -313,20 +313,20 @@ public class DropboxSettingsFragment
     }
 
     private void downloadFileFromDropbox(String fileDropbox) {
-//        Core core = new Core(getActivity().getApplicationContext());
-//        // compose intent to launch service for download
-//        Intent service = new Intent(getActivity().getApplicationContext(), DropboxServiceIntent.class);
-//        service.setAction(DropboxServiceIntent.INTENT_ACTION_DOWNLOAD);
-//        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, core.getExternalStorageDirectoryDropboxApplication().getPath() + fileDropbox);
-//        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, fileDropbox);
-//        // toast to show
-//        Toast.makeText(getActivity().getApplicationContext(), R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
-//        // start service
-//        getActivity().startService(service);
+        Core core = new Core(getActivity().getApplicationContext());
+        // compose intent to launch service for download
+        Intent service = new Intent(getActivity().getApplicationContext(), DropboxServiceIntent.class);
+        service.setAction(DropboxServiceIntent.INTENT_ACTION_DOWNLOAD);
+        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, core.getExternalStorageDirectoryDropboxApplication().getPath() + fileDropbox);
+        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, fileDropbox);
+        // toast to show
+        Toast.makeText(getActivity().getApplicationContext(), R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
+        // start service
+        getActivity().startService(service);
 
-        DropboxSettingsActivity parent = (DropboxSettingsActivity) getActivity();
-        DropboxManager dropbox = new DropboxManager(parent, mDropboxHelper, parent);
-        dropbox.startServiceSyncDropbox();
+//        DropboxSettingsActivity parent = (DropboxSettingsActivity) getActivity();
+//        DropboxManager dropbox = new DropboxManager(parent, mDropboxHelper, parent);
+//        dropbox.startServiceSyncDropbox();
     }
 
 }
