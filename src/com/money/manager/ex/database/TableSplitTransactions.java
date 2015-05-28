@@ -47,9 +47,11 @@ public class TableSplitTransactions extends Dataset
 	
 	// CONSTRUCTOR
 	public TableSplitTransactions() {
-		super("SPLITTRANSACTIONS_V1", DatasetType.TABLE, "splittransaction");
+		super(TABLE_NAME, DatasetType.TABLE, "splittransaction");
 	}
-	
+
+	public static String TABLE_NAME = "SPLITTRANSACTIONS_V1";
+
 	@Override
 	public String[] getAllColumns() {
 		return new String[] {"SPLITTRANSID AS _id", SPLITTRANSID, TRANSID, CATEGID,

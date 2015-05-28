@@ -404,11 +404,12 @@ public class MoneyManagerProvider
                 selectList += projection[i];
             }
         }
-        // compose from
+        // FROM
         from = "FROM (" + query + ") T";
-        // compose where
+        // WHERE
         if (!TextUtils.isEmpty(selection)) {
-            if (!selection.contains("WHERE")) {
+//            if (!selection.contains("WHERE")) {
+            if (!selection.startsWith("WHERE")) {
                 where += "WHERE";
             }
             where += " " + selection;
@@ -420,7 +421,7 @@ public class MoneyManagerProvider
             }
             sort += " " + sortOrder;
         }
-        // compose statment to return
+        // compose statement to return
         query = selectList + " " + from;
         // check where or sort not empty
         if (!TextUtils.isEmpty(where)) {
