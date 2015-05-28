@@ -411,10 +411,20 @@ public class MainActivity extends BaseFragmentActivity {
 
     public void startServiceSyncDropbox() {
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
+            // Make sure that the current database is also Dropbox-linked.
+            String currentDatabasePath = MoneyManagerApplication.getDatabasePath(getApplicationContext());
+            String dropboxPath = mDropboxHelper.getLinkedRemoteFile();
+            // easy comparison
+            if (!currentDatabasePath.contains(dropboxPath)) {
+                // The current file was probably opened through Open Database.
+                Toast.makeText(this, R.string.db_not_dropbox, Toast.LENGTH_LONG).show();
+                return;
+            }
+
             Intent service = new Intent(getApplicationContext(), DropboxServiceIntent.class);
             service.setAction(DropboxServiceIntent.INTENT_ACTION_SYNC);
-            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(getApplicationContext()));
-            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, mDropboxHelper.getLinkedRemoteFile());
+            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, currentDatabasePath);
+            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, dropboxPath);
             //progress dialog
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setCancelable(false);

@@ -42,7 +42,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DropboxServiceIntent extends IntentService {
+public class DropboxServiceIntent
+        extends IntentService {
     private static final String LOGCAT = DropboxServiceIntent.class.getSimpleName();
     // intent action
     public static final String INTENT_ACTION_SYNC = "com.money.manager.ex.custom.intent.action.DROPBOX_SYNC";
@@ -73,6 +74,7 @@ public class DropboxServiceIntent extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, intent.toString());
+
         // check if exist a messenger
         if (intent.getExtras().containsKey(INTENT_EXTRA_MESSENGER)) {
             mOutMessenger = intent.getParcelableExtra(INTENT_EXTRA_MESSENGER);
