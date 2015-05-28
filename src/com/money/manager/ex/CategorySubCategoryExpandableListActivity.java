@@ -173,7 +173,9 @@ public class CategorySubCategoryExpandableListActivity extends BaseFragmentActiv
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 mLayout = android.R.layout.simple_expandable_list_item_2;
             } else {
-                mLayout = Intent.ACTION_PICK.equals(mAction) ? R.layout.simple_expandable_list_item_multiple_choice_2 : android.R.layout.simple_expandable_list_item_2;
+                mLayout = Intent.ACTION_PICK.equals(mAction)
+                        ? R.layout.simple_expandable_list_item_multiple_choice_2
+                        : android.R.layout.simple_expandable_list_item_2;
             }
 
             // associate adapter
