@@ -27,13 +27,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -42,6 +45,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 
 public abstract class BaseExpandableListFragment
         extends ExpandableListFragment {
+
     // saved instance
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
     // menu items
@@ -50,6 +54,7 @@ public abstract class BaseExpandableListFragment
     private boolean mMenuItemSearchIconified = true;
     // flag for tips wildcard
     private boolean isShowTipsWildcard = false;
+    FloatingActionButton mFloatingActionButton;
 
     public abstract String getSubTitle();
 
@@ -73,8 +78,9 @@ public abstract class BaseExpandableListFragment
             getExpandableListView().setLayoutTransition(new LayoutTransition());
         // saved instance
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD))
+            if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) {
                 isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
+            }
         }
         // set subtitle in actionbar
         if (!(TextUtils.isEmpty(getSubTitle()))) {
@@ -91,7 +97,8 @@ public abstract class BaseExpandableListFragment
     public void onStart() {
         super.onStart();
         // check search type
-        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
+        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
         if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
             // show tooltip for wildcard
             TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getActivity().getApplicationContext(), "lookupswildcard");
@@ -103,6 +110,12 @@ public abstract class BaseExpandableListFragment
             }
         }
     }
+
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        return inflater.inflate(R.layout.abs_list_fragment, container, false);
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -208,6 +221,22 @@ public abstract class BaseExpandableListFragment
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onFloatingActionButtonClickListener();
+                }
+            });
+        }
+
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+
     /**
      * @return the mShowMenuItemSearch
      */
@@ -242,4 +271,28 @@ public abstract class BaseExpandableListFragment
     public void setMenuItemSearchIconified(boolean mMenuItemSearchIconified) {
         this.mMenuItemSearchIconified = mMenuItemSearchIconified;
     }
+
+    // Floating button methods
+
+    public FloatingActionButton getFloatingActionButton() {
+        return mFloatingActionButton;
+    }
+
+    public void setFloatingActionButtonVisible(boolean visible) {
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void setFloatingActionButtonAttachListView(boolean attachListView) {
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.attachToListView(getExpandableListView());
+        }
+    }
+
+    public void onFloatingActionButtonClickListener() {
+        return;
+    }
+
+    // End floating button events.
 }

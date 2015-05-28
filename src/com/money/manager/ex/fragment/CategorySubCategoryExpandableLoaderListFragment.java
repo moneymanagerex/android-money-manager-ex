@@ -122,9 +122,11 @@ public class CategorySubCategoryExpandableLoaderListFragment
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             mLayout = android.R.layout.simple_expandable_list_item_2;
         } else {
-            mLayout = Intent.ACTION_PICK.equals(mAction)
-                    ? R.layout.simple_expandable_list_item_multiple_choice_2
-                    : android.R.layout.simple_expandable_list_item_2;
+            if (Intent.ACTION_PICK.equals(mAction)) {
+                mLayout = R.layout.simple_expandable_list_item_multiple_choice_2;
+            } else {
+                mLayout = android.R.layout.simple_expandable_list_item_2;
+            }
         }
 
         // manage context menu
@@ -138,8 +140,11 @@ public class CategorySubCategoryExpandableLoaderListFragment
         // start loader
         getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
 
-        // set iconfied searched
+        // set icon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
+
+        setFloatingActionButtonVisible(true);
+        setFloatingActionButtonAttachListView(true);
     }
 
     @Override
@@ -205,10 +210,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
         super.onCreateOptionsMenu(menu, inflater);
 
         // create submenu from item add
-            /*menu.addSubMenu(0, SUBMENU_ITEM_ADD_CATEGORY, SUBMENU_ITEM_ADD_CATEGORY, R.string.add_category);
-            menu.addSubMenu(0, SUBMENU_ITEM_ADD_SUBCATEGORY, SUBMENU_ITEM_ADD_SUBCATEGORY, R.string.add_subcategory);*/
         inflater.inflate(R.menu.menu_category_sub_category_expandable_list, menu);
-
     }
 
     public CategoryExpandableListAdapter getAdapter(Cursor data) {
@@ -348,6 +350,10 @@ public class CategorySubCategoryExpandableLoaderListFragment
 
                 if (isResumed()) {
                     setListShown(true);
+
+                    if (data.getCount() <= 0 && getFloatingActionButton() != null) {
+                        getFloatingActionButton().show(true);
+                    }
                 } else {
                     setListShownNoAnimation(true);
                 }
@@ -451,9 +457,11 @@ public class CategorySubCategoryExpandableLoaderListFragment
                     public void onClick(DialogInterface dialog, int which) {
                         int rowsDelete = 0;
                         if (subCategId <= 0) {
-                            rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(), TableCategory.CATEGID + "=" + categId, null);
+                            rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(),
+                                    TableCategory.CATEGID + "=" + categId, null);
                         } else {
-                            rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(), TableSubCategory.CATEGID + "=" + categId + " AND " + TableSubCategory.SUBCATEGID + "=" + subCategId, null);
+                            rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(),
+                                    TableSubCategory.CATEGID + "=" + categId + " AND " + TableSubCategory.SUBCATEGID + "=" + subCategId, null);
                         }
                         if (rowsDelete == 0) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
@@ -481,6 +489,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
         final TableCategory category = new TableCategory();
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
+
         final EditText edtCategName = (EditText) viewDialog.findViewById(R.id.editTextCategName);
         // set category description
         edtCategName.setText(categName);
@@ -537,6 +546,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
         final TableSubCategory subCategory = new TableSubCategory();
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
+
         final EditText edtSubCategName = (EditText) viewDialog.findViewById(R.id.editTextCategName);
         final Spinner spnCategory = (Spinner) viewDialog.findViewById(R.id.spinnerCategory);
         // set category description

@@ -181,8 +181,9 @@ public class AccountLoaderListFragment
 
                 if (isResumed()) {
                     setListShown(true);
-                    if (data.getCount() <= 0 && getFloatingActionButton() != null)
+                    if (data.getCount() <= 0 && getFloatingActionButton() != null) {
                         getFloatingActionButton().show(true);
+                    }
                 } else {
                     setListShownNoAnimation(true);
                 }

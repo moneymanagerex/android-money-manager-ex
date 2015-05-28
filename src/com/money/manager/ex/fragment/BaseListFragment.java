@@ -184,7 +184,8 @@ public abstract class BaseListFragment
     }
 
     protected boolean onPreQueryTextChange(String newText) {
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
             newText = "%" + newText;
 
         return onQueryTextChange(newText);
