@@ -207,13 +207,29 @@ public class CategorySubCategoryExpandableLoaderListFragment
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    // toolbar menu
 
-        // create submenu from item add
-        inflater.inflate(R.menu.menu_category_sub_category_expandable_list, menu);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//
+//        // create submenu from item add
+//        inflater.inflate(R.menu.menu_category_sub_category_expandable_list, menu);
+//    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.menu_add_category:
+//                showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
+//                break;
+//            case R.id.menu_add_subcategory:
+//                showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
+    // end toolbar menu
 
     public CategoryExpandableListAdapter getAdapter(Cursor data) {
         mCategories.clear();
@@ -270,18 +286,6 @@ public class CategorySubCategoryExpandableLoaderListFragment
         CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(), mLayout, mCategories, mSubCategories);
         adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
         return adapter;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_add_category:
-                showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
-                break;
-            case R.id.menu_add_subcategory:
-                showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
