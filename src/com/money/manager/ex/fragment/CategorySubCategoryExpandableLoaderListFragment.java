@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
@@ -635,6 +637,11 @@ public class CategorySubCategoryExpandableLoaderListFragment
         return getString(R.string.categories);
     }
 
+    @Override
+    public void onFloatingActionButtonClickListener() {
+        showTypeSelectorDialog();
+    }
+
     private void addListClickHandlers() {
         // the list handlers available only when selecting a category.
         if (Intent.ACTION_PICK.equals(mAction)) {
@@ -693,5 +700,47 @@ public class CategorySubCategoryExpandableLoaderListFragment
             });
 
         }
+    }
+
+    /**
+     * Choose the item type: category / subcategory.
+     */
+    private void showTypeSelectorDialog() {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.donate)
+                .items(R.array.transcode_values)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        /**
+                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                         * returning false here won't allow the newly selected radio button to actually be selected.
+                         **/
+                        showNameEntryDialog();
+                        return true;
+                    }
+                })
+                .positiveText(R.string.category)
+                .negativeText(R.string.subcategory)
+                .show();
+
+    }
+
+    private void showNameEntryDialog() {
+        // todo: customize dialog.
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.donate)
+                .content(R.string.create_db_dialog_content)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(R.string.create_db, R.string.create_db_error, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        // Do something
+                    }
+                })
+                .positiveText(android.R.string.ok)
+//                .negativeText(R.string.subcategory)
+                .neutralText(android.R.string.cancel)
+                .show();
     }
 }

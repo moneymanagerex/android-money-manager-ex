@@ -36,7 +36,8 @@ import com.money.manager.ex.database.TableCategory;
 import java.util.HashMap;
 import java.util.List;
 
-public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
+public class CategoryExpandableListAdapter
+		extends BaseExpandableListAdapter {
 	private Context mContext;
 	
 	private int mLayout;
