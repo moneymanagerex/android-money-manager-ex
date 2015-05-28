@@ -60,6 +60,8 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.adapter.DrawerMenuItem;
 import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.DropboxManager;
+import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.TransactionTypes;
@@ -96,7 +98,9 @@ import java.util.List;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
 @SuppressLint("DefaultLocale")
-public class MainActivity extends BaseFragmentActivity {
+public class MainActivity
+        extends BaseFragmentActivity
+        implements IDropboxManagerCallbacks {
     // requestcode
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
@@ -397,7 +401,8 @@ public class MainActivity extends BaseFragmentActivity {
                                 .actionListener(new ActionClickListener() {
                                     @Override
                                     public void onActionClicked(Snackbar snackbar) {
-                                        startServiceSyncDropbox();
+                                        DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper, MainActivity.this);
+                                        dropbox.startServiceSyncDropbox();
                                     }
                                 })
                                 .duration(5 * 1000)
@@ -406,83 +411,6 @@ public class MainActivity extends BaseFragmentActivity {
                 }
             };
             asyncTask.execute();
-        }
-    }
-
-    public void startServiceSyncDropbox() {
-        if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
-            // Make sure that the current database is also Dropbox-linked.
-            String currentDatabasePath = MoneyManagerApplication.getDatabasePath(getApplicationContext());
-            String dropboxPath = mDropboxHelper.getLinkedRemoteFile();
-            // easy comparison
-            if (!currentDatabasePath.contains(dropboxPath)) {
-                // The current file was probably opened through Open Database.
-                Toast.makeText(this, R.string.db_not_dropbox, Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            Intent service = new Intent(getApplicationContext(), DropboxServiceIntent.class);
-            service.setAction(DropboxServiceIntent.INTENT_ACTION_SYNC);
-            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, currentDatabasePath);
-            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, dropboxPath);
-            //progress dialog
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage(getString(R.string.dropbox_syncProgress));
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-            //create a messenger
-            Messenger messenger = new Messenger(new Handler() {
-                @Override
-                public void handleMessage(Message msg) {
-                    if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
-                        // close dialog
-                        if (progressDialog != null && progressDialog.isShowing())
-                            progressDialog.hide();
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this, R.string.dropbox_database_is_synchronized, Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_START_DOWNLOAD) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this, R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD) {
-                        // close dialog
-                        if (progressDialog != null && progressDialog.isShowing())
-                            progressDialog.hide();
-                        // reload fragment
-                        reloadAllFragment();
-                    } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_START_UPLOAD) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this, R.string.dropbox_upload_is_starting, Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD) {
-                        // close dialog
-                        if (progressDialog != null && progressDialog.isShowing())
-                            progressDialog.hide();
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this, R.string.upload_file_to_dropbox_complete, Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-                }
-            });
-            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_MESSENGER, messenger);
-
-            this.startService(service);
         }
     }
 
@@ -877,7 +805,8 @@ public class MainActivity extends BaseFragmentActivity {
             showFragment(HomeFragment.class);
             return true;
         } else if (item.getId() == R.id.menu_sync_dropbox) {
-            startServiceSyncDropbox();
+            DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper, MainActivity.this);
+            dropbox.startServiceSyncDropbox();
             return true;
         } else if (item.getId() == R.id.menu_open_database) {
             pickFile(Environment.getExternalStorageDirectory());
@@ -1012,6 +941,15 @@ public class MainActivity extends BaseFragmentActivity {
         }
 
         dialog.show();
+    }
+
+    /**
+     * Dropbox just downloaded the database. Reload fragments.
+     */
+    @Override
+    public void onFileDownloaded() {
+        // reload fragment
+        reloadAllFragment();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
