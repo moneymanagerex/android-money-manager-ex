@@ -71,6 +71,7 @@ public class AllDataFragment extends BaseListFragment
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
     // KEY Arguments
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
+    public static final String KEY_ARGUMENTS_WHERE_PARAMS = "SearchResultFragment:ArgumentsWhereParams";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
     private static final String LOGCAT = AllDataFragment.class.getSimpleName();
     private IAllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
@@ -279,6 +280,12 @@ public class AllDataFragment extends BaseListFragment
                         }
                     }
                 }
+                // where parameters
+                String[] whereParams = new String[0];
+                if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE_PARAMS)) {
+                    ArrayList<String> whereParamsList = args.getStringArrayList(KEY_ARGUMENTS_WHERE_PARAMS);
+                    whereParams = whereParamsList.toArray(whereParams);
+                }
                 // set sort
                 if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
                     sort = args.getString(KEY_ARGUMENTS_SORT);
@@ -287,7 +294,7 @@ public class AllDataFragment extends BaseListFragment
                 return new CursorLoader(getActivity(), allData.getUri(),
                         allData.getAllColumns(),
                         selection,
-                        null,
+                        whereParams,
                         sort);
         }
         return null;

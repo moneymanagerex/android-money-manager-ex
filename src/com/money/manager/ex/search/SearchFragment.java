@@ -42,6 +42,7 @@ import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.core.Core;
@@ -235,72 +236,92 @@ public class SearchFragment extends Fragment
      * Compose arguments and execute search
      */
     public void executeSearch() {
-        ArrayList<String> whereClause = assembleWhereClause();
+        ParameterizedWhereClause where = assembleWhereClause();
+//        ArrayList<String> whereClause = assembleWhereClause();
 
-        showSearchResultsFragment(whereClause);
+        showSearchResultsFragment(where);
     }
 
-    private ArrayList<String> assembleWhereClause() {
-        ArrayList<String> whereClause = new ArrayList<>();
+    private ParameterizedWhereClause assembleWhereClause() {
+        ParameterizedWhereClause where = new ParameterizedWhereClause();
 
         // account
         if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
-            whereClause.add(QueryAllData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
+            where.Clause.add(QueryAllData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
         }
         // transaction type
         if (cbxDeposit.isChecked() || cbxTransfer.isChecked() || cbxWithdrawal.isChecked()) {
-            whereClause.add(QueryAllData.TransactionType + " IN (" +
+            where.Clause.add(QueryAllData.TransactionType + " IN (" +
                     (cbxDeposit.isChecked() ? "'Deposit'" : "''") + "," + (cbxTransfer.isChecked() ? "'Transfer'" : "''")
                     + "," + (cbxWithdrawal.isChecked() ? "'Withdrawal'" : "''") + ")");
         }
         // status
         if (spinStatus.getSelectedItemPosition() > 0) {
-            whereClause.add(QueryAllData.Status + "='" + mStatusValues.get(spinStatus.getSelectedItemPosition()) + "'");
+            where.Clause.add(QueryAllData.Status + "='" + mStatusValues.get(spinStatus.getSelectedItemPosition()) + "'");
         }
         // from date
         if (!TextUtils.isEmpty(txtFromDate.getText())) {
-            whereClause.add(QueryAllData.Date + ">='" + DateUtils.getSQLiteStringDate(
+            where.Clause.add(QueryAllData.Date + ">='" + DateUtils.getSQLiteStringDate(
                     getActivity(), DateUtils.getDateFromString(
                             getActivity().getApplicationContext(), String.valueOf(txtFromDate.getText()))) + "'");
         }
         // to date
         if (!TextUtils.isEmpty(txtToDate.getText())) {
-            whereClause.add(QueryAllData.Date + "<='" + DateUtils.getSQLiteStringDate(
+            where.Clause.add(QueryAllData.Date + "<='" + DateUtils.getSQLiteStringDate(
                     getActivity(), DateUtils.getDateFromString(
                             getActivity().getApplicationContext(), String.valueOf(txtToDate.getText()))) + "'");
         }
         // payee
         if (txtSelectPayee.getTag() != null) {
-            whereClause.add(QueryAllData.PayeeID + "=" + String.valueOf(txtSelectPayee.getTag()));
+            where.Clause.add(QueryAllData.PayeeID + "=" + String.valueOf(txtSelectPayee.getTag()));
         }
         // category
         if (txtSelectCategory.getTag() != null) {
             CategorySub categorySub = (CategorySub) txtSelectCategory.getTag();
-            whereClause.add(QueryAllData.CategID + "=" + categorySub.categId);
-            if (categorySub.subCategId != -1)
-                whereClause.add(QueryAllData.SubcategID + "=" + categorySub.subCategId);
+            // Category. Also check the splits.
+            where.Clause.add(QueryAllData.CategID + "=?");
+//            whereClause.add("(" +
+//                    QueryAllData.CategID + "=" + categorySub.categId +
+//                    " OR " + categorySub.categId + " IN (select " + QueryAllData.CategID +
+//                        " FROM " + TableSplitTransactions.TABLE_NAME +
+//                        " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + ")" +
+//                    ")");
+            where.Params.add(Integer.toString(categorySub.categId));
+
+            // subcategory
+            if (categorySub.subCategId != -1) {
+                // Subcategory. Also check the splits.
+                where.Clause.add(QueryAllData.SubcategID + "=?");
+//                whereClause.add("(" +
+//                        QueryAllData.SubcategID + "=?" + categorySub.subCategId +
+//                            " OR " + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
+//                                " FROM " + TableSplitTransactions.TABLE_NAME +
+//                                " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + ")" +
+//                        ")");
+                where.Params.add(Integer.toString(categorySub.subCategId));
+            }
         }
         // from amount: Trans Amount <= parameter
         if (txtFromAmount.getTag() != null) {
-            whereClause.add(QueryAllData.Amount + "<=" + String.valueOf(txtFromAmount.getTag()));
+            where.Clause.add(QueryAllData.Amount + "<=" + String.valueOf(txtFromAmount.getTag()));
         }
         // to amount: Trans Amount >= parameter
         if (txtToAmount.getTag() != null) {
-            whereClause.add(QueryAllData.Amount + ">=" + String.valueOf(txtToAmount.getTag()));
+            where.Clause.add(QueryAllData.Amount + ">=" + String.valueOf(txtToAmount.getTag()));
         }
         // transaction number
         if (!TextUtils.isEmpty(edtTransNumber.getText())) {
-            whereClause.add(QueryAllData.TransactionNumber + " LIKE '" + edtTransNumber.getText() + "'");
+            where.Clause.add(QueryAllData.TransactionNumber + " LIKE '" + edtTransNumber.getText() + "'");
         }
         // notes
         if (!TextUtils.isEmpty(txtNotes.getText())) {
-            whereClause.add(QueryAllData.Notes + " LIKE '%" + txtNotes.getText() + "%'");
+            where.Clause.add(QueryAllData.Notes + " LIKE '%" + txtNotes.getText() + "%'");
         }
 
-        return whereClause;
+        return where;
     }
 
-    private void showSearchResultsFragment(ArrayList<String> whereClause) {
+    private void showSearchResultsFragment(ParameterizedWhereClause where) {
         //create a fragment for search results.
         AllDataFragment searchResultsFragment;
         searchResultsFragment = (AllDataFragment) getActivity().getSupportFragmentManager()
@@ -314,7 +335,8 @@ public class SearchFragment extends Fragment
 
         //create bundle
         Bundle args = new Bundle();
-        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, whereClause);
+        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, where.Clause);
+        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE_PARAMS, where.Params);
         args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
         //set arguments
         searchResultsFragment.setArguments(args);
