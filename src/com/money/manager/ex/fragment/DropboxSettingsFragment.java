@@ -44,10 +44,13 @@ import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.DropboxManager;
+import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.dropbox.DropboxBrowserActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxReceiver;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
+import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.RawFileUtils;
 
@@ -310,15 +313,20 @@ public class DropboxSettingsFragment
     }
 
     private void downloadFileFromDropbox(String fileDropbox) {
-        Core core = new Core(getActivity().getApplicationContext());
-        // compose intent to launch service for download
-        Intent service = new Intent(getActivity().getApplicationContext(), DropboxServiceIntent.class);
-        service.setAction(DropboxServiceIntent.INTENT_ACTION_DOWNLOAD);
-        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, core.getExternalStorageDirectoryDropboxApplication().getPath() + fileDropbox);
-        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, fileDropbox);
-        // toast to show
-        Toast.makeText(getActivity().getApplicationContext(), R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
-        // start service
-        getActivity().startService(service);
+//        Core core = new Core(getActivity().getApplicationContext());
+//        // compose intent to launch service for download
+//        Intent service = new Intent(getActivity().getApplicationContext(), DropboxServiceIntent.class);
+//        service.setAction(DropboxServiceIntent.INTENT_ACTION_DOWNLOAD);
+//        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, core.getExternalStorageDirectoryDropboxApplication().getPath() + fileDropbox);
+//        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, fileDropbox);
+//        // toast to show
+//        Toast.makeText(getActivity().getApplicationContext(), R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
+//        // start service
+//        getActivity().startService(service);
+
+        DropboxSettingsActivity parent = (DropboxSettingsActivity) getActivity();
+        DropboxManager dropbox = new DropboxManager(parent, mDropboxHelper, parent);
+        dropbox.startServiceSyncDropbox();
     }
+
 }

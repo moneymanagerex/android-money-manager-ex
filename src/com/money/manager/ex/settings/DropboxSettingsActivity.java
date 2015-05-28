@@ -41,9 +41,11 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.HelpActivity;
+import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.dropbox.DropboxBrowserActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxReceiver;
@@ -54,13 +56,25 @@ import com.money.manager.ex.utils.RawFileUtils;
 
 import java.io.File;
 
-public class DropboxSettingsActivity extends BaseSettingsFragmentActivity {
+public class DropboxSettingsActivity
+        extends BaseSettingsFragmentActivity
+        implements IDropboxManagerCallbacks {
+
     private static String LOGCAT = DropboxSettingsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setSettingFragment(new DropboxSettingsFragment());
+    }
+
+    /**
+     * Handle dropbox manager events.
+     */
+    @Override
+    public void onFileDownloaded() {
+        // set main activity to reload.
+        MainActivity.setRestartActivity(true);
     }
 
 }
