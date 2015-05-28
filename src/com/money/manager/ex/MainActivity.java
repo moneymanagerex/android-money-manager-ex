@@ -385,10 +385,18 @@ public class MainActivity
 
     public void showSnackbarDropbox() {
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
-            AsyncTask<Void, Void, Integer> asyncTask = new AsyncTask<Void, Void, Integer>() {
+            AsyncTask<Void, Integer, Integer> asyncTask = new AsyncTask<Void, Integer, Integer>() {
                 @Override
                 protected Integer doInBackground(Void... voids) {
+                    publishProgress(1);
+
                     return mDropboxHelper.checkIfFileIsSync();
+                }
+
+                @Override
+                protected void onProgressUpdate(Integer... params) {
+                    Toast.makeText(MainActivity.this,
+                            R.string.checking_dropbox_for_changes, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
