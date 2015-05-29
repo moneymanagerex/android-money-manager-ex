@@ -480,7 +480,7 @@ public class HomeFragment extends Fragment implements
         menu.setHeaderTitle(account.getAccountName());
         String[] menuItems = getResources().getStringArray(R.array.context_menu_account_dashboard);
         for(String menuItem : menuItems) {
-            menu.add(0, v.getId(), 0, menuItem);
+            menu.add(menuItem);
         }
 //        menu.add(R.string.balance);
     }
@@ -496,13 +496,26 @@ public class HomeFragment extends Fragment implements
         int type = ExpandableListView.getPackedPositionType(info.packedPosition);
         if (type != ExpandableListView.PACKED_POSITION_TYPE_CHILD) return false;
 
+        // Get the account.
+
         groupPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
         childPos = ExpandableListView.getPackedPositionChild(info.packedPosition);
 
         AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
         QueryAccountBills account = (QueryAccountBills) accountsAdapter.getChild(groupPos, childPos);
+        int accountId = account.getAccountId();
 
-        result = true;
+        // get the action
+        String menuItemTitle = item.getTitle().toString();
+        
+        if (menuItemTitle.equalsIgnoreCase(getString(R.string.edit))) {
+            Intent intent = new Intent(getActivity(), AccountListEditActivity.class);
+            intent.putExtra(AccountListEditActivity.KEY_ACCOUNT_ID, accountId);
+            intent.setAction(Intent.ACTION_EDIT);
+            startActivity(intent);
+
+            result = true;
+        }
 
         return result;
     }
