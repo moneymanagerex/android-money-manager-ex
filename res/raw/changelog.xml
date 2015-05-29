@@ -18,7 +18,7 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="May 29, 2015" versionName="2.3.0-beta1">
+    <changelogversion changeDate="May 29, 2015" versionName="2.3.0-beta2">
         <changelogtext>Collapsible categories.</changelogtext>
         <changelogtext>Added long-press selection in Sub/Categories.</changelogtext>
         <changelogtext>Adding floating button for creation of Sub/Categories.</changelogtext>
