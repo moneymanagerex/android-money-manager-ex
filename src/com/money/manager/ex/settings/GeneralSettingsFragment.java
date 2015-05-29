@@ -305,8 +305,8 @@ public class GeneralSettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String accountName = entries[0];
-                if (!newValue.toString().equalsIgnoreCase("-1")) {
-                    int accountId = (int) newValue;
+                int accountId = Integer.parseInt(newValue.toString());
+                if (accountId != -1) {
                     accountName = repository.loadName(accountId);
                 }
                 preference.setSummary(accountName);
