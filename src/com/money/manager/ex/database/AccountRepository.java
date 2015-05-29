@@ -166,7 +166,7 @@ public class AccountRepository {
                 mAccount.getAllColumns(),
                 null,
                 null,
-                null
+                mAccount.ACCOUNTNAME
         );
         if (cursor == null) return null;
 

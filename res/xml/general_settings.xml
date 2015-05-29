@@ -93,8 +93,7 @@
     <ListPreference
         android:icon="@null"
         android:key="@string/pref_default_account"
-        android:title="@string/default_account"
-        android:summary="@string/default_account_summary" />
+        android:title="@string/default_account" />
 
     <CheckBoxPreference
         android:icon="@null"

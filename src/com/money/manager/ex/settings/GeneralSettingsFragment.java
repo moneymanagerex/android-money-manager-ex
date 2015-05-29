@@ -269,41 +269,48 @@ public class GeneralSettingsFragment extends PreferenceFragment {
     }
 
     private void initDefaultAccount() {
-        final ListPreference preference = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_ACCOUNT));
+        ListPreference preference = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_ACCOUNT));
         if (preference == null) return;
 
+        // show default summary
+//        preference.setSummary(getString(R.string.default_account_summary));
+
         final AccountRepository repository = new AccountRepository(getActivity());
-        final List<TableAccountList> accounts = repository.getAccountList(false, false);
+        List<TableAccountList> accounts = repository.getAccountList(false, false);
         // the list is already sorted by name.
 
-        String[] entries = new String[accounts.size() + 1];
-        final String[] entryValues = new String[accounts.size() + 1];
+        final String[] entries = new String[accounts.size() + 1];
+        String[] entryValues = new String[accounts.size() + 1];
         // Add the null value so that the setting can be disabled.
         entries[0] = getString(R.string.none);
         entryValues[0] = "-1";
         // list of currency
-        for (int i = 1; i < accounts.size(); i++) {
-            entries[i] = accounts.get(i).getAccountName();
-            entryValues[i] = ((Integer) accounts.get(i).getAccountId()).toString();
+        for (int i = 1; i < accounts.size() + 1; i++) {
+            entries[i] = accounts.get(i-1).getAccountName();
+            entryValues[i] = ((Integer) accounts.get(i-1).getAccountId()).toString();
         }
         // set value
         preference.setEntries(entries);
         preference.setEntryValues(entryValues);
 
         // set account name as the value here
-        AppSettings settings = new AppSettings(getActivity());
-        String defaultAccount = settings.getGeneralSettings().getDefaultAccount();
-        if (!TextUtils.isEmpty(defaultAccount)) {
-            String accountName = repository.loadName(Integer.parseInt(defaultAccount));
-            preference.setSummary(accountName);
+        String defaultAccount = preference.getValue();
+        String accountName = entries[0]; // none
+        if (!TextUtils.isEmpty(defaultAccount) && !defaultAccount.equalsIgnoreCase("-1")) {
+            accountName = repository.loadName(Integer.parseInt(defaultAccount));
         }
+        preference.setSummary(accountName);
 
         preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                int accountId = (int) newValue;
-                String accountName = repository.loadName(accountId);
+                String accountName = entries[0];
+                if (!newValue.toString().equalsIgnoreCase("-1")) {
+                    int accountId = (int) newValue;
+                    accountName = repository.loadName(accountId);
+                }
                 preference.setSummary(accountName);
+
                 return true;
             }
         });
