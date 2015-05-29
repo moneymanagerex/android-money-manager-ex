@@ -67,8 +67,8 @@ public class DatabaseMigrator14To20 {
         }
         // This was the default database name and it was impossible to create another one
         // at this location.
-        dbPath += "/databases/data.mmb";
-//        dbPath += "/databases/";
+//        dbPath += "/databases/data.mmb";
+        dbPath += "/databases/";
         // There are other internal databases, like webview.db.
 
         return dbPath;
