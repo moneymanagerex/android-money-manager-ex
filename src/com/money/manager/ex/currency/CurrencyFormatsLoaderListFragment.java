@@ -176,6 +176,8 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
         }
     }
 
+    // Loader event handlers.
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
@@ -191,12 +193,6 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
         }
 
         return null;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
     }
 
     @Override
@@ -223,6 +219,14 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
                     setListShownNoAnimation(true);
                 }
         }
+    }
+
+    // End loader event handlers.
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
     }
 
     @Override

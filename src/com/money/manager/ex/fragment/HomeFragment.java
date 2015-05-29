@@ -31,6 +31,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,12 +40,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,6 +86,7 @@ import java.util.List;
 @SuppressWarnings("static-access")
 public class HomeFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
+
     // ID Loader Manager
     private static final int ID_LOADER_USER_NAME = 1;
     private static final int ID_LOADER_ACCOUNT_BILLS = 2;
@@ -95,6 +100,7 @@ public class HomeFragment extends Fragment implements
 
     // Controls. view show in layout
     private TextView txtTotalAccounts;
+    // This is the collapsible list of account groups with accounts.
     private ExpandableListView mExpandableListView;
     private ViewGroup linearHome, linearFooter, linearWelcome;
     private TextView txtFooterSummary;
@@ -105,6 +111,13 @@ public class HomeFragment extends Fragment implements
     private List<String> mAccountTypes = new ArrayList<>();
     private HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
     private HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+//        registerForContextMenu(getListView());
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,51 +137,6 @@ public class HomeFragment extends Fragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.home_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Core core = new Core(getActivity().getApplicationContext());
-        CursorLoader result = null;
-
-        switch (id) {
-            case ID_LOADER_USER_NAME:
-                result = new CursorLoader(getActivity(), infoTable.getUri(),
-                        new String[]{infoTable.INFONAME, infoTable.INFOVALUE}, null, null, null);
-                break;
-            case ID_LOADER_ACCOUNT_BILLS:
-                setListViewAccountBillsVisible(false);
-                // compose whereClause
-                String where = "";
-                // check if show only open accounts
-                if (core.getAccountsOpenVisible()) {
-                    where = "LOWER(STATUS)='open'";
-                }
-                // check if show fav accounts
-                if (core.getAccountFavoriteVisible()) {
-                    where = "LOWER(FAVORITEACCT)='true'";
-                }
-                result = new CursorLoader(getActivity(), accountBills.getUri(),
-                        accountBills.getAllColumns(), where, null,
-                        accountBills.ACCOUNTTYPE + ", upper(" + accountBills.ACCOUNTNAME + ")");
-                break;
-
-            case ID_LOADER_BILL_DEPOSITS:
-                QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
-                result = new CursorLoader(getActivity(), billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
-                break;
-
-            case ID_LOADER_INCOME_EXPENSES:
-                QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                result = new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), QueryReportIncomeVsExpenses.Month + "="
-                        + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
-                        + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), null, null);
-                break;
-
-            default:
-                result = null;
-        }
-        return  result;
     }
 
     @Override
@@ -239,6 +207,53 @@ public class HomeFragment extends Fragment implements
         mFloatingActionButton.attachToListView(mExpandableListView);
     }
 
+    // Loader event handlers
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Core core = new Core(getActivity().getApplicationContext());
+        CursorLoader result = null;
+
+        switch (id) {
+            case ID_LOADER_USER_NAME:
+                result = new CursorLoader(getActivity(), infoTable.getUri(),
+                        new String[]{infoTable.INFONAME, infoTable.INFOVALUE}, null, null, null);
+                break;
+            case ID_LOADER_ACCOUNT_BILLS:
+                setListViewAccountBillsVisible(false);
+                // compose whereClause
+                String where = "";
+                // check if show only open accounts
+                if (core.getAccountsOpenVisible()) {
+                    where = "LOWER(STATUS)='open'";
+                }
+                // check if show fav accounts
+                if (core.getAccountFavoriteVisible()) {
+                    where = "LOWER(FAVORITEACCT)='true'";
+                }
+                result = new CursorLoader(getActivity(), accountBills.getUri(),
+                        accountBills.getAllColumns(), where, null,
+                        accountBills.ACCOUNTTYPE + ", upper(" + accountBills.ACCOUNTNAME + ")");
+                break;
+
+            case ID_LOADER_BILL_DEPOSITS:
+                QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
+                result = new CursorLoader(getActivity(), billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
+                break;
+
+            case ID_LOADER_INCOME_EXPENSES:
+                QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
+                result = new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), QueryReportIncomeVsExpenses.Month + "="
+                        + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
+                        + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), null, null);
+                break;
+
+            default:
+                result = null;
+        }
+        return  result;
+    }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
@@ -277,7 +292,6 @@ public class HomeFragment extends Fragment implements
 
             case ID_LOADER_ACCOUNT_BILLS:
                 double curTotal = 0, curReconciled = 0;
-                AccountBillsExpandableAdapter expandableAdapter = null;
 
                 linearHome.setVisibility(data != null && data.getCount() > 0 ? View.VISIBLE : View.GONE);
                 linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
@@ -342,7 +356,7 @@ public class HomeFragment extends Fragment implements
                 addFooterExpandableListView(curTotal, curReconciled);
 
                 // create adapter
-                expandableAdapter = new AccountBillsExpandableAdapter(getActivity());
+                AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity());
                 // set adapter and shown
                 mExpandableListView.setAdapter(expandableAdapter);
 
@@ -405,6 +419,15 @@ public class HomeFragment extends Fragment implements
         }
     }
 
+    public void startLoader() {
+        getLoaderManager().restartLoader(ID_LOADER_USER_NAME, null, this);
+        getLoaderManager().restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
+        /*getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);*/
+        getLoaderManager().restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
+    }
+
+    // End loader event handlers.
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_search) {
@@ -426,6 +449,82 @@ public class HomeFragment extends Fragment implements
         startLoader();
     }
 
+    // Context menu
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+//        // take cursor and move into position
+//        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+//        cursor.moveToPosition(info.position);
+//        // set currency name
+//        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
+//
+//        // compose context menu
+//        String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
+//        for (int i = 0; i < menuItems.length; i++) {
+//            menu.add(Menu.NONE, i, i, menuItems[i]);
+//        }
+
+//        Toast.makeText(getActivity(), "yo!", Toast.LENGTH_SHORT).show();
+
+        if (!(v instanceof ExpandableListView)) return;
+
+        ExpandableListView.ExpandableListContextMenuInfo info =
+                (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+        int groupPosition = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+        int childPosition = ExpandableListView.getPackedPositionChild(info.packedPosition);
+
+        // ignore long-press on group items.
+        if (type != ExpandableListView.PACKED_POSITION_TYPE_CHILD) return;
+
+        // get adapter.
+        ListAdapter adapter = mExpandableListView.getAdapter();
+        HeaderViewListAdapter headerAdapter = (HeaderViewListAdapter) mExpandableListView.getAdapter();
+        Object item0 = headerAdapter.getItem(0);
+        Object item1 = headerAdapter.getItem(1);
+        //headerAdapter.
+        if (adapter instanceof AccountBillsExpandableAdapter) {
+            AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getAdapter();
+            Object childItem = accountsAdapter.getChild(groupPosition, childPosition);
+        }
+
+        //QueryAccountBills account = (QueryAccountBills) selectedItem;
+//        menu.setHeaderIcon(android.R.drawable.ic_menu_manage);
+        menu.setHeaderTitle("account");
+        menu.add("test");
+        menu.add(R.string.edit);
+//        long selectedPosition = mExpandableListView.getSelectedPosition();
+//        ListAdapter adapter = mExpandableListView.getAdapter();
+//        adapter.getItem();
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        boolean result = false;
+
+        ExpandableListView.ExpandableListContextMenuInfo info =
+                (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
+
+        int groupPos = 0, childPos = 0;
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+        if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            groupPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+            childPos = ExpandableListView.getPackedPositionChild(info.packedPosition);
+
+            result = true;
+        }
+
+        return result;
+    }
+
+    // End context menu.
+
+    // Private custom methods.
+
     /**
      * @param visible if visible set true show the listview; false show progressbar
      */
@@ -437,13 +536,6 @@ public class HomeFragment extends Fragment implements
             mExpandableListView.setVisibility(View.GONE);
             prgAccountBills.setVisibility(View.VISIBLE);
         }
-    }
-
-    public void startLoader() {
-        getLoaderManager().restartLoader(ID_LOADER_USER_NAME, null, this);
-        getLoaderManager().restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
-        /*getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);*/
-        getLoaderManager().restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
     }
 
     private void addFooterExpandableListView(double curTotal, double curReconciled) {
@@ -531,6 +623,31 @@ public class HomeFragment extends Fragment implements
                 settings.set(key, groupVisible);
             }
         });
+        // handle long-click
+//        mExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                // i = position, l = id.
+//                // identify whether the selected item is a group or an account entry.
+//                Object selectedItem = adapterView.getItemAtPosition(i);
+//                if (!(selectedItem instanceof QueryAccountBills)) return false;
+//
+//                QueryAccountBills account = (QueryAccountBills) selectedItem;
+//
+//                // ignore investment accounts for now.
+//                if (account.getAccountType().equalsIgnoreCase(AccountTypes.INVESTMENT.toString())){
+//                    return false;
+//                }
+//
+//                // show context menu for accounts.
+//                getActivity().openContextMenu(adapterView);
+//
+////                return false;
+//                return true;
+//            }
+//        });
+
+        registerForContextMenu(mExpandableListView);
     }
 
     private String getSettingsKeyFromGroupPosition(int groupPosition) {
@@ -601,7 +718,9 @@ public class HomeFragment extends Fragment implements
         }
     }
 
-    private class AccountBillsExpandableAdapter extends BaseExpandableListAdapter {
+    private class AccountBillsExpandableAdapter
+            extends BaseExpandableListAdapter {
+
         private Context mContext;
 
         public AccountBillsExpandableAdapter(Context context) {
