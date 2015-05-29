@@ -46,7 +46,6 @@ import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
@@ -127,7 +126,7 @@ public class SearchFragment extends Fragment
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         if (mAccountList == null) {
             AccountRepository accountRepository = new AccountRepository(getActivity().getApplicationContext());
-            mAccountList = accountRepository.getListAccounts(core.getAccountsOpenVisible(),
+            mAccountList = accountRepository.getAccountList(core.getAccountsOpenVisible(),
                     core.getAccountFavoriteVisible());
             mAccountList.add(0, null);
             for (int i = 0; i <= mAccountList.size() - 1; i++) {

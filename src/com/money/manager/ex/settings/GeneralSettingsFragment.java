@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
@@ -31,6 +30,8 @@ import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.utils.CurrencyNameComparator;
 import com.money.manager.ex.utils.CurrencyUtils;
@@ -242,6 +243,8 @@ public class GeneralSettingsFragment extends PreferenceFragment {
                 }
             });
         }
+
+        initDefaultAccount();
     }
 
     public void setSummaryListPreference(Preference preference, String value, int idArrayValues, int idArrayItems) {
@@ -263,5 +266,46 @@ public class GeneralSettingsFragment extends PreferenceFragment {
             }
         }
         return null;
+    }
+
+    private void initDefaultAccount() {
+        final ListPreference preference = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_ACCOUNT));
+        if (preference == null) return;
+
+        final AccountRepository repository = new AccountRepository(getActivity());
+        final List<TableAccountList> accounts = repository.getAccountList(false, false);
+        // the list is already sorted by name.
+
+        String[] entries = new String[accounts.size() + 1];
+        final String[] entryValues = new String[accounts.size() + 1];
+        // Add the null value so that the setting can be disabled.
+        entries[0] = getString(R.string.none);
+        entryValues[0] = "-1";
+        // list of currency
+        for (int i = 1; i < accounts.size(); i++) {
+            entries[i] = accounts.get(i).getAccountName();
+            entryValues[i] = ((Integer) accounts.get(i).getAccountId()).toString();
+        }
+        // set value
+        preference.setEntries(entries);
+        preference.setEntryValues(entryValues);
+
+        // set account name as the value here
+        AppSettings settings = new AppSettings(getActivity());
+        String defaultAccount = settings.getGeneralSettings().getDefaultAccount();
+        if (!TextUtils.isEmpty(defaultAccount)) {
+            String accountName = repository.loadName(Integer.parseInt(defaultAccount));
+            preference.setSummary(accountName);
+        }
+
+        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int accountId = (int) newValue;
+                String accountName = repository.loadName(accountId);
+                preference.setSummary(accountName);
+                return true;
+            }
+        });
     }
 }

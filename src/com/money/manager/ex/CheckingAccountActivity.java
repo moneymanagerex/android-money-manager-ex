@@ -27,8 +27,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -41,8 +39,6 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +68,7 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.utils.DateUtils;
@@ -83,7 +80,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -164,72 +160,6 @@ public class CheckingAccountActivity
     private ArrayList<TableSplitTransactions> mSplitTransactions = null;
     private ArrayList<TableSplitTransactions> mSplitTransactionsDeleted = null;
     private EditTransactionCommonFunctions mCommonFunctions;
-
-    /**
-     * When cancelling changing the transaction type to Tranfer, revert back to the
-     * previous transaction type.
-     */
-    private void cancelChangingTransactionToTransfer() {
-        // Select the previous transaction type.
-        @SuppressWarnings("unchecked")
-        ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) mCommonFunctions.spinTransCode.getAdapter();
-        int originalPosition = adapterTrans.getPosition(getTransactionType());
-        mCommonFunctions.spinTransCode.setSelection(originalPosition);
-    }
-
-    /**
-     * getCategoryFromPayee set last category used from payee
-     *
-     * @param payeeId Identify of payee
-     * @return true if category set
-     */
-    public boolean getCategoryFromPayee(int payeeId) {
-        boolean ret = false;
-        // take data of payee
-        TablePayee payee = new TablePayee();
-        Cursor curPayee = getContentResolver().query(payee.getUri(),
-                payee.getAllColumns(), "PAYEEID=" + Integer.toString(payeeId), null, null);
-        // check cursor is valid
-        if ((curPayee != null) && (curPayee.moveToFirst())) {
-            // chek if category is valid
-            if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != -1) {
-                // prendo la categoria e la subcategorie
-                mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
-                mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
-                // create instance of query
-                QueryCategorySubCategory category = new QueryCategorySubCategory(getApplicationContext());
-                // compose selection
-                String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
-                Cursor curCategory = getContentResolver().query(category.getUri(), category.getAllColumns(), where, null, null);
-                // check cursor is valid
-                if ((curCategory != null) && (curCategory.moveToFirst())) {
-                    // take names of category and subcategory
-                    mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-                    mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
-                    // return true
-                    ret = true;
-                }
-                if (curCategory != null) {
-                    curCategory.close();
-                }
-            }
-        }
-
-        if (curPayee != null) {
-            curPayee.close();
-        }
-
-        return ret;
-    }
-
-    public String getTransactionType() {
-        if (mCommonFunctions.mTransactionType == null) {
-            return null;
-        }
-
-        // mTransType
-        return mCommonFunctions.mTransactionType.name();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -376,7 +306,7 @@ public class CheckingAccountActivity
         initTransactionTypeSelector();
 
         // status
-        // arrays to manage Status
+
         mStatusItems = getResources().getStringArray(R.array.status_items);
         mStatusValues = getResources().getStringArray(R.array.status_values);
         // create adapter for spinnerStatus
@@ -503,7 +433,6 @@ public class CheckingAccountActivity
 
         // Amount and total amount
 
-        // listener on dialog amount edittext
         OnClickListener onClickAmount = new OnClickListener() {
 
             @Override
@@ -595,12 +524,20 @@ public class CheckingAccountActivity
         refreshCategoryName();
     }
 
+    /**
+     * Get the parameters from the intent (parameters sent from the caller).
+     * Also used for Tasker integration, for example.
+     * @param savedInstanceState parameters
+     */
     private void handleIntent(Bundle savedInstanceState) {
         Intent intent = getIntent();
         mIntentAction = intent.getAction();
 
         if (savedInstanceState == null) {
             mCommonFunctions.mAccountId = intent.getIntExtra(KEY_ACCOUNT_ID, -1);
+
+            // Edit transaction.
+
             if (mIntentAction != null && Intent.ACTION_EDIT.equals(mIntentAction)) {
                 mTransId = intent.getIntExtra(KEY_TRANS_ID, -1);
                 // select data transaction
@@ -616,6 +553,8 @@ public class CheckingAccountActivity
                 }
             }
         }
+
+        // New transaction
 
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
             if (mStatus == null) {
@@ -665,6 +604,16 @@ public class CheckingAccountActivity
             }
 
             externalIntegration(intent);
+
+            // Set default account, if not set.
+            AppSettings settings = new AppSettings(this);
+            String defaultAccount = settings.getGeneralSettings().getDefaultAccount();
+            if (!TextUtils.isEmpty(defaultAccount)) {
+                TableAccountList account = mCommonFunctions.AccountList
+                        .get(mCommonFunctions.spinAccount.getSelectedItemPosition());
+                // todo: mCheckingAccount =
+                Log.d(LOGCAT, account.getAccountName());
+            }
         }
 
         // set title
@@ -1422,6 +1371,72 @@ public class CheckingAccountActivity
                 onSplitSet();
             }
         });
+    }
+
+    /**
+     * When cancelling changing the transaction type to Tranfer, revert back to the
+     * previous transaction type.
+     */
+    private void cancelChangingTransactionToTransfer() {
+        // Select the previous transaction type.
+        @SuppressWarnings("unchecked")
+        ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) mCommonFunctions.spinTransCode.getAdapter();
+        int originalPosition = adapterTrans.getPosition(getTransactionType());
+        mCommonFunctions.spinTransCode.setSelection(originalPosition);
+    }
+
+    /**
+     * getCategoryFromPayee set last category used from payee
+     *
+     * @param payeeId Identify of payee
+     * @return true if category set
+     */
+    public boolean getCategoryFromPayee(int payeeId) {
+        boolean ret = false;
+        // take data of payee
+        TablePayee payee = new TablePayee();
+        Cursor curPayee = getContentResolver().query(payee.getUri(),
+                payee.getAllColumns(), "PAYEEID=" + Integer.toString(payeeId), null, null);
+        // check cursor is valid
+        if ((curPayee != null) && (curPayee.moveToFirst())) {
+            // chek if category is valid
+            if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != -1) {
+                // prendo la categoria e la subcategorie
+                mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
+                mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
+                // create instance of query
+                QueryCategorySubCategory category = new QueryCategorySubCategory(getApplicationContext());
+                // compose selection
+                String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
+                Cursor curCategory = getContentResolver().query(category.getUri(), category.getAllColumns(), where, null, null);
+                // check cursor is valid
+                if ((curCategory != null) && (curCategory.moveToFirst())) {
+                    // take names of category and subcategory
+                    mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
+                    mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
+                    // return true
+                    ret = true;
+                }
+                if (curCategory != null) {
+                    curCategory.close();
+                }
+            }
+        }
+
+        if (curPayee != null) {
+            curPayee.close();
+        }
+
+        return ret;
+    }
+
+    public String getTransactionType() {
+        if (mCommonFunctions.mTransactionType == null) {
+            return null;
+        }
+
+        // mTransType
+        return mCommonFunctions.mTransactionType.name();
     }
 
 }

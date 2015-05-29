@@ -50,4 +50,11 @@ public class GeneralSettings {
     private SharedPreferences getSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
     }
+
+    public String getDefaultAccount() {
+        String key = mContext.getString(PreferenceConstants.PREF_DEFAULT_ACCOUNT);
+        String result = getSharedPreferences().getString(key, "");
+        return result;
+    }
+
 }

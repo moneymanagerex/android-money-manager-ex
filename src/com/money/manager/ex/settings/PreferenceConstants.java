@@ -19,6 +19,7 @@
 package com.money.manager.ex.settings;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.checkingaccount.IntentDataParameters;
 
 public class PreferenceConstants {
     ///////////////////////////////////////////////////////////////////////////
@@ -37,6 +38,7 @@ public class PreferenceConstants {
     // Database
     public static final Integer PREF_DATABASE_PATH = R.string.pref_database_path;
 
+    // General
     public static final Integer PREF_USER_NAME = R.string.pref_user_name;
     public static final Integer PREF_DATE_FORMAT = R.string.pref_date_format;
     public static final Integer PREF_FINANCIAL_YEAR_STARTDATE = R.string.pref_financial_year_startdate;
@@ -48,6 +50,7 @@ public class PreferenceConstants {
     public static final Integer PREF_THEME = R.string.pref_theme;
     public static final Integer PREF_SHOW_TRANSACTION = R.string.pref_show_transaction;
     public static final Integer PREF_HIDE_RECONCILED_AMOUNTS = R.string.pref_transaction_hide_reconciled_amounts;
+    public static final Integer PREF_DEFAULT_ACCOUNT = R.string.pref_default_account;
 
     public static final Integer PREF_EDIT_PASSCODE = R.string.pref_edit_passcode;
     public static final Integer PREF_DISABLE_PASSCODE = R.string.pref_disable_passcode;

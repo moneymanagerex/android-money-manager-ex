@@ -75,8 +75,8 @@ public class AppSettings {
     }
 
     private void init() {
-        Context context = mContext.getApplicationContext();
-        mSettings = PreferenceManager.getDefaultSharedPreferences(context);
+        Context appContext = mContext.getApplicationContext();
+        mSettings = PreferenceManager.getDefaultSharedPreferences(appContext);
     }
 
     public DatabaseSettings getDatabaseSettings() {
