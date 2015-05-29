@@ -43,6 +43,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.HeaderViewListAdapter;
@@ -455,19 +456,6 @@ public class HomeFragment extends Fragment implements
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-//        // take cursor and move into position
-//        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-//        cursor.moveToPosition(info.position);
-//        // set currency name
-//        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
-//
-//        // compose context menu
-//        String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
-//        for (int i = 0; i < menuItems.length; i++) {
-//            menu.add(Menu.NONE, i, i, menuItems[i]);
-//        }
-
 //        Toast.makeText(getActivity(), "yo!", Toast.LENGTH_SHORT).show();
 
         if (!(v instanceof ExpandableListView)) return;
@@ -482,24 +470,19 @@ public class HomeFragment extends Fragment implements
         if (type != ExpandableListView.PACKED_POSITION_TYPE_CHILD) return;
 
         // get adapter.
-        ListAdapter adapter = mExpandableListView.getAdapter();
-        HeaderViewListAdapter headerAdapter = (HeaderViewListAdapter) mExpandableListView.getAdapter();
-        Object item0 = headerAdapter.getItem(0);
-        Object item1 = headerAdapter.getItem(1);
-        //headerAdapter.
-        if (adapter instanceof AccountBillsExpandableAdapter) {
-            AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getAdapter();
-            Object childItem = accountsAdapter.getChild(groupPosition, childPosition);
-        }
-
-        //QueryAccountBills account = (QueryAccountBills) selectedItem;
-//        menu.setHeaderIcon(android.R.drawable.ic_menu_manage);
-        menu.setHeaderTitle("account");
-        menu.add("test");
-        menu.add(R.string.edit);
-//        long selectedPosition = mExpandableListView.getSelectedPosition();
 //        ListAdapter adapter = mExpandableListView.getAdapter();
-//        adapter.getItem();
+//        ExpandableListAdapter expandableListAdapter = mExpandableListView.getExpandableListAdapter();
+        AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
+        Object childItem = accountsAdapter.getChild(groupPosition, childPosition);
+        QueryAccountBills account = (QueryAccountBills) childItem;
+
+//        menu.setHeaderIcon(android.R.drawable.ic_menu_manage);
+        menu.setHeaderTitle(account.getAccountName());
+        String[] menuItems = getResources().getStringArray(R.array.context_menu_account_dashboard);
+        for(String menuItem : menuItems) {
+            menu.add(0, v.getId(), 0, menuItem);
+        }
+//        menu.add(R.string.balance);
     }
 
     @Override
@@ -511,12 +494,15 @@ public class HomeFragment extends Fragment implements
 
         int groupPos = 0, childPos = 0;
         int type = ExpandableListView.getPackedPositionType(info.packedPosition);
-        if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-            groupPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
-            childPos = ExpandableListView.getPackedPositionChild(info.packedPosition);
+        if (type != ExpandableListView.PACKED_POSITION_TYPE_CHILD) return false;
 
-            result = true;
-        }
+        groupPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+        childPos = ExpandableListView.getPackedPositionChild(info.packedPosition);
+
+        AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
+        QueryAccountBills account = (QueryAccountBills) accountsAdapter.getChild(groupPos, childPos);
+
+        result = true;
 
         return result;
     }
@@ -640,7 +626,9 @@ public class HomeFragment extends Fragment implements
 //                }
 //
 //                // show context menu for accounts.
-//                getActivity().openContextMenu(adapterView);
+////                getActivity().openContextMenu(adapterView);
+//                mExpandableListView.showContextMenuForChild(adapterView);
+//                mExpandableListView.showContextMenu();
 //
 ////                return false;
 //                return true;

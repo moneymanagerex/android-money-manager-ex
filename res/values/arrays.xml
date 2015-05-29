@@ -108,6 +108,10 @@
         <item>@string/delete</item>
     </string-array>
 
+    <string-array name="context_menu_account_dashboard">
+        <item>@string/edit</item>
+    </string-array>
+
     <!-- Define method of syncronization of dropbox -->
     <string-array name="dropbox_sync_item">
         <item>@string/synchronize</item>
