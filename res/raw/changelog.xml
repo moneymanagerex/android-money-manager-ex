@@ -18,8 +18,22 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="May 11, 2015" versionName="2.0.1">
-    <changelogtext>Introduced the material layout design</changelogtext>
+    <changelogversion changeDate="May 29, 2015" versionName="2.3.0-beta1">
+        <changelogtext>Collapsible categories.</changelogtext>
+        <changelogtext>Added long-press selection in Sub/Categories.</changelogtext>
+        <changelogtext>Adding floating button for creation of Sub/Categories.</changelogtext>
+        <changelogtext>Search for category now includes Splits.</changelogtext>
+        <changelogtext>Context menu for accounts on Home screen.</changelogtext>
+        <changelogtext>Other minor modifications and improvements.</changelogtext>
+    </changelogversion>
+    <changelogversion changeDate="May 27, 2015" versionName="2.2.4">
+        <changelogtext>Removing investment accounts on recurring transactions.</changelogtext>
+        <changelogtext>Disabling negative split amounts. Behaviour now matches the desktop application.</changelogtext>
+        <changelogtext>Correcting the detection of Split Category type.</changelogtext>
+        <changelogtext>Other minor modifications and improvements.</changelogtext>
+    </changelogversion>
+    <changelogversion changeDate="May 18, 2015" versionName="2.0.5">
+        <changelogtext>Introduced the material layout design</changelogtext>
         <changelogtext>Added the type of account Credit Card</changelogtext>
         <changelogtext>Displaying investment accounts with balances on the dashboard</changelogtext>
         <changelogtext>Added function duplicates transaction</changelogtext>
@@ -34,6 +48,7 @@
         <changelogtext>Added currency exchange rate chart. Check the exchange rate fluctuations in the past 5 days for all the currencies.</changelogtext>
         <changelogtext>Add translation: Bosnian (thanks MisterY)</changelogtext>
         <changelogtext>Add translation: Dutch (thanks kareltje68, dvdspelert and frijtersbart)</changelogtext>
+        <changelogtext>Option for migration of the database</changelogtext>
         <changelogtext>Fixed other minor bugs</changelogtext>
     </changelogversion>
     <changelogversion changeDate="January 7, 2015" versionName="1.4.17">
