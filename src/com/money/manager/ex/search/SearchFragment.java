@@ -44,11 +44,11 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.AllDataFragment;
+import com.money.manager.ex.fragment.IInputAmountDialogListener;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
@@ -62,7 +62,7 @@ import java.util.List;
  * The search form with search parameter input fields.
  */
 public class SearchFragment extends Fragment
-        implements InputAmountDialogListener {
+        implements IInputAmountDialogListener {
     // LOGCAT
     private static final String LOGCAT = SearchFragment.class.getSimpleName();
     // ID REQUEST code
@@ -111,7 +111,7 @@ public class SearchFragment extends Fragment
                 if (v.getTag() != null && v.getTag() instanceof Double) {
                     amount = (Double) v.getTag();
                 }
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+                InputAmountDialog dialog = InputAmountDialog.getInstance(SearchFragment.this, v.getId(), amount);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
