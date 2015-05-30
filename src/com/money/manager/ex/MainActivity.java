@@ -101,9 +101,15 @@ import java.util.List;
 public class MainActivity
         extends BaseFragmentActivity
         implements IDropboxManagerCallbacks {
+
     // requestcode
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
+
+    public DropboxHelper mDropboxHelper;
+
+    // private
+
     private static final String LOGCAT = MainActivity.class.getSimpleName();
     private static final String KEY_IS_AUTHENTICATED = "MainActivity:isAuthenticated";
     private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
@@ -129,8 +135,6 @@ public class MainActivity
     private TextView mDrawerTextUserName;
     private TextView mDrawerTextTotalAccounts;
     private TextView mDrawerTextViewRepeating;
-    // dropbox object
-    private DropboxHelper mDropboxHelper;
     // state dual panel
     private boolean mIsDualPanel = false;
 

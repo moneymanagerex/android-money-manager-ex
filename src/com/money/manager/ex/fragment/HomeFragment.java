@@ -63,6 +63,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.DropboxManager;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
@@ -133,12 +134,6 @@ public class HomeFragment extends Fragment implements
 
         // The fragment is using a custom option in the actionbar menu.
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.home_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -433,16 +428,41 @@ public class HomeFragment extends Fragment implements
         getLoaderManager().restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
     }
 
-    // End loader event handlers.
+    // Menu
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.home_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_search) {
-            startActivity(new Intent(getActivity(), SearchActivity.class));
-            return true;
+        boolean result = false;
+
+        switch (item.getItemId()) {
+            case R.id.menu_search:
+                startActivity(new Intent(getActivity(), SearchActivity.class));
+                result = true;
+                break;
+            case R.id.menu_sync_dropbox:
+                if (getActivity() instanceof MainActivity) {
+                    MainActivity parent = (MainActivity) getActivity();
+                    DropboxManager dropbox = new DropboxManager(parent, parent.mDropboxHelper, parent);
+                    dropbox.startServiceSyncDropbox();
+                    result = true;
+                }
+                break;
         }
-        return super.onOptionsItemSelected(item);
+
+        if (result) {
+            return result;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
+
+    // End menu.
 
     @Override
     public void onResume() {

@@ -29,4 +29,9 @@
     <!--<item android:id="@+id/action_settings"-->
     <!--android:title="@string/action_settings"-->
     <!--app:showAsAction="never" />-->
+
+    <item android:id="@+id/menu_sync_dropbox"
+        android:icon="?attr/ic_action_dropbox"
+        android:title="@string/synchronize"
+        app:showAsAction="never" />
 </menu>
