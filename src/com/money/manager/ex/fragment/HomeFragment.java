@@ -75,6 +75,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.view.RobotoTextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -292,7 +293,9 @@ public class HomeFragment extends Fragment implements
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:
-                double curTotal = 0, curReconciled = 0;
+//                double curTotal = 0, curReconciled = 0;
+                BigDecimal curTotal = new BigDecimal(0);
+                BigDecimal curReconciled = new BigDecimal(0);
 
                 linearHome.setVisibility(data != null && data.getCount() > 0 ? View.VISIBLE : View.GONE);
                 linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
@@ -304,8 +307,11 @@ public class HomeFragment extends Fragment implements
                 // cycle cursor
                 if (data != null && data.moveToFirst()) {
                     while (!data.isAfterLast()) {
-                        curTotal += data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
-                        curReconciled += data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
+                        double total = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+                        curTotal.add(BigDecimal.valueOf(total));
+//                        curReconciled += data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
+                        double totalReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
+                        curReconciled.add(BigDecimal.valueOf(totalReconciled));
 
                         // find element
                         QueryAccountBills bills = new QueryAccountBills(getActivity());
@@ -354,7 +360,7 @@ public class HomeFragment extends Fragment implements
                     }
                 }
                 // write accounts total
-                addFooterExpandableListView(curTotal, curReconciled);
+                addFooterExpandableListView(curTotal.doubleValue(), curReconciled.doubleValue());
 
                 // create adapter
                 AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity());
