@@ -161,16 +161,23 @@ public class AccountRepository {
     }
 
     private List<TableAccountList> loadAccounts_content(boolean open, boolean favorite, List<String> accountTypes) {
+        List<TableAccountList> result = new ArrayList<>();
+
+        // compose where clause
+        String where = getWhereFilterFor(open, favorite);
+        // filter accounts.
+        if (accountTypes != null && accountTypes.size() > 0) {
+            where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
+        }
+
         // use context provider instead of direct SQLite Database access.
         Cursor cursor = mContext.getContentResolver().query(mAccount.getUri(),
                 mAccount.getAllColumns(),
-                null,
+                where,
                 null,
                 mAccount.ACCOUNTNAME
         );
         if (cursor == null) return null;
-
-        List<TableAccountList> result = new ArrayList<>();
 
 //        for(cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext()) {
         while (cursor.moveToNext()) {
@@ -197,7 +204,6 @@ public class AccountRepository {
 
         // compose where clause
         String where = getWhereFilterFor(open,favorite);
-
         // filter accounts.
         if (accountTypes != null && accountTypes.size() > 0) {
             where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
