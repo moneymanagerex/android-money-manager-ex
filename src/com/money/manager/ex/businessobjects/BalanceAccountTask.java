@@ -42,16 +42,14 @@ public class BalanceAccountTask
     }
 
     private Context mContext;
-    private BigDecimal mCurrentBalance;
+    QueryAccountBills mAccount;
 
     public void startBalanceAccount(QueryAccountBills account) {
-        // get the account balance (from the screen here)
-        //String value = currencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getTotal());
-        mCurrentBalance = BigDecimal.valueOf(account.getTotal());
+        mAccount = account;
 
-        // todo: get the amount via input dialog.
+        // get the amount via input dialog.
         int currencyId = account.getCurrencyId();
-        // todo: check what to do with the id.
+        // do we need the id? the first 0.
         InputAmountDialog dialog = InputAmountDialog.getInstance(this, 0, 0.0, currencyId);
         FragmentActivity parent = (FragmentActivity) mContext;
         dialog.show(parent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
@@ -61,20 +59,24 @@ public class BalanceAccountTask
 
     @Override
     public void onFinishedInputAmountDialog(int id, Double amount) {
+        // get the account balance (from the screen here)
+        //String value = currencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getTotal());
+        BigDecimal currentBalance = BigDecimal.valueOf(mAccount.getTotal());
+
         // calculate the diff.
         BigDecimal newBalance = BigDecimal.valueOf(amount);
-        if (newBalance.compareTo(mCurrentBalance) == 0) return;
+        if (newBalance.compareTo(currentBalance) == 0) return;
 
         BigDecimal difference;
         TransactionTypes transactionType;
 
-        if (newBalance.compareTo(mCurrentBalance) > 0) {
+        if (newBalance.compareTo(currentBalance) > 0) {
             // new balance > current balance
-            difference = newBalance.subtract(mCurrentBalance);
+            difference = newBalance.subtract(currentBalance);
             transactionType = TransactionTypes.Deposit;
         } else {
             // new balance < current balance
-            difference = mCurrentBalance.subtract(newBalance);
+            difference = currentBalance.subtract(newBalance);
             transactionType = TransactionTypes.Withdrawal;
         }
 
@@ -84,6 +86,7 @@ public class BalanceAccountTask
         intent.setAction(Intent.ACTION_INSERT);
         // add balance and transaction type and payee
         IntentDataParameters params = new IntentDataParameters();
+        params.accountName = mAccount.getAccountName();
         params.transactionType = transactionType;
         params.payeeName = mContext.getString(R.string.balance_adjustment);
         params.amount = difference.doubleValue();

@@ -19,6 +19,7 @@ package com.money.manager.ex;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -47,7 +48,6 @@ import com.gc.materialdesign.views.CheckBox;
 import com.money.manager.ex.businessobjects.CategoryService;
 import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
-import com.money.manager.ex.checkingaccount.DataParser;
 import com.money.manager.ex.checkingaccount.EditTransactionCommonFunctions;
 import com.money.manager.ex.checkingaccount.IntentDataParameters;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
@@ -250,6 +250,8 @@ public class CheckingAccountActivity
 
         setContentView(R.layout.checkingaccount_activity);
 
+        mCommonFunctions = new EditTransactionCommonFunctions(this);
+
         try {
             DropboxHelper.getInstance();
         } catch (Exception e) {
@@ -260,8 +262,6 @@ public class CheckingAccountActivity
 
         setToolbarStandardAction(getToolbar());
 
-        mCommonFunctions = new EditTransactionCommonFunctions(this);
-
         // manage save instance
         if ((savedInstanceState != null)) {
             retrieveValuesFromSavedInstanceState(savedInstanceState);
@@ -270,11 +270,7 @@ public class CheckingAccountActivity
         // Controls need to be at the beginning as they are referenced throughout the code.
         mCommonFunctions.findControls();
 
-        // account(s)
-        mCommonFunctions.initAccountSelectors();
-
         // manage intent
-
         if (getIntent() != null) {
             handleIntent(savedInstanceState);
         }
@@ -282,6 +278,9 @@ public class CheckingAccountActivity
         // Transaction code
 
         initTransactionTypeSelector();
+
+        // account(s)
+        mCommonFunctions.initAccountSelectors();
 
         // status
 
@@ -634,8 +633,7 @@ public class CheckingAccountActivity
         Uri data = intent.getData();
         if (data == null) return;
 
-        DataParser dataParser = new DataParser(this);
-        IntentDataParameters parameters = dataParser.parseData(data);
+        IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
 
         // transaction type
         mCommonFunctions.mTransactionType = parameters.transactionType;
@@ -1210,9 +1208,7 @@ public class CheckingAccountActivity
      * @return true if update data successful
      */
     public boolean updateData() {
-        if (!validateData()) {
-            return false;
-        }
+        if (!validateData()) return false;
 
         // content value for insert or update data
         ContentValues values = new ContentValues();
@@ -1251,7 +1247,9 @@ public class CheckingAccountActivity
                 Log.w(LOGCAT, "Insert new transaction failed!");
                 return false;
             }
-            mTransId = Integer.parseInt(insert.getPathSegments().get(1));
+            long id = ContentUris.parseId(insert);
+//            mTransId = Integer.parseInt(insert.getPathSegments().get(1));
+            mTransId = (int) id;
         } else {
             // update
             if (getContentResolver().update(mCheckingAccount.getUri(), values,

@@ -19,6 +19,7 @@ package com.money.manager.ex.recurring.transactions;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -1003,7 +1004,9 @@ public class RepeatingTransactionActivity
                 Log.w(LOGCAT, "Insert new repeating transaction failed!");
                 return false;
             }
-            mBillDepositsId = Integer.parseInt(insert.getPathSegments().get(1));
+            long id = ContentUris.parseId(insert);
+//            mBillDepositsId = Integer.parseInt(insert.getPathSegments().get(1));
+            mBillDepositsId = (int) id;
         } else {
             // update
             if (getContentResolver().update(mRepeatingTransaction.getUri(), values,
