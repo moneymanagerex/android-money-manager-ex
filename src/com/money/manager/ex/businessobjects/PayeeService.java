@@ -17,8 +17,11 @@
  */
 package com.money.manager.ex.businessobjects;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.money.manager.ex.database.TablePayee;
@@ -54,10 +57,6 @@ public class PayeeService {
         return mPayee;
     }
 
-//    public int getId() {
-//        return mPayee.getPayeeId();
-//    }
-
     public int loadIdByName(String name) {
         int result = -1;
 
@@ -79,5 +78,15 @@ public class PayeeService {
         cursor.close();
 
         return result;
+    }
+
+    public int createNew(String payeeName) {
+        ContentValues values = new ContentValues();
+        values.put(TablePayee.PAYEENAME, payeeName);
+
+        Uri result = mContext.getContentResolver().insert(mPayee.getUri(), values);
+        long id = ContentUris.parseId(result);
+
+        return ((int) id);
     }
 }

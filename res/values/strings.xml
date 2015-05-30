@@ -597,4 +597,6 @@
     <string name="default_account">Default account</string>
     <string name="default_account_summary">The account to use when entering a new transaction.</string>
     <string name="balance_account">Balance account</string>
+    <string name="balance_adjustment">Balance Adjustment</string>
+    <string name="cash">Cash</string>
 </resources>

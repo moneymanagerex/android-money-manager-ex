@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 
 import com.money.manager.ex.CheckingAccountActivity;
+import com.money.manager.ex.R;
 import com.money.manager.ex.checkingaccount.IntentDataParameters;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -81,10 +82,12 @@ public class BalanceAccountTask
         // create a transaction to balance to the entered amount?
         Intent intent = new Intent(mContext, CheckingAccountActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
-        // add balance and transaction type
+        // add balance and transaction type and payee
         IntentDataParameters params = new IntentDataParameters();
         params.transactionType = transactionType;
+        params.payeeName = mContext.getString(R.string.balance_adjustment);
         params.amount = difference.doubleValue();
+        params.categoryName = mContext.getString(R.string.cash);
         intent.setData(params.toUri());
 
         mContext.startActivity(intent);

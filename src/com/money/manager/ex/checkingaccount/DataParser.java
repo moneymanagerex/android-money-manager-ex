@@ -20,8 +20,8 @@ package com.money.manager.ex.checkingaccount;
 import android.content.Context;
 import android.net.Uri;
 
-import com.money.manager.ex.businessobjects.Category;
-import com.money.manager.ex.businessobjects.Payee;
+import com.money.manager.ex.businessobjects.CategoryService;
+import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
 
@@ -61,7 +61,7 @@ public class DataParser {
 
         parameters.payeeName = data.getQueryParameter(PARAM_PAYEE);
         if (parameters.payeeName != null) {
-            Payee payee = new Payee(mContext);
+            PayeeService payee = new PayeeService(mContext);
             int payeeId = payee.loadIdByName(parameters.payeeName);
             parameters.payeeId = payeeId;
         }
@@ -69,9 +69,9 @@ public class DataParser {
         String amount = data.getQueryParameter(PARAM_AMOUNT);
         parameters.amount = Double.parseDouble(amount);
 
+        parameters.categoryName = data.getQueryParameter(PARAM_CATEGORY);
         if (parameters.categoryName != null) {
-            parameters.categoryName = data.getQueryParameter(PARAM_CATEGORY);
-            Category category = new Category(mContext);
+            CategoryService category = new CategoryService(mContext);
             int categoryId = category.loadIdByName(parameters.categoryName);
             parameters.categoryId = categoryId;
         }

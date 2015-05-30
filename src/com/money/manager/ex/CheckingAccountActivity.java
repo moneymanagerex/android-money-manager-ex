@@ -44,8 +44,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gc.materialdesign.views.CheckBox;
-import com.money.manager.ex.businessobjects.AccountService;
-import com.money.manager.ex.businessobjects.Payee;
+import com.money.manager.ex.businessobjects.CategoryService;
+import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.checkingaccount.DataParser;
 import com.money.manager.ex.checkingaccount.EditTransactionCommonFunctions;
@@ -648,17 +648,27 @@ public class CheckingAccountActivity
         if (parameters.payeeId > 0) {
             this.mPayeeId = parameters.payeeId;
             this.mPayeeName = parameters.payeeName;
-        }
-        // create payee if it does not exist
-        if (mPayeeName != null && mPayeeId <= 0) {
-            Payee newPayee = new Payee(this);
-
+        } else {
+            // create payee if it does not exist
+            if (parameters.payeeName != null) {
+                PayeeService newPayee = new PayeeService(this);
+                mPayeeId = newPayee.createNew(parameters.payeeName);
+                mPayeeName = parameters.payeeName;
+            }
         }
 
         // category
         if (parameters.categoryId > 0) {
-            this.mCategoryId = parameters.categoryId;
-            this.mCategoryName = parameters.categoryName;
+            mCategoryId = parameters.categoryId;
+            mCategoryName = parameters.categoryName;
+        } else {
+            // No id sent.
+            // create a category if it was sent but does not exist (id not found by the parser).
+            if (parameters.categoryName != null) {
+                CategoryService newCategory = new CategoryService(this);
+                mCategoryId = newCategory.createNew(mCategoryName);
+                mCategoryName = parameters.categoryName;
+            }
         }
     }
 

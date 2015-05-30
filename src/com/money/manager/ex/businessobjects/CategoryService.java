@@ -17,17 +17,21 @@
  */
 package com.money.manager.ex.businessobjects;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.money.manager.ex.database.TableCategory;
+import com.money.manager.ex.database.TablePayee;
 
 /**
  * Category
  */
-public class Category {
-    public Category(Context context) {
+public class CategoryService {
+    public CategoryService(Context context) {
         mContext = context;
         mCategory = new TableCategory();
     }
@@ -56,6 +60,16 @@ public class Category {
         cursor.close();
 
         return result;
-
     }
+
+    public int createNew(String name) {
+        ContentValues values = new ContentValues();
+        values.put(TableCategory.CATEGNAME, name);
+
+        Uri result = mContext.getContentResolver().insert(mCategory.getUri(), values);
+        long id = ContentUris.parseId(result);
+
+        return ((int) id);
+    }
+
 }
