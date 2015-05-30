@@ -37,7 +37,12 @@
         android:key="@string/pref_date_format"
         android:title="@string/date_format" />
 
-    <ListPreference
+    <!--<ListPreference-->
+        <!--android:icon="@null"-->
+        <!--android:key="@string/pref_base_currency"-->
+        <!--android:title="@string/base_currency" />-->
+
+    <Preference
         android:icon="@null"
         android:key="@string/pref_base_currency"
         android:title="@string/base_currency" />

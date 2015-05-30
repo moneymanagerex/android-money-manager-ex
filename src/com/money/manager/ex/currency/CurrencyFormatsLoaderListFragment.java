@@ -57,10 +57,11 @@ import java.util.List;
 /**
  *  Currency list.
  */
-public class CurrencyFormatsLoaderListFragment extends BaseListFragment
+public class CurrencyFormatsLoaderListFragment
+        extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static String mAction = Intent.ACTION_EDIT;
+    public String mAction = Intent.ACTION_EDIT;
 
     // Store previous device orientation when showing other screens (chart, etc.)
     public int PreviousOrientation = -1;
@@ -84,9 +85,13 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
         setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
         setHasOptionsMenu(true);
 
-        mLayout = Intent.ACTION_PICK.equals(mAction)
-                ? android.R.layout.simple_list_item_multiple_choice
-                : android.R.layout.simple_list_item_1;
+//        if (Intent.ACTION_PICK.equals(mAction)) {
+//            mLayout = android.R.layout.simple_list_item_multiple_choice;
+//        } else {
+//            mLayout = android.R.layout.simple_list_item_1;
+//        }
+        // Always use simple list layout.
+        mLayout = android.R.layout.simple_list_item_1;
 
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(), mLayout, null,
@@ -494,7 +499,12 @@ public class CurrencyFormatsLoaderListFragment extends BaseListFragment
 
         // Show context menu only if we are displaying the list of currencies
         // but not in selection mode.
-        if(mAction.equals(Intent.ACTION_EDIT)) getActivity().openContextMenu(v);
+        if (mAction.equals(Intent.ACTION_EDIT)) {
+            getActivity().openContextMenu(v);
+        } else {
+            // we are picking a currency. Select one.
+            setResultAndFinish();
+        }
     }
 
     private CurrencyUtils getCurrencyUtils() {

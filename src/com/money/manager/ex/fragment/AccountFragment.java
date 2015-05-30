@@ -35,7 +35,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +57,8 @@ import java.util.Calendar;
  * Checking account fragment. Includes list of transactions, etc.
  * @author a.lazzari
  */
-public class AccountFragment extends Fragment
+public class AccountFragment
+        extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataFragmentLoaderCallbacks {
 
     private static final String KEY_CONTENT = "AccountFragment:AccountId";

@@ -31,7 +31,9 @@ import com.money.manager.ex.utils.ActivityUtils;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.0
  */
-public class CurrencyFormatsListActivity extends BaseFragmentActivity {
+public class CurrencyFormatsListActivity
+        extends BaseFragmentActivity {
+
     public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
     public static final String LOGCAT = CurrencyFormatsListActivity.class.getSimpleName();
@@ -71,7 +73,8 @@ public class CurrencyFormatsListActivity extends BaseFragmentActivity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         // intercept key back
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            CurrencyFormatsLoaderListFragment fragment = (CurrencyFormatsLoaderListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+            CurrencyFormatsLoaderListFragment fragment = (CurrencyFormatsLoaderListFragment)
+                    getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
             if (fragment != null) {
                 fragment.setResultAndFinish();
             }

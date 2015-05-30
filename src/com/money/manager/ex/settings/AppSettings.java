@@ -74,6 +74,12 @@ public class AppSettings {
         return result;
     }
 
+    public boolean set(String key, int value) {
+        getEditor().putInt(key, value);
+        boolean result =getEditor().commit();
+        return result;
+    }
+
     private void init() {
         Context appContext = mContext.getApplicationContext();
         mSettings = PreferenceManager.getDefaultSharedPreferences(appContext);
@@ -88,7 +94,7 @@ public class AppSettings {
 
     public GeneralSettings getGeneralSettings() {
         if (mGeneral == null) {
-            mGeneral = new GeneralSettings(mContext);
+            mGeneral = new GeneralSettings(this);
         }
         return mGeneral;
     }

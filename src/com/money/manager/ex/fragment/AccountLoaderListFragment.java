@@ -45,7 +45,7 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
 
 /**
- * Account list
+ * List of accounts.
  */
 public class AccountLoaderListFragment
         extends BaseListFragment

@@ -28,16 +28,29 @@ import com.money.manager.ex.R;
  * Settings in the General category.
  */
 public class GeneralSettings {
-    public GeneralSettings(Context context) {
-        this.mContext = context;
+    public GeneralSettings(AppSettings settings) {
+        this.mSettings = settings;
+        this.mContext = settings.getContext();
     }
 
     private final Context mContext;
+    private AppSettings mSettings;
 
     public String getApplicationLocale() {
         String result = PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext())
                 .getString(mContext.getString(PreferenceConstants.PREF_LOCALE), "");
         return result;
+    }
+
+    public int getBaseCurrency() {
+        SharedPreferences preferences = getSharedPreferences();
+
+        String key = mContext.getString(PreferenceConstants.PREF_BASE_CURRENCY);
+//        String key2 = mContext.getString(R.string.pref_base_currency);
+
+        int currencyId = preferences.getInt(key, -1);
+
+        return currencyId;
     }
 
     public boolean getNotificationRecurringTransaction() {
@@ -57,4 +70,8 @@ public class GeneralSettings {
         return result;
     }
 
+    public boolean setBaseCurrency(int currencyId) {
+        String key = mContext.getString(PreferenceConstants.PREF_BASE_CURRENCY);
+        return mSettings.set(key, currencyId);
+    }
 }
