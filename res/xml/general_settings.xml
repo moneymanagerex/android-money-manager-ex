@@ -90,6 +90,11 @@
         android:summary="@string/summary_check_repeating_transaction"
         android:title="@string/title_check_repeating_transaction" />
 
+    <ListPreference
+        android:icon="@null"
+        android:key="@string/pref_default_account"
+        android:title="@string/default_account" />
+
     <CheckBoxPreference
         android:icon="@null"
         android:defaultValue="true"

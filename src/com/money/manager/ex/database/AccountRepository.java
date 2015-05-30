@@ -129,11 +129,13 @@ public class AccountRepository {
     }
 
     /**
+     * Load account list with given parameters.
+     * Includes all account types.
      * @param open     show open accounts
      * @param favorite show favorite account
      * @return List<TableAccountList> list of accounts selected
      */
-    public List<TableAccountList> getListAccounts(boolean open, boolean favorite) {
+    public List<TableAccountList> getAccountList(boolean open, boolean favorite) {
         // create a return list
         List<TableAccountList> listAccount = loadAccounts(open, favorite, null);
         return listAccount;
@@ -151,6 +153,45 @@ public class AccountRepository {
     }
 
     public List<TableAccountList> loadAccounts(boolean open, boolean favorite, List<String> accountTypes) {
+        List<TableAccountList> result;
+//        result = loadAccounts_sql(open, favorite, accountTypes);
+        result = loadAccounts_content(open, favorite, accountTypes);
+
+        return result;
+    }
+
+    private List<TableAccountList> loadAccounts_content(boolean open, boolean favorite, List<String> accountTypes) {
+        // use context provider instead of direct SQLite Database access.
+        Cursor cursor = mContext.getContentResolver().query(mAccount.getUri(),
+                mAccount.getAllColumns(),
+                null,
+                null,
+                mAccount.ACCOUNTNAME
+        );
+        if (cursor == null) return null;
+
+        List<TableAccountList> result = new ArrayList<>();
+
+//        for(cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
+            TableAccountList account = new TableAccountList();
+            account.setValueFromCursor(cursor);
+            result.add(account);
+        }
+        cursor.close();
+
+        return result;
+    }
+
+    /**
+     * Load accounts with these filters.
+     * Here the account types can be specified.
+     * @param open
+     * @param favorite
+     * @param accountTypes
+     * @return
+     */
+    private List<TableAccountList> loadAccounts_sql(boolean open, boolean favorite, List<String> accountTypes) {
         // create a return list
         List<TableAccountList> listAccount = new ArrayList<>();
 
@@ -168,7 +209,8 @@ public class AccountRepository {
         SQLiteDatabase db = helper.getReadableDatabase();
         if (db != null) {
             Cursor cursor = db.query(tAccountList.getSource(), tAccountList.getAllColumns(),
-                    where, null, null, null, TableAccountList.ACCOUNTNAME);
+                    where, null, null, null,
+                    TableAccountList.ACCOUNTNAME);
             // populate list from data cursor
             if (cursor != null && cursor.moveToFirst()) {
                 while (!(cursor.isAfterLast())) {
