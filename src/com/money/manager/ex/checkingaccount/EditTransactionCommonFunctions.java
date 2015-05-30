@@ -19,6 +19,7 @@ package com.money.manager.ex.checkingaccount;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,6 +31,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
@@ -87,6 +89,13 @@ public class EditTransactionCommonFunctions {
 
         addMissingAccountToSelectors(accountRepository, mAccountId);
         addMissingAccountToSelectors(accountRepository, mToAccountId);
+        // add the default account, if any.
+        AppSettings settings = new AppSettings(mContext);
+        String defaultAccountString = settings.getGeneralSettings().getDefaultAccount();
+        if (!TextUtils.isEmpty(defaultAccountString)) {
+            int defaultAccount = Integer.parseInt(defaultAccountString);
+            addMissingAccountToSelectors(accountRepository, defaultAccount);
+        }
 
         // create adapter for spinAccount
         ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(mContext,
