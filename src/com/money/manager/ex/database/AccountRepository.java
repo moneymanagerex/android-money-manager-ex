@@ -86,27 +86,6 @@ public class AccountRepository {
         return result;
     }
 
-//    public String loadNameById(int id) {
-//        String result = null;
-//
-//        String selection = TableAccountList.ACCOUNTID + "=?";
-//
-//        Cursor cursor = mContext.getContentResolver().query(
-//                mAccount.getUri(),
-//                new String[] { TableAccountList.ACCOUNTNAME },
-//                selection,
-//                new String[] { Integer.toString(id) },
-//                null);
-//
-//        if(cursor.moveToFirst()) {
-//            result = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
-//        }
-//
-//        cursor.close();
-//
-//        return result;
-//    }
-
     public String loadName(int id) {
         String name = null;
 
@@ -115,15 +94,11 @@ public class AccountRepository {
                 TableAccountList.ACCOUNTID + "=?",
                 new String[]{Integer.toString(id)},
                 null);
-        // check if cursor is valid and open
-        if ((cursor == null) || (!cursor.moveToFirst())) {
-            return name;
+
+        if ((cursor != null) && cursor.moveToFirst()) {
+            name = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
+            cursor.close();
         }
-
-        // set payee name
-        name = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
-
-        cursor.close();
 
         return name;
     }
@@ -141,13 +116,31 @@ public class AccountRepository {
         return listAccount;
     }
 
-    public List<TableAccountList> getTransactionAccounts(boolean open, boolean favorite) {
-        ArrayList<String> accountTypes = new ArrayList<>();
-        accountTypes.add(AccountTypes.CHECKING.toString());
-        accountTypes.add(AccountTypes.TERM.toString());
-        accountTypes.add(AccountTypes.CREDIT_CARD.toString());
+    public List<AccountTypes> getTransactionAccountTypes() {
+        List<AccountTypes> list = new ArrayList<>();
 
-        List<TableAccountList> result = loadAccounts(open, favorite, accountTypes);
+        list.add(AccountTypes.CHECKING);
+        list.add(AccountTypes.TERM);
+        list.add(AccountTypes.CREDIT_CARD);
+
+        return list;
+    }
+
+    public List<String> getTransactionAccountTypeNames() {
+        List<String> accountTypeNames = new ArrayList<>();
+        List<AccountTypes> accountTypes = getTransactionAccountTypes();
+
+        for (AccountTypes type : accountTypes) {
+            accountTypeNames.add(type.toString());
+        }
+
+        return accountTypeNames;
+    }
+
+    public List<TableAccountList> getTransactionAccounts(boolean open, boolean favorite) {
+        List<String> accountTypeNames = getTransactionAccountTypeNames();
+
+        List<TableAccountList> result = loadAccounts(open, favorite, accountTypeNames);
 
         return result;
     }
@@ -159,6 +152,8 @@ public class AccountRepository {
 
         return result;
     }
+
+    // Private section
 
     private List<TableAccountList> loadAccounts_content(boolean open, boolean favorite, List<String> accountTypes) {
         List<TableAccountList> result = new ArrayList<>();

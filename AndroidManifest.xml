@@ -119,14 +119,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-        <!-- provider for tasker integration -->
-        <!--<provider android:name=".checkingaccount.NewTransactionContentProvider"-->
-            <!--android:authorities="com.money.manager.ex.NewTransaction"-->
-            <!--android:label="NewTransaction"-->
-            <!--android:grantUriPermissions="true"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="true">-->
-        <!--</provider>-->
 
         <service
             android:name=".widget.SummaryDashExtension"

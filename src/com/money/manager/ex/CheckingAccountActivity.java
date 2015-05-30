@@ -19,6 +19,7 @@ package com.money.manager.ex;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -44,8 +45,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gc.materialdesign.views.CheckBox;
+import com.money.manager.ex.businessobjects.CategoryService;
+import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
-import com.money.manager.ex.checkingaccount.DataParser;
 import com.money.manager.ex.checkingaccount.EditTransactionCommonFunctions;
 import com.money.manager.ex.checkingaccount.IntentDataParameters;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
@@ -56,7 +58,6 @@ import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SplitCategoriesRepository;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableCategory;
@@ -66,8 +67,8 @@ import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.IInputAmountDialogListener;
 import com.money.manager.ex.fragment.InputAmountDialog;
-import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
@@ -88,7 +89,7 @@ import java.util.Locale;
  */
 public class CheckingAccountActivity
         extends BaseFragmentActivity
-        implements InputAmountDialogListener, YesNoDialogListener {
+        implements IInputAmountDialogListener, YesNoDialogListener {
 
     public static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
     // ID REQUEST Data
@@ -152,7 +153,7 @@ public class CheckingAccountActivity
     // Controls on the form.
     public ImageButton btnTransNumber;
     public EditText edtTransNumber, edtNotes;
-    public TextView txtSelectDate, txtSelectPayee;
+    public TextView txtSelectDate;
 
     // object of the table
     private TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
@@ -249,6 +250,8 @@ public class CheckingAccountActivity
 
         setContentView(R.layout.checkingaccount_activity);
 
+        mCommonFunctions = new EditTransactionCommonFunctions(this);
+
         try {
             DropboxHelper.getInstance();
         } catch (Exception e) {
@@ -259,8 +262,6 @@ public class CheckingAccountActivity
 
         setToolbarStandardAction(getToolbar());
 
-        mCommonFunctions = new EditTransactionCommonFunctions(this);
-
         // manage save instance
         if ((savedInstanceState != null)) {
             retrieveValuesFromSavedInstanceState(savedInstanceState);
@@ -269,11 +270,7 @@ public class CheckingAccountActivity
         // Controls need to be at the beginning as they are referenced throughout the code.
         mCommonFunctions.findControls();
 
-        // account(s)
-        mCommonFunctions.initAccountSelectors();
-
         // manage intent
-
         if (getIntent() != null) {
             handleIntent(savedInstanceState);
         }
@@ -281,6 +278,9 @@ public class CheckingAccountActivity
         // Transaction code
 
         initTransactionTypeSelector();
+
+        // account(s)
+        mCommonFunctions.initAccountSelectors();
 
         // status
 
@@ -354,8 +354,7 @@ public class CheckingAccountActivity
 
         // Payee
 
-        txtSelectPayee = (TextView) findViewById(R.id.textViewPayee);
-        txtSelectPayee.setOnClickListener(new OnClickListener() {
+        mCommonFunctions.txtSelectPayee.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PayeeActivity.class);
@@ -425,34 +424,32 @@ public class CheckingAccountActivity
                         }
                     }
                 } else {
+                    // Amount.
                     if (mCommonFunctions.spinToAccount.getSelectedItemPosition() >= 0 &&
                             mCommonFunctions.spinToAccount.getSelectedItemPosition() < mCommonFunctions.AccountList.size()) {
                         currencyId = mCommonFunctions.AccountList.get(mCommonFunctions.spinAccount.getSelectedItemPosition()).getCurrencyId();
                     }
                 }
                 double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
+                InputAmountDialog dialog = InputAmountDialog.getInstance(CheckingAccountActivity.this,
+                        v.getId(), amount, currencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
 
-        // total amount
-
-        mCommonFunctions.txtTotAmount = (TextView) findViewById(R.id.textViewTotAmount);
-        mCommonFunctions.formatAmount(mCommonFunctions.txtTotAmount, mTotAmount, !mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer)
-                ? mCommonFunctions.mAccountId : mCommonFunctions.mToAccountId);
-
-        // on click open dialog
-        mCommonFunctions.txtTotAmount.setOnClickListener(onClickAmount);
-
         // amount
-        mCommonFunctions.txtAmount = (TextView) findViewById(R.id.textViewAmount);
         mCommonFunctions.formatAmount(mCommonFunctions.txtAmount, mAmount,
                 !mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer)
-                ? mCommonFunctions.mToAccountId : mCommonFunctions.mAccountId);
-
-        // on click open dialog
+                        ? mCommonFunctions.mToAccountId : mCommonFunctions.mAccountId);
         mCommonFunctions.txtAmount.setOnClickListener(onClickAmount);
+
+        // total amount
+
+        mCommonFunctions.formatAmount(mCommonFunctions.txtTotAmount, mTotAmount,
+                !mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer)
+                ? mCommonFunctions.mAccountId : mCommonFunctions.mToAccountId);
+
+        mCommonFunctions.txtTotAmount.setOnClickListener(onClickAmount);
 
         // Transaction number
 
@@ -636,17 +633,41 @@ public class CheckingAccountActivity
         Uri data = intent.getData();
         if (data == null) return;
 
-        DataParser dataParser = new DataParser(this);
-        IntentDataParameters parameters = dataParser.parseData(data);
+        IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
 
-        // todo: transaction type
+        // transaction type
+        mCommonFunctions.mTransactionType = parameters.transactionType;
 
-        this.mCommonFunctions.mAccountId = parameters.accountId;
+        if (parameters.accountId > 0) {
+            this.mCommonFunctions.mAccountId = parameters.accountId;
+        }
         this.mTotAmount = parameters.amount;
-        this.mPayeeId = parameters.payeeId;
-        this.mPayeeName = parameters.payeeName;
-        this.mCategoryId = parameters.categoryId;
-        this.mCategoryName = parameters.categoryName;
+        // payee
+        if (parameters.payeeId > 0) {
+            this.mPayeeId = parameters.payeeId;
+            this.mPayeeName = parameters.payeeName;
+        } else {
+            // create payee if it does not exist
+            if (parameters.payeeName != null) {
+                PayeeService newPayee = new PayeeService(this);
+                mPayeeId = newPayee.createNew(parameters.payeeName);
+                mPayeeName = parameters.payeeName;
+            }
+        }
+
+        // category
+        if (parameters.categoryId > 0) {
+            mCategoryId = parameters.categoryId;
+            mCategoryName = parameters.categoryName;
+        } else {
+            // No id sent.
+            // create a category if it was sent but does not exist (id not found by the parser).
+            if (parameters.categoryName != null) {
+                CategoryService newCategory = new CategoryService(this);
+                mCategoryId = newCategory.createNew(mCategoryName);
+                mCategoryName = parameters.categoryName;
+            }
+        }
     }
 
     public ArrayList<TableSplitTransactions> getDeletedSplitCategories() {
@@ -665,6 +686,7 @@ public class CheckingAccountActivity
                 mTransCodeItems);
         adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCommonFunctions.spinTransCode.setAdapter(adapterTrans);
+
         // select the current value
         if (mCommonFunctions.mTransactionType != null) {
             if (Arrays.asList(mTransCodeValues).indexOf(getTransactionType()) >= 0) {
@@ -1104,8 +1126,9 @@ public class CheckingAccountActivity
      */
     public void refreshPayeeName() {
         // write into text button payee name
-        if (txtSelectPayee != null)
-            txtSelectPayee.setText(mPayeeName);
+        if (mCommonFunctions.txtSelectPayee != null) {
+            mCommonFunctions.txtSelectPayee.setText(mPayeeName);
+        }
     }
 
     /**
@@ -1185,9 +1208,7 @@ public class CheckingAccountActivity
      * @return true if update data successful
      */
     public boolean updateData() {
-        if (!validateData()) {
-            return false;
-        }
+        if (!validateData()) return false;
 
         // content value for insert or update data
         ContentValues values = new ContentValues();
@@ -1226,7 +1247,9 @@ public class CheckingAccountActivity
                 Log.w(LOGCAT, "Insert new transaction failed!");
                 return false;
             }
-            mTransId = Integer.parseInt(insert.getPathSegments().get(1));
+            long id = ContentUris.parseId(insert);
+//            mTransId = Integer.parseInt(insert.getPathSegments().get(1));
+            mTransId = (int) id;
         } else {
             // update
             if (getContentResolver().update(mCheckingAccount.getUri(), values,

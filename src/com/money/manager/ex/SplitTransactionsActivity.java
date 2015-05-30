@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package com.money.manager.ex;
 
 import android.content.Intent;
@@ -31,7 +30,7 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
+import com.money.manager.ex.fragment.IInputAmountDialogListener;
 import com.money.manager.ex.fragment.SplitItemFragment;
 import com.money.manager.ex.fragment.SplitItemFragment.SplitItemFragmentCallbacks;
 import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
@@ -40,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SplitTransactionsActivity extends BaseFragmentActivity
-        implements SplitItemFragmentCallbacks, InputAmountDialogListener {
+        implements SplitItemFragmentCallbacks, IInputAmountDialogListener {
 
     public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";

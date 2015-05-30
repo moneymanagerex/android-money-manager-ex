@@ -53,7 +53,7 @@ public class EditTransactionCommonFunctions {
     public TransactionTypes mTransactionType;
 
     public Spinner spinAccount, spinToAccount, spinStatus, spinTransCode;
-    public TextView txtTotAmount, txtAmount, txtSelectCategory, txtSplit;
+    public TextView txtSelectPayee, txtTotAmount, txtAmount, txtSelectCategory, txtSplit;
     public com.gc.materialdesign.views.CheckBox chbSplitTransaction;
 
     private Context mContext;
@@ -63,11 +63,16 @@ public class EditTransactionCommonFunctions {
 
         spinStatus = (Spinner) parent.findViewById(R.id.spinnerStatus);
         spinTransCode = (Spinner) parent.findViewById(R.id.spinnerTransCode);
+        txtSelectPayee = (TextView) parent.findViewById(R.id.textViewPayee);
+
         chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
         txtSelectCategory = (TextView) parent.findViewById(R.id.textViewCategory);
         txtSplit = (TextView) parent.findViewById(R.id.splitTextView);
         spinAccount = (Spinner) parent.findViewById(R.id.spinnerAccount);
         spinToAccount = (Spinner) parent.findViewById(R.id.spinnerToAccount);
+
+        txtAmount = (TextView) parent.findViewById(R.id.textViewAmount);
+        txtTotAmount = (TextView) parent.findViewById(R.id.textViewTotAmount);
     }
 
     /**

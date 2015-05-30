@@ -37,13 +37,11 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 
-import java.util.Objects;
-
-public class SplitItemFragment extends Fragment
-        implements InputAmountDialogListener {
+public class SplitItemFragment
+        extends Fragment
+        implements IInputAmountDialogListener {
 
     public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
     private static final int REQUEST_PICK_CATEGORY = 1;
@@ -159,7 +157,8 @@ public class SplitItemFragment extends Fragment
                         activity.setFragmentInputAmountClick(SplitItemFragment.this);
                     }
 
-                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+                    InputAmountDialog dialog = InputAmountDialog.getInstance(SplitItemFragment.this,
+                            v.getId(), amount);
                     dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });
