@@ -40,12 +40,6 @@ import java.math.BigDecimal;
 public class StockRepository
     extends Dataset {
 
-    public static ContentValues getContentValues() {
-        ContentValues result = new ContentValues();
-        //result.put(STOCKID);
-        return result;
-    }
-
     /**
      * Constructor for Stock dataset.
      *
@@ -82,20 +76,27 @@ public class StockRepository
     public boolean load(int accountId) {
         boolean result = false;
 
-        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext)
-                .getReadableDatabase();
-        if (database == null) return result;
+//        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext)
+//                .getReadableDatabase();
+//        if (database == null) return result;
 
         String selection = TableAccountList.ACCOUNTID + "=?";
-        Cursor cursor = database.query(
-                // table
-                this.getSource(),
-                // columns
+//        Cursor cursor = database.query(
+//                // table
+//                this.getSource(),
+//                // columns
+//                null,
+//                // selection, arguments
+//                selection, new String[] { Integer.toString(accountId) },
+//                // group by, having, order by
+//                null, null, null);
+        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
                 null,
-                // selection, arguments
-                selection, new String[] { Integer.toString(accountId) },
-                // group by, having, order by
-                null, null, null);
+                selection,
+                new String[] { Integer.toString(accountId) },
+                null
+        );
+
         // check if cursor is valid
         if (cursor != null && cursor.moveToFirst()) {
             this.setValueFromCursor(cursor);
@@ -108,16 +109,16 @@ public class StockRepository
         return result;
     }
 
-    public CursorLoader getCursorLoader(int accountId) {
-        String selection = HELDAT + "=?";
-
-        CursorLoader loader = new CursorLoader(mContext, getUri(),
-                null,
-                selection,
-                new String[] { Integer.toString(accountId) }, null);
-
-        return loader;
-    }
+//    public CursorLoader getCursorLoader(int accountId) {
+//        String selection = HELDAT + "=?";
+//
+//        CursorLoader loader = new CursorLoader(mContext, getUri(),
+//                null,
+//                selection,
+//                new String[] { Integer.toString(accountId) }, null);
+//
+//        return loader;
+//    }
 
     /**
      * Retrieves all record ids which refer the given symbol.
@@ -126,13 +127,18 @@ public class StockRepository
     public int[] findIdsBySymbol(String symbol) {
         int[] result = null;
 
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-                .getReadableDatabase();
-        Cursor cursor = db.query(this.getSource(),
+//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+//                .getReadableDatabase();
+//        Cursor cursor = db.query(this.getSource(),
+//                new String[]{STOCKID},
+//                SYMBOL + "=?", new String[]{symbol},
+//                null, null, null
+//        );
+
+        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
                 new String[]{STOCKID},
                 SYMBOL + "=?", new String[]{symbol},
-                null, null, null
-        );
+                null);
 
         if (cursor != null) {
             int records = cursor.getCount();
@@ -155,18 +161,25 @@ public class StockRepository
      */
     public boolean updatePrice(int id, BigDecimal price) {
         boolean result = false;
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-                .getWritableDatabase();
 
-        ContentValues values = getContentValues();
+        ContentValues values = new ContentValues();
 //        values.put(STOCKID, id);
         values.put(CURRENTPRICE, price.doubleValue());
 
-        int updateResult = db.update(
-                getSource(),
+//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+//                .getWritableDatabase();
+//        int updateResult = db.update(
+//                getSource(),
+//                values,
+//                STOCKID + "=?",
+//                new String[]{Integer.toString(id)}
+//        );
+        int updateResult = mContext.getContentResolver().update(this.getUri(),
                 values,
-                STOCKID + "=?", new String[]{Integer.toString(id)}
-        );
+                STOCKID + "=?",
+                new String[]{Integer.toString(id)}
+                );
+
         if (updateResult != 0) {
             result = true;
         } else {

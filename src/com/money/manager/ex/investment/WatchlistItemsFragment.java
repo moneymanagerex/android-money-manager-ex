@@ -181,7 +181,7 @@ public class WatchlistItemsFragment
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
         boolean cursorMoved = cursor.moveToPosition(info.position - 1);
 
-        ContentValues contents = StockRepository.getContentValues();
+        ContentValues contents = new ContentValues();
         DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, contents, StockRepository.SYMBOL);
 
         boolean result = false;
@@ -267,7 +267,7 @@ public class WatchlistItemsFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader result = null;
+        CursorLoader result;
 
         // store the arguments for later. This is the WHERE filter.
         mLoaderArgs = args;
@@ -279,9 +279,8 @@ public class WatchlistItemsFragment
             case ID_LOADER_WATCHLIST:
                 // compose selection and sort
                 String selection = "";
-                ArrayList<String> whereClause = null;
                 if (args != null && args.containsKey(AllDataFragment.KEY_ARGUMENTS_WHERE)) {
-                    whereClause = args.getStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE);
+                    ArrayList<String> whereClause = args.getStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE);
                     if (whereClause != null) {
                         for (int i = 0; i < whereClause.size(); i++) {
                             selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
