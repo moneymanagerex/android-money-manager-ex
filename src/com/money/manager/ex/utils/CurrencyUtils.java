@@ -77,7 +77,7 @@ public class CurrencyUtils {
 
     public CurrencyUtils(Context context, Boolean init) {
         mContext = context;
-        if (init)
+        if (init) 
             init();
     }
 
@@ -95,8 +95,6 @@ public class CurrencyUtils {
         // check if map currencies is create
         if (mCurrencies == null) {
             mCurrencies = new HashMap<>();
-            // clear map for new populate
-//            mCurrencies.clear();
 
             // load all currencies
             if (!loadCurrencies()) return Boolean.FALSE;
@@ -228,6 +226,10 @@ public class CurrencyUtils {
      */
     public Integer getBaseCurrencyId() {
         return mBaseCurrencyId;
+    }
+
+    public TableCurrencyFormats getBaseCurrency() {
+        return getCurrency(mBaseCurrencyId);
     }
 
     /**

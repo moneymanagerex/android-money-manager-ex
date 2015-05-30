@@ -164,7 +164,7 @@ public class AccountListEditActivity
         if (mCurrencyId == null) {
             CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
 
-            TableCurrencyFormats currencyFormats = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
+            TableCurrencyFormats currencyFormats = currencyUtils.getBaseCurrency();
 
             if (currencyFormats != null) {
                 mCurrencyId = currencyFormats.getCurrencyId();
