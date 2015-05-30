@@ -64,6 +64,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.DropboxManager;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
@@ -478,11 +479,15 @@ public class HomeFragment extends Fragment implements
 
     // Context menu
 
+    /**
+     * Context menu for account entries.
+     * @param menu
+     * @param v
+     * @param menuInfo
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-
-//        Toast.makeText(getActivity(), "yo!", Toast.LENGTH_SHORT).show();
 
         if (!(v instanceof ExpandableListView)) return;
 
@@ -496,8 +501,6 @@ public class HomeFragment extends Fragment implements
         if (type != ExpandableListView.PACKED_POSITION_TYPE_CHILD) return;
 
         // get adapter.
-//        ListAdapter adapter = mExpandableListView.getAdapter();
-//        ExpandableListAdapter expandableListAdapter = mExpandableListView.getExpandableListAdapter();
         AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
         Object childItem = accountsAdapter.getChild(groupPosition, childPosition);
         QueryAccountBills account = (QueryAccountBills) childItem;
@@ -508,7 +511,13 @@ public class HomeFragment extends Fragment implements
         for(String menuItem : menuItems) {
             menu.add(menuItem);
         }
-//        menu.add(R.string.balance);
+
+        // balance account should work only for transaction accounts.
+        AccountRepository accountRepository = new AccountRepository(getActivity());
+        List<String> accountTypes = accountRepository.getTransactionAccountTypeNames();
+        if (accountTypes.contains(account.getAccountType())) {
+            menu.add(R.string.balance_account);
+        }
     }
 
     @Override
@@ -541,6 +550,12 @@ public class HomeFragment extends Fragment implements
             startActivity(intent);
 
             result = true;
+        }
+        if (menuItemTitle.equalsIgnoreCase(getString(R.string.balance_account))) {
+            // todo: get the amount via input dialog.
+            // todo: run the balance task
+            // todo: get the account balance (from the screen here)
+            // todo: calculate the diff, create a transaction to balance to the entered amount.
         }
 
         return result;
