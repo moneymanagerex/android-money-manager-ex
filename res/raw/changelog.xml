@@ -26,6 +26,7 @@
         <changelogtext>Search for category now includes Splits.</changelogtext>
         <changelogtext>Context menu for accounts on Home screen.</changelogtext>
         <changelogtext>Improved currency picker for default currency.</changelogtext>
+        <changelogtext>Currencies now selected with a single click.</changelogtext>
         <changelogtext>Other minor modifications and improvements.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="May 27, 2015" versionName="2.2.4">
