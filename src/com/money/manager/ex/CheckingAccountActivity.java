@@ -263,43 +263,20 @@ public class CheckingAccountActivity
 
         // manage save instance
         if ((savedInstanceState != null)) {
-            mTransId = savedInstanceState.getInt(KEY_TRANS_ID);
-            mCommonFunctions.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
-            mCommonFunctions.mToAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
-            mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
-            mDate = savedInstanceState.getString(KEY_TRANS_DATE);
-            String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
-            mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
-            mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
-            mAmount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
-            mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
-            mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
-            mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
-            mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
-            mCategoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
-            mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
-            mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
-            mNotes = savedInstanceState.getString(KEY_NOTES);
-            mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
-            mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
-            mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
-            mRecurringTransactionId = savedInstanceState.getInt(KEY_BDID_ID);
-            mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
-            // action
-            mIntentAction = savedInstanceState.getString(KEY_ACTION);
+            retrieveValuesFromSavedInstanceState(savedInstanceState);
         }
 
         // Controls need to be at the beginning as they are referenced throughout the code.
         mCommonFunctions.findControls();
+
+        // account(s)
+        mCommonFunctions.initAccountSelectors();
 
         // manage intent
 
         if (getIntent() != null) {
             handleIntent(savedInstanceState);
         }
-
-        // account(s)
-        mCommonFunctions.initAccountSelectors();
 
         // Transaction code
 
@@ -524,6 +501,33 @@ public class CheckingAccountActivity
         refreshCategoryName();
     }
 
+    private void retrieveValuesFromSavedInstanceState(Bundle savedInstanceState) {
+        mTransId = savedInstanceState.getInt(KEY_TRANS_ID);
+        mCommonFunctions.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
+        mCommonFunctions.mToAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
+        mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
+        mDate = savedInstanceState.getString(KEY_TRANS_DATE);
+        String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
+        mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
+        mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
+        mAmount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
+        mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
+        mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
+        mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
+        mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
+        mCategoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
+        mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
+        mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
+        mNotes = savedInstanceState.getString(KEY_NOTES);
+        mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
+        mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
+        mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
+        mRecurringTransactionId = savedInstanceState.getInt(KEY_BDID_ID);
+        mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
+        // action
+        mIntentAction = savedInstanceState.getString(KEY_ACTION);
+    }
+
     /**
      * Get the parameters from the intent (parameters sent from the caller).
      * Also used for Tasker integration, for example.
@@ -605,14 +609,15 @@ public class CheckingAccountActivity
 
             externalIntegration(intent);
 
-            // Set default account, if not set.
+            // Select the default account.
             AppSettings settings = new AppSettings(this);
-            String defaultAccount = settings.getGeneralSettings().getDefaultAccount();
-            if (!TextUtils.isEmpty(defaultAccount)) {
-                TableAccountList account = mCommonFunctions.AccountList
-                        .get(mCommonFunctions.spinAccount.getSelectedItemPosition());
-                // todo: mCheckingAccount =
-                Log.d(LOGCAT, account.getAccountName());
+            String defaultAccountSetting = settings.getGeneralSettings().getDefaultAccount();
+            if (!TextUtils.isEmpty(defaultAccountSetting)) {
+                int defaultAccountId = Integer.parseInt(defaultAccountSetting);
+                if (mCommonFunctions.mAccountIdList.contains(defaultAccountId)) {
+                    int index = mCommonFunctions.mAccountIdList.indexOf(defaultAccountId);
+                    mCommonFunctions.spinAccount.setSelection(index);
+                }
             }
         }
 
@@ -1267,7 +1272,9 @@ public class CheckingAccountActivity
                     }
                 } else {
                     // update data
-                    if (getContentResolver().update(mSplitTransactions.get(i).getUri(), values, TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
+                    if (getContentResolver().update(mSplitTransactions.get(i).getUri(), values,
+                            TableSplitTransactions.SPLITTRANSID + "=?",
+                            new String[]{Integer.toString(mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Update split transaction failed!");
                         return false;
@@ -1283,7 +1290,9 @@ public class CheckingAccountActivity
                 values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactionsDeleted.get(i).getSplitTransAmount());
 
                 // update data
-                if (getContentResolver().delete(mSplitTransactionsDeleted.get(i).getUri(), TableSplitTransactions.SPLITTRANSID + "=?", new String[]{Integer.toString(mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
+                if (getContentResolver().delete(mSplitTransactionsDeleted.get(i).getUri(),
+                        TableSplitTransactions.SPLITTRANSID + "=?",
+                        new String[]{Integer.toString(mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(LOGCAT, "Delete split transaction failed!");
                     return false;
