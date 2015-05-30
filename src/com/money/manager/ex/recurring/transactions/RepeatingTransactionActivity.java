@@ -51,7 +51,6 @@ import com.money.manager.ex.checkingaccount.EditTransactionCommonFunctions;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
@@ -63,8 +62,8 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.IInputAmountDialogListener;
 import com.money.manager.ex.fragment.InputAmountDialog;
-import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.text.DecimalFormat;
@@ -74,7 +73,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -83,7 +81,7 @@ import java.util.Locale;
  */
 public class RepeatingTransactionActivity
         extends BaseFragmentActivity
-        implements InputAmountDialogListener {
+        implements IInputAmountDialogListener {
 
     private static final String LOGCAT = RepeatingTransactionActivity.class.getSimpleName();
     // ID REQUEST Data
@@ -433,7 +431,8 @@ public class RepeatingTransactionActivity
                     currencyId = mCommonFunctions.AccountList.get(mCommonFunctions.spinAccount.getSelectedItemPosition()).getCurrencyId();
                 }
                 double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
+                InputAmountDialog dialog = InputAmountDialog.getInstance(RepeatingTransactionActivity.this,
+                        v.getId(), amount, currencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };

@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package com.money.manager.ex.fragment;
 
 import android.app.Dialog;
@@ -42,7 +41,9 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class InputAmountDialog extends DialogFragment {
+public class InputAmountDialog
+        extends DialogFragment {
+
     private static final String LOGCAT = InputAmountDialog.class.getSimpleName();
 
     private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
@@ -63,8 +64,9 @@ public class InputAmountDialog extends DialogFragment {
     private Integer mCurrencyId, mDefaultColor;
     private TextView txtAmount, txtExpression;
     private ImageButton imgDelete;
+    private IInputAmountDialogListener mListener;
 
-    public static InputAmountDialog getInstance(int id, Double amount) {
+    public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id, Double amount) {
         Bundle args = new Bundle();
         args.putInt("id", id);
         args.putDouble("amount", amount);
@@ -75,9 +77,11 @@ public class InputAmountDialog extends DialogFragment {
         return fragment;
     }
 
-    public static InputAmountDialog getInstance(int id, Double amount, Integer currencyId) {
-        InputAmountDialog dialog = getInstance(id, amount);
+    public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id,
+                                                Double amount, Integer currencyId) {
+        InputAmountDialog dialog = getInstance(listener, id, amount);
         dialog.mCurrencyId = currencyId;
+        dialog.mListener = listener;
         return dialog;
     }
 
@@ -199,7 +203,7 @@ public class InputAmountDialog extends DialogFragment {
                     mAmount = Double.toString(0);
                 // check if is double
                 if (NumberUtils.isNumber(mAmount)) {
-                    ((InputAmountDialogListener) getActivity()).onFinishedInputAmountDialog(mIdView, MathUtils.Round(Double.parseDouble(mAmount), 2));
+                    mListener.onFinishedInputAmountDialog(mIdView, MathUtils.Round(Double.parseDouble(mAmount), 2));
                     dialog.dismiss();
                 }
             }
@@ -271,9 +275,5 @@ public class InputAmountDialog extends DialogFragment {
             }
         }
         return true;
-    }
-
-    public interface InputAmountDialogListener {
-        public void onFinishedInputAmountDialog(int id, Double amount);
     }
 }

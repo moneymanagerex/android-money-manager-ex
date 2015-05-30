@@ -22,6 +22,7 @@ import android.net.Uri;
 
 import com.money.manager.ex.businessobjects.Category;
 import com.money.manager.ex.businessobjects.Payee;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
 
 /**
@@ -34,6 +35,7 @@ public class DataParser {
     }
 
     // Keys for extra parameters in the Intent.
+    public static final String PARAM_TRANSACTION_TYPE = "transactionType";
     public static final String PARAM_ACCOUNT = "account";
     public static final String PARAM_AMOUNT = "amount";
     public static final String PARAM_PAYEE = "payee";
@@ -44,24 +46,35 @@ public class DataParser {
     public IntentDataParameters parseData(Uri data) {
         IntentDataParameters parameters = new IntentDataParameters();
 
+        // transaction type
+        String transactionTypeName = data.getQueryParameter(PARAM_TRANSACTION_TYPE);
+        TransactionTypes type = TransactionTypes.valueOf(transactionTypeName);
+        if (type != null) parameters.transactionType = type;
+
         // account
         String accountName = data.getQueryParameter(PARAM_ACCOUNT);
-        AccountRepository account = new AccountRepository(mContext);
-        int accountId = account.loadIdByName(accountName);
-        parameters.accountId = accountId;
+        if (accountName != null) {
+            AccountRepository account = new AccountRepository(mContext);
+            int accountId = account.loadIdByName(accountName);
+            parameters.accountId = accountId;
+        }
 
         parameters.payeeName = data.getQueryParameter(PARAM_PAYEE);
-        Payee payee = new Payee(mContext);
-        int payeeId = payee.loadIdByName(parameters.payeeName);
-        parameters.payeeId = payeeId;
+        if (parameters.payeeName != null) {
+            Payee payee = new Payee(mContext);
+            int payeeId = payee.loadIdByName(parameters.payeeName);
+            parameters.payeeId = payeeId;
+        }
 
         String amount = data.getQueryParameter(PARAM_AMOUNT);
         parameters.amount = Double.parseDouble(amount);
 
-        parameters.categoryName = data.getQueryParameter(PARAM_CATEGORY);
-        Category category = new Category(mContext);
-        int categoryId = category.loadIdByName(parameters.categoryName);
-        parameters.categoryId = categoryId;
+        if (parameters.categoryName != null) {
+            parameters.categoryName = data.getQueryParameter(PARAM_CATEGORY);
+            Category category = new Category(mContext);
+            int categoryId = category.loadIdByName(parameters.categoryName);
+            parameters.categoryId = categoryId;
+        }
 
         return parameters;
     }

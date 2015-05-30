@@ -43,8 +43,8 @@ import com.money.manager.ex.currency.CurrencyFormatsListActivity;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.fragment.IInputAmountDialogListener;
 import com.money.manager.ex.fragment.InputAmountDialog;
-import com.money.manager.ex.fragment.InputAmountDialog.InputAmountDialogListener;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.Arrays;
@@ -53,7 +53,9 @@ import java.util.Arrays;
  * @author Francesco Berton
  * @version 0.6.4
  */
-public class AccountListEditActivity extends BaseFragmentActivity implements InputAmountDialogListener {
+public class AccountListEditActivity
+        extends BaseFragmentActivity
+        implements IInputAmountDialogListener {
     // KEY INTENT for data exchange
 //    public static final String KEY_INTENT_ACTION = "AccountListEditActivity:IntentAction";
     public static final String KEY_ACCOUNT_ID = "AccountListEditActivity:AccountId";
@@ -226,7 +228,8 @@ public class AccountListEditActivity extends BaseFragmentActivity implements Inp
             @Override
             public void onClick(View v) {
                 double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, mCurrencyId);
+                InputAmountDialog dialog = InputAmountDialog.getInstance(AccountListEditActivity.this,
+                        v.getId(), amount, mCurrencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         });

@@ -17,15 +17,75 @@
  */
 package com.money.manager.ex.checkingaccount;
 
+import android.net.Uri;
+
+import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.core.TransactionTypes;
+
+import java.net.URL;
+
 /**
  * Parameters for creating new transaction from an external intent.
  */
 public class IntentDataParameters {
 
+    public TransactionTypes transactionType;
     public int accountId;
     public int payeeId;
     public String payeeName;
     public double amount;
     public int categoryId;
     public String categoryName;
+
+    public Uri toUri() {
+        StringBuilder builder = new StringBuilder("content://parameters?");
+        // content://parameters?account=account_name&transactionType=transaction_type
+        // &amount=amount&payee=payee_name&category=category_name
+        boolean firstParamAdded = false;
+
+        if (accountId > 0) {
+            builder.append(DataParser.PARAM_ACCOUNT);
+            builder.append("=");
+            builder.append(accountId);
+
+            firstParamAdded = true;
+        }
+
+        if (transactionType != null) {
+            if (firstParamAdded) {
+                builder.append("&");
+            }
+            builder.append(DataParser.PARAM_TRANSACTION_TYPE);
+            builder.append("=");
+            builder.append(transactionType);
+
+            firstParamAdded = true;
+        }
+
+        if (firstParamAdded) {
+            builder.append("&");
+        }
+        builder.append(DataParser.PARAM_AMOUNT);
+        builder.append("=");
+        builder.append(amount);
+
+        if (payeeName != null) {
+            builder.append("&");
+            builder.append(DataParser.PARAM_PAYEE);
+            builder.append("=");
+            builder.append(payeeName);
+        }
+
+        if (categoryName != null) {
+            builder.append("&");
+            builder.append(DataParser.PARAM_CATEGORY);
+            builder.append("=");
+            builder.append(categoryName);
+        }
+
+        String uriString = builder.toString();
+        Uri uri = Uri.parse(uriString);
+
+        return uri;
+    }
 }

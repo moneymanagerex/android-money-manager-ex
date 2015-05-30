@@ -26,8 +26,8 @@ import com.money.manager.ex.database.TablePayee;
 /**
  *
  */
-public class Payee {
-    public Payee(Context context) {
+public class PayeeService {
+    public PayeeService(Context context) {
         mContext = context;
         mPayee = new TablePayee();
     }

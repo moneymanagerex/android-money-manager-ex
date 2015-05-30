@@ -40,16 +40,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +57,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.BalanceAccountTask;
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.DropboxManager;
@@ -88,8 +85,8 @@ import java.util.List;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
 @SuppressWarnings("static-access")
-public class HomeFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+public class HomeFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // ID Loader Manager
     private static final int ID_LOADER_USER_NAME = 1;
@@ -552,10 +549,7 @@ public class HomeFragment extends Fragment implements
             result = true;
         }
         if (menuItemTitle.equalsIgnoreCase(getString(R.string.balance_account))) {
-            // todo: get the amount via input dialog.
-            // todo: run the balance task
-            // todo: get the account balance (from the screen here)
-            // todo: calculate the diff, create a transaction to balance to the entered amount.
+            getBalanceAccountTask().startBalanceAccount(account);
         }
 
         return result;
@@ -760,6 +754,15 @@ public class HomeFragment extends Fragment implements
         }
     }
 
+    private BalanceAccountTask mBalanceAccountTask;
+
+    private BalanceAccountTask getBalanceAccountTask() {
+        if (mBalanceAccountTask == null) {
+            mBalanceAccountTask = new BalanceAccountTask(getActivity());
+        }
+        return mBalanceAccountTask;
+    }
+
     private class AccountBillsExpandableAdapter
             extends BaseExpandableListAdapter {
 
@@ -877,7 +880,8 @@ public class HomeFragment extends Fragment implements
          * @return
          */
         @Override
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+                                 View convertView, ViewGroup parent) {
             ViewHolderAccountBills holder;
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -895,13 +899,13 @@ public class HomeFragment extends Fragment implements
                 convertView.setTag(holder);
             }
             holder = (ViewHolderAccountBills) convertView.getTag();
-            String accountType = mAccountTypes.get(groupPosition);
 
-            QueryAccountBills bills = mAccountsByType.get(accountType).get(childPosition);
+            QueryAccountBills account = getAccountData(groupPosition, childPosition);
+
             // set account name
-            holder.txtAccountName.setText(bills.getAccountName());
+            holder.txtAccountName.setText(account.getAccountName());
             // import formatted
-            String value = currencyUtils.getCurrencyFormatted(bills.getCurrencyId(), bills.getTotal());
+            String value = currencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getTotal());
             // set amount value
             holder.txtAccountTotal.setText(value);
 
@@ -909,7 +913,7 @@ public class HomeFragment extends Fragment implements
             if(mHideReconciled) {
                 holder.txtAccountReconciled.setVisibility(View.GONE);
             } else {
-                value = currencyUtils.getCurrencyFormatted(bills.getCurrencyId(), bills.getReconciled());
+                value = currencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getReconciled());
                 holder.txtAccountReconciled.setText(value);
             }
 
@@ -919,6 +923,13 @@ public class HomeFragment extends Fragment implements
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return true;
+        }
+
+        public QueryAccountBills getAccountData(int groupPosition, int childPosition) {
+            String accountType = mAccountTypes.get(groupPosition);
+            QueryAccountBills account = mAccountsByType.get(accountType).get(childPosition);
+
+            return account;
         }
 
         private class ViewHolderAccountBills {
