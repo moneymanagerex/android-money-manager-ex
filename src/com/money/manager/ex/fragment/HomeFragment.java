@@ -302,7 +302,6 @@ public class HomeFragment extends Fragment
                     while (!data.isAfterLast()) {
                         double total = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
                         curTotal = curTotal.add(BigDecimal.valueOf(total));
-//                        curReconciled += data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
                         double totalReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
                         curReconciled = curReconciled.add(BigDecimal.valueOf(totalReconciled));
 
