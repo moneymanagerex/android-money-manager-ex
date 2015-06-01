@@ -18,7 +18,7 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="June 1, 2015" versionName="2.3.0">
+    <changelogversion changeDate="June 1, 2015" versionName="2.3.1">
         <changelogtext>Balance Account option available through long-press on an account on the dashboard.</changelogtext>
         <changelogtext>Ability to set the default account for new transaction.</changelogtext>
         <changelogtext>Collapsible categories.</changelogtext>
