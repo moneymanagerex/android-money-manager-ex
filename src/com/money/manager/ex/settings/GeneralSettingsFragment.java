@@ -248,8 +248,8 @@ public class GeneralSettingsFragment
         if (baseCurrency == null) return;
 
         CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
-//        Integer currencyId = currencyUtils.getBaseCurrencyId();
-        int currencyId = mSettings.getGeneralSettings().getBaseCurrency();
+        Integer currencyId = currencyUtils.getBaseCurrencyId();
+//        int currencyId = mSettings.getGeneralSettings().getBaseCurrency();
 
         TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyId);
         if (tableCurrency != null) {
