@@ -20,6 +20,8 @@ package com.money.manager.ex.investment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.money.manager.ex.core.NumericHelper;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -118,7 +120,9 @@ public class YahooSecurityPriceUpdater
         // convert csv values to their original type.
 
         String symbol = values[0];
-        BigDecimal price = new BigDecimal(values[1]);
+        String priceString = values[1];
+        if (!NumericHelper.isNumeric(priceString)) return;
+        BigDecimal price = new BigDecimal(priceString);
         // date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = null;
