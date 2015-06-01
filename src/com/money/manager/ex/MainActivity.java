@@ -426,12 +426,12 @@ public class MainActivity
         }
     }
 
-    public void setDrawableUserName(String userName) {
+    public void setDrawerUserName(String userName) {
         if (mDrawerTextUserName != null)
             mDrawerTextUserName.setText(userName);
     }
 
-    public void setDrawableTotalAccounts(String totalAccounts) {
+    public void setDrawerTotalAccounts(String totalAccounts) {
         if (mDrawerTextTotalAccounts != null)
             mDrawerTextTotalAccounts.setText(totalAccounts);
     }
@@ -992,11 +992,13 @@ public class MainActivity
 
     public class MyActionBarDrawerToggle extends ActionBarDrawerToggle {
 
-        public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+        public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout,
+                                       int openDrawerContentDescRes, int closeDrawerContentDescRes) {
             super(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes);
         }
 
-        public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+        public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar,
+                                       int openDrawerContentDescRes, int closeDrawerContentDescRes) {
             super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
         }
 

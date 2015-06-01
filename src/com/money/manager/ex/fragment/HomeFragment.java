@@ -282,7 +282,7 @@ public class HomeFragment extends Fragment
                         data.moveToNext();
                     }
                 }
-                mainActivity.setDrawableUserName(MoneyManagerApplication.getInstanceApp().getUserName());
+                mainActivity.setDrawerUserName(MoneyManagerApplication.getInstanceApp().getUserName());
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:
@@ -301,10 +301,10 @@ public class HomeFragment extends Fragment
                 if (data != null && data.moveToFirst()) {
                     while (!data.isAfterLast()) {
                         double total = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
-                        curTotal.add(BigDecimal.valueOf(total));
+                        curTotal = curTotal.add(BigDecimal.valueOf(total));
 //                        curReconciled += data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
                         double totalReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
-                        curReconciled.add(BigDecimal.valueOf(totalReconciled));
+                        curReconciled = curReconciled.add(BigDecimal.valueOf(totalReconciled));
 
                         // find element
                         QueryAccountBills bills = new QueryAccountBills(getActivity());
@@ -364,8 +364,9 @@ public class HomeFragment extends Fragment
                 setListViewAccountBillsVisible(true);
 
                 // set total accounts in drawer
-                if (mainActivity != null)
-                    mainActivity.setDrawableTotalAccounts(txtTotalAccounts.getText().toString());
+                if (mainActivity != null) {
+                    mainActivity.setDrawerTotalAccounts(txtTotalAccounts.getText().toString());
+                }
 
                 break;
 

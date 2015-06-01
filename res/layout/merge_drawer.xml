@@ -44,20 +44,20 @@
             app:border_color="@color/material_green_50"/>
 
         <TextView
+            android:id="@+id/textViewUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:id="@+id/textViewUserName"
             android:layout_marginTop="2dp"
             android:layout_marginLeft="16dp"
             android:fontFamily="sans-serif"
             android:textColor="@color/material_green_50"/>
 
         <TextView
+            android:id="@+id/textViewTotalAccounts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:id="@+id/textViewTotalAccounts"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="16dp"
