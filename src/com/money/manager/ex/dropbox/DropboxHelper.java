@@ -296,7 +296,8 @@ public class DropboxHelper {
      * @return
      */
     public String getLinkedRemoteFile() {
-        return mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0).getString(PreferenceConstants.PREF_DROPBOX_REMOTE_FILE, null);
+        return mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0)
+                .getString(PreferenceConstants.PREF_DROPBOX_REMOTE_FILE, null);
     }
 
     /**
@@ -571,7 +572,8 @@ public class DropboxHelper {
      * @param dropboxFile
      * @param localFile
      */
-    public void downloadFileAsync(final Entry dropboxFile, final File localFile, final OnDownloadUploadEntry onDownloadUpload, final ProgressListener progressListener) {
+    public void downloadFileAsync(final Entry dropboxFile, final File localFile,
+                                  final OnDownloadUploadEntry onDownloadUpload, final ProgressListener progressListener) {
         AsyncTask<Void, Long, Boolean> asyncTask = new AsyncTask<Void, Long, Boolean>() {
             private FileOutputStream mFileOutputStream;
 

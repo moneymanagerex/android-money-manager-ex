@@ -41,9 +41,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.HelpActivity;
+import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.DropboxManager;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.dropbox.DropboxBrowserActivity;
@@ -60,7 +60,8 @@ import java.io.File;
  * Dropbox settings.
  */
 public class DropboxSettingsFragment
-        extends PreferenceFragment {
+        extends PreferenceFragment
+        implements IDropboxManagerCallbacks {
 
     private String LOGCAT = this.getClass().getSimpleName();
 
@@ -163,9 +164,8 @@ public class DropboxSettingsFragment
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    if (!TextUtils.isEmpty(mDropboxHelper.getLinkedRemoteFile()))
-                        downloadFileFromDropbox(mDropboxHelper.getLinkedRemoteFile());
-                    return false;
+                    downloadFileFromDropbox();
+                    return true;
                 }
             });
         }
@@ -224,7 +224,7 @@ public class DropboxSettingsFragment
                 // check if files is modified
                 if (!oldFile.equals(newFile)) {
                     // force download file
-                    downloadFileFromDropbox((String) newFile);
+                    downloadFileFromDropbox();
                 }
             }
         }
@@ -312,21 +312,23 @@ public class DropboxSettingsFragment
         getActivity().startService(service);
     }
 
-    private void downloadFileFromDropbox(String fileDropbox) {
-        Core core = new Core(getActivity().getApplicationContext());
-        // compose intent to launch service for download
-        Intent service = new Intent(getActivity().getApplicationContext(), DropboxServiceIntent.class);
-        service.setAction(DropboxServiceIntent.INTENT_ACTION_DOWNLOAD);
-        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, core.getExternalStorageDirectoryDropboxApplication().getPath() + fileDropbox);
-        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, fileDropbox);
-        // toast to show
-        Toast.makeText(getActivity().getApplicationContext(), R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
-        // start service
-        getActivity().startService(service);
+    private void downloadFileFromDropbox() {
+        DropboxSettingsActivity parent = (DropboxSettingsActivity) getActivity();
+        DropboxManager dropbox = new DropboxManager(parent, mDropboxHelper, this);
+        dropbox.downloadFromDropbox();
+    }
 
-//        DropboxSettingsActivity parent = (DropboxSettingsActivity) getActivity();
-//        DropboxManager dropbox = new DropboxManager(parent, mDropboxHelper, parent);
-//        dropbox.startServiceSyncDropbox();
+    /**
+     * Handle dropbox manager events. Called when file is downloaded from Dropbox.
+     */
+    @Override
+    public void onFileDownloaded() {
+        // set main activity to reload.
+        MainActivity.setRestartActivity(true);
+
+        // open the new database.
+        DropboxManager dropbox = new DropboxManager(getActivity(), mDropboxHelper, this);
+        dropbox.openDownloadedDatabase();
     }
 
 }

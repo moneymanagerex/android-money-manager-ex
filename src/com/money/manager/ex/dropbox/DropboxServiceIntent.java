@@ -44,6 +44,7 @@ import java.util.Date;
 
 public class DropboxServiceIntent
         extends IntentService {
+
     private static final String LOGCAT = DropboxServiceIntent.class.getSimpleName();
     // intent action
     public static final String INTENT_ACTION_SYNC = "com.money.manager.ex.custom.intent.action.DROPBOX_SYNC";
@@ -106,8 +107,10 @@ public class DropboxServiceIntent
             Log.e(LOGCAT, "remoteFile is null. DropboxServiceIntent.onHandleIntent don't execute");
             return;
         }
+
         // check if name is same
         if (!localFile.getName().toUpperCase().equals(remoteFile.fileName().toUpperCase())) return;
+
         // check action
         if (INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
             downloadFile(localFile, remoteFile);
@@ -150,8 +153,9 @@ public class DropboxServiceIntent
 
     public void downloadFile(final File localFile, final Entry remoteFile) {
         final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderDownload();
-        // get istance notification manager
-        final NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        // get instance of notification manager
+        final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
         final File tempFile = new File(localFile.toString() + "-download");
         // create interface
         OnDownloadUploadEntry onDownloadUpload = new OnDownloadUploadEntry() {
@@ -178,12 +182,12 @@ public class DropboxServiceIntent
                         }
                         // create notification for open file
                         // pending intent
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.setData(Uri.fromFile(localFile));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
+                        Intent intent = getIntentForOpenDatabase(getBaseContext(), localFile);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                                MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
                         // create builder
-                        final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderDownloadComplete(pendingIntent);
+                        final NotificationCompat.Builder notification =
+                                mDropboxHelper.getNotificationBuilderDownloadComplete(pendingIntent);
                         // notify
                         notificationManager.notify(NOTIFICATION_DROPBOX_OPEN_FILE, notification.build());
                     }
@@ -194,7 +198,8 @@ public class DropboxServiceIntent
         ProgressListener listener = new ProgressListener() {
             @Override
             public void onProgress(long bytes, long total) {
-                notificationManager.notify(NOTIFICATION_DROPBOX_PROGRESS, mDropboxHelper.getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
+                notificationManager.notify(NOTIFICATION_DROPBOX_PROGRESS,
+                        mDropboxHelper.getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
             }
         };
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.path);
@@ -251,10 +256,13 @@ public class DropboxServiceIntent
         ProgressListener listener = new ProgressListener() {
             @Override
             public void onProgress(long bytes, long total) {
-                notificationManager.notify(NOTIFICATION_DROPBOX_PROGRESS, mDropboxHelper.getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
+                notificationManager.notify(NOTIFICATION_DROPBOX_PROGRESS,
+                        mDropboxHelper.getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
             }
         };
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.path);
+
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload file from Dropbox. Local file: " +
+                localFile.getPath() + "; Remote file: " + remoteFile.path);
         //start
         onDownloadUpload.onPreExecute();
         //send message to the database upload staring
@@ -271,7 +279,6 @@ public class DropboxServiceIntent
         sendMessenger(messageComplete);
     }
 
-
     public boolean sendMessenger(Message msg) {
         if (mOutMessenger != null) {
             try {
@@ -282,5 +289,13 @@ public class DropboxServiceIntent
             }
         }
         return true;
+    }
+
+    public Intent getIntentForOpenDatabase(Context context, File database) {
+        Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
+        intent.setData(Uri.fromFile(database));
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        return intent;
     }
 }

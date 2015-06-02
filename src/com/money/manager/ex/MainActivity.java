@@ -20,7 +20,6 @@ package com.money.manager.ex;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -33,8 +32,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -92,7 +89,6 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 
 import java.io.File;
 import java.net.URLDecoder;
-import java.util.List;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -414,7 +410,7 @@ public class MainActivity
                                     @Override
                                     public void onActionClicked(Snackbar snackbar) {
                                         DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper, MainActivity.this);
-                                        dropbox.startServiceSyncDropbox();
+                                        dropbox.synchronizeDropbox();
                                     }
                                 })
                                 .duration(5 * 1000)
@@ -818,7 +814,7 @@ public class MainActivity
             return true;
         } else if (item.getId() == R.id.menu_sync_dropbox) {
             DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper, MainActivity.this);
-            dropbox.startServiceSyncDropbox();
+            dropbox.synchronizeDropbox();
             return true;
         } else if (item.getId() == R.id.menu_open_database) {
             pickFile(Environment.getExternalStorageDirectory());

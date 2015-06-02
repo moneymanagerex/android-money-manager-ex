@@ -31,7 +31,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -456,7 +455,7 @@ public class HomeFragment extends Fragment
                 if (getActivity() instanceof MainActivity) {
                     MainActivity parent = (MainActivity) getActivity();
                     DropboxManager dropbox = new DropboxManager(parent, parent.mDropboxHelper, parent);
-                    dropbox.startServiceSyncDropbox();
+                    dropbox.synchronizeDropbox();
                     result = true;
                 }
                 break;

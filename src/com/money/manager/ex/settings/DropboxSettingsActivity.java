@@ -57,8 +57,7 @@ import com.money.manager.ex.utils.RawFileUtils;
 import java.io.File;
 
 public class DropboxSettingsActivity
-        extends BaseSettingsFragmentActivity
-        implements IDropboxManagerCallbacks {
+        extends BaseSettingsFragmentActivity {
 
     private static String LOGCAT = DropboxSettingsActivity.class.getSimpleName();
 
@@ -66,15 +65,6 @@ public class DropboxSettingsActivity
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setSettingFragment(new DropboxSettingsFragment());
-    }
-
-    /**
-     * Handle dropbox manager events.
-     */
-    @Override
-    public void onFileDownloaded() {
-        // set main activity to reload.
-        MainActivity.setRestartActivity(true);
     }
 
 }
