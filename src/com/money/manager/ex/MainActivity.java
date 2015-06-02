@@ -332,9 +332,9 @@ public class MainActivity
     }
 
     /**
-     * show a fragment select with account id
+     * Shows a fragment with the selected account (id).
      *
-     * @param accountId account id of the fragment to be loaded
+     * @param accountId id of the account for which to show the transactions
      */
     public void showAccountFragment(int accountId) {
         String tagFragment = AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId);

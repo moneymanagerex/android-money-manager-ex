@@ -671,7 +671,7 @@ public class HomeFragment extends Fragment
                 settings.set(key, groupVisible);
             }
         });
-        // handle long-click
+        // handle long-click <- handled using standard context menu mechanism.
 //        mExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
 //            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {

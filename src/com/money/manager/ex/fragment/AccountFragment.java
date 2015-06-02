@@ -27,6 +27,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,7 +56,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- * Checking account fragment. Includes list of transactions, etc.
+ * Checking account fragment.
+ * Shows the list of transactions, etc.
  * @author a.lazzari
  */
 public class AccountFragment
@@ -70,8 +73,7 @@ public class AccountFragment
     // string name fragment
     private String mNameFragment;
     // account balance
-    private double mAccountBalance = 0;
-    private double mAccountReconciled = 0;
+    private double mAccountBalance = 0, mAccountReconciled = 0;
     // Dataset: accountlist e alldata
     private TableAccountList mAccountList;
     // view into layout
@@ -83,14 +85,14 @@ public class AccountFragment
     private boolean mShownOpenDatabaseItemMenu = false;
 
     /**
-     * @param accountid ID Account to be display
+     * @param accountId Id of the Account to be displayed
      * @return
      */
-    public static AccountFragment newInstance(int accountid) {
+    public static AccountFragment newInstance(int accountId) {
         AccountFragment fragment = new AccountFragment();
-        fragment.mAccountId = accountid;
+        fragment.mAccountId = accountId;
         // set name of child fragment
-        fragment.setNameFragment(AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountid));
+        fragment.setNameFragment(AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
 
         return fragment;
     }
@@ -118,17 +120,7 @@ public class AccountFragment
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String selection = "";
-        switch (id) {
-            case ID_LOADER_SUMMARY:
-                selection = QueryAccountBills.ACCOUNTID + "=?";
-                return new CursorLoader(getActivity(), new QueryAccountBills(getActivity()).getUri(), null, selection,
-                        new String[]{Integer.toString(mAccountId)}, null);
-        }
-        return null;
-    }
+    // Menu
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -136,28 +128,32 @@ public class AccountFragment
 
         // call create option menu of fragment
         mAllDataFragment.onCreateOptionsMenu(menu, inflater);
+
+        // Add options available only in account transactions list(s).
+        // todo: enable to display the custom menu.
+//        inflater.inflate(R.menu.menu_account_transactions, menu);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+
         //force show add transaction
         MenuItem itemAddTransaction = menu.findItem(R.id.menu_add_transaction_account);
-        if (itemAddTransaction != null)
-            itemAddTransaction.setVisible(true);
+        if (itemAddTransaction != null) itemAddTransaction.setVisible(true);
         //manage dual panel
         if (getActivity() != null && getActivity() instanceof MainActivity) {
             MainActivity activity = (MainActivity) getActivity();
             if (!activity.isDualPanel()) {
                 //hide dropbox toolbar
                 MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
-                if (itemDropbox != null)
-                    itemDropbox.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                if (itemDropbox != null) itemDropbox.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
                 // hide menu open database
                 MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
                 if (itemOpenDatabase != null) {
                     //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
-                    itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible() ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+                    itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible()
+                            ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
                 }
 
                 //hide dash board
@@ -168,6 +164,42 @@ public class AccountFragment
         }
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean result = false;
+
+        switch (item.getItemId()) {
+            case R.id.menu_select_account:
+                // Hide the name.
+                Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+                ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+                // todo: show account spinner in its place
+
+                break;
+            case R.id.menu_add_transaction_account:
+                startCheckingAccountActivity();
+                result = true;
+                break;
+            case R.id.menu_export_to_csv:
+                if (mAllDataFragment != null && mAccountList != null)
+                    mAllDataFragment.exportDataToCSVFile(mAccountList.getAccountName());
+                result = true;
+                break;
+            default:
+                result = false;
+                break;
+        }
+
+        if (result) {
+            return result;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // End menu.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -247,6 +279,23 @@ public class AccountFragment
         return view;
     }
 
+    // Loader events.
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String selection;
+        switch (id) {
+            case ID_LOADER_SUMMARY:
+                selection = QueryAccountBills.ACCOUNTID + "=?";
+                return new CursorLoader(getActivity(),
+                        new QueryAccountBills(getActivity()).getUri(),
+                        null, selection,
+                        new String[]{Integer.toString(mAccountId)},
+                        null);
+        }
+        return null;
+    }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         return;
@@ -274,18 +323,7 @@ public class AccountFragment
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_add_transaction_account) {
-            startCheckingAccountActivity();
-            return true;
-        } else if (item.getItemId() == R.id.menu_export_to_csv) {
-            if (mAllDataFragment != null && mAccountList != null)
-                mAllDataFragment.exportDataToCSVFile(mAccountList.getAccountName());
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    // end loader events
 
     @Override
     public void onResume() {
