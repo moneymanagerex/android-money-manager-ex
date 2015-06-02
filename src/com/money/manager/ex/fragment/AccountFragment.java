@@ -36,7 +36,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -171,14 +173,7 @@ public class AccountFragment
 
         switch (item.getItemId()) {
             case R.id.menu_select_account:
-                // Hide the name.
-                Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-                ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-                // todo: hide the 'choose account' button, as well.
-                
-                // todo: show account spinner in its place
-
+                showAccountsDropdown();
                 break;
             case R.id.menu_add_transaction_account:
                 startCheckingAccountActivity();
@@ -199,6 +194,28 @@ public class AccountFragment
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showAccountsDropdown() {
+        // Hide the name.
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // todo: hide the 'choose account' button, as well.
+        View button = toolbar.findViewById(R.id.menu_select_account);
+        button.setVisibility(View.GONE);
+
+        // todo: show account spinner in its place
+//        Spinner accounts = (Spinner) toolbar.findViewById(R.id.spinner_account);
+        Spinner accountsSpinner = new Spinner(getActivity());
+
+        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item,
+                new String[] { "one", "two" });
+        accountsSpinner.setAdapter(accountAdapter);
+        accountsSpinner.setVisibility(View.VISIBLE);
+
     }
 
     // End menu.

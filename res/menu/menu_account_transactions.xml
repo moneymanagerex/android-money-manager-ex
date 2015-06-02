@@ -26,9 +26,9 @@
       android:title="@string/select_account"
       app:showAsAction="ifRoom"/>
 
-    <Spinner
-        android:id="@+id/spinner_nav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<Spinner-->
+        <!--android:id="@+id/spinner_account"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
 </menu>
