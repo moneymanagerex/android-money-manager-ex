@@ -76,7 +76,7 @@ public class AllDataFragment extends BaseListFragment
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 
     private static final String LOGCAT = AllDataFragment.class.getSimpleName();
-    
+
     private IAllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
     private boolean mShownHeader = false;

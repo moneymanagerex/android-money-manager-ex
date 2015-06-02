@@ -294,7 +294,8 @@ public class HomeFragment extends Fragment
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:
-//                double curTotal = 0, curReconciled = 0;
+                // Accounts list
+
                 BigDecimal curTotal = new BigDecimal(0);
                 BigDecimal curReconciled = new BigDecimal(0);
 
@@ -306,8 +307,8 @@ public class HomeFragment extends Fragment
                 mAccountTypes.clear();
 
                 // cycle cursor
-                if (data != null && data.moveToFirst()) {
-                    while (!data.isAfterLast()) {
+                if (data != null) {
+                    while (data.moveToNext()) {
                         double total = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
                         curTotal = curTotal.add(BigDecimal.valueOf(total));
                         double totalReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
@@ -355,8 +356,6 @@ public class HomeFragment extends Fragment
                             mAccountsByType.put(accountType, list);
                         }
                         list.add(bills);
-
-                        data.moveToNext();
                     }
                 }
                 // write accounts total
@@ -378,6 +377,7 @@ public class HomeFragment extends Fragment
                 break;
 
             case ID_LOADER_BILL_DEPOSITS:
+                // Recurring Transactions.
                 mainActivity.setDrawableRepeatingTransactions(data != null ? data.getCount() : 0);
                 break;
 
