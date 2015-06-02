@@ -90,11 +90,6 @@ public class DropboxManager {
         return localFile;
     }
 
-//    public String getLocalDatabase() {
-//        String currentDatabasePath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
-//        return currentDatabasePath;
-//    }
-
     public void openDownloadedDatabase() {
         File downloadedDb = new File(this.getLocalDropboxFile());
         DropboxServiceIntent dropboxService = new DropboxServiceIntent();
