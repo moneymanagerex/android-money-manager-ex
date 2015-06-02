@@ -237,10 +237,16 @@ public class HomeFragment extends Fragment
                 break;
 
             case ID_LOADER_INCOME_EXPENSES:
+                String month = Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1);
+                String year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                result = new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), QueryReportIncomeVsExpenses.Month + "="
-                        + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
-                        + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), null, null);
+                result = new CursorLoader(getActivity(), report.getUri(),
+                        report.getAllColumns(),
+                        QueryReportIncomeVsExpenses.Month + "=?" +
+                                " AND " + QueryReportIncomeVsExpenses.Year + "=?",
+                        new String[] { month, year },
+                        null);
                 break;
 
             default:
@@ -520,6 +526,8 @@ public class HomeFragment extends Fragment
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         boolean result = false;
+
+        if (!(item instanceof ExpandableListView.ExpandableListContextMenuInfo)) return false;
 
         ExpandableListView.ExpandableListContextMenuInfo info =
                 (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();

@@ -202,7 +202,7 @@ public class InputAmountDialog
                 if (TextUtils.isEmpty(mAmount))
                     mAmount = Double.toString(0);
                 // check if is double
-                if (NumberUtils.isNumber(mAmount)) {
+                if (NumberUtils.isNumber(mAmount) && mListener != null) {
                     mListener.onFinishedInputAmountDialog(mIdView, MathUtils.Round(Double.parseDouble(mAmount), 2));
                     dialog.dismiss();
                 }
