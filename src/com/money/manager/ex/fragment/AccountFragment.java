@@ -131,7 +131,7 @@ public class AccountFragment
 
         // Add options available only in account transactions list(s).
         // todo: enable to display the custom menu.
-//        inflater.inflate(R.menu.menu_account_transactions, menu);
+        inflater.inflate(R.menu.menu_account_transactions, menu);
     }
 
     @Override
@@ -175,6 +175,8 @@ public class AccountFragment
                 Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
                 ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+                // todo: hide the 'choose account' button, as well.
+                
                 // todo: show account spinner in its place
 
                 break;
