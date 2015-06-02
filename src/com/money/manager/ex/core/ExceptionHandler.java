@@ -28,8 +28,15 @@ import java.util.Objects;
  * Standard exception handler.
  */
 public class ExceptionHandler {
+    /**
+     * Basic constructor
+     * @param context Context / activity.
+     * @param host The class where the exception originates. Used to get the class name
+     *             for Logcat.
+     */
     public ExceptionHandler(Context context, Object host) {
         mContext = context;
+        mHost = host;
     }
 
     private Context mContext;

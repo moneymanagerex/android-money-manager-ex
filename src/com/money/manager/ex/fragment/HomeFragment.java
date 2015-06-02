@@ -31,6 +31,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -61,6 +62,7 @@ import com.money.manager.ex.businessobjects.BalanceAccountTask;
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.DropboxManager;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -93,6 +95,9 @@ public class HomeFragment extends Fragment
     private static final int ID_LOADER_ACCOUNT_BILLS = 2;
     private static final int ID_LOADER_BILL_DEPOSITS = 3;
     private static final int ID_LOADER_INCOME_EXPENSES = 4;
+
+    private final String LOGCAT = this.getClass().getSimpleName();
+
     private CurrencyUtils currencyUtils;
     private boolean mHideReconciled;
     // dataset table/view/query manage into class
@@ -100,12 +105,10 @@ public class HomeFragment extends Fragment
     private QueryAccountBills accountBills;
 
     // Controls. view show in layout
-    private TextView txtTotalAccounts;
     // This is the collapsible list of account groups with accounts.
     private ExpandableListView mExpandableListView;
     private ViewGroup linearHome, linearFooter, linearWelcome;
-    private TextView txtFooterSummary;
-    private TextView txtFooterSummaryReconciled;
+    private TextView txtTotalAccounts, txtFooterSummary, txtFooterSummaryReconciled;
     private ProgressBar prgAccountBills;
     private FloatingActionButton mFloatingActionButton;
 
@@ -527,10 +530,14 @@ public class HomeFragment extends Fragment
     public boolean onContextItemSelected(android.view.MenuItem item) {
         boolean result = false;
 
-        if (!(item instanceof ExpandableListView.ExpandableListContextMenuInfo)) return false;
-
-        ExpandableListView.ExpandableListContextMenuInfo info =
-                (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
+        ExpandableListView.ExpandableListContextMenuInfo info;
+        try {
+            info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
+        } catch (ClassCastException cex) {
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.handle(cex, "Error casting context menu");
+            return false;
+        }
 
         int groupPos = 0, childPos = 0;
         int type = ExpandableListView.getPackedPositionType(info.packedPosition);
