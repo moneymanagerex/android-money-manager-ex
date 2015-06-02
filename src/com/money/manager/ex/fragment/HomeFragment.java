@@ -239,16 +239,13 @@ public class HomeFragment extends Fragment
                 break;
 
             case ID_LOADER_INCOME_EXPENSES:
-                String month = Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1);
-                String year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
-
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                result = new CursorLoader(getActivity(), report.getUri(),
-                        report.getAllColumns(),
-                        QueryReportIncomeVsExpenses.Month + "=?" +
-                                " AND " + QueryReportIncomeVsExpenses.Year + "=?",
-                        new String[] { month, year },
-                        null);
+                result = new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
+                        QueryReportIncomeVsExpenses.Month + "="
+                            + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND "
+                        + QueryReportIncomeVsExpenses.Year + "="
+                            + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)),
+                        null, null);
                 break;
 
             default:
@@ -294,7 +291,6 @@ public class HomeFragment extends Fragment
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:
-//                double curTotal = 0, curReconciled = 0;
                 BigDecimal curTotal = new BigDecimal(0);
                 BigDecimal curReconciled = new BigDecimal(0);
 
@@ -383,12 +379,10 @@ public class HomeFragment extends Fragment
 
             case ID_LOADER_INCOME_EXPENSES:
                 double income = 0, expenses = 0;
-                if (data != null && data.moveToFirst()) {
-                    while (!data.isAfterLast()) {
+                if (data != null) {
+                    while (data.moveToNext()) {
                         expenses = data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
                         income = data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-                        //move to next record
-                        data.moveToNext();
                     }
                 }
                 TextView txtIncome = (TextView) getActivity().findViewById(R.id.textViewIncome);
