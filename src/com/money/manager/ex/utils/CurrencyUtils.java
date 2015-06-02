@@ -77,7 +77,7 @@ public class CurrencyUtils {
 
     public CurrencyUtils(Context context, Boolean init) {
         mContext = context;
-        if (init) 
+        if (init)
             init();
     }
 
@@ -247,10 +247,9 @@ public class CurrencyUtils {
      */
     public String getCurrencyFormatted(Integer currencyId, Double value) {
         // check if value is null
-        if (value == null)
-            value = 0d;
+        if (value == null) value = 0d;
 
-        // find currencyid
+        // find currency id
         if (currencyId != null) {
             TableCurrencyFormats tableCurrency = getCurrency(currencyId);
 

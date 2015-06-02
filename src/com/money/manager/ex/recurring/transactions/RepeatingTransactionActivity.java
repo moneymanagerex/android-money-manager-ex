@@ -51,6 +51,7 @@ import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.checkingaccount.EditTransactionCommonFunctions;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -456,7 +457,7 @@ public class RepeatingTransactionActivity
 
         // transaction number
         edtTransNumber = (EditText) findViewById(R.id.editTextTransNumber);
-        if (!TextUtils.isEmpty(mTransNumber)) {
+        if (!TextUtils.isEmpty(mTransNumber) && NumericHelper.isNumeric(mTransNumber)) {
             edtTransNumber.setText(mTransNumber);
         }
         btnTransNumber = (ImageButton) findViewById(R.id.buttonTransNumber);
@@ -525,7 +526,6 @@ public class RepeatingTransactionActivity
                     } catch (Exception e) {
                         Log.e(LOGCAT, e.getMessage());
                     }
-
                 }
             };
 
