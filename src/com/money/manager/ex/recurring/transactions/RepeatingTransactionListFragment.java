@@ -192,8 +192,10 @@ public class RepeatingTransactionListFragment extends BaseListFragment
                 if (!TextUtils.isEmpty(mCurFilter)) {
                     select = TableAccountList.ACCOUNTNAME + " LIKE '" + mCurFilter + "%'";
                 }
-                return new CursorLoader(getActivity(), mBillDeposits.getUri(), mBillDeposits.getAllColumns(),
-                        select, null, QueryBillDeposits.NEXTOCCURRENCEDATE);
+                return new CursorLoader(getActivity(), mBillDeposits.getUri(),
+                        mBillDeposits.getAllColumns(),
+                        select, null,
+                        QueryBillDeposits.NEXTOCCURRENCEDATE);
         }
 
         return null;
@@ -218,7 +220,8 @@ public class RepeatingTransactionListFragment extends BaseListFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_LOADER_REPEATING:
-                AllDataAdapter adapter = new AllDataAdapter(getActivity(), data, AllDataAdapter.TypeCursor.REPEATINGTRANSACTION);
+                AllDataAdapter adapter = new AllDataAdapter(getActivity(), data,
+                        AllDataAdapter.TypeCursor.REPEATINGTRANSACTION);
                 setListAdapter(adapter);
 
                 if (isResumed()) {

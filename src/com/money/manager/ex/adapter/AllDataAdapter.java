@@ -22,6 +22,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.renderscript.Script;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.TextUtils;
@@ -169,30 +170,8 @@ public class AllDataAdapter
         }
 
         // Payee
-        if (isTransfer) {
-            // write ToAccountName instead of payee on transfers.
-            String fromAccountName;
-            int cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
-            if (mAccountId == -1) {
-                // We are on search results. Account id is always reset (-1).
-                fromAccountName = cursor.getString(cursor.getColumnIndex(FROMACCOUNTNAME));
-            } else {
-                // Standard checking account. See whether the other account is the source
-                // or the destination of the transfer.
-                if (mAccountId != cursorAccountId) {
-                    // This is in account transactions list where we display transfers to and from.
-                    fromAccountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
-                } else {
-                    // Search results, where we display only incoming transactions.
-                    fromAccountName = cursor.getString(cursor.getColumnIndex(FROMACCOUNTNAME));
-                }
-            }
-            fromAccountName = "[%]".replace("%", fromAccountName);
-            holder.txtPayee.setText(fromAccountName);
-        } else {
-            // compose payee description
-            holder.txtPayee.setText(cursor.getString(cursor.getColumnIndex(PAYEE)));
-        }
+        String payee = getPayeeName(cursor, isTransfer);
+        holder.txtPayee.setText(payee);
 
         // compose category description
         String categorySub = cursor.getString(cursor.getColumnIndex(CATEGORY));
@@ -245,6 +224,48 @@ public class AllDataAdapter
             }
             holder.txtBalance.setVisibility(View.VISIBLE);
         }
+    }
+
+    private String getPayeeName(Cursor cursor, boolean isTransfer) {
+        String result;
+
+        if (isTransfer) {
+            // write ToAccountName instead of payee on transfers.
+            String accountName;
+            int cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
+
+            if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
+                // Recurring transactions list.
+                // Show the destination for the transfer.
+                accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+            } else {
+                // Account transactions list.
+
+                if (mAccountId == -1) {
+                    // We are on search results or recurring transactions. Account id is always reset (-1).
+                    accountName = cursor.getString(cursor.getColumnIndex(FROMACCOUNTNAME));
+                } else {
+                    // Standard checking account. See whether the other account is the source
+                    // or the destination of the transfer.
+                    if (mAccountId != cursorAccountId) {
+                        // This is in account transactions list where we display transfers to and from.
+                        accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+                    } else {
+                        // Search results, where we display only incoming transactions.
+                        accountName = cursor.getString(cursor.getColumnIndex(FROMACCOUNTNAME));
+                    }
+                }
+            }
+
+            // append square brackets around the account name to distinguish transfers visually.
+            accountName = "[%]".replace("%", accountName);
+            result = accountName;
+        } else {
+            // compose payee description
+            result = cursor.getString(cursor.getColumnIndex(PAYEE));
+        }
+
+        return result;
     }
 
     @Override
@@ -389,7 +410,7 @@ public class AllDataAdapter
         FROMCURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromCurrencyId : QueryBillDeposits.CURRENCYID;
 //        TOACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountName : QueryBillDeposits.TOACCOUNTNAME;
         FROMACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAccountName : QueryBillDeposits.ACCOUNTNAME;
-        ACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.AccountName : QueryBillDeposits.ACCOUNTNAME;
+        ACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.AccountName : QueryBillDeposits.TOACCOUNTNAME;
         CATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Category : QueryBillDeposits.CATEGNAME;
         SUBCATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Subcategory : QueryBillDeposits.SUBCATEGNAME;
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
