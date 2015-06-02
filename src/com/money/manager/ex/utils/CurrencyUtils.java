@@ -77,7 +77,7 @@ public class CurrencyUtils {
 
     public CurrencyUtils(Context context, Boolean init) {
         mContext = context;
-        if (init) 
+        if (init)
             init();
     }
 

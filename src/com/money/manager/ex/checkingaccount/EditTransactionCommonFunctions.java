@@ -100,6 +100,8 @@ public class EditTransactionCommonFunctions {
         if (!TextUtils.isEmpty(defaultAccountString)) {
             int defaultAccount = Integer.parseInt(defaultAccountString);
             addMissingAccountToSelectors(accountRepository, defaultAccount);
+            // Set the default account as the active account.
+            mAccountId = defaultAccount;
         }
 
         // create adapter for spinAccount
