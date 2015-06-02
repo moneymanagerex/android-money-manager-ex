@@ -230,7 +230,7 @@ public class AccountFragment
         mAllDataFragment.setListHeader(header);
         mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
         mAllDataFragment.setAutoStarLoader(false);
-        mAllDataFragment.setContextMenuGroupId(mAccountId);
+//        mAllDataFragment.setContextMenuGroupId(mAccountId);
         mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
         // add fragment
         transaction.replace(R.id.fragmentContent, mAllDataFragment, getNameFragment());

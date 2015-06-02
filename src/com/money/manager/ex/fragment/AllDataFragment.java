@@ -67,18 +67,21 @@ import java.util.ArrayList;
 
 public class AllDataFragment extends BaseListFragment
         implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
+
     // ID Loader
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
     // KEY Arguments
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_WHERE_PARAMS = "SearchResultFragment:ArgumentsWhereParams";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
+
     private static final String LOGCAT = AllDataFragment.class.getSimpleName();
+    
     private IAllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
     private boolean mShownHeader = false;
     private boolean mShownBalance = false;
-    private int mGroupId = 0;
+//    private int mGroupId = 0;
     private int mAccountId = -1;
     private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
     private View mListHeader = null;
@@ -93,94 +96,6 @@ public class AllDataFragment extends BaseListFragment
         AllDataFragment fragment = new AllDataFragment();
         fragment.mAccountId = accountId;
         return fragment;
-    }
-
-    private int[] convertArrayListToArray(ArrayList<Integer> list) {
-        int[] result = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            result[i] = list.get(i);
-        }
-        return result;
-    }
-
-    /**
-     * Export data to CSV file
-     */
-    public void exportDataToCSVFile() {
-        exportDataToCSVFile("");
-    }
-
-    /**
-     * Export data to CSV file
-     *
-     * @param prefixName prefix for the file
-     */
-    public void exportDataToCSVFile(String prefixName) {
-        ExportToCsvFile csv = new ExportToCsvFile(getActivity(), (AllDataAdapter) getListAdapter());
-        csv.setPrefixName(prefixName);
-        csv.execute();
-    }
-
-    private void exportToQif(){
-        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-        QifExport qif = new QifExport(getActivity());
-        qif.export(adapter);
-    }
-
-    /**
-     * @return the mGroupId
-     */
-    public int getContextMenuGroupId() {
-        return mGroupId;
-    }
-
-    /**
-     * @param mGroupId the mGroupId to set
-     */
-    public void setContextMenuGroupId(int mGroupId) {
-        this.mGroupId = mGroupId;
-    }
-
-    /**
-     * @return the mSearResultFragmentLoaderCallbacks
-     */
-    public IAllDataFragmentLoaderCallbacks getSearchResultFragmentLoaderCallbacks() {
-        return mSearResultFragmentLoaderCallbacks;
-    }
-
-    /**
-     * @param searResultFragmentLoaderCallbacks the searResultFragmentLoaderCallbacks to set
-     */
-    public void setSearResultFragmentLoaderCallbacks(IAllDataFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
-        this.mSearResultFragmentLoaderCallbacks = searResultFragmentLoaderCallbacks;
-    }
-
-    /**
-     * @return the mAutoStarLoader
-     */
-    public boolean isAutoStarLoader() {
-        return mAutoStarLoader;
-    }
-
-    /**
-     * @param mAutoStarLoader the mAutoStarLoader to set
-     */
-    public void setAutoStarLoader(boolean mAutoStarLoader) {
-        this.mAutoStarLoader = mAutoStarLoader;
-    }
-
-    /**
-     * @return the mShownHeader
-     */
-    public boolean isShownHeader() {
-        return mShownHeader;
-    }
-
-    /**
-     * @param mShownHeader the mShownHeader to set
-     */
-    public void setShownHeader(boolean mShownHeader) {
-        this.mShownHeader = mShownHeader;
     }
 
     @Override
@@ -256,6 +171,87 @@ public class AllDataFragment extends BaseListFragment
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private int[] convertArrayListToArray(ArrayList<Integer> list) {
+        int[] result = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            result[i] = list.get(i);
+        }
+        return result;
+    }
+
+    /**
+     * Export data to CSV file
+     */
+    public void exportDataToCSVFile() {
+        exportDataToCSVFile("");
+    }
+
+    /**
+     * Export data to CSV file
+     *
+     * @param prefixName prefix for the file
+     */
+    public void exportDataToCSVFile(String prefixName) {
+        ExportToCsvFile csv = new ExportToCsvFile(getActivity(), (AllDataAdapter) getListAdapter());
+        csv.setPrefixName(prefixName);
+        csv.execute();
+    }
+
+//    public int getContextMenuGroupId() {
+//        return mGroupId;
+//    }
+
+//    public void setContextMenuGroupId(int mGroupId) {
+//        this.mGroupId = mGroupId;
+//    }
+
+    /**
+     * @return the mSearResultFragmentLoaderCallbacks
+     */
+    public IAllDataFragmentLoaderCallbacks getSearchResultFragmentLoaderCallbacks() {
+        return mSearResultFragmentLoaderCallbacks;
+    }
+
+    /**
+     * @param searResultFragmentLoaderCallbacks the searResultFragmentLoaderCallbacks to set
+     */
+    public void setSearResultFragmentLoaderCallbacks(IAllDataFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
+        this.mSearResultFragmentLoaderCallbacks = searResultFragmentLoaderCallbacks;
+    }
+
+    /**
+     * @return the mAutoStarLoader
+     */
+    public boolean isAutoStarLoader() {
+        return mAutoStarLoader;
+    }
+
+    /**
+     * @param mAutoStarLoader the mAutoStarLoader to set
+     */
+    public void setAutoStarLoader(boolean mAutoStarLoader) {
+        this.mAutoStarLoader = mAutoStarLoader;
+    }
+
+    /**
+     * @return the mShownHeader
+     */
+    public boolean isShownHeader() {
+        return mShownHeader;
+    }
+
+    /**
+     * @param mShownHeader the mShownHeader to set
+     */
+    public void setShownHeader(boolean mShownHeader) {
+        this.mShownHeader = mShownHeader;
     }
 
     // Loader event handlers
@@ -367,11 +363,6 @@ public class AllDataFragment extends BaseListFragment
                 inflater.inflate(R.menu.menu_alldata_operations, menu);
             }
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     // This is just to test:
@@ -769,4 +760,11 @@ public class AllDataFragment extends BaseListFragment
     }
 
     // end multi-choice-mode listener callback handlers.
+
+    private void exportToQif(){
+        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+        QifExport qif = new QifExport(getActivity());
+        qif.export(adapter);
+    }
+
 }
