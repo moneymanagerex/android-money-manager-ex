@@ -29,6 +29,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -51,6 +53,7 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.inapp.util.SpinnerValues;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 
@@ -68,6 +71,8 @@ public class AccountFragment
 
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
+
+    private final String LOGCAT = this.getClass().getSimpleName();
     // all data fragment
     AllDataFragment mAllDataFragment;
     // id account
@@ -78,9 +83,10 @@ public class AccountFragment
     private double mAccountBalance = 0, mAccountReconciled = 0;
     // Dataset: accountlist e alldata
     private TableAccountList mAccountList;
-    // view into layout
+    // Controls
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
+    private Spinner mAccountsSpinner;
     // name account
     private String mAccountName;
     // setting for shown open database item menu
@@ -132,7 +138,6 @@ public class AccountFragment
         mAllDataFragment.onCreateOptionsMenu(menu, inflater);
 
         // Add options available only in account transactions list(s).
-        // todo: enable to display the custom menu.
         inflater.inflate(R.menu.menu_account_transactions, menu);
     }
 
@@ -173,7 +178,7 @@ public class AccountFragment
 
         switch (item.getItemId()) {
             case R.id.menu_select_account:
-                showAccountsDropdown();
+                toggleAccountsDropdown();
                 break;
             case R.id.menu_add_transaction_account:
                 startCheckingAccountActivity();
@@ -196,6 +201,23 @@ public class AccountFragment
         }
     }
 
+    private void toggleAccountsDropdown() {
+        if (mAccountsSpinner == null) {
+            showAccountsDropdown();
+            return;
+        }
+
+        if (mAccountsSpinner.getVisibility() != View.VISIBLE) {
+            // Hide the title
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+            // Show selector.
+            mAccountsSpinner.setVisibility(View.VISIBLE);
+        } else {
+            mAccountsSpinner.setVisibility(View.GONE);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
+        }
+    }
+
     private void showAccountsDropdown() {
         // Hide the name.
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -207,20 +229,37 @@ public class AccountFragment
         button.setVisibility(View.GONE);
 
         // todo: show account spinner in its place
-//        final String spinnerId = "spinnerAccounts";
-
 //        Spinner accounts = (Spinner) toolbar.findViewById(R.id.spinner_account);
-        Spinner accountsSpinner = new Spinner(getActivity());
-        int id = accountsSpinner.getId();
+        mAccountsSpinner = new Spinner(getActivity());
+
+        SpinnerValues values = new SpinnerValues();
+        values.add("1", "account 1");
+        values.add("2", "account 2");
 
         ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item,
-                new String[] { "one", "two" });
+                values.getTextsArray());
         accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        accountsSpinner.setAdapter(accountAdapter);
-        accountsSpinner.setVisibility(View.VISIBLE);
+        mAccountsSpinner.setAdapter(accountAdapter);
+        mAccountsSpinner.setVisibility(View.VISIBLE);
         // add spinner to toolbar
-        toolbar.addView(accountsSpinner, 0);
+        toolbar.addView(mAccountsSpinner, 0);
+
+        // handle switching of accounts.
+        mAccountsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // todo: get the account name/id from selection
+                Object selectedItem = adapterView.getItemAtPosition(i);
+                String accountName = (String) selectedItem;
+                Log.d(LOGCAT, accountName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     // End menu.
