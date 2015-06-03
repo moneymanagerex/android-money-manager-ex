@@ -89,6 +89,7 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.util.List;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -315,6 +316,12 @@ public class MainActivity
      * @param tagFragment
      */
     public void showFragment(Fragment fragment, String tagFragment) {
+        // In tablet layout, do not try to display the Home Fragment again. Show empty fragment.
+        if (isDualPanel() && tagFragment.equalsIgnoreCase(HomeFragment.class.getName())) {
+            fragment = new Fragment();
+            tagFragment = "Empty";
+        }
+
         // transaction
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         // animation
