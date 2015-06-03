@@ -49,6 +49,7 @@ import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.checkingaccount.AccountTransactionsFilter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -94,6 +95,7 @@ public class AccountFragment
     private String mAccountName;
     // setting for shown open database item menu
     private boolean mShownOpenDatabaseItemMenu = false;
+    private AccountTransactionsFilter mFilter;
 
     /**
      * @param accountId Id of the Account to be displayed
@@ -102,6 +104,10 @@ public class AccountFragment
     public static AccountFragment newInstance(int accountId) {
         AccountFragment fragment = new AccountFragment();
         fragment.mAccountId = accountId;
+
+        fragment.mFilter = new AccountTransactionsFilter();
+        fragment.mFilter.setAccountId(accountId);
+
         // set name of child fragment
         fragment.setNameFragment(AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
 
@@ -110,7 +116,7 @@ public class AccountFragment
 
     @Override
     public void onCallbackCreateLoader(int id, Bundle args) {
-        return;
+//        return;
     }
 
     @Override
@@ -120,7 +126,7 @@ public class AccountFragment
 
     @Override
     public void onCallbackLoaderReset(Loader<Cursor> loader) {
-        return;
+//        return;
     }
 
     @Override
@@ -393,14 +399,17 @@ public class AccountFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String selection;
         switch (id) {
             case ID_LOADER_SUMMARY:
-                selection = QueryAccountBills.ACCOUNTID + "=?";
+                // create account filter based on the settings and manually selected options.
+                String selection = mFilter.getSelection();
+                String[] arguments = mFilter.getSelectionArguments();
+
                 return new CursorLoader(getActivity(),
                         new QueryAccountBills(getActivity()).getUri(),
-                        null, selection,
-                        new String[]{Integer.toString(mAccountId)},
+                        null,
+                        selection,
+                        arguments,
                         null);
         }
         return null;
