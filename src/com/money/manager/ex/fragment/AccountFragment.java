@@ -308,10 +308,6 @@ public class AccountFragment
                 if (accountId != mAccountId) {
                     // switch account. Reload transactions.
                     mAccountId = accountId;
-//                    mFilter.setAccountId(accountId);
-//                    detachTransactionsFragment();
-//                    showTransactionsFragment(null);
-//                    loadTransactions();
                     mAllDataFragment.loadData(prepareArgsForChildFragment());
                 }
             }
@@ -327,12 +323,6 @@ public class AccountFragment
     }
 
     // End menu.
-
-    private void detachTransactionsFragment() {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.detach(mAllDataFragment);
-        transaction.commit();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -412,7 +402,6 @@ public class AccountFragment
         mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
         mAllDataFragment.setAutoStarLoader(false);
-//        mAllDataFragment.setContextMenuGroupId(mAccountId);
         mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
 
         // add fragment
