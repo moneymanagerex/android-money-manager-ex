@@ -49,6 +49,8 @@ import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
@@ -59,6 +61,7 @@ import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Checking account fragment.
@@ -138,7 +141,7 @@ public class AccountFragment
         mAllDataFragment.onCreateOptionsMenu(menu, inflater);
 
         // Add options available only in account transactions list(s).
-        inflater.inflate(R.menu.menu_account_transactions, menu);
+//        inflater.inflate(R.menu.menu_account_transactions, menu);
 
         // set on click handler
         addToolbarTitleListener();
@@ -244,18 +247,24 @@ public class AccountFragment
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // todo: hide the 'choose account' button, as well.
-        View button = toolbar.findViewById(R.id.menu_select_account);
-        button.setVisibility(View.GONE);
+        // hide the 'choose account' button, as well.
+        View button = getActivity().findViewById(R.id.menu_select_account);
+        if (button != null) {
+            button.setVisibility(View.GONE);
+        }
 
-        // todo: show account spinner in its place
-//        Spinner accounts = (Spinner) toolbar.findViewById(R.id.spinner_account);
+        // show account spinner in its place
         mAccountsSpinner = new Spinner(getActivity());
 
-        // todo: load accounts with ids.
+        // load accounts with ids.
+        Core core = new Core(getActivity().getApplicationContext());
+        AccountRepository repo = new AccountRepository(getActivity());
+        List<TableAccountList> accounts = repo.getTransactionAccounts(core.getAccountsOpenVisible(),
+                core.getAccountFavoriteVisible());
         SpinnerValues values = new SpinnerValues();
-        values.add("1", "account 1");
-        values.add("2", "account 2");
+        for(TableAccountList account : accounts) {
+            values.add(Integer.toString(account.getAccountId()), account.getAccountName());
+        }
 
         ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item,
@@ -273,11 +282,12 @@ public class AccountFragment
                 // todo: get the account name/id from selection
                 Object selectedItem = adapterView.getItemAtPosition(i);
                 String accountName = (String) selectedItem;
-                Log.d(LOGCAT, accountName);
+//                Log.d(LOGCAT, accountName);
                 // Hide selector if account was changed
-                if (!mAccountName.equalsIgnoreCase(accountName)) {
-                    toggleAccountsDropdown();
-                }
+//                if (!mAccountName.equalsIgnoreCase(accountName)) {
+//                    toggleAccountsDropdown();
+//                }
+                // todo: switch account.
             }
 
             @Override
