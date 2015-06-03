@@ -302,19 +302,18 @@ public class AccountFragment
         mAccountsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // get the account name/id from selection
-//                Object selectedItem = adapterView.getItemAtPosition(i);
-//                String accountName = (String) selectedItem;
-                // Hide selector if account was changed
-//                if (!mAccountName.equalsIgnoreCase(accountName)) {
-//                    toggleAccountsDropdown();
-//                }
                 // switch account.
                 String accountIdString = mAccountSpinnerValues.getValueAtPosition(i);
-                mFilter.setAccountId(Integer.parseInt(accountIdString));
-
-                showTransactionsFragment(null);
-                loadTransactions();
+                int accountId = Integer.parseInt(accountIdString);
+                if (accountId != mAccountId) {
+                    // switch account. Reload transactions.
+                    mAccountId = accountId;
+//                    mFilter.setAccountId(accountId);
+//                    detachTransactionsFragment();
+//                    showTransactionsFragment(null);
+//                    loadTransactions();
+                    mAllDataFragment.loadData(prepareArgsForChildFragment());
+                }
             }
 
             @Override
@@ -328,6 +327,12 @@ public class AccountFragment
     }
 
     // End menu.
+
+    private void detachTransactionsFragment() {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.detach(mAllDataFragment);
+        transaction.commit();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -409,7 +414,7 @@ public class AccountFragment
         mAllDataFragment.setAutoStarLoader(false);
 //        mAllDataFragment.setContextMenuGroupId(mAccountId);
         mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
-        
+
         // add fragment
         transaction.replace(R.id.fragmentContent, mAllDataFragment, getNameFragment());
         transaction.commit();

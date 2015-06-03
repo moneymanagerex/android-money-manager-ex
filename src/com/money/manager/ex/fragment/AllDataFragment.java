@@ -256,6 +256,17 @@ public class AllDataFragment extends BaseListFragment
 
     // Loader event handlers
 
+    /**
+     * Start loader into fragment
+     */
+    public void loadData() {
+        loadData(getArguments());
+    }
+
+    public void loadData(Bundle arguments) {
+        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, arguments, this);
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (getSearchResultFragmentLoaderCallbacks() != null)
@@ -535,13 +546,6 @@ public class AllDataFragment extends BaseListFragment
         }
         // launch activity
         startActivity(intent);
-    }
-
-    /**
-     * Start loader into fragment
-     */
-    public void loadData() {
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getArguments(), this);
     }
 
     /**
