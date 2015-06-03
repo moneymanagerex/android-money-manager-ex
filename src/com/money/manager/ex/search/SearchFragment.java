@@ -39,6 +39,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.AccountRepository;
@@ -416,7 +417,8 @@ public class SearchFragment extends Fragment
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 try {
-                    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
+                    Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE).parse(Integer.toString(year) +
+                            "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                     mTextView.setText(DateUtils.getStringFromDate(getActivity().getApplicationContext(), date));
                 } catch (Exception e) {
                     Log.e(LOGCAT, e.getMessage());

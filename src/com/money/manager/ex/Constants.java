@@ -22,6 +22,7 @@ import android.content.Intent;
 public class Constants {
     // Java
     public static final String EMPTY_STRING = "";
+    public static final int NOT_SET = -1;
     // Database
     public static final String PATTERN_DB_DATE = "yyyy-MM-dd";
     // Transaction Status
