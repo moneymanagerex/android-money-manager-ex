@@ -71,6 +71,7 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
+import com.money.manager.ex.fragment.IToolbarSubtitleCallbacks;
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
 import com.money.manager.ex.investment.WatchlistFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
@@ -89,7 +90,6 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 
 import java.io.File;
 import java.net.URLDecoder;
-import java.util.List;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -97,7 +97,7 @@ import java.util.List;
 @SuppressLint("DefaultLocale")
 public class MainActivity
         extends BaseFragmentActivity
-        implements IDropboxManagerCallbacks {
+        implements IDropboxManagerCallbacks, IToolbarSubtitleCallbacks {
 
     // requestcode
     public static final int REQUEST_PICKFILE_CODE = 1;
@@ -710,7 +710,7 @@ public class MainActivity
             Fragment fragment = getSupportFragmentManager().findFragmentById(getResIdLayoutContent());
             if (fragment != null) {
                 if (fragment instanceof AccountFragment) {
-                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountFragment) fragment).getNameFragment());
+                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountFragment) fragment).getFragmentName());
                 } else if ((!(fragment instanceof DashboardFragment)) && (!(fragment instanceof HomeFragment))) {
                     outState.putString(KEY_CLASS_FRAGMENT_CONTENT, fragment.getClass().getName());
                 }
@@ -961,6 +961,16 @@ public class MainActivity
     public void onFileDownloaded() {
         // reload fragment
         reloadAllFragment();
+    }
+
+    /**
+     * Callback from the transactions list fragment, to display the subtitle / account name.
+     * @param subTitle The subtitle to display.
+     */
+    @Override
+    public void onSetToolbarSubtitleRequested(String subTitle) {
+        // todo: show the subtitle in the toolbar, select in the account spinner.
+        getSupportActionBar().setSubtitle(subTitle);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

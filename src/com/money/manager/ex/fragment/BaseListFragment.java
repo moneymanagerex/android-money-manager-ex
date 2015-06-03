@@ -100,10 +100,15 @@ public abstract class BaseListFragment
         }
         // set subtitle in actionbar
         if (!(TextUtils.isEmpty(getSubTitle()))) {
+            if (getActivity() instanceof IToolbarSubtitleCallbacks) {
+                IToolbarSubtitleCallbacks callback = (IToolbarSubtitleCallbacks) getActivity();
+                callback.onSetToolbarSubtitleRequested(getSubTitle());
+            }
+            // todo: once all the hosts implement the IToolbarSubtitleCallbacks, delete the
+            // code below:
             if (getActivity() instanceof AppCompatActivity) {
                 AppCompatActivity activity = (AppCompatActivity) getActivity();
                 if (activity != null) {
-                    // todo: use spinner instead, to allow quick switching of accounts.
                     activity.getSupportActionBar().setSubtitle(getSubTitle());
                 }
             }

@@ -84,7 +84,7 @@ public class AccountFragment
     // id account
     private Integer mAccountId = null;
     // string name fragment
-    private String mNameFragment;
+    private String mFragmentName;
     // account balance
     private double mAccountBalance = 0, mAccountReconciled = 0;
     // Dataset: accountlist e alldata
@@ -111,7 +111,7 @@ public class AccountFragment
         fragment.mFilter.setAccountId(accountId);
 
         // set name of child fragment
-        fragment.setNameFragment(AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
+        fragment.setFragmentName(AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
 
         return fragment;
     }
@@ -393,7 +393,7 @@ public class AccountFragment
         mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
 
         // add fragment
-        transaction.replace(R.id.fragmentContent, mAllDataFragment, getNameFragment());
+        transaction.replace(R.id.fragmentContent, mAllDataFragment, getFragmentName());
         transaction.commit();
     }
 
@@ -445,16 +445,26 @@ public class AccountFragment
                 }
                 // show balance values
                 setTextViewBalance();
+
                 // set titles
-                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-                if (activity != null) {
-                    activity.getSupportActionBar().setSubtitle(mAccountName);
-                }
+                raiseShowAccountName(mAccountName);
                 break;
         }
     }
 
     // end loader events
+
+    private void raiseShowAccountName(String accountName) {
+        if (getActivity() instanceof IToolbarSubtitleCallbacks) {
+            IToolbarSubtitleCallbacks callbacks = (IToolbarSubtitleCallbacks) getActivity();
+            callbacks.onSetToolbarSubtitleRequested(accountName);
+        }
+//                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+//                if (activity != null) {
+//                    activity.getSupportActionBar().setSubtitle(mAccountName);
+//                }
+
+    }
 
     @Override
     public void onResume() {
@@ -462,10 +472,7 @@ public class AccountFragment
         // restart loader
         loadTransactions();
         // set subtitle account name
-        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-        if (activity != null) {
-            activity.getSupportActionBar().setSubtitle(mAccountName);
-        }
+        raiseShowAccountName(mAccountName);
     }
 
     @Override
@@ -561,11 +568,11 @@ public class AccountFragment
         startActivity(intent);
     }
 
-    public String getNameFragment() {
-        return mNameFragment;
+    public String getFragmentName() {
+        return mFragmentName;
     }
 
-    public void setNameFragment(String mNameFragment) {
-        this.mNameFragment = mNameFragment;
+    public void setFragmentName(String mFragmentName) {
+        this.mFragmentName = mFragmentName;
     }
 }
