@@ -316,7 +316,8 @@ public class CheckingAccountActivity
         txtSelectDate = (TextView) findViewById(R.id.textViewDate);
         if (!(TextUtils.isEmpty(mDate))) {
             try {
-                txtSelectDate.setTag(new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale)
+                txtSelectDate.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE,
+                        getResources().getConfiguration().locale)
                         .parse(mDate));
             } catch (ParseException e) {
                 Log.e(LOGCAT, e.getMessage());
@@ -791,7 +792,7 @@ public class CheckingAccountActivity
         outState.putInt(KEY_ACCOUNT_ID, mCommonFunctions.mAccountId);
         outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.mToAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
-        outState.putString(KEY_TRANS_DATE, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(txtSelectDate.getTag()));
+        outState.putString(KEY_TRANS_DATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE, Locale.US).format(txtSelectDate.getTag()));
         outState.putString(KEY_TRANS_CODE, getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mStatus);
         outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());

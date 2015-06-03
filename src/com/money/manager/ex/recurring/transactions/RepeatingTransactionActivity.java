@@ -118,13 +118,13 @@ public class RepeatingTransactionActivity
     // action type intent
     private String mIntentAction;
     private String mToAccountName;
-    private int mBillDepositsId = -1;
+    private int mBillDepositsId = Constants.NOT_SET;
     private String mStatus;
     // info payee
-    private int mPayeeId = -1;
+    private int mPayeeId = Constants.NOT_SET;
     private String mPayeeName, mTextDefaultPayee;
     // info category and subcategory
-    private int mCategoryId = -1, mSubCategoryId = -1;
+    private int mCategoryId = Constants.NOT_SET, mSubCategoryId = Constants.NOT_SET;
     private String mCategoryName, mSubCategoryName;
     // arrays to manage transcode and status
     private String[] mTransCodeItems, mStatusItems;
@@ -138,7 +138,7 @@ public class RepeatingTransactionActivity
     // next occurrence
     private String mNextOccurrence = "";
     private int mFrequencies = 0;
-    private int mNumOccurrence = -1;
+    private int mNumOccurrence = Constants.NOT_SET;
 
     // Controls on the form.
     private Spinner spinFrequencies;
@@ -170,7 +170,7 @@ public class RepeatingTransactionActivity
         // check cursor is valid
         if ((curPayee != null) && (curPayee.moveToFirst())) {
             // chek if category is valid
-            if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != -1) {
+            if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != Constants.NOT_SET) {
                 mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
                 mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
                 // create instance of query
@@ -202,7 +202,7 @@ public class RepeatingTransactionActivity
         switch (requestCode) {
             case REQUEST_PICK_PAYEE:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
+                    mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
                     mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                     // select last category used from payee
                     if (!chbSplitTransaction.isCheck()) {
@@ -216,9 +216,9 @@ public class RepeatingTransactionActivity
                 break;
             case REQUEST_PICK_CATEGORY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
+                    mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                     mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
-                    mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
+                    mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
                     mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
                     // refresh UI category
                     refreshCategoryName();
@@ -291,9 +291,9 @@ public class RepeatingTransactionActivity
         // manage intent
         if (getIntent() != null) {
             if (savedInstanceState == null) {
-                mCommonFunctions.mAccountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, -1);
+                mCommonFunctions.mAccountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
                 if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                    mBillDepositsId = getIntent().getIntExtra(KEY_BILL_DEPOSITS_ID, -1);
+                    mBillDepositsId = getIntent().getIntExtra(KEY_BILL_DEPOSITS_ID, Constants.NOT_SET);
                     // select data transaction
                     loadRecurringTransaction(mBillDepositsId);
                 }
@@ -494,7 +494,7 @@ public class RepeatingTransactionActivity
         if (!(TextUtils.isEmpty(mNextOccurrence))) {
             try {
                 Locale locale = getResources().getConfiguration().locale;
-                txtNextOccurrence.setTag(new SimpleDateFormat("yyyy-MM-dd", locale).parse(mNextOccurrence));
+                txtNextOccurrence.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE, locale).parse(mNextOccurrence));
             } catch (ParseException e) {
                 Log.e(LOGCAT, e.getMessage());
             }
@@ -588,13 +588,13 @@ public class RepeatingTransactionActivity
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
         outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
         Locale locale = getResources().getConfiguration().locale;
-        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat("yyyy-MM-dd", locale)
+        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.PATTERN_DB_DATE, locale)
                 .format(txtNextOccurrence.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
         if (!TextUtils.isEmpty(edtTimesRepeated.getText())) {
             outState.putInt(KEY_NUM_OCCURRENCE, Integer.parseInt(edtTimesRepeated.getText().toString()));
         } else {
-            outState.putInt(KEY_NUM_OCCURRENCE, -1);
+            outState.putInt(KEY_NUM_OCCURRENCE, Constants.NOT_SET);
         }
         outState.putString(KEY_ACTION, mIntentAction);
     }
@@ -828,7 +828,7 @@ public class RepeatingTransactionActivity
         mNumOccurrence = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
 
         // load split transactions only if no category selected.
-        if (mCategoryId == -1 && mSplitTransactions == null) {
+        if (mCategoryId == Constants.NOT_SET && mSplitTransactions == null) {
             RecurringTransaction recurringTransaction = new RecurringTransaction(billId, this);
             mSplitTransactions = recurringTransaction.loadSplitTransactions();
         }
@@ -910,7 +910,7 @@ public class RepeatingTransactionActivity
         boolean isTransfer = mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer);
 
         if (isTransfer) {
-            if (mCommonFunctions.mToAccountId == -1) {
+            if (mCommonFunctions.mToAccountId == Constants.NOT_SET) {
                 Core.alertDialog(this, R.string.error_toaccount_not_selected);
                 return false;
             }
@@ -920,14 +920,14 @@ public class RepeatingTransactionActivity
             }
         }
         // Payee is now optional.
-//        else if ((!isTransfer()) && (mPayeeId == -1)) {
+//        else if ((!isTransfer()) && (mPayeeId == Constants.NOT_SET)) {
 //            Core.alertDialog(this, R.string.error_payee_not_selected);
 //
 //            return false;
 //        }
 
         // Category is required if tx is not a split or transfer.
-        if (mCategoryId == -1 && (!chbSplitTransaction.isCheck()) && !isTransfer) {
+        if (mCategoryId == Constants.NOT_SET && (!chbSplitTransaction.isCheck()) && !isTransfer) {
             Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
@@ -970,7 +970,7 @@ public class RepeatingTransactionActivity
         values.put(TableBillsDeposits.ACCOUNTID, mCommonFunctions.mAccountId);
         values.put(TableBillsDeposits.TOACCOUNTID, mCommonFunctions.mToAccountId);
         if (isTransfer) {
-            values.put(TableBillsDeposits.PAYEEID, -1);
+            values.put(TableBillsDeposits.PAYEEID, Constants.NOT_SET);
         } else {
             values.put(TableBillsDeposits.PAYEEID, mPayeeId);
         }
@@ -981,15 +981,15 @@ public class RepeatingTransactionActivity
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         }
         values.put(TableBillsDeposits.STATUS, mStatus);
-        values.put(TableBillsDeposits.CATEGID, !chbSplitTransaction.isCheck() ? mCategoryId : -1);
-        values.put(TableBillsDeposits.SUBCATEGID, !chbSplitTransaction.isCheck() ? mSubCategoryId : -1);
-        values.put(TableBillsDeposits.FOLLOWUPID, -1);
+        values.put(TableBillsDeposits.CATEGID, !chbSplitTransaction.isCheck() ? mCategoryId : Constants.NOT_SET);
+        values.put(TableBillsDeposits.SUBCATEGID, !chbSplitTransaction.isCheck() ? mSubCategoryId : Constants.NOT_SET);
+        values.put(TableBillsDeposits.FOLLOWUPID, Constants.NOT_SET);
         values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
         values.put(TableBillsDeposits.NOTES, edtNotes.getText().toString());
-        values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat("yyyy-MM-dd")
+        values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                 .format(txtNextOccurrence.getTag()));
-        values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat("yyyy-MM-dd")
+        values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                 .format(txtNextOccurrence.getTag()));
         values.put(TableBillsDeposits.REPEATS, mFrequencies);
         values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0
@@ -1026,7 +1026,7 @@ public class RepeatingTransactionActivity
                 values.put(TableBudgetSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactions.get(i).getSplitTransAmount());
                 values.put(TableBudgetSplitTransactions.TRANSID, mBillDepositsId);
 
-                if (mSplitTransactions.get(i).getSplitTransId() == -1) {
+                if (mSplitTransactions.get(i).getSplitTransId() == Constants.NOT_SET) {
                     // insert data
                     Uri insert = getContentResolver().insert(mSplitTransactions.get(i).getUri(), values);
                     if (insert == null) {
@@ -1175,7 +1175,7 @@ public class RepeatingTransactionActivity
         // Hide Category picker.
         mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
         // Clear category.
-        mCategoryId = -1;
+        mCategoryId = Constants.NOT_SET;
 
 //        mTransCode = getString(R.string.transfer);
         mCommonFunctions.mTransactionType = TransactionTypes.Transfer;

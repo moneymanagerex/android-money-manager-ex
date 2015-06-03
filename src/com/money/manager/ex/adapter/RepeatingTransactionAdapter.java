@@ -79,7 +79,8 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
         txtAccountName.setText(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.ACCOUNTNAME)));
         // write data
         try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
+            Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE).parse(
+                    cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
             txtDate.setText(new SimpleDateFormat("EEEE dd MMMM yyyy").format(date));
         } catch (ParseException e) {
             txtDate.setText(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)));
@@ -89,7 +90,8 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
         if (daysLeft == 0) {
             txtNextDueDate.setText(R.string.due_today);
         } else {
-            txtNextDueDate.setText(Integer.toString(Math.abs(daysLeft)) + " " + context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
+            txtNextDueDate.setText(Integer.toString(Math.abs(daysLeft)) + " " + context.getString(daysLeft > 0
+                    ? R.string.days_remaining : R.string.days_overdue));
             imgClock.setVisibility(daysLeft < 0 ? View.VISIBLE : View.INVISIBLE);
         }
         // show group

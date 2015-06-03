@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
@@ -49,7 +50,7 @@ public class EditTransactionCommonFunctions {
     public List<TableAccountList> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
-    public int mAccountId = -1, mToAccountId = -1;
+    public int mAccountId = Constants.NOT_SET, mToAccountId = Constants.NOT_SET;
     public TransactionTypes mTransactionType;
 
     public Spinner spinAccount, spinToAccount, spinStatus, spinTransCode;
@@ -76,7 +77,7 @@ public class EditTransactionCommonFunctions {
     }
 
     /**
-     * Initialize account dropdowns.
+     * Initialize account selectors.
      */
     public void initAccountSelectors() {
         Core core = new Core(mContext.getApplicationContext());
@@ -97,7 +98,8 @@ public class EditTransactionCommonFunctions {
         // add the default account, if any.
         AppSettings settings = new AppSettings(mContext);
         String defaultAccountString = settings.getGeneralSettings().getDefaultAccount();
-        if (!TextUtils.isEmpty(defaultAccountString)) {
+        // Set the current account, if not set already.
+        if ((mAccountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
             int defaultAccount = Integer.parseInt(defaultAccountString);
             addMissingAccountToSelectors(accountRepository, defaultAccount);
             // Set the default account as the active account.

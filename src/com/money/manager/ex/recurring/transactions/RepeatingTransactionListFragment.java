@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex.recurring.transactions;
 
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -31,12 +30,10 @@ import android.view.ContextMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
@@ -50,10 +47,11 @@ import com.money.manager.ex.utils.DateUtils;
 import java.util.Date;
 
 /**
- * The base class that implements common behaviour for list fragments.
+ * The recurring transactions list fragment.
  * Includes floating action button.
  */
-public class RepeatingTransactionListFragment extends BaseListFragment
+public class RepeatingTransactionListFragment
+        extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // ID request to add repeating transaction
