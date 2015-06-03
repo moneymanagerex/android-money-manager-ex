@@ -207,15 +207,20 @@ public class AccountFragment
         button.setVisibility(View.GONE);
 
         // todo: show account spinner in its place
+//        final String spinnerId = "spinnerAccounts";
+
 //        Spinner accounts = (Spinner) toolbar.findViewById(R.id.spinner_account);
         Spinner accountsSpinner = new Spinner(getActivity());
+        int id = accountsSpinner.getId();
 
         ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item,
                 new String[] { "one", "two" });
+        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         accountsSpinner.setAdapter(accountAdapter);
         accountsSpinner.setVisibility(View.VISIBLE);
-
+        // add spinner to toolbar
+        toolbar.addView(accountsSpinner, 0);
     }
 
     // End menu.
@@ -300,6 +305,15 @@ public class AccountFragment
 
     // Loader events.
 
+    /**
+     * Start Loader to retrive data
+     */
+    public void startLoaderData() {
+        if (mAllDataFragment != null) {
+            mAllDataFragment.startLoaderData();
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String selection;
@@ -317,7 +331,7 @@ public class AccountFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        return;
+//        return;
     }
 
     @Override
@@ -440,15 +454,6 @@ public class AccountFragment
         }
         // launch activity
         startActivity(intent);
-    }
-
-    /**
-     * Start Loader to retrive data
-     */
-    public void startLoaderData() {
-        if (mAllDataFragment != null) {
-            mAllDataFragment.startLoaderData();
-        }
     }
 
     /**
