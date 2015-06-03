@@ -51,7 +51,6 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     private static final int MENU_ADD_SPLIT_TRANSACTION = 1;
     private static int mIdTag = 0x8000;
 
-//    public String mParentTransactionType;
     public TransactionTypes mParentTransactionType;
 
     private SplitItemFragment mFragmentInputAmountClick;

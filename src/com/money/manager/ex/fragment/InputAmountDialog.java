@@ -73,6 +73,7 @@ public class InputAmountDialog
 
         InputAmountDialog fragment = new InputAmountDialog();
         fragment.setArguments(args);
+        fragment.mListener = listener;
 
         return fragment;
     }
@@ -116,7 +117,6 @@ public class InputAmountDialog
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        Core core = new Core(getActivity().getApplicationContext());
         LayoutInflater inflater = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         View view = inflater.inflate(R.layout.input_amount_dialog, null);
 
@@ -162,6 +162,7 @@ public class InputAmountDialog
                 evalExpression();
             }
         });
+
         // image button delete
         imgDelete = (ImageButton) view.findViewById(R.id.imageButtonCancel);
         imgDelete.setOnClickListener(new OnClickListener() {
@@ -183,12 +184,14 @@ public class InputAmountDialog
                 }
             }
         });
+
         // reference TextView amount
         txtAmount = (TextView) view.findViewById(R.id.textViewAmount);
         mDefaultColor = txtAmount.getCurrentTextColor();
         txtExpression = (TextView) view.findViewById(R.id.textViewExpression);
-        if (!TextUtils.isEmpty(mExpression))
+        if (!TextUtils.isEmpty(mExpression)) {
             txtExpression.setText(mExpression);
+        }
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         builder.customView(view, false);
@@ -196,11 +199,11 @@ public class InputAmountDialog
         builder.callback(new MaterialDialog.ButtonCallback() {
             @Override
             public void onPositive(MaterialDialog dialog) {
-                if (!evalExpression())
-                    return;
+                if (!evalExpression()) return;
 
-                if (TextUtils.isEmpty(mAmount))
+                if (TextUtils.isEmpty(mAmount)) {
                     mAmount = Double.toString(0);
+                }
                 // check if is double
                 if (NumberUtils.isNumber(mAmount) && mListener != null) {
                     mListener.onFinishedInputAmountDialog(mIdView, MathUtils.Round(Double.parseDouble(mAmount), 2));
