@@ -216,12 +216,9 @@ public class AccountFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        boolean result = false;
+        boolean result;
 
         switch (item.getItemId()) {
-            case R.id.menu_select_account:
-                toggleAccountsDropdown();
-                break;
             case R.id.menu_add_transaction_account:
                 startCheckingAccountActivity();
                 result = true;

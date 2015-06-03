@@ -142,8 +142,10 @@ public class HomeFragment extends Fragment
         if (container == null) {
             return null;
         }
+
         // inflate layout
         View view = inflater.inflate(R.layout.home_fragment, container, false);
+
         // reference view into layout
         linearHome = (FrameLayout) view.findViewById(R.id.linearLayoutHome);
         linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
@@ -194,6 +196,10 @@ public class HomeFragment extends Fragment
                 startActivity(intent);
             }
         });
+
+        // reset toolbar
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getActivity().invalidateOptionsMenu();
 
         return view;
     }
