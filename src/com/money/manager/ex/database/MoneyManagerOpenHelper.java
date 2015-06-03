@@ -31,6 +31,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.utils.CurrencyUtils;
 import com.money.manager.ex.utils.RawFileUtils;
 
@@ -157,8 +158,8 @@ public class MoneyManagerOpenHelper
         try {
             db = super.getReadableDatabase();
         } catch (SQLiteDiskIOException dex) {
-            Log.e(LOGCAT, "Error opening database: " + dex.getMessage());
-            dex.printStackTrace();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(dex, "Error opening database");
         }
         return db;
     }
