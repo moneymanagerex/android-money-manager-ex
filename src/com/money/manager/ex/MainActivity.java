@@ -340,7 +340,7 @@ public class MainActivity
 
     /**
      * Shows a fragment with the selected account (id) and transactions.
-     *
+     * Called from Home Fragment when an account is clicked in the main list.
      * @param accountId id of the account for which to show the transactions
      */
     public void showAccountFragment(int accountId) {
@@ -350,8 +350,6 @@ public class MainActivity
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             fragment = AccountFragment.newInstance(accountId);
         }
-        // set if shown open menu
-        fragment.setShownOpenDatabaseItemMenu(isDualPanel());
         // show fragment
         showFragment(fragment, tagFragment);
     }

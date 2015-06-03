@@ -627,6 +627,7 @@ public class HomeFragment extends Fragment
     private void setUpAccountsList(View view) {
         mExpandableListView = (ExpandableListView) view.findViewById(R.id.listViewAccountBills);
 
+        // Handle clicking on an account.
         mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
@@ -649,6 +650,7 @@ public class HomeFragment extends Fragment
                 return true;
             }
         });
+
         // store settings when groups are collapsed/expanded
         mExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override

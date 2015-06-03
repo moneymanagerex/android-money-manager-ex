@@ -94,8 +94,6 @@ public class AccountFragment
     private ImageView imgAccountFav, imgGotoAccount;
     // name account
     private String mAccountName;
-    // setting for shown open database item menu
-    private boolean mShownOpenDatabaseItemMenu = false;
     // Filtering
     private AccountTransactionsFilter mFilter;
     private SpinnerValues mAccountSpinnerValues;
@@ -556,20 +554,6 @@ public class AccountFragment
         }
         // launch activity
         startActivity(intent);
-    }
-
-    /**
-     * @return the mShownOpenDatabaseItemMenu
-     */
-    public boolean isShownOpenDatabaseItemMenu() {
-        return mShownOpenDatabaseItemMenu;
-    }
-
-    /**
-     * @param mShownOpenDatabaseItemMenu the mShownOpenDatabaseItemMenu to set
-     */
-    public void setShownOpenDatabaseItemMenu(boolean mShownOpenDatabaseItemMenu) {
-        this.mShownOpenDatabaseItemMenu = mShownOpenDatabaseItemMenu;
     }
 
     public String getNameFragment() {
