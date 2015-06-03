@@ -43,6 +43,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -520,6 +521,8 @@ public class MainActivity
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
         showSnackbarDropbox();
+
+
     }
 
     @Override
@@ -680,6 +683,16 @@ public class MainActivity
         setRestartActivity(true);
     }
 
+    // Menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Reset toolbar.
+        //remove account spinner, if shown.
+        hideAccountsDropdown();
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // quick-fix convert 'switch' to 'if-else'
@@ -695,6 +708,8 @@ public class MainActivity
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // End Menu.
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -974,8 +989,8 @@ public class MainActivity
      */
     @Override
     public void onSetToolbarSubtitleRequested(String subTitle) {
-        // todo: show the subtitle in the toolbar, select in the account spinner.
-        getSupportActionBar().setSubtitle(subTitle);
+        // show the subtitle in the toolbar, select in the account spinner.
+//        getSupportActionBar().setSubtitle(subTitle);
 
         showSelectedAccount(subTitle);
     }
@@ -986,15 +1001,20 @@ public class MainActivity
 
         Spinner accountsSpinner = (Spinner) toolbar.findViewWithTag(ACCOUNT_SPINNER_TAG);
         if (accountsSpinner == null) {
-            showAccountsDropdown();
+            initAccountsDropdown();
             accountsSpinner = (Spinner) toolbar.findViewWithTag(ACCOUNT_SPINNER_TAG);
         }
+
+        // show if invisible.
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        accountsSpinner.setVisibility(View.VISIBLE);
+
         // select the account.
         int position = mAccountSpinnerValues.getPositionOfText(accountName);
         accountsSpinner.setSelection(position);
     }
 
-    private void showAccountsDropdown() {
+    private void initAccountsDropdown() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         // Hide the toolbar title?
@@ -1025,7 +1045,6 @@ public class MainActivity
         // select the current account
 //        accountsSpinner.setSelection(mAccountSpinnerValues.getPositionOfValue(Integer.toString(mAccountId)));
 
-        accountsSpinner.setVisibility(View.VISIBLE);
         // add spinner to toolbar
         toolbar.addView(accountsSpinner, 0);
 
@@ -1036,12 +1055,6 @@ public class MainActivity
                 // switch account.
                 String selectedAccountIdString = mAccountSpinnerValues.getValueAtPosition(i);
                 int accountId = Integer.parseInt(selectedAccountIdString);
-//                if (accountId != mAccountId) {
-//                    // switch account. Reload transactions.
-//                    mAccountId = accountId;
-//                    mAllDataFragment.AccountId = accountId;
-//                    mAllDataFragment.loadData(prepareArgsForChildFragment());
-//                }
                 showAccountFragment(accountId);
             }
 
@@ -1053,6 +1066,18 @@ public class MainActivity
 
         // Expand immediately to save on clicks.
 //        accountsSpinner.performClick();
+    }
+
+    private void hideAccountsDropdown() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar == null) return;
+
+        Spinner accountsSpinner = (Spinner) toolbar.findViewWithTag(ACCOUNT_SPINNER_TAG);
+        if (accountsSpinner != null) {
+            accountsSpinner.setVisibility(View.GONE);
+        }
+        // show title.
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
