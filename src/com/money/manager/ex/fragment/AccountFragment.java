@@ -139,6 +139,25 @@ public class AccountFragment
 
         // Add options available only in account transactions list(s).
         inflater.inflate(R.menu.menu_account_transactions, menu);
+
+        // set on click handler
+        addToolbarTitleListener();
+    }
+
+    private void addToolbarTitleListener() {
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Toast.makeText(getActivity(), "click!", Toast.LENGTH_SHORT).show();
+                showAccountsDropdown();
+            }
+        });
+    }
+
+    private void removeToolbarTitleListener() {
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setOnClickListener(null);
     }
 
     @Override
@@ -219,8 +238,9 @@ public class AccountFragment
     }
 
     private void showAccountsDropdown() {
-        // Hide the name.
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+
+        // Hide the toolbar title.
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -232,6 +252,7 @@ public class AccountFragment
 //        Spinner accounts = (Spinner) toolbar.findViewById(R.id.spinner_account);
         mAccountsSpinner = new Spinner(getActivity());
 
+        // todo: load accounts with ids.
         SpinnerValues values = new SpinnerValues();
         values.add("1", "account 1");
         values.add("2", "account 2");
@@ -253,6 +274,10 @@ public class AccountFragment
                 Object selectedItem = adapterView.getItemAtPosition(i);
                 String accountName = (String) selectedItem;
                 Log.d(LOGCAT, accountName);
+                // Hide selector if account was changed
+                if (!mAccountName.equalsIgnoreCase(accountName)) {
+                    toggleAccountsDropdown();
+                }
             }
 
             @Override
@@ -260,6 +285,9 @@ public class AccountFragment
 
             }
         });
+
+        // Expand immediately to save on clicks.
+        mAccountsSpinner.performClick();
     }
 
     // End menu.
@@ -414,6 +442,14 @@ public class AccountFragment
         super.onSaveInstanceState(outState);
         if (mAccountId != null)
             outState.putInt(KEY_CONTENT, mAccountId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // remove listener from the toolbar.
+        removeToolbarTitleListener();
     }
 
     private Bundle prepareArgsForChildFragment() {
