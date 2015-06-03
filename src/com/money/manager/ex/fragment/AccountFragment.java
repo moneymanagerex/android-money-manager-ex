@@ -258,6 +258,9 @@ public class AccountFragment
         mAccountsSpinner = new Spinner(getActivity());
         mAccountsSpinner.setTag(ACCOUNT_SPINNER_TAG);
 
+        // Size, layout.
+        //mAccountsSpinner.
+
         // load accounts with ids.
         Core core = new Core(getActivity().getApplicationContext());
         AccountRepository repo = new AccountRepository(getActivity());
@@ -271,8 +274,10 @@ public class AccountFragment
         ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item,
                 mAccountSpinnerValues.getTextsArray());
-        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        // simple_spinner_item
+        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAccountsSpinner.setAdapter(accountAdapter);
+
         // select the current account
         mAccountsSpinner.setSelection(mAccountSpinnerValues.getPositionOfValue(Integer.toString(mAccountId)));
 

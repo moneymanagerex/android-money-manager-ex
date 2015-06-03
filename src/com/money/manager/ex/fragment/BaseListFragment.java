@@ -44,11 +44,11 @@ import com.money.manager.ex.settings.PreferenceConstants;
  */
 public abstract class BaseListFragment
         extends AbsListFragment {
-    // saved instance
+
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
+
     FloatingActionButton mFloatingActionButton;
     // menu items
-//    private boolean mDisplayShowCustomEnabled = false;
     private boolean mShowMenuItemSearch = false;
     private boolean mMenuItemSearchIconified = true;
     // flag for tips wildcard
@@ -101,9 +101,9 @@ public abstract class BaseListFragment
         // set subtitle in actionbar
         if (!(TextUtils.isEmpty(getSubTitle()))) {
             if (getActivity() instanceof AppCompatActivity) {
-//                ActionBarActivity activity = (ActionBarActivity) getActivity();
                 AppCompatActivity activity = (AppCompatActivity) getActivity();
                 if (activity != null) {
+                    // todo: use spinner instead, to allow quick switching of accounts.
                     activity.getSupportActionBar().setSubtitle(getSubTitle());
                 }
             }
@@ -135,37 +135,33 @@ public abstract class BaseListFragment
         if (isShowMenuItemSearch() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
-
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-//            ActionBarActivity activity = (ActionBarActivity) getActivity();
 
             SearchView searchView = new SearchView(getActivity());
-            if (searchView != null) {
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String s) {
-                        return false;
-                    }
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    return false;
+                }
 
-                    @Override
-                    public boolean onQueryTextChange(String s) {
-                        return BaseListFragment.this.onPreQueryTextChange(s);
-                    }
-                });
-                searchView.setIconified(isMenuItemSearchIconified());
-                itemSearch.setActionView(searchView);
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return BaseListFragment.this.onPreQueryTextChange(s);
+                }
+            });
+            searchView.setIconified(isMenuItemSearchIconified());
+            itemSearch.setActionView(searchView);
 
-                SearchViewFormatter formatter = new SearchViewFormatter();
+            SearchViewFormatter formatter = new SearchViewFormatter();
 
-                formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
-                formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
-                formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
-                formatter.setSearchHintColorResource(R.color.hint_foreground_material_dark);
+            formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
+            formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
+            formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
+            formatter.setSearchHintColorResource(R.color.hint_foreground_material_dark);
 
-                formatter.setSearchHintText(getSearchHint());
+            formatter.setSearchHintText(getSearchHint());
 
-                formatter.format(searchView);
-            }
+            formatter.format(searchView);
         }
     }
 
@@ -201,16 +197,10 @@ public abstract class BaseListFragment
         super.onSaveInstanceState(outState);
     }
 
-    /**
-     * @return the mShowMenuItemSearch
-     */
     public boolean isShowMenuItemSearch() {
         return mShowMenuItemSearch;
     }
 
-    /**
-     * @param mShowMenuItemSearch the mShowMenuItemSearch to set
-     */
     public void setShowMenuItemSearch(boolean mShowMenuItemSearch) {
         this.mShowMenuItemSearch = mShowMenuItemSearch;
     }
