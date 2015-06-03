@@ -27,8 +27,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,10 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,8 +44,6 @@ import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.checkingaccount.AccountTransactionsFilter;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
@@ -61,7 +54,6 @@ import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Checking account fragment.
@@ -71,8 +63,6 @@ import java.util.List;
 public class AccountFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataFragmentLoaderCallbacks {
-
-    public static final String ACCOUNT_SPINNER_TAG = "AccountFragment::AccountSpinner";
 
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
@@ -96,8 +86,6 @@ public class AccountFragment
     private String mAccountName;
     // Filtering
     private AccountTransactionsFilter mFilter;
-    private SpinnerValues mAccountSpinnerValues;
-    private Spinner mAccountsSpinner;
 
     /**
      * @param accountId Id of the Account to be displayed
@@ -152,37 +140,37 @@ public class AccountFragment
 //        inflater.inflate(R.menu.menu_account_transactions, menu);
 
         // set on click handler
-        addToolbarTitleListener();
+//        addToolbarTitleListener();
     }
 
-    private void addToolbarTitleListener() {
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAccountsDropdown();
-                removeToolbarTitleListener();
-            }
-        });
-    }
+//    private void addToolbarTitleListener() {
+//        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+//        toolbar.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showAccountsDropdown();
+//                removeToolbarTitleListener();
+//            }
+//        });
+//    }
 
-    private void resetToolbar() {
-        // hide account picker
-        if (mAccountsSpinner != null) {
-            mAccountsSpinner.setVisibility(View.GONE);
-        }
+//    private void resetToolbar() {
+//        // hide account picker
+//        if (mAccountsSpinner != null) {
+//            mAccountsSpinner.setVisibility(View.GONE);
+//        }
+//
+//        // remove listener from the toolbar.
+//        removeToolbarTitleListener();
+//
+//        // show the title again.
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
+//    }
 
-        // remove listener from the toolbar.
-        removeToolbarTitleListener();
-
-        // show the title again.
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
-    }
-
-    private void removeToolbarTitleListener() {
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setOnClickListener(null);
-    }
+//    private void removeToolbarTitleListener() {
+//        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+//        toolbar.setOnClickListener(null);
+//    }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
@@ -239,75 +227,6 @@ public class AccountFragment
         } else {
             return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void showAccountsDropdown() {
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-
-        // Hide the toolbar title.
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        // hide the 'choose account' button, as well.
-//        View button = getActivity().findViewById(R.id.menu_select_account);
-//        if (button != null) {
-//            button.setVisibility(View.GONE);
-//        }
-
-        // show account spinner in its place
-        mAccountsSpinner = new Spinner(getActivity());
-        mAccountsSpinner.setTag(ACCOUNT_SPINNER_TAG);
-
-        // Size, layout.
-        //mAccountsSpinner.
-
-        // load accounts with ids.
-        Core core = new Core(getActivity().getApplicationContext());
-        AccountRepository repo = new AccountRepository(getActivity());
-        List<TableAccountList> accounts = repo.getTransactionAccounts(core.getAccountsOpenVisible(),
-                core.getAccountFavoriteVisible());
-        mAccountSpinnerValues = new SpinnerValues();
-        for(TableAccountList account : accounts) {
-            mAccountSpinnerValues.add(Integer.toString(account.getAccountId()), account.getAccountName());
-        }
-
-        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item,
-                mAccountSpinnerValues.getTextsArray());
-        // simple_spinner_item
-        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mAccountsSpinner.setAdapter(accountAdapter);
-
-        // select the current account
-        mAccountsSpinner.setSelection(mAccountSpinnerValues.getPositionOfValue(Integer.toString(mAccountId)));
-
-        mAccountsSpinner.setVisibility(View.VISIBLE);
-        // add spinner to toolbar
-        toolbar.addView(mAccountsSpinner, 0);
-
-        // handle switching of accounts.
-        mAccountsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // switch account.
-                String accountIdString = mAccountSpinnerValues.getValueAtPosition(i);
-                int accountId = Integer.parseInt(accountIdString);
-                if (accountId != mAccountId) {
-                    // switch account. Reload transactions.
-                    mAccountId = accountId;
-                    mAllDataFragment.AccountId = accountId;
-                    mAllDataFragment.loadData(prepareArgsForChildFragment());
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        // Expand immediately to save on clicks.
-        mAccountsSpinner.performClick();
     }
 
     // End menu.
@@ -478,15 +397,16 @@ public class AccountFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mAccountId != null)
+        if (mAccountId != null) {
             outState.putInt(KEY_CONTENT, mAccountId);
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        resetToolbar();
+//        resetToolbar();
     }
 
     private Bundle prepareArgsForChildFragment() {

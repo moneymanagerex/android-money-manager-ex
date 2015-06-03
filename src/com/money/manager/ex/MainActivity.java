@@ -46,8 +46,10 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +65,8 @@ import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyFormatsListActivity;
+import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.fragment.AccountFragment;
@@ -73,6 +77,7 @@ import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
 import com.money.manager.ex.fragment.IToolbarSubtitleCallbacks;
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
+import com.money.manager.ex.inapp.util.SpinnerValues;
 import com.money.manager.ex.investment.WatchlistFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
 import com.money.manager.ex.recurring.transactions.RepeatingTransactionListFragment;
@@ -90,6 +95,7 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.util.List;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -102,6 +108,7 @@ public class MainActivity
     // requestcode
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
+    public static final String ACCOUNT_SPINNER_TAG = "MainActivity::AccountSpinner";
 
     public DropboxHelper mDropboxHelper;
 
@@ -134,6 +141,8 @@ public class MainActivity
     private TextView mDrawerTextViewRepeating;
     // state dual panel
     private boolean mIsDualPanel = false;
+    private SpinnerValues mAccountSpinnerValues;
+
 
     /**
      * @return the mRestart
@@ -343,8 +352,7 @@ public class MainActivity
      */
     public void showAccountFragment(int accountId) {
         String tagFragment = AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
-        AccountFragment fragment;
-        fragment = (AccountFragment) getSupportFragmentManager().findFragmentByTag(tagFragment);
+        AccountFragment fragment = (AccountFragment) getSupportFragmentManager().findFragmentByTag(tagFragment);
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             fragment = AccountFragment.newInstance(accountId);
         }
@@ -359,8 +367,6 @@ public class MainActivity
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             fragment = WatchlistFragment.newInstance(accountId);
         }
-        // set if shown open menu
-//        fragment.setShownOpenDatabaseItemMenu(isDualPanel());
         // show fragment
         showFragment(fragment, tagFragment);
     }
@@ -444,7 +450,6 @@ public class MainActivity
 
     public void onClickCardViewIncomesVsExpenses(View v) {
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-        return;
     }
 
     @Override
@@ -971,6 +976,83 @@ public class MainActivity
     public void onSetToolbarSubtitleRequested(String subTitle) {
         // todo: show the subtitle in the toolbar, select in the account spinner.
         getSupportActionBar().setSubtitle(subTitle);
+
+        showSelectedAccount(subTitle);
+    }
+
+    private void showSelectedAccount(String accountName) {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar == null) return;
+
+        Spinner accountsSpinner = (Spinner) toolbar.findViewWithTag(ACCOUNT_SPINNER_TAG);
+        if (accountsSpinner == null) {
+            showAccountsDropdown();
+            accountsSpinner = (Spinner) toolbar.findViewWithTag(ACCOUNT_SPINNER_TAG);
+        }
+        // select the account.
+        int position = mAccountSpinnerValues.getPositionOfText(accountName);
+        accountsSpinner.setSelection(position);
+    }
+
+    private void showAccountsDropdown() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        // Hide the toolbar title?
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // show account spinner
+        Spinner accountsSpinner = new Spinner(this);
+        accountsSpinner.setTag(ACCOUNT_SPINNER_TAG);
+
+        // load accounts with ids.
+        Core core = new Core(this.getApplicationContext());
+        AccountRepository repo = new AccountRepository(this);
+        List<TableAccountList> accounts = repo.getTransactionAccounts(core.getAccountsOpenVisible(),
+                core.getAccountFavoriteVisible());
+        mAccountSpinnerValues = new SpinnerValues();
+        for(TableAccountList account : accounts) {
+            mAccountSpinnerValues.add(Integer.toString(account.getAccountId()), account.getAccountName());
+        }
+
+        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item,
+                mAccountSpinnerValues.getTextsArray());
+        // simple_spinner_item
+        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        accountsSpinner.setAdapter(accountAdapter);
+
+        // select the current account
+//        accountsSpinner.setSelection(mAccountSpinnerValues.getPositionOfValue(Integer.toString(mAccountId)));
+
+        accountsSpinner.setVisibility(View.VISIBLE);
+        // add spinner to toolbar
+        toolbar.addView(accountsSpinner, 0);
+
+        // handle switching of accounts.
+        accountsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // switch account.
+                String selectedAccountIdString = mAccountSpinnerValues.getValueAtPosition(i);
+                int accountId = Integer.parseInt(selectedAccountIdString);
+//                if (accountId != mAccountId) {
+//                    // switch account. Reload transactions.
+//                    mAccountId = accountId;
+//                    mAllDataFragment.AccountId = accountId;
+//                    mAllDataFragment.loadData(prepareArgsForChildFragment());
+//                }
+                showAccountFragment(accountId);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        // Expand immediately to save on clicks.
+//        accountsSpinner.performClick();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
