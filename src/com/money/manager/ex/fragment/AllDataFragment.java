@@ -162,7 +162,7 @@ public class AllDataFragment extends BaseListFragment
 
         // start loader
         if (isAutoStarLoader()) {
-            startLoaderData();
+            loadData();
         }
     }
 
@@ -501,7 +501,7 @@ public class AllDataFragment extends BaseListFragment
                     }
                 }
                 // restart loader
-                startLoaderData();
+                loadData();
             }
         });
         // set listener negative button
@@ -540,7 +540,7 @@ public class AllDataFragment extends BaseListFragment
     /**
      * Start loader into fragment
      */
-    public void startLoaderData() {
+    public void loadData() {
         getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getArguments(), this);
     }
 
@@ -615,7 +615,7 @@ public class AllDataFragment extends BaseListFragment
 
         if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
             ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-            startLoaderData();
+            loadData();
         }
     }
 
@@ -735,7 +735,7 @@ public class AllDataFragment extends BaseListFragment
                         String status = item.getShortcut();
                         if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
                             ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-                            startLoaderData();
+                            loadData();
                         }
                 }
                 dialog.dismiss();

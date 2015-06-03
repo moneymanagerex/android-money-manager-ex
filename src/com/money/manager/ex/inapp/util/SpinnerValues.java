@@ -50,4 +50,52 @@ public class SpinnerValues {
         result = mContainer.values().toArray(result);
         return result;
     }
+
+    public String[] getValuesArray() {
+        String[] result = new String[mContainer.size()];
+        result = mContainer.keySet().toArray(result);
+        return result;
+    }
+
+    /**
+     * find the index of the given text
+     * @param text
+     * @return
+     */
+    public int getPositionOfValue(String text) {
+        int result = -1;
+
+        if (!mContainer.containsKey(text)) return result;
+
+        int counter = 0;
+        for(String content : mContainer.keySet()) {
+            if (text.equalsIgnoreCase(content)) {
+                result = counter;
+                break;
+            }
+            counter += 1;
+        }
+        return result;
+    }
+
+    public int getPositionOfText(String text) {
+        int result = -1;
+
+        if (!mContainer.containsValue(text)) return result;
+
+        int counter = 0;
+        for(String content : mContainer.values()) {
+            if (text.equalsIgnoreCase(content)) {
+                result = counter;
+                break;
+            }
+            counter += 1;
+        }
+        return result;
+    }
+
+    public String getValueAtPosition(int position) {
+        String result = this.getValuesArray()[position];
+        return result;
+    }
 }

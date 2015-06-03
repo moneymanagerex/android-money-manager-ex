@@ -79,7 +79,7 @@ public class SearchActivity
 		AllDataFragment fragment;
 		fragment = (AllDataFragment)getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
 		if (fragment != null && fragment.isVisible()) {
-			fragment.startLoaderData();
+			fragment.loadData();
 		}
 	}
 
