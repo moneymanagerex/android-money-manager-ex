@@ -332,7 +332,7 @@ public class MainActivity
     }
 
     /**
-     * Shows a fragment with the selected account (id).
+     * Shows a fragment with the selected account (id) and transactions.
      *
      * @param accountId id of the account for which to show the transactions
      */

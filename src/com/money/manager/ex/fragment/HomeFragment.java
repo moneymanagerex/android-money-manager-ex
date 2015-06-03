@@ -167,10 +167,6 @@ public class HomeFragment extends Fragment
             }
         });
 
-        // reset toolbar
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
-//        getActivity().invalidateOptionsMenu();
-
         return view;
     }
 
@@ -212,6 +208,7 @@ public class HomeFragment extends Fragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         mFloatingActionButton.attachToListView(mExpandableListView);
     }
 
