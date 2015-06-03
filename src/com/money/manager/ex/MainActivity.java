@@ -688,8 +688,12 @@ public class MainActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Reset toolbar.
-        //remove account spinner, if shown.
-        hideAccountsDropdown();
+//        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+//        for(Fragment fragment : fragments) {
+//            Log.d(LOGCAT, fragment.getClass().getName());
+//        }
+        // todo: remove account spinner, if shown.
+//        hideAccountsDropdown();
         return true;
     }
 
