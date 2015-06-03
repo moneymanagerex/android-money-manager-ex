@@ -83,7 +83,6 @@ public class AllDataFragment extends BaseListFragment
     private boolean mAutoStarLoader = true;
     private boolean mShownHeader = false;
     private boolean mShownBalance = false;
-//    private int mGroupId = 0;
     private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
     private View mListHeader = null;
 
@@ -130,11 +129,6 @@ public class AllDataFragment extends BaseListFragment
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (isShownHeader() && (position == 0)) {
-//                    // Ignore the header row.
-//                    Log.d(LOGCAT, "test");
-//                }
-
                 if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                     Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
                     if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
@@ -204,14 +198,6 @@ public class AllDataFragment extends BaseListFragment
         csv.setPrefixName(prefixName);
         csv.execute();
     }
-
-//    public int getContextMenuGroupId() {
-//        return mGroupId;
-//    }
-
-//    public void setContextMenuGroupId(int mGroupId) {
-//        this.mGroupId = mGroupId;
-//    }
 
     /**
      * @return the mSearResultFragmentLoaderCallbacks
