@@ -148,6 +148,33 @@ public class HomeFragment extends Fragment
 
         // reference view into layout
         linearHome = (FrameLayout) view.findViewById(R.id.linearLayoutHome);
+
+        createWelcomeView(view);
+
+        txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
+
+        setUpAccountsList(view);
+
+        prgAccountBills = (ProgressBar) view.findViewById(R.id.progressAccountBills);
+
+        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        mFloatingActionButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
+                intent.setAction(Intent.ACTION_INSERT);
+                startActivity(intent);
+            }
+        });
+
+        // reset toolbar
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
+//        getActivity().invalidateOptionsMenu();
+
+        return view;
+    }
+
+    private void createWelcomeView(View view) {
         linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
 
         // add account button
@@ -180,28 +207,6 @@ public class HomeFragment extends Fragment
 
         // Database migration v1.4 -> v2.0 location.
         setUpMigrationButton(view);
-
-        txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
-
-        setUpAccountsList(view);
-
-        prgAccountBills = (ProgressBar) view.findViewById(R.id.progressAccountBills);
-
-        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
-        mFloatingActionButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
-                intent.setAction(Intent.ACTION_INSERT);
-                startActivity(intent);
-            }
-        });
-
-        // reset toolbar
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getActivity().invalidateOptionsMenu();
-
-        return view;
     }
 
     @Override

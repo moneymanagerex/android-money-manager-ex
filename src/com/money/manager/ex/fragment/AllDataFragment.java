@@ -75,6 +75,8 @@ public class AllDataFragment extends BaseListFragment
     public static final String KEY_ARGUMENTS_WHERE_PARAMS = "SearchResultFragment:ArgumentsWhereParams";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 
+    public int AccountId = -1;
+
     private static final String LOGCAT = AllDataFragment.class.getSimpleName();
 
     private IAllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
@@ -82,7 +84,6 @@ public class AllDataFragment extends BaseListFragment
     private boolean mShownHeader = false;
     private boolean mShownBalance = false;
 //    private int mGroupId = 0;
-    private int mAccountId = -1;
     private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
     private View mListHeader = null;
 
@@ -94,7 +95,7 @@ public class AllDataFragment extends BaseListFragment
      */
     public static AllDataFragment newInstance(int accountId) {
         AllDataFragment fragment = new AllDataFragment();
-        fragment.mAccountId = accountId;
+        fragment.AccountId = accountId;
         return fragment;
     }
 
@@ -114,7 +115,7 @@ public class AllDataFragment extends BaseListFragment
 
         // create adapter
         AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
-        adapter.setAccountId(mAccountId);
+        adapter.setAccountId(this.AccountId);
         adapter.setShowAccountName(isShownHeader());
         adapter.setShowBalanceAmount(isShownBalance());
 
@@ -541,7 +542,7 @@ public class AllDataFragment extends BaseListFragment
             intent.putExtra(CheckingAccountActivity.KEY_TRANS_ID, transId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
-            intent.putExtra(CheckingAccountActivity.KEY_ACCOUNT_ID, mAccountId);
+            intent.putExtra(CheckingAccountActivity.KEY_ACCOUNT_ID, this.AccountId);
             intent.setAction(Intent.ACTION_INSERT);
         }
         // launch activity

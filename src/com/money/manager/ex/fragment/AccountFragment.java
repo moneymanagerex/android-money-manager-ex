@@ -72,10 +72,13 @@ public class AccountFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataFragmentLoaderCallbacks {
 
+    public static final String ACCOUNT_SPINNER_TAG = "AccountFragment::AccountSpinner";
+
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
 
     private final String LOGCAT = this.getClass().getSimpleName();
+
     // all data fragment
     AllDataFragment mAllDataFragment;
     // id account
@@ -240,38 +243,22 @@ public class AccountFragment
         }
     }
 
-    private void toggleAccountsDropdown() {
-        if (mAccountsSpinner == null) {
-            showAccountsDropdown();
-            return;
-        }
-
-        if (mAccountsSpinner.getVisibility() != View.VISIBLE) {
-            // Hide the title
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-            // Show selector.
-            mAccountsSpinner.setVisibility(View.VISIBLE);
-        } else {
-            mAccountsSpinner.setVisibility(View.GONE);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
-        }
-    }
-
     private void showAccountsDropdown() {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
         // Hide the toolbar title.
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // hide the 'choose account' button, as well.
-        View button = getActivity().findViewById(R.id.menu_select_account);
-        if (button != null) {
-            button.setVisibility(View.GONE);
-        }
+//        View button = getActivity().findViewById(R.id.menu_select_account);
+//        if (button != null) {
+//            button.setVisibility(View.GONE);
+//        }
 
         // show account spinner in its place
         mAccountsSpinner = new Spinner(getActivity());
+        mAccountsSpinner.setTag(ACCOUNT_SPINNER_TAG);
 
         // load accounts with ids.
         Core core = new Core(getActivity().getApplicationContext());
@@ -305,6 +292,7 @@ public class AccountFragment
                 if (accountId != mAccountId) {
                     // switch account. Reload transactions.
                     mAccountId = accountId;
+                    mAllDataFragment.AccountId = accountId;
                     mAllDataFragment.loadData(prepareArgsForChildFragment());
                 }
             }
