@@ -39,6 +39,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -176,6 +177,9 @@ public class AccountFragment
                     itemDashboard.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
             }
         }
+
+        // select the current account?
+        showCurrentAccount(menu);
     }
 
     @Override
@@ -204,17 +208,23 @@ public class AccountFragment
         }
     }
 
+    private Spinner getAccountsSpinner(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menuAccountSelector);
+        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+
+        return spinner;
+    }
+
     private void initAccountsDropdown(Menu menu) {
         // Hide the toolbar title?
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Load accounts into the list.
-        MenuItem item = menu.findItem(R.id.menuAccountSelector);
-        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+        Spinner spinner = getAccountsSpinner(menu);
         loadAccountsToSpinner(getActivity(), spinner);
-        // select the current account
-        spinner.setSelection(mAccountSpinnerValues.getPositionOfValue(Integer.toString(mAccountId)));
+
+        showCurrentAccount(menu);
 
         // handle switching of accounts.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -228,7 +238,8 @@ public class AccountFragment
                     mAccountId = accountId;
                     mAllDataFragment.AccountId = accountId;
                     mAllDataFragment.loadData(prepareArgsForChildFragment());
-                }            }
+                }
+            }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -237,8 +248,17 @@ public class AccountFragment
         });
     }
 
+    private void showCurrentAccount(Menu menu) {
+        Spinner spinner = getAccountsSpinner(menu);
+        // select the current account
+        spinner.setSelection(mAccountSpinnerValues.getPositionOfValue(Integer.toString(mAccountId)));
+    }
+
     private void loadAccountsToSpinner(Context context, Spinner spinner) {
         if (spinner == null) return;
+
+        // todo: use cursor?
+//        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context, );
 
         // load accounts with ids.
         Core core = new Core(context.getApplicationContext());

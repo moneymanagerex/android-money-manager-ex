@@ -71,7 +71,6 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
-import com.money.manager.ex.interfaces.IToolbarSubtitleCallbacks;
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
 import com.money.manager.ex.investment.WatchlistFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
