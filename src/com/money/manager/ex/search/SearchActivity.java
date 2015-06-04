@@ -32,7 +32,7 @@ import com.money.manager.ex.fragment.IInputAmountDialogListener;
 
 public class SearchActivity
         extends BaseFragmentActivity
-        implements IAllDataFragmentLoaderCallbacks, IInputAmountDialogListener {
+        implements IInputAmountDialogListener {
 
     /**
      * Indicates whether to show the account headers in search results.
@@ -64,14 +64,15 @@ public class SearchActivity
         setToolbarStandardAction(getToolbar(), R.id.action_cancel, R.id.action_search);
     }
 
-    @Override
-    public void onCallbackCreateLoader(int id, Bundle args) {	}
-
-	@Override
-	public void onCallbackLoaderFinished(Loader<Cursor> loader, final Cursor data) { }
-
-	@Override
-	public void onCallbackLoaderReset(Loader<Cursor> loader) {	}
+    // IAllDataFragmentLoaderCallbacks
+//    @Override
+//    public void onCallbackCreateLoader(int id, Bundle args) {	}
+//
+//	@Override
+//	public void onCallbackLoaderFinished(Loader<Cursor> loader, final Cursor data) { }
+//
+//	@Override
+//	public void onCallbackLoaderReset(Loader<Cursor> loader) {	}
 	
 	@Override
 	protected void onResume() {

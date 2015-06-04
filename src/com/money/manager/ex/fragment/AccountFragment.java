@@ -57,6 +57,7 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.interfaces.IAllDataFragmentCallbacks;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 
@@ -70,7 +71,9 @@ import java.util.Calendar;
  */
 public class AccountFragment
         extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataFragmentLoaderCallbacks {
+        implements LoaderManager.LoaderCallbacks<Cursor>,
+            IAllDataFragmentLoaderCallbacks,
+            IAllDataFragmentCallbacks {
 
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
@@ -100,6 +103,8 @@ public class AccountFragment
         return fragment;
     }
 
+    // IAllDataFragmentLoaderCallbacks
+
     @Override
     public void onCallbackCreateLoader(int id, Bundle args) {
 //        return;
@@ -114,6 +119,8 @@ public class AccountFragment
     public void onCallbackLoaderReset(Loader<Cursor> loader) {
 //        return;
     }
+
+    // End IAllDataFragmentLoaderCallbacks
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -547,7 +554,7 @@ public class AccountFragment
     private void showTransactionsFragment(ViewGroup header) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        mAllDataFragment = AllDataFragment.newInstance(mAccountId);
+        mAllDataFragment = AllDataFragment.newInstance(mAccountId, this);
 
         // set arguments and settings of fragment
         mAllDataFragment.setArguments(prepareArgsForChildFragment());

@@ -50,6 +50,7 @@ import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.interfaces.IAllDataFragmentCallbacks;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
@@ -63,7 +64,9 @@ import java.util.List;
  * The search form with search parameter input fields.
  */
 public class SearchFragment extends Fragment
-        implements IInputAmountDialogListener {
+        implements IInputAmountDialogListener,
+            IAllDataFragmentCallbacks {
+
     // LOGCAT
     private static final String LOGCAT = SearchFragment.class.getSimpleName();
     // ID REQUEST code
@@ -89,12 +92,12 @@ public class SearchFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-        AllDataFragment fragment;
-        fragment = (AllDataFragment) getActivity().getSupportFragmentManager()
-                .findFragmentByTag(AllDataFragment.class.getSimpleName());
-        if (fragment != null) {
-            fragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
-        }
+
+//        AllDataFragment fragment = (AllDataFragment) getActivity().getSupportFragmentManager()
+//                .findFragmentByTag(AllDataFragment.class.getSimpleName());
+//        if (fragment != null) {
+//            fragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
+//        }
     }
 
     @Override
@@ -331,7 +334,7 @@ public class SearchFragment extends Fragment
                     .remove(searchResultsFragment).commit();
         }
 
-        searchResultsFragment = AllDataFragment.newInstance(-1);
+        searchResultsFragment = AllDataFragment.newInstance(-1, this);
 
         //create bundle
         Bundle args = new Bundle();
@@ -340,7 +343,7 @@ public class SearchFragment extends Fragment
         args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
         //set arguments
         searchResultsFragment.setArguments(args);
-        searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
+//        searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
 //        searchResultsFragment.setShownHeader(true);
         if (getActivity() instanceof SearchActivity) {
             SearchActivity activity = (SearchActivity) getActivity();
@@ -408,7 +411,8 @@ public class SearchFragment extends Fragment
             if (!TextUtils.isEmpty(mTextView.getText())) {
                 date.setTime(DateUtils.getDateFromString(getActivity().getApplicationContext(), mTextView.getText().toString()));
             }
-            DatePickerDialog dialog = new DatePickerDialog(getActivity(), mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), mDateSetListener,
+                    date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
             dialog.show();
         }
 

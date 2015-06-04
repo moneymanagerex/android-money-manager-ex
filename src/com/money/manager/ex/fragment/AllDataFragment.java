@@ -50,6 +50,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.qif.QifExport;
+import com.money.manager.ex.interfaces.IAllDataFragmentCallbacks;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
@@ -67,6 +68,20 @@ import java.util.ArrayList;
 
 public class AllDataFragment extends BaseListFragment
         implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
+
+    /**
+     * Create a new instance of AllDataFragment with accountId params
+     *
+     * @param accountId Id of account to display. If generic shown set -1
+     * @return new instance AllDataFragment
+     */
+    public static AllDataFragment newInstance(int accountId, IAllDataFragmentCallbacks callbacks) {
+        AllDataFragment fragment = new AllDataFragment();
+        fragment.AccountId = accountId;
+        fragment.mCallbacks = callbacks;
+
+        return fragment;
+    }
 
     // ID Loader
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
@@ -86,17 +101,7 @@ public class AllDataFragment extends BaseListFragment
     private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
     private View mListHeader = null;
 
-    /**
-     * Create a new instance of AllDataFragment with accountId params
-     *
-     * @param accountId Id of account to display. If generic shown set -1
-     * @return new instance AllDataFragment
-     */
-    public static AllDataFragment newInstance(int accountId) {
-        AllDataFragment fragment = new AllDataFragment();
-        fragment.AccountId = accountId;
-        return fragment;
-    }
+    private IAllDataFragmentCallbacks mCallbacks;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
