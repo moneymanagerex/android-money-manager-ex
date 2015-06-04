@@ -75,15 +75,10 @@ public class AccountFragment
 
     private final String LOGCAT = this.getClass().getSimpleName();
 
-    // all data fragment
     AllDataFragment mAllDataFragment;
-    // id account
     private Integer mAccountId = null;
-    // string name fragment
     private String mFragmentName;
-    // account balance
     private double mAccountBalance = 0, mAccountReconciled = 0;
-    // Dataset: accountlist e alldata
     private TableAccountList mAccountList;
     // Controls
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
@@ -91,7 +86,7 @@ public class AccountFragment
 
     /**
      * @param accountId Id of the Account to be displayed
-     * @return
+     * @return initialized instance of Account Fragment.
      */
     public static AccountFragment newInstance(int accountId) {
         AccountFragment fragment = new AccountFragment();
