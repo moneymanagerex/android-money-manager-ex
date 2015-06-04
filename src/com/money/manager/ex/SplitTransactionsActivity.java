@@ -38,7 +38,8 @@ import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SplitTransactionsActivity extends BaseFragmentActivity
+public class SplitTransactionsActivity
+        extends BaseFragmentActivity
         implements SplitItemFragmentCallbacks, IInputAmountDialogListener {
 
     public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
@@ -48,7 +49,6 @@ public class SplitTransactionsActivity extends BaseFragmentActivity
     public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitTransactionsActivity:ResultSplitTransaction";
     public static final String INTENT_RESULT_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ResultSplitTransactionDeleted";
 
-    private static final int MENU_ADD_SPLIT_TRANSACTION = 1;
     private static int mIdTag = 0x8000;
 
     public TransactionTypes mParentTransactionType;

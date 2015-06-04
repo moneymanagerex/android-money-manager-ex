@@ -997,18 +997,28 @@ public class CheckingAccountActivity
         mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
         mTransNumber = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSACTIONNUMBER));
         mNotes = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.NOTES));
-        if (!duplicate)
+        if (!duplicate) {
             mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
+        }
 
+        cursor.close();
+
+        // Load Split Categories.
         if (mSplitTransactions == null) {
             SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
             mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
+
+            if (duplicate) {
+                // Reset ids so that the transactions get inserted on save.
+                for (TableSplitTransactions split : mSplitTransactions) {
+                    split.setSplitTransId(Constants.NOT_SET);
+                }
+            }
+
         }
 
         // convert status in uppercase string
         if (!TextUtils.isEmpty(mStatus)) mStatus = mStatus.toUpperCase();
-
-        cursor.close();
 
         AccountRepository accountRepository = new AccountRepository(this);
         mToAccountName = accountRepository.loadName(mCommonFunctions.mToAccountId);
