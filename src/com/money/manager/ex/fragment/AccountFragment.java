@@ -389,35 +389,17 @@ public class AccountFragment
                 // show balance values
                 setTextViewBalance();
 
-                // set titles
-                raiseShowAccountName(mAccountName);
                 break;
         }
     }
 
     // end loader events
 
-    private void raiseShowAccountName(String accountName) {
-        // todo: is this required?
-//        if (getActivity() instanceof IToolbarSubtitleCallbacks) {
-//            IToolbarSubtitleCallbacks callbacks = (IToolbarSubtitleCallbacks) getActivity();
-//            callbacks.onSetToolbarSubtitleRequested(accountName);
-//        }
-
-//                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-//                if (activity != null) {
-//                    activity.getSupportActionBar().setSubtitle(mAccountName);
-//                }
-
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         // restart loader
         loadTransactions();
-        // set subtitle account name
-        raiseShowAccountName(mAccountName);
     }
 
     @Override

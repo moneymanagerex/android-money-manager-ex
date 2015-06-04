@@ -43,14 +43,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,8 +63,6 @@ import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyFormatsListActivity;
-import com.money.manager.ex.database.AccountRepository;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.fragment.AccountFragment;
@@ -76,9 +71,8 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
-import com.money.manager.ex.fragment.IToolbarSubtitleCallbacks;
+import com.money.manager.ex.interfaces.IToolbarSubtitleCallbacks;
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
-import com.money.manager.ex.inapp.util.SpinnerValues;
 import com.money.manager.ex.investment.WatchlistFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
 import com.money.manager.ex.recurring.transactions.RepeatingTransactionListFragment;
@@ -96,7 +90,6 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 
 import java.io.File;
 import java.net.URLDecoder;
-import java.util.List;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -104,7 +97,7 @@ import java.util.List;
 @SuppressLint("DefaultLocale")
 public class MainActivity
         extends BaseFragmentActivity
-        implements IDropboxManagerCallbacks, IToolbarSubtitleCallbacks {
+        implements IDropboxManagerCallbacks {
 
     // requestcode
     public static final int REQUEST_PICKFILE_CODE = 1;
@@ -971,16 +964,6 @@ public class MainActivity
     public void onFileDownloaded() {
         // reload fragment
         reloadAllFragment();
-    }
-
-    /**
-     * Callback from the transactions list fragment, to display the subtitle / account name.
-     * @param subTitle The subtitle to display.
-     */
-    @Override
-    public void onSetToolbarSubtitleRequested(String subTitle) {
-        // show the subtitle in the toolbar (?)
-        getSupportActionBar().setSubtitle(subTitle);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
