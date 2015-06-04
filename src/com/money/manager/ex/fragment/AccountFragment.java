@@ -251,10 +251,12 @@ public class AccountFragment
         return account;
     }
 
+    /**
+     * Show the current account selected in the accounts dropdown.
+     * @param menu The toolbar/menu that contains the dropdown.
+     */
     private void showCurrentAccount(Menu menu) {
         Spinner spinner = getAccountsSpinner(menu);
-        // select the current account
-//        spinner.setSelection(mAccountSpinnerValues.getPositionOfValue(Integer.toString(mAccountId)));
         // find account
         SimpleCursorAdapter adapter = (SimpleCursorAdapter) spinner.getAdapter();
         Cursor cursor = adapter.getCursor();
@@ -274,15 +276,9 @@ public class AccountFragment
     }
 
     private void loadAccountsToSpinner(Context context, Spinner spinner) {
-        loadAccountsToSpinner_adapter(context, spinner);
-        // loadAccountsToSpinner_list()
-    }
-
-    private void loadAccountsToSpinner_adapter(Context context, Spinner spinner) {
         if (spinner == null) return;
 
         AccountRepository repo = new AccountRepository(context);
-//        TableAccountList account = new TableAccountList();
         Core core = new Core(context.getApplicationContext());
 
         Cursor cursor = repo.getCursor(core.getAccountsOpenVisible(),
@@ -332,7 +328,7 @@ public class AccountFragment
             public void onClick(View v) {
                 // set status account
                 mAccountList.setFavoriteAcct(!(mAccountList.isFavoriteAcct()));
-                // populate contentvalues for update
+                // populate content values for update
                 ContentValues values = new ContentValues();
                 values.put(TableAccountList.FAVORITEACCT, mAccountList.getFavoriteAcct());
                 // update
