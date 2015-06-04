@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package com.money.manager.ex.adapter;
 
 import android.content.Context;
@@ -28,6 +27,9 @@ import android.widget.TextView;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.view.RobotoView;
 
+/**
+ *
+ */
 public class MoneySimpleCursorAdapter
         extends SimpleCursorAdapter {
     private static final String LOGCAT = MoneySimpleCursorAdapter.class.getSimpleName();

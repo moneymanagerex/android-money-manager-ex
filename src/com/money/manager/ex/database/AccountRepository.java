@@ -153,11 +153,7 @@ public class AccountRepository {
         return result;
     }
 
-    // Private section
-
-    private List<TableAccountList> loadAccounts_content(boolean open, boolean favorite, List<String> accountTypes) {
-        List<TableAccountList> result = new ArrayList<>();
-
+    public Cursor getCursor(boolean open, boolean favorite, List<String> accountTypes) {
         // compose where clause
         String where = getWhereFilterFor(open, favorite);
         // filter accounts.
@@ -172,6 +168,15 @@ public class AccountRepository {
                 null,
                 mAccount.ACCOUNTNAME
         );
+        return cursor;
+    }
+
+    // Private section
+
+    private List<TableAccountList> loadAccounts_content(boolean open, boolean favorite, List<String> accountTypes) {
+        List<TableAccountList> result = new ArrayList<>();
+
+        Cursor cursor = getCursor(open, favorite, accountTypes);
         if (cursor == null) return null;
 
 //        for(cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext()) {

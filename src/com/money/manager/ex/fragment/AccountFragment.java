@@ -37,7 +37,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -46,6 +45,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.AccountListEditActivity;
 import com.money.manager.ex.CheckingAccountActivity;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -55,13 +55,11 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.inapp.util.SpinnerValues;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Checking account fragment.
@@ -91,9 +89,7 @@ public class AccountFragment
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
     // name account
-    private String mAccountName;
-    // Filtering
-    private SpinnerValues mAccountSpinnerValues;
+//    private String mAccountName;
 
     /**
      * @param accountId Id of the Account to be displayed
@@ -222,17 +218,22 @@ public class AccountFragment
 
         // Load accounts into the list.
         Spinner spinner = getAccountsSpinner(menu);
+
         loadAccountsToSpinner(getActivity(), spinner);
 
-        showCurrentAccount(menu);
+        // The account is selected in 'prepare menu'.
+//        showCurrentAccount(menu);
 
         // handle switching of accounts.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // switch account.
-                String selectedAccountIdString = mAccountSpinnerValues.getValueAtPosition(i);
-                int accountId = Integer.parseInt(selectedAccountIdString);
+                Spinner spinner1 = (Spinner) adapterView;
+                TableAccountList account = getAccountAtPosition(spinner1, i);
+                int accountId = account.getAccountId();
+//                String selectedAccountIdString = mAccountSpinnerValues.getValueAtPosition(i);
+//                int accountId = Integer.parseInt(selectedAccountIdString);
                 if (accountId != mAccountId) {
                     // switch account. Reload transactions.
                     mAccountId = accountId;
@@ -248,34 +249,63 @@ public class AccountFragment
         });
     }
 
+    private TableAccountList getAccountAtPosition(Spinner spinner, int position) {
+        SimpleCursorAdapter adapter = (SimpleCursorAdapter) spinner.getAdapter();
+        Cursor cursor = (Cursor) adapter.getItem(position);
+        TableAccountList account = new TableAccountList();
+        account.setValueFromCursor(cursor);
+
+        return account;
+    }
+
     private void showCurrentAccount(Menu menu) {
         Spinner spinner = getAccountsSpinner(menu);
         // select the current account
-        spinner.setSelection(mAccountSpinnerValues.getPositionOfValue(Integer.toString(mAccountId)));
+//        spinner.setSelection(mAccountSpinnerValues.getPositionOfValue(Integer.toString(mAccountId)));
+        // find account
+        SimpleCursorAdapter adapter = (SimpleCursorAdapter) spinner.getAdapter();
+        Cursor cursor = adapter.getCursor();
+        int position = Constants.NOT_SET;
+
+        for (int i = 0; i < adapter.getCount(); i++) {
+            cursor.moveToPosition(i);
+            String accountIdString = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTID));
+            int accountId = Integer.parseInt(accountIdString);
+            if (accountId == mAccountId) {
+                position = i;
+                break;
+            }
+        }
+
+        spinner.setSelection(position);
     }
 
     private void loadAccountsToSpinner(Context context, Spinner spinner) {
+        loadAccountsToSpinner_adapter(context, spinner);
+        // loadAccountsToSpinner_list()
+    }
+
+    private void loadAccountsToSpinner_adapter(Context context, Spinner spinner) {
         if (spinner == null) return;
 
-        // todo: use cursor?
-//        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context, );
-
-        // load accounts with ids.
-        Core core = new Core(context.getApplicationContext());
         AccountRepository repo = new AccountRepository(context);
-        List<TableAccountList> accounts = repo.getTransactionAccounts(core.getAccountsOpenVisible(),
-                core.getAccountFavoriteVisible());
-        mAccountSpinnerValues = new SpinnerValues();
-        for(TableAccountList account : accounts) {
-            mAccountSpinnerValues.add(Integer.toString(account.getAccountId()), account.getAccountName());
-        }
+//        TableAccountList account = new TableAccountList();
+        Core core = new Core(context.getApplicationContext());
 
-        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(context,
+        Cursor cursor = repo.getCursor(core.getAccountsOpenVisible(),
+                core.getAccountFavoriteVisible(), repo.getTransactionAccountTypeNames());
+
+        int[] adapterRowViews = new int[] { android.R.id.text1 };
+
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
                 android.R.layout.simple_spinner_item,
-                mAccountSpinnerValues.getTextsArray());
-        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                cursor,
+                new String[] { TableAccountList.ACCOUNTNAME, TableAccountList.ACCOUNTID },
+                adapterRowViews,
+                SimpleCursorAdapter.NO_SELECTION);
+        cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinner.setAdapter(accountAdapter);
+        spinner.setAdapter(cursorAdapter);
     }
 
     // End menu.
@@ -338,7 +368,7 @@ public class AccountFragment
 
         // refresh user interface
         if (mAccountList != null) {
-            mAccountName = mAccountList.getAccountName();
+//            mAccountName = mAccountList.getAccountName();
             setImageViewFavorite();
         }
 
