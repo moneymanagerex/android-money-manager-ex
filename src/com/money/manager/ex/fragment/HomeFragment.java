@@ -299,82 +299,10 @@ public class HomeFragment extends Fragment
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:
-                // Accounts list
+                renderAccountsList(data);
 
-                BigDecimal curTotal = new BigDecimal(0);
-                BigDecimal curReconciled = new BigDecimal(0);
-
-                linearHome.setVisibility(data != null && data.getCount() > 0 ? View.VISIBLE : View.GONE);
-                linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-
-                mAccountsByType.clear();
-                mTotalsByType.clear();
-                mAccountTypes.clear();
-
-                // cycle cursor
-                if (data != null) {
-                    while (data.moveToNext()) {
-                        double total = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
-                        curTotal = curTotal.add(BigDecimal.valueOf(total));
-                        double totalReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
-                        curReconciled = curReconciled.add(BigDecimal.valueOf(totalReconciled));
-
-                        // find element
-                        QueryAccountBills bills = new QueryAccountBills(getActivity());
-                        bills.setAccountId(data.getInt(data.getColumnIndex(QueryAccountBills.ACCOUNTID)));
-                        bills.setAccountName(data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTNAME)));
-                        bills.setAccountType(data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTTYPE)));
-                        bills.setCurrencyId(data.getInt(data.getColumnIndex(QueryAccountBills.CURRENCYID)));
-                        bills.setTotal(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL)));
-                        bills.setReconciled(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED)));
-                        bills.setTotalBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
-                        bills.setReconciledBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
-
-                        String accountType = data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTTYPE));
-                        QueryAccountBills totals;
-                        if (mAccountTypes.indexOf(accountType) == -1) {
-                            mAccountTypes.add(accountType);
-
-                            totals = new QueryAccountBills(getActivity());
-                            totals.setAccountType(accountType);
-                            // set group title
-                            if (AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)) {
-                                totals.setAccountName(getString(R.string.bank_accounts));
-                            } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
-                                totals.setAccountName(getString(R.string.term_accounts));
-                            } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
-                                totals.setAccountName(getString(R.string.credit_card_accounts));
-                            } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
-                                totals.setAccountName(getString(R.string.investment_accounts));
-                            }
-                            totals.setReconciledBaseConvRate(.0);
-                            totals.setTotalBaseConvRate(.0);
-                            mTotalsByType.put(accountType, totals);
-                        }
-                        totals = mTotalsByType.get(accountType);
-                        totals.setReconciledBaseConvRate(totals.getReconciledBaseConvRate() + data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
-                        totals.setTotalBaseConvRate(totals.getTotalBaseConvRate() + data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
-
-                        List<QueryAccountBills> list = mAccountsByType.get(accountType);
-                        if (list == null) {
-                            list = new ArrayList<>();
-                            mAccountsByType.put(accountType, list);
-                        }
-                        list.add(bills);
-                    }
-                }
-                // write accounts total
-                addFooterExpandableListView(curTotal.doubleValue(), curReconciled.doubleValue());
-
-                // create adapter
-                AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity());
-                // set adapter and shown
-                mExpandableListView.setAdapter(expandableAdapter);
-
-                setVisibilityOfAccountGroups();
-                setListViewAccountBillsVisible(true);
-
-                // set total accounts in drawer
+                // set total for accounts in the main Drawer.
+                // todo: use a callback interface for this.
                 if (mainActivity != null) {
                     mainActivity.setDrawerTotalAccounts(txtTotalAccounts.getText().toString());
                 }
@@ -428,6 +356,84 @@ public class HomeFragment extends Fragment
                     }
                 }
         }
+    }
+
+    private void renderAccountsList(Cursor data) {
+        // Accounts list
+
+        BigDecimal curTotal = new BigDecimal(0);
+        BigDecimal curReconciled = new BigDecimal(0);
+
+        linearHome.setVisibility(data != null && data.getCount() > 0 ? View.VISIBLE : View.GONE);
+        linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+
+        mAccountsByType.clear();
+        mTotalsByType.clear();
+        mAccountTypes.clear();
+
+        // cycle cursor
+        if (data != null) {
+            while (data.moveToNext()) {
+                double total = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+                curTotal = curTotal.add(BigDecimal.valueOf(total));
+                double totalReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
+                curReconciled = curReconciled.add(BigDecimal.valueOf(totalReconciled));
+
+                // find element
+                QueryAccountBills bills = new QueryAccountBills(getActivity());
+                bills.setAccountId(data.getInt(data.getColumnIndex(QueryAccountBills.ACCOUNTID)));
+                bills.setAccountName(data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTNAME)));
+                bills.setAccountType(data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTTYPE)));
+                bills.setCurrencyId(data.getInt(data.getColumnIndex(QueryAccountBills.CURRENCYID)));
+                bills.setTotal(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL)));
+                bills.setReconciled(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED)));
+                bills.setTotalBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
+                bills.setReconciledBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
+
+                String accountType = data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTTYPE));
+                QueryAccountBills totals;
+                if (mAccountTypes.indexOf(accountType) == -1) {
+                    mAccountTypes.add(accountType);
+
+                    totals = new QueryAccountBills(getActivity());
+                    totals.setAccountType(accountType);
+                    // set group title
+                    if (AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)) {
+                        totals.setAccountName(getString(R.string.bank_accounts));
+                    } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
+                        totals.setAccountName(getString(R.string.term_accounts));
+                    } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
+                        totals.setAccountName(getString(R.string.credit_card_accounts));
+                    } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
+                        totals.setAccountName(getString(R.string.investment_accounts));
+                    }
+                    totals.setReconciledBaseConvRate(.0);
+                    totals.setTotalBaseConvRate(.0);
+                    mTotalsByType.put(accountType, totals);
+                }
+                totals = mTotalsByType.get(accountType);
+                totals.setReconciledBaseConvRate(totals.getReconciledBaseConvRate() + data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
+                totals.setTotalBaseConvRate(totals.getTotalBaseConvRate() + data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
+
+                List<QueryAccountBills> list = mAccountsByType.get(accountType);
+                if (list == null) {
+                    list = new ArrayList<>();
+                    mAccountsByType.put(accountType, list);
+                }
+                list.add(bills);
+            }
+        }
+        // write accounts total
+        addFooterExpandableListView(curTotal.doubleValue(), curReconciled.doubleValue());
+
+        // create adapter
+        AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity());
+        // set adapter and shown
+        mExpandableListView.setAdapter(expandableAdapter);
+
+        setVisibilityOfAccountGroups();
+        setListViewAccountBillsVisible(true);
+
     }
 
     public void startLoader() {
