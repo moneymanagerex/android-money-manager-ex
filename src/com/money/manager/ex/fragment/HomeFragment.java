@@ -454,14 +454,14 @@ public class HomeFragment extends Fragment
                 startActivity(new Intent(getActivity(), SearchActivity.class));
                 result = true;
                 break;
-            case R.id.menu_sync_dropbox:
-                if (getActivity() instanceof MainActivity) {
-                    MainActivity parent = (MainActivity) getActivity();
-                    DropboxManager dropbox = new DropboxManager(parent, parent.mDropboxHelper, parent);
-                    dropbox.synchronizeDropbox();
-                    result = true;
-                }
-                break;
+//            case R.id.menu_sync_dropbox:
+//                if (getActivity() instanceof MainActivity) {
+//                    MainActivity parent = (MainActivity) getActivity();
+//                    DropboxManager dropbox = new DropboxManager(parent, parent.mDropboxHelper, parent);
+//                    dropbox.synchronizeDropbox();
+//                    result = true;
+//                }
+//                break;
         }
 
         if (result) {

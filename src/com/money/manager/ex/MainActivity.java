@@ -511,8 +511,6 @@ public class MainActivity
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
         showSnackbarDropbox();
-
-
     }
 
     @Override
@@ -677,7 +675,7 @@ public class MainActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // quick-fix convert 'switch' to 'if-else'
+        // toggle drawer with the menu hardware button.
         if (item.getItemId() == android.R.id.home) {
             if (mDrawer != null) {
                 if (mDrawer.isDrawerOpen(mDrawerLayout)) {
