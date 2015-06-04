@@ -215,7 +215,9 @@ public class AccountFragment
 //        ActionBar actionBar = toolbarActivity.getSupportActionBar();
 //        toolbarActivity.setSupportActionBar(toolbar);
 //        actionBar.setDisplayShowTitleEnabled(false);
+//        actionBar.setLogo(R.drawable.ic_logo_money_manager_ex);
 //        actionBar.setDisplayUseLogoEnabled(true);
+//        actionBar.setDisplayShowHomeEnabled(true);
 
 
         // Load accounts into the list.
@@ -321,8 +323,7 @@ public class AccountFragment
 
         // take object AccountList
         if (mAccountList == null) {
-            mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
-                    .getTableAccountList(mAccountId);
+            reloadAccountInfo();
         }
 
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
@@ -373,6 +374,11 @@ public class AccountFragment
         setHasOptionsMenu(true);
 
         return view;
+    }
+
+    private void reloadAccountInfo() {
+        mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
+                .getTableAccountList(mAccountId);
     }
 
     // Loader events.
@@ -490,6 +496,9 @@ public class AccountFragment
      * refresh user interface with total
      */
     private void setTextViewBalance() {
+        // Reload account info as it can be changed via dropdown. Need a currency info here.
+        reloadAccountInfo();
+
         // write account balance
         if (mAccountList != null) {
             CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
