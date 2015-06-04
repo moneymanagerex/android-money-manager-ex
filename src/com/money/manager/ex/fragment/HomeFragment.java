@@ -142,10 +142,35 @@ public class HomeFragment extends Fragment
         if (container == null) {
             return null;
         }
+
         // inflate layout
         View view = inflater.inflate(R.layout.home_fragment, container, false);
+
         // reference view into layout
         linearHome = (FrameLayout) view.findViewById(R.id.linearLayoutHome);
+
+        createWelcomeView(view);
+
+        txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
+
+        setUpAccountsList(view);
+
+        prgAccountBills = (ProgressBar) view.findViewById(R.id.progressAccountBills);
+
+        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        mFloatingActionButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
+                intent.setAction(Intent.ACTION_INSERT);
+                startActivity(intent);
+            }
+        });
+
+        return view;
+    }
+
+    private void createWelcomeView(View view) {
         linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
 
         // add account button
@@ -178,29 +203,12 @@ public class HomeFragment extends Fragment
 
         // Database migration v1.4 -> v2.0 location.
         setUpMigrationButton(view);
-
-        txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
-
-        setUpAccountsList(view);
-
-        prgAccountBills = (ProgressBar) view.findViewById(R.id.progressAccountBills);
-
-        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
-        mFloatingActionButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
-                intent.setAction(Intent.ACTION_INSERT);
-                startActivity(intent);
-            }
-        });
-
-        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         mFloatingActionButton.attachToListView(mExpandableListView);
     }
 
@@ -291,6 +299,8 @@ public class HomeFragment extends Fragment
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:
+                // Accounts list
+
                 BigDecimal curTotal = new BigDecimal(0);
                 BigDecimal curReconciled = new BigDecimal(0);
 
@@ -302,8 +312,8 @@ public class HomeFragment extends Fragment
                 mAccountTypes.clear();
 
                 // cycle cursor
-                if (data != null && data.moveToFirst()) {
-                    while (!data.isAfterLast()) {
+                if (data != null) {
+                    while (data.moveToNext()) {
                         double total = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
                         curTotal = curTotal.add(BigDecimal.valueOf(total));
                         double totalReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
@@ -351,8 +361,6 @@ public class HomeFragment extends Fragment
                             mAccountsByType.put(accountType, list);
                         }
                         list.add(bills);
-
-                        data.moveToNext();
                     }
                 }
                 // write accounts total
@@ -374,6 +382,7 @@ public class HomeFragment extends Fragment
                 break;
 
             case ID_LOADER_BILL_DEPOSITS:
+                // Recurring Transactions.
                 mainActivity.setDrawableRepeatingTransactions(data != null ? data.getCount() : 0);
                 break;
 
@@ -618,6 +627,7 @@ public class HomeFragment extends Fragment
     private void setUpAccountsList(View view) {
         mExpandableListView = (ExpandableListView) view.findViewById(R.id.listViewAccountBills);
 
+        // Handle clicking on an account.
         mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
@@ -640,6 +650,7 @@ public class HomeFragment extends Fragment
                 return true;
             }
         });
+
         // store settings when groups are collapsed/expanded
         mExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
@@ -665,31 +676,6 @@ public class HomeFragment extends Fragment
                 settings.set(key, groupVisible);
             }
         });
-        // handle long-click
-//        mExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                // i = position, l = id.
-//                // identify whether the selected item is a group or an account entry.
-//                Object selectedItem = adapterView.getItemAtPosition(i);
-//                if (!(selectedItem instanceof QueryAccountBills)) return false;
-//
-//                QueryAccountBills account = (QueryAccountBills) selectedItem;
-//
-//                // ignore investment accounts for now.
-//                if (account.getAccountType().equalsIgnoreCase(AccountTypes.INVESTMENT.toString())){
-//                    return false;
-//                }
-//
-//                // show context menu for accounts.
-////                getActivity().openContextMenu(adapterView);
-//                mExpandableListView.showContextMenuForChild(adapterView);
-//                mExpandableListView.showContextMenu();
-//
-////                return false;
-//                return true;
-//            }
-//        });
 
         registerForContextMenu(mExpandableListView);
     }

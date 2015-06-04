@@ -67,19 +67,22 @@ import java.util.ArrayList;
 
 public class AllDataFragment extends BaseListFragment
         implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
+
     // ID Loader
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
     // KEY Arguments
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_WHERE_PARAMS = "SearchResultFragment:ArgumentsWhereParams";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
+
+    public int AccountId = -1;
+
     private static final String LOGCAT = AllDataFragment.class.getSimpleName();
+
     private IAllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
     private boolean mShownHeader = false;
     private boolean mShownBalance = false;
-    private int mGroupId = 0;
-    private int mAccountId = -1;
     private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
     private View mListHeader = null;
 
@@ -91,8 +94,83 @@ public class AllDataFragment extends BaseListFragment
      */
     public static AllDataFragment newInstance(int accountId) {
         AllDataFragment fragment = new AllDataFragment();
-        fragment.mAccountId = accountId;
+        fragment.AccountId = accountId;
         return fragment;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // set fragment
+        setEmptyText(getString(R.string.no_data));
+        setListShown(false);
+
+        // Read header indicator directly from the activity.
+        if (getActivity() instanceof SearchActivity) {
+            SearchActivity activity = (SearchActivity) getActivity();
+            setShownHeader(activity.ShowAccountHeaders);
+        }
+
+        // create adapter
+        AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
+        adapter.setAccountId(this.AccountId);
+        adapter.setShowAccountName(isShownHeader());
+        adapter.setShowBalanceAmount(isShownBalance());
+
+        // set choice mode in list view
+        mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
+        mMultiChoiceModeListener.setListener(this);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
+
+        // click item
+        getListView().setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+                    Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
+                    if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
+                        startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+                    }
+                }
+            }
+        });
+        // if header is not null add to list view
+        if (getListAdapter() == null) {
+            if (mListHeader != null)
+                getListView().addHeaderView(mListHeader);
+        }
+        // set adapter
+        setListAdapter(adapter);
+
+        // register context menu
+        registerForContextMenu(getListView());
+
+        // set animation progress
+        setListShown(false);
+
+        // floating action button
+        setFloatingActionButtonVisible(true);
+        setFloatingActionButtonAttachListView(true);
+
+        // start loader
+        if (isAutoStarLoader()) {
+            loadData();
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     private int[] convertArrayListToArray(ArrayList<Integer> list) {
@@ -119,26 +197,6 @@ public class AllDataFragment extends BaseListFragment
         ExportToCsvFile csv = new ExportToCsvFile(getActivity(), (AllDataAdapter) getListAdapter());
         csv.setPrefixName(prefixName);
         csv.execute();
-    }
-
-    private void exportToQif(){
-        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-        QifExport qif = new QifExport(getActivity());
-        qif.export(adapter);
-    }
-
-    /**
-     * @return the mGroupId
-     */
-    public int getContextMenuGroupId() {
-        return mGroupId;
-    }
-
-    /**
-     * @param mGroupId the mGroupId to set
-     */
-    public void setContextMenuGroupId(int mGroupId) {
-        this.mGroupId = mGroupId;
     }
 
     /**
@@ -183,82 +241,18 @@ public class AllDataFragment extends BaseListFragment
         this.mShownHeader = mShownHeader;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // set fragment
-        setEmptyText(getString(R.string.no_data));
-        setListShown(false);
-
-        // Read header indicator directly from the activity.
-        if (getActivity() instanceof SearchActivity) {
-            SearchActivity activity = (SearchActivity) getActivity();
-            setShownHeader(activity.ShowAccountHeaders);
-        }
-
-        // create adapter
-        AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
-        adapter.setAccountId(mAccountId);
-        adapter.setShowAccountName(isShownHeader());
-        adapter.setShowBalanceAmount(isShownBalance());
-
-        // set choice mode in list view
-        mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
-        mMultiChoiceModeListener.setListener(this);
-        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
-
-        // click item
-        getListView().setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (isShownHeader() && (position == 0)) {
-//                    // Ignore the header row.
-//                    Log.d(LOGCAT, "test");
-//                }
-
-                if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                    Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
-                    if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-                        startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-                    }
-                }
-            }
-        });
-        // if header is not null add to list view
-        if (getListAdapter() == null) {
-            if (mListHeader != null)
-                getListView().addHeaderView(mListHeader);
-        }
-        // set adapter
-        setListAdapter(adapter);
-
-        // register context menu
-        registerForContextMenu(getListView());
-
-        // set animation progress
-        setListShown(false);
-
-        // floating action button
-        setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
-
-        // start loader
-        if (isAutoStarLoader()) {
-            startLoaderData();
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
-    }
-
     // Loader event handlers
+
+    /**
+     * Start loader into fragment
+     */
+    public void loadData() {
+        loadData(getArguments());
+    }
+
+    public void loadData(Bundle arguments) {
+        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, arguments, this);
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -367,11 +361,6 @@ public class AllDataFragment extends BaseListFragment
                 inflater.inflate(R.menu.menu_alldata_operations, menu);
             }
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     // This is just to test:
@@ -510,7 +499,7 @@ public class AllDataFragment extends BaseListFragment
                     }
                 }
                 // restart loader
-                startLoaderData();
+                loadData();
             }
         });
         // set listener negative button
@@ -539,18 +528,11 @@ public class AllDataFragment extends BaseListFragment
             intent.putExtra(CheckingAccountActivity.KEY_TRANS_ID, transId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
-            intent.putExtra(CheckingAccountActivity.KEY_ACCOUNT_ID, mAccountId);
+            intent.putExtra(CheckingAccountActivity.KEY_ACCOUNT_ID, this.AccountId);
             intent.setAction(Intent.ACTION_INSERT);
         }
         // launch activity
         startActivity(intent);
-    }
-
-    /**
-     * Start loader into fragment
-     */
-    public void startLoaderData() {
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getArguments(), this);
     }
 
     /**
@@ -624,7 +606,7 @@ public class AllDataFragment extends BaseListFragment
 
         if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
             ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-            startLoaderData();
+            loadData();
         }
     }
 
@@ -744,7 +726,7 @@ public class AllDataFragment extends BaseListFragment
                         String status = item.getShortcut();
                         if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
                             ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-                            startLoaderData();
+                            loadData();
                         }
                 }
                 dialog.dismiss();
@@ -769,4 +751,11 @@ public class AllDataFragment extends BaseListFragment
     }
 
     // end multi-choice-mode listener callback handlers.
+
+    private void exportToQif(){
+        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+        QifExport qif = new QifExport(getActivity());
+        qif.export(adapter);
+    }
+
 }

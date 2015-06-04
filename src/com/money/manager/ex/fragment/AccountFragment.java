@@ -18,6 +18,7 @@
 package com.money.manager.ex.fragment;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +36,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,18 +48,23 @@ import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.inapp.util.SpinnerValues;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
- * Checking account fragment. Includes list of transactions, etc.
+ * Checking account fragment.
+ * Shows the list of transactions, etc.
  * @author a.lazzari
  */
 public class AccountFragment
@@ -63,41 +73,44 @@ public class AccountFragment
 
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
+
+    private final String LOGCAT = this.getClass().getSimpleName();
+
     // all data fragment
     AllDataFragment mAllDataFragment;
     // id account
     private Integer mAccountId = null;
     // string name fragment
-    private String mNameFragment;
+    private String mFragmentName;
     // account balance
-    private double mAccountBalance = 0;
-    private double mAccountReconciled = 0;
+    private double mAccountBalance = 0, mAccountReconciled = 0;
     // Dataset: accountlist e alldata
     private TableAccountList mAccountList;
-    // view into layout
+    // Controls
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
     // name account
     private String mAccountName;
-    // setting for shown open database item menu
-    private boolean mShownOpenDatabaseItemMenu = false;
+    // Filtering
+    private SpinnerValues mAccountSpinnerValues;
 
     /**
-     * @param accountid ID Account to be display
+     * @param accountId Id of the Account to be displayed
      * @return
      */
-    public static AccountFragment newInstance(int accountid) {
+    public static AccountFragment newInstance(int accountId) {
         AccountFragment fragment = new AccountFragment();
-        fragment.mAccountId = accountid;
+        fragment.mAccountId = accountId;
+
         // set name of child fragment
-        fragment.setNameFragment(AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountid));
+        fragment.setFragmentName(AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
 
         return fragment;
     }
 
     @Override
     public void onCallbackCreateLoader(int id, Bundle args) {
-        return;
+//        return;
     }
 
     @Override
@@ -107,7 +120,7 @@ public class AccountFragment
 
     @Override
     public void onCallbackLoaderReset(Loader<Cursor> loader) {
-        return;
+//        return;
     }
 
     @Override
@@ -118,17 +131,7 @@ public class AccountFragment
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String selection = "";
-        switch (id) {
-            case ID_LOADER_SUMMARY:
-                selection = QueryAccountBills.ACCOUNTID + "=?";
-                return new CursorLoader(getActivity(), new QueryAccountBills(getActivity()).getUri(), null, selection,
-                        new String[]{Integer.toString(mAccountId)}, null);
-        }
-        return null;
-    }
+    // Menu
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -136,28 +139,35 @@ public class AccountFragment
 
         // call create option menu of fragment
         mAllDataFragment.onCreateOptionsMenu(menu, inflater);
+
+        // Accounts list dropdown in toolbar.
+        // Ref: http://stackoverflow.com/questions/11377760/adding-spinner-to-actionbar-not-navigation
+
+        // Add options available only in account transactions list(s).
+        inflater.inflate(R.menu.menu_account_transactions, menu);
+        initAccountsDropdown(menu);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+
         //force show add transaction
         MenuItem itemAddTransaction = menu.findItem(R.id.menu_add_transaction_account);
-        if (itemAddTransaction != null)
-            itemAddTransaction.setVisible(true);
+        if (itemAddTransaction != null) itemAddTransaction.setVisible(true);
         //manage dual panel
         if (getActivity() != null && getActivity() instanceof MainActivity) {
             MainActivity activity = (MainActivity) getActivity();
             if (!activity.isDualPanel()) {
                 //hide dropbox toolbar
                 MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
-                if (itemDropbox != null)
-                    itemDropbox.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                if (itemDropbox != null) itemDropbox.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
                 // hide menu open database
                 MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
                 if (itemOpenDatabase != null) {
                     //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
-                    itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible() ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+                    itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible()
+                            ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
                 }
 
                 //hide dash board
@@ -166,8 +176,89 @@ public class AccountFragment
                     itemDashboard.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
             }
         }
-
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean result;
+
+        switch (item.getItemId()) {
+            case R.id.menu_add_transaction_account:
+                startCheckingAccountActivity();
+                result = true;
+                break;
+            case R.id.menu_export_to_csv:
+                if (mAllDataFragment != null && mAccountList != null)
+                    mAllDataFragment.exportDataToCSVFile(mAccountList.getAccountName());
+                result = true;
+                break;
+            default:
+                result = false;
+                break;
+        }
+
+        if (result) {
+            return result;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void initAccountsDropdown(Menu menu) {
+        // Hide the toolbar title?
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // Load accounts into the list.
+        MenuItem item = menu.findItem(R.id.menuAccountSelector);
+        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+        loadAccountsToSpinner(getActivity(), spinner);
+        // select the current account
+        spinner.setSelection(mAccountSpinnerValues.getPositionOfValue(Integer.toString(mAccountId)));
+
+        // handle switching of accounts.
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // switch account.
+                String selectedAccountIdString = mAccountSpinnerValues.getValueAtPosition(i);
+                int accountId = Integer.parseInt(selectedAccountIdString);
+                if (accountId != mAccountId) {
+                    // switch account. Reload transactions.
+                    mAccountId = accountId;
+                    mAllDataFragment.AccountId = accountId;
+                    mAllDataFragment.loadData(prepareArgsForChildFragment());
+                }            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void loadAccountsToSpinner(Context context, Spinner spinner) {
+        if (spinner == null) return;
+
+        // load accounts with ids.
+        Core core = new Core(context.getApplicationContext());
+        AccountRepository repo = new AccountRepository(context);
+        List<TableAccountList> accounts = repo.getTransactionAccounts(core.getAccountsOpenVisible(),
+                core.getAccountFavoriteVisible());
+        mAccountSpinnerValues = new SpinnerValues();
+        for(TableAccountList account : accounts) {
+            mAccountSpinnerValues.add(Integer.toString(account.getAccountId()), account.getAccountName());
+        }
+
+        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(context,
+                android.R.layout.simple_spinner_item,
+                mAccountSpinnerValues.getTextsArray());
+        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(accountAdapter);
+    }
+
+    // End menu.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -223,18 +314,7 @@ public class AccountFragment
         });
 
         // Transactions
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        mAllDataFragment = AllDataFragment.newInstance(mAccountId);
-        // set arguments and settings of fragment
-        mAllDataFragment.setArguments(prepareArgsForChildFragment());
-        mAllDataFragment.setListHeader(header);
-        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
-        mAllDataFragment.setAutoStarLoader(false);
-        mAllDataFragment.setContextMenuGroupId(mAccountId);
-        mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
-        // add fragment
-        transaction.replace(R.id.fragmentContent, mAllDataFragment, getNameFragment());
-        transaction.commit();
+        showTransactionsFragment(header);
 
         // refresh user interface
         if (mAccountList != null) {
@@ -247,9 +327,52 @@ public class AccountFragment
         return view;
     }
 
+    private void showTransactionsFragment(ViewGroup header) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+        mAllDataFragment = AllDataFragment.newInstance(mAccountId);
+
+        // set arguments and settings of fragment
+        mAllDataFragment.setArguments(prepareArgsForChildFragment());
+        if (header != null) mAllDataFragment.setListHeader(header);
+        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
+        mAllDataFragment.setAutoStarLoader(false);
+        mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
+
+        // add fragment
+        transaction.replace(R.id.fragmentContent, mAllDataFragment, getFragmentName());
+        transaction.commit();
+    }
+
+    // Loader events.
+
+    /**
+     * Start Loader to retrieve data
+     */
+    public void loadTransactions() {
+        if (mAllDataFragment != null) {
+            mAllDataFragment.loadData();
+        }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case ID_LOADER_SUMMARY:
+                return new CursorLoader(getActivity(),
+                        new QueryAccountBills(getActivity()).getUri(),
+                        null,
+                        QueryAccountBills.ACCOUNTID + "=?",
+                        new String[] { Integer.toString(mAccountId) },
+                        null);
+        }
+        return null;
+    }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        return;
+//        return;
     }
 
     @Override
@@ -265,45 +388,33 @@ public class AccountFragment
                 }
                 // show balance values
                 setTextViewBalance();
-                // set titles
-                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-                if (activity != null) {
-                    activity.getSupportActionBar().setSubtitle(mAccountName);
-                }
+
                 break;
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_add_transaction_account) {
-            startCheckingAccountActivity();
-            return true;
-        } else if (item.getItemId() == R.id.menu_export_to_csv) {
-            if (mAllDataFragment != null && mAccountList != null)
-                mAllDataFragment.exportDataToCSVFile(mAccountList.getAccountName());
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    // end loader events
 
     @Override
     public void onResume() {
         super.onResume();
         // restart loader
-        startLoaderData();
-        // set subtitle account name
-        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-        if (activity != null) {
-            activity.getSupportActionBar().setSubtitle(mAccountName);
-        }
+        loadTransactions();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mAccountId != null)
+        if (mAccountId != null) {
             outState.putInt(KEY_CONTENT, mAccountId);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+//        resetToolbar();
     }
 
     private Bundle prepareArgsForChildFragment() {
@@ -385,34 +496,11 @@ public class AccountFragment
         startActivity(intent);
     }
 
-    /**
-     * Start Loader to retrive data
-     */
-    public void startLoaderData() {
-        if (mAllDataFragment != null) {
-            mAllDataFragment.startLoaderData();
-        }
+    public String getFragmentName() {
+        return mFragmentName;
     }
 
-    /**
-     * @return the mShownOpenDatabaseItemMenu
-     */
-    public boolean isShownOpenDatabaseItemMenu() {
-        return mShownOpenDatabaseItemMenu;
-    }
-
-    /**
-     * @param mShownOpenDatabaseItemMenu the mShownOpenDatabaseItemMenu to set
-     */
-    public void setShownOpenDatabaseItemMenu(boolean mShownOpenDatabaseItemMenu) {
-        this.mShownOpenDatabaseItemMenu = mShownOpenDatabaseItemMenu;
-    }
-
-    public String getNameFragment() {
-        return mNameFragment;
-    }
-
-    public void setNameFragment(String mNameFragment) {
-        this.mNameFragment = mNameFragment;
+    public void setFragmentName(String mFragmentName) {
+        this.mFragmentName = mFragmentName;
     }
 }

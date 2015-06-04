@@ -71,6 +71,7 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.fragment.DashboardFragment;
 import com.money.manager.ex.fragment.HomeFragment;
+import com.money.manager.ex.interfaces.IToolbarSubtitleCallbacks;
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
 import com.money.manager.ex.investment.WatchlistFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
@@ -89,7 +90,6 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 
 import java.io.File;
 import java.net.URLDecoder;
-import java.util.List;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -134,6 +134,7 @@ public class MainActivity
     private TextView mDrawerTextViewRepeating;
     // state dual panel
     private boolean mIsDualPanel = false;
+
 
     /**
      * @return the mRestart
@@ -322,12 +323,10 @@ public class MainActivity
             tagFragment = "Empty";
         }
 
-        // transaction
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        // animation
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
         // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack
+        // and add the transaction to the back stack.
         if (isDualPanel()) {
             transaction.replace(R.id.fragmentDetail, fragment, tagFragment);
         } else {
@@ -339,19 +338,16 @@ public class MainActivity
     }
 
     /**
-     * show a fragment select with account id
-     *
-     * @param accountId account id of the fragment to be loaded
+     * Shows a fragment with the selected account (id) and transactions.
+     * Called from Home Fragment when an account is clicked in the main list.
+     * @param accountId id of the account for which to show the transactions
      */
     public void showAccountFragment(int accountId) {
         String tagFragment = AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
-        AccountFragment fragment;
-        fragment = (AccountFragment) getSupportFragmentManager().findFragmentByTag(tagFragment);
+        AccountFragment fragment = (AccountFragment) getSupportFragmentManager().findFragmentByTag(tagFragment);
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             fragment = AccountFragment.newInstance(accountId);
         }
-        // set if shown open menu
-        fragment.setShownOpenDatabaseItemMenu(isDualPanel());
         // show fragment
         showFragment(fragment, tagFragment);
     }
@@ -363,8 +359,6 @@ public class MainActivity
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             fragment = WatchlistFragment.newInstance(accountId);
         }
-        // set if shown open menu
-//        fragment.setShownOpenDatabaseItemMenu(isDualPanel());
         // show fragment
         showFragment(fragment, tagFragment);
     }
@@ -448,7 +442,6 @@ public class MainActivity
 
     public void onClickCardViewIncomesVsExpenses(View v) {
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-        return;
     }
 
     @Override
@@ -519,6 +512,8 @@ public class MainActivity
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
         showSnackbarDropbox();
+
+
     }
 
     @Override
@@ -679,6 +674,8 @@ public class MainActivity
         setRestartActivity(true);
     }
 
+    // Menu
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // quick-fix convert 'switch' to 'if-else'
@@ -694,6 +691,8 @@ public class MainActivity
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // End Menu.
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -714,7 +713,7 @@ public class MainActivity
             Fragment fragment = getSupportFragmentManager().findFragmentById(getResIdLayoutContent());
             if (fragment != null) {
                 if (fragment instanceof AccountFragment) {
-                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountFragment) fragment).getNameFragment());
+                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountFragment) fragment).getFragmentName());
                 } else if ((!(fragment instanceof DashboardFragment)) && (!(fragment instanceof HomeFragment))) {
                     outState.putString(KEY_CLASS_FRAGMENT_CONTENT, fragment.getClass().getName());
                 }
