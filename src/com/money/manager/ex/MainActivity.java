@@ -979,11 +979,8 @@ public class MainActivity
      */
     @Override
     public void onSetToolbarSubtitleRequested(String subTitle) {
-        // todo: show the subtitle in the toolbar
-//        getSupportActionBar().setSubtitle(subTitle);
-
-        // select in the account spinner.
-//        showSelectedAccount(subTitle);
+        // show the subtitle in the toolbar (?)
+        getSupportActionBar().setSubtitle(subTitle);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

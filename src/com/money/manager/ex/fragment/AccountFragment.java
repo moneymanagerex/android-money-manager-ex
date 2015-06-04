@@ -29,7 +29,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,7 +48,6 @@ import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.checkingaccount.AccountTransactionsFilter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -73,8 +71,6 @@ public class AccountFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataFragmentLoaderCallbacks {
 
-    public static final String ACCOUNT_SPINNER_TAG = "AccountFragment::AccountSpinner";
-
     private static final String KEY_CONTENT = "AccountFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
 
@@ -96,7 +92,6 @@ public class AccountFragment
     // name account
     private String mAccountName;
     // Filtering
-    private AccountTransactionsFilter mFilter;
     private SpinnerValues mAccountSpinnerValues;
 
     /**
@@ -106,9 +101,6 @@ public class AccountFragment
     public static AccountFragment newInstance(int accountId) {
         AccountFragment fragment = new AccountFragment();
         fragment.mAccountId = accountId;
-
-        fragment.mFilter = new AccountTransactionsFilter();
-        fragment.mFilter.setAccountId(accountId);
 
         // set name of child fragment
         fragment.setFragmentName(AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
@@ -368,16 +360,11 @@ public class AccountFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case ID_LOADER_SUMMARY:
-                mFilter.setAccountId(mAccountId);
-                // create account filter based on the settings and manually selected options.
-                String selection = mFilter.getSelection();
-                String[] arguments = mFilter.getSelectionArguments();
-
                 return new CursorLoader(getActivity(),
                         new QueryAccountBills(getActivity()).getUri(),
                         null,
-                        selection,
-                        arguments,
+                        QueryAccountBills.ACCOUNTID + "=?",
+                        new String[] { Integer.toString(mAccountId) },
                         null);
         }
         return null;
