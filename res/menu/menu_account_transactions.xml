@@ -20,15 +20,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-  <item
-      android:id="@+id/menu_select_account"
-      android:icon="@android:drawable/ic_menu_agenda"
-      android:title="@string/select_account"
-      app:showAsAction="ifRoom"/>
-
-    <!--<Spinner-->
-        <!--android:id="@+id/spinner_account"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
+    <item
+        android:id="@+id/menuAccountSelector"
+        app:showAsAction="always"
+        android:actionViewClass="android.widget.Spinner"
+        android:title="@string/select_account" />
 
 </menu>
