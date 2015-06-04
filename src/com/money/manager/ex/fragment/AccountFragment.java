@@ -29,6 +29,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -116,6 +118,7 @@ public class AccountFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mAccountId = savedInstanceState.getInt(KEY_CONTENT);
         }
@@ -127,15 +130,17 @@ public class AccountFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        // call create option menu of fragment
-        mAllDataFragment.onCreateOptionsMenu(menu, inflater);
-
         // Accounts list dropdown in toolbar.
         // Ref: http://stackoverflow.com/questions/11377760/adding-spinner-to-actionbar-not-navigation
-
         // Add options available only in account transactions list(s).
         inflater.inflate(R.menu.menu_account_transactions, menu);
         initAccountsDropdown(menu);
+
+        // add the date picker.
+        // todo: inflater.inflate(R.menu.menu_period_picker, menu);
+
+        // call create option menu of fragment
+        mAllDataFragment.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -206,8 +211,12 @@ public class AccountFragment
 
     private void initAccountsDropdown(Menu menu) {
         // Hide the toolbar title?
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        AppCompatActivity toolbarActivity = (AppCompatActivity) getActivity();
+//        ActionBar actionBar = toolbarActivity.getSupportActionBar();
+//        toolbarActivity.setSupportActionBar(toolbar);
+//        actionBar.setDisplayShowTitleEnabled(false);
+//        actionBar.setDisplayUseLogoEnabled(true);
+
 
         // Load accounts into the list.
         Spinner spinner = getAccountsSpinner(menu);
@@ -366,24 +375,6 @@ public class AccountFragment
         return view;
     }
 
-    private void showTransactionsFragment(ViewGroup header) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-        mAllDataFragment = AllDataFragment.newInstance(mAccountId);
-
-        // set arguments and settings of fragment
-        mAllDataFragment.setArguments(prepareArgsForChildFragment());
-        if (header != null) mAllDataFragment.setListHeader(header);
-        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
-        mAllDataFragment.setAutoStarLoader(false);
-        mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
-
-        // add fragment
-        transaction.replace(R.id.fragmentContent, mAllDataFragment, getFragmentName());
-        transaction.commit();
-    }
-
     // Loader events.
 
     /**
@@ -391,7 +382,8 @@ public class AccountFragment
      */
     public void loadTransactions() {
         if (mAllDataFragment != null) {
-            mAllDataFragment.loadData();
+            Bundle arguments = prepareArgsForChildFragment();
+            mAllDataFragment.loadData(arguments);
         }
     }
 
@@ -542,4 +534,23 @@ public class AccountFragment
     public void setFragmentName(String mFragmentName) {
         this.mFragmentName = mFragmentName;
     }
+
+    private void showTransactionsFragment(ViewGroup header) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+        mAllDataFragment = AllDataFragment.newInstance(mAccountId);
+
+        // set arguments and settings of fragment
+        mAllDataFragment.setArguments(prepareArgsForChildFragment());
+        if (header != null) mAllDataFragment.setListHeader(header);
+        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
+        mAllDataFragment.setAutoStarLoader(false);
+        mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
+
+        // add fragment
+        transaction.replace(R.id.fragmentContent, mAllDataFragment, getFragmentName());
+        transaction.commit();
+    }
+
 }
