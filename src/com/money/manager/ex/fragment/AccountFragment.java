@@ -88,8 +88,6 @@ public class AccountFragment
     // Controls
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
-    // name account
-//    private String mAccountName;
 
     /**
      * @param accountId Id of the Account to be displayed
