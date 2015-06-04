@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_period"
+        android:icon="?attr/ic_action_calendar_day"
+        android:title="@string/time_frame"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_custom_dates"
+                    android:title="@string/custom_dates"/>
+                <item
+                    android:id="@+id/menu_current_month"
+                    android:title="@string/current_month"/>
+                <item
+                    android:id="@+id/menu_last_month"
+                    android:title="@string/last_month"/>
+                <item
+                    android:id="@+id/menu_last_30_days"
+                    android:title="@string/last30days"/>
+                <item
+                    android:id="@+id/menu_current_year"
+                    android:title="@string/current_year"/>
+                <item
+                    android:id="@+id/menu_last_year"
+                    android:title="@string/last_year"/>
+                <item
+                    android:id="@+id/menu_all_time"
+                    android:title="@string/all_time"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>

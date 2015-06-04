@@ -95,6 +95,7 @@ public abstract class BaseReportFragment extends BaseListFragment implements Loa
         super.onCreateOptionsMenu(menu, inflater);
         //inflate menu
         inflater.inflate(R.menu.menu_report, menu);
+        inflater.inflate(R.menu.menu_period_picker, menu);
         //checked item
         MenuItem item = menu.findItem(mItemSelected);
         if (item != null) {
