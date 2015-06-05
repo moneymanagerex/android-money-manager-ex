@@ -53,6 +53,7 @@ import com.money.manager.ex.checkingaccount.IntentDataParameters;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
 import com.money.manager.ex.checkingaccount.YesNoDialogListener;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -163,88 +164,6 @@ public class CheckingAccountActivity
     private EditTransactionCommonFunctions mCommonFunctions;
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_PICK_PAYEE:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
-                    mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
-                    // select last category used from payee
-                    if (!mCommonFunctions.chbSplitTransaction.isCheck()) {
-                        if (getCategoryFromPayee(mPayeeId)) {
-                            refreshCategoryName(); // refresh UI
-                        }
-                    }
-                    // refresh UI
-                    refreshPayeeName();
-                }
-                break;
-            case REQUEST_PICK_ACCOUNT:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCommonFunctions.mToAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
-                    mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
-                }
-                break;
-            case REQUEST_PICK_CATEGORY:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
-                    mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
-                    mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
-                    mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
-                    // refresh UI category
-                    refreshCategoryName();
-                }
-                break;
-            case REQUEST_PICK_SPLIT_TRANSACTION:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
-                    if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
-                        double totAmount = 0;
-                        for (int i = 0; i < mSplitTransactions.size(); i++) {
-                            totAmount += mSplitTransactions.get(i).getSplitTransAmount();
-                        }
-                        mCommonFunctions.formatAmount(mCommonFunctions.txtTotAmount, totAmount,
-                                !mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer)
-                                        ? mCommonFunctions.mAccountId
-                                        : mCommonFunctions.mToAccountId);
-                    }
-                    // deleted item
-                    if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
-                        mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
-                    }
-                }
-                break;
-        }
-    }
-
-    /**
-     * After the user accepts, remove any split categories.
-     */
-    private void removeAllSplitCategories() {
-        if(mSplitTransactions == null) return;
-
-        for(int i = 0; i < mSplitTransactions.size(); i++) {
-            TableSplitTransactions split = mSplitTransactions.get(i);
-            int id = split.getSplitTransId();
-            ArrayList<TableSplitTransactions> deletedSplits = getDeletedSplitCategories();
-
-            if(id == -1) {
-                // Remove any newly created splits.
-                // transaction id == -1
-                mSplitTransactions.remove(i);
-                i--;
-            } else {
-                // Delete any splits already in the database.
-                // transaction id != -1
-                // avoid adding duplicate records.
-                if(!deletedSplits.contains(split)) {
-                    deletedSplits.add(split);
-                }
-            }
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -321,6 +240,9 @@ public class CheckingAccountActivity
                         .parse(mDate));
             } catch (ParseException e) {
                 Log.e(LOGCAT, e.getMessage());
+            } catch (Exception e) {
+                ExceptionHandler handler = new ExceptionHandler(this, this);
+                handler.handle(e, "Error parsing the date.");
             }
         } else {
             txtSelectDate.setTag(Calendar.getInstance().getTime());
@@ -448,7 +370,7 @@ public class CheckingAccountActivity
 
         mCommonFunctions.formatAmount(mCommonFunctions.txtTotAmount, mTotAmount,
                 !mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer)
-                ? mCommonFunctions.mAccountId : mCommonFunctions.mToAccountId);
+                        ? mCommonFunctions.mAccountId : mCommonFunctions.mToAccountId);
 
         mCommonFunctions.txtTotAmount.setOnClickListener(onClickAmount);
 
@@ -497,6 +419,88 @@ public class CheckingAccountActivity
         refreshAfterTransactionCodeChange();
         refreshPayeeName();
         refreshCategoryName();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_PICK_PAYEE:
+                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                    mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
+                    mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
+                    // select last category used from payee
+                    if (!mCommonFunctions.chbSplitTransaction.isCheck()) {
+                        if (getCategoryFromPayee(mPayeeId)) {
+                            refreshCategoryName(); // refresh UI
+                        }
+                    }
+                    // refresh UI
+                    refreshPayeeName();
+                }
+                break;
+            case REQUEST_PICK_ACCOUNT:
+                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                    mCommonFunctions.mToAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
+                    mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
+                }
+                break;
+            case REQUEST_PICK_CATEGORY:
+                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                    mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
+                    mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
+                    mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
+                    mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
+                    // refresh UI category
+                    refreshCategoryName();
+                }
+                break;
+            case REQUEST_PICK_SPLIT_TRANSACTION:
+                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                    mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                    if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
+                        double totAmount = 0;
+                        for (int i = 0; i < mSplitTransactions.size(); i++) {
+                            totAmount += mSplitTransactions.get(i).getSplitTransAmount();
+                        }
+                        mCommonFunctions.formatAmount(mCommonFunctions.txtTotAmount, totAmount,
+                                !mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer)
+                                        ? mCommonFunctions.mAccountId
+                                        : mCommonFunctions.mToAccountId);
+                    }
+                    // deleted item
+                    if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
+                        mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                    }
+                }
+                break;
+        }
+    }
+
+    /**
+     * After the user accepts, remove any split categories.
+     */
+    private void removeAllSplitCategories() {
+        if(mSplitTransactions == null) return;
+
+        for(int i = 0; i < mSplitTransactions.size(); i++) {
+            TableSplitTransactions split = mSplitTransactions.get(i);
+            int id = split.getSplitTransId();
+            ArrayList<TableSplitTransactions> deletedSplits = getDeletedSplitCategories();
+
+            if(id == -1) {
+                // Remove any newly created splits.
+                // transaction id == -1
+                mSplitTransactions.remove(i);
+                i--;
+            } else {
+                // Delete any splits already in the database.
+                // transaction id != -1
+                // avoid adding duplicate records.
+                if(!deletedSplits.contains(split)) {
+                    deletedSplits.add(split);
+                }
+            }
+        }
     }
 
     private void retrieveValuesFromSavedInstanceState(Bundle savedInstanceState) {
