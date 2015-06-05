@@ -249,6 +249,9 @@ public class AllDataFragment extends BaseListFragment
     }
 
     public void loadData(Bundle arguments) {
+        // set the current arguments / account id
+        setLatestArguments(arguments);
+        // reload data with the latest arguments.
         getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, arguments, this);
     }
 
