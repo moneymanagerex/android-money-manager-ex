@@ -183,16 +183,17 @@ public class MoneyManagerApplication
      */
     public String getFromDatabaseUserName(Context context) {
         TableInfoTable infoTable = new TableInfoTable();
+        // todo: getContentResolver().query()
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
         Cursor data = helper.getReadableDatabase().query(infoTable.getSource(), null,
                 TableInfoTable.INFONAME + "=?", new String[]{"USERNAME"}, null, null, null);
+        if (data == null) return Constants.EMPTY_STRING;
+
         String ret = "";
-        if (data != null && data.moveToFirst()) {
+        if (data.moveToFirst()) {
             ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
         }
-        if (data != null) {
-            data.close();
-        }
+        data.close();
         //helper.close();
 
         return ret;
