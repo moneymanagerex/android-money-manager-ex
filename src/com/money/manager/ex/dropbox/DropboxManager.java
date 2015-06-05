@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.core;
+package com.money.manager.ex.dropbox;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -30,6 +30,8 @@ import android.widget.Toast;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 
@@ -55,7 +57,16 @@ public class DropboxManager {
 
         // Make sure that the current database is also the one linked to Dropbox.
         String currentDatabasePath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
+        if (TextUtils.isEmpty(currentDatabasePath)) {
+            return;
+        }
+
         String dropboxFile = mDropboxHelper.getLinkedRemoteFile();
+        if (TextUtils.isEmpty(dropboxFile)) {
+            Toast.makeText(mContext, R.string.dropbox_select_file, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // easy comparison
         if (!currentDatabasePath.contains(dropboxFile)) {
             // The current file was probably opened through Open Database.
