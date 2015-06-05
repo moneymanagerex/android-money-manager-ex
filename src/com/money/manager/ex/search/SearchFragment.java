@@ -284,24 +284,22 @@ public class SearchFragment extends Fragment
             // Category. Also check the splits.
 //            where.Clause.add(QueryAllData.CategID + "=?");
             where.Clause.add("(" +
-                    "(" + QueryAllData.CategID + "=?" + ") " +
+                    "(" + QueryAllData.CategID + "=" + Integer.toString(categorySub.categId) + ") " +
                     " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
                         " FROM " + TableSplitTransactions.TABLE_NAME +
                         " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + "))" +
                     ")");
-            where.Params.add(Integer.toString(categorySub.categId));
 
             // subcategory
             if (categorySub.subCategId != -1) {
                 // Subcategory. Also check the splits.
 //                where.Clause.add(QueryAllData.SubcategID + "=?");
                 where.Clause.add("(" +
-                        QueryAllData.SubcategID + "=?" +
+                        "(" + QueryAllData.SubcategID + "=" + Integer.toString(categorySub.subCategId) + ") " +
                             " OR " + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
                                 " FROM " + TableSplitTransactions.TABLE_NAME +
                                 " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + ")" +
                         ")");
-                where.Params.add(Integer.toString(categorySub.subCategId));
             }
         }
         // from amount: Trans Amount <= parameter

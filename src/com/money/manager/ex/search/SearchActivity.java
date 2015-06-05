@@ -17,17 +17,14 @@
  */
 package com.money.manager.ex.search;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.fragment.AllDataFragment;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.IAllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.fragment.IInputAmountDialogListener;
 
 public class SearchActivity
@@ -64,21 +61,12 @@ public class SearchActivity
         setToolbarStandardAction(getToolbar(), R.id.action_cancel, R.id.action_search);
     }
 
-    // IAllDataFragmentLoaderCallbacks
-//    @Override
-//    public void onCallbackCreateLoader(int id, Bundle args) {	}
-//
-//	@Override
-//	public void onCallbackLoaderFinished(Loader<Cursor> loader, final Cursor data) { }
-//
-//	@Override
-//	public void onCallbackLoaderReset(Loader<Cursor> loader) {	}
-	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		AllDataFragment fragment;
-		fragment = (AllDataFragment)getSupportFragmentManager().findFragmentByTag(AllDataFragment.class.getSimpleName());
+		fragment = (AllDataFragment)getSupportFragmentManager()
+                .findFragmentByTag(AllDataFragment.class.getSimpleName());
 		if (fragment != null && fragment.isVisible()) {
 			fragment.loadData();
 		}
@@ -86,7 +74,8 @@ public class SearchActivity
 
 	@Override
 	public void onFinishedInputAmountDialog(int id, Double amount) {
-		SearchFragment fragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
+		SearchFragment fragment = (SearchFragment)getSupportFragmentManager()
+                .findFragmentByTag(SearchFragment.class.getSimpleName());
 		if (fragment != null) fragment.onFinishedInputAmountDialog(id, amount);
 	}
 
@@ -103,9 +92,12 @@ public class SearchActivity
             ((SearchFragment) fragment).executeSearch();
         } else {
             if (!mIsDualPanel) {
-                SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
+                SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
+                        .findFragmentByTag(SearchFragment.class.getSimpleName());
                 if (searchFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName()).commit();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
+                            .commit();
                 }
             }
         }
