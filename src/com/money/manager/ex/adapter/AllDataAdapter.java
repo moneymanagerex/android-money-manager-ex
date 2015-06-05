@@ -75,7 +75,7 @@ public class AllDataAdapter
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
     // database for balance account
-    private SQLiteDatabase mDatabase;
+//    private SQLiteDatabase mDatabase;
     // core and context
     private Context mContext;
     private final String LOGCAT = this.getClass().getSimpleName();
@@ -209,7 +209,7 @@ public class AllDataAdapter
 
         // balance account or days left
         if (mTypeCursor == TypeCursor.ALLDATA) {
-            if (isShowBalanceAmount() && getDatabase() != null) {
+            if (isShowBalanceAmount()) {
                 // create thread for calculate balance amount
                 calculateBalanceAmount(cursor, holder);
             } else {
@@ -360,24 +360,18 @@ public class AllDataAdapter
         this.mShowAccountName = showAccountName;
     }
 
-    /**
-     * @return the mDatabase
-     */
-    public SQLiteDatabase getDatabase() {
-        if (mDatabase == null) {
-            mDatabase = MoneyManagerOpenHelper.getInstance(mContext.getApplicationContext())
-                    .getReadableDatabase();
-        }
+//    public SQLiteDatabase getDatabase() {
+//        if (mDatabase == null) {
+//            mDatabase = MoneyManagerOpenHelper.getInstance(mContext.getApplicationContext())
+//                    .getReadableDatabase();
+//        }
+//
+//        return mDatabase;
+//    }
 
-        return mDatabase;
-    }
-
-    /**
-     * @param mDatabase the mDatabase to set
-     */
-    public void setDatabase(SQLiteDatabase mDatabase) {
-        this.mDatabase = mDatabase;
-    }
+//    public void setDatabase(SQLiteDatabase mDatabase) {
+//        this.mDatabase = mDatabase;
+//    }
 
     /**
      * @return the mShowBalanceAmount
