@@ -19,7 +19,6 @@ package com.money.manager.ex.fragment;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -58,7 +57,6 @@ import com.money.manager.ex.adapter.DrawerMenuItem;
 import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExportToCsvFile;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TableSplitTransactions;
@@ -249,6 +247,12 @@ public class AllDataFragment extends BaseListFragment
     }
 
     public void loadData(Bundle arguments) {
+        // set the account id in the data adapter
+        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+        if (adapter != null) {
+            adapter.setAccountId(this.AccountId);
+        }
+
         // set the current arguments / account id
         setLatestArguments(arguments);
         // reload data with the latest arguments.

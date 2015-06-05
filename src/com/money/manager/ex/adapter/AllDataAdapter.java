@@ -53,6 +53,9 @@ import java.util.Locale;
 @SuppressLint("UseSparseArrays")
 public class AllDataAdapter
         extends CursorAdapter {
+
+    private final String LOGCAT = this.getClass().getSimpleName();
+
     // type cursor
     private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
 
@@ -75,7 +78,6 @@ public class AllDataAdapter
 //    private SQLiteDatabase mDatabase;
     // core and context
     private Context mContext;
-    private final String LOGCAT = this.getClass().getSimpleName();
 
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
         super(context, c, -1);
@@ -229,7 +231,6 @@ public class AllDataAdapter
         if (isTransfer) {
             // write ToAccountName instead of payee on transfers.
             String accountName;
-            int cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
 
             if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
                 // Recurring transactions list.
@@ -244,6 +245,7 @@ public class AllDataAdapter
                 } else {
                     // Standard checking account. See whether the other account is the source
                     // or the destination of the transfer.
+                    int cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
                     if (mAccountId != cursorAccountId) {
                         // This is in account transactions list where we display transfers to and from.
                         accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
