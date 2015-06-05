@@ -102,6 +102,7 @@ public class AllDataFragment extends BaseListFragment
     private View mListHeader = null;
 
     private IAllDataFragmentCallbacks mCallbacks;
+    private Bundle mArguments;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -244,7 +245,7 @@ public class AllDataFragment extends BaseListFragment
      * Start loader into fragment
      */
     public void loadData() {
-        loadData(getArguments());
+        loadData(getLatestArguments());
     }
 
     public void loadData(Bundle arguments) {
@@ -765,4 +766,21 @@ public class AllDataFragment extends BaseListFragment
         return result;
     }
 
+    /**
+     * Returns the latest-set arguments. This is because the original arguments, when the
+     * fragment was created, can not be altered.
+     * But, when an account changes, we need to modify them. The new arguments are passed
+     * through the call to loadData().
+     * @return
+     */
+    private Bundle getLatestArguments() {
+        if (mArguments == null) {
+            mArguments = getArguments();
+        }
+        return mArguments;
+    }
+
+    private void setLatestArguments(Bundle arguments) {
+        mArguments = arguments;
+    }
 }
