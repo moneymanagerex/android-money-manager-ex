@@ -54,8 +54,11 @@ public class BalanceAmountTask
                 "' AND " + TableCheckingAccount.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
                 "AND " + TableCheckingAccount.STATUS + "<>'V'";
 
-        Cursor cursor = getDatabase().query(checkingAccount.getSource(),
-                checkingAccount.getAllColumns(), selection, null, null, null, null);
+//        Cursor cursor = getDatabase().query(checkingAccount.getSource(),
+//                checkingAccount.getAllColumns(), selection, null, null, null, null);
+        // Use content provider instead of direct database access.
+        Cursor cursor = mContext.getContentResolver().query(checkingAccount.getUri(),
+                checkingAccount.getAllColumns(), selection, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -81,10 +84,18 @@ public class BalanceAmountTask
         }
         // calculate initial bal
         TableAccountList accountList = new TableAccountList();
-        cursor = getDatabase().query(accountList.getSource(), accountList.getAllColumns(),
+
+//        cursor = getDatabase().query(accountList.getSource(), accountList.getAllColumns(),
+//                TableAccountList.ACCOUNTID + "=?",
+//                new String[] { Integer.toString(getAccountId()) },
+//                null, null, null);
+
+        cursor = mContext.getContentResolver().query(accountList.getUri(),
+                accountList.getAllColumns(),
                 TableAccountList.ACCOUNTID + "=?",
                 new String[] { Integer.toString(getAccountId()) },
-                null, null, null);
+                null);
+
         if (cursor != null && cursor.moveToFirst()) {
             total += cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
         }
@@ -177,24 +188,18 @@ public class BalanceAmountTask
         this.mTransId = mTransId;
     }
 
-    /**
-     * @return the mDatabase
-     */
-    public SQLiteDatabase getDatabase() {
-        if (mDatabase == null || !mDatabase.isOpen()) {
-            mDatabase = MoneyManagerOpenHelper.getInstance(mContext.getApplicationContext())
-                    .getReadableDatabase();
-        }
+//    public SQLiteDatabase getDatabase() {
+//        if (mDatabase == null || !mDatabase.isOpen()) {
+//            mDatabase = MoneyManagerOpenHelper.getInstance(mContext.getApplicationContext())
+//                    .getReadableDatabase();
+//        }
+//
+//        return mDatabase;
+//    }
 
-        return mDatabase;
-    }
-
-    /**
-     * @param mDatabase the mDatabase to set
-     */
-    public void setDatabase(SQLiteDatabase mDatabase) {
-        this.mDatabase = mDatabase;
-    }
+//    public void setDatabase(SQLiteDatabase mDatabase) {
+//        this.mDatabase = mDatabase;
+//    }
 
     public int getCurrencyId() {
         return mCurrencyId;
