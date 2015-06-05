@@ -178,14 +178,6 @@ public class AllDataFragment extends BaseListFragment
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private int[] convertArrayListToArray(ArrayList<Integer> list) {
-        int[] result = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            result[i] = list.get(i);
-        }
-        return result;
-    }
-
     /**
      * Export data to CSV file
      */
@@ -639,6 +631,8 @@ public class AllDataFragment extends BaseListFragment
         }
     }
 
+    // Private area
+
     private void selectAllRecords() {
         ListAdapter listAdapter = getListAdapter();
         if (listAdapter != null && listAdapter instanceof AllDataAdapter) {
@@ -761,6 +755,14 @@ public class AllDataFragment extends BaseListFragment
         AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
         QifExport qif = new QifExport(getActivity());
         qif.export(adapter);
+    }
+
+    private int[] convertArrayListToArray(ArrayList<Integer> list) {
+        int[] result = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            result[i] = list.get(i);
+        }
+        return result;
     }
 
 }

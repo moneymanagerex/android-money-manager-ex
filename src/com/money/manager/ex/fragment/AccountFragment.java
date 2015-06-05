@@ -103,6 +103,15 @@ public class AccountFragment
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
+            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
+        }
+    }
+
     // IAllDataFragmentLoaderCallbacks
 
     @Override
@@ -121,15 +130,6 @@ public class AccountFragment
     }
 
     // End IAllDataFragmentLoaderCallbacks
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
-        }
-    }
 
     // Menu
 
