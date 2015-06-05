@@ -600,4 +600,5 @@
     <string name="balance_adjustment">Balance Adjustment</string>
     <string name="cash">Cash</string>
     <string name="select_account">Select account</string>
+    <string name="invalid_transaction_number">Invalid transaction number</string>
 </resources>

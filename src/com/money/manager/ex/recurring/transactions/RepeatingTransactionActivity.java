@@ -68,6 +68,9 @@ import com.money.manager.ex.fragment.IInputAmountDialogListener;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.utils.CurrencyUtils;
 
+import org.apache.commons.lang.math.NumberUtils;
+
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -476,11 +479,18 @@ public class RepeatingTransactionActivity
                         transNumber = "0";
                     }
                     if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
-                        edtTransNumber.setText(Integer.toString(Integer.parseInt(transNumber) + 1));
+                        // Use BigDecimal to allow for large numbers.
+                        BigDecimal transactionNumber = new BigDecimal(transNumber);
+//                        int transactionNumber = NumberUtils.toInt(transNumber);
+//                        if (transactionNumber == 0) {
+//                            Toast.makeText(RepeatingTransactionActivity.this,
+//                                    R.string.invalid_transaction_number, Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+                        edtTransNumber.setText(transactionNumber.add(BigDecimal.ONE).toString());
                     }
                     cursor.close();
                 }
-                //helper.close();
             }
         });
         // notes
