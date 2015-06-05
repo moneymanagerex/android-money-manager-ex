@@ -191,7 +191,7 @@ public class MoneyManagerProvider
         // find object from uri
         Object ret = getObjectFromUri(uri);
         // Instance of database
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext().getApplicationContext());
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
         int rowsUpdate = 0;
