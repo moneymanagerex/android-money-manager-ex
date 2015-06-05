@@ -72,8 +72,8 @@ android {
         applicationId "com.money.manager.ex"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 637
-        versionName '2.4.2'
+        versionCode 638
+        versionName '2.4.3'
         // 601 = 1.4.17, stable
         // 625 = 2.2.4, stable
     }
