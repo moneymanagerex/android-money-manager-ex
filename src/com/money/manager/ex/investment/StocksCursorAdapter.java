@@ -19,34 +19,17 @@ package com.money.manager.ex.investment;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockRepository;
-import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.database.TransactionStatus;
-import com.money.manager.ex.utils.CurrencyUtils;
 
-import org.w3c.dom.Text;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 /**
  *

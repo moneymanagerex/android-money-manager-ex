@@ -1,11 +1,12 @@
 package com.money.manager.ex.investment;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -72,15 +73,16 @@ public class StockHistoryRepository
 
         boolean recordExists = recordExists(symbol, date);
 
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-                .getWritableDatabase();
+//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+//                .getWritableDatabase();
         ContentValues values = getContentValues(symbol, price, date);
 
         // check whether to insert or update.
         if (!recordExists) {
-            long records = db.insert(getSource(), null, values);
+            Uri insert = mContext.getContentResolver().insert(getUri(), values);
+             long id = ContentUris.parseId(insert);
 
-            if (records >= 1) {
+            if (id > 0) {
                 // success
                 success = true;
             } else {
@@ -98,17 +100,22 @@ public class StockHistoryRepository
 
     public boolean recordExists(String symbol, Date date) {
         boolean result = false;
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-                .getReadableDatabase();
+//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+//                .getReadableDatabase();
 
         String isoDate = DateUtils.getSQLiteStringDate(mContext, date);
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
-        Cursor cursor = db.query(getSource(), null,
+//        Cursor cursor = db.query(getSource(), null,
+//                selection,
+//                new String[]{symbol, isoDate},
+//                null, null, null
+//        );
+        Cursor cursor = mContext.getContentResolver().query(getUri(),
+                null,
                 selection,
                 new String[]{symbol, isoDate},
-                null, null, null
-        );
+                null);
 
         if (cursor != null) {
             int records = cursor.getCount();
@@ -132,14 +139,17 @@ public class StockHistoryRepository
     public boolean updateHistory(String symbol, BigDecimal price, Date date) {
         boolean result = false;
 
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext).getWritableDatabase();
+//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext).getWritableDatabase();
 
         ContentValues values = getContentValues(symbol, price, date);
         String where = StockHistory.SYMBOL + "=?";
         where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
         String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
 
-        int records = db.update(getSource(),
+//        int records = db.update(getSource(),
+//                values,
+//                where, whereArgs);
+        int records = mContext.getContentResolver().update(getUri(),
                 values,
                 where, whereArgs);
 
@@ -175,20 +185,25 @@ public class StockHistoryRepository
     }
 
     private ContentValues getLatestPriceFor_Internal(String symbol) {
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-                .getReadableDatabase();
+//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+//                .getReadableDatabase();
 
         String selection = StockHistory.SYMBOL + "=?";
 
-        Cursor cursor = db.query(getSource(),
+//        Cursor cursor = db.query(getSource(),
+//                null,
+//                selection,
+//                new String[] { symbol },
+//                null, // group by
+//                null, // having
+//                // order by
+//                StockHistory.DATE + " DESC"
+//        );
+        Cursor cursor = mContext.getContentResolver().query(getUri(),
                 null,
                 selection,
-                new String[] { symbol },
-                null, // group by
-                null, // having
-                // order by
-                StockHistory.DATE + " DESC"
-        );
+                new String[]{symbol},
+                StockHistory.DATE + " DESC");
 
         ContentValues result = new ContentValues();
 
@@ -240,13 +255,12 @@ public class StockHistoryRepository
      * @return number of deleted records
      */
     public int deletePriceHistory() {
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-                .getWritableDatabase();
+//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+//                .getWritableDatabase();
 
-        int actionResult = db.delete(getSource(),
+        int actionResult = mContext.getContentResolver().delete(getUri(),
                 null,
-                null
-                );
+                null);
 
 //        db.close();
 

@@ -401,10 +401,16 @@ public class Core {
         TableSubCategory subCategory = new TableSubCategory();
         Cursor cursor;
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
-        SQLiteDatabase db = helper.getReadableDatabase();
+//        SQLiteDatabase db = helper.getReadableDatabase();
         // category
-        cursor = db.query(category.getSource(), null,
-                TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null, null, null);
+//        cursor = db.query(category.getSource(), null,
+//                TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null, null, null);
+        cursor = mContext.getContentResolver().query(category.getUri(),
+                null,
+                TableCategory.CATEGID + "=?",
+                new String[]{Integer.toString(categoryId)},
+                null);
+
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
             categoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
@@ -415,8 +421,13 @@ public class Core {
             cursor.close();
         }
         // sub-category
-        cursor = db.query(subCategory.getSource(), null,
-                TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null, null, null);
+//        cursor = db.query(subCategory.getSource(), null,
+//                TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null, null, null);
+        cursor = mContext.getContentResolver().query(subCategory.getUri(),
+                null,
+                TableSubCategory.SUBCATEGID + "=?",
+                new String[]{Integer.toString(subCategoryId)},
+                null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
             subCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));

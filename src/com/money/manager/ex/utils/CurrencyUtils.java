@@ -20,7 +20,6 @@ package com.money.manager.ex.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.StrictMode;
 import android.text.TextUtils;
@@ -306,21 +305,24 @@ public class CurrencyUtils {
     protected Boolean loadCurrencies() {
         Boolean ret = Boolean.TRUE;
         // ************************************************************
-        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+//        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
-        MoneyManagerOpenHelper helper;
-        SQLiteDatabase db = null;
+//        MoneyManagerOpenHelper helper;
+//        SQLiteDatabase db;
         Cursor cursor;
 
         try {
             // set table name
-            queryBuilder.setTables(tableCurrency.getSource());
-            helper = MoneyManagerOpenHelper.getInstance(mContext);
-            db = helper.getReadableDatabase();
+//            queryBuilder.setTables(tableCurrency.getSource());
+//            helper = MoneyManagerOpenHelper.getInstance(mContext);
+//            db = helper.getReadableDatabase();
 
-            cursor = queryBuilder.query(db,
+//            cursor = queryBuilder.query(db,
+//                    tableCurrency.getAllColumns(),
+//                    null, null, null, null, null);
+            cursor = mContext.getContentResolver().query(tableCurrency.getUri(),
                     tableCurrency.getAllColumns(),
-                    null, null, null, null, null);
+                    null, null, null);
 
             // load data into map
             if (cursor != null && cursor.moveToFirst()) {

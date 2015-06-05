@@ -18,13 +18,10 @@
 package com.money.manager.ex.database;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.caverock.androidsvg.IntegerParser;
 import com.money.manager.ex.core.AccountTypes;
 
 import java.util.ArrayList;
@@ -212,23 +209,25 @@ public class AccountRepository {
         // data cursor
         TableAccountList tAccountList = new TableAccountList();
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext.getApplicationContext());
-        SQLiteDatabase db = helper.getReadableDatabase();
-        if (db != null) {
-            Cursor cursor = db.query(tAccountList.getSource(), tAccountList.getAllColumns(),
-                    where, null, null, null,
-                    TableAccountList.ACCOUNTNAME);
-            // populate list from data cursor
-            if (cursor != null && cursor.moveToFirst()) {
-                while (!(cursor.isAfterLast())) {
-                    TableAccountList account = new TableAccountList();
-                    account.setValueFromCursor(cursor);
-                    listAccount.add(account);
-                    cursor.moveToNext();
-                }
-                cursor.close();
+//        SQLiteDatabase db = helper.getReadableDatabase();
+//        Cursor cursor = db.query(tAccountList.getSource(), tAccountList.getAllColumns(),
+//                where, null, null, null,
+//                TableAccountList.ACCOUNTNAME);
+        Cursor cursor = mContext.getContentResolver().query(tAccountList.getUri(),
+                tAccountList.getAllColumns(),
+                where, null,
+                TableAccountList.ACCOUNTNAME);
+        // populate list from data cursor
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                TableAccountList account = new TableAccountList();
+                account.setValueFromCursor(cursor);
+                listAccount.add(account);
+                cursor.moveToNext();
             }
-//            db.close();
+            cursor.close();
         }
+
         return listAccount;
     }
 

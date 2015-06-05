@@ -19,13 +19,11 @@ package com.money.manager.ex.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.utils.CurrencyUtils;
@@ -42,7 +40,6 @@ public class BalanceAmountTask
     private TextView mTextView;
     private Context mContext;
     private double total = 0;
-    private SQLiteDatabase mDatabase;
 
     @Override
     protected Boolean doInBackground(Void... params) {

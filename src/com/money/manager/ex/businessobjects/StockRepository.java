@@ -20,17 +20,11 @@ package com.money.manager.ex.businessobjects;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.investment.StockHistoryRepository;
-import com.money.manager.ex.utils.RawFileUtils;
 
 import java.math.BigDecimal;
 
