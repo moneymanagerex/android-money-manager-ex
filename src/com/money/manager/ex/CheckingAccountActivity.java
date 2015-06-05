@@ -1008,7 +1008,7 @@ public class CheckingAccountActivity
             SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
             mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
 
-            if (duplicate) {
+            if (duplicate && (mSplitTransactions != null)) {
                 // Reset ids so that the transactions get inserted on save.
                 for (TableSplitTransactions split : mSplitTransactions) {
                     split.setSplitTransId(Constants.NOT_SET);
