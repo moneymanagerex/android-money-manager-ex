@@ -18,8 +18,9 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="June 5, 2015" versionName="2.4.3">
+    <changelogversion changeDate="June 6, 2015" versionName="2.4.4">
         <changelogtext>Quick account switching via dropdown in the transaction list.</changelogtext>
+        <changelogtext>Updated translations.</changelogtext>
         <changelogtext>Corrections in calculator input and Split Categories duplication.</changelogtext>
         <changelogtext>Stability improvements in Dropbox sync.</changelogtext>
         <changelogtext>Correction in search for subcategories and splits.</changelogtext>
