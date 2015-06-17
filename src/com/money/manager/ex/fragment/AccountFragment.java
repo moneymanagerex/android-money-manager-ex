@@ -31,6 +31,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -232,7 +233,7 @@ public class AccountFragment
 
         loadAccountsToSpinner(getActivity(), spinner);
 
-        // The account is selected in 'prepare menu'.
+        // The current account is selected in 'prepare menu'.
 //        showCurrentAccount(menu);
 
         // handle switching of accounts.
@@ -295,6 +296,10 @@ public class AccountFragment
 
     private void loadAccountsToSpinner(Context context, Spinner spinner) {
         if (spinner == null) return;
+        if (context == null) {
+            Log.e(LOGCAT, "Context not sent when loading accounts");
+            return;
+        }
 
         AccountRepository repo = new AccountRepository(context);
         Core core = new Core(context.getApplicationContext());
