@@ -58,7 +58,7 @@ public class DonateDialogUtils {
                 AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(context);
                 showDialog.setCancelable(false);
                 showDialog.setTitle(R.string.donate);
-                showDialog.setIcon(R.drawable.ic_launcher);
+                showDialog.setIcon(R.mipmap.ic_launcher);
                 showDialog.setMessage(Html.fromHtml(donateText));
                 showDialog.setNegativeButton(R.string.no_thanks, new DialogInterface.OnClickListener() {
                     @Override

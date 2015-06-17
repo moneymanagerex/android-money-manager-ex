@@ -34,7 +34,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="2dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_launcher" />
+            android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
             android:layout_width="0dip"

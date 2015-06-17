@@ -189,7 +189,7 @@ public class MainActivity
         AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext());
         exitDialog.setTitle(R.string.close_application);
         exitDialog.setMessage(R.string.question_close_application);
-        exitDialog.setIcon(R.drawable.ic_launcher);
+        exitDialog.setIcon(R.mipmap.ic_launcher);
         exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

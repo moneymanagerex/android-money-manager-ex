@@ -31,6 +31,7 @@ import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
@@ -125,15 +126,21 @@ public class DropboxManager {
         service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, localFile);
         service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, dropboxFile);
 
-        //progress dialog
-        final ProgressDialog progressDialog = new ProgressDialog(mContext);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(mContext.getString(R.string.dropbox_syncProgress));
-        progressDialog.setIndeterminate(true);
-        progressDialog.show();
+        ProgressDialog progressDialog = null;
+        try {
+            //progress dialog
+            progressDialog = new ProgressDialog(mContext);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(mContext.getString(R.string.dropbox_syncProgress));
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
 
-        Messenger messenger = createMessenger(progressDialog);
-        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_MESSENGER, messenger);
+            Messenger messenger = createMessenger(progressDialog);
+            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_MESSENGER, messenger);
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "Error displaying dropbox progress dialog");
+        }
 
         // start service
         mContext.startService(service);

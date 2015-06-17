@@ -34,7 +34,7 @@
         android:name=".MoneyManagerApplication"
         android:allowBackup="true"
         android:backupAgent=".core.MoneyManagerBackupAgentHelper"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
         android:theme="@style/Theme.Splash" >
         <meta-data
