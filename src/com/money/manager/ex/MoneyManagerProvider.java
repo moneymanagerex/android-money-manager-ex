@@ -253,14 +253,14 @@ public class MoneyManagerProvider
         Object ret = getObjectFromUri(uri);
         // safety control of having the where if not clean the table
         if (TextUtils.isEmpty(selection)) {
-            Log.e(LOGCAT, "Delete not permitted because not define where clausole");
+            Log.e(LOGCAT, "Delete not permitted because not define where clause");
             return 0;
         }
         // take a database reference
         MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         int rowsDelete = 0;
-        // check type of istance dataset
+        // check type of dataset instance.
         if (Dataset.class.isInstance(ret)) {
             Dataset dataset = ((Dataset) ret);
             switch (dataset.getType()) {

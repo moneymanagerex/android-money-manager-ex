@@ -255,14 +255,12 @@ public class StockHistoryRepository
      * @return number of deleted records
      */
     public int deletePriceHistory() {
-//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-//                .getWritableDatabase();
 
+        // Delete all manually downloaded prices.
         int actionResult = mContext.getContentResolver().delete(getUri(),
-                null,
-                null);
+                StockHistory.UPDTYPE + "=?",
+                new String[] { "1" });
 
-//        db.close();
 
         return actionResult;
     }
