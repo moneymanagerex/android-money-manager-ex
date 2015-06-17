@@ -211,8 +211,12 @@ public class AccountFragment
     }
 
     private Spinner getAccountsSpinner(Menu menu) {
+        Spinner spinner = null;
+
         MenuItem item = menu.findItem(R.id.menuAccountSelector);
-        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+        if (item != null) {
+            spinner = (Spinner) MenuItemCompat.getActionView(item);
+        }
 
         return spinner;
     }
