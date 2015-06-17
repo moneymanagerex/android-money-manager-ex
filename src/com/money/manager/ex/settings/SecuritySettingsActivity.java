@@ -108,7 +108,8 @@ public class SecuritySettingsActivity extends BaseSettingsFragmentActivity {
                         }
                         // re-insert passcode
                         if (requestCode == REQUEST_REINSERT_PASSCODE && data != null) {
-                            if (passcode.equals(data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE))) {
+                            String sentPasscode = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
+                            if (passcode.equals(sentPasscode)) {
                                 if (!pass.setPasscode(passcode)) {
                                     Toast.makeText(getActivity(), R.string.passcode_not_update, Toast.LENGTH_LONG).show();
                                 }
