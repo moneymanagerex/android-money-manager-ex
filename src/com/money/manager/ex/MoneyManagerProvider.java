@@ -313,7 +313,13 @@ public class MoneyManagerProvider
         Object sourceObject = getObjectFromUri(uri);
         // take a database reference
         MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
+
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
+        if (database == null) {
+            Log.e(LOGCAT, "Database could not be opened");
+            return null;
+        }
+
         Cursor cursor;
 
         // check type of instance data set
