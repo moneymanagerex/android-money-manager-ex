@@ -64,8 +64,7 @@ public class ExportToCsvFile extends AsyncTask<Void, Void, Boolean> {
 		try {
 			CSVWriter csvWriter = new CSVWriter(new FileWriter(mFileName), CSVWriter.DEFAULT_SEPARATOR,
 					CSVWriter.NO_QUOTE_CHARACTER);
-			data.moveToFirst();
-			while (!data.isAfterLast()) {
+			while (data.moveToNext()) {
 				String[] record = new String[7];
 				// compose a records
 				record[0] = data.getString(data.getColumnIndex(QueryAllData.UserDate));
