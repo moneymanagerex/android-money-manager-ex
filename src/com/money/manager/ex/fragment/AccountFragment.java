@@ -234,8 +234,9 @@ public class AccountFragment
 
         // Load accounts into the list.
         Spinner spinner = getAccountsSpinner(menu);
-
-        loadAccountsToSpinner(getActivity(), spinner);
+        if (spinner != null) {
+            loadAccountsToSpinner(getActivity(), spinner);
+        }
 
         // The current account is selected in 'prepare menu'.
 //        showCurrentAccount(menu);
@@ -280,6 +281,8 @@ public class AccountFragment
      */
     private void showCurrentAccount(Menu menu) {
         Spinner spinner = getAccountsSpinner(menu);
+        if (spinner == null) return;
+        
         // find account
         SimpleCursorAdapter adapter = (SimpleCursorAdapter) spinner.getAdapter();
         Cursor cursor = adapter.getCursor();
