@@ -282,7 +282,7 @@ public class AccountFragment
     private void showCurrentAccount(Menu menu) {
         Spinner spinner = getAccountsSpinner(menu);
         if (spinner == null) return;
-        
+
         // find account
         SimpleCursorAdapter adapter = (SimpleCursorAdapter) spinner.getAdapter();
         Cursor cursor = adapter.getCursor();

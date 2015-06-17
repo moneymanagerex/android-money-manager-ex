@@ -230,7 +230,7 @@ public class AllDataAdapter
 
         if (isTransfer) {
             // write ToAccountName instead of payee on transfers.
-            String accountName;
+            String accountName = Constants.EMPTY_STRING;
 
             if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
                 // Recurring transactions list.
