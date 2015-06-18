@@ -53,7 +53,7 @@ import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.investment.StockHistoryRepository;
+import com.money.manager.ex.businessobjects.StockHistoryRepository;
 
 import java.util.Arrays;
 import java.util.HashMap;

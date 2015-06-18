@@ -25,6 +25,7 @@ import android.widget.ListAdapter;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.businessobjects.StockHistory;
+import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.core.file.TextFileExport;
 
