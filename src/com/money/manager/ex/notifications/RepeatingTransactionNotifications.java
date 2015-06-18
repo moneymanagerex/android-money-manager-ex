@@ -60,75 +60,69 @@ public class RepeatingTransactionNotifications {
         // create application
         CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
         // init currencies
-        if (!currencyUtils.isInit())
-            currencyUtils.init();
+        if (!currencyUtils.isInit()) currencyUtils.init();
 
         // select data
         QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);
+
         MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(mContext);
+        if (databaseHelper == null) return;
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        if(db == null) return;
 
-        if (databaseHelper != null) {
-            SQLiteDatabase db = databaseHelper.getReadableDatabase();
-            if(db == null) return;
+        Cursor cursor = db.rawQuery(billDeposits.getSource() + " AND " +
+                        QueryBillDeposits.DAYSLEFT + "<=0 ORDER BY " + QueryBillDeposits.NEXTOCCURRENCEDATE,
+                null);
+        if (cursor == null) return;
 
-            Cursor cursor = db.rawQuery(billDeposits.getSource() + " AND " +
-                    QueryBillDeposits.DAYSLEFT + "<=0 ORDER BY " + QueryBillDeposits.NEXTOCCURRENCEDATE, null);
-            if (cursor != null) {
-                if (cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-                    while (!cursor.isAfterLast()) {
-                        String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
-                        // check if payee name is null, then put toAccountName
-                        if (TextUtils.isEmpty(payeeName))
-                            payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
-                        // compose text
-                        String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
-                                " " + payeeName +
-                                ": <b>" + currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
-                        // add line
-                        inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
-                        // move to next row
-                        cursor.moveToNext();
-                    }
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            while (!cursor.isAfterLast()) {
+                String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
+                // check if payee name is null, then put toAccountName
+                if (TextUtils.isEmpty(payeeName))
+                    payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
+                // compose text
+                String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
+                        " " + payeeName +
+                        ": <b>" + currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
+                // add line
+                inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
+                // move to next row
+                cursor.moveToNext();
+            }
 
-                    NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                    // create pendig intent
-                    Intent intent = new Intent(mContext, RepeatingTransactionListActivity.class);
-                    // set launch from notification // check pin code
-                    intent.putExtra(RepeatingTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
+            NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            // create pending intent
+            Intent intent = new Intent(mContext, RepeatingTransactionListActivity.class);
+            // set launch from notification // check pin code
+            intent.putExtra(RepeatingTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
-                    // create notification
-                    Notification notification = null;
-                    try {
-                        notification = new NotificationCompat.Builder(mContext)
-                                .setAutoCancel(true)
-                                .setContentIntent(pendingIntent)
-                                .setContentTitle(mContext.getString(R.string.application_name))
-                                .setContentText(mContext.getString(R.string.notification_repeating_transaction_expired))
-                                .setSubText(mContext.getString(R.string.notification_click_to_check_repeating_transaction))
-                                .setSmallIcon(R.drawable.ic_stat_notification)
-                                .setTicker(mContext.getString(R.string.notification_repeating_transaction_expired))
-                                .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
-                                .setNumber(cursor.getCount())
-                                .setStyle(inboxStyle)
-                                .setColor(mContext.getResources().getColor(R.color.md_primary))
-                                .build();
-                        // notify
-                        notificationManager.cancel(ID_NOTIFICATION);
-                        notificationManager.notify(ID_NOTIFICATION, notification);
-                    } catch (Exception e) {
-                        Log.e(LOGCAT, e.getMessage());
-                    }
-                }
-                // close cursor
-                cursor.close();
-            } //
-
-            // close database helper
-            //databaseHelper.close();
-//            db.close();
+            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+            // create notification
+            Notification notification = null;
+            try {
+                notification = new NotificationCompat.Builder(mContext)
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent)
+                        .setContentTitle(mContext.getString(R.string.application_name))
+                        .setContentText(mContext.getString(R.string.notification_repeating_transaction_expired))
+                        .setSubText(mContext.getString(R.string.notification_click_to_check_repeating_transaction))
+                        .setSmallIcon(R.drawable.ic_stat_notification)
+                        .setTicker(mContext.getString(R.string.notification_repeating_transaction_expired))
+                        .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                        .setNumber(cursor.getCount())
+                        .setStyle(inboxStyle)
+                        .setColor(mContext.getResources().getColor(R.color.md_primary))
+                        .build();
+                // notify
+                notificationManager.cancel(ID_NOTIFICATION);
+                notificationManager.notify(ID_NOTIFICATION, notification);
+            } catch (Exception e) {
+                Log.e(LOGCAT, e.getMessage());
+            }
         }
+        cursor.close();
     }
 }

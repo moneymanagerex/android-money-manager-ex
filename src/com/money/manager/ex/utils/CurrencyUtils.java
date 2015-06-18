@@ -67,8 +67,6 @@ public class CurrencyUtils {
 
     // context
     private Context mContext;
-    // TableInfoTable
-    private TableInfoTable mInfoTable = new TableInfoTable();
 
     public CurrencyUtils(Context context) {
         mContext = context;
@@ -88,9 +86,9 @@ public class CurrencyUtils {
     }
 
     /**
-     * Initializes the structures of class
+     * Loads all available currencies.
      *
-     * @return Return true if initialization successfully otherwise Return Boolean.FALSE
+     * @return true if initialization successfully otherwise FALSE
      */
     public boolean init() {
         // check if map currencies is create
@@ -322,6 +320,8 @@ public class CurrencyUtils {
      * @return true if update succeed, otherwise false
      */
     public Boolean saveBaseCurrencyId(Integer currencyId) {
+        TableInfoTable mInfoTable = new TableInfoTable();
+
         // update data into database
         ContentValues values = new ContentValues();
         values.put(TableInfoTable.INFOVALUE, currencyId);

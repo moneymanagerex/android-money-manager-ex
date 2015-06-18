@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment
 
     private final String LOGCAT = this.getClass().getSimpleName();
 
-    private CurrencyUtils currencyUtils;
+    private CurrencyUtils mCurrencyUtils;
     private boolean mHideReconciled;
     // dataset table/view/query manage into class
     private TableInfoTable infoTable = new TableInfoTable();
@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        mCurrencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
         accountBills = new QueryAccountBills(getActivity());
 
         AppSettings settings = new AppSettings(getActivity());
@@ -265,7 +265,7 @@ public class HomeFragment extends Fragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER_ACCOUNT_BILLS:
-                txtTotalAccounts.setText(currencyUtils.getBaseCurrencyFormatted((double) 0));
+                txtTotalAccounts.setText(mCurrencyUtils.getBaseCurrencyFormatted((double) 0));
 
                 setListViewAccountBillsVisible(false);
                 mAccountsByType.clear();
@@ -326,11 +326,11 @@ public class HomeFragment extends Fragment
                 TextView txtDifference = (TextView) getActivity().findViewById(R.id.textViewDifference);
                 // set value
                 if (txtIncome != null)
-                    txtIncome.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income));
+                    txtIncome.setText(mCurrencyUtils.getCurrencyFormatted(mCurrencyUtils.getBaseCurrencyId(), income));
                 if (txtExpenses != null)
-                    txtExpenses.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
+                    txtExpenses.setText(mCurrencyUtils.getCurrencyFormatted(mCurrencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
                 if (txtDifference != null)
-                    txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
+                    txtDifference.setText(mCurrencyUtils.getCurrencyFormatted(mCurrencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
                 // manage progressbar
                 final ProgressBar barIncome = (ProgressBar) getActivity().findViewById(R.id.progressBarIncome);
                 final ProgressBar barExpenses = (ProgressBar) getActivity().findViewById(R.id.progressBarExpenses);
@@ -620,10 +620,10 @@ public class HomeFragment extends Fragment
         // remove footer
         mExpandableListView.removeFooterView(linearFooter);
         // set text
-        txtTotalAccounts.setText(currencyUtils.getBaseCurrencyFormatted(curTotal));
+        txtTotalAccounts.setText(mCurrencyUtils.getBaseCurrencyFormatted(curTotal));
         txtFooterSummary.setText(txtTotalAccounts.getText());
         if(!mHideReconciled) {
-            txtFooterSummaryReconciled.setText(currencyUtils.getBaseCurrencyFormatted(curReconciled));
+            txtFooterSummaryReconciled.setText(mCurrencyUtils.getBaseCurrencyFormatted(curReconciled));
         }
         // add footer
         mExpandableListView.addFooterView(linearFooter, null, false);
@@ -846,9 +846,9 @@ public class HomeFragment extends Fragment
             QueryAccountBills total = mTotalsByType.get(accountType);
             if (total != null) {
                 // set account type value
-                holder.txtAccountTotal.setText(currencyUtils.getBaseCurrencyFormatted(total.getTotalBaseConvRate()));
+                holder.txtAccountTotal.setText(mCurrencyUtils.getBaseCurrencyFormatted(total.getTotalBaseConvRate()));
                 if(!mHideReconciled) {
-                    holder.txtAccountReconciled.setText(currencyUtils.getBaseCurrencyFormatted(total.getReconciledBaseConvRate()));
+                    holder.txtAccountReconciled.setText(mCurrencyUtils.getBaseCurrencyFormatted(total.getReconciledBaseConvRate()));
                 }
                 // set account name
                 holder.txtAccountName.setText(total.getAccountName());
@@ -904,7 +904,7 @@ public class HomeFragment extends Fragment
             // set account name
             holder.txtAccountName.setText(account.getAccountName());
             // import formatted
-            String value = currencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getTotal());
+            String value = mCurrencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getTotal());
             // set amount value
             holder.txtAccountTotal.setText(value);
 
@@ -912,7 +912,7 @@ public class HomeFragment extends Fragment
             if(mHideReconciled) {
                 holder.txtAccountReconciled.setVisibility(View.GONE);
             } else {
-                value = currencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getReconciled());
+                value = mCurrencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getReconciled());
                 holder.txtAccountReconciled.setText(value);
             }
 
