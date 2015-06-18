@@ -41,13 +41,13 @@
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewIncome"
                 android:layout_width="wrap_content"
+                android:minWidth="70dp"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:gravity="right"
                 android:singleLine="true"
-
                 android:textColor="@color/md_green" />
 
             <ProgressBar
@@ -65,7 +65,6 @@
         </TableRow>
 
         <TableRow>
-
             <com.money.manager.ex.view.RobotoTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,19 +74,18 @@
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/expenses"
-
                 android:textColor="@color/md_red" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewExpenses"
                 android:layout_width="match_parent"
+                android:minWidth="70dp"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:gravity="right"
                 android:singleLine="true"
-
                 android:textColor="@color/md_red" />
 
             <ProgressBar
@@ -119,6 +117,7 @@
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewDifference"
                 android:layout_width="match_parent"
+                android:minWidth="70dp"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
