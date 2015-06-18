@@ -59,8 +59,6 @@ public class RepeatingTransactionNotifications {
     private void notifyRepeatingTransaction_Internal() {
         // create application
         CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
-        // init currencies
-        if (!currencyUtils.isInit()) currencyUtils.loadCurrencies();
 
         // select data
         QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);

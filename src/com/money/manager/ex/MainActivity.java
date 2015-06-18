@@ -181,10 +181,8 @@ public class MainActivity
         }
 
         // load base currency and compose hash currencies
-        CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
-        if (!currencyUtils.isInit()) {
-            currencyUtils.reInit();
-        }
+//        CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
+//        if (!currencyUtils.isInit()) currencyUtils.reInit();
 
         // create a connection to dropbox
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
