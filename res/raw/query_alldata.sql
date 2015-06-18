@@ -4,7 +4,10 @@ SELECT 	CANS.TransID AS ID,
 	d.userdate AS UserDate,
 	CAT.CategName as Category,
 	SUBCAT.SUBCategName as Subcategory,
-	ROUND( ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.ToTransAmount, 2 ) AS Amount,
+	CASE
+	    WHEN CANS.ToTransAmount = 0 THEN ROUND( ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.TransAmount, 2 )
+	    ELSE ROUND( ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.ToTransAmount, 2 )
+	END as Amount,
 	ifnull(cfTo.currency_symbol, cf.currency_symbol) AS currency,
 	CANS.Status AS Status,
 	CANS.NOTES AS Notes,
