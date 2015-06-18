@@ -18,6 +18,8 @@
 package com.money.manager.ex.core;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -49,10 +51,22 @@ public class ExceptionHandler {
 
         Log.e(getLogcat(), errorMessage + ": " + ex.getLocalizedMessage());
         ex.printStackTrace();
-        Toast.makeText(mContext, errorMessage, Toast.LENGTH_SHORT).show();
+        showMessage(errorMessage);
     }
 
     private String getLogcat() {
         return mHost.getClass().getSimpleName();
+    }
+
+    private void showMessage(final String message) {
+        // http://stackoverflow.com/questions/18705945/android-cant-create-handler-inside-thread-that-has-not-called-looper-prepare
+
+        Handler h = new Handler(Looper.getMainLooper());
+        h.post(new Runnable() {
+            public void run() {
+//                Toast.makeText(context, "Your message to main thread", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
