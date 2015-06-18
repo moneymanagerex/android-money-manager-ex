@@ -19,6 +19,7 @@ package com.money.manager.ex;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,6 +29,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -307,6 +309,19 @@ public class MoneyManagerProvider
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        Context context = null;
+
+        try {
+            context = getContext();
+            return query_internal(uri, projection, selection, selectionArgs, sortOrder);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(context, this);
+            handler.handle(e, "Error fetching data");
+        }
+        return null;
+    }
+
+    private Cursor query_internal(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Query URI: " + uri);
 
         // find object from uri
