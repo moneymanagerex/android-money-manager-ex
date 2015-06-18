@@ -57,6 +57,7 @@ import java.util.Map;
  * @author lazzari.ale@gmail.com
  */
 public class CurrencyUtils {
+
     private static final String LOGCAT = CurrencyUtils.class.getSimpleName();
     private static final String URL_FREE_CURRENCY_CONVERT_API = "http://www.freecurrencyconverterapi.com/api/convert?q=SYMBOL&compact=y";
     // id base currency
@@ -76,8 +77,9 @@ public class CurrencyUtils {
 
     public CurrencyUtils(Context context, Boolean init) {
         mContext = context;
-        if (init)
+        if (init) {
             init();
+        }
     }
 
     public static void destroy() {
@@ -90,7 +92,7 @@ public class CurrencyUtils {
      *
      * @return Return true if initialization successfully otherwise Return Boolean.FALSE
      */
-    public Boolean init() {
+    public boolean init() {
         // check if map currencies is create
         if (mCurrencies == null) {
             mCurrencies = new HashMap<>();
@@ -98,9 +100,6 @@ public class CurrencyUtils {
             // load all currencies
             if (!loadCurrencies()) return Boolean.FALSE;
         }
-
-        // load id base currency
-        if (mBaseCurrencyId == null) mBaseCurrencyId = getInitBaseCurrencyId();
 
         return Boolean.TRUE;
     }
@@ -219,16 +218,28 @@ public class CurrencyUtils {
     }
 
     /**
-     * Get id of base currency
+     * Get id of base currency.
+     * Lazy loaded, no need to initialize separately.
      *
      * @return Id of base currency
      */
     public Integer getBaseCurrencyId() {
+        // lazy loading the base currency id.
+        if (mBaseCurrencyId == null) {
+            Integer baseCurrencyId = getInitBaseCurrencyId();
+            setBaseCurrencyId(baseCurrencyId);
+        }
+
         return mBaseCurrencyId;
     }
 
+    public void setBaseCurrencyId(int baseCurrencyId) {
+        mBaseCurrencyId = baseCurrencyId;
+    }
+
     public TableCurrencyFormats getBaseCurrency() {
-        return getCurrency(mBaseCurrencyId);
+        int baseCurrencyId = getBaseCurrencyId();
+        return getCurrency(baseCurrencyId);
     }
 
     /**
@@ -236,7 +247,8 @@ public class CurrencyUtils {
      * @return formatted value
      */
     public String getBaseCurrencyFormatted(Double value) {
-        return this.getCurrencyFormatted(mBaseCurrencyId, value);
+        int baseCurrencyId = getBaseCurrencyId();
+        return this.getCurrencyFormatted(baseCurrencyId, value);
     }
 
     /**
@@ -267,21 +279,40 @@ public class CurrencyUtils {
      * @param currencyId of the currency to be get
      * @return an instance of class TableCurrencyFormats. Null if fail
      */
-    public TableCurrencyFormats getCurrency(Integer currencyId) {
-        // todo: test using content resolver.
-//        TableCurrencyFormats currency = new TableCurrencyFormats();
-//        String selection = TableCurrencyFormats.CURRENCYID + "=?";
-//        mContext.getContentResolver().query(currency.getUri(),
-//                currency.getAllColumns(),
-//                selection,
-//                new String[] { Integer.toString(currencyId) },
-//                null);
+    public TableCurrencyFormats getCurrency(int currencyId) {
+        TableCurrencyFormats result = null;
 
-        if (mCurrencies != null && currencyId != null) {
-            return mCurrencies.get(currencyId);
-        } else {
-            return null;
+        // check if the currency is cached.
+        if (mCurrencies != null) {
+            result =  mCurrencies.get(currencyId);
         }
+        // if not cached, try to load it.
+        if (result == null) {
+            result = loadCurrency(currencyId);
+        }
+
+        return result;
+    }
+
+    public TableCurrencyFormats loadCurrency(int currencyId) {
+        TableCurrencyFormats currency = new TableCurrencyFormats();
+        String selection = TableCurrencyFormats.CURRENCYID + "=?";
+
+        Cursor cursor = mContext.getContentResolver().query(currency.getUri(),
+                currency.getAllColumns(),
+                selection,
+                new String[] { Integer.toString(currencyId) },
+                null);
+        if (cursor == null) return null;
+
+        if (cursor.moveToNext()) {
+            currency.setValueFromCursor(cursor);
+        } else {
+            currency = null;
+        }
+        cursor.close();
+
+        return currency;
     }
 
     /**
@@ -290,65 +321,48 @@ public class CurrencyUtils {
      * @param currencyId of the currency
      * @return true if update succeed, otherwise false
      */
-    public Boolean setBaseCurrencyId(Integer currencyId) {
+    public Boolean saveBaseCurrencyId(Integer currencyId) {
         // update data into database
         ContentValues values = new ContentValues();
         values.put(TableInfoTable.INFOVALUE, currencyId);
 
-        return mContext.getContentResolver().update(mInfoTable.getUri(), values, TableInfoTable.INFONAME + "=?",
+        return mContext.getContentResolver().update(mInfoTable.getUri(),
+                values,
+                TableInfoTable.INFONAME + "=?",
                 new String[]{Constants.INFOTABLE_BASECURRENCYID}) == 1;
     }
 
     /**
      *  Load all currencies into map
      */
-    protected Boolean loadCurrencies() {
-        Boolean ret = Boolean.TRUE;
-        // ************************************************************
-//        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+    protected boolean loadCurrencies() {
+        boolean result = true;
         TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
-//        MoneyManagerOpenHelper helper;
-//        SQLiteDatabase db;
         Cursor cursor;
 
         try {
-            // set table name
-//            queryBuilder.setTables(tableCurrency.getSource());
-//            helper = MoneyManagerOpenHelper.getInstance(mContext);
-//            db = helper.getReadableDatabase();
-
-//            cursor = queryBuilder.query(db,
-//                    tableCurrency.getAllColumns(),
-//                    null, null, null, null, null);
             cursor = mContext.getContentResolver().query(tableCurrency.getUri(),
                     tableCurrency.getAllColumns(),
                     null, null, null);
+            if (cursor == null) return false;
 
             // load data into map
-            if (cursor != null && cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    TableCurrencyFormats mapCur = new TableCurrencyFormats();
-                    mapCur.setValueFromCursor(cursor);
+            while (cursor.moveToNext()) {
+                TableCurrencyFormats mapCur = new TableCurrencyFormats();
+                mapCur.setValueFromCursor(cursor);
 
-                    Integer currencyId = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
-                    // put object into map
-                    mCurrencies.put(currencyId, mapCur);
+                Integer currencyId = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
+                // put object into map
+                mCurrencies.put(currencyId, mapCur);
 
-                    cursor.moveToNext();
-                }
-                cursor.close();
-            } else {
-                ret = Boolean.FALSE;
+                cursor.moveToNext();
             }
+            cursor.close();
         } catch (Exception e) {
             Log.e(LOGCAT, "Error loading currencies: " + e.getMessage());
         }
 
-//        if (db != null) {
-//            db.close();
-//        }
-
-        return ret;
+        return result;
     }
 
     /**
@@ -371,10 +385,13 @@ public class CurrencyUtils {
         try {
             helper = MoneyManagerOpenHelper.getInstance(mContext);
             cursorInfo = queryBuilder.query(helper.getReadableDatabase(),
-                    tableInfo.getAllColumns(), TableInfoTable.INFONAME + "=?",
+                    tableInfo.getAllColumns(),
+                    TableInfoTable.INFONAME + "=?",
                     new String[]{Constants.INFOTABLE_BASECURRENCYID}, null, null, null);
+            if (cursorInfo == null) return null;
+
             // set BaseCurrencyId
-            if (cursorInfo != null && cursorInfo.moveToFirst()) {
+            if (cursorInfo.moveToFirst()) {
                 currencyId = cursorInfo.getInt(cursorInfo.getColumnIndex(TableInfoTable.INFOVALUE));
             }
         } catch (Exception e) {

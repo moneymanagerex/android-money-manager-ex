@@ -314,7 +314,7 @@ public class GeneralSettingsFragment
         lstBaseCurrency.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (currencyUtils.setBaseCurrencyId(Integer.valueOf(String.valueOf(newValue)))) {
+                if (currencyUtils.saveBaseCurrencyId(Integer.valueOf(String.valueOf(newValue)))) {
                     currencyUtils.reInit();
                     TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
                     if (tableCurrency != null) {
