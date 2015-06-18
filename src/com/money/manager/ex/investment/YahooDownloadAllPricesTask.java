@@ -18,7 +18,6 @@
 package com.money.manager.ex.investment;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -26,13 +25,9 @@ import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyFormatsListActivity;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.utils.ActivityUtils;
-import com.money.manager.ex.utils.CurrencyUtils;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Task that updates all the security prices in the list.
@@ -56,7 +51,7 @@ public class YahooDownloadAllPricesTask
     protected void onPreExecute() {
         super.onPreExecute();
 
-        DropboxHelper.setDisableAutoUpload(true);
+        DropboxHelper.setAutoUploadDisabled(true);
 
         // Check if the context still exists to avoid exceptions.
         showProgressDialog();
@@ -119,7 +114,7 @@ public class YahooDownloadAllPricesTask
             Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();
         }
 
-        DropboxHelper.setDisableAutoUpload(false);
+        DropboxHelper.setAutoUploadDisabled(false);
         DropboxHelper.notifyDataChanged();
 
         super.onPostExecute(result);

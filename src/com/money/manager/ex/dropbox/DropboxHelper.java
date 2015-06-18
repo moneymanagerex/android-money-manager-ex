@@ -62,19 +62,15 @@ import java.util.List;
 public class DropboxHelper {
     // info dropbox
     public static final String ROOT = "/";
-    // logcat
     private static final String LOGCAT = DropboxHelper.class.getSimpleName();
-    // date format
     private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
-    // constant
     private static final int DROPBOX_FILE_LIMIT = 1000;
 
     // info to access sharedpref
     // singleton
     private static DropboxHelper mHelper;
-    // context
     private static Context mContext;
-    // flag status upload immediatle
+    // flag status upload immediate
     private static boolean mDelayedUploadImmediate = false;
     // flag temp disable auto upload
     private static boolean mDisableAutoUpload = false;
@@ -83,18 +79,18 @@ public class DropboxHelper {
 
     private DropboxHelper(Context context) {
         super();
-        // save context
+
         mContext = context;
-        // create session
+
         AndroidAuthSession session = buildSession();
-        mDropboxApi = new DropboxAPI<AndroidAuthSession>(session);
+        mDropboxApi = new DropboxAPI<>(session);
     }
 
     /**
      * Get a singleton of dropbox. if object don't exists it does create
      *
-     * @param context
-     * @return
+     * @param context Executing context
+     * @return A dropbox helper instance.
      */
     public static DropboxHelper getInstance(Context context) {
         if (mHelper == null) {
@@ -104,7 +100,7 @@ public class DropboxHelper {
     }
 
     public static DropboxHelper getInstance() throws Exception {
-        if (mHelper == null) throw new Exception("DropboxHelper not yet instantiated");
+        if (mHelper == null) throw new Exception("Dropbox Helper not yet instantiated");
 
         return mHelper;
     }
@@ -115,7 +111,7 @@ public class DropboxHelper {
     public static void notifyDataChanged() {
         if (mHelper == null) return;
         if (!mHelper.isLinked()) return;
-        if (isDisableAutoUpload()) return;
+        if (isAutoUploadDisabled()) return;
 
         // save the last modified date
         File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
@@ -138,11 +134,11 @@ public class DropboxHelper {
         }
     }
 
-    public static boolean isDisableAutoUpload() {
+    public static boolean isAutoUploadDisabled() {
         return mDisableAutoUpload;
     }
 
-    public static void setDisableAutoUpload(boolean mDisableAutoUpload) {
+    public static void setAutoUploadDisabled(boolean mDisableAutoUpload) {
         DropboxHelper.mDisableAutoUpload = mDisableAutoUpload;
     }
 
@@ -309,7 +305,7 @@ public class DropboxHelper {
         SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
         prefs.edit().putString(mContext.getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE), fileDropbox)
                 .putString(PreferenceConstants.PREF_DROPBOX_REMOTE_FILE, fileDropbox)
-                .commit();
+                .apply();
     }
 
     /**
@@ -317,14 +313,17 @@ public class DropboxHelper {
      */
     public boolean isActiveAutoUpload() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        boolean result = false;
+
         if (prefs != null) {
-            return prefs.getBoolean(mContext.getString(PreferenceConstants.PREF_DROPBOX_UPLOAD_IMMEDIATE), true);
-        } else
-            return false;
+            result = prefs.getBoolean(mContext.getString(PreferenceConstants.PREF_DROPBOX_UPLOAD_IMMEDIATE), true);
+        }
+
+        return result;
     }
 
     /**
-     * Send a broadcast intent for start service shceduled
+     * Send a broadcast intent for start service scheduled
      */
     public void sendBroadcastStartServiceScheduled(String action) {
         Intent intent = new Intent(mContext, DropboxReceiver.class);

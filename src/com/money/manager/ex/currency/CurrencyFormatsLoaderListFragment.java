@@ -429,7 +429,7 @@ public class CurrencyFormatsLoaderListFragment
                 mPrevOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
 
                 mCore = new Core(getActivity().getApplicationContext());
-                DropboxHelper.setDisableAutoUpload(true);
+                DropboxHelper.setAutoUploadDisabled(true);
 
                 //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
@@ -477,7 +477,7 @@ public class CurrencyFormatsLoaderListFragment
                 if (result)
                     Toast.makeText(getActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
 
-                DropboxHelper.setDisableAutoUpload(false);
+                DropboxHelper.setAutoUploadDisabled(false);
                 DropboxHelper.notifyDataChanged();
 
                 ActivityUtils.restoreOrientation(getActivity(), mPrevOrientation);
@@ -529,7 +529,7 @@ public class CurrencyFormatsLoaderListFragment
 
                 mPrevOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
 
-                DropboxHelper.setDisableAutoUpload(true);
+                DropboxHelper.setAutoUploadDisabled(true);
 
                 dialog = new ProgressDialog(getActivity());
                 // setting dialog
@@ -561,7 +561,7 @@ public class CurrencyFormatsLoaderListFragment
                     Toast.makeText(getActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
                 }
 
-                DropboxHelper.setDisableAutoUpload(false);
+                DropboxHelper.setAutoUploadDisabled(false);
                 DropboxHelper.notifyDataChanged();
 
                 ActivityUtils.restoreOrientation(getActivity(), mPrevOrientation);
