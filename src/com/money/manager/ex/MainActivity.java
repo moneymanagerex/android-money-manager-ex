@@ -201,7 +201,11 @@ public class MainActivity
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
-        showSnackbarDropbox();
+        if (savedInstanceState == null) {
+            // The code that executes *only* when the activity is started the first time.
+            // This is to avoid checking Dropbox on every device rotation.
+            showSnackbarDropbox();
+        }
     }
 
     @Override
