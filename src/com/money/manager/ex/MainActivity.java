@@ -134,6 +134,235 @@ public class MainActivity
     // state dual panel
     private boolean mIsDualPanel = false;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Core core = new Core(this);
+
+        // close notification
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
+
+        // check intent is valid
+        if (getIntent() != null && getIntent().getData() != null) {
+            // todo: try to use this file as the current database!
+            String pathFile = getIntent().getData().getEncodedPath();
+            // decode
+            try {
+                pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
+                if (BuildConfig.DEBUG)
+                    Log.d(LOGCAT, "Path intent file to open:" + pathFile);
+                if (!core.changeDatabase(pathFile)) {
+                    Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
+                }
+            } catch (Exception e) {
+                Log.e(LOGCAT, e.getMessage());
+            }
+        }
+
+        // check authentication
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
+                isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
+            if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
+                isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
+            if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION))
+                isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
+            if (savedInstanceState.containsKey(KEY_ORIENTATION)) {
+                if (core.isTablet()) {
+                    if (savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
+                        for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+                            getSupportFragmentManager().popBackStack();
+                        }
+                    }
+                }
+            }
+        }
+
+        // load base currency and compose hash currencies
+        CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
+        if (!currencyUtils.isInit()) {
+            currencyUtils.reInit();
+        }
+
+        // create a connection to dropbox
+        mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
+        // check type mode
+        onCreateFragments(savedInstanceState);
+        // show tutorial
+        showTutorial(savedInstanceState);
+        // show changelog dialog
+        if (core.isToDisplayChangelog()) core.showChangelog();
+
+        MoneyManagerApplication.showDatabasePathWork(getApplicationContext());
+
+        // notification send broadcast
+        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
+        getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
+
+        showSnackbarDropbox();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // check if has passcode and authenticate
+        if (!isAuthenticated) {
+            Passcode passcode = new Passcode(this);
+            if (passcode.hasPasscode() && !isInAuthentication) {
+                Intent intent = new Intent(this, PasscodeActivity.class);
+                // set action and data
+                intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
+                intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
+                // start activity
+                startActivityForResult(intent, REQUEST_PASSCODE);
+                // set in authentication
+                isInAuthentication = true;
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // check if restart activity
+        if (isRestartActivitySet()) {
+            restartActivity(); // restart and exit
+            return;
+        }
+    }
+
+    /**
+     * this method call for classic method (show fragments)
+     *
+     * @param savedInstanceState
+     */
+    public void onCreateFragments(Bundle savedInstanceState) {
+        Core core = new Core(getApplicationContext());
+
+        setContentView(R.layout.main_fragments_activity);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+
+        LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
+        setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
+        // show home fragment
+        HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
+                .findFragmentByTag(HomeFragment.class.getSimpleName());
+        if (fragment == null) {
+            // fragment create
+            fragment = new HomeFragment();
+            // add to stack
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    .commit();
+        } else if (core.isTablet()) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    .commit();
+        }
+
+        // manage fragment
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
+            String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
+            // check if className is null, then setting Home Fragment
+            if (TextUtils.isEmpty(className))
+                className = HomeFragment.class.getName();
+            if (className.contains(AccountFragment.class.getSimpleName())) {
+                showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+            } else {
+                try {
+                    showFragment(Class.forName(className));
+                } catch (ClassNotFoundException e) {
+                    Log.e(LOGCAT, e.getMessage());
+                }
+            }
+        }
+        // navigation drawer
+        mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+
+        // set a custom shadow that overlays the main content when the drawer opens
+        if (mDrawer != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
+                mDrawer.setDrawerListener(mDrawerToggle);
+                // create drawer menu
+                createDrawerMenu();
+                // enable ActionBar app icon to behave as action to toggle nav drawer
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowTitleEnabled(true);
+            } else {
+                mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+        }
+        // start notification for recurring transaction
+        if (!isRecurringTransactionStarted) {
+            AppSettings settings = new AppSettings(this);
+            boolean showNotification = settings.getGeneralSettings().getNotificationRecurringTransaction();
+            if (showNotification) {
+                RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
+                notifications.notifyRepeatingTransaction();
+                isRecurringTransactionStarted = true;
+            }
+        }
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (mDrawerToggle != null) {
+            try {
+                mDrawerToggle.syncState();
+            } catch (Exception e) {
+                Log.w(LOGCAT, "Error on drawer sync state.");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check request code
+        switch (requestCode) {
+            case REQUEST_PICKFILE_CODE:
+                if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                    changeDatabase(data.getData().getPath());
+                }
+                break;
+            case REQUEST_PASSCODE:
+                isAuthenticated = false;
+                isInAuthentication = false;
+                if (resultCode == RESULT_OK && data != null) {
+                    Passcode passcode = new Passcode(getApplicationContext());
+                    String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
+                    String passDb = passcode.getPasscode();
+                    if (passIntent != null && passDb != null) {
+                        isAuthenticated = passIntent.equals(passDb);
+                        if (!isAuthenticated) {
+                            Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                // close if not authenticated
+                if (!isAuthenticated) {
+                    this.finish();
+                }
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setRestartActivity(true);
+    }
+
+    // Custom methods
 
     /**
      * @return the mRestart
@@ -441,234 +670,6 @@ public class MainActivity
 
     public void onClickCardViewIncomesVsExpenses(View v) {
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Core core = new Core(this);
-
-        // close notification
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
-
-        // check intent is valid
-        if (getIntent() != null && getIntent().getData() != null) {
-            // todo: try to use this file as the current database!
-            String pathFile = getIntent().getData().getEncodedPath();
-            // decode
-            try {
-                pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
-                if (BuildConfig.DEBUG)
-                    Log.d(LOGCAT, "Path intent file to open:" + pathFile);
-                if (!core.changeDatabase(pathFile)) {
-                    Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
-                }
-            } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
-            }
-        }
-
-        // check authentication
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
-                isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
-            if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
-                isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
-            if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION))
-                isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
-            if (savedInstanceState.containsKey(KEY_ORIENTATION)) {
-                if (core.isTablet()) {
-                    if (savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
-                        for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
-                            getSupportFragmentManager().popBackStack();
-                        }
-                    }
-                }
-            }
-        }
-
-        // load base currency and compose hash currencies
-        CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
-        if (!currencyUtils.isInit()) {
-            currencyUtils.reInit();
-        }
-
-        // create a connection to dropbox
-        mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
-        // check type mode
-        onCreateFragments(savedInstanceState);
-        // show tutorial
-        showTutorial(savedInstanceState);
-        // show changelog dialog
-        if (core.isToDisplayChangelog()) core.showChangelog();
-
-        MoneyManagerApplication.showDatabasePathWork(getApplicationContext());
-
-        // notification send broadcast
-        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
-        getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
-
-        showSnackbarDropbox();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // check if has passcode and authenticate
-        if (!isAuthenticated) {
-            Passcode passcode = new Passcode(this);
-            if (passcode.hasPasscode() && !isInAuthentication) {
-                Intent intent = new Intent(this, PasscodeActivity.class);
-                // set action and data
-                intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
-                intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
-                // start activity
-                startActivityForResult(intent, REQUEST_PASSCODE);
-                // set in authentication
-                isInAuthentication = true;
-            }
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // check if restart activity
-        if (isRestartActivitySet()) {
-            restartActivity(); // restart and exit
-            return;
-        }
-    }
-
-    /**
-     * this method call for classic method (show fragments)
-     *
-     * @param savedInstanceState
-     */
-    public void onCreateFragments(Bundle savedInstanceState) {
-        Core core = new Core(getApplicationContext());
-
-        setContentView(R.layout.main_fragments_activity);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
-
-        LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
-        setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
-        // show home fragment
-        HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
-                .findFragmentByTag(HomeFragment.class.getSimpleName());
-        if (fragment == null) {
-            // fragment create
-            fragment = new HomeFragment();
-            // add to stack
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                    .commit();
-        } else if (core.isTablet()) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                    .commit();
-        }
-
-        // manage fragment
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
-            String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
-            // check if className is null, then setting Home Fragment
-            if (TextUtils.isEmpty(className))
-                className = HomeFragment.class.getName();
-            if (className.contains(AccountFragment.class.getSimpleName())) {
-                showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
-            } else {
-                try {
-                    showFragment(Class.forName(className));
-                } catch (ClassNotFoundException e) {
-                    Log.e(LOGCAT, e.getMessage());
-                }
-            }
-        }
-        // navigation drawer
-        mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
-
-        // set a custom shadow that overlays the main content when the drawer opens
-        if (mDrawer != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
-                mDrawer.setDrawerListener(mDrawerToggle);
-                // create drawer menu
-                createDrawerMenu();
-                // enable ActionBar app icon to behave as action to toggle nav drawer
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setDisplayShowTitleEnabled(true);
-            } else {
-                mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            }
-        }
-        // start notification for recurring transaction
-        if (!isRecurringTransactionStarted) {
-            AppSettings settings = new AppSettings(this);
-            boolean showNotification = settings.getGeneralSettings().getNotificationRecurringTransaction();
-            if (showNotification) {
-                RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
-                notifications.notifyRepeatingTransaction();
-                isRecurringTransactionStarted = true;
-            }
-        }
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        if (mDrawerToggle != null) {
-            try {
-                mDrawerToggle.syncState();
-            } catch (Exception e) {
-                Log.w(LOGCAT, "Error on drawer sync state.");
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // check request code
-        switch (requestCode) {
-            case REQUEST_PICKFILE_CODE:
-                if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                    changeDatabase(data.getData().getPath());
-                }
-                break;
-            case REQUEST_PASSCODE:
-                isAuthenticated = false;
-                isInAuthentication = false;
-                if (resultCode == RESULT_OK && data != null) {
-                    Passcode passcode = new Passcode(getApplicationContext());
-                    String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
-                    String passDb = passcode.getPasscode();
-                    if (passIntent != null && passDb != null) {
-                        isAuthenticated = passIntent.equals(passDb);
-                        if (!isAuthenticated) {
-                            Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-                // close if not authenticated
-                if (!isAuthenticated) {
-                    this.finish();
-                }
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        setRestartActivity(true);
     }
 
     // Menu
