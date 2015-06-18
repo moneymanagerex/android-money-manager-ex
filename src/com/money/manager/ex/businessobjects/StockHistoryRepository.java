@@ -47,7 +47,6 @@ public class StockHistoryRepository
 
     private static final String TABLE_NAME = "stockhistory_v1";
 
-    // UpdateType: online = 1, manual = 2
     private enum UpdateType {
         Online(1),
         Manual(2);

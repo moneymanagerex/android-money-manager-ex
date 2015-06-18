@@ -32,8 +32,6 @@ import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -569,7 +567,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
         // populate spinner
         // take a categories list
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
-        final List<TableCategory> categories = helper.getListCategories();
+        final List<TableCategory> categories = helper.getCategoryList();
         // close connection database
         //helper.close();
 

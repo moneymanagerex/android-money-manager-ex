@@ -179,8 +179,9 @@ public class MoneyManagerOpenHelper
     private SQLiteDatabase getWritableDatabase_Internal() {
         SQLiteDatabase db = super.getWritableDatabase();
 
-        if (db != null)
+        if (db != null) {
             db.rawQuery("PRAGMA journal_mode=OFF", null).close();
+        }
 
         return db;
 
@@ -211,23 +212,24 @@ public class MoneyManagerOpenHelper
      * @return List of all categories
      * @since version 1.0.1
      */
-    public List<TableCategory> getListCategories() {
+    public List<TableCategory> getCategoryList() {
         // create a return list
         List<TableCategory> listCategories = new ArrayList<>();
         // data cursor
         //Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(), null, null, null, TableCategory.CATEGNAME);
         Cursor cursor = this.getReadableDatabase().query(new TableCategory().getSource(),
                 null, null, null, null, null, TableCategory.CATEGNAME);
+        if (cursor == null) return listCategories;
+
         // populate list from data cursor
-        if ((cursor != null) && (cursor.moveToFirst())) {
-            while (!(cursor.isAfterLast())) {
-                TableCategory category = new TableCategory();
-                category.setValueFromCursor(cursor);
-                listCategories.add(category);
-                cursor.moveToNext();
-            }
-            cursor.close();
+        while (cursor.moveToNext()) {
+            TableCategory category = new TableCategory();
+            category.setValueFromCursor(cursor);
+            listCategories.add(category);
+            cursor.moveToNext();
         }
+        cursor.close();
+
         return listCategories;
     }
 
@@ -262,24 +264,24 @@ public class MoneyManagerOpenHelper
      * @return TableAccountList, return null if account id not find
      */
     public TableAccountList getTableAccountList(int id) {
+        TableAccountList account = null;
         String selection = TableAccountList.ACCOUNTID + "=?";
         SQLiteDatabase database = getReadableDatabase();
-        if (database != null) {
-            Cursor cursor = database.query(new TableAccountList().getSource(), null, selection,
-                    new String[]{Integer.toString(id)}, null, null, null);
-            // check if cursor is valid
-            if (cursor != null && cursor.moveToFirst()) {
-                TableAccountList account = new TableAccountList();
-                account.setValueFromCursor(cursor);
+        if (database == null) return null;
 
-                cursor.close();
-                return account;
-            }
-//            database.close();
-            //close();
+        Cursor cursor = database.query(new TableAccountList().getSource(), null, selection,
+                new String[]{Integer.toString(id)}, null, null, null);
+        if (cursor == null) return null;
+
+        // check if cursor is valid
+        if (cursor.moveToFirst()) {
+            account = new TableAccountList();
+            account.setValueFromCursor(cursor);
+
+            cursor.close();
         }
-        // find is false then return null
-        return null;
+
+        return account;
     }
 
     /**
