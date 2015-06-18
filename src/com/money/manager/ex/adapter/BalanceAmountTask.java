@@ -185,19 +185,6 @@ public class BalanceAmountTask
         this.mTransId = mTransId;
     }
 
-//    public SQLiteDatabase getDatabase() {
-//        if (mDatabase == null || !mDatabase.isOpen()) {
-//            mDatabase = MoneyManagerOpenHelper.getInstance(mContext.getApplicationContext())
-//                    .getReadableDatabase();
-//        }
-//
-//        return mDatabase;
-//    }
-
-//    public void setDatabase(SQLiteDatabase mDatabase) {
-//        this.mDatabase = mDatabase;
-//    }
-
     public int getCurrencyId() {
         return mCurrencyId;
     }

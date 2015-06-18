@@ -308,22 +308,20 @@ public class DashboardFragment
                 "<small><b>" + getString(R.string.quantity) + "</b></small>", "<small><b>" + getString(R.string.summary) + "</b></small>"}, new Float[]{1f,
                 null, null}, new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
         // add rows
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                // load values
-                String category = "<b>" + cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)) + "</b>";
-                if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
-                    category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
-                }
-                double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-                int num = cursor.getInt(cursor.getColumnIndex("NUM"));
-                // Add Row
-                tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
-                                "<small>" + currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
-                        new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
-                // move to nextrow
-                cursor.moveToNext();
+        while (cursor.moveToNext()) {
+            // load values
+            String category = "<b>" + cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)) + "</b>";
+            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
+                category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
             }
+            double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
+            int num = cursor.getInt(cursor.getColumnIndex("NUM"));
+            // Add Row
+            tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
+                            "<small>" + currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
+                    new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
+            // move to nextrow
+            cursor.moveToNext();
         }
         // return Layout
         return layout;
@@ -344,20 +342,19 @@ public class DashboardFragment
                 "<small><b>" + getString(R.string.quantity) + "</b></small>", "<small><b>" + getString(R.string.summary) + "</b></small>"}, new Float[]{1f,
                 null, null}, new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
         // add rows
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                // load values
-                String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee));
-                double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-                int num = cursor.getInt(cursor.getColumnIndex("NUM"));
-                // Add Row
-                tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
-                                "<small>" + currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
-                        new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
-                // move to nextrow
-                cursor.moveToNext();
-            }
+        while (cursor.moveToNext()) {
+            // load values
+            String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee));
+            double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
+            int num = cursor.getInt(cursor.getColumnIndex("NUM"));
+            // Add Row
+            tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
+                            "<small>" + currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
+                    new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
+            // move to nextrow
+            cursor.moveToNext();
         }
+
         // return Layout
         return layout;
     }
@@ -374,26 +371,24 @@ public class DashboardFragment
         // Table
         TableLayout tableLayout = (TableLayout) layout.findViewById(R.id.tableLayoutSummary);
         // add rows
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                // load values
-                String payee = "<i>" + cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)) + "</i>";
-                double total = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
-                int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
-                int currencyId = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID));
-                String daysLeftText = "";
-                daysLeftText = Integer.toString(Math.abs(daysLeft)) + " " + getString(daysLeft >= 0 ? R.string.days_remaining : R.string.days_overdue);
-                TableRow row = createTableRow(new String[]{"<small>" + payee + "</small>",
-                                "<small>" + currencyUtils.getCurrencyFormatted(currencyId, total) + "</small>",
-                                "<small>" + daysLeftText + "</small>"}, new Float[]{1f, null, 1f},
-                        new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null});
-                TextView txt = (TextView) row.getChildAt(2);
-                txt.setTextColor(getResources().getColor(daysLeft >= 0 ? core.resolveIdAttribute(R.attr.holo_green_color_theme) : core.resolveIdAttribute(R.attr.holo_red_color_theme)));
-                // Add Row
-                tableLayout.addView(row);
-                // move to nextrow
-                cursor.moveToNext();
-            }
+        while (cursor.moveToNext()) {
+            // load values
+            String payee = "<i>" + cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)) + "</i>";
+            double total = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
+            int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
+            int currencyId = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID));
+            String daysLeftText = "";
+            daysLeftText = Integer.toString(Math.abs(daysLeft)) + " " + getString(daysLeft >= 0 ? R.string.days_remaining : R.string.days_overdue);
+            TableRow row = createTableRow(new String[]{"<small>" + payee + "</small>",
+                            "<small>" + currencyUtils.getCurrencyFormatted(currencyId, total) + "</small>",
+                            "<small>" + daysLeftText + "</small>"}, new Float[]{1f, null, 1f},
+                    new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null});
+            TextView txt = (TextView) row.getChildAt(2);
+            txt.setTextColor(getResources().getColor(daysLeft >= 0 ? core.resolveIdAttribute(R.attr.holo_green_color_theme) : core.resolveIdAttribute(R.attr.holo_red_color_theme)));
+            // Add Row
+            tableLayout.addView(row);
+            // move to nextrow
+            cursor.moveToNext();
         }
         // return Layout
         return layout;

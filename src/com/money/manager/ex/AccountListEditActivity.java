@@ -163,12 +163,11 @@ public class AccountListEditActivity
         // default currency
         if (mCurrencyId == null) {
             CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
+            TableCurrencyFormats baseCurrency = currencyUtils.getBaseCurrency();
 
-            TableCurrencyFormats currencyFormats = currencyUtils.getBaseCurrency();
-
-            if (currencyFormats != null) {
-                mCurrencyId = currencyFormats.getCurrencyId();
-                mCurrencyName = currencyFormats.getCurrencyName();
+            if (baseCurrency != null) {
+                mCurrencyId = baseCurrency.getCurrencyId();
+                mCurrencyName = baseCurrency.getCurrencyName();
             }
         }
 

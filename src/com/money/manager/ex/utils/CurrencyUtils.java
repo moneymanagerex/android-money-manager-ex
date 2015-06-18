@@ -27,6 +27,7 @@ import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
@@ -208,6 +209,11 @@ public class CurrencyUtils {
      * @return list of all CurrencyFormats
      */
     public List<TableCurrencyFormats> getAllCurrencyFormats() {
+        // try loading the currencies first.
+        if (mCurrencies == null) {
+            this.loadCurrencies();
+        }
+
         if (mCurrencies != null) {
             return new ArrayList<>(mCurrencies.values());
         } else {
@@ -286,31 +292,11 @@ public class CurrencyUtils {
         }
         // if not cached, try to load it.
         if (result == null) {
-            result = loadCurrency(currencyId);
+            CurrencyRepository repository = new CurrencyRepository(mContext);
+            result = repository.loadCurrency(currencyId);
         }
 
         return result;
-    }
-
-    public TableCurrencyFormats loadCurrency(int currencyId) {
-        TableCurrencyFormats currency = new TableCurrencyFormats();
-        String selection = TableCurrencyFormats.CURRENCYID + "=?";
-
-        Cursor cursor = mContext.getContentResolver().query(currency.getUri(),
-                currency.getAllColumns(),
-                selection,
-                new String[] { Integer.toString(currencyId) },
-                null);
-        if (cursor == null) return null;
-
-        if (cursor.moveToNext()) {
-            currency.setValueFromCursor(cursor);
-        } else {
-            currency = null;
-        }
-        cursor.close();
-
-        return currency;
     }
 
     /**
