@@ -269,7 +269,8 @@
                     android:drawableLeft="?attr/ic_plusone"
                     android:ellipsize="end"
                     android:hint="@string/transaction_number"
-                    android:singleLine="true"/>
+                    android:singleLine="true"
+                    android:textCursorDrawable="@null" />
 
                 <ImageButton
                     android:id="@+id/buttonTransNumber"
@@ -296,7 +297,8 @@
                 android:hint="@string/notes"
                 android:inputType="textMultiLine"
                 android:maxLength="1000"
-                android:scrollHorizontally="false"/>
+                android:scrollHorizontally="false"
+                android:textCursorDrawable="@null" />
         </LinearLayout>
     </ScrollView>
 
