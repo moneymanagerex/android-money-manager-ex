@@ -83,7 +83,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
-import com.money.manager.ex.utils.CurrencyUtils;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.ActionClickListener;
 
@@ -193,7 +192,7 @@ public class MainActivity
         // show changelog dialog
         if (core.isToDisplayChangelog()) core.showChangelog();
 
-        MoneyManagerApplication.showDatabasePathWork(getApplicationContext());
+        MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
 
         // notification send broadcast
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);

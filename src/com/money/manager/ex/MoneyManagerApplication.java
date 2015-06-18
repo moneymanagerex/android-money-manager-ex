@@ -159,7 +159,7 @@ public class MoneyManagerApplication
      *
      * @param context Executing context.
      */
-    public static void showDatabasePathWork(Context context) {
+    public static void showCurrentDatabasePath(Context context) {
         String currentPath = getDatabasePath(context);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lastPath = preferences.getString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), "");
@@ -177,24 +177,20 @@ public class MoneyManagerApplication
         }
     }
 
-    /**
-     * @param context Executing context.
-     * @return the username
-     */
-    public String getFromDatabaseUserName(Context context) {
+    public String loadUserNameFromDatabase(Context context) {
         TableInfoTable infoTable = new TableInfoTable();
-        // todo: getContentResolver().query()
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
-        Cursor data = helper.getReadableDatabase().query(infoTable.getSource(), null,
-                TableInfoTable.INFONAME + "=?", new String[]{"USERNAME"}, null, null, null);
-        if (data == null) return Constants.EMPTY_STRING;
+        Cursor cursor = context.getContentResolver().query(infoTable.getUri(),
+                null,
+                TableInfoTable.INFONAME + "=?",
+                new String[]{ "USERNAME" },
+                null);
+        if (cursor == null) return Constants.EMPTY_STRING;
 
         String ret = "";
-        if (data.moveToFirst()) {
-            ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
+        if (cursor.moveToFirst()) {
+            ret = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
         }
-        data.close();
-        //helper.close();
+        cursor.close();
 
         return ret;
     }
@@ -244,7 +240,8 @@ public class MoneyManagerApplication
             where = "LOWER(FAVORITEACCT)='true'";
         }
         QueryAccountBills accountBills = new QueryAccountBills(context);
-        Cursor data = context.getContentResolver().query(accountBills.getUri(), null, where, null, null);
+        Cursor data = context.getContentResolver().query(accountBills.getUri(),
+                null, where, null, null);
         double curTotal = 0;
 
         if (data != null && data.moveToFirst()) {

@@ -44,7 +44,7 @@ public class SummaryWidgetProvider extends AppWidgetProvider {
 
         for (int i = 0; i < allWidgetIds.length; ++i) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_summary);
-            remoteViews.setTextViewText(R.id.textViewUserName, app.getFromDatabaseUserName(context));
+            remoteViews.setTextViewText(R.id.textViewUserName, app.loadUserNameFromDatabase(context));
             remoteViews.setTextViewText(R.id.textViewTotalAccounts, context.getString(R.string.summary) + ": "
                     + currencyUtils.getBaseCurrencyFormatted(app.getSummaryAccounts(context)));
             // register on click in icon launch application

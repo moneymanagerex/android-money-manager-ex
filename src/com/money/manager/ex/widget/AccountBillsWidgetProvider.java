@@ -42,7 +42,7 @@ public class AccountBillsWidgetProvider extends AppWidgetProvider {
 
         for (int i = 0; i < appWidgetIds.length; ++i) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_account_bills);
-            remoteViews.setTextViewText(R.id.textViewUserName, app.getFromDatabaseUserName(context));
+            remoteViews.setTextViewText(R.id.textViewUserName, app.loadUserNameFromDatabase(context));
             remoteViews.setTextViewText(R.id.textViewTotalAccounts, context.getString(R.string.summary) + ": "
                     + currencyUtils.getBaseCurrencyFormatted(app.getSummaryAccounts(context)));
             // register on click in icon launch application
