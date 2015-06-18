@@ -41,7 +41,7 @@
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewIncome"
                 android:layout_width="wrap_content"
-                android:minWidth="70dp"
+                android:minWidth="75dp"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
@@ -79,7 +79,7 @@
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewExpenses"
                 android:layout_width="match_parent"
-                android:minWidth="70dp"
+                android:minWidth="75dp"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
@@ -117,7 +117,7 @@
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewDifference"
                 android:layout_width="match_parent"
-                android:minWidth="70dp"
+                android:minWidth="75dp"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
