@@ -21,11 +21,20 @@ package com.money.manager.ex.notifications;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 
-public class RepeatingTransactionReceiver extends BroadcastReceiver {
+import com.money.manager.ex.settings.PreferenceConstants;
+
+public class RepeatingTransactionReceiver
+        extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+        // If the notifications are disabled in settings, do not trigger the alarm.
+        boolean notify = PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(context.getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS), true);
+        if (!notify) return;
+
 		Intent service = new Intent(context, RepeatingTransactionService.class);
 		context.startService(service);
 	}

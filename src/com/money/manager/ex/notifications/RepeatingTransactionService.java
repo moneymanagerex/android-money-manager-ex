@@ -20,8 +20,12 @@ package com.money.manager.ex.notifications;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 
-public class RepeatingTransactionService extends IntentService {
+import com.money.manager.ex.settings.PreferenceConstants;
+
+public class RepeatingTransactionService
+		extends IntentService {
 
 	public RepeatingTransactionService() {
 		super("com.money.manager.ex.notifications.RepeatingTransactionService");
