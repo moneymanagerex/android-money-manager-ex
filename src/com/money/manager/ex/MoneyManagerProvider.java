@@ -367,7 +367,9 @@ public class MoneyManagerProvider
         // notify listeners waiting for the data is ready
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Rows returned: " + cursor.getCount());
+        if (BuildConfig.DEBUG && !cursor.isClosed()) {
+            Log.d(LOGCAT, "Rows returned: " + cursor.getCount());
+        }
 
         return cursor;
     }
