@@ -60,7 +60,7 @@ public class RepeatingTransactionNotifications {
         // create application
         CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
         // init currencies
-        if (!currencyUtils.isInit()) currencyUtils.init();
+        if (!currencyUtils.isInit()) currencyUtils.loadCurrencies();
 
         // select data
         QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);

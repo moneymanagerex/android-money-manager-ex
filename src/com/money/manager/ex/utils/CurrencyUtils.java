@@ -71,36 +71,12 @@ public class CurrencyUtils {
 
     public CurrencyUtils(Context context) {
         mContext = context;
-        init();
-    }
-
-    public CurrencyUtils(Context context, Boolean init) {
-        mContext = context;
-        if (init) {
-            init();
-        }
+//        loadCurrencies();
     }
 
     public static void destroy() {
         mCurrencies = null;
         mBaseCurrencyId = null;
-    }
-
-    /**
-     * Loads all available currencies.
-     *
-     * @return true if initialization successfully otherwise FALSE
-     */
-    public boolean init() {
-        // check if map currencies is create
-        if (mCurrencies == null) {
-            mCurrencies = new HashMap<>();
-
-            // load all currencies
-            if (!loadCurrencies()) return Boolean.FALSE;
-        }
-
-        return Boolean.TRUE;
     }
 
     /**
@@ -113,7 +89,7 @@ public class CurrencyUtils {
     public Boolean reInit() {
         destroy();
 
-        return init();
+        return loadCurrencies();
     }
 
     public Double doCurrencyExchange(Integer toCurrencyId, double amount, Integer fromCurrencyId) {
@@ -321,10 +297,11 @@ public class CurrencyUtils {
     /**
      *  Load all currencies into map
      */
-    protected boolean loadCurrencies() {
+    public boolean loadCurrencies() {
         boolean result = true;
         TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
         Cursor cursor;
+        mCurrencies = new HashMap<>();
 
         try {
             cursor = mContext.getContentResolver().query(tableCurrency.getUri(),
