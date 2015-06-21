@@ -42,6 +42,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class RepeatingTransactionAdapter extends CursorAdapter {
     private LayoutInflater inflater;
@@ -81,6 +82,7 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
         try {
             Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE).parse(
                     cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
+//            Locale locale = mContext.getResources().getConfiguration().locale;
             txtDate.setText(new SimpleDateFormat("EEEE dd MMMM yyyy").format(date));
         } catch (ParseException e) {
             txtDate.setText(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)));

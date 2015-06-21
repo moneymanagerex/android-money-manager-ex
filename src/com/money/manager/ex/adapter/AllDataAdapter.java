@@ -118,7 +118,7 @@ public class AllDataAdapter
         try {
             Locale locale = mContext.getResources().getConfiguration().locale;
 
-            Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, locale)
+            Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                     .parse(cursor.getString(cursor.getColumnIndex(DATE)));
             holder.txtMonth.setText(new SimpleDateFormat("MMM", locale).format(date));
             holder.txtYear.setText(new SimpleDateFormat("yyyy", locale).format(date));

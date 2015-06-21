@@ -503,8 +503,9 @@ public class RepeatingTransactionActivity
 
         if (!(TextUtils.isEmpty(mNextOccurrence))) {
             try {
-                Locale locale = getResources().getConfiguration().locale;
-                txtNextOccurrence.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE, locale).parse(mNextOccurrence));
+//                Locale locale = getResources().getConfiguration().locale;
+                txtNextOccurrence.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+                        .parse(mNextOccurrence));
             } catch (ParseException e) {
                 Log.e(LOGCAT, e.getMessage());
             }
@@ -598,7 +599,7 @@ public class RepeatingTransactionActivity
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
         outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
         Locale locale = getResources().getConfiguration().locale;
-        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.PATTERN_DB_DATE, locale)
+        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                 .format(txtNextOccurrence.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
         if (!TextUtils.isEmpty(edtTimesRepeated.getText())) {
