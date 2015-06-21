@@ -468,4 +468,14 @@
   <string name="db_check_schema_error">Greška: nedostaju tabele u bazi podataka!</string>
   <string name="split_amount_negative">Ukupan iznos ne može biti negativan.</string>
   <string name="select_all">Označi sve</string>
+  <string name="db_not_dropbox">Vaša trenutna baza podataka nije sinhronizovana. Molim vas podesite Dropbox sinkronizaciju.</string>
+  <string name="checking_dropbox_for_changes">Provjeravam Dropbox za promjene u bazi podataka.</string>
+  <string name="choose_type">Odaberite tip</string>
+  <string name="default_account">Zadani račun</string>
+  <string name="default_account_summary">Račun koji se koristi pri unosu nove transakcije.</string>
+  <string name="balance_account">Balansiranje računa</string>
+  <string name="balance_adjustment">Podešavanje balansa</string>
+  <string name="cash">Gotovina</string>
+  <string name="select_account">Odaberite račun</string>
+  <string name="invalid_transaction_number">Broj transakcije nije validan</string>
 </resources>
