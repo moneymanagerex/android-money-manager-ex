@@ -31,12 +31,15 @@ import com.money.manager.ex.fragment.PayeeLoaderListFragment;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 0.9.0
  */
-public class PayeeActivity extends BaseFragmentActivity {
+public class PayeeActivity
+        extends BaseFragmentActivity {
+
     public static final String INTENT_RESULT_PAYEEID = "PayeeActivity:PayeeId";
     public static final String INTENT_RESULT_PAYEENAME = "PayeeActivity:PayeeName";
     @SuppressWarnings("unused")
     private static final String LOGCAT = PayeeActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = PayeeActivity.class.getSimpleName() + "_Fragment";
+
     PayeeLoaderListFragment listFragment = new PayeeLoaderListFragment();
 
     @Override
@@ -46,6 +49,7 @@ public class PayeeActivity extends BaseFragmentActivity {
 
         // enable home button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // process intent
         Intent intent = getIntent();
         String action = intent.getAction();

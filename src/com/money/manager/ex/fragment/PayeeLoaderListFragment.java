@@ -85,10 +85,8 @@ public class PayeeLoaderListFragment
         setEmptyText(getActivity().getResources().getString(R.string.payee_empty_list));
         setHasOptionsMenu(true);
 
-        // Use a single layout, it is not necessary to have the layout with the checkbox, with the
-        // single click for the selection of the pay
-        // mLayout = Intent.ACTION_PICK.equals(mAction) ? android.R.layout.simple_list_item_multiple_choice : android.R.layout.simple_list_item_1;
         mLayout = android.R.layout.simple_list_item_1;
+
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 mLayout, null, new String[] { TablePayee.PAYEENAME },
@@ -101,7 +99,8 @@ public class PayeeLoaderListFragment
 
         setListShown(false);
         // init sort
-        mSort = PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0);
+        mSort = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0);
         // start loader
         getLoaderManager().initLoader(ID_LOADER_PAYEE, null, this);
         // set icon searched
@@ -117,7 +116,8 @@ public class PayeeLoaderListFragment
         inflater.inflate(R.menu.menu_payee, menu);
         //Check the default sort order
         final MenuItem item;
-        switch (PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0)) {
+        switch (PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0)) {
             case 0:
                 item = menu.findItem(R.id.menu_sort_name);
                 item.setChecked(true);
@@ -135,14 +135,16 @@ public class PayeeLoaderListFragment
             case R.id.menu_sort_name:
                 mSort = 0;
                 item.setChecked(true);
-                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferenceConstants.PREF_SORT_PAYEE), mSort).commit();
+                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
+                        .putInt(getString(PreferenceConstants.PREF_SORT_PAYEE), mSort).commit();
                 // restart search
                 restartLoader();
                 return true;
             case R.id.menu_sort_usage:
                 mSort = 1;
                 item.setChecked(true);
-                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putInt(getString(PreferenceConstants.PREF_SORT_PAYEE), mSort).commit();
+                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
+                        .putInt(getString(PreferenceConstants.PREF_SORT_PAYEE), mSort).commit();
                 // restart search
                 restartLoader();
                 return true;
@@ -163,7 +165,8 @@ public class PayeeLoaderListFragment
 
         switch (item.getItemId()) {
             case 0: //EDIT
-                showDialogEditPayeeName(SQLTypeTransaction.UPDATE, cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)), cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
+                showDialogEditPayeeName(SQLTypeTransaction.UPDATE, cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)),
+                        cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
                 break;
             case 1: //DELETE
                 //if (new TablePayee().canDelete(getActivity(), cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)))) {
@@ -237,7 +240,10 @@ public class PayeeLoaderListFragment
         switch (loader.getId()) {
             case ID_LOADER_PAYEE:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-                adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
+                String highlightFilter = mCurFilter != null
+                        ? mCurFilter.replace("%", "")
+                        : "";
+                adapter.setHighlightFilter(highlightFilter);
                 adapter.swapCursor(data);
                 if (isResumed()) {
                     setListShown(true);
