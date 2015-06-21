@@ -235,8 +235,7 @@ public class CheckingAccountActivity
         txtSelectDate = (TextView) findViewById(R.id.textViewDate);
         if (!(TextUtils.isEmpty(mDate))) {
             try {
-                txtSelectDate.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE,
-                        getResources().getConfiguration().locale)
+                txtSelectDate.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                         .parse(mDate));
             } catch (ParseException e) {
                 Log.e(LOGCAT, e.getMessage());
