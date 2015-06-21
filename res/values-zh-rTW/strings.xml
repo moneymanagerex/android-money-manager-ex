@@ -468,4 +468,14 @@
   <string name="db_check_schema_error">錯誤: 資料庫中找不到資料表 ！</string>
   <string name="split_amount_negative">總金額不能為負的。</string>
   <string name="select_all">全選</string>
+  <string name="db_not_dropbox">您目前的資料庫未同步。請設定 Dropbox 以同步。</string>
+  <string name="checking_dropbox_for_changes">檢查 Dropbox 中的資料庫變更。</string>
+  <string name="choose_type">選擇類型</string>
+  <string name="default_account">預設帳戶</string>
+  <string name="default_account_summary">輸入新交易時使用的帳戶。</string>
+  <string name="balance_account">結算帳戶</string>
+  <string name="balance_adjustment">平衡調整</string>
+  <string name="cash">現金</string>
+  <string name="select_account">選擇帳戶</string>
+  <string name="invalid_transaction_number">無效的交易號碼</string>
 </resources>

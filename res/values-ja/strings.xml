@@ -468,4 +468,14 @@
   <string name="db_check_schema_error">エラー: テーブルがデータベースで不足しています!</string>
   <string name="split_amount_negative">合計金額はマイナスにできません。</string>
   <string name="select_all">すべて選択</string>
+  <string name="db_not_dropbox">現在のデータベースは同期されません。Dropbox の同期を設定してください。</string>
+  <string name="checking_dropbox_for_changes">データベースの変更を Dropbox でチェックします。</string>
+  <string name="choose_type">種類を選択してください</string>
+  <string name="default_account">デフォルトアカウント</string>
+  <string name="default_account_summary">新しい取引を入力するときに使用するアカウント。</string>
+  <string name="balance_account">残高アカウント</string>
+  <string name="balance_adjustment">残高調整</string>
+  <string name="cash">現金</string>
+  <string name="select_account">アカウントを選択</string>
+  <string name="invalid_transaction_number">取引番号が正しくありません</string>
 </resources>

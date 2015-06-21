@@ -18,6 +18,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <resources>
+  <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Jednoduchá a snadno použitelná aplikace pro správu osobních financí, bankovních účtů, rodinného rozpočtu a tak dále.</string>
   <string name="application_credits">MoneyManagerEx pro Android projekt používá knihovny ActionBarSherlock</string>
   <string name="application_license">Open source licence</string>
@@ -93,7 +94,7 @@
   <string name="decimal_char">Desetinný oddělovač</string>
   <string name="group_char">Skupinový oddělovač</string>
   <string name="scale">Míra</string>
-  <string name="conversion_to_base_rate">Kurz pro převod</string>
+  <string name="conversion_to_base_rate">Směnný kurz</string>
   <string name="currency_name_empty">Je vyžadován název měny</string>
   <string name="amount">Částka</string>
   <string name="total_amount">Celková částka</string>
@@ -116,6 +117,7 @@
   <string name="error_toaccount_not_selected">Je vyžadován cílový účet</string>
   <string name="error_category_not_selected">Je vyžadována kategorie</string>
   <string name="error_totamount_empty">Je vyžadována celková částka</string>
+  <string name="error_transfer_to_same_account">Zadané účty pro převod musí být rozdílné</string>
   <string name="about">O programu</string>
   <string name="add">Přidat</string>
   <string name="confirmDelete">Jste si jisti, že chcete odstranit?</string>
@@ -193,7 +195,9 @@
   <string name="activates">Aktivní</string>
   <string name="enter_next_occurrence">Zadejte další výskyt</string>
   <string name="skip_next_occurrence">Přeskočit další výskyt</string>
+  <string name="notification_repeating_transaction_expired">Máte opakované transakce po splatnosti</string>
   <string name="notification_click_to_check_repeating_transaction">Dotkněte se pro kontrolu splatnosti transakce</string>
+  <string name="num_repeating_transaction_expired">Počet opakovaných transakcí po splatnosti: %1$d</string>
   <string name="send_feedback">Zašlete svůj názor</string>
   <string name="preferences_info_application">Informace</string>
   <string name="preferences_security">Zabezpečení</string>
@@ -290,6 +294,7 @@
   <string name="dashclock_extension_summary">Zobrazit přehled v Money Manager Ex pro Android</string>
   <string name="dashclock_extension_summary_all_account">Zobrazit Shrnutí každého účtu v Money Manager Ex pro Android</string>
   <string name="title_check_repeating_transaction">Čas kontroly</string>
+  <string name="summary_check_repeating_transaction">V kolik hodin kontrolovat, zda jsou opakované transakce po splatnosti? (výchozí 8:00)</string>
   <string name="credits">Poděkování</string>
   <string name="top_withdrawals_last_30_days">Největší výběry: Posledních 30 dní</string>
   <string name="top_payees_last_30_days">Největší příjemci: Posledních 30 dní</string>
@@ -362,7 +367,7 @@
   <string name="start_currency_exchange_rates">Aktualizuji směnné kurzy měn. Čekejte prosím&#8230;</string>
   <string name="update_currency_exchange_rates">Aktualizuji směnný kurz:\n%1$s</string>
   <string name="success_currency_exchange_rates">Všechny směnné kurzy měn byly úspěšně aktualizovány</string>
-  <string name="update_menu_currency_exchange_rates">Aktualizovat směnná kurzy</string>
+  <string name="update_menu_currency_exchange_rates">Aktualizovat směnný kurz</string>
   <string name="question_update_currency_exchange_rates">Chcete aktualizovat směnný kurz?</string>
   <string name="withdrawal_from">Výběr z %1$s</string>
   <string name="deposit_to">Vkad do %1$s</string>
@@ -371,6 +376,8 @@
   <string name="donate_in_app_already_donate">Již jste podporoval rozvoj MoneyManagerEx pro Android obdarováním! \n\nVývojový tým vám děkuje!</string>
   <string name="donate_in_app_retrieving_status">Načítání stavu vašich darů ze služby Google Play. Počkejte prosím&#8230;</string>
   <string name="donate_in_app_error">Nelze použít Nákupy v aplikaci. Zkontrolujte, zda je nainstalována nejnovější verze aplikace Obchod Play.</string>
+  <string name="title_notifications_repeating_transaction">Upozornění na opakované transakce po splatnosti </string>
+  <string name="summary_notifications_repeating_transaction">Zobrazit upozornění na opakované transakce po splatnosti</string>
   <string name="tools">Nástroje</string>
   <string name="loading">Nahrávám&#8230;</string>
   <string name="grand_total">Celkový součet</string>
@@ -396,7 +403,10 @@
   <string name="keep_editing">Pokračovat v editaci</string>
   <string name="discard">Zrušit</string>
   <string name="invalid_expression">Neplatný výraz</string>
+  <string name="send_me_logcat">Logcat</string>
   <string name="dropbox_database_can_be_updted">Na Dropboxu je aktualizovaná databáze</string>
+  <string name="due_today">Splatnost dnes</string>
+  <string name="issues_tracker">Hlášení problémů na GitHubu</string>
   <string name="action_settings">Nastavení</string>
   <string name="close">Zavřít</string>
   <string name="tutorial_accounts_1">Několik typů účtů: běžný, spořící, kreditní, aktiva a investice.</string>
@@ -409,8 +419,10 @@
   <string name="tutorial_sync_1">Podpora více platforem, synchronizace prostřednictvím Dropboxu. Import a export dat do jiných aplikací.</string>
   <string name="transactions">Transakce</string>
   <string name="tutorial_transactions_1">Vklady, výběry, převody. Opakované transakce s upomínkami.</string>
-  <string name="sort_by_ascending">Seřadit vzestupně podle roku a měsíce</string>
-  <string name="sort_by_desceding">Seřadit sestupně podle roku a měsíce</string>
+  <string name="split_category">-Více kategorií-</string>
+  <string name="title_activity_currency_chart">Graf směnného kurzu měny</string>
+  <string name="sort_by_ascending">Vzestupně podle roku a měsíce</string>
+  <string name="sort_by_desceding">Sestupně podle roku a měsíce</string>
   <string name="years">Roky</string>
   <string name="select_the_years_to_be_displayed">Vyberte roky, které chcete zobrazit</string>
   <string name="to_date">Datum do</string>
@@ -441,4 +453,15 @@
   <string name="db_check_schema_success">Všechny požadované tabulky jsou v databázi.</string>
   <string name="db_check_schema_error">Chyba: v databázi chybí tabulky!</string>
   <string name="split_amount_negative">Celková částka nemůže být záporná.</string>
+  <string name="select_all">Vybrat vše</string>
+  <string name="db_not_dropbox">Vaše současná databáze není synchronizována. Nastavte prosím synchronizaci přes Dropbox.</string>
+  <string name="checking_dropbox_for_changes">Kontroluji změny v databázi na Dropboxu.</string>
+  <string name="choose_type">Vyberte typ</string>
+  <string name="default_account">Výchozí účet</string>
+  <string name="default_account_summary">Účet, který chcete použít při zadávání nové transakce.</string>
+  <string name="balance_account">Upravit zůstatek</string>
+  <string name="balance_adjustment">Úprava zůstatku</string>
+  <string name="cash">Hotovost</string>
+  <string name="select_account">Vyberte účet</string>
+  <string name="invalid_transaction_number">Neplatné číslo transakce</string>
 </resources>

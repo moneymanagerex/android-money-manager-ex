@@ -258,13 +258,14 @@
   <string name="last_modified">Последнее изменение</string>
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Ваша база данных была загружена</string>
-  <string name="dropbox_open_database_downloaded">Дря работы с загруженной базой нажмите Открыть Базу</string>
+  <string name="dropbox_open_database_downloaded">Для работы с загруженной базой нажмите Открыть Базу</string>
   <string name="click_to_select_file_dropbox">Нажмите для выбора файла из Dropbox</string>
   <string name="download_from_drobpox">Загрузка из Dropbox</string>
   <string name="summary_download_from_drobpox">Нажмите для принудительной загрузки связанного файла из Dropbox</string>
   <string name="upload_to_drobpox">Загрузка в Dropbox</string>
   <string name="summary_upload_to_drobpox">Нажмите для принудительной загрузки файла в папку Dropbox</string>
-  <string name="upload_file_to_dropbox_complete">Ваша базы данных была успешно загружена</string>
+  <string name="upload_file_to_dropbox_complete">Ваша база данных была успешно загружена</string>
+  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
   <string name="dropbox_how_it_works">Как Dropbox работает с Money Manager Ex\?</string>
   <string name="dont_show_again">Не показывать снова</string>
   <string name="open_database">Открыть БД</string>
@@ -372,6 +373,7 @@
   <string name="withdrawal_from">Снятие со счета  %1$s</string>
   <string name="deposit_to">Пополнение счета %1$s</string>
   <string name="mmex_website">Сайт MoneyManagerEX</string>
+  <string name="android_website">Вебсайт программы MMEx для Android</string>
   <string name="donate_in_app_already_donate">Вы уже поддержали разработчиков MoneyManagerEx для Android внеся пожертвование!\n\nБольшое спасибо от группы разработчиков!</string>
   <string name="donate_in_app_retrieving_status">Запрашиваем статус ваших пожертвований через Google Play. Пожалуйста подождите&#8230;</string>
   <string name="donate_in_app_error">Невозможно использовать функцию оплаты из программы. Проверьте, что у вас установлена последняя версия приложения Google Play Store.</string>
@@ -436,6 +438,7 @@
   <string name="update_price">Обновление цен</string>
   <string name="price_updated">Цены обновлены</string>
   <string name="all_prices_updated">Все цены обновлены.</string>
+  <string name="confirm_price_download">Вы хотите обновить цены безопасности онлайн ?</string>
   <string name="starting_price_update">Загрузка цен, пожалуйста, подождите...</string>
   <string name="database_migrate_14_to_20">Перенос базы данных с v1.4</string>
   <string name="database_migrate_14_to_20_explanation">Найденыстарые данные. Нажмите здесь, чтобы использовать вашу предыдущую базу данных.</string>
@@ -444,7 +447,10 @@
   <string name="database_migrate_14_to_20_complete">Перенос завершен. Закройте настройки, чтобы начать использовать эту базу данных.</string>
   <string name="database_migrate_14_to_20_intro">База данных была обнаружена на старом месте. Нажмите на кнопку ниже, чтобы перенести на SD-карту  и использовать.</string>
   <string name="export_prices">Экспорт цен</string>
+  <string name="purge_history">Очистить историю цен</string>
   <string name="purge_history_confirmation">Вы хотите удалить историю цен для всех счетов?</string>
+  <string name="purge_history_complete">Историю цен очищена.</string>
+  <string name="purge_history_failed">Невозможно очистить историю цен.</string>
   <string name="create_db">Создать базу данных</string>
   <string name="create_db_summary">Создать новый файл базы данных</string>
   <string name="create_db_hint">Укажите название папки</string>

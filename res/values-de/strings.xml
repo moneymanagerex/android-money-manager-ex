@@ -468,4 +468,14 @@
   <string name="db_check_schema_error">Fehler: Tabellen in der Datenbank fehlen!</string>
   <string name="split_amount_negative">Der Gesamtbetrag darf nicht negativ sein.</string>
   <string name="select_all">Alle auswählen</string>
+  <string name="db_not_dropbox">Die aktuelle Datenbank ist nicht synchronisiert. Bitte richten Sie die Dropbox-Synchronisation ein.</string>
+  <string name="checking_dropbox_for_changes">Kontrollieren Sie Dropbox wegen Änderungen an der Datenbank.</string>
+  <string name="choose_type">Wählen Sie einen Typ</string>
+  <string name="default_account">Standardkonto</string>
+  <string name="default_account_summary">Das Konto welches verwendet wird, wenn Sie eine neue Transaktion eingeben.</string>
+  <string name="balance_account">Kontostand</string>
+  <string name="balance_adjustment">Saldoberichtigung</string>
+  <string name="cash">Bargeld</string>
+  <string name="select_account">Konto auswählen</string>
+  <string name="invalid_transaction_number">Ungültige Transaktionsnummer</string>
 </resources>

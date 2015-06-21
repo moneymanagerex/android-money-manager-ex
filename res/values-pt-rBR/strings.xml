@@ -468,4 +468,14 @@
   <string name="db_check_schema_error">Erro: faltando tabelas do banco de dados!</string>
   <string name="split_amount_negative">A quantidade total não pode ser negativa.</string>
   <string name="select_all">Selecionar tudo</string>
+  <string name="db_not_dropbox">Seu banco de dados atual não está sincronizado. Por favor configure a sincronização do Dropbox.</string>
+  <string name="checking_dropbox_for_changes">Verificando modificações do banco de dados no Dropbox.</string>
+  <string name="choose_type">Escolha o tipo</string>
+  <string name="default_account">Conta padrão</string>
+  <string name="default_account_summary">Conta a usar quando criar uma nova transacção.</string>
+  <string name="balance_account">Saldo da conta</string>
+  <string name="balance_adjustment">Ajuste de saldo</string>
+  <string name="cash">Dinheiro</string>
+  <string name="select_account">Selecione a conta</string>
+  <string name="invalid_transaction_number">Número de transação inválido</string>
 </resources>

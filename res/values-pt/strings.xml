@@ -125,7 +125,7 @@
   <string name="delete">Eliminar</string>
   <string name="download">Descarregar</string>
   <string name="edit">Editar</string>
-  <string name="home">Casa</string>
+  <string name="home">Início</string>
   <string name="logo">Logotipo</string>
   <string name="new_edit_transaction">Novo/Editar Movimento</string>
   <string name="refresh">Atualizar</string>
@@ -468,4 +468,14 @@
   <string name="db_check_schema_error">Erro: tabelas da base de dados em falta!</string>
   <string name="split_amount_negative">A quantia total não pode ser negativa.</string>
   <string name="select_all">Seleccionar tudo</string>
+  <string name="db_not_dropbox">A base de dados actual não está sincronizada. Por favor configure a sincronização Dropbox.</string>
+  <string name="checking_dropbox_for_changes">Verificando alterações na base de dados para o Dropbox.</string>
+  <string name="choose_type">Escolha um tipo</string>
+  <string name="default_account">Conta padrão</string>
+  <string name="default_account_summary">Conta a usar quando criar uma nova transacção.</string>
+  <string name="balance_account">Saldo da conta</string>
+  <string name="balance_adjustment">Ajuste de saldo</string>
+  <string name="cash">Dinheiro</string>
+  <string name="select_account">Seleccionar conta</string>
+  <string name="invalid_transaction_number">Número de transacção inválido</string>
 </resources>

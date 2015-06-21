@@ -468,4 +468,9 @@
   <string name="db_check_schema_error">Errore: tabelle mancanti nel database!</string>
   <string name="split_amount_negative">L\'importo totale non può essere negativo.</string>
   <string name="select_all">Seleziona tutto</string>
+  <string name="db_not_dropbox">Il database corrente non è sincronizzato. Per favore imposta la sincronizzazione con Dropbox.</string>
+  <string name="checking_dropbox_for_changes">Sto controllando Dropbox per modifiche al database.</string>
+  <string name="cash">Contante</string>
+  <string name="select_account">Seleziona un account</string>
+  <string name="invalid_transaction_number">Numero di transazione non valido</string>
 </resources>
