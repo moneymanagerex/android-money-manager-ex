@@ -126,7 +126,7 @@ public class DropboxManager {
         service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, localFile);
         service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, dropboxFile);
 
-        ProgressDialog progressDialog = null;
+        ProgressDialog progressDialog;
         try {
             //progress dialog
             progressDialog = new ProgressDialog(mContext);
