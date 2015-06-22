@@ -76,7 +76,7 @@ public class AppSettings {
 
     public boolean set(String key, int value) {
         getEditor().putInt(key, value);
-        boolean result =getEditor().commit();
+        boolean result = getEditor().commit();
         return result;
     }
 
