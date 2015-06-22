@@ -552,6 +552,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
      */
     private void showDialogEditSubCategoryName(final SQLTypeTransaction type, final int categoryId,
                                                final int subCategoryId, final CharSequence subCategName) {
+
         final TableSubCategory subCategory = new TableSubCategory();
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
@@ -568,16 +569,14 @@ public class CategorySubCategoryExpandableLoaderListFragment
         // take a categories list
         MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
         final List<TableCategory> categories = helper.getCategoryList();
-        // close connection database
-        //helper.close();
 
-        ArrayList<String> categName = new ArrayList<String>();
-        ArrayList<Integer> categId = new ArrayList<Integer>();
+        ArrayList<String> categName = new ArrayList<>();
+        ArrayList<Integer> categId = new ArrayList<>();
         for (TableCategory category : categories) {
             categId.add(category.getCategId());
             categName.add(category.getCategName().toString());
         }
-        ArrayAdapter<String> adapterCategory = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categName);
+        ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categName);
         adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnCategory.setAdapter(adapterCategory);
         //select category if present

@@ -223,7 +223,6 @@ public class AccountRepository {
                 TableAccountList account = new TableAccountList();
                 account.setValueFromCursor(cursor);
                 listAccount.add(account);
-                cursor.moveToNext();
             }
             cursor.close();
         }

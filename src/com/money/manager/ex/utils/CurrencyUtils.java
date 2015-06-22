@@ -324,8 +324,6 @@ public class CurrencyUtils {
                 Integer currencyId = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
                 // put object into map
                 mCurrencies.put(currencyId, mapCur);
-
-                cursor.moveToNext();
             }
             cursor.close();
         } catch (Exception e) {

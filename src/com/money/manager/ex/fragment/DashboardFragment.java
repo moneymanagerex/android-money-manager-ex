@@ -320,8 +320,6 @@ public class DashboardFragment
             tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
                             "<small>" + currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
                     new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
-            // move to nextrow
-            cursor.moveToNext();
         }
         // return Layout
         return layout;
@@ -351,8 +349,6 @@ public class DashboardFragment
             tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
                             "<small>" + currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
                     new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
-            // move to nextrow
-            cursor.moveToNext();
         }
 
         // return Layout
@@ -387,8 +383,6 @@ public class DashboardFragment
             txt.setTextColor(getResources().getColor(daysLeft >= 0 ? core.resolveIdAttribute(R.attr.holo_green_color_theme) : core.resolveIdAttribute(R.attr.holo_red_color_theme)));
             // Add Row
             tableLayout.addView(row);
-            // move to nextrow
-            cursor.moveToNext();
         }
         // return Layout
         return layout;

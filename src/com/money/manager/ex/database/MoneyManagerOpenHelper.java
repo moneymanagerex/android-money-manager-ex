@@ -216,9 +216,10 @@ public class MoneyManagerOpenHelper
         // create a return list
         List<TableCategory> listCategories = new ArrayList<>();
         // data cursor
-        //Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(), null, null, null, TableCategory.CATEGNAME);
-        Cursor cursor = this.getReadableDatabase().query(new TableCategory().getSource(),
-                null, null, null, null, null, TableCategory.CATEGNAME);
+        Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(),
+                null, null, null, TableCategory.CATEGNAME);
+//        Cursor cursor = this.getReadableDatabase().query(new TableCategory().getSource(),
+//                null, null, null, null, null, TableCategory.CATEGNAME);
         if (cursor == null) return listCategories;
 
         // populate list from data cursor
@@ -226,7 +227,6 @@ public class MoneyManagerOpenHelper
             TableCategory category = new TableCategory();
             category.setValueFromCursor(cursor);
             listCategories.add(category);
-            cursor.moveToNext();
         }
         cursor.close();
 
