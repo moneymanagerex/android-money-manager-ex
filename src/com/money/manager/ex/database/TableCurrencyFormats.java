@@ -202,12 +202,13 @@ public class TableCurrencyFormats extends Dataset {
 	public void setCurrencySymbol(String currencySymbol) {
 		this.currencySymbol = currencySymbol;
 	}
+
 	@Override
 	public void setValueFromCursor(Cursor c) {
 		if (c == null) { return; }
 		// check number of columns
 		if (!(c.getColumnCount() == this.getAllColumns().length)) { return; }
-		// set value of istance
+		// set value of instance
 		this.setCurrencyId(c.getInt(c.getColumnIndex(CURRENCYID)));
 		this.setCurrencyName(c.getString(c.getColumnIndex(CURRENCYNAME)));
 		this.setPfxSymbol(c.getString(c.getColumnIndex(PFX_SYMBOL)));
