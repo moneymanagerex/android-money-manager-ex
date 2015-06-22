@@ -79,12 +79,12 @@ public class CurrencyUtils {
         mBaseCurrencyId = null;
     }
 
-    /**
-     * @return true if wrapper is init
-     */
-    public Boolean isInit() {
-        return mCurrencies != null && mCurrencies.size() > 0;
-    }
+//    /**
+//     * @return true if wrapper is init
+//     */
+//    public Boolean isInit() {
+//        return mCurrencies != null && mCurrencies.size() > 0;
+//    }
 
     public Boolean reInit() {
         destroy();

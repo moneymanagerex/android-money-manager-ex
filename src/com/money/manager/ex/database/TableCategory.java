@@ -19,47 +19,53 @@ package com.money.manager.ex.database;
 
 import android.database.Cursor;
 
-public class TableCategory extends Dataset {
-	// definizione dei nomi dei campi
+public class TableCategory
+		extends Dataset {
+
 	public static final String CATEGID = "CATEGID";
 	public static final String CATEGNAME = "CATEGNAME";
-	// definizione dei campi
+
 	private int categId;
 	private CharSequence categName;
-	// costruttore
+
 	public TableCategory() {
 		super("category_v1", DatasetType.TABLE, "category");
 	}
+
 	@Override
 	public String[] getAllColumns() {
 		return new String[] {"CATEGID AS _id", CATEGID, CATEGNAME};
 	}
-	@Override
-	protected void setValueFromCursor(Cursor c) {
-		// controllo che non sia null il cursore
+
+    @Override
+	public void setValueFromCursor(Cursor c) {
 		if (c == null) { return; }
-		// imposto i vari valori
+
 		this.setCategId(c.getInt(c.getColumnIndex(CATEGID)));
 		this.setCategName(c.getString(c.getColumnIndex(CATEGNAME)));
 	}
+
 	/**
 	 * @return the categID
 	 */
 	public int getCategId() {
 		return categId;
 	}
+
 	/**
 	 * @param categID the categID to set
 	 */
 	public void setCategId(int categID) {
 		this.categId = categID;
 	}
+
 	/**
 	 * @return the categName
 	 */
 	public CharSequence getCategName() {
 		return categName;
 	}
+
 	/**
 	 * @param categName the categName to set
 	 */

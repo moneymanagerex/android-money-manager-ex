@@ -27,6 +27,9 @@ import android.text.TextUtils;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TablePayee;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Category
  */
@@ -70,6 +73,30 @@ public class CategoryService {
         long id = ContentUris.parseId(result);
 
         return ((int) id);
+    }
+
+    /**
+     * Return a list of all categories
+     *
+     * @return List of all categories
+     * @since version 1.0.1
+     */
+    public List<TableCategory> getCategoryList() {
+        List<TableCategory> listCategories = new ArrayList<>();
+
+        Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(),
+                null, null, null, TableCategory.CATEGNAME);
+        if (cursor == null) return listCategories;
+
+        // populate list from data cursor
+        while (cursor.moveToNext()) {
+            TableCategory category = new TableCategory();
+            category.setValueFromCursor(cursor);
+            listCategories.add(category);
+        }
+        cursor.close();
+
+        return listCategories;
     }
 
 }

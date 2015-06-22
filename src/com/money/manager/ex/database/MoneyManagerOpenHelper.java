@@ -207,33 +207,6 @@ public class MoneyManagerOpenHelper
     }
 
     /**
-     * Return a list of all categories
-     *
-     * @return List of all categories
-     * @since version 1.0.1
-     */
-    public List<TableCategory> getCategoryList() {
-        // create a return list
-        List<TableCategory> listCategories = new ArrayList<>();
-        // data cursor
-        Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(),
-                null, null, null, TableCategory.CATEGNAME);
-//        Cursor cursor = this.getReadableDatabase().query(new TableCategory().getSource(),
-//                null, null, null, null, null, TableCategory.CATEGNAME);
-        if (cursor == null) return listCategories;
-
-        // populate list from data cursor
-        while (cursor.moveToNext()) {
-            TableCategory category = new TableCategory();
-            category.setValueFromCursor(cursor);
-            listCategories.add(category);
-        }
-        cursor.close();
-
-        return listCategories;
-    }
-
-    /**
      * Get SQLite Version installed
      *
      * @return version of SQLite

@@ -46,6 +46,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
+import com.money.manager.ex.businessobjects.CategoryService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -567,8 +568,10 @@ public class CategorySubCategoryExpandableLoaderListFragment
 
         // populate spinner
         // take a categories list
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
-        final List<TableCategory> categories = helper.getCategoryList();
+//        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
+        CategoryService categoryService = new CategoryService(getActivity());
+//        final List<TableCategory> categories = helper.getCategoryList();
+        final List<TableCategory> categories = categoryService.getCategoryList();
 
         ArrayList<String> categName = new ArrayList<>();
         ArrayList<Integer> categId = new ArrayList<>();
