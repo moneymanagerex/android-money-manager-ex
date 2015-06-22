@@ -42,16 +42,16 @@ public class GeneralSettings {
         return result;
     }
 
-    public int getBaseCurrency() {
-        SharedPreferences preferences = getSharedPreferences();
-
-        String key = mContext.getString(PreferenceConstants.PREF_BASE_CURRENCY);
-//        String key2 = mContext.getString(R.string.pref_base_currency);
-
-        int currencyId = preferences.getInt(key, -1);
-
-        return currencyId;
-    }
+//    public int getBaseCurrency() {
+//        SharedPreferences preferences = getSharedPreferences();
+//
+//        String key = mContext.getString(PreferenceConstants.PREF_BASE_CURRENCY);
+////        String key2 = mContext.getString(R.string.pref_base_currency);
+//
+//        int currencyId = preferences.getInt(key, -1);
+//
+//        return currencyId;
+//    }
 
     public boolean getNotificationRecurringTransaction() {
         SharedPreferences preferences = getSharedPreferences();
@@ -70,8 +70,8 @@ public class GeneralSettings {
         return result;
     }
 
-    public boolean setBaseCurrency(int currencyId) {
-        String key = mContext.getString(PreferenceConstants.PREF_BASE_CURRENCY);
-        return mSettings.set(key, currencyId);
-    }
+//    public boolean setBaseCurrency(int currencyId) {
+//        String key = mContext.getString(PreferenceConstants.PREF_BASE_CURRENCY);
+//        return mSettings.set(key, currencyId);
+//    }
 }

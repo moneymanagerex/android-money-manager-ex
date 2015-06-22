@@ -234,8 +234,10 @@ public class GeneralSettingsFragment
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     int currencyId = data.getIntExtra(CurrencyFormatsListActivity.INTENT_RESULT_CURRENCYID, -1);
                     // set preference
-                    AppSettings settings = new AppSettings(getActivity());
-                    settings.getGeneralSettings().setBaseCurrency(currencyId);
+//                    AppSettings settings = new AppSettings(getActivity());
+//                    settings.getGeneralSettings().setBaseCurrency(currencyId);
+                    CurrencyUtils utils = new CurrencyUtils(getActivity());
+                    utils.saveBaseCurrencyId(currencyId);
                     // refresh the displayed value.
                     showCurrentDefaultCurrency();
                 }
@@ -248,8 +250,7 @@ public class GeneralSettingsFragment
         if (baseCurrency == null) return;
 
         CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
-//        Integer currencyId = currencyUtils.getBaseCurrencyId();
-        int currencyId = mSettings.getGeneralSettings().getBaseCurrency();
+        Integer currencyId = currencyUtils.getBaseCurrencyId();
 
         TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyId);
         if (tableCurrency != null) {

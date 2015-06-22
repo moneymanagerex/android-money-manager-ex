@@ -288,10 +288,17 @@ public class CurrencyUtils {
         ContentValues values = new ContentValues();
         values.put(TableInfoTable.INFOVALUE, currencyId);
 
-        return mContext.getContentResolver().update(mInfoTable.getUri(),
+        boolean success = mContext.getContentResolver().update(mInfoTable.getUri(),
                 values,
                 TableInfoTable.INFONAME + "=?",
                 new String[]{Constants.INFOTABLE_BASECURRENCYID}) == 1;
+
+        // cache the new base currency
+        if (success) {
+            mBaseCurrencyId = currencyId;
+        }
+
+        return success;
     }
 
     /**
