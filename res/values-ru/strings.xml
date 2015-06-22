@@ -29,7 +29,7 @@
   <string name="menu_manage">Управление</string>
   <string name="dropbox_link">Соединиться с Dropbox</string>
   <string name="dropbox_unlink">Отсоединиться от Dropbox</string>
-  <string name="dropbox_syncProgress">Файл обновляется. Пожалуйста, подождите&#8230;</string>
+  <string name="dropbox_syncProgress">Синхронизирую файл. Пожалуйста подождите&#8230;</string>
   <string name="dropbox_downloadProgress">Загрузка файла из Dropbox. Пожалуйста, подождите&#8230;</string>
   <string name="dropbox_uploadProgress">Выгрузка файла в Dropbox. Подождите, пожалуйста&#8230;</string>
   <string name="dropbox_linkedFile">Файл Dropbox</string>

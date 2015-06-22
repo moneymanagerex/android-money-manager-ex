@@ -18,6 +18,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <resources>
+  <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Một ứng dụng đơn giản và dễ dàng sử dụng để quản lý tài chính cá nhân, tài khoản ngân hàng, ngân sách gia đình, và v.v...</string>
   <string name="application_credits">Dự án MoneyManagerEx cho Android sử dụng thư viện ActionBarSherlock</string>
   <string name="application_license">Giấy phép mã nguồn mở</string>
@@ -33,14 +34,19 @@
   <string name="dropbox_uploadProgress">Đang tải tập tin tới Dropbox. Vui lòng chờ...</string>
   <string name="dropbox_linkedFile">Tập tin Dropbox</string>
   <string name="preferences_general">Chung</string>
+  <string name="preferences_dispaly">Nhìn &amp; Cảm nhận</string>
   <string name="base_currency">Tiền tệ cơ sở</string>
   <string name="view_accounts_opened">Xem các tài khoản mở</string>
   <string name="if_not_selected_willShowAllAccounts">Nếu không được chọn sẽ hiện tất cả tài khoản</string>
   <string name="view_accounts_favorites">Xem tài khoản ưa thích</string>
   <string name="version">Phiên bản</string>
   <string name="build">Xây dựng</string>
+  <string name="path">Đường dẫn CSDL</string>
+  <string name="title_show_tutorial">Hiện hướng dẫn</string>
+  <string name="summary_show_tutorial">Hiện hướng dẫn trong lần chạy tới?</string>
   <string name="account">Tài khoản</string>
   <string name="account_list">Danh sách tài khoản</string>
+  <string name="account_empty_list">Không tìm thấy tài khoản nào. Để tạo 1 tài khoản, chạm vào nút \"+\" màu xanh.</string>
   <string name="account_balance">Số dư tài khoản</string>
   <string name="account_reconciled_balance">Số dư đối chiếu</string>
   <string name="delete_account">Xoá tài khoản</string>
@@ -53,6 +59,7 @@
   <string name="select_currency">Chọn loại tiền tệ</string>
   <string name="checking">Kiểm tra</string>
   <string name="investment">Đầu tư</string>
+  <string name="investment_accounts">Tài khoản đầu tư</string>
   <string name="term">Kỳ hạn</string>
   <string name="db_account_insert_failed">Lỗi chèn tài khoản</string>
   <string name="db_account_update_failed">Lỗi cập nhật tài khoản</string>
@@ -66,10 +73,12 @@
   <string name="delete_payee">Xoá người nhận thanh toán</string>
   <string name="payee">Người nhận thanh toán</string>
   <string name="select_payee">Chọn người nhận thanh toán</string>
+  <string name="payee_empty_list">Không tìm thấy người nhận thanh toán nào. Để tạo một người nhận, hãy nhấp vào nút \"+\" màu xanh lá cây.</string>
   <string name="from">Từ</string>
   <string name="db_payee_update_failed">Cập Nhật người nhận thanh toán bị lỗi</string>
   <string name="category">Danh mục</string>
   <string name="subcategory">Danh mục phụ</string>
+  <string name="category_empty_list">Không tìm thấy danh mục nào. Để tạo danh mục, chạm nút \"+\" màu xanh lá.</string>
   <string name="select_category">Chọn danh mục</string>
   <string name="add_category">Thêm danh mục</string>
   <string name="add_subcategory">Thêm danh mục phụ</string>
@@ -108,6 +117,7 @@
   <string name="error_toaccount_not_selected">Tới Tài Khoản được yêu cầu</string>
   <string name="error_category_not_selected">Danh mục được yêu cầu</string>
   <string name="error_totamount_empty">Tổng số tiền được yêu cầu</string>
+  <string name="error_transfer_to_same_account">Hai tài khoản cho việc chuyển giao phải khác biệt</string>
   <string name="about">Giới thiệu</string>
   <string name="add">Thêm</string>
   <string name="confirmDelete">Bạn có chắc muốn xóa không?</string>
@@ -122,6 +132,7 @@
   <string name="search">Tìm kiếm</string>
   <string name="settings">Thiết đặt</string>
   <string name="summary">Tóm lược</string>
+  <string name="sync">Đồng bộ</string>
   <string name="synchronize">Đồng bộ</string>
   <string name="open">Mở</string>
   <string name="user">Người dùng</string>
@@ -135,6 +146,9 @@
   <string name="notes">Ghi chú</string>
   <string name="closed">Đã đóng</string>
   <string name="new_edit_currency">Mới/Sửa tiền tệ</string>
+  <string name="theme_application">Chủ đề</string>
+  <string name="theme_holo">Material Tối</string>
+  <string name="theme_light">Material Sáng</string>
   <string name="close_application">Đóng ứng dụng</string>
   <string name="question_close_application">Bạn có muốn đóng ứng dụng?</string>
   <string name="error_intent_pick_file">Không có hoạt động tìm thấy để xử lý ý định chọn tập tin</string>
@@ -154,6 +168,7 @@
   <string name="widget_summary">Tóm lược Money Manager Ex</string>
   <string name="widget_all_accounts">Tất cả Tài khoản Money Manager Ex</string>
   <string name="widget_add_transaction">Thêm giao dịch Money Manager Ex</string>
+  <string name="repeating_empty_transaction">Không tìm thấy giao dịch định kỳ nào. Để tạo một cái, hãy nhấp vào nút \"+\" màu xanh lá.</string>
   <string name="none">Không</string>
   <string name="weekly">Hàng Tuần</string>
   <string name="bi_weekly">Mỗi 2 tuần</string>
@@ -172,6 +187,7 @@
   <string name="inactive">Không hoạt động</string>
   <string name="days_overdue">ngày quá hạn!</string>
   <string name="days_remaining">ngày còn lại</string>
+  <string name="new_edit_repeating_transaction">Giao Dịch Định Kỳ Mới/Sửa</string>
   <string name="next_occurrence">Lần xuất hiện tiếp theo</string>
   <string name="repeats">Lặp lại</string>
   <string name="times_repeated">Lần lặp lại</string>
@@ -179,7 +195,9 @@
   <string name="activates">Kích hoạt</string>
   <string name="enter_next_occurrence">Nhập việc xảy ra tiếp theo</string>
   <string name="skip_next_occurrence">Bỏ qua lần xảy ra tiếp theo</string>
+  <string name="notification_repeating_transaction_expired">Có những giao dịch định kỳ hết hạn</string>
   <string name="notification_click_to_check_repeating_transaction">Chạm để kiểm tra giao dịch quá hạn</string>
+  <string name="num_repeating_transaction_expired">%1$d giao dịch định kỳ quá hạn</string>
   <string name="send_feedback">Gửi phản hồi</string>
   <string name="preferences_info_application">Thông tin</string>
   <string name="preferences_security">Bảo mật</string>
@@ -196,6 +214,8 @@
   <string name="income">Thu nhập</string>
   <string name="expenses">Chi phí</string>
   <string name="difference">Sự khác biệt</string>
+  <string name="no_data">Không tìm thấy hồ sơ nào. Để tạo một hồ sơ, nhấp vào nút \"+\"màu xanh lá. </string>
+  <string name="no_stock_data">Không có dữ liệu cổ phiếu có sẵn cho tài khoản này.</string>
   <string name="month">Tháng</string>
   <string name="year">Năm</string>
   <string name="menu_reports">Báo cáo</string>
@@ -209,6 +229,7 @@
   <string name="date_format">Định dạng ngày</string>
   <string name="financial_year_start_day">Năm tài chính: Ngày bắt đầu</string>
   <string name="financial_year_start_month">Năm tài chính: Tháng bắt đầu</string>
+  <string name="menu_move_database_to_external_storage">Xuất CSDL</string>
   <string name="database_has_been_moved">Cơ sở dữ liệu đã chuyển: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Sao chép CSDL trên lưu trữ ngoài bị lỗi</string>
   <string name="path_database_using">Bạn đang dùng CSDL được lưu trong: %1$s</string>
@@ -219,6 +240,8 @@
   <string name="export_data_in_progress">Đang xuất dữ liệu. Vui lòng chờ&#8230;</string>
   <string name="export_file_complete">Dữ liệu đã được xuất thành công ra tệp %1$s</string>
   <string name="export_file_failed">Xuất tập tin %1$s bị lỗi</string>
+  <string name="donate_header">MoneyManagerEx cho Android được cung cấp miễn phí. Nếu ứng dụng này là theo ý thích của bạn, bạn có thể hỗ trợ các nhóm phát triển với một quyên tặng.</string>
+  <string name="donate_in_app_title">Thanh toán bên trong ứng dụng Google Play</string>
   <string name="donate_in_app_description">Tặng thông qua Google Play trong ứng dụng thanh toán.</string>
   <string name="donate_in_app_spinner_text">Chọn một số tiền tặng</string>
   <string name="donate_in_app_button">Tặng tiền</string>
@@ -226,12 +249,14 @@
   <string name="donate">Tặng tiền</string>
   <string name="no_thanks">Không, cảm ơn</string>
   <string name="donate_exlamation">Tặng tiền!</string>
+  <string name="android_sqlite_vesion">Phiên bản SQLite</string>
   <string name="ascending">Tăng dần</string>
   <string name="descending">Giảm dần</string>
   <string name="sorting_month">Xếp theo Tháng</string>
   <string name="dropbox_empty_folder">Thư mục trong Dropbox/Ứng dụng/Money Manager Ex Di Động đang trống. Nếu bạn đã dùng Money Manager Ex sao chép cơ sở dữ liệu vào thư mục này của bạn trong máy tính của bạn, và sau đó bạn thực hiện làm mới.</string>
   <string name="dropbox_select_file">Chọn một tập tin từ Dropbox</string>
   <string name="last_modified">Sửa đổi cuối</string>
+  <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Cơ sở dữ liệu của bạn đã được tải về</string>
   <string name="dropbox_open_database_downloaded">Để sử dụng cơ sở dữ liệu tải về, chạm vào Mở cơ sở dữ liệu</string>
   <string name="click_to_select_file_dropbox">Chạm để chọn tập tin để sử dụng từ Dropbox</string>
@@ -240,6 +265,7 @@
   <string name="upload_to_drobpox">Tải lên Dropbox</string>
   <string name="summary_upload_to_drobpox">Chạm để tùy chọn tải lên các tập tin được liên kết vào thư mục Dropbox</string>
   <string name="upload_file_to_dropbox_complete">Cơ sở dữ liệu của bạn đã được tải lên thành công</string>
+  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
   <string name="dropbox_how_it_works">Dropbox làm việc cho Money Manager Ex như thế nào\?</string>
   <string name="dont_show_again">Không hiện lại nữa</string>
   <string name="open_database">Mở Cơ sở dữ liệu</string>
@@ -251,6 +277,7 @@
   <string name="title_transaction_shown_balance">Hiện số dư cho mỗi giao dịch</string>
   <string name="summary_transaction_shown_balance">Hiện số dư cho cho mỗi giao dịch. Hiển thị số dư có thể làm ứng dụng chậm hơn</string>
   <string name="menu_open_database">Mở Cơ sở dữ liệu</string>
+  <string name="database">CSDL</string>
   <string name="tips">Mẹo</string>
   <string name="title_application_font">Font Ứng dụng</string>
   <string name="summary_application_font">Chọn font bạn muốn cấp cho ứng dụng</string>
@@ -267,17 +294,21 @@
   <string name="menu_report_where_money_comes_from">Nơi tiền Đến</string>
   <string name="dashclock_extension_summary">Hiển thị tóm tắt về Money Manager Ex cho Android</string>
   <string name="dashclock_extension_summary_all_account">Xem tóm tắt của mỗi tài khoản Money Manager Ex cho Android</string>
+  <string name="title_check_repeating_transaction">Kiểm tra thời gian</string>
+  <string name="summary_check_repeating_transaction">Thời gian nào bạn sẽ kiểm tra xem có các giao dịch định kỳ quá hạn? (mặc định 08:00)</string>
   <string name="credits">Tác giả</string>
   <string name="top_withdrawals_last_30_days">Rút tiền hàng đầu: 30 ngày qua</string>
   <string name="top_payees_last_30_days">Người thanh toán hàng đầu: 30 ngày qua</string>
   <string name="upcoming_transactions">Giao dịch sắp tới</string>
   <string name="quantity">Số lượng</string>
   <string name="dashboard">Bảng điều khiển</string>
+  <string name="dropbox_database_is_synchronized">CSDL đã cập nhật</string>
   <string name="last3months">3 tháng qua</string>
   <string name="last6months">6 tháng qua</string>
   <string name="empty_category">Làm trống Danh mục</string>
   <string name="empty_payee">Làm trống Người thanh toán</string>
   <string name="help">Trợ giúp</string>
+  <string name="delete_repeating_transaction">Xoá Giao dịch định kỳ</string>
   <string name="last">Đã qua</string>
   <string name="accounts">Tài khoản</string>
   <string name="to_account">Tới Tài khoản</string>
@@ -290,6 +321,7 @@
   <string name="categories">Danh mục</string>
   <string name="currencies">Tiền tệ</string>
   <string name="payees">Người nhận thanh toán</string>
+  <string name="repeating_transactions">Giao dịch định kỳ</string>
   <string name="theme_holo_light">Holo Sáng</string>
   <string name="new_account">Tài khoản mới</string>
   <string name="import_all_currencies">Nhập tiền tệ</string>
@@ -297,6 +329,8 @@
   <string name="amount_greater_or_equal">Số tiền lớn hơn hoặc bằng</string>
   <string name="amount_less_or_equal">Số tiền ít hơn hoặc bằng</string>
   <string name="result_search">Kết quả tìm kiếm của bạn</string>
+  <string name="new_repeating_transaction">Giao dịch định kỳ mới</string>
+  <string name="edit_repeating_transaction">Sửa giao dịch định kỳ</string>
   <string name="every_5_minutes">Mỗi 5 phút</string>
   <string name="every_15_minutes">Mỗi 15 phút</string>
   <string name="every_30_minutes">Mỗi 30 phút</string>
@@ -318,6 +352,7 @@
   <string name="search_text_contain_title">Tìm kiếm bằng nội dung văn bản và không phải bằng văn bản bắt đầu với</string>
   <string name="search_text_contain_summary">Tìm kiếm người nhận thanh toán, danh mục, loại tiền tệ, v.v... theo nội dung và không theo bắt đầu các kí tự</string>
   <string name="rate_application">Đánh giá Ứng dụng</string>
+  <string name="locale_application">Ngôn ngữ ứng dụng</string>
   <string name="locale_cs">Tiếng Séc</string>
   <string name="locale_en">Tiếng Anh</string>
   <string name="locale_es">Tiếng Tây Ban Nha</string>
@@ -338,5 +373,24 @@
   <string name="withdrawal_from">Rút khỏi từ %1$s</string>
   <string name="deposit_to">Khoản tiền gửi tới %1$s</string>
   <string name="mmex_website">Trang web MoneyManagerEx</string>
+  <string name="android_website">MMEx cho trang web Android</string>
+  <string name="donate_in_app_already_donate">Bạn đã hỗ trợ sự phát triển của MoneyManagerEx cho Android với tài trợ của bạn! \n\nCảm ơn bạn từ nhóm phát triển!</string>
+  <string name="donate_in_app_retrieving_status">Đang lấy trạng thái của sự tài trợ của bạn từ Google Play. Vui lòng chờ&#8230;</string>
+  <string name="donate_in_app_error">Không thể sử dụng thanh toán trong ứng dụng. Kiểm tra xem phiên bản mới nhất của ứng dụng Cửa hàng Play đã được cài đặt chưa.</string>
+  <string name="title_notifications_repeating_transaction">Thông báo giao dịch định kỳ quá hạn </string>
+  <string name="summary_notifications_repeating_transaction">Hiển thị thông báo giao dịch định kỳ quá hạn</string>
+  <string name="tools">Công cụ</string>
+  <string name="loading">Đang nạp&#8230;</string>
+  <string name="grand_total">Tổng thành tiền</string>
+  <string name="change_status">Thay đổi trạng thái</string>
+  <string name="sort">Sắp xếp</string>
+  <string name="sort_by_name">Sắp xếp theo tên</string>
+  <string name="sort_by_usage">Sắp xếp theo cách dùng</string>
   <string name="action_settings">Thiết đặt</string>
+  <string name="update_price">Cập nhật giá</string>
+  <string name="price_updated">Giá đã cập nhật</string>
+  <string name="all_prices_updated">Tất cả giá đã được cập nhật.</string>
+  <string name="confirm_price_download">Bạn có muốn cập nhật giá bảo mật trực tuyến?</string>
+  <string name="starting_price_update">Đang tải giá, vui lòng chờ&#8230;</string>
+  <string name="database_migrate_14_to_20_explanation">Dữ liệu cũ đã được tìm thấy. Nhấp vào đây để dùng CSDL trước đó của bạn.</string>
 </resources>

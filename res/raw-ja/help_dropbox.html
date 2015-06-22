@@ -41,8 +41,8 @@ h3 { font-size:105%; }
 </style>
 </head>
 	<body>
-    <h2><b></b></h2>
-    <h3></h3>
+    <h2><b>MoneyManagerEx for Android</b></h2>
+    <h3>Dropbox のサービスを使用して、MoneyManagerEx for Windows/Linux/Mac とデータベースを同期します。</h3>
     <p><b>前提条件:</b> Dropbox のアカウントを持っていること。 まだ持っていない場合は www.dropbox.com に移動して、新しいアカウントを作成してください。</p>
     <ul>
         <li>MoneyManagerEx for Android を Dropbox に接続します。 "Dropbox にリンク" を選択してください。お使いのデバイスに Dropbox アプリをインストールしている場合は、それが自動的に開いて、MoneyManagerEx for Android が Dropbox にアクセスする承認を求められます。 お使いのデバイスに Dropbox アプリをインストールしていない場合は、Android がブラウザーで Dropbox のログイン ページを開きます。 ログインした後に、MoneyManagerEx for Android が Dropbox にアクセスするための承認を求められます。</li>
@@ -59,14 +59,15 @@ h3 { font-size:105%; }
         <li>まだ、MoneyManagerEx デスクトップ バージョンの mmb ファイルがない場合は、 "Dropbox データベースにアップロード" をクリックする必要があります。約 10 秒後に、現在使用している Dropbox データベースにアップロードが開始されます。 終了するとアップロードの完了がデバイスに通知されて、<i>/Apps/MoneyManagerEx Mobile</i> に data.mmb という名前のファイルが見つかります。</li>
 
         <a name="other_settings" style="margin:0px 0px 0px 15px;"><h3><b>その他の設定</b></h3></a>
-        <li> 自動的に同期したくない場合は、 "同期間隔" をゼロに設定します。</li>
+        <li>アカウントとファイルのリンクを作成すると、MoneyManagerEx for Android は、設定 "同期間隔" でセットした x 分ごとに自動的に Dropbox と同期します。 自動的に同期したくない場合は、 "同期間隔" をゼロに設定します。</li>
         <li>"変更をすぐにデータベースにアップロード" の設定は重要です。この設定は、MoneyManagerEx for Android が、変更を加えた直後に Dropbox のデータベースをアップロードすることができます。</li>
         <li>"Dropbox からデータベースをダウンロード" と "Dropbox にデータベースをアップロード" は、不具合がある場合に、ダウンロードまたはアップロードのデータベース操作を強制します。</li>
         <li>あなたの Dropbox アカウントとファイルをリンクすると、メイン ウィンドウのトップにあるツールバーの同期機能がアクティブになります。</li>
         <a name="faq" style="margin:0px 0px 0px 15px;"><h3><b>FAQ</b></h3></a>
-        <li><b>Q. </b>Dropbox と接続できません、または MoneyManagerEx が同期しないようですが?<br><b>A.  .
+        <li><b>Q. </b>Dropbox と接続できません、または MoneyManagerEx が同期しないようですが?<br><b>A. </b>まず、私たちにメールをお送りください 
+<a href="android.money.manager.ex@gmail.com">android.money.manager.ex@gmail.com</a> 問題を説明してください。 一方、データベースを MoneyManagerEx for Android と同期する場合、例えば <a href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite">FolderSync</a>, <a href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync">Dropsync</a> または <a href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0">Google Play</a> でアプリケーションを検索して、他のアプリケーションをご利用ください。.
         <li><b>Q. </b>MoneyManagerEx for Android を他のクラウドサービスと同期したいのですが (Drive, Box.net, Wuala, など. ..). どうすればいいですか?<br><b>A. </b>In MoneyManagerEx for Android でご利用可能なクラウドサービスは Dropbox のみです。 他のクラウド ストレージ サービスでデータベースを使用したい場合は、Google Play で、ご利用のサービスと同期することができるアプリケーションを探してください。 データベースは、デバイスの外部メモリに保存されます。MoneyManagerEx for Android で開いてください
-        <li><b>Q. </b>同期した後に、データが参照できません。 データベースのデータをすべて失ってしまったのでしょうか?<br><b>A. </b>何も失っていません! まれなケースで、同期するときに、データベースが正しくダウンロードされずに、MoneyManagerEx for Android で使用できなくることがあります。 このケースでは、Dropbox にデータベースのダウンロードを強制します。 それでもまだ動作しない場合は、/com.money.manager.ex/dropbox/ の中のファイルを削除して、強制的にファイルのダウンロードを行うことをお勧めします。
+        <li><b>Q. </b>同期した後に、データが参照できません。 データベースのデータをすべて失ってしまったのでしょうか?<br><b>A.    
         <li><b>Q. </b>以前のバージョンのデータベースを復元することはできますか?<br><b>A. </b>もちろんできます。 Dropbox はあなたのすべてのファイルのすべてのバージョンを保持しています。 <a href="https://www.dropbox.com/help/11/">ここの Dropbox ガイドで、ファイルを復元する方法を見つけることができます</a>
         </li>
     </ul>

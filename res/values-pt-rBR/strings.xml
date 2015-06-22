@@ -472,7 +472,7 @@
   <string name="checking_dropbox_for_changes">Verificando modificações do banco de dados no Dropbox.</string>
   <string name="choose_type">Escolha o tipo</string>
   <string name="default_account">Conta padrão</string>
-  <string name="default_account_summary">Conta a usar quando criar uma nova transacção.</string>
+  <string name="default_account_summary">Conta a usar quando criar uma nova transação.</string>
   <string name="balance_account">Saldo da conta</string>
   <string name="balance_adjustment">Ajuste de saldo</string>
   <string name="cash">Dinheiro</string>
