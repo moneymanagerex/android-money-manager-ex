@@ -85,7 +85,8 @@ public class DropboxSettingsFragment
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    showWebTipsDialog(getString(PreferenceConstants.PREF_DROPBOX_HOWITWORKS), getString(R.string.dropbox_how_it_works), R.raw.help_dropbox, false);
+                    showWebTipsDialog(getString(PreferenceConstants.PREF_DROPBOX_HOWITWORKS),
+                            getString(R.string.dropbox_how_it_works), R.raw.help_dropbox, false);
                     return false;
                 }
             });

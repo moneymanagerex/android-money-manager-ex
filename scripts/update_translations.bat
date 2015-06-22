@@ -6,6 +6,7 @@
 set lang=bs
 set locale=BA
 call copy_translation.bat %lang% %locale%
+call copy_dropbox.bat %lang% %locale%
 
 :: Chinese, modern
 set lang=zh
@@ -16,6 +17,7 @@ call copy_translation.bat %lang% %locale%
 set lang=zh
 set locale=TW
 call copy_translation.bat %lang% %locale%
+call copy_dropbox.bat %lang% %locale%
 
 :: Czech
 set lang=cs
@@ -36,6 +38,7 @@ call copy_translation.bat %lang% %locale%
 set lang=de
 set locale=DE
 call copy_translation.bat %lang% %locale%
+call copy_dropbox.bat %lang% %locale%
 
 :: Hebrew, he iw-IL
 set lang=he
@@ -57,6 +60,7 @@ call copy_translation.bat %lang% %locale%
 set lang=ja
 set locale=JP
 call copy_translation.bat %lang% %locale%
+call copy_dropbox.bat %lang% %locale%
 
 :: Polish
 set lang=pl
@@ -67,16 +71,19 @@ call copy_translation.bat %lang% %locale%
 set lang=pt
 set locale=BR
 call copy_translation.bat %lang% %locale%
+call copy_dropbox.bat %lang% %locale%
 
 :: Portugese
 set lang=pt
 set locale=PT
 call copy_translation.bat %lang% %locale%
+call copy_dropbox.bat %lang% %locale%
 
 :: Russian
 set lang=ru
 set locale=RU
 call copy_translation.bat %lang% %locale%
+call copy_dropbox.bat %lang% %locale%
 
 :: Spanish
 set lang=es
@@ -87,5 +94,6 @@ call copy_translation.bat %lang% %locale%
 set lang=vi
 set locale=VN
 call copy_translation.bat %lang% %locale%
+::call copy_dropbox.bat %lang% %locale%
 
 pause

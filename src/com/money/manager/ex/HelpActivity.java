@@ -21,6 +21,7 @@ package com.money.manager.ex;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.money.manager.ex.fragment.BaseFragmentActivity;
@@ -46,8 +47,21 @@ public class HelpActivity extends BaseFragmentActivity {
         if (getIntent() != null) {
             try {
                 if ("android.resource".equals(getIntent().getData().getScheme())) {
-                    int rawId = Integer.parseInt(getIntent().getData().getPathSegments().get(getIntent().getData().getPathSegments().size() - 1));
-                    mWebView.loadData(RawFileUtils.getRawAsString(getApplicationContext(), rawId), "text/html", "UTF-8");
+                    int rawId = Integer.parseInt(getIntent().getData().getPathSegments()
+                            .get(getIntent().getData().getPathSegments().size() - 1));
+//                    mWebView.loadData(RawFileUtils.getRawAsString(getApplicationContext(), rawId), "text/html", "UTF-8");
+
+                    // One option to show Unicode characters:
+//                    mWebView.loadDataWithBaseURL(null,
+//                            RawFileUtils.getRawAsString(getApplicationContext(), rawId),
+//                            "text/html", "UTF-8",
+//                            null);
+
+                    // 2nd option.
+                    WebSettings settings = mWebView.getSettings();
+                    settings.setDefaultTextEncodingName("utf-8");
+                    mWebView.loadData(RawFileUtils.getRawAsString(getApplicationContext(), rawId),
+                            "text/html; charset=utf-8", null);
                 } else {
                     mWebView.loadUrl(getIntent().getData().toString());
                 }
