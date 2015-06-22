@@ -207,7 +207,9 @@ public class CurrencyUtils {
         // lazy loading the base currency id.
         if (mBaseCurrencyId == null) {
             Integer baseCurrencyId = getInitBaseCurrencyId();
-            setBaseCurrencyId(baseCurrencyId);
+            if(baseCurrencyId != null) {
+                setBaseCurrencyId(baseCurrencyId);
+            }
         }
 
         return mBaseCurrencyId;
