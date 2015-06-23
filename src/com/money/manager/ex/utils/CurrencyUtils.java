@@ -213,6 +213,8 @@ public class CurrencyUtils {
                 setBaseCurrencyId(baseCurrencyId);
                 result = baseCurrencyId;
             }
+        } else {
+            result = mBaseCurrencyId;
         }
 
         return result;

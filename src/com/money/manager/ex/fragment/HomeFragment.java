@@ -853,7 +853,7 @@ public class HomeFragment extends Fragment
                 // set account name
                 holder.txtAccountName.setText(total.getAccountName());
             }
-            // set imageview account type
+            // set image depending on the account type
             if (!TextUtils.isEmpty(accountType)) {
                 if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
                     holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_safe));
