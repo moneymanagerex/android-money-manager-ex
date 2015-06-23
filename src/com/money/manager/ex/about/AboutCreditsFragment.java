@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.money.manager.ex.R;
@@ -47,8 +48,15 @@ public class AboutCreditsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        WebView creditsWebView = (WebView) getActivity().findViewById(R.id.about_thirdsparty_credits);
+        WebView webView = (WebView) getActivity().findViewById(R.id.about_thirdsparty_credits);
 
-        creditsWebView.loadData(RawFileUtils.getRawAsString(getActivity(), R.raw.credits_thirdparty), "text/html", "UTF-8");
+//        webView.loadData(RawFileUtils.getRawAsString(getActivity(), R.raw.credits_thirdparty), "text/html", "UTF-8");
+
+        // Display Unicode characters.
+        WebSettings settings = webView.getSettings();
+        settings.setDefaultTextEncodingName("utf-8");
+
+        webView.loadData(RawFileUtils.getRawAsString(getActivity().getApplicationContext(), R.raw.credits_thirdparty),
+                "text/html; charset=utf-8", null);
     }
 }
