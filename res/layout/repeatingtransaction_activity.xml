@@ -280,30 +280,30 @@
                     android:drawableLeft="?attr/ic_label_outline"
                     android:hint="@string/category"/>
 
-                <!--<com.money.manager.ex.view.RobotoCheckBox-->
-                    <!--android:id="@+id/checkBoxSplitTransaction"-->
-                    <!--style="@style/Money.TextView.Header.Caption"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_gravity="right"-->
-                    <!--android:text="@string/split"/>-->
-
-                <com.gc.materialdesign.views.CheckBox
+                <com.money.manager.ex.view.RobotoCheckBox
                     android:id="@+id/checkBoxSplitTransaction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    />
-
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/splitTextView"
                     android:text="@string/split"
                     style="@style/Money.TextView.Header.Caption"
-                    android:layout_gravity="end"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="15dp" />
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right" />
+
+                <!--<com.gc.materialdesign.views.CheckBox-->
+                    <!--android:id="@+id/checkBoxSplitTransaction"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_gravity="end"-->
+                    <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+                    <!--/>-->
+
+                <!--<com.money.manager.ex.view.RobotoTextView-->
+                    <!--android:id="@+id/splitTextView"-->
+                    <!--android:text="@string/split"-->
+                    <!--style="@style/Money.TextView.Header.Caption"-->
+                    <!--android:layout_gravity="end"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="15dp" />-->
 
             </LinearLayout>
 

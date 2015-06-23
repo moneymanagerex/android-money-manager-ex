@@ -285,16 +285,17 @@ public class Core {
      */
     public int getThemeApplication() {
         try {
-//            String darkTheme = context.getString(R.string.theme_holo);
             String darkTheme = Constants.THEME_DARK;
-//            String lightTheme = context.getString(R.string.theme_light);
             String lightTheme = Constants.THEME_LIGHT;
+
             String currentTheme = PreferenceManager.getDefaultSharedPreferences(mContext)
                     .getString(mContext.getString(PreferenceConstants.PREF_THEME), lightTheme);
 
             if (currentTheme.endsWith(darkTheme)) {
+                // Dark theme
                 return R.style.Theme_Money_Manager;
             } else {
+                // Light theme
                 return R.style.Theme_Money_Manager_Light_DarkActionBar;
             }
         } catch (Exception e) {

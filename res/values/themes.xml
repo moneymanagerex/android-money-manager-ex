@@ -70,25 +70,25 @@
         <item name="md_dark_theme">false</item>
     </style>
 
-    <style name="App" parent="@style/_App"/>
+    <!--<style name="App" parent="@style/_App"/>-->
 
     <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar"/>
 
-    <!-- Theme Application, Material Light -->
+    <!-- Application Theme, Material Light -->
     <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/App_Light_DarkActionBar">
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 
         <!-- Colors -->
         <item name="theme_background_color">@android:color/transparent</item>
-        <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background
-        </item>
+        <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background</item>
         <item name="cardViewBackgroundColor">@android:color/white</item>
         <item name="holo_blue_color_theme">@color/holo_blue_dark</item>
         <item name="holo_green_color_theme">@color/holo_green_dark</item>
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_light_row_light</item>
+        <item name="colorAccent">@color/holo_green_dark</item>
 
         <!-- Charts -->
         <item name="chartTextColor">@color/md_primary_text</item>
@@ -151,8 +151,8 @@
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
     </style>
 
-    <!-- Material Dark theme -->
-    <style name="Theme.Money.Manager" parent="@style/App">
+    <!-- Application Theme, Material Dark -->
+    <style name="Theme.Money.Manager" parent="@style/_App">
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat</item>
 
@@ -165,6 +165,9 @@
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_dark_row_light</item>
+        <!-- checkboxes and confirmation text in dialogs -->
+        <item name="colorAccent">@color/holo_green_dark</item>
+        <item name="android:textColorSecondary">@color/secondary_text_default_material_dark</item>
 
         <!-- Charts -->
         <item name="chartTextColor">@color/material_grey_50</item>

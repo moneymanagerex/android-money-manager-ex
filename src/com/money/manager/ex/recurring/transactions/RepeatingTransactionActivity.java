@@ -319,7 +319,7 @@ public class RepeatingTransactionActivity
         txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
         txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
         mCommonFunctions.txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
-        mCommonFunctions.txtSplit = (TextView) findViewById(R.id.splitTextView);
+//        mCommonFunctions.txtSplit = (TextView) findViewById(R.id.splitTextView);
 
         Core core = new Core(getApplicationContext());
 
@@ -416,15 +416,15 @@ public class RepeatingTransactionActivity
                 splitSet();
             }
         });
-        // split text is a separate control.
-        mCommonFunctions.txtSplit.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
-
-                splitSet();
-            }
-        });
+//        // split text is a separate control.
+//        mCommonFunctions.txtSplit.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
+//
+//                splitSet();
+//            }
+//        });
 
         // amount and total amount
         OnClickListener onClickAmount = new OnClickListener() {
@@ -907,7 +907,7 @@ public class RepeatingTransactionActivity
         txtSelectPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls
         chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
-        mCommonFunctions.txtSplit.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+//        mCommonFunctions.txtSplit.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         mCommonFunctions.refreshHeaderAmount();
     }

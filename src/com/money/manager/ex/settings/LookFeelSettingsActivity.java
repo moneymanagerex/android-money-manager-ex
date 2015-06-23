@@ -21,7 +21,7 @@ package com.money.manager.ex.settings;
 import android.os.Bundle;
 
 public class LookFeelSettingsActivity extends BaseSettingsFragmentActivity {
-    private static String LOGCAT = LookFeelSettingsActivity.class.getSimpleName();
+//    private static String LOGCAT = LookFeelSettingsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstance) {

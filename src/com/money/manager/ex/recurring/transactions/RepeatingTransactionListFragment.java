@@ -37,6 +37,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
+import com.money.manager.ex.checkingaccount.CheckingAccountConstants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
@@ -123,8 +124,8 @@ public class RepeatingTransactionListFragment
                 if (date != null) {
                     Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
                     intent.setAction(Constants.INTENT_ACTION_INSERT);
-                    intent.putExtra(CheckingAccountActivity.KEY_BDID_ID, bdId);
-                    intent.putExtra(CheckingAccountActivity.KEY_NEXT_OCCURRENCE, DateUtils.getSQLiteStringDate(getActivity(), date));
+                    intent.putExtra(CheckingAccountConstants.KEY_BDID_ID, bdId);
+                    intent.putExtra(CheckingAccountConstants.KEY_NEXT_OCCURRENCE, DateUtils.getSQLiteStringDate(getActivity(), date));
                     // start for insert new transaction
                     startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
                 }

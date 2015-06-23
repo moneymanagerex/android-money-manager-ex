@@ -34,6 +34,7 @@ import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.view.RobotoCheckBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +55,9 @@ public class EditTransactionCommonFunctions {
     public TransactionTypes mTransactionType;
 
     public Spinner spinAccount, spinToAccount, spinStatus, spinTransCode;
-    public TextView txtSelectPayee, txtTotAmount, txtAmount, txtSelectCategory, txtSplit;
-    public com.gc.materialdesign.views.CheckBox chbSplitTransaction;
+    public TextView txtSelectPayee, txtTotAmount, txtAmount, txtSelectCategory;//, txtSplit;
+    // public com.gc.materialdesign.views.CheckBox chbSplitTransaction;
+    public RobotoCheckBox chbSplitTransaction;
 
     private Context mContext;
 
@@ -66,9 +68,10 @@ public class EditTransactionCommonFunctions {
         spinTransCode = (Spinner) parent.findViewById(R.id.spinnerTransCode);
         txtSelectPayee = (TextView) parent.findViewById(R.id.textViewPayee);
 
-        chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
+//        chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
+        chbSplitTransaction = (RobotoCheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
         txtSelectCategory = (TextView) parent.findViewById(R.id.textViewCategory);
-        txtSplit = (TextView) parent.findViewById(R.id.splitTextView);
+//        txtSplit = (TextView) parent.findViewById(R.id.splitTextView);
         spinAccount = (Spinner) parent.findViewById(R.id.spinnerAccount);
         spinToAccount = (Spinner) parent.findViewById(R.id.spinnerToAccount);
 

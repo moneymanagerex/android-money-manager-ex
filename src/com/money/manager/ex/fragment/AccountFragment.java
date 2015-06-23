@@ -52,6 +52,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.checkingaccount.CheckingAccountConstants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -543,10 +544,10 @@ public class AccountFragment
     private void startCheckingAccountActivity(Integer transId) {
         // create intent, set Account ID
         Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
-        intent.putExtra(CheckingAccountActivity.KEY_ACCOUNT_ID, mAccountId);
+        intent.putExtra(CheckingAccountConstants.KEY_ACCOUNT_ID, mAccountId);
         // check transId not null
         if (transId != null) {
-            intent.putExtra(CheckingAccountActivity.KEY_TRANS_ID, transId);
+            intent.putExtra(CheckingAccountConstants.KEY_TRANS_ID, transId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
             intent.setAction(Intent.ACTION_INSERT);

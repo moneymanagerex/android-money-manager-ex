@@ -49,6 +49,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.qif.QifExport;
+import com.money.manager.ex.checkingaccount.CheckingAccountConstants;
 import com.money.manager.ex.interfaces.IAllDataFragmentCallbacks;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.adapter.AllDataAdapter;
@@ -530,10 +531,10 @@ public class AllDataFragment extends BaseListFragment
         Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
         // check transId not null
         if (transId != null) {
-            intent.putExtra(CheckingAccountActivity.KEY_TRANS_ID, transId);
+            intent.putExtra(CheckingAccountConstants.KEY_TRANS_ID, transId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
-            intent.putExtra(CheckingAccountActivity.KEY_ACCOUNT_ID, this.AccountId);
+            intent.putExtra(CheckingAccountConstants.KEY_ACCOUNT_ID, this.AccountId);
             intent.setAction(Intent.ACTION_INSERT);
         }
         // launch activity
@@ -751,7 +752,7 @@ public class AllDataFragment extends BaseListFragment
         Intent[] intents = new Intent[transactionCount];
         for (int i = 0; i < transactionCount; i++) {
             intents[i] = new Intent(getActivity(), CheckingAccountActivity.class);
-            intents[i].putExtra(CheckingAccountActivity.KEY_TRANS_ID, ids[i]);
+            intents[i].putExtra(CheckingAccountConstants.KEY_TRANS_ID, ids[i]);
             intents[i].setAction(Intent.ACTION_PASTE);
         }
         getActivity().startActivities(intents);

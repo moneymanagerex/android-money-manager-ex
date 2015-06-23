@@ -37,6 +37,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -44,10 +45,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.gc.materialdesign.views.CheckBox;
 import com.money.manager.ex.businessobjects.CategoryService;
 import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
+import com.money.manager.ex.checkingaccount.CheckingAccountConstants;
 import com.money.manager.ex.checkingaccount.EditTransactionCommonFunctions;
 import com.money.manager.ex.checkingaccount.IntentDataParameters;
 import com.money.manager.ex.checkingaccount.YesNoDialog;
@@ -82,7 +83,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -91,37 +91,6 @@ import java.util.Locale;
 public class CheckingAccountActivity
         extends BaseFragmentActivity
         implements IInputAmountDialogListener, YesNoDialogListener {
-
-    public static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
-    // ID REQUEST Data
-    public static final int REQUEST_PICK_PAYEE = 1;
-    public static final int REQUEST_PICK_ACCOUNT = 2;
-    public static final int REQUEST_PICK_CATEGORY = 3;
-    public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
-
-    // KEY INTENT per il passaggio dei dati
-    public static final String KEY_TRANS_ID = "AllDataActivity:TransId";
-    public static final String KEY_BDID_ID = "AllDataActivity:bdId";
-    public static final String KEY_ACCOUNT_ID = "AllDataActivity:AccountId";
-    public static final String KEY_TO_ACCOUNT_ID = "AllDataActivity:ToAccountId";
-    public static final String KEY_TO_ACCOUNT_NAME = "AllDataActivity:ToAccountName";
-    public static final String KEY_TRANS_CODE = "AllDataActivity:TransCode";
-    public static final String KEY_TRANS_STATUS = "AllDataActivity:TransStatus";
-    public static final String KEY_TRANS_DATE = "AllDataActivity:TransDate";
-    public static final String KEY_TRANS_AMOUNT = "AllDataActivity:TransAmount";
-    public static final String KEY_TRANS_TOTAMOUNT = "AllDataActivity:TransTotAmount";
-    public static final String KEY_PAYEE_ID = "AllDataActivity:PayeeId";
-    public static final String KEY_PAYEE_NAME = "AllDataActivity:PayeeName";
-    public static final String KEY_CATEGORY_ID = "AllDataActivity:CategoryId";
-    public static final String KEY_CATEGORY_NAME = "AllDataActivity:CategoryName";
-    public static final String KEY_SUBCATEGORY_ID = "AllDataActivity:SubCategoryId";
-    public static final String KEY_SUBCATEGORY_NAME = "AllDataActivity:SubCategoryName";
-    public static final String KEY_NOTES = "AllDataActivity:Notes";
-    public static final String KEY_TRANS_NUMBER = "AllDataActivity:TransNumber";
-    public static final String KEY_NEXT_OCCURRENCE = "AllDataActivity:NextOccurrence";
-    public static final String KEY_SPLIT_TRANSACTION = "AllDataActivity:SplitTransaction";
-    public static final String KEY_SPLIT_TRANSACTION_DELETED = "AllDataActivity:SplitTransactionDeleted";
-    public static final String KEY_ACTION = "AllDataActivity:Action";
 
     // action type intent
     public String mIntentAction;
@@ -174,7 +143,7 @@ public class CheckingAccountActivity
         try {
             DropboxHelper.getInstance();
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            Log.e(CheckingAccountConstants.LOGCAT, e.getMessage());
             // create helper
             DropboxHelper.getInstance(getApplicationContext());
         }
@@ -238,7 +207,7 @@ public class CheckingAccountActivity
                 txtSelectDate.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                         .parse(mDate));
             } catch (ParseException e) {
-                Log.e(LOGCAT, e.getMessage());
+                Log.e(CheckingAccountConstants.LOGCAT, e.getMessage());
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(this, this);
                 handler.handle(e, "Error parsing the date.");
@@ -268,7 +237,7 @@ public class CheckingAccountActivity
                         txtSelectDate.setTag(date);
                         formatExtendedDate(txtSelectDate);
                     } catch (Exception e) {
-                        Log.e(LOGCAT, e.getMessage());
+                        Log.e(CheckingAccountConstants.LOGCAT, e.getMessage());
                     }
                 }
             };
@@ -281,7 +250,7 @@ public class CheckingAccountActivity
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_PAYEE);
+                startActivityForResult(intent, CheckingAccountConstants.REQUEST_PICK_PAYEE);
             }
         });
 
@@ -290,11 +259,11 @@ public class CheckingAccountActivity
         mCommonFunctions.txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mCommonFunctions.chbSplitTransaction.isCheck()) {
+                if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
                     // select single category.
                     Intent intent = new Intent(CheckingAccountActivity.this, CategorySubCategoryExpandableListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
-                    startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+                    startActivityForResult(intent, CheckingAccountConstants.REQUEST_PICK_CATEGORY);
                 } else {
                     // select split categories.
                     Intent intent = new Intent(CheckingAccountActivity.this, SplitTransactionsActivity.class);
@@ -302,32 +271,39 @@ public class CheckingAccountActivity
                     intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mCommonFunctions.mTransactionType.getCode());
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
-                    startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
+                    startActivityForResult(intent, CheckingAccountConstants.REQUEST_PICK_SPLIT_TRANSACTION);
                 }
             }
         });
 
         // Split Categories
 
-        mCommonFunctions.chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
+        mCommonFunctions.chbSplitTransaction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheck(CheckBox checkBox, boolean b) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 onSplitSet();
             }
         });
+
+//        mCommonFunctions.chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
+//            @Override
+//            public void onCheck(CheckBox checkBox, boolean b) {
+//                onSplitSet();
+//            }
+//        });
         // mark checked if there are existing split categories.
         boolean hasSplit = hasSplitCategories();
         setSplit(hasSplit);
 
         // split text is a separate control.
-        mCommonFunctions.txtSplit.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCommonFunctions.chbSplitTransaction.setChecked(!mCommonFunctions.chbSplitTransaction.isCheck());
-
-                onSplitSet();
-            }
-        });
+//        mCommonFunctions.txtSplit.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mCommonFunctions.chbSplitTransaction.setChecked(!mCommonFunctions.chbSplitTransaction.isChecked());
+//
+//                onSplitSet();
+//            }
+//        });
 
         // Amount and total amount
 
@@ -398,7 +374,7 @@ public class CheckingAccountActivity
                         try {
                             edtTransNumber.setText(Long.toString(Long.parseLong(transNumber) + 1));
                         } catch (Exception e) {
-                            Log.e(LOGCAT, e.getMessage());
+                            Log.e(CheckingAccountConstants.LOGCAT, e.getMessage());
                         }
                     }
                     cursor.close();
@@ -423,12 +399,12 @@ public class CheckingAccountActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_PICK_PAYEE:
+            case CheckingAccountConstants.REQUEST_PICK_PAYEE:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
                     mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                     // select last category used from payee
-                    if (!mCommonFunctions.chbSplitTransaction.isCheck()) {
+                    if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
                         if (getCategoryFromPayee(mPayeeId)) {
                             refreshCategoryName(); // refresh UI
                         }
@@ -437,13 +413,13 @@ public class CheckingAccountActivity
                     refreshPayeeName();
                 }
                 break;
-            case REQUEST_PICK_ACCOUNT:
+            case CheckingAccountConstants.REQUEST_PICK_ACCOUNT:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mCommonFunctions.mToAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
                     mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 }
                 break;
-            case REQUEST_PICK_CATEGORY:
+            case CheckingAccountConstants.REQUEST_PICK_CATEGORY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
                     mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
@@ -453,7 +429,7 @@ public class CheckingAccountActivity
                     refreshCategoryName();
                 }
                 break;
-            case REQUEST_PICK_SPLIT_TRANSACTION:
+            case CheckingAccountConstants.REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
                     if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
@@ -503,30 +479,30 @@ public class CheckingAccountActivity
     }
 
     private void retrieveValuesFromSavedInstanceState(Bundle savedInstanceState) {
-        mTransId = savedInstanceState.getInt(KEY_TRANS_ID);
-        mCommonFunctions.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
-        mCommonFunctions.mToAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
-        mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
-        mDate = savedInstanceState.getString(KEY_TRANS_DATE);
-        String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
+        mTransId = savedInstanceState.getInt(CheckingAccountConstants.KEY_TRANS_ID);
+        mCommonFunctions.mAccountId = savedInstanceState.getInt(CheckingAccountConstants.KEY_ACCOUNT_ID);
+        mCommonFunctions.mToAccountId = savedInstanceState.getInt(CheckingAccountConstants.KEY_TO_ACCOUNT_ID);
+        mToAccountName = savedInstanceState.getString(CheckingAccountConstants.KEY_TO_ACCOUNT_NAME);
+        mDate = savedInstanceState.getString(CheckingAccountConstants.KEY_TRANS_DATE);
+        String transCode = savedInstanceState.getString(CheckingAccountConstants.KEY_TRANS_CODE);
         mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
-        mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
-        mAmount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
-        mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
-        mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
-        mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
-        mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
-        mCategoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
-        mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
-        mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
-        mNotes = savedInstanceState.getString(KEY_NOTES);
-        mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
-        mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
-        mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
-        mRecurringTransactionId = savedInstanceState.getInt(KEY_BDID_ID);
-        mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
+        mStatus = savedInstanceState.getString(CheckingAccountConstants.KEY_TRANS_STATUS);
+        mAmount = savedInstanceState.getDouble(CheckingAccountConstants.KEY_TRANS_AMOUNT);
+        mTotAmount = savedInstanceState.getDouble(CheckingAccountConstants.KEY_TRANS_TOTAMOUNT);
+        mPayeeId = savedInstanceState.getInt(CheckingAccountConstants.KEY_PAYEE_ID);
+        mPayeeName = savedInstanceState.getString(CheckingAccountConstants.KEY_PAYEE_NAME);
+        mCategoryId = savedInstanceState.getInt(CheckingAccountConstants.KEY_CATEGORY_ID);
+        mCategoryName = savedInstanceState.getString(CheckingAccountConstants.KEY_CATEGORY_NAME);
+        mSubCategoryId = savedInstanceState.getInt(CheckingAccountConstants.KEY_SUBCATEGORY_ID);
+        mSubCategoryName = savedInstanceState.getString(CheckingAccountConstants.KEY_SUBCATEGORY_NAME);
+        mNotes = savedInstanceState.getString(CheckingAccountConstants.KEY_NOTES);
+        mTransNumber = savedInstanceState.getString(CheckingAccountConstants.KEY_TRANS_NUMBER);
+        mSplitTransactions = savedInstanceState.getParcelableArrayList(CheckingAccountConstants.KEY_SPLIT_TRANSACTION);
+        mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(CheckingAccountConstants.KEY_SPLIT_TRANSACTION_DELETED);
+        mRecurringTransactionId = savedInstanceState.getInt(CheckingAccountConstants.KEY_BDID_ID);
+        mNextOccurrence = savedInstanceState.getString(CheckingAccountConstants.KEY_NEXT_OCCURRENCE);
         // action
-        mIntentAction = savedInstanceState.getString(KEY_ACTION);
+        mIntentAction = savedInstanceState.getString(CheckingAccountConstants.KEY_ACTION);
     }
 
     /**
@@ -539,21 +515,21 @@ public class CheckingAccountActivity
         mIntentAction = intent.getAction();
 
         if (savedInstanceState == null) {
-            mCommonFunctions.mAccountId = intent.getIntExtra(KEY_ACCOUNT_ID, -1);
+            mCommonFunctions.mAccountId = intent.getIntExtra(CheckingAccountConstants.KEY_ACCOUNT_ID, -1);
 
             // Edit transaction.
 
             if (mIntentAction != null && Intent.ACTION_EDIT.equals(mIntentAction)) {
-                mTransId = intent.getIntExtra(KEY_TRANS_ID, -1);
+                mTransId = intent.getIntExtra(CheckingAccountConstants.KEY_TRANS_ID, -1);
                 // select data transaction
                 loadCheckingAccount(mTransId, false);
             } else if (mIntentAction != null && Intent.ACTION_PASTE.equals(mIntentAction)) {
                 // select data transaction
-                loadCheckingAccount(intent.getIntExtra(KEY_TRANS_ID, -1), true);
+                loadCheckingAccount(intent.getIntExtra(CheckingAccountConstants.KEY_TRANS_ID, -1), true);
             } else {
-                if (intent.getIntExtra(KEY_BDID_ID, -1) > -1) {
-                    mRecurringTransactionId = intent.getIntExtra(KEY_BDID_ID, -1);
-                    mNextOccurrence = intent.getStringExtra(KEY_NEXT_OCCURRENCE);
+                if (intent.getIntExtra(CheckingAccountConstants.KEY_BDID_ID, -1) > -1) {
+                    mRecurringTransactionId = intent.getIntExtra(CheckingAccountConstants.KEY_BDID_ID, -1);
+                    mNextOccurrence = intent.getStringExtra(CheckingAccountConstants.KEY_NEXT_OCCURRENCE);
                     loadRecurringTransaction(mRecurringTransactionId);
                 }
             }
@@ -586,7 +562,7 @@ public class CheckingAccountActivity
                                 return Boolean.TRUE;
                             }
                         } catch (Exception e) {
-                            Log.e(LOGCAT, e.getMessage());
+                            Log.e(CheckingAccountConstants.LOGCAT, e.getMessage());
                         }
                         return Boolean.FALSE;
                     }
@@ -600,7 +576,7 @@ public class CheckingAccountActivity
                                 refreshPayeeName();
                                 refreshCategoryName();
                             } catch (Exception e) {
-                                Log.e(LOGCAT, e.getMessage());
+                                Log.e(CheckingAccountConstants.LOGCAT, e.getMessage());
                             }
                         }
                     }
@@ -791,30 +767,31 @@ public class CheckingAccountActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // save the state interface
-        outState.putInt(KEY_TRANS_ID, mTransId);
-        outState.putInt(KEY_ACCOUNT_ID, mCommonFunctions.mAccountId);
-        outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.mToAccountId);
-        outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
-        outState.putString(KEY_TRANS_DATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(txtSelectDate.getTag()));
-        outState.putString(KEY_TRANS_CODE, getTransactionType());
-        outState.putString(KEY_TRANS_STATUS, mStatus);
-        outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
-        outState.putDouble(KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
-        outState.putInt(KEY_PAYEE_ID, mPayeeId);
-        outState.putString(KEY_PAYEE_NAME, mPayeeName);
-        outState.putInt(KEY_CATEGORY_ID, mCategoryId);
-        outState.putString(KEY_CATEGORY_NAME, mCategoryName);
-        outState.putInt(KEY_SUBCATEGORY_ID, mSubCategoryId);
-        outState.putString(KEY_SUBCATEGORY_NAME, mSubCategoryName);
-        outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
-        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransactions);
-        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
-        outState.putString(KEY_NOTES, edtNotes.getText().toString());
+        outState.putInt(CheckingAccountConstants.KEY_TRANS_ID, mTransId);
+        outState.putInt(CheckingAccountConstants.KEY_ACCOUNT_ID, mCommonFunctions.mAccountId);
+        outState.putInt(CheckingAccountConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.mToAccountId);
+        outState.putString(CheckingAccountConstants.KEY_TO_ACCOUNT_NAME, mToAccountName);
+        outState.putString(CheckingAccountConstants.KEY_TRANS_DATE,
+                new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(txtSelectDate.getTag()));
+        outState.putString(CheckingAccountConstants.KEY_TRANS_CODE, getTransactionType());
+        outState.putString(CheckingAccountConstants.KEY_TRANS_STATUS, mStatus);
+        outState.putDouble(CheckingAccountConstants.KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
+        outState.putDouble(CheckingAccountConstants.KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
+        outState.putInt(CheckingAccountConstants.KEY_PAYEE_ID, mPayeeId);
+        outState.putString(CheckingAccountConstants.KEY_PAYEE_NAME, mPayeeName);
+        outState.putInt(CheckingAccountConstants.KEY_CATEGORY_ID, mCategoryId);
+        outState.putString(CheckingAccountConstants.KEY_CATEGORY_NAME, mCategoryName);
+        outState.putInt(CheckingAccountConstants.KEY_SUBCATEGORY_ID, mSubCategoryId);
+        outState.putString(CheckingAccountConstants.KEY_SUBCATEGORY_NAME, mSubCategoryName);
+        outState.putString(CheckingAccountConstants.KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
+        outState.putParcelableArrayList(CheckingAccountConstants.KEY_SPLIT_TRANSACTION, mSplitTransactions);
+        outState.putParcelableArrayList(CheckingAccountConstants.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
+        outState.putString(CheckingAccountConstants.KEY_NOTES, edtNotes.getText().toString());
         // bill deposits
-        outState.putInt(KEY_BDID_ID, mRecurringTransactionId);
-        outState.putString(KEY_NEXT_OCCURRENCE, mNextOccurrence);
+        outState.putInt(CheckingAccountConstants.KEY_BDID_ID, mRecurringTransactionId);
+        outState.putString(CheckingAccountConstants.KEY_NEXT_OCCURRENCE, mNextOccurrence);
 
-        outState.putString(KEY_ACTION, mIntentAction);
+        outState.putString(CheckingAccountConstants.KEY_ACTION, mIntentAction);
     }
 
     @Override
@@ -863,7 +840,7 @@ public class CheckingAccountActivity
                     }
 
                 } catch (Exception e) {
-                    Log.e(LOGCAT, e.getMessage());
+                    Log.e(CheckingAccountConstants.LOGCAT, e.getMessage());
                 }
             }
             if (mCommonFunctions.txtTotAmount.equals(view)) {
@@ -1108,7 +1085,7 @@ public class CheckingAccountActivity
             dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", getResources().getConfiguration().locale)
                     .format((Date) dateTextView.getTag()));
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            Log.e(CheckingAccountConstants.LOGCAT, e.getMessage());
         }
     }
 
@@ -1122,7 +1099,7 @@ public class CheckingAccountActivity
 
         mCommonFunctions.txtSelectCategory.setText("");
 
-        if (mCommonFunctions.chbSplitTransaction.isCheck()) {
+        if (mCommonFunctions.chbSplitTransaction.isChecked()) {
             // Split transaction. Show ...
             mCommonFunctions.txtSelectCategory.setText("\u2026");
         } else {
@@ -1164,7 +1141,7 @@ public class CheckingAccountActivity
         mCommonFunctions.spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls
         mCommonFunctions.chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
-        mCommonFunctions.txtSplit.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+//        mCommonFunctions.txtSplit.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         mCommonFunctions.refreshHeaderAmount();
     }
@@ -1195,12 +1172,12 @@ public class CheckingAccountActivity
 //        }
 
         // Category is required if tx is not a split or transfer.
-        if (mCategoryId == -1 && (!mCommonFunctions.chbSplitTransaction.isCheck()) && !isTransfer) {
+        if (mCategoryId == -1 && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
             Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
         // Splits.
-        if (mCommonFunctions.chbSplitTransaction.isCheck() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
+        if (mCommonFunctions.chbSplitTransaction.isChecked() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
             Core.alertDialog(this, R.string.error_split_transaction_empty);
             return false;
         }
@@ -1243,8 +1220,8 @@ public class CheckingAccountActivity
             values.put(TableCheckingAccount.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         }
         values.put(TableCheckingAccount.STATUS, mStatus);
-        values.put(TableCheckingAccount.CATEGID, !mCommonFunctions.chbSplitTransaction.isCheck() ? mCategoryId : -1);
-        values.put(TableCheckingAccount.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isCheck() ? mSubCategoryId : -1);
+        values.put(TableCheckingAccount.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked() ? mCategoryId : -1);
+        values.put(TableCheckingAccount.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked() ? mSubCategoryId : -1);
         String transactionDate = DateUtils.getSQLiteStringDate(this, (Date) txtSelectDate.getTag());
         values.put(TableCheckingAccount.TRANSDATE, transactionDate);
         values.put(TableCheckingAccount.FOLLOWUPID, -1);
@@ -1258,7 +1235,7 @@ public class CheckingAccountActivity
             Uri insert = getContentResolver().insert(mCheckingAccount.getUri(), values);
             if (insert == null) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Insert new transaction failed!");
+                Log.w(CheckingAccountConstants.LOGCAT, "Insert new transaction failed!");
                 return false;
             }
             long id = ContentUris.parseId(insert);
@@ -1269,7 +1246,7 @@ public class CheckingAccountActivity
             if (getContentResolver().update(mCheckingAccount.getUri(), values,
                     TableCheckingAccount.TRANSID + "=?", new String[]{Integer.toString(mTransId)}) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Update transaction failed!");
+                Log.w(CheckingAccountConstants.LOGCAT, "Update transaction failed!");
                 return false;
             }
         }
@@ -1277,7 +1254,7 @@ public class CheckingAccountActivity
         // Split Categories
 
         // Delete any split categories if split is unchecked.
-        if(!mCommonFunctions.chbSplitTransaction.isCheck()) {
+        if(!mCommonFunctions.chbSplitTransaction.isChecked()) {
             removeAllSplitCategories();
         }
 
@@ -1304,7 +1281,7 @@ public class CheckingAccountActivity
                     // insert data
                     if (getContentResolver().insert(mSplitTransactions.get(i).getUri(), values) == null) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
-                        Log.w(LOGCAT, "Insert new split transaction failed!");
+                        Log.w(CheckingAccountConstants.LOGCAT, "Insert new split transaction failed!");
                         return false;
                     }
                 } else {
@@ -1313,7 +1290,7 @@ public class CheckingAccountActivity
                             TableSplitTransactions.SPLITTRANSID + "=?",
                             new String[]{Integer.toString(mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                        Log.w(LOGCAT, "Update split transaction failed!");
+                        Log.w(CheckingAccountConstants.LOGCAT, "Update split transaction failed!");
                         return false;
                     }
                 }
@@ -1331,7 +1308,7 @@ public class CheckingAccountActivity
                         TableSplitTransactions.SPLITTRANSID + "=?",
                         new String[]{Integer.toString(mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                    Log.w(LOGCAT, "Delete split transaction failed!");
+                    Log.w(CheckingAccountConstants.LOGCAT, "Delete split transaction failed!");
                     return false;
                 }
             }
@@ -1350,7 +1327,7 @@ public class CheckingAccountActivity
             if (getContentResolver().update(payee.getUri(), values,
                     TablePayee.PAYEEID + "=" + Integer.toString(mPayeeId), null) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mPayeeId) + " return <= 0");
+                Log.w(CheckingAccountConstants.LOGCAT, "Update Payee with Id=" + Integer.toString(mPayeeId) + " return <= 0");
             }
         }
 
@@ -1401,7 +1378,7 @@ public class CheckingAccountActivity
         // update category field
         refreshCategoryName();
 
-        boolean isSplit = mCommonFunctions.chbSplitTransaction.isCheck();
+        boolean isSplit = mCommonFunctions.chbSplitTransaction.isChecked();
 
         // enable/disable Amount field.
         mCommonFunctions.txtAmount.setEnabled(!isSplit);
