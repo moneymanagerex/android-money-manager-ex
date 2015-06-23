@@ -295,16 +295,6 @@ public class CheckingAccountActivity
         boolean hasSplit = hasSplitCategories();
         setSplit(hasSplit);
 
-        // split text is a separate control.
-//        mCommonFunctions.txtSplit.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mCommonFunctions.chbSplitTransaction.setChecked(!mCommonFunctions.chbSplitTransaction.isChecked());
-//
-//                onSplitSet();
-//            }
-//        });
-
         // Amount and total amount
 
         OnClickListener onClickAmount = new OnClickListener() {
@@ -1141,7 +1131,6 @@ public class CheckingAccountActivity
         mCommonFunctions.spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls
         mCommonFunctions.chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
-//        mCommonFunctions.txtSplit.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         mCommonFunctions.refreshHeaderAmount();
     }

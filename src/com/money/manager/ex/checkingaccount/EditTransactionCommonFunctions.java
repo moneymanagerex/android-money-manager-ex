@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -55,9 +56,10 @@ public class EditTransactionCommonFunctions {
     public TransactionTypes mTransactionType;
 
     public Spinner spinAccount, spinToAccount, spinStatus, spinTransCode;
-    public TextView txtSelectPayee, txtTotAmount, txtAmount, txtSelectCategory;//, txtSplit;
+    public TextView txtSelectPayee, txtTotAmount, txtAmount, txtSelectCategory;
     // public com.gc.materialdesign.views.CheckBox chbSplitTransaction;
-    public RobotoCheckBox chbSplitTransaction;
+//    public RobotoCheckBox chbSplitTransaction;
+    public CheckBox chbSplitTransaction;
 
     private Context mContext;
 
@@ -68,10 +70,8 @@ public class EditTransactionCommonFunctions {
         spinTransCode = (Spinner) parent.findViewById(R.id.spinnerTransCode);
         txtSelectPayee = (TextView) parent.findViewById(R.id.textViewPayee);
 
-//        chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
-        chbSplitTransaction = (RobotoCheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
+        chbSplitTransaction = (CheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
         txtSelectCategory = (TextView) parent.findViewById(R.id.textViewCategory);
-//        txtSplit = (TextView) parent.findViewById(R.id.splitTextView);
         spinAccount = (Spinner) parent.findViewById(R.id.spinnerAccount);
         spinToAccount = (Spinner) parent.findViewById(R.id.spinnerToAccount);
 

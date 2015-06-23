@@ -237,7 +237,7 @@
                     android:drawableLeft="?attr/ic_label_outline"
                     android:hint="@string/category"/>
 
-                <com.money.manager.ex.view.RobotoCheckBox
+                <CheckBox
                     android:id="@+id/checkBoxSplitTransaction"
                     android:text="@string/split"
                     style="@style/Money.TextView.Header.Caption"

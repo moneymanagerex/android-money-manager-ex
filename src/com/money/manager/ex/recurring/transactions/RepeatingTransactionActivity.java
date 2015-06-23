@@ -34,6 +34,8 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -67,8 +69,6 @@ import com.money.manager.ex.fragment.BaseFragmentActivity;
 import com.money.manager.ex.fragment.IInputAmountDialogListener;
 import com.money.manager.ex.fragment.InputAmountDialog;
 import com.money.manager.ex.utils.CurrencyUtils;
-
-import org.apache.commons.lang.math.NumberUtils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -147,7 +147,7 @@ public class RepeatingTransactionActivity
     private Spinner spinFrequencies;
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
-    public com.gc.materialdesign.views.CheckBox chbSplitTransaction;
+    public CheckBox chbSplitTransaction;
     private TextView txtPayee, txtSelectPayee, txtCaptionAmount, txtRepeats,
             txtTimesRepeated, txtNextOccurrence;
 
@@ -208,7 +208,7 @@ public class RepeatingTransactionActivity
                     mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
                     mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                     // select last category used from payee
-                    if (!chbSplitTransaction.isCheck()) {
+                    if (!chbSplitTransaction.isChecked()) {
                         if (getCategoryFromPayee(mPayeeId)) {
                             refreshCategoryName(); // refresh UI
                         }
@@ -311,7 +311,7 @@ public class RepeatingTransactionActivity
 
         mCommonFunctions.txtAmount = (TextView) findViewById(R.id.editTextAmount);
         mCommonFunctions.txtTotAmount = (TextView) findViewById(R.id.editTextTotAmount);
-        chbSplitTransaction = (com.gc.materialdesign.views.CheckBox) findViewById(R.id.checkBoxSplitTransaction);
+        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
         mCommonFunctions.spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         txtPayee = (TextView) findViewById(R.id.textViewPayee);
         txtCaptionAmount = (TextView) findViewById(R.id.textViewHeaderTotalAmount);
@@ -319,7 +319,6 @@ public class RepeatingTransactionActivity
         txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
         txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
         mCommonFunctions.txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
-//        mCommonFunctions.txtSplit = (TextView) findViewById(R.id.splitTextView);
 
         Core core = new Core(getApplicationContext());
 
@@ -376,11 +375,11 @@ public class RepeatingTransactionActivity
         mCommonFunctions.txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!chbSplitTransaction.isCheck()) {
-	                Intent intent = new Intent(RepeatingTransactionActivity.this,
+                if (!chbSplitTransaction.isChecked()) {
+                    Intent intent = new Intent(RepeatingTransactionActivity.this,
                             CategorySubCategoryExpandableListActivity.class);
-	                intent.setAction(Intent.ACTION_PICK);
-	                startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+                    intent.setAction(Intent.ACTION_PICK);
+                    startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 } else {
                     // Open the activity for creating split transactions.
                     Intent intent = new Intent(RepeatingTransactionActivity.this, SplitTransactionsActivity.class);
@@ -400,10 +399,10 @@ public class RepeatingTransactionActivity
         // Split Categories
 
         // Set checked on start if we are editing a tx with split categories.
-        chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
+        chbSplitTransaction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheck(com.gc.materialdesign.views.CheckBox checkBox, boolean b) {
-                splitSet();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                onSplitSet();
             }
         });
         // mark checked if there are existing split categories.
@@ -416,15 +415,6 @@ public class RepeatingTransactionActivity
                 splitSet();
             }
         });
-//        // split text is a separate control.
-//        mCommonFunctions.txtSplit.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                chbSplitTransaction.setChecked(!chbSplitTransaction.isCheck());
-//
-//                splitSet();
-//            }
-//        });
 
         // amount and total amount
         OnClickListener onClickAmount = new OnClickListener() {
@@ -481,12 +471,6 @@ public class RepeatingTransactionActivity
                     if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
                         // Use BigDecimal to allow for large numbers.
                         BigDecimal transactionNumber = new BigDecimal(transNumber);
-//                        int transactionNumber = NumberUtils.toInt(transNumber);
-//                        if (transactionNumber == 0) {
-//                            Toast.makeText(RepeatingTransactionActivity.this,
-//                                    R.string.invalid_transaction_number, Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
                         edtTransNumber.setText(transactionNumber.add(BigDecimal.ONE).toString());
                     }
                     cursor.close();
@@ -871,7 +855,7 @@ public class RepeatingTransactionActivity
 
         mCommonFunctions.txtSelectCategory.setText("");
 
-        if (!chbSplitTransaction.isCheck()) {
+        if (!chbSplitTransaction.isChecked()) {
             if (!TextUtils.isEmpty(mCategoryName)) {
                 mCommonFunctions.txtSelectCategory.setText(mCategoryName);
                 if (!TextUtils.isEmpty(mSubCategoryName)) {
@@ -907,7 +891,6 @@ public class RepeatingTransactionActivity
         txtSelectPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls
         chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
-//        mCommonFunctions.txtSplit.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         mCommonFunctions.refreshHeaderAmount();
     }
@@ -938,11 +921,11 @@ public class RepeatingTransactionActivity
 //        }
 
         // Category is required if tx is not a split or transfer.
-        if (mCategoryId == Constants.NOT_SET && (!chbSplitTransaction.isCheck()) && !isTransfer) {
+        if (mCategoryId == Constants.NOT_SET && (!chbSplitTransaction.isChecked()) && !isTransfer) {
             Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
-        if (chbSplitTransaction.isCheck() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
+        if (chbSplitTransaction.isChecked() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
             Core.alertDialog(this, R.string.error_split_transaction_empty);
             return false;
         }
@@ -992,8 +975,8 @@ public class RepeatingTransactionActivity
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         }
         values.put(TableBillsDeposits.STATUS, mStatus);
-        values.put(TableBillsDeposits.CATEGID, !chbSplitTransaction.isCheck() ? mCategoryId : Constants.NOT_SET);
-        values.put(TableBillsDeposits.SUBCATEGID, !chbSplitTransaction.isCheck() ? mSubCategoryId : Constants.NOT_SET);
+        values.put(TableBillsDeposits.CATEGID, !chbSplitTransaction.isChecked() ? mCategoryId : Constants.NOT_SET);
+        values.put(TableBillsDeposits.SUBCATEGID, !chbSplitTransaction.isChecked() ? mSubCategoryId : Constants.NOT_SET);
         values.put(TableBillsDeposits.FOLLOWUPID, Constants.NOT_SET);
         values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
@@ -1109,7 +1092,7 @@ public class RepeatingTransactionActivity
         // update category field
         RepeatingTransactionActivity.this.refreshCategoryName();
 
-        boolean isSplit = chbSplitTransaction.isCheck();
+        boolean isSplit = chbSplitTransaction.isChecked();
 
         // enable/disable Amount field.
         mCommonFunctions.txtAmount.setEnabled(!isSplit);
@@ -1209,7 +1192,7 @@ public class RepeatingTransactionActivity
         // update category field
         refreshCategoryName();
 
-        boolean isSplit = chbSplitTransaction.isCheck();
+        boolean isSplit = chbSplitTransaction.isChecked();
 
         // enable/disable Amount field.
         mCommonFunctions.txtAmount.setEnabled(!isSplit);
