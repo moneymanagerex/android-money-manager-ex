@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -25,6 +25,13 @@
         </ExpandableListView>
     </FrameLayout>
 
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/myFAB"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/ic_action_add_dark"-->
+        <!--app:elevation="4dp"-->
+    <!--/>-->
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -33,7 +40,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_action_add_dark"
         android:visibility="gone"
-        fab:fab_colorNormal="@color/md_primary"
-        fab:fab_colorPressed="@color/md_primary_dark" />
+        app:fab_colorNormal="@color/md_primary"
+        app:fab_colorPressed="@color/md_primary_dark" />
 
 </FrameLayout>
