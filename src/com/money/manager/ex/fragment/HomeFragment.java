@@ -537,26 +537,10 @@ public class HomeFragment extends Fragment
     public boolean onContextItemSelected(android.view.MenuItem item) {
         boolean result = false;
 
-        ExpandableListView.ExpandableListContextMenuInfo info;
-        try {
-            info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
-        } catch (ClassCastException cex) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(cex, "Error casting context menu");
-            return false;
-        }
+        // get account id
+        QueryAccountBills account = getSelectedAccount(item);
+        if (account == null) return false;
 
-        int groupPos = 0, childPos = 0;
-        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
-        if (type != ExpandableListView.PACKED_POSITION_TYPE_CHILD) return false;
-
-        // Get the account.
-
-        groupPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
-        childPos = ExpandableListView.getPackedPositionChild(info.packedPosition);
-
-        AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
-        QueryAccountBills account = (QueryAccountBills) accountsAdapter.getChild(groupPos, childPos);
         int accountId = account.getAccountId();
 
         // get the action
@@ -751,6 +735,37 @@ public class HomeFragment extends Fragment
             }
 
         }
+    }
+
+    private QueryAccountBills getSelectedAccount(android.view.MenuItem item){
+        ExpandableListView.ExpandableListContextMenuInfo info = null;
+        try {
+            info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
+        } catch (ClassCastException cex) {
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.handle(cex, "Error casting context menu");
+        }
+        if (info == null) return null;
+
+        int groupPos, childPos;
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+        if (type != ExpandableListView.PACKED_POSITION_TYPE_CHILD) return null;
+
+        // Get the account.
+
+        groupPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+        childPos = ExpandableListView.getPackedPositionChild(info.packedPosition);
+
+        AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
+        QueryAccountBills account = null;
+        try {
+            account = (QueryAccountBills) accountsAdapter.getChild(groupPos, childPos);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.handle(e, "Error getting the selected account id");
+        }
+
+        return account;
     }
 
     private BalanceAccountTask mBalanceAccountTask;
