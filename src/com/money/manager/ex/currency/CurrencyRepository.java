@@ -18,11 +18,10 @@ public class CurrencyRepository {
 
     public TableCurrencyFormats loadCurrency(int currencyId) {
         TableCurrencyFormats currency = new TableCurrencyFormats();
-        String selection = TableCurrencyFormats.CURRENCYID + "=?";
 
         Cursor cursor = mContext.getContentResolver().query(currency.getUri(),
                 currency.getAllColumns(),
-                selection,
+                TableCurrencyFormats.CURRENCYID + "=?",
                 new String[] { Integer.toString(currencyId) },
                 null);
         if (cursor == null) return null;

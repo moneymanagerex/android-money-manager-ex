@@ -203,16 +203,19 @@ public class CurrencyUtils {
      *
      * @return Id of base currency
      */
-    public Integer getBaseCurrencyId() {
+    public int getBaseCurrencyId() {
+        int result = -1;
+
         // lazy loading the base currency id.
         if (mBaseCurrencyId == null) {
             Integer baseCurrencyId = getInitBaseCurrencyId();
             if(baseCurrencyId != null) {
                 setBaseCurrencyId(baseCurrencyId);
+                result = baseCurrencyId;
             }
         }
 
-        return mBaseCurrencyId;
+        return result;
     }
 
     public void setBaseCurrencyId(int baseCurrencyId) {
