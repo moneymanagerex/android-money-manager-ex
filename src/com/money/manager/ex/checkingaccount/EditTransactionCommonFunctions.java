@@ -19,6 +19,7 @@ package com.money.manager.ex.checkingaccount;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,6 +55,7 @@ public class EditTransactionCommonFunctions {
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
     public int mAccountId = Constants.NOT_SET, mToAccountId = Constants.NOT_SET;
     public TransactionTypes mTransactionType;
+    public String mCategoryName, mSubCategoryName;
 
     public Spinner spinAccount, spinToAccount, spinStatus, spinTransCode;
     public TextView txtSelectPayee, txtTotAmount, txtAmount, txtSelectCategory;
@@ -208,6 +210,17 @@ public class EditTransactionCommonFunctions {
         }
     }
 
+    public void setSplit(final boolean checked) {
+        chbSplitTransaction.post(new Runnable() {
+            @Override
+            public void run() {
+                chbSplitTransaction.setChecked(checked);
+
+                onSplitSet();
+            }
+        });
+    }
+
     private void addMissingAccountToSelectors(AccountRepository accountRepository, int accountId) {
         if (accountId <= 0) return;
 
@@ -224,4 +237,35 @@ public class EditTransactionCommonFunctions {
             }
         }
     }
+
+    public void onSplitSet() {
+        // update category field
+        refreshCategoryName();
+
+        boolean isSplit = chbSplitTransaction.isChecked();
+
+        // enable/disable Amount field.
+        txtAmount.setEnabled(!isSplit);
+        txtTotAmount.setEnabled(!isSplit);
+    }
+
+    public void refreshCategoryName() {
+        // validation
+        if (txtSelectCategory == null) return;
+
+        txtSelectCategory.setText("");
+
+        if (chbSplitTransaction.isChecked()) {
+            // Split transaction. Show ...
+            txtSelectCategory.setText("\u2026");
+        } else {
+            if (!TextUtils.isEmpty(mCategoryName)) {
+                txtSelectCategory.setText(mCategoryName);
+                if (!TextUtils.isEmpty(mSubCategoryName)) {
+                    txtSelectCategory.setText(Html.fromHtml(txtSelectCategory.getText() + " : <i>" + mSubCategoryName + "</i>"));
+                }
+            }
+        }
+    }
+
 }

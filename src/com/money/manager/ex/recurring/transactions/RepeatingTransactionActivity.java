@@ -128,7 +128,7 @@ public class RepeatingTransactionActivity
     private String mPayeeName, mTextDefaultPayee;
     // info category and subcategory
     private int mCategoryId = Constants.NOT_SET, mSubCategoryId = Constants.NOT_SET;
-    private String mCategoryName, mSubCategoryName;
+//    private String mCategoryName, mSubCategoryName;
     // arrays to manage transcode and status
     private String[] mTransCodeItems, mStatusItems;
     private String[] mTransCodeValues, mStatusValues;
@@ -147,7 +147,7 @@ public class RepeatingTransactionActivity
     private Spinner spinFrequencies;
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
-    public CheckBox chbSplitTransaction;
+//    public CheckBox chbSplitTransaction;
     private TextView txtPayee, txtSelectPayee, txtCaptionAmount, txtRepeats,
             txtTimesRepeated, txtNextOccurrence;
 
@@ -185,8 +185,8 @@ public class RepeatingTransactionActivity
                 // check cursor is valid
                 if ((curCategory != null) && (curCategory.moveToFirst())) {
                     // take names of category and subcategory
-                    mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-                    mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
+                    mCommonFunctions.mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
+                    mCommonFunctions.mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
                     // return true
                     ret = true;
 
@@ -208,9 +208,9 @@ public class RepeatingTransactionActivity
                     mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
                     mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                     // select last category used from payee
-                    if (!chbSplitTransaction.isChecked()) {
+                    if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
                         if (getCategoryFromPayee(mPayeeId)) {
-                            refreshCategoryName(); // refresh UI
+                            mCommonFunctions.refreshCategoryName(); // refresh UI
                         }
                     }
                     // refresh UI
@@ -220,11 +220,11 @@ public class RepeatingTransactionActivity
             case REQUEST_PICK_CATEGORY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-                    mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
+                    mCommonFunctions.mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
                     mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-                    mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
+                    mCommonFunctions.mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
                     // refresh UI category
-                    refreshCategoryName();
+                    mCommonFunctions.refreshCategoryName();
                 }
                 break;
             case REQUEST_PICK_SPLIT_TRANSACTION:
@@ -274,9 +274,9 @@ public class RepeatingTransactionActivity
             mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
             mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
             mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
-            mCategoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
+            mCommonFunctions.mCategoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
             mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
-            mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
+            mCommonFunctions.mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
             mNotes = savedInstanceState.getString(KEY_NOTES);
             mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
             mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
@@ -309,16 +309,16 @@ public class RepeatingTransactionActivity
 
         // Controls
 
-        mCommonFunctions.txtAmount = (TextView) findViewById(R.id.editTextAmount);
-        mCommonFunctions.txtTotAmount = (TextView) findViewById(R.id.editTextTotAmount);
-        chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
-        mCommonFunctions.spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
+//        mCommonFunctions.txtAmount = (TextView) findViewById(R.id.editTextAmount);
+//        mCommonFunctions.txtTotAmount = (TextView) findViewById(R.id.editTextTotAmount);
+//        mCommonFunctions.chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
+//        mCommonFunctions.spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         txtPayee = (TextView) findViewById(R.id.textViewPayee);
         txtCaptionAmount = (TextView) findViewById(R.id.textViewHeaderTotalAmount);
         spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
         txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
         txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
-        mCommonFunctions.txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
+//        mCommonFunctions.txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
 
         Core core = new Core(getApplicationContext());
 
@@ -375,7 +375,7 @@ public class RepeatingTransactionActivity
         mCommonFunctions.txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!chbSplitTransaction.isChecked()) {
+                if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
                     Intent intent = new Intent(RepeatingTransactionActivity.this,
                             CategorySubCategoryExpandableListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
@@ -398,25 +398,19 @@ public class RepeatingTransactionActivity
 
         // Split Categories
 
-        // Set checked on start if we are editing a tx with split categories.
-        chbSplitTransaction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mCommonFunctions.chbSplitTransaction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                onSplitSet();
+                mCommonFunctions.onSplitSet();
             }
         });
+
         // mark checked if there are existing split categories.
-        chbSplitTransaction.post(new Runnable() {
-            @Override
-            public void run() {
-                boolean hasSplit = hasSplitCategories();
-                chbSplitTransaction.setChecked(hasSplit);
+        boolean hasSplit = hasSplitCategories();
+        mCommonFunctions.setSplit(hasSplit);
 
-                splitSet();
-            }
-        });
+        // Amount and total amount
 
-        // amount and total amount
         OnClickListener onClickAmount = new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -556,7 +550,7 @@ public class RepeatingTransactionActivity
         // refresh user interface
         refreshAfterTransactionCodeChange();
         refreshPayeeName();
-        refreshCategoryName();
+        mCommonFunctions.refreshCategoryName();
         refreshTimesRepeated();
     }
 
@@ -575,9 +569,9 @@ public class RepeatingTransactionActivity
         outState.putInt(KEY_PAYEE_ID, mPayeeId);
         outState.putString(KEY_PAYEE_NAME, mPayeeName);
         outState.putInt(KEY_CATEGORY_ID, mCategoryId);
-        outState.putString(KEY_CATEGORY_NAME, mCategoryName);
+        outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.mCategoryName);
         outState.putInt(KEY_SUBCATEGORY_ID, mSubCategoryId);
-        outState.putString(KEY_SUBCATEGORY_NAME, mSubCategoryName);
+        outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.mSubCategoryName);
         outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransactions);
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
@@ -744,20 +738,20 @@ public class RepeatingTransactionActivity
                 TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
-            mCategoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
+            mCommonFunctions.mCategoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
             cursor.close();
         } else {
-            mCategoryName = null;
+            mCommonFunctions.mCategoryName = null;
         }
         // sub-category
         cursor = getContentResolver().query(subCategory.getUri(), subCategory.getAllColumns(),
                 TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
-            mSubCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
+            mCommonFunctions.mSubCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
             cursor.close();
         } else {
-            mSubCategoryName = null;
+            mCommonFunctions.mSubCategoryName = null;
         }
 
         return true;
@@ -850,22 +844,22 @@ public class RepeatingTransactionActivity
         return mSplitTransactions != null && !mSplitTransactions.isEmpty();
     }
 
-    public void refreshCategoryName() {
-        if (mCommonFunctions.txtSelectCategory == null) return;
-
-        mCommonFunctions.txtSelectCategory.setText("");
-
-        if (!chbSplitTransaction.isChecked()) {
-            if (!TextUtils.isEmpty(mCategoryName)) {
-                mCommonFunctions.txtSelectCategory.setText(mCategoryName);
-                if (!TextUtils.isEmpty(mSubCategoryName)) {
-                    mCommonFunctions.txtSelectCategory.setText(Html.fromHtml(mCommonFunctions.txtSelectCategory.getText() + " : <i>" + mSubCategoryName + "</i>"));
-                }
-            }
-        } else {
-            mCommonFunctions.txtSelectCategory.setText("\u2026");
-        }
-    }
+//    public void refreshCategoryName() {
+//        if (mCommonFunctions.txtSelectCategory == null) return;
+//
+//        mCommonFunctions.txtSelectCategory.setText("");
+//
+//        if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
+//            if (!TextUtils.isEmpty(mCommonFunctions.mCategoryName)) {
+//                mCommonFunctions.txtSelectCategory.setText(mCommonFunctions.mCategoryName);
+//                if (!TextUtils.isEmpty(mCommonFunctions.mSubCategoryName)) {
+//                    mCommonFunctions.txtSelectCategory.setText(Html.fromHtml(mCommonFunctions.txtSelectCategory.getText() + " : <i>" + mCommonFunctions.mSubCategoryName + "</i>"));
+//                }
+//            }
+//        } else {
+//            mCommonFunctions.txtSelectCategory.setText("\u2026");
+//        }
+//    }
 
     /**
      * update UI interface with PayeeName
@@ -890,7 +884,7 @@ public class RepeatingTransactionActivity
         mCommonFunctions.spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         txtSelectPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls
-        chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+        mCommonFunctions.chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         mCommonFunctions.refreshHeaderAmount();
     }
@@ -921,11 +915,11 @@ public class RepeatingTransactionActivity
 //        }
 
         // Category is required if tx is not a split or transfer.
-        if (mCategoryId == Constants.NOT_SET && (!chbSplitTransaction.isChecked()) && !isTransfer) {
+        if (mCategoryId == Constants.NOT_SET && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
             Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
-        if (chbSplitTransaction.isChecked() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
+        if (mCommonFunctions.chbSplitTransaction.isChecked() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
             Core.alertDialog(this, R.string.error_split_transaction_empty);
             return false;
         }
@@ -975,8 +969,8 @@ public class RepeatingTransactionActivity
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         }
         values.put(TableBillsDeposits.STATUS, mStatus);
-        values.put(TableBillsDeposits.CATEGID, !chbSplitTransaction.isChecked() ? mCategoryId : Constants.NOT_SET);
-        values.put(TableBillsDeposits.SUBCATEGID, !chbSplitTransaction.isChecked() ? mSubCategoryId : Constants.NOT_SET);
+        values.put(TableBillsDeposits.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked() ? mCategoryId : Constants.NOT_SET);
+        values.put(TableBillsDeposits.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked() ? mSubCategoryId : Constants.NOT_SET);
         values.put(TableBillsDeposits.FOLLOWUPID, Constants.NOT_SET);
         values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
@@ -1088,16 +1082,16 @@ public class RepeatingTransactionActivity
         }
     }
 
-    private void splitSet() {
-        // update category field
-        RepeatingTransactionActivity.this.refreshCategoryName();
-
-        boolean isSplit = chbSplitTransaction.isChecked();
-
-        // enable/disable Amount field.
-        mCommonFunctions.txtAmount.setEnabled(!isSplit);
-        mCommonFunctions.txtTotAmount.setEnabled(!isSplit);
-    }
+//    private void splitSet() {
+//        // update category field
+//        mCommonFunctions.refreshCategoryName();
+//
+//        boolean isSplit = mCommonFunctions.chbSplitTransaction.isChecked();
+//
+//        // enable/disable Amount field.
+//        mCommonFunctions.txtAmount.setEnabled(!isSplit);
+//        mCommonFunctions.txtTotAmount.setEnabled(!isSplit);
+//    }
 
     private void initTransactionTypeSelector() {
         // trans-code
@@ -1164,7 +1158,7 @@ public class RepeatingTransactionActivity
         }
 
         // un-check split.
-        setSplit(false);
+        mCommonFunctions.setSplit(false);
 
         // Hide Category picker.
         mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
@@ -1175,28 +1169,6 @@ public class RepeatingTransactionActivity
         mCommonFunctions.mTransactionType = TransactionTypes.Transfer;
 
         refreshAfterTransactionCodeChange();
-    }
-
-    public void setSplit(final boolean checked) {
-        chbSplitTransaction.post(new Runnable() {
-            @Override
-            public void run() {
-                chbSplitTransaction.setChecked(checked);
-
-                onSplitSet();
-            }
-        });
-    }
-
-    private void onSplitSet() {
-        // update category field
-        refreshCategoryName();
-
-        boolean isSplit = chbSplitTransaction.isChecked();
-
-        // enable/disable Amount field.
-        mCommonFunctions.txtAmount.setEnabled(!isSplit);
-        mCommonFunctions.txtTotAmount.setEnabled(!isSplit);
     }
 
     public String getTransactionType() {

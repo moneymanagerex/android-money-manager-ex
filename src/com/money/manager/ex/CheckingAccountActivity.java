@@ -28,7 +28,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -104,7 +103,7 @@ public class CheckingAccountActivity
     public String mPayeeName;
     // info category and subcategory
     public int mCategoryId = -1, mSubCategoryId = -1;
-    public String mCategoryName, mSubCategoryName;
+//    public String mCategoryName, mSubCategoryName;
     // arrays to manage transcode and status
     public String[] mTransCodeItems, mStatusItems;
     public String[] mTransCodeValues, mStatusValues;
@@ -281,19 +280,13 @@ public class CheckingAccountActivity
         mCommonFunctions.chbSplitTransaction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                onSplitSet();
+                mCommonFunctions.onSplitSet();
             }
         });
 
-//        mCommonFunctions.chbSplitTransaction.setOncheckListener(new com.gc.materialdesign.views.CheckBox.OnCheckListener() {
-//            @Override
-//            public void onCheck(CheckBox checkBox, boolean b) {
-//                onSplitSet();
-//            }
-//        });
         // mark checked if there are existing split categories.
         boolean hasSplit = hasSplitCategories();
-        setSplit(hasSplit);
+        mCommonFunctions.setSplit(hasSplit);
 
         // Amount and total amount
 
@@ -383,7 +376,7 @@ public class CheckingAccountActivity
         // refresh user interface
         refreshAfterTransactionCodeChange();
         refreshPayeeName();
-        refreshCategoryName();
+        mCommonFunctions.refreshCategoryName();
     }
 
     @Override
@@ -396,7 +389,7 @@ public class CheckingAccountActivity
                     // select last category used from payee
                     if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
                         if (getCategoryFromPayee(mPayeeId)) {
-                            refreshCategoryName(); // refresh UI
+                            mCommonFunctions.refreshCategoryName(); // refresh UI
                         }
                     }
                     // refresh UI
@@ -412,11 +405,11 @@ public class CheckingAccountActivity
             case CheckingAccountConstants.REQUEST_PICK_CATEGORY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
-                    mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
+                    mCommonFunctions.mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
                     mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
-                    mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
+                    mCommonFunctions.mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
                     // refresh UI category
-                    refreshCategoryName();
+                    mCommonFunctions.refreshCategoryName();
                 }
                 break;
             case CheckingAccountConstants.REQUEST_PICK_SPLIT_TRANSACTION:
@@ -482,9 +475,9 @@ public class CheckingAccountActivity
         mPayeeId = savedInstanceState.getInt(CheckingAccountConstants.KEY_PAYEE_ID);
         mPayeeName = savedInstanceState.getString(CheckingAccountConstants.KEY_PAYEE_NAME);
         mCategoryId = savedInstanceState.getInt(CheckingAccountConstants.KEY_CATEGORY_ID);
-        mCategoryName = savedInstanceState.getString(CheckingAccountConstants.KEY_CATEGORY_NAME);
+        mCommonFunctions.mCategoryName = savedInstanceState.getString(CheckingAccountConstants.KEY_CATEGORY_NAME);
         mSubCategoryId = savedInstanceState.getInt(CheckingAccountConstants.KEY_SUBCATEGORY_ID);
-        mSubCategoryName = savedInstanceState.getString(CheckingAccountConstants.KEY_SUBCATEGORY_NAME);
+        mCommonFunctions.mSubCategoryName = savedInstanceState.getString(CheckingAccountConstants.KEY_SUBCATEGORY_NAME);
         mNotes = savedInstanceState.getString(CheckingAccountConstants.KEY_NOTES);
         mTransNumber = savedInstanceState.getString(CheckingAccountConstants.KEY_TRANS_NUMBER);
         mSplitTransactions = savedInstanceState.getParcelableArrayList(CheckingAccountConstants.KEY_SPLIT_TRANSACTION);
@@ -564,7 +557,7 @@ public class CheckingAccountActivity
                             try {
                                 // refresh field
                                 refreshPayeeName();
-                                refreshCategoryName();
+                                mCommonFunctions.refreshCategoryName();
                             } catch (Exception e) {
                                 Log.e(CheckingAccountConstants.LOGCAT, e.getMessage());
                             }
@@ -628,14 +621,14 @@ public class CheckingAccountActivity
         // category
         if (parameters.categoryId > 0) {
             mCategoryId = parameters.categoryId;
-            mCategoryName = parameters.categoryName;
+            mCommonFunctions.mCategoryName = parameters.categoryName;
         } else {
             // No id sent.
             // create a category if it was sent but does not exist (id not found by the parser).
             if (parameters.categoryName != null) {
                 CategoryService newCategory = new CategoryService(this);
-                mCategoryId = newCategory.createNew(mCategoryName);
-                mCategoryName = parameters.categoryName;
+                mCategoryId = newCategory.createNew(mCommonFunctions.mCategoryName);
+                mCommonFunctions.mCategoryName = parameters.categoryName;
             }
         }
     }
@@ -711,7 +704,7 @@ public class CheckingAccountActivity
         }
 
         // un-check split.
-        setSplit(false);
+        mCommonFunctions.setSplit(false);
 
         // Hide Category picker.
         mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
@@ -737,7 +730,7 @@ public class CheckingAccountActivity
 
         removeAllSplitCategories();
 
-        setSplit(false);
+        mCommonFunctions.setSplit(false);
 
         mCommonFunctions.mTransactionType = TransactionTypes.Transfer;
 
@@ -770,9 +763,9 @@ public class CheckingAccountActivity
         outState.putInt(CheckingAccountConstants.KEY_PAYEE_ID, mPayeeId);
         outState.putString(CheckingAccountConstants.KEY_PAYEE_NAME, mPayeeName);
         outState.putInt(CheckingAccountConstants.KEY_CATEGORY_ID, mCategoryId);
-        outState.putString(CheckingAccountConstants.KEY_CATEGORY_NAME, mCategoryName);
+        outState.putString(CheckingAccountConstants.KEY_CATEGORY_NAME, mCommonFunctions.mCategoryName);
         outState.putInt(CheckingAccountConstants.KEY_SUBCATEGORY_ID, mSubCategoryId);
-        outState.putString(CheckingAccountConstants.KEY_SUBCATEGORY_NAME, mSubCategoryName);
+        outState.putString(CheckingAccountConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.mSubCategoryName);
         outState.putString(CheckingAccountConstants.KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
         outState.putParcelableArrayList(CheckingAccountConstants.KEY_SPLIT_TRANSACTION, mSplitTransactions);
         outState.putParcelableArrayList(CheckingAccountConstants.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
@@ -910,9 +903,9 @@ public class CheckingAccountActivity
                 TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
-            mCategoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
+            mCommonFunctions.mCategoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
         } else {
-            mCategoryName = null;
+            mCommonFunctions.mCategoryName = null;
         }
         if (cursor != null) {
             cursor.close();
@@ -924,9 +917,9 @@ public class CheckingAccountActivity
                 TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
-            mSubCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
+            mCommonFunctions.mSubCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
         } else {
-            mSubCategoryName = null;
+            mCommonFunctions.mSubCategoryName = null;
         }
         if (cursor != null) {
             cursor.close();
@@ -1081,25 +1074,6 @@ public class CheckingAccountActivity
 
     public boolean hasSplitCategories() {
         return mSplitTransactions != null && !mSplitTransactions.isEmpty();
-    }
-
-    public void refreshCategoryName() {
-        // validation
-        if (mCommonFunctions.txtSelectCategory == null) return;
-
-        mCommonFunctions.txtSelectCategory.setText("");
-
-        if (mCommonFunctions.chbSplitTransaction.isChecked()) {
-            // Split transaction. Show ...
-            mCommonFunctions.txtSelectCategory.setText("\u2026");
-        } else {
-            if (!TextUtils.isEmpty(mCategoryName)) {
-                mCommonFunctions.txtSelectCategory.setText(mCategoryName);
-                if (!TextUtils.isEmpty(mSubCategoryName)) {
-                    mCommonFunctions.txtSelectCategory.setText(Html.fromHtml(mCommonFunctions.txtSelectCategory.getText() + " : <i>" + mSubCategoryName + "</i>"));
-                }
-            }
-        }
     }
 
     /**
@@ -1363,28 +1337,6 @@ public class CheckingAccountActivity
         return true;
     }
 
-    private void onSplitSet() {
-        // update category field
-        refreshCategoryName();
-
-        boolean isSplit = mCommonFunctions.chbSplitTransaction.isChecked();
-
-        // enable/disable Amount field.
-        mCommonFunctions.txtAmount.setEnabled(!isSplit);
-        mCommonFunctions.txtTotAmount.setEnabled(!isSplit);
-    }
-
-    public void setSplit(final boolean checked) {
-        mCommonFunctions.chbSplitTransaction.post(new Runnable() {
-            @Override
-            public void run() {
-                mCommonFunctions.chbSplitTransaction.setChecked(checked);
-
-                onSplitSet();
-            }
-        });
-    }
-
     /**
      * When cancelling changing the transaction type to Tranfer, revert back to the
      * previous transaction type.
@@ -1424,8 +1376,8 @@ public class CheckingAccountActivity
                 // check cursor is valid
                 if ((curCategory != null) && (curCategory.moveToFirst())) {
                     // take names of category and subcategory
-                    mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-                    mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
+                    mCommonFunctions.mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
+                    mCommonFunctions.mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
                     // return true
                     ret = true;
                 }
