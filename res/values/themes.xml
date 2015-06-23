@@ -88,7 +88,7 @@
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_light_row_light</item>
-        <item name="colorAccent">@color/holo_green_dark</item>
+        <item name="colorAccent">@color/md_primary_dark</item>
 
         <!-- Charts -->
         <item name="chartTextColor">@color/md_primary_text</item>
@@ -166,7 +166,7 @@
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_dark_row_light</item>
         <!-- checkboxes and confirmation text in dialogs -->
-        <item name="colorAccent">@color/holo_green_dark</item>
+        <item name="colorAccent">@color/md_primary_dark</item>
         <item name="android:textColorSecondary">@color/secondary_text_default_material_dark</item>
 
         <!-- Charts -->
