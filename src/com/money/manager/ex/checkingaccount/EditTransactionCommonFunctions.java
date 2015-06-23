@@ -59,8 +59,6 @@ public class EditTransactionCommonFunctions {
 
     public Spinner spinAccount, spinToAccount, spinStatus, spinTransCode;
     public TextView txtSelectPayee, txtTotAmount, txtAmount, txtSelectCategory;
-    // public com.gc.materialdesign.views.CheckBox chbSplitTransaction;
-//    public RobotoCheckBox chbSplitTransaction;
     public CheckBox chbSplitTransaction;
 
     private Context mContext;
