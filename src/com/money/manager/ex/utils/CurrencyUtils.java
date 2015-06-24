@@ -60,7 +60,8 @@ import java.util.Map;
 public class CurrencyUtils {
 
     private static final String LOGCAT = CurrencyUtils.class.getSimpleName();
-    private static final String URL_FREE_CURRENCY_CONVERT_API = "http://www.freecurrencyconverterapi.com/api/convert?q=SYMBOL&compact=y";
+    private static final String URL_FREE_CURRENCY_CONVERT_API =
+            "http://www.freecurrencyconverterapi.com/api/convert?q=SYMBOL&compact=y";
     // id base currency
     private static Integer mBaseCurrencyId = null;
     // hash map of all currencies
@@ -124,13 +125,13 @@ public class CurrencyUtils {
             return false;
         // compose symbol
         String symbolRate = toSymbol + "-" + fromSymbol;
-        // compose url
-        String url = URL_FREE_CURRENCY_CONVERT_API.replace("SYMBOL", symbolRate);
         // check if DEBUG
         if (BuildConfig.DEBUG) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        String url = URL_FREE_CURRENCY_CONVERT_API.replace("SYMBOL", symbolRate);
 
         // new connection
         // todo: use this
@@ -164,7 +165,10 @@ public class CurrencyUtils {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(TableCurrencyFormats.BASECONVRATE, rate);
 
-                return mContext.getContentResolver().update(toCurrencyFormats.getUri(), contentValues, TableCurrencyFormats.CURRENCYID + "=" + Integer.toString(toCurrencyId), null) > 0;
+                return mContext.getContentResolver().update(toCurrencyFormats.getUri(),
+                        contentValues,
+                        TableCurrencyFormats.CURRENCYID + "=" + Integer.toString(toCurrencyId),
+                        null) > 0;
             }
         } catch (ClientProtocolException e) {
             Log.e(LOGCAT, e.getMessage());

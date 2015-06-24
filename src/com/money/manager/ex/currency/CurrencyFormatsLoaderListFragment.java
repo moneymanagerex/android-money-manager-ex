@@ -85,11 +85,6 @@ public class CurrencyFormatsLoaderListFragment
         setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
         setHasOptionsMenu(true);
 
-//        if (Intent.ACTION_PICK.equals(mAction)) {
-//            mLayout = android.R.layout.simple_list_item_multiple_choice;
-//        } else {
-//            mLayout = android.R.layout.simple_list_item_1;
-//        }
         // Always use simple list layout.
         mLayout = android.R.layout.simple_list_item_1;
 
