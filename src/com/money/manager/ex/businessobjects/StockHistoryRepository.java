@@ -185,48 +185,34 @@ public class StockHistoryRepository
     }
 
     private ContentValues getLatestPriceFor_Internal(String symbol) {
-//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-//                .getReadableDatabase();
 
-        String selection = StockHistory.SYMBOL + "=?";
-
-//        Cursor cursor = db.query(getSource(),
-//                null,
-//                selection,
-//                new String[] { symbol },
-//                null, // group by
-//                null, // having
-//                // order by
-//                StockHistory.DATE + " DESC"
-//        );
         Cursor cursor = mContext.getContentResolver().query(getUri(),
                 null,
-                selection,
-                new String[]{symbol},
+                StockHistory.SYMBOL + "=?",
+                new String[]{ symbol },
                 StockHistory.DATE + " DESC");
+        if (cursor == null) return null;
 
         ContentValues result = new ContentValues();
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+//        int rowCount = cursor.getCount();
+        boolean recordFound = cursor.moveToFirst();
+        if (!recordFound) return null;
 
 //            Date date = getDateFromCursor(cursor);
 //            BigDecimal price = getPriceFromCursor(cursor);
 //            result = getContentValues(symbol, price, date);
 
-            // keep the raw values for now
-            result.put(StockHistory.SYMBOL, symbol);
+        // keep the raw values for now
+        result.put(StockHistory.SYMBOL, symbol);
 
-            String dateString = cursor.getString(cursor.getColumnIndex(StockHistory.DATE));
-            result.put(StockHistory.DATE, dateString);
+        String dateString = cursor.getString(cursor.getColumnIndex(StockHistory.DATE));
+        result.put(StockHistory.DATE, dateString);
 
-            String priceString = cursor.getString(cursor.getColumnIndex(StockHistory.VALUE));
-            result.put(StockHistory.VALUE, priceString);
+        String priceString = cursor.getString(cursor.getColumnIndex(StockHistory.VALUE));
+        result.put(StockHistory.VALUE, priceString);
 
-            cursor.close();
-        }
-
-//        db.close();
+        cursor.close();
 
         return result;
     }
