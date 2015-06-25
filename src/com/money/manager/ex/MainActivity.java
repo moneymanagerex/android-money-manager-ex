@@ -776,9 +776,13 @@ public class MainActivity
                 .withText(getString(R.string.tools))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_domain_dark : R.drawable.ic_action_domain_light));
         // manage: repeating transactions
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_repeating_transaction)
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
                 .withText(getString(R.string.repeating_transactions))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_history_dark : R.drawable.ic_action_history_light));
+        // Budgets
+//        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
+//            .withText(getString(R.string.budgets))
+//            .withIcon());
         // search transaction
         adapter.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
                 .withText(getString(R.string.search))
@@ -802,9 +806,9 @@ public class MainActivity
                 .withText(getString(R.string.about))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light));
 
-        // get drawerlist and set adapter
-        if (mDrawerList != null)
+        if (mDrawerList != null) {
             mDrawerList.setAdapter(adapter);
+        }
         // set listener on item click
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
@@ -866,7 +870,7 @@ public class MainActivity
         } else if (item.getId() == R.id.menu_payee) {
             showFragment(PayeeLoaderListFragment.class);
             return true;
-        } else if (item.getId() == R.id.menu_repeating_transaction) {
+        } else if (item.getId() == R.id.menu_recurring_transaction) {
             showFragment(RepeatingTransactionListFragment.class);
             return true;
         } else if (item.getId() == R.id.menu_search_transaction) {
