@@ -370,6 +370,7 @@
   <string name="success_currency_exchange_rates">Todas as taxas de câmbio das moedas foram actualizadas com sucesso</string>
   <string name="update_menu_currency_exchange_rates">Atualização da taxa de câmbio</string>
   <string name="question_update_currency_exchange_rates">Deseja actualizar a taxa de câmbio?</string>
+  <string name="error_update_currency_exchange_rate">Existiu um erro ao actualizar a taxa</string>
   <string name="withdrawal_from">Levantamentos de %1$s</string>
   <string name="deposit_to">Depósito para %1$s</string>
   <string name="mmex_website">Site do MoneyManager</string>

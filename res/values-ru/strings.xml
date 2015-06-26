@@ -370,6 +370,7 @@
   <string name="success_currency_exchange_rates">Все обменные курсы были успешно обновлены</string>
   <string name="update_menu_currency_exchange_rates">Обновить курс валюты</string>
   <string name="question_update_currency_exchange_rates">Вы хотите обновить обменый курс ?</string>
+  <string name="error_update_currency_exchange_rate">Ошибка обновления курса валюты</string>
   <string name="withdrawal_from">Снятие со счета  %1$s</string>
   <string name="deposit_to">Пополнение счета %1$s</string>
   <string name="mmex_website">Сайт MoneyManagerEX</string>
