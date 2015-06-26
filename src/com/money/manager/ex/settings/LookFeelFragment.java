@@ -49,9 +49,12 @@ public class LookFeelFragment
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // checkbox on open and favorite account
-        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE));
-        final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE));
-        final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(PreferenceConstants.PREF_HIDE_RECONCILED_AMOUNTS));
+        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(
+                PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE));
+        final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(
+                PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE));
+        final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(
+                PreferenceConstants.PREF_HIDE_RECONCILED_AMOUNTS));
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override
@@ -66,7 +69,8 @@ public class LookFeelFragment
         chkHideReconciled.setOnPreferenceChangeListener(listener);
 
         // show transaction
-        final ListPreference lstShow = (ListPreference) findPreference(getString(PreferenceConstants.PREF_SHOW_TRANSACTION));
+        final ListPreference lstShow = (ListPreference) findPreference(getString(
+                PreferenceConstants.PREF_SHOW_TRANSACTION));
         if (lstShow != null) {
             lstShow.setSummary(MoneyManagerApplication.getInstanceApp().getShowTransaction());
             lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
