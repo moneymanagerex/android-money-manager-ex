@@ -21,41 +21,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.os.StrictMode;
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
-import com.money.manager.ex.investment.IDownloadAsyncTaskFeedback;
-import com.money.manager.ex.investment.IPriceUpdaterFeedback;
-import com.money.manager.ex.investment.ISecurityPriceUpdater;
-import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
-import com.money.manager.ex.investment.YahooDownloadAllPricesTask;
-import com.money.manager.ex.investment.YahooSecurityPriceUpdater;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,15 +77,6 @@ public class CurrencyUtils {
         double fromConversionRate = fromCurrencyFormats.getBaseConvRate();
         double result = (amount * fromConversionRate) / toConversionRate;
         return result;
-    }
-
-    public String getCurrencySymbolFromId(Integer currencyId) {
-        if (currencyId == null) return null;
-
-        TableCurrencyFormats fromCurrencyFormats = getCurrency(currencyId);
-        String symbol = fromCurrencyFormats.getCurrencySymbol();
-
-        return symbol;
     }
 
     /**
