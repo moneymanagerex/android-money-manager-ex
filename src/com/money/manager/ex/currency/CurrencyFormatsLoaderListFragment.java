@@ -448,10 +448,6 @@ public class CurrencyFormatsLoaderListFragment
     }
 
     public void updateExchangeRates() {
-//        AsyncTask<Void, Integer, Boolean> asyncTask =
-//                new UpdateCurrenciesTask(getActivity(), getCurrencyUtils());
-//        asyncTask.execute();
-
         updateAllExchangeRatesFromYahoo();
     }
 
@@ -466,10 +462,6 @@ public class CurrencyFormatsLoaderListFragment
      * Update rate for the currently selected currency.
      */
     private void updateSingleCurrencyExchangeRate(final int currencyId) {
-//        AsyncTask<Void, Integer, Boolean> updateAsync =
-//                new UpdateSingleCurrencyTask(getActivity(), mCurrencyUtils, currencyId);
-//        updateAsync.execute();
-
         updateCurrencyFromYahoo(currencyId);
     }
 
@@ -484,7 +476,6 @@ public class CurrencyFormatsLoaderListFragment
         if (currencies.size() <= 0) return;
 
         CurrencyUtils utils = getCurrencyUtils();
-//        List<TableCurrencyFormats> currencies = utils.getAllCurrencyFormats();
         String[] currencySymbols = new String[currencies.size()];
         int counter = 0;
         String symbol;

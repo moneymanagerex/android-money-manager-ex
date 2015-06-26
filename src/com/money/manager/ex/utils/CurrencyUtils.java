@@ -68,8 +68,6 @@ import java.util.Map;
 public class CurrencyUtils {
 
     private static final String LOGCAT = CurrencyUtils.class.getSimpleName();
-    private static final String URL_FREE_CURRENCY_CONVERT_API =
-            "http://www.freecurrencyconverterapi.com/api/convert?q=SYMBOL&compact=y";
     // id base currency
     private static Integer mBaseCurrencyId = null;
     // hash map of all currencies
@@ -102,88 +100,8 @@ public class CurrencyUtils {
         // exchange
         double toConversionRate = toCurrencyFormats.getBaseConvRate();
         double fromConversionRate = fromCurrencyFormats.getBaseConvRate();
-//        double result = (amount * toConversionRate) / fromConversionRate;
         double result = (amount * fromConversionRate) / toConversionRate;
         return result;
-    }
-
-    public boolean updateCurrencyRateFromBase(Integer toCurrencyId) {
-        boolean result;
-
-        result = updateCurrencyRate(getBaseCurrencyId(), toCurrencyId);
-//        result = updateCurrencyFromYahoo(getBaseCurrencyId(), toCurrencyId);
-
-        return result;
-    }
-
-    private boolean updateCurrencyRate(Integer fromCurrencyId, Integer toCurrencyId) {
-        // take symbol from and to currencies
-        String fromSymbol = getCurrencySymbolFromId(fromCurrencyId);
-        if (TextUtils.isEmpty(fromSymbol)) return false;
-        String toSymbol = getCurrencySymbolFromId(toCurrencyId);
-        if (TextUtils.isEmpty(toSymbol)) return false;
-
-        // compose symbol
-        String symbolRate = toSymbol + "-" + fromSymbol;
-        // check if DEBUG
-        if (BuildConfig.DEBUG) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
-
-        String url = URL_FREE_CURRENCY_CONVERT_API.replace("SYMBOL", symbolRate);
-
-        // new connection
-        // todo: use this
-//        URL urlObject = createUrl(url);
-//        HttpURLConnection urlConnection = (HttpURLConnection) urlObject.openConnection();
-
-
-        // compose connection
-        StringBuilder stringBuilder = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(url);
-        try {
-            HttpResponse httpResponse = client.execute(httpGet);
-            StatusLine statusLine = httpResponse.getStatusLine();
-            if (statusLine.getStatusCode() == 200) {
-                HttpEntity httpEntity = httpResponse.getEntity();
-                InputStream inputStream = httpEntity.getContent();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(line);
-                }
-                // close buffer and stream
-                bufferedReader.close();
-                inputStream.close();
-                // convert string builder in json object
-                JSONObject jsonObject = new JSONObject(stringBuilder.toString());
-                JSONObject jsonRate = jsonObject.getJSONObject(symbolRate);
-                Double rate = jsonRate.getDouble("val");
-
-                // update value on database
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(TableCurrencyFormats.BASECONVRATE, rate);
-
-                TableCurrencyFormats currencyTable = new TableCurrencyFormats();
-
-                return mContext.getContentResolver().update(currencyTable.getUri(),
-                        contentValues,
-                        TableCurrencyFormats.CURRENCYID + "=" + Integer.toString(toCurrencyId),
-                        null) > 0;
-            }
-        } catch (ClientProtocolException e) {
-            Log.e(LOGCAT, e.getMessage());
-            return false;
-        } catch (IOException e) {
-            Log.e(LOGCAT, e.getMessage());
-            return false;
-        } catch (JSONException e) {
-            Log.e(LOGCAT, e.getMessage());
-            return false;
-        }
-        return true;
     }
 
     public String getCurrencySymbolFromId(Integer currencyId) {
