@@ -1129,11 +1129,6 @@ public class CheckingAccountActivity
                 return false;
             }
         }
-        // Payee is now optional.
-//        if ((!Constants.TRANSACTION_TYPE_TRANSFER.equalsIgnoreCase(mTransCode)) && (mPayeeId == -1)) {
-//            Core.alertDialog(this, R.string.error_payee_not_selected).show();
-//            return false;
-//        }
 
         // Category is required if tx is not a split or transfer.
         if (mCategoryId == -1 && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
