@@ -101,7 +101,7 @@
   <string name="deposit">Einzahlung</string>
   <string name="status">Status</string>
   <string name="status_reconciled">ausgeglichen</string>
-  <string name="status_void">Ungültig</string>
+  <string name="status_void">ungültig</string>
   <string name="status_follow_up">Nachverfolgung</string>
   <string name="status_duplicate">Duplikat</string>
   <string name="status_none">Nichts</string>
@@ -214,7 +214,7 @@
   <string name="income">Einkommen</string>
   <string name="expenses">Ausgaben</string>
   <string name="difference">Differenz</string>
-  <string name="no_data">Keine Aufnahmen gefunden. Um eine Aufnahme zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
+  <string name="no_data">Keine Einträge gefunden. Um einen Eintrag zu erstellen. drücken Sie den grünen Plus-Knopf. </string>
   <string name="no_stock_data">Keine Bestandsdaten für dieses Konto vorhanden.</string>
   <string name="month">Monat</string>
   <string name="year">Jahr</string>
@@ -247,7 +247,7 @@
   <string name="donate_in_app_button">Spenden</string>
   <string name="donate_thank_you">Vielen Dank für Ihre Spende!</string>
   <string name="donate">Spenden</string>
-  <string name="no_thanks">Nein, danke</string>
+  <string name="no_thanks">Nein danke</string>
   <string name="donate_exlamation">Spenden!</string>
   <string name="android_sqlite_vesion">SQLite-Version</string>
   <string name="ascending">Aufsteigend</string>
