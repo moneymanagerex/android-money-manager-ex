@@ -483,6 +483,7 @@ public class CurrencyFormatsLoaderListFragment
 
         for (TableCurrencyFormats currency : currencies) {
             symbol = currency.getCurrencySymbol();
+            if (symbol == null) continue;
             if (symbol.equals(baseCurrencySymbol)) continue;
 
             currencySymbols[counter] = baseCurrencySymbol + symbol + "=X";
