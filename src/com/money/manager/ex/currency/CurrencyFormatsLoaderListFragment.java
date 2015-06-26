@@ -51,6 +51,7 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.fragment.BaseListFragment;
 import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.utils.DialogUtils;
 
 import java.util.List;
 
@@ -378,109 +379,14 @@ public class CurrencyFormatsLoaderListFragment
      * Import all currencies from Android System
      */
     public void importAllCurrencies() {
-        AsyncTask<Void, Void, Boolean> asyncTask = new AsyncTask<Void, Void, Boolean>() {
-            ProgressDialog dialog = null;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                dialog = ProgressDialog.show(getActivity(), null, getString(R.string.import_currencies_in_progress));
-            }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                Core core = new Core(getActivity().getApplicationContext());
-                return core.importCurrenciesFromLocaleAvaible();
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                try {
-                    if (dialog != null) {
-                        closeProgressDialog(dialog);
-                    }
-                } catch (Exception e) {
-                    Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
-                }
-                super.onPostExecute(result);
-            }
-        };
+        AsyncTask<Void, Void, Boolean> asyncTask = new ImportAllCurrenciesTask(getActivity());
         asyncTask.execute();
     }
 
     public void updateRateCurrencies() {
-        AsyncTask<Void, Integer, Boolean> asyncTask = new AsyncTask<Void, Integer, Boolean>() {
-            private ProgressDialog dialog = null;
-            private int mCountCurrencies = 0;
-            private TableCurrencyFormats mCurrencyFormat;
+        AsyncTask<Void, Integer, Boolean> asyncTask =
+                new UpdateCurrenciesTask(getActivity(), getCurrencyUtils());
 
-            private Core mCore;
-
-            private int mPrevOrientation;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-
-                mPrevOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
-
-                mCore = new Core(getActivity().getApplicationContext());
-                DropboxHelper.setAutoUploadDisabled(true);
-
-                //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
-                dialog = new ProgressDialog(getActivity());
-                dialog.setMessage(getString(R.string.start_currency_exchange_rates));
-                dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                dialog.setCancelable(false);
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.show();
-            }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                CurrencyUtils currencyUtils = getCurrencyUtils();
-                List<TableCurrencyFormats> currencyFormats = currencyUtils.getAllCurrencyFormats();
-                mCountCurrencies = currencyFormats.size();
-                for (int i = 0; i < currencyFormats.size(); i++) {
-                    mCurrencyFormat = currencyFormats.get(i);
-                    currencyUtils.updateCurrencyRateFromBase(mCurrencyFormat.getCurrencyId());
-                    publishProgress(i);
-                }
-                return Boolean.TRUE;
-            }
-
-            @Override
-            protected void onProgressUpdate(Integer... values) {
-                super.onProgressUpdate(values);
-                if (dialog != null) {
-                    dialog.setMax(mCountCurrencies);
-                    dialog.setProgress(values[0]);
-                    if (mCurrencyFormat != null) {
-                        dialog.setMessage(mCore.highlight(mCurrencyFormat.getCurrencyName(), getString(R.string.update_currency_exchange_rates, mCurrencyFormat.getCurrencyName())));
-                    }
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                try {
-                    if (dialog != null)
-                        closeProgressDialog(dialog);
-                } catch (Exception e) {
-                    Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
-                }
-                if (result)
-                    Toast.makeText(getActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
-
-                DropboxHelper.setAutoUploadDisabled(false);
-                DropboxHelper.notifyDataChanged();
-
-                ActivityUtils.restoreOrientation(getActivity(), mPrevOrientation);
-
-                super.onPostExecute(result);
-            }
-        };
         asyncTask.execute();
     }
 
@@ -515,63 +421,9 @@ public class CurrencyFormatsLoaderListFragment
      */
     private void updateSingleCurrencyExchangeRate(final int currencyId) {
 
-        AsyncTask<Void, Integer, Boolean> updateAsync = new AsyncTask<Void, Integer, Boolean>() {
-            private ProgressDialog dialog = null;
-            private int mPrevOrientation;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-
-                mPrevOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
-
-                DropboxHelper.setAutoUploadDisabled(true);
-
-                dialog = new ProgressDialog(getActivity());
-                // setting dialog
-                // update_menu_currency_exchange_rates
-                dialog.setMessage(getString(R.string.start_currency_exchange_rates));
-                dialog.setIndeterminate(true);
-                dialog.setCancelable(false);
-                dialog.setCanceledOnTouchOutside(false);
-                // show dialog
-                dialog.show();
-            }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                CurrencyUtils util = getCurrencyUtils();
-                util.updateCurrencyRateFromBase(currencyId);
-                return Boolean.TRUE;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                try {
-                    if (dialog != null) {
-                        closeProgressDialog(dialog);
-                    }
-                } catch (Exception e) {
-                    Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
-                }
-                if (result) {
-                    Toast.makeText(getActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
-                }
-
-                DropboxHelper.setAutoUploadDisabled(false);
-                DropboxHelper.notifyDataChanged();
-
-                ActivityUtils.restoreOrientation(getActivity(), mPrevOrientation);
-
-                super.onPostExecute(result);
-            }
-        };
+        AsyncTask<Void, Integer, Boolean> updateAsync =
+                new UpdateSingleCurrencyTask(getActivity(), mCurrencyUtils, currencyId);
         updateAsync.execute();
-    }
-
-    private void closeProgressDialog(ProgressDialog progressDialog) {
-        progressDialog.hide();
-        progressDialog.dismiss();
     }
 
 }
