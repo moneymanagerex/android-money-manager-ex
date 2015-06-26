@@ -32,7 +32,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.CheckingAccountActivity;
+import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;

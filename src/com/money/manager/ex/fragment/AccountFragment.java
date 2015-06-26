@@ -29,8 +29,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,7 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.AccountListEditActivity;
-import com.money.manager.ex.CheckingAccountActivity;
+import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;

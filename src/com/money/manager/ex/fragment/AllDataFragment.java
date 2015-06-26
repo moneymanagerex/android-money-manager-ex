@@ -46,7 +46,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.CheckingAccountActivity;
+import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.qif.QifExport;
 import com.money.manager.ex.checkingaccount.CheckingAccountConstants;

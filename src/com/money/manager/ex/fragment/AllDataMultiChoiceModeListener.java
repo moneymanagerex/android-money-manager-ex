@@ -17,26 +17,10 @@
  */
 package com.money.manager.ex.fragment;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.util.SparseBooleanArray;
 import android.view.ActionMode;
-import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.CheckingAccountActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.AllDataAdapter;
-import com.money.manager.ex.adapter.DrawerMenuItem;
-import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.QueryAllData;
-
-import java.util.ArrayList;
 
 /**
  * class to manage multi choice mode

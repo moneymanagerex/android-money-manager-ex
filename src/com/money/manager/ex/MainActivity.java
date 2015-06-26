@@ -56,6 +56,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.adapter.DrawerMenuItem;
 import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
+import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;

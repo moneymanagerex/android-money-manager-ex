@@ -17,44 +17,15 @@
  */
 package com.money.manager.ex.recurring.transactions;
 
-import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.text.TextUtils;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.CheckingAccountActivity;
-import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.AllDataAdapter;
-import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Passcode;
-import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.database.TableBillsDeposits;
-import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.BaseListFragment;
-import com.money.manager.ex.utils.DateUtils;
-
-import java.util.Date;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)

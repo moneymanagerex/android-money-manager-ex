@@ -1,7 +1,5 @@
 package com.money.manager.ex.checkingaccount;
 
-import com.money.manager.ex.CheckingAccountActivity;
-
 /**
  * Constants used by the Checking Account
  */
