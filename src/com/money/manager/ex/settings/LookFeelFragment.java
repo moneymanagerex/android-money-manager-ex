@@ -26,6 +26,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -89,6 +90,8 @@ public class LookFeelFragment
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (newValue instanceof String && NumberUtils.isNumber(newValue.toString())) {
+                        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Preference set: font = " + newValue.toString());
+
                         RobotoView.setUserFont(Integer.parseInt(newValue.toString()));
                         return true;
                     }
@@ -104,6 +107,8 @@ public class LookFeelFragment
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "Preference set: font = " + newValue.toString());
+
                     RobotoView.setUserFontSize(getActivity().getApplicationContext(), newValue.toString());
                     return true;
                 }
