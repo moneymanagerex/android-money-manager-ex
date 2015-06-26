@@ -31,6 +31,12 @@ import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.investment.IDownloadAsyncTaskFeedback;
+import com.money.manager.ex.investment.IPriceUpdaterFeedback;
+import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
+import com.money.manager.ex.investment.YahooDownloadAllPricesTask;
+import com.money.manager.ex.investment.YahooSecurityPriceUpdater;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -46,8 +52,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,20 +80,12 @@ public class CurrencyUtils {
 
     public CurrencyUtils(Context context) {
         mContext = context;
-//        loadCurrencies();
     }
 
     public static void destroy() {
         mCurrencies = null;
         mBaseCurrencyId = null;
     }
-
-//    /**
-//     * @return true if wrapper is init
-//     */
-//    public Boolean isInit() {
-//        return mCurrencies != null && mCurrencies.size() > 0;
-//    }
 
     public Boolean reInit() {
         destroy();
@@ -108,21 +108,21 @@ public class CurrencyUtils {
     }
 
     public boolean updateCurrencyRateFromBase(Integer toCurrencyId) {
-        return updateCurrencyRate(getBaseCurrencyId(), toCurrencyId);
+        boolean result;
+
+        result = updateCurrencyRate(getBaseCurrencyId(), toCurrencyId);
+//        result = updateCurrencyFromYahoo(getBaseCurrencyId(), toCurrencyId);
+
+        return result;
     }
 
-    public boolean updateCurrencyRate(Integer fromCurrencyId, Integer toCurrencyId) {
-        TableCurrencyFormats fromCurrencyFormats = getCurrency(fromCurrencyId);
-        TableCurrencyFormats toCurrencyFormats = getCurrency(toCurrencyId);
-        // check if exists from and to currencies
-        if (fromCurrencyFormats == null || toCurrencyFormats == null)
-            return false;
+    private boolean updateCurrencyRate(Integer fromCurrencyId, Integer toCurrencyId) {
         // take symbol from and to currencies
-        String fromSymbol = fromCurrencyFormats.getCurrencySymbol();
-        String toSymbol = toCurrencyFormats.getCurrencySymbol();
-        // check if symbol is empty
-        if (TextUtils.isEmpty(fromSymbol) || TextUtils.isEmpty(toSymbol))
-            return false;
+        String fromSymbol = getCurrencySymbolFromId(fromCurrencyId);
+        if (TextUtils.isEmpty(fromSymbol)) return false;
+        String toSymbol = getCurrencySymbolFromId(toCurrencyId);
+        if (TextUtils.isEmpty(toSymbol)) return false;
+
         // compose symbol
         String symbolRate = toSymbol + "-" + fromSymbol;
         // check if DEBUG
@@ -161,11 +161,14 @@ public class CurrencyUtils {
                 JSONObject jsonObject = new JSONObject(stringBuilder.toString());
                 JSONObject jsonRate = jsonObject.getJSONObject(symbolRate);
                 Double rate = jsonRate.getDouble("val");
+
                 // update value on database
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(TableCurrencyFormats.BASECONVRATE, rate);
 
-                return mContext.getContentResolver().update(toCurrencyFormats.getUri(),
+                TableCurrencyFormats currencyTable = new TableCurrencyFormats();
+
+                return mContext.getContentResolver().update(currencyTable.getUri(),
                         contentValues,
                         TableCurrencyFormats.CURRENCYID + "=" + Integer.toString(toCurrencyId),
                         null) > 0;
@@ -181,6 +184,15 @@ public class CurrencyUtils {
             return false;
         }
         return true;
+    }
+
+    public String getCurrencySymbolFromId(Integer currencyId) {
+        if (currencyId == null) return null;
+
+        TableCurrencyFormats fromCurrencyFormats = getCurrency(currencyId);
+        String symbol = fromCurrencyFormats.getCurrencySymbol();
+
+        return symbol;
     }
 
     /**

@@ -35,6 +35,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
+import com.money.manager.ex.utils.DialogUtils;
 
 import java.io.File;
 
@@ -157,7 +158,7 @@ public class DropboxManager {
                 if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
                     // close dialog
                     if (progressDialog != null && progressDialog.isShowing()) {
-                        closeProgressDialog(progressDialog);
+                        DialogUtils.closeProgressDialog(progressDialog);
                     }
 
                     parent.runOnUiThread(new Runnable() {
@@ -177,7 +178,7 @@ public class DropboxManager {
                     // Download from Dropbox completed.
                     // close dialog
                     if (progressDialog != null && progressDialog.isShowing()) {
-                        closeProgressDialog(progressDialog);
+                        DialogUtils.closeProgressDialog(progressDialog);
                     }
                     // Notify whoever is interested.
                     mCallbacks.onFileDownloaded();
@@ -191,7 +192,7 @@ public class DropboxManager {
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD) {
                     // close dialog
                     if (progressDialog != null && progressDialog.isShowing()) {
-                        closeProgressDialog(progressDialog);
+                        DialogUtils.closeProgressDialog(progressDialog);
                     }
 
                     parent.runOnUiThread(new Runnable() {
@@ -206,8 +207,4 @@ public class DropboxManager {
         return messenger;
     }
 
-    private void closeProgressDialog(ProgressDialog progressDialog) {
-        progressDialog.hide();
-        progressDialog.dismiss();
-    }
 }

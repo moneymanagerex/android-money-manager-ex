@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.investment;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -38,12 +39,14 @@ import au.com.bytecode.opencsv.CSVParser;
 public class YahooSecurityPriceUpdater
         implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
 
-    public YahooSecurityPriceUpdater(IPriceUpdaterFeedback feedback) {
+    public YahooSecurityPriceUpdater(Context context, IPriceUpdaterFeedback feedback) {
+        mContext = context;
         mFeedback = feedback;
     }
 
     private final String LOGCAT = this.getClass().getSimpleName();
 
+    private Context mContext;
     // "http://download.finance.yahoo.com/d/quotes.csv?s=", A2, "&f=l1d1&e=.csv"
     private String mUrlPrefix = "http://download.finance.yahoo.com/d/quotes.csv?s=";
     // get symbol, last trade price, last trade date
@@ -52,7 +55,7 @@ public class YahooSecurityPriceUpdater
     private IPriceUpdaterFeedback mFeedback;
 
     // All the symbols to be updated.
-    private String[] mSymbolsToUpdate;
+//    private String[] mSymbolsToUpdate;
 
     /**
      * Update prices for all the symbols in the list.
@@ -60,10 +63,10 @@ public class YahooSecurityPriceUpdater
     public void updatePrices(String... symbols) {
         if (symbols == null) return;
 
-        mSymbolsToUpdate = symbols;
+//        mSymbolsToUpdate = symbols;
 
         YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(
-                mFeedback.getContext(), this);
+                mContext, this);
         downloader.execute(symbols);
 
         // Async call. The prices are updated in onCsvDownloaded.

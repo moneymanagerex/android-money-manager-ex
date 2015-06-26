@@ -485,11 +485,14 @@
     <string name="locale_vi">Vietnamese</string>
     <string name="locale_zh_rCN">Chinese Simplified</string>
     <string name="locale_zh_rTW">Chinese Traditional</string>
+
     <string name="start_currency_exchange_rates">Updating the exchange rates of currencies. Please wait…</string>
     <string name="update_currency_exchange_rates">Updating the exchange rate:\n%1$s</string>
     <string name="success_currency_exchange_rates">All the exchange rates of currencies have been updated successfully</string>
     <string name="update_menu_currency_exchange_rates">Update Exchange Rate</string>
     <string name="question_update_currency_exchange_rates">Do you want to update exchange rate?</string>
+    <string name="error_update_currency_exchange_rate">There was an error updating the rate</string>
+
     <string name="withdrawal_from">Withdrawal From %1$s</string>
     <string name="deposit_to">Deposit To %1$s</string>
     <string name="mmex_website">MoneyManagerEx Website</string>

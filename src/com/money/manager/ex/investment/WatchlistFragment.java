@@ -106,7 +106,7 @@ public class WatchlistFragment extends Fragment
 
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
-                                .getUpdaterInstance(WatchlistFragment.this);
+                                .getUpdaterInstance(mContext, WatchlistFragment.this);
                         updater.updatePrices(symbols);
 
                         dialog.dismiss();
@@ -318,15 +318,6 @@ public class WatchlistFragment extends Fragment
     }
 
     /**
-     * Called from Price updater
-     * @return
-     */
-    @Override
-    public Context getContext() {
-        return mContext;
-    }
-
-    /**
      * Called from asynchronous task when a single price is downloaded.
      * @param symbol
      * @param price
@@ -424,7 +415,7 @@ public class WatchlistFragment extends Fragment
         mToUpdateTotal = 1;
         mUpdateCounter = 0;
 
-        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(this);
+        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(mContext, this);
         updater.updatePrices(symbol);
     }
 

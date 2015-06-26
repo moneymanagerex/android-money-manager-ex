@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyFormatsListActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.utils.DialogUtils;
 
 import java.io.IOException;
 
@@ -104,8 +105,7 @@ public class YahooDownloadAllPricesTask
     protected void onPostExecute(Boolean result) {
         try {
             if (mDialog != null) {
-                mDialog.hide();
-                mDialog.dismiss();
+                DialogUtils.closeProgressDialog(mDialog);
             }
         } catch (Exception e) {
             Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
