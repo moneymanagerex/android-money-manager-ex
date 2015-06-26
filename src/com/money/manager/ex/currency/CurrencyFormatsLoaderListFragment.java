@@ -396,8 +396,9 @@ public class CurrencyFormatsLoaderListFragment
             @Override
             protected void onPostExecute(Boolean result) {
                 try {
-                    if (dialog != null)
-                        dialog.hide();
+                    if (dialog != null) {
+                        closeProgressDialog(dialog);
+                    }
                 } catch (Exception e) {
                     Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
                 }
@@ -465,7 +466,7 @@ public class CurrencyFormatsLoaderListFragment
             protected void onPostExecute(Boolean result) {
                 try {
                     if (dialog != null)
-                        dialog.hide();
+                        closeProgressDialog(dialog);
                 } catch (Exception e) {
                     Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
                 }
@@ -547,8 +548,9 @@ public class CurrencyFormatsLoaderListFragment
             @Override
             protected void onPostExecute(Boolean result) {
                 try {
-                    if (dialog != null)
-                        dialog.hide();
+                    if (dialog != null) {
+                        closeProgressDialog(dialog);
+                    }
                 } catch (Exception e) {
                     Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
                 }
@@ -565,6 +567,11 @@ public class CurrencyFormatsLoaderListFragment
             }
         };
         updateAsync.execute();
-
     }
+
+    private void closeProgressDialog(ProgressDialog progressDialog) {
+        progressDialog.hide();
+        progressDialog.dismiss();
+    }
+
 }
