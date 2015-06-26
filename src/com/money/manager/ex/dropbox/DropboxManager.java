@@ -157,7 +157,7 @@ public class DropboxManager {
                 if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
                     // close dialog
                     if (progressDialog != null && progressDialog.isShowing()) {
-                        progressDialog.hide();
+                        closeProgressDialog(progressDialog);
                     }
 
                     parent.runOnUiThread(new Runnable() {
@@ -177,7 +177,7 @@ public class DropboxManager {
                     // Download from Dropbox completed.
                     // close dialog
                     if (progressDialog != null && progressDialog.isShowing()) {
-                        progressDialog.hide();
+                        closeProgressDialog(progressDialog);
                     }
                     // Notify whoever is interested.
                     mCallbacks.onFileDownloaded();
@@ -191,7 +191,7 @@ public class DropboxManager {
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD) {
                     // close dialog
                     if (progressDialog != null && progressDialog.isShowing()) {
-                        progressDialog.hide();
+                        closeProgressDialog(progressDialog);
                     }
 
                     parent.runOnUiThread(new Runnable() {
@@ -204,5 +204,10 @@ public class DropboxManager {
             }
         });
         return messenger;
+    }
+
+    private void closeProgressDialog(ProgressDialog progressDialog) {
+        progressDialog.hide();
+        progressDialog.dismiss();
     }
 }
