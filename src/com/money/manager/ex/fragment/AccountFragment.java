@@ -284,6 +284,8 @@ public class AccountFragment
 
         // find account
         SimpleCursorAdapter adapter = (SimpleCursorAdapter) spinner.getAdapter();
+        if (adapter == null) return;
+
         Cursor cursor = adapter.getCursor();
         int position = Constants.NOT_SET;
 
