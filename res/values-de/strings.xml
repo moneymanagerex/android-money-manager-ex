@@ -370,6 +370,7 @@
   <string name="success_currency_exchange_rates">Alle Wechselkurse sind erfolgreich aktualisiert</string>
   <string name="update_menu_currency_exchange_rates">Aktualisiere Wechselkurs</string>
   <string name="question_update_currency_exchange_rates">Wollen Sie den Wechselkurs aktualisieren?</string>
+  <string name="error_update_currency_exchange_rate">Es passierte ein Fehler beim Aktualisieren des Kurses</string>
   <string name="withdrawal_from">Abhebung %1$s</string>
   <string name="deposit_to">Hinterlege zu %1$s</string>
   <string name="mmex_website">MoneyManagerEx Website</string>

@@ -96,6 +96,12 @@ set locale=ES
 call copy_translation.bat %src_root% %dest_root% %lang% %locale%
 call copy_dropbox.bat %src_root% %dest_root% %lang% %locale%
 
+:: Turkish
+set lang=tr
+set locale=TR
+call copy_translation.bat %src_root% %dest_root% %lang% %locale%
+::call copy_dropbox.bat %src_root% %dest_root% %lang% %locale%
+
 :: Vietnamese
 set lang=vi
 set locale=VN

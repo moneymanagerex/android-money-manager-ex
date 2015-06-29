@@ -370,6 +370,7 @@
   <string name="success_currency_exchange_rates">Tất cả tỷ giá hối đoái của tiền tệ đã được cập nhật thành công</string>
   <string name="update_menu_currency_exchange_rates">Cập Nhật Tỷ giá hối đoái</string>
   <string name="question_update_currency_exchange_rates">Bạn có muốn cập nhật tỷ giá hối đoái?</string>
+  <string name="error_update_currency_exchange_rate">Đã có 1 lỗi khi cập nhật tỉ giá</string>
   <string name="withdrawal_from">Rút khỏi từ %1$s</string>
   <string name="deposit_to">Khoản tiền gửi tới %1$s</string>
   <string name="mmex_website">Trang web MoneyManagerEx</string>

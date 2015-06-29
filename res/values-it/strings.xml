@@ -370,6 +370,7 @@
   <string name="success_currency_exchange_rates">Tutti i tassi di cambio delle valute sono stati aggiornati con successo</string>
   <string name="update_menu_currency_exchange_rates">Aggiornamento tasso di cambio</string>
   <string name="question_update_currency_exchange_rates">Si desidera aggiornare il tasso di cambio?</string>
+  <string name="error_update_currency_exchange_rate">C\'è stato un errore durante l\'aggiornamento del tasso</string>
   <string name="withdrawal_from">Prelievo da %1$s</string>
   <string name="deposit_to">Deposito su %1$s</string>
   <string name="mmex_website">MoneyManagerEx Website</string>
@@ -472,6 +473,7 @@
   <string name="checking_dropbox_for_changes">Sto controllando Dropbox per modifiche al database.</string>
   <string name="choose_type">Seleziona una tipologia</string>
   <string name="default_account">Account di default</string>
+  <string name="default_account_summary">L\'account da utilizzare quando si immette in una nuova transazione.</string>
   <string name="cash">Contante</string>
   <string name="select_account">Seleziona un account</string>
   <string name="invalid_transaction_number">Numero di transazione non valido</string>

@@ -369,6 +369,7 @@
   <string name="success_currency_exchange_rates">Se han actualizado todos los tipos de cambio de divisas con éxito</string>
   <string name="update_menu_currency_exchange_rates">Actualizar Cambio de Moneda</string>
   <string name="question_update_currency_exchange_rates">¿Quieres actualizar el tipo de cambio?</string>
+  <string name="error_update_currency_exchange_rate">Ocurrió un error al actualizar la tasa</string>
   <string name="withdrawal_from">Retirar desde %1$s</string>
   <string name="deposit_to">Depositar en %1$s</string>
   <string name="mmex_website">Sitio web de MoneyManagerEx</string>

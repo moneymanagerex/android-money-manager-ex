@@ -370,6 +370,7 @@
   <string name="success_currency_exchange_rates">通貨の為替レートをすべて正常に更新しました</string>
   <string name="update_menu_currency_exchange_rates">為替レートを更新</string>
   <string name="question_update_currency_exchange_rates">為替レートを更新しますか?</string>
+  <string name="error_update_currency_exchange_rate">レートの更新時にエラーが発生しました</string>
   <string name="withdrawal_from">%1$s から払戻</string>
   <string name="deposit_to">%1$s へ入金</string>
   <string name="mmex_website">MoneyManagerEx Webサイト</string>
