@@ -75,7 +75,7 @@ public class CurrencyUtils {
         // exchange
         double toConversionRate = toCurrencyFormats.getBaseConvRate();
         double fromConversionRate = fromCurrencyFormats.getBaseConvRate();
-        double result = (amount * fromConversionRate) / toConversionRate;
+        double result = (amount * toConversionRate) / fromConversionRate;
         return result;
     }
 
