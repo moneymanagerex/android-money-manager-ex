@@ -22,8 +22,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
@@ -280,6 +282,11 @@ public class CurrencyUtils {
         int baseCurrencyId = this.getBaseCurrencyId();
 
         TableCurrencyFormats currency = this.getCurrency(baseCurrencyId);
+        if (currency == null) {
+            Toast.makeText(mContext, mContext.getString(R.string.base_currency_not_set),
+                    Toast.LENGTH_SHORT).show();
+            return "";
+        }
         return currency.getCurrencySymbol();
     }
 }
