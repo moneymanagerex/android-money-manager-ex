@@ -17,53 +17,14 @@
  */
 package com.money.manager.ex;
 
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.text.TextUtils;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.QueryCategorySubCategory;
-import com.money.manager.ex.database.SQLTypeTransaction;
-import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TableSubCategory;
-import com.money.manager.ex.fragment.BaseExpandableListFragment;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.CategorySubCategoryExpandableLoaderListFragment;
-
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.CategorySubCategoryExpandableLoaderListFragment;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)

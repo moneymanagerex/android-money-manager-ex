@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.money.manager.ex.fragment;
+package com.money.manager.ex.reports;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

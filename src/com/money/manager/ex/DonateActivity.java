@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.inapp.util.IabHelper;
 import com.money.manager.ex.inapp.util.IabResult;
 import com.money.manager.ex.inapp.util.Inventory;

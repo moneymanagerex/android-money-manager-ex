@@ -28,7 +28,7 @@ import android.util.Log;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.money.manager.ex.R;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseFragmentActivity;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)

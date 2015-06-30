@@ -36,13 +36,12 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class RepeatingTransactionAdapter extends CursorAdapter {
     private LayoutInflater inflater;

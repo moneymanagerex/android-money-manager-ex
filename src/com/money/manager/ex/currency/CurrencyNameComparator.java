@@ -16,35 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.money.manager.ex.interfaces;
+package com.money.manager.ex.currency;
 
-import android.os.Parcelable;
+import com.money.manager.ex.database.TableCurrencyFormats;
+
+import java.util.Comparator;
 
 /**
- * Interface for Split Category entity. Used by split categories on account transactions
- * and on recurring transactions.
+ * Compare two Currencies by Name.
+ * Created by Alen Siljak on 11/03/2015.
  */
-public interface ISplitTransactionsDataset extends Parcelable {
-
-    int getCategId();
-
-    /**
-     * @return the splitTransAmount
-     */
-    double getSplitTransAmount();
-
-    int getSplitTransId();
-
-    int getSubCategId();
-
-    // Setters
-
-    void setCategId(int categId);
-
-    /**
-     * @param splitTransAmount the splitTransAmount to set
-     */
-    void setSplitTransAmount(double splitTransAmount);
-
-    void setSubCategId(int subCategId);
+public class CurrencyNameComparator implements Comparator<TableCurrencyFormats> {
+    @Override
+    public int compare(TableCurrencyFormats o1, TableCurrencyFormats o2) {
+        return o1.getCurrencyName().compareTo(o2.getCurrencyName());
+    }
 }

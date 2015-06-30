@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.fragment;
+package com.money.manager.ex.settings;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -41,7 +41,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.HelpActivity;
-import com.money.manager.ex.MainActivity;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.dropbox.DropboxManager;
@@ -50,8 +50,7 @@ import com.money.manager.ex.dropbox.DropboxBrowserActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxReceiver;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
-import com.money.manager.ex.settings.DropboxSettingsActivity;
-import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.utils.RawFileUtils;
 
 import java.io.File;

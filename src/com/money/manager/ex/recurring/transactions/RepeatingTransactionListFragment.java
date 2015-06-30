@@ -42,7 +42,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
-import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.util.Date;

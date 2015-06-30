@@ -40,7 +40,7 @@ import com.github.pedrovgs.lynx.LynxActivity;
 import com.github.pedrovgs.lynx.LynxConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseFragmentActivity;
 
 public class AboutFragment extends Fragment {
     private static final String LOGCAT = AboutFragment.class.getSimpleName();

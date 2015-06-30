@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.utils;
+package com.money.manager.ex.currency;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -24,7 +24,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;

@@ -15,20 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+package com.money.manager.ex.common;
 
-package com.money.manager.ex.utils;
-
-import com.money.manager.ex.database.TableCurrencyFormats;
-
-import java.util.Comparator;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.support.v4.content.Loader;
 
 /**
- * Compare two Currencies by Name.
- * Created by Alen Siljak on 11/03/2015.
+ * Interface for callback fragment
  */
-public class CurrencyNameComparator implements Comparator<TableCurrencyFormats> {
-    @Override
-    public int compare(TableCurrencyFormats o1, TableCurrencyFormats o2) {
-        return o1.getCurrencyName().compareTo(o2.getCurrencyName());
-    }
+public interface IAllDataFragmentLoaderCallbacks {
+    void onCallbackCreateLoader(int id, Bundle args);
+
+    void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data);
+
+    void onCallbackLoaderReset(Loader<Cursor> loader);
 }

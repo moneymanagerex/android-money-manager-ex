@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.money.manager.ex.fragment;
+package com.money.manager.ex.home;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -50,7 +50,8 @@ import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
+import com.money.manager.ex.currency.CurrencyUtils;
 import com.money.manager.ex.view.RobotoTextView;
 
 import java.text.SimpleDateFormat;

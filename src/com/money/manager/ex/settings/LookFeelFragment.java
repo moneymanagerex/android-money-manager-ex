@@ -27,7 +27,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.MainActivity;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoView;

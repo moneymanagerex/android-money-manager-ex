@@ -29,11 +29,11 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableSplitTransactions;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.IInputAmountDialogListener;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.fragment.SplitItemFragment;
 import com.money.manager.ex.fragment.SplitItemFragment.SplitItemFragmentCallbacks;
-import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 
 import java.util.ArrayList;
 import java.util.List;

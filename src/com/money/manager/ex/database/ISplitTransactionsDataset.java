@@ -15,11 +15,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.interfaces;
+
+package com.money.manager.ex.database;
+
+import android.os.Parcelable;
 
 /**
- * Interface for callbacks from AllDataFragment.
+ * Interface for Split Category entity. Used by split categories on account transactions
+ * and on recurring transactions.
  */
-public interface IAllDataFragmentCallbacks {
+public interface ISplitTransactionsDataset extends Parcelable {
 
+    int getCategId();
+
+    /**
+     * @return the splitTransAmount
+     */
+    double getSplitTransAmount();
+
+    int getSplitTransId();
+
+    int getSubCategId();
+
+    // Setters
+
+    void setCategId(int categId);
+
+    /**
+     * @param splitTransAmount the splitTransAmount to set
+     */
+    void setSplitTransAmount(double splitTransAmount);
+
+    void setSubCategId(int subCategId);
 }

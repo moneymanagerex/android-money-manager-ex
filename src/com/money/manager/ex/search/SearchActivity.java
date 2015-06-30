@@ -23,9 +23,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.fragment.AllDataFragment;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.IInputAmountDialogListener;
+import com.money.manager.ex.common.AllDataFragment;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.IInputAmountDialogListener;
 
 public class SearchActivity
         extends BaseFragmentActivity

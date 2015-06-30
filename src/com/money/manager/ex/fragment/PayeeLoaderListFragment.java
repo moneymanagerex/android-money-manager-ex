@@ -48,6 +48,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
+import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.PreferenceConstants;

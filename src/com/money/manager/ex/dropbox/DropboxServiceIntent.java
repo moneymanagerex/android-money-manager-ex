@@ -33,7 +33,7 @@ import android.util.Log;
 import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.ProgressListener;
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.MainActivity;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.DropboxHelper.OnDownloadUploadEntry;
 

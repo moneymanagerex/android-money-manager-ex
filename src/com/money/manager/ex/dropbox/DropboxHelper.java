@@ -45,7 +45,7 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.TokenPair;
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.MainActivity;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.PreferenceConstants;

@@ -26,7 +26,7 @@ import android.widget.ImageView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseFragmentActivity;
 
 
 public class CurrencyChartActivity extends BaseFragmentActivity {

@@ -24,7 +24,7 @@ import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.utils.RawFileUtils;
 
 public class HelpActivity

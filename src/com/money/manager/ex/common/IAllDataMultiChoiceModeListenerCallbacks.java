@@ -15,19 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.fragment;
+package com.money.manager.ex.common;
 
-import android.database.Cursor;
-import android.os.Bundle;
-import android.support.v4.content.Loader;
+import java.util.ArrayList;
 
 /**
- * Interface for callback fragment
+ * Callbacks from All Data multi-choice mode listener.
  */
-public interface IAllDataFragmentLoaderCallbacks {
-    void onCallbackCreateLoader(int id, Bundle args);
-
-    void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data);
-
-    void onCallbackLoaderReset(Loader<Cursor> loader);
+public interface IAllDataMultiChoiceModeListenerCallbacks {
+    void onMultiChoiceCreated(android.view.Menu menu);
+    void onDestroyActionMode();
+    void onDeleteClicked();
+    void onChangeTransactionStatusClicked();
+    void onTransactionStatusClicked(String status);
+    void onSelectAllRecordsClicked();
+    void onDuplicateTransactionsClicked();
+    void onItemCheckedStateChanged(int position, boolean checked);
 }

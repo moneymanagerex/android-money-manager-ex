@@ -15,20 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.fragment;
-
-import java.util.ArrayList;
+package com.money.manager.ex.common;
 
 /**
- * Callbacks from All Data multi-choice mode listener.
+ * Interface for callbacks from amount input dialog.
  */
-public interface IAllDataMultiChoiceModeListenerCallbacks {
-    void onMultiChoiceCreated(android.view.Menu menu);
-    void onDestroyActionMode();
-    void onDeleteClicked();
-    void onChangeTransactionStatusClicked();
-    void onTransactionStatusClicked(String status);
-    void onSelectAllRecordsClicked();
-    void onDuplicateTransactionsClicked();
-    void onItemCheckedStateChanged(int position, boolean checked);
+public interface IInputAmountDialogListener {
+    public void onFinishedInputAmountDialog(int id, Double amount);
 }

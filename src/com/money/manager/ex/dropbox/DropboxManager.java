@@ -27,14 +27,11 @@ import android.os.Messenger;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
-import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.utils.DialogUtils;
 
 import java.io.File;

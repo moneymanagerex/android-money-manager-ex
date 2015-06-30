@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.fragment;
+package com.money.manager.ex.common;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -48,7 +48,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.businessobjects.CategoryService;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TableCategory;

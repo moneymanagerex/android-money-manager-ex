@@ -26,8 +26,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.checkingaccount.IntentDataParameters;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.fragment.IInputAmountDialogListener;
-import com.money.manager.ex.fragment.InputAmountDialog;
+import com.money.manager.ex.common.IInputAmountDialogListener;
+import com.money.manager.ex.common.InputAmountDialog;
 
 import java.math.BigDecimal;
 

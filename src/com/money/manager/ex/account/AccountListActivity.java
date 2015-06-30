@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.currency;
+package com.money.manager.ex.account;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,45 +25,37 @@ import android.view.KeyEvent;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.utils.ActivityUtils;
+
+//
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.0
  */
-public class CurrencyFormatsListActivity
+public class AccountListActivity
         extends BaseFragmentActivity {
 
-    public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
-    public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
-    public static final String LOGCAT = CurrencyFormatsListActivity.class.getSimpleName();
-    private static final String FRAGMENTTAG = CurrencyFormatsListActivity.class.getSimpleName() + "_Fragment";
-
-    // Instance fragment list
-    private CurrencyFormatsLoaderListFragment listFragment = new CurrencyFormatsLoaderListFragment();
+    public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
+    public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
+    @SuppressWarnings("unused")
+    private static final String LOGCAT = AccountListActivity.class.getSimpleName();
+    private static final String FRAGMENTTAG = AccountListActivity.class.getSimpleName() + "_Fragment";
+    private AccountLoaderListFragment listFragment = new AccountLoaderListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.base_toolbar_activity);
 
-        // enabled home to come back
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // take intent
+        // take intent send
         Intent intent = getIntent();
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-            // Store the requested action.
             listFragment.mAction = intent.getAction();
-            // restore previous device orientation if it was modified.
-            if(listFragment.PreviousOrientation != -1) {
-                int currentOrientation = ActivityUtils.forceCurrentOrientation(this);
-                if(currentOrientation != listFragment.PreviousOrientation) {
-                    ActivityUtils.restoreOrientation(this, listFragment.PreviousOrientation);
-                }
-            }
         }
-
         FragmentManager fm = getSupportFragmentManager();
+        // attach fragment to activity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
@@ -71,15 +63,12 @@ public class CurrencyFormatsListActivity
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        // intercept key back
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            CurrencyFormatsLoaderListFragment fragment = (CurrencyFormatsLoaderListFragment)
-                    getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+            AccountLoaderListFragment fragment = (AccountLoaderListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
             if (fragment != null) {
                 fragment.setResultAndFinish();
             }
         }
         return super.onKeyUp(keyCode, event);
     }
-
 }

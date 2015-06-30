@@ -44,7 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.AccountListActivity;
+import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
@@ -68,12 +68,12 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.IInputAmountDialogListener;
-import com.money.manager.ex.fragment.InputAmountDialog;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.IInputAmountDialogListener;
+import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyUtils;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.text.DecimalFormat;

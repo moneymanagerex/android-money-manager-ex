@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Passcode;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseFragmentActivity;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)

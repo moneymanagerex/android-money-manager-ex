@@ -25,7 +25,7 @@ import android.widget.RemoteViewsService;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 public class AccountBillsWidgetService extends RemoteViewsService {
     @Override

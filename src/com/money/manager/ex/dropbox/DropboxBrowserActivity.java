@@ -42,8 +42,8 @@ import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.RESTUtility;
 import com.money.manager.ex.R;
 import com.money.manager.ex.dropbox.DropboxHelper.OnGetEntries;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseListFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

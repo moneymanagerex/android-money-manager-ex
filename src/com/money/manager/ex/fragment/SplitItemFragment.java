@@ -35,9 +35,11 @@ import android.widget.TextView;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
+import com.money.manager.ex.common.IInputAmountDialogListener;
+import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 
 public class SplitItemFragment
         extends Fragment

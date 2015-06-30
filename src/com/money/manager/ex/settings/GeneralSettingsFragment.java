@@ -27,19 +27,17 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.money.manager.ex.AccountListEditActivity;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MainActivity;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.currency.CurrencyFormatsActivity;
 import com.money.manager.ex.currency.CurrencyFormatsListActivity;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.utils.CurrencyNameComparator;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyNameComparator;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
