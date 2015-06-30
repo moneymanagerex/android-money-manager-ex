@@ -378,15 +378,15 @@ public class HomeFragment extends Fragment
                 curReconciled = curReconciled.add(BigDecimal.valueOf(totalReconciled));
 
                 // find element
-                QueryAccountBills bills = new QueryAccountBills(getActivity());
-                bills.setAccountId(data.getInt(data.getColumnIndex(QueryAccountBills.ACCOUNTID)));
-                bills.setAccountName(data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTNAME)));
-                bills.setAccountType(data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTTYPE)));
-                bills.setCurrencyId(data.getInt(data.getColumnIndex(QueryAccountBills.CURRENCYID)));
-                bills.setTotal(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL)));
-                bills.setReconciled(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED)));
-                bills.setTotalBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
-                bills.setReconciledBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
+                QueryAccountBills accountEntry = new QueryAccountBills(getActivity());
+                accountEntry.setAccountId(data.getInt(data.getColumnIndex(QueryAccountBills.ACCOUNTID)));
+                accountEntry.setAccountName(data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTNAME)));
+                accountEntry.setAccountType(data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTTYPE)));
+                accountEntry.setCurrencyId(data.getInt(data.getColumnIndex(QueryAccountBills.CURRENCYID)));
+                accountEntry.setTotal(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL)));
+                accountEntry.setReconciled(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED)));
+                accountEntry.setTotalBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
+                accountEntry.setReconciledBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
 
                 String accountType = data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTTYPE));
                 QueryAccountBills totals;
@@ -405,20 +405,22 @@ public class HomeFragment extends Fragment
                     } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
                         totals.setAccountName(getString(R.string.investment_accounts));
                     }
-                    totals.setReconciledBaseConvRate(.0);
-                    totals.setTotalBaseConvRate(.0);
+//                    totals.setReconciledBaseConvRate(.0);
+//                    totals.setTotalBaseConvRate(.0);
                     mTotalsByType.put(accountType, totals);
                 }
                 totals = mTotalsByType.get(accountType);
-                totals.setReconciledBaseConvRate(totals.getReconciledBaseConvRate() + data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
-                totals.setTotalBaseConvRate(totals.getTotalBaseConvRate() + data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
+                double reconciledBaseConversionRate = totals.getReconciledBaseConvRate() + data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
+                totals.setReconciledBaseConvRate(reconciledBaseConversionRate);
+                double totalBaseConversionRate = totals.getTotalBaseConvRate() + data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+                totals.setTotalBaseConvRate(totalBaseConversionRate);
 
                 List<QueryAccountBills> list = mAccountsByType.get(accountType);
                 if (list == null) {
                     list = new ArrayList<>();
                     mAccountsByType.put(accountType, list);
                 }
-                list.add(bills);
+                list.add(accountEntry);
             }
         }
         // write accounts total
@@ -856,6 +858,7 @@ public class HomeFragment extends Fragment
             }
             holder = (ViewHolderAccountBills) convertView.getTag();
 
+            // Show Totals
             String accountType = mAccountTypes.get(groupPosition);
             QueryAccountBills total = mTotalsByType.get(accountType);
             if (total != null) {
