@@ -18,7 +18,7 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="June 29, 2015" versionName="2.5.2">
+    <changelogversion changeDate="June 30, 2015" versionName="2.5.3">
         <changelogtext>Switched to Yahoo as the currency rates provider.</changelogtext>
         <changelogtext>Correcting the currency exchange logic after switch to Yahoo.</changelogtext>
         <changelogtext>Adding initial Turkish translation.</changelogtext>
