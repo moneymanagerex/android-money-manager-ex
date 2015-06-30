@@ -483,7 +483,7 @@ public class CurrencyFormatsLoaderListFragment
             if (symbol == null) continue;
             if (symbol.equals(baseCurrencySymbol)) continue;
 
-            currencySymbols[counter] = baseCurrencySymbol + symbol + "=X";
+            currencySymbols[counter] = symbol + baseCurrencySymbol + "=X";
             counter++;
         }
 
