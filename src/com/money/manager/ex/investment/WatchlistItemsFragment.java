@@ -43,9 +43,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
-import com.money.manager.ex.fragment.AllDataFragment;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.common.AllDataFragment;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseListFragment;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

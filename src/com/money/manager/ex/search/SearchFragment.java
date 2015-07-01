@@ -44,13 +44,13 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableSplitTransactions;
-import com.money.manager.ex.fragment.AllDataFragment;
-import com.money.manager.ex.fragment.IInputAmountDialogListener;
-import com.money.manager.ex.fragment.InputAmountDialog;
+import com.money.manager.ex.common.AllDataFragment;
+import com.money.manager.ex.common.IInputAmountDialogListener;
+import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.interfaces.IAllDataFragmentCallbacks;
+import com.money.manager.ex.common.IAllDataFragmentCallbacks;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.text.SimpleDateFormat;

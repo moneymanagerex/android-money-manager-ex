@@ -42,10 +42,8 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
-import com.money.manager.ex.fragment.PieChartFragment;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.util.ArrayList;
 

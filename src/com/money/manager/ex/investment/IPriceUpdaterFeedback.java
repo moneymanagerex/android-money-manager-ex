@@ -26,6 +26,6 @@ import java.util.Date;
  * Interface for feedback from Yahoo security price updater.
  */
 public interface IPriceUpdaterFeedback {
-    Context getContext();
+//    Context getContext();
     void onPriceDownloaded(String symbol, BigDecimal price, Date date);
 }

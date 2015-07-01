@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
-
 package com.money.manager.ex.view;
 
 import android.content.Context;
@@ -31,7 +30,8 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 
 /**
- * Implementation of a {@link TextView} with native support for all the Roboto fonts on all versions of Android, with customization from users.
+ * Implementation of a {@link TextView} with native support for all the Roboto fonts on all
+ * versions of Android, with customization from users.
  *
  * @author a.lazzari
  */
@@ -67,9 +67,9 @@ public class RobotoView {
     /**
      * List of created typefaces for later reused.
      */
-    private final static SparseArray<Typeface> mTypefaces = new SparseArray<Typeface>(16);
+    private final static SparseArray<Typeface> mTypefaces = new SparseArray<>(16);
 
-    /*
+    /**
      * Font user
      */
     private static int mUserFont = ROBOTO_CONDENSED_LIGHT;

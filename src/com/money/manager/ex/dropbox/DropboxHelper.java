@@ -45,7 +45,7 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.TokenPair;
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.MainActivity;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -305,7 +305,8 @@ public class DropboxHelper {
         SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
         prefs.edit().putString(mContext.getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE), fileDropbox)
                 .putString(PreferenceConstants.PREF_DROPBOX_REMOTE_FILE, fileDropbox)
-                .apply();
+//                .apply();
+                .commit();
     }
 
     /**
@@ -389,7 +390,7 @@ public class DropboxHelper {
         inboxStyle.setBigContentTitle(mContext.getString(R.string.application_name_dropbox));
         inboxStyle.addLine(mContext.getString(R.string.dropbox_file_ready_for_use));
         inboxStyle.addLine(mContext.getString(R.string.dropbox_open_database_downloaded));
-        // compose builder
+
         NotificationCompat.Builder notification = new NotificationCompat.Builder(mContext)
                 .addAction(R.drawable.ic_action_folder_open_dark, mContext.getString(R.string.open_database), pendingIntent)
                 .setAutoCancel(true)

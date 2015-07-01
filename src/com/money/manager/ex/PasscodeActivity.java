@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.common.BaseListFragment;
 
 public class PasscodeActivity extends FragmentActivity {
 	public static final String INTENT_REQUEST_PASSWORD = "com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD";

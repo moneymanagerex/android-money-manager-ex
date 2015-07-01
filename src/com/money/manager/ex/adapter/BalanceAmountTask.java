@@ -26,7 +26,7 @@ import android.widget.TextView;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 /**
  * Async task that updates the balance amount.

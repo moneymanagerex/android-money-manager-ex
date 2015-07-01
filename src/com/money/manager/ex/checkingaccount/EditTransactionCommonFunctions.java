@@ -35,8 +35,7 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.CurrencyUtils;
-import com.money.manager.ex.view.RobotoCheckBox;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.util.ArrayList;
 import java.util.List;

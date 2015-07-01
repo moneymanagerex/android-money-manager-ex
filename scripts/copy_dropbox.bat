@@ -1,13 +1,13 @@
 :: copy translation of the dropbox manual.
 :: Called from update_translations.
 
-set src=c:\temp
-set dest_root=c:\dev\android-money-manager-ex\res
+set src=%~1
+set dest_root=%~2
 
 :: set VAR="%~1"
-set lang=%~1
-set locale=%~2
-set locale_spec=%~3
+set lang=%~3
+set locale=%~4
+set locale_spec=%~5
 
 :: source directory
 if exist %src%\%lang% (

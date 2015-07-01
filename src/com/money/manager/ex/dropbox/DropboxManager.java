@@ -27,14 +27,12 @@ import android.os.Messenger;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.money.manager.ex.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
-import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.dropbox.DropboxServiceIntent;
+import com.money.manager.ex.utils.DialogUtils;
 
 import java.io.File;
 
@@ -157,7 +155,7 @@ public class DropboxManager {
                 if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
                     // close dialog
                     if (progressDialog != null && progressDialog.isShowing()) {
-                        progressDialog.hide();
+                        DialogUtils.closeProgressDialog(progressDialog);
                     }
 
                     parent.runOnUiThread(new Runnable() {
@@ -177,7 +175,7 @@ public class DropboxManager {
                     // Download from Dropbox completed.
                     // close dialog
                     if (progressDialog != null && progressDialog.isShowing()) {
-                        progressDialog.hide();
+                        DialogUtils.closeProgressDialog(progressDialog);
                     }
                     // Notify whoever is interested.
                     mCallbacks.onFileDownloaded();
@@ -191,7 +189,7 @@ public class DropboxManager {
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD) {
                     // close dialog
                     if (progressDialog != null && progressDialog.isShowing()) {
-                        progressDialog.hide();
+                        DialogUtils.closeProgressDialog(progressDialog);
                     }
 
                     parent.runOnUiThread(new Runnable() {
@@ -205,4 +203,5 @@ public class DropboxManager {
         });
         return messenger;
     }
+
 }

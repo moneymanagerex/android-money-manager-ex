@@ -50,9 +50,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import org.apache.commons.lang3.ArrayUtils;
 

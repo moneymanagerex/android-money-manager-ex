@@ -370,6 +370,7 @@
   <string name="success_currency_exchange_rates">已更新所有的貨幣匯率</string>
   <string name="update_menu_currency_exchange_rates">更新匯率</string>
   <string name="question_update_currency_exchange_rates">你想要更新匯率嗎？</string>
+  <string name="error_update_currency_exchange_rate">更新匯率時發生錯誤。</string>
   <string name="withdrawal_from">由 %1$s 匯出</string>
   <string name="deposit_to">匯入到 %1$s</string>
   <string name="mmex_website">MoneyManagerEx 網站</string>

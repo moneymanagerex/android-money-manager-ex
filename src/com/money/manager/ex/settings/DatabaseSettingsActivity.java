@@ -19,20 +19,6 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.text.Html;
-import android.widget.Toast;
-
-import com.money.manager.ex.MainActivity;
-import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.utils.DonateDialogUtils;
-
-import java.io.File;
 
 public class DatabaseSettingsActivity extends BaseSettingsFragmentActivity {
     private static String LOGCAT = DatabaseSettingsActivity.class.getSimpleName();

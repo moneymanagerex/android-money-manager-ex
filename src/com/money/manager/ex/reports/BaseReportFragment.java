@@ -33,7 +33,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.util.Calendar;

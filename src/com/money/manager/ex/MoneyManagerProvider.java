@@ -72,7 +72,7 @@ import java.util.Map;
  */
 public class MoneyManagerProvider
         extends ContentProvider {
-    // tag LOGCAT
+
     private static final String LOGCAT = MoneyManagerProvider.class.getSimpleName();
     // object definition for the call to check the content
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);

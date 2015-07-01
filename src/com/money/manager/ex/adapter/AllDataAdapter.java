@@ -39,7 +39,7 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

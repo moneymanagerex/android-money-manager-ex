@@ -24,7 +24,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.utils.ActivityUtils;
 
 /**

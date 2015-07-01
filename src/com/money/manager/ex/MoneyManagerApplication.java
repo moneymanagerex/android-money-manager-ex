@@ -128,14 +128,14 @@ public class MoneyManagerApplication
 
     /**
      * @param context Executing context for which to set the preferences.
-     * @param dbpath  path of database file to save
+     * @param dbPath  path of database file to save
      */
-    public static void setDatabasePath(Context context, String dbpath) {
+    public static void setDatabasePath(Context context, String dbPath) {
         // save a reference db path
         Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        editor.putString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), dbpath);
-//        editor.commit();
-        editor.apply();
+        editor.putString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), dbPath);
+        editor.commit();
+//        editor.apply();
     }
 
     public static float getTextSize() {
@@ -163,11 +163,12 @@ public class MoneyManagerApplication
         String currentPath = getDatabasePath(context);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lastPath = preferences.getString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), "");
+
         if (!lastPath.equals(currentPath)) {
             preferences.edit()
                     .putString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), currentPath)
-                    .apply();
-//                    .commit();
+//                    .apply();
+                    .commit();
             try {
                 Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG)
                         .show();
@@ -202,7 +203,7 @@ public class MoneyManagerApplication
     public String getRepeatAsString(int repeat) {
         if (repeat >= 200) {
             repeat = repeat - 200;
-        } // set auto execute without user acknowlegement
+        } // set auto execute without user acknowledgement
         if (repeat >= 100) {
             repeat = repeat - 100;
         } // set auto execute on the next occurrence

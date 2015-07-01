@@ -34,7 +34,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RepeatingTransactionListActivity;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 public class RepeatingTransactionNotifications {
     private static final String LOGCAT = RepeatingTransactionNotifications.class.getSimpleName();

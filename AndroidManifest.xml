@@ -160,7 +160,7 @@
         </service>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".home.MainActivity"
             android:label="@string/application_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -206,7 +206,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CheckingAccountActivity"
+            android:name=".checkingaccount.CheckingAccountActivity"
             android:label="@string/new_edit_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
@@ -221,7 +221,7 @@
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".AccountListActivity" >
+        <activity android:name=".account.AccountListActivity" >
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
@@ -241,7 +241,7 @@
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity android:name=".AccountListEditActivity"
+        <activity android:name=".account.AccountListEditActivity"
             android:label="@string/account_list" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />

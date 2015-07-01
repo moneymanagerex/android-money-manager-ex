@@ -24,7 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.money.manager.ex.CheckingAccountActivity;
+import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 
