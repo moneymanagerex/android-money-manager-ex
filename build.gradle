@@ -29,6 +29,10 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        // MPChartAndroid,
+        maven { url "https://jitpack.io" }
+        // fonticon
+        maven { url "http://jcenter.bintray.com" }
     }
 }
 
@@ -52,11 +56,7 @@ dependencies {
     compile 'me.relex:circleindicator:1.1.3@aar'
     // androidSVG
     compile project(':androidSVG_12')
-}
-
-// MPChartAndroid
-repositories {
-    maven { url "https://jitpack.io" }
+    compile 'com.shamanland:fonticon:0.1.8'
 }
 
 dependencies {

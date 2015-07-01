@@ -777,9 +777,14 @@ public class MainActivity
                 .withText(getString(R.string.tools))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_domain_dark : R.drawable.ic_action_domain_light));
         // manage: repeating transactions
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_repeating_transaction)
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
                 .withText(getString(R.string.repeating_transactions))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_history_dark : R.drawable.ic_action_history_light));
+        // Budgets
+        // todo: uncomment to enable the Budgets menu item.
+//        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
+//            .withText(getString(R.string.budgets))
+//            .withIcon(FontIconDrawable.inflate(getResources(), R.xml.ic_law)));
         // search transaction
         adapter.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
                 .withText(getString(R.string.search))
@@ -853,7 +858,7 @@ public class MainActivity
             case R.id.menu_report_categories:
                 startActivity(new Intent(this, CategoriesReportActivity.class));
                 break;
-            case R.id.menu_repeating_transaction:
+            case R.id.menu_recurring_transaction:
                 showFragment(RepeatingTransactionListFragment.class);
                 break;
             case R.id.menu_search_transaction:
