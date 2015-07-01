@@ -150,14 +150,14 @@ public class MainActivity
 
         // check intent is valid
         if (getIntent() != null && getIntent().getData() != null) {
-            // todo: try to use this file as the current database!
             String pathFile = getIntent().getData().getEncodedPath();
             // decode
             try {
                 pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
-                if (BuildConfig.DEBUG)
-                    Log.d(LOGCAT, "Path intent file to open:" + pathFile);
-                if (!core.changeDatabase(pathFile)) {
+                if (BuildConfig.DEBUG) Log.d(LOGCAT, "Path intent file to open:" + pathFile);
+                // Open this database.
+                boolean databaseOpened = core.changeDatabase(pathFile);
+                if (!databaseOpened) {
                     Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
                 }
             } catch (Exception e) {
@@ -184,17 +184,13 @@ public class MainActivity
             }
         }
 
-        // load base currency and compose hash currencies
-//        CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
-//        if (!currencyUtils.isInit()) currencyUtils.reInit();
-
         // create a connection to dropbox
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
         // check type mode
         onCreateFragments(savedInstanceState);
         // show tutorial
         showTutorial(savedInstanceState);
-        // show changelog dialog
+        // show change log dialog
         if (core.isToDisplayChangelog()) core.showChangelog();
 
         MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());

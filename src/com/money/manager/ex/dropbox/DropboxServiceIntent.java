@@ -42,6 +42,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ *
+ */
 public class DropboxServiceIntent
         extends IntentService {
 
@@ -95,6 +98,7 @@ public class DropboxServiceIntent
         String remote = intent.getStringExtra(INTENT_EXTRA_REMOTE_FILE);
         // check if file is correct
         if (TextUtils.isEmpty(local) || TextUtils.isEmpty(remote)) return;
+
         // take a file and entries
         File localFile = new File(local);
         Entry remoteFile = mDropboxHelper.getEntry(remote);
@@ -157,6 +161,7 @@ public class DropboxServiceIntent
         final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         final File tempFile = new File(localFile.toString() + "-download");
+
         // create interface
         OnDownloadUploadEntry onDownloadUpload = new OnDownloadUploadEntry() {
             @Override
@@ -181,7 +186,7 @@ public class DropboxServiceIntent
                             return;
                         }
                         // create notification for open file
-                        // pending intent
+                        // intent is passed to the notification and called if clicked on.
                         Intent intent = getIntentForOpenDatabase(getBaseContext(), localFile);
                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
                                 MainActivity.REQUEST_PICKFILE_CODE, intent, 0);

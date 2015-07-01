@@ -36,7 +36,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class DropboxReceiver extends BroadcastReceiver {
+public class DropboxReceiver
+        extends BroadcastReceiver {
+
     // action intents
     public static final String ACTION_START = "com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX";
     public static final String ACTION_CANCEL = "com.money.manager.ex.custom.intent.action.CANCEL_SERVICE_DROPBOX";
@@ -50,6 +52,7 @@ public class DropboxReceiver extends BroadcastReceiver {
             action = intent.getAction();
             if (BuildConfig.DEBUG) Log.d(LOGCAT, "Action request: " + action);
         }
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         // compose intent
         Intent i = new Intent(context, DropboxStartServiceReceiver.class);
@@ -59,9 +62,11 @@ public class DropboxReceiver extends BroadcastReceiver {
             alarmManager.cancel(pending);
             return;
         }
+
         // check if connect
         DropboxHelper dropboxHelper = DropboxHelper.getInstance(context);
         if (dropboxHelper == null || !dropboxHelper.isLinked()) return;
+
         // take repeat time
         SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(context);
         // get minute
@@ -72,9 +77,11 @@ public class DropboxReceiver extends BroadcastReceiver {
                 if (minute > 0) {
                     Calendar cal = Calendar.getInstance();
                     // cal.add(Calendar.MINUTE, minute);
+
                     // log
-                    if (BuildConfig.DEBUG)
+                    if (BuildConfig.DEBUG) {
                         Log.d(LOGCAT, "Start at: " + new SimpleDateFormat().format(cal.getTime()) + " and repeats every: " + preferenceMinute + " minutes");
+                    }
                     // start service
                     alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), minute * 60 * 1000, pending);
                 }
