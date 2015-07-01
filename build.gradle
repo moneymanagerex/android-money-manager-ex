@@ -31,8 +31,6 @@ allprojects {
         jcenter()
         // MPChartAndroid,
         maven { url "https://jitpack.io" }
-        // fonticon
-        maven { url "http://jcenter.bintray.com" }
     }
 }
 

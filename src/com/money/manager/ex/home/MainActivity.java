@@ -232,7 +232,6 @@ public class MainActivity
         // check if restart activity
         if (isRestartActivitySet()) {
             restartActivity(); // restart and exit
-            return;
         }
     }
 

@@ -2,6 +2,6 @@
 <font-icon
     xmlns:android="http://schemas.android.com/apk/res-auto"
     android:text="@string/ic_law"
-    android:textSize="@dimen/big_icon_size"
-    android:textColor="@color/green_170"
+    android:textSize="@dimen/fonticon_drawer"
+    android:textColor="@color/color_money_manager"
     />
