@@ -19,6 +19,7 @@
 package com.money.manager.ex;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -37,6 +38,7 @@ import com.money.manager.ex.inapp.util.IabResult;
 import com.money.manager.ex.inapp.util.Inventory;
 import com.money.manager.ex.inapp.util.Purchase;
 import com.money.manager.ex.inapp.util.SkuDetails;
+import com.money.manager.ex.view.RobotoTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +140,9 @@ public class DonateActivity extends BaseFragmentActivity {
         }
         // set enable return
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // handle clicking on direct donation text
+        setUpDirectDonationButton();
     }
 
     @Override
@@ -208,5 +213,22 @@ public class DonateActivity extends BaseFragmentActivity {
         super.onSaveInstanceState(outState);
         outState.putString(PURCHASED_SKU, purchasedSku);
         outState.putString(PURCHASED_TOKEN, purchasedToken);
+    }
+
+    private void setUpDirectDonationButton() {
+        RobotoTextView directDonationLink = (RobotoTextView) findViewById(R.id.directDonationTextView);
+        String template = "<p><u>%text%</u></p>";
+        String text = template.replace("%text%", getText(R.string.donate_direct));
+        directDonationLink.setText(Html.fromHtml(text));
+
+        final String siteUrl = "http://moneymanagerex.github.io/android-money-manager-ex/";
+
+        directDonationLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteUrl));
+                startActivity(browserIntent);
+            }
+        });
     }
 }

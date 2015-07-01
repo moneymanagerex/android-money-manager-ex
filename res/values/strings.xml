@@ -312,6 +312,7 @@
     <string name="donate">Donate</string>
     <string name="no_thanks">No, thanks</string>
     <string name="donate_exlamation">Donate!</string>
+    <string name="donate_direct">You can donate by clicking the Donate link on our app web site. Click here to open in browser.</string>
     <!-- 20130225 -->
     <string name="android_sqlite_vesion">SQLite Version</string>
     <!-- 20130301 -->
