@@ -579,5 +579,6 @@
     <string name="cash">Cash</string>
     <string name="select_account">Select account</string>
     <string name="invalid_transaction_number">Invalid transaction number</string>
+    <string name="budgets">Budgets</string>
     <string name="base_currency_not_set">Base currency has not been set</string>
 </resources>
