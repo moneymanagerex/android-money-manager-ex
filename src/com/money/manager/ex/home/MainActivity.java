@@ -779,9 +779,9 @@ public class MainActivity
                 .withText(getString(R.string.repeating_transactions))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_history_dark : R.drawable.ic_action_history_light));
         // Budgets
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
-            .withText(getString(R.string.budgets))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
+//        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
+//            .withText(getString(R.string.budgets))
+//            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
         // search transaction
         adapter.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
                 .withText(getString(R.string.search))
