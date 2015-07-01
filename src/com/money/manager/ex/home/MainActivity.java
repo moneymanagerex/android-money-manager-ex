@@ -777,7 +777,8 @@ public class MainActivity
         // manage: repeating transactions
         adapter.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
                 .withText(getString(R.string.repeating_transactions))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_history_dark : R.drawable.ic_action_history_light));
+//                .withIcon(isDarkTheme ? R.drawable.ic_action_history_dark : R.drawable.ic_action_history_light));
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
         // Budgets
         adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
             .withText(getString(R.string.budgets))
