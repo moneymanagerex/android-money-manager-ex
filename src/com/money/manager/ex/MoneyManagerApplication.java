@@ -178,6 +178,73 @@ public class MoneyManagerApplication
         }
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        // save instance of application
+        myInstance = this;
+
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
+        // create application folder
+        Core core = new Core(getApplicationContext());
+        core.getExternalStorageDirectoryApplication();
+
+        // set default text size.
+        setTextSize(new TextView(getApplicationContext()).getTextSize());
+        // preference
+        if (appPreferences == null) {
+            appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            RobotoView.setUserFont(Integer.parseInt(
+                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
+            RobotoView.setUserFontSize(getApplicationContext(),
+                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
+        }
+
+        // todo: Initialize font icons.
+//        FontIconTypefaceHolder.init(getAssets(), "mmex.ttf");
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+
+        // on terminate is never called
+        // ref: http://stackoverflow.com/questions/15162562/application-lifecycle
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
+    }
+
+    // custom
+
+    public boolean setUserName(String userName) {
+        return this.setUserName(userName, false);
+    }
+
+    /**
+     * @param userName the userName to set
+     * @param save     save into database
+     */
+    public boolean setUserName(String userName, boolean save) {
+        if (save) {
+            TableInfoTable infoTable = new TableInfoTable();
+            // update data into database
+            ContentValues values = new ContentValues();
+            values.put(TableInfoTable.INFOVALUE, userName);
+
+            if (getContentResolver().update(infoTable.getUri(), values, TableInfoTable.INFONAME + "='USERNAME'", null) != 1) {
+                return false;
+            }
+        }
+        // edit preferences
+        Editor editPreferences = appPreferences.edit();
+        editPreferences.putString(getString(PreferenceConstants.PREF_USER_NAME), userName);
+        // commit
+//        editPreferences.commit();
+        editPreferences.apply();
+        // set the value
+        MoneyManagerApplication.userName = userName;
+        return true;
+    }
+
     public String loadUserNameFromDatabase(Context context) {
         TableInfoTable infoTable = new TableInfoTable();
         Cursor cursor = context.getContentResolver().query(infoTable.getUri(),
@@ -268,69 +335,6 @@ public class MoneyManagerApplication
 
     public boolean isUriAvailable(Context context, Intent intent) {
         return context.getPackageManager().resolveActivity(intent, 0) != null;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        // save instance of application
-        myInstance = this;
-
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
-        // create application folder
-        Core core = new Core(getApplicationContext());
-        core.getExternalStorageDirectoryApplication();
-
-        // create instance drobpox
-//        DropboxHelper dropboxHelper = DropboxHelper.getInstance(getApplicationContext());
-
-        // set default value
-        setTextSize(new TextView(getApplicationContext()).getTextSize());
-        // preference
-        if (appPreferences == null) {
-            appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            RobotoView.setUserFont(Integer.parseInt(
-                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
-            RobotoView.setUserFontSize(getApplicationContext(),
-                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
-        }
-    }
-
-    @Override
-    public void onTerminate() {
-        // on terminate is never called
-        // ref: http://stackoverflow.com/questions/15162562/application-lifecycle
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
-    }
-
-    public boolean setUserName(String userName) {
-        return this.setUserName(userName, false);
-    }
-
-    /**
-     * @param userName the userName to set
-     * @param save     save into database
-     */
-    public boolean setUserName(String userName, boolean save) {
-        if (save) {
-            TableInfoTable infoTable = new TableInfoTable();
-            // update data into database
-            ContentValues values = new ContentValues();
-            values.put(TableInfoTable.INFOVALUE, userName);
-
-            if (getContentResolver().update(infoTable.getUri(), values, TableInfoTable.INFONAME + "='USERNAME'", null) != 1) {
-                return false;
-            }
-        }
-        // edit preferences
-        Editor editPreferences = appPreferences.edit();
-        editPreferences.putString(getString(PreferenceConstants.PREF_USER_NAME), userName);
-        // commit
-//        editPreferences.commit();
-        editPreferences.apply();
-        // set the value
-        MoneyManagerApplication.userName = userName;
-        return true;
     }
 
 //    /**
