@@ -61,6 +61,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- font icons sizes -->
-    <dimen name="fonticon_drawer">20dp</dimen>
+    <dimen name="fonticon_drawer">30dp</dimen>
 
 </resources>

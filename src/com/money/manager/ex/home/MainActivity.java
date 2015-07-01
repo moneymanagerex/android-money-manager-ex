@@ -60,8 +60,6 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
-import com.money.manager.ex.adapter.DrawerMenuItem;
-import com.money.manager.ex.adapter.DrawerMenuItemAdapter;
 import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.DropboxManager;
@@ -90,6 +88,7 @@ import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.ActionClickListener;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.File;
 import java.net.URLDecoder;
@@ -780,10 +779,9 @@ public class MainActivity
                 .withText(getString(R.string.repeating_transactions))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_history_dark : R.drawable.ic_action_history_light));
         // Budgets
-        // todo: uncomment to enable the Budgets menu item.
-//        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
-//            .withText(getString(R.string.budgets))
-//            .withIcon(FontIconDrawable.inflate(getResources(), R.xml.ic_law)));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
+            .withText(getString(R.string.budgets))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
         // search transaction
         adapter.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
                 .withText(getString(R.string.search))

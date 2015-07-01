@@ -38,6 +38,7 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.view.RobotoView;
+import com.shamanland.fonticon.FontIconTypefaceHolder;
 
 import java.io.File;
 
@@ -200,8 +201,8 @@ public class MoneyManagerApplication
                     appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
         }
 
-        // todo: Initialize font icons.
-//        FontIconTypefaceHolder.init(getAssets(), "mmex.ttf");
+        // Initialize font icons.
+        FontIconTypefaceHolder.init(getAssets(), "mmex.ttf");
     }
 
     @Override
