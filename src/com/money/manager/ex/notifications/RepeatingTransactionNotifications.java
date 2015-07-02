@@ -31,6 +31,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RepeatingTransactionListActivity;
@@ -74,9 +75,8 @@ public class RepeatingTransactionNotifications {
         if (cursor == null) return;
 
         if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
             NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-            while (!cursor.isAfterLast()) {
+            while (cursor.moveToNext()) {
                 String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
                 // check if payee name is null, then put toAccountName
                 if (TextUtils.isEmpty(payeeName))
@@ -87,8 +87,6 @@ public class RepeatingTransactionNotifications {
                         ": <b>" + currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
                 // add line
                 inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
-                // move to next row
-                cursor.moveToNext();
             }
 
             NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -99,9 +97,8 @@ public class RepeatingTransactionNotifications {
 
             PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
             // create notification
-            Notification notification = null;
             try {
-                notification = new NotificationCompat.Builder(mContext)
+                Notification notification = new NotificationCompat.Builder(mContext)
                         .setAutoCancel(true)
                         .setContentIntent(pendingIntent)
                         .setContentTitle(mContext.getString(R.string.application_name))
@@ -118,7 +115,8 @@ public class RepeatingTransactionNotifications {
                 notificationManager.cancel(ID_NOTIFICATION);
                 notificationManager.notify(ID_NOTIFICATION, notification);
             } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
+                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                handler.handle(e, "showing notification for recurring transaction");
             }
         }
         cursor.close();

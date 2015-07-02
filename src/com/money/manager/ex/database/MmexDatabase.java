@@ -213,12 +213,7 @@ public class MmexDatabase {
                 "SELECT name FROM sqlite_master WHERE type='table'", null);
         ArrayList<String> result = new ArrayList<>();
         int i = 0;
-//        result.add(c.getColumnNames());
-        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-//            String[] temp = new String[c.getColumnCount()];
-//            for (i = 0; i < temp.length; i++) {
-//                temp[i] = c.getString(i);
-//            }
+        while (c.moveToNext()) {
             String temp = c.getString(i);
             result.add(temp);
         }
