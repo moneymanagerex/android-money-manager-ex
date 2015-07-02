@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.TableCurrencyFormats;
 
 import java.math.BigDecimal;
@@ -47,6 +48,17 @@ public class CurrencyRepository {
     // private methods
 
     private TableCurrencyFormats loadCurrency(String selection, String[] selectionArgs) {
+        TableCurrencyFormats result = null;
+        try {
+            result = loadCurrencyInternal(selection, selectionArgs);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "loading currency");
+        }
+        return result;
+    }
+
+    private TableCurrencyFormats loadCurrencyInternal(String selection, String[] selectionArgs) {
         TableCurrencyFormats currency = mCurrencyTable;
         Cursor cursor = mContext.getContentResolver().query(currency.getUri(),
                 currency.getAllColumns(),
