@@ -44,6 +44,7 @@ public class CurrenciesActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.base_toolbar_activity);
 
         // enabled home to come back

@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.core.ExceptionHandler;
 
 public class PasscodeActivity extends FragmentActivity {
 	public static final String INTENT_REQUEST_PASSWORD = "com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD";
@@ -39,6 +40,9 @@ public class PasscodeActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
+		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
 		// set theme
 		Core core = new Core(getApplicationContext());
 		try {

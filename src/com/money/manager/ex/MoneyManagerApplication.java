@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.dropbox.client2.session.Session.AccessType;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
@@ -182,6 +183,9 @@ public class MoneyManagerApplication
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
         // save instance of application
         myInstance = this;
 

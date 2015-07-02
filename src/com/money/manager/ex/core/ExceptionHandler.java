@@ -18,18 +18,33 @@
 package com.money.manager.ex.core;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.money.manager.ex.R;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Objects;
 
 /**
  * Standard exception handler.
  */
-public class ExceptionHandler {
+public class ExceptionHandler
+        implements Thread.UncaughtExceptionHandler {
+
+    public ExceptionHandler(Context context) {
+        mContext = context;
+        mHost = context;
+    }
+
     /**
      * Basic constructor
      * @param context Context / activity.
@@ -41,6 +56,7 @@ public class ExceptionHandler {
         mHost = host;
     }
 
+    private final String LINE_SEPARATOR = "\n";
     private Context mContext;
     private Object mHost;
 
@@ -66,5 +82,76 @@ public class ExceptionHandler {
                 Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void uncaughtException(Thread thread, Throwable throwable) {
+        StringWriter stackTrace = new StringWriter();
+        throwable.printStackTrace(new PrintWriter(stackTrace));
+
+        StringBuilder errorReport = new StringBuilder();
+        errorReport.append("************ CAUSE OF ERROR ************\n\n");
+        errorReport.append(stackTrace.toString());
+
+        errorReport.append("\n************ DEVICE INFORMATION ***********\n");
+        errorReport.append("Brand: ");
+        errorReport.append(Build.BRAND);
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append("Device: ");
+        errorReport.append(Build.DEVICE);
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append("Model: ");
+        errorReport.append(Build.MODEL);
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append("Id: ");
+        errorReport.append(Build.ID);
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append("Product: ");
+        errorReport.append(Build.PRODUCT);
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append("\n************ FIRMWARE ************\n");
+        errorReport.append("SDK: ");
+        errorReport.append(Build.VERSION.SDK);
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append("Release: ");
+        errorReport.append(Build.VERSION.RELEASE);
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append("Incremental: ");
+        errorReport.append(Build.VERSION.INCREMENTAL);
+        errorReport.append(LINE_SEPARATOR);
+
+//        Intent intent = new Intent(mContext, ExceptionHandlerActivity.class);
+//        intent.putExtra("error", errorReport.toString());
+//        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
+//        mContext.startActivity(intent);
+
+//        Log.e(getLogcat(), errorReport.toString());
+//        showMessage(errorReport.toString());
+
+//        Intent intent = new Intent ();
+//        intent.setAction ("com.mydomain.SEND_LOG"); // see step 5.
+//        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
+//        mContext.startActivity(intent);
+
+        sendEmail(errorReport.toString());
+
+//        android.os.Process.killProcess(android.os.Process.myPid());
+//        System.exit(10);
+        System.exit(1);
+    }
+
+    private void sendEmail(String text) {
+        Intent intent = new Intent (Intent.ACTION_SEND);
+        intent.setType ("plain/text");
+        intent.putExtra (Intent.EXTRA_EMAIL, new String[] {"android.money.manager.ex@gmail.com"});
+        intent.putExtra (Intent.EXTRA_SUBJECT, "Unexpected Exception Log");
+//        intent.putExtra (Intent.EXTRA_STREAM, Uri.parse("file://" + fullName));
+        intent.putExtra (Intent.EXTRA_TEXT, text); // do this so some email clients don't complain about empty body.
+        // Title for the app selector
+//        intent.putExtra(Intent.EXTRA_TITLE, "The app has crashed");
+//        mContext.startActivity(intent);
+
+        Intent chooser = Intent.createChooser(intent, mContext.getString(R.string.unhandled_crash));
+        mContext.startActivity(chooser);
     }
 }

@@ -741,7 +741,7 @@ public class MainActivity
      * drawer management
      */
     public void createDrawerMenu() {
-        Core core = new Core(getApplicationContext());
+//        Core core = new Core(getApplicationContext());
 //        Boolean isDarkTheme = core.usingDarkTheme();
 
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);

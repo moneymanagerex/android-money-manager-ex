@@ -581,5 +581,6 @@
     <string name="invalid_transaction_number">Invalid transaction number</string>
     <string name="budgets">Budgets</string>
     <string name="base_currency_not_set">Base currency has not been set</string>
-    <string name="title_activity_budgets">BudgetsActivity</string>
+    <string name="error">Error</string>
+    <string name="unhandled_crash">Unexpected error. Please send us the log.</string>
 </resources>

@@ -357,7 +357,11 @@
         </activity>
         <activity
             android:name=".budget.BudgetsActivity"
-            android:label="@string/title_activity_budgets" >
+            android:label="@string/budgets" >
+        </activity>
+        <activity
+            android:name=".core.ExceptionHandlerActivity"
+            android:label="@string/error" >
         </activity>
     </application>
 

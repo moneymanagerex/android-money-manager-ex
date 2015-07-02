@@ -36,6 +36,7 @@ import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 public abstract class BaseFragmentActivity
@@ -71,6 +72,8 @@ public abstract class BaseFragmentActivity
         Core.changeLocaleApp(getApplicationContext(), locale);
 
         super.onCreate(savedInstance);
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
     }
 
     @Override
