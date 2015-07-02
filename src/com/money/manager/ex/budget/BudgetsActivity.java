@@ -24,7 +24,7 @@ public class BudgetsActivity
         setSupportActionBar(getToolbar());
         setToolbarStandardAction(getToolbar());
         // enable returning back from toolbar.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -51,17 +51,6 @@ public class BudgetsActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    //
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        // intercept key back
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            this.finish();
-        }
-        return super.onKeyUp(keyCode, event);
     }
 
 }
