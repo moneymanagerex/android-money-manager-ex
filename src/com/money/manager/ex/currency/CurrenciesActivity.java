@@ -29,13 +29,12 @@ import com.money.manager.ex.utils.ActivityUtils;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.0.0
  */
 public class CurrenciesActivity
         extends BaseFragmentActivity {
 
-    public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
-    public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
+    public static final String INTENT_RESULT_CURRENCYID = "CurrenciesActivity:ACCOUNTID";
+    public static final String INTENT_RESULT_CURRENCYNAME = "CurrenciesActivity:ACCOUNTNAME";
     public static final String LOGCAT = CurrenciesActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = CurrenciesActivity.class.getSimpleName() + "_Fragment";
 
@@ -49,6 +48,7 @@ public class CurrenciesActivity
 
         // enabled home to come back
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // take intent
         Intent intent = getIntent();
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
