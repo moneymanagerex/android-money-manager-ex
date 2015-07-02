@@ -168,7 +168,6 @@
   <string name="widget_summary">Money Manager Ex 概要</string>
   <string name="widget_all_accounts">Money Manager Ex すべてのアカウント</string>
   <string name="widget_add_transaction">Money Manager Ex 取引の追加</string>
-  <string name="repeating_empty_transaction">定期的な取引が見つかりません。 作成するには緑色のプラスボタンをタップしてください。</string>
   <string name="none">なし</string>
   <string name="weekly">毎週</string>
   <string name="bi_weekly">隔週</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">(X) ヶ月</string>
   <string name="every_x_days">(x) 日毎</string>
   <string name="every_x_months">(X) ヶ月毎</string>
+  <string name="repeating_empty_transaction">定期的な取引が見つかりません。 作成するには緑色のプラスボタンをタップしてください。</string>
   <string name="inactive">無効</string>
+  <string name="activates">有効にする</string>
   <string name="days_overdue">日期限超過!</string>
   <string name="days_remaining">残り日数</string>
   <string name="new_edit_repeating_transaction">定期的な取引を新しく作成/編集</string>
@@ -192,7 +193,6 @@
   <string name="repeats">繰り返し</string>
   <string name="times_repeated">回繰り返し</string>
   <string name="error_next_occurrence_not_populate">次回発生が必要です</string>
-  <string name="activates">有効にする</string>
   <string name="enter_next_occurrence">次回発生を入力してください</string>
   <string name="skip_next_occurrence">次回発生をスキップ</string>
   <string name="notification_repeating_transaction_expired">期限切れの定期的な取引があります</string>

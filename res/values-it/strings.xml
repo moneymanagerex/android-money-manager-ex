@@ -168,7 +168,6 @@
   <string name="widget_summary">Money Manager Ex Saldo</string>
   <string name="widget_all_accounts">Money Manager Ex Conti Correnti</string>
   <string name="widget_add_transaction">Money Manager Ex Nuova Transazione</string>
-  <string name="repeating_empty_transaction">Non sono state trovate transazioni ricorrenti. Per crearne uno, toccare il pulsante più verde.</string>
   <string name="none">Nessuna</string>
   <string name="weekly">Settimanale</string>
   <string name="bi_weekly">Quindicinale</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">In (x) Mesi</string>
   <string name="every_x_days">Ogni (x) Giorni</string>
   <string name="every_x_months">Ogni (x) Mese</string>
+  <string name="repeating_empty_transaction">Non sono state trovate transazioni ricorrenti. Per crearne uno, toccare il pulsante più verde.</string>
   <string name="inactive">Inattivo</string>
+  <string name="activates">Attiva</string>
   <string name="days_overdue">giorni scaduti!</string>
   <string name="days_remaining">giorni rimanenti</string>
   <string name="new_edit_repeating_transaction">Operazione ricorrente nuova/modifica</string>
@@ -192,7 +193,6 @@
   <string name="repeats">Cadenza</string>
   <string name="times_repeated">Numero di Operazione</string>
   <string name="error_next_occurrence_not_populate">Prossima ricorrenza è richiesta</string>
-  <string name="activates">Attiva</string>
   <string name="enter_next_occurrence">Inserire Scadenza Successiva</string>
   <string name="skip_next_occurrence">Ignora Successiva Scadenza</string>
   <string name="notification_repeating_transaction_expired">Ci sono le transazioni ricorrenti scadute</string>

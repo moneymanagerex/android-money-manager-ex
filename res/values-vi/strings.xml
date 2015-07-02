@@ -168,7 +168,6 @@
   <string name="widget_summary">Tóm lược Money Manager Ex</string>
   <string name="widget_all_accounts">Tất cả Tài khoản Money Manager Ex</string>
   <string name="widget_add_transaction">Thêm giao dịch Money Manager Ex</string>
-  <string name="repeating_empty_transaction">Không tìm thấy giao dịch định kỳ nào. Để tạo một cái, hãy nhấp vào nút \"+\" màu xanh lá.</string>
   <string name="none">Không</string>
   <string name="weekly">Hàng Tuần</string>
   <string name="bi_weekly">Mỗi 2 tuần</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">Trong (x) tháng</string>
   <string name="every_x_days">Mỗi (x) ngày</string>
   <string name="every_x_months">Mỗi (x) tháng</string>
+  <string name="repeating_empty_transaction">Không tìm thấy giao dịch định kỳ nào. Để tạo một cái, hãy nhấp vào nút \"+\" màu xanh lá.</string>
   <string name="inactive">Không hoạt động</string>
+  <string name="activates">Kích hoạt</string>
   <string name="days_overdue">ngày quá hạn!</string>
   <string name="days_remaining">ngày còn lại</string>
   <string name="new_edit_repeating_transaction">Giao Dịch Định Kỳ Mới/Sửa</string>
@@ -192,7 +193,6 @@
   <string name="repeats">Lặp lại</string>
   <string name="times_repeated">Lần lặp lại</string>
   <string name="error_next_occurrence_not_populate">Lần xuất hiện tiếp theo là cần thiết</string>
-  <string name="activates">Kích hoạt</string>
   <string name="enter_next_occurrence">Nhập việc xảy ra tiếp theo</string>
   <string name="skip_next_occurrence">Bỏ qua lần xảy ra tiếp theo</string>
   <string name="notification_repeating_transaction_expired">Có những giao dịch định kỳ hết hạn</string>

@@ -168,7 +168,6 @@
   <string name="widget_summary">Resumo do Money Manager Ex</string>
   <string name="widget_all_accounts">Money Manager Ex Todas as contas</string>
   <string name="widget_add_transaction">Adicionar Movimento no Money Manager Ex</string>
-  <string name="repeating_empty_transaction">Não foram encontradas transacções recorrentes. Para criar uma, toque no botão verde, com o sinal mais.</string>
   <string name="none">Nenhum</string>
   <string name="weekly">Semanal</string>
   <string name="bi_weekly">Quinzenal</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">Em (x) Mes(es)</string>
   <string name="every_x_days">Cada (x) Dia(s)</string>
   <string name="every_x_months">Cada (x) Mes(es)</string>
+  <string name="repeating_empty_transaction">Não foram encontradas transacções recorrentes. Para criar uma, toque no botão verde, com o sinal mais.</string>
   <string name="inactive">Desactivado</string>
+  <string name="activates">Activar</string>
   <string name="days_overdue">dia(s) de atraso</string>
   <string name="days_remaining">dia(s) restante(s)</string>
   <string name="new_edit_repeating_transaction">Novo/editar transação recorrente</string>
@@ -192,9 +193,9 @@
   <string name="repeats">Repetição</string>
   <string name="times_repeated">Nº de Vezes Repetidas</string>
   <string name="error_next_occurrence_not_populate">Próxima ocorrência é necessária</string>
-  <string name="activates">Activar</string>
   <string name="enter_next_occurrence">Introduzir Próxima Ocorrência</string>
   <string name="skip_next_occurrence">Saltar Próxima Ocorrência</string>
+  <string name="skip_next_occurrence_confirmation">Ignorar a próxima ocorrência?</string>
   <string name="notification_repeating_transaction_expired">Há transações recorrentes expiradas</string>
   <string name="notification_click_to_check_repeating_transaction">Toque para marcar a transação como atrasada</string>
   <string name="num_repeating_transaction_expired">%1$d transação recorrente em atraso</string>
@@ -249,6 +250,7 @@
   <string name="donate">Doar</string>
   <string name="no_thanks">Não, obrigado</string>
   <string name="donate_exlamation">Doar!</string>
+  <string name="donate_direct">Pode fazer o donativo clicando no link de doação no nosso site. Clique aqui para abrir no navegador.</string>
   <string name="android_sqlite_vesion">Versão do SQLite</string>
   <string name="ascending">Ascendente</string>
   <string name="descending">Descendente</string>
@@ -479,4 +481,8 @@
   <string name="cash">Dinheiro</string>
   <string name="select_account">Seleccionar conta</string>
   <string name="invalid_transaction_number">Número de transacção inválido</string>
+  <string name="budgets">Orçamento</string>
+  <string name="base_currency_not_set">A moeda-base não foi definida</string>
+  <string name="error">Erro</string>
+  <string name="unhandled_crash">Erro inesperado. Por favor, envie-nos o registo do erro.</string>
 </resources>

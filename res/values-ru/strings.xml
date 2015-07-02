@@ -168,7 +168,6 @@
   <string name="widget_summary">Money Manager Ex Сводка</string>
   <string name="widget_all_accounts">Money Manager Ex Счета</string>
   <string name="widget_add_transaction">Money Manager Ex Создать проводку</string>
-  <string name="repeating_empty_transaction">Не найдено ни одного перевода. Чтобы создать его, нажмите на зеленый плюс.</string>
   <string name="none">Нет</string>
   <string name="weekly">Еженедельно</string>
   <string name="bi_weekly">Каждые две недели</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">В (x) месяц</string>
   <string name="every_x_days">Каждые (x) дней</string>
   <string name="every_x_months">Каждые (x) месяцев</string>
+  <string name="repeating_empty_transaction">Не найдено ни одного перевода. Чтобы создать его, нажмите на зеленый плюс.</string>
   <string name="inactive">Неактивна</string>
+  <string name="activates">Активировать</string>
   <string name="days_overdue">дней просрочки!</string>
   <string name="days_remaining">дней осталось</string>
   <string name="new_edit_repeating_transaction">Создать/Изменить повторяющуюся транзакцию</string>
@@ -192,7 +193,6 @@
   <string name="repeats">Повторы</string>
   <string name="times_repeated">Количество повторов</string>
   <string name="error_next_occurrence_not_populate">Требуется указать следующее вхождение</string>
-  <string name="activates">Активировать</string>
   <string name="enter_next_occurrence">Ввести следующее начисление</string>
   <string name="skip_next_occurrence">Пропустить следующее начисление</string>
   <string name="notification_repeating_transaction_expired">Есть просроченные повторяющиеся транзакции</string>

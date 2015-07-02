@@ -168,7 +168,6 @@
   <string name="widget_summary">Money Manager Ex sažetak</string>
   <string name="widget_all_accounts">Money Manager Ex Svi računi</string>
   <string name="widget_add_transaction">Money Manager Ex Dodaj transakciju</string>
-  <string name="repeating_empty_transaction">Ponavljajuće transakcije nisu pronađene. Da biste kreirali novu, dodirnite zeleno plus dugme.</string>
   <string name="none">Nijedan</string>
   <string name="weekly">Sedmično</string>
   <string name="bi_weekly">Dvo-sedmično</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">Za (x) mjeseci</string>
   <string name="every_x_days">Svakih (x) dana</string>
   <string name="every_x_months">Svakih (x) mjeseci</string>
+  <string name="repeating_empty_transaction">Ponavljajuće transakcije nisu pronađene. Da biste kreirali novu, dodirnite zeleno plus dugme.</string>
   <string name="inactive">Neaktivan</string>
+  <string name="activates">Aktivira</string>
   <string name="days_overdue">dana kasni!</string>
   <string name="days_remaining">dan(a) preostalo</string>
   <string name="new_edit_repeating_transaction">Novih/izmjena ponavljajuće transakcije</string>
@@ -192,9 +193,9 @@
   <string name="repeats">Ponavlja se</string>
   <string name="times_repeated">Puta ponovljeno</string>
   <string name="error_next_occurrence_not_populate">Sljedeće pojavljivanje je neophodno</string>
-  <string name="activates">Aktivira</string>
   <string name="enter_next_occurrence">Unesite sljedeće pojavljivanje</string>
   <string name="skip_next_occurrence">Preskoči sljedeće pojavljivanje</string>
+  <string name="skip_next_occurrence_confirmation">Želite li preskočiti sljedeće ponavljanje?</string>
   <string name="notification_repeating_transaction_expired">Postoje istekle ponavljajuće transakcije</string>
   <string name="notification_click_to_check_repeating_transaction">Dodirnite za provjeru dospjeća transakcije</string>
   <string name="num_repeating_transaction_expired">%1$d ponavljajućih transakcija dospjelo</string>
@@ -249,6 +250,7 @@
   <string name="donate">Donirajte</string>
   <string name="no_thanks">Ne, hvala</string>
   <string name="donate_exlamation">Donirajte!</string>
+  <string name="donate_direct">Možete donirati klikom na link Donirajte na web stranici naše aplikacije. Kliknite ovdje da otvorite u pregledniku.</string>
   <string name="android_sqlite_vesion">SQLite verzija</string>
   <string name="ascending">Uzlazno</string>
   <string name="descending">Silazno</string>
@@ -370,6 +372,7 @@
   <string name="success_currency_exchange_rates">Svi kursevi valuta su uspješno ažurirani</string>
   <string name="update_menu_currency_exchange_rates">Ažuriranje kursa valute</string>
   <string name="question_update_currency_exchange_rates">Želite li ažurirati kurs valute?</string>
+  <string name="error_update_currency_exchange_rate">Dogodila se greška pri spremanju stope</string>
   <string name="withdrawal_from">Povlačenje iz %1$s</string>
   <string name="deposit_to">Depozit na %1$s</string>
   <string name="mmex_website">MoneyManagerEx web stranica</string>
@@ -478,4 +481,8 @@
   <string name="cash">Gotovina</string>
   <string name="select_account">Odaberite račun</string>
   <string name="invalid_transaction_number">Broj transakcije nije validan</string>
+  <string name="budgets">Budžeti</string>
+  <string name="base_currency_not_set">Osnovna valuta nije postavljena</string>
+  <string name="error">Greška</string>
+  <string name="unhandled_crash">Neočekivana greška. Molimo Vas da nam pošaljete log.</string>
 </resources>

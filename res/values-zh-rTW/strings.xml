@@ -168,7 +168,6 @@
   <string name="widget_summary">Money Manager Ex 摘要</string>
   <string name="widget_all_accounts">Money Manager Ex 全部帳戶</string>
   <string name="widget_add_transaction">Money Manager Ex 新增交易</string>
-  <string name="repeating_empty_transaction">發現任何循環交易，請點擊綠色加號按鈕新增。</string>
   <string name="none">無</string>
   <string name="weekly">每週</string>
   <string name="bi_weekly">雙週</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">再 (x) 月</string>
   <string name="every_x_days">每 (x) 日</string>
   <string name="every_x_months">每 (x) 月</string>
+  <string name="repeating_empty_transaction">發現任何循環交易，請點擊綠色加號按鈕新增。</string>
   <string name="inactive">未啟用</string>
+  <string name="activates">啟動</string>
   <string name="days_overdue">日 - 過期</string>
   <string name="days_remaining">日 - 到期</string>
   <string name="new_edit_repeating_transaction">新增/編輯定期交易</string>
@@ -192,7 +193,6 @@
   <string name="repeats">重複類型</string>
   <string name="times_repeated">重複次數</string>
   <string name="error_next_occurrence_not_populate">需要下次到期的交易</string>
-  <string name="activates">啟動</string>
   <string name="enter_next_occurrence">確認下次交易</string>
   <string name="skip_next_occurrence">跳過下次交易</string>
   <string name="notification_repeating_transaction_expired">有過期的定期交易</string>
