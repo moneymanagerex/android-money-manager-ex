@@ -62,6 +62,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
@@ -170,13 +171,10 @@ public class MainActivity
                 isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
             if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION))
                 isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
-            if (savedInstanceState.containsKey(KEY_ORIENTATION)) {
-                if (core.isTablet()) {
-                    if (savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
-                        for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
-                            getSupportFragmentManager().popBackStack();
-                        }
-                    }
+            if (savedInstanceState.containsKey(KEY_ORIENTATION) && core.isTablet()
+                    && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
+                for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+                    getSupportFragmentManager().popBackStack();
                 }
             }
         }
@@ -246,6 +244,7 @@ public class MainActivity
 
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
+
         // show home fragment
         HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
                 .findFragmentByTag(HomeFragment.class.getSimpleName());
@@ -256,10 +255,12 @@ public class MainActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
                     .commit();
-        } else if (core.isTablet()) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                    .commit();
+        } else {
+            if (core.isTablet()) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                        .commit();
+            }
         }
 
         // manage fragment
@@ -271,11 +272,13 @@ public class MainActivity
             if (className.contains(AccountFragment.class.getSimpleName())) {
                 showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
             } else {
+                Class fragmentClass = null;
                 try {
-                    showFragment(Class.forName(className));
+                    fragmentClass = Class.forName(className);
                 } catch (ClassNotFoundException e) {
                     Log.e(LOGCAT, e.getMessage());
                 }
+                showFragment(fragmentClass);
             }
         }
         // navigation drawer
@@ -505,13 +508,15 @@ public class MainActivity
     /**
      * Show fragment using reflection from class
      */
-    public void showFragment(Class<?> clsFragment) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(clsFragment.getName());
+    public void showFragment(Class<?> fragmentClass) {
+        if (fragmentClass == null) return;
+
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentClass.getName());
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             ClassLoader loader = getClassLoader();
             if (loader != null) {
                 try {
-                    Class<?> classFragment = loader.loadClass(clsFragment.getName());
+                    Class<?> classFragment = loader.loadClass(fragmentClass.getName());
                     fragment = (Fragment) classFragment.newInstance();
                 } catch (Exception e) {
                     Log.e(LOGCAT, e.getMessage());

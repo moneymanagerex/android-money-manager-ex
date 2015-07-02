@@ -321,7 +321,7 @@ public class CurrencyFormatsLoaderListFragment
             success = saveExchangeRate(destinationCurrency, price);
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(ex, "Error saving exchange rate");
+            handler.handle(ex, "saving exchange rate");
         }
 
         if (!success) {

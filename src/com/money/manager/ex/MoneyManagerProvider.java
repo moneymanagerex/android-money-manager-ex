@@ -316,7 +316,7 @@ public class MoneyManagerProvider
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(e, "Error fetching data");
+            handler.handle(e, "fetching data in content provider");
         }
         return null;
     }

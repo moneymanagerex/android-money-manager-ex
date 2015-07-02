@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -13,19 +15,22 @@ import com.money.manager.ex.currency.CurrencyFormatsLoaderListFragment;
 public class BudgetsActivity
         extends BaseFragmentActivity {
 
+    private boolean mIsDualPanel = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // layout
-//        setContentView(R.layout.activity_budgets);
-        setContentView(R.layout.main_fragments_activity);
+        setContentView(R.layout.activity_budgets);
+//        setContentView(R.layout.main_fragments_activity);
 
         setSupportActionBar(getToolbar());
         setToolbarStandardAction(getToolbar());
         // enable returning back from toolbar.
         setDisplayHomeAsUpEnabled(true);
 
+        createFragments(savedInstanceState);
     }
 
     // Menu / toolbar
@@ -51,6 +56,16 @@ public class BudgetsActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createFragments(Bundle savedInstanceState) {
+        LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
+        setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
+
+    }
+
+    public void setDualPanel(boolean mIsDualPanel) {
+        this.mIsDualPanel = mIsDualPanel;
     }
 
 }

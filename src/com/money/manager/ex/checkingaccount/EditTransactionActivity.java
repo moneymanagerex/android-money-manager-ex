@@ -210,7 +210,7 @@ public class EditTransactionActivity
                 Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(this, this);
-                handler.handle(e, "Error parsing the date.");
+                handler.handle(e, "parsing the date");
             }
         } else {
             txtSelectDate.setTag(Calendar.getInstance().getTime());

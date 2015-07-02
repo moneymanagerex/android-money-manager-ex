@@ -16,34 +16,45 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v4.widget.DrawerLayout
     android:id="@+id/drawerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-        <!-- Navigation Drawer -->
+        android:orientation="vertical">
+        <!-- Toolbar -->
         <include layout="@layout/toolbar"/>
 
         <LinearLayout
-            android:id="@+id/fragmentContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:background="?attr/theme_background_color"
+            android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/fragmentDetail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/fragmentContent"
+                android:layout_width="400dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"/>
+
+            <LinearLayout
+                android:id="@+id/fragmentDetail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/money_margin"
+                android:background="?attr/shape_background_shadow"
+                android:orientation="horizontal"
+                android:padding="@dimen/money_padding"/>
+        </LinearLayout>
     </LinearLayout>
-
     <!-- Navigation Drawer -->
+
     <include layout="@layout/merge_drawer"/>
+
+
 </android.support.v4.widget.DrawerLayout>

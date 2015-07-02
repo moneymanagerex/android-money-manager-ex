@@ -744,7 +744,7 @@ public class HomeFragment extends Fragment
             info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
         } catch (ClassCastException cex) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(cex, "Error casting context menu");
+            handler.handle(cex, "casting context menu");
         }
         if (info == null) return null;
 
@@ -763,7 +763,7 @@ public class HomeFragment extends Fragment
             account = (QueryAccountBills) accountsAdapter.getChild(groupPos, childPos);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(e, "Error getting the selected account id");
+            handler.handle(e, "getting the selected account id");
         }
 
         return account;

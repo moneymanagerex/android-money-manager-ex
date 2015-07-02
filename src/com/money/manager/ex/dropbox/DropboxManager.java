@@ -137,7 +137,7 @@ public class DropboxManager {
             service.putExtra(DropboxServiceIntent.INTENT_EXTRA_MESSENGER, messenger);
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "Error displaying dropbox progress dialog");
+            handler.handle(ex, "displaying dropbox progress dialog");
         }
 
         // start service

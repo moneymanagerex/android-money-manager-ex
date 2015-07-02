@@ -430,7 +430,7 @@ public class AllDataAdapter
             balanceAmount.execute();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "Error in balance amount");
+            handler.handle(ex, "calculating balance amount");
         }
     }
 }

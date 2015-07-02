@@ -45,9 +45,7 @@ public class ExceptionHandler {
     private Object mHost;
 
     public void handle(Exception ex, String errorMessage) {
-        if (TextUtils.isEmpty(errorMessage)) {
-            errorMessage = "Error";
-        }
+        errorMessage = "Error " + errorMessage;
 
         Log.e(getLogcat(), errorMessage + ": " + ex.getLocalizedMessage());
         ex.printStackTrace();
