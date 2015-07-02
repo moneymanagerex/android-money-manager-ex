@@ -31,13 +31,13 @@ import com.money.manager.ex.utils.ActivityUtils;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.0.0
  */
-public class CurrencyFormatsListActivity
+public class CurrenciesActivity
         extends BaseFragmentActivity {
 
     public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
-    public static final String LOGCAT = CurrencyFormatsListActivity.class.getSimpleName();
-    private static final String FRAGMENTTAG = CurrencyFormatsListActivity.class.getSimpleName() + "_Fragment";
+    public static final String LOGCAT = CurrenciesActivity.class.getSimpleName();
+    private static final String FRAGMENTTAG = CurrenciesActivity.class.getSimpleName() + "_Fragment";
 
     // Instance fragment list
     private CurrencyFormatsLoaderListFragment listFragment = new CurrencyFormatsLoaderListFragment();

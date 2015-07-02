@@ -230,7 +230,7 @@
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".currency.CurrencyFormatsListActivity" >
+        <activity android:name=".currency.CurrenciesActivity" >
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>

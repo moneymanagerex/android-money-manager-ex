@@ -67,7 +67,7 @@ import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.currency.CurrencyFormatsListActivity;
+import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.account.AccountFragment;
@@ -832,7 +832,7 @@ public class MainActivity
                 break;
             case R.id.menu_currency:
                 // Show Currency list.
-                intent = new Intent(MainActivity.this, CurrencyFormatsListActivity.class);
+                intent = new Intent(MainActivity.this, CurrenciesActivity.class);
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
                 break;

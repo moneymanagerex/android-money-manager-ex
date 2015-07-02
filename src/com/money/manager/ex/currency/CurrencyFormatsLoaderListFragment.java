@@ -270,9 +270,9 @@ public class CurrencyFormatsLoaderListFragment
                     cursor.moveToPosition(i);
 
                     result = new Intent();
-                    result.putExtra(CurrencyFormatsListActivity.INTENT_RESULT_CURRENCYID,
+                    result.putExtra(CurrenciesActivity.INTENT_RESULT_CURRENCYID,
                             cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
-                    result.putExtra(CurrencyFormatsListActivity.INTENT_RESULT_CURRENCYNAME,
+                    result.putExtra(CurrenciesActivity.INTENT_RESULT_CURRENCYNAME,
                             cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
 
                     getActivity().setResult(Activity.RESULT_OK, result);
@@ -281,7 +281,7 @@ public class CurrencyFormatsLoaderListFragment
                 }
             }
         }
-        getActivity().setResult(CurrencyFormatsListActivity.RESULT_CANCELED);
+        getActivity().setResult(CurrenciesActivity.RESULT_CANCELED);
     }
 
     @Override

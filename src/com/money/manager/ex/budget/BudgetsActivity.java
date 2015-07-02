@@ -2,11 +2,13 @@ package com.money.manager.ex.budget;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.currency.CurrencyFormatsLoaderListFragment;
 
 public class BudgetsActivity
         extends BaseFragmentActivity {
@@ -14,11 +16,19 @@ public class BudgetsActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_budgets);
+
+        // layout
+//        setContentView(R.layout.activity_budgets);
+        setContentView(R.layout.main_fragments_activity);
 
         setSupportActionBar(getToolbar());
         setToolbarStandardAction(getToolbar());
+        // enable returning back from toolbar.
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
+
+    // Menu / toolbar
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -42,4 +52,16 @@ public class BudgetsActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    //
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        // intercept key back
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
 }

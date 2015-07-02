@@ -24,7 +24,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.currency.CurrencyFormatsListActivity;
+import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.utils.DialogUtils;
 
@@ -108,7 +108,7 @@ public class YahooDownloadAllPricesTask
                 DialogUtils.closeProgressDialog(mDialog);
             }
         } catch (Exception e) {
-            Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
+            Log.e(CurrenciesActivity.LOGCAT, e.getMessage());
         }
         if (result) {
             Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();

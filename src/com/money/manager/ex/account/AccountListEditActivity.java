@@ -41,7 +41,7 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.currency.CurrencyFormatsListActivity;
+import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -322,7 +322,7 @@ public class AccountListEditActivity
         txtSelectCurrency.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AccountListEditActivity.this, CurrencyFormatsListActivity.class);
+                Intent intent = new Intent(AccountListEditActivity.this, CurrenciesActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(intent, REQUEST_PICK_CURRENCY);
             }
@@ -337,8 +337,8 @@ public class AccountListEditActivity
         switch (requestCode) {
             case REQUEST_PICK_CURRENCY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCurrencyId = data.getIntExtra(CurrencyFormatsListActivity.INTENT_RESULT_CURRENCYID, -1);
-                    mCurrencyName = data.getStringExtra(CurrencyFormatsListActivity.INTENT_RESULT_CURRENCYNAME);
+                    mCurrencyId = data.getIntExtra(CurrenciesActivity.INTENT_RESULT_CURRENCYID, -1);
+                    mCurrencyName = data.getStringExtra(CurrenciesActivity.INTENT_RESULT_CURRENCYNAME);
                     // refresh displayed Currency
                     refreshCurrencyName();
                     // refresh amount
