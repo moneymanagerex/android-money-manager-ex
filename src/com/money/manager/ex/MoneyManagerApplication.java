@@ -202,7 +202,7 @@ public class MoneyManagerApplication
         }
 
         // Initialize font icons.
-        FontIconTypefaceHolder.init(getAssets(), "mmex.ttf");
+        FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
     }
 
     @Override
