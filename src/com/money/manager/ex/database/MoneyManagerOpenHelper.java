@@ -155,9 +155,12 @@ public class MoneyManagerOpenHelper
         SQLiteDatabase db = null;
         try {
             db = super.getReadableDatabase();
-        } catch (SQLiteDiskIOException dex) {
+//        } catch (SQLiteDiskIOException dex) {
+//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+//            handler.handle(dex, "opening database");
+        } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(dex, "opening database");
+            handler.handle(ex, "opening database");
         }
         return db;
     }
