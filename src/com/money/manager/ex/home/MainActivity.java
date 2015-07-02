@@ -118,8 +118,6 @@ public class MainActivity
     private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
     // state if restart activity
     private static boolean mRestartActivity = false;
-    // list of account visible
-//    List<TableAccountList> mAccountList;
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
     private boolean isShowTipsDropbox2 = false;
@@ -186,9 +184,11 @@ public class MainActivity
         // create a connection to dropbox
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
         // check type mode
-        onCreateFragments(savedInstanceState);
+        createFragments(savedInstanceState);
+
         // show tutorial
         showTutorial(savedInstanceState);
+
         // show change log dialog
         if (core.isToDisplayChangelog()) core.showChangelog();
 
@@ -234,12 +234,7 @@ public class MainActivity
         }
     }
 
-    /**
-     * this method call for classic method (show fragments)
-     *
-     * @param savedInstanceState
-     */
-    public void onCreateFragments(Bundle savedInstanceState) {
+    public void createFragments(Bundle savedInstanceState) {
         Core core = new Core(getApplicationContext());
 
         setContentView(R.layout.main_fragments_activity);
