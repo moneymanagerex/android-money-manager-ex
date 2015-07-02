@@ -46,10 +46,10 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
+import com.money.manager.ex.checkingaccount.EditTransactionActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.qif.QifExport;
-import com.money.manager.ex.checkingaccount.CheckingAccountConstants;
+import com.money.manager.ex.checkingaccount.EditTransactionActivityConstants;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
@@ -527,13 +527,13 @@ public class AllDataFragment extends BaseListFragment
      */
     private void startCheckingAccountActivity(Integer transId) {
         // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
+        Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
         // check transId not null
         if (transId != null) {
-            intent.putExtra(CheckingAccountConstants.KEY_TRANS_ID, transId);
+            intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
-            intent.putExtra(CheckingAccountConstants.KEY_ACCOUNT_ID, this.AccountId);
+            intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, this.AccountId);
             intent.setAction(Intent.ACTION_INSERT);
         }
         // launch activity
@@ -750,8 +750,8 @@ public class AllDataFragment extends BaseListFragment
         int[] ids = convertArrayListToArray(transIds);
         Intent[] intents = new Intent[transactionCount];
         for (int i = 0; i < transactionCount; i++) {
-            intents[i] = new Intent(getActivity(), CheckingAccountActivity.class);
-            intents[i].putExtra(CheckingAccountConstants.KEY_TRANS_ID, ids[i]);
+            intents[i] = new Intent(getActivity(), EditTransactionActivity.class);
+            intents[i].putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, ids[i]);
             intents[i].setAction(Intent.ACTION_PASTE);
         }
         getActivity().startActivities(intents);

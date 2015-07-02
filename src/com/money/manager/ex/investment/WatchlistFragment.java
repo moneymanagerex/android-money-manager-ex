@@ -89,39 +89,6 @@ public class WatchlistFragment extends Fragment
         return fragment;
     }
 
-    private void confirmPriceUpdate() {
-        new AlertDialogWrapper.Builder(getActivity())
-                .setTitle(R.string.download)
-                .setMessage(R.string.confirm_price_download)
-                .setIcon(R.drawable.ic_action_help_light)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-//                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
-
-                        // get the list of symbols
-                        String[] symbols = getAllShownSymbols();
-                        mToUpdateTotal = symbols.length;
-                        mUpdateCounter = 0;
-
-                        // update security prices
-                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
-                                .getUpdaterInstance(mContext, WatchlistFragment.this);
-                        updater.updatePrices(symbols);
-
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create()
-                .show();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -452,4 +419,38 @@ public class WatchlistFragment extends Fragment
                 .show();
 
     }
+
+    private void confirmPriceUpdate() {
+        new AlertDialogWrapper.Builder(getActivity())
+                .setTitle(R.string.download)
+                .setMessage(R.string.confirm_price_download)
+                .setIcon(R.drawable.ic_action_help_light)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
+
+                        // get the list of symbols
+                        String[] symbols = getAllShownSymbols();
+                        mToUpdateTotal = symbols.length;
+                        mUpdateCounter = 0;
+
+                        // update security prices
+                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+                                .getUpdaterInstance(mContext, WatchlistFragment.this);
+                        updater.updatePrices(symbols);
+
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
 }

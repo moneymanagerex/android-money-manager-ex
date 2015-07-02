@@ -32,12 +32,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
+import com.money.manager.ex.checkingaccount.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
-import com.money.manager.ex.checkingaccount.CheckingAccountConstants;
+import com.money.manager.ex.checkingaccount.EditTransactionActivityConstants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
@@ -124,10 +124,10 @@ public class RepeatingTransactionListFragment
                 date = DateUtils.getDateFromString(getActivity(), nextOccurrence, Constants.PATTERN_DB_DATE);
                 date = DateUtils.getDateNextOccurrence(date, repeats);
                 if (date != null) {
-                    Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
+                    Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
                     intent.setAction(Constants.INTENT_ACTION_INSERT);
-                    intent.putExtra(CheckingAccountConstants.KEY_BDID_ID, bdId);
-                    intent.putExtra(CheckingAccountConstants.KEY_NEXT_OCCURRENCE,
+                    intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, bdId);
+                    intent.putExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE,
                             DateUtils.getSQLiteStringDate(getActivity(), date));
                     // start for insert new transaction
                     startActivityForResult(intent, REQUEST_ADD_TRANSACTION);

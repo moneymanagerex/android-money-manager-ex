@@ -66,7 +66,7 @@ public class WatchlistItemsFragment
     public static WatchlistItemsFragment newInstance(
             int accountId, IWatchlistItemsFragmentEventHandler eventHandler) {
         WatchlistItemsFragment fragment = new WatchlistItemsFragment();
-        fragment.mAccountId = accountId;
+//        fragment.mAccountId = accountId;
         fragment.mEventHandler = eventHandler;
         return fragment;
     }
@@ -78,7 +78,7 @@ public class WatchlistItemsFragment
     private IWatchlistItemsFragmentEventHandler mEventHandler;
     private boolean mAutoStarLoader = true;
     private int mGroupId = 0;
-    private int mAccountId = -1;
+//    private int mAccountId = -1;
     private View mListHeader = null;
     private Context mContext;
     private StockRepository mStockRepository;
