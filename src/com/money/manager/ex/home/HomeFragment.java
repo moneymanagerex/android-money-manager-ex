@@ -84,7 +84,8 @@ import java.util.List;
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
 @SuppressWarnings("static-access")
-public class HomeFragment extends Fragment
+public class HomeFragment
+        extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // ID Loader Manager
@@ -283,14 +284,13 @@ public class HomeFragment extends Fragment
 
         switch (loader.getId()) {
             case ID_LOADER_USER_NAME:
-                if (data != null && data.moveToFirst()) {
-                    while (!data.isAfterLast()) {
+                if (data != null) {
+                    while (data.moveToNext()) {
                         String infoValue = data.getString(data.getColumnIndex(infoTable.INFONAME));
                         // save into preferences username and base currency id
                         if (Constants.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
                             MoneyManagerApplication.getInstanceApp().setUserName(data.getString(data.getColumnIndex(infoTable.INFOVALUE)));
                         }
-                        data.moveToNext();
                     }
                 }
                 mainActivity.setDrawerUserName(MoneyManagerApplication.getInstanceApp().getUserName());

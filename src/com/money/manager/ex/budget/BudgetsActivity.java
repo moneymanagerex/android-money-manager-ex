@@ -2,6 +2,8 @@ package com.money.manager.ex.budget;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,8 +11,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.AccountFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyFormatsLoaderListFragment;
+import com.money.manager.ex.home.HomeFragment;
 
 public class BudgetsActivity
         extends BaseFragmentActivity {
@@ -62,6 +67,25 @@ public class BudgetsActivity
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
+        Core core = new Core(getApplicationContext());
+
+        // show navigation fragment
+        BudgetsListFragment fragment = (BudgetsListFragment) getSupportFragmentManager()
+                .findFragmentByTag(BudgetsListFragment.class.getSimpleName());
+        if (fragment == null) {
+            // fragment create
+            fragment = new BudgetsListFragment();
+            // add to stack
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContent, fragment, BudgetsListFragment.class.getSimpleName())
+                    .commit();
+        } else {
+            if (core.isTablet()) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContent, fragment, BudgetsListFragment.class.getSimpleName())
+                        .commit();
+            }
+        }
     }
 
     public void setDualPanel(boolean mIsDualPanel) {

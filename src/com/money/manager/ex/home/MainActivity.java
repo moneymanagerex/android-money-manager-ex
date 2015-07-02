@@ -233,8 +233,6 @@ public class MainActivity
     }
 
     public void createFragments(Bundle savedInstanceState) {
-        Core core = new Core(getApplicationContext());
-
         setContentView(R.layout.main_fragments_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -245,7 +243,9 @@ public class MainActivity
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
-        // show home fragment
+        Core core = new Core(getApplicationContext());
+
+        // show main navigation fragment
         HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
                 .findFragmentByTag(HomeFragment.class.getSimpleName());
         if (fragment == null) {
@@ -281,6 +281,7 @@ public class MainActivity
                 showFragment(fragmentClass);
             }
         }
+
         // navigation drawer
         mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
 
@@ -292,7 +293,8 @@ public class MainActivity
                 // create drawer menu
                 createDrawerMenu();
                 // enable ActionBar app icon to behave as action to toggle nav drawer
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                setDisplayHomeAsUpEnabled(true);
+//                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setDisplayShowTitleEnabled(true);
             } else {
                 mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
