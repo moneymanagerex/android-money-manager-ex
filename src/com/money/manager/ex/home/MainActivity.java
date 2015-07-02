@@ -183,11 +183,11 @@ public class MainActivity
 
         // create a connection to dropbox
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
-        // check type mode
+
         createFragments(savedInstanceState);
 
         // show tutorial
-        showTutorial(savedInstanceState);
+        showTutorial();
 
         // show change log dialog
         if (core.isToDisplayChangelog()) core.showChangelog();
@@ -588,10 +588,8 @@ public class MainActivity
 
     /**
      * Show tutorial on first run.
-     *
-     * @param savedInstanceState
      */
-    public void showTutorial(Bundle savedInstanceState) {
+    public void showTutorial() {
         Context context = getApplicationContext();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         String key = context.getString(PreferenceConstants.PREF_SHOW_TUTORIAL);
@@ -608,42 +606,44 @@ public class MainActivity
     }
 
     public void showSnackbarDropbox() {
-        if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
-            AsyncTask<Void, Integer, Integer> asyncTask = new AsyncTask<Void, Integer, Integer>() {
-                @Override
-                protected Integer doInBackground(Void... voids) {
-                    publishProgress(1);
-
-                    return mDropboxHelper.checkIfFileIsSync();
-                }
-
-                @Override
-                protected void onProgressUpdate(Integer... params) {
-                    Toast.makeText(MainActivity.this,
-                            R.string.checking_dropbox_for_changes, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                protected void onPostExecute(Integer ret) {
-                    if (DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD == ret) {
-                        Snackbar.with(getApplicationContext()) // context
-                                .text(getString(R.string.dropbox_database_can_be_updted))
-                                .actionLabel(getString(R.string.sync))
-                                .actionColor(getResources().getColor(R.color.md_primary))
-                                .actionListener(new ActionClickListener() {
-                                    @Override
-                                    public void onActionClicked(Snackbar snackbar) {
-                                        DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper, MainActivity.this);
-                                        dropbox.synchronizeDropbox();
-                                    }
-                                })
-                                .duration(5 * 1000)
-                                .show(MainActivity.this);
-                    }
-                }
-            };
-            asyncTask.execute();
+        if (mDropboxHelper == null || !mDropboxHelper.isLinked()) {
+            return;
         }
+
+        AsyncTask<Void, Integer, Integer> asyncTask = new AsyncTask<Void, Integer, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                publishProgress(1);
+
+                return mDropboxHelper.checkIfFileIsSync();
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... params) {
+                Toast.makeText(MainActivity.this,
+                        R.string.checking_dropbox_for_changes, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected void onPostExecute(Integer ret) {
+                if (DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD == ret) {
+                    Snackbar.with(getApplicationContext()) // context
+                            .text(getString(R.string.dropbox_database_can_be_updted))
+                            .actionLabel(getString(R.string.sync))
+                            .actionColor(getResources().getColor(R.color.md_primary))
+                            .actionListener(new ActionClickListener() {
+                                @Override
+                                public void onActionClicked(Snackbar snackbar) {
+                                    DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper, MainActivity.this);
+                                    dropbox.synchronizeDropbox();
+                                }
+                            })
+                            .duration(5 * 1000)
+                            .show(MainActivity.this);
+                }
+            }
+        };
+        asyncTask.execute();
     }
 
     public void setDrawerUserName(String userName) {
