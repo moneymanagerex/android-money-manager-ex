@@ -160,7 +160,7 @@ public class MoneyManagerOpenHelper
 //            handler.handle(dex, "opening database");
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "opening database");
+            handler.handle(ex, "opening readable database");
         }
         return db;
     }
@@ -170,9 +170,8 @@ public class MoneyManagerOpenHelper
         try {
             return getWritableDatabase_Internal();
         } catch (Exception ex) {
-            String error = "Error getting writable database";
-            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
-            Toast.makeText(mContext, error, Toast.LENGTH_SHORT).show();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "opening writable database");
         }
         return null;
     }
