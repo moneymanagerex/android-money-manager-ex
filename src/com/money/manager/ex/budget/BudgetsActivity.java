@@ -16,13 +16,15 @@ public class BudgetsActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budgets);
 
+        setSupportActionBar(getToolbar());
         setToolbarStandardAction(getToolbar());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_budgets, menu);
+//        getMenuInflater().inflate(R.menu.menu_budgets, menu);
+
         return true;
     }
 
