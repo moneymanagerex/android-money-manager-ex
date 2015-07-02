@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-icon
+    xmlns:android="http://schemas.android.com/apk/res-auto"
+    android:text="@string/ic_magnifier"
+    android:textSize="@dimen/fonticon_drawer"
+    android:textColor="?android:textColorSecondary" />

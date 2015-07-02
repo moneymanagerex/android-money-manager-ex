@@ -753,60 +753,56 @@ public class MainActivity
 
         // create adapter
         DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
-        // home
+        // Home
         adapter.add(new DrawerMenuItem().withId(R.id.menu_home)
-                .withText(getString(R.string.home))
-                .withIcon(isDarkTheme ? R.drawable.ic_home_dark : R.drawable.ic_home_light));
-        // open database
+            .withText(getString(R.string.home))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
+        // Open database
         adapter.add(new DrawerMenuItem().withId(R.id.menu_open_database)
-                .withText(getString(R.string.open_database))
-                .withIcon(isDarkTheme
-                        ? R.drawable.ic_action_folder_open_dark
-                        : R.drawable.ic_action_folder_open_light));
-        // dropbox synchronize
-        if (mDropboxHelper != null && mDropboxHelper.isLinked())
+            .withText(getString(R.string.open_database))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
+        // Dropbox synchronize
+        if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
             adapter.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
                     .withText(getString(R.string.synchronize))
-                    .withIcon(isDarkTheme ? R.drawable.ic_action_dropbox_dark : R.drawable.ic_action_dropbox_light));
-        // manage: add transaction
-        // adapter.add(new DrawerMenuItem(R.id.menu_add_transaction_account, getString(R.string.add_transaction), isDarkTheme ? R.drawable.ic_action_add_dark : R.drawable.ic_action_add_light));
-        // tools
+                    .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
+        }
+        // Tools
         adapter.add(new DrawerMenuItem().withId(R.id.menu_group_main)
-                .withText(getString(R.string.tools))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_domain_dark : R.drawable.ic_action_domain_light));
-        // manage: repeating transactions
+            .withText(getString(R.string.tools))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
+        // Recurring Transactions
         adapter.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
-                .withText(getString(R.string.repeating_transactions))
-//                .withIcon(isDarkTheme ? R.drawable.ic_action_history_dark : R.drawable.ic_action_history_light));
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
+            .withText(getString(R.string.repeating_transactions))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
         // Budgets
         adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
             .withText(getString(R.string.budgets))
             .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
-        // search transaction
+        // Search transaction
         adapter.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
-                .withText(getString(R.string.search))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_search_dark : R.drawable.ic_action_search_light));
+            .withText(getString(R.string.search))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
         // reports
         adapter.add(new DrawerMenuItem().withId(R.id.menu_reports)
                 .withText(getString(R.string.menu_reports))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light)
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_reports))
                 .withDivider(true));
-        // settings
+        // Settings
         adapter.add(new DrawerMenuItem().withId(R.id.menu_settings)
-                .withText(getString(R.string.settings))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_settings_dark : R.drawable.ic_action_settings_light));
-        // donate
+            .withText(getString(R.string.settings))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_settings)));
+        // Donate
         adapter.add(new DrawerMenuItem().withId(R.id.menu_donate)
-                .withText(getString(R.string.donate))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_redeem_dark : R.drawable.ic_action_redeem_light)
-                .withDivider(Boolean.TRUE));
-        // help
+            .withText(getString(R.string.donate))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_gift))
+            .withDivider(Boolean.TRUE));
+        // Help
         adapter.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_help_dark : R.drawable.ic_action_help_light));
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
 
-        // get drawerlist and set adapter
+        // get drawer list and set adapter
         if (mDrawerList != null)
             mDrawerList.setAdapter(adapter);
         // set listener on item click
