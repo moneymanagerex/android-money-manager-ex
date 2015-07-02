@@ -44,12 +44,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
+import com.money.manager.ex.checkingaccount.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.checkingaccount.CheckingAccountConstants;
+import com.money.manager.ex.checkingaccount.EditTransactionActivityConstants;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.IAllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.core.Core;
@@ -544,11 +544,11 @@ public class AccountFragment
      */
     private void startCheckingAccountActivity(Integer transId) {
         // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
-        intent.putExtra(CheckingAccountConstants.KEY_ACCOUNT_ID, mAccountId);
+        Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
+        intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mAccountId);
         // check transId not null
         if (transId != null) {
-            intent.putExtra(CheckingAccountConstants.KEY_TRANS_ID, transId);
+            intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
             intent.setAction(Intent.ACTION_INSERT);

@@ -60,7 +60,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
-import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
+import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
@@ -740,7 +740,7 @@ public class MainActivity
      */
     public void createDrawerMenu() {
         Core core = new Core(getApplicationContext());
-        Boolean isDarkTheme = core.usingDarkTheme();
+//        Boolean isDarkTheme = core.usingDarkTheme();
 
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
         mDrawerList = (ListView) findViewById(R.id.listViewDrawer);
@@ -776,9 +776,9 @@ public class MainActivity
             .withText(getString(R.string.repeating_transactions))
             .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
         // Budgets
-//        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
-//            .withText(getString(R.string.budgets))
-//            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
+            .withText(getString(R.string.budgets))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
         // Search transaction
         adapter.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
             .withText(getString(R.string.search))
@@ -826,11 +826,6 @@ public class MainActivity
             case R.id.menu_open_database:
                 pickFile(Environment.getExternalStorageDirectory());
                 break;
-            case R.id.menu_add_transaction_account:
-                intent = new Intent(MainActivity.this, CheckingAccountActivity.class);
-                intent.setAction(Intent.ACTION_INSERT);
-                startActivity(intent);
-                break;
             case R.id.menu_group_main:
                 showToolsSelector(isDarkTheme, item.getText());
                 break;
@@ -849,20 +844,21 @@ public class MainActivity
             case R.id.menu_payee:
                 showFragment(PayeeLoaderListFragment.class);
                 break;
-            case R.id.menu_report_categories:
-                startActivity(new Intent(this, CategoriesReportActivity.class));
-                break;
             case R.id.menu_recurring_transaction:
                 showFragment(RepeatingTransactionListFragment.class);
+                break;
+            case R.id.menu_budgets:
+                intent = new Intent(this, BudgetsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.menu_search_transaction:
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 break;
+            case R.id.menu_report_categories:
+                startActivity(new Intent(this, CategoriesReportActivity.class));
+                break;
             case R.id.menu_settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                break;
-            case R.id.menu_dashboard:
-                showFragment(DashboardFragment.class);
                 break;
             case R.id.menu_reports:
                 showReportsSelector(isDarkTheme, item.getText());
@@ -987,9 +983,7 @@ public class MainActivity
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (mDrawer == null) return;
-            // Highlight the selected item, update the title, and close the
-            // drawer
-            // update selected item and title, then close the drawer
+            // Highlight the selected item, update the title, and close the drawer
             mDrawerList.setItemChecked(position, true);
 
             // You should reset item counter

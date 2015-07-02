@@ -3,8 +3,8 @@ package com.money.manager.ex.checkingaccount;
 /**
  * Constants used by the Checking Account
  */
-public class CheckingAccountConstants {
-    public static final String LOGCAT = CheckingAccountActivity.class.getSimpleName();
+public class EditTransactionActivityConstants {
+    public static final String LOGCAT = EditTransactionActivity.class.getSimpleName();
 
     public static final int REQUEST_PICK_PAYEE = 1;
     public static final int REQUEST_PICK_ACCOUNT = 2;

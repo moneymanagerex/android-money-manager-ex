@@ -21,7 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 
-import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
+import com.money.manager.ex.checkingaccount.EditTransactionActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.checkingaccount.IntentDataParameters;
 import com.money.manager.ex.core.TransactionTypes;
@@ -82,7 +82,7 @@ public class BalanceAccountTask
 
         // ask for category to use? Or just open a new transaction screen!
         // create a transaction to balance to the entered amount?
-        Intent intent = new Intent(mContext, CheckingAccountActivity.class);
+        Intent intent = new Intent(mContext, EditTransactionActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         // add balance and transaction type and payee
         IntentDataParameters params = new IntentDataParameters();

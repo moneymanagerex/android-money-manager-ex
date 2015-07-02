@@ -52,7 +52,7 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountListEditActivity;
-import com.money.manager.ex.checkingaccount.CheckingAccountActivity;
+import com.money.manager.ex.checkingaccount.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -159,7 +159,7 @@ public class HomeFragment extends Fragment
         mFloatingActionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
+                Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
                 intent.setAction(Intent.ACTION_INSERT);
                 startActivity(intent);
             }

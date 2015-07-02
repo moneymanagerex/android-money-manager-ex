@@ -206,13 +206,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".checkingaccount.CheckingAccountActivity"
+            android:name=".checkingaccount.EditTransactionActivity"
             android:label="@string/new_edit_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
+
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
-                <!--<data android:scheme="content" />-->
+                <!-- <data android:scheme="content" /> -->
             </intent-filter>
         </activity>
         <activity
@@ -233,32 +234,40 @@
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".about.AboutActivity"
+        <activity
+            android:name=".about.AboutActivity"
             android:label="@string/about" >
         </activity>
-        <activity android:name=".currency.CurrencyFormatsActivity"
+        <activity
+            android:name=".currency.CurrencyFormatsActivity"
             android:label="@string/new_edit_currency" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity android:name=".account.AccountListEditActivity"
+        <activity
+            android:name=".account.AccountListEditActivity"
             android:label="@string/account_list" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
         <activity android:name=".recurring.transactions.RepeatingTransactionListActivity" />
-        <activity android:name=".recurring.transactions.RepeatingTransactionActivity"
+        <activity
+            android:name=".recurring.transactions.RepeatingTransactionActivity"
             android:label="@string/new_edit_repeating_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity android:name=".settings.SettingsActivity"
+        <activity
+            android:name=".settings.SettingsActivity"
             android:label="@string/settings" />
-        <activity android:name=".settings.GeneralSettingsActivity"
+        <activity
+            android:name=".settings.GeneralSettingsActivity"
             android:label="@string/preferences_general" />
-        <activity android:name=".settings.LookFeelSettingsActivity"
+        <activity
+            android:name=".settings.LookFeelSettingsActivity"
             android:label="@string/preferences_dispaly" />
-        <activity android:name=".settings.SecuritySettingsActivity"
+        <activity
+            android:name=".settings.SecuritySettingsActivity"
             android:label="@string/preferences_security" />
         <activity
             android:name=".settings.DatabaseSettingsActivity"
@@ -345,6 +354,10 @@
             android:name=".currency.CurrencyChartActivity"
             android:label="@string/title_activity_currency_chart"
             android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".budget.BudgetsActivity"
+            android:label="@string/title_activity_budgets" >
         </activity>
     </application>
 
