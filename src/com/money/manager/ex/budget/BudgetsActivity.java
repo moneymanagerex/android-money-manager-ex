@@ -1,5 +1,7 @@
 package com.money.manager.ex.budget;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,10 +17,12 @@ import com.money.manager.ex.account.AccountFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyFormatsLoaderListFragment;
+import com.money.manager.ex.database.BudgetYear;
 import com.money.manager.ex.home.HomeFragment;
 
 public class BudgetsActivity
-        extends BaseFragmentActivity {
+        extends BaseFragmentActivity
+implements IBudgetListCallbacks{
 
     private boolean mIsDualPanel = false;
 
@@ -28,14 +32,13 @@ public class BudgetsActivity
 
         // layout
         setContentView(R.layout.activity_budgets);
-//        setContentView(R.layout.main_fragments_activity);
 
         setSupportActionBar(getToolbar());
         setToolbarStandardAction(getToolbar());
         // enable returning back from toolbar.
         setDisplayHomeAsUpEnabled(true);
 
-        createFragments(savedInstanceState);
+        createFragments();
     }
 
     // Menu / toolbar
@@ -63,7 +66,27 @@ public class BudgetsActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void createFragments(Bundle savedInstanceState) {
+    // End menu
+
+    @Override
+    public void onBudgetClicked(long budgetYearId) {
+        // budget clicked in the list; show the details fragment.
+        // todo: showBudgetDetails(budgetYearId);
+    }
+
+    // Public methods
+
+    public void setDualPanel(boolean mIsDualPanel) {
+        this.mIsDualPanel = mIsDualPanel;
+    }
+
+    public boolean isDualPanel() {
+        return mIsDualPanel;
+    }
+
+    // Private methods
+
+    private void createFragments() {
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
@@ -75,6 +98,8 @@ public class BudgetsActivity
         if (fragment == null) {
             // fragment create
             fragment = BudgetsListFragment.newInstance();
+            fragment.setListener(this);
+
             // add to stack
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContent, fragment, BudgetsListFragment.class.getSimpleName())
@@ -88,8 +113,47 @@ public class BudgetsActivity
         }
     }
 
-    public void setDualPanel(boolean mIsDualPanel) {
-        this.mIsDualPanel = mIsDualPanel;
+    private void showBudgetDetails(long id) {
+        String tag = BudgetDetailFragment.class.getName();
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+
+        if (fragment == null) {
+            fragment = BudgetDetailFragment.newInstance(id);
+        }
+
+        showFragment(fragment, tag);
+    }
+
+    /**
+     * Displays the fragment and associate the tag
+     *
+     * @param fragment
+     * @param tagFragment
+     */
+    public void showFragment(Fragment fragment, String tagFragment) {
+        // In tablet layout, do not try to display the Home Fragment again. Show empty fragment.
+        if (isDualPanel() && tagFragment.equalsIgnoreCase(BudgetsListFragment.class.getName())) {
+            fragment = new Fragment();
+            tagFragment = "Empty";
+        }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack.
+        if (isDualPanel()) {
+            transaction.replace(R.id.fragmentDetail, fragment, tagFragment);
+        } else {
+            // Single panel UI.
+            transaction.replace(R.id.fragmentContent, fragment, tagFragment);
+
+            // todo: enable going back only if showing the list.
+//            boolean showingList = tagFragment.equals(BudgetsListFragment.class.getName());
+//            setDisplayHomeAsUpEnabled(showingList);
+        }
+        transaction.addToBackStack(null);
+        // Commit the transaction
+        transaction.commit();
     }
 
 }

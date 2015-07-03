@@ -62,7 +62,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
@@ -72,7 +71,7 @@ import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.account.AccountFragment;
-import com.money.manager.ex.account.AccountLoaderListFragment;
+import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
@@ -778,9 +777,9 @@ public class MainActivity
             .withText(getString(R.string.repeating_transactions))
             .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
         // Budgets
-//        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
-//            .withText(getString(R.string.budgets))
-//            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
+            .withText(getString(R.string.budgets))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
         // Search transaction
         adapter.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
             .withText(getString(R.string.search))
@@ -832,7 +831,7 @@ public class MainActivity
                 showToolsSelector(isDarkTheme, item.getText());
                 break;
             case R.id.menu_account:
-                showFragment(AccountLoaderListFragment.class);
+                showFragment(AccountListFragment.class);
                 break;
             case R.id.menu_category:
                 showFragment(CategorySubCategoryExpandableLoaderListFragment.class);
