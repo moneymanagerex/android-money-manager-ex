@@ -35,7 +35,7 @@ public class GeneralSettings
     }
 
     public String getApplicationLocale() {
-        String result = getStringSetting(PreferenceConstants.PREF_LOCALE);
+        String result = get(PreferenceConstants.PREF_LOCALE, "");
         return result;
     }
 

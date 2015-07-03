@@ -36,17 +36,13 @@ public abstract class SettingsBase {
 
     // String
 
+    protected String get(Integer settingKey, String defaultValue) {
+        String key = getSettingsKey(settingKey);
+        return get(key, defaultValue);
+    }
+
     public String get(String key, String defaultValue) {
         return getSharedPreferences().getString(key, defaultValue);
-    }
-
-    protected String getStringSetting(Integer settingKey) {
-        String key = getSettingsKey(settingKey);
-        return getStringSetting(key);
-    }
-
-    protected String getStringSetting(String settingKey) {
-        return getSharedPreferences().getString(settingKey, "");
     }
 
     /**
@@ -54,7 +50,7 @@ public abstract class SettingsBase {
      * @param key
      * @param value
      */
-    public boolean set(String key, String value) {
+    protected boolean set(String key, String value) {
         getEditor().putString(key, value);
         boolean result = getEditor().commit();
         return result;
@@ -89,7 +85,7 @@ public abstract class SettingsBase {
 
     // Integer
 
-    public boolean set(String key, int value) {
+    protected boolean set(String key, int value) {
         getEditor().putInt(key, value);
         boolean result = getEditor().commit();
         return result;

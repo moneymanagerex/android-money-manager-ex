@@ -1,6 +1,7 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.money.manager.ex.R;
 
@@ -22,10 +23,18 @@ public class LookAndFeelSettings
     }
 
     public String getShowTransactions() {
-        return getStringSetting(R.string.pref_show_transaction);
+        return get(R.string.pref_show_transaction, "");
     }
 
     public boolean setShowTransactions(String value) {
+        String key = getSettingsKey(R.string.pref_show_transaction);
+        return set(key, value);
+    }
+
+    public boolean setShowTransactions(int resourceId) {
+        String value = mContext.getString(resourceId);
+        if (TextUtils.isEmpty(value)) return false;
+
         String key = getSettingsKey(R.string.pref_show_transaction);
         return set(key, value);
     }

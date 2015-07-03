@@ -232,60 +232,66 @@ public class AccountTransactionsFragment
 
         LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
 
-        // todo: set the
-        // PreferenceConstants.PREF_SHOW_TRANSACTION
-
         switch (item.getItemId()) {
             case R.id.menu_last7days:
-                // todo: settings.setShowTransactions(R.string.last7days);
-                preferenceValue = R.string.last7days;
+                settings.setShowTransactions(R.string.last7days);
                 break;
             case R.id.menu_last15days:
-                preferenceValue = R.string.last15days;
+                settings.setShowTransactions(R.string.last15days);
                 break;
             case R.id.menu_current_month:
-                result = ViewMobileData.Month + "=" + Integer.toString(currentMonth) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
+//                result = ViewMobileData.Month + "=" + Integer.toString(currentMonth) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
+                settings.setShowTransactions(R.string.current_month);
                 break;
-            case R.id.menu_last_month:
-                if (currentMonth == 1) {
-                    result = ViewMobileData.Month + "=" + Integer.toString(12) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
-                } else {
-                    result = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
-                }
+//            case R.id.menu_last_month:
+//                if (currentMonth == 1) {
+//                    result = ViewMobileData.Month + "=" + Integer.toString(12) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
+//                } else {
+//                    result = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
+//                }
+//                break;
+//            case R.id.menu_last_30_days:
+//                result = "(julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
+//                break;
+            case R.id.menu_last3months:
+                settings.setShowTransactions(R.string.last3months);
                 break;
-            case R.id.menu_last_30_days:
-                result = "(julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
+            case R.id.menu_last6months:
+                settings.setShowTransactions(R.string.last6months);
                 break;
             case R.id.menu_current_year:
-                result = ViewMobileData.Year + "=" + Integer.toString(currentYear);
+//                result = ViewMobileData.Year + "=" + Integer.toString(currentYear);
+                settings.setShowTransactions(R.string.current_year);
                 break;
-            case R.id.menu_last_year:
-                result = ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
-                break;
+//            case R.id.menu_last_year:
+//                result = ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
+//                break;
             case R.id.menu_all_time:
+                settings.setShowTransactions(R.string.all_time);
                 break;
-            case R.id.menu_custom_dates:
-                //check item
-                item.setChecked(true);
-                mPeriodIndex = item.getItemId();
-                //show dialog
-                // todo: showDialogCustomDates();
-                return true;
+//            case R.id.menu_custom_dates:
+//                //check item
+//                item.setChecked(true);
+//                mPeriodIndex = item.getItemId();
+//                //show dialog
+//                // showDialogCustomDates();
+//                return true;
 //                break;
             default:
                 return false;
         }
 
-        result = getString(preferenceValue);
+//        result = getString(preferenceValue);
 
         //check item
         item.setChecked(true);
         mPeriodIndex = item.getItemId();
         //compose bundle
-        Bundle args = new Bundle();
-        // todo: args.putString(KEY_WHERE_CLAUSE, whereClause);
+//        Bundle args = new Bundle();
+//        args.putString(KEY_WHERE_CLAUSE, whereClause);
         //starts loader
-        // todo: startLoader(args);
+        // startLoader(args);
+        loadTransactions();
 
         return true;
     }
