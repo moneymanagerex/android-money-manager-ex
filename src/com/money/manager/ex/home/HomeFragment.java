@@ -127,7 +127,7 @@ public class HomeFragment
         accountBills = new QueryAccountBills(getActivity());
 
         AppSettings settings = new AppSettings(getActivity());
-        mHideReconciled = settings.getHideReconciledAmounts();
+        mHideReconciled = settings.getLookAndFeelSettings().getHideReconciledAmounts();
 
         // The fragment is using a custom option in the actionbar menu.
         setHasOptionsMenu(true);
@@ -136,9 +136,7 @@ public class HomeFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (container == null) {
-            return null;
-        }
+        if (container == null) return null;
 
         // inflate layout
         View view = inflater.inflate(R.layout.home_fragment, container, false);

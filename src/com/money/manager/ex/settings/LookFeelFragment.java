@@ -47,6 +47,7 @@ public class LookFeelFragment
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.look_and_feel_settings);
+
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // checkbox on open and favorite account

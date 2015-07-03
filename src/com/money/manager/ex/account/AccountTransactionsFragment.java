@@ -60,6 +60,8 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.common.IAllDataFragmentCallbacks;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyUtils;
 
@@ -148,7 +150,7 @@ public class AccountTransactionsFragment
         initAccountsDropdown(menu);
 
         // add the date picker.
-        // todo: inflater.inflate(R.menu.menu_period_picker, menu);
+        inflater.inflate(R.menu.menu_period_picker_transactions, menu);
 
         // call create option menu of fragment
         mAllDataFragment.onCreateOptionsMenu(menu, inflater);
@@ -219,29 +221,46 @@ public class AccountTransactionsFragment
     }
 
     private boolean datePeriodItemSelected(MenuItem item) {
-        String whereClause = null;
+        String result = null;
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int preferenceValue = Constants.NOT_SET;
+
+        // todo: on init, mark the default item as checked
+//        AppSettings settings = new AppSettings(getActivity());
+//        String preference = settings.getLookAndFeelSettings().getShowTransactions();
+
+        LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
+
+        // todo: set the
+        // PreferenceConstants.PREF_SHOW_TRANSACTION
 
         switch (item.getItemId()) {
+            case R.id.menu_last7days:
+                // todo: settings.setShowTransactions(R.string.last7days);
+                preferenceValue = R.string.last7days;
+                break;
+            case R.id.menu_last15days:
+                preferenceValue = R.string.last15days;
+                break;
             case R.id.menu_current_month:
-                whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
+                result = ViewMobileData.Month + "=" + Integer.toString(currentMonth) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
                 break;
             case R.id.menu_last_month:
                 if (currentMonth == 1) {
-                    whereClause = ViewMobileData.Month + "=" + Integer.toString(12) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
+                    result = ViewMobileData.Month + "=" + Integer.toString(12) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
                 } else {
-                    whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
+                    result = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
                 }
                 break;
             case R.id.menu_last_30_days:
-                whereClause = "(julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
+                result = "(julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
                 break;
             case R.id.menu_current_year:
-                whereClause = ViewMobileData.Year + "=" + Integer.toString(currentYear);
+                result = ViewMobileData.Year + "=" + Integer.toString(currentYear);
                 break;
             case R.id.menu_last_year:
-                whereClause = ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
+                result = ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
                 break;
             case R.id.menu_all_time:
                 break;
@@ -256,6 +275,8 @@ public class AccountTransactionsFragment
             default:
                 return false;
         }
+
+        result = getString(preferenceValue);
 
         //check item
         item.setChecked(true);
@@ -530,8 +551,6 @@ public class AccountTransactionsFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-//        resetToolbar();
     }
 
     private Bundle prepareArgsForChildFragment() {
@@ -539,18 +558,21 @@ public class AccountTransactionsFragment
         ArrayList<String> selection = new ArrayList<>();
         selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.FromAccountId + "="
                 + Integer.toString(mAccountId) + ")");
-        if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last7days))) {
+
+        String defaultPeriod = MoneyManagerApplication.getInstanceApp().getShowTransaction();
+
+        if (defaultPeriod.equalsIgnoreCase(getString(R.string.last7days))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
-        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last15days))) {
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last15days))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
-        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_month))) {
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.current_month))) {
             selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
             selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last3months))) {
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last3months))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
-        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.last6months))) {
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last6months))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
-        } else if (MoneyManagerApplication.getInstanceApp().getShowTransaction().equalsIgnoreCase(getString(R.string.current_year))) {
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.current_year))) {
             selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
         }
         // create a bundle to returns
@@ -562,7 +584,7 @@ public class AccountTransactionsFragment
     }
 
     /**
-     * refresh UI, show favorite icome
+     * refresh UI, show favorite icon
      */
     private void setImageViewFavorite() {
         if (mAccountList.isFavoriteAcct()) {

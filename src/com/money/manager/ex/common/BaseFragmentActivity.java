@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 public abstract class BaseFragmentActivity
@@ -67,8 +68,8 @@ public abstract class BaseFragmentActivity
         // setTheme
         setTheme();
 
-        String locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                .getString(getString(PreferenceConstants.PREF_LOCALE), "");
+        AppSettings settings = new AppSettings(this);
+        String locale = settings.getGeneralSettings().getApplicationLocale();
         Core.changeLocaleApp(getApplicationContext(), locale);
 
         super.onCreate(savedInstance);
