@@ -60,6 +60,7 @@ call copy_translation.bat %src_root% %dest_root% %lang% %locale%
 set lang=it
 set locale=IT
 call copy_translation.bat %src_root% %dest_root% %lang% %locale%
+call copy_dropbox.bat %src_root% %dest_root% %lang% %locale%
 
 :: Japanese
 set lang=ja
@@ -71,6 +72,7 @@ call copy_dropbox.bat %src_root% %dest_root% %lang% %locale%
 set lang=pl
 set locale=PL
 call copy_translation.bat %src_root% %dest_root% %lang% %locale%
+call copy_dropbox.bat %src_root% %dest_root% %lang% %locale%
 
 :: Portugese, Brasilian
 set lang=pt

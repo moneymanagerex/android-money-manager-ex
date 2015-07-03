@@ -195,6 +195,7 @@
   <string name="error_next_occurrence_not_populate">La siguiente repetición es requerida</string>
   <string name="enter_next_occurrence">Efectuar Siguiente Ocurrencia</string>
   <string name="skip_next_occurrence">Omitir Siguiente Ocurrencia</string>
+  <string name="skip_next_occurrence_confirmation">¿Desea omitir la próxima ocurrencia?</string>
   <string name="notification_repeating_transaction_expired">Existen transacciones recurrentes vencidas</string>
   <string name="notification_click_to_check_repeating_transaction">Toque para comprobar transacción atrasada</string>
   <string name="num_repeating_transaction_expired">%1$d transacción recurrente vencida</string>
@@ -248,6 +249,7 @@
   <string name="donate">Donar</string>
   <string name="no_thanks">No, gracias</string>
   <string name="donate_exlamation">Donar!</string>
+  <string name="donate_direct">Usted puede donar haciendo click en el enlace Donar en el sitio web de nuestra aplicación. Click aquí para abrirlo en el navegador.</string>
   <string name="android_sqlite_vesion">Version de SQLite</string>
   <string name="ascending">Ascendente</string>
   <string name="descending">Descendente</string>
@@ -477,4 +479,8 @@
   <string name="cash">Efectivo</string>
   <string name="select_account">Seleccionar cuenta</string>
   <string name="invalid_transaction_number">Número de transacción inválido</string>
+  <string name="budgets">Presupuestos</string>
+  <string name="base_currency_not_set">No se ha configurado la moneda base</string>
+  <string name="error">Error</string>
+  <string name="unhandled_crash">Error inesperado. Por favor envíenos el registro.</string>
 </resources>

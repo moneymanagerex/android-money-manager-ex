@@ -195,6 +195,7 @@
   <string name="error_next_occurrence_not_populate">Prossima ricorrenza è richiesta</string>
   <string name="enter_next_occurrence">Inserire Scadenza Successiva</string>
   <string name="skip_next_occurrence">Ignora Successiva Scadenza</string>
+  <string name="skip_next_occurrence_confirmation">Si desidera ignorare l\'operazione successiva?</string>
   <string name="notification_repeating_transaction_expired">Ci sono le transazioni ricorrenti scadute</string>
   <string name="notification_click_to_check_repeating_transaction">Toccare per controllare la transazione scadute</string>
   <string name="num_repeating_transaction_expired">%1$d operazione ricorrente scadute</string>
@@ -249,6 +250,7 @@
   <string name="donate">Donate</string>
   <string name="no_thanks">No, grazie</string>
   <string name="donate_exlamation">Donate!</string>
+  <string name="donate_direct">Puoi donare cliccando sul link Fai una donazione sul nostro sito web app. Clicca qui per aprire nel browser.</string>
   <string name="android_sqlite_vesion">Versione SQLite</string>
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
@@ -474,7 +476,12 @@
   <string name="choose_type">Seleziona una tipologia</string>
   <string name="default_account">Account di default</string>
   <string name="default_account_summary">L\'account da utilizzare quando si immette in una nuova transazione.</string>
+  <string name="balance_account">Saldo conto</string>
+  <string name="balance_adjustment">Regolazione del Saldo</string>
   <string name="cash">Contante</string>
   <string name="select_account">Seleziona un account</string>
   <string name="invalid_transaction_number">Numero di transazione non valido</string>
+  <string name="base_currency_not_set">La valuta di base non è stata impostata</string>
+  <string name="error">Errore</string>
+  <string name="unhandled_crash">Errore imprevisto. Si prega di inviare il log.</string>
 </resources>

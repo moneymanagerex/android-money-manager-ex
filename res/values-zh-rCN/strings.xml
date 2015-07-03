@@ -195,6 +195,7 @@
   <string name="error_next_occurrence_not_populate">请选择下一个周期</string>
   <string name="enter_next_occurrence">确认下次交易</string>
   <string name="skip_next_occurrence">跳过下次交易</string>
+  <string name="skip_next_occurrence_confirmation">确定要跳过下一次循环事件？</string>
   <string name="notification_repeating_transaction_expired">有到期的循环交易</string>
   <string name="notification_click_to_check_repeating_transaction">轻触以检查到期的交易</string>
   <string name="num_repeating_transaction_expired">%1$d 循环交易到期</string>
@@ -249,6 +250,7 @@
   <string name="donate">捐赠</string>
   <string name="no_thanks">不，谢谢</string>
   <string name="donate_exlamation">捐赠！</string>
+  <string name="donate_direct">您可以通过点击 APP 中的捐助网址链接给我们捐款。点击此处可在浏览器中打开网页。</string>
   <string name="android_sqlite_vesion">SQLite 版本</string>
   <string name="ascending">升序</string>
   <string name="descending">降序</string>
@@ -479,4 +481,8 @@
   <string name="cash">现金</string>
   <string name="select_account">选择帐户</string>
   <string name="invalid_transaction_number">无效的交易号码</string>
+  <string name="budgets">预算</string>
+  <string name="base_currency_not_set">尚未设置基础货币</string>
+  <string name="error">错误</string>
+  <string name="unhandled_crash">发生意外错误。请向我们发送错误日志。</string>
 </resources>
