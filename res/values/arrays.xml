@@ -125,6 +125,7 @@
         <item>@string/last7days</item>
         <item>@string/last15days</item>
         <item>@string/current_month</item>
+        <item>@string/last30days</item>
         <item>@string/last3months</item>
         <item>@string/last6months</item>
         <item>@string/current_year</item>

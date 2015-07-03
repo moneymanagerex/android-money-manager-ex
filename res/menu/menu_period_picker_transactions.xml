@@ -36,6 +36,9 @@
                     android:id="@+id/menu_current_month"
                     android:title="@string/current_month"/>
                 <item
+                    android:id="@+id/menu_last30days"
+                    android:title="@string/last30days" />
+                <item
                     android:id="@+id/menu_last3months"
                     android:title="@string/last3months"/>
                 <item

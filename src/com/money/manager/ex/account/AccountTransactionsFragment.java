@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -187,6 +188,8 @@ public class AccountTransactionsFragment
 
         // select the current account?
         showCurrentAccount(menu);
+
+        selectCurrentPeriod(menu);
     }
 
     @Override
@@ -221,15 +224,6 @@ public class AccountTransactionsFragment
     }
 
     private boolean datePeriodItemSelected(MenuItem item) {
-        String result = null;
-        int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        int preferenceValue = Constants.NOT_SET;
-
-        // todo: on init, mark the default item as checked
-//        AppSettings settings = new AppSettings(getActivity());
-//        String preference = settings.getLookAndFeelSettings().getShowTransactions();
-
         LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
 
         switch (item.getItemId()) {
@@ -240,19 +234,11 @@ public class AccountTransactionsFragment
                 settings.setShowTransactions(R.string.last15days);
                 break;
             case R.id.menu_current_month:
-//                result = ViewMobileData.Month + "=" + Integer.toString(currentMonth) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
                 settings.setShowTransactions(R.string.current_month);
                 break;
-//            case R.id.menu_last_month:
-//                if (currentMonth == 1) {
-//                    result = ViewMobileData.Month + "=" + Integer.toString(12) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
-//                } else {
-//                    result = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
-//                }
-//                break;
-//            case R.id.menu_last_30_days:
-//                result = "(julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
-//                break;
+            case R.id.menu_last30days:
+                settings.setShowTransactions(R.string.last30days);
+                break;
             case R.id.menu_last3months:
                 settings.setShowTransactions(R.string.last3months);
                 break;
@@ -260,37 +246,19 @@ public class AccountTransactionsFragment
                 settings.setShowTransactions(R.string.last6months);
                 break;
             case R.id.menu_current_year:
-//                result = ViewMobileData.Year + "=" + Integer.toString(currentYear);
                 settings.setShowTransactions(R.string.current_year);
                 break;
-//            case R.id.menu_last_year:
-//                result = ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
-//                break;
             case R.id.menu_all_time:
                 settings.setShowTransactions(R.string.all_time);
                 break;
-//            case R.id.menu_custom_dates:
-//                //check item
-//                item.setChecked(true);
-//                mPeriodIndex = item.getItemId();
-//                //show dialog
-//                // showDialogCustomDates();
-//                return true;
-//                break;
             default:
                 return false;
         }
 
-//        result = getString(preferenceValue);
-
         //check item
         item.setChecked(true);
         mPeriodIndex = item.getItemId();
-        //compose bundle
-//        Bundle args = new Bundle();
-//        args.putString(KEY_WHERE_CLAUSE, whereClause);
-        //starts loader
-        // startLoader(args);
+
         loadTransactions();
 
         return true;
@@ -387,6 +355,41 @@ public class AccountTransactionsFragment
         }
 
         spinner.setSelection(position);
+    }
+
+    private void selectCurrentPeriod(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menu_period);
+        if (item == null) return;
+
+        SubMenu subMenu = item.getSubMenu();
+
+        // on init, mark the default item as checked
+        AppSettings settings = new AppSettings(getActivity());
+        String preference = settings.getLookAndFeelSettings().getShowTransactions();
+
+        int id = Constants.NOT_SET;
+        if (preference.equals(getString(R.string.last7days))) {
+            id = R.id.menu_last7days;
+        } else if (preference.equals(getString(R.string.last15days))) {
+            id = R.id.menu_last15days;
+        } else if (preference.equals(getString(R.string.current_month))) {
+            id = R.id.menu_current_month;
+        } else if (preference.equals(getString(R.string.last30days))) {
+            id = R.id.menu_last30days;
+        } else if (preference.equals(getString(R.string.last3months))) {
+            id = R.id.menu_last3months;
+        } else if (preference.equals(getString(R.string.last6months))) {
+            id = R.id.menu_last6months;
+        } else if (preference.equals(getString(R.string.current_year))) {
+            id = R.id.menu_current_year;
+        } else if (preference.equals(getString(R.string.all_time))) {
+            id = R.id.menu_all_time;
+        }
+
+        MenuItem itemToMark = subMenu.findItem(id);
+        if (itemToMark == null) return;
+
+        itemToMark.setChecked(true);
     }
 
     private void loadAccountsToSpinner(Context context, Spinner spinner) {
@@ -574,6 +577,8 @@ public class AccountTransactionsFragment
         } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.current_month))) {
             selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
             selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last30days))) {
+            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 30)");
         } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last3months))) {
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
         } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last6months))) {
