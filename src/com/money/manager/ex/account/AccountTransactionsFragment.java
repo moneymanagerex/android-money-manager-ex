@@ -198,11 +198,13 @@ public class AccountTransactionsFragment
                     mAllDataFragment.exportDataToCSVFile(mAccountList.getAccountName());
                 result = true;
                 break;
+
             default:
                 result = false;
                 break;
         }
 
+        // If not consumed here (true), send for further processing to the parent.
         if (result) {
             return result;
         } else {
