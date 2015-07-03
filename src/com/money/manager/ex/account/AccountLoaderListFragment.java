@@ -54,7 +54,7 @@ public class AccountLoaderListFragment
 
     private static TableAccountList mAccount = new TableAccountList();
     // id menu item add
-    private static final int MENU_ITEM_ADD = 1;
+//    private static final int MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_ACCOUNT = 0;
     // filter
     private String mCurFilter;
@@ -145,6 +145,8 @@ public class AccountLoaderListFragment
         }
     }
 
+    // Loader
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
@@ -188,6 +190,8 @@ public class AccountLoaderListFragment
                 }
         }
     }
+
+    // End loader
 
     @Override
     public boolean onQueryTextChange(String newText) {

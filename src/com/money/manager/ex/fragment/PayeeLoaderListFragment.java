@@ -111,6 +111,8 @@ public class PayeeLoaderListFragment
         setFloatingActionButtonAttachListView(true);
     }
 
+    // Menu
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -208,6 +210,8 @@ public class PayeeLoaderListFragment
             menu.add(Menu.NONE, i, i, menuItems[i]);
         }
     }
+
+    // Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

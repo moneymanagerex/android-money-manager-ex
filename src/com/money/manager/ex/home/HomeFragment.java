@@ -94,8 +94,6 @@ public class HomeFragment
     private static final int ID_LOADER_BILL_DEPOSITS = 3;
     private static final int ID_LOADER_INCOME_EXPENSES = 4;
 
-    private final String LOGCAT = this.getClass().getSimpleName();
-
     private CurrencyUtils mCurrencyUtils;
     private boolean mHideReconciled;
     // dataset table/view/query manage into class

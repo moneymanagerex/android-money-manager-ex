@@ -208,8 +208,7 @@ public abstract class BaseListFragment
     /**
      * metodo per l'implementazione del ritorno dei dati
      */
-    protected void setResult() {
-    }
+    protected void setResult() { }
 
     public void setResultAndFinish() {
         this.setResult();

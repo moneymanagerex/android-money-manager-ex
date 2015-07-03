@@ -43,8 +43,8 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableAssets;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
-import com.money.manager.ex.database.TableBudgetTable;
-import com.money.manager.ex.database.TableBudgetYear;
+import com.money.manager.ex.database.BudgetTable;
+import com.money.manager.ex.database.BudgetYear;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -102,9 +102,9 @@ public class MoneyManagerProvider
         List<Dataset> objMoneyManager = Arrays.asList(new TableAccountList(),
                 new TableAssets(),
                 new TableBillsDeposits(),
-                new TableBudgetTable(),
+                new BudgetTable(),
                 new TableBudgetSplitTransactions(),
-                new TableBudgetYear(),
+                new BudgetYear(),
                 new TableCategory(),
                 new TableCheckingAccount(),
                 new TableCurrencyFormats(),

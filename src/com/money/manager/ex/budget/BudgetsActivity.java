@@ -74,7 +74,7 @@ public class BudgetsActivity
                 .findFragmentByTag(BudgetsListFragment.class.getSimpleName());
         if (fragment == null) {
             // fragment create
-            fragment = new BudgetsListFragment();
+            fragment = BudgetsListFragment.newInstance();
             // add to stack
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContent, fragment, BudgetsListFragment.class.getSimpleName())
