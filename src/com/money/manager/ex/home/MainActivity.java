@@ -60,6 +60,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
+import com.money.manager.ex.account.AccountTransactionsFragment;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.DropboxManager;
@@ -70,7 +71,6 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
-import com.money.manager.ex.account.AccountFragment;
 import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategorySubCategoryExpandableLoaderListFragment;
@@ -268,7 +268,7 @@ public class MainActivity
             // check if className is null, then setting Home Fragment
             if (TextUtils.isEmpty(className))
                 className = HomeFragment.class.getName();
-            if (className.contains(AccountFragment.class.getSimpleName())) {
+            if (className.contains(AccountTransactionsFragment.class.getSimpleName())) {
                 showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
             } else {
                 Class fragmentClass = null;
@@ -572,10 +572,10 @@ public class MainActivity
      * @param accountId id of the account for which to show the transactions
      */
     public void showAccountFragment(int accountId) {
-        String tagFragment = AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
-        AccountFragment fragment = (AccountFragment) getSupportFragmentManager().findFragmentByTag(tagFragment);
+        String tagFragment = AccountTransactionsFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        AccountTransactionsFragment fragment = (AccountTransactionsFragment) getSupportFragmentManager().findFragmentByTag(tagFragment);
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
-            fragment = AccountFragment.newInstance(accountId);
+            fragment = AccountTransactionsFragment.newInstance(accountId);
         }
         // show fragment
         showFragment(fragment, tagFragment);
@@ -711,8 +711,8 @@ public class MainActivity
         if (core.isTablet()) {
             Fragment fragment = getSupportFragmentManager().findFragmentById(getResIdLayoutContent());
             if (fragment != null) {
-                if (fragment instanceof AccountFragment) {
-                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountFragment) fragment).getFragmentName());
+                if (fragment instanceof AccountTransactionsFragment) {
+                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountTransactionsFragment) fragment).getFragmentName());
                 } else if ((!(fragment instanceof DashboardFragment)) && (!(fragment instanceof HomeFragment))) {
                     outState.putString(KEY_CLASS_FRAGMENT_CONTENT, fragment.getClass().getName());
                 }

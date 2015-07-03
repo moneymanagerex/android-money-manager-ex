@@ -2,23 +2,15 @@ package com.money.manager.ex.budget;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.account.AccountFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.currency.CurrencyFormatsLoaderListFragment;
-import com.money.manager.ex.database.BudgetYear;
-import com.money.manager.ex.home.HomeFragment;
 
 public class BudgetsActivity
         extends BaseFragmentActivity

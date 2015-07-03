@@ -70,13 +70,13 @@ import java.util.Calendar;
  * Shows the list of transactions, etc.
  * @author a.lazzari
  */
-public class AccountFragment
+public class AccountTransactionsFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>,
         IAllDataFragmentLoaderCallbacks,
             IAllDataFragmentCallbacks {
 
-    private static final String KEY_CONTENT = "AccountFragment:AccountId";
+    private static final String KEY_CONTENT = "AccountTransactionsFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
 
     private final String LOGCAT = this.getClass().getSimpleName();
@@ -94,12 +94,12 @@ public class AccountFragment
      * @param accountId Id of the Account to be displayed
      * @return initialized instance of Account Fragment.
      */
-    public static AccountFragment newInstance(int accountId) {
-        AccountFragment fragment = new AccountFragment();
+    public static AccountTransactionsFragment newInstance(int accountId) {
+        AccountTransactionsFragment fragment = new AccountTransactionsFragment();
         fragment.mAccountId = accountId;
 
         // set name of child fragment
-        fragment.setFragmentName(AccountFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
+        fragment.setFragmentName(AccountTransactionsFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
 
         return fragment;
     }
