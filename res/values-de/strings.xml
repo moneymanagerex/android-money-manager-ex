@@ -195,6 +195,7 @@
   <string name="error_next_occurrence_not_populate">Nächstes Vorkommen ist erforderlich</string>
   <string name="enter_next_occurrence">Gib den nächsten Vorgang ein</string>
   <string name="skip_next_occurrence">Überspringe den nächsten Vorgang</string>
+  <string name="skip_next_occurrence_confirmation">Möchten Sie das nächste Ereignis überspringen?</string>
   <string name="notification_repeating_transaction_expired">Abgelaufene wiederholte Transaktionen vorhanden</string>
   <string name="notification_click_to_check_repeating_transaction">Berühren um die ausstehende Transation zu sehen</string>
   <string name="num_repeating_transaction_expired">%1$d Wiederholte Transaktion überfällig</string>
@@ -249,6 +250,7 @@
   <string name="donate">Spenden</string>
   <string name="no_thanks">Nein danke</string>
   <string name="donate_exlamation">Spenden!</string>
+  <string name="donate_direct">Sie können spenden, indem Sie auf den Spenden-Link auf unserer Website klicken. Klicken Sie hier, um den Spenden-Link im Browser zu öffnen.</string>
   <string name="android_sqlite_vesion">SQLite-Version</string>
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
@@ -479,4 +481,8 @@
   <string name="cash">Bargeld</string>
   <string name="select_account">Konto auswählen</string>
   <string name="invalid_transaction_number">Ungültige Transaktionsnummer</string>
+  <string name="budgets">Haushaltsplan</string>
+  <string name="base_currency_not_set">Basiswährung wurde nicht festgelegt</string>
+  <string name="error">Fehler</string>
+  <string name="unhandled_crash">Unerwarteter Fehler. Bitte senden Sie uns das Protokoll (log file).</string>
 </resources>
