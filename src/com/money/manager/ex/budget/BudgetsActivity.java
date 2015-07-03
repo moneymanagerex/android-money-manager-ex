@@ -63,7 +63,7 @@ implements IBudgetListCallbacks{
     @Override
     public void onBudgetClicked(long budgetYearId) {
         // budget clicked in the list; show the details fragment.
-        // todo: showBudgetDetails(budgetYearId);
+        showBudgetDetails(budgetYearId);
     }
 
     // Public methods
