@@ -18,11 +18,14 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="June 30, 2015" versionName="2.5.4">
+    <changelogversion changeDate="July 3, 2015" versionName="2.5.5">
+        <changelogtext>Now accepting direct donations through our app web page.</changelogtext>
+        <changelogtext>Updated translations.</changelogtext>
+        <changelogtext>Catching all exceptions and offering to send the log to developers.</changelogtext>
+        <changelogtext>Introducing font icons.</changelogtext>
         <changelogtext>Switched to Yahoo as the currency rates provider.</changelogtext>
         <changelogtext>Correcting the currency exchange logic after switch to Yahoo.</changelogtext>
         <changelogtext>Adding initial Turkish translation.</changelogtext>
-        <changelogtext>Updated translations.</changelogtext>
         <changelogtext>Stability improvements.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="June 23, 2015" versionName="2.4.10">
