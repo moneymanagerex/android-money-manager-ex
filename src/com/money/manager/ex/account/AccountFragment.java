@@ -376,8 +376,8 @@ public class AccountFragment
         imgGotoAccount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AccountListEditActivity.class);
-                intent.putExtra(AccountListEditActivity.KEY_ACCOUNT_ID, mAccountId);
+                Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
             }

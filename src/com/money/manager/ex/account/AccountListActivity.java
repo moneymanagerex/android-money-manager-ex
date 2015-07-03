@@ -40,7 +40,7 @@ public class AccountListActivity
     @SuppressWarnings("unused")
     private static final String LOGCAT = AccountListActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = AccountListActivity.class.getSimpleName() + "_Fragment";
-    private AccountLoaderListFragment listFragment = new AccountLoaderListFragment();
+    private AccountListFragment listFragment = new AccountListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class AccountListActivity
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            AccountLoaderListFragment fragment = (AccountLoaderListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+            AccountListFragment fragment = (AccountListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
             if (fragment != null) {
                 fragment.setResultAndFinish();
             }

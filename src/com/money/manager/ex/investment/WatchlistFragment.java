@@ -37,7 +37,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.account.AccountListEditActivity;
+import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
@@ -166,8 +166,8 @@ public class WatchlistFragment extends Fragment
         imgGotoAccount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, AccountListEditActivity.class);
-                intent.putExtra(AccountListEditActivity.KEY_ACCOUNT_ID, mAccountId);
+                Intent intent = new Intent(mContext, AccountEditActivity.class);
+                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
             }

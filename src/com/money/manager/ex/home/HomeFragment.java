@@ -51,7 +51,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
-import com.money.manager.ex.account.AccountListEditActivity;
+import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.checkingaccount.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -177,7 +177,7 @@ public class HomeFragment
 
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), AccountListEditActivity.class);
+                    Intent intent = new Intent(getActivity(), AccountEditActivity.class);
                     intent.setAction(Constants.INTENT_ACTION_INSERT);
                     startActivity(intent);
                 }
@@ -546,8 +546,8 @@ public class HomeFragment
         String menuItemTitle = item.getTitle().toString();
         
         if (menuItemTitle.equalsIgnoreCase(getString(R.string.edit))) {
-            Intent intent = new Intent(getActivity(), AccountListEditActivity.class);
-            intent.putExtra(AccountListEditActivity.KEY_ACCOUNT_ID, accountId);
+            Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+            intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, accountId);
             intent.setAction(Intent.ACTION_EDIT);
             startActivity(intent);
 

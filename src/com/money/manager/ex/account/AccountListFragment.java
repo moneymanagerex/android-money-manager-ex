@@ -46,7 +46,7 @@ import com.money.manager.ex.database.TablePayee;
 /**
  * List of accounts.
  */
-public class AccountLoaderListFragment
+public class AccountListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -244,7 +244,7 @@ public class AccountLoaderListFragment
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                         }
                         // restart loader
-                        getLoaderManager().restartLoader(ID_LOADER_ACCOUNT, null, AccountLoaderListFragment.this);
+                        getLoaderManager().restartLoader(ID_LOADER_ACCOUNT, null, AccountListFragment.this);
                     }
                 });
 
@@ -273,10 +273,10 @@ public class AccountLoaderListFragment
      */
     private void startAccountListEditActivity(Integer accountId) {
         // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), AccountListEditActivity.class);
+        Intent intent = new Intent(getActivity(), AccountEditActivity.class);
         // check accountId not null
         if (accountId != null) {
-            intent.putExtra(AccountListEditActivity.KEY_ACCOUNT_ID, accountId);
+            intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, accountId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
             intent.setAction(Intent.ACTION_INSERT);

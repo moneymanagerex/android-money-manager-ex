@@ -245,7 +245,7 @@
             <action android:name="android.intent.action.INSERT" />
         </activity>
         <activity
-            android:name=".account.AccountListEditActivity"
+            android:name=".account.AccountEditActivity"
             android:label="@string/account_list" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />

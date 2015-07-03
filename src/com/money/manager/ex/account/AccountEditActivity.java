@@ -53,33 +53,31 @@ import java.util.Arrays;
 
 /**
  * @author Francesco Berton
- * @version 0.6.4
  */
-public class AccountListEditActivity
+public class AccountEditActivity
         extends BaseFragmentActivity
         implements IInputAmountDialogListener {
-    // KEY INTENT for data exchange
-//    public static final String KEY_INTENT_ACTION = "AccountListEditActivity:IntentAction";
-    public static final String KEY_ACCOUNT_ID = "AccountListEditActivity:AccountId";
-    public static final String KEY_ACCOUNT_NAME = "AccountListEditActivity:AccountName";
-    public static final String KEY_ACCOUNT_TYPE = "AccountListEditActivity:AccountType";
-    public static final String KEY_ACCOUNT_NUM = "AccountListEditActivity:AccountNum";
-    public static final String KEY_HELD_AT = "AccountListEditActivity:HeldAt";
-    public static final String KEY_WEBSITE = "AccountListEditActivity:Website";
-    public static final String KEY_CONTACT_INFO = "AccountListEditActivity:ContactInfo";
-    public static final String KEY_ACCESS_INFO = "AccountListEditActivity:AccessInfo";
-    public static final String KEY_STATUS = "AccountListEditActivity:Status";
-    public static final String KEY_INITIAL_BAL = "AccountListEditActivity:InitialBal";
-    public static final String KEY_NOTES = "AccountListEditActivity:Notes";
-    public static final String KEY_FAVORITE_ACCT = "AccountListEditActivity:FavoriteAcct";
-    public static final String KEY_CURRENCY_ID = "AccountListEditActivity:CurrencyId";
-    public static final String KEY_CURRENCY_NAME = "AccountListEditActivity:CurrencyName";
-    public static final String KEY_SYMBOL = "AccountListEditActivity:Symbol";
+
+    public static final String KEY_ACCOUNT_ID = "AccountEditActivity:AccountId";
+    public static final String KEY_ACCOUNT_NAME = "AccountEditActivity:AccountName";
+    public static final String KEY_ACCOUNT_TYPE = "AccountEditActivity:AccountType";
+    public static final String KEY_ACCOUNT_NUM = "AccountEditActivity:AccountNum";
+    public static final String KEY_HELD_AT = "AccountEditActivity:HeldAt";
+    public static final String KEY_WEBSITE = "AccountEditActivity:Website";
+    public static final String KEY_CONTACT_INFO = "AccountEditActivity:ContactInfo";
+    public static final String KEY_ACCESS_INFO = "AccountEditActivity:AccessInfo";
+    public static final String KEY_STATUS = "AccountEditActivity:Status";
+    public static final String KEY_INITIAL_BAL = "AccountEditActivity:InitialBal";
+    public static final String KEY_NOTES = "AccountEditActivity:Notes";
+    public static final String KEY_FAVORITE_ACCT = "AccountEditActivity:FavoriteAcct";
+    public static final String KEY_CURRENCY_ID = "AccountEditActivity:CurrencyId";
+    public static final String KEY_CURRENCY_NAME = "AccountEditActivity:CurrencyName";
+    public static final String KEY_SYMBOL = "AccountEditActivity:Symbol";
     // LOGCAT
-    private static final String LOGCAT = AccountListEditActivity.class.getSimpleName();
+    private static final String LOGCAT = AccountEditActivity.class.getSimpleName();
     // ID REQUEST Data
     private static final int REQUEST_PICK_CURRENCY = 1;
-    private static final String KEY_ACTION = "AccountListEditActivity:Action";
+    private static final String KEY_ACTION = "AccountEditActivity:Action";
     // Constant
     private static final int PLUS = 0;
     private static final int LESS = 1;
@@ -229,7 +227,7 @@ public class AccountListEditActivity
             @Override
             public void onClick(View v) {
                 double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(AccountListEditActivity.this,
+                InputAmountDialog dialog = InputAmountDialog.getInstance(AccountEditActivity.this,
                         v.getId(), amount, mCurrencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
@@ -322,7 +320,7 @@ public class AccountListEditActivity
         txtSelectCurrency.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AccountListEditActivity.this, CurrenciesActivity.class);
+                Intent intent = new Intent(AccountEditActivity.this, CurrenciesActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(intent, REQUEST_PICK_CURRENCY);
             }
