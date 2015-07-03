@@ -46,6 +46,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.checkingaccount.EditTransactionActivity;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -83,6 +84,8 @@ public class AccountTransactionsFragment
 
     AllDataFragment mAllDataFragment;
     private Integer mAccountId = null;
+    // Id of the period in the period picker in the toolbar.
+    private int mPeriodIndex = Constants.NOT_SET;
     private String mFragmentName;
     private double mAccountBalance = 0, mAccountReconciled = 0;
     private TableAccountList mAccountList;
@@ -188,6 +191,9 @@ public class AccountTransactionsFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         boolean result;
 
+        result = datePeriodItemSelected(item);
+        if (result) return result;
+
         switch (item.getItemId()) {
             case R.id.menu_add_transaction_account:
                 startCheckingAccountActivity();
@@ -210,6 +216,57 @@ public class AccountTransactionsFragment
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private boolean datePeriodItemSelected(MenuItem item) {
+        String whereClause = null;
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+        switch (item.getItemId()) {
+            case R.id.menu_current_month:
+                whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
+                break;
+            case R.id.menu_last_month:
+                if (currentMonth == 1) {
+                    whereClause = ViewMobileData.Month + "=" + Integer.toString(12) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
+                } else {
+                    whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
+                }
+                break;
+            case R.id.menu_last_30_days:
+                whereClause = "(julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
+                break;
+            case R.id.menu_current_year:
+                whereClause = ViewMobileData.Year + "=" + Integer.toString(currentYear);
+                break;
+            case R.id.menu_last_year:
+                whereClause = ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
+                break;
+            case R.id.menu_all_time:
+                break;
+            case R.id.menu_custom_dates:
+                //check item
+                item.setChecked(true);
+                mPeriodIndex = item.getItemId();
+                //show dialog
+                // todo: showDialogCustomDates();
+                return true;
+//                break;
+            default:
+                return false;
+        }
+
+        //check item
+        item.setChecked(true);
+        mPeriodIndex = item.getItemId();
+        //compose bundle
+        Bundle args = new Bundle();
+        // todo: args.putString(KEY_WHERE_CLAUSE, whereClause);
+        //starts loader
+        // todo: startLoader(args);
+
+        return true;
     }
 
     private Spinner getAccountsSpinner(Menu menu) {
