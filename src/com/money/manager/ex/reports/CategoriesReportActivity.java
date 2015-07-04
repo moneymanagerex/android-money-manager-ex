@@ -49,7 +49,9 @@ import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.util.ArrayList;
 
-public class CategoriesReportActivity extends BaseFragmentActivity {
+public class CategoriesReportActivity
+        extends BaseFragmentActivity {
+    
     public static final String REPORT_FILTERS = "CategoriesReportActivity:Filter";
     public static final String REPORT_TITLE = "CategoriesReportActivity:Title";
     private static CurrencyUtils currencyUtils;

@@ -363,6 +363,10 @@
             android:name=".core.ExceptionHandlerActivity"
             android:label="@string/error" >
         </activity>
+        <activity
+            android:name=".reports.currency.rates.CurrencyRatesReportActivity"
+            android:label="@string/title_activity_currency_rates_report" >
+        </activity>
     </application>
 
 </manifest>

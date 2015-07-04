@@ -583,7 +583,5 @@
     <string name="base_currency_not_set">Base currency has not been set</string>
     <string name="error">Error</string>
     <string name="unhandled_crash">Unexpected error. Please send us the log.</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_currency_rates_report">Currency Rates</string>
 </resources>
