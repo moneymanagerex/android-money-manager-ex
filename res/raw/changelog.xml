@@ -18,6 +18,9 @@
   -->
 
 <changelog bulletedList="true">
+    <changelogversion changeDate="July 4, 2015" versionName="2.6.0">
+        <changelogtext>Ability to change visible period for account transactions.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="July 3, 2015" versionName="2.5.5">
         <changelogtext>Now accepting direct donations through our app web page.</changelogtext>
         <changelogtext>Updated translations.</changelogtext>
