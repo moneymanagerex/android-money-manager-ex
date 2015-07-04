@@ -1,4 +1,4 @@
-package com.money.manager.ex.checkingaccount;
+package com.money.manager.ex.transactions;
 
 /**
  * Constants used by the Checking Account

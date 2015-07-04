@@ -60,30 +60,11 @@ public class YahooDownloadAllPricesTask
 
     @Override
     protected Boolean doInBackground(String... symbols) {
-        TextDownloader downloader = new TextDownloader();
-        mDialog.setMax(symbols.length);
-
-        for (String symbol:symbols) {
-            // Show the symbol being updated.
-//            mDialog.setMessage(symbol);
-
-            String url = mFeedback.getUrlForSymbol(symbol);
-            String csv;
-            try {
-                csv = downloader.downloadAsText(url);
-            } catch (IOException iox) {
-                Log.e(LOGCAT, iox.getMessage());
-                iox.printStackTrace();
-                return false;
-            }
-            // notify parent about the price update
-            mFeedback.onCsvDownloaded(csv);
-
-            mProgressCount += 1;
-            publishProgress(mProgressCount);
+        try {
+            return runTask(symbols);
+        } catch (Exception e) {
+            throw new RuntimeException("Error in Yahoo download all prices", e);
         }
-
-        return Boolean.TRUE;
     }
 
     @Override
@@ -118,6 +99,33 @@ public class YahooDownloadAllPricesTask
         DropboxHelper.notifyDataChanged();
 
         super.onPostExecute(result);
+    }
+
+    private boolean runTask(String... symbols) {
+        TextDownloader downloader = new TextDownloader();
+        mDialog.setMax(symbols.length);
+
+        for (String symbol:symbols) {
+            // Show the symbol being updated.
+//            mDialog.setMessage(symbol);
+
+            String url = mFeedback.getUrlForSymbol(symbol);
+            String csv;
+            try {
+                csv = downloader.downloadAsText(url);
+            } catch (IOException iox) {
+                Log.e(LOGCAT, iox.getMessage());
+                iox.printStackTrace();
+                return false;
+            }
+            // notify parent about the price update
+            mFeedback.onCsvDownloaded(csv);
+
+            mProgressCount += 1;
+            publishProgress(mProgressCount);
+        }
+
+        return Boolean.TRUE;
     }
 
     private void showProgressDialog() {

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.checkingaccount;
+package com.money.manager.ex.transactions;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -546,7 +546,9 @@ public class EditTransactionActivity
                                 return Boolean.TRUE;
                             }
                         } catch (Exception e) {
-                            Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
+                            ExceptionHandler handler = new ExceptionHandler(EditTransactionActivity.this,
+                                    EditTransactionActivity.this);
+                            handler.handle(e, "loading default payee");
                         }
                         return Boolean.FALSE;
                     }
