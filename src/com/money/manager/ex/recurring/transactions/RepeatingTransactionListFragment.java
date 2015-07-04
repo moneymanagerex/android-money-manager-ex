@@ -32,12 +32,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.checkingaccount.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
-import com.money.manager.ex.checkingaccount.EditTransactionActivityConstants;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;

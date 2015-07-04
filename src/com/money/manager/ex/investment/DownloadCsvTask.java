@@ -94,6 +94,7 @@ public class DownloadCsvTask
 
         } catch (Exception e) {
             Log.e("Error: ", e.getMessage());
+            e.printStackTrace();
         }
 
         return null;    }

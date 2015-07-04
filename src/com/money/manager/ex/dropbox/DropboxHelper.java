@@ -517,6 +517,7 @@ public class DropboxHelper {
                     return folder.contents;
                 } catch (DropboxException e) {
                     Log.e(LOGCAT, log(e.getMessage(), "getEntries exxception"));
+                    e.printStackTrace();
                 }
 
                 return null;
@@ -591,6 +592,7 @@ public class DropboxHelper {
                     mDropboxApi.getFile(dropboxFile.path, null, mFileOutputStream, progressListener);
                 } catch (Exception e) {
                     Log.e(LOGCAT, log(e.getMessage(), "downloadFileASync exception"));
+                    e.printStackTrace();
                     return false;
                 }
                 return true;
@@ -631,6 +633,7 @@ public class DropboxHelper {
                         mEntryDropboxFile = uploadRequest.upload();
                 } catch (Exception e) {
                     Log.e(LOGCAT, log(e.getMessage(), "uploadFileASync exception"));
+                    e.printStackTrace();
                     return false;
                 }
                 return true;

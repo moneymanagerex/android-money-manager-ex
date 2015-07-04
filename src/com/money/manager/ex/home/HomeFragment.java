@@ -52,7 +52,7 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
-import com.money.manager.ex.checkingaccount.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;

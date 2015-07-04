@@ -21,9 +21,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 
-import com.money.manager.ex.checkingaccount.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.checkingaccount.IntentDataParameters;
+import com.money.manager.ex.transactions.IntentDataParameters;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.common.IInputAmountDialogListener;

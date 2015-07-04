@@ -33,6 +33,7 @@ import com.money.manager.ex.currency.CurrencyUtils;
  */
 public class BalanceAmountTask
         extends AsyncTask<Void, Void, Boolean> {
+
     private int mAccountId;
     private int mCurrencyId = -1;
     private int mTransId;
@@ -43,6 +44,26 @@ public class BalanceAmountTask
 
     @Override
     protected Boolean doInBackground(Void... params) {
+        try {
+            return runTask();
+        } catch (Exception e) {
+            throw new RuntimeException("Error in Balance Amount Task", e);
+        }
+    }
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+        if (result && getTextView() != null) {
+            CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+
+            getTextView().setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), total));
+            if (getTextView().getVisibility() != View.VISIBLE) getTextView().setVisibility(View.VISIBLE);
+            // put in hash map balance total
+            // mBalanceTransactions.put(getTransId(), total);
+        }
+    }
+
+    private boolean runTask() {
         TableCheckingAccount checkingAccount = new TableCheckingAccount();
         String selection = "(" + TableCheckingAccount.ACCOUNTID + "=" + Integer.toString(getAccountId()) +
                 " OR " + TableCheckingAccount.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " + "" +
@@ -51,9 +72,6 @@ public class BalanceAmountTask
                 "' AND " + TableCheckingAccount.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
                 "AND " + TableCheckingAccount.STATUS + "<>'V'";
 
-//        Cursor cursor = getDatabase().query(checkingAccount.getSource(),
-//                checkingAccount.getAllColumns(), selection, null, null, null, null);
-        // Use content provider instead of direct database access.
         Cursor cursor = mContext.getContentResolver().query(checkingAccount.getUri(),
                 checkingAccount.getAllColumns(), selection, null, null);
 
@@ -82,11 +100,6 @@ public class BalanceAmountTask
         // calculate initial bal
         TableAccountList accountList = new TableAccountList();
 
-//        cursor = getDatabase().query(accountList.getSource(), accountList.getAllColumns(),
-//                TableAccountList.ACCOUNTID + "=?",
-//                new String[] { Integer.toString(getAccountId()) },
-//                null, null, null);
-
         cursor = mContext.getContentResolver().query(accountList.getUri(),
                 accountList.getAllColumns(),
                 TableAccountList.ACCOUNTID + "=?",
@@ -100,18 +113,6 @@ public class BalanceAmountTask
             cursor.close();
         }
         return true;
-    }
-
-    @Override
-    protected void onPostExecute(Boolean result) {
-        if (result && getTextView() != null) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
-
-            getTextView().setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), total));
-            if (getTextView().getVisibility() != View.VISIBLE) getTextView().setVisibility(View.VISIBLE);
-            // put in hash map balance total
-            // mBalanceTransactions.put(getTransId(), total);
-        }
     }
 
     /**

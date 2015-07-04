@@ -45,13 +45,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.money.manager.ex.checkingaccount.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.checkingaccount.EditTransactionActivityConstants;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.IAllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.core.Core;

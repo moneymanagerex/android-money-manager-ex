@@ -46,10 +46,10 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.checkingaccount.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.qif.QifExport;
-import com.money.manager.ex.checkingaccount.EditTransactionActivityConstants;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;

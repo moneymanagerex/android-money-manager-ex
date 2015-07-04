@@ -19,7 +19,6 @@
 package com.money.manager.ex.settings;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.checkingaccount.IntentDataParameters;
 
 public class PreferenceConstants {
     ///////////////////////////////////////////////////////////////////////////

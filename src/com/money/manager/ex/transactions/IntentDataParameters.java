@@ -15,18 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.checkingaccount;
+package com.money.manager.ex.transactions;
 
 import android.content.Context;
 import android.net.Uri;
 
-import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.businessobjects.CategoryService;
 import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
-
-import java.net.URL;
 
 /**
  * Parameters for creating new transaction from an external intent.
