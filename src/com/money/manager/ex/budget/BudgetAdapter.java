@@ -21,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.Contacts;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,15 +93,13 @@ public class BudgetAdapter
             int categoryCol = c.getColumnIndex(BudgetQuery.CATEGNAME);
             String category = c.getString(categoryCol);
 
-            categoryTextView.setText(category);
-        }
-
-        // Subcategory
-
-        TextView subCategoryTextView = (TextView) v.findViewById(R.id.subCategoryTextView);
-        if (subCategoryTextView != null) {
+            // Subcategory
             String subCategory = c.getString(c.getColumnIndex(BudgetQuery.SUBCATEGNAME));
-            subCategoryTextView.setText(subCategory);
+            if (!TextUtils.isEmpty(subCategory)) {
+                category += ":" + subCategory;
+            }
+
+            categoryTextView.setText(category);
         }
 
         // Frequency
