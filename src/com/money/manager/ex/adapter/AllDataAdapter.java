@@ -256,6 +256,7 @@ public class AllDataAdapter
                     }
                 }
             }
+            if (TextUtils.isEmpty(accountName)) accountName = "-";
 
             // append square brackets around the account name to distinguish transfers visually.
             accountName = "[%]".replace("%", accountName);
