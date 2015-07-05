@@ -101,7 +101,6 @@ public class MainActivity
         extends BaseFragmentActivity
         implements IDropboxManagerCallbacks {
 
-    // requestcode
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
 
@@ -156,6 +155,7 @@ public class MainActivity
                 boolean databaseOpened = core.changeDatabase(pathFile);
                 if (!databaseOpened) {
                     Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
+                    throw new RuntimeException("Could not open database: " + pathFile);
                 }
             } catch (Exception e) {
                 Log.e(LOGCAT, e.getMessage());

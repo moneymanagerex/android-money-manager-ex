@@ -322,7 +322,7 @@ public class MoneyManagerProvider
             // Just log for now. The reload is done automatically so should be no harm.
 
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(ise, "fetching data in content provider");
+            handler.handle(ise, "content provider.query " + uri);
         }
         return null;
     }
