@@ -123,7 +123,8 @@ public class LookFeelFragment
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Log.d(LOGCAT, newValue.toString());
+                    if (BuildConfig.DEBUG) Log.d(LOGCAT, newValue.toString());
+
                     MainActivity.setRestartActivity(true);
                     return true;
                 }

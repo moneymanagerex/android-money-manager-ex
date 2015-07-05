@@ -80,7 +80,8 @@ public class DropboxReceiver
 
                     // log
                     if (BuildConfig.DEBUG) {
-                        Log.d(LOGCAT, "Start at: " + new SimpleDateFormat().format(cal.getTime()) + " and repeats every: " + preferenceMinute + " minutes");
+                        Log.d(LOGCAT, "Start at: " + new SimpleDateFormat().format(cal.getTime())
+                                + " and repeats every: " + preferenceMinute + " minutes");
                     }
                     // start service
                     alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), minute * 60 * 1000, pending);

@@ -87,8 +87,9 @@ public class DonateActivity extends BaseFragmentActivity {
             public void onClick(final View v) {
                 final int selectedInAppAmount = inAppSpinner.getSelectedItemPosition();
                 purchasedSku = skus.get(selectedInAppAmount);
-                if (BuildConfig.DEBUG)
+                if (BuildConfig.DEBUG) {
                     Log.d(DonateActivity.this.getClass().getSimpleName(), "Clicked " + purchasedSku);
+                }
                 purchasedToken = UUID.randomUUID().toString();
                 //BillingController.requestPurchase(DonateActivity.this, purchasedSku, true, null);
                 mIabHelper.launchPurchaseFlow(DonateActivity.this, purchasedSku, 1001, mConsumeFinishedListener, purchasedToken);

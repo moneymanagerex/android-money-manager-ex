@@ -190,6 +190,7 @@ public class MoneyManagerApplication
         myInstance = this;
 
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
+
         // create application folder
         Core core = new Core(getApplicationContext());
         core.getExternalStorageDirectoryApplication();
