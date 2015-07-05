@@ -302,6 +302,16 @@ public class MoneyManagerApplication
      * @return total
      */
     public double getSummaryAccounts(Context context) {
+        try {
+            return getSummaryAccountsInternal(context);
+        } catch (IllegalStateException ise) {
+            ExceptionHandler handler = new ExceptionHandler(this, this);
+            handler.handle(ise, "getting summary accounts");
+        }
+        return 0;
+    }
+
+    private double getSummaryAccountsInternal(Context context) {
         double curTotal = 0;
 
         Core core = new Core(context);
@@ -339,24 +349,4 @@ public class MoneyManagerApplication
     public boolean isUriAvailable(Context context, Intent intent) {
         return context.getPackageManager().resolveActivity(intent, 0) != null;
     }
-
-//    /**
-//     * update all widget of application
-//     */
-//    public void updateAllWidget() {
-//        Class<?>[] classes = {AccountBillsWidgetProvider.class, SummaryWidgetProvider.class};
-//        for (Class<?> cls : classes) {
-//            try {
-//                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
-//                ComponentName componentName = new ComponentName(getApplicationContext(), cls);
-//                int[] ids = appWidgetManager.getAppWidgetIds(componentName);
-//                Intent update_widget = new Intent();
-//                update_widget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-//                update_widget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-//                getApplicationContext().sendBroadcast(update_widget);
-//            } catch (Exception e) {
-//                Log.e(LOGCAT, "update All Widget:" + e.getMessage());
-//            }
-//        }
-//    }
 }

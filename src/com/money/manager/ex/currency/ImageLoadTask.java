@@ -54,8 +54,9 @@ public class ImageLoadTask
             return myBitmap;
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Error in Image Load Task", e);
         }
-        return null;
+//        return null;
     }
 
     @Override

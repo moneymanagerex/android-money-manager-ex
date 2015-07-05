@@ -470,7 +470,9 @@ public class AccountEditActivity
                 TableAccountList.ACCOUNTID + "=?",
                 new String[]{Integer.toString(accountId)}, null);
         // Check if cursor is valid and open
-        if ((cursor == null) || (!(cursor.moveToFirst()))) {
+        if (cursor == null) return false;
+        if (!(cursor.moveToFirst())) {
+            cursor.close();
             return false;
         }
         // Get the data

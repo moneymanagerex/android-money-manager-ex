@@ -97,7 +97,8 @@ public class DownloadCsvTask
             e.printStackTrace();
         }
 
-        return null;    }
+        return null;
+    }
 
     /**
      * After completing background task Dismiss the progress dialog

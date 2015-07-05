@@ -55,6 +55,7 @@ public class DownloadCsvToStringTask
             result = downloader.downloadAsText(url);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Error in download csv string task", e);
         }
         return result;
     }

@@ -619,9 +619,13 @@ public class MainActivity
         AsyncTask<Void, Integer, Integer> asyncTask = new AsyncTask<Void, Integer, Integer>() {
             @Override
             protected Integer doInBackground(Void... voids) {
-                publishProgress(1);
+                try {
+                    publishProgress(1);
 
-                return mDropboxHelper.checkIfFileIsSync();
+                    return mDropboxHelper.checkIfFileIsSync();
+                } catch (Exception e) {
+                    throw new RuntimeException("Error in showSnackbarDropbox", e);
+                }
             }
 
             @Override

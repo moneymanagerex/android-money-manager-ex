@@ -18,6 +18,7 @@
 package com.money.manager.ex.budget;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
