@@ -280,22 +280,20 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                     }
                     // calculate income, expenses
                     double income = 0, expenses = 0;
-                    if (data != null && data.moveToFirst()) {
-                        while (!data.isAfterLast()) {
-                            if (data.getInt(data.getColumnIndex(QueryReportIncomeVsExpenses.Month)) != SUBTOTAL_MONTH) {
-                                income += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-                                expenses += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
-                            }
-                            // move to next record
-                            data.moveToNext();
-                        }
-                        updateListViewFooter(mFooterListView, income, expenses);
-                        if (data.getCount() > 0) {
-                            getListView().removeFooterView(mFooterListView);
-                            getListView().addFooterView(mFooterListView);
-                        }
+                    if (data == null) return;
 
+                    while (data.moveToNext()) {
+                        if (data.getInt(data.getColumnIndex(QueryReportIncomeVsExpenses.Month)) != SUBTOTAL_MONTH) {
+                            income += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+                            expenses += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+                        }
                     }
+                    updateListViewFooter(mFooterListView, income, expenses);
+                    if (data.getCount() > 0) {
+                        getListView().removeFooterView(mFooterListView);
+                        getListView().addFooterView(mFooterListView);
+                    }
+
                     if (((IncomeVsExpensesActivity) getActivity()).mIsDualPanel) {
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {

@@ -22,10 +22,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDiskIOException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
@@ -184,7 +182,6 @@ public class MoneyManagerOpenHelper
         }
 
         return db;
-
     }
 
     /**
