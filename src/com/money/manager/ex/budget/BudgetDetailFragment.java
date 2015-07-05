@@ -83,7 +83,7 @@ public class BudgetDetailFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mBudgetYearId = getArguments().getInt(ARG_BUDGET_YEAR_ID);
+            mBudgetYearId = getArguments().getLong(ARG_BUDGET_YEAR_ID);
             mBudgetName = getArguments().getString(ARG_BUDGET_NAME_ID);
         }
     }
@@ -133,11 +133,13 @@ public class BudgetDetailFragment
         switch (id) {
             case LOADER_BUDGET:
                 BudgetQuery budget = new BudgetQuery(getActivity());
-                result = new CursorLoader(getActivity(),
+
+                 result = new CursorLoader(getActivity(),
                         budget.getUri(),
                         budget.getAllColumns(),
-                        null, null,
-                        BudgetTable.BUDGETENTRYID
+                        BudgetQuery.BUDGETYEARID + "=?",
+                        new String[] { Long.toString(mBudgetYearId) },
+                        BudgetQuery.CATEGNAME + ", " + BudgetQuery.SUBCATEGNAME
                 );
                 break;
         }
