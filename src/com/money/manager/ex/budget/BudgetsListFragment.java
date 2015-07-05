@@ -178,8 +178,10 @@ public class BudgetsListFragment
 //        getActivity().openContextMenu(v);
 
         // Notify the parent to show the budget details.
+        Cursor cursor = (Cursor) l.getItemAtPosition(position);
+        String budgetName = cursor.getString(cursor.getColumnIndex(BudgetYear.BUDGETYEARNAME));
         if (mListener != null) {
-            mListener.onBudgetClicked(id);
+            mListener.onBudgetClicked(id, budgetName);
         }
     }
 

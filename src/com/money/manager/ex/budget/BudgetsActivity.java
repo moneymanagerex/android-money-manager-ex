@@ -78,9 +78,9 @@ implements IBudgetListCallbacks{
     // End menu
 
     @Override
-    public void onBudgetClicked(long budgetYearId) {
+    public void onBudgetClicked(long budgetYearId, String budgetName) {
         // budget clicked in the list; show the details fragment.
-        showBudgetDetails(budgetYearId);
+        showBudgetDetails(budgetYearId, budgetName);
     }
 
     // Public methods
@@ -122,12 +122,12 @@ implements IBudgetListCallbacks{
         }
     }
 
-    private void showBudgetDetails(long id) {
-        String tag = BudgetDetailFragment.class.getName();
+    private void showBudgetDetails(long id, String budgetName) {
+        String tag = BudgetDetailFragment.class.getName() + "_" + Long.toString(id);
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
 
         if (fragment == null) {
-            fragment = BudgetDetailFragment.newInstance(id);
+            fragment = BudgetDetailFragment.newInstance(id, budgetName);
         }
 
         showFragment(fragment, tag);

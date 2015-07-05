@@ -45,12 +45,12 @@ public class BudgetDetailFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_BUDGET_YEAR_ID = "budgetYearId";
+    private static final String ARG_BUDGET_NAME_ID = "budgetName";
 
     private final int LOADER_BUDGET = 1;
     private long mBudgetYearId = Constants.NOT_SET;
+    private String mBudgetName;
 
     private IBudgetDetailCallbacks mListener;
 
@@ -60,10 +60,11 @@ public class BudgetDetailFragment
      *
      * @return A new instance of fragment BudgetDetailFragment.
      */
-    public static BudgetDetailFragment newInstance(long budgetYearId) {
+    public static BudgetDetailFragment newInstance(long budgetYearId, String budgetName) {
         BudgetDetailFragment fragment = new BudgetDetailFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_BUDGET_YEAR_ID, budgetYearId);
+        args.putString(ARG_BUDGET_NAME_ID, budgetName);
         fragment.setArguments(args);
 
         return fragment;
@@ -75,16 +76,15 @@ public class BudgetDetailFragment
 
     @Override
     public String getSubTitle() {
-        // todo: display the name of the budget here
-        return "test";
+        return mBudgetName;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
+            mBudgetYearId = getArguments().getInt(ARG_BUDGET_YEAR_ID);
+            mBudgetName = getArguments().getString(ARG_BUDGET_NAME_ID);
         }
     }
 
@@ -219,12 +219,6 @@ public class BudgetDetailFragment
     // Private
 
     private void displayBudget() {
-//        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-//                android.R.layout.simple_list_item_1,
-//                null,
-//                new String[]{ BudgetTable.PERIOD },
-//                new int[]{ android.R.id.text1}, 0);
-
         BudgetAdapter adapter = new BudgetAdapter(getActivity(),
                 null,
                 new String[]{ BudgetQuery.CATEGNAME },
