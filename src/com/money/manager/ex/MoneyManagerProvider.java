@@ -314,9 +314,13 @@ public class MoneyManagerProvider
         try {
             context = getContext();
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
-        } catch (Exception e) {
+        } catch (IllegalStateException ise) {
+            // This happens when the database is changed by all the asynchronous loaders still
+            // have references to the already-closed database helper.
+            // Just log for now. The reload is done automatically so should be no harm.
+
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(e, "fetching data in content provider");
+            handler.handle(ise, "fetching data in content provider");
         }
         return null;
     }
