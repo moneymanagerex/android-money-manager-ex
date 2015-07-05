@@ -29,6 +29,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.money.manager.ex.budget.BudgetQuery;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
@@ -119,6 +120,7 @@ public class MoneyManagerProvider
                 new QueryAllData(getContext()),
                 new QueryBillDeposits(getContext()),
                 new QueryReportIncomeVsExpenses(getContext()),
+                new BudgetQuery(getContext()),
                 new ViewMobileData(),
                 new SQLDataSet());
 

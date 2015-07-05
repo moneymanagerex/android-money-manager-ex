@@ -70,20 +70,7 @@ public class StockRepository
     public boolean load(int accountId) {
         boolean result = false;
 
-//        SQLiteDatabase database = MoneyManagerOpenHelper.getInstance(mContext)
-//                .getReadableDatabase();
-//        if (database == null) return result;
-
         String selection = TableAccountList.ACCOUNTID + "=?";
-//        Cursor cursor = database.query(
-//                // table
-//                this.getSource(),
-//                // columns
-//                null,
-//                // selection, arguments
-//                selection, new String[] { Integer.toString(accountId) },
-//                // group by, having, order by
-//                null, null, null);
         Cursor cursor = mContext.getContentResolver().query(this.getUri(),
                 null,
                 selection,
@@ -98,21 +85,8 @@ public class StockRepository
             cursor.close();
             result = true;
         }
-//        database.close();
-
         return result;
     }
-
-//    public CursorLoader getCursorLoader(int accountId) {
-//        String selection = HELDAT + "=?";
-//
-//        CursorLoader loader = new CursorLoader(mContext, getUri(),
-//                null,
-//                selection,
-//                new String[] { Integer.toString(accountId) }, null);
-//
-//        return loader;
-//    }
 
     /**
      * Retrieves all record ids which refer the given symbol.
@@ -120,14 +94,6 @@ public class StockRepository
      */
     public int[] findIdsBySymbol(String symbol) {
         int[] result = null;
-
-//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-//                .getReadableDatabase();
-//        Cursor cursor = db.query(this.getSource(),
-//                new String[]{STOCKID},
-//                SYMBOL + "=?", new String[]{symbol},
-//                null, null, null
-//        );
 
         Cursor cursor = mContext.getContentResolver().query(this.getUri(),
                 new String[]{STOCKID},
@@ -160,14 +126,6 @@ public class StockRepository
 //        values.put(STOCKID, id);
         values.put(CURRENTPRICE, price.doubleValue());
 
-//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-//                .getWritableDatabase();
-//        int updateResult = db.update(
-//                getSource(),
-//                values,
-//                STOCKID + "=?",
-//                new String[]{Integer.toString(id)}
-//        );
         int updateResult = mContext.getContentResolver().update(this.getUri(),
                 values,
                 STOCKID + "=?",
@@ -180,7 +138,6 @@ public class StockRepository
             Log.w(LOGCAT, "Price update failed for stock id:" + id);
         }
 
-//        db.close();
         return  result;
     }
 

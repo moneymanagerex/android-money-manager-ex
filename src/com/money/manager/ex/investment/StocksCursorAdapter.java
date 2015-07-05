@@ -64,7 +64,8 @@ public class StocksCursorAdapter
         // set holder to view
         view.setTag(holder);
 
-        return view;    }
+        return view;
+    }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {

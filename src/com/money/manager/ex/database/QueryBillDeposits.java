@@ -25,7 +25,15 @@ import com.money.manager.ex.utils.RawFileUtils;
 /**
  * @author lazzari.ale@gmail.com
  */
-public class QueryBillDeposits extends Dataset {
+public class QueryBillDeposits
+        extends Dataset {
+
+    // constructor
+    public QueryBillDeposits(Context context) {
+        super(RawFileUtils.getRawAsString(context, R.raw.query_billdeposits), DatasetType.QUERY,
+                QueryBillDeposits.class.getSimpleName());
+    }
+
     // fields
     public static String BDID = "BDID";
     public static String PAYEEID = "PAYEEID";
@@ -51,12 +59,6 @@ public class QueryBillDeposits extends Dataset {
     public static String TRANSDATE = "TRANSDATE";
     public static String AMOUNT = "AMOUNT";
     public static String USERNEXTOCCURRENCEDATE = "USERNEXTOCCURRENCEDATE";
-
-    // constructor
-    public QueryBillDeposits(Context context) {
-        super(RawFileUtils.getRawAsString(context, R.raw.query_billdeposits), DatasetType.QUERY,
-                QueryBillDeposits.class.getSimpleName());
-    }
 
     // get all columns
     @Override

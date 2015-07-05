@@ -43,7 +43,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class RepeatingTransactionAdapter extends CursorAdapter {
+public class RepeatingTransactionAdapter
+        extends CursorAdapter {
+
     private LayoutInflater inflater;
     private HashMap<String, Integer> mHeadersIndexAccountDate;
 
@@ -52,7 +54,7 @@ public class RepeatingTransactionAdapter extends CursorAdapter {
         super(context, c);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        mHeadersIndexAccountDate = new HashMap<String, Integer>();
+        mHeadersIndexAccountDate = new HashMap<>();
     }
 
     @Override
