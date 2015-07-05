@@ -736,11 +736,11 @@ public class HomeFragment
 
     private QueryAccountBills getSelectedAccount(android.view.MenuItem item){
         ExpandableListView.ExpandableListContextMenuInfo info = null;
-        try {
-            info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
-        } catch (ClassCastException cex) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(cex, "casting context menu");
+        ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
+        // clicking any context item in child fragments will also come here. We need only
+        // the context menu items from the Home fragment.
+        if (menuInfo instanceof ExpandableListView.ExpandableListContextMenuInfo) {
+            info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
         }
         if (info == null) return null;
 
