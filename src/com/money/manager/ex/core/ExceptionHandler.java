@@ -90,6 +90,10 @@ public class ExceptionHandler
         throwable.printStackTrace(new PrintWriter(stackTrace));
 
         StringBuilder errorReport = new StringBuilder();
+        errorReport.append("************ APP DETAILS ************\n\n");
+        String version = getAppVersionInformation();
+        errorReport.append(version);
+
         errorReport.append("************ CAUSE OF ERROR ************\n\n");
         errorReport.append(stackTrace.toString());
 
@@ -109,6 +113,7 @@ public class ExceptionHandler
         errorReport.append("Product: ");
         errorReport.append(Build.PRODUCT);
         errorReport.append(LINE_SEPARATOR);
+
         errorReport.append("\n************ FIRMWARE ************\n");
         errorReport.append("SDK: ");
         errorReport.append(Build.VERSION.SDK);
@@ -153,5 +158,20 @@ public class ExceptionHandler
 
         Intent chooser = Intent.createChooser(intent, mContext.getString(R.string.unhandled_crash));
         mContext.startActivity(chooser);
+    }
+
+    private String getAppVersionInformation() {
+        String result = "";
+        try {
+            String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+            result += "Version: " + version;
+            result += LINE_SEPARATOR;
+
+            String build = Integer.toString(mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode);
+            result += "Build: " + build;
+        } catch (Exception ex) {
+            result = "Could not retrieve version information.";
+        }
+        return result;
     }
 }
