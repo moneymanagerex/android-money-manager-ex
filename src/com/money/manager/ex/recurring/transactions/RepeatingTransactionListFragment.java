@@ -196,6 +196,8 @@ public class RepeatingTransactionListFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_LOADER_REPEATING:
+                if (data == null) return;
+
                 AllDataAdapter adapter = new AllDataAdapter(getActivity(), data,
                         AllDataAdapter.TypeCursor.REPEATINGTRANSACTION);
                 setListAdapter(adapter);

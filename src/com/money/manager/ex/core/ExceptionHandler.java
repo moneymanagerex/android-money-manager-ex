@@ -93,6 +93,7 @@ public class ExceptionHandler
         errorReport.append("************ APP DETAILS ************\n\n");
         String version = getAppVersionInformation();
         errorReport.append(version);
+        errorReport.append(LINE_SEPARATOR);
 
         errorReport.append("************ CAUSE OF ERROR ************\n\n");
         errorReport.append(stackTrace.toString());

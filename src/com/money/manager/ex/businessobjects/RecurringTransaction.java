@@ -173,8 +173,10 @@ public class RecurringTransaction {
         boolean result = false;
 
         // first check if there are any records.
-        Cursor query = this.getCursorForSplitTransactions();
-        int existingRecords = query.getCount();
+        Cursor cursor = this.getCursorForSplitTransactions();
+        if (cursor == null) return false;
+
+        int existingRecords = cursor.getCount();
         if(existingRecords == 0) return true;
 
         // delete them

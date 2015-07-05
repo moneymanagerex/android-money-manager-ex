@@ -100,31 +100,21 @@ public class StockHistoryRepository
 
     public boolean recordExists(String symbol, Date date) {
         boolean result = false;
-//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-//                .getReadableDatabase();
 
         String isoDate = DateUtils.getSQLiteStringDate(mContext, date);
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
-//        Cursor cursor = db.query(getSource(), null,
-//                selection,
-//                new String[]{symbol, isoDate},
-//                null, null, null
-//        );
         Cursor cursor = mContext.getContentResolver().query(getUri(),
                 null,
                 selection,
                 new String[]{symbol, isoDate},
                 null);
+        if (cursor == null) return false;
 
-        if (cursor != null) {
-            int records = cursor.getCount();
-            result = records > 0;
+        int records = cursor.getCount();
+        result = records > 0;
 
-            cursor.close();
-        }
-
-//        db.close();
+        cursor.close();
 
         return result;
     }

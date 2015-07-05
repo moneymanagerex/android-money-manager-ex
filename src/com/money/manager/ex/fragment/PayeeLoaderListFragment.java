@@ -243,6 +243,8 @@ public class PayeeLoaderListFragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data == null) return;
+
         switch (loader.getId()) {
             case ID_LOADER_PAYEE:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();

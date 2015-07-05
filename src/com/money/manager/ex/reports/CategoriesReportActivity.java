@@ -185,20 +185,20 @@ public class CategoriesReportActivity
             switch (loader.getId()) {
                 case ID_LOADER:
                     //parse cursor for calculate total
-                    if (data != null && data.moveToFirst()) {
-                        double totalAmount = 0;
-                        while (!data.isAfterLast()) {
-                            totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
-                            data.moveToNext();
-                        }
-                        TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
-                        txtColumn2.setText(currencyUtils.getBaseCurrencyFormatted(totalAmount));
-                        // soved bug chart
-                        if (data.getCount() > 0) {
-                            getListView().removeFooterView(mFooterListView);
-                            getListView().addFooterView(mFooterListView);
-                        }
+                    if (data == null) return;
+
+                    double totalAmount = 0;
+                    while (data.moveToNext()) {
+                        totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
                     }
+                    TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
+                    txtColumn2.setText(currencyUtils.getBaseCurrencyFormatted(totalAmount));
+                    // soved bug chart
+                    if (data.getCount() > 0) {
+                        getListView().removeFooterView(mFooterListView);
+                        getListView().addFooterView(mFooterListView);
+                    }
+
                     if (((CategoriesReportActivity) getActivity()).mIsDualPanel) {
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
