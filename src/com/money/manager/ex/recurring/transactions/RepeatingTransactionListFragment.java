@@ -187,6 +187,8 @@ public class RepeatingTransactionListFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER_REPEATING:
+                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+                adapter.swapCursor(null);
         }
     }
 

@@ -234,10 +234,11 @@ public class PayeeLoaderListFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-//        switch (loader.getId()) {
-//            case ID_LOADER_PAYEE:
-//                // mAdapter.swapCursor(null);
-//        }
+        switch (loader.getId()) {
+            case ID_LOADER_PAYEE:
+                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+                adapter.swapCursor(null);
+        }
     }
 
     @Override

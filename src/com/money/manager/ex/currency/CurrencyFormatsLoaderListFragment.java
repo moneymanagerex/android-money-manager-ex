@@ -202,7 +202,9 @@ public class CurrencyFormatsLoaderListFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER_CURRENCY:
-                // ((SimpleCursorAdapter)getListAdapter()).swapCursor(null);
+                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+                adapter.swapCursor(null);
+                break;
         }
     }
 

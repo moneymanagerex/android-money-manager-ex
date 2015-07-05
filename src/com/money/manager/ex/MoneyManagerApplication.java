@@ -301,6 +301,8 @@ public class MoneyManagerApplication
      * @return total
      */
     public double getSummaryAccounts(Context context) {
+        double curTotal = 0;
+
         Core core = new Core(context);
         // compose whereClause
         String where = "";
@@ -313,20 +315,15 @@ public class MoneyManagerApplication
             where = "LOWER(FAVORITEACCT)='true'";
         }
         QueryAccountBills accountBills = new QueryAccountBills(context);
-        Cursor data = context.getContentResolver().query(accountBills.getUri(),
+        Cursor cursor = context.getContentResolver().query(accountBills.getUri(),
                 null, where, null, null);
-        double curTotal = 0;
+        if (cursor == null) return 0;
 
-        if (data != null && data.moveToFirst()) {
-            // calculate summary
-            while (!data.isAfterLast()) {
-                curTotal = curTotal + data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
-                data.moveToNext();
-            }
+        // calculate summary
+        while (cursor.moveToNext()) {
+            curTotal = curTotal + cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
         }
-        if (data != null) {
-            data.close();
-        }
+        cursor.close();
 
         return curTotal;
     }

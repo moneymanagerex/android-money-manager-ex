@@ -518,7 +518,11 @@ public class AccountTransactionsFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-//        return;
+//        switch (loader.getId()) {
+//            case ID_LOADER_SUMMARY:
+//                mAdapter.swapCursor(null);
+//                break;
+//        }
     }
 
     @Override

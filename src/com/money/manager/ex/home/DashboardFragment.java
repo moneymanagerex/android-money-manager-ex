@@ -154,16 +154,21 @@ public class DashboardFragment
         switch (id) {
             case ID_LOADER_SCREEN1:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), QueryReportIncomeVsExpenses.Month + "="
+                return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
+                        QueryReportIncomeVsExpenses.Month + "="
                         + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
-                        + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), null, null);
+                        + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)),
+                        null, null);
             case ID_LOADER_SCREEN2:
-                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null, prepareQueryTopWithdrawals(), null, null);
+                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null,
+                        prepareQueryTopWithdrawals(), null, null);
             case ID_LOADER_SCREEN3:
-                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null, prepareQueryTopPayees(), null, null);
+                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null,
+                        prepareQueryTopPayees(), null, null);
             case ID_LOADER_SCREEN4:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
-                return new CursorLoader(getActivity(), billDeposits.getUri(), billDeposits.getAllColumns(), QueryBillDeposits.DAYSLEFT + "<=10", null, QueryBillDeposits.DAYSLEFT);
+                return new CursorLoader(getActivity(), billDeposits.getUri(), billDeposits.getAllColumns(),
+                        QueryBillDeposits.DAYSLEFT + "<=10", null, QueryBillDeposits.DAYSLEFT);
         }
         return null;
     }
@@ -193,6 +198,8 @@ public class DashboardFragment
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+    // End loader
 
     @SuppressWarnings("deprecation")
     private String prepareQueryTopWithdrawals() {
