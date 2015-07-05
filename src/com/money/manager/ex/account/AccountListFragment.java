@@ -168,7 +168,8 @@ public class AccountListFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER_ACCOUNT:
-                // ((SimpleCursorAdapter)getListAdapter()).swapCursor(null);
+                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+                adapter.swapCursor(null);
         }
     }
 
@@ -225,8 +226,6 @@ public class AccountListFragment
         }
         // return cancel
         getActivity().setResult(AccountListActivity.RESULT_CANCELED);
-
-        return;
     }
 
     private void showDialogDeleteAccount(final int ACCOUNTID) {
