@@ -41,7 +41,7 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:contentDescription="@string/logo"
                 android:src="@drawable/ic_logo_money_manager_ex"/>
 
@@ -57,20 +57,57 @@
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewDonateHeader"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="20dp"
                 android:text="@string/donate_header"
                 android:textIsSelectable="false"/>
 
-            <!-- direct donation link -->
+            <!-- direct donation text -->
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/directDonationTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
+                android:paddingTop="10dp"
                 android:text="@string/donate_direct"
                 android:textIsSelectable="false"/>
+
+            <!-- bitcoin explanation -->
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/bitcoinDonationTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/donate_bitcoin"
+                android:textIsSelectable="false"/>
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/licenseDonationTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/donate_license"
+                android:textIsSelectable="false"/>
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp" >
+
+                <com.money.manager.ex.view.RobotoButton
+                    android:id="@+id/donateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/donate_button_text"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    />
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutInApp"

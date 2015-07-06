@@ -38,6 +38,7 @@ import com.money.manager.ex.inapp.util.IabResult;
 import com.money.manager.ex.inapp.util.Inventory;
 import com.money.manager.ex.inapp.util.Purchase;
 import com.money.manager.ex.inapp.util.SkuDetails;
+import com.money.manager.ex.view.RobotoButton;
 import com.money.manager.ex.view.RobotoTextView;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class DonateActivity extends BaseFragmentActivity {
         setContentView(R.layout.donate_activity);
 
         // Set up SKUs
-        if (1==2 && BuildConfig.DEBUG) {
+        if (false && BuildConfig.DEBUG) {
             skus.add("android.test.purchased");
             skus.add("android.test.canceled");
             skus.add("android.test.refunded");
@@ -217,19 +218,27 @@ public class DonateActivity extends BaseFragmentActivity {
     }
 
     private void setUpDirectDonationButton() {
-        RobotoTextView directDonationLink = (RobotoTextView) findViewById(R.id.directDonationTextView);
-        String template = "<p><u>%text%</u></p>";
-        String text = template.replace("%text%", getText(R.string.donate_direct));
-        directDonationLink.setText(Html.fromHtml(text));
+        // Underline the text. Not used now.
+//        RobotoTextView directDonationLink = (RobotoTextView) findViewById(R.id.directDonationTextView);
+//        String template = "<p><u>%text%</u></p>";
+//        String text = template.replace("%text%", getText(R.string.donate_direct));
+//        directDonationLink.setText(Html.fromHtml(text));
 
         final String siteUrl = "http://moneymanagerex.github.io/android-money-manager-ex/";
 
-        directDonationLink.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteUrl));
                 startActivity(browserIntent);
             }
-        });
+        };
+//        directDonationLink.setOnClickListener(listener);
+
+        // Button
+        RobotoButton button = (RobotoButton) findViewById(R.id.donateButton);
+        if (button != null) {
+            button.setOnClickListener(listener);
+        }
     }
 }

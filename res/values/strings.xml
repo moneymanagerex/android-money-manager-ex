@@ -312,7 +312,10 @@
     <string name="donate">Donate</string>
     <string name="no_thanks">No, thanks</string>
     <string name="donate_exlamation">Donate!</string>
-    <string name="donate_direct">You can donate by clicking the Donate link on our app web site. Click here to open in browser.</string>
+    <string name="donate_direct">You can donate directly by clicking the Donate links on our app web page.</string>
+    <string name="donate_bitcoin">We now also accept BitCoin donations.</string>
+    <string name="donate_license">For Google licensing reasons, we are not allowed to place donation links directly inside the app.</string>
+    <string name="donate_button_text">Open homepage</string>
     <!-- 20130225 -->
     <string name="android_sqlite_vesion">SQLite Version</string>
     <!-- 20130301 -->
