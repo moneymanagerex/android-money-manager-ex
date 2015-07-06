@@ -179,7 +179,8 @@ public class CategoriesReportFragment extends BaseReportFragment {
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
-        String groupBy = ViewMobileData.CategID + ", " + ViewMobileData.Category + ", " + ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
+        String groupBy = ViewMobileData.CategID + ", " + ViewMobileData.Category + ", " +
+                ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
         String having = null;
         if (!TextUtils.isEmpty(((CategoriesReportActivity) getActivity()).mFilter)) {
             String filter = ((CategoriesReportActivity) getActivity()).mFilter;

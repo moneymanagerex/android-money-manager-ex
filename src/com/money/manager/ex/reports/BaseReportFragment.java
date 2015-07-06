@@ -39,7 +39,10 @@ import com.money.manager.ex.utils.DateUtils;
 import java.util.Calendar;
 import java.util.Date;
 
-public abstract class BaseReportFragment extends BaseListFragment implements LoaderCallbacks<Cursor> {
+public abstract class BaseReportFragment
+        extends BaseListFragment
+        implements LoaderCallbacks<Cursor> {
+
     protected static final int ID_LOADER = 1;
     protected static final String KEY_ITEM_SELECTED = "PayeeReportFragment:ItemSelected";
     protected static final String KEY_WHERE_CLAUSE = "PayeeReportFragment:WhereClause";
@@ -61,7 +64,7 @@ public abstract class BaseReportFragment extends BaseListFragment implements Loa
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //set listview
+        //set list view
         setHasOptionsMenu(true);
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
@@ -85,7 +88,8 @@ public abstract class BaseReportFragment extends BaseListFragment implements Loa
                 if (args != null && args.containsKey(KEY_WHERE_CLAUSE)) {
                     setWhereClause(args.getString(KEY_WHERE_CLAUSE));
                 }
-                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null, prepareQuery(getWhereClause()), null, null);
+                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null,
+                        prepareQuery(getWhereClause()), null, null);
         }
         return null;
     }
@@ -237,10 +241,8 @@ public abstract class BaseReportFragment extends BaseListFragment implements Loa
                 })
                 .show();
         // set date if is null
-        if (mFromDate == null)
-            mFromDate = Calendar.getInstance().getTime();
-        if (mToDate == null)
-            mToDate = Calendar.getInstance().getTime();
+        if (mFromDate == null) mFromDate = Calendar.getInstance().getTime();
+        if (mToDate == null) mToDate = Calendar.getInstance().getTime();
 
         View view = dialog.getCustomView();
         DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
@@ -248,6 +250,5 @@ public abstract class BaseReportFragment extends BaseListFragment implements Loa
 
         DateUtils.setDateToDatePicker(mFromDate, fromDatePicker);
         DateUtils.setDateToDatePicker(mToDate, toDatePicker);
-
     }
 }
