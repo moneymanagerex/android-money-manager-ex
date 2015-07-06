@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
 
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
@@ -46,9 +47,13 @@ public class BalanceAmountTask
     protected Boolean doInBackground(Void... params) {
         try {
             return runTask();
+        } catch (IllegalStateException ise) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ise, "balancing amount");
         } catch (Exception e) {
             throw new RuntimeException("Error in Balance Amount Task", e);
         }
+        return false;
     }
 
     @Override
