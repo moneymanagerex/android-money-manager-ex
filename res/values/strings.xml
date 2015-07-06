@@ -584,4 +584,5 @@
     <string name="error">Error</string>
     <string name="unhandled_crash">Unexpected error. Please send us the log.</string>
     <string name="title_activity_currency_rates_report">Currency Rates</string>
+    <string name="frequency">Frequency</string>
 </resources>

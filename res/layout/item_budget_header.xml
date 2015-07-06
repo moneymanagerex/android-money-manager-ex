@@ -31,7 +31,7 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:layout_weight="1"
-        android:text="test1" />
+        android:text="@string/category" />
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/frequencyTextView"
@@ -40,7 +40,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:gravity="center"
-        android:text="test2" />
+        android:text="@string/frequency" />
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/amountTextView"
@@ -50,7 +50,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:gravity="center_vertical|end"
-        android:text="test3" />
+        android:text="@string/amount" />
 
 
 </LinearLayout>

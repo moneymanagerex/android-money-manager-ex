@@ -64,19 +64,14 @@ public class CurrencyFormatsLoaderListFragment
         implements LoaderManager.LoaderCallbacks<Cursor>, IPriceUpdaterFeedback {
 
     public String mAction = Intent.ACTION_EDIT;
-
     // Store previous device orientation when showing other screens (chart, etc.)
     public int PreviousOrientation = -1;
 
-    // ID loader
     private static final int ID_LOADER_CURRENCY = 0;
-    // filter
+    private TableCurrencyFormats mCurrency = new TableCurrencyFormats();
+
     private String mCurFilter;
-    private int mLayout;
-    // database table
-    private static TableCurrencyFormats mCurrency = new TableCurrencyFormats();
     private CurrencyUtils mCurrencyUtils;
-    private String LOGCAT = this.getClass().getSimpleName();
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -88,11 +83,14 @@ public class CurrencyFormatsLoaderListFragment
         setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
         setHasOptionsMenu(true);
 
-        // Always use simple list layout.
-        mLayout = android.R.layout.simple_list_item_1;
+        // Add the column header.
+        View header = View.inflate(getActivity(), R.layout.item_budget_header, null);
+        getListView().addHeaderView(header);
 
-        // associate adapter
-        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(), mLayout, null,
+        // create and link the adapter
+        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
+                android.R.layout.simple_list_item_1,
+                null,
                 new String[]{TableCurrencyFormats.CURRENCYNAME}, new int[]{android.R.id.text1}, 0);
         setListAdapter(adapter);
 
