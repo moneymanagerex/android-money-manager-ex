@@ -83,10 +83,6 @@ public class CurrencyFormatsLoaderListFragment
         setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
         setHasOptionsMenu(true);
 
-        // Add the column header.
-        View header = View.inflate(getActivity(), R.layout.item_budget_header, null);
-        getListView().addHeaderView(header);
-
         // create and link the adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 android.R.layout.simple_list_item_1,

@@ -231,6 +231,10 @@ public class BudgetDetailFragment
         setListAdapter(adapter);
         setListShown(false);
 
+        // Add the column header.
+        View header = View.inflate(getActivity(), R.layout.item_budget_header, null);
+        getListView().addHeaderView(header);
+
         getLoaderManager().initLoader(LOADER_BUDGET, null, this);
     }
 
