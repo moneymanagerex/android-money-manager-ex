@@ -18,10 +18,13 @@
   -->
 
 <changelog bulletedList="true">
+    <changelogversion changeDate="unknown" versionName="upcoming">
+        <changelogtext>A readonly view for Budgets. You can now see the budgets created in the desktop version.</changelogtext>
+        <changelogtext>We now accept donations in BitCoin. See the 'Donate' page.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="July 4, 2015" versionName="2.6.1">
         <changelogtext>Ability to change visible period for account transactions.</changelogtext>
         <changelogtext>Major stability improvement: handling the database change after the notification is clicked on download.</changelogtext>
-        <changelogtext>We now accept donations in BitCoin. See About page.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="July 3, 2015" versionName="2.5.5">
         <changelogtext>Now accepting direct donations through our app web page.</changelogtext>
