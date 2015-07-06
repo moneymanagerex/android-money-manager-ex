@@ -49,6 +49,7 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -223,7 +224,7 @@ public class PayeeLoaderListFragment
                     whereClause = TablePayee.PAYEENAME + " LIKE ?";// + mCurFilter + "%'";
                     selectionArgs = new String[]{mCurFilter + '%'};
                 }
-                return new CursorLoader(getActivity(), mPayee.getUri(),
+                return new MmexCursorLoader(getActivity(), mPayee.getUri(),
                         mPayee.getAllColumns(),
                         whereClause, selectionArgs,
                         mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);

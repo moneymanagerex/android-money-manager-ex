@@ -46,6 +46,7 @@ import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.MmexCursorLoader;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -261,7 +262,7 @@ public class WatchlistItemsFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader result;
+        MmexCursorLoader result;
 
         // store the arguments for later. This is the WHERE filter.
         mLoaderArgs = args;
@@ -288,7 +289,7 @@ public class WatchlistItemsFragment
                     sort = args.getString(AllDataFragment.KEY_ARGUMENTS_SORT);
                 }
 
-                result = new CursorLoader(mContext,
+                result = new MmexCursorLoader(mContext,
                         mStockRepository.getUri(),
                         mStockRepository.getAllColumns(),
                         selection,

@@ -290,7 +290,7 @@ public class AllDataFragment extends BaseListFragment
                 }
                 // create loader
                 QueryAllData allData = new QueryAllData(getActivity());
-                return new CursorLoader(getActivity(), allData.getUri(),
+                return new MmexCursorLoader(getActivity(), allData.getUri(),
                         allData.getAllColumns(),
                         selection,
                         whereParams,

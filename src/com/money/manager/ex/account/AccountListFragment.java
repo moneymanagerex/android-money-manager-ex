@@ -40,6 +40,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
 
@@ -157,7 +158,7 @@ public class AccountListFragment
                     whereClause = TableAccountList.ACCOUNTNAME + " LIKE ?";
                     selectionArgs = new String[]{mCurFilter + "%"};
                 }
-                return new CursorLoader(getActivity(), mAccount.getUri(), mAccount.getAllColumns(),
+                return new MmexCursorLoader(getActivity(), mAccount.getUri(), mAccount.getAllColumns(),
                         whereClause, selectionArgs, "upper(" + TableAccountList.ACCOUNTNAME + ")");
         }
 

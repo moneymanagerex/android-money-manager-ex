@@ -41,6 +41,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -185,8 +186,10 @@ public class CurrencyFormatsLoaderListFragment
                     whereClause = TableCurrencyFormats.CURRENCYNAME + " LIKE ?";
                     selectionArgs = new String[]{mCurFilter + "%"};
                 }
-                return new CursorLoader(getActivity(), mCurrency.getUri(), mCurrency.getAllColumns(),
-                        whereClause, selectionArgs, "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
+                return new MmexCursorLoader(getActivity(), mCurrency.getUri(),
+                        mCurrency.getAllColumns(),
+                        whereClause, selectionArgs,
+                        "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
         }
 
         return null;

@@ -32,6 +32,7 @@ import android.widget.CursorAdapter;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.BudgetTable;
 
 /**
@@ -135,7 +136,7 @@ public class BudgetDetailFragment
             case LOADER_BUDGET:
                 BudgetQuery budget = new BudgetQuery(getActivity());
 
-                 result = new CursorLoader(getActivity(),
+                 result = new MmexCursorLoader(getActivity(),
                         budget.getUri(),
                         budget.getAllColumns(),
                         BudgetQuery.BUDGETYEARID + "=?",

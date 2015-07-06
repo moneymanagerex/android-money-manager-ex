@@ -52,6 +52,7 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -212,11 +213,11 @@ public class HomeFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Core core = new Core(getActivity().getApplicationContext());
-        CursorLoader result = null;
+        MmexCursorLoader result;
 
         switch (id) {
             case ID_LOADER_USER_NAME:
-                result = new CursorLoader(getActivity(), infoTable.getUri(),
+                result = new MmexCursorLoader(getActivity(), infoTable.getUri(),
                         new String[]{infoTable.INFONAME, infoTable.INFOVALUE}, null, null, null);
                 break;
             case ID_LOADER_ACCOUNT_BILLS:
@@ -231,21 +232,24 @@ public class HomeFragment
                 if (core.getAccountFavoriteVisible()) {
                     where = "LOWER(FAVORITEACCT)='true'";
                 }
-                result = new CursorLoader(getActivity(), accountBills.getUri(),
+                result = new MmexCursorLoader(getActivity(), accountBills.getUri(),
                         accountBills.getAllColumns(), where, null,
                         accountBills.ACCOUNTTYPE + ", upper(" + accountBills.ACCOUNTNAME + ")");
                 break;
 
             case ID_LOADER_BILL_DEPOSITS:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
-                result = new CursorLoader(getActivity(), billDeposits.getUri(), null, QueryBillDeposits.DAYSLEFT + "<=0", null, null);
+                result = new MmexCursorLoader(getActivity(),
+                        billDeposits.getUri(), null,
+                        QueryBillDeposits.DAYSLEFT + "<=0", null, null);
                 break;
 
             case ID_LOADER_INCOME_EXPENSES:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                result = new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
+                result = new MmexCursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
                         QueryReportIncomeVsExpenses.Month + "="
-                            + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND "
+                            + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
+                                " AND "
                         + QueryReportIncomeVsExpenses.Year + "="
                             + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)),
                         null, null);

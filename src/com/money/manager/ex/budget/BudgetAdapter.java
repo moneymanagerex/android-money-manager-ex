@@ -74,7 +74,7 @@ public class BudgetAdapter
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        Cursor c = getCursor();
+//        Cursor c = getCursor();
 
         final LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(mLayout, parent, false);
@@ -120,6 +120,7 @@ public class BudgetAdapter
 
         // Estimated
         // Actual
+        // todo: try to sum all the records here? or asynchronously?
     }
 
 }

@@ -32,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -174,7 +175,7 @@ public class RepeatingTransactionListFragment
                 if (!TextUtils.isEmpty(mCurFilter)) {
                     select = TableAccountList.ACCOUNTNAME + " LIKE '" + mCurFilter + "%'";
                 }
-                return new CursorLoader(getActivity(), mBillDeposits.getUri(),
+                return new MmexCursorLoader(getActivity(), mBillDeposits.getUri(),
                         mBillDeposits.getAllColumns(),
                         select, null,
                         QueryBillDeposits.NEXTOCCURRENCEDATE);

@@ -30,6 +30,7 @@ import android.widget.ListView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.BudgetYear;
 
 /**
@@ -124,7 +125,7 @@ public class BudgetsListFragment
         switch (id) {
             case LOADER_BUDGETS:
                 BudgetYear budgetYear = new BudgetYear();
-                result = new CursorLoader(getActivity(),
+                result = new MmexCursorLoader(getActivity(),
                         budgetYear.getUri(),
                         budgetYear.getAllColumns(),
                         null, null,
@@ -181,7 +182,6 @@ public class BudgetsListFragment
     }
 
     private void displayBudgets() {
-
         mAdapter = new MoneySimpleCursorAdapter(getActivity(),
                 android.R.layout.simple_list_item_1,
                 null,
@@ -192,7 +192,6 @@ public class BudgetsListFragment
         setListShown(false);
 
         getLoaderManager().initLoader(LOADER_BUDGETS, null, this);
-
     }
 
 

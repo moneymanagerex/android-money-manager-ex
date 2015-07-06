@@ -45,6 +45,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
@@ -154,20 +155,22 @@ public class DashboardFragment
         switch (id) {
             case ID_LOADER_SCREEN1:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
-                        QueryReportIncomeVsExpenses.Month + "="
-                        + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) + " AND " + QueryReportIncomeVsExpenses.Year + "="
-                        + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)),
+                return new MmexCursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
+                        QueryReportIncomeVsExpenses.Month + "=" +
+                        Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
+                        " AND " + QueryReportIncomeVsExpenses.Year + "=" +
+                        Integer.toString(Calendar.getInstance().get(Calendar.YEAR)),
                         null, null);
             case ID_LOADER_SCREEN2:
-                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null,
+                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), null,
                         prepareQueryTopWithdrawals(), null, null);
             case ID_LOADER_SCREEN3:
-                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null,
+                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), null,
                         prepareQueryTopPayees(), null, null);
             case ID_LOADER_SCREEN4:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
-                return new CursorLoader(getActivity(), billDeposits.getUri(), billDeposits.getAllColumns(),
+                return new MmexCursorLoader(getActivity(), billDeposits.getUri(),
+                        billDeposits.getAllColumns(),
                         QueryBillDeposits.DAYSLEFT + "<=10", null, QueryBillDeposits.DAYSLEFT);
         }
         return null;

@@ -46,6 +46,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
@@ -244,10 +245,13 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                     if (TextUtils.isEmpty(selection)) {
                         selection = "1=2";
                     }
-                    return new CursorLoader(getActivity(), report.getUri(), report.getAllColumns(), selection, null, QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
+                    return new MmexCursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
+                            selection, null,
+                            QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
                 case ID_LOADER_YEARS:
                     selection = "SELECT DISTINCT Year FROM " + ViewMobileData.mobiledata + " ORDER BY Year DESC";
-                    return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null, selection, null, null);
+                    return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(),
+                            null, selection, null, null);
             }
             return null;
         }

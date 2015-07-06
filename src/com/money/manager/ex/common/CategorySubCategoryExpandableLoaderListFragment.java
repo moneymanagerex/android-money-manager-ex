@@ -320,7 +320,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
                             + QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
                     selectionArgs = new String[]{mCurFilter + "%", mCurFilter + "%"};
                 }
-                return new CursorLoader(getActivity(), mCategorySub.getUri(),
+                return new MmexCursorLoader(getActivity(), mCategorySub.getUri(),
                         mCategorySub.getAllColumns(),
                         whereClause,
                         selectionArgs,

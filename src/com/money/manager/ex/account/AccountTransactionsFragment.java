@@ -45,6 +45,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.MainActivity;
@@ -506,7 +507,7 @@ public class AccountTransactionsFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case ID_LOADER_SUMMARY:
-                return new CursorLoader(getActivity(),
+                return new MmexCursorLoader(getActivity(),
                         new QueryAccountBills(getActivity()).getUri(),
                         null,
                         QueryAccountBills.ACCOUNTID + "=?",
