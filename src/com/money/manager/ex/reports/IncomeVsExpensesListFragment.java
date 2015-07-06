@@ -353,15 +353,24 @@ public class IncomeVsExpensesListFragment
     }
 
     private void showChart() {
+        try {
+            showChartInternal();
+        } catch (IllegalStateException ise) {
+            ExceptionHandler handler = new ExceptionHandler(getActivity().getApplicationContext(), this);
+            handler.handle(ise, "showing chart");
+        }
+    }
+
+    private void showChartInternal() {
         // take a adapter and cursor
         IncomeVsExpensesAdapter adapter = ((IncomeVsExpensesAdapter) getListAdapter());
         if (adapter == null) return;
         Cursor cursor = adapter.getCursor();
         if (cursor == null) return;
         // arrays
-        ArrayList<Double> incomes = new ArrayList<Double>();
-        ArrayList<Double> expenses = new ArrayList<Double>();
-        ArrayList<String> titles = new ArrayList<String>();
+        ArrayList<Double> incomes = new ArrayList<>();
+        ArrayList<Double> expenses = new ArrayList<>();
+        ArrayList<String> titles = new ArrayList<>();
 
         // cycle cursor
         while (cursor.moveToNext()) {
