@@ -27,6 +27,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.database.BudgetYear;
@@ -43,14 +44,6 @@ public class BudgetsListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    // Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-
-//    private String mParam1;
-//    private String mParam2;
-
     private IBudgetListCallbacks mListener;
 
     /**
@@ -61,7 +54,6 @@ public class BudgetsListFragment
      */
     // TODO: Rename and change types and number of parameters
     public static BudgetsListFragment newInstance() {
-        // String param1, String param2
         BudgetsListFragment fragment = new BudgetsListFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
@@ -80,8 +72,7 @@ public class BudgetsListFragment
 
     @Override
     public String getSubTitle() {
-        return null;
-//        return getString(R.string.budgets);
+        return getString(R.string.budget_list);
     }
 
     @Override
