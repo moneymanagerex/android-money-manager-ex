@@ -20,7 +20,9 @@ package com.money.manager.ex.database;
 /**
  * This has been migrated to QueryAllData.
  */
-public class ViewMobileData extends Dataset {
+public class ViewMobileData
+        extends Dataset {
+
 	public static final String mobiledata =  
 		"( " + 
 		"SELECT 	CANS.TransID AS ID, " + 
@@ -74,6 +76,7 @@ public class ViewMobileData extends Dataset {
 		"	    				LEFT JOIN infotable_v1 fd ON fd.infoname = 'FINANCIAL_YEAR_START_DAY'  " + 
 		"       ) d ON d.id = CANS.TRANSID " + 
 		") mobiledata ";
+
 	// FIELDS
 	public static final String ID = "ID";
 	public static final String TransactionType = "TransactionType";

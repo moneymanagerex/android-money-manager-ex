@@ -171,8 +171,11 @@ public class CategoriesReportFragment extends BaseReportFragment {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         ViewMobileData mobileData = new ViewMobileData();
         //data to compose builder
-        String[] projectionIn = new String[]{"ROWID AS _id", ViewMobileData.CategID, ViewMobileData.Category, ViewMobileData.SubcategID, ViewMobileData.Subcategory, "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"};
-        String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+        String[] projectionIn = new String[]{"ROWID AS _id", ViewMobileData.CategID, ViewMobileData.Category,
+                ViewMobileData.SubcategID, ViewMobileData.Subcategory,
+                "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"};
+        String selection = ViewMobileData.Status + "<>'V' AND " +
+                ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }

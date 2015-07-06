@@ -22,7 +22,9 @@ import android.content.Context;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.RawFileUtils;
 
-
+/**
+ *
+ */
 public class QueryAllData
         extends Dataset {
     // FIELDS
