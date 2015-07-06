@@ -52,5 +52,14 @@
         android:gravity="center_vertical|end"
         android:text="@string/amount" />
 
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/actualTextView"
+        android:layout_width="wrap_content"
+        android:minWidth="60dp"
+        android:paddingLeft="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center_vertical|end"
+        android:text="@string/actual" />
 
 </LinearLayout>

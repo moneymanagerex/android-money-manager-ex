@@ -52,10 +52,12 @@ public class CategoriesReportAdapter extends CursorAdapter {
         Core core = new Core(context);
         double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
         String column1;
-        if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)))) {
-            column1 = "<b>" + cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)) + "</b>";
-            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
-                column1 += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
+        String category = cursor.getString(cursor.getColumnIndex(ViewMobileData.Category));
+        if (!TextUtils.isEmpty(category)) {
+            column1 = "<b>" + category + "</b>";
+            String subCategory = cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
+            if (!TextUtils.isEmpty(subCategory)) {
+                column1 += " : " + subCategory;
             }
         } else {
             column1 = "<i>" + context.getString(R.string.empty_category);

@@ -19,16 +19,25 @@ package com.money.manager.ex.budget;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.Contacts;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.database.SQLDataSet;
+import com.money.manager.ex.database.ViewMobileData;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
 
 /**
  * Adapter for budgets.
@@ -68,35 +77,30 @@ public class BudgetAdapter
 //        mLayout = layout;
 //    }
 
-    private Context mContext;
     private int mLayout;
+    private String mBudgetName;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-
-//        Cursor c = getCursor();
-
         final LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(mLayout, parent, false);
-
-        return v;
+        return inflater.inflate(mLayout, parent, false);
     }
+
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Cursor c = cursor;
-        View v = view;
-
         // Category
 
-        TextView categoryTextView = (TextView) v.findViewById(R.id.categoryTextView);
+        boolean hasSubcategory = false;
+        TextView categoryTextView = (TextView) view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
-            int categoryCol = c.getColumnIndex(BudgetQuery.CATEGNAME);
-            String category = c.getString(categoryCol);
+            int categoryCol = cursor.getColumnIndex(BudgetQuery.CATEGNAME);
+            String category = cursor.getString(categoryCol);
 
             // Subcategory
-            String subCategory = c.getString(c.getColumnIndex(BudgetQuery.SUBCATEGNAME));
+            String subCategory = cursor.getString(cursor.getColumnIndex(BudgetQuery.SUBCATEGNAME));
             if (!TextUtils.isEmpty(subCategory)) {
                 category += ":" + subCategory;
+                hasSubcategory = true;
             }
 
             categoryTextView.setText(category);
@@ -104,23 +108,146 @@ public class BudgetAdapter
 
         // Frequency
 
-        TextView frequencyTextView = (TextView) v.findViewById(R.id.frequencyTextView);
+        TextView frequencyTextView = (TextView) view.findViewById(R.id.frequencyTextView);
         if (frequencyTextView != null) {
-            String text = c.getString(c.getColumnIndex(BudgetQuery.PERIOD));
+            String text = cursor.getString(cursor.getColumnIndex(BudgetQuery.PERIOD));
             frequencyTextView.setText(text);
         }
 
+        CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+
         // Amount
 
-        TextView amountTextView = (TextView) v.findViewById(R.id.amountTextView);
+        TextView amountTextView = (TextView) view.findViewById(R.id.amountTextView);
         if (amountTextView != null) {
-            String text = c.getString(c.getColumnIndex(BudgetQuery.AMOUNT));
+            double amount = cursor.getDouble(cursor.getColumnIndex(BudgetQuery.AMOUNT));
+            String text = currencyUtils.getBaseCurrencyFormatted(amount);
             amountTextView.setText(text);
         }
 
         // Estimated
         // Actual
-        // todo: try to sum all the records here? or asynchronously?
+        // todo: colour the amount depending on whether it is above/below the budgeted amount.
+        TextView actualTextView = (TextView) view.findViewById(R.id.actualTextView);
+        if (actualTextView != null) {
+            double actual;
+            if (!hasSubcategory) {
+                int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
+                actual = getAmountForCategory(categoryId);
+            } else {
+                int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
+                actual = getAmountForSubCategory(subCategoryId);
+            }
+
+            String actualString = currencyUtils.getBaseCurrencyFormatted(actual);
+            actualTextView.setText(actualString);
+        }
     }
 
+    public void setBudgetName(String budgetName) {
+        mBudgetName = budgetName;
+    }
+
+    private double getAmountForCategory(int categoryId) {
+        double total = loadTotalFor(ViewMobileData.CategID + "=" + Integer.toString(categoryId));
+        return total;
+    }
+
+    private double getAmountForSubCategory(int subCategoryId) {
+        double total = loadTotalFor(ViewMobileData.SubcategID + "=" + Integer.toString(subCategoryId));
+        return total;
+    }
+
+    private double loadTotalFor(String where) {
+        double total = 0;
+
+        int year = getYearFromBudgetName(mBudgetName);
+        where += " AND " + ViewMobileData.Year + "=" + Integer.toString(year);
+        int month = getMonthFromBudgetName(mBudgetName);
+        if (month != Constants.NOT_SET) {
+            where += " AND " + ViewMobileData.Month + "=" + Integer.toString(month);
+        }
+
+        try {
+            SQLDataSet dataSet = new SQLDataSet();
+            Cursor cursor = mContext.getContentResolver().query(dataSet.getUri(),
+                    null,
+                    prepareQuery(where),
+                    null,
+                    null);
+            if (cursor == null) return 0;
+            if (cursor.moveToFirst()) {
+                total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
+
+                cursor.close();
+            }
+        } catch (IllegalStateException ise) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ise, "loading category total");
+        }
+
+        return total;
+    }
+
+    protected String prepareQuery(String whereClause) {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        ViewMobileData mobileData = new ViewMobileData();
+
+        //data to compose builder
+        String[] projectionIn = new String[]{
+                "ROWID AS _id", ViewMobileData.CategID, ViewMobileData.Category,
+                ViewMobileData.SubcategID, ViewMobileData.Subcategory,
+                "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
+        };
+
+        String selection = ViewMobileData.Status + "<>'V' AND " +
+                ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+        if (!TextUtils.isEmpty(whereClause)) {
+            selection += " AND " + whereClause;
+        }
+
+        String groupBy = ViewMobileData.CategID + ", " + ViewMobileData.Category + ", " +
+                ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
+
+        String having = null;
+//        if (!TextUtils.isEmpty(((CategoriesReportActivity) mContext).mFilter)) {
+//            String filter = ((CategoriesReportActivity) mContext).mFilter;
+//            if (TransactionTypes.valueOf(filter).equals(TransactionTypes.Withdrawal)) {
+//                having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") < 0";
+//            } else {
+//                having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") > 0";
+//            }
+//        }
+
+        String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
+        String limit = null;
+
+        //compose builder
+        builder.setTables(mobileData.getSource());
+
+        //return query
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+        return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
+//        } else {
+//            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
+//        }
+    }
+
+    private int getYearFromBudgetName(String budgetName) {
+        String yearString = budgetName.substring(0, 4);
+        int year = Integer.parseInt(yearString);
+        return year;
+    }
+
+    private int getMonthFromBudgetName(String budgetName) {
+        int result = Constants.NOT_SET;
+
+        if (!budgetName.contains("-")) return result;
+
+        int separatorLocation = budgetName.indexOf("-");
+        String monthString = budgetName.substring(separatorLocation + 1, separatorLocation + 3);
+
+        result = Integer.parseInt(monthString);
+        return result;
+    }
 }

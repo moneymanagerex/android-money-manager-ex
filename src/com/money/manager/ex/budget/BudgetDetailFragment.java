@@ -229,6 +229,8 @@ public class BudgetDetailFragment
                 new int[]{ R.id.categoryTextView },
                 0);
 
+        adapter.setBudgetName(mBudgetName);
+
         setListAdapter(adapter);
         setListShown(false);
 

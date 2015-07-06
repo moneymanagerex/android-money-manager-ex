@@ -347,6 +347,7 @@ public class EditTransactionActivity
                 String query = "SELECT MAX(CAST(" + TableCheckingAccount.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
                         new TableCheckingAccount().getSource() + " WHERE " +
                         TableCheckingAccount.ACCOUNTID + "=?";
+
                 Cursor cursor = helper.getReadableDatabase().rawQuery(query,
                         new String[]{Integer.toString(mCommonFunctions.mAccountId)});
                 if (cursor != null && cursor.moveToFirst()) {
@@ -363,7 +364,6 @@ public class EditTransactionActivity
                     }
                     cursor.close();
                 }
-                //helper.close();
             }
         });
 

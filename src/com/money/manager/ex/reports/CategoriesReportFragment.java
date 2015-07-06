@@ -134,9 +134,14 @@ public class CategoriesReportFragment extends BaseReportFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_chart) {
-            showChart();
-        } else if (item.getItemId() < 0) { // category
+        switch (item.getItemId()) {
+            case R.id.menu_chart:
+                showChart();
+                break;
+        }
+
+        if (item.getItemId() < 0) {
+            // category
             String whereClause = getWhereClause();
             if (!TextUtils.isEmpty(whereClause))
                 whereClause += " AND ";
