@@ -155,7 +155,8 @@ public class CategoriesReportFragment extends BaseReportFragment {
             whereClause = "/** */";
         }
         // use token to replace criteria
-        whereClause += "(" + ViewMobileData.Category + " Like '%" + newText + "%' OR " + ViewMobileData.Subcategory + " Like '%" + newText + "%')/** */";
+        whereClause += "(" + ViewMobileData.Category + " Like '%" + newText + "%' OR " +
+                ViewMobileData.Subcategory + " Like '%" + newText + "%')/** */";
 
         //create arguments
         Bundle args = new Bundle();
@@ -165,22 +166,27 @@ public class CategoriesReportFragment extends BaseReportFragment {
         return super.onQueryTextChange(newText);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected String prepareQuery(String whereClause) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         ViewMobileData mobileData = new ViewMobileData();
+
         //data to compose builder
-        String[] projectionIn = new String[]{"ROWID AS _id", ViewMobileData.CategID, ViewMobileData.Category,
+        String[] projectionIn = new String[]{
+                "ROWID AS _id", ViewMobileData.CategID, ViewMobileData.Category,
                 ViewMobileData.SubcategID, ViewMobileData.Subcategory,
-                "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"};
+                "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
+        };
+
         String selection = ViewMobileData.Status + "<>'V' AND " +
                 ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
+
         String groupBy = ViewMobileData.CategID + ", " + ViewMobileData.Category + ", " +
                 ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
+
         String having = null;
         if (!TextUtils.isEmpty(((CategoriesReportActivity) getActivity()).mFilter)) {
             String filter = ((CategoriesReportActivity) getActivity()).mFilter;
@@ -190,16 +196,19 @@ public class CategoriesReportFragment extends BaseReportFragment {
                 having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") > 0";
             }
         }
+
         String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
         String limit = null;
+
         //compose builder
         builder.setTables(mobileData.getSource());
+
         //return query
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
-        } else {
-            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+        return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
+//        } else {
+//            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
+//        }
     }
 
     public void showChart() {
