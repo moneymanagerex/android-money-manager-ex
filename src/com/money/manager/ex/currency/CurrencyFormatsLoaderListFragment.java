@@ -18,7 +18,6 @@
 package com.money.manager.ex.currency;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,7 +29,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,15 +41,19 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
-import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.investment.IPriceUpdaterFeedback;
+import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.utils.ActivityUtils;
-import com.money.manager.ex.utils.CurrencyUtils;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,7 +61,7 @@ import java.util.List;
  */
 public class CurrencyFormatsLoaderListFragment
         extends BaseListFragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+        implements LoaderManager.LoaderCallbacks<Cursor>, IPriceUpdaterFeedback {
 
     public String mAction = Intent.ACTION_EDIT;
 
@@ -74,6 +76,7 @@ public class CurrencyFormatsLoaderListFragment
     // database table
     private static TableCurrencyFormats mCurrency = new TableCurrencyFormats();
     private CurrencyUtils mCurrencyUtils;
+    private String LOGCAT = this.getClass().getSimpleName();
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -85,11 +88,6 @@ public class CurrencyFormatsLoaderListFragment
         setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
         setHasOptionsMenu(true);
 
-//        if (Intent.ACTION_PICK.equals(mAction)) {
-//            mLayout = android.R.layout.simple_list_item_multiple_choice;
-//        } else {
-//            mLayout = android.R.layout.simple_list_item_1;
-//        }
         // Always use simple list layout.
         mLayout = android.R.layout.simple_list_item_1;
 
@@ -204,7 +202,9 @@ public class CurrencyFormatsLoaderListFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER_CURRENCY:
-                // ((SimpleCursorAdapter)getListAdapter()).swapCursor(null);
+                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+                adapter.swapCursor(null);
+                break;
         }
     }
 
@@ -227,6 +227,7 @@ public class CurrencyFormatsLoaderListFragment
     }
 
     // End loader event handlers.
+    // Menu.
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -246,6 +247,8 @@ public class CurrencyFormatsLoaderListFragment
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // End menu.
 
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -269,9 +272,9 @@ public class CurrencyFormatsLoaderListFragment
                     cursor.moveToPosition(i);
 
                     result = new Intent();
-                    result.putExtra(CurrencyFormatsListActivity.INTENT_RESULT_CURRENCYID,
+                    result.putExtra(CurrenciesActivity.INTENT_RESULT_CURRENCYID,
                             cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
-                    result.putExtra(CurrencyFormatsListActivity.INTENT_RESULT_CURRENCYNAME,
+                    result.putExtra(CurrenciesActivity.INTENT_RESULT_CURRENCYNAME,
                             cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
 
                     getActivity().setResult(Activity.RESULT_OK, result);
@@ -280,7 +283,68 @@ public class CurrencyFormatsLoaderListFragment
                 }
             }
         }
-        getActivity().setResult(CurrencyFormatsListActivity.RESULT_CANCELED);
+        getActivity().setResult(CurrenciesActivity.RESULT_CANCELED);
+    }
+
+    @Override
+    public void onFloatingActionButtonClickListener() {
+        startCurrencyFormatActivity(null);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        // Show context menu only if we are displaying the list of currencies
+        // but not in selection mode.
+        if (mAction.equals(Intent.ACTION_EDIT)) {
+            getActivity().openContextMenu(v);
+        } else {
+            // we are picking a currency. Select one.
+            setResultAndFinish();
+        }
+    }
+
+    @Override
+    public String getSubTitle() {
+        return getString(R.string.currencies);
+    }
+
+    @Override
+    public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
+        // extract destination currency
+        String baseCurrencyCode = getCurrencyUtils().getBaseCurrencyCode();
+        String destinationCurrency = symbol.replace(baseCurrencyCode, "");
+        destinationCurrency = destinationCurrency.replace("=X", "");
+        boolean success = false;
+
+        try {
+            // update exchange rate.
+            success = saveExchangeRate(destinationCurrency, price);
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.handle(ex, "saving exchange rate");
+        }
+
+        if (!success) {
+            String message = getString(R.string.error_update_currency_exchange_rate);
+            message += " " + destinationCurrency;
+
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Private methods.
+
+    private boolean saveExchangeRate(String symbol, BigDecimal rate) {
+        CurrencyRepository repo = new CurrencyRepository(getActivity());
+        TableCurrencyFormats currency = repo.loadCurrency(symbol);
+        int currencyId = currency.getCurrencyId();
+
+        // update value on database
+        int updateResult = repo.saveExchangeRate(currencyId, rate);
+
+        return updateResult > 0;
     }
 
     private void showDialogDeleteCurrency(final int currencyId) {
@@ -326,11 +390,6 @@ public class CurrencyFormatsLoaderListFragment
         startActivity(intent);
     }
 
-    @Override
-    public String getSubTitle() {
-        return getString(R.string.currencies);
-    }
-
     private void showDialogImportAllCurrencies() {
         // config alert dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
@@ -365,7 +424,7 @@ public class CurrencyFormatsLoaderListFragment
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        updateRateCurrencies();
+                        updateExchangeRates();
                     }
                 });
         // set listener on negative button
@@ -383,128 +442,12 @@ public class CurrencyFormatsLoaderListFragment
      * Import all currencies from Android System
      */
     public void importAllCurrencies() {
-        AsyncTask<Void, Void, Boolean> asyncTask = new AsyncTask<Void, Void, Boolean>() {
-            ProgressDialog dialog = null;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                dialog = ProgressDialog.show(getActivity(), null, getString(R.string.import_currencies_in_progress));
-            }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                Core core = new Core(getActivity().getApplicationContext());
-                return core.importCurrenciesFromLocaleAvaible();
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                try {
-                    if (dialog != null)
-                        dialog.hide();
-                } catch (Exception e) {
-                    Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
-                }
-                super.onPostExecute(result);
-            }
-        };
+        AsyncTask<Void, Void, Boolean> asyncTask = new ImportAllCurrenciesTask(getActivity());
         asyncTask.execute();
     }
 
-    public void updateRateCurrencies() {
-        AsyncTask<Void, Integer, Boolean> asyncTask = new AsyncTask<Void, Integer, Boolean>() {
-            private ProgressDialog dialog = null;
-            private int mCountCurrencies = 0;
-            private TableCurrencyFormats mCurrencyFormat;
-
-            private Core mCore;
-
-            private int mPrevOrientation;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-
-                mPrevOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
-
-                mCore = new Core(getActivity().getApplicationContext());
-                DropboxHelper.setAutoUploadDisabled(true);
-
-                //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
-                dialog = new ProgressDialog(getActivity());
-                dialog.setMessage(getString(R.string.start_currency_exchange_rates));
-                dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                dialog.setCancelable(false);
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.show();
-            }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                CurrencyUtils currencyUtils = getCurrencyUtils();
-                List<TableCurrencyFormats> currencyFormats = currencyUtils.getAllCurrencyFormats();
-                mCountCurrencies = currencyFormats.size();
-                for (int i = 0; i < currencyFormats.size(); i++) {
-                    mCurrencyFormat = currencyFormats.get(i);
-                    currencyUtils.updateCurrencyRateFromBase(mCurrencyFormat.getCurrencyId());
-                    publishProgress(i);
-                }
-                return Boolean.TRUE;
-            }
-
-            @Override
-            protected void onProgressUpdate(Integer... values) {
-                super.onProgressUpdate(values);
-                if (dialog != null) {
-                    dialog.setMax(mCountCurrencies);
-                    dialog.setProgress(values[0]);
-                    if (mCurrencyFormat != null) {
-                        dialog.setMessage(mCore.highlight(mCurrencyFormat.getCurrencyName(), getString(R.string.update_currency_exchange_rates, mCurrencyFormat.getCurrencyName())));
-                    }
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                try {
-                    if (dialog != null)
-                        dialog.hide();
-                } catch (Exception e) {
-                    Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
-                }
-                if (result)
-                    Toast.makeText(getActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
-
-                DropboxHelper.setAutoUploadDisabled(false);
-                DropboxHelper.notifyDataChanged();
-
-                ActivityUtils.restoreOrientation(getActivity(), mPrevOrientation);
-
-                super.onPostExecute(result);
-            }
-        };
-        asyncTask.execute();
-    }
-
-    @Override
-    public void onFloatingActionButtonClickListener() {
-        startCurrencyFormatActivity(null);
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-
-        // Show context menu only if we are displaying the list of currencies
-        // but not in selection mode.
-        if (mAction.equals(Intent.ACTION_EDIT)) {
-            getActivity().openContextMenu(v);
-        } else {
-            // we are picking a currency. Select one.
-            setResultAndFinish();
-        }
+    public void updateExchangeRates() {
+        updateAllExchangeRatesFromYahoo();
     }
 
     private CurrencyUtils getCurrencyUtils() {
@@ -518,58 +461,47 @@ public class CurrencyFormatsLoaderListFragment
      * Update rate for the currently selected currency.
      */
     private void updateSingleCurrencyExchangeRate(final int currencyId) {
-
-        AsyncTask<Void, Integer, Boolean> updateAsync = new AsyncTask<Void, Integer, Boolean>() {
-            private ProgressDialog dialog = null;
-            private int mPrevOrientation;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-
-                mPrevOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
-
-                DropboxHelper.setAutoUploadDisabled(true);
-
-                dialog = new ProgressDialog(getActivity());
-                // setting dialog
-                // update_menu_currency_exchange_rates
-                dialog.setMessage(getString(R.string.start_currency_exchange_rates));
-                dialog.setIndeterminate(true);
-                dialog.setCancelable(false);
-                dialog.setCanceledOnTouchOutside(false);
-                // show dialog
-                dialog.show();
-            }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                CurrencyUtils util = getCurrencyUtils();
-                util.updateCurrencyRateFromBase(currencyId);
-                return Boolean.TRUE;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                try {
-                    if (dialog != null)
-                        dialog.hide();
-                } catch (Exception e) {
-                    Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
-                }
-                if (result) {
-                    Toast.makeText(getActivity(), R.string.success_currency_exchange_rates, Toast.LENGTH_LONG).show();
-                }
-
-                DropboxHelper.setAutoUploadDisabled(false);
-                DropboxHelper.notifyDataChanged();
-
-                ActivityUtils.restoreOrientation(getActivity(), mPrevOrientation);
-
-                super.onPostExecute(result);
-            }
-        };
-        updateAsync.execute();
-
+        updateCurrencyFromYahoo(currencyId);
     }
+
+    private void updateAllExchangeRatesFromYahoo(){
+        CurrencyUtils utils = getCurrencyUtils();
+        List<TableCurrencyFormats> currencies = utils.getAllCurrencyFormats();
+
+        updateExchangeRatesFromYahoo(currencies);
+    }
+
+    private void updateExchangeRatesFromYahoo(List<TableCurrencyFormats> currencies){
+        if (currencies.size() <= 0) return;
+
+        CurrencyUtils utils = getCurrencyUtils();
+        String[] currencySymbols = new String[currencies.size()];
+        int counter = 0;
+        String symbol;
+        String baseCurrencySymbol = utils.getBaseCurrencyCode();
+
+        for (TableCurrencyFormats currency : currencies) {
+            symbol = currency.getCurrencySymbol();
+            if (symbol == null) continue;
+            if (symbol.equals(baseCurrencySymbol)) continue;
+
+            currencySymbols[counter] = symbol + baseCurrencySymbol + "=X";
+            counter++;
+        }
+
+        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity(), this);
+        updater.updatePrices(currencySymbols);
+    }
+
+    private boolean updateCurrencyFromYahoo(int toCurrencyId) {
+        CurrencyUtils utils = getCurrencyUtils();
+
+        List<TableCurrencyFormats> currencies = new ArrayList<>();
+        currencies.add(utils.getCurrency(toCurrencyId));
+
+        updateExchangeRatesFromYahoo(currencies);
+
+        return true;
+    }
+
 }

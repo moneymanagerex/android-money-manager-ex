@@ -17,11 +17,10 @@
  */
 package com.money.manager.ex.database;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.money.manager.ex.MainActivity;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.AppSettings;

@@ -24,8 +24,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.currency.CurrencyFormatsListActivity;
+import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.utils.DialogUtils;
 
 import java.io.IOException;
 
@@ -59,6 +60,48 @@ public class YahooDownloadAllPricesTask
 
     @Override
     protected Boolean doInBackground(String... symbols) {
+        try {
+            return runTask(symbols);
+        } catch (Exception e) {
+            throw new RuntimeException("Error in Yahoo download all prices", e);
+        }
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+
+        if (mDialog != null) {
+            mDialog.setProgress(values[0]);
+
+            // todo: check what this does.
+//            if (mCurrencyFormat != null) {
+//                mDialog.setMessage(mCore.highlight(mCurrencyFormat.getCurrencyName(),
+//                        mContext.getString(R.string.update_currency_exchange_rates, mCurrencyFormat.getCurrencyName())));
+//            }
+        }
+    }
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+        try {
+            if (mDialog != null) {
+                DialogUtils.closeProgressDialog(mDialog);
+            }
+        } catch (Exception e) {
+            Log.e(CurrenciesActivity.LOGCAT, e.getMessage());
+        }
+        if (result) {
+            Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();
+        }
+
+        DropboxHelper.setAutoUploadDisabled(false);
+        DropboxHelper.notifyDataChanged();
+
+        super.onPostExecute(result);
+    }
+
+    private boolean runTask(String... symbols) {
         TextDownloader downloader = new TextDownloader();
         mDialog.setMax(symbols.length);
 
@@ -83,41 +126,6 @@ public class YahooDownloadAllPricesTask
         }
 
         return Boolean.TRUE;
-    }
-
-    @Override
-    protected void onProgressUpdate(Integer... values) {
-        super.onProgressUpdate(values);
-
-        if (mDialog != null) {
-            mDialog.setProgress(values[0]);
-
-            // todo: check what this does.
-//            if (mCurrencyFormat != null) {
-//                mDialog.setMessage(mCore.highlight(mCurrencyFormat.getCurrencyName(),
-//                        mContext.getString(R.string.update_currency_exchange_rates, mCurrencyFormat.getCurrencyName())));
-//            }
-        }
-    }
-
-    @Override
-    protected void onPostExecute(Boolean result) {
-        try {
-            if (mDialog != null) {
-                mDialog.hide();
-                mDialog.dismiss();
-            }
-        } catch (Exception e) {
-            Log.e(CurrencyFormatsListActivity.LOGCAT, e.getMessage());
-        }
-        if (result) {
-            Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();
-        }
-
-        DropboxHelper.setAutoUploadDisabled(false);
-        DropboxHelper.notifyDataChanged();
-
-        super.onPostExecute(result);
     }
 
     private void showProgressDialog() {

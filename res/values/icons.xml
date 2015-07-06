@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ic_law">a</string>
+    <string name="ic_home">b</string>
+    <string name="ic_settings">c</string>
+    <string name="ic_gift">d</string>
+    <string name="ic_building">e</string>
+    <string name="ic_euro">f</string>
+    <string name="ic_briefcase">g</string>
+    <string name="ic_open_folder">h</string>
+    <string name="ic_dropbox">i</string>
+    <string name="ic_magnifier">j</string>
+    <string name="ic_recurring">k</string>
+    <string name="ic_question">l</string>
+    <string name="ic_reports">m</string>
+</resources>

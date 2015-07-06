@@ -29,13 +29,15 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        // MPChartAndroid,
+        maven { url "https://jitpack.io" }
     }
 }
 
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+    compile fileTree(include: '*.jar', dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:support-v4:22.2.0'
     compile 'com.android.support:cardview-v7:22.2.0'
@@ -52,11 +54,7 @@ dependencies {
     compile 'me.relex:circleindicator:1.1.3@aar'
     // androidSVG
     compile project(':androidSVG_12')
-}
-
-// MPChartAndroid
-repositories {
-    maven { url "https://jitpack.io" }
+    compile 'com.shamanland:fonticon:0.1.8'
 }
 
 dependencies {
@@ -71,8 +69,8 @@ android {
         applicationId "com.money.manager.ex"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 645
-        versionName '2.4.10'
+        versionCode 653
+        versionName '2.6.1'
         // 601 = 1.4.17, stable
     }
 

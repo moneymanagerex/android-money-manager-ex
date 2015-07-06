@@ -168,7 +168,6 @@
   <string name="widget_summary">Money Manager Ex - Souhrnný zůstatek</string>
   <string name="widget_all_accounts">Money Manager Ex - Zůstatky na účtech</string>
   <string name="widget_add_transaction">Money Manager Ex přidat transakci</string>
-  <string name="repeating_empty_transaction">Nenalezena žádná opakovaná transakce. Klepněte na zelené tlačítko se symbolem plus pro její vytvoření.</string>
   <string name="none">Žádný(á)</string>
   <string name="weekly">Týden</string>
   <string name="bi_weekly">2 týdny</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">Na (x) měsíců</string>
   <string name="every_x_days">Každých (x) dní</string>
   <string name="every_x_months">Každých (x) měsíců</string>
+  <string name="repeating_empty_transaction">Nenalezena žádná opakovaná transakce. Klepněte na zelené tlačítko se symbolem plus pro její vytvoření.</string>
   <string name="inactive">Neaktivní</string>
+  <string name="activates">Aktivní</string>
   <string name="days_overdue">dny po splatnosti!</string>
   <string name="days_remaining">dnů zbývá</string>
   <string name="new_edit_repeating_transaction">Nová/úprava opakované transakce</string>
@@ -192,7 +193,6 @@
   <string name="repeats">Periodicita</string>
   <string name="times_repeated">Počet opakování</string>
   <string name="error_next_occurrence_not_populate">Je vyžadován další výskyt</string>
-  <string name="activates">Aktivní</string>
   <string name="enter_next_occurrence">Zadejte další výskyt</string>
   <string name="skip_next_occurrence">Přeskočit další výskyt</string>
   <string name="notification_repeating_transaction_expired">Máte opakované transakce po splatnosti</string>

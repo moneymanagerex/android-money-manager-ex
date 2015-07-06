@@ -23,6 +23,7 @@ import android.database.DatabaseUtils;
 import android.text.TextUtils;
 
 import com.money.manager.ex.core.AccountTypes;
+import com.money.manager.ex.core.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.List;
  * Repository for Accounts
  */
 public class AccountRepository {
+
     public AccountRepository(Context context) {
         mContext = context;
         mAccount = new TableAccountList();
@@ -151,6 +153,18 @@ public class AccountRepository {
     }
 
     public Cursor getCursor(boolean open, boolean favorite, List<String> accountTypes) {
+        try {
+            return getCursorInternal(open, favorite, accountTypes);
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "getting cursor in account repository");
+        }
+        return null;
+    }
+
+    // Private section
+
+    private Cursor getCursorInternal(boolean open, boolean favorite, List<String> accountTypes) {
         // compose where clause
         String where = getWhereFilterFor(open, favorite);
         // filter accounts.
@@ -167,8 +181,6 @@ public class AccountRepository {
         );
         return cursor;
     }
-
-    // Private section
 
     private List<TableAccountList> loadAccounts_content(boolean open, boolean favorite, List<String> accountTypes) {
         List<TableAccountList> result = new ArrayList<>();

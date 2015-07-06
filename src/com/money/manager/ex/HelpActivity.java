@@ -24,11 +24,12 @@ import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.utils.RawFileUtils;
 
-public class HelpActivity extends BaseFragmentActivity {
-    public static final String INTENT_ID_RAW = "HelpActiviy:IdRaw";
+public class HelpActivity
+        extends BaseFragmentActivity {
+
     private static final String LOGCAT = HelpActivity.class.getSimpleName();
     private WebView mWebView;
 
@@ -43,31 +44,23 @@ public class HelpActivity extends BaseFragmentActivity {
         mWebView = (WebView) findViewById(R.id.webViewContent);
         // enable javascript
         mWebView.getSettings().setJavaScriptEnabled(true);
-        // get intent
-        if (getIntent() != null) {
-            try {
-                if ("android.resource".equals(getIntent().getData().getScheme())) {
-                    int rawId = Integer.parseInt(getIntent().getData().getPathSegments()
-                            .get(getIntent().getData().getPathSegments().size() - 1));
-//                    mWebView.loadData(RawFileUtils.getRawAsString(getApplicationContext(), rawId), "text/html", "UTF-8");
 
-                    // One option to show Unicode characters:
-//                    mWebView.loadDataWithBaseURL(null,
-//                            RawFileUtils.getRawAsString(getApplicationContext(), rawId),
-//                            "text/html", "UTF-8",
-//                            null);
+        if (getIntent() == null) return;
 
-                    // 2nd option.
-                    WebSettings settings = mWebView.getSettings();
-                    settings.setDefaultTextEncodingName("utf-8");
-                    mWebView.loadData(RawFileUtils.getRawAsString(getApplicationContext(), rawId),
-                            "text/html; charset=utf-8", null);
-                } else {
-                    mWebView.loadUrl(getIntent().getData().toString());
-                }
-            } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
+        try {
+            if ("android.resource".equals(getIntent().getData().getScheme())) {
+                int rawId = Integer.parseInt(getIntent().getData().getPathSegments()
+                        .get(getIntent().getData().getPathSegments().size() - 1));
+
+                WebSettings settings = mWebView.getSettings();
+                settings.setDefaultTextEncodingName("utf-8");
+                mWebView.loadData(RawFileUtils.getRawAsString(getApplicationContext(), rawId),
+                        "text/html; charset=utf-8", null);
+            } else {
+                mWebView.loadUrl(getIntent().getData().toString());
             }
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
         }
     }
 

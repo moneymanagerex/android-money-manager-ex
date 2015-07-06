@@ -22,7 +22,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.core.DatabaseField;
-import com.money.manager.ex.interfaces.ISplitTransactionsDataset;
 
 public class TableSplitTransactions extends Dataset
         implements Parcelable, ISplitTransactionsDataset {

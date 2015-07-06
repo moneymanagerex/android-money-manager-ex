@@ -32,17 +32,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.CheckingAccountActivity;
+import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
-import com.money.manager.ex.checkingaccount.CheckingAccountConstants;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
-import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.util.Date;
@@ -114,6 +114,8 @@ public class RepeatingTransactionListFragment
             cursor.moveToPosition(mActiveTransactionPosition);
 
             int selectedItemId = item.getItemId();
+            int transactionId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
+
             //quick-fix convert 'switch' to 'if-else'
             if (selectedItemId == R.id.menu_enter_next_occurrence) {
                 nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
@@ -122,52 +124,23 @@ public class RepeatingTransactionListFragment
                 date = DateUtils.getDateFromString(getActivity(), nextOccurrence, Constants.PATTERN_DB_DATE);
                 date = DateUtils.getDateNextOccurrence(date, repeats);
                 if (date != null) {
-                    Intent intent = new Intent(getActivity(), CheckingAccountActivity.class);
+                    Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
                     intent.setAction(Constants.INTENT_ACTION_INSERT);
-                    intent.putExtra(CheckingAccountConstants.KEY_BDID_ID, bdId);
-                    intent.putExtra(CheckingAccountConstants.KEY_NEXT_OCCURRENCE, DateUtils.getSQLiteStringDate(getActivity(), date));
+                    intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, bdId);
+                    intent.putExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE,
+                            DateUtils.getSQLiteStringDate(getActivity(), date));
                     // start for insert new transaction
                     startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
                 }
             } else if (selectedItemId == R.id.menu_skip_next_occurrence) {
-                RecurringTransaction recurringTransaction = new RecurringTransaction(cursor, getActivity());
-                recurringTransaction.skipNextOccurrence();
-                getLoaderManager().restartLoader(ID_LOADER_REPEATING, null, this);
+                showDialogSkip(transactionId);
             } else if (selectedItemId == R.id.menu_edit) {
-                startRecurringTransactionActivity(cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID)),
-                        REQUEST_EDIT_REPEATING_TRANSACTION);
+                startRecurringTransactionActivity(transactionId, REQUEST_EDIT_REPEATING_TRANSACTION);
             } else if (selectedItemId == R.id.menu_delete) {
-                showDialogDeleteRepeatingTransaction(cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID)));
+                showDialogDelete(transactionId);
             }
         }
         return false;
-    }
-
-    private void showDialogDeleteRepeatingTransaction(final int id) {
-        // create alert dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        alertDialog.setTitle(R.string.delete_repeating_transaction);
-        alertDialog.setMessage(R.string.confirmDelete);
-        // set listener
-        alertDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        RecurringTransaction recurringTransaction = new RecurringTransaction(id, getActivity());
-                        recurringTransaction.delete();
-
-                        // restart loader
-                        getLoaderManager().restartLoader(ID_LOADER_REPEATING,
-                                null, RepeatingTransactionListFragment.this);
-                    }
-                });
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.create().show();
     }
 
     @Override
@@ -182,6 +155,16 @@ public class RepeatingTransactionListFragment
             getActivity().getMenuInflater().inflate(R.menu.contextmenu_repeating_transactions, menu);
         }
     }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        // show context menu here.
+        getActivity().openContextMenu(v);
+    }
+
+    // Loader callbacks.
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -201,17 +184,11 @@ public class RepeatingTransactionListFragment
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-
-        // show context menu here.
-        getActivity().openContextMenu(v);
-    }
-
-    @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER_REPEATING:
+                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+                adapter.swapCursor(null);
         }
     }
 
@@ -219,6 +196,8 @@ public class RepeatingTransactionListFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_LOADER_REPEATING:
+                if (data == null) return;
+
                 AllDataAdapter adapter = new AllDataAdapter(getActivity(), data,
                         AllDataAdapter.TypeCursor.REPEATINGTRANSACTION);
                 setListAdapter(adapter);
@@ -232,6 +211,8 @@ public class RepeatingTransactionListFragment
                 }
         }
     }
+
+    // End loader callbacks.
 
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -286,4 +267,57 @@ public class RepeatingTransactionListFragment
     public String getSubTitle() {
         return getString(R.string.repeating_transactions);
     }
+
+    private void showDialogDelete(final int id) {
+        // create alert dialog
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
+        alertDialog.setTitle(R.string.delete_repeating_transaction);
+        alertDialog.setMessage(R.string.confirmDelete);
+        // set listener
+        alertDialog.setPositiveButton(android.R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        RecurringTransaction recurringTransaction = new RecurringTransaction(id, getActivity());
+                        recurringTransaction.delete();
+
+                        // restart loader
+                        getLoaderManager().restartLoader(ID_LOADER_REPEATING,
+                                null, RepeatingTransactionListFragment.this);
+                    }
+                });
+        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.create().show();
+    }
+
+    private void showDialogSkip(final int id) {
+        // create alert dialog
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
+        alertDialog.setTitle(R.string.skip_next_occurrence);
+        alertDialog.setMessage(R.string.skip_next_occurrence_confirmation);
+        // set listener
+        alertDialog.setPositiveButton(android.R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        RecurringTransaction recurringTransaction = new RecurringTransaction(id, getActivity());
+                        recurringTransaction.skipNextOccurrence();
+                        getLoaderManager().restartLoader(ID_LOADER_REPEATING, null,
+                                RepeatingTransactionListFragment.this);
+                    }
+                });
+        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.create().show();
+    }
+
 }

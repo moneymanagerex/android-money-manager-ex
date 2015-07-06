@@ -43,9 +43,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
-import com.money.manager.ex.fragment.AllDataFragment;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.BaseListFragment;
+import com.money.manager.ex.common.AllDataFragment;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseListFragment;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class WatchlistItemsFragment
     public static WatchlistItemsFragment newInstance(
             int accountId, IWatchlistItemsFragmentEventHandler eventHandler) {
         WatchlistItemsFragment fragment = new WatchlistItemsFragment();
-        fragment.mAccountId = accountId;
+//        fragment.mAccountId = accountId;
         fragment.mEventHandler = eventHandler;
         return fragment;
     }
@@ -78,7 +78,7 @@ public class WatchlistItemsFragment
     private IWatchlistItemsFragmentEventHandler mEventHandler;
     private boolean mAutoStarLoader = true;
     private int mGroupId = 0;
-    private int mAccountId = -1;
+//    private int mAccountId = -1;
     private View mListHeader = null;
     private Context mContext;
     private StockRepository mStockRepository;

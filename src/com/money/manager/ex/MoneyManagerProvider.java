@@ -43,8 +43,8 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableAssets;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
-import com.money.manager.ex.database.TableBudgetTable;
-import com.money.manager.ex.database.TableBudgetYear;
+import com.money.manager.ex.database.BudgetTable;
+import com.money.manager.ex.database.BudgetYear;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -72,7 +72,7 @@ import java.util.Map;
  */
 public class MoneyManagerProvider
         extends ContentProvider {
-    // tag LOGCAT
+
     private static final String LOGCAT = MoneyManagerProvider.class.getSimpleName();
     // object definition for the call to check the content
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -102,9 +102,9 @@ public class MoneyManagerProvider
         List<Dataset> objMoneyManager = Arrays.asList(new TableAccountList(),
                 new TableAssets(),
                 new TableBillsDeposits(),
-                new TableBudgetTable(),
+                new BudgetTable(),
                 new TableBudgetSplitTransactions(),
-                new TableBudgetYear(),
+                new BudgetYear(),
                 new TableCategory(),
                 new TableCheckingAccount(),
                 new TableCurrencyFormats(),
@@ -314,9 +314,13 @@ public class MoneyManagerProvider
         try {
             context = getContext();
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
-        } catch (Exception e) {
+        } catch (IllegalStateException ise) {
+            // This happens when the database is changed by all the asynchronous loaders still
+            // have references to the already-closed database helper.
+            // Just log for now. The reload is done automatically so should be no harm.
+
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(e, "Error fetching data");
+            handler.handle(ise, "fetching data in content provider");
         }
         return null;
     }

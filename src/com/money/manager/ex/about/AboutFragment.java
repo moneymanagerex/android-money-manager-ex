@@ -40,7 +40,7 @@ import com.github.pedrovgs.lynx.LynxActivity;
 import com.github.pedrovgs.lynx.LynxConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseFragmentActivity;
 
 public class AboutFragment extends Fragment {
     private static final String LOGCAT = AboutFragment.class.getSimpleName();
@@ -62,6 +62,7 @@ public class AboutFragment extends Fragment {
         if (activity != null) {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
         // Version application
         TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
         try {
@@ -72,7 +73,7 @@ public class AboutFragment extends Fragment {
             Log.e(LOGCAT, e.getMessage());
         }
 
-        // take a object into layout
+        // Send Feedback
         TextView txtFeedback = (TextView) view.findViewById(R.id.textViewLinkFeedback);
         text = "<u>" + txtFeedback.getText() + "</u>";
         txtFeedback.setText(Html.fromHtml(text));
@@ -90,20 +91,7 @@ public class AboutFragment extends Fragment {
                 }
             }
         });
-        // logcat
-        TextView txtLogcat = (TextView) view.findViewById(R.id.textViewLogcat);
-        text = "<u>" + txtLogcat.getText() + "</u>";
-        txtLogcat.setText(Html.fromHtml(text));
-        txtLogcat.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LynxConfig lynxConfig = new LynxConfig();
-                lynxConfig.setMaxNumberOfTracesToShow(4000);
 
-                Intent lynxActivityIntent = LynxActivity.getIntent(getActivity(), lynxConfig);
-                startActivity(lynxActivityIntent);
-            }
-        });
         // rate application
         TextView txtRate = (TextView) view.findViewById(R.id.textViewLinkRate);
         text = "<u>" + txtRate.getText() + "</u>";
@@ -145,6 +133,7 @@ public class AboutFragment extends Fragment {
         clickListenerGooglePlus.setUrl("http://goo.gl/R693Ih");
         ImageView imageViewGooglePlus = (ImageView) view.findViewById(R.id.imageViewGooglePlus);
         imageViewGooglePlus.setOnClickListener(clickListenerGooglePlus);
+
         // image view github
         OnClickListenerUrl clickListenerGithub = new OnClickListenerUrl();
         clickListenerGithub.setUrl("https://github.com/moneymanagerex/android-money-manager-ex");
@@ -162,7 +151,22 @@ public class AboutFragment extends Fragment {
         OnClickListenerUrl clickListenerLicense = new OnClickListenerUrl();
         clickListenerLicense.setUrl("http://www.gnu.org/licenses/old-licenses/gpl-2.0.html");
         txtLicense.setOnClickListener(clickListenerLicense);
-        // donate
+        // logcat
+        TextView txtLogcat = (TextView) view.findViewById(R.id.textViewLogcat);
+        text = "<u>" + txtLogcat.getText() + "</u>";
+        txtLogcat.setText(Html.fromHtml(text));
+        txtLogcat.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LynxConfig lynxConfig = new LynxConfig();
+                lynxConfig.setMaxNumberOfTracesToShow(4000);
+
+                Intent lynxActivityIntent = LynxActivity.getIntent(getActivity(), lynxConfig);
+                startActivity(lynxActivityIntent);
+            }
+        });
+
+        // Donate, button
         Button buttonDonate = (Button) view.findViewById(R.id.buttonDonateInApp);
         buttonDonate.setOnClickListener(new OnClickListener() {
             @Override

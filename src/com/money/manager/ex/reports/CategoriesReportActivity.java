@@ -40,19 +40,18 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
-import com.money.manager.ex.fragment.PieChartFragment;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.util.ArrayList;
 
-public class CategoriesReportActivity extends BaseFragmentActivity {
+public class CategoriesReportActivity
+        extends BaseFragmentActivity {
+    
     public static final String REPORT_FILTERS = "CategoriesReportActivity:Filter";
     public static final String REPORT_TITLE = "CategoriesReportActivity:Title";
     private static CurrencyUtils currencyUtils;
@@ -186,20 +185,20 @@ public class CategoriesReportActivity extends BaseFragmentActivity {
             switch (loader.getId()) {
                 case ID_LOADER:
                     //parse cursor for calculate total
-                    if (data != null && data.moveToFirst()) {
-                        double totalAmount = 0;
-                        while (!data.isAfterLast()) {
-                            totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
-                            data.moveToNext();
-                        }
-                        TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
-                        txtColumn2.setText(currencyUtils.getBaseCurrencyFormatted(totalAmount));
-                        // soved bug chart
-                        if (data.getCount() > 0) {
-                            getListView().removeFooterView(mFooterListView);
-                            getListView().addFooterView(mFooterListView);
-                        }
+                    if (data == null) return;
+
+                    double totalAmount = 0;
+                    while (data.moveToNext()) {
+                        totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
                     }
+                    TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
+                    txtColumn2.setText(currencyUtils.getBaseCurrencyFormatted(totalAmount));
+                    // soved bug chart
+                    if (data.getCount() > 0) {
+                        getListView().removeFooterView(mFooterListView);
+                        getListView().addFooterView(mFooterListView);
+                    }
+
                     if (((CategoriesReportActivity) getActivity()).mIsDualPanel) {
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {

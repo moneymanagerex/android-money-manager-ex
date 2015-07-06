@@ -19,6 +19,7 @@
 package com.money.manager.ex;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -31,12 +32,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.inapp.util.IabHelper;
 import com.money.manager.ex.inapp.util.IabResult;
 import com.money.manager.ex.inapp.util.Inventory;
 import com.money.manager.ex.inapp.util.Purchase;
 import com.money.manager.ex.inapp.util.SkuDetails;
+import com.money.manager.ex.view.RobotoTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +87,9 @@ public class DonateActivity extends BaseFragmentActivity {
             public void onClick(final View v) {
                 final int selectedInAppAmount = inAppSpinner.getSelectedItemPosition();
                 purchasedSku = skus.get(selectedInAppAmount);
-                if (BuildConfig.DEBUG)
+                if (BuildConfig.DEBUG) {
                     Log.d(DonateActivity.this.getClass().getSimpleName(), "Clicked " + purchasedSku);
+                }
                 purchasedToken = UUID.randomUUID().toString();
                 //BillingController.requestPurchase(DonateActivity.this, purchasedSku, true, null);
                 mIabHelper.launchPurchaseFlow(DonateActivity.this, purchasedSku, 1001, mConsumeFinishedListener, purchasedToken);
@@ -138,6 +141,9 @@ public class DonateActivity extends BaseFragmentActivity {
         }
         // set enable return
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // handle clicking on direct donation text
+        setUpDirectDonationButton();
     }
 
     @Override
@@ -208,5 +214,22 @@ public class DonateActivity extends BaseFragmentActivity {
         super.onSaveInstanceState(outState);
         outState.putString(PURCHASED_SKU, purchasedSku);
         outState.putString(PURCHASED_TOKEN, purchasedToken);
+    }
+
+    private void setUpDirectDonationButton() {
+        RobotoTextView directDonationLink = (RobotoTextView) findViewById(R.id.directDonationTextView);
+        String template = "<p><u>%text%</u></p>";
+        String text = template.replace("%text%", getText(R.string.donate_direct));
+        directDonationLink.setText(Html.fromHtml(text));
+
+        final String siteUrl = "http://moneymanagerex.github.io/android-money-manager-ex/";
+
+        directDonationLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteUrl));
+                startActivity(browserIntent);
+            }
+        });
     }
 }

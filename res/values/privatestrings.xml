@@ -19,5 +19,5 @@
 
 <resources>
     <string name="view_user_size">user_size</string>
-    <string name="application_copyright">© 2012-2014 Alessandro Lazzari\r\nAndroid Money Manager Ex Project</string>
+    <string name="application_copyright">© 2012-2014 Android Money Manager Ex Project</string>
 </resources>

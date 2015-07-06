@@ -24,8 +24,9 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 public class AccountBillsWidgetService extends RemoteViewsService {
     @Override
@@ -47,6 +48,16 @@ public class AccountBillsWidgetService extends RemoteViewsService {
 
         @Override
         public int getCount() {
+            try {
+                return getCountInternal();
+            } catch (IllegalStateException ise) {
+                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                handler.handle(ise, "getting the record count for widget");
+                return 0;
+            }
+        }
+
+        private int getCountInternal() {
             if (mCursor != null) {
                 return mCursor.getCount();
             } else {

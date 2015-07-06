@@ -26,7 +26,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.money.manager.ex.MainActivity;
+import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoView;
@@ -46,12 +47,16 @@ public class LookFeelFragment
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.look_and_feel_settings);
+
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // checkbox on open and favorite account
-        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE));
-        final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE));
-        final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(PreferenceConstants.PREF_HIDE_RECONCILED_AMOUNTS));
+        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(
+                PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE));
+        final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(
+                PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE));
+        final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(
+                PreferenceConstants.PREF_HIDE_RECONCILED_AMOUNTS));
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override
@@ -66,7 +71,8 @@ public class LookFeelFragment
         chkHideReconciled.setOnPreferenceChangeListener(listener);
 
         // show transaction
-        final ListPreference lstShow = (ListPreference) findPreference(getString(PreferenceConstants.PREF_SHOW_TRANSACTION));
+        final ListPreference lstShow = (ListPreference) findPreference(getString(
+                PreferenceConstants.PREF_SHOW_TRANSACTION));
         if (lstShow != null) {
             lstShow.setSummary(MoneyManagerApplication.getInstanceApp().getShowTransaction());
             lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -85,6 +91,8 @@ public class LookFeelFragment
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (newValue instanceof String && NumberUtils.isNumber(newValue.toString())) {
+                        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Preference set: font = " + newValue.toString());
+
                         RobotoView.setUserFont(Integer.parseInt(newValue.toString()));
                         return true;
                     }
@@ -100,6 +108,8 @@ public class LookFeelFragment
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "Preference set: font = " + newValue.toString());
+
                     RobotoView.setUserFontSize(getActivity().getApplicationContext(), newValue.toString());
                     return true;
                 }
@@ -113,7 +123,8 @@ public class LookFeelFragment
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Log.d(LOGCAT, newValue.toString());
+                    if (BuildConfig.DEBUG) Log.d(LOGCAT, newValue.toString());
+
                     MainActivity.setRestartActivity(true);
                     return true;
                 }

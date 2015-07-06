@@ -37,15 +37,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.AccountListEditActivity;
+import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.fragment.AllDataFragment;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
+import com.money.manager.ex.common.AllDataFragment;
+import com.money.manager.ex.common.BaseFragmentActivity;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -87,39 +87,6 @@ public class WatchlistFragment extends Fragment
         fragment.setNameFragment(WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountid));
 
         return fragment;
-    }
-
-    private void confirmPriceUpdate() {
-        new AlertDialogWrapper.Builder(getActivity())
-                .setTitle(R.string.download)
-                .setMessage(R.string.confirm_price_download)
-                .setIcon(R.drawable.ic_action_help_light)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-//                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
-
-                        // get the list of symbols
-                        String[] symbols = getAllShownSymbols();
-                        mToUpdateTotal = symbols.length;
-                        mUpdateCounter = 0;
-
-                        // update security prices
-                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
-                                .getUpdaterInstance(WatchlistFragment.this);
-                        updater.updatePrices(symbols);
-
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create()
-                .show();
     }
 
     @Override
@@ -199,8 +166,8 @@ public class WatchlistFragment extends Fragment
         imgGotoAccount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, AccountListEditActivity.class);
-                intent.putExtra(AccountListEditActivity.KEY_ACCOUNT_ID, mAccountId);
+                Intent intent = new Intent(mContext, AccountEditActivity.class);
+                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
             }
@@ -318,15 +285,6 @@ public class WatchlistFragment extends Fragment
     }
 
     /**
-     * Called from Price updater
-     * @return
-     */
-    @Override
-    public Context getContext() {
-        return mContext;
-    }
-
-    /**
      * Called from asynchronous task when a single price is downloaded.
      * @param symbol
      * @param price
@@ -424,7 +382,7 @@ public class WatchlistFragment extends Fragment
         mToUpdateTotal = 1;
         mUpdateCounter = 0;
 
-        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(this);
+        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(mContext, this);
         updater.updatePrices(symbol);
     }
 
@@ -461,4 +419,38 @@ public class WatchlistFragment extends Fragment
                 .show();
 
     }
+
+    private void confirmPriceUpdate() {
+        new AlertDialogWrapper.Builder(getActivity())
+                .setTitle(R.string.download)
+                .setMessage(R.string.confirm_price_download)
+                .setIcon(R.drawable.ic_action_help_light)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
+
+                        // get the list of symbols
+                        String[] symbols = getAllShownSymbols();
+                        mToUpdateTotal = symbols.length;
+                        mUpdateCounter = 0;
+
+                        // update security prices
+                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+                                .getUpdaterInstance(mContext, WatchlistFragment.this);
+                        updater.updatePrices(symbols);
+
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
 }

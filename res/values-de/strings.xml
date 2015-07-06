@@ -101,7 +101,7 @@
   <string name="deposit">Einzahlung</string>
   <string name="status">Status</string>
   <string name="status_reconciled">ausgeglichen</string>
-  <string name="status_void">Ungültig</string>
+  <string name="status_void">ungültig</string>
   <string name="status_follow_up">Nachverfolgung</string>
   <string name="status_duplicate">Duplikat</string>
   <string name="status_none">Nichts</string>
@@ -168,7 +168,6 @@
   <string name="widget_summary">Money Manager Ex - Zusammenfassung</string>
   <string name="widget_all_accounts">Money Manager Ex - alle Konten</string>
   <string name="widget_add_transaction">Money Manager Ex - Transaktion hinzufügen</string>
-  <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf das grüne plus -Taste.</string>
   <string name="none">Nichts</string>
   <string name="weekly">Wöchentlich</string>
   <string name="bi_weekly">Zweiwöchentlich</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">In (x) Monaten</string>
   <string name="every_x_days">Alle (x) Tage</string>
   <string name="every_x_months">Alle (x) Monate</string>
+  <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf das grüne plus -Taste.</string>
   <string name="inactive">Inaktiv</string>
+  <string name="activates">aktiviert</string>
   <string name="days_overdue">Tage überfällig!</string>
   <string name="days_remaining">Tage verbleibend</string>
   <string name="new_edit_repeating_transaction">Neu/editieren wiederholte Transaktionen</string>
@@ -192,9 +193,9 @@
   <string name="repeats">Wiederholungen</string>
   <string name="times_repeated">Mal wiederholt</string>
   <string name="error_next_occurrence_not_populate">Nächstes Vorkommen ist erforderlich</string>
-  <string name="activates">aktiviert</string>
   <string name="enter_next_occurrence">Gib den nächsten Vorgang ein</string>
   <string name="skip_next_occurrence">Überspringe den nächsten Vorgang</string>
+  <string name="skip_next_occurrence_confirmation">Möchten Sie das nächste Ereignis überspringen?</string>
   <string name="notification_repeating_transaction_expired">Abgelaufene wiederholte Transaktionen vorhanden</string>
   <string name="notification_click_to_check_repeating_transaction">Berühren um die ausstehende Transation zu sehen</string>
   <string name="num_repeating_transaction_expired">%1$d Wiederholte Transaktion überfällig</string>
@@ -214,7 +215,7 @@
   <string name="income">Einkommen</string>
   <string name="expenses">Ausgaben</string>
   <string name="difference">Differenz</string>
-  <string name="no_data">Keine Aufnahmen gefunden. Um eine Aufnahme zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
+  <string name="no_data">Keine Einträge gefunden. Um einen Eintrag zu erstellen. drücken Sie den grünen Plus-Knopf. </string>
   <string name="no_stock_data">Keine Bestandsdaten für dieses Konto vorhanden.</string>
   <string name="month">Monat</string>
   <string name="year">Jahr</string>
@@ -247,8 +248,9 @@
   <string name="donate_in_app_button">Spenden</string>
   <string name="donate_thank_you">Vielen Dank für Ihre Spende!</string>
   <string name="donate">Spenden</string>
-  <string name="no_thanks">Nein, danke</string>
+  <string name="no_thanks">Nein danke</string>
   <string name="donate_exlamation">Spenden!</string>
+  <string name="donate_direct">Sie können spenden, indem Sie auf den Spenden-Link auf unserer Website klicken. Klicken Sie hier, um den Spenden-Link im Browser zu öffnen.</string>
   <string name="android_sqlite_vesion">SQLite-Version</string>
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
@@ -370,6 +372,7 @@
   <string name="success_currency_exchange_rates">Alle Wechselkurse sind erfolgreich aktualisiert</string>
   <string name="update_menu_currency_exchange_rates">Aktualisiere Wechselkurs</string>
   <string name="question_update_currency_exchange_rates">Wollen Sie den Wechselkurs aktualisieren?</string>
+  <string name="error_update_currency_exchange_rate">Es passierte ein Fehler beim Aktualisieren des Kurses</string>
   <string name="withdrawal_from">Abhebung %1$s</string>
   <string name="deposit_to">Hinterlege zu %1$s</string>
   <string name="mmex_website">MoneyManagerEx Website</string>
@@ -478,4 +481,8 @@
   <string name="cash">Bargeld</string>
   <string name="select_account">Konto auswählen</string>
   <string name="invalid_transaction_number">Ungültige Transaktionsnummer</string>
+  <string name="budgets">Haushaltsplan</string>
+  <string name="base_currency_not_set">Basiswährung wurde nicht festgelegt</string>
+  <string name="error">Fehler</string>
+  <string name="unhandled_crash">Unerwarteter Fehler. Bitte senden Sie uns das Protokoll (log file).</string>
 </resources>

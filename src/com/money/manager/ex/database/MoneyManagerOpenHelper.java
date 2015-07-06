@@ -22,23 +22,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDiskIOException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyUtils;
 import com.money.manager.ex.utils.RawFileUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Currency;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -157,9 +153,12 @@ public class MoneyManagerOpenHelper
         SQLiteDatabase db = null;
         try {
             db = super.getReadableDatabase();
-        } catch (SQLiteDiskIOException dex) {
+//        } catch (SQLiteDiskIOException dex) {
+//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+//            handler.handle(dex, "opening database");
+        } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(dex, "Error opening database");
+            handler.handle(ex, "opening readable database");
         }
         return db;
     }
@@ -169,9 +168,8 @@ public class MoneyManagerOpenHelper
         try {
             return getWritableDatabase_Internal();
         } catch (Exception ex) {
-            String error = "Error getting writable database";
-            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
-            Toast.makeText(mContext, error, Toast.LENGTH_SHORT).show();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "opening writable database");
         }
         return null;
     }
@@ -184,7 +182,6 @@ public class MoneyManagerOpenHelper
         }
 
         return db;
-
     }
 
     /**

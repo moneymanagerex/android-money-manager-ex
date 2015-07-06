@@ -48,6 +48,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
+import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -109,6 +110,8 @@ public class PayeeLoaderListFragment
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
     }
+
+    // Menu
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -208,6 +211,8 @@ public class PayeeLoaderListFragment
         }
     }
 
+    // Loader
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
@@ -229,14 +234,17 @@ public class PayeeLoaderListFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-//        switch (loader.getId()) {
-//            case ID_LOADER_PAYEE:
-//                // mAdapter.swapCursor(null);
-//        }
+        switch (loader.getId()) {
+            case ID_LOADER_PAYEE:
+                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+                adapter.swapCursor(null);
+        }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data == null) return;
+
         switch (loader.getId()) {
             case ID_LOADER_PAYEE:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();

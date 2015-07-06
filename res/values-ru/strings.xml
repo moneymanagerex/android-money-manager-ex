@@ -168,7 +168,6 @@
   <string name="widget_summary">Money Manager Ex Сводка</string>
   <string name="widget_all_accounts">Money Manager Ex Счета</string>
   <string name="widget_add_transaction">Money Manager Ex Создать проводку</string>
-  <string name="repeating_empty_transaction">Не найдено ни одного перевода. Чтобы создать его, нажмите на зеленый плюс.</string>
   <string name="none">Нет</string>
   <string name="weekly">Еженедельно</string>
   <string name="bi_weekly">Каждые две недели</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">В (x) месяц</string>
   <string name="every_x_days">Каждые (x) дней</string>
   <string name="every_x_months">Каждые (x) месяцев</string>
+  <string name="repeating_empty_transaction">Не найдено ни одного перевода. Чтобы создать его, нажмите на зеленый плюс.</string>
   <string name="inactive">Неактивна</string>
+  <string name="activates">Активировать</string>
   <string name="days_overdue">дней просрочки!</string>
   <string name="days_remaining">дней осталось</string>
   <string name="new_edit_repeating_transaction">Создать/Изменить повторяющуюся транзакцию</string>
@@ -192,9 +193,9 @@
   <string name="repeats">Повторы</string>
   <string name="times_repeated">Количество повторов</string>
   <string name="error_next_occurrence_not_populate">Требуется указать следующее вхождение</string>
-  <string name="activates">Активировать</string>
   <string name="enter_next_occurrence">Ввести следующее начисление</string>
   <string name="skip_next_occurrence">Пропустить следующее начисление</string>
+  <string name="skip_next_occurrence_confirmation">Вы хотите пропустить следующее вхождение?</string>
   <string name="notification_repeating_transaction_expired">Есть просроченные повторяющиеся транзакции</string>
   <string name="notification_click_to_check_repeating_transaction">Нажмите чтобы проверить наличие просроченных проводок</string>
   <string name="num_repeating_transaction_expired">Повторяющаяся транзакция просрочена на %1$d</string>
@@ -249,6 +250,7 @@
   <string name="donate">Поддержать</string>
   <string name="no_thanks">Нет, спасибо</string>
   <string name="donate_exlamation">Поддержать!</string>
+  <string name="donate_direct">Вы можете сделать пожертвование, нажав на кнопку на нашем сайте. Кликните здесь, чтобы открыть в браузере.</string>
   <string name="android_sqlite_vesion">Версия SQLite</string>
   <string name="ascending">По возрастанию</string>
   <string name="descending">По убыванию</string>
@@ -370,6 +372,7 @@
   <string name="success_currency_exchange_rates">Все обменные курсы были успешно обновлены</string>
   <string name="update_menu_currency_exchange_rates">Обновить курс валюты</string>
   <string name="question_update_currency_exchange_rates">Вы хотите обновить обменый курс ?</string>
+  <string name="error_update_currency_exchange_rate">Ошибка обновления курса валюты</string>
   <string name="withdrawal_from">Снятие со счета  %1$s</string>
   <string name="deposit_to">Пополнение счета %1$s</string>
   <string name="mmex_website">Сайт MoneyManagerEX</string>
@@ -478,4 +481,8 @@
   <string name="cash">Наличные</string>
   <string name="select_account">Выберите счет</string>
   <string name="invalid_transaction_number">Неправильный номер проводки</string>
+  <string name="budgets">Бюджеты</string>
+  <string name="base_currency_not_set">Базовая валюта не была установлена</string>
+  <string name="error">Ошибка</string>
+  <string name="unhandled_crash">Непредвиденная ошибка. Пришлите нам лог.</string>
 </resources>

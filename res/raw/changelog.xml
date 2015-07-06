@@ -18,6 +18,20 @@
   -->
 
 <changelog bulletedList="true">
+    <changelogversion changeDate="July 4, 2015" versionName="2.6.0">
+        <changelogtext>Ability to change visible period for account transactions.</changelogtext>
+        <changelogtext>Major stability improvement: handling the database change after the notification is clicked on download.</changelogtext>
+    </changelogversion>
+    <changelogversion changeDate="July 3, 2015" versionName="2.5.5">
+        <changelogtext>Now accepting direct donations through our app web page.</changelogtext>
+        <changelogtext>Updated translations.</changelogtext>
+        <changelogtext>Catching all exceptions and offering to send the log to developers.</changelogtext>
+        <changelogtext>Introducing font icons.</changelogtext>
+        <changelogtext>Switched to Yahoo as the currency rates provider.</changelogtext>
+        <changelogtext>Correcting the currency exchange logic after switch to Yahoo.</changelogtext>
+        <changelogtext>Adding initial Turkish translation.</changelogtext>
+        <changelogtext>Stability improvements.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="June 23, 2015" versionName="2.4.10">
         <changelogtext>Updated translations.</changelogtext>
         <changelogtext>fixed display of categories when creating a new subcategory.</changelogtext>

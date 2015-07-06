@@ -32,6 +32,7 @@ import com.money.manager.ex.view.RobotoView;
  */
 public class MoneySimpleCursorAdapter
         extends SimpleCursorAdapter {
+
     private static final String LOGCAT = MoneySimpleCursorAdapter.class.getSimpleName();
     private String mHighlight;
     private Core mCore;

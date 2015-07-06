@@ -31,7 +31,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/money_margin"
             android:orientation="vertical"
             android:padding="@dimen/money_padding">
@@ -61,6 +61,15 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="20dp"
                 android:text="@string/donate_header"
+                android:textIsSelectable="false"/>
+
+            <!-- direct donation link -->
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/directDonationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:text="@string/donate_direct"
                 android:textIsSelectable="false"/>
 
             <RelativeLayout
@@ -126,6 +135,7 @@
                         android:text="@string/donate_in_app_retrieving_status"/>
 
                 </LinearLayout>
+
             </RelativeLayout>
         </LinearLayout>
 

@@ -34,12 +34,13 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.BalanceAmountTask;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -255,6 +256,7 @@ public class AllDataAdapter
                     }
                 }
             }
+            if (TextUtils.isEmpty(accountName)) accountName = "-";
 
             // append square brackets around the account name to distinguish transfers visually.
             accountName = "[%]".replace("%", accountName);
@@ -429,7 +431,7 @@ public class AllDataAdapter
             balanceAmount.execute();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "Error in balance amount");
+            handler.handle(ex, "calculating balance amount");
         }
     }
 }

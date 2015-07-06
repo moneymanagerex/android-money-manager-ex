@@ -17,73 +17,24 @@
  */
 package com.money.manager.ex.settings;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-
-import com.money.manager.ex.R;
 
 /**
  * This class is used to interact with application settings/preferences.
  * Expand with additional methods as needed.
  */
-public class AppSettings {
+public class AppSettings extends SettingsBase {
 
     public AppSettings(Context context) {
-        mContext = context;
-        init();
+        super(context);
+
     }
 
-    private Context mContext;
-    private SharedPreferences mSettings;
-    private SharedPreferences.Editor mEditor;
+    // setting groups
 
-    private DatabaseSettings mDatabase;
     private GeneralSettings mGeneral;
-
-    public boolean get(String key, boolean defaultValue) {
-        return mSettings.getBoolean(key, defaultValue);
-    }
-
-    public String get(String key, String defaultValue) {
-        return mSettings.getString(key, defaultValue);
-    }
-
-    public boolean getHideReconciledAmounts() {
-        String key = mContext.getString(R.string.pref_transaction_hide_reconciled_amounts);
-        return this.get(key, false);
-    }
-
-    /**
-     * Save string value to settings.
-     * @param key
-     * @param value
-     */
-    public boolean set(String key, String value) {
-        getEditor().putString(key, value);
-        boolean result =getEditor().commit();
-        return result;
-    }
-
-    public boolean set(String key, boolean value) {
-        getEditor().putBoolean(key, value);
-        boolean result = getEditor().commit();
-
-        return result;
-    }
-
-    public boolean set(String key, int value) {
-        getEditor().putInt(key, value);
-        boolean result = getEditor().commit();
-        return result;
-    }
-
-    private void init() {
-        Context appContext = mContext.getApplicationContext();
-        mSettings = PreferenceManager.getDefaultSharedPreferences(appContext);
-    }
+    private LookAndFeelSettings mLookAndFeel;
+    private DatabaseSettings mDatabase;
 
     public DatabaseSettings getDatabaseSettings() {
         if (mDatabase == null) {
@@ -94,19 +45,19 @@ public class AppSettings {
 
     public GeneralSettings getGeneralSettings() {
         if (mGeneral == null) {
-            mGeneral = new GeneralSettings(this);
+            mGeneral = new GeneralSettings(mContext);
         }
         return mGeneral;
+    }
+
+    public LookAndFeelSettings getLookAndFeelSettings() {
+        if (mLookAndFeel == null) mLookAndFeel = new LookAndFeelSettings(mContext);
+
+        return mLookAndFeel;
     }
 
     public Context getContext() {
         return mContext;
     }
 
-    public SharedPreferences.Editor getEditor() {
-        if (mEditor == null) {
-            mEditor = mSettings.edit();
-        }
-        return mEditor;
-    }
 }

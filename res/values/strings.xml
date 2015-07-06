@@ -53,26 +53,20 @@
     <!-- dropbox -->
     <string name="dropbox_link">Link to Dropbox</string>
     <string name="dropbox_unlink">Unlink from Dropbox</string>
-    <!--<string name="dropbox_listFileProgress">File list in progress…</string>-->
     <string name="dropbox_syncProgress">Synchronizing file. Please wait…</string>
     <string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>
     <string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>
-    <!--<string name="dropbox_account">Dropbox Account</string>-->
     <string name="dropbox_linkedFile">File Dropbox</string>
-    <!--<string name="dropbox_method">Dropbox Synchronization Method</string>-->
 
     <!-- preferences -->
     <string name="preferences_general">General</string>
     <string name="preferences_dispaly">Look &#38; Feel</string>
     <string name="base_currency">Base currency</string>
-    <!--<string name="accounts_visible">Visible accounts</string>-->
     <string name="view_accounts_opened">View open accounts</string>
     <string name="if_not_selected_willShowAllAccounts">If not selected will show all accounts</string>
     <string name="view_accounts_favorites">View favourite accounts</string>
-    <!--<string name="preferences_version">MoneyManagerEx for Android</string>-->
     <string name="version">Version</string>
     <string name="build">Build</string>
-    <!--<string name="preferences_dropbox">Dropbox settings</string>-->
     <string name="path">Database path</string>
     <string name="title_show_tutorial">Show tutorial</string>
     <string name="summary_show_tutorial">Show tutorial on the next run?</string>
@@ -111,7 +105,6 @@
     <string name="delete_payee">Delete Payee</string>
     <string name="payee">Payee</string>
     <string name="select_payee">Select Payee</string>
-    <!--<string name="select_from">Select From</string>-->
     <string name="payee_empty_list">No payee has been found. To create one, tap the green plus button.</string>
     <string name="from">From</string>
     <string name="db_payee_update_failed">Updating payee failed</string>
@@ -123,12 +116,10 @@
     <string name="select_category">Select Category</string>
     <string name="add_category">Add Category</string>
     <string name="add_subcategory">Add Subcategory</string>
-    <!--<string name="category_name">Category Name</string>-->
     <string name="edit_categoryName">Edit Category</string>
     <string name="delete_category">Delete Category</string>
 
     <!-- currency -->
-    <!--<string name="currency">Currency</string>-->
     <string name="currency_name">Currency name</string>
     <string name="currency_symbol">Currency symbol</string>
     <string name="delete_currency">Delete Currency</string>
@@ -168,45 +159,33 @@
 
     <!-- application string -->
     <string name="about">About</string>
-    <!--<string name="abort">Abort</string>-->
     <string name="add">Add</string>
-    <!--<string name="all">All</string>-->
     <string name="confirmDelete">Are you sure you want to delete?</string>
     <string name="date">Date</string>
     <string name="delete">Delete</string>
     <string name="download">Download</string>
     <string name="edit">Edit</string>
-    <!--<string name="favorites">Favorites</string>-->
     <string name="home">Home</string>
-    <!--<string name="link">Link</string>-->
     <string name="logo">Logo</string>
-    <!--<string name="New">New</string>-->
     <string name="new_edit_transaction">New/Edit Transaction</string>
     <string name="refresh">Refresh</string>
-    <!--<string name="report_problem">Report a problem</string>-->
     <string name="search">Search</string>
-    <!--<string name="select">Select</string>-->
     <string name="settings">Settings</string>
     <string name="summary">Summary</string>
     <string name="sync">Sync</string>
     <string name="synchronize">Synchronize</string>
-    <!--<string name="synchronize_success">Synchronization completed successfully</string>-->
     <string name="open">Open</string>
     <string name="user">User</string>
-    <!--<string name="unlink">Unlink</string>-->
     <string name="upload">Upload</string>
     <string name="username">User Name</string>
-    <!--<string name="tell_us_a_problem">Please report any bugs or problems</string>-->
     <string name="to">To</string>
     <string name="website">Website</string>
     <string name="contact">Contact</string>
     <string name="access_info">Access info</string>
     <string name="initial_balance">Initial balance</string>
     <string name="notes">Notes</string>
-    <!--<string name="new_edit_account">New/Edit Account</string>-->
     <string name="closed">Closed</string>
     <string name="new_edit_currency">New/Edit Currency</string>
-    <!--<string name="path">Path</string>-->
     <string name="theme_application">Theme</string>
     <string name="theme_holo">Material Dark</string>
     <string name="theme_light">Material Light</string>
@@ -215,7 +194,6 @@
     <string name="close_application">Close application</string>
     <string name="question_close_application">Do you want to close the application?</string>
     <string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string>
-    <!-- do not translate -->
     <string name="attention">Attention</string>
     <string name="payee_can_not_deleted">The selected payee can not be deleted because it is referenced</string>
     <string name="account_can_not_deleted">The selected account can not be deleted because it is referenced</string>
@@ -228,10 +206,6 @@
     <string name="current_month">Current month</string>
     <string name="current_year">Current year</string>
     <string name="show_transaction">Show Transaction</string>
-    <!-- 20120917 -->
-    <!--<string name="type_home">Type Home</string>-->
-    <!--<string name="classic">Classic</string>-->
-    <!--<string name="advance">Advance</string>-->
     <string name="changelog">Changelog</string>
     <!-- 20120925 -->
     <string name="transaction_number">Transaction number</string>
@@ -239,9 +213,8 @@
     <string name="widget_summary">Money Manager Ex Summary</string>
     <string name="widget_all_accounts">Money Manager Ex All Accounts</string>
     <string name="widget_add_transaction">Money Manager Ex Add Transaction</string>
-    <!-- 20121023 -->
-    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
-    <!--<string name="repeating_transaction">Repeating Transaction</string>-->
+
+    <!-- Recurring Transactions -->
     <string name="none">None</string>
     <string name="weekly">Weekly</string>
     <string name="bi_weekly">Bi-Weekly</string>
@@ -257,7 +230,9 @@
     <string name="in_x_months">In (x) Months</string>
     <string name="every_x_days">Every (x) Days</string>
     <string name="every_x_months">Every (x) Months</string>
+    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
     <string name="inactive">Inactive</string>
+    <string name="activates">Activates</string>
     <string name="days_overdue">days overdue!</string>
     <string name="days_remaining">days remaining</string>
     <string name="new_edit_repeating_transaction">New/Edit Recurring Transaction</string>
@@ -265,14 +240,13 @@
     <string name="repeats">Repeats</string>
     <string name="times_repeated">Times Repeated</string>
     <string name="error_next_occurrence_not_populate">Next occurrence is required</string>
-    <string name="activates">Activates</string>
-    <!--<string name="period_days">Period: days</string>-->
     <string name="enter_next_occurrence">Enter Next Occurrence</string>
     <string name="skip_next_occurrence">Skip Next Occurrence</string>
+    <string name="skip_next_occurrence_confirmation">Do you want to skip the next occurrence?</string>
     <string name="notification_repeating_transaction_expired">There are expired recurring transactions</string>
     <string name="notification_click_to_check_repeating_transaction">Touch to check the transaction overdue</string>
-    <!-- 20121115 -->
     <string name="num_repeating_transaction_expired">%1$d recurring transaction overdue</string>
+
     <!-- 20121121 -->
     <string name="send_feedback">Send Feedback</string>
     <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -338,6 +312,7 @@
     <string name="donate">Donate</string>
     <string name="no_thanks">No, thanks</string>
     <string name="donate_exlamation">Donate!</string>
+    <string name="donate_direct">You can donate by clicking the Donate link on our app web site. Click here to open in browser.</string>
     <!-- 20130225 -->
     <string name="android_sqlite_vesion">SQLite Version</string>
     <!-- 20130301 -->
@@ -485,11 +460,14 @@
     <string name="locale_vi">Vietnamese</string>
     <string name="locale_zh_rCN">Chinese Simplified</string>
     <string name="locale_zh_rTW">Chinese Traditional</string>
+
     <string name="start_currency_exchange_rates">Updating the exchange rates of currencies. Please wait…</string>
     <string name="update_currency_exchange_rates">Updating the exchange rate:\n%1$s</string>
     <string name="success_currency_exchange_rates">All the exchange rates of currencies have been updated successfully</string>
     <string name="update_menu_currency_exchange_rates">Update Exchange Rate</string>
     <string name="question_update_currency_exchange_rates">Do you want to update exchange rate?</string>
+    <string name="error_update_currency_exchange_rate">There was an error updating the rate</string>
+
     <string name="withdrawal_from">Withdrawal From %1$s</string>
     <string name="deposit_to">Deposit To %1$s</string>
     <string name="mmex_website">MoneyManagerEx Website</string>
@@ -601,4 +579,9 @@
     <string name="cash">Cash</string>
     <string name="select_account">Select account</string>
     <string name="invalid_transaction_number">Invalid transaction number</string>
+    <string name="budgets">Budgets</string>
+    <string name="base_currency_not_set">Base currency has not been set</string>
+    <string name="error">Error</string>
+    <string name="unhandled_crash">Unexpected error. Please send us the log.</string>
+    <string name="title_activity_currency_rates_report">Currency Rates</string>
 </resources>

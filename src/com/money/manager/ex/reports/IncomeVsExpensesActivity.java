@@ -50,9 +50,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -281,22 +280,20 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
                     }
                     // calculate income, expenses
                     double income = 0, expenses = 0;
-                    if (data != null && data.moveToFirst()) {
-                        while (!data.isAfterLast()) {
-                            if (data.getInt(data.getColumnIndex(QueryReportIncomeVsExpenses.Month)) != SUBTOTAL_MONTH) {
-                                income += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-                                expenses += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
-                            }
-                            // move to next record
-                            data.moveToNext();
-                        }
-                        updateListViewFooter(mFooterListView, income, expenses);
-                        if (data.getCount() > 0) {
-                            getListView().removeFooterView(mFooterListView);
-                            getListView().addFooterView(mFooterListView);
-                        }
+                    if (data == null) return;
 
+                    while (data.moveToNext()) {
+                        if (data.getInt(data.getColumnIndex(QueryReportIncomeVsExpenses.Month)) != SUBTOTAL_MONTH) {
+                            income += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+                            expenses += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+                        }
                     }
+                    updateListViewFooter(mFooterListView, income, expenses);
+                    if (data.getCount() > 0) {
+                        getListView().removeFooterView(mFooterListView);
+                        getListView().addFooterView(mFooterListView);
+                    }
+
                     if (((IncomeVsExpensesActivity) getActivity()).mIsDualPanel) {
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {

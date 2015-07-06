@@ -38,7 +38,9 @@ import java.util.Calendar;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
-public class ExportToCsvFile extends AsyncTask<Void, Void, Boolean> {
+public class ExportToCsvFile
+        extends AsyncTask<Void, Void, Boolean> {
+
 	private final String LOGCAT = ExportToCsvFile.class.getSimpleName();
 	private Context mContext;
 	private AllDataAdapter mAdapter;
@@ -56,39 +58,11 @@ public class ExportToCsvFile extends AsyncTask<Void, Void, Boolean> {
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
-		if (mAdapter == null || mAdapter.getCursor() == null)
-			return false;
-		// take cursor
-		Cursor data = mAdapter.getCursor();
-		// create object to write csv file
-		try {
-			CSVWriter csvWriter = new CSVWriter(new FileWriter(mFileName), CSVWriter.DEFAULT_SEPARATOR,
-					CSVWriter.NO_QUOTE_CHARACTER);
-			while (data.moveToNext()) {
-				String[] record = new String[7];
-				// compose a records
-				record[0] = data.getString(data.getColumnIndex(QueryAllData.UserDate));
-				if (!TextUtils.isEmpty(data.getString(data.getColumnIndex(QueryAllData.Payee)))) {
-					record[1] = data.getString(data.getColumnIndex(QueryAllData.Payee));
-				} else {
-					record[1] = data.getString(data.getColumnIndex(QueryAllData.AccountName));
-				}
-				record[2] = Double.toString(data.getDouble(data.getColumnIndex(QueryAllData.Amount)));
-				record[3] = data.getString(data.getColumnIndex(QueryAllData.Category));
-				record[4] = data.getString(data.getColumnIndex(QueryAllData.Subcategory));
-				record[5] = Integer.toString(data.getInt(data.getColumnIndex(QueryAllData.TransactionNumber)));
-				record[6] = data.getString(data.getColumnIndex(QueryAllData.Notes));
-				// writer record
-				csvWriter.writeNext(record);
-				// move to next row
-				data.moveToNext();
-			}
-			csvWriter.close();
-		} catch (Exception e) {
-			Log.e(LOGCAT, e.getMessage());
-			return false;
-		}
-		return true;
+        try {
+            return runTask();
+        } catch (Exception e) {
+            throw new RuntimeException("Error in Export to CSV", e);
+        }
 	}
 
 	@Override
@@ -127,6 +101,44 @@ public class ExportToCsvFile extends AsyncTask<Void, Void, Boolean> {
 		dialog.setIndeterminate(true);
 		dialog.setMessage(mContext.getString(R.string.export_data_in_progress));
 		dialog.show();
+	}
+
+	private boolean runTask() {
+		if (mAdapter == null || mAdapter.getCursor() == null)
+			return false;
+		// take cursor
+		Cursor data = mAdapter.getCursor();
+		// create object to write csv file
+		try {
+			CSVWriter csvWriter = new CSVWriter(new FileWriter(mFileName), CSVWriter.DEFAULT_SEPARATOR,
+					CSVWriter.NO_QUOTE_CHARACTER);
+			while (data.moveToNext()) {
+				String[] record = new String[7];
+				// compose a records
+				record[0] = data.getString(data.getColumnIndex(QueryAllData.UserDate));
+				if (!TextUtils.isEmpty(data.getString(data.getColumnIndex(QueryAllData.Payee)))) {
+					record[1] = data.getString(data.getColumnIndex(QueryAllData.Payee));
+				} else {
+					record[1] = data.getString(data.getColumnIndex(QueryAllData.AccountName));
+				}
+				record[2] = Double.toString(data.getDouble(data.getColumnIndex(QueryAllData.Amount)));
+				record[3] = data.getString(data.getColumnIndex(QueryAllData.Category));
+				record[4] = data.getString(data.getColumnIndex(QueryAllData.Subcategory));
+				record[5] = Integer.toString(data.getInt(data.getColumnIndex(QueryAllData.TransactionNumber)));
+				record[6] = data.getString(data.getColumnIndex(QueryAllData.Notes));
+				// writer record
+				csvWriter.writeNext(record);
+				// move to next row
+				data.moveToNext();
+			}
+			csvWriter.close();
+		} catch (Exception e) {
+			ExceptionHandler handler = new ExceptionHandler(mContext, this);
+			handler.handle(e, "exporting to CSV");
+
+			return false;
+		}
+		return true;
 	}
 
 	/**

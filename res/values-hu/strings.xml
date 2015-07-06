@@ -168,7 +168,6 @@
   <string name="widget_summary">Money Manager Ex Összesen</string>
   <string name="widget_all_accounts">Money Manager Ex minden számla</string>
   <string name="widget_add_transaction">Money Manager Ex Új tranzakció</string>
-  <string name="repeating_empty_transaction">Nincsenek ismétlődő tranzakciók. Létrehozásukhoz nyomja meg a zöld plusz gombot.</string>
   <string name="none">Soha</string>
   <string name="weekly">Hetente</string>
   <string name="bi_weekly">Kéthetente</string>
@@ -184,7 +183,9 @@
   <string name="in_x_months">(x) havonta</string>
   <string name="every_x_days">Minden (x). napon</string>
   <string name="every_x_months">Minden (x). hónapban</string>
+  <string name="repeating_empty_transaction">Nincsenek ismétlődő tranzakciók. Létrehozásukhoz nyomja meg a zöld plusz gombot.</string>
   <string name="inactive">Inaktív</string>
+  <string name="activates">Aktiválás</string>
   <string name="days_overdue">napja lejárt!</string>
   <string name="days_remaining">hátralévő nap</string>
   <string name="new_edit_repeating_transaction">Új/Szerkeszt ismétlődő tranzakció</string>
@@ -192,7 +193,6 @@
   <string name="repeats">Ismétlődik</string>
   <string name="times_repeated">Gyakoriság</string>
   <string name="error_next_occurrence_not_populate">Következő előfordulás megadása kötelező</string>
-  <string name="activates">Aktiválás</string>
   <string name="enter_next_occurrence">Következő előfordulás felvitele</string>
   <string name="skip_next_occurrence">Következő előfordulás kihagyása</string>
   <string name="notification_repeating_transaction_expired">Vannak lejárt ismétlődő tranzakciók</string>

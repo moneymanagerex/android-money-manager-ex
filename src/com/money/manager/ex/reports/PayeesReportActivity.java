@@ -42,10 +42,8 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.fragment.IncomeVsExpensesChartFragment;
-import com.money.manager.ex.fragment.PieChartFragment;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.util.ArrayList;
 
@@ -187,31 +185,32 @@ public class PayeesReportActivity extends BaseFragmentActivity {
             super.onLoadFinished(loader, data);
             switch (loader.getId()) {
                 case ID_LOADER:
-                    //parse cursor for calculate total
-                    if (data != null && data.moveToFirst()) {
-                        double totalAmount = 0;
-                        while (!data.isAfterLast()) {
-                            totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
-                            data.moveToNext();
-                        }
-                        TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
-                        txtColumn2.setText(currencyUtils.getBaseCurrencyFormatted(totalAmount));
-                        // soved bug chart
-                        if (data.getCount() > 0) {
-                            getListView().removeFooterView(mFooterListView);
-                            getListView().addFooterView(mFooterListView);
-                        }
-                        // handler to show chart
-                        if (((PayeesReportActivity) getActivity()).mIsDualPanel) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
+                    if (data == null) return;
 
-                                @Override
-                                public void run() {
-                                    showChart();
-                                }
-                            }, 1 * 1000);
-                        }
+                    //parse cursor for calculate total
+                    double totalAmount = 0;
+                    while (data.moveToNext()) {
+                        totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
+                    }
+
+                    TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
+                    txtColumn2.setText(currencyUtils.getBaseCurrencyFormatted(totalAmount));
+
+                    // solve bug chart
+                    if (data.getCount() > 0) {
+                        getListView().removeFooterView(mFooterListView);
+                        getListView().addFooterView(mFooterListView);
+                    }
+                    // handler to show chart
+                    if (((PayeesReportActivity) getActivity()).mIsDualPanel) {
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                showChart();
+                            }
+                        }, 1 * 1000);
                     }
             }
         }

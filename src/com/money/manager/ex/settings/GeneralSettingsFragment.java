@@ -27,19 +27,17 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.money.manager.ex.AccountListEditActivity;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MainActivity;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.currency.CurrencyFormatsActivity;
-import com.money.manager.ex.currency.CurrencyFormatsListActivity;
+import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.utils.CurrencyNameComparator;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyNameComparator;
+import com.money.manager.ex.currency.CurrencyUtils;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -74,7 +72,6 @@ public class GeneralSettingsFragment
         final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferenceConstants.PREF_LOCALE));
         if (lstLocaleApp != null) {
             String summary = mSettings.getGeneralSettings().getApplicationLocale();
-//            String summary = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).getString(getString(PreferenceConstants.PREF_LOCALE), "");
             setSummaryListPreference(lstLocaleApp, summary, R.array.application_locale_values, R.array.application_locale_entries);
             lstLocaleApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
@@ -232,7 +229,7 @@ public class GeneralSettingsFragment
             case REQUEST_PICK_CURRENCY:
                 // Returning from the currency picker screen.
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    int currencyId = data.getIntExtra(CurrencyFormatsListActivity.INTENT_RESULT_CURRENCYID, -1);
+                    int currencyId = data.getIntExtra(CurrenciesActivity.INTENT_RESULT_CURRENCYID, -1);
                     // set preference
 //                    AppSettings settings = new AppSettings(getActivity());
 //                    settings.getGeneralSettings().setBaseCurrency(currencyId);
@@ -272,7 +269,7 @@ public class GeneralSettingsFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 // show the currencies activity
-                Intent intent = new Intent(getActivity(), CurrencyFormatsListActivity.class);
+                Intent intent = new Intent(getActivity(), CurrenciesActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(intent, REQUEST_PICK_CURRENCY);
 

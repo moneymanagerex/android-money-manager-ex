@@ -166,7 +166,6 @@
   <string name="widget_summary">Money Manager Ex - Samenvatting</string>
   <string name="widget_all_accounts">Money Manager Ex - Alle Rekeningen</string>
   <string name="widget_add_transaction">Money Manager Ex - Transactie Toevoegen</string>
-  <string name="repeating_empty_transaction">Geen terugkerende transacties gevonden. Om deze te maken, tik op de groene plus knop.</string>
   <string name="none">Geen</string>
   <string name="weekly">Wekelijks</string>
   <string name="bi_weekly">2-Wekelijks</string>
@@ -182,7 +181,9 @@
   <string name="in_x_months">Binnen (x) maanden</string>
   <string name="every_x_days">Elke (x) dagen</string>
   <string name="every_x_months">Elke (x) maanden</string>
+  <string name="repeating_empty_transaction">Geen terugkerende transacties gevonden. Om deze te maken, tik op de groene plus knop.</string>
   <string name="inactive">Inactief</string>
+  <string name="activates">Aan het activeren</string>
   <string name="days_overdue">aantal dagen te laat!</string>
   <string name="days_remaining">aantal dagen te gaan</string>
   <string name="new_edit_repeating_transaction">Maak Nieuwe/Bewerk Periodieke Transactie</string>
@@ -190,7 +191,6 @@
   <string name="repeats">Herhalingen</string>
   <string name="times_repeated">Aantal Herhalingen</string>
   <string name="error_next_occurrence_not_populate">Volgend Vermelding is vereist</string>
-  <string name="activates">Aan het activeren</string>
   <string name="enter_next_occurrence">Volgende vermelding invoeren</string>
   <string name="skip_next_occurrence">Volgende vermelding overslaan</string>
   <string name="notification_repeating_transaction_expired">Er zijn vervallen Periodieke Transacties</string>

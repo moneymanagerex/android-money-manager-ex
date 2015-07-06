@@ -20,25 +20,22 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
 
 /**
  * Settings in the General category.
  */
-public class GeneralSettings {
-    public GeneralSettings(AppSettings settings) {
-        this.mSettings = settings;
-        this.mContext = settings.getContext();
+public class GeneralSettings
+    extends SettingsBase {
+
+    public GeneralSettings(Context context) {
+        super(context);
+
     }
 
-    private final Context mContext;
-    private AppSettings mSettings;
-
     public String getApplicationLocale() {
-        String result = PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext())
-                .getString(mContext.getString(PreferenceConstants.PREF_LOCALE), "");
+        String result = get(PreferenceConstants.PREF_LOCALE, "");
         return result;
     }
 
@@ -58,10 +55,6 @@ public class GeneralSettings {
         String key = mContext.getString(R.string.pref_repeating_transaction_notifications);
         boolean notify = preferences.getBoolean(key, true);
         return notify;
-    }
-
-    private SharedPreferences getSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
     }
 
     public String getDefaultAccount() {

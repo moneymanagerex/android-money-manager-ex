@@ -30,8 +30,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.fragment.BaseFragmentActivity;
-import com.money.manager.ex.utils.CurrencyUtils;
+import com.money.manager.ex.common.BaseFragmentActivity;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
