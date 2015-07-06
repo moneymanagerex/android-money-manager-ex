@@ -344,7 +344,7 @@
   <string name="path_database_not_exists">数据库路径不存在</string>
   <string name="database_can_not_open_write">该数据库不能读写</string>
   <string name="question_import_currencies">需要导入货币吗？</string>
-  <string name="time_frame">时间框架</string>
+  <string name="time_frame">时间范围</string>
   <string name="show_chart">显示图表</string>
   <string name="add_transaction">添加交易</string>
   <string name="welcome_header">欢迎使用 MoneyManagerEx</string>
