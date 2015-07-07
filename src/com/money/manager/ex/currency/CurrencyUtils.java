@@ -54,6 +54,7 @@ public class CurrencyUtils {
 
     public CurrencyUtils(Context context) {
         mContext = context;
+        mCurrencies = new HashMap<>();
     }
 
     public static void destroy() {
@@ -222,7 +223,6 @@ public class CurrencyUtils {
         boolean result = true;
         TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
         Cursor cursor;
-        mCurrencies = new HashMap<>();
 
         try {
             cursor = mContext.getContentResolver().query(tableCurrency.getUri(),
