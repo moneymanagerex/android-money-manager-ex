@@ -34,7 +34,7 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 
 /**
- *
+ * List fragment
  */
 public class AbsListFragment
         extends Fragment {
@@ -298,8 +298,7 @@ public class AbsListFragment
             mList = (ListView) rawListView;
             if (mList == null) {
                 throw new RuntimeException(
-                        "Your content must have a ListView whose id attribute is " +
-                                "'android.R.id.list'");
+                        "Your content must have a ListView whose id attribute is 'android.R.id.list'");
             }
             if (mEmptyView != null) {
 //                mList.setEmptyView(mEmptyView);

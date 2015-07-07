@@ -73,7 +73,7 @@ public class CategoriesReportFragment extends BaseReportFragment {
         txtColumn1.setTypeface(null, Typeface.BOLD_ITALIC);
         txtColumn2.setText(R.string.total);
         txtColumn2.setTypeface(null, Typeface.BOLD_ITALIC);
-        //add to listview --> move to load finished
+        //add to list view --> move to load finished
         //getListView().addFooterView(mFooterListView);
         //set adapter
         CategoriesReportAdapter adapter = new CategoriesReportAdapter(getActivity(), null);

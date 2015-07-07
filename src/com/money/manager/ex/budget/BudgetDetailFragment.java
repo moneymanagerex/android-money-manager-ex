@@ -18,7 +18,6 @@
 package com.money.manager.ex.budget;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -26,14 +25,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ListView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.database.BudgetTable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,18 +85,31 @@ public class BudgetDetailFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mBudgetYearId = getArguments().getLong(ARG_BUDGET_YEAR_ID);
             mBudgetName = getArguments().getString(ARG_BUDGET_NAME_ID);
         }
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_budget_detail, container, false);
-//    }
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        ListView list = (ListView) view.findViewById(android.R.id.list);
+
+        // Add the column header.
+        View header = View.inflate(getActivity(), R.layout.item_budget_header, null);
+        list.addHeaderView(header);
+        // Header has to be added before the adapter is set on the list.
+
+        setUpAdapter();
+
+        return view;
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -223,6 +237,12 @@ public class BudgetDetailFragment
     // Private
 
     private void displayBudget() {
+        setListShown(false);
+
+        getLoaderManager().initLoader(LOADER_BUDGET, null, this);
+    }
+
+    private void setUpAdapter() {
         BudgetAdapter adapter = new BudgetAdapter(getActivity(),
                 null,
                 new String[]{ BudgetQuery.CATEGNAME },
@@ -232,13 +252,5 @@ public class BudgetDetailFragment
         adapter.setBudgetName(mBudgetName);
 
         setListAdapter(adapter);
-        setListShown(false);
-
-        // Add the column header.
-        View header = View.inflate(getActivity(), R.layout.item_budget_header, null);
-        getListView().addHeaderView(header);
-
-        getLoaderManager().initLoader(LOADER_BUDGET, null, this);
     }
-
 }
