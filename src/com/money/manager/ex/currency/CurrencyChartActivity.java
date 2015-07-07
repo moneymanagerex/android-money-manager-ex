@@ -81,7 +81,7 @@ public class CurrencyChartActivity extends BaseFragmentActivity {
         // https://code.google.com/p/yahoo-finance-managed/wiki/miscapiImageDownload
 
         String url = String.format("http://chart.finance.yahoo.com/z?s=%s%s=x&t=5d&z=m",
-                baseCurrencySymbol, currencySymbol);
+                currencySymbol, baseCurrencySymbol);
 
         ImageView imageView = (ImageView) findViewById(R.id.imageChart);
 
