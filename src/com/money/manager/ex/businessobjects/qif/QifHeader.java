@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAllData;
@@ -131,8 +132,8 @@ L5,000.00
 
     private TableAccountList loadAccount(Cursor cursor) {
         int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
-        TableAccountList account = MoneyManagerOpenHelper.getInstance(mContext)
-                .getTableAccountList(accountId);
+        AccountService service = new AccountService(mContext);
+        TableAccountList account = service.getTableAccountList(accountId);
         return account;
     }
 }

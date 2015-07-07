@@ -17,9 +17,49 @@
  */
 package com.money.manager.ex.businessobjects;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.money.manager.ex.database.TableAccountList;
+
 /**
  * Various business logic pieces related to Account(s).
  */
 public class AccountService {
-    public static final int NO_ACCOUNT = -1;
+
+    public AccountService(Context context) {
+        mContext = context;
+    }
+
+//    public static final int NO_ACCOUNT = -1;
+
+    private Context mContext;
+
+    /**
+     * @param id account id to be search
+     * @return TableAccountList, return null if account id not find
+     */
+    public TableAccountList getTableAccountList(int id) {
+        TableAccountList account = new TableAccountList();
+        String selection = TableAccountList.ACCOUNTID + "=?";
+
+        Cursor cursor = mContext.getContentResolver().query(account.getUri(),
+                null,
+                selection,
+                new String[]{Integer.toString(id)},
+                null, null);
+        if (cursor == null) return null;
+
+        // check if cursor is valid
+        if (cursor.moveToFirst()) {
+            account = new TableAccountList();
+            account.setValueFromCursor(cursor);
+
+            cursor.close();
+        }
+
+        return account;
+    }
+
 }

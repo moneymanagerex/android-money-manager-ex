@@ -45,6 +45,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
@@ -487,8 +488,10 @@ public class AccountTransactionsFragment
     }
 
     private void reloadAccountInfo() {
-        mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
-                .getTableAccountList(mAccountId);
+//        mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
+//                .getTableAccountList(mAccountId);
+        AccountService service = new AccountService(getActivity().getApplicationContext());
+        mAccountList = service.getTableAccountList(mAccountId);
     }
 
     // Loader events.

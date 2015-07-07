@@ -400,13 +400,8 @@ public class Core {
         String categoryName, subCategoryName, ret;
         TableCategory category = new TableCategory();
         TableSubCategory subCategory = new TableSubCategory();
-        Cursor cursor;
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
-//        SQLiteDatabase db = helper.getReadableDatabase();
         // category
-//        cursor = db.query(category.getSource(), null,
-//                TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null, null, null);
-        cursor = mContext.getContentResolver().query(category.getUri(),
+        Cursor cursor = mContext.getContentResolver().query(category.getUri(),
                 null,
                 TableCategory.CATEGID + "=?",
                 new String[]{Integer.toString(categoryId)},
@@ -421,9 +416,8 @@ public class Core {
         if (cursor != null) {
             cursor.close();
         }
+
         // sub-category
-//        cursor = db.query(subCategory.getSource(), null,
-//                TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null, null, null);
         cursor = mContext.getContentResolver().query(subCategory.getUri(),
                 null,
                 TableSubCategory.SUBCATEGID + "=?",
@@ -438,45 +432,12 @@ public class Core {
         if (cursor != null) {
             cursor.close();
         }
-        ////helper.close();
 
         ret = (!TextUtils.isEmpty(categoryName) ? categoryName : "") +
                 (!TextUtils.isEmpty(subCategoryName) ? ":" + subCategoryName : "");
 
-//        db.close();
-
         return ret;
     }
-
-//    /**
-//     * Returns category and sub-category formatted
-//     *
-//     * @param queryCategorySubCategory object
-//     * @return category : sub-category
-//     */
-//    public String getCategSubName(QueryCategorySubCategory queryCategorySubCategory) {
-//        return getCategSubName(queryCategorySubCategory.getCategId(), queryCategorySubCategory.getSubCategId());
-//    }
-
-//    /**
-//     * Returns category and sub-category formatted
-//     *
-//     * @param category object
-//     * @return category : sub-category
-//     */
-//    public String getCategSubName(TableCategory category) {
-//        return getCategSubName(category.getCategId(), -1);
-//    }
-
-//    /**
-//     * Returns category and sub-category formatted
-//     *
-//     * @param subCategory object
-//     * @return category : sub-category
-//     */
-//    public String getCategSubName(TableSubCategory subCategory) {
-//        return getCategSubName(subCategory.getCategId(), subCategory.getSubCategId());
-//    }
 
     /**
      * Retrieve value of info
@@ -486,24 +447,24 @@ public class Core {
      */
     public String getInfoValue(String info) {
         TableInfoTable infoTable = new TableInfoTable();
-//        MoneyManagerOpenHelper helper;
         Cursor data;
         String ret = null;
 
         try {
-            data = MoneyManagerOpenHelper.getInstance(mContext)
-                .getReadableDatabase().query(infoTable.getSource(), null,
-                    TableInfoTable.INFONAME + "=?", new String[]{info}, null, null, null);
-            if (data != null && data.moveToFirst()) {
+            data = mContext.getContentResolver().query(infoTable.getUri(),
+                    null,
+                    TableInfoTable.INFONAME + "=?",
+                    new String[]{ info },
+                    null, null);
+            if (data == null) return null;
+
+            if (data.moveToFirst()) {
                 ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
             }
+            data.close();
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
-        } finally {
-//            // close data
-//            if (data != null)
-//                data.close();
-            //if (helper != null) helper.close();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "retrieving info value: " + info);
         }
 
         return ret;
@@ -580,9 +541,11 @@ public class Core {
 
                 // check if already exists currency symbol
                 Cursor cursor = mContext.getContentResolver().query(tableCurrencyFormats.getUri(), null,
-                        TableCurrencyFormats.CURRENCY_SYMBOL + "=?", new String[]{currency.getCurrencyCode()}, null);
+                        TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
+                        new String[]{currency.getCurrencyCode()}, null);
+                if (cursor == null) return false;
 
-                if (cursor != null && cursor.getCount() <= 0) {
+                if (cursor.getCount() <= 0) {
                     ContentValues values = new ContentValues();
 
                     values.put(TableCurrencyFormats.CURRENCYNAME, currency.getDisplayName());
@@ -597,14 +560,14 @@ public class Core {
                     values.put(TableCurrencyFormats.SCALE, 100);
                     values.put(TableCurrencyFormats.BASECONVRATE, 1);
 
-                    cursor.close();
-
                     // insert and check error
                     if (mContext.getContentResolver().insert(tableCurrencyFormats.getUri(), values) == null)
                         return false;
                 }
+                cursor.close();
             } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
+                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                handler.handle(e, "importing currencies from locale");
             }
         }
 
@@ -636,7 +599,7 @@ public class Core {
     }
 
     /**
-     * Change the application database
+     * Change the database used by the app.
      *
      * @param path new database
      * @return indicator whether the operation was successful

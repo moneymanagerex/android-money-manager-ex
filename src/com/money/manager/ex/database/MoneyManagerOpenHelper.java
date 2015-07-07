@@ -231,31 +231,6 @@ public class MoneyManagerOpenHelper
     }
 
     /**
-     * @param id account id to be search
-     * @return TableAccountList, return null if account id not find
-     */
-    public TableAccountList getTableAccountList(int id) {
-        TableAccountList account = null;
-        String selection = TableAccountList.ACCOUNTID + "=?";
-        SQLiteDatabase database = getReadableDatabase();
-        if (database == null) return null;
-
-        Cursor cursor = database.query(new TableAccountList().getSource(), null, selection,
-                new String[]{Integer.toString(id)}, null, null, null);
-        if (cursor == null) return null;
-
-        // check if cursor is valid
-        if (cursor.moveToFirst()) {
-            account = new TableAccountList();
-            account.setValueFromCursor(cursor);
-
-            cursor.close();
-        }
-
-        return account;
-    }
-
-    /**
      * Called when the database is being created.
      * @param db Database instance.
      */

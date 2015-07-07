@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -136,8 +137,8 @@ public class WatchlistFragment extends Fragment
         View view = inflater.inflate(R.layout.account_fragment, container, false);
 
         if (mAccount == null) {
-            mAccount = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
-                    .getTableAccountList(mAccountId);
+            AccountService service = new AccountService(getActivity().getApplicationContext());
+            mAccount = service.getTableAccountList(mAccountId);
         }
 
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.fragment_watchlist_header, null, false);
