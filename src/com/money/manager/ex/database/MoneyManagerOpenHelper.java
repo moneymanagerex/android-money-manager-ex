@@ -68,6 +68,7 @@ public class MoneyManagerOpenHelper
     public static synchronized MoneyManagerOpenHelper getInstance(Context context) {
         if (mInstance == null) {
             Log.v(LOGCAT, "MoneyManagerOpenHelper.getInstance()");
+
             mInstance = new MoneyManagerOpenHelper(context);
         }
         return mInstance;

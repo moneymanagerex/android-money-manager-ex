@@ -101,13 +101,17 @@ public class Passcode {
 
     private String retrievePasscode() {
         String ret = null;
-        // open connection to database
-
         TableInfoTable infoTable = new TableInfoTable();
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
-        Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null,
-                TableInfoTable.INFONAME + "=?", new String[]{INFONAME}, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
+
+        Cursor cursor = mContext.getContentResolver().query(infoTable.getUri(),
+                null,
+                TableInfoTable.INFONAME + "=?",
+                new String[]{ INFONAME },
+                null, null);
+
+        if (cursor == null) return null;
+
+        if (cursor.moveToFirst()) {
             ret = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
 
             cursor.close();
