@@ -179,6 +179,11 @@ public class CurrencyUtils {
         if (result == null) {
             CurrencyRepository repository = new CurrencyRepository(mContext);
             result = repository.loadCurrency(currencyId);
+
+            // cache
+            if (!mCurrencies.containsKey(currencyId)) {
+                mCurrencies.put(currencyId, result);
+            }
         }
 
         return result;
@@ -227,12 +232,7 @@ public class CurrencyUtils {
 
             // load data into map
             while (cursor.moveToNext()) {
-                TableCurrencyFormats mapCur = new TableCurrencyFormats();
-                mapCur.setValueFromCursor(cursor);
-
-                Integer currencyId = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
-                // put object into map
-                mCurrencies.put(currencyId, mapCur);
+                cacheCurrencyFromCursor(cursor);
             }
             cursor.close();
         } catch (Exception e) {
@@ -240,6 +240,15 @@ public class CurrencyUtils {
         }
 
         return result;
+    }
+
+    private void cacheCurrencyFromCursor(Cursor cursor) {
+        TableCurrencyFormats currency = new TableCurrencyFormats();
+        currency.setValueFromCursor(cursor);
+
+        Integer currencyId = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
+        // put object into map
+        mCurrencies.put(currencyId, currency);
     }
 
     /**
