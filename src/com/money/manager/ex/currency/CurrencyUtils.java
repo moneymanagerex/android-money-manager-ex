@@ -54,7 +54,6 @@ public class CurrencyUtils {
 
     public CurrencyUtils(Context context) {
         mContext = context;
-        mCurrencies = new HashMap<>();
     }
 
     public static void destroy() {
@@ -65,7 +64,12 @@ public class CurrencyUtils {
     public Boolean reInit() {
         destroy();
 
-        return loadCurrencies();
+        return loadAllCurrencies();
+    }
+
+    public Map<Integer, TableCurrencyFormats> getCurrenciesStore() {
+        if (mCurrencies == null) mCurrencies = new HashMap<>();
+        return mCurrencies;
     }
 
     public Double doCurrencyExchange(Integer toCurrencyId, double amount, Integer fromCurrencyId) {
@@ -88,15 +92,15 @@ public class CurrencyUtils {
      */
     public List<TableCurrencyFormats> getAllCurrencyFormats() {
         // try loading the currencies first.
-        if (mCurrencies == null) {
-            this.loadCurrencies();
-        }
+        this.loadAllCurrencies();
 
-        if (mCurrencies != null) {
-            return new ArrayList<>(mCurrencies.values());
-        } else {
-            return Collections.emptyList();
-        }
+//        if (mCurrencies != null) {
+//            return new ArrayList<>(mCurrencies.values());
+//        } else {
+//            return Collections.emptyList();
+//        }
+
+        return new ArrayList<>(getCurrenciesStore().values());
     }
 
     /**
@@ -173,17 +177,16 @@ public class CurrencyUtils {
         TableCurrencyFormats result = null;
 
         // check if the currency is cached.
-        if (mCurrencies != null) {
-            result =  mCurrencies.get(currencyId);
-        }
+        result =  getCurrenciesStore().get(currencyId);
+
         // if not cached, try to load it.
         if (result == null) {
             CurrencyRepository repository = new CurrencyRepository(mContext);
             result = repository.loadCurrency(currencyId);
 
             // cache
-            if (!mCurrencies.containsKey(currencyId)) {
-                mCurrencies.put(currencyId, result);
+            if (!getCurrenciesStore().containsKey(currencyId)) {
+                getCurrenciesStore().put(currencyId, result);
             }
         }
 
@@ -219,7 +222,7 @@ public class CurrencyUtils {
     /**
      *  Load all currencies into map
      */
-    public boolean loadCurrencies() {
+    public boolean loadAllCurrencies() {
         boolean result = true;
         TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
         Cursor cursor;
@@ -248,7 +251,7 @@ public class CurrencyUtils {
 
         Integer currencyId = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
         // put object into map
-        mCurrencies.put(currencyId, currency);
+        getCurrenciesStore().put(currencyId, currency);
     }
 
     /**
