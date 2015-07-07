@@ -289,7 +289,8 @@ public class HomeFragment
                         String infoValue = data.getString(data.getColumnIndex(infoTable.INFONAME));
                         // save into preferences username and base currency id
                         if (Constants.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
-                            MoneyManagerApplication.getInstanceApp().setUserName(data.getString(data.getColumnIndex(infoTable.INFOVALUE)));
+                            MoneyManagerApplication.getInstanceApp().setUserName(
+                                    data.getString(data.getColumnIndex(infoTable.INFOVALUE)));
                         }
                     }
                 }

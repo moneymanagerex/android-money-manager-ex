@@ -174,7 +174,7 @@ public class CurrencyUtils {
      * @return an instance of class TableCurrencyFormats. Null if fail
      */
     public TableCurrencyFormats getCurrency(int currencyId) {
-        TableCurrencyFormats result = null;
+        TableCurrencyFormats result;
 
         // check if the currency is cached.
         result =  getCurrenciesStore().get(currencyId);
