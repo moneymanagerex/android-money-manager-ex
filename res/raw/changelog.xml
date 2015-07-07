@@ -18,8 +18,9 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="July 6, 2015" versionName="2.7.0">
+    <changelogversion changeDate="July 7, 2015" versionName="2.7.1">
         <changelogtext>A readonly view for Budgets. You can now see the budgets created in the desktop version.</changelogtext>
+        <changelogtext>Calculating the actual usage in the balance view.</changelogtext>
         <changelogtext>We now accept donations in BitCoin. See the 'Donate' page.</changelogtext>
         <changelogtext>Stability improvement: solved another cause of errors on database switch for some users.</changelogtext>
     </changelogversion>
