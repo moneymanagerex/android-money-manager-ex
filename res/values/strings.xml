@@ -94,6 +94,7 @@
     <string name="db_account_insert_failed">Error inserting account</string>
     <string name="db_account_update_failed">Error updating account</string>
     <string name="error_currency_not_selected">Currency is required</string>
+    <string name="error_saving_default_currency">Error saving the default currency</string>
     <string name="error_initialbal_empty">Account initial balance is required</string>
     <string name="error_accountname_empty">Account name is required</string>
     <string name="error_accounttype_empty">Account type is required</string>

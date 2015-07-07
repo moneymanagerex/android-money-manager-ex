@@ -214,6 +214,9 @@ public class CurrencyUtils {
         // cache the new base currency
         if (success) {
             mBaseCurrencyId = currencyId;
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.error_saving_default_currency), Toast.LENGTH_SHORT)
+                    .show();
         }
 
         return success;

@@ -265,6 +265,9 @@ public class GeneralSettingsFragment
         // Display the current default currency as the summary.
         showCurrentDefaultCurrency();
 
+        // After the currency is selected in the Currencies screen, the change is handled
+        // in onActivityResult
+
         Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -280,49 +283,49 @@ public class GeneralSettingsFragment
         baseCurrency.setOnPreferenceClickListener(clickListener);
     }
 
-    private void initBaseCurrency_list() {
-        final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
-
-        final ListPreference lstBaseCurrency = (ListPreference) findPreference(getString(PreferenceConstants.PREF_BASE_CURRENCY));
-        if (lstBaseCurrency == null) {
-            return;
-        }
-
-        List<TableCurrencyFormats> currencies = currencyUtils.getAllCurrencyFormats();
-        // sort the currencies by name.
-        Collections.sort(currencies, new CurrencyNameComparator());
-
-        String[] entries = new String[currencies.size()];
-        String[] entryValues = new String[currencies.size()];
-        // list of currency
-        for (int i = 0; i < currencies.size(); i++) {
-            entries[i] = currencies.get(i).getCurrencyName();
-            entryValues[i] = ((Integer) currencies.get(i).getCurrencyId()).toString();
-        }
-        // set value
-        lstBaseCurrency.setEntries(entries);
-        lstBaseCurrency.setEntryValues(entryValues);
-
-        // Display the current default currency as the summary.
-        TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
-        if (tableCurrency != null) {
-            lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
-        }
-
-        lstBaseCurrency.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (currencyUtils.saveBaseCurrencyId(Integer.valueOf(String.valueOf(newValue)))) {
-                    currencyUtils.reInit();
-                    TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
-                    if (tableCurrency != null) {
-                        lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
-                    }
-                }
-                return true;
-            }
-        });
-    }
+//    private void initBaseCurrency_list() {
+//        final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+//
+//        final ListPreference lstBaseCurrency = (ListPreference) findPreference(getString(PreferenceConstants.PREF_BASE_CURRENCY));
+//        if (lstBaseCurrency == null) {
+//            return;
+//        }
+//
+//        List<TableCurrencyFormats> currencies = currencyUtils.getAllCurrencyFormats();
+//        // sort the currencies by name.
+//        Collections.sort(currencies, new CurrencyNameComparator());
+//
+//        String[] entries = new String[currencies.size()];
+//        String[] entryValues = new String[currencies.size()];
+//        // list of currency
+//        for (int i = 0; i < currencies.size(); i++) {
+//            entries[i] = currencies.get(i).getCurrencyName();
+//            entryValues[i] = ((Integer) currencies.get(i).getCurrencyId()).toString();
+//        }
+//        // set value
+//        lstBaseCurrency.setEntries(entries);
+//        lstBaseCurrency.setEntryValues(entryValues);
+//
+//        // Display the current default currency as the summary.
+//        TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
+//        if (tableCurrency != null) {
+//            lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
+//        }
+//
+//        lstBaseCurrency.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+//            @Override
+//            public boolean onPreferenceChange(Preference preference, Object newValue) {
+//                if (currencyUtils.saveBaseCurrencyId(Integer.valueOf(String.valueOf(newValue)))) {
+//                    currencyUtils.reInit();
+//                    TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
+//                    if (tableCurrency != null) {
+//                        lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
+//                    }
+//                }
+//                return true;
+//            }
+//        });
+//    }
 
     public void setSummaryListPreference(Preference preference, String value, int idArrayValues, int idArrayItems) {
         final String[] values = getResources().getStringArray(idArrayValues);
