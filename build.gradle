@@ -55,6 +55,8 @@ dependencies {
     // androidSVG
     compile project(':androidSVG_12')
     compile 'com.shamanland:fonticon:0.1.8'
+    // Ref: https://developer.android.com/tools/building/multidex.html
+    compile 'com.android.support:multidex:1.0.0'
 }
 
 dependencies {
@@ -67,6 +69,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
+        multiDexEnabled true
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 656

@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDex;
 import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
@@ -52,6 +53,7 @@ import java.io.File;
  */
 public class MoneyManagerApplication
         extends Application {
+
     ///////////////////////////////////////////////////////////////////////////
     public static final String KEY = "8941ED03A52BF76CD48EF951CA623B0709564CA238DB7FE1BA3980E4F617CD52";
     ///////////////////////////////////////////////////////////////////////////
@@ -74,6 +76,55 @@ public class MoneyManagerApplication
 
     public static MoneyManagerApplication getInstanceApp() {
         return myInstance;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
+        // save instance of application
+        myInstance = this;
+
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
+
+        // create application folder
+        Core core = new Core(getApplicationContext());
+        core.getExternalStorageDirectoryApplication();
+
+        // set default text size.
+        setTextSize(new TextView(getApplicationContext()).getTextSize());
+        // preference
+        if (appPreferences == null) {
+            appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            RobotoView.setUserFont(Integer.parseInt(
+                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
+            RobotoView.setUserFontSize(getApplicationContext(),
+                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
+        }
+
+        // Initialize font icons.
+        FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+
+        // on terminate is never called
+        // ref: http://stackoverflow.com/questions/15162562/application-lifecycle
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
+    }
+
+    @Override
+    public void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+
+        // Trying to mitigate issues on some 4.2.2 devices
+        // https://code.google.com/p/android/issues/detail?id=78377
+        // ref: https://developer.android.com/tools/building/multidex.html
+        MultiDex.install(this);
     }
 
     /**
@@ -178,45 +229,6 @@ public class MoneyManagerApplication
                 Log.e(LOGCAT, e.getMessage());
             }
         }
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-
-        // save instance of application
-        myInstance = this;
-
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
-
-        // create application folder
-        Core core = new Core(getApplicationContext());
-        core.getExternalStorageDirectoryApplication();
-
-        // set default text size.
-        setTextSize(new TextView(getApplicationContext()).getTextSize());
-        // preference
-        if (appPreferences == null) {
-            appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            RobotoView.setUserFont(Integer.parseInt(
-                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
-            RobotoView.setUserFontSize(getApplicationContext(),
-                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
-        }
-
-        // Initialize font icons.
-        FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
-    }
-
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-
-        // on terminate is never called
-        // ref: http://stackoverflow.com/questions/15162562/application-lifecycle
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
     }
 
     // custom
