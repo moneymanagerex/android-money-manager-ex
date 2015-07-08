@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
@@ -272,22 +273,27 @@ public class CurrencyUtils {
 
         // get cursor from query builder
         MoneyManagerOpenHelper helper;
-        Cursor cursorInfo;
 
         try {
             helper = MoneyManagerOpenHelper.getInstance(mContext);
-            cursorInfo = queryBuilder.query(helper.getReadableDatabase(),
+//            Cursor cursor = queryBuilder.query(helper.getReadableDatabase(),
+//                    tableInfo.getAllColumns(),
+//                    TableInfoTable.INFONAME + "=?",
+//                    new String[]{Constants.INFOTABLE_BASECURRENCYID}, null, null, null);
+            Cursor cursor = mContext.getContentResolver().query(tableInfo.getUri(),
                     tableInfo.getAllColumns(),
                     TableInfoTable.INFONAME + "=?",
-                    new String[]{Constants.INFOTABLE_BASECURRENCYID}, null, null, null);
-            if (cursorInfo == null) return null;
+                    new String[]{ Constants.INFOTABLE_BASECURRENCYID },
+                    null, null);
+            if (cursor == null) return null;
 
             // set BaseCurrencyId
-            if (cursorInfo.moveToFirst()) {
-                currencyId = cursorInfo.getInt(cursorInfo.getColumnIndex(TableInfoTable.INFOVALUE));
+            if (cursor.moveToFirst()) {
+                currencyId = cursor.getInt(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
             }
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "init base currency");
         }
 
         return currencyId;
