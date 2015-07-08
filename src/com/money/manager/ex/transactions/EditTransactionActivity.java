@@ -229,7 +229,7 @@ public class EditTransactionActivity
 //                DatePickerDialog dialog = new DatePickerDialog(EditTransactionActivity.this,
 //                        mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
 //                dialog.show();
-                  DatePickerDialog dialog = DatePickerDialog.newInstance(this,
+                  DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
                           calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
             }
 
