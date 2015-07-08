@@ -18,7 +18,7 @@
 package com.money.manager.ex.recurring.transactions;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
+//import android.app.DatePickerDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -42,6 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
@@ -86,6 +87,7 @@ public class RecurringTransactionActivity
         extends BaseFragmentActivity
         implements IInputAmountDialogListener {
 
+    public static final String DATEPICKER_TAG = "datepicker";
     private static final String LOGCAT = RecurringTransactionActivity.class.getSimpleName();
     // ID REQUEST Data
     private static final int REQUEST_PICK_PAYEE = 1;
@@ -307,16 +309,11 @@ public class RecurringTransactionActivity
 
         // Controls
 
-//        mCommonFunctions.txtAmount = (TextView) findViewById(R.id.editTextAmount);
-//        mCommonFunctions.txtTotAmount = (TextView) findViewById(R.id.editTextTotAmount);
-//        mCommonFunctions.chbSplitTransaction = (CheckBox) findViewById(R.id.checkBoxSplitTransaction);
-//        mCommonFunctions.spinAccount = (Spinner) findViewById(R.id.spinnerAccount);
         txtPayee = (TextView) findViewById(R.id.textViewPayee);
         txtCaptionAmount = (TextView) findViewById(R.id.textViewHeaderTotalAmount);
         spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
         txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
         txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
-//        mCommonFunctions.txtSelectCategory = (TextView) findViewById(R.id.textViewSelectCategory);
 
         Core core = new Core(getApplicationContext());
 
@@ -327,6 +324,7 @@ public class RecurringTransactionActivity
         initTransactionTypeSelector();
 
         // status
+
         mCommonFunctions.spinStatus = (Spinner) findViewById(R.id.spinnerStatus);
         // arrays to manage Status
         mStatusItems = getResources().getStringArray(R.array.status_items);
@@ -358,6 +356,7 @@ public class RecurringTransactionActivity
         });
 
         // payee
+
         txtSelectPayee = (TextView) findViewById(R.id.textViewSelectPayee);
         txtSelectPayee.setOnClickListener(new OnClickListener() {
             @Override
@@ -441,6 +440,7 @@ public class RecurringTransactionActivity
         mCommonFunctions.txtAmount.setOnClickListener(onClickAmount);
 
         // transaction number
+
         edtTransNumber = (EditText) findViewById(R.id.editTextTransNumber);
         if (!TextUtils.isEmpty(mTransNumber) && NumericHelper.isNumeric(mTransNumber)) {
             edtTransNumber.setText(mTransNumber);
@@ -469,17 +469,20 @@ public class RecurringTransactionActivity
                 }
             }
         });
+
         // notes
+
         edtNotes = (EditText) findViewById(R.id.editTextNotes);
         if (!(TextUtils.isEmpty(mNotes))) {
             edtNotes.setText(mNotes);
         }
+
         // next occurrence
+
         txtNextOccurrence = (TextView) findViewById(R.id.editTextNextOccurrence);
 
         if (!(TextUtils.isEmpty(mNextOccurrence))) {
             try {
-//                Locale locale = getResources().getConfiguration().locale;
                 txtNextOccurrence.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                         .parse(mNextOccurrence));
             } catch (ParseException e) {
@@ -492,17 +495,22 @@ public class RecurringTransactionActivity
         txtNextOccurrence.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar date = Calendar.getInstance();
-                date.setTime((Date) txtNextOccurrence.getTag());
-                DatePickerDialog dialog = new DatePickerDialog(RecurringTransactionActivity.this,
-                        mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
-                dialog.show();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime((Date) txtNextOccurrence.getTag());
+//                DatePickerDialog dialog = new DatePickerDialog(RecurringTransactionActivity.this,
+//                        mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+//                dialog.show();
+                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+                dialog.setCloseOnSingleTapDay(true);
+                dialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
             }
 
             public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
                 @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
                     try {
                         Locale locale = getResources().getConfiguration().locale;
                         Date date = new SimpleDateFormat("yyyy-MM-dd", locale)
