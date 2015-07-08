@@ -77,7 +77,7 @@ import com.money.manager.ex.common.CategorySubCategoryExpandableLoaderListFragme
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
 import com.money.manager.ex.investment.WatchlistFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
-import com.money.manager.ex.recurring.transactions.RepeatingTransactionListFragment;
+import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
@@ -850,7 +850,7 @@ public class MainActivity
                 showFragment(PayeeLoaderListFragment.class);
                 break;
             case R.id.menu_recurring_transaction:
-                showFragment(RepeatingTransactionListFragment.class);
+                showFragment(RecurringTransactionListFragment.class);
                 break;
             case R.id.menu_budgets:
                 intent = new Intent(this, BudgetsActivity.class);

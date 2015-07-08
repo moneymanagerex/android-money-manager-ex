@@ -30,15 +30,15 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
-public class RepeatingTransactionListActivity extends BaseFragmentActivity {
-    public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RepeatingTransactionListActivity:LaunchNotification";
+public class RecurringTransactionListActivity extends BaseFragmentActivity {
+    public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RecurringTransactionListActivity:LaunchNotification";
     public static final int INTENT_REQUEST_PASSCODE = 2;
     public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
     @SuppressWarnings("unused")
-    private static final String LOGCAT = RepeatingTransactionListActivity.class.getSimpleName();
-    private static final String FRAGMENTTAG = RepeatingTransactionListActivity.class.getSimpleName() + "_Fragment";
-    private RepeatingTransactionListFragment listFragment;
+    private static final String LOGCAT = RecurringTransactionListActivity.class.getSimpleName();
+    private static final String FRAGMENTTAG = RecurringTransactionListActivity.class.getSimpleName() + "_Fragment";
+    private RecurringTransactionListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class RepeatingTransactionListActivity extends BaseFragmentActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // set fragment and fragment manager
         FragmentManager fm = getSupportFragmentManager();
-        listFragment = new RepeatingTransactionListFragment();
+        listFragment = new RecurringTransactionListFragment();
         // attach fragment on activity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();

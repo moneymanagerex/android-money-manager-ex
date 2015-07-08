@@ -23,7 +23,6 @@ import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -52,7 +51,7 @@ import java.util.Date;
  * The recurring transactions list fragment.
  * Includes floating action button.
  */
-public class RepeatingTransactionListFragment
+public class RecurringTransactionListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -234,10 +233,10 @@ public class RepeatingTransactionListFragment
      */
     private void startRecurringTransactionActivity(Integer billDepositsId, int purposeCode) {
         // create intent, set Bill Deposits ID
-        Intent intent = new Intent(getActivity(), RepeatingTransactionActivity.class);
+        Intent intent = new Intent(getActivity(), RecurringTransactionActivity.class);
         // check transId not null
         if (billDepositsId != null) {
-            intent.putExtra(RepeatingTransactionActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
+            intent.putExtra(RecurringTransactionActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
             intent.setAction(Intent.ACTION_INSERT);
@@ -250,7 +249,7 @@ public class RepeatingTransactionListFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RepeatingTransactionListActivity.RESULT_OK) {
+        if (resultCode == RecurringTransactionListActivity.RESULT_OK) {
 //                switch (requestCode) {
 //                    case REQUEST_ADD_REPEATING_TRANSACTION:
 //                        break;
@@ -284,7 +283,7 @@ public class RepeatingTransactionListFragment
 
                         // restart loader
                         getLoaderManager().restartLoader(ID_LOADER_REPEATING,
-                                null, RepeatingTransactionListFragment.this);
+                                null, RecurringTransactionListFragment.this);
                     }
                 });
         alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -309,7 +308,7 @@ public class RepeatingTransactionListFragment
                         RecurringTransaction recurringTransaction = new RecurringTransaction(id, getActivity());
                         recurringTransaction.skipNextOccurrence();
                         getLoaderManager().restartLoader(ID_LOADER_REPEATING, null,
-                                RepeatingTransactionListFragment.this);
+                                RecurringTransactionListFragment.this);
                     }
                 });
         alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

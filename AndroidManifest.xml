@@ -250,9 +250,9 @@
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity android:name=".recurring.transactions.RepeatingTransactionListActivity" />
+        <activity android:name=".recurring.transactions.RecurringTransactionListActivity" />
         <activity
-            android:name=".recurring.transactions.RepeatingTransactionActivity"
+            android:name=".recurring.transactions.RecurringTransactionActivity"
             android:label="@string/new_edit_repeating_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />

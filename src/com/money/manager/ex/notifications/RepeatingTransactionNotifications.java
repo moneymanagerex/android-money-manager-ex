@@ -34,7 +34,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.recurring.transactions.RepeatingTransactionListActivity;
+import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
 import com.money.manager.ex.currency.CurrencyUtils;
 
 public class RepeatingTransactionNotifications {
@@ -96,9 +96,9 @@ public class RepeatingTransactionNotifications {
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         // create pending intent
-        Intent intent = new Intent(mContext, RepeatingTransactionListActivity.class);
+        Intent intent = new Intent(mContext, RecurringTransactionListActivity.class);
         // set launch from notification // check pin code
-        intent.putExtra(RepeatingTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
+        intent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
         // create notification
