@@ -24,6 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -34,7 +35,6 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.BudgetYear;
 
 /**
- * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link BudgetsListFragment} interface
  * to handle interaction events.
@@ -44,6 +44,8 @@ import com.money.manager.ex.database.BudgetYear;
 public class BudgetsListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private final String KEY_LISTENER = "listener";
 
     private IBudgetListCallbacks mListener;
 
@@ -58,7 +60,6 @@ public class BudgetsListFragment
         BudgetsListFragment fragment = new BudgetsListFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,12 +78,20 @@ public class BudgetsListFragment
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // restore state. This should be called only if a device is rotated or in a similar
+        // situation.
+//        Log.d("test", "blah");
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 //        if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
 //        }
 
     }
@@ -96,12 +105,15 @@ public class BudgetsListFragment
 
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         displayBudgets();
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
 //        try {
 //            mListener = (OnFragmentInteractionListener) activity;
 //        } catch (ClassCastException e) {
@@ -114,6 +126,13 @@ public class BudgetsListFragment
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+//        outState.put(KEY_LISTENER, mListener);
     }
 
     // Loader events
@@ -166,9 +185,6 @@ public class BudgetsListFragment
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-        // show context menu here.
-//        getActivity().openContextMenu(v);
-
         // Notify the parent to show the budget details.
         Cursor cursor = (Cursor) l.getItemAtPosition(position);
         String budgetName = cursor.getString(cursor.getColumnIndex(BudgetYear.BUDGETYEARNAME));
@@ -193,6 +209,4 @@ public class BudgetsListFragment
 
         getLoaderManager().initLoader(LOADER_BUDGETS, null, this);
     }
-
-
 }

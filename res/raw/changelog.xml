@@ -18,7 +18,9 @@
   -->
 
 <changelog bulletedList="true">
-    <changelogversion changeDate="July 7, 2015" versionName="2.7.1">
+    <changelogversion changeDate="July 7, 2015" versionName="2.7.3">
+        <changelogtext>Preliminary mitigation for inability to open on certain devices with Android 4.2.2</changelogtext>
+        <changelogtext>Replaced the date picker to prevent exceptions on certain devices.</changelogtext>
         <changelogtext>A readonly view for Budgets. You can now see the budgets created in the desktop version.</changelogtext>
         <changelogtext>Calculating the actual usage in the balance view.</changelogtext>
         <changelogtext>We now accept donations in BitCoin. See the 'Donate' page.</changelogtext>

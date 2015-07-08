@@ -78,8 +78,11 @@ public class ExceptionHandler
         Handler h = new Handler(Looper.getMainLooper());
         h.post(new Runnable() {
             public void run() {
-//                Toast.makeText(context, "Your message to main thread", Toast.LENGTH_SHORT).show();
-                Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Log.e(getLogcat(), "Error showing toast: " + e.getMessage());
+                }
             }
         });
     }

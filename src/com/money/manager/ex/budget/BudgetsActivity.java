@@ -30,8 +30,8 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 
 public class BudgetsActivity
-        extends BaseFragmentActivity
-implements IBudgetListCallbacks{
+    extends BaseFragmentActivity
+    implements IBudgetListCallbacks{
 
     private boolean mIsDualPanel = false;
 
@@ -83,6 +83,13 @@ implements IBudgetListCallbacks{
         showBudgetDetails(budgetYearId, budgetName);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+//        outState.putInt(KEY_TRANS_ID, mTransId);
+    }
+
     // Public methods
 
     public void setDualPanel(boolean mIsDualPanel) {
@@ -107,7 +114,6 @@ implements IBudgetListCallbacks{
         if (fragment == null) {
             // fragment create
             fragment = BudgetsListFragment.newInstance();
-            fragment.setListener(this);
 
             // add to stack
             getSupportFragmentManager().beginTransaction()
@@ -120,6 +126,7 @@ implements IBudgetListCallbacks{
                         .commit();
             }
         }
+        fragment.setListener(this);
     }
 
     private void showBudgetDetails(long id, String budgetName) {
