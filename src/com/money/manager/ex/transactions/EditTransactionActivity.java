@@ -93,10 +93,12 @@ import java.util.Date;
  * @version 1.0.1
  */
 public class EditTransactionActivity
-        extends BaseFragmentActivity
-        implements IInputAmountDialogListener, YesNoDialogListener {
+    extends BaseFragmentActivity
+    implements IInputAmountDialogListener, YesNoDialogListener {
 
-    // action type intent
+    public static final String DATEPICKER_TAG = "datepicker";
+
+        // action type intent
     public String mIntentAction;
     public String mToAccountName;
     public int mTransId = -1;
@@ -229,8 +231,10 @@ public class EditTransactionActivity
 //                DatePickerDialog dialog = new DatePickerDialog(EditTransactionActivity.this,
 //                        mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
 //                dialog.show();
-                  DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
-                          calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
+                    calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+                dialog.setCloseOnSingleTapDay(true);
+                dialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
             }
 
             public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
