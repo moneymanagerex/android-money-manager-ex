@@ -18,7 +18,7 @@
 package com.money.manager.ex.transactions;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
+//import android.app.DatePickerDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -75,6 +75,10 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyUtils;
 import com.money.manager.ex.utils.DateUtils;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -220,17 +224,19 @@ public class EditTransactionActivity
         txtSelectDate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar date = Calendar.getInstance();
-                date.setTime((Date) txtSelectDate.getTag());
-                DatePickerDialog dialog = new DatePickerDialog(EditTransactionActivity.this,
-                        mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
-                dialog.show();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime((Date) txtSelectDate.getTag());
+//                DatePickerDialog dialog = new DatePickerDialog(EditTransactionActivity.this,
+//                        mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+//                dialog.show();
+                  DatePickerDialog dialog = DatePickerDialog.newInstance(this,
+                          calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
             }
 
             public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-
                 @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
                     try {
                         Date date = new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale)
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
