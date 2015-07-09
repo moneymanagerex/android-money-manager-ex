@@ -100,6 +100,16 @@ public class Passcode {
     }
 
     private String retrievePasscode() {
+        try {
+            return retrievePasscodeInternal();
+        } catch (IllegalStateException ise) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ise, "retrieving passcode");
+        }
+        return null;
+    }
+
+    private String retrievePasscodeInternal() {
         String ret = null;
         TableInfoTable infoTable = new TableInfoTable();
 
