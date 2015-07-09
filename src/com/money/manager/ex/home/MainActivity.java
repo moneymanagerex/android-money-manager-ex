@@ -63,6 +63,7 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionsFragment;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
@@ -434,9 +435,9 @@ public class MainActivity
         exitDialog.create().show();
     }
 
-    public Fragment getFragmentDisplay() {
-        return getSupportFragmentManager().findFragmentById(isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent);
-    }
+//    public Fragment getFragmentDisplay() {
+//        return getSupportFragmentManager().findFragmentById(isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent);
+//    }
 
     /**
      * pick a file to use
@@ -451,8 +452,8 @@ public class MainActivity
             try {
                 startActivityForResult(intent, REQUEST_PICKFILE_CODE);
             } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
-                Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                ExceptionHandler handler = new ExceptionHandler(this, this);
+                handler.handle(e, "selecting a database file");
             }
         } else {
             Toast.makeText(getApplicationContext(), R.string.error_intent_pick_file, Toast.LENGTH_LONG).show();
@@ -496,15 +497,15 @@ public class MainActivity
         setRestartActivity(false);
     }
 
-    public void showDashboardFragment() {
-        DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager()
-                .findFragmentByTag(DashboardFragment.class.getSimpleName());
-        if (dashboardFragment == null || dashboardFragment.getId() != getResIdLayoutContent()) {
-            dashboardFragment = new DashboardFragment();
-        }
-        // fragment dashboard
-        showFragment(dashboardFragment, DashboardFragment.class.getSimpleName());
-    }
+//    public void showDashboardFragment() {
+//        DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager()
+//                .findFragmentByTag(DashboardFragment.class.getSimpleName());
+//        if (dashboardFragment == null || dashboardFragment.getId() != getResIdLayoutContent()) {
+//            dashboardFragment = new DashboardFragment();
+//        }
+//        // fragment dashboard
+//        showFragment(dashboardFragment, DashboardFragment.class.getSimpleName());
+//    }
 
     /**
      * Show fragment using reflection from class
@@ -946,9 +947,6 @@ public class MainActivity
         // open the new database.
         DropboxManager dropbox = new DropboxManager(this, mDropboxHelper, this);
         dropbox.openDownloadedDatabase();
-
-        setRestartActivity(true);
-        restartActivity();
 
         // reload fragment
 //        reloadAllFragment();
