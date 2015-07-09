@@ -114,6 +114,7 @@ public class IncomeVsExpensesChartFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_SAVED_INSTANCE))
                 setChartArguments(savedInstanceState.getBundle(KEY_SAVED_INSTANCE));

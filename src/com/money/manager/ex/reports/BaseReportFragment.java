@@ -84,19 +84,25 @@ public abstract class BaseReportFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Loader<Cursor> result = null;
+
         switch (id) {
             case ID_LOADER:
                 if (args != null && args.containsKey(KEY_WHERE_CLAUSE)) {
                     setWhereClause(args.getString(KEY_WHERE_CLAUSE));
                 }
-                return new MmexCursorLoader(getActivity(),  // context
+                result = new MmexCursorLoader(getActivity(),  // context
                         new SQLDataSet().getUri(),          // uri
                         null,                               // projection
                         prepareQuery(getWhereClause()),     // selection
                         null,                               // selection args
                         null);                              // sort
+//                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null,
+//                        prepareQuery(getWhereClause()), null, null);
+
+//            break;
         }
-        return null;
+        return result;
     }
 
     @Override
