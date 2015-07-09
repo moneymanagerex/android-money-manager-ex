@@ -367,11 +367,16 @@ public class IncomeVsExpensesListFragment
         if (adapter == null) return;
         Cursor cursor = adapter.getCursor();
         if (cursor == null) return;
+        // Move to the first record.
+        if (cursor.getCount() <= 0) return;
+
         // arrays
         ArrayList<Double> incomes = new ArrayList<>();
         ArrayList<Double> expenses = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
 
+        // Reset cursor to initial position.
+        cursor.moveToPosition(-1);
         // cycle cursor
         while (cursor.moveToNext()) {
             int month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));

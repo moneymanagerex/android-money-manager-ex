@@ -238,10 +238,13 @@ public class CategoriesReportFragment extends BaseReportFragment {
         if (adapter == null) return;
         Cursor cursor = adapter.getCursor();
         if (cursor == null) return;
+        if (cursor.getCount() <= 0) return;
 
         ArrayList<ValuePieEntry> arrayList = new ArrayList<>();
         CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
 
+        // Reset cursor to initial position.
+        cursor.moveToPosition(-1);
         // process cursor
         while (cursor.moveToNext()) {
             ValuePieEntry item = new ValuePieEntry();
