@@ -160,7 +160,7 @@ public class Core {
                     dialog.dismiss();
                     }
             })
-                .show();
+            .show();
     }
 
     /**

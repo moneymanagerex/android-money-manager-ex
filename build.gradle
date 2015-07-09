@@ -47,7 +47,7 @@ dependencies {
     compile 'com.afollestad:material-dialogs:0.7.4.2'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.github.pedrovgs:lynx:1.5'
-    compile 'com.nispok:snackbar:2.10.2'
+    compile 'com.nispok:snackbar:2.10.10'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'de.hdodenhof:circleimageview:1.3.0'
     // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
@@ -74,9 +74,10 @@ android {
         multiDexEnabled true
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 657
-        versionName '2.7.3'
+        versionCode 658
+        versionName '2.7.4-alpha1'
         // 601 = 1.4.17, stable
+        // 2.7.4 is the next version. It has only been sent to one user.
     }
 
     sourceSets {

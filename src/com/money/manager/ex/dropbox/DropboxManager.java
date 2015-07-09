@@ -115,6 +115,8 @@ public class DropboxManager {
         String dropboxFile = getDropboxFileSetting();
         if (TextUtils.isEmpty(dropboxFile)) return;
 
+        // Action
+
         String localFile = getLocalDropboxFile();
 
         Intent service = new Intent(mContext.getApplicationContext(), DropboxServiceIntent.class);

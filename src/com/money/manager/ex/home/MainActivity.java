@@ -616,43 +616,7 @@ public class MainActivity
             return;
         }
 
-        AsyncTask<Void, Integer, Integer> asyncTask = new AsyncTask<Void, Integer, Integer>() {
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                try {
-                    publishProgress(1);
-
-                    return mDropboxHelper.checkIfFileIsSync();
-                } catch (Exception e) {
-                    throw new RuntimeException("Error in showSnackbarDropbox", e);
-                }
-            }
-
-            @Override
-            protected void onProgressUpdate(Integer... params) {
-                Toast.makeText(MainActivity.this,
-                        R.string.checking_dropbox_for_changes, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected void onPostExecute(Integer ret) {
-                if (DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD == ret) {
-                    Snackbar.with(getApplicationContext()) // context
-                            .text(getString(R.string.dropbox_database_can_be_updted))
-                            .actionLabel(getString(R.string.sync))
-                            .actionColor(getResources().getColor(R.color.md_primary))
-                            .actionListener(new ActionClickListener() {
-                                @Override
-                                public void onActionClicked(Snackbar snackbar) {
-                                    DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper, MainActivity.this);
-                                    dropbox.synchronizeDropbox();
-                                }
-                            })
-                            .duration(5 * 1000)
-                            .show(MainActivity.this);
-                }
-            }
-        };
+        AsyncTask<Void, Integer, Integer> asyncTask = new CheckDropboxForUpdatesTask(this, mDropboxHelper);
         asyncTask.execute();
     }
 
@@ -979,8 +943,15 @@ public class MainActivity
      */
     @Override
     public void onFileDownloaded() {
+        // open the new database.
+        DropboxManager dropbox = new DropboxManager(this, mDropboxHelper, this);
+        dropbox.openDownloadedDatabase();
+
+        setRestartActivity(true);
+        restartActivity();
+
         // reload fragment
-        reloadAllFragment();
+//        reloadAllFragment();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

@@ -591,4 +591,6 @@
     <string name="unhandled_crash">Unexpected error. Please send us the log.</string>
     <string name="title_activity_currency_rates_report">Currency Rates</string>
     <string name="frequency">Frequency</string>
+    <string name="update_available">Update available</string>
+    <string name="update_on_dropbox">There is an updated database file available on Dropbox. Would you like to update?</string>
 </resources>
