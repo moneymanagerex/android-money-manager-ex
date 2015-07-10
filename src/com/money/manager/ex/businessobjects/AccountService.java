@@ -20,7 +20,9 @@ package com.money.manager.ex.businessobjects;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDiskIOException;
 
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.TableAccountList;
 
 /**
@@ -41,6 +43,17 @@ public class AccountService {
      * @return TableAccountList, return null if account id not find
      */
     public TableAccountList getTableAccountList(int id) {
+        TableAccountList account = null;
+        try {
+            account = loadAccount(id);
+        } catch (SQLiteDiskIOException e1) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e1, "loading account: " + Integer.toString(id));
+        }
+        return account;
+    }
+
+    private TableAccountList loadAccount(int id) {
         TableAccountList account = new TableAccountList();
         String selection = TableAccountList.ACCOUNTID + "=?";
 
@@ -61,5 +74,4 @@ public class AccountService {
 
         return account;
     }
-
 }
