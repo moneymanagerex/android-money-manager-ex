@@ -123,9 +123,8 @@ public class Passcode {
 
         if (cursor.moveToFirst()) {
             ret = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
-
-            cursor.close();
         }
+        cursor.close();
 
         return ret;
     }

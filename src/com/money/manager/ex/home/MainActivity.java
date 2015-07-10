@@ -87,8 +87,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.listeners.ActionClickListener;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.File;
@@ -565,6 +563,8 @@ public class MainActivity
         transaction.addToBackStack(null);
         // Commit the transaction
         transaction.commit();
+
+        // todo: use this call to prevent exception is nome cases -> commitAllowingStateLoss()
     }
 
     /**
