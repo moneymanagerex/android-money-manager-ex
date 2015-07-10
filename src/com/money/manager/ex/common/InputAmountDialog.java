@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyUtils;
 import com.money.manager.ex.utils.MathUtils;
 
@@ -50,7 +51,7 @@ public class InputAmountDialog
     private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
     private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
     private static final String KEY_EXPRESSION = "InputAmountDialog:Expression";
-    private static final String COMMA_DECIMAL = ".";
+//    private static final String COMMA_DECIMAL = ".";
 
     // arrays id keynum button
     private int[] idButtonKeyNum = {R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
@@ -177,10 +178,10 @@ public class InputAmountDialog
                     }
                 }
                 refreshAmount();*/
-                String exp = txtExpression.getText().toString();
-                if (exp.length() > 0) {
-                    exp = exp.substring(0, exp.length() - 1);
-                    txtExpression.setText(exp);
+                String currentNumber = txtExpression.getText().toString();
+                if (currentNumber.length() > 0) {
+                    currentNumber = deleteLastDigitFrom(currentNumber);
+                    txtExpression.setText(currentNumber);
                 }
             }
         });
@@ -271,12 +272,23 @@ public class InputAmountDialog
                 txtAmount.setTextColor(mDefaultColor);
                 return true;
             } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
+                ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                handler.handle(e, "evaluating expression");
+
                 txtAmount.setText(R.string.invalid_expression);
                 txtAmount.setTextColor(getResources().getColor(R.color.material_red_700));
                 return false;
             }
         }
         return true;
+    }
+
+    private String deleteLastDigitFrom(String number) {
+        // first cut-off the last digit
+        number = number.substring(0, number.length() - 1);
+
+        // Should we check if the next character is the decimal separator. (?)
+
+        return number;
     }
 }
