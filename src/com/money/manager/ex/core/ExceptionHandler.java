@@ -72,7 +72,7 @@ public class ExceptionHandler
         return mHost.getClass().getSimpleName();
     }
 
-    private void showMessage(final String message) {
+    public void showMessage(final String message) {
         // http://stackoverflow.com/questions/18705945/android-cant-create-handler-inside-thread-that-has-not-called-looper-prepare
 
         Handler h = new Handler(Looper.getMainLooper());
