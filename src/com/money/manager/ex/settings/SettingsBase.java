@@ -24,7 +24,12 @@ public abstract class SettingsBase {
     }
 
     protected String getSettingsKey(Integer settingKeyConstant) {
-        return mContext.getString(settingKeyConstant, "");
+        try {
+            return mContext.getString(settingKeyConstant, "");
+        } catch (Exception e) {
+            throw new RuntimeException("error getting string for resource " +
+                    Integer.toString(settingKeyConstant), e);
+        }
     }
 
     public SharedPreferences.Editor getEditor() {
