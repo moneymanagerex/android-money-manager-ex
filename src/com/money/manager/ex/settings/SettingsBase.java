@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 /**
+ * Base class for settings sections.
  * Created by Alen Siljak on 03/07/2015.
  */
 public abstract class SettingsBase {
@@ -14,7 +15,6 @@ public abstract class SettingsBase {
     }
 
     protected final Context mContext;
-//    protected AppSettings mSettings;
     private SharedPreferences.Editor mEditor;
 
     // common
