@@ -82,12 +82,15 @@ public class SearchFragment extends Fragment
             mStatusValues = new ArrayList<>();
     // dual panel
     private boolean mDualPanel = false;
+    private SearchParameters mSearchParameters;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+
+        mSearchParameters = new SearchParameters();
 
 //        AllDataFragment fragment = (AllDataFragment) getActivity().getSupportFragmentManager()
 //                .findFragmentByTag(AllDataFragment.class.getSimpleName());
@@ -122,7 +125,7 @@ public class SearchFragment extends Fragment
         txtFromAmount = (TextView) view.findViewById(R.id.textViewToAmount);
         txtFromAmount.setOnClickListener(onClickAmount);
 
-        // account list <> to populate the spin
+        // Account
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         if (mAccountList == null) {
             AccountRepository accountRepository = new AccountRepository(getActivity().getApplicationContext());
@@ -139,14 +142,16 @@ public class SearchFragment extends Fragment
                 }
             }
         }
-        // checkbox
-        cbxDeposit = (CheckBox) view.findViewById(R.id.checkBoxDeposit);
-        cbxTransfer = (CheckBox) view.findViewById(R.id.checkBoxTransfer);
-        cbxWithdrawal = (CheckBox) view.findViewById(R.id.checkBoxWithdrawal);
         // create adapter for spinAccount
         ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mAccountNameList);
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccount.setAdapter(adapterAccount);
+
+        // checkbox for Transaction Type
+        cbxDeposit = (CheckBox) view.findViewById(R.id.checkBoxDeposit);
+        cbxTransfer = (CheckBox) view.findViewById(R.id.checkBoxTransfer);
+        cbxWithdrawal = (CheckBox) view.findViewById(R.id.checkBoxWithdrawal);
+
         //Payee
         txtSelectPayee = (TextView) view.findViewById(R.id.textViewSelectPayee);
         txtSelectPayee.setOnClickListener(new OnClickListener() {
@@ -167,6 +172,8 @@ public class SearchFragment extends Fragment
                 startActivityForResult(intent, REQUEST_PICK_CATEGORY);
             }
         });
+
+        // Status
         if (mStatusItems.size() <= 0) {
             // arrays to manage Status
             mStatusItems.add("");
@@ -179,6 +186,7 @@ public class SearchFragment extends Fragment
         ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mStatusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinStatus.setAdapter(adapterStatus);
+
         // from date
         txtFromDate = (TextView) view.findViewById(R.id.textViewFromDate);
         txtFromDate.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtFromDate));
@@ -189,6 +197,8 @@ public class SearchFragment extends Fragment
         edtTransNumber = (EditText) view.findViewById(R.id.editTextTransNumber);
         // notes
         txtNotes = (EditText) view.findViewById(R.id.editTextNotes);
+
+        restoreSearchCriteria();
 
         return view;
     }
@@ -235,6 +245,8 @@ public class SearchFragment extends Fragment
      * Compose arguments and execute search
      */
     public void executeSearch() {
+        saveSearchValues();
+
         ParameterizedWhereClause where = assembleWhereClause();
 //        ArrayList<String> whereClause = assembleWhereClause();
 
@@ -249,7 +261,7 @@ public class SearchFragment extends Fragment
             where.Clause.add(QueryAllData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
         }
         // transaction type
-        if (cbxDeposit.isChecked() || cbxTransfer.isChecked() || cbxWithdrawal.isChecked()) {
+        if (mSearchParameters.deposit || mSearchParameters.transfer || mSearchParameters.withdrawal) {
             where.Clause.add(QueryAllData.TransactionType + " IN (" +
                     (cbxDeposit.isChecked() ? "'Deposit'" : "''") + "," + (cbxTransfer.isChecked() ? "'Transfer'" : "''")
                     + "," + (cbxWithdrawal.isChecked() ? "'Withdrawal'" : "''") + ")");
@@ -391,4 +403,16 @@ public class SearchFragment extends Fragment
         public String subCategName;
     }
 
+    private void saveSearchValues() {
+        mSearchParameters.deposit = cbxDeposit.isChecked();
+        mSearchParameters.transfer = cbxTransfer.isChecked();
+        mSearchParameters.withdrawal = cbxWithdrawal.isChecked();
+    }
+
+    private void restoreSearchCriteria() {
+        cbxDeposit.setChecked(mSearchParameters.deposit);
+        cbxTransfer.setChecked(mSearchParameters.transfer);
+        cbxWithdrawal.setChecked(mSearchParameters.withdrawal);
+
+    }
 }
