@@ -197,7 +197,7 @@ public class MainActivity
         if (savedInstanceState == null) {
             // The code that executes *only* when the activity is started the first time.
             // This is to avoid checking Dropbox on every device rotation.
-            showSnackbarDropbox();
+            checkDropboxForUpdates();
         }
     }
 
@@ -612,7 +612,7 @@ public class MainActivity
         // Tutorial is marked as seen when OK on the last page is clicked.
     }
 
-    public void showSnackbarDropbox() {
+    public void checkDropboxForUpdates() {
         if (mDropboxHelper == null || !mDropboxHelper.isLinked()) {
             return;
         }

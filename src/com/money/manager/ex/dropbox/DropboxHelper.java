@@ -45,6 +45,7 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.TokenPair;
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -71,20 +72,14 @@ public class DropboxHelper {
     private static DropboxHelper mHelper;
     private static Context mContext;
     // flag status upload immediate
-    private static boolean mDelayedUploadImmediate = false;
+    private static boolean mDelayedUploadImmediate= false;
     // flag temp disable auto upload
     private static boolean mDisableAutoUpload = false;
+    // Delayed synchronization
+    private static Handler mDelayedHandler = null;
+    private static Runnable mRunSyncRunnable = null;
     // Dropbox API
     DropboxAPI<AndroidAuthSession> mDropboxApi;
-
-    private DropboxHelper(Context context) {
-        super();
-
-        mContext = context;
-
-        AndroidAuthSession session = buildSession();
-        mDropboxApi = new DropboxAPI<>(session);
-    }
 
     /**
      * Get a singleton of dropbox. if object don't exists it does create
@@ -107,6 +102,7 @@ public class DropboxHelper {
 
     /**
      * called whenever the database has changed and should be resynchronized.
+     * Sets the timer for delayed sync of the database.
      */
     public static void notifyDataChanged() {
         if (mHelper == null) return;
@@ -119,22 +115,28 @@ public class DropboxHelper {
 
         //check if upload as immediate
         if (mHelper.isActiveAutoUpload() && !mDelayedUploadImmediate) {
-            final Runnable runnableDropboxUpload = new Runnable() {
+            mRunSyncRunnable = new Runnable() {
                 @Override
                 public void run() {
                     if (BuildConfig.DEBUG) {
-                        Log.d(LOGCAT, "Start postDelayed Runnanble to upload database");
+                        Log.d(LOGCAT, "Start postDelayed task to upload database");
                     }
 
                     mHelper.sendBroadcastStartService(DropboxServiceIntent.INTENT_ACTION_UPLOAD);
                     mDelayedUploadImmediate = false;
                 }
             };
+
             if (BuildConfig.DEBUG) Log.d(LOGCAT, "Launch Handler postDelayed");
-            Handler handler = new Handler();
-            handler.postDelayed(runnableDropboxUpload, 30 * 1000);
+            mDelayedHandler = new Handler();
+            mDelayedHandler.postDelayed(mRunSyncRunnable, 30 * 1000);
             mDelayedUploadImmediate = true;
         }
+    }
+
+    public static void resetDelayedSync() {
+        mDelayedUploadImmediate = false;
+        mDelayedHandler.removeCallbacks(mRunSyncRunnable);
     }
 
     public static boolean isAutoUploadDisabled() {
@@ -143,6 +145,17 @@ public class DropboxHelper {
 
     public static void setAutoUploadDisabled(boolean mDisableAutoUpload) {
         DropboxHelper.mDisableAutoUpload = mDisableAutoUpload;
+    }
+
+    // Instance methods.
+
+    private DropboxHelper(Context context) {
+        super();
+
+        mContext = context;
+
+        AndroidAuthSession session = buildSession();
+        mDropboxApi = new DropboxAPI<>(session);
     }
 
     /**
@@ -536,15 +549,27 @@ public class DropboxHelper {
         asyncTask.execute(folder);
     }
 
+    /**
+     * Downloads the file from Dropbox service.
+     * @param dropboxFile
+     * @param localFile
+     * @param progressListener
+     * @return
+     */
     public boolean download(final Entry dropboxFile, final File localFile, final ProgressListener progressListener) {
         try {
             FileOutputStream fos = new FileOutputStream(localFile);
             mDropboxApi.getFile(dropboxFile.path, null, fos, progressListener);
         } catch (Exception e) {
-            Log.e(LOGCAT, log(e.getMessage(), "download exception"));
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "downloading from dropbox");
             return false;
         }
+
         setDateLastModified(dropboxFile.fileName(), RESTUtility.parseDate(dropboxFile.modified));
+
+        DropboxHelper.resetDelayedSync();
+
         return true;
     }
 
@@ -564,9 +589,13 @@ public class DropboxHelper {
                 }
             }
         } catch (Exception e) {
-            Log.e(LOGCAT, log(e.getMessage(), "Upload exception"));
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "uploading to dropbox");
             return false;
         }
+
+        DropboxHelper.resetDelayedSync();
+
         return true;
     }
 

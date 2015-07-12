@@ -35,7 +35,7 @@ public class CheckDropboxForUpdatesTask
 
             return mDropboxHelper.checkIfFileIsSync();
         } catch (Exception e) {
-            throw new RuntimeException("Error in showSnackbarDropbox", e);
+            throw new RuntimeException("Error in checkDropboxForUpdates", e);
         }
     }
 

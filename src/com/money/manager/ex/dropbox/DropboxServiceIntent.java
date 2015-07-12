@@ -86,7 +86,7 @@ public class DropboxServiceIntent
         // check if device is online
         Core core = new Core(getApplicationContext());
         if (!core.isOnline()) {
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, "The device is not connected to internet");
+            if (BuildConfig.DEBUG) Log.i(LOGCAT, "Can't sync. Device not online.");
             return;
         }
         // take instance dropbox
@@ -113,7 +113,10 @@ public class DropboxServiceIntent
         }
 
         // check if name is same
-        if (!localFile.getName().toUpperCase().equals(remoteFile.fileName().toUpperCase())) return;
+        if (!localFile.getName().toUpperCase().equals(remoteFile.fileName().toUpperCase())) {
+            Log.w(LOGCAT, "Local filename different from the remote!");
+            return;
+        }
 
         // check action
         if (INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
@@ -126,18 +129,24 @@ public class DropboxServiceIntent
         }
     }
 
+    /**
+     * 
+     * @param localFile
+     * @param remoteFile
+     */
     public void syncFile(final File localFile, final Entry remoteFile) {
-        Date localLastModified = null, remoteLastModified = null;
+        Date localLastModified = null, remoteLastModified;
         try {
             localLastModified = mDropboxHelper.getDateLastModified(remoteFile.fileName());
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
         }
-        if (localLastModified == null)
-            localLastModified = new Date(localFile.lastModified());
+        if (localLastModified == null) localLastModified = new Date(localFile.lastModified());
         remoteLastModified = mDropboxHelper.getLastModifiedEntry(remoteFile);
+
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified local file: " + new SimpleDateFormat().format(localLastModified));
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified remote file: " + new SimpleDateFormat().format(remoteLastModified));
+
         // check date
         if (remoteLastModified.after(localLastModified)) {
             if (BuildConfig.DEBUG) Log.d(LOGCAT, "Download " + remoteFile.path + " from Dropox");
@@ -157,12 +166,11 @@ public class DropboxServiceIntent
 
     public void downloadFile(final File localFile, final Entry remoteFile) {
         final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderDownload();
-        // get instance of notification manager
+
         final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         final File tempFile = new File(localFile.toString() + "-download");
 
-        // create interface
         OnDownloadUploadEntry onDownloadUpload = new OnDownloadUploadEntry() {
             @Override
             public void onPreExecute() {
@@ -207,7 +215,9 @@ public class DropboxServiceIntent
                         mDropboxHelper.getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
             }
         };
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.path);
+        if (BuildConfig.DEBUG) {
+            Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.path);
+        }
 
         //start
         onDownloadUpload.onPreExecute();
