@@ -1,6 +1,7 @@
 # Icon Font
 
-There is a possibility of adding a font, similar to FontAwesome, and use scalable icons from the font instead of multiple resource files for images.
+There is a possibility of adding a font, similar to FontAwesome, and use scalable icons from the font
+instead of multiple resource files for images.
 
 ## Links
 
@@ -20,3 +21,7 @@ The custom font is named mmex.
 
 Icons used:
 - icon-law, octicons; a
+
+# Usage
+
+FontIconDrawable.inflate(getResources(), R.xml.ic_quote)

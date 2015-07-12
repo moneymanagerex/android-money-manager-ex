@@ -101,9 +101,9 @@ public class CategorySubCategoryExpandableLoaderListFragment
         // create category adapter
         mCategorySub = new QueryCategorySubCategory(getActivity());
 
-        mCategories = new ArrayList<TableCategory>();
-        mSubCategories = new HashMap<TableCategory, List<QueryCategorySubCategory>>();
-        mPositionToExpand = new ArrayList<Integer>();
+        mCategories = new ArrayList<>();
+        mSubCategories = new HashMap<>();
+        mPositionToExpand = new ArrayList<>();
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_ID_GROUP))
@@ -113,20 +113,17 @@ public class CategorySubCategoryExpandableLoaderListFragment
             if (savedInstanceState.containsKey(KEY_CUR_FILTER))
                 mCurFilter = savedInstanceState.getString(KEY_CUR_FILTER, "");
         }
-        // set visibile search menu
+        // set visible search menu
         setShowMenuItemSearch(true);
 
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
         setHasOptionsMenu(true);
         // define layout
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            mLayout = android.R.layout.simple_expandable_list_item_2;
+        if (Intent.ACTION_PICK.equals(mAction)) {
+//            mLayout = R.layout.simple_expandable_list_item_multiple_choice_2;
+            mLayout = R.layout.simple_expandable_list_item_selector;
         } else {
-            if (Intent.ACTION_PICK.equals(mAction)) {
-                mLayout = R.layout.simple_expandable_list_item_multiple_choice_2;
-            } else {
-                mLayout = android.R.layout.simple_expandable_list_item_2;
-            }
+            mLayout = android.R.layout.simple_expandable_list_item_2;
         }
 
         // manage context menu
@@ -281,7 +278,8 @@ public class CategorySubCategoryExpandableLoaderListFragment
                 mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
             }
         }
-        CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(), mLayout, mCategories, mSubCategories);
+        CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
+                mLayout, mCategories, mSubCategories);
         adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
         return adapter;
     }
@@ -747,41 +745,41 @@ public class CategorySubCategoryExpandableLoaderListFragment
                 .show();
     }
 
-    private void showNameEntryDialog() {
-        // todo: customize dialog.
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.donate)
-                .content(R.string.create_db_dialog_content)
-                .inputType(InputType.TYPE_CLASS_TEXT)
-                .input(R.string.create_db, R.string.create_db_error, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog dialog, CharSequence input) {
-                        // Do something. Happens after positive handler.
-                        String category = input.toString();
-                        dialog.setIcon(android.R.drawable.btn_radio);
-                    }
-                })
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        dialog.setIcon(android.R.drawable.btn_plus);
-                    }
-
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        String input = dialog.getInputEditText().getText().toString();
-                        dialog.setIcon(android.R.drawable.btn_minus);
-                    }
-
+//    private void showNameEntryDialog() {
+//        // todo: customize dialog.
+//        new MaterialDialog.Builder(getActivity())
+//                .title(R.string.donate)
+//                .content(R.string.create_db_dialog_content)
+//                .inputType(InputType.TYPE_CLASS_TEXT)
+//                .input(R.string.create_db, R.string.create_db_error, new MaterialDialog.InputCallback() {
 //                    @Override
-//                    public void onNeutral(MaterialDialog dialog) {
-//                        dialog.setIcon(android.R.drawable.btn_star);
-////                        dialog.dismiss();
+//                    public void onInput(MaterialDialog dialog, CharSequence input) {
+//                        // Do something. Happens after positive handler.
+//                        String category = input.toString();
+//                        dialog.setIcon(android.R.drawable.btn_radio);
 //                    }
-                })
-                .positiveText(R.string.category)
-                .negativeText(R.string.subcategory)
-//                .neutralText(android.R.string.cancel)
-                .show();
-    }
+//                })
+//                .callback(new MaterialDialog.ButtonCallback() {
+//                    @Override
+//                    public void onPositive(MaterialDialog dialog) {
+//                        dialog.setIcon(android.R.drawable.btn_plus);
+//                    }
+//
+//                    @Override
+//                    public void onNegative(MaterialDialog dialog) {
+//                        String input = dialog.getInputEditText().getText().toString();
+//                        dialog.setIcon(android.R.drawable.btn_minus);
+//                    }
+//
+////                    @Override
+////                    public void onNeutral(MaterialDialog dialog) {
+////                        dialog.setIcon(android.R.drawable.btn_star);
+//////                        dialog.dismiss();
+////                    }
+//                })
+//                .positiveText(R.string.category)
+//                .negativeText(R.string.subcategory)
+////                .neutralText(android.R.string.cancel)
+//                .show();
+//    }
 }

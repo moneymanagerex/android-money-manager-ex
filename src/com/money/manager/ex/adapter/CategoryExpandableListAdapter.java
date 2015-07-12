@@ -18,20 +18,28 @@
 
 package com.money.manager.ex.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableCategory;
+import com.money.manager.ex.view.RobotoTextView;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,11 +57,13 @@ public class CategoryExpandableListAdapter
 	private int mIdChildChecked = ListView.INVALID_POSITION;
 	
 	public static class ViewHolderGroup {
-		TextView text1;
+//		TextView text1;
+        RobotoTextView text1;
 	}
 	
 	public static class ViewHolderChild {
-		TextView text1;
+//		TextView text1;
+        RobotoTextView text1;
 		TextView text2;
 	}
 	
@@ -89,7 +99,8 @@ public class CategoryExpandableListAdapter
 			convertView = inflater.inflate(mLayout, null);
 			
 			holder = new ViewHolderChild();
-			holder.text1 = (TextView)convertView.findViewById(android.R.id.text1);
+//			holder.text1 = (TextView)convertView.findViewById(android.R.id.text1);
+            holder.text1 = (RobotoTextView)convertView.findViewById(android.R.id.text1);
 			holder.text2 = (TextView)convertView.findViewById(android.R.id.text2);
 			
 			convertView.setTag(holder);
@@ -105,12 +116,9 @@ public class CategoryExpandableListAdapter
 			holder.text2.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
 			
 			boolean isChildSelected = mIdChildChecked == ((QueryCategorySubCategory)getChild(groupPosition, childPosition)).getSubCategId();
-			if (holder.text1 instanceof CheckedTextView) {
-				((CheckedTextView)holder.text1).setChecked(isChildSelected);
-			} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-				convertView.setBackgroundColor(mContext.getResources().getColor(isChildSelected
-                        ? R.color.holo_blue_light : android.R.color.transparent));
-			}
+//			if (holder.text1 instanceof CheckedTextView) {
+//				((CheckedTextView)holder.text1).setChecked(isChildSelected);
+//			}
 		}
 		
 		return convertView;
@@ -144,7 +152,8 @@ public class CategoryExpandableListAdapter
 			convertView = inflater.inflate(mLayout, null);
 			
 			holder = new ViewHolderGroup();
-			holder.text1 = (TextView)convertView.findViewById(android.R.id.text1);
+//			holder.text1 = (TextView)convertView.findViewById(android.R.id.text1);
+            holder.text1 = (RobotoTextView) convertView.findViewById(android.R.id.text1);
 			
 			convertView.setTag(holder);
 		} else {
@@ -153,18 +162,44 @@ public class CategoryExpandableListAdapter
 		
 		// check position and size of ArrayList
 		if (groupPosition < mCategories.size()) {
-			holder.text1.setText(((TableCategory)mCategories.get(groupPosition)).getCategName());
+			holder.text1.setText(mCategories.get(groupPosition).getCategName());
 			
-			boolean isGroupChecked = mIdGroupChecked == ((TableCategory)mCategories.get(groupPosition)).getCategId();
-			if (holder.text1 instanceof CheckedTextView) {
-				((CheckedTextView)holder.text1).setChecked(isGroupChecked && mIdChildChecked == ListView.INVALID_POSITION);
-				if (isGroupChecked) {
-					((ExpandableListView)parent).expandGroup(groupPosition, true);
-				}
-			} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-				convertView.setBackgroundColor(mContext.getResources().getColor(isGroupChecked &&
-                        mIdChildChecked == ExpandableListView.INVALID_POSITION ? R.color.holo_blue_light : android.R.color.transparent));
-			}
+			boolean isGroupChecked = mIdGroupChecked == mCategories.get(groupPosition).getCategId();
+//			if (holder.text1 instanceof CheckedTextView) {
+//				((CheckedTextView)holder.text1).setChecked(isGroupChecked && mIdChildChecked == ListView.INVALID_POSITION);
+//				if (isGroupChecked) {
+//					((ExpandableListView)parent).expandGroup(groupPosition, true);
+//				}
+//			}
+//            else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//				convertView.setBackgroundColor(mContext.getResources().getColor(isGroupChecked &&
+//                        mIdChildChecked == ExpandableListView.INVALID_POSITION ? R.color.holo_blue_light : android.R.color.transparent));
+//			}
+            // set the selector image
+            ImageView selectorImageView = (ImageView) convertView.findViewById(R.id.selectorImage);
+            if (selectorImageView != null) {
+                // set the tag to be the group position
+                selectorImageView.setTag(groupPosition);
+
+                selectorImageView.setImageDrawable(FontIconDrawable.inflate(mContext,
+                        R.xml.ic_right_arrow));
+
+                selectorImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String tag = v.getTag().toString();
+                        Integer groupId = Integer.parseInt(tag);
+                        setIdGroupChecked(groupId);
+                        // close
+                        FragmentActivity activity = (FragmentActivity) mContext;
+                        CategorySubCategoryExpandableLoaderListFragment fragment =
+                                (CategorySubCategoryExpandableLoaderListFragment) activity
+                                        .getSupportFragmentManager()
+                                        .findFragmentByTag(CategorySubCategoryExpandableListActivity.FRAGMENTTAG);
+                        fragment.setResultAndFinish();
+                    }
+                });
+            }
 		}
 		
 		return convertView;
