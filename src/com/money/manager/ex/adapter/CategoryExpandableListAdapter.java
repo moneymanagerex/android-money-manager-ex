@@ -19,6 +19,8 @@
 package com.money.manager.ex.adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
@@ -113,20 +116,18 @@ public class CategoryExpandableListAdapter
 
         holder.text2.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
 
-//			boolean isChildSelected = mIdChildChecked == ((QueryCategorySubCategory)getChild(groupPosition, childPosition)).getSubCategId();
-//			if (holder.text1 instanceof CheckedTextView) {
-//				((CheckedTextView)holder.text1).setChecked(isChildSelected);
-//			}
+        // Selector
 
-        ImageView selectorImageView = (ImageView) convertView.findViewById(R.id.selectorImage);
-        if (selectorImageView != null) {
+        TextView selectorText = (TextView) convertView.findViewById(R.id.selectorText);
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/mmex.ttf");
+        selectorText.setTypeface(typeface);
+
+        RelativeLayout selector = (RelativeLayout) convertView.findViewById(R.id.selector);
+        if (selector != null) {
             // set the tag to be the group position
-            selectorImageView.setTag(entity.getCategId() + ":" + entity.getSubCategId());
+            selector.setTag(entity.getCategId() + ":" + entity.getSubCategId());
 
-            selectorImageView.setImageDrawable(FontIconDrawable.inflate(mContext,
-                    R.xml.ic_right_arrow));
-
-            selectorImageView.setOnClickListener(new View.OnClickListener() {
+            selector.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String tag = v.getTag().toString();
@@ -143,6 +144,7 @@ public class CategoryExpandableListAdapter
                     fragment.setResultAndFinish();
                 }
             });
+
         }
 
 		return convertView;
@@ -176,7 +178,6 @@ public class CategoryExpandableListAdapter
 			convertView = inflater.inflate(mLayout, null);
 			
 			holder = new ViewHolderGroup();
-//			holder.text1 = (TextView)convertView.findViewById(android.R.id.text1);
             holder.text1 = (RobotoTextView) convertView.findViewById(android.R.id.text1);
 			
 			convertView.setTag(holder);
@@ -189,28 +190,26 @@ public class CategoryExpandableListAdapter
             TableCategory category = mCategories.get(groupPosition);
 
 			holder.text1.setText(category.getCategName());
-			
-//			boolean isGroupChecked = mIdGroupChecked == mCategories.get(groupPosition).getCategId();
-//			if (holder.text1 instanceof CheckedTextView) {
-//				((CheckedTextView)holder.text1).setChecked(isGroupChecked && mIdChildChecked == ListView.INVALID_POSITION);
-//				if (isGroupChecked) {
-//					((ExpandableListView)parent).expandGroup(groupPosition, true);
-//				}
-//			}
-//            else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//				convertView.setBackgroundColor(mContext.getResources().getColor(isGroupChecked &&
-//                        mIdChildChecked == ExpandableListView.INVALID_POSITION ? R.color.holo_blue_light : android.R.color.transparent));
-//			}
+
+            // Selector
+
+            TextView selectorText = (TextView) convertView.findViewById(R.id.selectorText);
+            Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/mmex.ttf");
+            selectorText.setTypeface(typeface);
+
             // set the selector image
-            ImageView selectorImageView = (ImageView) convertView.findViewById(R.id.selectorImage);
-            if (selectorImageView != null) {
+//            ImageView selectorImageView = (ImageView) convertView.findViewById(R.id.selectorImage);
+//            if (selectorImageView != null) {
+//                selectorImageView.setImageDrawable(FontIconDrawable.inflate(mContext,
+//                        R.xml.ic_right_arrow));
+//            }
+
+            RelativeLayout selector = (RelativeLayout) convertView.findViewById(R.id.selector);
+            if (selector != null) {
                 // set the tag to be the group position
-                selectorImageView.setTag(category.getCategId());
+                selector.setTag(category.getCategId());
 
-                selectorImageView.setImageDrawable(FontIconDrawable.inflate(mContext,
-                        R.xml.ic_right_arrow));
-
-                selectorImageView.setOnClickListener(new View.OnClickListener() {
+                selector.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String tag = v.getTag().toString();
@@ -226,7 +225,7 @@ public class CategoryExpandableListAdapter
                     }
                 });
             }
-		}
+        }
 		
 		return convertView;
 	}

@@ -17,9 +17,10 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:gravity="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,11 +69,30 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/selectorImage"
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        />
+    <RelativeLayout
+        android:id="@+id/selector"
+        android:layout_width="?android:attr/listPreferredItemHeight"
+        android:layout_height="match_parent" >
+        <TextView
+            android:id="@+id/selectorText"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:text="n"
+            android:textColor="@color/md_accent"
+            android:textSize="33sp"
+            android:layout_centerInParent="true"
+            />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/selectorImage"-->
+            <!--android:layout_width="33dp"-->
+            <!--android:layout_height="33dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:scaleType="centerInside"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--/>-->
+
+    </RelativeLayout>
 
 </LinearLayout>
