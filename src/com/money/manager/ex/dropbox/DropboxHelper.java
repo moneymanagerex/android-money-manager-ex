@@ -116,13 +116,16 @@ public class DropboxHelper {
         // save the last modified date
         File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
         mHelper.setDateLastModified(database.getName(), Calendar.getInstance().getTime());
+
         //check if upload as immediate
         if (mHelper.isActiveAutoUpload() && !mDelayedUploadImmediate) {
             final Runnable runnableDropboxUpload = new Runnable() {
                 @Override
                 public void run() {
-                    if (BuildConfig.DEBUG)
+                    if (BuildConfig.DEBUG) {
                         Log.d(LOGCAT, "Start postDelayed Runnanble to upload database");
+                    }
+
                     mHelper.sendBroadcastStartService(DropboxServiceIntent.INTENT_ACTION_UPLOAD);
                     mDelayedUploadImmediate = false;
                 }

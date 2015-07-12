@@ -45,6 +45,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.qif.QifExport;
@@ -135,7 +136,7 @@ public class AllDataFragment extends BaseListFragment
                 if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                     Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
                     if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-                        startCheckingAccountActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+                        startEditAccountTransactionActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
                     }
                 }
             }
@@ -434,8 +435,10 @@ public class AllDataFragment extends BaseListFragment
 
     private boolean setStatusCheckingAccount(int[] transId, String status) {
         // check if status = "U" convert to empty string
-        if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status))
-            status = "";
+        if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status)) status = "";
+
+        // Pause Dropbox notification while bulk processing.
+        DropboxHelper.setAutoUploadDisabled(true);
 
         for (int id : transId) {
             // content value for updates
@@ -444,14 +447,24 @@ public class AllDataFragment extends BaseListFragment
             values.put(TableCheckingAccount.STATUS, status.toUpperCase());
 
             // update
-            if (getActivity().getContentResolver().update(new TableCheckingAccount().getUri(),
+            int updateResult = getActivity().getContentResolver().update(new TableCheckingAccount().getUri(),
                     values,
                     TableCheckingAccount.TRANSID + "=?",
-                    new String[]{Integer.toString(id)}) <= 0) {
+                    new String[]{Integer.toString(id)});
+            if (updateResult <= 0) {
                 Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
+
+                DropboxHelper.setAutoUploadDisabled(false);
+                DropboxHelper.notifyDataChanged();
+
                 return false;
             }
         }
+
+        // Now notify Dropbox about modifications.
+        DropboxHelper.setAutoUploadDisabled(false);
+        DropboxHelper.notifyDataChanged();
+
         return true;
     }
 
@@ -471,6 +484,9 @@ public class AllDataFragment extends BaseListFragment
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                // Pause sync notification while bulk processing.
+                DropboxHelper.setAutoUploadDisabled(true);
+
                 for (int transactionId : transactionIds) {
                     // First delete any splits.
                     // See if there are any split records.
@@ -488,6 +504,11 @@ public class AllDataFragment extends BaseListFragment
                                 new String[]{Integer.toString(transactionId)});
                         if (deleteResult != splitCount) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+
+                            // Now notify Dropbox about modifications.
+                            DropboxHelper.setAutoUploadDisabled(false);
+                            DropboxHelper.notifyDataChanged();
+
                             return;
                         }
                     }
@@ -495,13 +516,24 @@ public class AllDataFragment extends BaseListFragment
                     // Delete the transaction.
 
                     TableCheckingAccount trans = new TableCheckingAccount();
-                    if (getActivity().getContentResolver().delete(
+                    int deleteResult = getActivity().getContentResolver().delete(
                             trans.getUri(), TableCheckingAccount.TRANSID + "=?",
-                            new String[]{Integer.toString(transactionId)}) == 0) {
+                            new String[]{Integer.toString(transactionId)});
+                    if (deleteResult == 0) {
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+
+                        // Now notify Dropbox about modifications.
+                        DropboxHelper.setAutoUploadDisabled(false);
+                        DropboxHelper.notifyDataChanged();
+
                         return;
                     }
                 }
+
+                // Now notify Dropbox about modifications.
+                DropboxHelper.setAutoUploadDisabled(false);
+                DropboxHelper.notifyDataChanged();
+
                 // restart loader
                 loadData();
             }
@@ -524,7 +556,7 @@ public class AllDataFragment extends BaseListFragment
      *
      * @param transId null set if you want to do a new transaction, or transaction id
      */
-    private void startCheckingAccountActivity(Integer transId) {
+    private void startEditAccountTransactionActivity(Integer transId) {
         // create intent, set Account ID
         Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
         // check transId not null
@@ -560,7 +592,7 @@ public class AllDataFragment extends BaseListFragment
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        startCheckingAccountActivity(null);
+        startEditAccountTransactionActivity(null);
     }
 
     public View getListHeader() {
@@ -578,7 +610,6 @@ public class AllDataFragment extends BaseListFragment
      */
     @Override
     public void onMultiChoiceCreated(android.view.Menu menu) {
-//        int selectedItemPosition = getListView().getSelectedItemPosition();
         getActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
     }
 
