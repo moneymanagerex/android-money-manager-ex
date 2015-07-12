@@ -18,7 +18,6 @@
 package com.money.manager.ex.search;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,11 +32,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
@@ -64,11 +63,8 @@ import java.util.List;
  * The search form with search parameter input fields.
  */
 public class SearchFragment extends Fragment
-        implements IInputAmountDialogListener,
-            IAllDataFragmentCallbacks {
+        implements IInputAmountDialogListener, IAllDataFragmentCallbacks {
 
-    // LOGCAT
-    private static final String LOGCAT = SearchFragment.class.getSimpleName();
     // ID REQUEST code
     private static final int REQUEST_PICK_PAYEE = 1;
     private static final int REQUEST_PICK_CATEGORY = 3;
@@ -185,10 +181,10 @@ public class SearchFragment extends Fragment
         spinStatus.setAdapter(adapterStatus);
         // from date
         txtFromDate = (TextView) view.findViewById(R.id.textViewFromDate);
-        txtFromDate.setOnClickListener(new OnDateButtonClickListener(txtFromDate));
+        txtFromDate.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtFromDate));
         // to date
         txtToDate = (TextView) view.findViewById(R.id.textViewToDate);
-        txtToDate.setOnClickListener(new OnDateButtonClickListener(txtToDate));
+        txtToDate.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtToDate));
         // transaction number
         edtTransNumber = (EditText) view.findViewById(R.id.editTextTransNumber);
         // notes
@@ -395,38 +391,4 @@ public class SearchFragment extends Fragment
         public String subCategName;
     }
 
-    private class OnDateButtonClickListener implements OnClickListener {
-        private TextView mTextView;
-
-        public OnDateButtonClickListener(TextView txtFromDate) {
-            super();
-            mTextView = txtFromDate;
-        }
-
-        @Override
-        public void onClick(View v) {
-            Calendar date = Calendar.getInstance();
-            if (!TextUtils.isEmpty(mTextView.getText())) {
-                date.setTime(DateUtils.getDateFromString(getActivity().getApplicationContext(), mTextView.getText().toString()));
-            }
-            DatePickerDialog dialog = new DatePickerDialog(getActivity(), mDateSetListener,
-                    date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
-            dialog.show();
-        }
-
-        private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                try {
-                    Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE).parse(Integer.toString(year) +
-                            "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-                    mTextView.setText(DateUtils.getStringFromDate(getActivity().getApplicationContext(), date));
-                } catch (Exception e) {
-                    Log.e(LOGCAT, e.getMessage());
-                }
-
-            }
-        };
-    }
 }
