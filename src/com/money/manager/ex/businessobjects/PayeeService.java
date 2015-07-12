@@ -82,11 +82,13 @@ public class PayeeService {
         return result;
     }
 
-    public int createNew(String payeeName) {
-        payeeName = payeeName.trim();
+    public int createNew(String name) {
+        if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
+
+        name = name.trim();
 
         ContentValues values = new ContentValues();
-        values.put(TablePayee.PAYEENAME, payeeName);
+        values.put(TablePayee.PAYEENAME, name);
 
         Uri result = mContext.getContentResolver().insert(mPayee.getUri(), values);
         long id = ContentUris.parseId(result);
@@ -102,18 +104,16 @@ public class PayeeService {
     }
 
     public int update(int id, String name) {
-        int result = Constants.NOT_SET;
-
-        if(TextUtils.isEmpty(name)) return result;
+        if(TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
 
         ContentValues values = new ContentValues();
         values.put(TablePayee.PAYEENAME, name);
 
-        result = mContext.getContentResolver().update(mPayee.getUri(),
+        int result = mContext.getContentResolver().update(mPayee.getUri(),
                 values,
-                "PAYEEID=" + id, null);
+                TablePayee.PAYEEID + "=" + id, null);
 
         return result;
     }

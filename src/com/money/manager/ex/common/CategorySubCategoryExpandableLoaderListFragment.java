@@ -517,17 +517,19 @@ public class CategorySubCategoryExpandableLoaderListFragment
                     public void onClick(DialogInterface dialog, int which) {
                         // get description category
                         String name = edtCategName.getText().toString();
-                        ContentValues values = new ContentValues();
-                        values.put(TableCategory.CATEGNAME, name);
-                        // check type transaction is request
+                        CategoryService service = new CategoryService(getActivity());
+
                         switch (type) {
                             case INSERT:
-                                if (getActivity().getContentResolver().insert(category.getUri(), values) == null) {
+                                int insertResult = service.createNew(name);
+
+                                if (insertResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case UPDATE:
-                                if (getActivity().getContentResolver().update(category.getUri(), values, TableCategory.CATEGID + "=" + categoryId, null) == 0) {
+                                int updateResult = service.update(categoryId, name);
+                                if (updateResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;

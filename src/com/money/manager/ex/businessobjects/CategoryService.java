@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TablePayee;
 
@@ -66,10 +67,15 @@ public class CategoryService {
     }
 
     public int createNew(String name) {
+        if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
+
+        name = name.trim();
+
         ContentValues values = new ContentValues();
         values.put(TableCategory.CATEGNAME, name);
 
-        Uri result = mContext.getContentResolver().insert(mCategory.getUri(), values);
+        Uri result = mContext.getContentResolver()
+                .insert(mCategory.getUri(), values);
         long id = ContentUris.parseId(result);
 
         return ((int) id);
@@ -97,6 +103,21 @@ public class CategoryService {
         cursor.close();
 
         return listCategories;
+    }
+
+    public int update(int id, String name) {
+        if(TextUtils.isEmpty(name)) return Constants.NOT_SET;
+
+        name = name.trim();
+
+        ContentValues values = new ContentValues();
+        values.put(TableCategory.CATEGNAME, name);
+
+        int result = mContext.getContentResolver().update(mCategory.getUri(),
+                values,
+                TableCategory.CATEGID + "=" + id, null);
+
+        return result;
     }
 
 }
