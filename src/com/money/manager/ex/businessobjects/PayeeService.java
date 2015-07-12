@@ -24,12 +24,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.TablePayee;
 
 /**
  *
  */
 public class PayeeService {
+
     public PayeeService(Context context) {
         mContext = context;
         mPayee = new TablePayee();
@@ -60,7 +62,7 @@ public class PayeeService {
     public int loadIdByName(String name) {
         int result = -1;
 
-        if(TextUtils.isEmpty(name)) { return result; }
+        if(TextUtils.isEmpty(name)) return result;
 
         String selection = TablePayee.PAYEENAME + "=?";
 
@@ -81,6 +83,8 @@ public class PayeeService {
     }
 
     public int createNew(String payeeName) {
+        payeeName = payeeName.trim();
+
         ContentValues values = new ContentValues();
         values.put(TablePayee.PAYEENAME, payeeName);
 
@@ -88,5 +92,29 @@ public class PayeeService {
         long id = ContentUris.parseId(result);
 
         return ((int) id);
+    }
+
+    public boolean exists(String name) {
+        name = name.trim();
+
+        TablePayee payee = loadByName(name);
+        return (payee != null);
+    }
+
+    public int update(int id, String name) {
+        int result = Constants.NOT_SET;
+
+        if(TextUtils.isEmpty(name)) return result;
+
+        name = name.trim();
+
+        ContentValues values = new ContentValues();
+        values.put(TablePayee.PAYEENAME, name);
+
+        result = mContext.getContentResolver().update(mPayee.getUri(),
+                values,
+                "PAYEEID=" + id, null);
+
+        return result;
     }
 }

@@ -45,9 +45,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
+import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.SQLTypeTransaction;
@@ -173,7 +175,6 @@ public class PayeeLoaderListFragment
                         cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
                 break;
             case 1: //DELETE
-                //if (new TablePayee().canDelete(getActivity(), cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)))) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(TablePayee.PAYEEID, cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
                 if (new TablePayee().canDelete(getActivity(), contentValues)) {
@@ -360,20 +361,17 @@ public class PayeeLoaderListFragment
                     public void onClick(DialogInterface dialog, int which) {
                         // take payee name from the input field.
                         String name = edtPayeeName.getText().toString();
-                        ContentValues values = new ContentValues();
-                        values.put(TablePayee.PAYEENAME, name);
 
-                        ContentResolver resolver = mContext.getContentResolver();
+                        PayeeService service = new PayeeService(mContext);
 
                         // check if action in update or insert
                         switch (type) {
                             case INSERT:
-                                Uri insertResult = resolver.insert(mPayee.getUri(), values);
-                                if (insertResult != null) {
+                                int newId = service.createNew(name);
+                                if (newId != Constants.NOT_SET) {
                                     // Created a new payee. But only if picking a payee for another activity.
                                     if (mAction.equalsIgnoreCase(Intent.ACTION_PICK)) {
                                         // Select it and close.
-                                        int newId = (int) ContentUris.parseId(insertResult);
                                         sendResultToActivity(newId, name);
                                         return;
                                     }
@@ -383,7 +381,8 @@ public class PayeeLoaderListFragment
                                 }
                                 break;
                             case UPDATE:
-                                if (resolver.update(mPayee.getUri(), values, "PAYEEID=" + payeeId, null) == 0) {
+                                int updateResult = service.update(payeeId, name);
+                                if (updateResult <= 0) {
                                     Toast.makeText(mContext, R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;

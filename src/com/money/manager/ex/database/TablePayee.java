@@ -31,7 +31,8 @@ public class TablePayee
 	public static final String PAYEENAME = "PAYEENAME";
 	public static final String CATEGID = "CATEGID";
 	public static final String SUBCATEGID = "SUBCATEGID";
-	// definizione dei campi
+
+	// Fields
 	private int payeeId;
 	private String payeeName;
 	private int categId;
@@ -44,9 +45,8 @@ public class TablePayee
 
 	@Override
 	public void setValueFromCursor(Cursor c) {
-		// controllo che non sia null il cursore
-		if (c == null) { return; }
-		// imposto i vari valori
+		if (c == null) return;
+
 		this.setPayeeId(c.getInt(c.getColumnIndex(PAYEEID)));
 		this.setPayeeName(c.getString(c.getColumnIndex(PAYEENAME)));
 		this.setCategId(c.getInt(c.getColumnIndex(CATEGID)));
