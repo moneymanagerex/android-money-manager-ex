@@ -17,61 +17,62 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:mode="twoLine"
-    android:orientation="vertical"
-    android:paddingBottom="2dip"
-    android:paddingTop="2dip">
+    android:orientation="horizontal" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:mode="twoLine"
+        android:orientation="vertical"
+        android:paddingBottom="2dip"
+        android:paddingTop="2dip"
+        android:layout_weight="1" >
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@android:id/text1"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/category"
             android:textSize="16sp"
-            android:layout_weight="1"
             android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
             android:layout_marginTop="6dip"
             android:textAlignment="viewStart"
             android:layout_gravity="start"
             android:textAppearance="?android:attr/textAppearanceListItem"
             />
-        <ImageView
-            android:id="@+id/selectorImage"
-            android:layout_width="25dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            />
+
+        <!--<CheckedTextView-->
+            <!--android:id="@android:id/text1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"-->
+            <!--android:layout_marginTop="6dip"-->
+            <!--android:checkMark="?android:attr/listChoiceIndicatorMultiple"-->
+            <!--android:textAlignment="viewStart"-->
+            <!--android:layout_gravity="start"-->
+            <!--android:textAppearance="?android:attr/textAppearanceListItem" />-->
+
+        <TextView
+            android:id="@android:id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@android:id/text1"
+            android:layout_alignLeft="@+id/text1"
+            android:layout_below="@android:id/text1"
+            android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+            android:textAlignment="viewStart"
+            android:layout_gravity="start"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
 
-    <!--<CheckedTextView-->
-        <!--android:id="@android:id/text1"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"-->
-        <!--android:layout_marginTop="6dip"-->
-        <!--android:checkMark="?android:attr/listChoiceIndicatorMultiple"-->
-        <!--android:textAlignment="viewStart"-->
-        <!--android:layout_gravity="start"-->
-        <!--android:textAppearance="?android:attr/textAppearanceListItem" />-->
-
-    <TextView
-        android:id="@android:id/text2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@android:id/text1"
-        android:layout_alignLeft="@+id/text1"
-        android:layout_below="@android:id/text1"
-        android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:textAlignment="viewStart"
-        android:layout_gravity="start"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <ImageView
+        android:id="@+id/selectorImage"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        />
 
 </LinearLayout>

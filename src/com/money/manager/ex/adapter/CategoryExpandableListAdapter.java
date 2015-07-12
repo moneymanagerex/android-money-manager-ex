@@ -18,16 +18,12 @@
 
 package com.money.manager.ex.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -108,20 +104,47 @@ public class CategoryExpandableListAdapter
 		}
 		holder = (ViewHolderChild)convertView.getTag();
 		
-		QueryCategorySubCategory categorySubCategory = (QueryCategorySubCategory)getChild(groupPosition, childPosition);
+		QueryCategorySubCategory entity = (QueryCategorySubCategory)getChild(groupPosition, childPosition);
 		
-		if (categorySubCategory != null) {
-			holder.text1.setText(categorySubCategory.getSubCategName());
-			holder.text2.setText(categorySubCategory.getCategName());
-			
-			holder.text2.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
-			
-			boolean isChildSelected = mIdChildChecked == ((QueryCategorySubCategory)getChild(groupPosition, childPosition)).getSubCategId();
+		if (entity == null) return convertView;
+
+        holder.text1.setText(entity.getSubcategoryName());
+        holder.text2.setText(entity.getCategName());
+
+        holder.text2.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+
+//			boolean isChildSelected = mIdChildChecked == ((QueryCategorySubCategory)getChild(groupPosition, childPosition)).getSubCategId();
 //			if (holder.text1 instanceof CheckedTextView) {
 //				((CheckedTextView)holder.text1).setChecked(isChildSelected);
 //			}
-		}
-		
+
+        ImageView selectorImageView = (ImageView) convertView.findViewById(R.id.selectorImage);
+        if (selectorImageView != null) {
+            // set the tag to be the group position
+            selectorImageView.setTag(entity.getCategId() + ":" + entity.getSubCategId());
+
+            selectorImageView.setImageDrawable(FontIconDrawable.inflate(mContext,
+                    R.xml.ic_right_arrow));
+
+            selectorImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String tag = v.getTag().toString();
+                    String[] ids = tag.split(":");
+                    Integer groupId = Integer.parseInt(ids[0]);
+                    Integer childId = Integer.parseInt(ids[1]);
+                    setIdChildChecked(groupId, childId);
+                    // close
+                    FragmentActivity activity = (FragmentActivity) mContext;
+                    CategorySubCategoryExpandableLoaderListFragment fragment =
+                            (CategorySubCategoryExpandableLoaderListFragment) activity
+                                    .getSupportFragmentManager()
+                                    .findFragmentByTag(CategorySubCategoryExpandableListActivity.FRAGMENTTAG);
+                    fragment.setResultAndFinish();
+                }
+            });
+        }
+
 		return convertView;
 	}
 

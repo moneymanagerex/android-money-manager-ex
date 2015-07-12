@@ -35,7 +35,7 @@ public class QueryCategorySubCategory extends Dataset {
     private int categId;
     private CharSequence categName;
     private int subCategId;
-    private CharSequence subCategName;
+    private CharSequence mSubcategoryName;
     private CharSequence categSubName;
 
     // definizione del costruttore
@@ -80,12 +80,12 @@ public class QueryCategorySubCategory extends Dataset {
         this.subCategId = subCategId;
     }
 
-    public CharSequence getSubCategName() {
-        return subCategName;
+    public CharSequence getSubcategoryName() {
+        return mSubcategoryName;
     }
 
-    public void setSubCategName(CharSequence subCategName) {
-        this.subCategName = subCategName;
+    public void setSubcategoryName(CharSequence mSubcategoryName) {
+        this.mSubcategoryName = mSubcategoryName;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class QueryCategorySubCategory extends Dataset {
         this.setCategId(c.getInt(c.getColumnIndex(CATEGID)));
         this.setCategName(c.getString(c.getColumnIndex(CATEGNAME)));
         this.setSubCategId(c.getInt(c.getColumnIndex(SUBCATEGID)));
-        this.setSubCategName(c.getString(c.getColumnIndex(SUBCATEGNAME)));
+        this.setSubcategoryName(c.getString(c.getColumnIndex(SUBCATEGNAME)));
         this.setCategSubName(c.getString(c.getColumnIndex(CATEGSUBNAME)));
     }
 }

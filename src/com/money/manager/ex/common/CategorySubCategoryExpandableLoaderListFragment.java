@@ -161,7 +161,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
             categId = mSubCategories.get(mCategories.get(group)).get(child).getCategId();
             subCategId = mSubCategories.get(mCategories.get(group)).get(child).getSubCategId();
-            subCategName = mSubCategories.get(mCategories.get(group)).get(child).getSubCategName();
+            subCategName = mSubCategories.get(mCategories.get(group)).get(child).getSubcategoryName();
         }
         // manage select menu
         switch (item.getItemId()) {
@@ -191,7 +191,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
             menu.setHeaderTitle(mCategories.get(group).getCategName().toString());
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
             QueryCategorySubCategory subCategory = mSubCategories.get(mCategories.get(group)).get(child);
-            menu.setHeaderTitle(subCategory.getCategName().toString() + ": " + subCategory.getSubCategName().toString());
+            menu.setHeaderTitle(subCategory.getCategName().toString() + ": " + subCategory.getSubcategoryName().toString());
         }
         // context menu from resource
         String[] menuItems = getResources().getStringArray(R.array.context_menu);
@@ -257,14 +257,14 @@ public class CategorySubCategoryExpandableLoaderListFragment
                 QueryCategorySubCategory subCategory = new QueryCategorySubCategory(getActivity());
                 // subcategory
                 subCategory.setSubCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)));
-                subCategory.setSubCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME))));
+                subCategory.setSubcategoryName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME))));
                 subCategory.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
                 subCategory.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
                 // add to hashmap
                 listSubCategories.add(subCategory);
                 // check if expand group
                 if (!TextUtils.isEmpty(filter)) {
-                    String normalizedText = Normalizer.normalize(subCategory.getSubCategName(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
+                    String normalizedText = Normalizer.normalize(subCategory.getSubcategoryName(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
                     if ((normalizedText.indexOf(filter) >= 0) && (!mPositionToExpand.contains(mCategories.size() - 1))) {
                         mPositionToExpand.add(mCategories.size() - 1);
                     }
@@ -391,7 +391,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
                                             mSubCategories.get(mCategories.get(groupIndex)).get(child).getCategName().toString());
                                     result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
                                     result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME,
-                                            mSubCategories.get(mCategories.get(groupIndex)).get(child).getSubCategName().toString());
+                                            mSubCategories.get(mCategories.get(groupIndex)).get(child).getSubcategoryName().toString());
                                     break;
                                 }
                             }
