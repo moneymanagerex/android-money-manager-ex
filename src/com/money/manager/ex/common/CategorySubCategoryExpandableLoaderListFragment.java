@@ -22,12 +22,9 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -74,10 +71,11 @@ public class CategorySubCategoryExpandableLoaderListFragment
     private static final String KEY_ID_CHILD = "CategorySubCategory:idChild";
     private static final String KEY_CUR_FILTER = "CategorySubCategory:curFilter";
     // table or query
-    private static QueryCategorySubCategory mCategorySub;
+    private static QueryCategorySubCategory mQuery;
     private int mLayout;
     private int mIdGroupChecked = ExpandableListView.INVALID_POSITION;
     private int mIdChildChecked = ExpandableListView.INVALID_POSITION;
+
     private List<TableCategory> mCategories;
     private HashMap<TableCategory, List<QueryCategorySubCategory>> mSubCategories;
 
@@ -99,7 +97,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
         super.onActivityCreated(savedInstanceState);
 
         // create category adapter
-        mCategorySub = new QueryCategorySubCategory(getActivity());
+        mQuery = new QueryCategorySubCategory(getActivity());
 
         mCategories = new ArrayList<>();
         mSubCategories = new HashMap<>();
@@ -227,57 +225,56 @@ public class CategorySubCategoryExpandableLoaderListFragment
     // end toolbar menu
 
     public CategoryExpandableListAdapter getAdapter(Cursor data) {
+        if (data == null) return null;
+
         mCategories.clear();
         mSubCategories.clear();
         mPositionToExpand.clear();
-        // create core and fixed string filter to hightlight
+        // create core and fixed string filter to highlight
         Core core = new Core(getActivity().getApplicationContext());
         String filter = mCurFilter != null ? mCurFilter.replace("%", "") : "";
-        // compose list and hashmap
-        if (data != null && data.moveToFirst()) {
-            int key = -1;
-            List<QueryCategorySubCategory> listSubCategories = null;
-            while (!data.isAfterLast()) {
-                if (key != data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID))) {
-                    // check if listCategories > 0
-                    if (mCategories.size() > 0 && listSubCategories != null) {
-                        mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
-                    }
-                    // save key
-                    key = data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID));
-                    // create instance cateogry
-                    TableCategory category = new TableCategory();
-                    category.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
-                    category.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
-                    // add list
-                    mCategories.add(category);
-                    listSubCategories = new ArrayList<QueryCategorySubCategory>();
-                }
-                // check if subcategory != -1
-                if (data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != -1) {
-                    QueryCategorySubCategory subCategory = new QueryCategorySubCategory(getActivity());
-                    // subcategory
-                    subCategory.setSubCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)));
-                    subCategory.setSubCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME))));
-                    subCategory.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
-                    subCategory.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
-                    // add to hashmap
-                    listSubCategories.add(subCategory);
-                    // check if expand group
-                    if (!TextUtils.isEmpty(filter)) {
-                        String normalizedText = Normalizer.normalize(subCategory.getSubCategName(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
-                        if ((normalizedText.indexOf(filter) >= 0) && (!mPositionToExpand.contains(mCategories.size() - 1))) {
-                            mPositionToExpand.add(mCategories.size() - 1);
-                        }
-                    }
-                }
 
-                data.moveToNext();
+        int key = -1;
+        List<QueryCategorySubCategory> listSubCategories = null;
+        while (data.moveToNext()) {
+            if (key != data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID))) {
+                // check if listCategories > 0
+                if (mCategories.size() > 0 && listSubCategories != null) {
+                    mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
+                }
+                // save key
+                key = data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID));
+                // create instance category
+                TableCategory category = new TableCategory();
+                category.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
+                category.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
+                // add list
+                mCategories.add(category);
+                listSubCategories = new ArrayList<QueryCategorySubCategory>();
             }
-            if (mCategories.size() > 0 && listSubCategories != null) {
-                mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
+            // check if subcategory != -1
+            if (data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != -1) {
+                QueryCategorySubCategory subCategory = new QueryCategorySubCategory(getActivity());
+                // subcategory
+                subCategory.setSubCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)));
+                subCategory.setSubCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME))));
+                subCategory.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
+                subCategory.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
+                // add to hashmap
+                listSubCategories.add(subCategory);
+                // check if expand group
+                if (!TextUtils.isEmpty(filter)) {
+                    String normalizedText = Normalizer.normalize(subCategory.getSubCategName(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
+                    if ((normalizedText.indexOf(filter) >= 0) && (!mPositionToExpand.contains(mCategories.size() - 1))) {
+                        mPositionToExpand.add(mCategories.size() - 1);
+                    }
+                }
             }
         }
+        if (mCategories.size() > 0 && listSubCategories != null) {
+            mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
+        }
+
         CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
                 mLayout, mCategories, mSubCategories);
         adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
@@ -318,8 +315,8 @@ public class CategorySubCategoryExpandableLoaderListFragment
                             + QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
                     selectionArgs = new String[]{mCurFilter + "%", mCurFilter + "%"};
                 }
-                return new MmexCursorLoader(getActivity(), mCategorySub.getUri(),
-                        mCategorySub.getAllColumns(),
+                return new MmexCursorLoader(getActivity(), mQuery.getUri(),
+                        mQuery.getAllColumns(),
                         whereClause,
                         selectionArgs,
                         QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
@@ -371,34 +368,40 @@ public class CategorySubCategoryExpandableLoaderListFragment
     @Override
     protected void setResult() {
         if (Intent.ACTION_PICK.equals(mAction)) {
+            if (getExpandableListAdapter() == null) return;
+
             Intent result = null;
 
-            if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
+            if (getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
                 CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
                 int categId = adapter.getIdGroupChecked();
                 int subCategId = adapter.getIdChildChecked();
 
-                if (categId != ExpandableListView.INVALID_POSITION) {
-                    for (int group = 0; group < mCategories.size(); group++) {
-                        if (mCategories.get(group).getCategId() == categId) {
-                            if (subCategId != ExpandableListView.INVALID_POSITION) {
-                                for (int child = 0; child < mSubCategories.get(mCategories.get(group)).size(); child++) {
-                                    if (mSubCategories.get(mCategories.get(group)).get(child).getSubCategId() == subCategId) {
-                                        result = new Intent();
-                                        result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, categId);
-                                        result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME, mSubCategories.get(mCategories.get(group)).get(child).getCategName().toString());
-                                        result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
-                                        result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME, mSubCategories.get(mCategories.get(group)).get(child).getSubCategName().toString());
-                                        break;
-                                    }
+                if (categId == ExpandableListView.INVALID_POSITION) return;
+
+                for (int groupIndex = 0; groupIndex < mCategories.size(); groupIndex++) {
+                    if (mCategories.get(groupIndex).getCategId() == categId) {
+                        // Get subcategory
+                        if (subCategId != ExpandableListView.INVALID_POSITION) {
+                            for (int child = 0; child < mSubCategories.get(mCategories.get(groupIndex)).size(); child++) {
+                                if (mSubCategories.get(mCategories.get(groupIndex)).get(child).getSubCategId() == subCategId) {
+                                    result = new Intent();
+                                    result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, categId);
+                                    result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME,
+                                            mSubCategories.get(mCategories.get(groupIndex)).get(child).getCategName().toString());
+                                    result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
+                                    result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME,
+                                            mSubCategories.get(mCategories.get(groupIndex)).get(child).getSubCategName().toString());
+                                    break;
                                 }
-                            } else {
-                                result = new Intent();
-                                result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, categId);
-                                result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME, mCategories.get(group).getCategName().toString());
-                                result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
-                                result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME, "");
                             }
+                        } else {
+                            result = new Intent();
+                            result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, categId);
+                            result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME,
+                                    mCategories.get(groupIndex).getCategName().toString());
+                            result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
+                            result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME, "");
                         }
                     }
                 }
@@ -412,7 +415,6 @@ public class CategorySubCategoryExpandableLoaderListFragment
 
         }
 
-        return;
     }
 
     /**

@@ -67,7 +67,8 @@ public class CategoryExpandableListAdapter
 		TextView text2;
 	}
 	
-	public CategoryExpandableListAdapter(Context context, int layout, List<TableCategory> categories,
+	public CategoryExpandableListAdapter(Context context, int layout,
+                                         List<TableCategory> categories,
                                          HashMap<TableCategory, List<QueryCategorySubCategory>> subCategories) {
 		mContext = context;
 		mLayout = layout;
@@ -162,9 +163,11 @@ public class CategoryExpandableListAdapter
 		
 		// check position and size of ArrayList
 		if (groupPosition < mCategories.size()) {
-			holder.text1.setText(mCategories.get(groupPosition).getCategName());
+            TableCategory category = mCategories.get(groupPosition);
+
+			holder.text1.setText(category.getCategName());
 			
-			boolean isGroupChecked = mIdGroupChecked == mCategories.get(groupPosition).getCategId();
+//			boolean isGroupChecked = mIdGroupChecked == mCategories.get(groupPosition).getCategId();
 //			if (holder.text1 instanceof CheckedTextView) {
 //				((CheckedTextView)holder.text1).setChecked(isGroupChecked && mIdChildChecked == ListView.INVALID_POSITION);
 //				if (isGroupChecked) {
@@ -179,7 +182,7 @@ public class CategoryExpandableListAdapter
             ImageView selectorImageView = (ImageView) convertView.findViewById(R.id.selectorImage);
             if (selectorImageView != null) {
                 // set the tag to be the group position
-                selectorImageView.setTag(groupPosition);
+                selectorImageView.setTag(category.getCategId());
 
                 selectorImageView.setImageDrawable(FontIconDrawable.inflate(mContext,
                         R.xml.ic_right_arrow));
