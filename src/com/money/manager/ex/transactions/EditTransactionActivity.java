@@ -74,9 +74,6 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyUtils;
 import com.money.manager.ex.utils.DateUtils;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
-import com.sleepbot.datetimepicker.time.RadialPickerLayout;
-import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -107,7 +104,8 @@ public class EditTransactionActivity
     public int mPayeeId = -1;
     public String mPayeeName;
     // info category and subcategory
-    public int mCategoryId = -1, mSubCategoryId = -1;
+    public int mCategoryId = Constants.NOT_SET;
+    public int mSubCategoryId = Constants.NOT_SET;
 //    public String mCategoryName, mSubCategoryName;
     // arrays to manage transcode and status
     public String[] mTransCodeItems, mStatusItems;
@@ -392,34 +390,34 @@ public class EditTransactionActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case EditTransactionActivityConstants.REQUEST_PICK_PAYEE:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
-                    mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
-                    // select last category used from payee
-                    if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
-                        if (getCategoryFromPayee(mPayeeId)) {
-                            mCommonFunctions.refreshCategoryName(); // refresh UI
-                        }
+                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
+                mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
+                mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
+                // select last category used from payee. Only if category has not been entered earlier.
+                if (!mCommonFunctions.chbSplitTransaction.isChecked() && mCategoryId == Constants.NOT_SET) {
+                    if (setCategoryFromPayee(mPayeeId)) {
+                        mCommonFunctions.refreshCategoryName(); // refresh UI
                     }
-                    // refresh UI
-                    refreshPayeeName();
                 }
+                // refresh UI
+                refreshPayeeName();
                 break;
             case EditTransactionActivityConstants.REQUEST_PICK_ACCOUNT:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCommonFunctions.mToAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
-                    mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
-                }
+                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
+                mCommonFunctions.mToAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
+                mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 break;
             case EditTransactionActivityConstants.REQUEST_PICK_CATEGORY:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
-                    mCommonFunctions.mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
-                    mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
-                    mCommonFunctions.mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
-                    // refresh UI category
-                    mCommonFunctions.refreshCategoryName();
-                }
+                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
+                mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
+                mCommonFunctions.mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
+                mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
+                mCommonFunctions.mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
+                // refresh UI category
+                mCommonFunctions.refreshCategoryName();
                 break;
             case EditTransactionActivityConstants.REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
@@ -1356,12 +1354,12 @@ public class EditTransactionActivity
     }
 
     /**
-     * getCategoryFromPayee set last category used from payee
+     * setCategoryFromPayee set last category used from payee
      *
      * @param payeeId Identify of payee
      * @return true if category set
      */
-    public boolean getCategoryFromPayee(int payeeId) {
+    public boolean setCategoryFromPayee(int payeeId) {
         boolean ret = false;
         // take data of payee
         TablePayee payee = new TablePayee();

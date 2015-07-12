@@ -159,7 +159,7 @@ public class RecurringTransactionActivity
     private EditTransactionCommonFunctions mCommonFunctions;
 
     /**
-     * getCategoryFromPayee set last category used from payee
+     * setCategoryFromPayee set last category used from payee
      *
      * @param payeeId Identify of payee
      * @return true if category set
