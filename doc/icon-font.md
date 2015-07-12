@@ -24,4 +24,12 @@ Icons used:
 
 # Usage
 
-FontIconDrawable.inflate(getResources(), R.xml.ic_quote)
+## As Image
+
+    FontIconDrawable.inflate(getResources(), R.xml.ic_quote)
+
+## As Text
+
+    TextView selectorText = (TextView) convertView.findViewById(R.id.selectorText);
+    Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/mmex.ttf");
+    selectorText.setTypeface(typeface);
