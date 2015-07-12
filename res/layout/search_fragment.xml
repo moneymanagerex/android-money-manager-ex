@@ -113,7 +113,7 @@
                     android:layout_weight="1"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:hint="@string/amount_greater_or_equal"
+                    android:hint="@string/amount_from"
                     android:singleLine="true"
                     android:textStyle="bold"/>
 
@@ -126,7 +126,7 @@
                     android:layout_weight="1"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:hint="@string/amount_less_or_equal"
+                    android:hint="@string/amount_to"
                     android:singleLine="true"
                     android:textStyle="bold"/>
             </LinearLayout>
@@ -193,6 +193,16 @@
                 android:hint="@string/notes"
                 android:inputType="textMultiLine"
                 android:scrollHorizontally="false"/>
+
+            <Button
+                android:id="@+id/resetButton"
+                android:text="@string/reset"
+                android:layout_margin="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
         </LinearLayout>
     </ScrollView>
 

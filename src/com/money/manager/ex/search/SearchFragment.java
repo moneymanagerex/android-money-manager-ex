@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,12 +30,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
@@ -52,11 +51,8 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.common.IAllDataFragmentCallbacks;
 import com.money.manager.ex.utils.DateUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -70,7 +66,7 @@ public class SearchFragment extends Fragment
     private static final int REQUEST_PICK_CATEGORY = 3;
     // reference view into layout
     private Spinner spinAccount, spinStatus;
-    private EditText edtTransNumber, txtNotes;
+    private EditText txtTransNumber, txtNotes;
     private TextView txtToAmount, txtFromAmount, txtSelectCategory, txtSelectPayee, txtFromDate, txtToDate;
     private CheckBox cbxWithdrawal, cbxDeposit, cbxTransfer;
     // arrays list account name and account id
@@ -106,6 +102,7 @@ public class SearchFragment extends Fragment
         Core core = new Core(getActivity().getApplicationContext());
         //create view
         View view = inflater.inflate(R.layout.search_fragment, container, false);
+
         //create listener amount
         OnClickListener onClickAmount = new OnClickListener() {
             @Override
@@ -118,12 +115,12 @@ public class SearchFragment extends Fragment
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
-        //To Amount
-        txtToAmount = (TextView) view.findViewById(R.id.textViewFromAmount);
-        txtToAmount.setOnClickListener(onClickAmount);
         //From Amount
-        txtFromAmount = (TextView) view.findViewById(R.id.textViewToAmount);
+        txtFromAmount = (TextView) view.findViewById(R.id.textViewFromAmount);
         txtFromAmount.setOnClickListener(onClickAmount);
+        //To Amount
+        txtToAmount = (TextView) view.findViewById(R.id.textViewToAmount);
+        txtToAmount.setOnClickListener(onClickAmount);
 
         // Account
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
@@ -194,11 +191,21 @@ public class SearchFragment extends Fragment
         txtToDate = (TextView) view.findViewById(R.id.textViewToDate);
         txtToDate.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtToDate));
         // transaction number
-        edtTransNumber = (EditText) view.findViewById(R.id.editTextTransNumber);
+        txtTransNumber = (EditText) view.findViewById(R.id.editTextTransNumber);
         // notes
         txtNotes = (EditText) view.findViewById(R.id.editTextNotes);
 
         restoreSearchCriteria();
+
+        // Reset button.
+        Button resetButton = (Button) view.findViewById(R.id.resetButton);
+        resetButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchParameters = new SearchParameters();
+                restoreSearchCriteria();
+            }
+        });
 
         return view;
     }
@@ -221,8 +228,7 @@ public class SearchFragment extends Fragment
                     categorySub.subCategId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
                     categorySub.subCategName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
                     //save into button
-                    txtSelectCategory.setText(categorySub.categName + (!TextUtils.isEmpty(categorySub.subCategName) ? " : " + categorySub.subCategName : ""));
-                    txtSelectCategory.setTag(categorySub);
+                    displayCategory(categorySub);
                 }
         }
     }
@@ -248,49 +254,68 @@ public class SearchFragment extends Fragment
         saveSearchValues();
 
         ParameterizedWhereClause where = assembleWhereClause();
-//        ArrayList<String> whereClause = assembleWhereClause();
 
         showSearchResultsFragment(where);
+    }
+
+    private void displayCategory(CategorySub categorySub) {
+        if (categorySub == null) {
+            txtSelectCategory.setText("");
+            txtSelectCategory.setTag(null);
+        } else {
+            txtSelectCategory.setText(categorySub.categName + (!TextUtils.isEmpty(categorySub.subCategName) ? " : " + categorySub.subCategName : ""));
+            txtSelectCategory.setTag(categorySub);
+        }
     }
 
     private ParameterizedWhereClause assembleWhereClause() {
         ParameterizedWhereClause where = new ParameterizedWhereClause();
 
         // account
-        if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION && mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
-            where.Clause.add(QueryAllData.ACCOUNTID + "=" + mAccountIdList.get(spinAccount.getSelectedItemPosition()));
+        if (mSearchParameters.accountId != Constants.NOT_SET) {
+            where.Clause.add(QueryAllData.ACCOUNTID + "=" + mSearchParameters.accountId);
         }
         // transaction type
         if (mSearchParameters.deposit || mSearchParameters.transfer || mSearchParameters.withdrawal) {
             where.Clause.add(QueryAllData.TransactionType + " IN (" +
-                    (cbxDeposit.isChecked() ? "'Deposit'" : "''") + "," + (cbxTransfer.isChecked() ? "'Transfer'" : "''")
-                    + "," + (cbxWithdrawal.isChecked() ? "'Withdrawal'" : "''") + ")");
+                    (mSearchParameters.deposit ? "'Deposit'" : "''") + "," +
+                    (mSearchParameters.transfer ? "'Transfer'" : "''") + "," +
+                    (mSearchParameters.withdrawal ? "'Withdrawal'" : "''") + ")");
         }
         // status
-        if (spinStatus.getSelectedItemPosition() > 0) {
-            where.Clause.add(QueryAllData.Status + "='" + mStatusValues.get(spinStatus.getSelectedItemPosition()) + "'");
+        if (!TextUtils.isEmpty(mSearchParameters.status)) {
+            where.Clause.add(QueryAllData.Status + "='" + mSearchParameters.status + "'");
         }
+
+        // from amount
+        if (!TextUtils.isEmpty(mSearchParameters.amountFrom)) {
+            where.Clause.add(QueryAllData.Amount + ">=" + mSearchParameters.amountFrom);
+        }
+        // to amount
+        if (!TextUtils.isEmpty(mSearchParameters.amountTo)) {
+            where.Clause.add(QueryAllData.Amount + "<=" + mSearchParameters.amountTo);
+        }
+
         // from date
-        if (!TextUtils.isEmpty(txtFromDate.getText())) {
+        if (!TextUtils.isEmpty(mSearchParameters.dateFrom)) {
             where.Clause.add(QueryAllData.Date + ">='" + DateUtils.getSQLiteStringDate(
                     getActivity(), DateUtils.getDateFromString(
-                            getActivity().getApplicationContext(), String.valueOf(txtFromDate.getText()))) + "'");
+                            getActivity().getApplicationContext(), mSearchParameters.dateFrom)) + "'");
         }
         // to date
-        if (!TextUtils.isEmpty(txtToDate.getText())) {
+        if (!TextUtils.isEmpty(mSearchParameters.dateTo)) {
             where.Clause.add(QueryAllData.Date + "<='" + DateUtils.getSQLiteStringDate(
                     getActivity(), DateUtils.getDateFromString(
-                            getActivity().getApplicationContext(), String.valueOf(txtToDate.getText()))) + "'");
+                            getActivity().getApplicationContext(), mSearchParameters.dateTo)) + "'");
         }
         // payee
-        if (txtSelectPayee.getTag() != null) {
-            where.Clause.add(QueryAllData.PayeeID + "=" + String.valueOf(txtSelectPayee.getTag()));
+        if (!TextUtils.isEmpty(mSearchParameters.payee)) {
+            where.Clause.add(QueryAllData.PayeeID + "=" + mSearchParameters.payee);
         }
         // category
-        if (txtSelectCategory.getTag() != null) {
-            CategorySub categorySub = (CategorySub) txtSelectCategory.getTag();
+        if (mSearchParameters.category != null) {
+            CategorySub categorySub = mSearchParameters.category;
             // Category. Also check the splits.
-//            where.Clause.add(QueryAllData.CategID + "=?");
             where.Clause.add("(" +
                     "(" + QueryAllData.CategID + "=" + Integer.toString(categorySub.categId) + ") " +
                     " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
@@ -301,7 +326,6 @@ public class SearchFragment extends Fragment
             // subcategory
             if (categorySub.subCategId != -1) {
                 // Subcategory. Also check the splits.
-//                where.Clause.add(QueryAllData.SubcategID + "=?");
                 where.Clause.add("(" +
                         "(" + QueryAllData.SubcategID + "=" + Integer.toString(categorySub.subCategId) + ") " +
                             " OR " + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
@@ -310,21 +334,14 @@ public class SearchFragment extends Fragment
                         ")");
             }
         }
-        // from amount: Trans Amount <= parameter
-        if (txtFromAmount.getTag() != null) {
-            where.Clause.add(QueryAllData.Amount + "<=" + String.valueOf(txtFromAmount.getTag()));
-        }
-        // to amount: Trans Amount >= parameter
-        if (txtToAmount.getTag() != null) {
-            where.Clause.add(QueryAllData.Amount + ">=" + String.valueOf(txtToAmount.getTag()));
-        }
+
         // transaction number
-        if (!TextUtils.isEmpty(edtTransNumber.getText())) {
-            where.Clause.add(QueryAllData.TransactionNumber + " LIKE '" + edtTransNumber.getText() + "'");
+        if (!TextUtils.isEmpty(mSearchParameters.transactionNumber)) {
+            where.Clause.add(QueryAllData.TransactionNumber + " LIKE '" + mSearchParameters.transactionNumber + "'");
         }
         // notes
-        if (!TextUtils.isEmpty(txtNotes.getText())) {
-            where.Clause.add(QueryAllData.Notes + " LIKE '%" + txtNotes.getText() + "%'");
+        if (!TextUtils.isEmpty(mSearchParameters.notes)) {
+            where.Clause.add(QueryAllData.Notes + " LIKE '%" + mSearchParameters.notes + "%'");
         }
 
         return where;
@@ -396,23 +413,86 @@ public class SearchFragment extends Fragment
             core.formatAmountTextView(((TextView) view), amount);
     }
 
-    private class CategorySub {
-        public int categId;
-        public String categName;
-        public int subCategId;
-        public String subCategName;
-    }
-
     private void saveSearchValues() {
+        // Account
+        if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION &&
+                mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
+            mSearchParameters.accountId = mAccountIdList.get(spinAccount.getSelectedItemPosition());
+        }
+
+        // Transaction Type
         mSearchParameters.deposit = cbxDeposit.isChecked();
         mSearchParameters.transfer = cbxTransfer.isChecked();
         mSearchParameters.withdrawal = cbxWithdrawal.isChecked();
+
+        // Status
+        if (spinStatus.getSelectedItemPosition() > 0) {
+            mSearchParameters.status = mStatusValues.get(spinStatus.getSelectedItemPosition());
+        }
+
+        // Amount from
+        if (txtFromAmount.getTag() != null) {
+            mSearchParameters.amountFrom = String.valueOf(txtFromAmount.getTag());
+        }
+        // Amount to
+        if (txtToAmount.getTag() != null) {
+            mSearchParameters.amountTo = String.valueOf(txtToAmount.getTag());
+        }
+
+        // Date from
+        if (!TextUtils.isEmpty(txtFromDate.getText())) {
+            mSearchParameters.dateFrom = String.valueOf(txtFromDate.getText());
+        }
+        // Date to
+        if (!TextUtils.isEmpty(txtToDate.getText())) {
+            mSearchParameters.dateTo = String.valueOf(txtToDate.getText());
+        }
+        // Payee
+        if (txtSelectPayee.getTag() != null) {
+            mSearchParameters.payee = String.valueOf(txtSelectPayee.getTag());
+        }
+        // Category
+        if (txtSelectCategory.getTag() != null) {
+            mSearchParameters.category = (CategorySub) txtSelectCategory.getTag();
+        }
+        // Transaction number
+        if (!TextUtils.isEmpty(txtTransNumber.getText())) {
+            mSearchParameters.transactionNumber = txtTransNumber.getText().toString();
+        }
+        // Notes
+        if (!TextUtils.isEmpty(txtNotes.getText())) {
+            mSearchParameters.notes = txtNotes.getText().toString();
+        }
     }
 
     private void restoreSearchCriteria() {
+        // Account
+        // no need to restore. The collection is kept in memory.
+
+        // Transaction Type
         cbxDeposit.setChecked(mSearchParameters.deposit);
         cbxTransfer.setChecked(mSearchParameters.transfer);
         cbxWithdrawal.setChecked(mSearchParameters.withdrawal);
 
+        // Status
+        // Status is also stored as the collection is kept in an instance variable.
+
+        // Amount from
+        txtFromAmount.setText(mSearchParameters.amountFrom);
+        // Amount to
+        txtToAmount.setText(mSearchParameters.amountTo);
+
+        // Date from
+        txtFromDate.setText(mSearchParameters.dateFrom);
+        // Date to
+        txtToDate.setText(mSearchParameters.dateTo);
+        // Payee
+        txtSelectPayee.setText(mSearchParameters.payee);
+        // Category
+        displayCategory(mSearchParameters.category);
+        // Transaction number
+        txtTransNumber.setText(mSearchParameters.transactionNumber);
+        // Notes
+        txtNotes.setText(mSearchParameters.notes);
     }
 }
