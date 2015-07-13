@@ -136,7 +136,9 @@ public class DropboxHelper {
 
     public static void resetDelayedSync() {
         mDelayedUploadImmediate = false;
-        mDelayedHandler.removeCallbacks(mRunSyncRunnable);
+        if (mDelayedHandler != null) {
+            mDelayedHandler.removeCallbacks(mRunSyncRunnable);
+        }
     }
 
     public static boolean isAutoUploadDisabled() {
