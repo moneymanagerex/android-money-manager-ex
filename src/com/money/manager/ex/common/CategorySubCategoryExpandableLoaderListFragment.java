@@ -117,12 +117,12 @@ public class CategorySubCategoryExpandableLoaderListFragment
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
         setHasOptionsMenu(true);
         // define layout
-        if (Intent.ACTION_PICK.equals(mAction)) {
+//        if (Intent.ACTION_PICK.equals(mAction)) {
 //            mLayout = R.layout.simple_expandable_list_item_multiple_choice_2;
-            mLayout = R.layout.simple_expandable_list_item_selector;
-        } else {
-            mLayout = android.R.layout.simple_expandable_list_item_2;
-        }
+//        } else {
+//            mLayout = android.R.layout.simple_expandable_list_item_2;
+//        }
+        mLayout = R.layout.simple_expandable_list_item_selector;
 
         // manage context menu
         registerForContextMenu(getExpandableListView());

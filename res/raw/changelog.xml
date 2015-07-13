@@ -16,7 +16,6 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
-
 <changelog bulletedList="true">
     <changelogversion changeDate="July 13, 2015" versionName="2.8.0">
         <changelogtext>Single-click selection of categories.</changelogtext>
