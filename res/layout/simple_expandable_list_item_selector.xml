@@ -23,7 +23,7 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:mode="twoLine"
         android:orientation="vertical"
@@ -39,7 +39,6 @@
             android:textSize="16sp"
             android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
             android:layout_marginTop="6dip"
-            android:textAlignment="viewStart"
             android:layout_gravity="start"
             android:textAppearance="?android:attr/textAppearanceListItem"
             />
@@ -59,11 +58,7 @@
             android:id="@android:id/text2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@android:id/text1"
-            android:layout_alignLeft="@+id/text1"
-            android:layout_below="@android:id/text1"
             android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-            android:textAlignment="viewStart"
             android:layout_gravity="start"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -71,6 +66,7 @@
 
     <RelativeLayout
         android:id="@+id/selector"
+        android:background="@drawable/md_selector_dark"
         android:layout_width="?android:attr/listPreferredItemHeight"
         android:layout_height="match_parent" >
         <TextView
@@ -80,19 +76,7 @@
             android:text="n"
             android:textColor="@color/md_accent"
             android:textSize="33sp"
-            android:layout_centerInParent="true"
-            />
-
-        <!--<ImageView-->
-            <!--android:id="@+id/selectorImage"-->
-            <!--android:layout_width="33dp"-->
-            <!--android:layout_height="33dp"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:scaleType="centerInside"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--/>-->
-
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 
 </LinearLayout>
