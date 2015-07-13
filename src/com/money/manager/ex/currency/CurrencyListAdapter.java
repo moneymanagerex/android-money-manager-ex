@@ -21,19 +21,14 @@ public class CurrencyListAdapter
     public CurrencyListAdapter(Context context, Cursor cursor) {
         super(context, cursor, -1);
 
-        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        mHeadersAccountIndex = new HashMap<>();
-//        mCheckedPosition = new SparseBooleanArray();
         mContext = context;
     }
 
-    private LayoutInflater mInflater;
-//    private HashMap<Integer, Integer> mHeadersAccountIndex;
-//    private SparseBooleanArray mCheckedPosition;
-
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = mInflater.inflate(R.layout.item_currency, parent, false);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view = inflater.inflate(R.layout.item_currency, parent, false);
 
         // holder
         CurrencyListViewHolder holder = new CurrencyListViewHolder();
@@ -49,7 +44,6 @@ public class CurrencyListAdapter
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // take a holder
         CurrencyListViewHolder holder = (CurrencyListViewHolder) view.getTag();
 
         // name

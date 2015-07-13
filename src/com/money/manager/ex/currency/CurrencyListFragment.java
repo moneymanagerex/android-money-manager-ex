@@ -82,11 +82,6 @@ public class CurrencyListFragment
         setHasOptionsMenu(true);
 
         // create and link the adapter
-//        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-//                android.R.layout.simple_list_item_1,
-//                null,
-//                new String[]{TableCurrencyFormats.CURRENCYNAME},
-//                new int[]{ android.R.id.text1 }, 0);
         CurrencyListAdapter adapter = new CurrencyListAdapter(getActivity(), null);
         setListAdapter(adapter);
 
@@ -208,9 +203,7 @@ public class CurrencyListFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_LOADER_CURRENCY:
-//                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
                 CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
-//                adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
                 adapter.swapCursor(data);
 
                 if (isResumed()) {
