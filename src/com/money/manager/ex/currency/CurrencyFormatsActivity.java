@@ -38,7 +38,6 @@ import java.util.Arrays;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.0.0
  */
 public class CurrencyFormatsActivity extends BaseFragmentActivity {
     // key intent

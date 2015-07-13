@@ -32,7 +32,7 @@ import com.money.manager.ex.businessobjects.StockRepository;
 import java.util.HashMap;
 
 /**
- *
+ * Cursor adapter for stock list (watchlist).
  */
 public class StocksCursorAdapter
         extends CursorAdapter {

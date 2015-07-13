@@ -39,7 +39,7 @@ public class CurrenciesActivity
     private static final String FRAGMENTTAG = CurrenciesActivity.class.getSimpleName() + "_Fragment";
 
     // Instance fragment list
-    private CurrencyFormatsLoaderListFragment listFragment = new CurrencyFormatsLoaderListFragment();
+    private CurrencyListFragment listFragment = new CurrencyListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class CurrenciesActivity
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         // intercept key back
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            CurrencyFormatsLoaderListFragment fragment = (CurrencyFormatsLoaderListFragment)
+            CurrencyListFragment fragment = (CurrencyListFragment)
                     getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
             if (fragment != null) {
                 fragment.setResultAndFinish();

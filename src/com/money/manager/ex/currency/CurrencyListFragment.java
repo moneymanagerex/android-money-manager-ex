@@ -25,9 +25,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -40,7 +38,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.TableAccountList;
@@ -60,7 +57,7 @@ import java.util.List;
 /**
  *  Currency list.
  */
-public class CurrencyFormatsLoaderListFragment
+public class CurrencyListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor>, IPriceUpdaterFeedback {
 
@@ -81,14 +78,16 @@ public class CurrencyFormatsLoaderListFragment
         // show search into actionbar
         setShowMenuItemSearch(true);
 
-        setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
+        setEmptyText(getActivity().getResources().getString(R.string.currencies_empty));
         setHasOptionsMenu(true);
 
         // create and link the adapter
-        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                android.R.layout.simple_list_item_1,
-                null,
-                new String[]{TableCurrencyFormats.CURRENCYNAME}, new int[]{android.R.id.text1}, 0);
+//        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
+//                android.R.layout.simple_list_item_1,
+//                null,
+//                new String[]{TableCurrencyFormats.CURRENCYNAME},
+//                new int[]{ android.R.id.text1 }, 0);
+        CurrencyListAdapter adapter = new CurrencyListAdapter(getActivity(), null);
         setListAdapter(adapter);
 
         registerForContextMenu(getListView());
@@ -104,10 +103,26 @@ public class CurrencyFormatsLoaderListFragment
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        // take cursor and move into position
+        Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
+        cursor.moveToPosition(info.position);
+        // set currency name
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
+
+        // compose context menu
+        String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
+        for (int i = 0; i < menuItems.length; i++) {
+            menu.add(Menu.NONE, i, i, menuItems[i]);
+        }
+    }
+
+    @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         // take cursor and move to position
-        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+        Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
 
         int currencyId = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
@@ -158,22 +173,6 @@ public class CurrencyFormatsLoaderListFragment
         return false;
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        // take cursor and move into position
-        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-        cursor.moveToPosition(info.position);
-        // set currency name
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
-
-        // compose context menu
-        String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
-        for (int i = 0; i < menuItems.length; i++) {
-            menu.add(Menu.NONE, i, i, menuItems[i]);
-        }
-    }
-
     // Loader event handlers.
 
     @Override
@@ -184,7 +183,7 @@ public class CurrencyFormatsLoaderListFragment
                 String selectionArgs[] = null;
                 if (!TextUtils.isEmpty(mCurFilter)) {
                     whereClause = TableCurrencyFormats.CURRENCYNAME + " LIKE ?";
-                    selectionArgs = new String[]{mCurFilter + "%"};
+                    selectionArgs = new String[]{ mCurFilter + "%"};
                 }
                 return new MmexCursorLoader(getActivity(), mCurrency.getUri(),
                         mCurrency.getAllColumns(),
@@ -199,7 +198,7 @@ public class CurrencyFormatsLoaderListFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER_CURRENCY:
-                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+                CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
                 adapter.swapCursor(null);
                 break;
         }
@@ -209,8 +208,9 @@ public class CurrencyFormatsLoaderListFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_LOADER_CURRENCY:
-                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-                adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
+//                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+                CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
+//                adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
                 adapter.swapCursor(data);
 
                 if (isResumed()) {
@@ -220,10 +220,10 @@ public class CurrencyFormatsLoaderListFragment
                 } else {
                     setListShownNoAnimation(true);
                 }
+                break;
         }
     }
 
-    // End loader event handlers.
     // Menu.
 
     @Override
@@ -262,7 +262,7 @@ public class CurrencyFormatsLoaderListFragment
         Intent result = null;
         if (Intent.ACTION_PICK.equals(mAction)) {
             // create intent
-            Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+            Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
 
             for (int i = 0; i < getListView().getCount(); i++) {
                 if (getListView().isItemChecked(i)) {
@@ -359,7 +359,7 @@ public class CurrencyFormatsLoaderListFragment
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                         }
                         // restart loader
-                        getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, CurrencyFormatsLoaderListFragment.this);
+                        getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, CurrencyListFragment.this);
                     }
                 });
         // set listener on negative button
