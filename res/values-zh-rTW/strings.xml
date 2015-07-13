@@ -251,6 +251,9 @@
   <string name="no_thanks">不，謝謝</string>
   <string name="donate_exlamation">捐款!</string>
   <string name="donate_direct">您可以透過我們 APP 網站上的捐款連結捐款，點此開啟於瀏覽器。</string>
+  <string name="donate_bitcoin">現在，我們也接受比特幣捐贈。</string>
+  <string name="donate_license">由於 Google 授權限制，我們不允許在 APP 內放置直接捐贈的連結。</string>
+  <string name="donate_button_text">開啟首頁</string>
   <string name="android_sqlite_vesion">SQLite 版本</string>
   <string name="ascending">順序</string>
   <string name="descending">反序</string>
@@ -485,4 +488,6 @@
   <string name="base_currency_not_set">預設貨幣尚未設定</string>
   <string name="error">錯誤</string>
   <string name="unhandled_crash">發生意外的錯誤，請將 log 寄給我們。</string>
+  <string name="title_activity_currency_rates_report">貨幣匯率</string>
+  <string name="frequency">頻率</string>
 </resources>

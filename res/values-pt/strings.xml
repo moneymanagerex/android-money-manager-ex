@@ -43,7 +43,7 @@
   <string name="build">Build</string>
   <string name="path">Caminho para a Base de Dados</string>
   <string name="title_show_tutorial">Mostrar o tutorial</string>
-  <string name="summary_show_tutorial">Mostrar tutorial na próxima execuação?</string>
+  <string name="summary_show_tutorial">Mostrar tutorial na próxima execução?</string>
   <string name="account">Conta</string>
   <string name="account_list">Lista de Contas</string>
   <string name="account_empty_list">Não foram encontradas contas. Para criar uma, toque no botão verde +.</string>
@@ -241,9 +241,9 @@
   <string name="export_data_in_progress">Exportação de dados. Aguarde...</string>
   <string name="export_file_complete">Os dados foram exportados com êxito para o ficheiro %1$s</string>
   <string name="export_file_failed">Ficheiro %1$s falhou a exportação</string>
-  <string name="donate_header">MoneyManagerEx para o Android é fornecido gratuitamente. Se este aplicativo é do seu agrado, você pode oferecer suporte à equipe de desenvolvimento com uma doação.</string>
+  <string name="donate_header">MoneyManagerEx para o Android é fornecido gratuitamente. Se este aplicativo é do seu agrado, pode oferecer suporte à equipa de desenvolvimento com um donativo.</string>
   <string name="donate_in_app_title">Conta de pagamento da Google Play</string>
-  <string name="donate_in_app_description">Doar via Google Play Pagamento na aplicação.</string>
+  <string name="donate_in_app_description">Doar via Google Play. Pagamento na aplicação.</string>
   <string name="donate_in_app_spinner_text">Escolha o montante do donativo</string>
   <string name="donate_in_app_button">Doar</string>
   <string name="donate_thank_you">Obrigado pelo donativo!</string>
@@ -251,6 +251,9 @@
   <string name="no_thanks">Não, obrigado</string>
   <string name="donate_exlamation">Doar!</string>
   <string name="donate_direct">Pode fazer o donativo clicando no link de doação no nosso site. Clique aqui para abrir no navegador.</string>
+  <string name="donate_bitcoin">Agora também aceitamos donativos em BitCoin.</string>
+  <string name="donate_license">Por razões de licença do Google, não podemos colocar links para donativos diretamente dentro da app.</string>
+  <string name="donate_button_text">Abrir homepage</string>
   <string name="android_sqlite_vesion">Versão do SQLite</string>
   <string name="ascending">Ascendente</string>
   <string name="descending">Descendente</string>
@@ -485,4 +488,6 @@
   <string name="base_currency_not_set">A moeda-base não foi definida</string>
   <string name="error">Erro</string>
   <string name="unhandled_crash">Erro inesperado. Por favor, envie-nos o registo do erro.</string>
+  <string name="title_activity_currency_rates_report">Taxas de câmbio</string>
+  <string name="frequency">Frequência</string>
 </resources>

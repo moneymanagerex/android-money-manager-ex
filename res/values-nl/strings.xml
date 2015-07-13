@@ -59,6 +59,7 @@
   <string name="select_currency">Selecteer Munteenheid</string>
   <string name="checking">Zichtrekening</string>
   <string name="investment">InvesteringsRekening</string>
+  <string name="investment_accounts">Investeringsrekeningen</string>
   <string name="term">Termijn (Spaar) Rekening</string>
   <string name="db_account_insert_failed">Fout bij het ingeven van een Rekening</string>
   <string name="db_account_update_failed">Fout bij het actualiseren van een Rekening</string>
@@ -116,6 +117,7 @@
   <string name="error_toaccount_not_selected">\"Naar Rekening\" is vereist</string>
   <string name="error_category_not_selected">Categorie is vereist</string>
   <string name="error_totamount_empty">\"Totaal Bedrag\" is vereist</string>
+  <string name="error_transfer_to_same_account">De twee rekeningen voor deze transfer moeten verschillend zijn</string>
   <string name="about">Over</string>
   <string name="add">Voeg toe</string>
   <string name="confirmDelete">Ben je zeker dat je wil verwijderen ?</string>
@@ -193,6 +195,7 @@
   <string name="error_next_occurrence_not_populate">Volgend Vermelding is vereist</string>
   <string name="enter_next_occurrence">Volgende vermelding invoeren</string>
   <string name="skip_next_occurrence">Volgende vermelding overslaan</string>
+  <string name="skip_next_occurrence_confirmation">Wil je de volgende positie overslaan ?</string>
   <string name="notification_repeating_transaction_expired">Er zijn vervallen Periodieke Transacties</string>
   <string name="notification_click_to_check_repeating_transaction">Raak aan om de achterstallige transacties te controleren</string>
   <string name="num_repeating_transaction_expired">%1$d achterstallige periodieke transactie</string>
@@ -213,6 +216,7 @@
   <string name="expenses">Uitgaven</string>
   <string name="difference">Verschil</string>
   <string name="no_data">Geen opnames gevonden. Tik op de groene knop om er een te maken. </string>
+  <string name="no_stock_data">Geen aandelen gegevens beschikbaar voor deze rekening.</string>
   <string name="month">maand</string>
   <string name="year">Jaar</string>
   <string name="menu_reports">Rapportages</string>
@@ -245,6 +249,8 @@
   <string name="donate">Schenking</string>
   <string name="no_thanks">Nee, dank u</string>
   <string name="donate_exlamation">Schenking!</string>
+  <string name="donate_button_text">Homepagina Openen</string>
+  <string name="android_sqlite_vesion">SQLite versie</string>
   <string name="ascending">Oplopend</string>
   <string name="descending">Aflopend</string>
   <string name="sorting_month">Sorteren op maand</string>
@@ -389,6 +395,7 @@
   <string name="locale_hu">Hongaars</string>
   <string name="montly_last_days">Maandelijkse (laatste dag)</string>
   <string name="montly_last_bussines_day">Maandelijkse (laatste werkdag)</string>
+  <string name="locale_bs">Bosnisch</string>
   <string name="locale_de">Duits</string>
   <string name="locale_ja">Japans</string>
   <string name="locale_nl">Nederlands</string>
@@ -404,6 +411,7 @@
   <string name="action_settings">Instellingen</string>
   <string name="close">Sluiten</string>
   <string name="tutorial_accounts_1">Meerdere rekening types: bankrekening, spaarrekening, credit en investeringen.</string>
+  <string name="tutorial_accounts_2">Wrijf naar links om verder te gaan...</string>
   <string name="financial_overview">Financieel overzicht</string>
   <string name="tutorial_overview_1">Snel overzicht dashboard, begrotingen, rapporten met aanpassingen.</string>
   <string name="global">Wereldwijd</string>
@@ -413,6 +421,35 @@
   <string name="transactions">Transacties</string>
   <string name="tutorial_transactions_1">Stortingen, uitbetalingen, overdrachten. Terugkerende transacties met herinneringen.</string>
   <string name="split_category">-Categorie opdelen-</string>
+  <string name="sort_by_ascending">Oplopend sorteren op jaar en maand</string>
+  <string name="sort_by_desceding">Aflopend sorteren op jaar en maand</string>
   <string name="years">Wrijf naar links om verder te gaan...</string>
+  <string name="to_date">Tot datum</string>
+  <string name="from_date">Vanaf datum</string>
+  <string name="custom_dates">Aangepaste datums</string>
   <string name="warning">Waarschuwing</string>
+  <string name="qif_export">QIF exporteren</string>
+  <string name="update_prices">Prijzen bijwerken</string>
+  <string name="update_price">Prijs bijwerken</string>
+  <string name="price_updated">Prijzen bijgewerkt</string>
+  <string name="all_prices_updated">Alle prijzen zijn bijgewerkt.</string>
+  <string name="database_migrate_14_to_20">v1.4 database migreren</string>
+  <string name="database_migrate_14_to_20_success">Databasemigratie succesvol.</string>
+  <string name="export_prices">Prijzen exporteren</string>
+  <string name="create_db">Database aanmaken</string>
+  <string name="create_db_summary">Een nieuw databasebestand aanmaken</string>
+  <string name="create_db_success">Database succesvol aangemaakt</string>
+  <string name="db_check_integrity">Database integriteit verifiëren</string>
+  <string name="select_all">Alles selecteren</string>
+  <string name="checking_dropbox_for_changes">Dropbox verifiëren ivbm wijzigingen van de database.</string>
+  <string name="choose_type">Selecteer een type</string>
+  <string name="default_account">Standaard rekening</string>
+  <string name="cash">Contant</string>
+  <string name="select_account">Selecteer een rekening</string>
+  <string name="invalid_transaction_number">Ongeldig transactienummer</string>
+  <string name="budgets">Budgetten</string>
+  <string name="base_currency_not_set">Basisvaluta is nog niet opgegeven</string>
+  <string name="error">Fout</string>
+  <string name="title_activity_currency_rates_report">Wisselkoersen</string>
+  <string name="frequency">Frequentie</string>
 </resources>

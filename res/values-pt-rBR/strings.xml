@@ -251,6 +251,9 @@
   <string name="no_thanks">Não, obrigado</string>
   <string name="donate_exlamation">Doar!</string>
   <string name="donate_direct">Pode fazer o donativo clicando no link de doação no nosso site. Clique aqui para abrir no navegador.</string>
+  <string name="donate_bitcoin">Agora também aceitamos donativos em BitCoin.</string>
+  <string name="donate_license">Por razões de licença do Google, não podemos colocar links para donativos diretamente dentro da app.</string>
+  <string name="donate_button_text">Abrir homepage</string>
   <string name="android_sqlite_vesion">Versão SQLite</string>
   <string name="ascending">Ascendente</string>
   <string name="descending">Descendente</string>
@@ -485,4 +488,6 @@
   <string name="base_currency_not_set">A moeda-base não foi definida</string>
   <string name="error">Erro</string>
   <string name="unhandled_crash">Erro inesperado. Por favor, envie-nos o registo do erro.</string>
+  <string name="title_activity_currency_rates_report">Taxas de câmbio</string>
+  <string name="frequency">Frequência</string>
 </resources>

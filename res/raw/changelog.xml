@@ -23,6 +23,7 @@
         <changelogtext>Trimming names of Payees and Categories on creation and editing. This prevents creation of seemingly duplicate records.</changelogtext>
         <changelogtext>Improvement in sync: Dropbox sync will not run automatically if it was run manually during the delay period after data change.</changelogtext>
         <changelogtext>Remembering the search parameters when returning from the search results view.</changelogtext>
+        <changelogtext>Updated translations.</changelogtext>
         <changelogtext>More minor stability improvements.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="July 10, 2015" versionName="2.7.4">

@@ -2,10 +2,10 @@
 :: Set the correct location to the root of the unzipped translations file from Crowdin.
 @echo off
 
-set src_root=c:\temp
-set dest_root=c:\dev\android-money-manager-ex\res
-::set src_root=d:\temp
-::set dest_root=d:\dev\GitHub\android-money-manager-ex\res
+::set src_root=c:\temp
+::set dest_root=c:\dev\android-money-manager-ex\res
+set src_root=d:\temp
+set dest_root=d:\dev\GitHub\android-money-manager-ex\res
 
 :: Bosnian
 set lang=bs

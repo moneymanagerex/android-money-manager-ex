@@ -251,6 +251,9 @@
   <string name="no_thanks">No, grazie</string>
   <string name="donate_exlamation">Donate!</string>
   <string name="donate_direct">Puoi donare cliccando sul link Fai una donazione sul nostro sito web app. Clicca qui per aprire nel browser.</string>
+  <string name="donate_bitcoin">Ora accettiamo anche donazioni BitCoin.</string>
+  <string name="donate_license">Per ragioni di licenza di Google, non possiamo inserire dei link per donazione direttamente all\'interno dell\'app.</string>
+  <string name="donate_button_text">Apri l\'homepage</string>
   <string name="android_sqlite_vesion">Versione SQLite</string>
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
@@ -481,7 +484,10 @@
   <string name="cash">Contante</string>
   <string name="select_account">Seleziona un account</string>
   <string name="invalid_transaction_number">Numero di transazione non valido</string>
+  <string name="budgets">Bilanci</string>
   <string name="base_currency_not_set">La valuta di base non è stata impostata</string>
   <string name="error">Errore</string>
   <string name="unhandled_crash">Errore imprevisto. Si prega di inviare il log.</string>
+  <string name="title_activity_currency_rates_report">Tasso di cambio</string>
+  <string name="frequency">Frequenza</string>
 </resources>

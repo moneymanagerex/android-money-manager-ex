@@ -195,6 +195,7 @@
   <string name="error_next_occurrence_not_populate">Lần xuất hiện tiếp theo là cần thiết</string>
   <string name="enter_next_occurrence">Nhập việc xảy ra tiếp theo</string>
   <string name="skip_next_occurrence">Bỏ qua lần xảy ra tiếp theo</string>
+  <string name="skip_next_occurrence_confirmation">Bạn có muốn bỏ qua sự xuất hiện lần tới?</string>
   <string name="notification_repeating_transaction_expired">Có những giao dịch định kỳ hết hạn</string>
   <string name="notification_click_to_check_repeating_transaction">Chạm để kiểm tra giao dịch quá hạn</string>
   <string name="num_repeating_transaction_expired">%1$d giao dịch định kỳ quá hạn</string>
@@ -249,6 +250,10 @@
   <string name="donate">Tặng tiền</string>
   <string name="no_thanks">Không, cảm ơn</string>
   <string name="donate_exlamation">Tặng tiền!</string>
+  <string name="donate_direct">Bạn có thể tặng tiền trực tiếp bằng cách nhấn vào các liên kết Tặng tiền trên trang web ứng dụng của chúng tôi.</string>
+  <string name="donate_bitcoin">Chúng tôi bây giờ cũng chấp nhận việc tặng BitCoin.</string>
+  <string name="donate_license">Vì lý do cấp phép của Google, chúng tôi không được phép đặt liên kết tặng tiền trực tiếp bên trong các ứng dụng.</string>
+  <string name="donate_button_text">Mở trang chủ</string>
   <string name="android_sqlite_vesion">Phiên bản SQLite</string>
   <string name="ascending">Tăng dần</string>
   <string name="descending">Giảm dần</string>
@@ -479,4 +484,10 @@
   <string name="cash">Tiền mặt</string>
   <string name="select_account">Chọn tài khoản</string>
   <string name="invalid_transaction_number">Số giao dịch không hợp lệ</string>
+  <string name="budgets">Ngân sách</string>
+  <string name="base_currency_not_set">Tiền tệ cơ bản đã không được thiết lập</string>
+  <string name="error">Lỗi</string>
+  <string name="unhandled_crash">Lỗi không mong muốn. Xin vui lòng gửi cho chúng tôi bản ghi.</string>
+  <string name="title_activity_currency_rates_report">Tỷ giá tiền tệ</string>
+  <string name="frequency">Tần suất</string>
 </resources>

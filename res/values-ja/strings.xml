@@ -251,6 +251,9 @@
   <string name="no_thanks">遠慮します</string>
   <string name="donate_exlamation">寄付する!</string>
   <string name="donate_direct">アプリの web サイトから寄付リンクをクリックして寄付することができます。ここをクリックするとブラウザーを開きます。</string>
+  <string name="donate_bitcoin">私たちは BitCoin の寄付も受け付けるようになりました。</string>
+  <string name="donate_license">Google ライセンス上の理由から、私たちはアプリ内に直接寄付のリンクを配置することはできません。</string>
+  <string name="donate_button_text">ホームページを開く</string>
   <string name="android_sqlite_vesion">SQLite バージョン</string>
   <string name="ascending">昇順</string>
   <string name="descending">降順</string>
@@ -485,4 +488,6 @@
   <string name="base_currency_not_set">基本通貨が設定されていません</string>
   <string name="error">エラー</string>
   <string name="unhandled_crash">予期しないエラーが発生しました。ログをお送りください。</string>
+  <string name="title_activity_currency_rates_report">為替レート</string>
+  <string name="frequency">頻度</string>
 </resources>

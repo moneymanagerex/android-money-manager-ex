@@ -251,6 +251,9 @@
   <string name="no_thanks">Nie, dziękuję</string>
   <string name="donate_exlamation">Wesprzyj!</string>
   <string name="donate_direct">Możesz wesprzeć klikając link Wesprzyj na naszej stronie internetowej z aplikacja. Kliknij tutaj, aby otworzyć w przeglądarce.</string>
+  <string name="donate_bitcoin">Teraz akceptujemy również darowizny w bitcoinach.</string>
+  <string name="donate_license">Ze względu na zasady Google, nie możemy umieścić linku do strony pozwalającej nas wesprzeć bezpośrednio w aplikacji.</string>
+  <string name="donate_button_text">Otwórz stronę aplikacji</string>
   <string name="android_sqlite_vesion">Wersja SQLite</string>
   <string name="ascending">Rosnąco</string>
   <string name="descending">Malejąco</string>
@@ -485,4 +488,6 @@
   <string name="base_currency_not_set">Waluta bazowa nie została ustawiona</string>
   <string name="error">Błąd</string>
   <string name="unhandled_crash">Nieoczekiwany błąd. Proszę prześlij do nas informację z logiem błędu.</string>
+  <string name="title_activity_currency_rates_report">Kursy walut</string>
+  <string name="frequency">Częstotliwość</string>
 </resources>

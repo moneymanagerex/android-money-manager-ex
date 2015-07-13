@@ -251,6 +251,9 @@
   <string name="no_thanks">Нет, спасибо</string>
   <string name="donate_exlamation">Поддержать!</string>
   <string name="donate_direct">Вы можете сделать пожертвование, нажав на кнопку на нашем сайте. Кликните здесь, чтобы открыть в браузере.</string>
+  <string name="donate_bitcoin">Теперь мы также принимаем пожертвования в BitCoin.</string>
+  <string name="donate_license">Из-за ограничений в лицензировании Google, мы не может поместить ссылки для пожертвований прямо в приложении.</string>
+  <string name="donate_button_text">Открыть домашнюю страницу</string>
   <string name="android_sqlite_vesion">Версия SQLite</string>
   <string name="ascending">По возрастанию</string>
   <string name="descending">По убыванию</string>
@@ -485,4 +488,6 @@
   <string name="base_currency_not_set">Базовая валюта не была установлена</string>
   <string name="error">Ошибка</string>
   <string name="unhandled_crash">Непредвиденная ошибка. Пришлите нам лог.</string>
+  <string name="title_activity_currency_rates_report">Курсы валют</string>
+  <string name="frequency">Частота</string>
 </resources>

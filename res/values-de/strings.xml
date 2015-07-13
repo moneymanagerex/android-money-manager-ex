@@ -251,6 +251,9 @@
   <string name="no_thanks">Nein danke</string>
   <string name="donate_exlamation">Spenden!</string>
   <string name="donate_direct">Sie können spenden, indem Sie auf den Spenden-Link auf unserer Website klicken. Klicken Sie hier, um den Spenden-Link im Browser zu öffnen.</string>
+  <string name="donate_bitcoin">Wir akzeptieren nun auch BitCoin Spenden.</string>
+  <string name="donate_license">Aus lizenzrechtlichen Gründen von Google dürfen wir den Spendenlink nicht direkt in der App platzieren.</string>
+  <string name="donate_button_text">Homepage öffnen</string>
   <string name="android_sqlite_vesion">SQLite-Version</string>
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
@@ -485,4 +488,6 @@
   <string name="base_currency_not_set">Basiswährung wurde nicht festgelegt</string>
   <string name="error">Fehler</string>
   <string name="unhandled_crash">Unerwarteter Fehler. Bitte senden Sie uns das Protokoll (log file).</string>
+  <string name="title_activity_currency_rates_report">Währungskurse</string>
+  <string name="frequency">Häufigkeit</string>
 </resources>
