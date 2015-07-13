@@ -56,19 +56,20 @@ public class CategoryExpandableListAdapter
 	private int mIdChildChecked = ListView.INVALID_POSITION;
 	
 	public static class ViewHolderGroup {
-//		TextView text1;
+		TextView textView;
         RobotoTextView text1;
 	}
 	
 	public static class ViewHolderChild {
-//		TextView text1;
+		TextView textView;
         RobotoTextView text1;
 		TextView text2;
 	}
 	
 	public CategoryExpandableListAdapter(Context context, int layout,
                                          List<TableCategory> categories,
-                                         HashMap<TableCategory, List<QueryCategorySubCategory>> subCategories) {
+                                         HashMap<TableCategory,
+                                         List<QueryCategorySubCategory>> subCategories) {
 		mContext = context;
 		mLayout = layout;
 		mCategories = categories;
@@ -100,7 +101,12 @@ public class CategoryExpandableListAdapter
 			
 			holder = new ViewHolderChild();
 //			holder.text1 = (TextView)convertView.findViewById(android.R.id.text1);
-            holder.text1 = (RobotoTextView)convertView.findViewById(android.R.id.text1);
+            View text1 = convertView.findViewById(android.R.id.text1);
+            if (text1 instanceof RobotoTextView) {
+                holder.text1 = (RobotoTextView) text1;
+            } else {
+                holder.textView = (TextView) text1;
+            }
 			holder.text2 = (TextView)convertView.findViewById(android.R.id.text2);
 			
 			convertView.setTag(holder);
@@ -111,16 +117,22 @@ public class CategoryExpandableListAdapter
 		
 		if (entity == null) return convertView;
 
-        holder.text1.setText(entity.getSubcategoryName());
-        holder.text2.setText(entity.getCategName());
+        if (holder.textView != null) {
+            holder.textView.setText(entity.getSubcategoryName());
+        } else {
+            holder.text1.setText(entity.getSubcategoryName());
+        }
 
+        holder.text2.setText(entity.getCategName());
         holder.text2.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
 
         // Selector
 
         TextView selectorText = (TextView) convertView.findViewById(R.id.selectorText);
-        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/mmex.ttf");
-        selectorText.setTypeface(typeface);
+        if (selectorText != null) {
+            Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/mmex.ttf");
+            selectorText.setTypeface(typeface);
+        }
 
         RelativeLayout selector = (RelativeLayout) convertView.findViewById(R.id.selector);
         if (selector != null) {
@@ -178,8 +190,13 @@ public class CategoryExpandableListAdapter
 			convertView = inflater.inflate(mLayout, null);
 			
 			holder = new ViewHolderGroup();
-            holder.text1 = (RobotoTextView) convertView.findViewById(android.R.id.text1);
-			
+			View text1 = convertView.findViewById(android.R.id.text1);
+			if (text1 instanceof RobotoTextView) {
+				holder.text1 = (RobotoTextView) text1;
+			} else {
+				holder.textView = (TextView) text1;
+			}
+
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolderGroup)convertView.getTag();
@@ -189,20 +206,19 @@ public class CategoryExpandableListAdapter
 		if (groupPosition < mCategories.size()) {
             TableCategory category = mCategories.get(groupPosition);
 
-			holder.text1.setText(category.getCategName());
+            if (holder.text1 != null) {
+                holder.text1.setText(category.getCategName());
+            } else {
+                holder.textView.setText(category.getCategName());
+            }
 
             // Selector
 
             TextView selectorText = (TextView) convertView.findViewById(R.id.selectorText);
-            Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/mmex.ttf");
-            selectorText.setTypeface(typeface);
-
-            // set the selector image
-//            ImageView selectorImageView = (ImageView) convertView.findViewById(R.id.selectorImage);
-//            if (selectorImageView != null) {
-//                selectorImageView.setImageDrawable(FontIconDrawable.inflate(mContext,
-//                        R.xml.ic_right_arrow));
-//            }
+            if (selectorText != null) {
+                Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/mmex.ttf");
+                selectorText.setTypeface(typeface);
+            }
 
             RelativeLayout selector = (RelativeLayout) convertView.findViewById(R.id.selector);
             if (selector != null) {

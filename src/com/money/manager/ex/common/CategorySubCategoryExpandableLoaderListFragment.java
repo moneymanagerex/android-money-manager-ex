@@ -117,12 +117,12 @@ public class CategorySubCategoryExpandableLoaderListFragment
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
         setHasOptionsMenu(true);
         // define layout
-//        if (Intent.ACTION_PICK.equals(mAction)) {
+        if (Intent.ACTION_PICK.equals(mAction)) {
 //            mLayout = R.layout.simple_expandable_list_item_multiple_choice_2;
-//        } else {
-//            mLayout = android.R.layout.simple_expandable_list_item_2;
-//        }
-        mLayout = R.layout.simple_expandable_list_item_selector;
+            mLayout = R.layout.simple_expandable_list_item_selector;
+        } else {
+            mLayout = android.R.layout.simple_expandable_list_item_2;
+        }
 
         // manage context menu
         registerForContextMenu(getExpandableListView());
@@ -690,29 +690,29 @@ public class CategorySubCategoryExpandableLoaderListFragment
             });
 
             // Long-click selects the category.
-            getExpandableListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    // i = position, l = id
-                    Object selectedItem = adapterView.getItemAtPosition(i);
-                    CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                    if (selectedItem instanceof TableCategory) {
-                        // this is a category
-                        TableCategory category = (TableCategory) selectedItem;
-                        adapter.setIdGroupChecked(category.getCategId());
-                    } else {
-                        // subcategory
-                        QueryCategorySubCategory subCategory = (QueryCategorySubCategory) selectedItem;
-                        adapter.setIdChildChecked(subCategory.getCategId(), subCategory.getSubCategId());
-                    }
-
-                    CategorySubCategoryExpandableLoaderListFragment fragment =
-                            (CategorySubCategoryExpandableLoaderListFragment) getActivity()
-                                    .getSupportFragmentManager().findFragmentByTag(CategorySubCategoryExpandableListActivity.FRAGMENTTAG);
-                    fragment.setResultAndFinish();
-                    return true;
-                }
-            });
+//            getExpandableListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//                @Override
+//                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                    // i = position, l = id
+//                    Object selectedItem = adapterView.getItemAtPosition(i);
+//                    CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
+//                    if (selectedItem instanceof TableCategory) {
+//                        // this is a category
+//                        TableCategory category = (TableCategory) selectedItem;
+//                        adapter.setIdGroupChecked(category.getCategId());
+//                    } else {
+//                        // subcategory
+//                        QueryCategorySubCategory subCategory = (QueryCategorySubCategory) selectedItem;
+//                        adapter.setIdChildChecked(subCategory.getCategId(), subCategory.getSubCategId());
+//                    }
+//
+//                    CategorySubCategoryExpandableLoaderListFragment fragment =
+//                            (CategorySubCategoryExpandableLoaderListFragment) getActivity()
+//                                    .getSupportFragmentManager().findFragmentByTag(CategorySubCategoryExpandableListActivity.FRAGMENTTAG);
+//                    fragment.setResultAndFinish();
+//                    return true;
+//                }
+//            });
 
         }
     }

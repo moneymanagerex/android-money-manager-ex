@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="July 13, 2015" versionName="2.8.0">
+    <changelogversion changeDate="July 13, 2015" versionName="2.8.1">
         <changelogtext>Single-click selection of categories.</changelogtext>
         <changelogtext>Trimming names of Payees and Categories on creation and editing. This prevents creation of seemingly duplicate records.</changelogtext>
         <changelogtext>Improvement in sync: Dropbox sync will not run automatically if it was run manually during the delay period after data change.</changelogtext>
