@@ -20,6 +20,8 @@ package com.money.manager.ex.database;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.money.manager.ex.core.NumericHelper;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 /**
@@ -236,36 +238,20 @@ public class TableCurrencyFormats extends Dataset {
 	 * @return value formatted
 	 */
 	public String getValueFormatted(double value, boolean showSymbols) {
-		// set format
-		DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
-		if (!(TextUtils.isEmpty(getDecimalPoint()))) {
-			formatSymbols.setDecimalSeparator(getDecimalPoint().charAt(0));
-		}
-		if (!(TextUtils.isEmpty(getGroupSeparator()))) {
-			formatSymbols.setGroupingSeparator(getGroupSeparator().charAt(0));
-		}
+        NumericHelper helper = new NumericHelper();
+        String result = helper.getNumberFormatted(value, this.getScale(),
+            this.getDecimalPoint(), this.getGroupSeparator());
 
-		DecimalFormat formatter = new DecimalFormat();
-		// set which symbols to use
-		formatter.setDecimalFormatSymbols(formatSymbols);
-	
-		formatter.setMaximumFractionDigits(getNumberDecimal());
-		formatter.setMinimumFractionDigits(getNumberDecimal());
-
-		String ret = formatter.format(value);
 		// check suffix
 		if ((showSymbols) && (!TextUtils.isEmpty(this.getSfxSymbol()))) {
-			ret = ret + " " + this.getSfxSymbol();
+			result = result + " " + this.getSfxSymbol();
 		}
 		// check prefix
 		if (((showSymbols) && !TextUtils.isEmpty(this.getPfxSymbol()))) {
-			ret = this.getPfxSymbol() + " " + ret;
+			result = this.getPfxSymbol() + " " + result;
 		}
 		
-		return ret;
+		return result;
 	}
 	
-	private int getNumberDecimal() {
-		return (int)(Math.log(this.getScale()) / Math.log(10.0));
-	}
 }

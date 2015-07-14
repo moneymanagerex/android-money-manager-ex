@@ -34,7 +34,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.utils.MathUtils;
 
 import net.objecthunter.exp4j.Expression;
@@ -145,7 +147,7 @@ public class InputAmountDialog
             public void onClick(View v) {
 //                evalExpression();
                 // Set the calculated amount into the main box
-                txtMain.setText(mAmount);
+                txtMain.setText(getCalculatedAmount(false));
             }
         });
 
@@ -159,6 +161,7 @@ public class InputAmountDialog
                     currentNumber = deleteLastDigitFrom(currentNumber);
                     txtMain.setText(currentNumber);
                 }
+                evalExpression();
             }
         });
 
@@ -222,25 +225,13 @@ public class InputAmountDialog
         savedInstanceState.putString(KEY_EXPRESSION, txtMain.getText().toString());
     }
 
+    /**
+     * Displays the expression result in the top text box.
+     */
     public void refreshAmount() {
-        String amount = mAmount;
+        String result = getCalculatedAmount();
 
-        // check if amount is not empty and is double
-        if (TextUtils.isEmpty(amount)) {
-            amount = Double.toString(0);
-        }
-
-        if (NumberUtils.isNumber(amount)) {
-            double fAmount = Double.parseDouble(amount);
-
-            CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
-
-            if (mCurrencyId == null) {
-                txtTop.setText(currencyUtils.getBaseCurrencyFormatted(fAmount));
-            } else {
-                txtTop.setText(currencyUtils.getCurrencyFormatted(mCurrencyId, fAmount));
-            }
-        }
+        txtTop.setText(result);
     }
 
     public boolean evalExpression() {
@@ -250,13 +241,17 @@ public class InputAmountDialog
                 Expression e = new ExpressionBuilder(exp).build();
                 double result = e.evaluate();
                 mAmount = Double.toString(result);
-                refreshAmount();
 
+                refreshAmount();
                 txtTop.setTextColor(mDefaultColor);
                 return true;
             } catch (IllegalArgumentException ex) {
-                txtTop.setText(R.string.invalid_expression);
-                txtTop.setTextColor(getResources().getColor(R.color.material_red_700));
+//                txtTop.setText(R.string.invalid_expression);
+//                txtTop.setTextColor(getResources().getColor(R.color.material_red_700));
+                // Just display the last valid value.
+                refreshAmount();
+                // Use the warning colour.
+                txtTop.setTextColor(getResources().getColor(R.color.material_amber_800));
                 return false;
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
@@ -264,6 +259,39 @@ public class InputAmountDialog
             }
         }
         return true;
+    }
+
+    public String getCalculatedAmount() {
+        return getCalculatedAmount(true);
+    }
+
+    public String getCalculatedAmount(boolean withCurrency) {
+        String amount = mAmount;
+
+        // check if amount is not empty and is double
+        if (TextUtils.isEmpty(amount)) {
+            amount = Double.toString(0);
+        }
+
+        if (!NumberUtils.isNumber(amount)) return amount;
+
+        double fAmount = Double.parseDouble(amount);
+
+        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+
+        String result;
+        if (withCurrency) {
+            if (mCurrencyId == null) {
+                result = currencyUtils.getBaseCurrencyFormatted(fAmount);
+            } else {
+                result = currencyUtils.getCurrencyFormatted(mCurrencyId, fAmount);
+            }
+        } else {
+            // return just the number, without the currency symbol.
+            result = currencyUtils.getBaseCurrency().getValueFormatted(fAmount, withCurrency);
+        }
+
+        return result;
     }
 
     private String deleteLastDigitFrom(String number) {

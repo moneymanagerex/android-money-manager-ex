@@ -17,6 +17,11 @@
  */
 package com.money.manager.ex.core;
 
+import android.text.TextUtils;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 /**
  * Various methods that help out working with numbers.
  */
@@ -33,4 +38,33 @@ public class NumericHelper {
         }
         return true;
     }
+
+    public String getNumberFormatted(double value, double scale, String decimalPoint, String groupSeparator) {
+        // set format
+        DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
+        // getDecimalPoint()
+        if (!(TextUtils.isEmpty(decimalPoint))) {
+            formatSymbols.setDecimalSeparator(decimalPoint.charAt(0));
+        }
+        // getGroupSeparator()
+        if (!(TextUtils.isEmpty(groupSeparator))) {
+            formatSymbols.setGroupingSeparator(groupSeparator.charAt(0));
+        }
+
+        DecimalFormat formatter = new DecimalFormat();
+        // set which symbols to use
+        formatter.setDecimalFormatSymbols(formatSymbols);
+
+        formatter.setMaximumFractionDigits(getNumberDecimal(scale));
+        formatter.setMinimumFractionDigits(getNumberDecimal(scale));
+
+        String result = formatter.format(value);
+        return result;
+    }
+
+    private int getNumberDecimal(double scale) {
+        // this.getScale()
+        return (int)(Math.log(scale) / Math.log(10.0));
+    }
+
 }
