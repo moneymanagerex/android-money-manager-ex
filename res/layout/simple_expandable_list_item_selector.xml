@@ -71,11 +71,11 @@
         android:layout_height="match_parent" >
         <TextView
             android:id="@+id/selectorText"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:text="n"
             android:textColor="@color/md_accent"
-            android:textSize="33sp"
+            android:textSize="30sp"
             android:layout_centerInParent="true" />
     </RelativeLayout>
 
