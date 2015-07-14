@@ -200,21 +200,20 @@
     <string name="account_can_not_deleted">The selected account can not be deleted because it is referenced</string>
     <string name="currency_can_not_deleted">The selected currency can not be deleted because it is referenced</string>
     <string name="category_can_not_deleted">The selected category can not be deleted because it is referenced</string>
-    <!-- 20120909 -->
+    <!-- transaction list periods -->
     <string name="all_transaction">All transactions</string>
     <string name="last7days">Last 7 days</string>
     <string name="last15days">Last 2 weeks</string>
     <string name="current_month">Current month</string>
     <string name="current_year">Current year</string>
+    <string name="future_transactions">Future transactions</string>
+
     <string name="show_transaction">Show Transaction</string>
     <string name="changelog">Changelog</string>
-    <!-- 20120925 -->
     <string name="transaction_number">Transaction number</string>
-    <!-- 20120927 -->
     <string name="widget_summary">Money Manager Ex Summary</string>
     <string name="widget_all_accounts">Money Manager Ex All Accounts</string>
     <string name="widget_add_transaction">Money Manager Ex Add Transaction</string>
-
     <!-- Recurring Transactions -->
     <string name="none">None</string>
     <string name="weekly">Weekly</string>

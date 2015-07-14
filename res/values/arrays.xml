@@ -129,6 +129,7 @@
         <item>@string/last3months</item>
         <item>@string/last6months</item>
         <item>@string/current_year</item>
+        <item>@string/future_transactions</item>
     </string-array>
 
     <!-- Define last or none used payee -->

@@ -249,6 +249,9 @@ public class AccountTransactionsFragment
             case R.id.menu_current_year:
                 settings.setShowTransactions(R.string.current_year);
                 break;
+            case R.id.menu_future_transactions:
+                settings.setShowTransactions(R.string.future_transactions);
+                break;
             case R.id.menu_all_time:
                 settings.setShowTransactions(R.string.all_time);
                 break;
@@ -592,6 +595,9 @@ public class AccountTransactionsFragment
             selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
         } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.current_year))) {
             selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.future_transactions))) {
+            // Future transactions
+            selection.add("date(" + QueryAllData.Date + ") > date('now')");
         }
         // create a bundle to returns
         Bundle args = new Bundle();

@@ -70,7 +70,7 @@ public class LookFeelFragment
         chkAccountFav.setOnPreferenceChangeListener(listener);
         chkHideReconciled.setOnPreferenceChangeListener(listener);
 
-        // show transaction
+        // show transactions
         final ListPreference lstShow = (ListPreference) findPreference(getString(
                 PreferenceConstants.PREF_SHOW_TRANSACTION));
         if (lstShow != null) {
