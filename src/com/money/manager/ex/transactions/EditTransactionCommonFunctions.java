@@ -194,6 +194,7 @@ public class EditTransactionCommonFunctions {
             txtHeaderTotAmount.setText(R.string.total_amount);
             txtHeaderAmount.setText(R.string.amount);
         } else {
+            // Transfer. Adjust the headers on amount text boxes.
             int index = mAccountIdList.indexOf(mAccountId);
             if (index >= 0) {
                 txtHeaderAmount.setText(mContext.getString(R.string.withdrawal_from,
