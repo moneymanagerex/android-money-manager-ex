@@ -22,7 +22,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,8 +62,7 @@ public class InputAmountDialog
     private String mAmount = Constants.EMPTY_STRING;
     private String mExpression = null;
     private Integer mCurrencyId, mDefaultColor;
-    private TextView txtAmount, txtExpression;
-    private ImageButton imgDelete;
+    private TextView txtMain, txtTop;
     private IInputAmountDialogListener mListener;
 
     public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id, Double amount) {
@@ -119,8 +117,9 @@ public class InputAmountDialog
         OnClickListener clickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                txtExpression.setText(txtExpression.getText().toString()
+                txtTop.setText(txtTop.getText().toString()
                         .concat(((Button) v).getText().toString()));
+//                evalExpression();
             }
         };
         // reference button click listener
@@ -134,7 +133,7 @@ public class InputAmountDialog
         clearButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtExpression.setText("");
+                txtTop.setText("");
             }
         });
 
@@ -148,25 +147,26 @@ public class InputAmountDialog
         });
 
         // image button delete
-        imgDelete = (ImageButton) view.findViewById(R.id.imageButtonCancel);
+        ImageButton imgDelete = (ImageButton) view.findViewById(R.id.imageButtonCancel);
         imgDelete.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String currentNumber = txtExpression.getText().toString();
+                String currentNumber = txtTop.getText().toString();
                 if (currentNumber.length() > 0) {
                     currentNumber = deleteLastDigitFrom(currentNumber);
-                    txtExpression.setText(currentNumber);
+                    txtTop.setText(currentNumber);
                 }
             }
         });
 
-        // Amount
-        txtAmount = (TextView) view.findViewById(R.id.textViewAmount);
-        mDefaultColor = txtAmount.getCurrentTextColor();
-        txtExpression = (TextView) view.findViewById(R.id.textViewExpression);
+        // Amounts
+        txtMain = (TextView) view.findViewById(R.id.textViewMain);
+        mDefaultColor = txtMain.getCurrentTextColor();
+
+        txtTop = (TextView) view.findViewById(R.id.textViewTop);
         if (!TextUtils.isEmpty(mExpression)) {
-            txtExpression.setText(mExpression);
+            txtTop.setText(mExpression);
         }
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
@@ -215,7 +215,7 @@ public class InputAmountDialog
         savedInstanceState.putString(KEY_AMOUNT, mAmount);
         if (mCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
         savedInstanceState.putInt(KEY_ID_VIEW, mIdView);
-        savedInstanceState.putString(KEY_EXPRESSION, txtExpression.getText().toString());
+        savedInstanceState.putString(KEY_EXPRESSION, txtTop.getText().toString());
     }
 
     public void refreshAmount() {
@@ -232,29 +232,29 @@ public class InputAmountDialog
             CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
 
             if (mCurrencyId == null) {
-                txtAmount.setText(currencyUtils.getBaseCurrencyFormatted(fAmount));
+                txtMain.setText(currencyUtils.getBaseCurrencyFormatted(fAmount));
             } else {
-                txtAmount.setText(currencyUtils.getCurrencyFormatted(mCurrencyId, fAmount));
+                txtMain.setText(currencyUtils.getCurrencyFormatted(mCurrencyId, fAmount));
             }
         }
     }
 
     public boolean evalExpression() {
-        String exp = txtExpression.getText().toString();
+        String exp = txtTop.getText().toString();
         if (exp.length() > 0) {
             try {
                 Expression e = new ExpressionBuilder(exp).build();
                 double result = e.evaluate();
                 mAmount = Double.toString(result);
                 refreshAmount();
-                txtAmount.setTextColor(mDefaultColor);
+                txtMain.setTextColor(mDefaultColor);
                 return true;
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
                 handler.handle(e, "evaluating expression");
 
-                txtAmount.setText(R.string.invalid_expression);
-                txtAmount.setTextColor(getResources().getColor(R.color.material_red_700));
+                txtMain.setText(R.string.invalid_expression);
+                txtMain.setTextColor(getResources().getColor(R.color.material_red_700));
                 return false;
             }
         }

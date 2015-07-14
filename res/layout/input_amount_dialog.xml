@@ -24,7 +24,7 @@
               android:orientation="vertical">
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/textViewExpression"
+        android:id="@+id/textViewTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -36,7 +36,7 @@
         app:typeface="roboto_light"/>
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/textViewAmount"
+        android:id="@+id/textViewMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
