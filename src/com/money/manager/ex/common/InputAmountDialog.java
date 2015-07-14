@@ -22,6 +22,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -117,9 +118,9 @@ public class InputAmountDialog
         OnClickListener clickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                txtTop.setText(txtTop.getText().toString()
+                txtMain.setText(txtMain.getText().toString()
                         .concat(((Button) v).getText().toString()));
-//                evalExpression();
+                evalExpression();
             }
         };
         // reference button click listener
@@ -133,41 +134,42 @@ public class InputAmountDialog
         clearButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtTop.setText("");
+                txtMain.setText("");
             }
         });
 
-        // button equals
+        // Equals button
         Button buttonKeyEquals = (Button) view.findViewById(R.id.buttonKeyEqual);
         buttonKeyEquals.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                evalExpression();
+//                evalExpression();
+                // Set the calculated amount into the main box
+                txtMain.setText(mAmount);
             }
         });
 
-        // image button delete
+        // Delete button
         ImageButton imgDelete = (ImageButton) view.findViewById(R.id.imageButtonCancel);
         imgDelete.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                String currentNumber = txtTop.getText().toString();
+                String currentNumber = txtMain.getText().toString();
                 if (currentNumber.length() > 0) {
                     currentNumber = deleteLastDigitFrom(currentNumber);
-                    txtTop.setText(currentNumber);
+                    txtMain.setText(currentNumber);
                 }
             }
         });
 
         // Amounts
-        txtMain = (TextView) view.findViewById(R.id.textViewMain);
-        mDefaultColor = txtMain.getCurrentTextColor();
-
         txtTop = (TextView) view.findViewById(R.id.textViewTop);
-        if (!TextUtils.isEmpty(mExpression)) {
-            txtTop.setText(mExpression);
-        }
+        mDefaultColor = txtTop.getCurrentTextColor();
+
+        txtMain = (TextView) view.findViewById(R.id.textViewMain);
+        txtMain.setText(mExpression);
+
+        // Dialog
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         builder.customView(view, false);
@@ -212,10 +214,12 @@ public class InputAmountDialog
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+
         savedInstanceState.putString(KEY_AMOUNT, mAmount);
         if (mCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
         savedInstanceState.putInt(KEY_ID_VIEW, mIdView);
-        savedInstanceState.putString(KEY_EXPRESSION, txtTop.getText().toString());
+
+        savedInstanceState.putString(KEY_EXPRESSION, txtMain.getText().toString());
     }
 
     public void refreshAmount() {
@@ -232,30 +236,31 @@ public class InputAmountDialog
             CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
 
             if (mCurrencyId == null) {
-                txtMain.setText(currencyUtils.getBaseCurrencyFormatted(fAmount));
+                txtTop.setText(currencyUtils.getBaseCurrencyFormatted(fAmount));
             } else {
-                txtMain.setText(currencyUtils.getCurrencyFormatted(mCurrencyId, fAmount));
+                txtTop.setText(currencyUtils.getCurrencyFormatted(mCurrencyId, fAmount));
             }
         }
     }
 
     public boolean evalExpression() {
-        String exp = txtTop.getText().toString();
+        String exp = txtMain.getText().toString();
         if (exp.length() > 0) {
             try {
                 Expression e = new ExpressionBuilder(exp).build();
                 double result = e.evaluate();
                 mAmount = Double.toString(result);
                 refreshAmount();
-                txtMain.setTextColor(mDefaultColor);
+
+                txtTop.setTextColor(mDefaultColor);
                 return true;
+            } catch (IllegalArgumentException ex) {
+                txtTop.setText(R.string.invalid_expression);
+                txtTop.setTextColor(getResources().getColor(R.color.material_red_700));
+                return false;
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
                 handler.handle(e, "evaluating expression");
-
-                txtMain.setText(R.string.invalid_expression);
-                txtMain.setTextColor(getResources().getColor(R.color.material_red_700));
-                return false;
             }
         }
         return true;
