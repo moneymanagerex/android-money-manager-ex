@@ -45,19 +45,19 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class InputAmountDialog
         extends DialogFragment {
 
-    private static final String LOGCAT = InputAmountDialog.class.getSimpleName();
-
     private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
     private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
     private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
     private static final String KEY_EXPRESSION = "InputAmountDialog:Expression";
-//    private static final String COMMA_DECIMAL = ".";
 
     // arrays id keynum button
-    private int[] idButtonKeyNum = {R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
-            R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7, R.id.buttonKeyNum8,
+    private int[] idButtonKeyNum = {
+            R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
+            R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
+            R.id.buttonKeyNum8,
             R.id.buttonKeyNum9, R.id.buttonKeyNumDecimal, R.id.buttonKeyAdd, R.id.buttonKeyDiv,
-            R.id.buttonKeyLess, R.id.buttonKeyMultiplication, R.id.buttonKeyLeftParenthesis, R.id.buttonKeyRightParenthesis};
+            R.id.buttonKeyLess, R.id.buttonKeyMultiplication, R.id.buttonKeyLeftParenthesis,
+            R.id.buttonKeyRightParenthesis};
 
     private int mIdView;
     private String mAmount = Constants.EMPTY_STRING;
@@ -91,28 +91,22 @@ public class InputAmountDialog
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState == null) {
-            int id = getArguments().getInt("id");
-            Double amount = MathUtils.Round(getArguments().getDouble("amount"), 2);
-            mIdView = id;
-            if (!(amount == null || amount == 0)) {
-                int iAmount = (int) (amount * 100);
-                if (Math.abs(amount - (iAmount / 100)) == 0) {
-                    mAmount = Integer.toString(iAmount / 100);
-                } else {
-                    mAmount = Double.toString(amount);
-                }
-                mExpression = mAmount;
+        if (savedInstanceState != null) {
+            restoreSavedInstanceState(savedInstanceState);
+            return;
+        }
+
+        int id = getArguments().getInt("id");
+        Double amount = MathUtils.Round(getArguments().getDouble("amount"), 2);
+        mIdView = id;
+        if (amount != 0) {
+            int iAmount = (int) (amount * 100);
+            if (Math.abs(amount - (iAmount / 100)) == 0) {
+                mAmount = Integer.toString(iAmount / 100);
+            } else {
+                mAmount = Double.toString(amount);
             }
-        } else {
-            if (savedInstanceState.containsKey(KEY_AMOUNT))
-                mAmount = savedInstanceState.getString(KEY_AMOUNT);
-            if (savedInstanceState.containsKey(KEY_CURRENCY_ID))
-                mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
-            if (savedInstanceState.containsKey(KEY_ID_VIEW))
-                mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
-            if (savedInstanceState.containsKey(KEY_EXPRESSION))
-                mExpression = savedInstanceState.getString(KEY_EXPRESSION);
+            mExpression = mAmount;
         }
     }
 
@@ -125,19 +119,8 @@ public class InputAmountDialog
         OnClickListener clickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*String parseAmountTry = mAmount;
-                parseAmountTry += ((Button) v).getText();
-                // check if amount string is empty
-                if (TextUtils.isEmpty(parseAmountTry))
-                    parseAmountTry = Double.toString(0);
-                // check if amount end with
-                // check if amount is number
-                if (NumberUtils.isNumber(parseAmountTry)) {
-                    // change amount
-                    mAmount = parseAmountTry;
-                    refreshAmount();
-                }*/
-                txtExpression.setText(txtExpression.getText().toString().concat(((Button) v).getText().toString()));
+                txtExpression.setText(txtExpression.getText().toString()
+                        .concat(((Button) v).getText().toString()));
             }
         };
         // reference button click listener
@@ -170,14 +153,6 @@ public class InputAmountDialog
 
             @Override
             public void onClick(View v) {
-                /*if (!TextUtils.isEmpty(mAmount)) {
-                    if (mAmount.endsWith(COMMA_DECIMAL)) {
-                        mAmount = mAmount.substring(0, mAmount.length() - 2);
-                    } else {
-                        mAmount = mAmount.substring(0, mAmount.length() - 1);
-                    }
-                }
-                refreshAmount();*/
                 String currentNumber = txtExpression.getText().toString();
                 if (currentNumber.length() > 0) {
                     currentNumber = deleteLastDigitFrom(currentNumber);
@@ -186,7 +161,7 @@ public class InputAmountDialog
             }
         });
 
-        // reference TextView amount
+        // Amount
         txtAmount = (TextView) view.findViewById(R.id.textViewAmount);
         mDefaultColor = txtAmount.getCurrentTextColor();
         txtExpression = (TextView) view.findViewById(R.id.textViewExpression);
@@ -207,7 +182,9 @@ public class InputAmountDialog
                 }
                 // check if is double
                 if (NumberUtils.isNumber(mAmount) && mListener != null) {
-                    mListener.onFinishedInputAmountDialog(mIdView, MathUtils.Round(Double.parseDouble(mAmount), 2));
+                    double result = MathUtils.Round(Double.parseDouble(mAmount), 2);
+                    mListener.onFinishedInputAmountDialog(mIdView, result);
+
                     dialog.dismiss();
                 }
             }
@@ -236,17 +213,18 @@ public class InputAmountDialog
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString(KEY_AMOUNT, mAmount);
-        if (mCurrencyId != null)
-            savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
+        if (mCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
         savedInstanceState.putInt(KEY_ID_VIEW, mIdView);
         savedInstanceState.putString(KEY_EXPRESSION, txtExpression.getText().toString());
     }
 
     public void refreshAmount() {
         String amount = mAmount;
+
         // check if amount is not empty and is double
-        if (TextUtils.isEmpty(amount))
+        if (TextUtils.isEmpty(amount)) {
             amount = Double.toString(0);
+        }
 
         if (NumberUtils.isNumber(amount)) {
             double fAmount = Double.parseDouble(amount);
@@ -290,5 +268,17 @@ public class InputAmountDialog
         // Should we check if the next character is the decimal separator. (?)
 
         return number;
+    }
+
+    private void restoreSavedInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey(KEY_AMOUNT)) {
+            mAmount = savedInstanceState.getString(KEY_AMOUNT);
+        }
+        if (savedInstanceState.containsKey(KEY_CURRENCY_ID))
+            mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
+        if (savedInstanceState.containsKey(KEY_ID_VIEW))
+            mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
+        if (savedInstanceState.containsKey(KEY_EXPRESSION))
+            mExpression = savedInstanceState.getString(KEY_EXPRESSION);
     }
 }
