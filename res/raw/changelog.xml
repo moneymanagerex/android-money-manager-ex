@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="" versionName="">
+    <changelogversion changeDate="July 14, 2015" versionName="2.9">
         <changelogtext>Displaying exchange rate next to the currency name in the currencies list.</changelogtext>
         <changelogtext>Option to display future-dated transactions only in the transactions list.</changelogtext>
     </changelogversion>
