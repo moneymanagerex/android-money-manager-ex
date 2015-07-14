@@ -64,6 +64,7 @@
   <string name="db_account_insert_failed">アカウントを挿入中にエラー</string>
   <string name="db_account_update_failed">アカウントを更新中にエラー</string>
   <string name="error_currency_not_selected">通貨が必要です</string>
+  <string name="error_saving_default_currency">デフォルトの通貨を保存時にエラー</string>
   <string name="error_initialbal_empty">初期残高が必要です</string>
   <string name="error_accountname_empty">アカウント名が必要です</string>
   <string name="error_accounttype_empty">アカウントの種類が必要です</string>
@@ -332,7 +333,10 @@
   <string name="import_all_currencies">通貨のインポート</string>
   <string name="import_currencies_in_progress">通貨をインポートしています。しばらくお待ちください&#8230;</string>
   <string name="amount_greater_or_equal">金額が以上</string>
+  <string name="amount_from">金額 から</string>
   <string name="amount_less_or_equal">金額が以下</string>
+  <string name="amount_to">金額 まで</string>
+  <string name="reset">リセット</string>
   <string name="result_search">検索結果</string>
   <string name="new_repeating_transaction">新しい定期的な取引</string>
   <string name="edit_repeating_transaction">定期的な取引を編集</string>
@@ -485,9 +489,13 @@
   <string name="select_account">アカウントを選択</string>
   <string name="invalid_transaction_number">取引番号が正しくありません</string>
   <string name="budgets">予算</string>
+  <string name="budget_list">予算一覧</string>
+  <string name="actual">実際</string>
   <string name="base_currency_not_set">基本通貨が設定されていません</string>
   <string name="error">エラー</string>
   <string name="unhandled_crash">予期しないエラーが発生しました。ログをお送りください。</string>
   <string name="title_activity_currency_rates_report">為替レート</string>
   <string name="frequency">頻度</string>
+  <string name="update_available">利用可能な更新</string>
+  <string name="update_on_dropbox">Dropbox で利用可能な、更新されたデータベース ファイルがあります。更新しますか?</string>
 </resources>
