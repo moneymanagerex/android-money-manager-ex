@@ -40,6 +40,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.businessobjects.CategoryService;
@@ -235,6 +236,12 @@ public class CategorySubCategoryExpandableLoaderListFragment
 
         int key = -1;
         List<QueryCategorySubCategory> listSubCategories = null;
+
+        // reset cursor if getting back on the fragment.
+        if (data.getPosition() > 0) {
+            data.moveToPosition(Constants.NOT_SET);
+        }
+
         while (data.moveToNext()) {
             if (key != data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID))) {
                 // check if listCategories > 0
