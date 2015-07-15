@@ -808,7 +808,7 @@ public class HomeFragment
 
         // also add to grand total of all accounts
         mGrandTotal = mGrandTotal.add(BigDecimal.valueOf(total));
-        mGrandTotal = mGrandReconciled.add(BigDecimal.valueOf(total));
+        mGrandReconciled = mGrandReconciled.add(BigDecimal.valueOf(total));
         addFooterExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
     }
 
