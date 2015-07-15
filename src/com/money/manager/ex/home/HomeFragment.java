@@ -273,7 +273,10 @@ public class HomeFragment
             case ID_LOADER_INVESTMENTS:
                 // get investment accounts
                 String investmentTitle = getString(R.string.investment);
-                List<QueryAccountBills> investmentAccounts = mAccountsByType.get(investmentTitle);
+                List<QueryAccountBills> investmentAccounts = null;
+                if (mAccountsByType != null) {
+                    investmentAccounts = mAccountsByType.get(investmentTitle);
+                }
                 String[] accountList = null;
                 if (investmentAccounts != null) {
                     accountList = new String[investmentAccounts.size()];
