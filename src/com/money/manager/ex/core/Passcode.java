@@ -20,6 +20,7 @@ package com.money.manager.ex.core;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDiskIOException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -102,9 +103,9 @@ public class Passcode {
     private String retrievePasscode() {
         try {
             return retrievePasscodeInternal();
-        } catch (IllegalStateException ise) {
+        } catch (IllegalStateException | SQLiteDiskIOException ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ise, "retrieving passcode");
+            handler.handle(ex, "retrieving passcode");
         }
         return null;
     }
