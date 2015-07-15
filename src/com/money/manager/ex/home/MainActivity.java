@@ -545,6 +545,9 @@ public class MainActivity
      * @param tagFragment
      */
     public void showFragment(Fragment fragment, String tagFragment) {
+        // Check if fragment is already added.
+//        if (fragment.isAdded()) return;
+
         // In tablet layout, do not try to display the Home Fragment again. Show empty fragment.
         if (isDualPanel() && tagFragment.equalsIgnoreCase(HomeFragment.class.getName())) {
             fragment = new Fragment();
@@ -562,9 +565,10 @@ public class MainActivity
         }
         transaction.addToBackStack(null);
         // Commit the transaction
-        transaction.commit();
-
-        // todo: use this call to prevent exception is nome cases -> commitAllowingStateLoss()
+//        transaction.commit();
+        // use this call to prevent exception in some cases -> commitAllowingStateLoss()
+        // The exception is "fragment already added".
+        transaction.commitAllowingStateLoss();
     }
 
     /**
