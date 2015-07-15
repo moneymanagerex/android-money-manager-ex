@@ -774,8 +774,8 @@ public class HomeFragment
     }
 
     private void showInvestmentTotals(Cursor cursor) {
-        return;
-        
+        if (true) return;
+
         if (cursor == null) return;
         if (mAccountsByType == null || mAccountsByType.size() <= 0) return;
         if (mTotalsByType == null || mTotalsByType.size() <= 0) return;
