@@ -19,6 +19,8 @@ package com.money.manager.ex.core;
 
 import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
@@ -37,6 +39,17 @@ public class NumericHelper {
             return false;
         }
         return true;
+    }
+
+    public int tryParse(String value) {
+        int result;
+        try {
+            result = Integer.parseInt(value);
+        } catch (Exception ex) {
+            // nothing
+            result = Constants.NOT_SET;
+        }
+        return result;
     }
 
     public String getNumberFormatted(double value, double scale, String decimalPoint, String groupSeparator) {

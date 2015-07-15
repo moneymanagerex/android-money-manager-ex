@@ -582,11 +582,14 @@ public class RecurringTransactionActivity
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransactions);
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
         outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
-        Locale locale = getResources().getConfiguration().locale;
+//        Locale locale = getResources().getConfiguration().locale;
         outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                 .format(txtNextOccurrence.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
-        if (!TextUtils.isEmpty(edtTimesRepeated.getText())) {
+
+        NumericHelper helper = new NumericHelper();
+        int timesRepeated = helper.tryParse(edtTimesRepeated.getText().toString());
+        if (timesRepeated != Constants.NOT_SET) {
             outState.putInt(KEY_NUM_OCCURRENCE, Integer.parseInt(edtTimesRepeated.getText().toString()));
         } else {
             outState.putInt(KEY_NUM_OCCURRENCE, Constants.NOT_SET);
