@@ -18,19 +18,15 @@
 package com.money.manager.ex.home;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,7 +36,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -113,6 +108,9 @@ public class HomeFragment
     private List<String> mAccountTypes = new ArrayList<>();
     private HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
     private HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
+
+    private BigDecimal mGrandTotal = BigDecimal.ZERO;
+    private BigDecimal mGrandReconciled = BigDecimal.ZERO;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -268,12 +266,20 @@ public class HomeFragment
                 break;
 
             case ID_LOADER_INVESTMENTS:
-                Log.d("loader investments", mAccountsByType.toString());
+                // get investment accounts
+                String investmentTitle = getString(R.string.investment);
+                List<QueryAccountBills> investmentAccounts = mAccountsByType.get(investmentTitle);
+                String[] accountList = new String[investmentAccounts.size()];
+                for(int i = 0; i < investmentAccounts.size(); i++) {
+                    accountList[i] = Integer.toString(investmentAccounts.get(i).getAccountId());
+                }
+
                 TableStock stocks = new TableStock();
                 result = new MmexCursorLoader(getActivity(), stocks.getUri(),
-                        new String[] { TableStock.SYMBOL, TableStock.NUMSHARES, TableStock.CURRENTPRICE },
-                        null,
-                        null,
+                        new String[] { TableStock.HELDAT, TableStock.SYMBOL, TableStock.NUMSHARES,
+                                TableStock.CURRENTPRICE },
+                        TableStock.HELDAT + " IN (" + makePlaceholders(investmentAccounts.size()) + ")",
+                        accountList,
                         null);
                 break;
 
@@ -377,14 +383,16 @@ public class HomeFragment
                         barExpenses.setProgress((int) Math.abs(expenses));
                     }
                 }
+                break;
+
+            case ID_LOADER_INVESTMENTS:
+                showInvestmentTotals(data);
+                break;
         }
     }
 
     private void renderAccountsList(Cursor cursor) {
         // Accounts list
-
-        BigDecimal curTotal = new BigDecimal(0);
-        BigDecimal curReconciled = new BigDecimal(0);
 
         linearHome.setVisibility(cursor != null && cursor.getCount() > 0 ? View.VISIBLE : View.GONE);
         linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
@@ -395,53 +403,11 @@ public class HomeFragment
 
         // display individual accounts with balances
         if (cursor != null) {
-            while (cursor.moveToNext()) {
-                QueryAccountBills accountEntry = new QueryAccountBills(getActivity());
-                accountEntry.setValueFromCursor(cursor);
-
-                double total = accountEntry.getTotalBaseConvRate();
-                curTotal = curTotal.add(BigDecimal.valueOf(total));
-                double totalReconciled = accountEntry.getReconciledBaseConvRate();
-                curReconciled = curReconciled.add(BigDecimal.valueOf(totalReconciled));
-
-                String accountType = accountEntry.getAccountType();
-                QueryAccountBills totals;
-                if (mAccountTypes.indexOf(accountType) == -1) {
-                    mAccountTypes.add(accountType);
-
-                    totals = new QueryAccountBills(getActivity());
-                    totals.setAccountType(accountType);
-                    // set group title
-                    if (AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)) {
-                        totals.setAccountName(getString(R.string.bank_accounts));
-                    } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
-                        totals.setAccountName(getString(R.string.term_accounts));
-                    } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
-                        totals.setAccountName(getString(R.string.credit_card_accounts));
-                    } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
-                        totals.setAccountName(getString(R.string.investment_accounts));
-                    }
-                    mTotalsByType.put(accountType, totals);
-                }
-                totals = mTotalsByType.get(accountType);
-                double reconciledBaseConversionRate = totals.getReconciledBaseConvRate() +
-                        accountEntry.getReconciledBaseConvRate();
-                totals.setReconciledBaseConvRate(reconciledBaseConversionRate);
-                double totalBaseConversionRate = totals.getTotalBaseConvRate() +
-                        accountEntry.getTotalBaseConvRate();
-                totals.setTotalBaseConvRate(totalBaseConversionRate);
-
-                List<QueryAccountBills> list = mAccountsByType.get(accountType);
-                if (list == null) {
-                    list = new ArrayList<>();
-                    mAccountsByType.put(accountType, list);
-                }
-                list.add(accountEntry);
-            }
+            showAccountTotals(cursor);
         }
-        
+
         // write accounts total
-        addFooterExpandableListView(curTotal.doubleValue(), curReconciled.doubleValue());
+        addFooterExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
 
         // create adapter
         AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity(),
@@ -451,6 +417,9 @@ public class HomeFragment
 
         setVisibilityOfAccountGroups();
         setListViewAccountBillsVisible(true);
+
+        // Load, calculate, and show investment totals
+        loadInvestmentTotals();
     }
 
     private void loadInvestmentTotals() {
@@ -790,4 +759,116 @@ public class HomeFragment
         return mBalanceAccountTask;
     }
 
+    private void showInvestmentTotals(Cursor cursor) {
+        // get investment accounts
+        String investmentTitle = getString(R.string.investment);
+        HashMap<Integer, QueryAccountBills> investmentAccounts = new HashMap<>();
+        for(QueryAccountBills account : mAccountsByType.get(investmentTitle)) {
+            investmentAccounts.put(account.getAccountId(), account);
+        }
+
+        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        int baseCurrencyId = currencyUtils.getBaseCurrencyId();
+
+        double total = 0;
+        while(cursor.moveToNext()) {
+            int accountId = cursor.getInt(cursor.getColumnIndex(TableStock.HELDAT));
+//            String symbol = cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL));
+            double price = cursor.getDouble(cursor.getColumnIndex(TableStock.CURRENTPRICE));
+            double numShares = cursor.getDouble(cursor.getColumnIndex(TableStock.NUMSHARES));
+            double amount = price * numShares;
+
+            QueryAccountBills account = investmentAccounts.get(accountId);
+
+            // total in local currency
+            double currentTotal = account.getTotal();
+            account.setTotal(currentTotal + amount);
+
+            // currency
+            int currencyId = account.getCurrencyId();
+            double amountInBaseCurrency = currencyUtils.doCurrencyExchange(baseCurrencyId, amount, currencyId);
+            double currentTotalInBase = account.getTotalBaseConvRate();
+            account.setTotalBaseConvRate(currentTotalInBase + amountInBaseCurrency);
+
+            total += amountInBaseCurrency;
+        }
+
+        // show totals for each account
+
+        // show total for all investment accounts
+        QueryAccountBills investmentTotalRecord = mTotalsByType.get(investmentTitle);
+        investmentTotalRecord.setTotalBaseConvRate(total);
+        investmentTotalRecord.setReconciledBaseConvRate(total);
+
+        // Notify about the changes
+        AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
+        if (accountsAdapter != null) {
+            accountsAdapter.notifyDataSetChanged();
+        }
+
+        // also add to grand total of all accounts
+        mGrandTotal = mGrandTotal.add(BigDecimal.valueOf(total));
+        mGrandTotal = mGrandReconciled.add(BigDecimal.valueOf(total));
+        addFooterExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
+    }
+
+    private String makePlaceholders(int len) {
+        if (len < 1) {
+            // It will lead to an invalid query anyway ..
+            throw new RuntimeException("No placeholders");
+        } else {
+            StringBuilder sb = new StringBuilder(len * 2 - 1);
+            sb.append("?");
+            for (int i = 1; i < len; i++) {
+                sb.append(",?");
+            }
+            return sb.toString();
+        }
+    }
+
+    private void showAccountTotals(Cursor cursor) {
+        while (cursor.moveToNext()) {
+            QueryAccountBills accountTransaction = new QueryAccountBills(getActivity());
+            accountTransaction.setValueFromCursor(cursor);
+
+            double total = accountTransaction.getTotalBaseConvRate();
+            mGrandTotal = mGrandTotal.add(BigDecimal.valueOf(total));
+            double totalReconciled = accountTransaction.getReconciledBaseConvRate();
+            mGrandReconciled = mGrandReconciled.add(BigDecimal.valueOf(totalReconciled));
+
+            String accountType = accountTransaction.getAccountType();
+            QueryAccountBills totalForType;
+            if (mAccountTypes.indexOf(accountType) == -1) {
+                mAccountTypes.add(accountType);
+
+                totalForType = new QueryAccountBills(getActivity());
+                totalForType.setAccountType(accountType);
+                // set group title
+                if (AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)) {
+                    totalForType.setAccountName(getString(R.string.bank_accounts));
+                } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
+                    totalForType.setAccountName(getString(R.string.term_accounts));
+                } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
+                    totalForType.setAccountName(getString(R.string.credit_card_accounts));
+                } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
+                    totalForType.setAccountName(getString(R.string.investment_accounts));
+                }
+                mTotalsByType.put(accountType, totalForType);
+            }
+            totalForType = mTotalsByType.get(accountType);
+            double reconciledBaseConversionRate = totalForType.getReconciledBaseConvRate() +
+                    accountTransaction.getReconciledBaseConvRate();
+            totalForType.setReconciledBaseConvRate(reconciledBaseConversionRate);
+            double totalBaseConversionRate = totalForType.getTotalBaseConvRate() +
+                    accountTransaction.getTotalBaseConvRate();
+            totalForType.setTotalBaseConvRate(totalBaseConversionRate);
+
+            List<QueryAccountBills> listOfAccountsOfType = mAccountsByType.get(accountType);
+            if (listOfAccountsOfType == null) {
+                listOfAccountsOfType = new ArrayList<>();
+                mAccountsByType.put(accountType, listOfAccountsOfType);
+            }
+            listOfAccountsOfType.add(accountTransaction);
+        }
+    }
 }
