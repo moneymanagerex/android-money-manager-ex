@@ -252,7 +252,7 @@ public class CurrencyListFragment
 
     @Override
     protected void setResult() {
-        Intent result = null;
+        Intent result;
         if (Intent.ACTION_PICK.equals(mAction)) {
             // create intent
             Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
