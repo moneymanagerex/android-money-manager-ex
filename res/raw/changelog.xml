@@ -21,6 +21,7 @@
         <changelogtext>Calculating totals for investment accounts on Home screen.</changelogtext>
         <changelogtext>Fixed expanded category selection.</changelogtext>
         <changelogtext>Fixed empty Categories list when moving back through screens.</changelogtext>
+        <changelogtext>Fixed layout issue in Currencies screen for Android 4.1 devices.</changelogtext>
         <changelogtext>Stability improvements.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="July 14, 2015" versionName="2.10">
