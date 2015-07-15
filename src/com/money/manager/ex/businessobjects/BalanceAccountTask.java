@@ -33,6 +33,8 @@ import java.math.BigDecimal;
 
 /**
  * Balance Account functionality encapsulated.
+ * The user enters the ending balance and a new transaction is created to adjust the account balance
+ * to the desired amount. The new transaction is displayed to the user for confirmation in edit mode.
  */
 public class BalanceAccountTask
     implements IInputAmountDialogListener {

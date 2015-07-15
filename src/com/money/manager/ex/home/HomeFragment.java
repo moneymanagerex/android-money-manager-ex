@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -84,7 +83,7 @@ import java.util.List;
  * The fragment that contains the accounts groups with accounts and their balances.
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
-@SuppressWarnings("static-access")
+//@SuppressWarnings("static-access")
 public class HomeFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -98,8 +97,8 @@ public class HomeFragment
     private CurrencyUtils mCurrencyUtils;
     private boolean mHideReconciled;
     // dataset table/view/query manage into class
-    private TableInfoTable infoTable = new TableInfoTable();
-    private QueryAccountBills accountBills;
+    private TableInfoTable mInfoTable = new TableInfoTable();
+    private QueryAccountBills mAccountBillsQuery;
 
     // Controls. view show in layout
     // This is the collapsible list of account groups with accounts.
@@ -125,7 +124,7 @@ public class HomeFragment
         super.onCreate(savedInstanceState);
 
         mCurrencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
-        accountBills = new QueryAccountBills(getActivity());
+        mAccountBillsQuery = new QueryAccountBills(getActivity());
 
         AppSettings settings = new AppSettings(getActivity());
         mHideReconciled = settings.getLookAndFeelSettings().getHideReconciledAmounts();
@@ -217,8 +216,8 @@ public class HomeFragment
 
         switch (id) {
             case ID_LOADER_USER_NAME:
-                result = new MmexCursorLoader(getActivity(), infoTable.getUri(),
-                        new String[]{infoTable.INFONAME, infoTable.INFOVALUE}, null, null, null);
+                result = new MmexCursorLoader(getActivity(), mInfoTable.getUri(),
+                        new String[]{TableInfoTable.INFONAME, TableInfoTable.INFOVALUE}, null, null, null);
                 break;
             case ID_LOADER_ACCOUNT_BILLS:
                 setListViewAccountBillsVisible(false);
@@ -232,9 +231,10 @@ public class HomeFragment
                 if (core.getAccountFavoriteVisible()) {
                     where = "LOWER(FAVORITEACCT)='true'";
                 }
-                result = new MmexCursorLoader(getActivity(), accountBills.getUri(),
-                        accountBills.getAllColumns(), where, null,
-                        accountBills.ACCOUNTTYPE + ", upper(" + accountBills.ACCOUNTNAME + ")");
+                result = new MmexCursorLoader(getActivity(), mAccountBillsQuery.getUri(),
+                        mAccountBillsQuery.getAllColumns(),
+                        where, null,
+                        QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
                 break;
 
             case ID_LOADER_BILL_DEPOSITS:
@@ -286,11 +286,11 @@ public class HomeFragment
             case ID_LOADER_USER_NAME:
                 if (data != null) {
                     while (data.moveToNext()) {
-                        String infoValue = data.getString(data.getColumnIndex(infoTable.INFONAME));
+                        String infoValue = data.getString(data.getColumnIndex(TableInfoTable.INFONAME));
                         // save into preferences username and base currency id
                         if (Constants.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
                             MoneyManagerApplication.getInstanceApp().setUserName(
-                                    data.getString(data.getColumnIndex(infoTable.INFOVALUE)));
+                                    data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE)));
                         }
                     }
                 }
@@ -370,7 +370,7 @@ public class HomeFragment
         mTotalsByType.clear();
         mAccountTypes.clear();
 
-        // cycle cursor
+        // display individual accounts with balances
         if (data != null) {
             while (data.moveToNext()) {
                 double total = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
@@ -406,14 +406,14 @@ public class HomeFragment
                     } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
                         totals.setAccountName(getString(R.string.investment_accounts));
                     }
-//                    totals.setReconciledBaseConvRate(.0);
-//                    totals.setTotalBaseConvRate(.0);
                     mTotalsByType.put(accountType, totals);
                 }
                 totals = mTotalsByType.get(accountType);
-                double reconciledBaseConversionRate = totals.getReconciledBaseConvRate() + data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
+                double reconciledBaseConversionRate = totals.getReconciledBaseConvRate() +
+                        data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
                 totals.setReconciledBaseConvRate(reconciledBaseConversionRate);
-                double totalBaseConversionRate = totals.getTotalBaseConvRate() + data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+                double totalBaseConversionRate = totals.getTotalBaseConvRate() +
+                        data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
                 totals.setTotalBaseConvRate(totalBaseConversionRate);
 
                 List<QueryAccountBills> list = mAccountsByType.get(accountType);
@@ -472,7 +472,7 @@ public class HomeFragment
         }
 
         if (result) {
-            return result;
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
