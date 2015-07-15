@@ -398,23 +398,12 @@ public class HomeFragment
             while (cursor.moveToNext()) {
                 QueryAccountBills accountEntry = new QueryAccountBills(getActivity());
                 accountEntry.setValueFromCursor(cursor);
-//                accountEntry.setAccountId(cursor.getInt(cursor.getColumnIndex(QueryAccountBills.ACCOUNTID)));
-//                accountEntry.setAccountName(cursor.getString(cursor.getColumnIndex(QueryAccountBills.ACCOUNTNAME)));
-//                accountEntry.setAccountType(cursor.getString(cursor.getColumnIndex(QueryAccountBills.ACCOUNTTYPE)));
-//                accountEntry.setCurrencyId(cursor.getInt(cursor.getColumnIndex(QueryAccountBills.CURRENCYID)));
-//                accountEntry.setTotal(cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTAL)));
-//                accountEntry.setReconciled(cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.RECONCILED)));
-//                accountEntry.setTotalBaseConvRate(cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
-//                accountEntry.setReconciledBaseConvRate(cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
 
-//                double total = cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
                 double total = accountEntry.getTotalBaseConvRate();
                 curTotal = curTotal.add(BigDecimal.valueOf(total));
-//                double totalReconciled = cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
                 double totalReconciled = accountEntry.getReconciledBaseConvRate();
                 curReconciled = curReconciled.add(BigDecimal.valueOf(totalReconciled));
 
-//                String accountType = cursor.getString(cursor.getColumnIndex(QueryAccountBills.ACCOUNTTYPE));
                 String accountType = accountEntry.getAccountType();
                 QueryAccountBills totals;
                 if (mAccountTypes.indexOf(accountType) == -1) {
@@ -437,11 +426,9 @@ public class HomeFragment
                 totals = mTotalsByType.get(accountType);
                 double reconciledBaseConversionRate = totals.getReconciledBaseConvRate() +
                         accountEntry.getReconciledBaseConvRate();
-//                        cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
                 totals.setReconciledBaseConvRate(reconciledBaseConversionRate);
                 double totalBaseConversionRate = totals.getTotalBaseConvRate() +
                         accountEntry.getTotalBaseConvRate();
-//                        cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
                 totals.setTotalBaseConvRate(totalBaseConversionRate);
 
                 List<QueryAccountBills> list = mAccountsByType.get(accountType);
@@ -452,6 +439,7 @@ public class HomeFragment
                 list.add(accountEntry);
             }
         }
+        
         // write accounts total
         addFooterExpandableListView(curTotal.doubleValue(), curReconciled.doubleValue());
 
@@ -607,7 +595,7 @@ public class HomeFragment
         // manage footer list view
         if (linearFooter == null) {
             linearFooter = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.item_account_bills, null);
-            // textview into layout
+            // text view into layout
             txtFooterSummary = (TextView) linearFooter.findViewById(R.id.textViewItemAccountTotal);
             txtFooterSummaryReconciled = (TextView) linearFooter.findViewById(R.id.textViewItemAccountTotalReconciled);
             if(mHideReconciled) {
