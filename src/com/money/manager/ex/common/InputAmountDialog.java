@@ -157,10 +157,9 @@ public class InputAmountDialog
             @Override
             public void onClick(View v) {
                 String currentNumber = txtMain.getText().toString();
-                if (currentNumber.length() > 0) {
-                    currentNumber = deleteLastDigitFrom(currentNumber);
-                    txtMain.setText(currentNumber);
-                }
+                currentNumber = deleteLastDigitFrom(currentNumber);
+                txtMain.setText(currentNumber);
+
                 evalExpression();
             }
         });
@@ -295,6 +294,9 @@ public class InputAmountDialog
     }
 
     private String deleteLastDigitFrom(String number) {
+        // check length
+        if (number.length() <= 0) return number;
+
         // first cut-off the last digit
         number = number.substring(0, number.length() - 1);
 
