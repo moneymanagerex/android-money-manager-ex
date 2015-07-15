@@ -779,7 +779,9 @@ public class HomeFragment
         // get investment accounts
         String investmentTitle = getString(R.string.investment);
         HashMap<Integer, QueryAccountBills> investmentAccounts = new HashMap<>();
-        for(QueryAccountBills account : mAccountsByType.get(investmentTitle)) {
+        List<QueryAccountBills> investmentAccountList = mAccountsByType.get(investmentTitle);
+        if (investmentAccountList == null) return;
+        for(QueryAccountBills account : investmentAccountList) {
             investmentAccounts.put(account.getAccountId(), account);
         }
 
