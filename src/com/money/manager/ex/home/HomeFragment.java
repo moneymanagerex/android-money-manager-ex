@@ -111,6 +111,8 @@ public class HomeFragment
 
     private BigDecimal mGrandTotal = BigDecimal.ZERO;
     private BigDecimal mGrandReconciled = BigDecimal.ZERO;
+//    private boolean mFragmentLoaded = false;
+    private Cursor mInvestmentsCursor;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -131,6 +133,8 @@ public class HomeFragment
 
         // The fragment is using a custom option in the actionbar menu.
         setHasOptionsMenu(true);
+
+//        mFragmentLoaded = true;
     }
 
     @Override
@@ -215,6 +219,7 @@ public class HomeFragment
         loaderManager.restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
         /*getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);*/
         loaderManager.restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
+        loadInvestmentTotals();
     }
 
     @Override
@@ -234,11 +239,11 @@ public class HomeFragment
                 String where = "";
                 // check if show only open accounts
                 if (core.getAccountsOpenVisible()) {
-                    where = "LOWER(STATUS)='open'";
+                    where = "LOWER(" + QueryAccountBills.STATUS + ")='open'";
                 }
                 // check if show fav accounts
                 if (core.getAccountFavoriteVisible()) {
-                    where = "LOWER(FAVORITEACCT)='true'";
+                    where = "LOWER(" + QueryAccountBills.FAVORITEACCT + ")='true'";
                 }
                 result = new MmexCursorLoader(getActivity(), mAccountBillsQuery.getUri(),
                         mAccountBillsQuery.getAllColumns(),
@@ -269,16 +274,24 @@ public class HomeFragment
                 // get investment accounts
                 String investmentTitle = getString(R.string.investment);
                 List<QueryAccountBills> investmentAccounts = mAccountsByType.get(investmentTitle);
-                String[] accountList = new String[investmentAccounts.size()];
-                for(int i = 0; i < investmentAccounts.size(); i++) {
-                    accountList[i] = Integer.toString(investmentAccounts.get(i).getAccountId());
+                String[] accountList = null;
+                if (investmentAccounts != null) {
+                    accountList = new String[investmentAccounts.size()];
+                    for(int i = 0; i < investmentAccounts.size(); i++) {
+                        accountList[i] = Integer.toString(investmentAccounts.get(i).getAccountId());
+                    }
+                }
+
+                String selection = "";
+                if (accountList != null && accountList.length > 0) {
+                    selection = TableStock.HELDAT + " IN (" + makePlaceholders(investmentAccounts.size()) + ")";
                 }
 
                 TableStock stocks = new TableStock();
                 result = new MmexCursorLoader(getActivity(), stocks.getUri(),
                         new String[] { TableStock.HELDAT, TableStock.SYMBOL, TableStock.NUMSHARES,
                                 TableStock.CURRENTPRICE },
-                        TableStock.HELDAT + " IN (" + makePlaceholders(investmentAccounts.size()) + ")",
+                        selection,
                         accountList,
                         null);
                 break;
@@ -294,7 +307,6 @@ public class HomeFragment
         switch (loader.getId()) {
             case ID_LOADER_ACCOUNT_BILLS:
                 txtTotalAccounts.setText(mCurrencyUtils.getBaseCurrencyFormatted((double) 0));
-
                 setListViewAccountBillsVisible(false);
                 mAccountsByType.clear();
                 mTotalsByType.clear();
@@ -386,40 +398,10 @@ public class HomeFragment
                 break;
 
             case ID_LOADER_INVESTMENTS:
-                showInvestmentTotals(data);
+                mInvestmentsCursor = data;
+//                showInvestmentTotals(data);
                 break;
         }
-    }
-
-    private void renderAccountsList(Cursor cursor) {
-        // Accounts list
-
-        linearHome.setVisibility(cursor != null && cursor.getCount() > 0 ? View.VISIBLE : View.GONE);
-        linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-
-        mAccountsByType.clear();
-        mTotalsByType.clear();
-        mAccountTypes.clear();
-
-        // display individual accounts with balances
-        if (cursor != null) {
-            showAccountTotals(cursor);
-        }
-
-        // write accounts total
-        addFooterExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
-
-        // create adapter
-        AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity(),
-            mAccountTypes, mAccountsByType, mTotalsByType, mHideReconciled);
-        // set adapter and shown
-        mExpandableListView.setAdapter(expandableAdapter);
-
-        setVisibilityOfAccountGroups();
-        setListViewAccountBillsVisible(true);
-
-        // Load, calculate, and show investment totals
-        loadInvestmentTotals();
     }
 
     private void loadInvestmentTotals() {
@@ -759,12 +741,51 @@ public class HomeFragment
         return mBalanceAccountTask;
     }
 
+    private void renderAccountsList(Cursor cursor) {
+        // Accounts list
+
+        linearHome.setVisibility(cursor != null && cursor.getCount() > 0 ? View.VISIBLE : View.GONE);
+        linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+
+        mAccountsByType.clear();
+        mTotalsByType.clear();
+        mAccountTypes.clear();
+        mGrandTotal = BigDecimal.ZERO;
+        mGrandReconciled = BigDecimal.ZERO;
+
+        // display individual accounts with balances
+        if (cursor != null) {
+            showAccountTotals(cursor);
+            showInvestmentTotals(mInvestmentsCursor);
+        }
+
+        // write accounts total
+        addFooterExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
+
+        // create adapter
+        AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity(),
+                mAccountTypes, mAccountsByType, mTotalsByType, mHideReconciled);
+        // set adapter and shown
+        mExpandableListView.setAdapter(expandableAdapter);
+
+        setVisibilityOfAccountGroups();
+        setListViewAccountBillsVisible(true);
+    }
+
     private void showInvestmentTotals(Cursor cursor) {
+        if (cursor == null) return;
+        if (mAccountsByType == null || mAccountsByType.size() <= 0) return;
+
         // get investment accounts
         String investmentTitle = getString(R.string.investment);
         HashMap<Integer, QueryAccountBills> investmentAccounts = new HashMap<>();
         for(QueryAccountBills account : mAccountsByType.get(investmentTitle)) {
             investmentAccounts.put(account.getAccountId(), account);
+        }
+
+        // reset cursor's position
+        if (cursor.getPosition() != Constants.NOT_SET) {
+            cursor.moveToPosition(Constants.NOT_SET);
         }
 
         CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
@@ -773,12 +794,13 @@ public class HomeFragment
         double total = 0;
         while(cursor.moveToNext()) {
             int accountId = cursor.getInt(cursor.getColumnIndex(TableStock.HELDAT));
+            QueryAccountBills account = investmentAccounts.get(accountId);
+            if (account == null) continue;
+
 //            String symbol = cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL));
             double price = cursor.getDouble(cursor.getColumnIndex(TableStock.CURRENTPRICE));
             double numShares = cursor.getDouble(cursor.getColumnIndex(TableStock.NUMSHARES));
             double amount = price * numShares;
-
-            QueryAccountBills account = investmentAccounts.get(accountId);
 
             // total in local currency
             double currentTotal = account.getTotal();
@@ -809,7 +831,7 @@ public class HomeFragment
         // also add to grand total of all accounts
         mGrandTotal = mGrandTotal.add(BigDecimal.valueOf(total));
         mGrandReconciled = mGrandReconciled.add(BigDecimal.valueOf(total));
-        addFooterExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
+//        addFooterExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
     }
 
     private String makePlaceholders(int len) {
@@ -868,7 +890,9 @@ public class HomeFragment
                 listOfAccountsOfType = new ArrayList<>();
                 mAccountsByType.put(accountType, listOfAccountsOfType);
             }
-            listOfAccountsOfType.add(accountTransaction);
+            if (!listOfAccountsOfType.contains(accountTransaction)) {
+                listOfAccountsOfType.add(accountTransaction);
+            }
         }
     }
 }

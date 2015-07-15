@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="July 15, 2015" versionName="2.11">
+    <changelogversion changeDate="July 15, 2015" versionName="2.11.1">
         <changelogtext>Calculating totals for investment accounts on Home screen.</changelogtext>
         <changelogtext>Minor stability improvements.</changelogtext>
     </changelogversion>
