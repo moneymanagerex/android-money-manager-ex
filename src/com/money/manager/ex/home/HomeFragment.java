@@ -113,6 +113,8 @@ public class HomeFragment
     private BigDecimal mGrandReconciled = BigDecimal.ZERO;
 
     private Cursor mInvestmentsCursor;
+    private boolean mAccountTransactionsLoaded = false;
+    private boolean mInvestmentTransactionsLoaded = false;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -234,6 +236,8 @@ public class HomeFragment
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:
+                mAccountTransactionsLoaded = false;
+
                 setListViewAccountBillsVisible(false);
                 // compose whereClause
                 String where = "";
@@ -271,6 +275,8 @@ public class HomeFragment
                 break;
 
             case ID_LOADER_INVESTMENTS:
+                mInvestmentTransactionsLoaded = false;
+
                 // get investment accounts
                 String investmentTitle = getString(R.string.investment);
                 List<QueryAccountBills> investmentAccounts = null;
@@ -348,7 +354,6 @@ public class HomeFragment
                 if (mainActivity != null) {
                     mainActivity.setDrawerTotalAccounts(txtTotalAccounts.getText().toString());
                 }
-
                 break;
 
             case ID_LOADER_BILL_DEPOSITS:
@@ -401,6 +406,7 @@ public class HomeFragment
 
             case ID_LOADER_INVESTMENTS:
                 mInvestmentsCursor = data;
+                mInvestmentTransactionsLoaded = true;
                 showInvestmentTotals(data);
                 break;
         }
@@ -757,6 +763,7 @@ public class HomeFragment
         // display individual accounts with balances
         if (cursor != null) {
             showAccountTotals(cursor);
+            mAccountTransactionsLoaded = true;
             showInvestmentTotals(mInvestmentsCursor);
         }
 
@@ -774,8 +781,7 @@ public class HomeFragment
     }
 
     private void showInvestmentTotals(Cursor cursor) {
-        if (true) return;
-
+        if (!(mAccountTransactionsLoaded && mInvestmentTransactionsLoaded)) return;
         if (cursor == null) return;
         if (mAccountsByType == null || mAccountsByType.size() <= 0) return;
         if (mTotalsByType == null || mTotalsByType.size() <= 0) return;
