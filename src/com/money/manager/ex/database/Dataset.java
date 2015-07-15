@@ -27,6 +27,7 @@ import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerProvider;
+import com.money.manager.ex.core.ExceptionHandler;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -102,7 +103,8 @@ public abstract class Dataset
 			Constructor<?> cnt = cls.getConstructor(classParm);
 			dataset = (Dataset) cnt.newInstance(objectParm);
 		} catch (Exception e) {
-			Log.e(LOGCAT, e.getMessage());
+			ExceptionHandler handler = new ExceptionHandler(context, this);
+			handler.handle(e, "creating new instance of a dataset");
 			return false;
 		}
 		// check if dataset is created
@@ -110,9 +112,9 @@ public abstract class Dataset
 			if (BuildConfig.DEBUG) Log.d(LOGCAT, "Dataset is not created dynamic. Force return false");
 			return false;
 		}
+
 		// check if referenced
-		Cursor cursor = context.getContentResolver().query(dataset.getUri(), null,
-				selection, selectionArgs.toArray(new String[selectionArgs.size()]), null);
+		Cursor cursor = loadDataset(context, dataset, selection, selectionArgs);
 		if (cursor != null && cursor.getCount() <= 0) {
 			cursor.close();
 			return true;
@@ -120,6 +122,21 @@ public abstract class Dataset
 			return false;
 		}
 	}
+
+    private Cursor loadDataset(Context context, Dataset dataset, String selection,
+                               List<String> selectionArgs) {
+        Cursor result = null;
+        try {
+            result = context.getContentResolver().query(dataset.getUri(), null,
+                    selection,
+                    selectionArgs.toArray(new String[selectionArgs.size()]),
+                    null);
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(context, this);
+            handler.handle(ex, "loading dataset");
+        }
+        return result;
+    }
 
 	/**
 	 * 
