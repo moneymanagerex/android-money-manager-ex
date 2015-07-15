@@ -71,7 +71,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@id/listViewAccountBills"
+        android:id="@+id/listViewAccountBills"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_marginBottom="5dp"
