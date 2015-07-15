@@ -17,7 +17,6 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:gravity="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal">
@@ -36,12 +35,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/category"
-            android:textSize="16sp"
             android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+            android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft"
             android:layout_marginTop="6dip"
             android:layout_gravity="start"
-            android:textAppearance="?android:attr/textAppearanceListItem"
-            />
+            android:textAppearance="?android:attr/textAppearanceListItem" />
+        <!-- android:textSize="16sp" -->
 
         <!--<CheckedTextView-->
             <!--android:id="@android:id/text1"-->
@@ -59,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+            android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft"
             android:layout_gravity="start"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 

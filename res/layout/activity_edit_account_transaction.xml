@@ -214,6 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="?attr/ic_users"
+                    android:drawableStart="?attr/ic_users"
                     android:hint="@string/payee"/>
             </LinearLayout>
 
@@ -236,6 +237,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableLeft="?attr/ic_label_outline"
+                    android:drawableStart="?attr/ic_label_outline"
                     android:hint="@string/category"/>
 
                 <CheckBox
@@ -244,7 +246,7 @@
                     style="@style/Money.TextView.Header.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="right" />
+                    android:layout_gravity="end" />
 
             </LinearLayout>
 
@@ -286,6 +288,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="?attr/ic_paste"
+                android:drawableStart="?attr/ic_paste"
                 android:gravity="top|left"
                 android:hint="@string/notes"
                 android:inputType="textMultiLine"
