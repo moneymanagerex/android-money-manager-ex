@@ -590,7 +590,7 @@ public class RecurringTransactionActivity
         NumericHelper helper = new NumericHelper();
         int timesRepeated = helper.tryParse(edtTimesRepeated.getText().toString());
         if (timesRepeated != Constants.NOT_SET) {
-            outState.putInt(KEY_NUM_OCCURRENCE, Integer.parseInt(edtTimesRepeated.getText().toString()));
+            outState.putInt(KEY_NUM_OCCURRENCE, timesRepeated);
         } else {
             outState.putInt(KEY_NUM_OCCURRENCE, Constants.NOT_SET);
         }
