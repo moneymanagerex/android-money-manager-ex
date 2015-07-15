@@ -199,10 +199,8 @@ public class QueryAccountBills extends Dataset {
 
     @Override
     public void setValueFromCursor(Cursor c) {
-        // controllo che non sia null il cursore
-        if (c == null) {
-            return;
-        }
+        if (c == null) return;
+
         // controllo che il numero di colonne siano le stesse
         if (!(c.getColumnCount() == this.getAllColumns().length)) {
             return;
@@ -210,10 +208,13 @@ public class QueryAccountBills extends Dataset {
         // set dei valori
         this.setAccountId(c.getInt(c.getColumnIndex(ACCOUNTID)));
         this.setAccountName(c.getString(c.getColumnIndex(ACCOUNTNAME)));
-        this.setCurrencyId(c.getInt(c.getColumnIndex(CURRENCYID)));
         this.setAccountType(c.getString(c.getColumnIndex(ACCOUNTTYPE)));
+        this.setCurrencyId(c.getInt(c.getColumnIndex(CURRENCYID)));
         this.setFavoriteAcct(c.getString(c.getColumnIndex(FAVORITEACCT)));
+        this.setReconciled(c.getDouble(c.getColumnIndex(RECONCILED)));
+        this.setReconciledBaseConvRate(c.getDouble(c.getColumnIndex(RECONCILEDBASECONVRATE)));
         this.setStatus(c.getString(c.getColumnIndex(STATUS)));
         this.setTotal(c.getDouble(c.getColumnIndex(TOTAL)));
+        this.setTotalBaseConvRate(c.getDouble(c.getColumnIndex(TOTALBASECONVRATE)));
     }
 }

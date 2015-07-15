@@ -30,6 +30,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,6 +53,7 @@ import android.widget.Toast;
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -83,7 +85,6 @@ import java.util.List;
  * The fragment that contains the accounts groups with accounts and their balances.
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
-//@SuppressWarnings("static-access")
 public class HomeFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -93,10 +94,11 @@ public class HomeFragment
     private static final int ID_LOADER_ACCOUNT_BILLS = 2;
     private static final int ID_LOADER_BILL_DEPOSITS = 3;
     private static final int ID_LOADER_INCOME_EXPENSES = 4;
+    private static final int ID_LOADER_INVESTMENTS = 5;
 
     private CurrencyUtils mCurrencyUtils;
     private boolean mHideReconciled;
-    // dataset table/view/query manage into class
+
     private TableInfoTable mInfoTable = new TableInfoTable();
     private QueryAccountBills mAccountBillsQuery;
 
@@ -209,6 +211,14 @@ public class HomeFragment
 
     // Loader event handlers
 
+    public void startLoader() {
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.restartLoader(ID_LOADER_USER_NAME, null, this);
+        loaderManager.restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
+        /*getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);*/
+        loaderManager.restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Core core = new Core(getActivity().getApplicationContext());
@@ -219,6 +229,7 @@ public class HomeFragment
                 result = new MmexCursorLoader(getActivity(), mInfoTable.getUri(),
                         new String[]{TableInfoTable.INFONAME, TableInfoTable.INFOVALUE}, null, null, null);
                 break;
+
             case ID_LOADER_ACCOUNT_BILLS:
                 setListViewAccountBillsVisible(false);
                 // compose whereClause
@@ -246,13 +257,24 @@ public class HomeFragment
 
             case ID_LOADER_INCOME_EXPENSES:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                result = new MmexCursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
+                result = new MmexCursorLoader(getActivity(), report.getUri(),
+                        report.getAllColumns(),
                         QueryReportIncomeVsExpenses.Month + "="
                             + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
                                 " AND "
                         + QueryReportIncomeVsExpenses.Year + "="
                             + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)),
                         null, null);
+                break;
+
+            case ID_LOADER_INVESTMENTS:
+                Log.d("loader investments", mAccountsByType.toString());
+                TableStock stocks = new TableStock();
+                result = new MmexCursorLoader(getActivity(), stocks.getUri(),
+                        new String[] { TableStock.SYMBOL, TableStock.NUMSHARES, TableStock.CURRENTPRICE },
+                        null,
+                        null,
+                        null);
                 break;
 
             default:
@@ -271,6 +293,7 @@ public class HomeFragment
                 mAccountsByType.clear();
                 mTotalsByType.clear();
                 mAccountTypes.clear();
+                break;
         }
     }
 
@@ -357,13 +380,13 @@ public class HomeFragment
         }
     }
 
-    private void renderAccountsList(Cursor data) {
+    private void renderAccountsList(Cursor cursor) {
         // Accounts list
 
         BigDecimal curTotal = new BigDecimal(0);
         BigDecimal curReconciled = new BigDecimal(0);
 
-        linearHome.setVisibility(data != null && data.getCount() > 0 ? View.VISIBLE : View.GONE);
+        linearHome.setVisibility(cursor != null && cursor.getCount() > 0 ? View.VISIBLE : View.GONE);
         linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
 
         mAccountsByType.clear();
@@ -371,25 +394,28 @@ public class HomeFragment
         mAccountTypes.clear();
 
         // display individual accounts with balances
-        if (data != null) {
-            while (data.moveToNext()) {
-                double total = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                QueryAccountBills accountEntry = new QueryAccountBills(getActivity());
+                accountEntry.setValueFromCursor(cursor);
+//                accountEntry.setAccountId(cursor.getInt(cursor.getColumnIndex(QueryAccountBills.ACCOUNTID)));
+//                accountEntry.setAccountName(cursor.getString(cursor.getColumnIndex(QueryAccountBills.ACCOUNTNAME)));
+//                accountEntry.setAccountType(cursor.getString(cursor.getColumnIndex(QueryAccountBills.ACCOUNTTYPE)));
+//                accountEntry.setCurrencyId(cursor.getInt(cursor.getColumnIndex(QueryAccountBills.CURRENCYID)));
+//                accountEntry.setTotal(cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTAL)));
+//                accountEntry.setReconciled(cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.RECONCILED)));
+//                accountEntry.setTotalBaseConvRate(cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
+//                accountEntry.setReconciledBaseConvRate(cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
+
+//                double total = cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+                double total = accountEntry.getTotalBaseConvRate();
                 curTotal = curTotal.add(BigDecimal.valueOf(total));
-                double totalReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
+//                double totalReconciled = cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
+                double totalReconciled = accountEntry.getReconciledBaseConvRate();
                 curReconciled = curReconciled.add(BigDecimal.valueOf(totalReconciled));
 
-                // find element
-                QueryAccountBills accountEntry = new QueryAccountBills(getActivity());
-                accountEntry.setAccountId(data.getInt(data.getColumnIndex(QueryAccountBills.ACCOUNTID)));
-                accountEntry.setAccountName(data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTNAME)));
-                accountEntry.setAccountType(data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTTYPE)));
-                accountEntry.setCurrencyId(data.getInt(data.getColumnIndex(QueryAccountBills.CURRENCYID)));
-                accountEntry.setTotal(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL)));
-                accountEntry.setReconciled(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED)));
-                accountEntry.setTotalBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE)));
-                accountEntry.setReconciledBaseConvRate(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE)));
-
-                String accountType = data.getString(data.getColumnIndex(QueryAccountBills.ACCOUNTTYPE));
+//                String accountType = cursor.getString(cursor.getColumnIndex(QueryAccountBills.ACCOUNTTYPE));
+                String accountType = accountEntry.getAccountType();
                 QueryAccountBills totals;
                 if (mAccountTypes.indexOf(accountType) == -1) {
                     mAccountTypes.add(accountType);
@@ -410,10 +436,12 @@ public class HomeFragment
                 }
                 totals = mTotalsByType.get(accountType);
                 double reconciledBaseConversionRate = totals.getReconciledBaseConvRate() +
-                        data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
+                        accountEntry.getReconciledBaseConvRate();
+//                        cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.RECONCILEDBASECONVRATE));
                 totals.setReconciledBaseConvRate(reconciledBaseConversionRate);
                 double totalBaseConversionRate = totals.getTotalBaseConvRate() +
-                        data.getDouble(data.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+                        accountEntry.getTotalBaseConvRate();
+//                        cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
                 totals.setTotalBaseConvRate(totalBaseConversionRate);
 
                 List<QueryAccountBills> list = mAccountsByType.get(accountType);
@@ -428,20 +456,17 @@ public class HomeFragment
         addFooterExpandableListView(curTotal.doubleValue(), curReconciled.doubleValue());
 
         // create adapter
-        AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity());
+        AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity(),
+            mAccountTypes, mAccountsByType, mTotalsByType, mHideReconciled);
         // set adapter and shown
         mExpandableListView.setAdapter(expandableAdapter);
 
         setVisibilityOfAccountGroups();
         setListViewAccountBillsVisible(true);
-
     }
 
-    public void startLoader() {
-        getLoaderManager().restartLoader(ID_LOADER_USER_NAME, null, this);
-        getLoaderManager().restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
-        /*getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);*/
-        getLoaderManager().restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
+    private void loadInvestmentTotals() {
+        getLoaderManager().restartLoader(ID_LOADER_INVESTMENTS, null, this);
     }
 
     // Menu
@@ -562,8 +587,6 @@ public class HomeFragment
 
         return result;
     }
-
-    // End context menu.
 
     // Private custom methods.
 
@@ -777,184 +800,6 @@ public class HomeFragment
             mBalanceAccountTask = new BalanceAccountTask(getActivity());
         }
         return mBalanceAccountTask;
-    }
-
-    private class AccountBillsExpandableAdapter
-            extends BaseExpandableListAdapter {
-
-        private Context mContext;
-
-        public AccountBillsExpandableAdapter(Context context) {
-            mContext = context;
-        }
-
-        @Override
-        public int getGroupCount() {
-            return mAccountTypes.size();
-        }
-
-        @Override
-        public int getChildrenCount(int groupPosition) {
-            return mAccountsByType.get(mAccountTypes.get(groupPosition)).size();
-        }
-
-        @Override
-        public Object getGroup(int groupPosition) {
-            return mAccountTypes.get(groupPosition);
-        }
-
-        @Override
-        public Object getChild(int groupPosition, int childPosition) {
-            return mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
-        }
-
-        @Override
-        public long getGroupId(int groupPosition) {
-            return groupPosition;
-        }
-
-        @Override
-        public long getChildId(int groupPosition, int childPosition) {
-            return childPosition;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return false;
-        }
-
-        /**
-         * Creates a view for the group header row.
-         * @param groupPosition
-         * @param isExpanded
-         * @param convertView
-         * @param parent
-         * @return
-         */
-        @Override
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            ViewHolderAccountBills holder;
-            if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.item_account_bills, null);
-
-                holder = new ViewHolderAccountBills();
-
-                holder.txtAccountName = (TextView) convertView.findViewById(R.id.textViewItemAccountName);
-                holder.txtAccountName.setTypeface(null, Typeface.BOLD);
-
-                holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textViewItemAccountTotal);
-                holder.txtAccountTotal.setTypeface(null, Typeface.BOLD);
-
-                holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textViewItemAccountTotalReconciled);
-                if(mHideReconciled) {
-                    holder.txtAccountReconciled.setVisibility(View.GONE);
-                } else {
-                    holder.txtAccountReconciled.setTypeface(null, Typeface.BOLD);
-                }
-
-                holder.imgAccountType = (ImageView) convertView.findViewById(R.id.imageViewAccountType);
-
-                convertView.setTag(holder);
-            }
-            holder = (ViewHolderAccountBills) convertView.getTag();
-
-            // Show Totals
-            String accountType = mAccountTypes.get(groupPosition);
-            QueryAccountBills total = mTotalsByType.get(accountType);
-            if (total != null) {
-                // set account type value
-                holder.txtAccountTotal.setText(mCurrencyUtils.getBaseCurrencyFormatted(total.getTotalBaseConvRate()));
-                if(!mHideReconciled) {
-                    holder.txtAccountReconciled.setText(mCurrencyUtils.getBaseCurrencyFormatted(total.getReconciledBaseConvRate()));
-                }
-                // set account name
-                holder.txtAccountName.setText(total.getAccountName());
-            }
-            // set image depending on the account type
-            if (!TextUtils.isEmpty(accountType)) {
-                if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
-                    holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_safe));
-                } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
-                    holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_money_finance));
-                } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
-                    holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.ic_credit_card));
-                } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
-                    holder.imgAccountType.setImageDrawable(getResources().getDrawable(R.drawable.portfolio));
-                }
-            }
-
-            return convertView;
-        }
-
-        /**
-         * Creates a view for the group item row.
-         * @param groupPosition
-         * @param childPosition
-         * @param isLastChild
-         * @param convertView
-         * @param parent
-         * @return
-         */
-        @Override
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                                 View convertView, ViewGroup parent) {
-            ViewHolderAccountBills holder;
-            if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.item_account_bills, null);
-
-                holder = new ViewHolderAccountBills();
-                holder.txtAccountName = (TextView) convertView.findViewById(R.id.textViewItemAccountName);
-                holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textViewItemAccountTotal);
-                holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textViewItemAccountTotalReconciled);
-                holder.imgAccountType = (ImageView) convertView.findViewById(R.id.imageViewAccountType);
-
-                holder.txtAccountTotal.setTypeface(null, Typeface.NORMAL);
-                holder.imgAccountType.setVisibility(View.INVISIBLE);
-
-                convertView.setTag(holder);
-            }
-            holder = (ViewHolderAccountBills) convertView.getTag();
-
-            QueryAccountBills account = getAccountData(groupPosition, childPosition);
-
-            // set account name
-            holder.txtAccountName.setText(account.getAccountName());
-            // import formatted
-            String value = mCurrencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getTotal());
-            // set amount value
-            holder.txtAccountTotal.setText(value);
-
-            // reconciled
-            if(mHideReconciled) {
-                holder.txtAccountReconciled.setVisibility(View.GONE);
-            } else {
-                value = mCurrencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getReconciled());
-                holder.txtAccountReconciled.setText(value);
-            }
-
-            return convertView;
-        }
-
-        @Override
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return true;
-        }
-
-        public QueryAccountBills getAccountData(int groupPosition, int childPosition) {
-            String accountType = mAccountTypes.get(groupPosition);
-            QueryAccountBills account = mAccountsByType.get(accountType).get(childPosition);
-
-            return account;
-        }
-
-        private class ViewHolderAccountBills {
-            TextView txtAccountName;
-            TextView txtAccountTotal;
-            TextView txtAccountReconciled;
-            ImageView imgAccountType;
-        }
     }
 
 }
