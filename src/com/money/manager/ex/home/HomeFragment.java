@@ -111,7 +111,7 @@ public class HomeFragment
 
     private BigDecimal mGrandTotal = BigDecimal.ZERO;
     private BigDecimal mGrandReconciled = BigDecimal.ZERO;
-//    private boolean mFragmentLoaded = false;
+
     private Cursor mInvestmentsCursor;
 
     @Override
@@ -219,7 +219,7 @@ public class HomeFragment
         loaderManager.restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
         /*getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);*/
         loaderManager.restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
-        loadInvestmentTotals();
+        loaderManager.restartLoader(ID_LOADER_INVESTMENTS, null, this);
     }
 
     @Override
@@ -318,7 +318,6 @@ public class HomeFragment
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         MainActivity mainActivity = null;
@@ -402,13 +401,9 @@ public class HomeFragment
 
             case ID_LOADER_INVESTMENTS:
                 mInvestmentsCursor = data;
-//                showInvestmentTotals(data);
+                showInvestmentTotals(data);
                 break;
         }
-    }
-
-    private void loadInvestmentTotals() {
-        getLoaderManager().restartLoader(ID_LOADER_INVESTMENTS, null, this);
     }
 
     // Menu
@@ -450,12 +445,15 @@ public class HomeFragment
     @Override
     public void onResume() {
         super.onResume();
+
         // clear subTitle of ActionBar
 //        ActionBarActivity activity = (ActionBarActivity) getActivity();
         AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (activity != null)
+        if (activity != null) {
             activity.getSupportActionBar().setSubtitle(null);
-        // start loader data
+        }
+
+        // reload data.
         startLoader();
     }
 
@@ -776,8 +774,11 @@ public class HomeFragment
     }
 
     private void showInvestmentTotals(Cursor cursor) {
+        return;
+        
         if (cursor == null) return;
         if (mAccountsByType == null || mAccountsByType.size() <= 0) return;
+        if (mTotalsByType == null || mTotalsByType.size() <= 0) return;
 
         // get investment accounts
         String investmentTitle = getString(R.string.investment);
@@ -785,11 +786,15 @@ public class HomeFragment
         List<QueryAccountBills> investmentAccountList = mAccountsByType.get(investmentTitle);
         if (investmentAccountList == null) return;
         for(QueryAccountBills account : investmentAccountList) {
+            // reset totals
+            account.setTotalBaseConvRate(0);
+            // add to collection where they are easy to retrieve by id later in the loop.
             investmentAccounts.put(account.getAccountId(), account);
         }
 
         // reset cursor's position
-        if (cursor.getPosition() != Constants.NOT_SET) {
+        int currentCursorPosition = cursor.getPosition();
+        if (currentCursorPosition != Constants.NOT_SET) {
             cursor.moveToPosition(Constants.NOT_SET);
         }
 
