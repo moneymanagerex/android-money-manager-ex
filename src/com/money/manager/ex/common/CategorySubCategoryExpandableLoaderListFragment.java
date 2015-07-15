@@ -263,7 +263,8 @@ public class CategorySubCategoryExpandableLoaderListFragment
                 listSubCategories.add(subCategory);
                 // check if expand group
                 if (!TextUtils.isEmpty(filter)) {
-                    String normalizedText = Normalizer.normalize(subCategory.getSubcategoryName(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
+                    String normalizedText = Normalizer.normalize(subCategory.getSubcategoryName(), Normalizer.Form.NFD)
+                            .replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
                     if ((normalizedText.indexOf(filter) >= 0) && (!mPositionToExpand.contains(mCategories.size() - 1))) {
                         mPositionToExpand.add(mCategories.size() - 1);
                     }

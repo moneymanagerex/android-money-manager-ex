@@ -28,7 +28,6 @@ import com.money.manager.ex.common.CategorySubCategoryExpandableLoaderListFragme
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.0.0
  */
 public class CategorySubCategoryExpandableListActivity
         extends BaseFragmentActivity {
@@ -37,10 +36,8 @@ public class CategorySubCategoryExpandableListActivity
     public static final String INTENT_RESULT_CATEGNAME = "CategorySubCategory:CategName";
     public static final String INTENT_RESULT_SUBCATEGID = "CategorySubCategory:SubCategId";
     public static final String INTENT_RESULT_SUBCATEGNAME = "CategorySubCategory:SubCategName";
-    @SuppressWarnings("unused")
 
     public static final String FRAGMENTTAG = CategorySubCategoryExpandableListActivity.class.getSimpleName() + "_Fragment";
-    private static final String LOGCAT = CategorySubCategoryExpandableListActivity.class.getSimpleName();
 
     CategorySubCategoryExpandableLoaderListFragment listFragment = new CategorySubCategoryExpandableLoaderListFragment();
 
