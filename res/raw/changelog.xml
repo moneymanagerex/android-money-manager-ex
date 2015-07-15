@@ -18,7 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="July 15, 2015" versionName="2.11.5">
-        <changelogtext>Calculating totals for investment accounts on Home screen until multithreading issues are resolved.</changelogtext>
+        <changelogtext>Calculating totals for investment accounts on Home screen.</changelogtext>
         <changelogtext>Fixed expanded category selection.</changelogtext>
         <changelogtext>Fixed empty Categories list when moving back through screens.</changelogtext>
         <changelogtext>Stability improvements.</changelogtext>
