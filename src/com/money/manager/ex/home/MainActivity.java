@@ -285,18 +285,13 @@ public class MainActivity
 
         // set a custom shadow that overlays the main content when the drawer opens
         if (mDrawer != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
-                mDrawer.setDrawerListener(mDrawerToggle);
-                // create drawer menu
-                createDrawerMenu();
-                // enable ActionBar app icon to behave as action to toggle nav drawer
-                setDisplayHomeAsUpEnabled(true);
-//                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setDisplayShowTitleEnabled(true);
-            } else {
-                mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            }
+            mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
+            mDrawer.setDrawerListener(mDrawerToggle);
+            // create drawer menu
+            createDrawerMenu();
+            // enable ActionBar app icon to behave as action to toggle nav drawer
+            setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
         // start notification for recurring transaction
         if (!isRecurringTransactionStarted) {
@@ -674,7 +669,10 @@ public class MainActivity
             } else {
                 mDrawer.openDrawer(mDrawerLayout);
             }
+            // do not propagate the event further.
+            return true;
         }
+
         return super.onKeyDown(keyCode, event);
     }
 
