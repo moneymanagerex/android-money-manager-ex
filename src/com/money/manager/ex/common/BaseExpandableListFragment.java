@@ -124,7 +124,7 @@ public abstract class BaseExpandableListFragment
 
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 //            ActionBarActivity activity = (ActionBarActivity) getActivity();
-            AppCompatActivity activity = (AppCompatActivity) getActivity();
+//            AppCompatActivity activity = (AppCompatActivity) getActivity();
 
             SearchView searchView = new SearchView(getActivity());
             if (searchView != null) {
@@ -173,7 +173,7 @@ public abstract class BaseExpandableListFragment
     }
 
     protected void onMenuItemSearchClick(MenuItem item) {
-        View searchView = ((FragmentActivity) getActivity()).getActionBar().getCustomView();
+        View searchView = getActivity().getActionBar().getCustomView();
         final EditText edtSearch = (EditText) searchView.findViewById(R.id.editTextSearchView);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         // se in visualizzazione prendo l'edittext
@@ -244,6 +244,7 @@ public abstract class BaseExpandableListFragment
     }
 
     /**
+     *
      * @param mShowMenuItemSearch the mShowMenuItemSearch to set
      */
     public void setShowMenuItemSearch(boolean mShowMenuItemSearch) {

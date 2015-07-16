@@ -48,6 +48,7 @@ import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.settings.AppSettings;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -110,8 +111,11 @@ public class CategorySubCategoryExpandableLoaderListFragment
             if (savedInstanceState.containsKey(KEY_CUR_FILTER))
                 mCurFilter = savedInstanceState.getString(KEY_CUR_FILTER, "");
         }
-        // set visible search menu
-        setShowMenuItemSearch(true);
+
+        // Focus on search menu if set in preferences.
+        AppSettings settings = new AppSettings(getActivity());
+        boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
+        setShowMenuItemSearch(focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
         setHasOptionsMenu(true);

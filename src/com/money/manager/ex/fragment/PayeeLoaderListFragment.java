@@ -54,6 +54,7 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 /**
@@ -77,7 +78,6 @@ public class PayeeLoaderListFragment
     private Context mContext;
     private String mCurFilter;
     private int mSort = 0;
-    private int mLayout;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -85,15 +85,19 @@ public class PayeeLoaderListFragment
 
         mContext = getActivity();
 
-        setShowMenuItemSearch(true);
+        // Focus on search menu if set in preferences.
+        AppSettings settings = new AppSettings(getActivity());
+        boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
+        setShowMenuItemSearch(focusOnSearch);
+
         setEmptyText(getActivity().getResources().getString(R.string.payee_empty_list));
         setHasOptionsMenu(true);
 
-        mLayout = android.R.layout.simple_list_item_1;
+        int layout = android.R.layout.simple_list_item_1;
 
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                mLayout, null, new String[] { TablePayee.PAYEENAME },
+                layout, null, new String[] { TablePayee.PAYEENAME },
                 new int[]{android.R.id.text1}, 0);
         // set adapter
         setListAdapter(adapter);

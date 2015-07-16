@@ -40,4 +40,9 @@ public class BehaviourSettings
         return notify;
     }
 
+    public boolean getFilterInSelectors() {
+        boolean result = getSharedPreferences().getBoolean(
+                mContext.getString(R.string.pref_behaviour_focus_filter), true);
+        return result;
+    }
 }
