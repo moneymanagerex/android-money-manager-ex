@@ -112,10 +112,11 @@ public class CategorySubCategoryExpandableLoaderListFragment
                 mCurFilter = savedInstanceState.getString(KEY_CUR_FILTER, "");
         }
 
+        setShowMenuItemSearch(true);
         // Focus on search menu if set in preferences.
         AppSettings settings = new AppSettings(getActivity());
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
-        setShowMenuItemSearch(focusOnSearch);
+        setMenuItemSearchIconified(!focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
         setHasOptionsMenu(true);
@@ -137,9 +138,6 @@ public class CategorySubCategoryExpandableLoaderListFragment
 
         // start loader
         getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
-
-        // set icon searched
-        setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
 
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);

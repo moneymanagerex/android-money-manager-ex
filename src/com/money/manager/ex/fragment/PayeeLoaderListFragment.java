@@ -85,10 +85,11 @@ public class PayeeLoaderListFragment
 
         mContext = getActivity();
 
+        setShowMenuItemSearch(true);
         // Focus on search menu if set in preferences.
         AppSettings settings = new AppSettings(getActivity());
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
-        setShowMenuItemSearch(focusOnSearch);
+        setMenuItemSearchIconified(!focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.payee_empty_list));
         setHasOptionsMenu(true);
@@ -111,8 +112,7 @@ public class PayeeLoaderListFragment
                 .getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0);
         // start loader
         getLoaderManager().initLoader(ID_LOADER_PAYEE, null, this);
-        // set icon searched
-        setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
+
         // set floating button visible
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);

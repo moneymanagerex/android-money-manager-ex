@@ -149,11 +149,11 @@ public abstract class BaseListFragment
                     return BaseListFragment.this.onPreQueryTextChange(s);
                 }
             });
+//            searchView.setIconifiedByDefault(isMenuItemSearchIconified());
             searchView.setIconified(isMenuItemSearchIconified());
             itemSearch.setActionView(searchView);
 
             SearchViewFormatter formatter = new SearchViewFormatter();
-
             formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
             formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
             formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
@@ -162,6 +162,10 @@ public abstract class BaseListFragment
             formatter.setSearchHintText(getSearchHint());
 
             formatter.format(searchView);
+
+//            if (getSearchCollapsed()) {
+//                itemSearch.collapseActionView();
+//            }
         }
     }
 

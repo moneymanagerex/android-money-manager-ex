@@ -76,10 +76,11 @@ public class CurrencyListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setShowMenuItemSearch(true);
         // Focus on search menu if set in preferences.
         AppSettings settings = new AppSettings(getActivity());
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
-        setShowMenuItemSearch(focusOnSearch);
+        setMenuItemSearchIconified(!focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.currencies_empty));
         setHasOptionsMenu(true);
@@ -94,8 +95,6 @@ public class CurrencyListFragment
         setListShown(false);
         getLoaderManager().initLoader(ID_LOADER_CURRENCY, null, this);
 
-        // set icon searched
-        setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
     }
