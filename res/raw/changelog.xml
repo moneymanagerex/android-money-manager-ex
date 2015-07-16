@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="" versionName="">
+    <changelogversion changeDate="July 16" versionName="2.12">
         <changelogtext>Added a behaviour preference setting for searching/browsing in selectors (category, payee, currency).</changelogtext>
     </changelogversion>
     <changelogversion changeDate="July 15, 2015" versionName="2.11.5">
