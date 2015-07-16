@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -52,15 +53,11 @@ public class GeneralSettingsFragment
 
     public static final int REQUEST_PICK_CURRENCY = 1;
 
-    private static String LOGCAT = GeneralSettingsActivity.class.getSimpleName();
-
-    private AppSettings mSettings;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSettings = new AppSettings(getActivity());
+        AppSettings settings = new AppSettings(getActivity());
 
         addPreferencesFromResource(R.xml.general_settings);
         PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -71,7 +68,7 @@ public class GeneralSettingsFragment
 
         final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferenceConstants.PREF_LOCALE));
         if (lstLocaleApp != null) {
-            String summary = mSettings.getGeneralSettings().getApplicationLocale();
+            String summary = settings.getGeneralSettings().getApplicationLocale();
             setSummaryListPreference(lstLocaleApp, summary, R.array.application_locale_values, R.array.application_locale_entries);
             lstLocaleApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
@@ -174,7 +171,8 @@ public class GeneralSettingsFragment
                         }
                         return true;
                     } catch (Exception e) {
-                        Log.e(LOGCAT, e.getMessage());
+                        ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                        handler.handle(e, "changing the start day of the financial year");
                     }
                     return false;
                 }
@@ -197,7 +195,8 @@ public class GeneralSettingsFragment
                     }
                 }
             } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
+                ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                handler.handle(e, "showing the month of the financial year");
             }
             lstFinancialMonth.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
@@ -212,7 +211,8 @@ public class GeneralSettingsFragment
                             }
                         }
                     } catch (Exception e) {
-                        Log.e(LOGCAT, e.getMessage());
+                        ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                        handler.handle(e, "changing the month of the financial year");
                         return false;
                     }
                     return true;
@@ -282,50 +282,6 @@ public class GeneralSettingsFragment
 
         baseCurrency.setOnPreferenceClickListener(clickListener);
     }
-
-//    private void initBaseCurrency_list() {
-//        final CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
-//
-//        final ListPreference lstBaseCurrency = (ListPreference) findPreference(getString(PreferenceConstants.PREF_BASE_CURRENCY));
-//        if (lstBaseCurrency == null) {
-//            return;
-//        }
-//
-//        List<TableCurrencyFormats> currencies = currencyUtils.getAllCurrencyFormats();
-//        // sort the currencies by name.
-//        Collections.sort(currencies, new CurrencyNameComparator());
-//
-//        String[] entries = new String[currencies.size()];
-//        String[] entryValues = new String[currencies.size()];
-//        // list of currency
-//        for (int i = 0; i < currencies.size(); i++) {
-//            entries[i] = currencies.get(i).getCurrencyName();
-//            entryValues[i] = ((Integer) currencies.get(i).getCurrencyId()).toString();
-//        }
-//        // set value
-//        lstBaseCurrency.setEntries(entries);
-//        lstBaseCurrency.setEntryValues(entryValues);
-//
-//        // Display the current default currency as the summary.
-//        TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
-//        if (tableCurrency != null) {
-//            lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
-//        }
-//
-//        lstBaseCurrency.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-//            @Override
-//            public boolean onPreferenceChange(Preference preference, Object newValue) {
-//                if (currencyUtils.saveBaseCurrencyId(Integer.valueOf(String.valueOf(newValue)))) {
-//                    currencyUtils.reInit();
-//                    TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyUtils.getBaseCurrencyId());
-//                    if (tableCurrency != null) {
-//                        lstBaseCurrency.setSummary(tableCurrency.getCurrencyName());
-//                    }
-//                }
-//                return true;
-//            }
-//        });
-//    }
 
     public void setSummaryListPreference(Preference preference, String value, int idArrayValues, int idArrayItems) {
         final String[] values = getResources().getStringArray(idArrayValues);

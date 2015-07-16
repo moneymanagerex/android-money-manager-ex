@@ -19,7 +19,6 @@
 package com.money.manager.ex.adapter;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -27,18 +26,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
+import com.money.manager.ex.common.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.view.RobotoTextView;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.HashMap;
 import java.util.List;

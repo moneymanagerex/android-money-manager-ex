@@ -226,7 +226,7 @@
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".CategorySubCategoryExpandableListActivity" >
+        <activity android:name=".common.CategorySubCategoryExpandableListActivity" >
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>

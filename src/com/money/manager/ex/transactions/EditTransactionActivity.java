@@ -43,7 +43,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.account.AccountListActivity;
-import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
+import com.money.manager.ex.common.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;

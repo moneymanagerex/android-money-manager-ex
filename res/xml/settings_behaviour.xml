@@ -25,4 +25,11 @@
         android:summary="@string/preferences_behaviour_focus_filter_summary"
         android:title="@string/preferences_behaviour_focus_filter_title"/>
 
+    <CheckBoxPreference
+        android:icon="@null"
+        android:defaultValue="true"
+        android:key="@string/pref_show_tutorial"
+        android:title="@string/title_show_tutorial"
+        android:summary="@string/summary_show_tutorial" />
+
 </PreferenceScreen>

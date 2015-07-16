@@ -21,7 +21,7 @@
     <string name="pref_last_version_key">preflastversioncodekey</string>
     <string name="pref_donate_last_version_key">prefdonatelastversioncodekey</string>
     <string name="pref_last_db_path_shown">preflastdbpathshown</string>
-    <string name="pref_show_introduction">prefshowintroduction</string>
+    <string name="pref_text_search_type">preftextsearchtype</string>
     <!-- database -->
     <string name="pref_database_path">databasepath</string>
     <string name="pref_database_check_integrity">pref_database_check_integrity</string>
@@ -65,7 +65,6 @@
     <string name="pref_dropbox_wiki">prefdropboxwiki</string>
     <string name="pref_default_status">prefdefaultstatus</string>
     <string name="pref_default_payee">prefdefaultpayee</string>
-    <string name="pref_text_search_type">preftextsearchtype</string>
     <string name="pref_locale">preflocale</string>
     <string name="pref_repeating_transaction_notifications">prefrepeatingtransactionnotifications</string>
     <string name="pref_general">prefgeneral</string>
@@ -79,4 +78,5 @@
     <!-- behaviour -->
     <string name="pref_behaviour">prefbehaviour</string>
     <string name="pref_behaviour_focus_filter">prefbehaviour_focus_filter</string>
+    <string name="pref_show_introduction">prefshowintroduction</string>
 </resources>

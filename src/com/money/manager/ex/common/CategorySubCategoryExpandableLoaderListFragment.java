@@ -39,7 +39,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.CategorySubCategoryExpandableListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
@@ -342,7 +341,7 @@ public class CategorySubCategoryExpandableLoaderListFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER_CATEGORYSUB:
-                // clear arraylist and hashmap
+                // clear the data storage collections.
                 mCategories.clear();
                 mSubCategories.clear();
         }
