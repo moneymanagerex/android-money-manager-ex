@@ -19,27 +19,12 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
-
-/**
- *
- */
-public class BaseSettingsFragmentActivity extends BaseFragmentActivity {
+public class BehaviourSettingsActivity extends BaseSettingsFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-
-        setContentView(R.layout.settings_activity);
-        setDisplayHomeAsUpEnabled(true);
-    }
-
-    protected void setSettingFragment(PreferenceFragment fragment) {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.content, fragment)
-                .commit();
+        setSettingFragment(new BehaviourFragment());
     }
 }

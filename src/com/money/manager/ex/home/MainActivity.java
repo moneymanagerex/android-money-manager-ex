@@ -663,13 +663,14 @@ public class MainActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // Hardware Menu key pressed.
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             if (mDrawer.isDrawerOpen(mDrawerLayout)) {
                 mDrawer.closeDrawer(mDrawerLayout);
             } else {
                 mDrawer.openDrawer(mDrawerLayout);
             }
-            // do not propagate the event further.
+            // Do not propagate the event further. Mark the event as handled.
             return true;
         }
 
@@ -711,9 +712,6 @@ public class MainActivity
      * drawer management
      */
     public void createDrawerMenu() {
-//        Core core = new Core(getApplicationContext());
-//        Boolean isDarkTheme = core.usingDarkTheme();
-
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
         mDrawerList = (ListView) findViewById(R.id.listViewDrawer);
         // repeating transaction

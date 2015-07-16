@@ -30,6 +30,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
+import com.money.manager.ex.core.ExceptionHandler;
 
 /**
  *
@@ -37,15 +38,12 @@ import com.money.manager.ex.about.AboutActivity;
 public class SettingsFragment
         extends PreferenceFragment {
 
-    private String LOGCAT = this.getClass().getSimpleName();
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        // find preferences
         final Preference generalPreference = findPreference(getString(PreferenceConstants.PREF_GENERAL));
         if (generalPreference != null) {
             generalPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -63,6 +61,17 @@ public class SettingsFragment
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     startActivity(new Intent(getActivity(), LookFeelSettingsActivity.class));
+                    return true;
+                }
+            });
+        }
+
+        final Preference behaviourPreference = findPreference(getString(R.string.pref_behaviour));
+        if (behaviourPreference != null) {
+            behaviourPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivity(new Intent(getActivity(), BehaviourSettingsActivity.class));
                     return true;
                 }
             });
@@ -127,15 +136,18 @@ public class SettingsFragment
 
         // manage intent
         if (getActivity().getIntent() != null) {
-            if (!TextUtils.isEmpty(getActivity().getIntent().getStringExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN))) {
+            if (!TextUtils.isEmpty(getActivity().getIntent()
+                    .getStringExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN))) {
                 try {
                     PreferenceScreen screen = getPreferenceScreen();
-                    Preference preference = findPreference(getActivity().getIntent().getStringExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN));
+                    Preference preference = findPreference(getActivity().getIntent()
+                            .getStringExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN));
                     if (preference != null) {
                         screen.onItemClick(null, null, preference.getOrder(), 0);
                     }
                 } catch (Exception e) {
-                    Log.e(LOGCAT, e.getMessage());
+                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                    handler.handle(e, "opening preferences screen");
                 }
             }
         }

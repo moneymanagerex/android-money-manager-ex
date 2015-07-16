@@ -267,6 +267,9 @@
             android:name=".settings.LookFeelSettingsActivity"
             android:label="@string/preferences_dispaly" />
         <activity
+            android:name=".settings.BehaviourSettingsActivity"
+            android:label="@string/preferences_behaviour" />
+        <activity
             android:name=".settings.SecuritySettingsActivity"
             android:label="@string/preferences_security" />
         <activity
@@ -362,10 +365,6 @@
         <activity
             android:name=".core.ExceptionHandlerActivity"
             android:label="@string/error" >
-        </activity>
-        <activity
-            android:name=".reports.currency.rates.CurrencyRatesReportActivity"
-            android:label="@string/title_activity_currency_rates_report" >
         </activity>
     </application>
 

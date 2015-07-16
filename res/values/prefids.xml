@@ -76,4 +76,7 @@
     <string name="pref_show_tutorial">prefshowtutorial</string>
     <string name="pref_dashboard_group_visibility">pref-dashboard-group-visible</string>
     <string name="pref_default_account">pref_default_account</string>
+    <!-- behaviour -->
+    <string name="pref_behaviour">prefbehaviour</string>
+    <string name="pref_behaviour_focus_filter">prefbehaviour_focus_filter</string>
 </resources>
