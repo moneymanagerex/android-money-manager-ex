@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package com.money.manager.ex.settings;
 
 import android.content.Context;
@@ -26,23 +25,19 @@ import com.money.manager.ex.R;
 /**
  * Settings in the General category.
  */
-public class GeneralSettings
+public class BehaviourSettings
     extends SettingsBase {
 
-    public GeneralSettings(Context context) {
+    public BehaviourSettings(Context context) {
         super(context);
 
     }
 
-    public String getApplicationLocale() {
-        String result = get(PreferenceConstants.PREF_LOCALE, "");
-        return result;
-    }
-
-    public String getDefaultAccount() {
-        String key = mContext.getString(PreferenceConstants.PREF_DEFAULT_ACCOUNT);
-        String result = getSharedPreferences().getString(key, "");
-        return result;
+    public boolean getNotificationRecurringTransaction() {
+        SharedPreferences preferences = getSharedPreferences();
+        String key = mContext.getString(R.string.pref_repeating_transaction_notifications);
+        boolean notify = preferences.getBoolean(key, true);
+        return notify;
     }
 
 }

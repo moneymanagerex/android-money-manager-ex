@@ -34,6 +34,7 @@ public class AppSettings extends SettingsBase {
 
     private GeneralSettings mGeneral;
     private LookAndFeelSettings mLookAndFeel;
+    private BehaviourSettings mBehaviour;
     private DatabaseSettings mDatabase;
 
     public DatabaseSettings getDatabaseSettings() {
@@ -54,6 +55,13 @@ public class AppSettings extends SettingsBase {
         if (mLookAndFeel == null) mLookAndFeel = new LookAndFeelSettings(mContext);
 
         return mLookAndFeel;
+    }
+
+    public BehaviourSettings getBehaviourSettings() {
+        if (mBehaviour == null) {
+            mBehaviour = new BehaviourSettings(mContext);
+        }
+        return mBehaviour;
     }
 
     public Context getContext() {

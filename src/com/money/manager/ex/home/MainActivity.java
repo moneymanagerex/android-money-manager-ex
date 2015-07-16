@@ -296,7 +296,7 @@ public class MainActivity
         // start notification for recurring transaction
         if (!isRecurringTransactionStarted) {
             AppSettings settings = new AppSettings(this);
-            boolean showNotification = settings.getGeneralSettings().getNotificationRecurringTransaction();
+            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
             if (showNotification) {
                 RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
                 notifications.notifyRepeatingTransaction();
