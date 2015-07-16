@@ -47,6 +47,7 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.investment.IPriceUpdaterFeedback;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.ActivityUtils;
 
 import java.math.BigDecimal;
@@ -75,8 +76,10 @@ public class CurrencyListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // show search into actionbar
-        setShowMenuItemSearch(true);
+        // Focus on search menu if set in preferences.
+        AppSettings settings = new AppSettings(getActivity());
+        boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
+        setShowMenuItemSearch(focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.currencies_empty));
         setHasOptionsMenu(true);
