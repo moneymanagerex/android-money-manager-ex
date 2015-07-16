@@ -135,7 +135,7 @@ INSERT INTO "CURRENCYFORMATS_V1" VALUES(7,'Albanian lek','','L','.',' ','','',1,
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(8,'Algerian dinar','دج','','.',' ','','',100,1,'DZD');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(9,'Angolan kwanza','','Kz','.',' ','','Céntimo',100,1,'AOA');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(10,'East Caribbean dollar','EC$','','.',' ','','',100,1,'XCD');
-INSERT INTO "CURRENCYFORMATS_V1" VALUES(11,'Argentine peso','','','.',' ','','',100,1,'ARS');
+INSERT INTO "CURRENCYFORMATS_V1" VALUES(11,'Argentine peso','$','','.',' ','','centavo',100,1,'ARS');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(12,'Armenian dram','','','.',' ','','',1,1,'AMD');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(13,'Aruban florin','ƒ','','.',' ','','',100,1,'AWG');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(14,'Australian dollar','$','','.',',','','',100,1,'AUD');
