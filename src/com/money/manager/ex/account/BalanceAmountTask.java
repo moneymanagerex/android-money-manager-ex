@@ -30,7 +30,7 @@ import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.currency.CurrencyUtils;
 
 /**
- * Async task that updates the balance amount.
+ * Async task that calculates and updates the amount balance in the transaction list.
  */
 public class BalanceAmountTask
         extends AsyncTask<Void, Void, Boolean> {
@@ -80,9 +80,11 @@ public class BalanceAmountTask
         Cursor cursor = mContext.getContentResolver().query(checkingAccount.getUri(),
                 checkingAccount.getAllColumns(), selection, null, null);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
                 String transType = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
+
+                // Some users have invalid Transaction Type. Should we check .contains()?
 
                 if (TransactionTypes.valueOf(transType).equals(TransactionTypes.Withdrawal)) {
                     total -= cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
@@ -96,12 +98,11 @@ public class BalanceAmountTask
                         total += cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
                     }
                 }
-                cursor.moveToNext();
             }
-        }
-        if (cursor != null) {
+
             cursor.close();
         }
+
         // calculate initial bal
         TableAccountList accountList = new TableAccountList();
 
@@ -111,10 +112,10 @@ public class BalanceAmountTask
                 new String[] { Integer.toString(getAccountId()) },
                 null);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            total += cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
-        }
         if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                total += cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
+            }
             cursor.close();
         }
         return true;

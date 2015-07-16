@@ -38,4 +38,17 @@ public enum TransactionTypes {
 //    public TransactionTypes from(String name) {
 //
 //    }
+
+    public boolean contains(String name) {
+        boolean result = false;
+
+        for (TransactionTypes type : TransactionTypes.values()) {
+            if (type.toString().equalsIgnoreCase(name)) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
 }
