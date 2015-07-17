@@ -210,7 +210,7 @@ public class CurrencyListFragment
 
                 if (isResumed()) {
                     setListShown(true);
-                    if (data.getCount() <= 0 && getFloatingActionButton() != null)
+                    if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null)
                         getFloatingActionButton().show(true);
                 } else {
                     setListShownNoAnimation(true);
