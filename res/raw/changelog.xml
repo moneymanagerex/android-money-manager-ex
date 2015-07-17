@@ -17,8 +17,10 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="July 16" versionName="2.12">
+    <changelogversion changeDate="July 17" versionName="2.12.1">
         <changelogtext>Added a behaviour preference setting for searching/browsing in selectors (category, payee, currency).</changelogtext>
+        <changelogtext>Correction: hardware Menu button now does not open double menu.</changelogtext>
+        <changelogtext>Minor stability improvements.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="July 15, 2015" versionName="2.11.5">
         <changelogtext>Calculating totals for investment accounts on Home screen.</changelogtext>
