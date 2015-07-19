@@ -23,13 +23,16 @@ import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockHistory;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
+import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -41,9 +44,11 @@ import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.view.RobotoTextView;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Edit price dialog for manual entry/modification of the latest stock price.
@@ -68,7 +73,6 @@ public class EditPriceDialog
         StockHistoryRepository historyRepository = new StockHistoryRepository(mContext.getApplicationContext());
         ContentValues latestPriceValues = historyRepository.getLatestPriceFor(symbol);
         // symbol, date, value
-        String latestPriceDate = latestPriceValues.getAsString(StockHistory.DATE);
 
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(mContext);
 
@@ -106,8 +110,17 @@ public class EditPriceDialog
             };
         };
         mDateTextView.setOnClickListener(dateClickListener);
-        mDateTextView.setText(latestPriceDate);
-        mDateTextView.setTag(Calendar.getInstance().getTime());;
+        String latestPriceDate = latestPriceValues.getAsString(StockHistory.DATE);
+        Date latestDate;
+        try {
+            latestDate = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+                    .parse(latestPriceDate);
+        } catch (ParseException pex) {
+            latestDate = Calendar.getInstance().getTime();
+        }
+        mDateTextView.setTag(latestDate);
+//        mDateTextView.setText(latestPriceDate);
+        formatExtendedDate(mDateTextView);
 
         // price
 
@@ -140,6 +153,10 @@ public class EditPriceDialog
                 //save price
                 double amount = (Double) mAmountTextView.getTag();
                 Date date = (Date) mDateTextView.getTag();
+
+                StockRepository repo = new StockRepository(mContext);
+                repo.updateCurrentPrice(symbol, BigDecimal.valueOf(amount));
+
                 StockHistoryRepository historyRepository = new StockHistoryRepository(mContext);
                 boolean result = historyRepository.addStockHistoryRecord(symbol, BigDecimal.valueOf(amount), date);
                 if (!result) {
@@ -179,4 +196,15 @@ public class EditPriceDialog
         mAmountTextView.setText(currencySymbol + " " + Double.toString(currentPrice));
         mAmountTextView.setTag(currentPrice);
     }
+
+    public void formatExtendedDate(TextView dateTextView) {
+        try {
+            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", mContext.getResources().getConfiguration().locale)
+                    .format((Date) dateTextView.getTag()));
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "formatting date");
+        }
+    }
+
 }

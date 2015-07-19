@@ -297,7 +297,7 @@ public class WatchlistFragment extends Fragment
     public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
         // prices updated.
 
-        // update the price in database.
+        // update the current price of the stock.
         StockRepository repo = getStockRepository();
         repo.updateCurrentPrice(symbol, price);
 

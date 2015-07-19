@@ -37,8 +37,8 @@
         style="@style/Money.TextView.Widget.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_action_calculator_light"
-        android:drawableStart="@drawable/ic_action_calculator_light"
+        android:drawableLeft="?attr/ic_calculator"
+        android:drawableStart="?attr/ic_calculator"
         android:textStyle="bold"/>
 
 </LinearLayout>

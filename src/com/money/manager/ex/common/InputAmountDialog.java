@@ -146,7 +146,7 @@ public class InputAmountDialog
             }
         });
 
-        // Equals button
+        // Equals button =
         Button buttonKeyEquals = (Button) view.findViewById(R.id.buttonKeyEqual);
         buttonKeyEquals.setOnClickListener(new OnClickListener() {
             @Override

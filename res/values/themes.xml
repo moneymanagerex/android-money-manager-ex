@@ -178,7 +178,7 @@
         <item name="ic_action_bargraph">@drawable/ic_action_bargraph_dark</item>
         <item name="ic_action_bell">@drawable/ic_action_bell_dark</item>
         <item name="ic_action_business">@drawable/ic_action_business_dark</item>
-        <item name="ic_action_calculator">@drawable/ic_action_calculator_light</item>
+        <item name="ic_action_calculator">@drawable/ic_action_calculator_dark</item>
         <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
         <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
         <item name="ic_action_cancel_contrast">@drawable/ic_action_cancel_dark</item>
