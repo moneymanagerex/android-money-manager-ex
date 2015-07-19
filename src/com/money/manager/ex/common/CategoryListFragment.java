@@ -59,7 +59,7 @@ import java.util.List;
  * Categories list fragment. Used in Main Activity for editing of categories, and own activity
  * when selecting the category for a transaction.
  */
-public class CategorySubCategoryExpandableLoaderListFragment
+public class CategoryListFragment
         extends BaseExpandableListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -394,22 +394,22 @@ public class CategorySubCategoryExpandableLoaderListFragment
                             for (int child = 0; child < mSubCategories.get(mCategories.get(groupIndex)).size(); child++) {
                                 if (mSubCategories.get(mCategories.get(groupIndex)).get(child).getSubCategId() == subCategId) {
                                     result = new Intent();
-                                    result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, categId);
-                                    result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME,
+                                    result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categId);
+                                    result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME,
                                             mSubCategories.get(mCategories.get(groupIndex)).get(child).getCategName().toString());
-                                    result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
-                                    result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME,
+                                    result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
+                                    result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME,
                                             mSubCategories.get(mCategories.get(groupIndex)).get(child).getSubcategoryName().toString());
                                     break;
                                 }
                             }
                         } else {
                             result = new Intent();
-                            result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, categId);
-                            result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME,
+                            result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categId);
+                            result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME,
                                     mCategories.get(groupIndex).getCategName().toString());
-                            result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
-                            result.putExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME, "");
+                            result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
+                            result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME, "");
                         }
                     }
                 }
@@ -714,9 +714,9 @@ public class CategorySubCategoryExpandableLoaderListFragment
 //                        adapter.setIdChildChecked(subCategory.getCategId(), subCategory.getSubCategId());
 //                    }
 //
-//                    CategorySubCategoryExpandableLoaderListFragment fragment =
-//                            (CategorySubCategoryExpandableLoaderListFragment) getActivity()
-//                                    .getSupportFragmentManager().findFragmentByTag(CategorySubCategoryExpandableListActivity.FRAGMENTTAG);
+//                    CategoryListFragment fragment =
+//                            (CategoryListFragment) getActivity()
+//                                    .getSupportFragmentManager().findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
 //                    fragment.setResultAndFinish();
 //                    return true;
 //                }

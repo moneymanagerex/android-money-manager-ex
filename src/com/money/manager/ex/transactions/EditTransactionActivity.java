@@ -43,7 +43,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.account.AccountListActivity;
-import com.money.manager.ex.common.CategorySubCategoryExpandableListActivity;
+import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
@@ -267,7 +267,7 @@ public class EditTransactionActivity
             public void onClick(View v) {
                 if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
                     // select single category.
-                    Intent intent = new Intent(EditTransactionActivity.this, CategorySubCategoryExpandableListActivity.class);
+                    Intent intent = new Intent(EditTransactionActivity.this, CategoryListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
                     startActivityForResult(intent, EditTransactionActivityConstants.REQUEST_PICK_CATEGORY);
                 } else {
@@ -412,10 +412,10 @@ public class EditTransactionActivity
             case EditTransactionActivityConstants.REQUEST_PICK_CATEGORY:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
-                mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
-                mCommonFunctions.mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
-                mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
-                mCommonFunctions.mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
+                mCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1);
+                mCommonFunctions.mCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
+                mSubCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1);
+                mCommonFunctions.mSubCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                 // refresh UI category
                 mCommonFunctions.refreshCategoryName();
                 break;

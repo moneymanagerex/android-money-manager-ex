@@ -30,9 +30,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.money.manager.ex.common.CategorySubCategoryExpandableListActivity;
+import com.money.manager.ex.common.CategoryListActivity;
+import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.view.RobotoTextView;
@@ -146,10 +146,10 @@ public class CategoryExpandableListAdapter
                     setIdChildChecked(groupId, childId);
                     // close
                     FragmentActivity activity = (FragmentActivity) mContext;
-                    CategorySubCategoryExpandableLoaderListFragment fragment =
-                            (CategorySubCategoryExpandableLoaderListFragment) activity
+                    CategoryListFragment fragment =
+                            (CategoryListFragment) activity
                                     .getSupportFragmentManager()
-                                    .findFragmentByTag(CategorySubCategoryExpandableListActivity.FRAGMENTTAG);
+                                    .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
                     fragment.setResultAndFinish();
                 }
             });
@@ -230,10 +230,10 @@ public class CategoryExpandableListAdapter
                         setIdGroupChecked(groupId);
                         // close
                         FragmentActivity activity = (FragmentActivity) mContext;
-                        CategorySubCategoryExpandableLoaderListFragment fragment =
-                                (CategorySubCategoryExpandableLoaderListFragment) activity
+                        CategoryListFragment fragment =
+                                (CategoryListFragment) activity
                                         .getSupportFragmentManager()
-                                        .findFragmentByTag(CategorySubCategoryExpandableListActivity.FRAGMENTTAG);
+                                        .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
                         fragment.setResultAndFinish();
                     }
                 });

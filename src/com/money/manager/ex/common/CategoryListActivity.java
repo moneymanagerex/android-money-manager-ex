@@ -28,7 +28,7 @@ import com.money.manager.ex.R;
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
-public class CategorySubCategoryExpandableListActivity
+public class CategoryListActivity
         extends BaseFragmentActivity {
 
     public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";
@@ -36,9 +36,9 @@ public class CategorySubCategoryExpandableListActivity
     public static final String INTENT_RESULT_SUBCATEGID = "CategorySubCategory:SubCategId";
     public static final String INTENT_RESULT_SUBCATEGNAME = "CategorySubCategory:SubCategName";
 
-    public static final String FRAGMENTTAG = CategorySubCategoryExpandableListActivity.class.getSimpleName() + "_Fragment";
+    public static final String FRAGMENTTAG = CategoryListActivity.class.getSimpleName() + "_Fragment";
 
-    CategorySubCategoryExpandableLoaderListFragment listFragment = new CategorySubCategoryExpandableLoaderListFragment();
+    CategoryListFragment listFragment = new CategoryListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +66,8 @@ public class CategorySubCategoryExpandableListActivity
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // set result and terminate activity
-            CategorySubCategoryExpandableLoaderListFragment fragment =
-                    (CategorySubCategoryExpandableLoaderListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+            CategoryListFragment fragment =
+                    (CategoryListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
             if (fragment != null) {
                 fragment.setResultAndFinish();
             }

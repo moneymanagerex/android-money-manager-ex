@@ -42,7 +42,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.money.manager.ex.common.CategorySubCategoryExpandableListActivity;
+import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
@@ -218,10 +218,10 @@ public class RecurringTransactionActivity
                 break;
             case REQUEST_PICK_CATEGORY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-                    mCommonFunctions.mCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
-                    mSubCategoryId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-                    mCommonFunctions.mSubCategoryName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
+                    mCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                    mCommonFunctions.mCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
+                    mSubCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                    mCommonFunctions.mSubCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                     // refresh UI category
                     mCommonFunctions.refreshCategoryName();
                 }
@@ -373,7 +373,7 @@ public class RecurringTransactionActivity
             public void onClick(View v) {
                 if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
                     Intent intent = new Intent(RecurringTransactionActivity.this,
-                            CategorySubCategoryExpandableListActivity.class);
+                            CategoryListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
                     startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 } else {

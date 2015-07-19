@@ -28,7 +28,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -62,6 +61,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionsFragment;
 import com.money.manager.ex.budget.BudgetsActivity;
+import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.DropboxManager;
@@ -74,7 +74,6 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.CategorySubCategoryExpandableLoaderListFragment;
 import com.money.manager.ex.fragment.PayeeLoaderListFragment;
 import com.money.manager.ex.investment.WatchlistFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
@@ -803,7 +802,7 @@ public class MainActivity
                 showFragment(AccountListFragment.class);
                 break;
             case R.id.menu_category:
-                showFragment(CategorySubCategoryExpandableLoaderListFragment.class);
+                showFragment(CategoryListFragment.class);
                 break;
             case R.id.menu_currency:
                 // Show Currency list.

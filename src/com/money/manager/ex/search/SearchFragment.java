@@ -36,7 +36,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.money.manager.ex.common.CategorySubCategoryExpandableListActivity;
+import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
@@ -164,7 +164,7 @@ public class SearchFragment extends Fragment
         txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CategorySubCategoryExpandableListActivity.class);
+                Intent intent = new Intent(getActivity(), CategoryListActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(intent, REQUEST_PICK_CATEGORY);
             }
@@ -223,10 +223,10 @@ public class SearchFragment extends Fragment
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     //create class for store data
                     CategorySub categorySub = new CategorySub();
-                    categorySub.categId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGID, -1);
-                    categorySub.categName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_CATEGNAME);
-                    categorySub.subCategId = data.getIntExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGID, -1);
-                    categorySub.subCategName = data.getStringExtra(CategorySubCategoryExpandableListActivity.INTENT_RESULT_SUBCATEGNAME);
+                    categorySub.categId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1);
+                    categorySub.categName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
+                    categorySub.subCategId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1);
+                    categorySub.subCategName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                     //save into button
                     displayCategory(categorySub);
                 }
