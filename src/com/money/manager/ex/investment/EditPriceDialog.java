@@ -40,6 +40,7 @@ import com.money.manager.ex.currency.CurrencyUtils;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.view.RobotoTextView;
 
@@ -66,13 +67,18 @@ public class EditPriceDialog
     private RobotoTextView mAmountTextView;
     private RobotoTextView mDateTextView;
 
-    public void show(int accountId, final String symbol) {
+    public void show(int accountId, final String symbol, double currentPrice) {
         mAccountId = accountId;
 
         // get the current record date
         StockHistoryRepository historyRepository = new StockHistoryRepository(mContext.getApplicationContext());
         ContentValues latestPriceValues = historyRepository.getLatestPriceFor(symbol);
         // symbol, date, value
+        if (latestPriceValues == null) {
+            // todo: No history available. Get the values from the stock record.
+            StockRepository repository = new StockRepository(mContext);
+//            repository.findIdsBySymbol()
+        }
 
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(mContext);
 
@@ -110,12 +116,17 @@ public class EditPriceDialog
             };
         };
         mDateTextView.setOnClickListener(dateClickListener);
-        String latestPriceDate = latestPriceValues.getAsString(StockHistory.DATE);
+
         Date latestDate;
-        try {
-            latestDate = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                    .parse(latestPriceDate);
-        } catch (ParseException pex) {
+        if (latestPriceValues != null) {
+            String latestPriceDate = latestPriceValues.getAsString(StockHistory.DATE);
+            try {
+                latestDate = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+                        .parse(latestPriceDate);
+            } catch (ParseException pex) {
+                latestDate = Calendar.getInstance().getTime();
+            }
+        } else {
             latestDate = Calendar.getInstance().getTime();
         }
         mDateTextView.setTag(latestDate);
@@ -142,9 +153,14 @@ public class EditPriceDialog
         mAmountTextView.setOnClickListener(onClickAmount);
 
         // get the current record price
-        String currentPriceString = latestPriceValues.getAsString(StockHistory.VALUE);
-        double currentPrice = Double.parseDouble(currentPriceString);
-        showCurrentPrice(currentPrice, accountId);
+        double latestPrice;
+        if (latestPriceValues != null) {
+            String currentPriceString = latestPriceValues.getAsString(StockHistory.VALUE);
+            latestPrice = Double.parseDouble(currentPriceString);
+        } else {
+            latestPrice = currentPrice;
+        }
+        showCurrentPrice(latestPrice, accountId);
 
         // actions
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -163,6 +179,8 @@ public class EditPriceDialog
                     Toast.makeText(mContext, mContext.getString(R.string.error_update_currency_exchange_rate),
                             Toast.LENGTH_SHORT).show();
                 }
+
+                DropboxHelper.notifyDataChanged();
             }
         });
         alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

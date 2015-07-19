@@ -313,17 +313,17 @@ public class WatchlistFragment extends Fragment
         }
     }
 
-    private void showUpdateMessage(final String symbol) {
-        // this call is made from async task so have to get back to the main thread.
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //
-                String message = getString(R.string.price_updated) + ": " + symbol;
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void showUpdateMessage(final String symbol) {
+//        // this call is made from async task so have to get back to the main thread.
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //
+//                String message = getString(R.string.price_updated) + ": " + symbol;
+//                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     private void completePriceUpdate() {
         // this call is made from async task so have to get back to the main thread.

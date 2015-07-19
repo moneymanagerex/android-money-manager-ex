@@ -67,7 +67,7 @@ public class StockRepository
         };
     }
 
-    public boolean load(int accountId) {
+    public boolean loadFor(int accountId) {
         boolean result = false;
 
         String selection = TableAccountList.ACCOUNTID + "=?";
@@ -77,14 +77,16 @@ public class StockRepository
                 new String[] { Integer.toString(accountId) },
                 null
         );
+        if (cursor == null) return false;
 
         // check if cursor is valid
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             this.setValueFromCursor(cursor);
 
-            cursor.close();
             result = true;
         }
+        cursor.close();
+
         return result;
     }
 
@@ -111,8 +113,6 @@ public class StockRepository
             cursor.close();
         }
 
-//        db.close();
-
         return result;
     }
 
@@ -123,13 +123,12 @@ public class StockRepository
         boolean result = false;
 
         ContentValues values = new ContentValues();
-//        values.put(STOCKID, id);
         values.put(CURRENTPRICE, price.doubleValue());
 
         int updateResult = mContext.getContentResolver().update(this.getUri(),
                 values,
                 STOCKID + "=?",
-                new String[]{Integer.toString(id)}
+                new String[]{ Integer.toString(id) }
                 );
 
         if (updateResult != 0) {
@@ -153,4 +152,8 @@ public class StockRepository
             updatePrice(id, price);
         }
     }
+
+//    public BigDecimal loadLatestPriceForSymbol(String symbol) {
+//
+//    }
 }

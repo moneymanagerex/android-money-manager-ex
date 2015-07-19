@@ -233,7 +233,11 @@ public class WatchlistItemsFragment
                 // Edit price
                 DatabaseUtils.cursorIntToContentValuesIfPresent(cursor, contents, StockRepository.HELDAT);
                 int accountId = contents.getAsInteger(StockRepository.HELDAT);
-                showEditPriceDialog(accountId, symbol);
+                DatabaseUtils.cursorDoubleToContentValuesIfPresent(cursor, contents, StockRepository.CURRENTPRICE);
+                double currentPrice = contents.getAsDouble(StockRepository.CURRENTPRICE);
+
+                EditPriceDialog dialog = new EditPriceDialog(mContext);
+                dialog.show(accountId, symbol, currentPrice);
                 break;
         }
 
@@ -403,10 +407,5 @@ public class WatchlistItemsFragment
             mStockHistoryRepository = new StockHistoryRepository(mContext);
         }
         return mStockHistoryRepository;
-    }
-
-    private void showEditPriceDialog(int accountId, String symbol) {
-        EditPriceDialog dialog = new EditPriceDialog(mContext);
-        dialog.show(accountId, symbol);
     }
 }
