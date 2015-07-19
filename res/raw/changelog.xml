@@ -17,6 +17,9 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="" versionName="2.13">
+        <changelogtext>Ability to set the stock price manually.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="July 17, 2015" versionName="2.12.1">
         <changelogtext>Added a behaviour preference setting for searching/browsing in selectors (category, payee, currency).</changelogtext>
         <changelogtext>Correction: hardware Menu button now does not open double menu.</changelogtext>
