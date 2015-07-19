@@ -575,8 +575,7 @@ public class CategoryListFragment
             edtSubCategName.setSelection(subCategName.length());
         }
 
-        // populate spinner
-        // take a categories list
+        // Fill categories list.
         CategoryService categoryService = new CategoryService(getActivity());
         final List<TableCategory> categories = categoryService.getCategoryList();
 
@@ -603,8 +602,7 @@ public class CategoryListFragment
         alertDialog.setView(viewDialog);
         alertDialog.setTitle(titleId);
         // listener on positive button
-        alertDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     //@SuppressWarnings("incomplete-switch")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -42,6 +42,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxHelper;
@@ -54,7 +55,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- *
+ * The main fragment for the watchlist. Contains the list and everything else.
+ * Not sure why it was done in two fragments. Probably because the list can not have additional items?
  */
 public class WatchlistFragment extends Fragment
         implements IPriceUpdaterFeedback,
@@ -366,8 +368,9 @@ public class WatchlistFragment extends Fragment
 
         try {
             result = export.exportPrices(mDataFragment.getListAdapter(), mAccountName);
-        } catch (IOException ioex) {
-            Log.e(LOGCAT, "Error exporting prices:" + ioex.getMessage());
+        } catch (IOException ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "exporting stock prices");
         }
 
         // todo: handle result. (?)

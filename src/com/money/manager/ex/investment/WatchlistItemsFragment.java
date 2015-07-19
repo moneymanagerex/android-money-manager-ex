@@ -19,6 +19,7 @@ package com.money.manager.ex.investment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Bundle;
@@ -39,24 +40,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.StockHistory;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.IInputAmountDialogListener;
+import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.view.RobotoTextView;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
- *
+ * The list of securities.
  */
 public class WatchlistItemsFragment
         extends BaseListFragment
-        implements LoaderCallbacks<Cursor> {
+        implements LoaderCallbacks<Cursor>, IInputAmountDialogListener {
 
     // ID Loader
     public static final int ID_LOADER_WATCHLIST = 1;
@@ -162,37 +172,7 @@ public class WatchlistItemsFragment
         super.onCreate(savedInstanceState);
 
 //        setHasOptionsMenu(true);
-    }
 
-    /**
-     * Context menu click handler. Update individual price.
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
-        boolean cursorMoved = cursor.moveToPosition(info.position - 1);
-
-        ContentValues contents = new ContentValues();
-        DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, contents, StockRepository.SYMBOL);
-
-        boolean result = false;
-        int itemId = item.getItemId();
-//        String itemTitle = item.getTitle();
-
-        switch (itemId) {
-            case 0:
-                // Update price
-                String symbol = contents.getAsString(StockRepository.SYMBOL);
-                mEventHandler.onPriceUpdateRequested(symbol);
-                result = true;
-                break;
-        }
-
-        return result;
     }
 
     @Override
@@ -216,6 +196,42 @@ public class WatchlistItemsFragment
         for (int i = 0; i < menuItems.length; i++) {
             menu.add(Menu.NONE, i, i, menuItems[i]);
         }
+    }
+
+    /**
+     * Context menu click handler. Update individual price.
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
+        boolean cursorMoved = cursor.moveToPosition(info.position - 1);
+
+        ContentValues contents = new ContentValues();
+        // get Symbol from cursor
+        DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, contents, StockRepository.SYMBOL);
+        String symbol = contents.getAsString(StockRepository.SYMBOL);
+
+        boolean result = false;
+        int itemId = item.getItemId();
+//        String itemTitle = item.getTitle();
+
+        switch (itemId) {
+            case 0:
+                // Update price
+                mEventHandler.onPriceUpdateRequested(symbol);
+                result = true;
+                break;
+            case 1:
+                // Edit price
+                showEditPriceDialog(symbol);
+                break;
+        }
+
+        return result;
     }
 
     /**
@@ -246,9 +262,7 @@ public class WatchlistItemsFragment
             childFragmentManager.setAccessible(true);
             childFragmentManager.set(this, null);
 
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
@@ -383,5 +397,79 @@ public class WatchlistItemsFragment
             mStockHistoryRepository = new StockHistoryRepository(mContext);
         }
         return mStockHistoryRepository;
+    }
+
+    private void showEditPriceDialog(String symbol) {
+        // todo: get the current record date
+        StockHistoryRepository historyRepository = new StockHistoryRepository(mContext.getApplicationContext());
+        ContentValues latestPriceValues = historyRepository.getLatestPriceFor(symbol);
+        // symbol, date, value
+        String latestPriceDate = latestPriceValues.getAsString(StockHistory.DATE);
+
+        // todo: get the current record price
+        String currentPrice = latestPriceValues.getAsString(StockHistory.VALUE);
+
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
+
+        View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_stock_price, null);
+        alertDialog.setView(viewDialog);
+
+        // date picker
+        RobotoTextView dateTextView = (RobotoTextView) viewDialog.findViewById(R.id.dateTextView);
+        dateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // todo: show date picker
+            }
+        });
+        dateTextView.setText(latestPriceDate);
+
+        // price
+//        EditText priceEditText = (EditText) viewDialog.findViewById(R.id.priceEditText);
+//        priceEditText.setText(currentPrice);
+        final CurrencyUtils currencyUtils = new CurrencyUtils(mContext.getApplicationContext());
+
+        View.OnClickListener onClickAmount = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                double amount = (Double) v.getTag();
+                // todo: get currency id
+                int currencyId = currencyUtils.getBaseCurrencyId();
+                InputAmountDialog dialog = InputAmountDialog.getInstance(WatchlistItemsFragment.this,
+                        v.getId(), amount, currencyId);
+                dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+            }
+        };
+        RobotoTextView amountTextView = (RobotoTextView) viewDialog.findViewById(R.id.amountTextView);
+        amountTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // todo: show amount input
+            }
+        });
+
+        // actions
+        alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //todo: save price
+            }
+        });
+        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+
+        alertDialog.create().show();
+    }
+
+    @Override
+    public void onFinishedInputAmountDialog(int id, Double amount) {
+        // todo: set the amount on the dialog. (how?!)
+
     }
 }

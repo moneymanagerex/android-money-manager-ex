@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.businessobjects.StockHistory;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -167,9 +168,8 @@ public class StockHistoryRepository
         try {
             return getLatestPriceFor_Internal(symbol);
         } catch (SQLiteException sqlex) {
-            String error = "Error reading price for " + symbol;
-            Log.e(LOGCAT, error + ": " + sqlex.getLocalizedMessage());
-            Toast.makeText(mContext, error, Toast.LENGTH_SHORT).show();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(sqlex, "reading price for " + symbol);
         }
         return null;
     }

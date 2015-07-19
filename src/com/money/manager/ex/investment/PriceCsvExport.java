@@ -27,6 +27,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.businessobjects.StockHistory;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
 
 import java.io.IOException;
@@ -59,14 +60,16 @@ public class PriceCsvExport
      */
     public boolean exportPrices(ListAdapter adapter, String filePrefix)
             throws IOException {
+
         boolean result = false;
         String content = this.getContent(adapter);
         String filename = generateFileName(filePrefix);
 
         try {
             result = this.export(filename, content);
-        } catch (IOException ioex) {
-            Log.e(LOGCAT, "Error exporting prices: " + ioex.getMessage());
+        } catch (IOException ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "exporting prices");
         }
 
         return result;

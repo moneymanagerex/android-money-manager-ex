@@ -224,9 +224,6 @@ public class EditTransactionActivity
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime((Date) txtSelectDate.getTag());
-//                DatePickerDialog dialog = new DatePickerDialog(EditTransactionActivity.this,
-//                        mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
-//                dialog.show();
                 DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
                     calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
                 dialog.setCloseOnSingleTapDay(true);
