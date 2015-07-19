@@ -577,9 +577,7 @@ public class CategoryListFragment
 
         // populate spinner
         // take a categories list
-//        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
         CategoryService categoryService = new CategoryService(getActivity());
-//        final List<TableCategory> categories = helper.getCategoryList();
         final List<TableCategory> categories = categoryService.getCategoryList();
 
         ArrayList<String> categName = new ArrayList<>();
@@ -607,7 +605,7 @@ public class CategoryListFragment
         // listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
-                    @SuppressWarnings("incomplete-switch")
+                    //@SuppressWarnings("incomplete-switch")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // get description category
@@ -615,7 +613,7 @@ public class CategoryListFragment
                         // check position
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
                             return;
-                        // get categid
+                        // get category id
                         int categId = categories.get(spnCategory.getSelectedItemPosition()).getCategId();
                         ContentValues values = new ContentValues();
                         values.put(TableSubCategory.CATEGID, categId);
@@ -756,42 +754,4 @@ public class CategoryListFragment
                 .neutralText(android.R.string.cancel)
                 .show();
     }
-
-//    private void showNameEntryDialog() {
-//        // todo: customize dialog.
-//        new MaterialDialog.Builder(getActivity())
-//                .title(R.string.donate)
-//                .content(R.string.create_db_dialog_content)
-//                .inputType(InputType.TYPE_CLASS_TEXT)
-//                .input(R.string.create_db, R.string.create_db_error, new MaterialDialog.InputCallback() {
-//                    @Override
-//                    public void onInput(MaterialDialog dialog, CharSequence input) {
-//                        // Do something. Happens after positive handler.
-//                        String category = input.toString();
-//                        dialog.setIcon(android.R.drawable.btn_radio);
-//                    }
-//                })
-//                .callback(new MaterialDialog.ButtonCallback() {
-//                    @Override
-//                    public void onPositive(MaterialDialog dialog) {
-//                        dialog.setIcon(android.R.drawable.btn_plus);
-//                    }
-//
-//                    @Override
-//                    public void onNegative(MaterialDialog dialog) {
-//                        String input = dialog.getInputEditText().getText().toString();
-//                        dialog.setIcon(android.R.drawable.btn_minus);
-//                    }
-//
-////                    @Override
-////                    public void onNeutral(MaterialDialog dialog) {
-////                        dialog.setIcon(android.R.drawable.btn_star);
-//////                        dialog.dismiss();
-////                    }
-//                })
-//                .positiveText(R.string.category)
-//                .negativeText(R.string.subcategory)
-////                .neutralText(android.R.string.cancel)
-//                .show();
-//    }
 }

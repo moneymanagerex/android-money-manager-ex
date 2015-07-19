@@ -182,7 +182,7 @@ public class WatchlistFragment extends Fragment
         mDataFragment.setArguments(prepareArgsForChildFragment());
         mDataFragment.setListHeader(header);
         mDataFragment.setAutoStarLoader(false);
-        mDataFragment.setContextMenuGroupId(mAccountId);
+//        mDataFragment.setContextMenuGroupId(mAccountId);
 //        mDataFragment.setSearResultFragmentLoaderCallbacks(this);
 
         // add fragment

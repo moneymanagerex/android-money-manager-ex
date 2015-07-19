@@ -51,6 +51,9 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class WatchlistItemsFragment
         extends BaseListFragment
         implements LoaderCallbacks<Cursor> {
@@ -78,7 +81,7 @@ public class WatchlistItemsFragment
 
     private IWatchlistItemsFragmentEventHandler mEventHandler;
     private boolean mAutoStarLoader = true;
-    private int mGroupId = 0;
+//    private int mGroupId = 0;
 //    private int mAccountId = -1;
     private View mListHeader = null;
     private Context mContext;
@@ -86,12 +89,9 @@ public class WatchlistItemsFragment
     private StockHistoryRepository mStockHistoryRepository;
     private Bundle mLoaderArgs;
 
-    /**
-     * @param mGroupId the mGroupId to set
-     */
-    public void setContextMenuGroupId(int mGroupId) {
-        this.mGroupId = mGroupId;
-    }
+//    public void setContextMenuGroupId(int mGroupId) {
+//        this.mGroupId = mGroupId;
+//    }
 
     /**
      * @return the mAutoStarLoader
