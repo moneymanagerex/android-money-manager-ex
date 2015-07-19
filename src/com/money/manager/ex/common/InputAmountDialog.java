@@ -47,6 +47,28 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class InputAmountDialog
         extends DialogFragment {
 
+    public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id, Double amount) {
+        Bundle args = new Bundle();
+        args.putInt("id", id);
+        args.putDouble("amount", amount);
+
+        InputAmountDialog fragment = new InputAmountDialog();
+        fragment.setArguments(args);
+        fragment.mListener = listener;
+
+        return fragment;
+    }
+
+    public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id,
+                                                Double amount, Integer currencyId) {
+        InputAmountDialog dialog = getInstance(listener, id, amount);
+        dialog.mCurrencyId = currencyId;
+        dialog.mListener = listener;
+        return dialog;
+    }
+
+    public boolean RoundToCurrencyDecimals = true;
+
     private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
     private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
     private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
@@ -68,26 +90,6 @@ public class InputAmountDialog
     private TextView txtMain, txtTop;
     private IInputAmountDialogListener mListener;
 
-    public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id, Double amount) {
-        Bundle args = new Bundle();
-        args.putInt("id", id);
-        args.putDouble("amount", amount);
-
-        InputAmountDialog fragment = new InputAmountDialog();
-        fragment.setArguments(args);
-        fragment.mListener = listener;
-
-        return fragment;
-    }
-
-    public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id,
-                                                Double amount, Integer currencyId) {
-        InputAmountDialog dialog = getInstance(listener, id, amount);
-        dialog.mCurrencyId = currencyId;
-        dialog.mListener = listener;
-        return dialog;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,8 +100,12 @@ public class InputAmountDialog
         }
 
         int id = getArguments().getInt("id");
-        Double amount = MathUtils.Round(getArguments().getDouble("amount"), 2);
         mIdView = id;
+
+        Double amount = this.RoundToCurrencyDecimals
+                ? MathUtils.Round(getArguments().getDouble("amount"), 2)
+                : getArguments().getDouble("amount");
+
         if (amount != 0) {
             int iAmount = (int) (amount * 100);
             if (Math.abs(amount - (iAmount / 100)) == 0) {
@@ -186,7 +192,10 @@ public class InputAmountDialog
                 }
                 // check if is double
                 if (NumberUtils.isNumber(mAmount) && mListener != null) {
-                    double result = MathUtils.Round(Double.parseDouble(mAmount), 2);
+                    // to round or not?
+                    double result = InputAmountDialog.this.RoundToCurrencyDecimals
+                            ? MathUtils.Round(Double.parseDouble(mAmount), 2)
+                            : Double.parseDouble(mAmount);
                     mListener.onFinishedInputAmountDialog(mIdView, result);
 
                     dialog.dismiss();

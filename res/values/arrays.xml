@@ -97,7 +97,7 @@
 
     <!-- context menu for watchlist entries -->
     <string-array name="context_menu_watchlist">
-        <item>@string/update_price</item>
+        <item>@string/download_price</item>
         <item>@string/edit_price</item>
     </string-array>
 
@@ -113,7 +113,7 @@
         <item>@string/edit</item>
     </string-array>
 
-    <!-- Define method of syncronization of dropbox -->
+    <!-- Define method of synchronization of dropbox -->
     <string-array name="dropbox_sync_item">
         <item>@string/synchronize</item>
         <item>@string/download</item>

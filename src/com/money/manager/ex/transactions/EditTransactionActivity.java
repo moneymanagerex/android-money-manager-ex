@@ -209,8 +209,6 @@ public class EditTransactionActivity
                 txtSelectDate.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                         .parse(mDate));
             } catch (ParseException e) {
-                Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
-            } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(this, this);
                 handler.handle(e, "parsing the date");
             }
@@ -232,7 +230,6 @@ public class EditTransactionActivity
 
             public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
                 @Override
-//                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
                     try {
                         Date date = new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale)
@@ -240,7 +237,8 @@ public class EditTransactionActivity
                         txtSelectDate.setTag(date);
                         formatExtendedDate(txtSelectDate);
                     } catch (Exception e) {
-                        Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
+                        ExceptionHandler handler = new ExceptionHandler(EditTransactionActivity.this, this);
+                        handler.handle(e, "setting the date");
                     }
                 }
             };
@@ -1074,7 +1072,8 @@ public class EditTransactionActivity
             dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", getResources().getConfiguration().locale)
                     .format((Date) dateTextView.getTag()));
         } catch (Exception e) {
-            Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(this, this);
+            handler.handle(e, "formatting date");
         }
     }
 

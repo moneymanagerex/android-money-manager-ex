@@ -41,14 +41,4 @@
         android:drawableStart="@drawable/ic_action_calculator_light"
         android:textStyle="bold"/>
 
-    <EditText
-        android:id="@+id/priceEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/subcategory"
-        android:inputType="none" >
-
-        <requestFocus />
-    </EditText>
-
 </LinearLayout>
