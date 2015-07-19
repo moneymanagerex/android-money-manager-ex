@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDiskIOException;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
@@ -316,13 +317,13 @@ public class MoneyManagerProvider
         try {
             context = getContext();
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
-        } catch (IllegalStateException ise) {
+        } catch (IllegalStateException | SQLiteDiskIOException ex) {
             // This happens when the database is changed by all the asynchronous loaders still
             // have references to the already-closed database helper.
             // Just log for now. The reload is done automatically so should be no harm.
 
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(ise, "content provider.query " + uri);
+            handler.handle(ex, "content provider.query " + uri);
         }
         return null;
     }
