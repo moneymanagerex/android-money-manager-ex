@@ -190,6 +190,7 @@ public class EditPriceDialog
             }
         });
 
+        alertDialog.setTitle(symbol);
 
         alertDialog.create().show();
     }

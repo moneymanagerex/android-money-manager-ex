@@ -74,8 +74,6 @@ public class StockHistoryRepository
 
         boolean recordExists = recordExists(symbol, date);
 
-//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
-//                .getWritableDatabase();
         ContentValues values = getContentValues(symbol, price, date);
 
         // check whether to insert or update.
@@ -94,13 +92,11 @@ public class StockHistoryRepository
             success = updateHistory(symbol, price, date);
         }
 
-//        db.close();
-
         return success;
     }
 
     public boolean recordExists(String symbol, Date date) {
-        boolean result = false;
+        boolean result;
 
         String isoDate = DateUtils.getSQLiteStringDate(mContext, date);
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
@@ -128,25 +124,18 @@ public class StockHistoryRepository
      * @return
      */
     public boolean updateHistory(String symbol, BigDecimal price, Date date) {
-        boolean result = false;
-
-//        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext).getWritableDatabase();
+        boolean result;
 
         ContentValues values = getContentValues(symbol, price, date);
         String where = StockHistory.SYMBOL + "=?";
         where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
         String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
 
-//        int records = db.update(getSource(),
-//                values,
-//                where, whereArgs);
         int records = mContext.getContentResolver().update(getUri(),
                 values,
                 where, whereArgs);
 
         result = records > 0;
-
-//        db.close();
 
         return result;
     }
@@ -185,7 +174,6 @@ public class StockHistoryRepository
 
         ContentValues result = new ContentValues();
 
-//        int rowCount = cursor.getCount();
         boolean recordFound = cursor.moveToFirst();
         if (!recordFound) return null;
 
@@ -214,8 +202,8 @@ public class StockHistoryRepository
         try {
             date = format.parse(dateString);
         } catch (ParseException pex) {
-            Log.e(LOGCAT, "Error parsing the date from stock history.");
-//            date = new Date();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(pex, "parsing the date from stock history");
         }
         return date;
     }
