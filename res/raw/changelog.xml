@@ -25,7 +25,7 @@
         <changelogtext>Correction: hardware Menu button now does not open double menu.</changelogtext>
         <changelogtext>Minor stability improvements.</changelogtext>
     </changelogversion>
-    <changelogversion changeDate="July 15, 2015" versionName="2.11.5">
+    <changelogversion changeDate="July 15, 2015" versionName="2.11.6">
         <changelogtext>Calculating totals for investment accounts on Home screen.</changelogtext>
         <changelogtext>Fixed expanded category selection.</changelogtext>
         <changelogtext>Fixed empty Categories list when moving back through screens.</changelogtext>
