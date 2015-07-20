@@ -37,6 +37,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -49,6 +50,7 @@ import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.ActivityUtils;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -71,6 +73,15 @@ public class CurrencyListFragment
 
     private String mCurFilter;
     private CurrencyUtils mCurrencyUtils;
+    private boolean mShowOnlyUsedCurrencies;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Filter currencies only if in the standalone Currencies list. Do not filter in pickers.
+        mShowOnlyUsedCurrencies = !mAction.equals(Intent.ACTION_PICK);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -83,6 +94,7 @@ public class CurrencyListFragment
         setMenuItemSearchIconified(!focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.currencies_empty));
+
         setHasOptionsMenu(true);
 
         // create and link the adapter
@@ -93,7 +105,8 @@ public class CurrencyListFragment
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         setListShown(false);
-        getLoaderManager().initLoader(ID_LOADER_CURRENCY, null, this);
+
+        loadData();
 
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
@@ -176,15 +189,42 @@ public class CurrencyListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case ID_LOADER_CURRENCY:
-                String whereClause = null;
-                String selectionArgs[] = null;
-                if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause = TableCurrencyFormats.CURRENCYNAME + " LIKE ?";
-                    selectionArgs = new String[]{ mCurFilter + "%"};
+                String whereClause = "";
+                ArrayList<String> arguments = new ArrayList<>();
+
+                // filter only used accounts?
+                if (mShowOnlyUsedCurrencies) {
+                    // get the list of used currencies.
+                    CurrencyUtils currencyUtils = getCurrencyUtils();
+                    List<TableCurrencyFormats> usedCurrencies = currencyUtils.getUsedCurrencies();
+                    ArrayList<String> symbols = new ArrayList<>();
+                    for(TableCurrencyFormats currency : usedCurrencies) {
+                        symbols.add(currency.getCurrencySymbol());
+                    }
+
+                    MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils();
+                    whereClause = TableCurrencyFormats.CURRENCY_SYMBOL + " IN (" +
+                            databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
+                    arguments.addAll(symbols);
                 }
+
+                if (!TextUtils.isEmpty(mCurFilter)) {
+                    if (!TextUtils.isEmpty(whereClause)) {
+                        whereClause += " AND ";
+                    }
+
+                    whereClause += TableCurrencyFormats.CURRENCYNAME + " LIKE ?";
+                    arguments.add(mCurFilter + "%");
+//                    selectionArgs = new String[]{ mCurFilter + "%"};
+                }
+
+                String selectionArgs[] = new String[arguments.size()];
+                selectionArgs = arguments.toArray(selectionArgs);
+
                 return new MmexCursorLoader(getActivity(), mCurrency.getUri(),
                         mCurrency.getAllColumns(),
-                        whereClause, selectionArgs,
+                        whereClause,
+                        selectionArgs,
                         "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
         }
 
@@ -228,6 +268,14 @@ public class CurrencyListFragment
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem showOnlyUsed = menu.findItem(R.id.menu_show_used);
+        if (showOnlyUsed != null) {
+            showOnlyUsed.setChecked(mShowOnlyUsedCurrencies);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_import_all_currencies:
@@ -236,6 +284,21 @@ public class CurrencyListFragment
 
             case R.id.menu_update_exchange_rate:
                 showDialogUpdateExchangeRateCurrencies();
+                break;
+
+            case R.id.menu_show_used:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    // list all accounts
+                    mShowOnlyUsedCurrencies = false;
+                    reloadData();
+                } else {
+                    item.setChecked(true);
+                    // list only used accounts
+                    mShowOnlyUsedCurrencies = true;
+                    reloadData();
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -439,7 +502,26 @@ public class CurrencyListFragment
     }
 
     public void updateExchangeRates() {
-        updateAllExchangeRatesFromYahoo();
+        // Update only the visible currencies.
+        List<TableCurrencyFormats> currencies = getVisibleCurrencies();
+        // updateAllExchangeRatesFromYahoo();
+        updateExchangeRatesFromYahoo(currencies);
+    }
+
+    private List<TableCurrencyFormats> getVisibleCurrencies() {
+        CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
+        Cursor cursor = adapter.getCursor();
+
+        cursor.moveToPosition(Constants.NOT_SET);
+        List<TableCurrencyFormats> currencies = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            TableCurrencyFormats currency = new TableCurrencyFormats();
+            currency.setValueFromCursor(cursor);
+            currencies.add(currency);
+        }
+
+        return currencies;
     }
 
     private CurrencyUtils getCurrencyUtils() {
@@ -456,12 +538,12 @@ public class CurrencyListFragment
         updateCurrencyFromYahoo(currencyId);
     }
 
-    private void updateAllExchangeRatesFromYahoo(){
-        CurrencyUtils utils = getCurrencyUtils();
-        List<TableCurrencyFormats> currencies = utils.getAllCurrencyFormats();
-
-        updateExchangeRatesFromYahoo(currencies);
-    }
+//    private void updateAllExchangeRatesFromYahoo(){
+//        CurrencyUtils utils = getCurrencyUtils();
+//        List<TableCurrencyFormats> currencies = utils.getAllCurrencyFormats();
+//
+//        updateExchangeRatesFromYahoo(currencies);
+//    }
 
     private void updateExchangeRatesFromYahoo(List<TableCurrencyFormats> currencies){
         if (currencies.size() <= 0) return;
@@ -496,4 +578,11 @@ public class CurrencyListFragment
         return true;
     }
 
+    private void loadData() {
+        getLoaderManager().initLoader(ID_LOADER_CURRENCY, null, this);
+    }
+
+    private void reloadData() {
+        getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, this);
+    }
 }

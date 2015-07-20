@@ -39,4 +39,11 @@ public class LookAndFeelSettings
         return set(key, value);
     }
 
+    public boolean getViewOpenAccounts() {
+        return get(R.string.pref_account_open_visible, true);
+    }
+
+    public boolean getViewFavouriteAccounts() {
+        return get(R.string.pref_account_fav_visible, true);
+    }
 }

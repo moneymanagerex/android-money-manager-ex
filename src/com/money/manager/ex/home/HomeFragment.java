@@ -68,6 +68,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
 
 import java.math.BigDecimal;
@@ -293,7 +294,8 @@ public class HomeFragment
 
                 String selection = "";
                 if (accountList != null && accountList.length > 0) {
-                    selection = TableStock.HELDAT + " IN (" + makePlaceholders(investmentAccounts.size()) + ")";
+                    MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils();
+                    selection = TableStock.HELDAT + " IN (" + databaseUtils.makePlaceholders(investmentAccounts.size()) + ")";
                 }
 
                 TableStock stocks = new TableStock();
@@ -849,20 +851,6 @@ public class HomeFragment
         mGrandReconciled = mGrandReconciled.add(BigDecimal.valueOf(total));
         // refresh the footer
         addFooterExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
-    }
-
-    private String makePlaceholders(int len) {
-        if (len < 1) {
-            // It will lead to an invalid query anyway ..
-            throw new RuntimeException("No placeholders");
-        } else {
-            StringBuilder sb = new StringBuilder(len * 2 - 1);
-            sb.append("?");
-            for (int i = 1; i < len; i++) {
-                sb.append(",?");
-            }
-            return sb.toString();
-        }
     }
 
     private void showAccountTotals(Cursor cursor) {

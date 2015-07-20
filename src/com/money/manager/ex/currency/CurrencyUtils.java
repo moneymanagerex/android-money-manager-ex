@@ -27,9 +27,12 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.settings.AppSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,6 +76,33 @@ public class CurrencyUtils {
         return mCurrencies;
     }
 
+    public List<TableCurrencyFormats> getUsedCurrencies() {
+        AppSettings settings = new AppSettings(mContext);
+        AccountRepository repo = new AccountRepository(mContext);
+
+        boolean favourite = settings.getLookAndFeelSettings().getViewFavouriteAccounts();
+        boolean open = settings.getLookAndFeelSettings().getViewOpenAccounts();
+        List<TableAccountList> accounts = repo.getAccountList(open, favourite);
+
+//        List<String> symbols = new ArrayList<>();
+        List<TableCurrencyFormats> currencies = new ArrayList<>();
+        for(TableAccountList account : accounts) {
+//            int currencyId = account.getCurrencyId();
+//            TableCurrencyFormats currency = this.getCurrency(currencyId);
+//            String symbol = currency.getCurrencySymbol();
+
+//            if (!symbols.contains(symbol)) {
+//                symbols.add(symbol);
+//            }
+            TableCurrencyFormats currency = getCurrency(account.getCurrencyId());
+            if (!currencies.contains(currency)) {
+                currencies.add(currency);
+            }
+        }
+
+        return currencies;
+    }
+
     public Double doCurrencyExchange(Integer toCurrencyId, double amount, Integer fromCurrencyId) {
         TableCurrencyFormats fromCurrencyFormats = getCurrency(fromCurrencyId);
         TableCurrencyFormats toCurrencyFormats = getCurrency(toCurrencyId);
@@ -94,12 +124,6 @@ public class CurrencyUtils {
     public List<TableCurrencyFormats> getAllCurrencyFormats() {
         // try loading the currencies first.
         this.loadAllCurrencies();
-
-//        if (mCurrencies != null) {
-//            return new ArrayList<>(mCurrencies.values());
-//        } else {
-//            return Collections.emptyList();
-//        }
 
         return new ArrayList<>(getCurrenciesStore().values());
     }
