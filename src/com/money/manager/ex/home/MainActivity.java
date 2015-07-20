@@ -90,6 +90,7 @@ import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -286,8 +287,11 @@ public class MainActivity
         if (mDrawer != null) {
             mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
             mDrawer.setDrawerListener(mDrawerToggle);
+
             // create drawer menu
             createDrawerMenu();
+            // todo: createDrawerMenuWithGroups();
+
             // enable ActionBar app icon to behave as action to toggle nav drawer
             setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -710,7 +714,7 @@ public class MainActivity
     /**
      * drawer management
      */
-    public void createDrawerMenu() {
+    private void createDrawerMenu() {
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
         mDrawerList = (ListView) findViewById(R.id.listViewDrawer);
         // repeating transaction
@@ -772,11 +776,22 @@ public class MainActivity
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
 
         // get drawer list and set adapter
-        if (mDrawerList != null)
+        if (mDrawerList != null) {
             mDrawerList.setAdapter(adapter);
+        }
+
         // set listener on item click
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
+
+    // todo: expandable drawer
+//    private void createDrawerMenuWithGroups() {
+//        ArrayList<String> groupItems = new ArrayList();
+//        ArrayList<Object> childItems = new ArrayList();
+//        DrawerMenuGroupAdapter adapter = new DrawerMenuGroupAdapter(this, groupItems, childItems);
+//
+//        mDrawerList.setAdapter(adapter);
+//    }
 
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
