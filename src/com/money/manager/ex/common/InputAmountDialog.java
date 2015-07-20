@@ -146,7 +146,7 @@ public class InputAmountDialog
             }
         });
 
-        // Equals button =
+        // Equals button '='
         Button buttonKeyEquals = (Button) view.findViewById(R.id.buttonKeyEqual);
         buttonKeyEquals.setOnClickListener(new OnClickListener() {
             @Override
@@ -244,6 +244,9 @@ public class InputAmountDialog
 
     public boolean evalExpression() {
         String exp = txtMain.getText().toString();
+        // replace any blanks
+        exp = exp.replace(" ", "");
+
         if (exp.length() > 0) {
             try {
                 Expression e = new ExpressionBuilder(exp).build();
@@ -296,7 +299,8 @@ public class InputAmountDialog
             }
         } else {
             // return just the number, without the currency symbol.
-            result = currencyUtils.getBaseCurrency().getValueFormatted(fAmount, withCurrency);
+            result = currencyUtils.getBaseCurrency().getValueFormatted(fAmount, false);
+//            result = mAmount;
         }
 
         return result;

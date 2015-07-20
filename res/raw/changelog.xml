@@ -20,6 +20,7 @@
     <changelogversion changeDate="" versionName="2.13.0">
         <changelogtext>Ability to set the stock price manually.</changelogtext>
         <changelogtext>Recalculating the stock value on price update (for desktop version).</changelogtext>
+        <changelogtext>Corrected formatting when evaluating expression on number input.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="July 17, 2015" versionName="2.12.1">
         <changelogtext>Added a behaviour preference setting for searching/browsing in selectors (category, payee, currency).</changelogtext>
