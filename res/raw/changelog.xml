@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="" versionName="2.13.0">
+    <changelogversion changeDate="July 20, 2015" versionName="2.13.0">
         <changelogtext>Ability to set the stock price manually.</changelogtext>
         <changelogtext>Recalculating the stock value on price update (for desktop version).</changelogtext>
         <changelogtext>Corrected formatting when evaluating expression on number input.</changelogtext>
