@@ -75,19 +75,19 @@ public class WatchlistFragment extends Fragment
     private ImageView imgAccountFav, imgGotoAccount;
 
     private Context mContext;
-    private String LOGCAT = this.getClass().getSimpleName();
+//    private String LOGCAT = this.getClass().getSimpleName();
     // price update counter. Used to know when all the prices are done.
     private int mUpdateCounter;
     private int mToUpdateTotal;
 
     /**
-     * @param accountid ID Account to be display
+     * @param accountId ID Account to be display
      * @return instance of Wathchlist fragment with transactions for the given account.
      */
-    public static WatchlistFragment newInstance(int accountid) {
+    public static WatchlistFragment newInstance(int accountId) {
         WatchlistFragment fragment = new WatchlistFragment();
-        fragment.mAccountId = accountid;
-        fragment.setNameFragment(WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountid));
+        fragment.mAccountId = accountId;
+        fragment.setNameFragment(WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
 
         return fragment;
     }

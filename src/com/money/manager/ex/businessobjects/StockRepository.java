@@ -20,11 +20,17 @@ package com.money.manager.ex.businessobjects;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.support.v4.database.DatabaseUtilsCompat;
 import android.util.Log;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.database.TableStock;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.math.BigDecimal;
 
@@ -56,15 +62,49 @@ public class StockRepository
     public static final String STOCKNAME = "STOCKNAME";
     public static final String SYMBOL = "SYMBOL";
     public static final String CURRENTPRICE = "CURRENTPRICE";
+    public static final String NUMSHARES = "NUMSHARES";
+    public static final String VALUE = "VALUE";
 
     private Context mContext;
     private String LOGCAT = this.getClass().getSimpleName();
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {
-                "STOCKID AS _id", STOCKID, HELDAT, PURCHASEDATE, STOCKNAME, SYMBOL, CURRENTPRICE
+        String [] idColumn = new String[] {
+                "STOCKID AS _id"
         };
+
+        return ArrayUtils.addAll(idColumn, tableColumns());
+    }
+
+    public String[] tableColumns() {
+        return new String[] {
+                STOCKID, HELDAT, PURCHASEDATE, STOCKNAME, SYMBOL, CURRENTPRICE,
+                NUMSHARES, VALUE
+        };
+    }
+
+    public ContentValues load(int id) {
+        if (id == Constants.NOT_SET) return null;
+
+        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
+                null,
+                STOCKID + "=?",
+                new String[] { Integer.toString(id)},
+                null);
+        if (cursor == null) return null;
+        if (!cursor.moveToNext()) return null;
+
+        ContentValues stockValues = new ContentValues();
+
+        String[] columns = tableColumns();
+        for(String column : columns) {
+            DatabaseUtils.cursorDoubleToContentValuesIfPresent(cursor, stockValues, column);
+        }
+
+        cursor.close();
+
+        return stockValues;
     }
 
     public boolean loadFor(int accountId) {
@@ -116,20 +156,14 @@ public class StockRepository
         return result;
     }
 
-    /**
-     * Update price for the security id.
-     */
-    public boolean updatePrice(int id, BigDecimal price) {
+    public boolean update(int id, ContentValues values) {
         boolean result = false;
-
-        ContentValues values = new ContentValues();
-        values.put(CURRENTPRICE, price.doubleValue());
 
         int updateResult = mContext.getContentResolver().update(this.getUri(),
                 values,
                 STOCKID + "=?",
-                new String[]{ Integer.toString(id) }
-                );
+                new String[]{Integer.toString(id)}
+        );
 
         if (updateResult != 0) {
             result = true;
@@ -140,6 +174,7 @@ public class StockRepository
         return  result;
     }
 
+
     /**
      * Update price for all the records with this symbol.
      * @param symbol
@@ -148,12 +183,22 @@ public class StockRepository
     public void updateCurrentPrice(String symbol, BigDecimal price) {
         int[] ids = findIdsBySymbol(symbol);
 
+        // recalculate value
+
         for (int id : ids) {
-            updatePrice(id, price);
+            //updatePrice(id, price);
+
+            ContentValues oldValues = load(id);
+            double numberOfSharesD = oldValues.getAsDouble(NUMSHARES);
+            BigDecimal numberOfShares = new BigDecimal(numberOfSharesD);
+            BigDecimal value = numberOfShares.multiply(price);
+
+            ContentValues newValues = new ContentValues();
+            newValues.put(CURRENTPRICE, price.doubleValue());
+            newValues.put(VALUE, value.doubleValue());
+
+            update(id, newValues);
         }
     }
 
-//    public BigDecimal loadLatestPriceForSymbol(String symbol) {
-//
-//    }
 }
