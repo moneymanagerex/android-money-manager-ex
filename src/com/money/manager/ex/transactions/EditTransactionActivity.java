@@ -351,7 +351,9 @@ public class EditTransactionActivity
 
                 Cursor cursor = helper.getReadableDatabase().rawQuery(query,
                         new String[]{Integer.toString(mCommonFunctions.mAccountId)});
-                if (cursor != null && cursor.moveToFirst()) {
+                if (cursor == null) return;
+
+                if (cursor.moveToFirst()) {
                     String transNumber = cursor.getString(0);
                     if (TextUtils.isEmpty(transNumber)) {
                         transNumber = "0";
@@ -363,8 +365,8 @@ public class EditTransactionActivity
                             Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
                         }
                     }
-                    cursor.close();
                 }
+                cursor.close();
             }
         });
 
