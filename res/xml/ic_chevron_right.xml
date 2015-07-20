@@ -18,6 +18,6 @@
   -->
 <font-icon
     xmlns:android="http://schemas.android.com/apk/res-auto"
-    android:text="@string/ic_settings"
+    android:text="@string/ic_chevron_right"
     android:textSize="@dimen/fonticon_drawer"
     android:textColor="?android:textColorSecondary" />

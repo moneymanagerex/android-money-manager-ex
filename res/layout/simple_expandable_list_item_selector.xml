@@ -73,7 +73,7 @@
             android:id="@+id/selectorText"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:text="n"
+            android:text="o"
             android:textColor="@color/md_accent"
             android:textSize="30sp"
             android:layout_centerInParent="true" />
