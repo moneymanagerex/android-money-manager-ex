@@ -157,48 +157,6 @@ public class RecurringTransactionActivity
     ArrayList<TableBudgetSplitTransactions> mSplitTransactionsDeleted = null;
     private EditTransactionCommonFunctions mCommonFunctions;
 
-    /**
-     * setCategoryFromPayee set last category used from payee
-     *
-     * @param payeeId Identify of payee
-     * @return true if category set
-     */
-    private boolean getCategoryFromPayee(int payeeId) {
-        boolean ret = false;
-        // take data of payee
-        TablePayee payee = new TablePayee();
-        Cursor curPayee = getContentResolver().query(payee.getUri(), payee.getAllColumns(),
-                "PAYEEID=" + Integer.toString(payeeId), null, null);
-        // check cursor is valid
-        if ((curPayee != null) && (curPayee.moveToFirst())) {
-            // chek if category is valid
-            if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != Constants.NOT_SET) {
-                mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
-                mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
-                // create instance of query
-                QueryCategorySubCategory category = new QueryCategorySubCategory(getApplicationContext());
-                // compose selection
-                String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
-                Cursor curCategory = getContentResolver().query(category.getUri(),
-                        category.getAllColumns(), where, null, null);
-                // check cursor is valid
-                if ((curCategory != null) && (curCategory.moveToFirst())) {
-                    // take names of category and subcategory
-                    mCommonFunctions.mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-                    mCommonFunctions.mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
-                    // return true
-                    ret = true;
-
-                    curCategory.close();
-                }
-            }
-
-            curPayee.close();
-        }
-
-        return ret;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -496,9 +454,7 @@ public class RecurringTransactionActivity
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime((Date) txtNextOccurrence.getTag());
-//                DatePickerDialog dialog = new DatePickerDialog(RecurringTransactionActivity.this,
-//                        mDateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
-//                dialog.show();
+
                 DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
                         calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
                 dialog.setCloseOnSingleTapDay(true);
@@ -737,7 +693,7 @@ public class RecurringTransactionActivity
      * @param subCategoryId Id of the sub-category
      * @return indicator whether the operation was successful.
      */
-    private boolean selectCategSubName(int categoryId, int subCategoryId) {
+    private boolean selectSubcategoryName(int categoryId, int subCategoryId) {
         TableCategory category = new TableCategory();
         TableSubCategory subCategory = new TableSubCategory();
         Cursor cursor;
@@ -778,13 +734,12 @@ public class RecurringTransactionActivity
                 TablePayee.PAYEEID + "=?",
                 new String[]{Integer.toString(payeeId)}, null);
         // check if cursor is valid and open
-        if ((cursor == null) || (!cursor.moveToFirst())) {
-            return false;
+        if (cursor == null) return false;
+
+        if (cursor.moveToFirst()) {
+            // set payee name
+            mPayeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
         }
-
-        // set payee name
-        mPayeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
-
         cursor.close();
 
         return true;
@@ -834,7 +789,7 @@ public class RecurringTransactionActivity
 
         selectAccountName(mCommonFunctions.mToAccountId);
         selectPayeeName(mPayeeId);
-        selectCategSubName(mCategoryId, mSubCategoryId);
+        selectSubcategoryName(mCategoryId, mSubCategoryId);
 
         return true;
     }
@@ -851,23 +806,6 @@ public class RecurringTransactionActivity
     public boolean hasSplitCategories() {
         return mSplitTransactions != null && !mSplitTransactions.isEmpty();
     }
-
-//    public void refreshCategoryName() {
-//        if (mCommonFunctions.txtSelectCategory == null) return;
-//
-//        mCommonFunctions.txtSelectCategory.setText("");
-//
-//        if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
-//            if (!TextUtils.isEmpty(mCommonFunctions.mCategoryName)) {
-//                mCommonFunctions.txtSelectCategory.setText(mCommonFunctions.mCategoryName);
-//                if (!TextUtils.isEmpty(mCommonFunctions.mSubCategoryName)) {
-//                    mCommonFunctions.txtSelectCategory.setText(Html.fromHtml(mCommonFunctions.txtSelectCategory.getText() + " : <i>" + mCommonFunctions.mSubCategoryName + "</i>"));
-//                }
-//            }
-//        } else {
-//            mCommonFunctions.txtSelectCategory.setText("\u2026");
-//        }
-//    }
 
     /**
      * update UI interface with PayeeName
@@ -893,6 +831,8 @@ public class RecurringTransactionActivity
         txtSelectPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls
         mCommonFunctions.chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+
+        mCommonFunctions.txtSelectCategory.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         mCommonFunctions.refreshHeaderAmount();
     }
@@ -1090,17 +1030,6 @@ public class RecurringTransactionActivity
         }
     }
 
-//    private void splitSet() {
-//        // update category field
-//        mCommonFunctions.refreshCategoryName();
-//
-//        boolean isSplit = mCommonFunctions.chbSplitTransaction.isChecked();
-//
-//        // enable/disable Amount field.
-//        mCommonFunctions.txtAmount.setEnabled(!isSplit);
-//        mCommonFunctions.txtTotAmount.setEnabled(!isSplit);
-//    }
-
     private void initTransactionTypeSelector() {
         // trans-code
         mCommonFunctions.spinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
@@ -1168,8 +1097,6 @@ public class RecurringTransactionActivity
         // un-check split.
         mCommonFunctions.setSplit(false);
 
-        // Hide Category picker.
-        mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
         // Clear category.
         mCategoryId = Constants.NOT_SET;
 
@@ -1187,5 +1114,48 @@ public class RecurringTransactionActivity
         // mTransType
         return mCommonFunctions.mTransactionType.name();
     }
+
+    /**
+     * setCategoryFromPayee set last category used from payee
+     *
+     * @param payeeId Identify of payee
+     * @return true if category set
+     */
+    private boolean getCategoryFromPayee(int payeeId) {
+        boolean ret = false;
+        // take data of payee
+        TablePayee payee = new TablePayee();
+        Cursor curPayee = getContentResolver().query(payee.getUri(), payee.getAllColumns(),
+                "PAYEEID=" + Integer.toString(payeeId), null, null);
+        // check cursor is valid
+        if ((curPayee != null) && (curPayee.moveToFirst())) {
+            // chek if category is valid
+            if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != Constants.NOT_SET) {
+                mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
+                mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
+                // create instance of query
+                QueryCategorySubCategory category = new QueryCategorySubCategory(getApplicationContext());
+                // compose selection
+                String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
+                Cursor curCategory = getContentResolver().query(category.getUri(),
+                        category.getAllColumns(), where, null, null);
+                // check cursor is valid
+                if ((curCategory != null) && (curCategory.moveToFirst())) {
+                    // take names of category and subcategory
+                    mCommonFunctions.mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
+                    mCommonFunctions.mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
+                    // return true
+                    ret = true;
+
+                    curCategory.close();
+                }
+            }
+
+            curPayee.close();
+        }
+
+        return ret;
+    }
+
 }
 

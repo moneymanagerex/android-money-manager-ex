@@ -91,14 +91,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:prompt="@string/transaction_type"/>
+                    android:prompt="@string/transaction_type"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
 
                 <Spinner
                     android:id="@+id/spinnerStatus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:prompt="@string/status"/>
+                    android:prompt="@string/status"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
             </LinearLayout>
 
             <LinearLayout
@@ -139,7 +141,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"/>
+                    android:focusableInTouchMode="true"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
 
                 <Spinner
                     android:id="@+id/spinnerToAccount"
@@ -148,7 +151,8 @@
                     android:layout_weight="1"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
             </LinearLayout>
 
             <LinearLayout
@@ -188,7 +192,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:entries="@array/frequencies_items"/>
+                    android:entries="@array/frequencies_items"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
 
                 <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextTimesRepeated"
