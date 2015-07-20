@@ -662,6 +662,7 @@ public class EditTransactionActivity
         } else {
             mCommonFunctions.mTransactionType = TransactionTypes.values()[mCommonFunctions.spinTransCode.getSelectedItemPosition()];
         }
+
         mCommonFunctions.spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -711,7 +712,8 @@ public class EditTransactionActivity
         mCommonFunctions.setSplit(false);
 
         // Hide Category picker.
-        mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
+//        mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
+
         // Clear category.
         mCategoryId = -1;
 
@@ -1110,6 +1112,8 @@ public class EditTransactionActivity
         mCommonFunctions.spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls
         mCommonFunctions.chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+
+        mCommonFunctions.txtSelectCategory.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         mCommonFunctions.refreshHeaderAmount();
     }
