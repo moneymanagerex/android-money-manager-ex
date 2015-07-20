@@ -17,6 +17,11 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="" versionName="">
+        <changelogtext>Default filter for Currencies screen shows only used currencies. Switch via menu item.</changelogtext>
+        <changelogtext>Styling entry controls in transaction editing views.</changelogtext>
+        <changelogtext>Changed icon for Category selection to chevron.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="July 20, 2015" versionName="2.13.0">
         <changelogtext>Ability to set the stock price manually.</changelogtext>
         <changelogtext>Recalculating the stock value on price update (for desktop version).</changelogtext>
