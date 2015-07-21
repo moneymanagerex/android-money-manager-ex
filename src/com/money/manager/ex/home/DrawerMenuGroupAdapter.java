@@ -94,12 +94,17 @@ public class DrawerMenuGroupAdapter
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return ((ArrayList<String>) mChildItems.get(groupPosition)).size();
+        ArrayList<String> children = (ArrayList<String>) mChildItems.get(groupPosition);
+        if (children == null) {
+            return 0;
+        } else {
+            return children.size();
+        }
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return null;
+        return mGroupItems.get(groupPosition);
     }
 
     @Override
@@ -115,6 +120,9 @@ public class DrawerMenuGroupAdapter
     @Override
     public void onGroupExpanded(int groupPosition) {
         super.onGroupExpanded(groupPosition);
+
+        // If the group has no children, fire the click event?
+
     }
 
     @Override

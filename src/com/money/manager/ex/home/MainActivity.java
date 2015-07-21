@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -290,7 +291,8 @@ public class MainActivity
 
             // create drawer menu
             createDrawerMenu();
-            // todo: createExpandableDrawer();
+//            createLinearDrawer();
+            createExpandableDrawer();
 
             // enable ActionBar app icon to behave as action to toggle nav drawer
             setDisplayHomeAsUpEnabled(true);
@@ -716,97 +718,161 @@ public class MainActivity
      */
     private void createDrawerMenu() {
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
-        mDrawerList = (ListView) findViewById(R.id.listViewDrawer);
+
         // repeating transaction
         mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
         mDrawerLinearRepeating.setVisibility(View.GONE);
         mDrawerTextViewRepeating = (TextView) findViewById(R.id.textViewOverdue);
         mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
-
-        DrawerMenuItemAdapter adapter = createDrawerAdapter();
-
-        // get drawer list and set adapter
-        if (mDrawerList != null) {
-            mDrawerList.setAdapter(adapter);
-        }
-
-        // set listener on item click
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(this, mDrawerLayout, mDrawerList, mDrawer));
     }
+
+//    private void createLinearDrawer() {
+//        mDrawerList = (ListView) findViewById(R.id.listViewDrawer);
+//
+//        DrawerMenuItemAdapter adapter = createDrawerAdapter();
+//
+//        // get drawer list and set adapter
+//        if (mDrawerList != null) {
+//            mDrawerList.setAdapter(adapter);
+//        }
+//
+//        // set listener on item click
+//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(this, mDrawerLayout, mDrawerList, mDrawer));
+//    }
 
     private DrawerMenuItemAdapter createDrawerAdapter() {
         // create adapter
         DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
-        // Home
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_home)
-                .withText(getString(R.string.home))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
-        // Open database
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_open_database)
-                .withText(getString(R.string.open_database))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
-        // Dropbox synchronize
-        if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
-                    .withText(getString(R.string.synchronize))
-                    .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
-        }
-        // Tools
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_group_main)
-                .withText(getString(R.string.tools))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
-        // Recurring Transactions
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
-                .withText(getString(R.string.repeating_transactions))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
-        // Budgets
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
-                .withText(getString(R.string.budgets))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
-        // Search transaction
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
-                .withText(getString(R.string.search))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
-        // reports
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_reports)
-                .withText(getString(R.string.menu_reports))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_reports))
-                .withDivider(true));
-        // Settings
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_settings)
-                .withText(getString(R.string.settings))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_settings)));
-        // Donate
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_donate)
-                .withText(getString(R.string.donate))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_gift))
-                .withDivider(Boolean.TRUE));
-        // Help
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_about)
-                .withText(getString(R.string.about))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
+
+        adapter.addAll(getDrawerMenuItems());
 
         return adapter;
     }
 
-//    private void createExpandableDrawer() {
-//        ArrayList<DrawerMenuItem> groupItems = new ArrayList<>();
-//        groupItems.add(new DrawerMenuItem().withId(R.id.menu_home)
-//                .withText(getString(R.string.home))
-//                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
-//        ArrayList<Object> childItems = new ArrayList<>();
-//        ArrayList<String> child1 = new ArrayList<>();
-//        child1.add("child1");
-//        childItems.add(child1);
-//        DrawerMenuGroupAdapter adapter = new DrawerMenuGroupAdapter(this, groupItems, childItems);
-//
-////        LinearLayout drawer = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
-//        ExpandableListView drawerList = (ExpandableListView) findViewById(R.id.drawerExpandableList);
-////        drawerList.setVisibility(View.GONE);
-//
-//        drawerList.setAdapter(adapter);
-//    }
+    private void createExpandableDrawer() {
+        // Menu.
+
+        final ArrayList<DrawerMenuItem> groupItems = getDrawerMenuItems();
+        final ArrayList<Object> childItems = new ArrayList<>();
+        // Home
+        childItems.add(null);
+        // open database
+        childItems.add(null);
+        // Dropbox
+        if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
+            childItems.add(null);
+        }
+        // Tools
+        ArrayList<String> childTools = new ArrayList<>();
+        childTools.add("Accounts");
+        childTools.add("child 2");
+        childItems.add(childTools);
+        // Recurring Transactions
+        childItems.add(null);
+        // Budgets
+        childItems.add(null);
+        // Search transaction
+        childItems.add(null);
+        // reports
+        childItems.add(null);
+        // Settings
+        childItems.add(null);
+        // Donate
+        childItems.add(null);
+        // Help
+        childItems.add(null);
+
+        // Adapter.
+        final ExpandableListView drawerList = (ExpandableListView) findViewById(R.id.drawerExpandableList);
+        DrawerMenuGroupAdapter adapter = new DrawerMenuGroupAdapter(this, groupItems, childItems);
+        drawerList.setAdapter(adapter);
+
+        // set listener on item click
+        drawerList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                if (mDrawer == null) return true;
+                // if the group has child items, do not handle.
+                ArrayList<String> children = (ArrayList<String>) childItems.get(groupPosition);
+                if (children != null) return false;
+
+                // Highlight the selected item, update the title, and close the drawer
+                drawerList.setItemChecked(groupPosition, true);
+
+                // You should reset item counter
+                mDrawer.closeDrawer(mDrawerLayout);
+                // check item selected
+                final DrawerMenuItem item = (DrawerMenuItem) drawerList.getExpandableListAdapter()
+                        .getGroup(groupPosition);
+                if (item != null) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // execute operation
+                            onDrawerMenuAndOptionMenuSelected(item);
+                        }
+                    }, 250);
+                }
+                return true;
+            }
+        });
+    }
+
+    private ArrayList<DrawerMenuItem> getDrawerMenuItems() {
+        ArrayList<DrawerMenuItem> menuItems = new ArrayList<>();
+
+        // Home
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_home)
+                .withText(getString(R.string.home))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
+        // Open database
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_open_database)
+                .withText(getString(R.string.open_database))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
+        // Dropbox synchronize
+        if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
+            menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
+                    .withText(getString(R.string.synchronize))
+                    .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
+        }
+        // Tools
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_group_main)
+                .withText(getString(R.string.tools))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
+        // Recurring Transactions
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
+                .withText(getString(R.string.repeating_transactions))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
+        // Budgets
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_budgets)
+                .withText(getString(R.string.budgets))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
+        // Search transaction
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
+                .withText(getString(R.string.search))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
+        // reports
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_reports)
+                .withText(getString(R.string.menu_reports))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_reports))
+                .withDivider(true));
+        // Settings
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
+                .withText(getString(R.string.settings))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_settings)));
+        // Donate
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
+                .withText(getString(R.string.donate))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_gift))
+                .withDivider(Boolean.TRUE));
+        // Help
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
+                .withText(getString(R.string.about))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
+
+        return menuItems;
+    }
 
     /**
      * Handle the callback from the drawer click handler.
