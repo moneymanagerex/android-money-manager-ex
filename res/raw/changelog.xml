@@ -18,6 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="" versionName="">
+        <changelogtext>Updated the link to our web page with the new sub-domain - android.moneymanagerex.org</changelogtext>
         <changelogtext>Default filter for Currencies screen shows only used currencies. Switch via menu item.</changelogtext>
         <changelogtext>Styling entry controls in transaction editing views.</changelogtext>
         <changelogtext>Changed icon for Category selection to chevron.</changelogtext>
