@@ -110,6 +110,15 @@ public class AboutFragment extends Fragment {
         clickListenerIssuesTracker.setUrl("https://github.com/moneymanagerex/android-money-manager-ex/issues/");
         txtIssues.setOnClickListener(clickListenerIssuesTracker);
 
+        // MMEX for Android web page
+        TextView txtWebsite = (TextView) view.findViewById(R.id.textViewWebSite);
+        text = "<u>" + txtWebsite.getText() + "</u>";
+        txtWebsite.setText(Html.fromHtml(text));
+        txtWebsite.setMovementMethod(LinkMovementMethod.getInstance());
+        OnClickListenerUrl clickListenerWebsite = new OnClickListenerUrl();
+        clickListenerWebsite.setUrl("http://android.moneymanagerex.org/");
+        txtWebsite.setOnClickListener(clickListenerWebsite);
+
         // report set link
         TextView txtReport = (TextView) view.findViewById(R.id.textViewLinkWebSite);
         text = "<u>" + txtReport.getText() + "</u>";
@@ -118,15 +127,6 @@ public class AboutFragment extends Fragment {
         OnClickListenerUrl clickListenerFeedback = new OnClickListenerUrl();
         clickListenerFeedback.setUrl("http://www.moneymanagerex.org/?utm_campaign=Application_Android&utm_medium=MMEX_" + version + "&utm_source=Website");
         txtReport.setOnClickListener(clickListenerFeedback);
-
-        // MMEX for Android web page
-        TextView txtWebsite = (TextView) view.findViewById(R.id.textViewWebSite);
-        text = "<u>" + txtWebsite.getText() + "</u>";
-        txtWebsite.setText(Html.fromHtml(text));
-        txtWebsite.setMovementMethod(LinkMovementMethod.getInstance());
-        OnClickListenerUrl clickListenerWebsite = new OnClickListenerUrl();
-        clickListenerWebsite.setUrl("http://moneymanagerex.github.io/android-money-manager-ex/");
-        txtWebsite.setOnClickListener(clickListenerWebsite);
 
         // image view google plus
         OnClickListenerUrl clickListenerGooglePlus = new OnClickListenerUrl();
