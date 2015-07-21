@@ -124,16 +124,14 @@ public class CategoryListFragment
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
 
         // define layout
-        if (Intent.ACTION_PICK.equals(mAction)) {
+        // Show category selector (arrow) when used as a picker.
+        // show simple list when opened independently.
+        mLayout = mAction.equals(Intent.ACTION_PICK)
+                ? R.layout.simple_expandable_list_item_selector
+                : android.R.layout.simple_expandable_list_item_2;
 //            mLayout = R.layout.simple_expandable_list_item_multiple_choice_2;
-            // Show category selector when used as a picker.
-            mLayout = R.layout.simple_expandable_list_item_selector;
-        } else {
-            // show simple list when opened independently.
-            mLayout = android.R.layout.simple_expandable_list_item_2;
             // todo: use custom chevron as an indicator, like in drawer menu.
 //            mLayout = R.layout.simple_expandable_custom_list_item;
-        }
 
         // manage context menu
         registerForContextMenu(getExpandableListView());
