@@ -37,6 +37,7 @@ public class SearchActivity
     public boolean ShowAccountHeaders = true;
 
 	private boolean mIsDualPanel = false;
+    private SearchFragment mSearchFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +48,17 @@ public class SearchActivity
                 .findFragmentByTag(SearchFragment.class.getSimpleName());
         if (searchFragment == null) {
             // fragment create
-            searchFragment = new SearchFragment();
-            // set dual panel
-            LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
-            mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
-            searchFragment.setDualPanel(mIsDualPanel);
-            // add to stack
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
-                    .commit();
+            searchFragment = getSearchFragment();
+            if (!searchFragment.isAdded()) {
+                // set dual panel
+                LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
+                mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
+                searchFragment.setDualPanel(mIsDualPanel);
+                // add to stack
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
+                        .commit();
+            }
         }
         // reconfigure the toolbar event
         setToolbarStandardAction(getToolbar(), R.id.action_cancel, R.id.action_search);
@@ -65,7 +68,7 @@ public class SearchActivity
 	protected void onResume() {
 		super.onResume();
 		AllDataFragment fragment;
-		fragment = (AllDataFragment)getSupportFragmentManager()
+		fragment = (AllDataFragment) getSupportFragmentManager()
                 .findFragmentByTag(AllDataFragment.class.getSimpleName());
 		if (fragment != null && fragment.isVisible()) {
 			fragment.loadData();
@@ -102,5 +105,12 @@ public class SearchActivity
             }
         }
         return super.onActionDoneClick();
+    }
+
+    private SearchFragment getSearchFragment() {
+        if (mSearchFragment == null) {
+            mSearchFragment = new SearchFragment();
+        }
+        return mSearchFragment;
     }
 }
