@@ -742,14 +742,14 @@ public class MainActivity
 //        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(this, mDrawerLayout, mDrawerList, mDrawer));
 //    }
 
-    private DrawerMenuItemAdapter createDrawerAdapter() {
-        // create adapter
-        DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
-
-        adapter.addAll(getDrawerMenuItems());
-
-        return adapter;
-    }
+//    private DrawerMenuItemAdapter createDrawerAdapter() {
+//        // create adapter
+//        DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+//
+//        adapter.addAll(getDrawerMenuItems());
+//
+//        return adapter;
+//    }
 
     private void createExpandableDrawer() {
         // Menu.
@@ -936,9 +936,9 @@ public class MainActivity
             case R.id.menu_open_database:
                 pickFile(Environment.getExternalStorageDirectory());
                 break;
-            case R.id.menu_group_main:
-                showToolsSelector(isDarkTheme, item.getText());
-                break;
+//            case R.id.menu_group_main:
+//                showToolsSelector(isDarkTheme, item.getText());
+//                break;
             case R.id.menu_account:
                 showFragment(AccountListFragment.class);
                 break;
@@ -1033,31 +1033,31 @@ public class MainActivity
         onDrawerItemSubDialogs(adapter, text, isDarkTheme);
     }
 
-    private void showToolsSelector(boolean isDarkTheme, String text) {
-        final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
-        // manage: account
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_account)
-                .withText(getString(R.string.accounts))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_bank_dark
-                        : R.drawable.ic_action_bank_light));
-        // manage: categories
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_category)
-                .withText(getString(R.string.categories))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_label_outline_dark
-                        : R.drawable.ic_action_label_outline_light));
-        // manage: currencies
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_currency)
-                .withText(getString(R.string.currencies))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_attach_money_dark
-                        : R.drawable.ic_action_attach_money_light));
-        // manage: payees
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_payee)
-                .withText(getString(R.string.payees))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_users_dark
-                        : R.drawable.ic_action_users_light));
-
-        onDrawerItemSubDialogs(adapter, text, isDarkTheme);
-    }
+//    private void showToolsSelector(boolean isDarkTheme, String text) {
+//        final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+//        // manage: account
+//        adapter.add(new DrawerMenuItem().withId(R.id.menu_account)
+//                .withText(getString(R.string.accounts))
+//                .withIcon(isDarkTheme ? R.drawable.ic_action_bank_dark
+//                        : R.drawable.ic_action_bank_light));
+//        // manage: categories
+//        adapter.add(new DrawerMenuItem().withId(R.id.menu_category)
+//                .withText(getString(R.string.categories))
+//                .withIcon(isDarkTheme ? R.drawable.ic_action_label_outline_dark
+//                        : R.drawable.ic_action_label_outline_light));
+//        // manage: currencies
+//        adapter.add(new DrawerMenuItem().withId(R.id.menu_currency)
+//                .withText(getString(R.string.currencies))
+//                .withIcon(isDarkTheme ? R.drawable.ic_action_attach_money_dark
+//                        : R.drawable.ic_action_attach_money_light));
+//        // manage: payees
+//        adapter.add(new DrawerMenuItem().withId(R.id.menu_payee)
+//                .withText(getString(R.string.payees))
+//                .withIcon(isDarkTheme ? R.drawable.ic_action_users_dark
+//                        : R.drawable.ic_action_users_light));
+//
+//        onDrawerItemSubDialogs(adapter, text, isDarkTheme);
+//    }
 
     public void onDrawerItemSubDialogs(final DrawerMenuItemAdapter adapter, CharSequence title, Boolean isDarkTheme) {
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
