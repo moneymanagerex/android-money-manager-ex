@@ -70,9 +70,11 @@ public class AccountListFragment
         // set default value
         setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
         setHasOptionsMenu(true);
+
         mLayout = Intent.ACTION_PICK.equals(mAction)
                 ? android.R.layout.simple_list_item_multiple_choice
                 : android.R.layout.simple_list_item_1;
+
         // create adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 mLayout, null,
@@ -80,6 +82,7 @@ public class AccountListFragment
                 new int[]{android.R.id.text1}, 0);
         // set adapter
         setListAdapter(adapter);
+
         // set listview
         registerForContextMenu(getListView());
 

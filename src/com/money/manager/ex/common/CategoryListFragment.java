@@ -113,19 +113,26 @@ public class CategoryListFragment
         }
 
         setShowMenuItemSearch(true);
+
+        setHasOptionsMenu(true);
+
         // Focus on search menu if set in preferences.
         AppSettings settings = new AppSettings(getActivity());
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
         setMenuItemSearchIconified(!focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
-        setHasOptionsMenu(true);
+
         // define layout
         if (Intent.ACTION_PICK.equals(mAction)) {
 //            mLayout = R.layout.simple_expandable_list_item_multiple_choice_2;
+            // Show category selector when used as a picker.
             mLayout = R.layout.simple_expandable_list_item_selector;
         } else {
+            // show simple list when opened independently.
             mLayout = android.R.layout.simple_expandable_list_item_2;
+            // todo: use custom chevron as an indicator, like in drawer menu.
+//            mLayout = R.layout.simple_expandable_custom_list_item;
         }
 
         // manage context menu
