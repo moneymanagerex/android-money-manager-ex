@@ -807,7 +807,7 @@ public class MainActivity
         drawerList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (mDrawer == null) return true;
+                if (mDrawer == null) return false;
                 // if the group has child items, do not handle.
                 ArrayList<String> children = (ArrayList<String>) childItems.get(groupPosition);
                 if (children != null) return false;
@@ -836,8 +836,24 @@ public class MainActivity
         drawerList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                if (mDrawer == null) return false;
+
+                mDrawer.closeDrawer(mDrawerLayout);
+
                 ArrayList<Object> children = (ArrayList) childItems.get(groupPosition);
-                return false;
+                final DrawerMenuItem selectedItem = (DrawerMenuItem) children.get(childPosition);
+                if (selectedItem != null) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // execute operation
+                            onDrawerMenuAndOptionMenuSelected(selectedItem);
+                        }
+                    }, 250);
+                    return true;
+                } else {
+                    return false;
+                }
             }
         });
     }
@@ -899,8 +915,8 @@ public class MainActivity
 
     /**
      * Handle the callback from the drawer click handler.
-     * @param item
-     * @return
+     * @param item selected DrawerMenuItem
+     * @return boolean indicating whether the action was handled or not.
      */
     @Override
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {

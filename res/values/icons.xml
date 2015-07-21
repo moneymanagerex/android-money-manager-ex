@@ -22,4 +22,7 @@
     <string name="ic_wallet">t</string>
     <string name="ic_star">u</string>
     <string name="ic_people">v</string>
+    <string name="ic_chevron_down">w</string>
+    <string name="ic_chevron_left">x</string>
+    <string name="ic_chevron_up">y</string>
 </resources>

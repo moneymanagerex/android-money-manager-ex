@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoTextView;
+import com.shamanland.fonticon.FontIconDrawable;
 import com.shamanland.fonticon.FontIconView;
 
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ public class DrawerMenuGroupAdapter
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
+        // mChildItems.get(groupPosition)
         return null;
     }
 
@@ -202,13 +204,22 @@ public class DrawerMenuGroupAdapter
             }
         }
 
-        // Show/hide caret
-        FontIconView caretView = (FontIconView) convertView.findViewById(R.id.caretView);
-        if (!isExpanded && getChildrenCount(groupPosition) > 0) {
-            // the group is not expanded and has children.
-            caretView.setVisibility(View.VISIBLE);
+        // Show/hide chevron
+        FontIconView chevronView = (FontIconView) convertView.findViewById(R.id.caretView);
+        if (getChildrenCount(groupPosition) > 0) {
+            if (isExpanded) {
+                // the group is not expanded and has children.
+                // holder.imageViewIcon.setBackground(item.getIconDrawable());
+                chevronView.setText(mContext.getString(R.string.ic_chevron_down));
+//                chevronView.setBackground(FontIconDrawable.inflate(mContext, R.xml.ic_chevron_down));
+            } else {
+//                chevronView.setBackground(FontIconDrawable.inflate(mContext, R.xml.ic_chevron_right));
+                chevronView.setText(mContext.getString(R.string.ic_chevron_right));
+            }
+
+            chevronView.setVisibility(View.VISIBLE);
         } else {
-            caretView.setVisibility(View.GONE);
+            chevronView.setVisibility(View.GONE);
         }
 
 //        convertView.setTag(mGroupItems.get(groupPosition));
@@ -224,7 +235,9 @@ public class DrawerMenuGroupAdapter
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        // If this is false, the children are not selectable / clickable! They don't fire the
+        // click event.
+        return true;
     }
 
 }
