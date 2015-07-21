@@ -52,24 +52,24 @@ public class CheckDropboxForUpdatesTask
         }
     }
 
-    private void showNotificationSnackbar() {
-        // The context has to implement the callbacks interface!
-        final MainActivity mainActivity = (MainActivity) mContext;
-
-        Snackbar.with(mContext.getApplicationContext()) // context
-            .text(mContext.getString(R.string.dropbox_database_can_be_updted))
-            .actionLabel(mContext.getString(R.string.sync))
-            .actionColor(mContext.getResources().getColor(R.color.md_primary))
-            .actionListener(new ActionClickListener() {
-                @Override
-                public void onActionClicked(Snackbar snackbar) {
-                    DropboxManager dropbox = new DropboxManager(mContext, mDropboxHelper, mainActivity);
-                    dropbox.synchronizeDropbox();
-                }
-            })
-            .duration(5 * 1000)
-            .show(mainActivity);
-    }
+//    private void showNotificationSnackbar() {
+//        // The context has to implement the callbacks interface!
+//        final MainActivity mainActivity = (MainActivity) mContext;
+//
+//        Snackbar.with(mContext.getApplicationContext()) // context
+//            .text(mContext.getString(R.string.dropbox_database_can_be_updted))
+//            .actionLabel(mContext.getString(R.string.sync))
+//            .actionColor(mContext.getResources().getColor(R.color.md_primary))
+//            .actionListener(new ActionClickListener() {
+//                @Override
+//                public void onActionClicked(Snackbar snackbar) {
+//                    DropboxManager dropbox = new DropboxManager(mContext, mDropboxHelper, mainActivity);
+//                    dropbox.synchronizeDropbox();
+//                }
+//            })
+//            .duration(5 * 1000)
+//            .show(mainActivity);
+//    }
 
     private void showNotificationDialog() {
         // The context has to implement the callbacks interface!
