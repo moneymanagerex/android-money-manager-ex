@@ -827,7 +827,7 @@ public class MainActivity
                             // execute operation
                             onDrawerMenuAndOptionMenuSelected(item);
                         }
-                    }, 250);
+                    }, 200);
                 }
                 return true;
             }
@@ -849,7 +849,7 @@ public class MainActivity
                             // execute operation
                             onDrawerMenuAndOptionMenuSelected(selectedItem);
                         }
-                    }, 250);
+                    }, 200);
                     return true;
                 } else {
                     return false;
