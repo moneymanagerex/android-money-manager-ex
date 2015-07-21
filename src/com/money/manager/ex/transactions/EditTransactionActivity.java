@@ -22,6 +22,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDiskIOException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -936,13 +937,23 @@ public class EditTransactionActivity
         return true;
     }
 
+    public boolean loadCheckingAccount(int transId, boolean duplicate) {
+        try {
+            return loadCheckingAccountInternal(transId, duplicate);
+        } catch (SQLiteDiskIOException ex) {
+            ExceptionHandler handler = new ExceptionHandler(this, this);
+            handler.handle(ex, "loading checking account");
+        }
+        return false;
+    }
+
     /**
      * getApplicationContext() method allows you to search the transaction data
      *
      * @param transId transaction id
      * @return true if data selected, false nothing
      */
-    public boolean loadCheckingAccount(int transId, boolean duplicate) {
+    private boolean loadCheckingAccountInternal(int transId, boolean duplicate) {
         Cursor cursor = getContentResolver().query(mCheckingAccount.getUri(),
                 mCheckingAccount.getAllColumns(),
                 TableCheckingAccount.TRANSID + "=?",
