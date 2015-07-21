@@ -17,14 +17,15 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/linearLayoutDrawer"
-              android:layout_width="320dp"
-              android:layout_height="match_parent"
-              android:layout_gravity="start"
-              android:background="?attr/theme_drawer_background_color"
-              android:orientation="vertical"
-              tools:ignore="UselessParent">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayoutDrawer"
+    android:layout_width="320dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="?attr/theme_drawer_background_color"
+    android:orientation="vertical"
+    tools:ignore="UselessParent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,6 +77,14 @@
         android:dividerHeight="0dp"
         android:groupIndicator="@android:color/transparent" />
     <!-- android:background="#111" -->
+
+    <!--<android.support.design.widget.NavigationView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="start"-->
+        <!--app:menu="@menu/menu_drawer"/>-->
+    <!-- app:headerLayout="@layout/drawer_header" -->
+
 
     <!--<ListView-->
         <!--android:id="@+id/listViewDrawer"-->
