@@ -65,6 +65,18 @@
             android:textColor="@color/material_green_50"/>
     </LinearLayout>
 
+    <!-- expandable drawer list -->
+    <!--<ExpandableListView-->
+        <!--android:id="@+id/drawerExpandableList"-->
+        <!--android:layout_width="240dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="start"-->
+        <!--android:choiceMode="singleChoice"-->
+        <!--android:divider="@android:color/transparent"-->
+        <!--android:dividerHeight="0dp"-->
+        <!--android:groupIndicator="@android:color/transparent" />-->
+    <!-- android:background="#111" -->
+
     <ListView
         android:id="@+id/listViewDrawer"
         android:layout_width="320dp"

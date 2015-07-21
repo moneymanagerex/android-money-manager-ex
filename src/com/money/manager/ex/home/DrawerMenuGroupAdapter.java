@@ -23,7 +23,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.money.manager.ex.R;
+import com.shamanland.fonticon.FontIconView;
 
 import java.util.ArrayList;
 
@@ -36,20 +40,21 @@ import java.util.ArrayList;
 public class DrawerMenuGroupAdapter
         extends BaseExpandableListAdapter {
 
-    public ArrayList<String> groupItem, tempChild;
-    public ArrayList<Object> Childtem = new ArrayList<Object>();
-    public LayoutInflater minflater;
+    public ArrayList<DrawerMenuItem> mGroupItems;
+    public ArrayList<String> tempChild;
+    public ArrayList<Object> mChildItems = new ArrayList<Object>();
+    public LayoutInflater mInflater;
     public Activity activity;
-    private final Context context;
+    private final Context mContext;
 
-    public DrawerMenuGroupAdapter(Context context, ArrayList<String> grList, ArrayList<Object> childItem) {
-        this.context = context;
-        groupItem = grList;
-        this.Childtem = childItem;
+    public DrawerMenuGroupAdapter(Context context, ArrayList<DrawerMenuItem> grList, ArrayList<Object> childItem) {
+        this.mContext = context;
+        this.mGroupItems = grList;
+        this.mChildItems = childItem;
     }
 
     public void setInflater(LayoutInflater mInflater, Activity act) {
-        this.minflater = mInflater;
+        this.mInflater = mInflater;
         activity = act;
     }
 
@@ -66,14 +71,14 @@ public class DrawerMenuGroupAdapter
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        tempChild = (ArrayList<String>) Childtem.get(groupPosition);
+        tempChild = (ArrayList<String>) mChildItems.get(groupPosition);
 
         TextView text;
         if (convertView == null) {
-            convertView = new TextView(context);
+            convertView = new TextView(mContext);
         }
         text = (TextView) convertView;
-        text.setText(">"+tempChild.get(childPosition));
+        text.setText(">" + tempChild.get(childPosition));
 
 //		convertView.setOnClickListener(new OnClickListener() {
 //			@Override
@@ -87,11 +92,9 @@ public class DrawerMenuGroupAdapter
         return convertView;
     }
 
-
-
     @Override
     public int getChildrenCount(int groupPosition) {
-        return ((ArrayList<String>) Childtem.get(groupPosition)).size();
+        return ((ArrayList<String>) mChildItems.get(groupPosition)).size();
     }
 
     @Override
@@ -101,7 +104,7 @@ public class DrawerMenuGroupAdapter
 
     @Override
     public int getGroupCount() {
-        return groupItem.size();
+        return mGroupItems.size();
     }
 
     @Override
@@ -120,14 +123,55 @@ public class DrawerMenuGroupAdapter
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+//        if (convertView == null) {
+//            convertView = new TextView(mContext);
+//        }
+
+//        DrawerMenuItem item = getItem(position);
+        DrawerMenuItem item = mGroupItems.get(groupPosition);
+        DrawerViewHolder holder = null;
+        View view = convertView;
         if (convertView == null) {
-            convertView = new TextView(context);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_drawer_group, null);
+            TextView textViewItem = (TextView)view.findViewById(R.id.textViewItem);
+            ImageView imageViewIcon = (ImageView)view.findViewById(R.id.imageViewIcon);
+            View viewDivider = view.findViewById(R.id.viewDivider);
+            view.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
         }
-        ((TextView) convertView).setText(groupItem.get(groupPosition));
-        convertView.setTag(groupItem.get(groupPosition));
-        return convertView;
+
+//        TextView view = (TextView) convertView;
+//        view.setText(mGroupItems.get(groupPosition).getText());
+
+        if (view != null && holder == null) {
+            if (view.getTag() instanceof DrawerViewHolder) {
+                holder = (DrawerViewHolder)view.getTag();
+            }
+        }
+
+        if (item != null && holder != null) {
+            holder.textViewItem.setText(item.getText());
+            holder.viewDivider.setVisibility(item.hasDivider() ? View.VISIBLE : View.GONE);
+            if (item.getIcon() != null) {
+                holder.imageViewIcon.setBackgroundResource(item.getIcon());
+            }
+            if (item.getIconDrawable() != null) {
+                holder.imageViewIcon.setBackground(item.getIconDrawable());
+            }
+        }
+
+        // Show caret
+        if (isExpanded) {
+            // todo: show indicator that the group is expanded.
+            // id: caretView
+            FontIconView caretView = (FontIconView) view.findViewById(R.id.caretView);
+            caretView.setText("n");
+        }
+
+//        convertView.setTag(mGroupItems.get(groupPosition));
+//        return convertView;
+
+        return view;
     }
 
     @Override

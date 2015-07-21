@@ -30,7 +30,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -45,6 +44,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -98,7 +98,7 @@ import java.util.ArrayList;
 @SuppressLint("DefaultLocale")
 public class MainActivity
         extends BaseFragmentActivity
-        implements IDropboxManagerCallbacks {
+        implements IDropboxManagerCallbacks, IDrawerItemClickListenerCallbacks {
 
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
@@ -290,7 +290,7 @@ public class MainActivity
 
             // create drawer menu
             createDrawerMenu();
-            // todo: createDrawerMenuWithGroups();
+            // todo: createExpandableDrawer();
 
             // enable ActionBar app icon to behave as action to toggle nav drawer
             setDisplayHomeAsUpEnabled(true);
@@ -724,16 +724,28 @@ public class MainActivity
         mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
 
+        DrawerMenuItemAdapter adapter = createDrawerAdapter();
+
+        // get drawer list and set adapter
+        if (mDrawerList != null) {
+            mDrawerList.setAdapter(adapter);
+        }
+
+        // set listener on item click
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(this, mDrawerLayout, mDrawerList, mDrawer));
+    }
+
+    private DrawerMenuItemAdapter createDrawerAdapter() {
         // create adapter
         DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
         // Home
         adapter.add(new DrawerMenuItem().withId(R.id.menu_home)
-            .withText(getString(R.string.home))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
+                .withText(getString(R.string.home))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
         // Open database
         adapter.add(new DrawerMenuItem().withId(R.id.menu_open_database)
-            .withText(getString(R.string.open_database))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
+                .withText(getString(R.string.open_database))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
         // Dropbox synchronize
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
             adapter.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
@@ -742,20 +754,20 @@ public class MainActivity
         }
         // Tools
         adapter.add(new DrawerMenuItem().withId(R.id.menu_group_main)
-            .withText(getString(R.string.tools))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
+                .withText(getString(R.string.tools))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
         // Recurring Transactions
         adapter.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
-            .withText(getString(R.string.repeating_transactions))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
+                .withText(getString(R.string.repeating_transactions))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
         // Budgets
         adapter.add(new DrawerMenuItem().withId(R.id.menu_budgets)
-            .withText(getString(R.string.budgets))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
+                .withText(getString(R.string.budgets))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
         // Search transaction
         adapter.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
-            .withText(getString(R.string.search))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
+                .withText(getString(R.string.search))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
         // reports
         adapter.add(new DrawerMenuItem().withId(R.id.menu_reports)
                 .withText(getString(R.string.menu_reports))
@@ -763,36 +775,44 @@ public class MainActivity
                 .withDivider(true));
         // Settings
         adapter.add(new DrawerMenuItem().withId(R.id.menu_settings)
-            .withText(getString(R.string.settings))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_settings)));
+                .withText(getString(R.string.settings))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_settings)));
         // Donate
         adapter.add(new DrawerMenuItem().withId(R.id.menu_donate)
-            .withText(getString(R.string.donate))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_gift))
-            .withDivider(Boolean.TRUE));
+                .withText(getString(R.string.donate))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_gift))
+                .withDivider(Boolean.TRUE));
         // Help
         adapter.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
 
-        // get drawer list and set adapter
-        if (mDrawerList != null) {
-            mDrawerList.setAdapter(adapter);
-        }
-
-        // set listener on item click
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        return adapter;
     }
 
-    // todo: expandable drawer
-//    private void createDrawerMenuWithGroups() {
-//        ArrayList<String> groupItems = new ArrayList();
-//        ArrayList<Object> childItems = new ArrayList();
+//    private void createExpandableDrawer() {
+//        ArrayList<DrawerMenuItem> groupItems = new ArrayList<>();
+//        groupItems.add(new DrawerMenuItem().withId(R.id.menu_home)
+//                .withText(getString(R.string.home))
+//                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
+//        ArrayList<Object> childItems = new ArrayList<>();
+//        ArrayList<String> child1 = new ArrayList<>();
+//        child1.add("child1");
+//        childItems.add(child1);
 //        DrawerMenuGroupAdapter adapter = new DrawerMenuGroupAdapter(this, groupItems, childItems);
 //
-//        mDrawerList.setAdapter(adapter);
+////        LinearLayout drawer = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
+//        ExpandableListView drawerList = (ExpandableListView) findViewById(R.id.drawerExpandableList);
+////        drawerList.setVisibility(View.GONE);
+//
+//        drawerList.setAdapter(adapter);
 //    }
 
+    /**
+     * Handle the callback from the drawer click handler.
+     * @param item
+     * @return
+     */
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
         Intent intent;
@@ -964,30 +984,6 @@ public class MainActivity
 
         // reload fragment
 //        reloadAllFragment();
-    }
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (mDrawer == null) return;
-            // Highlight the selected item, update the title, and close the drawer
-            mDrawerList.setItemChecked(position, true);
-
-            // You should reset item counter
-            mDrawer.closeDrawer(mDrawerLayout);
-            // check item selected
-            final DrawerMenuItem item = ((DrawerMenuItemAdapter) mDrawerList.getAdapter()).getItem(position);
-            if (item != null) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // execute operation
-                        onDrawerMenuAndOptionMenuSelected(item);
-                    }
-                }, 250);
-            }
-        }
     }
 
     public class MyActionBarDrawerToggle extends ActionBarDrawerToggle {

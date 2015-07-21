@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.home.DrawerMenuItem;
 
 public class DrawerMenuItemAdapter
 		extends ArrayAdapter<DrawerMenuItem> {
@@ -35,22 +34,10 @@ public class DrawerMenuItemAdapter
 		super(context, 0);
 	}
 	
-	public static class ViewHolder {
-		public TextView textViewItem;
-		public ImageView imageViewIcon;
-        public View viewDivider;
-
-        public ViewHolder(TextView textViewItem, ImageView imageViewIcon, View viewDivider) {
-            this.textViewItem = textViewItem;
-			this.imageViewIcon = imageViewIcon;
-            this.viewDivider = viewDivider;
-        }
-	}
-	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		DrawerMenuItem item = getItem(position);
-		ViewHolder holder = null;
+		DrawerViewHolder holder = null;
 		View view = convertView;
 		
 		if (view == null) {
@@ -58,12 +45,12 @@ public class DrawerMenuItemAdapter
 			TextView textViewItem = (TextView)view.findViewById(R.id.textViewItem);
 			ImageView imageViewIcon = (ImageView)view.findViewById(R.id.imageViewIcon);
             View viewDivider = view.findViewById(R.id.viewDivider);
-            view.setTag(new ViewHolder(textViewItem, imageViewIcon, viewDivider));
+            view.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
         }
 		
 		if (view != null && holder == null) {
-			if (view.getTag() instanceof ViewHolder) {
-				holder = (ViewHolder)view.getTag();
+			if (view.getTag() instanceof DrawerViewHolder) {
+				holder = (DrawerViewHolder)view.getTag();
 			}
 		}
 
