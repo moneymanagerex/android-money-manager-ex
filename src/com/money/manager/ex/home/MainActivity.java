@@ -92,6 +92,7 @@ import com.shamanland.fonticon.FontIconDrawable;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -765,12 +766,22 @@ public class MainActivity
         }
         // Tools
         ArrayList<DrawerMenuItem> childTools = new ArrayList<>();
-        childTools.add(new DrawerMenuItem().withId(R.id.menu_home)
-                .withText(getString(R.string.home))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
-        childTools.add(new DrawerMenuItem().withId(R.id.menu_home)
-                .withText(getString(R.string.home))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
+        // manage: account
+        childTools.add(new DrawerMenuItem().withId(R.id.menu_account)
+                .withText(getString(R.string.accounts))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_temple)));
+        // manage: categories
+        childTools.add(new DrawerMenuItem().withId(R.id.menu_category)
+                .withText(getString(R.string.categories))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_tag_empty)));
+        // manage: currencies
+        childTools.add(new DrawerMenuItem().withId(R.id.menu_currency)
+                .withText(getString(R.string.currencies))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_euro)));
+        // manage: payees
+        childTools.add(new DrawerMenuItem().withId(R.id.menu_payee)
+                .withText(getString(R.string.payees))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_people)));
         childItems.add(childTools);
         // Recurring Transactions
         childItems.add(null);
@@ -819,6 +830,14 @@ public class MainActivity
                     }, 250);
                 }
                 return true;
+            }
+        });
+
+        drawerList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                ArrayList<Object> children = (ArrayList) childItems.get(groupPosition);
+                return false;
             }
         });
     }
