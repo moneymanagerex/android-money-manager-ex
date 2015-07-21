@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
 import java.util.ArrayList;
@@ -41,16 +42,16 @@ public class DrawerMenuGroupAdapter
         extends BaseExpandableListAdapter {
 
     public ArrayList<DrawerMenuItem> mGroupItems;
-    public ArrayList<String> tempChild;
     public ArrayList<Object> mChildItems = new ArrayList<Object>();
+    public ArrayList<DrawerMenuItem> tempChild;
     public LayoutInflater mInflater;
     public Activity activity;
     private final Context mContext;
 
-    public DrawerMenuGroupAdapter(Context context, ArrayList<DrawerMenuItem> grList, ArrayList<Object> childItem) {
+    public DrawerMenuGroupAdapter(Context context, ArrayList<DrawerMenuItem> grList, ArrayList<Object> childItems) {
         this.mContext = context;
         this.mGroupItems = grList;
-        this.mChildItems = childItem;
+        this.mChildItems = childItems;
     }
 
     public void setInflater(LayoutInflater mInflater, Activity act) {
@@ -71,14 +72,49 @@ public class DrawerMenuGroupAdapter
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        tempChild = (ArrayList<String>) mChildItems.get(groupPosition);
+        tempChild = (ArrayList<DrawerMenuItem>) mChildItems.get(groupPosition);
 
-        TextView text;
+        DrawerMenuItem item = tempChild.get(childPosition);
+        DrawerViewHolder holder = null;
+
+//        TextView text;
         if (convertView == null) {
-            convertView = new TextView(mContext);
+//            convertView = new TextView(mContext);
+//            LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            convertView = inflater.inflate(R.layout.item_drawer_child, null);
+//
+//            ImageView imageViewIcon = (ImageView) convertView.findViewById(R.id.imageViewIcon);
+//            View viewDivider = view.findViewById(R.id.viewDivider);
+//            convertView.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
+
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_drawer_child, null);
+
+            TextView textViewItem = (TextView)convertView.findViewById(R.id.textViewItem);
+            ImageView imageViewIcon = (ImageView)convertView.findViewById(R.id.imageViewIcon);
+            View viewDivider = convertView.findViewById(R.id.viewDivider);
+
+            convertView.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
         }
-        text = (TextView) convertView;
-        text.setText(">" + tempChild.get(childPosition));
+//        text = (TextView) convertView;
+//        text.setText(">" + tempChild.get(childPosition));
+
+        if (convertView.getTag() instanceof DrawerViewHolder) {
+            holder = (DrawerViewHolder)convertView.getTag();
+        }
+
+        if (item != null && holder != null) {
+            holder.textViewItem.setText(item.getText());
+            holder.viewDivider.setVisibility(item.hasDivider() ? View.VISIBLE : View.GONE);
+            if (item.getIcon() != null) {
+                holder.imageViewIcon.setBackgroundResource(item.getIcon());
+            }
+            if (item.getIconDrawable() != null) {
+                holder.imageViewIcon.setBackground(item.getIconDrawable());
+            }
+        }
+
+//        RobotoTextView itemTextView = (RobotoTextView) convertView.findViewById(R.id.textViewItem);
+//        itemTextView.setText(tempChild.get(childPosition));
 
 //		convertView.setOnClickListener(new OnClickListener() {
 //			@Override
@@ -136,23 +172,24 @@ public class DrawerMenuGroupAdapter
 //        DrawerMenuItem item = getItem(position);
         DrawerMenuItem item = mGroupItems.get(groupPosition);
         DrawerViewHolder holder = null;
-        View view = convertView;
         if (convertView == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_drawer_group, null);
-            TextView textViewItem = (TextView)view.findViewById(R.id.textViewItem);
-            ImageView imageViewIcon = (ImageView)view.findViewById(R.id.imageViewIcon);
-            View viewDivider = view.findViewById(R.id.viewDivider);
-            view.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_drawer_group, null);
+
+            TextView textViewItem = (TextView)convertView.findViewById(R.id.textViewItem);
+            ImageView imageViewIcon = (ImageView)convertView.findViewById(R.id.imageViewIcon);
+            View viewDivider = convertView.findViewById(R.id.viewDivider);
+
+            convertView.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
         }
 
 //        TextView view = (TextView) convertView;
 //        view.setText(mGroupItems.get(groupPosition).getText());
 
-        if (view != null && holder == null) {
-            if (view.getTag() instanceof DrawerViewHolder) {
-                holder = (DrawerViewHolder)view.getTag();
+//        if (view != null && holder == null) {
+            if (convertView.getTag() instanceof DrawerViewHolder) {
+                holder = (DrawerViewHolder)convertView.getTag();
             }
-        }
+//        }
 
         if (item != null && holder != null) {
             holder.textViewItem.setText(item.getText());
@@ -166,7 +203,7 @@ public class DrawerMenuGroupAdapter
         }
 
         // Show/hide caret
-        FontIconView caretView = (FontIconView) view.findViewById(R.id.caretView);
+        FontIconView caretView = (FontIconView) convertView.findViewById(R.id.caretView);
         if (!isExpanded && getChildrenCount(groupPosition) > 0) {
             // the group is not expanded and has children.
             caretView.setVisibility(View.VISIBLE);
@@ -177,7 +214,7 @@ public class DrawerMenuGroupAdapter
 //        convertView.setTag(mGroupItems.get(groupPosition));
 //        return convertView;
 
-        return view;
+        return convertView;
     }
 
     @Override

@@ -90,7 +90,8 @@ public class CategoryExpandableListAdapter
 	}
 
 	@Override
-	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+	public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+							 View convertView, ViewGroup parent) {
 		ViewHolderChild holder;
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

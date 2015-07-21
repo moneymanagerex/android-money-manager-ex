@@ -764,9 +764,13 @@ public class MainActivity
             childItems.add(null);
         }
         // Tools
-        ArrayList<String> childTools = new ArrayList<>();
-        childTools.add("Accounts");
-        childTools.add("child 2");
+        ArrayList<DrawerMenuItem> childTools = new ArrayList<>();
+        childTools.add(new DrawerMenuItem().withId(R.id.menu_home)
+                .withText(getString(R.string.home))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
+        childTools.add(new DrawerMenuItem().withId(R.id.menu_home)
+                .withText(getString(R.string.home))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
         childItems.add(childTools);
         // Recurring Transactions
         childItems.add(null);
