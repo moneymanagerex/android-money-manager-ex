@@ -813,6 +813,7 @@ public class MainActivity
      * @param item
      * @return
      */
+    @Override
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
         Intent intent;
@@ -984,30 +985,6 @@ public class MainActivity
 
         // reload fragment
 //        reloadAllFragment();
-    }
-
-    public class MyActionBarDrawerToggle extends ActionBarDrawerToggle {
-
-        public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout,
-                                       int openDrawerContentDescRes, int closeDrawerContentDescRes) {
-            super(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes);
-        }
-
-        public MyActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar,
-                                       int openDrawerContentDescRes, int closeDrawerContentDescRes) {
-            super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
-        }
-
-        @Override
-        public void onDrawerOpened(View drawerView) {
-            super.onDrawerOpened(drawerView);
-        }
-
-        @Override
-        public void onDrawerClosed(View drawerView) {
-            super.onDrawerClosed(drawerView);
-        }
-
     }
 
     @Override
