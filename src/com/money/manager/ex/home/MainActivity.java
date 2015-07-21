@@ -123,7 +123,7 @@ public class MainActivity
     private boolean isRecurringTransactionStarted = false;
     // navigation drawer
     private LinearLayout mDrawerLayout;
-    private ListView mDrawerList;
+//    private ListView mDrawerList;
     private DrawerLayout mDrawer;
     private MyActionBarDrawerToggle mDrawerToggle;
     // object in drawer

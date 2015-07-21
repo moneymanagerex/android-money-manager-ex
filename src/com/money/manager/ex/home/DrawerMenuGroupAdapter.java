@@ -120,9 +120,6 @@ public class DrawerMenuGroupAdapter
     @Override
     public void onGroupExpanded(int groupPosition) {
         super.onGroupExpanded(groupPosition);
-
-        // If the group has no children, fire the click event?
-
     }
 
     @Override
@@ -168,12 +165,13 @@ public class DrawerMenuGroupAdapter
             }
         }
 
-        // Show caret
-        if (isExpanded) {
-            // todo: show indicator that the group is expanded.
-            // id: caretView
-            FontIconView caretView = (FontIconView) view.findViewById(R.id.caretView);
-            caretView.setText("n");
+        // Show/hide caret
+        FontIconView caretView = (FontIconView) view.findViewById(R.id.caretView);
+        if (!isExpanded && getChildrenCount(groupPosition) > 0) {
+            // the group is not expanded and has children.
+            caretView.setVisibility(View.VISIBLE);
+        } else {
+            caretView.setVisibility(View.GONE);
         }
 
 //        convertView.setTag(mGroupItems.get(groupPosition));
