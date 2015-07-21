@@ -89,6 +89,7 @@ public class EditTransactionCommonFunctions {
         // MoneyManagerOpenHelper.getInstance(getApplicationContext())
         this.AccountList = accountRepository.getTransactionAccounts(core.getAccountsOpenVisible(),
                 core.getAccountFavoriteVisible());
+        if (this.AccountList == null) return;
 
         for(TableAccountList account : this.AccountList) {
             mAccountNameList.add(account.getAccountName());
