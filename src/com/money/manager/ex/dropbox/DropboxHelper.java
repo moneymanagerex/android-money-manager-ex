@@ -109,17 +109,18 @@ public class DropboxHelper {
     public static void notifyDataChanged() {
         if (mHelper == null) return;
         if (!mHelper.isLinked()) return;
+
+        // save the last modified date so that we can correctly synchronize later.
+        File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
+        mHelper.setDateLastModified(database.getName(), Calendar.getInstance().getTime());
+
+        // Should we also synchronize immediately?
         if (getAutoUploadDisabled()) return;
         DropboxHelper helper = new DropboxHelper(mContext);
         if (!helper.shouldAutoSynchronize()) {
             Log.i(LOGCAT, "Not on WiFi connection. Not synchronizing.");
             return;
         }
-
-
-        // save the last modified date
-        File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
-        mHelper.setDateLastModified(database.getName(), Calendar.getInstance().getTime());
 
         //check if upload as immediate
         if (mHelper.isActiveAutoUpload() && !mDelayedUploadImmediate) {
@@ -317,14 +318,15 @@ public class DropboxHelper {
     }
 
     /**
-     * Save modified datetime dropbox file
+     * Save the last modified datetime of the dropbox file into Settings.
      *
      * @param file
      * @param date
      */
     public void setDateLastModified(String file, Date date) {
-        if (BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG) {
             Log.d(LOGCAT, "Set Dropbox file: " + file + " last modification date " + new SimpleDateFormat().format(date));
+        }
 
         SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
         if (!prefs.edit().putString(file.toUpperCase(), new SimpleDateFormat(DATE_FORMAT).format(date)).commit()) {
