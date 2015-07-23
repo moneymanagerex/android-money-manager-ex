@@ -23,8 +23,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Message;
 import android.os.Messenger;
@@ -38,7 +36,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.DropboxHelper.OnDownloadUploadEntry;
-import com.money.manager.ex.settings.DropboxSettings;
+import com.money.manager.ex.utils.NetworkUtilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Dropbox synchronization service that is run on schedule.
+ * Dropbox synchronization service. Run on schedule or invoked manually.
  */
 public class DropboxServiceIntent
         extends IntentService {
@@ -89,8 +87,8 @@ public class DropboxServiceIntent
         }
 
         // check if the device is online.
-        Core core = new Core(getApplicationContext());
-        if (!core.isOnline()) {
+        NetworkUtilities network = new NetworkUtilities(getApplicationContext());
+        if (!network.isOnline()) {
             if (BuildConfig.DEBUG) Log.i(LOGCAT, "Can't sync. Device not online.");
             return;
         }

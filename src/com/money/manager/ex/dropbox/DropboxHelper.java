@@ -49,7 +49,9 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.utils.NetworkUtilities;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -107,7 +109,13 @@ public class DropboxHelper {
     public static void notifyDataChanged() {
         if (mHelper == null) return;
         if (!mHelper.isLinked()) return;
-        if (isAutoUploadDisabled()) return;
+        if (getAutoUploadDisabled()) return;
+        DropboxHelper helper = new DropboxHelper(mContext);
+        if (!helper.shouldAutoSynchronize()) {
+            Log.i(LOGCAT, "Not on WiFi connection. Not synchronizing.");
+            return;
+        }
+
 
         // save the last modified date
         File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
@@ -144,7 +152,7 @@ public class DropboxHelper {
         }
     }
 
-    public static boolean isAutoUploadDisabled() {
+    public static boolean getAutoUploadDisabled() {
         return mDisableAutoUpload;
     }
 
@@ -152,7 +160,24 @@ public class DropboxHelper {
         DropboxHelper.mDisableAutoUpload = mDisableAutoUpload;
     }
 
-    // Instance methods.
+    public boolean shouldAutoSynchronize() {
+        // Check WiFi settings.
+        // should we sync only on wifi?
+        AppSettings settings = new AppSettings(mContext);
+        if (BuildConfig.DEBUG) Log.i(LOGCAT, "Preferences set to sync on WiFi only.");
+        if (settings.getDropboxSettings().getShouldSyncOnWifi()) {
+            // check if we are on WiFi connection.
+            NetworkUtilities network = new NetworkUtilities(mContext);
+            if (!network.isOnWiFi()) {
+                Log.i(LOGCAT, "Not on WiFi connection. Not synchronizing.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Private methods.
 
     private DropboxHelper(Context context) {
         super();

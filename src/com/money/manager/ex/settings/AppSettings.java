@@ -65,6 +65,13 @@ public class AppSettings extends SettingsBase {
         return mBehaviour;
     }
 
+    public DropboxSettings getDropboxSettings() {
+        if (mDropbox == null) {
+            mDropbox = new DropboxSettings(mContext);
+        }
+        return mDropbox;
+    }
+
     public Context getContext() {
         return mContext;
     }

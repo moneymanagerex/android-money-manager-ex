@@ -25,14 +25,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.DialogUtils;
+import com.money.manager.ex.utils.NetworkUtilities;
 
 import java.io.File;
 
@@ -108,6 +112,8 @@ public class DropboxManager {
 
         mContext.startActivity(intent);
     }
+
+    // Private area
 
     private void runDropbox(String intentAction) {
         // Validation.

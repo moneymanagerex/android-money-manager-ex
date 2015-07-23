@@ -575,18 +575,6 @@ public class Core {
     }
 
     /**
-     * Check if device has connection
-     *
-     * @return true if is online otherwise false
-     */
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
-    /**
      * Function that determines if the application is running on tablet
      *
      * @return true if running on the tablet, otherwise false
