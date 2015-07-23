@@ -43,8 +43,8 @@
         android:defaultValue="false"
         android:dependency="@string/pref_dropbox_unlink"
         android:key="@string/pref_sync_via_wifi"
-        android:title="@string/pref_behaviour_sync_via_wifi"
-        android:summary="@string/pref_behaviour_sync_via_wifi_summary" />
+        android:title="@string/pref_auto_sync_via_wifi"
+        android:summary="@string/pref_auto_sync_via_wifi_summary" />
 
     <CheckBoxPreference
         android:icon="@null"

@@ -77,7 +77,7 @@
                 android:resource="@xml/widget_account_bills" >
             </meta-data>
         </receiver>
-        <receiver android:name=".dropbox.DropboxReceiver" >
+        <receiver android:name=".dropbox.DropboxScheduler" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX" />

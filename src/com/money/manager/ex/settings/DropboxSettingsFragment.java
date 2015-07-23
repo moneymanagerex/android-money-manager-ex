@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.HelpActivity;
+import com.money.manager.ex.dropbox.DropboxScheduler;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -48,7 +49,6 @@ import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.dropbox.DropboxBrowserActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.dropbox.DropboxReceiver;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.utils.RawFileUtils;
@@ -110,7 +110,7 @@ public class DropboxSettingsFragment
                 mDropboxHelper.logOut();
                 /* SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
                 sharedPreferences.edit().putString(PreferenceConstants.PREF_DROPBOX_TIMES_REPEAT, null).commit(); */
-                mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxReceiver.ACTION_CANCEL);
+                mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxScheduler.ACTION_CANCEL);
                 // refresh ui
                 onResume();
                 return false;
@@ -193,8 +193,8 @@ public class DropboxSettingsFragment
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxReceiver.ACTION_CANCEL);
-                    mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxReceiver.ACTION_START);
+                    mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxScheduler.ACTION_CANCEL);
+                    mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxScheduler.ACTION_START);
                     return true;
                 }
             });
@@ -234,7 +234,7 @@ public class DropboxSettingsFragment
         // complete process authentication
         if (mDropboxLoginBegin) {
             mDropboxHelper.completeAuthenticationDropbox();
-            mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxReceiver.ACTION_START);
+            mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxScheduler.ACTION_START);
             mDropboxLoginBegin = false;
         }
 

@@ -37,15 +37,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Dropbox broadcast receiver
+ * Schedules the periodic synchronization.
+ * Run from the settings, when the synchronization interval changes.
  */
-public class DropboxReceiver
+public class DropboxScheduler
         extends BroadcastReceiver {
 
     // action intents
     public static final String ACTION_START = "com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX";
     public static final String ACTION_CANCEL = "com.money.manager.ex.custom.intent.action.CANCEL_SERVICE_DROPBOX";
-    private static final String LOGCAT = DropboxReceiver.class.getSimpleName();
+    private static final String LOGCAT = DropboxScheduler.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -56,11 +57,12 @@ public class DropboxReceiver
             if (BuildConfig.DEBUG) Log.d(LOGCAT, "Action request: " + action);
         }
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         // compose intent
         Intent i = new Intent(context, DropboxStartServiceReceiver.class);
         PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
-        // check if cancel pending intent
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
         if (ACTION_CANCEL.equals(action)) {
             alarmManager.cancel(pending);
             return;
@@ -79,9 +81,7 @@ public class DropboxReceiver
                 int minute = Integer.parseInt(preferenceMinute);
                 if (minute > 0) {
                     Calendar cal = Calendar.getInstance();
-                    // cal.add(Calendar.MINUTE, minute);
 
-                    // log
                     if (BuildConfig.DEBUG) {
                         Log.d(LOGCAT, "Start at: " + new SimpleDateFormat().format(cal.getTime())
                                 + " and repeats every: " + preferenceMinute + " minutes");

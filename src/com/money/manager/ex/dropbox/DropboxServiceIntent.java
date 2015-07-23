@@ -66,6 +66,7 @@ public class DropboxServiceIntent
     public static final Integer INTENT_EXTRA_MESSENGER_UPLOAD = 0x000B;
     public static final Integer INTENT_EXTRA_MESSENGER_START_DOWNLOAD = 0x000C;
     public static final Integer INTENT_EXTRA_MESSENGER_START_UPLOAD = 0x000D;
+    public static final Integer INTENT_EXTRA_MESSENGER_NOT_ON_WIFI = 0x000E;
     // id notification
     public static final int NOTIFICATION_DROPBOX_PROGRESS = 0xCCCC;
     public static final int NOTIFICATION_DROPBOX_OPEN_FILE = 0xDDDD;
@@ -82,11 +83,16 @@ public class DropboxServiceIntent
     protected void onHandleIntent(Intent intent) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, intent.toString());
 
-        if (!shouldSynchronize()) return;
-
-        // check if exist a messenger
+        // Check if there is a messenger. Used to send the messages back.
         if (intent.getExtras().containsKey(INTENT_EXTRA_MESSENGER)) {
             mOutMessenger = intent.getParcelableExtra(INTENT_EXTRA_MESSENGER);
+        }
+
+        // check if the device is online.
+        Core core = new Core(getApplicationContext());
+        if (!core.isOnline()) {
+            if (BuildConfig.DEBUG) Log.i(LOGCAT, "Can't sync. Device not online.");
+            return;
         }
 
         // take instance dropbox
@@ -312,30 +318,5 @@ public class DropboxServiceIntent
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         return intent;
-    }
-
-    private boolean shouldSynchronize() {
-        // check if the device is online.
-        Core core = new Core(getApplicationContext());
-        if (!core.isOnline()) {
-            if (BuildConfig.DEBUG) Log.i(LOGCAT, "Can't sync. Device not online.");
-            return false;
-        }
-
-        // Check WiFi settings.
-        // should we sync only on wifi?
-        DropboxSettings settings = new DropboxSettings(getApplicationContext());
-        if (BuildConfig.DEBUG) Log.i(LOGCAT, "Preferences set to sync on WiFi only.");
-        if (settings.getShouldSyncOnWifi()) {
-            // check if we are on WiFi connection.
-            ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-            if (!mWifi.isConnected()) {
-                Log.i(LOGCAT, "Not on WiFi connection. Not synchronizing.");
-                return false;
-            }
-        }
-
-        return true;
     }
 }

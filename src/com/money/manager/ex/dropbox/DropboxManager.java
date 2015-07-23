@@ -152,58 +152,47 @@ public class DropboxManager {
         Messenger messenger = new Messenger(new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                final Activity parent = (Activity) mContext;
-
-                if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
+                if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_ON_WIFI) {
+                    //showMessage();
+                    closeDialog(progressDialog);
+                } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
                     // close dialog
-                    if (progressDialog != null && progressDialog.isShowing()) {
-                        DialogUtils.closeProgressDialog(progressDialog);
-                    }
-
-                    parent.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, R.string.dropbox_database_is_synchronized, Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    closeDialog(progressDialog);
+                    showMessage(R.string.dropbox_database_is_synchronized, Toast.LENGTH_LONG);
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_START_DOWNLOAD) {
-                    parent.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    showMessage(R.string.dropbox_download_is_starting, Toast.LENGTH_LONG);
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD) {
                     // Download from Dropbox completed.
                     // close dialog
-                    if (progressDialog != null && progressDialog.isShowing()) {
-                        DialogUtils.closeProgressDialog(progressDialog);
-                    }
+                    closeDialog(progressDialog);
                     // Notify whoever is interested.
                     mCallbacks.onFileDownloaded();
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_START_UPLOAD) {
-                    parent.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, R.string.dropbox_upload_is_starting, Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    showMessage(R.string.dropbox_upload_is_starting, Toast.LENGTH_LONG);
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD) {
                     // close dialog
-                    if (progressDialog != null && progressDialog.isShowing()) {
-                        DialogUtils.closeProgressDialog(progressDialog);
-                    }
-
-                    parent.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, R.string.upload_file_to_dropbox_complete, Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    closeDialog(progressDialog);
+                    showMessage(R.string.upload_file_to_dropbox_complete, Toast.LENGTH_LONG);
                 }
             }
         });
         return messenger;
     }
 
+    private void showMessage(final int message, final int length) {
+        final Activity parent = (Activity) mContext;
+
+        parent.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mContext, message, length).show();
+            }
+        });
+    }
+
+    private void closeDialog(ProgressDialog progressDialog) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            DialogUtils.closeProgressDialog(progressDialog);
+        }
+    }
 }
