@@ -38,9 +38,7 @@ public class DropboxStartServiceReceiver
 
         DropboxHelper dropboxHelper = DropboxHelper.getInstance(context);
 
-        if (!dropboxHelper.shouldAutoSynchronize()) {
-            return;
-        }
+        if (!dropboxHelper.shouldAutoSynchronize()) return;
 
 		//create intent to launch sync
 		Intent service = new Intent(context, DropboxServiceIntent.class);
