@@ -40,4 +40,9 @@ public class DropboxSettings
         return result;
     }
 
+    public boolean getImmediatelyUploadChanges() {
+        boolean result = getSharedPreferences().getBoolean(
+                mContext.getString(R.string.pref_dropbox_upload_immediate), true);
+        return result;
+    }
 }

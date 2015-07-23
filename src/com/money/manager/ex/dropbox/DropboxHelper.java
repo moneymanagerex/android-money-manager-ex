@@ -50,6 +50,7 @@ import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.DropboxSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.NetworkUtilities;
 
@@ -123,7 +124,9 @@ public class DropboxHelper {
         }
 
         //check if upload as immediate
-        if (mHelper.isActiveAutoUpload() && !mDelayedUploadImmediate) {
+        DropboxSettings settings = new AppSettings(mContext).getDropboxSettings();
+
+        if (settings.getImmediatelyUploadChanges() && !mDelayedUploadImmediate) {
             // Create task/runnable for synchronization.
             mRunSyncRunnable = new Runnable() {
                 @Override
@@ -357,19 +360,16 @@ public class DropboxHelper {
                 .commit();
     }
 
-    /**
-     * get the status of immediate loading
-     */
-    public boolean isActiveAutoUpload() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        boolean result = false;
-
-        if (prefs != null) {
-            result = prefs.getBoolean(mContext.getString(PreferenceConstants.PREF_DROPBOX_UPLOAD_IMMEDIATE), true);
-        }
-
-        return result;
-    }
+//    public boolean isActiveAutoUpload() {
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+//        boolean result = false;
+//
+//        if (prefs != null) {
+//            result = prefs.getBoolean(mContext.getString(PreferenceConstants.PREF_DROPBOX_UPLOAD_IMMEDIATE), true);
+//        }
+//
+//        return result;
+//    }
 
     /**
      * Send a broadcast intent for start service scheduled
