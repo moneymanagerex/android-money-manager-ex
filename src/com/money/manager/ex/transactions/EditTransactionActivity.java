@@ -900,7 +900,16 @@ public class EditTransactionActivity
      * @return A boolean indicating whether the operation was successful.
      */
     public boolean loadCategorySubName(int categoryId, int subCategoryId) {
+        try {
+            return loadCategorySubNameInternal(categoryId, subCategoryId);
+        } catch (IllegalStateException ex) {
+            ExceptionHandler handler = new ExceptionHandler(this, this);
+            handler.handle(ex, "loading category & subcategory names");
+        }
+        return false;
+    }
 
+    private boolean loadCategorySubNameInternal(int categoryId, int subCategoryId) {
         // don't load anything if category & sub-category are not set.
         if(categoryId <= 0 && subCategoryId <= 0) return false;
 
