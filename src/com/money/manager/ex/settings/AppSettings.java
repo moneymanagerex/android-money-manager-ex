@@ -36,6 +36,7 @@ public class AppSettings extends SettingsBase {
     private LookAndFeelSettings mLookAndFeel;
     private BehaviourSettings mBehaviour;
     private DatabaseSettings mDatabase;
+    private DropboxSettings mDropbox;
 
     public DatabaseSettings getDatabaseSettings() {
         if (mDatabase == null) {

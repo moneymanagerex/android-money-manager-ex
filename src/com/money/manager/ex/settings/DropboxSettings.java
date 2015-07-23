@@ -18,32 +18,26 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.money.manager.ex.R;
 
 /**
- * Manipulates database settings/preferences.
+ * Encapsulates Dropbox settings.
+ *
+ * Created by Alen Siljak on 23/07/2015.
  */
-public class DatabaseSettings {
+public class DropboxSettings
+    extends SettingsBase {
 
-    public DatabaseSettings(AppSettings mainSettings) {
-        mAppSettings = mainSettings;
+    public DropboxSettings(Context context) {
+        super(context);
+
     }
 
-    private AppSettings mAppSettings;
-
-    public String getDatabasePath() {
-        Context context = mAppSettings.getContext();
-        String key = context.getString(PreferenceConstants.PREF_DATABASE_PATH);
-        String path = mAppSettings.get(key, "");
-        return path;
+    public boolean getShouldSyncOnWifi() {
+        boolean result = getSharedPreferences().getBoolean(
+                mContext.getString(R.string.pref_sync_via_wifi), false);
+        return result;
     }
 
-    public boolean setDatabasePath(String path) {
-        Context context = mAppSettings.getContext();
-        String key = context.getString(PreferenceConstants.PREF_DATABASE_PATH);
-        boolean pathSet = mAppSettings.set(key, path);
-        return pathSet;
-    }
 }

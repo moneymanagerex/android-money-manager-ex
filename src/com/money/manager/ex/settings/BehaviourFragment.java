@@ -39,8 +39,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class BehaviourFragment
         extends PreferenceFragment {
 
-    private final String LOGCAT = this.getClass().getSimpleName();
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

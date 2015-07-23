@@ -23,6 +23,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Message;
 import android.os.Messenger;
@@ -36,6 +38,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.DropboxHelper.OnDownloadUploadEntry;
+import com.money.manager.ex.settings.DropboxSettings;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
+ * Dropbox synchronization service that is run on schedule.
  */
 public class DropboxServiceIntent
         extends IntentService {
@@ -79,16 +82,13 @@ public class DropboxServiceIntent
     protected void onHandleIntent(Intent intent) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, intent.toString());
 
+        if (!shouldSynchronize()) return;
+
         // check if exist a messenger
         if (intent.getExtras().containsKey(INTENT_EXTRA_MESSENGER)) {
             mOutMessenger = intent.getParcelableExtra(INTENT_EXTRA_MESSENGER);
         }
-        // check if device is online
-        Core core = new Core(getApplicationContext());
-        if (!core.isOnline()) {
-            if (BuildConfig.DEBUG) Log.i(LOGCAT, "Can't sync. Device not online.");
-            return;
-        }
+
         // take instance dropbox
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
         // check if connect to dropbox
@@ -118,7 +118,7 @@ public class DropboxServiceIntent
             return;
         }
 
-        // check action
+        // Execute action.
         if (INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
             downloadFile(localFile, remoteFile);
         } else if (INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
@@ -312,5 +312,30 @@ public class DropboxServiceIntent
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         return intent;
+    }
+
+    private boolean shouldSynchronize() {
+        // check if the device is online.
+        Core core = new Core(getApplicationContext());
+        if (!core.isOnline()) {
+            if (BuildConfig.DEBUG) Log.i(LOGCAT, "Can't sync. Device not online.");
+            return false;
+        }
+
+        // Check WiFi settings.
+        // should we sync only on wifi?
+        DropboxSettings settings = new DropboxSettings(getApplicationContext());
+        if (BuildConfig.DEBUG) Log.i(LOGCAT, "Preferences set to sync on WiFi only.");
+        if (settings.getShouldSyncOnWifi()) {
+            // check if we are on WiFi connection.
+            ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            if (!mWifi.isConnected()) {
+                Log.i(LOGCAT, "Not on WiFi connection. Not synchronizing.");
+                return false;
+            }
+        }
+
+        return true;
     }
 }

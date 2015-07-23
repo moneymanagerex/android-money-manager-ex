@@ -115,6 +115,7 @@ public class DropboxHelper {
 
         //check if upload as immediate
         if (mHelper.isActiveAutoUpload() && !mDelayedUploadImmediate) {
+            // Create task/runnable for synchronization.
             mRunSyncRunnable = new Runnable() {
                 @Override
                 public void run() {
@@ -127,8 +128,10 @@ public class DropboxHelper {
                 }
             };
 
+            // Schedule delayed execution of the sync task.
             if (BuildConfig.DEBUG) Log.d(LOGCAT, "Launch Handler postDelayed");
             mDelayedHandler = new Handler();
+            // Synchronize after 30 seconds.
             mDelayedHandler.postDelayed(mRunSyncRunnable, 30 * 1000);
             mDelayedUploadImmediate = true;
         }

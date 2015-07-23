@@ -24,6 +24,9 @@ import android.content.Intent;
 
 import com.money.manager.ex.MoneyManagerApplication;
 
+/**
+ * gets the notification to run the synchronization task on schedule.
+ */
 public class DropboxStartServiceReceiver extends BroadcastReceiver {
 
 	@Override

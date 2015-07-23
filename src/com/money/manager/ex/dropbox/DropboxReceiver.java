@@ -36,6 +36,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * Dropbox broadcast receiver
+ */
 public class DropboxReceiver
         extends BroadcastReceiver {
 

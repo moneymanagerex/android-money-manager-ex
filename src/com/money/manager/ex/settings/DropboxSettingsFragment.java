@@ -62,8 +62,6 @@ public class DropboxSettingsFragment
         extends PreferenceFragment
         implements IDropboxManagerCallbacks {
 
-    private String LOGCAT = this.getClass().getSimpleName();
-
     private static final int REQUEST_DROPBOX_FILE = 20;
 
     private DropboxHelper mDropboxHelper = null;
