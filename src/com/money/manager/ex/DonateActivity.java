@@ -224,7 +224,7 @@ public class DonateActivity extends BaseFragmentActivity {
 //        String text = template.replace("%text%", getText(R.string.donate_direct));
 //        directDonationLink.setText(Html.fromHtml(text));
 
-        final String siteUrl = "http://moneymanagerex.github.io/android-money-manager-ex/";
+        final String siteUrl = "http://android.moneymanagerex.org/";
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override

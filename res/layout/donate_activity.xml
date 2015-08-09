@@ -93,7 +93,8 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp" >
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp" >
 
                 <com.money.manager.ex.view.RobotoButton
                     android:id="@+id/donateButton"
@@ -109,71 +110,11 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/relativeLayoutInApp"
-                android:layout_width="wrap_content"
+            <com.money.manager.ex.view.RobotoTextView
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textViewDonateHeader"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:visibility="visible">
+                android:text="@string/homepage"/>
 
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewInAppTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/donate_in_app_title"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textIsSelectable="false"/>
-
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewInAppDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textViewInAppTitle"
-                    android:text="@string/donate_in_app_description"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textIsSelectable="false"/>
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textViewInAppDescription"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical"
-                    android:paddingTop="5dp">
-
-                    <Spinner
-                        android:id="@+id/spinnerDonateInApp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:prompt="@string/donate_in_app_spinner_text"
-                        android:visibility="gone"/>
-
-                    <com.money.manager.ex.view.RobotoButton
-                        android:id="@+id/buttonDonateInApp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/donate_in_app_button"
-                        android:visibility="gone"/>
-
-                    <com.money.manager.ex.view.RobotoTextView
-                        android:id="@+id/textViewInAppStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="center_horizontal"
-                        android:text="@string/donate_in_app_retrieving_status"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
         </LinearLayout>
 
     </ScrollView>

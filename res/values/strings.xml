@@ -308,7 +308,7 @@
     <string name="export_file_complete">The data has been successfully exported to the file %1$s</string>
     <string name="export_file_failed">Export file %1$s failed</string>
     <!-- 20130220 -->
-    <string name="donate_header">MoneyManagerEx for Android is provided free. If this application is to your liking, you can support the development team with a donation.</string>
+    <string name="donate_header">MoneyManagerEx for Android is provided for free. If you like the application, you can support the development team with a donation.</string>
     <string name="donate_in_app_title">Google Play In-App Billing</string>
     <string name="donate_in_app_description">Donate via Google Play In-App Billing.</string>
     <string name="donate_in_app_spinner_text">Select a donation amount</string>
@@ -318,7 +318,7 @@
     <string name="no_thanks">No, thanks</string>
     <string name="donate_exlamation">Donate!</string>
     <string name="donate_direct">You can donate directly by clicking the Donate links on our app web page.</string>
-    <string name="donate_bitcoin">We now also accept BitCoin donations.</string>
+    <string name="donate_bitcoin">We also accept BitCoin donations.</string>
     <string name="donate_license">For Google licensing reasons, we are not allowed to place donation links directly inside the app.</string>
     <string name="donate_button_text">Open homepage</string>
     <!-- 20130225 -->
@@ -603,4 +603,5 @@
     <string name="update_available">Update available</string>
     <string name="update_on_dropbox">There is an updated database file available on Dropbox. Would you like to update?</string>
     <string name="currencies_empty">No currencies have been found. To create one, tap the green plus button.</string>
+    <string name="homepage">Our homepage is http://android.moneymanagerex.org/</string>
 </resources>
