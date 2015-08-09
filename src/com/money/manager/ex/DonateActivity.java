@@ -53,14 +53,11 @@ public class DonateActivity extends BaseFragmentActivity {
 
     // List of valid SKUs
     ArrayList<String> skus = new ArrayList<String>();
-    ArrayList<SkuDetails> skusToBePublished = new ArrayList<SkuDetails>();
     // purchase
     private String purchasedSku = "";
     private String purchasedToken = "";
     // Helper In-app Billing
     private IabHelper mIabHelper;
-    private IabHelper.OnIabPurchaseFinishedListener mConsumeFinishedListener;
-    private IabHelper.QueryInventoryFinishedListener mQueryInventoryFinishedListener;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -80,66 +77,6 @@ public class DonateActivity extends BaseFragmentActivity {
         // add SKU application
         skus.add("android.money.manager.ex.donations.small");
 
-        final Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
-        final Button inAppButton = (Button) findViewById(R.id.buttonDonateInApp);
-        inAppButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(final View v) {
-                final int selectedInAppAmount = inAppSpinner.getSelectedItemPosition();
-                purchasedSku = skus.get(selectedInAppAmount);
-                if (BuildConfig.DEBUG) {
-                    Log.d(DonateActivity.this.getClass().getSimpleName(), "Clicked " + purchasedSku);
-                }
-                purchasedToken = UUID.randomUUID().toString();
-                //BillingController.requestPurchase(DonateActivity.this, purchasedSku, true, null);
-                mIabHelper.launchPurchaseFlow(DonateActivity.this, purchasedSku, 1001, mConsumeFinishedListener, purchasedToken);
-            }
-        });
-        // Disabilito il tasto fin che non è pronto
-        inAppButton.setEnabled(false);
-
-        mConsumeFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-            @Override
-            public void onIabPurchaseFinished(IabResult result, Purchase info) {
-                if (result.isSuccess()) {
-                    Toast.makeText(DonateActivity.this, R.string.donate_thank_you, Toast.LENGTH_LONG).show();
-                    // close activity
-                    DonateActivity.this.finish();
-                }
-            }
-        };
-        mQueryInventoryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
-            @Override
-            public void onQueryInventoryFinished(IabResult result, Inventory inv) {
-                if (result.isSuccess()) {
-                    for (String sku : skus) {
-                        if (inv.hasDetails(sku)) {
-                            SkuDetails skuDetails = inv.getSkuDetails(sku);
-                            if (!inv.hasPurchase(sku)) {
-                                skusToBePublished.add(skuDetails);
-                            }
-                        }
-                    }
-                }
-                onStartupInApp(result.isSuccess());
-            }
-        };
-        // init IabHelper
-        try {
-            mIabHelper = new IabHelper(getApplicationContext(), Core.getAppBase64());
-            mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                @Override
-                public void onIabSetupFinished(IabResult result) {
-                    if (result.isSuccess()) {
-                        mIabHelper.queryInventoryAsync(true, skus, mQueryInventoryFinishedListener);
-                    }
-                }
-            });
-        } catch (Exception e) {
-            Log.e(LOGCAT, "In-App Billing startup error");
-            onStartupInApp(false);
-        }
         // set enable return
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -174,35 +111,6 @@ public class DonateActivity extends BaseFragmentActivity {
         }
     }
 
-    public void onStartupInApp(boolean supported) {
-        final TextView inAppStatus = (TextView) findViewById(R.id.textViewInAppStatus);
-        if (supported) {
-            final List<String> inAppName = new ArrayList<String>();
-
-            for (SkuDetails sku : skusToBePublished) {
-                inAppName.add(sku.getDescription() + " " + sku.getPrice());
-            }
-
-            Spinner inAppSpinner = (Spinner) findViewById(R.id.spinnerDonateInApp);
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, inAppName);
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            // Apply the adapter to the spinner
-            inAppSpinner.setAdapter(adapter);
-            // visibility button
-            final Button inAppButton = (Button) findViewById(R.id.buttonDonateInApp);
-            inAppButton.setVisibility(inAppName.size() > 0 ? View.VISIBLE : View.GONE);
-            inAppButton.setEnabled(inAppName.size() > 0 );
-            // status
-            inAppStatus.setText(inAppName.size() <= 0 ? Html.fromHtml("<b>" + getString(R.string.donate_in_app_already_donate) + "</b>") : null);
-            // hide spinner if release version
-            inAppSpinner.setVisibility(inAppName.size() > 1 ? View.VISIBLE : View.GONE);
-        } else {
-            inAppStatus.setText(R.string.donate_in_app_error);
-            inAppStatus.setTextColor(getResources().getColor(R.color.holo_red_dark));
-        }
-    }
-
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -218,12 +126,6 @@ public class DonateActivity extends BaseFragmentActivity {
     }
 
     private void setUpDirectDonationButton() {
-        // Underline the text. Not used now.
-//        RobotoTextView directDonationLink = (RobotoTextView) findViewById(R.id.directDonationTextView);
-//        String template = "<p><u>%text%</u></p>";
-//        String text = template.replace("%text%", getText(R.string.donate_direct));
-//        directDonationLink.setText(Html.fromHtml(text));
-
         final String siteUrl = "http://android.moneymanagerex.org/";
 
         View.OnClickListener listener = new View.OnClickListener() {
