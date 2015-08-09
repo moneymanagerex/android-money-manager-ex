@@ -277,6 +277,15 @@ public class InputAmountDialog
     }
 
     public String getCalculatedAmount(boolean withCurrency) {
+        try {
+            return getCalculatedAmountInternal(withCurrency);
+        } catch (NullPointerException ex) {
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.handle(ex, "getting calculated amount");
+        }
+        return "";
+    }
+    public String getCalculatedAmountInternal(boolean withCurrency) {
         String amount = mAmount;
 
         // check if amount is not empty and is double
