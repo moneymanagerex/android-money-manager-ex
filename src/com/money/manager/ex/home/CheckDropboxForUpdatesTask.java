@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
@@ -46,9 +47,14 @@ public class CheckDropboxForUpdatesTask
 
     @Override
     protected void onPostExecute(Integer ret) {
-        if (DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD.equals(ret)) {
+        try {
+            if (DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD.equals(ret)) {
 //            showNotificationSnackbar();
-            showNotificationDialog();
+                showNotificationDialog();
+            }
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "showing dropbox update notification dialog");
         }
     }
 
