@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.money.manager.ex.core.ExceptionHandler;
+
 /**
  * Base class for settings sections.
  * Created by Alen Siljak on 03/07/2015.
@@ -27,9 +29,13 @@ public abstract class SettingsBase {
         try {
             return mContext.getString(settingKeyConstant, "");
         } catch (Exception e) {
-            throw new RuntimeException("error getting string for resource " +
-                    Integer.toString(settingKeyConstant), e);
+//            throw new RuntimeException("error getting string for resource " +
+//                    Integer.toString(settingKeyConstant), e);
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "error getting string for resource " +
+                Integer.toString(settingKeyConstant));
         }
+        return "";
     }
 
     public SharedPreferences.Editor getEditor() {
