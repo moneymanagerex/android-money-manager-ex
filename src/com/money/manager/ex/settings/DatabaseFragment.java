@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -220,11 +221,18 @@ public class DatabaseFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 MmexDatabase db = new MmexDatabase(getActivity());
-                boolean result = db.checkIntegrity();
-                if (result) {
-                    showToast(R.string.db_check_integrity_success, Toast.LENGTH_SHORT);
-                } else {
-                    showToast(R.string.db_check_integrity_error, Toast.LENGTH_SHORT);
+                boolean result = false;
+                try {
+                    result = db.checkIntegrity();
+
+                    if (result) {
+                        showToast(R.string.db_check_integrity_success, Toast.LENGTH_SHORT);
+                    } else {
+                        showToast(R.string.db_check_integrity_error, Toast.LENGTH_SHORT);
+                    }
+                } catch (Exception ex) {
+                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                    handler.handle(ex, "checking integrity");
                 }
                 return false;
             }
