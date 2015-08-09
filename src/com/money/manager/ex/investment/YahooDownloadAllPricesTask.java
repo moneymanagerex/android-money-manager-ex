@@ -24,6 +24,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.utils.DialogUtils;
@@ -62,6 +63,10 @@ public class YahooDownloadAllPricesTask
     protected Boolean doInBackground(String... symbols) {
         try {
             return runTask(symbols);
+        } catch (IllegalArgumentException ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "No price provided by Yahoo.");
+            return false;
         } catch (Exception e) {
             throw new RuntimeException("Error in Yahoo download all prices", e);
         }
