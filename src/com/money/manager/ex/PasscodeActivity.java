@@ -33,7 +33,9 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.ExceptionHandler;
 
-public class PasscodeActivity extends FragmentActivity {
+public class PasscodeActivity
+		extends FragmentActivity {
+
 	public static final String INTENT_REQUEST_PASSWORD = "com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD";
 	public static final String INTENT_MESSAGE_TEXT = "INTENT_MESSAGE_TEXT";
 	public static final String INTENT_RESULT_PASSCODE = "INTENT_RESULT_PASSCODE";
@@ -48,7 +50,9 @@ public class PasscodeActivity extends FragmentActivity {
 		try {
 			setTheme(core.getThemeApplication());
 		} catch (Exception e) {
-			Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
+			//Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(this, this);
+            handler.handle(e, "setting theme in passcode activity");
 		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.passcode_activity);
