@@ -19,6 +19,7 @@ package com.money.manager.ex.account;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDiskIOException;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
@@ -47,9 +48,9 @@ public class BalanceAmountTask
     protected Boolean doInBackground(Void... params) {
         try {
             return runTask();
-        } catch (IllegalStateException ise) {
+        } catch (IllegalStateException | SQLiteDiskIOException ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ise, "balancing amount");
+            handler.handle(ex, "balancing amount");
         } catch (Exception e) {
             throw new RuntimeException("Error in Balance Amount Task", e);
         }
