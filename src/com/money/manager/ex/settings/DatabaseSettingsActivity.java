@@ -21,12 +21,11 @@ package com.money.manager.ex.settings;
 import android.os.Bundle;
 
 public class DatabaseSettingsActivity extends BaseSettingsFragmentActivity {
-    private static String LOGCAT = DatabaseSettingsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setSettingFragment(new DatabaseFragment());
+        setSettingFragment(new DatabaseSettingsFragment());
     }
 
 }

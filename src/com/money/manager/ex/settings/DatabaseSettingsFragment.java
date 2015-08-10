@@ -43,10 +43,8 @@ import java.io.File;
 /**
  * Database settings fragment.
  */
-public class DatabaseFragment
+public class DatabaseSettingsFragment
         extends PreferenceFragment {
-
-    private final String LOGCAT = this.getClass().getSimpleName();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
