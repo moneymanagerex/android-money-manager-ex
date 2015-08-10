@@ -69,7 +69,11 @@ public class ExceptionHandler
     }
 
     private String getLogcat() {
-        return mHost.getClass().getSimpleName();
+        if (mHost != null) {
+            return mHost.getClass().getSimpleName();
+        } else {
+            return "";
+        }
     }
 
     public void showMessage(final String message) {

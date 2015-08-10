@@ -209,10 +209,10 @@ public class Core {
      */
     public static boolean changeLocaleApp(Context context, String languageToLoad) {
         try {
-            // load locale
             Locale locale;
             if (!TextUtils.isEmpty(languageToLoad)) {
-                locale = new Locale(languageToLoad);
+//                locale = new Locale(languageToLoad);
+                locale = Locale.forLanguageTag(languageToLoad);
             } else {
                 locale = Locale.getDefault();
             }
@@ -221,13 +221,15 @@ public class Core {
             // change locale to configuration
             Resources resources = context.getResources();
 //            Configuration config = new Configuration();
-            Configuration config = resources.getConfiguration();
+            Configuration config = new Configuration(resources.getConfiguration());
             config.locale = locale;
             // set new locale
             resources.updateConfiguration(config, resources.getDisplayMetrics());
 //            getBaseContext().getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(context, null);
+            handler.handle(e, "changing app locale");
+
             return false;
         }
         return true;
