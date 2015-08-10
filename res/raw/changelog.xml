@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="August 9, 2015" versionName="2.14.0">
+    <changelogversion changeDate="August 9, 2015" versionName="2.14.1">
         <changelogtext>Adding Tools submenu to navigation drawer.</changelogtext>
         <changelogtext>Added preference for auto-synchronization on WiFi only.</changelogtext>
         <changelogtext>Updated the link to our web page with the new sub-domain - android.moneymanagerex.org</changelogtext>
