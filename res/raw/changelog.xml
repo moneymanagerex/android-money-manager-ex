@@ -17,6 +17,9 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="" versionName="">
+        <changelogtext>Correction for prices retrieved from London Stock Exchange in pence.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="August 9, 2015" versionName="2.14.1">
         <changelogtext>Adding Tools submenu to navigation drawer.</changelogtext>
         <changelogtext>Added preference for auto-synchronization on WiFi only.</changelogtext>

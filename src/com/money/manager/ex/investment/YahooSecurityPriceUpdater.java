@@ -52,12 +52,10 @@ public class YahooSecurityPriceUpdater
     // "http://download.finance.yahoo.com/d/quotes.csv?s=", A2, "&f=l1d1&e=.csv"
     private String mUrlPrefix = "http://download.finance.yahoo.com/d/quotes.csv?s=";
     // get symbol, last trade price, last trade date
-    private String mUrlSuffix = "&f=sl1d1&e=.csv";
+    private String mUrlSuffix = "&f=sl1d1c4&e=.csv";
     // "&f=l1&e=.csv";
+    // c4 = currency
     private IPriceUpdaterFeedback mFeedback;
-
-    // All the symbols to be updated.
-//    private String[] mSymbolsToUpdate;
 
     /**
      * Update prices for all the symbols in the list.
@@ -125,9 +123,18 @@ public class YahooSecurityPriceUpdater
         // convert csv values to their original type.
 
         String symbol = values[0];
+
+        // price
         String priceString = values[1];
         if (!NumericHelper.isNumeric(priceString)) return;
         BigDecimal price = new BigDecimal(priceString);
+        // LSE stocks are expressed in GBp (pence), not Pounds.
+        // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
+        String currency = values[3];
+        if (currency.equals("GBp")) {
+            price = price.divide(BigDecimal.valueOf(100));
+        }
+
         // date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = null;
