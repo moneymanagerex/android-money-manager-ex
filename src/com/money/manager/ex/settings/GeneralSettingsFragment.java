@@ -66,7 +66,8 @@ public class GeneralSettingsFragment
 
         // Application Locale
 
-        final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferenceConstants.PREF_LOCALE));
+//        final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferenceConstants.PREF_LOCALE));
+        final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(R.string.pref_locale));
         if (lstLocaleApp != null) {
             String summary = settings.getGeneralSettings().getApplicationLocale();
             setSummaryListPreference(lstLocaleApp, summary, R.array.application_locale_values, R.array.application_locale_entries);

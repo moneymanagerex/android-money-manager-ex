@@ -26,6 +26,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -216,11 +217,15 @@ public class Core {
                 locale = Locale.getDefault();
             }
             Locale.setDefault(locale);
+
             // change locale to configuration
-            Configuration config = new Configuration();
+            Resources resources = context.getResources();
+//            Configuration config = new Configuration();
+            Configuration config = resources.getConfiguration();
             config.locale = locale;
             // set new locale
-            context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+            resources.updateConfiguration(config, resources.getDisplayMetrics());
+//            getBaseContext().getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
             return false;
