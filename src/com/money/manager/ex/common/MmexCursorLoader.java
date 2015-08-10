@@ -2,6 +2,7 @@ package com.money.manager.ex.common;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.net.Uri;
 import android.support.v4.content.CursorLoader;
@@ -30,7 +31,7 @@ public class MmexCursorLoader
     public Cursor loadInBackground() {
         try {
             return super.loadInBackground();
-        } catch (IllegalStateException | SQLiteDiskIOException ex) {
+        } catch (IllegalStateException | SQLiteDiskIOException | SQLiteDatabaseCorruptException ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "loading data in cursor loader");
         }
