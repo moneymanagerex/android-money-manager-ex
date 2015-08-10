@@ -197,15 +197,17 @@ public class CurrencyListFragment
                     // get the list of used currencies.
                     CurrencyUtils currencyUtils = getCurrencyUtils();
                     List<TableCurrencyFormats> usedCurrencies = currencyUtils.getUsedCurrencies();
-                    ArrayList<String> symbols = new ArrayList<>();
-                    for(TableCurrencyFormats currency : usedCurrencies) {
-                        symbols.add(currency.getCurrencySymbol());
-                    }
+                    if (usedCurrencies.size() > 0) {
+                        ArrayList<String> symbols = new ArrayList<>();
+                        for (TableCurrencyFormats currency : usedCurrencies) {
+                            symbols.add(currency.getCurrencySymbol());
+                        }
 
-                    MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils();
-                    whereClause = TableCurrencyFormats.CURRENCY_SYMBOL + " IN (" +
-                            databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
-                    arguments.addAll(symbols);
+                        MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils();
+                        whereClause = TableCurrencyFormats.CURRENCY_SYMBOL + " IN (" +
+                                databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
+                        arguments.addAll(symbols);
+                    }
                 }
 
                 if (!TextUtils.isEmpty(mCurFilter)) {
