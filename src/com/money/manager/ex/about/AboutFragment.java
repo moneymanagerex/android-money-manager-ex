@@ -41,6 +41,7 @@ import com.github.pedrovgs.lynx.LynxConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.ExceptionHandler;
 
 public class AboutFragment extends Fragment {
     private static final String LOGCAT = AboutFragment.class.getSimpleName();
@@ -70,7 +71,8 @@ public class AboutFragment extends Fragment {
             build = Integer.toString(getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionCode);
             txtVersion.setText(txtVersion.getText() + " " + version + " (" + getString(R.string.build) + " " + build + ")");
         } catch (NameNotFoundException e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.handle(e, "showing version number");
         }
 
         // Send Feedback

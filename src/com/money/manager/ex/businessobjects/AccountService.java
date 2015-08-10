@@ -46,9 +46,9 @@ public class AccountService {
         TableAccountList account = null;
         try {
             account = loadAccount(id);
-        } catch (SQLiteDiskIOException e1) {
+        } catch (SQLiteDiskIOException | IllegalStateException ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e1, "loading account: " + Integer.toString(id));
+            handler.handle(ex, "loading account: " + Integer.toString(id));
         }
         return account;
     }
