@@ -13,16 +13,17 @@ import com.money.manager.ex.core.ExceptionHandler;
 public abstract class SettingsBase {
 
     public SettingsBase(Context context) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
     }
 
+    // Context for settings is the Application Context.
     protected final Context mContext;
     private SharedPreferences.Editor mEditor;
 
     // common
 
     protected SharedPreferences getSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
+        return PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
     protected String getSettingsKey(Integer settingKeyConstant) {

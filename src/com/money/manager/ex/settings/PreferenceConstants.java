@@ -45,7 +45,7 @@ public class PreferenceConstants {
     public static final Integer PREF_BASE_CURRENCY = R.string.pref_base_currency;
     public static final Integer PREF_ACCOUNT_OPEN_VISIBLE = R.string.pref_account_open_visible;
     public static final Integer PREF_ACCOUNT_FAV_VISIBLE = R.string.pref_account_fav_visible;
-    public static final Integer PREF_DROPBOX_MODE = R.string.pref_dropbox_mode;
+//    public static final Integer PREF_DROPBOX_MODE = R.string.pref_dropbox_mode;
     public static final Integer PREF_THEME = R.string.pref_theme;
     public static final Integer PREF_SHOW_TRANSACTION = R.string.pref_show_transaction;
     public static final Integer PREF_HIDE_RECONCILED_AMOUNTS = R.string.pref_transaction_hide_reconciled_amounts;
@@ -74,7 +74,7 @@ public class PreferenceConstants {
     public static final Integer PREF_DEFAULT_STATUS = R.string.pref_default_status;
     public static final Integer PREF_DEFAULT_PAYEE = R.string.pref_default_payee;
     public static final Integer PREF_TEXT_SEARCH_TYPE = R.string.pref_text_search_type;
-    public static final Integer PREF_LOCALE = R.string.pref_locale;
+//    public static final Integer PREF_LOCALE = R.string.pref_locale;
     // others preference setting don't display
     public static final String PREF_DROPBOX_ACCOUNT_PREFS_NAME = "com.money.manager.ex_dropbox_preferences";
     public static final String PREF_DROPBOX_ACCESS_KEY_NAME = "ACCESS_KEY";
