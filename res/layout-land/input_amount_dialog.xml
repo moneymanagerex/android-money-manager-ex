@@ -86,10 +86,10 @@
                 style="@style/Money.Button.Input.Dialog.Operator"
                 android:text=")"/>
 
-            <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyDiv"
-                style="@style/Money.Button.Input.Dialog.Operator"
-                android:text="/"/>
+                <ImageButton
+                    android:id="@+id/imageButtonCancel"
+                    style="@style/Money.Button.Input.Dialog.Operator"
+                    android:src="?attr/sym_keyboard_delete"/>
         </LinearLayout>
 
             <LinearLayout
@@ -98,24 +98,24 @@
                 android:orientation="horizontal">
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonKeyNum1"
+                    android:id="@+id/buttonKeyNum7"
                     style="@style/Money.Button.Input.Dialog"
-                    android:text="1"/>
+                    android:text="7"/>
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonKeyNum2"
+                    android:id="@+id/buttonKeyNum8"
                     style="@style/Money.Button.Input.Dialog"
-                    android:text="2"/>
+                    android:text="8"/>
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonKeyNum3"
+                    android:id="@+id/buttonKeyNum9"
                     style="@style/Money.Button.Input.Dialog"
-                    android:text="3"/>
+                    android:text="9"/>
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonKeyMultiplication"
+                    android:id="@+id/buttonKeyDiv"
                     style="@style/Money.Button.Input.Dialog.Operator"
-                    android:text="*"/>
+                    android:text="/"/>
             </LinearLayout>
 
             <LinearLayout
@@ -139,9 +139,9 @@
                     android:text="6"/>
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonKeyLess"
+                    android:id="@+id/buttonKeyMultiplication"
                     style="@style/Money.Button.Input.Dialog.Operator"
-                    android:text="-"/>
+                    android:text="*"/>
             </LinearLayout>
 
             <LinearLayout
@@ -150,24 +150,24 @@
                 android:orientation="horizontal">
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonKeyNum7"
+                    android:id="@+id/buttonKeyNum1"
                     style="@style/Money.Button.Input.Dialog"
-                    android:text="7"/>
+                    android:text="1"/>
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonKeyNum8"
+                    android:id="@+id/buttonKeyNum2"
                     style="@style/Money.Button.Input.Dialog"
-                    android:text="8"/>
+                    android:text="2"/>
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonKeyNum9"
+                    android:id="@+id/buttonKeyNum3"
                     style="@style/Money.Button.Input.Dialog"
-                    android:text="9"/>
+                    android:text="3"/>
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonKeyAdd"
+                    android:id="@+id/buttonKeyLess"
                     style="@style/Money.Button.Input.Dialog.Operator"
-                    android:text="+"/>
+                    android:text="-"/>
             </LinearLayout>
 
             <LinearLayout
@@ -185,17 +185,16 @@
                     style="@style/Money.Button.Input.Dialog"
                     android:text="0"/>
 
-                <ImageButton
-                    android:id="@+id/imageButtonCancel"
-                    style="@style/Money.Button.Input.Dialog"
-                    android:src="?attr/sym_keyboard_delete"/>
-
                 <com.money.manager.ex.view.RobotoButton
                     android:id="@+id/buttonKeyEqual"
                     style="@style/Money.Button.Input.Dialog.Operator"
                     android:text="="/>
-            </LinearLayout>
 
+                <com.money.manager.ex.view.RobotoButton
+                    android:id="@+id/buttonKeyAdd"
+                    style="@style/Money.Button.Input.Dialog.Operator"
+                    android:text="+"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

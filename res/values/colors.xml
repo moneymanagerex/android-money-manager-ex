@@ -83,4 +83,7 @@
     <color name="md_red">@color/material_red_700</color>
     <color name="md_green">@color/material_green_700</color>
     <color name="md_indigo">@color/material_indigo_500</color>
+
+    <color name="color_dialog_number_button">#474747</color>
+    <color name="color_dialog_number_operator">#222222</color>
 </resources>
