@@ -551,7 +551,7 @@ public class HomeFragment
         }
     }
 
-    private void addFooterExpandableListView(double curTotal, double curReconciled) {
+    private void addFooterToExpandableListView(double curTotal, double curReconciled) {
         // manage footer list view
         if (linearFooter == null) {
             linearFooter = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.item_account_bills, null);
@@ -564,7 +564,7 @@ public class HomeFragment
             // set text
             TextView txtTextSummary = (TextView) linearFooter.findViewById(R.id.textViewItemAccountName);
             txtTextSummary.setText(R.string.summary);
-            // invisibile image
+            // invisible image
             ImageView imgSummary = (ImageView) linearFooter.findViewById(R.id.imageViewAccountType);
             imgSummary.setVisibility(View.INVISIBLE);
             // set color textview
@@ -770,7 +770,7 @@ public class HomeFragment
         }
 
         // write accounts total
-        addFooterExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
+        addFooterToExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
 
         // create adapter
         AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity(),
@@ -850,7 +850,7 @@ public class HomeFragment
         mGrandTotal = mGrandTotal.add(BigDecimal.valueOf(total));
         mGrandReconciled = mGrandReconciled.add(BigDecimal.valueOf(total));
         // refresh the footer
-        addFooterExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
+        addFooterToExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
     }
 
     private void showAccountTotals(Cursor cursor) {
