@@ -5,8 +5,8 @@ SELECT 	CANS.TransID AS ID,
 	CAT.CategName as Category,
 	SUBCAT.SUBCategName as Subcategory,
 	CASE
-	    WHEN CANS.ToTransAmount = 0 THEN ROUND( ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.TransAmount, 2 )
-	    ELSE ROUND( ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.ToTransAmount, 2 )
+	    WHEN CANS.ToTransAmount = 0 THEN ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.TransAmount
+	    ELSE ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.ToTransAmount
 	END as Amount,
 	ifnull(cfTo.currency_symbol, cf.currency_symbol) AS currency,
 	CANS.Status AS Status,
@@ -38,14 +38,14 @@ FROM 	CHECKINGACCOUNT_V1 CANS
 	LEFT JOIN currencyformats_v1 cf ON cf.currencyid = FROMACC.currencyid
 	LEFT JOIN currencyformats_v1 cfTo ON cfTo.currencyid = TOACC.currencyid
 	LEFT JOIN  ( 
-           SELECT	transid AS id,
-	    	  			date( transdate ) AS transdate,
-	    				round( strftime( '%d', transdate )  ) AS day,
-	    				round( strftime( '%m', transdate )  ) AS month,
-	    				round( strftime( '%Y', transdate )  ) AS year,
-	    				round( strftime( '%Y', transdate, 'start of month',  (  ( CASE WHEN fd.infovalue <= round( strftime( '%d', transdate )  ) THEN 1 ELSE 0 END ) - fm.infovalue ) || ' month' )  ) AS finyear,
-	    				ifnull( ifnull( strftime( df.infovalue, TransDate ) ,  ( strftime( REPLACE( df.infovalue, '%y', SubStr( strftime( '%Y', TransDate ) , 3, 2 )  ) , TransDate )  )  ) , date( TransDate )  ) AS UserDate
-           FROM CHECKINGACCOUNT_V1 LEFT JOIN infotable_v1 df ON df.infoname = 'DATEFORMAT'
-	    				LEFT JOIN infotable_v1 fm ON fm.infoname = 'FINANCIAL_YEAR_START_MONTH'
-	    				LEFT JOIN infotable_v1 fd ON fd.infoname = 'FINANCIAL_YEAR_START_DAY' 
-       ) d ON d.id = CANS.TRANSID
+        SELECT	transid AS id,
+			date( transdate ) AS transdate,
+			round( strftime( '%d', transdate )  ) AS day,
+			round( strftime( '%m', transdate )  ) AS month,
+			round( strftime( '%Y', transdate )  ) AS year,
+			round( strftime( '%Y', transdate, 'start of month',  (  ( CASE WHEN fd.infovalue <= round( strftime( '%d', transdate )  ) THEN 1 ELSE 0 END ) - fm.infovalue ) || ' month' )  ) AS finyear,
+			ifnull( ifnull( strftime( df.infovalue, TransDate ) ,  ( strftime( REPLACE( df.infovalue, '%y', SubStr( strftime( '%Y', TransDate ) , 3, 2 )  ) , TransDate )  )  ) , date( TransDate )  ) AS UserDate
+	    FROM CHECKINGACCOUNT_V1 LEFT JOIN infotable_v1 df ON df.infoname = 'DATEFORMAT'
+		LEFT JOIN infotable_v1 fm ON fm.infoname = 'FINANCIAL_YEAR_START_MONTH'
+		LEFT JOIN infotable_v1 fd ON fd.infoname = 'FINANCIAL_YEAR_START_DAY'
+    ) d ON d.id = CANS.TRANSID

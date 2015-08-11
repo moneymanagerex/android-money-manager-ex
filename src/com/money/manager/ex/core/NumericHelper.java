@@ -75,9 +75,11 @@ public class NumericHelper {
         return result;
     }
 
-    private int getNumberDecimal(double scale) {
+    public int getNumberDecimal(double scale) {
         // this.getScale()
-        return (int)(Math.log(scale) / Math.log(10.0));
+        double decimals = Math.log(scale) / Math.log(10.0);
+        int result = (int) Math.round(decimals);
+        return result;
     }
 
 }

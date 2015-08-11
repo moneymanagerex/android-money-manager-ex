@@ -18,8 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="" versionName="">
-        <changelogtext>Correction for prices retrieved from London Stock Exchange in pence.</changelogtext>
-        <changelogtext>Correction for application language selection.</changelogtext>
+        <changelogtext>Adjustment for prices retrieved from London Stock Exchange in pence.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="August 9, 2015" versionName="2.14.1">
         <changelogtext>Adding Tools submenu to navigation drawer.</changelogtext>

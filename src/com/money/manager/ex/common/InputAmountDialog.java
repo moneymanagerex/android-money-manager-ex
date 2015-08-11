@@ -47,6 +47,11 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class InputAmountDialog
         extends DialogFragment {
 
+    private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
+    private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
+    private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
+    private static final String KEY_EXPRESSION = "InputAmountDialog:Expression";
+
     public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id, Double amount) {
         Bundle args = new Bundle();
         args.putInt("id", id);
@@ -69,11 +74,6 @@ public class InputAmountDialog
 
     public boolean RoundToCurrencyDecimals = true;
 
-    private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
-    private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
-    private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
-    private static final String KEY_EXPRESSION = "InputAmountDialog:Expression";
-
     // arrays id keynum button
     private int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
@@ -89,6 +89,7 @@ public class InputAmountDialog
     private Integer mCurrencyId, mDefaultColor;
     private TextView txtMain, txtTop;
     private IInputAmountDialogListener mListener;
+    private CurrencyUtils mCurrencyUtils;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,13 +100,18 @@ public class InputAmountDialog
             return;
         }
 
-        int id = getArguments().getInt("id");
-        mIdView = id;
+        mIdView = getArguments().getInt("id");
 
+        mCurrencyUtils = new CurrencyUtils(getActivity());
+
+        NumericHelper numericHelper = new NumericHelper();
+        int decimals = numericHelper.getNumberDecimal(
+                mCurrencyUtils.getCurrency(mCurrencyId).getScale());
         Double amount = this.RoundToCurrencyDecimals
-                ? MathUtils.Round(getArguments().getDouble("amount"), 2)
+                ? MathUtils.Round(getArguments().getDouble("amount"), decimals)
                 : getArguments().getDouble("amount");
 
+        // Not sure what the purpose of this block is.
         if (amount != 0) {
             int iAmount = (int) (amount * 100);
             if (Math.abs(amount - (iAmount / 100)) == 0) {
@@ -151,7 +157,6 @@ public class InputAmountDialog
         buttonKeyEquals.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-//                evalExpression();
                 // Set the calculated amount into the main box
                 txtMain.setText(getCalculatedAmount(false));
             }
@@ -193,9 +198,16 @@ public class InputAmountDialog
                 // check if is double
                 if (NumberUtils.isNumber(mAmount) && mListener != null) {
                     // to round or not?
-                    double result = InputAmountDialog.this.RoundToCurrencyDecimals
-                            ? MathUtils.Round(Double.parseDouble(mAmount), 2)
-                            : Double.parseDouble(mAmount);
+                    double result;
+                    if (InputAmountDialog.this.RoundToCurrencyDecimals) {
+                        NumericHelper numericHelper = new NumericHelper();
+                        int decimals = numericHelper.getNumberDecimal(
+                                mCurrencyUtils.getCurrency(mCurrencyId).getScale());
+                        result = MathUtils.Round(Double.parseDouble(mAmount), decimals);
+                    } else {
+                        result = Double.parseDouble(mAmount);
+                    }
+
                     mListener.onFinishedInputAmountDialog(mIdView, result);
 
                     dialog.dismiss();
@@ -308,8 +320,7 @@ public class InputAmountDialog
             }
         } else {
             // return just the number, without the currency symbol.
-            result = currencyUtils.getBaseCurrency().getValueFormatted(fAmount, false);
-//            result = mAmount;
+            result = currencyUtils.getCurrency(mCurrencyId).getValueFormatted(fAmount, false);
         }
 
         return result;

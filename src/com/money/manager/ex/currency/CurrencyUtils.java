@@ -84,16 +84,8 @@ public class CurrencyUtils {
         boolean open = settings.getLookAndFeelSettings().getViewOpenAccounts();
         List<TableAccountList> accounts = repo.getAccountList(open, favourite);
 
-//        List<String> symbols = new ArrayList<>();
         List<TableCurrencyFormats> currencies = new ArrayList<>();
         for(TableAccountList account : accounts) {
-//            int currencyId = account.getCurrencyId();
-//            TableCurrencyFormats currency = this.getCurrency(currencyId);
-//            String symbol = currency.getCurrencySymbol();
-
-//            if (!symbols.contains(symbol)) {
-//                symbols.add(symbol);
-//            }
             TableCurrencyFormats currency = getCurrency(account.getCurrencyId());
             if (!currencies.contains(currency)) {
                 currencies.add(currency);
@@ -295,15 +287,7 @@ public class CurrencyUtils {
         // set table
         queryBuilder.setTables(tableInfo.getSource());
 
-        // get cursor from query builder
-        MoneyManagerOpenHelper helper;
-
         try {
-            helper = MoneyManagerOpenHelper.getInstance(mContext);
-//            Cursor cursor = queryBuilder.query(helper.getReadableDatabase(),
-//                    tableInfo.getAllColumns(),
-//                    TableInfoTable.INFONAME + "=?",
-//                    new String[]{Constants.INFOTABLE_BASECURRENCYID}, null, null, null);
             Cursor cursor = mContext.getContentResolver().query(tableInfo.getUri(),
                     tableInfo.getAllColumns(),
                     TableInfoTable.INFONAME + "=?",

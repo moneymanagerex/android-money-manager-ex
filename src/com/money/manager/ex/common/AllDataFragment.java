@@ -315,10 +315,6 @@ public class AllDataFragment extends BaseListFragment
         switch (loader.getId()) {
             case ID_LOADER_ALL_DATA_DETAIL:
                 AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-//                if (isShownBalance()) {
-//                    Context appContext = getActivity().getApplicationContext();
-//                    adapter.setDatabase(MoneyManagerOpenHelper.getInstance(appContext).getReadableDatabase());
-//                }
                 adapter.swapCursor(data);
                 if (isResumed()) {
                     setListShown(true);

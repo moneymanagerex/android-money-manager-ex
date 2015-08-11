@@ -55,8 +55,6 @@ import java.util.Locale;
 public class AllDataAdapter
         extends CursorAdapter {
 
-    private final String LOGCAT = this.getClass().getSimpleName();
-
     // type cursor
     private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
 
@@ -67,7 +65,6 @@ public class AllDataAdapter
     private LayoutInflater mInflater;
     // hash map for group
     private HashMap<Integer, Integer> mHeadersAccountIndex;
-    // private HashMap<Integer, Double> mBalanceTransactions;
     private SparseBooleanArray mCheckedPosition;
     // account and currency
     private int mAccountId = -1;
@@ -75,9 +72,6 @@ public class AllDataAdapter
     // show account name and show balance
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
-    // database for balance account
-//    private SQLiteDatabase mDatabase;
-    // core and context
     private Context mContext;
 
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
@@ -96,7 +90,6 @@ public class AllDataAdapter
         setFieldFromTypeCursor();
     }
 
-    @SuppressWarnings({})
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // take a holder
@@ -125,8 +118,10 @@ public class AllDataAdapter
             holder.txtYear.setText(new SimpleDateFormat("yyyy", locale).format(date));
             holder.txtDay.setText(new SimpleDateFormat("dd", locale).format(date));
         } catch (ParseException e) {
-            Log.e(AllDataAdapter.class.getSimpleName(), e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "parsing transaction date");
         }
+
         // take transaction amount
         double amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
         // set currency id
@@ -360,19 +355,6 @@ public class AllDataAdapter
     public void setShowAccountName(boolean showAccountName) {
         this.mShowAccountName = showAccountName;
     }
-
-//    public SQLiteDatabase getDatabase() {
-//        if (mDatabase == null) {
-//            mDatabase = MoneyManagerOpenHelper.getInstance(mContext.getApplicationContext())
-//                    .getReadableDatabase();
-//        }
-//
-//        return mDatabase;
-//    }
-
-//    public void setDatabase(SQLiteDatabase mDatabase) {
-//        this.mDatabase = mDatabase;
-//    }
 
     /**
      * @return the mShowBalanceAmount

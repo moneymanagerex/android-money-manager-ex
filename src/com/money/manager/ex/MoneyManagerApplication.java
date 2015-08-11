@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
@@ -35,7 +34,6 @@ import android.widget.Toast;
 import com.dropbox.client2.session.Session.AccessType;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -131,7 +129,7 @@ public class MoneyManagerApplication
      * @param context Executing context.
      * @return path database file
      */
-    @SuppressLint("SdCardPath")
+//    @SuppressLint("SdCardPath")
     public static String getDatabasePath(Context context) {
         String databasePath = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), null);

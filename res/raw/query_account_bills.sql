@@ -11,7 +11,7 @@ SELECT
     (INITIALBAL + ifnull(T1.TOTAL, 0)) * ifnull(CURRENCYFORMATS_V1.BASECONVRATE, 1) AS TOTALBASECONVRATE,
     (INITIALBAL + ifnull(T1.reconciled, 0)) * ifnull(CURRENCYFORMATS_V1.BASECONVRATE, 1) AS RECONCILEDBASECONVRATE
 FROM ACCOUNTLIST_V1 LEFT OUTER JOIN ( 
-    select accountid, ROUND(SUM(total), 2) as total, ROUND(SUM(reconciled), 2) as reconciled
+    select accountid, SUM(total) as total, SUM(reconciled) as reconciled
     from (
         select accountid, transcode, sum(case when status in ('R', 'F', 'D', '') then -transamount else 0 end) as total,
             sum(case when status = 'R' then -transamount else 0 end) as reconciled

@@ -17,8 +17,6 @@
  */
 package com.money.manager.ex.home;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,7 +34,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -92,12 +89,10 @@ import com.shamanland.fonticon.FontIconDrawable;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
-@SuppressLint("DefaultLocale")
 public class MainActivity
         extends BaseFragmentActivity
         implements IDropboxManagerCallbacks, IDrawerItemClickListenerCallbacks {
