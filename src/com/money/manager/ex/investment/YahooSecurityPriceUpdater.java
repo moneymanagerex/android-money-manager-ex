@@ -21,6 +21,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -115,8 +116,8 @@ public class YahooSecurityPriceUpdater
         try {
             values = csvParser.parseLineMulti(csvContents);
         } catch (IOException e) {
-            Log.e(LOGCAT, "Error parsing downloaded CSV contents.");
-            e.printStackTrace();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "parsing downloaded CSV contents");
             return;
         }
 
@@ -141,8 +142,8 @@ public class YahooSecurityPriceUpdater
         try {
             date = dateFormat.parse(values[2]);
         } catch (ParseException e) {
-            Log.e(LOGCAT, "Error parsing date from CSV.");
-            e.printStackTrace();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "parsing date from CSV");
         }
 
         // Notify the caller by invoking the interface method.
