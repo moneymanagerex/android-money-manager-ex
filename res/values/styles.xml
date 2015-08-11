@@ -38,12 +38,14 @@
         <item name="android:layout_margin">2dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textSize">@dimen/input_dialog_text_size</item>
-        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:background">@color/color_dialog_number_button</item>
+        <!--<item name="android:background">?android:attr/selectableItemBackground</item>-->
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="Money.Button.Input.Dialog.Operator" parent="Money.Button.Input.Dialog">
         <item name="android:textColor">@color/md_primary_dark</item>
+        <item name="android:background">@color/color_dialog_number_operator</item>
     </style>
 
     <style name="Money.TextView" parent="android:Widget.TextView">

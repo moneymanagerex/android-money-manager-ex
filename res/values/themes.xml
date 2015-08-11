@@ -27,7 +27,7 @@
     <style name="Theme.NoBackground" parent="android:Theme">
         <item name="android:windowBackground">@null</item>
     </style>
-    <!-- theme for simulating splash screen -->
+    <!-- theme for simulating splash screen. Currently not used. See Startup theme above. -->
     <style name="Theme.Splash" parent="android:Theme">
         <item name="android:windowBackground">@drawable/background_logo</item>
         <item name="android:windowNoTitle">true</item>
@@ -69,8 +69,6 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="md_dark_theme">false</item>
     </style>
-
-    <!--<style name="App" parent="@style/_App"/>-->
 
     <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar"/>
 
