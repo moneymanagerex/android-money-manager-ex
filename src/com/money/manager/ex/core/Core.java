@@ -211,8 +211,9 @@ public class Core {
         try {
             Locale locale;
             if (!TextUtils.isEmpty(languageToLoad)) {
-//                locale = new Locale(languageToLoad);
-                locale = Locale.forLanguageTag(languageToLoad);
+                locale = new Locale(languageToLoad);
+                // Below method is not available in emulator 4.1.1 (?!).
+//                locale = Locale.forLanguageTag(languageToLoad);
             } else {
                 locale = Locale.getDefault();
             }
