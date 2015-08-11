@@ -4,7 +4,6 @@ import com.money.manager.ex.core.NumericHelper;
 
 import junit.framework.TestCase;
 
-import org.junit.Before;
 
 /**
  * First unit test.
@@ -14,9 +13,15 @@ public class NumericHelperTest extends TestCase {
 
     private NumericHelper _numericHelper;
 
-    @Before
-    public void setup() {
+    public void setUp() throws Exception {
+        super.setUp();
+
         _numericHelper = new NumericHelper();
+
+    }
+
+    public void tearDown() throws Exception {
+
     }
 
     public void testIsNumeric() throws Exception {
@@ -25,7 +30,7 @@ public class NumericHelperTest extends TestCase {
     }
 
     public void testTryParse() throws Exception {
-
+        assertTrue(false);
     }
 
     public void testGetNumberFormatted() throws Exception {
