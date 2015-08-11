@@ -41,6 +41,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
 
@@ -115,10 +116,15 @@ public class AccountListFragment
                 if (new TablePayee().canDelete(getActivity(), contentValues)) {
                     showDialogDeleteAccount(cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
                 } else {
+                    Core core = new Core(getActivity());
+                    int icon = core.usingDarkTheme()
+                            ? R.drawable.ic_action_warning_dark
+                            : R.drawable.ic_action_warning_light;
+
                     new AlertDialogWrapper.Builder(getActivity())
                             .setTitle(R.string.attention)
                             .setMessage(R.string.account_can_not_deleted)
-                            .setIcon(R.drawable.ic_action_warning_light)
+                            .setIcon(icon)
                             .setPositiveButton(android.R.string.ok,
                                     new DialogInterface.OnClickListener() {
                                         @Override

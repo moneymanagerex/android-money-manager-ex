@@ -18,6 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="" versionName="">
+        <changelogtext>Restyled the numeric input calculator.</changelogtext>
         <changelogtext>Adjustment for prices retrieved from London Stock Exchange in pence.</changelogtext>
         <changelogtext>Improved support for currencies with scale of 1000.</changelogtext>
     </changelogversion>

@@ -447,10 +447,15 @@ public class CategoryListFragment
             canDelete = new TableSubCategory().canDelete(getActivity(), values);
         }
         if (!(canDelete)) {
+            Core core = new Core(getActivity());
+            int icon = core.usingDarkTheme()
+                ? R.drawable.ic_action_warning_dark
+                : R.drawable.ic_action_warning_light;
+
             new AlertDialogWrapper.Builder(getActivity())
                     .setTitle(R.string.attention)
                     .setMessage(R.string.category_can_not_deleted)
-                    .setIcon(R.drawable.ic_action_warning_light)
+                    .setIcon(icon)
                     .setPositiveButton(android.R.string.ok,
                             new DialogInterface.OnClickListener() {
                                 @Override

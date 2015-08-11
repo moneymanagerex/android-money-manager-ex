@@ -128,8 +128,9 @@ public class RecurringTransaction {
         int repeats = this.getRepeats();
         String currentNextOccurrence = mCursor.getString(mCursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
         Date newNextOccurrence = DateUtils.getDateFromString(mContext, currentNextOccurrence, Constants.PATTERN_DB_DATE);
+        int instances = mCursor.getInt(mCursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
         // calculate the next occurrence date
-        newNextOccurrence = DateUtils.getDateNextOccurrence(newNextOccurrence, repeats);
+        newNextOccurrence = DateUtils.getDateNextOccurrence(newNextOccurrence, repeats, instances);
 
         if (newNextOccurrence != null) {
             this.setNextOccurrenceDate(newNextOccurrence);
@@ -160,7 +161,6 @@ public class RecurringTransaction {
         }
 
         // result is true if deletion of related splits was successful.
-        // result = result;
 
         return result;
     }

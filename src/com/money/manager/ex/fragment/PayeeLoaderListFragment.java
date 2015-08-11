@@ -52,6 +52,7 @@ import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.AppSettings;
@@ -184,10 +185,15 @@ public class PayeeLoaderListFragment
                 if (new TablePayee().canDelete(getActivity(), contentValues)) {
                     showDialogDeletePayee(cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
                 } else {
+                    Core core = new Core(getActivity());
+                    int icon = core.usingDarkTheme()
+                            ? R.drawable.ic_action_warning_dark
+                            : R.drawable.ic_action_warning_light;
+
                     new AlertDialogWrapper.Builder(getActivity())
                             .setTitle(R.string.attention)
                             .setMessage(R.string.payee_can_not_deleted)
-                            .setIcon(R.drawable.ic_action_warning_light)
+                            .setIcon(icon)
                             .setPositiveButton(android.R.string.ok,
                                     new DialogInterface.OnClickListener() {
                                         @Override
@@ -321,7 +327,12 @@ public class PayeeLoaderListFragment
 
         alertDialog.setTitle(R.string.delete_payee);
         alertDialog.setMessage(R.string.confirmDelete);
-        alertDialog.setIcon(R.drawable.ic_action_warning_light);
+
+        Core core = new Core(getActivity());
+        int icon = core.usingDarkTheme()
+                ? R.drawable.ic_action_warning_dark
+                : R.drawable.ic_action_warning_light;
+        alertDialog.setIcon(icon);
 
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {

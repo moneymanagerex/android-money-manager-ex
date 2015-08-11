@@ -40,6 +40,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -166,10 +167,15 @@ public class CurrencyListFragment
                 if (new TablePayee().canDelete(getActivity(), contentValues, TableAccountList.class.getName())) {
                     showDialogDeleteCurrency(currencyId);
                 } else {
+                    Core core = new Core(getActivity());
+                    int icon = core.usingDarkTheme()
+                            ? R.drawable.ic_action_warning_dark
+                            : R.drawable.ic_action_warning_light;
+
                     new AlertDialogWrapper.Builder(getActivity())
                         .setTitle(R.string.attention)
                         .setMessage(R.string.currency_can_not_deleted)
-                        .setIcon(R.drawable.ic_action_warning_light)
+                        .setIcon(icon)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

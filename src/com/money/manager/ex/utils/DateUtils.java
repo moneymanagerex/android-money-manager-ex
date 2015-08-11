@@ -130,22 +130,28 @@ public class DateUtils {
         return pattern;
     }
 
+//    public static Date getDateNextOccurrence(Date date, int repeats) {
+//        return getDateNextOccurrence(date, repeats, 0);
+//    }
+
     /**
      * @param date    to start calculate
-     * @param repeats type of repeating transactions
+     * @param repeatType type of repeating transactions
+     * @param instances Number of instances (days, months) parameter. Used for In (x) Days, for
+     *                  example to indicate x.
      * @return next Date
      */
-    public static Date getDateNextOccurrence(Date date, int repeats) {
-        if (repeats >= 200) {
-            repeats = repeats - 200;
+    public static Date getDateNextOccurrence(Date date, int repeatType, int instances) {
+        if (repeatType >= 200) {
+            repeatType = repeatType - 200;
         } // set auto execute without user acknowledgement
-        if (repeats >= 100) {
-            repeats = repeats - 100;
+        if (repeatType >= 100) {
+            repeatType = repeatType - 100;
         } // set auto execute on the next occurrence
         // create object calendar
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        switch (repeats) {
+        switch (repeatType) {
             case 0: //none
                 break;
             case 1: //weekly
@@ -179,9 +185,12 @@ public class DateUtils {
                 calendar.add(Calendar.DATE, 1);
                 break;
             case 11: //in_x_days
-            case 12: //in_x_months
             case 13: //every_x_days
+                calendar.add(Calendar.DATE, instances);
+                break;
+            case 12: //in_x_months
             case 14: //every_x_months
+                calendar.add(Calendar.MONTH, instances);
                 break;
             case 15: //month (last day)
                 calendar.add(Calendar.MONTH, 1);
@@ -189,6 +198,14 @@ public class DateUtils {
                 calendar.add(Calendar.DATE, -1);
                 break;
             case 16: //month (last business day)
+                // get the last day of the month first.
+                calendar.add(Calendar.MONTH, 1);
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+                calendar.add(Calendar.DATE, -1);
+                // now iterate backwards until we are not on weekend day.
+                while(calendar.equals(Calendar.SATURDAY) || calendar.equals(Calendar.SUNDAY)) {
+                    calendar.add(Calendar.DATE, -1);
+                }
                 break;
         }
         return calendar.getTime();

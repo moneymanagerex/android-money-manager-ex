@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxManager;
@@ -81,9 +82,14 @@ public class CheckDropboxForUpdatesTask
         // The context has to implement the callbacks interface!
         final MainActivity mainActivity = (MainActivity) mContext;
 
+        Core core = new Core(mContext);
+        int icon = core.usingDarkTheme()
+                ? R.drawable.ic_action_warning_dark
+                : R.drawable.ic_action_warning_light;
+
         new AlertDialogWrapper.Builder(mContext)
                 // setting alert dialog
-                .setIcon(R.drawable.ic_action_warning_light)
+                .setIcon(icon)
                 .setTitle(R.string.update_available)
                 .setMessage(R.string.update_on_dropbox)
                 .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {

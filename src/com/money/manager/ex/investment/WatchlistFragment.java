@@ -42,12 +42,14 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -179,13 +181,11 @@ public class WatchlistFragment extends Fragment
         // manage fragment
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        mDataFragment = WatchlistItemsFragment.newInstance(mAccountId, this);
+        mDataFragment = WatchlistItemsFragment.newInstance(this);
         // set arguments and settings of fragment
         mDataFragment.setArguments(prepareArgsForChildFragment());
         mDataFragment.setListHeader(header);
         mDataFragment.setAutoStarLoader(false);
-//        mDataFragment.setContextMenuGroupId(mAccountId);
-//        mDataFragment.setSearResultFragmentLoaderCallbacks(this);
 
         // add fragment
         transaction.replace(R.id.fragmentContent, mDataFragment, getNameFragment());
@@ -391,10 +391,15 @@ public class WatchlistFragment extends Fragment
     }
 
     private void purgePriceHistory() {
+        Core core = new Core(getActivity());
+        int icon = core.usingDarkTheme()
+                ? R.drawable.ic_action_help_dark
+                : R.drawable.ic_action_help_light;
+
         new AlertDialogWrapper.Builder(getActivity())
                 .setTitle(R.string.purge_history)
                 .setMessage(R.string.purge_history_confirmation)
-                .setIcon(R.drawable.ic_action_help_light)
+                .setIcon(icon)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -421,19 +426,21 @@ public class WatchlistFragment extends Fragment
                 })
                 .create()
                 .show();
-
     }
 
     private void confirmPriceUpdate() {
+        Core core = new Core(mContext);
+        int icon = core.usingDarkTheme()
+                ? R.drawable.ic_action_help_dark
+                : R.drawable.ic_action_help_light;
+
         new AlertDialogWrapper.Builder(getActivity())
                 .setTitle(R.string.download)
                 .setMessage(R.string.confirm_price_download)
-                .setIcon(R.drawable.ic_action_help_light)
+                .setIcon(icon)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        Log.d(LOGCAT, "dialog: " + dialog.toString() + ", which: " + which);
-
                         // get the list of symbols
                         String[] symbols = getAllShownSymbols();
                         mToUpdateTotal = symbols.length;

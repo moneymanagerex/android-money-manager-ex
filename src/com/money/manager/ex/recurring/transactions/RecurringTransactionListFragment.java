@@ -65,11 +65,6 @@ public class RecurringTransactionListFragment
     private static QueryBillDeposits mBillDeposits;
     // filter
     private String mCurFilter;
-    /**
-     * The cursor position of the current transaction in the list of all transactions.
-     * The active transaction is the one on which we are performing an operation (edit, enter...).
-     */
-    private int mActiveTransactionPosition = 0;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -86,9 +81,10 @@ public class RecurringTransactionListFragment
                 .resolveIdAttribute(R.attr.theme_background_color)));
 
         setListShown(false);
-        // start loaderapplication.getSQLiteStringDate(date)
+
         getLoaderManager().initLoader(ID_LOADER_REPEATING, null, this);
-        // set fab visible
+
+        // show floating button.
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
     }
@@ -106,23 +102,31 @@ public class RecurringTransactionListFragment
         Date date;
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        this.mActiveTransactionPosition = info.position;
+        /*
+      The cursor position of the current transaction in the list of all transactions.
+      The active transaction is the one on which we are performing an operation (edit, enter...).
+     */
+        int activeTransactionPosition = info.position;
 
         // move cursor to selected item's position.
         Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
-        if (cursor != null) {
-            cursor.moveToPosition(mActiveTransactionPosition);
+        if (cursor == null) {
+            return false;
+        }
 
-            int selectedItemId = item.getItemId();
-            int transactionId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
+        cursor.moveToPosition(activeTransactionPosition);
 
-            //quick-fix convert 'switch' to 'if-else'
-            if (selectedItemId == R.id.menu_enter_next_occurrence) {
+        int selectedItemId = item.getItemId();
+        int transactionId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
+
+        switch (selectedItemId) {
+            case R.id.menu_enter_next_occurrence:
                 nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
                 repeats = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
+                int instances = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
                 bdId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
                 date = DateUtils.getDateFromString(getActivity(), nextOccurrence, Constants.PATTERN_DB_DATE);
-                date = DateUtils.getDateNextOccurrence(date, repeats);
+                date = DateUtils.getDateNextOccurrence(date, repeats, instances);
                 if (date != null) {
                     Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
                     intent.setAction(Constants.INTENT_ACTION_INSERT);
@@ -132,14 +136,18 @@ public class RecurringTransactionListFragment
                     // start for insert new transaction
                     startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
                 }
-            } else if (selectedItemId == R.id.menu_skip_next_occurrence) {
+                break;
+            case R.id.menu_skip_next_occurrence:
                 showDialogSkip(transactionId);
-            } else if (selectedItemId == R.id.menu_edit) {
+                break;
+            case R.id.menu_edit:
                 startRecurringTransactionActivity(transactionId, REQUEST_EDIT_REPEATING_TRANSACTION);
-            } else if (selectedItemId == R.id.menu_delete) {
+                break;
+            case R.id.menu_delete:
                 showDialogDelete(transactionId);
-            }
+                break;
         }
+
         return false;
     }
 

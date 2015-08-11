@@ -84,13 +84,10 @@ public class WatchlistItemsFragment
     /**
      * Create a new instance of the fragment with accountId params
      *
-     * @param accountId Id of account to display. If generic shown set -1
      * @return new instance AllDataFragment
      */
-    public static WatchlistItemsFragment newInstance(
-            int accountId, IWatchlistItemsFragmentEventHandler eventHandler) {
+    public static WatchlistItemsFragment newInstance(IWatchlistItemsFragmentEventHandler eventHandler) {
         WatchlistItemsFragment fragment = new WatchlistItemsFragment();
-//        fragment.mAccountId = accountId;
         fragment.mEventHandler = eventHandler;
         return fragment;
     }

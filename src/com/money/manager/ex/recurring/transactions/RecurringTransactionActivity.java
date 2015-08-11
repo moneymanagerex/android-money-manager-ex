@@ -48,6 +48,7 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.transactions.YesNoDialog;
 import com.money.manager.ex.core.Core;
@@ -127,7 +128,6 @@ public class RecurringTransactionActivity
     private String mPayeeName, mTextDefaultPayee;
     // info category and subcategory
     private int mCategoryId = Constants.NOT_SET, mSubCategoryId = Constants.NOT_SET;
-//    private String mCategoryName, mSubCategoryName;
     // arrays to manage transcode and status
     private String[] mTransCodeItems, mStatusItems;
     private String[] mTransCodeValues, mStatusValues;
@@ -158,91 +158,17 @@ public class RecurringTransactionActivity
     private EditTransactionCommonFunctions mCommonFunctions;
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_PICK_PAYEE:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
-                    mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
-                    // select last category used from payee
-                    if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
-                        if (getCategoryFromPayee(mPayeeId)) {
-                            mCommonFunctions.refreshCategoryName(); // refresh UI
-                        }
-                    }
-                    // refresh UI
-                    refreshPayeeName();
-                }
-                break;
-            case REQUEST_PICK_CATEGORY:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-                    mCommonFunctions.mCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                    mSubCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-                    mCommonFunctions.mSubCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
-                    // refresh UI category
-                    mCommonFunctions.refreshCategoryName();
-                }
-                break;
-            case REQUEST_PICK_SPLIT_TRANSACTION:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
-                    if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
-                        double totAmount = 0;
-                        for (int i = 0; i < mSplitTransactions.size(); i++) {
-                            totAmount += mSplitTransactions.get(i).getSplitTransAmount();
-                        }
-                        Core core = new Core(getBaseContext());
-//                        formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
-                        int accountId = !mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer)
-                                ? mCommonFunctions.mAccountId
-                                : mCommonFunctions.mToAccountId;
-                        core.formatAmountTextView(mCommonFunctions.txtTotAmount, totAmount, getCurrencyIdFromAccountId(accountId));
-                    }
-                    // deleted item
-                    if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
-                        mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
-                    }
-                }
-                break;
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.repeatingtransaction_activity);
+        setContentView(R.layout.recurringtransaction_activity);
 
         setToolbarStandardAction(getToolbar());
 
         mCommonFunctions = new EditTransactionCommonFunctions(this);
 
         // manage save instance
-        if ((savedInstanceState != null)) {
-            mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
-            mCommonFunctions.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
-            mCommonFunctions.mToAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
-            mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
-            String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
-            mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
-            mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
-            mAmount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
-            mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
-            mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
-            mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
-            mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
-            mCommonFunctions.mCategoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
-            mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
-            mCommonFunctions.mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
-            mNotes = savedInstanceState.getString(KEY_NOTES);
-            mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
-            mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
-            mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
-            mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
-            mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
-            mNumOccurrence = savedInstanceState.getInt(KEY_NUM_OCCURRENCE);
-            // action
-            mIntentAction = savedInstanceState.getString(KEY_ACTION);
+        if (savedInstanceState != null) {
+            restoreInstanceState(savedInstanceState);
         }
 
         // Controls need to be at the beginning as they are referenced throughout the code.
@@ -513,6 +439,57 @@ public class RecurringTransactionActivity
         refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
         refreshTimesRepeated();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_PICK_PAYEE:
+                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                    mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
+                    mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
+                    // select last category used from payee
+                    if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
+                        if (getCategoryFromPayee(mPayeeId)) {
+                            mCommonFunctions.refreshCategoryName(); // refresh UI
+                        }
+                    }
+                    // refresh UI
+                    refreshPayeeName();
+                }
+                break;
+            case REQUEST_PICK_CATEGORY:
+                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                    mCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                    mCommonFunctions.mCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
+                    mSubCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                    mCommonFunctions.mSubCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
+                    // refresh UI category
+                    mCommonFunctions.refreshCategoryName();
+                }
+                break;
+            case REQUEST_PICK_SPLIT_TRANSACTION:
+                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                    mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                    if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
+                        double totAmount = 0;
+                        for (int i = 0; i < mSplitTransactions.size(); i++) {
+                            totAmount += mSplitTransactions.get(i).getSplitTransAmount();
+                        }
+                        Core core = new Core(getBaseContext());
+//                        formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
+                        int accountId = !mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer)
+                                ? mCommonFunctions.mAccountId
+                                : mCommonFunctions.mToAccountId;
+                        core.formatAmountTextView(mCommonFunctions.txtTotAmount, totAmount, getCurrencyIdFromAccountId(accountId));
+                    }
+                    // deleted item
+                    if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
+                        mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                    }
+                }
+                break;
+        }
     }
 
     @Override
@@ -799,7 +776,8 @@ public class RecurringTransactionActivity
             Locale locale = getResources().getConfiguration().locale;
             dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", locale).format((Date) dateTextView.getTag()));
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(this, this);
+            handler.handle(e, "formatting extended date");
         }
     }
 
@@ -1157,5 +1135,31 @@ public class RecurringTransactionActivity
         return ret;
     }
 
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
+        mCommonFunctions.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
+        mCommonFunctions.mToAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
+        mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
+        String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
+        mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
+        mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
+        mAmount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
+        mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
+        mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
+        mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
+        mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
+        mCommonFunctions.mCategoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
+        mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
+        mCommonFunctions.mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
+        mNotes = savedInstanceState.getString(KEY_NOTES);
+        mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
+        mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
+        mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
+        mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
+        mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
+        mNumOccurrence = savedInstanceState.getInt(KEY_NUM_OCCURRENCE);
+        // action
+        mIntentAction = savedInstanceState.getString(KEY_ACTION);
+    }
 }
 

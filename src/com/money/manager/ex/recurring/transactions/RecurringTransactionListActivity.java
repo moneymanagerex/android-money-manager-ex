@@ -30,14 +30,17 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
-public class RecurringTransactionListActivity extends BaseFragmentActivity {
+public class RecurringTransactionListActivity
+        extends BaseFragmentActivity {
+
     public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RecurringTransactionListActivity:LaunchNotification";
     public static final int INTENT_REQUEST_PASSCODE = 2;
-    public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
-    public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
-    @SuppressWarnings("unused")
-    private static final String LOGCAT = RecurringTransactionListActivity.class.getSimpleName();
+//    public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
+//    public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
+//    @SuppressWarnings("unused")
+//    private static final String LOGCAT = RecurringTransactionListActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = RecurringTransactionListActivity.class.getSimpleName() + "_Fragment";
+
     private RecurringTransactionListFragment listFragment;
 
     @Override
