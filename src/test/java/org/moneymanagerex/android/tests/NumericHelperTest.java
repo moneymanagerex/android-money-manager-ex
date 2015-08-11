@@ -21,7 +21,7 @@ public class NumericHelperTest extends TestCase {
     }
 
     public void tearDown() throws Exception {
-
+        _numericHelper = null;
     }
 
     public void testIsNumeric() throws Exception {
@@ -30,7 +30,8 @@ public class NumericHelperTest extends TestCase {
     }
 
     public void testTryParse() throws Exception {
-        assertTrue(false);
+        int actual = _numericHelper.tryParse("64");
+        assertEquals(64, actual);
     }
 
     public void testGetNumberFormatted() throws Exception {
