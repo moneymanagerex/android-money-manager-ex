@@ -143,6 +143,8 @@ public class RecurringTransactionListFragment
         return false;
     }
 
+    // Menu
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -175,9 +177,9 @@ public class RecurringTransactionListFragment
                     select = TableAccountList.ACCOUNTNAME + " LIKE '" + mCurFilter + "%'";
                 }
                 return new MmexCursorLoader(getActivity(), mBillDeposits.getUri(),
-                        mBillDeposits.getAllColumns(),
-                        select, null,
-                        QueryBillDeposits.NEXTOCCURRENCEDATE);
+                    mBillDeposits.getAllColumns(),
+                    select, null,
+                    QueryBillDeposits.NEXTOCCURRENCEDATE);
         }
 
         return null;
