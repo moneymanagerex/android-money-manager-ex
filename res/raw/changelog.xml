@@ -17,8 +17,12 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="" versionName="">
+    <changelogversion changeDate="August 12, 2015" versionName="2.14.2-beta1">
+        <changelogtext>Correcting handling for recurring transactions that occur 'every X days'.</changelogtext>
+        <changelogtext>Correcting the wrong sign for transactions imported via .qif in the desktop version.</changelogtext>
+        <changelogtext>Ability to set default currency for new databases with locales not directly supported by Android.</changelogtext>
         <changelogtext>Restyled the numeric input calculator.</changelogtext>
+        <changelogtext>Language change correction.</changelogtext>
         <changelogtext>Adjustment for prices retrieved from London Stock Exchange in pence.</changelogtext>
         <changelogtext>Improved support for currencies with scale of 1000.</changelogtext>
     </changelogversion>
