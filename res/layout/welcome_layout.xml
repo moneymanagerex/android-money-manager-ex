@@ -56,6 +56,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
+                android:text="@string/current_database"
+                android:textSize="18sp"
+                app:typeface="roboto_light" />
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/currentDatabaseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/current_database"
+                android:textSize="14sp"
+                app:typeface="roboto_light" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/welcome_body"
                 android:textSize="18sp"
                 app:typeface="roboto_light" />
