@@ -84,7 +84,7 @@ public class AccountTransactionsFragment
 
     private final String LOGCAT = this.getClass().getSimpleName();
 
-    AllDataFragment mAllDataFragment;
+    private AllDataFragment mAllDataFragment;
     private Integer mAccountId = null;
     // Id of the period in the period picker in the toolbar.
     private int mPeriodIndex = Constants.NOT_SET;
