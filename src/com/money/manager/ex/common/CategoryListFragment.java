@@ -434,17 +434,17 @@ public class CategoryListFragment
     /**
      * Show alter dialog confirm delete category or sub category
      *
-     * @param categId    id of category
-     * @param subCategId id of subcategory. 0 if not sub category
+     * @param categoryId    id of category
+     * @param subCategoryId id of subcategory. 0 if not sub category
      */
-    private void showDialogDeleteCategorySub(final int categId, final int subCategId) {
+    private void showDialogDeleteCategorySub(final int categoryId, final int subCategoryId) {
         boolean canDelete = false;
         ContentValues values = new ContentValues();
-        if (subCategId <= 0) {
-            values.put(TableCategory.CATEGID, categId);
+        if (subCategoryId <= 0) {
+            values.put(TableCategory.CATEGID, categoryId);
             canDelete = new TableCategory().canDelete(getActivity(), values);
         } else {
-            values.put(TableSubCategory.SUBCATEGID, subCategId);
+            values.put(TableSubCategory.SUBCATEGID, subCategoryId);
             canDelete = new TableSubCategory().canDelete(getActivity(), values);
         }
         if (!(canDelete)) {
@@ -479,12 +479,12 @@ public class CategoryListFragment
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         int rowsDelete = 0;
-                        if (subCategId <= 0) {
+                        if (subCategoryId <= 0) {
                             rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(),
-                                    TableCategory.CATEGID + "=" + categId, null);
+                                    TableCategory.CATEGID + "=" + categoryId, null);
                         } else {
                             rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(),
-                                    TableSubCategory.CATEGID + "=" + categId + " AND " + TableSubCategory.SUBCATEGID + "=" + subCategId, null);
+                                    TableSubCategory.CATEGID + "=" + categoryId + " AND " + TableSubCategory.SUBCATEGID + "=" + subCategoryId, null);
                         }
                         if (rowsDelete == 0) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
@@ -508,16 +508,15 @@ public class CategoryListFragment
      * Show alter dialog, for create or edit new category
      */
     private void showDialogEditCategoryName(final SQLTypeTransaction type, final int categoryId,
-                                            final CharSequence categName) {
-        final TableCategory category = new TableCategory();
+                                            final CharSequence categoryName) {
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
 
         final EditText edtCategName = (EditText) viewDialog.findViewById(R.id.editTextCategName);
         // set category description
-        edtCategName.setText(categName);
-        if (!TextUtils.isEmpty(categName)) {
-            edtCategName.setSelection(categName.length());
+        edtCategName.setText(categoryName);
+        if (!TextUtils.isEmpty(categoryName)) {
+            edtCategName.setSelection(categoryName.length());
         }
 
         int titleId = type.equals(SQLTypeTransaction.INSERT)
@@ -590,18 +589,18 @@ public class CategoryListFragment
         CategoryService categoryService = new CategoryService(getActivity());
         final List<TableCategory> categories = categoryService.getCategoryList();
 
-        ArrayList<String> categName = new ArrayList<>();
-        ArrayList<Integer> categId = new ArrayList<>();
+        ArrayList<String> categoryNames = new ArrayList<>();
+        ArrayList<Integer> categoryIds = new ArrayList<>();
         for (TableCategory category : categories) {
-            categId.add(category.getCategId());
-            categName.add(category.getCategName().toString());
+            categoryIds.add(category.getCategId());
+            categoryNames.add(category.getCategName().toString());
         }
-        ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categName);
+        ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categoryNames);
         adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnCategory.setAdapter(adapterCategory);
         //select category if present
         if (categoryId > 0) {
-            spnCategory.setSelection(categId.indexOf(categoryId), true);
+            spnCategory.setSelection(categoryIds.indexOf(categoryId), true);
         }
 
         int titleId = type.equals(SQLTypeTransaction.INSERT)
@@ -703,32 +702,6 @@ public class CategoryListFragment
                     return false;
                 }
             });
-
-            // Long-click selects the category.
-//            getExpandableListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//                @Override
-//                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                    // i = position, l = id
-//                    Object selectedItem = adapterView.getItemAtPosition(i);
-//                    CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-//                    if (selectedItem instanceof TableCategory) {
-//                        // this is a category
-//                        TableCategory category = (TableCategory) selectedItem;
-//                        adapter.setIdGroupChecked(category.getCategId());
-//                    } else {
-//                        // subcategory
-//                        QueryCategorySubCategory subCategory = (QueryCategorySubCategory) selectedItem;
-//                        adapter.setIdChildChecked(subCategory.getCategId(), subCategory.getSubCategId());
-//                    }
-//
-//                    CategoryListFragment fragment =
-//                            (CategoryListFragment) getActivity()
-//                                    .getSupportFragmentManager().findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
-//                    fragment.setResultAndFinish();
-//                    return true;
-//                }
-//            });
-
         }
     }
 
