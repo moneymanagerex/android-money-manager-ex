@@ -433,7 +433,7 @@ public class RecurringTransactionActivity
         });
         // refresh user interface
         refreshAfterTransactionCodeChange();
-        refreshPayeeName();
+        mCommonFunctions.refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
         refreshTimesRepeated();
     }
@@ -452,9 +452,10 @@ public class RecurringTransactionActivity
                         }
                     }
                     // refresh UI
-                    refreshPayeeName();
+                    mCommonFunctions.refreshPayeeName();
                 }
                 break;
+            
             case REQUEST_PICK_CATEGORY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
@@ -780,15 +781,6 @@ public class RecurringTransactionActivity
 
     public boolean hasSplitCategories() {
         return mSplitTransactions != null && !mSplitTransactions.isEmpty();
-    }
-
-    /**
-     * update UI interface with PayeeName
-     */
-    public void refreshPayeeName() {
-        // write into text button payee name
-        mCommonFunctions.txtSelectPayee.setText(!TextUtils.isEmpty(mCommonFunctions.payeeName)
-                ? mCommonFunctions.payeeName : "");
     }
 
     public void refreshAfterTransactionCodeChange() {

@@ -378,7 +378,7 @@ public class EditTransactionActivity
 
         // refresh user interface
         refreshAfterTransactionCodeChange();
-        refreshPayeeName();
+        mCommonFunctions.refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
     }
 
@@ -397,7 +397,7 @@ public class EditTransactionActivity
                     }
                 }
                 // refresh UI
-                refreshPayeeName();
+                mCommonFunctions.refreshPayeeName();
                 break;
             case EditTransactionActivityConstants.REQUEST_PICK_ACCOUNT:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
@@ -561,7 +561,7 @@ public class EditTransactionActivity
                         if (result) {
                             try {
                                 // refresh field
-                                refreshPayeeName();
+                                mCommonFunctions.refreshPayeeName();
                                 mCommonFunctions.refreshCategoryName();
                             } catch (Exception e) {
                                 Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
@@ -1101,16 +1101,6 @@ public class EditTransactionActivity
 
     public boolean hasSplitCategories() {
         return mSplitTransactions != null && !mSplitTransactions.isEmpty();
-    }
-
-    /**
-     * update UI interface with PayeeName
-     */
-    public void refreshPayeeName() {
-        // write into text button payee name
-        if (mCommonFunctions.txtSelectPayee != null) {
-            mCommonFunctions.txtSelectPayee.setText(mCommonFunctions.payeeName);
-        }
     }
 
     /**

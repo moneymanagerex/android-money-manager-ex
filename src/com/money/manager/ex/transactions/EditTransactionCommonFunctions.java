@@ -196,6 +196,8 @@ public class EditTransactionCommonFunctions {
             public void onClick(View v) {
                 payeeId = Constants.NOT_SET;
                 payeeName = "";
+
+                refreshPayeeName();
             }
         });
     }
@@ -244,6 +246,19 @@ public class EditTransactionCommonFunctions {
                 txtHeaderTotAmount.setText(mContext.getString(R.string.deposit_to,
                         this.AccountList.get(index).getAccountName()));
             }
+        }
+    }
+
+    /**
+     * update UI interface with PayeeName
+     */
+    public void refreshPayeeName() {
+        // write into text button payee name
+        if (txtSelectPayee != null) {
+            String text = !TextUtils.isEmpty(payeeName)
+                    ? payeeName : "";
+
+            txtSelectPayee.setText(text);
         }
     }
 
