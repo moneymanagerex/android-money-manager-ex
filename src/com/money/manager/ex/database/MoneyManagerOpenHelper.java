@@ -273,20 +273,24 @@ public class MoneyManagerOpenHelper
     private boolean initDatabase(SQLiteDatabase database) {
         TableInfoTable infoTable = new TableInfoTable();
         Cursor infoCurrency = null, infoDate = null;
-        // check if database is initial
+        // check if database is initialized
         // currencies
         try {
-            infoCurrency = database.rawQuery("SELECT * FROM " + infoTable.getSource() + " WHERE " + TableInfoTable.INFONAME + "=?",
-                    new String[]{Constants.INFOTABLE_BASECURRENCYID});
+            infoCurrency = database.rawQuery("SELECT * FROM " + infoTable.getSource() +
+                            " WHERE " + TableInfoTable.INFONAME + "=?",
+                    new String[]{ Constants.INFOTABLE_BASECURRENCYID });
 
-            if (!(infoCurrency != null && infoCurrency.moveToFirst())) {
+            boolean recordExists = (infoCurrency != null && infoCurrency.moveToFirst());
+            if (!recordExists) {
                 // get current currencies
                 Currency currency = Currency.getInstance(Locale.getDefault());
 
                 if (currency != null) {
                     Cursor cursor = database.rawQuery(
-                            "SELECT CURRENCYID FROM CURRENCYFORMATS_V1 WHERE CURRENCY_SYMBOL=?",
-                            new String[]{currency.getCurrencyCode()});
+                        "SELECT " + TableCurrencyFormats.CURRENCYID +
+                        " FROM CURRENCYFORMATS_V1" +
+                        " WHERE " + TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
+                        new String[]{currency.getCurrencyCode()});
                     if (cursor != null && cursor.moveToFirst()) {
                         ContentValues values = new ContentValues();
 
@@ -297,9 +301,12 @@ public class MoneyManagerOpenHelper
                         cursor.close();
                     }
                 }
+            } else {
+                // Update the (empty) record to the default currency.
             }
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "init database, currency");
         } finally {
             if (infoCurrency != null)
                 infoCurrency.close();
@@ -347,7 +354,8 @@ public class MoneyManagerOpenHelper
                 }
             }
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "init database, date format");
         } finally {
             if (infoDate != null)
                 infoDate.close();
@@ -390,7 +398,8 @@ public class MoneyManagerOpenHelper
                 countCategories.close();
             }
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "init database, categories");
         }
 
         return true;
