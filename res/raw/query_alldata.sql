@@ -1,4 +1,4 @@
---
+-- Account Transactions list
 SELECT 	CANS.TransID AS ID,
 	CANS.TransCode AS TransactionType,
 	date( CANS.TransDate ) AS Date,
@@ -6,8 +6,8 @@ SELECT 	CANS.TransID AS ID,
 	CAT.CategName as Category,
 	SUBCAT.SUBCategName as Subcategory,
 	CASE
-	    WHEN CANS.ToTransAmount = 0 THEN ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.TransAmount
-	    ELSE ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.ToTransAmount
+	    WHEN CANS.TransAmount = 0 THEN ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.ToTransAmount
+	    ELSE ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.TransAmount
 	END as Amount,
 	ifnull(cfTo.currency_symbol, cf.currency_symbol) AS currency,
 	CANS.Status AS Status,
