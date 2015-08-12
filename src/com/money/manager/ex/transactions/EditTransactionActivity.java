@@ -102,9 +102,6 @@ public class EditTransactionActivity
 
     public String mStatus = null;
 
-    // info payee
-    public int mPayeeId = -1;
-    public String mPayeeName;
     // info category and subcategory
     public int mCategoryId = Constants.NOT_SET;
     public int mSubCategoryId = Constants.NOT_SET;
@@ -391,11 +388,11 @@ public class EditTransactionActivity
             case EditTransactionActivityConstants.REQUEST_PICK_PAYEE:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
-                mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
-                mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
+                mCommonFunctions.payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
+                mCommonFunctions.payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
                 if (!mCommonFunctions.chbSplitTransaction.isChecked() && mCategoryId == Constants.NOT_SET) {
-                    if (setCategoryFromPayee(mPayeeId)) {
+                    if (setCategoryFromPayee(mCommonFunctions.payeeId)) {
                         mCommonFunctions.refreshCategoryName(); // refresh UI
                     }
                 }
@@ -478,8 +475,8 @@ public class EditTransactionActivity
         mStatus = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
         mAmount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT);
         mTotAmount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT);
-        mPayeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
-        mPayeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
+        mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
+        mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCategoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID);
         mCommonFunctions.mCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
         mSubCategoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID);
@@ -540,10 +537,10 @@ public class EditTransactionActivity
                         try {
                             Core core = new Core(getApplicationContext());
                             TablePayee payee = core.getLastPayeeUsed();
-                            if (payee != null && mPayeeId == -1) {
+                            if (payee != null && mCommonFunctions.payeeId == -1) {
                                 // get id payee and category
-                                mPayeeId = payee.getPayeeId();
-                                mPayeeName = payee.getPayeeName();
+                                mCommonFunctions.payeeId = payee.getPayeeId();
+                                mCommonFunctions.payeeName = payee.getPayeeName();
                                 mCategoryId = payee.getCategId();
                                 mSubCategoryId = payee.getSubCategId();
                                 // load category and subcategory name
@@ -615,14 +612,14 @@ public class EditTransactionActivity
         this.mTotAmount = parameters.amount;
         // payee
         if (parameters.payeeId > 0) {
-            this.mPayeeId = parameters.payeeId;
-            this.mPayeeName = parameters.payeeName;
+            this.mCommonFunctions.payeeId = parameters.payeeId;
+            this.mCommonFunctions.payeeName = parameters.payeeName;
         } else {
             // create payee if it does not exist
             if (parameters.payeeName != null) {
                 PayeeService newPayee = new PayeeService(this);
-                mPayeeId = newPayee.createNew(parameters.payeeName);
-                mPayeeName = parameters.payeeName;
+                mCommonFunctions.payeeId = newPayee.createNew(parameters.payeeName);
+                mCommonFunctions.payeeName = parameters.payeeName;
             }
         }
 
@@ -770,8 +767,8 @@ public class EditTransactionActivity
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mStatus);
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
-        outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mPayeeId);
-        outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mPayeeName);
+        outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.payeeId);
+        outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
         outState.putInt(EditTransactionActivityConstants.KEY_CATEGORY_ID, mCategoryId);
         outState.putString(EditTransactionActivityConstants.KEY_CATEGORY_NAME, mCommonFunctions.mCategoryName);
         outState.putInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, mSubCategoryId);
@@ -984,7 +981,7 @@ public class EditTransactionActivity
         mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
         mAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
         mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
-        mPayeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
+        mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
         mCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
         mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
         mTransNumber = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSACTIONNUMBER));
@@ -1015,7 +1012,7 @@ public class EditTransactionActivity
         AccountRepository accountRepository = new AccountRepository(this);
         mToAccountName = accountRepository.loadName(mCommonFunctions.mToAccountId);
 
-        getPayeeName(mPayeeId);
+        getPayeeName(mCommonFunctions.payeeId);
         loadCategorySubName(mCategoryId, mSubCategoryId);
 
         return true;
@@ -1039,7 +1036,7 @@ public class EditTransactionActivity
         }
 
         // set payeename
-        mPayeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
+        mCommonFunctions.payeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
 
         cursor.close();
 
@@ -1070,7 +1067,7 @@ public class EditTransactionActivity
         mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
         mAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
         mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
-        mPayeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
+        mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
         mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
         mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
         mTransNumber = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
@@ -1083,7 +1080,7 @@ public class EditTransactionActivity
         AccountRepository accountRepository = new AccountRepository(this);
         mToAccountName = accountRepository.loadName(mCommonFunctions.mToAccountId);
 
-        getPayeeName(mPayeeId);
+        getPayeeName(mCommonFunctions.payeeId);
         loadCategorySubName(mCategoryId, mSubCategoryId);
 
         // handle splits
@@ -1112,7 +1109,7 @@ public class EditTransactionActivity
     public void refreshPayeeName() {
         // write into text button payee name
         if (mCommonFunctions.txtSelectPayee != null) {
-            mCommonFunctions.txtSelectPayee.setText(mPayeeName);
+            mCommonFunctions.txtSelectPayee.setText(mCommonFunctions.payeeName);
         }
     }
 
@@ -1202,7 +1199,7 @@ public class EditTransactionActivity
             values.put(TableCheckingAccount.TOACCOUNTID, mCommonFunctions.mToAccountId);
             values.put(TableCheckingAccount.PAYEEID, -1);
         } else {
-            values.put(TableCheckingAccount.PAYEEID, mPayeeId);
+            values.put(TableCheckingAccount.PAYEEID, mCommonFunctions.payeeId);
         }
         values.put(TableCheckingAccount.TRANSCODE, getTransactionType());
         if (TextUtils.isEmpty(mCommonFunctions.txtAmount.getText().toString()) || (!isTransfer)) {
@@ -1306,7 +1303,7 @@ public class EditTransactionActivity
         }
 
         // update category and subcategory payee
-        if ((!isTransfer) && (mPayeeId > 0) && !hasSplitCategories) {
+        if ((!isTransfer) && (mCommonFunctions.payeeId > 0) && !hasSplitCategories) {
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
@@ -1316,9 +1313,9 @@ public class EditTransactionActivity
             TablePayee payee = new TablePayee();
             // update data
             if (getContentResolver().update(payee.getUri(), values,
-                    TablePayee.PAYEEID + "=" + Integer.toString(mPayeeId), null) <= 0) {
+                    TablePayee.PAYEEID + "=" + Integer.toString(mCommonFunctions.payeeId), null) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(EditTransactionActivityConstants.LOGCAT, "Update Payee with Id=" + Integer.toString(mPayeeId) + " return <= 0");
+                Log.w(EditTransactionActivityConstants.LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.payeeId) + " return <= 0");
             }
         }
 

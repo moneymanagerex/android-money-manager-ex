@@ -38,7 +38,6 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.recurring.transactions.RecurringTransactionActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.shamanland.fonticon.FontIconButton;
 
@@ -55,6 +54,11 @@ public class EditTransactionCommonFunctions {
     public EditTransactionCommonFunctions(Context context) {
         mContext = context;
     }
+
+    // info payee
+    public int payeeId = Constants.NOT_SET;
+    public String payeeName;
+
 
     public List<TableAccountList> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
@@ -190,8 +194,8 @@ public class EditTransactionCommonFunctions {
         removePayeeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo: remove payee
-
+                payeeId = Constants.NOT_SET;
+                payeeName = "";
             }
         });
     }

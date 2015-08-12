@@ -122,9 +122,6 @@ public class RecurringTransactionActivity
     private String mToAccountName;
     private int mBillDepositsId = Constants.NOT_SET;
     private String mStatus;
-    // info payee
-    private int mPayeeId = Constants.NOT_SET;
-    private String mPayeeName;
     // info category and subcategory
     private int mCategoryId = Constants.NOT_SET, mSubCategoryId = Constants.NOT_SET;
     // arrays to manage transcode and status
@@ -446,11 +443,11 @@ public class RecurringTransactionActivity
         switch (requestCode) {
             case EditTransactionCommonFunctions.REQUEST_PICK_PAYEE:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
-                    mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
+                    mCommonFunctions.payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
+                    mCommonFunctions.payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                     // select last category used from payee
                     if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
-                        if (getCategoryFromPayee(mPayeeId)) {
+                        if (getCategoryFromPayee(mCommonFunctions.payeeId)) {
                             mCommonFunctions.refreshCategoryName(); // refresh UI
                         }
                     }
@@ -504,8 +501,8 @@ public class RecurringTransactionActivity
         outState.putString(KEY_TRANS_STATUS, mStatus);
         outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         outState.putDouble(KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
-        outState.putInt(KEY_PAYEE_ID, mPayeeId);
-        outState.putString(KEY_PAYEE_NAME, mPayeeName);
+        outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
+        outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
         outState.putInt(KEY_CATEGORY_ID, mCategoryId);
         outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.mCategoryName);
         outState.putInt(KEY_SUBCATEGORY_ID, mSubCategoryId);
@@ -715,7 +712,7 @@ public class RecurringTransactionActivity
 
         if (cursor.moveToFirst()) {
             // set payee name
-            mPayeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
+            mCommonFunctions.payeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
         }
         cursor.close();
 
@@ -747,7 +744,7 @@ public class RecurringTransactionActivity
         mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
         mAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
         mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
-        mPayeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
+        mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
         mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
         mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
         mTransNumber = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
@@ -765,7 +762,7 @@ public class RecurringTransactionActivity
         cursor.close();
 
         selectAccountName(mCommonFunctions.mToAccountId);
-        selectPayeeName(mPayeeId);
+        selectPayeeName(mCommonFunctions.payeeId);
         selectSubcategoryName(mCategoryId, mSubCategoryId);
 
         return true;
@@ -790,8 +787,8 @@ public class RecurringTransactionActivity
      */
     public void refreshPayeeName() {
         // write into text button payee name
-        mCommonFunctions.txtSelectPayee.setText(!TextUtils.isEmpty(mPayeeName)
-                ? mPayeeName : "");
+        mCommonFunctions.txtSelectPayee.setText(!TextUtils.isEmpty(mCommonFunctions.payeeName)
+                ? mCommonFunctions.payeeName : "");
     }
 
     public void refreshAfterTransactionCodeChange() {
@@ -836,7 +833,7 @@ public class RecurringTransactionActivity
             }
         }
         // Payee is now optional.
-//        else if ((!isTransfer()) && (mPayeeId == Constants.NOT_SET)) {
+//        else if ((!isTransfer()) && (payeeId == Constants.NOT_SET)) {
 //            Core.alertDialog(this, R.string.error_payee_not_selected);
 //
 //            return false;
@@ -888,7 +885,7 @@ public class RecurringTransactionActivity
         if (isTransfer) {
             values.put(TableBillsDeposits.PAYEEID, Constants.NOT_SET);
         } else {
-            values.put(TableBillsDeposits.PAYEEID, mPayeeId);
+            values.put(TableBillsDeposits.PAYEEID, mCommonFunctions.payeeId);
         }
         values.put(TableBillsDeposits.TRANSCODE, getTransactionType());
         if (TextUtils.isEmpty(mCommonFunctions.txtAmount.getText().toString()) || (!(isTransfer))) {
@@ -981,7 +978,7 @@ public class RecurringTransactionActivity
             }
         }
         // update category and subcategory payee
-        if ((!(isTransfer)) && (mPayeeId > 0) && (!hasSplitTransaction)) {
+        if ((!(isTransfer)) && (mCommonFunctions.payeeId > 0) && (!hasSplitTransaction)) {
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
@@ -992,10 +989,10 @@ public class RecurringTransactionActivity
             // update data
             if (getContentResolver().update(payee.getUri(),
                     values,
-                    TablePayee.PAYEEID + "=" + Integer.toString(mPayeeId),
+                    TablePayee.PAYEEID + "=" + Integer.toString(mCommonFunctions.payeeId),
                     null) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mPayeeId) + " return <= 0");
+                Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.payeeId) + " return <= 0");
             }
         }
 
@@ -1147,8 +1144,8 @@ public class RecurringTransactionActivity
         mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
         mAmount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
         mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
-        mPayeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
-        mPayeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
+        mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
+        mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
         mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
         mCommonFunctions.mCategoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
         mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
