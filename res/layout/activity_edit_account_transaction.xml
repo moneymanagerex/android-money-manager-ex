@@ -18,6 +18,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/activity_side_margin"
@@ -216,14 +217,29 @@
                     android:text="@string/payee"
                     android:visibility="gone"/>
 
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewPayee"
-                    style="@style/Money.TextView.Widget.EditText"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="?attr/ic_users"
-                    android:drawableStart="?attr/ic_users"
-                    android:hint="@string/payee"/>
+                    android:orientation="horizontal">
+
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/textViewPayee"
+                        style="@style/Money.TextView.Widget.EditText"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="?attr/ic_users"
+                        android:drawableStart="?attr/ic_users"
+                        android:hint="@string/payee"/>
+
+                    <com.shamanland.fonticon.FontIconButton
+                        android:id="@+id/removePayeeButton"
+                        style="@style/Money.Button.Transparent"
+                        android:layout_width="@dimen/money_button_height"
+                        android:layout_height="@dimen/money_button_height"
+                        app:iconLeft="@xml/ic_erase"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
             </LinearLayout>
 
             <com.money.manager.ex.view.RobotoTextView

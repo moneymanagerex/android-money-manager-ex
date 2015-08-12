@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="August 12, 2015" versionName="2.14.2-beta1">
+    <changelogversion changeDate="August 12, 2015" versionName="2.14.2">
         <changelogtext>Correcting handling for recurring transactions that occur 'every X days'.</changelogtext>
         <changelogtext>Correcting the wrong sign for transactions imported via .qif in the desktop version.</changelogtext>
         <changelogtext>Ability to set default currency for new databases with locales not directly supported by Android.</changelogtext>

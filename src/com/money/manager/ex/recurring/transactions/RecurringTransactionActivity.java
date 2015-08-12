@@ -90,7 +90,6 @@ public class RecurringTransactionActivity
     public static final String DATEPICKER_TAG = "datepicker";
     private static final String LOGCAT = RecurringTransactionActivity.class.getSimpleName();
     // ID REQUEST Data
-    private static final int REQUEST_PICK_PAYEE = 1;
     private static final int REQUEST_PICK_CATEGORY = 3;
     public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
     // KEY INTENT per il passaggio dei dati
@@ -125,7 +124,7 @@ public class RecurringTransactionActivity
     private String mStatus;
     // info payee
     private int mPayeeId = Constants.NOT_SET;
-    private String mPayeeName, mTextDefaultPayee;
+    private String mPayeeName;
     // info category and subcategory
     private int mCategoryId = Constants.NOT_SET, mSubCategoryId = Constants.NOT_SET;
     // arrays to manage transcode and status
@@ -147,7 +146,7 @@ public class RecurringTransactionActivity
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
 //    public CheckBox chbSplitTransaction;
-    private TextView txtPayee, txtSelectPayee, txtCaptionAmount, txtRepeats,
+    private TextView txtCaptionAmount, txtRepeats,
             txtTimesRepeated, txtNextOccurrence;
 
     // object of the table
@@ -192,7 +191,7 @@ public class RecurringTransactionActivity
 
         // Controls
 
-        txtPayee = (TextView) findViewById(R.id.textViewPayee);
+//        txtPayee = (TextView) findViewById(R.id.textViewPayee);
         txtCaptionAmount = (TextView) findViewById(R.id.textViewHeaderTotalAmount);
         spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
         txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
@@ -240,15 +239,16 @@ public class RecurringTransactionActivity
 
         // payee
 
-        txtSelectPayee = (TextView) findViewById(R.id.textViewSelectPayee);
-        txtSelectPayee.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RecurringTransactionActivity.this, PayeeActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_PAYEE);
-            }
-        });
+//        txtSelectPayee = (TextView) findViewById(R.id.textViewPayee);
+//        txtSelectPayee.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(RecurringTransactionActivity.this, PayeeActivity.class);
+//                intent.setAction(Intent.ACTION_PICK);
+//                startActivityForResult(intent, REQUEST_PICK_PAYEE);
+//            }
+//        });
+        mCommonFunctions.initPayeeControls();
 
         // Category
 
@@ -444,7 +444,7 @@ public class RecurringTransactionActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_PICK_PAYEE:
+            case EditTransactionCommonFunctions.REQUEST_PICK_PAYEE:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mPayeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
                     mPayeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
@@ -790,7 +790,8 @@ public class RecurringTransactionActivity
      */
     public void refreshPayeeName() {
         // write into text button payee name
-        txtSelectPayee.setText(!TextUtils.isEmpty(mPayeeName) ? mPayeeName : mTextDefaultPayee);
+        mCommonFunctions.txtSelectPayee.setText(!TextUtils.isEmpty(mPayeeName)
+                ? mPayeeName : "");
     }
 
     public void refreshAfterTransactionCodeChange() {
@@ -806,7 +807,8 @@ public class RecurringTransactionActivity
         txtCaptionAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         mCommonFunctions.txtAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         mCommonFunctions.spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        txtSelectPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+        mCommonFunctions.tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+//        txtSelectPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls
         mCommonFunctions.chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 

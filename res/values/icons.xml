@@ -27,4 +27,5 @@
     <string name="ic_chevron_up">y</string>
     <string name="ic_calculator">z</string>
     <string name="ic_dollar">A</string>
+    <string name="ic_erase">B</string>
 </resources>

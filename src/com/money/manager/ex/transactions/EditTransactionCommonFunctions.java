@@ -19,9 +19,11 @@ package com.money.manager.ex.transactions;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -29,13 +31,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.recurring.transactions.RecurringTransactionActivity;
 import com.money.manager.ex.settings.AppSettings;
+import com.shamanland.fonticon.FontIconButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +49,8 @@ import java.util.List;
  * Functions shared between Checking Account activity and Recurring Transactions activity.
  */
 public class EditTransactionCommonFunctions {
+
+    public static final int REQUEST_PICK_PAYEE = 1;
 
     public EditTransactionCommonFunctions(Context context) {
         mContext = context;
@@ -59,6 +66,8 @@ public class EditTransactionCommonFunctions {
     public Spinner spinAccount, spinToAccount, spinStatus, spinTransCode;
     public TextView txtSelectPayee, txtTotAmount, txtAmount, txtSelectCategory;
     public CheckBox chbSplitTransaction;
+    public FontIconButton removePayeeButton;
+    public ViewGroup tableRowPayee;
 
     private Context mContext;
 
@@ -67,7 +76,11 @@ public class EditTransactionCommonFunctions {
 
         spinStatus = (Spinner) parent.findViewById(R.id.spinnerStatus);
         spinTransCode = (Spinner) parent.findViewById(R.id.spinnerTransCode);
+
+        // Payee
+        tableRowPayee = (ViewGroup) parent.findViewById(R.id.tableRowPayee);
         txtSelectPayee = (TextView) parent.findViewById(R.id.textViewPayee);
+        removePayeeButton = (FontIconButton) parent.findViewById(R.id.removePayeeButton);
 
         chbSplitTransaction = (CheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
         txtSelectCategory = (TextView) parent.findViewById(R.id.textViewCategory);
@@ -158,6 +171,27 @@ public class EditTransactionCommonFunctions {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    public void initPayeeControls() {
+        txtSelectPayee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity parent = (Activity) mContext;
+
+                Intent intent = new Intent(mContext, PayeeActivity.class);
+                intent.setAction(Intent.ACTION_PICK);
+                parent.startActivityForResult(intent, REQUEST_PICK_PAYEE);
+            }
+        });
+
+        removePayeeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // todo: remove payee
+
             }
         });
     }

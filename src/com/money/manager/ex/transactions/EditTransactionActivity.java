@@ -75,6 +75,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.shamanland.fonticon.FontIconButton;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -107,7 +108,6 @@ public class EditTransactionActivity
     // info category and subcategory
     public int mCategoryId = Constants.NOT_SET;
     public int mSubCategoryId = Constants.NOT_SET;
-//    public String mCategoryName, mSubCategoryName;
     // arrays to manage transcode and status
     public String[] mTransCodeItems, mStatusItems;
     public String[] mTransCodeValues, mStatusValues;
@@ -247,14 +247,15 @@ public class EditTransactionActivity
 
         // Payee
 
-        mCommonFunctions.txtSelectPayee.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PayeeActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, EditTransactionActivityConstants.REQUEST_PICK_PAYEE);
-            }
-        });
+        mCommonFunctions.initPayeeControls();
+//        mCommonFunctions.txtSelectPayee.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), PayeeActivity.class);
+//                intent.setAction(Intent.ACTION_PICK);
+//                startActivityForResult(intent, EditTransactionActivityConstants.REQUEST_PICK_PAYEE);
+//            }
+//        });
 
         // Category
 
@@ -1122,14 +1123,15 @@ public class EditTransactionActivity
         // check type of transaction
         TextView txtFromAccount = (TextView) findViewById(R.id.textViewFromAccount);
         TextView txtToAccount = (TextView) findViewById(R.id.textViewToAccount);
-        ViewGroup tableRowPayee = (ViewGroup) findViewById(R.id.tableRowPayee);
+//        ViewGroup tableRowPayee = (ViewGroup) findViewById(R.id.tableRowPayee);
         ViewGroup tableRowAmount = (ViewGroup) findViewById(R.id.tableRowAmount);
 
         // hide and show
         boolean isTransfer = mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer);
         txtFromAccount.setText(isTransfer ? R.string.from_account : R.string.account);
         txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+        mCommonFunctions.tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+//        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         tableRowAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         mCommonFunctions.spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         // hide split controls

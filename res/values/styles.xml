@@ -29,6 +29,9 @@
         <item name="android:shadowRadius">1</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+    <style name="Money.Button.Transparent" parent="Money.Button">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 
     <style name="Money.Button.Input.Dialog" parent="android:Widget.Button">
         <item name="android:layout_width">0dp</item>
