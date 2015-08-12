@@ -22,7 +22,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,8 +34,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.currency.CurrencyUtils;
-import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.utils.MathUtils;
 
 import net.objecthunter.exp4j.Expression;
@@ -89,7 +87,7 @@ public class InputAmountDialog
     private Integer mCurrencyId, mDefaultColor;
     private TextView txtMain, txtTop;
     private IInputAmountDialogListener mListener;
-    private CurrencyUtils mCurrencyUtils;
+    private CurrencyService mCurrencyService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,11 +100,11 @@ public class InputAmountDialog
 
         mIdView = getArguments().getInt("id");
 
-        mCurrencyUtils = new CurrencyUtils(getActivity());
+        mCurrencyService = new CurrencyService(getActivity());
 
         NumericHelper numericHelper = new NumericHelper();
         int decimals = numericHelper.getNumberDecimal(
-                mCurrencyUtils.getCurrency(mCurrencyId).getScale());
+                mCurrencyService.getCurrency(mCurrencyId).getScale());
         Double amount = this.RoundToCurrencyDecimals
                 ? MathUtils.Round(getArguments().getDouble("amount"), decimals)
                 : getArguments().getDouble("amount");
@@ -202,7 +200,7 @@ public class InputAmountDialog
                     if (InputAmountDialog.this.RoundToCurrencyDecimals) {
                         NumericHelper numericHelper = new NumericHelper();
                         int decimals = numericHelper.getNumberDecimal(
-                                mCurrencyUtils.getCurrency(mCurrencyId).getScale());
+                                mCurrencyService.getCurrency(mCurrencyId).getScale());
                         result = MathUtils.Round(Double.parseDouble(mAmount), decimals);
                     } else {
                         result = Double.parseDouble(mAmount);
@@ -309,18 +307,18 @@ public class InputAmountDialog
 
         double fAmount = Double.parseDouble(amount);
 
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
         String result;
         if (withCurrency) {
             if (mCurrencyId == null) {
-                result = currencyUtils.getBaseCurrencyFormatted(fAmount);
+                result = currencyService.getBaseCurrencyFormatted(fAmount);
             } else {
-                result = currencyUtils.getCurrencyFormatted(mCurrencyId, fAmount);
+                result = currencyService.getCurrencyFormatted(mCurrencyId, fAmount);
             }
         } else {
             // return just the number, without the currency symbol.
-            result = currencyUtils.getCurrency(mCurrencyId).getValueFormatted(fAmount, false);
+            result = currencyService.getCurrency(mCurrencyId).getValueFormatted(fAmount, false);
         }
 
         return result;

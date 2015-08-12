@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AccountTypes;
-import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 
 import java.util.ArrayList;
@@ -115,15 +115,15 @@ public class AccountBillsExpandableAdapter
         }
         holder = (ViewHolderAccountBills) convertView.getTag();
 
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext.getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
         // Show Totals
         String accountType = mAccountTypes.get(groupPosition);
         QueryAccountBills total = mTotalsByType.get(accountType);
         if (total != null) {
             // set account type value
-            holder.txtAccountTotal.setText(currencyUtils.getBaseCurrencyFormatted(total.getTotalBaseConvRate()));
+            holder.txtAccountTotal.setText(currencyService.getBaseCurrencyFormatted(total.getTotalBaseConvRate()));
             if(!mHideReconciled) {
-                holder.txtAccountReconciled.setText(currencyUtils.getBaseCurrencyFormatted(total.getReconciledBaseConvRate()));
+                holder.txtAccountReconciled.setText(currencyService.getBaseCurrencyFormatted(total.getReconciledBaseConvRate()));
             }
             // set account name
             holder.txtAccountName.setText(total.getAccountName());
@@ -175,12 +175,12 @@ public class AccountBillsExpandableAdapter
         holder = (ViewHolderAccountBills) convertView.getTag();
 
         QueryAccountBills account = getAccountData(groupPosition, childPosition);
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext.getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
 
         // set account name
         holder.txtAccountName.setText(account.getAccountName());
         // import formatted
-        String value = currencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getTotal());
+        String value = currencyService.getCurrencyFormatted(account.getCurrencyId(), account.getTotal());
         // set amount value
         holder.txtAccountTotal.setText(value);
 
@@ -188,7 +188,7 @@ public class AccountBillsExpandableAdapter
         if(mHideReconciled) {
             holder.txtAccountReconciled.setVisibility(View.GONE);
         } else {
-            value = currencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getReconciled());
+            value = currencyService.getCurrencyFormatted(account.getCurrencyId(), account.getReconciled());
             holder.txtAccountReconciled.setText(value);
         }
 

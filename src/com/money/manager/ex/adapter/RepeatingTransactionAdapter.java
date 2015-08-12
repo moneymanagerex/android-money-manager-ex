@@ -35,8 +35,8 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -122,8 +122,8 @@ public class RepeatingTransactionAdapter
                 amount = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.TOTRANSAMOUNT)); // to account = account
             }
         }
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
-        txtAmount.setText(currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), amount));
+        CurrencyService currencyService = new CurrencyService(mContext);
+        txtAmount.setText(currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), amount));
         // check amount sign
         Core core = new Core(context);
         txtAmount.setTextColor(context.getResources().getColor(amount > 0

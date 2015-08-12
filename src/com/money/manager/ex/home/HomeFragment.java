@@ -67,9 +67,11 @@ import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
+
+import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -92,7 +94,7 @@ public class HomeFragment
     private static final int ID_LOADER_INCOME_EXPENSES = 4;
     private static final int ID_LOADER_INVESTMENTS = 5;
 
-    private CurrencyUtils mCurrencyUtils;
+    private CurrencyService mCurrencyService;
     private boolean mHideReconciled;
 
     private TableInfoTable mInfoTable = new TableInfoTable();
@@ -128,7 +130,7 @@ public class HomeFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mCurrencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        mCurrencyService = new CurrencyService(getActivity().getApplicationContext());
         mAccountBillsQuery = new QueryAccountBills(getActivity());
 
         AppSettings settings = new AppSettings(getActivity());
@@ -201,6 +203,13 @@ public class HomeFragment
                     startActivity(intent);
                 }
             });
+        }
+
+        // Show current database
+        TextView currentDatabaseTextView = (TextView) view.findViewById(R.id.currentDatabaseTextView);
+        if (currentDatabaseTextView != null) {
+            String path = MoneyManagerApplication.getDatabasePath(getActivity());
+            currentDatabaseTextView.setText(path);
         }
 
         // Database migration v1.4 -> v2.0 location.
@@ -317,7 +326,7 @@ public class HomeFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER_ACCOUNT_BILLS:
-                txtTotalAccounts.setText(mCurrencyUtils.getBaseCurrencyFormatted((double) 0));
+                txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted((double) 0));
                 setListViewAccountBillsVisible(false);
                 mAccountsByType.clear();
                 mTotalsByType.clear();
@@ -376,11 +385,11 @@ public class HomeFragment
                 TextView txtDifference = (TextView) getActivity().findViewById(R.id.textViewDifference);
                 // set value
                 if (txtIncome != null)
-                    txtIncome.setText(mCurrencyUtils.getCurrencyFormatted(mCurrencyUtils.getBaseCurrencyId(), income));
+                    txtIncome.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(), income));
                 if (txtExpenses != null)
-                    txtExpenses.setText(mCurrencyUtils.getCurrencyFormatted(mCurrencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
+                    txtExpenses.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(), Math.abs(expenses)));
                 if (txtDifference != null)
-                    txtDifference.setText(mCurrencyUtils.getCurrencyFormatted(mCurrencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
+                    txtDifference.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(), income - Math.abs(expenses)));
                 // manage progressbar
                 final ProgressBar barIncome = (ProgressBar) getActivity().findViewById(R.id.progressBarIncome);
                 final ProgressBar barExpenses = (ProgressBar) getActivity().findViewById(R.id.progressBarExpenses);
@@ -577,10 +586,10 @@ public class HomeFragment
         // remove footer
         mExpandableListView.removeFooterView(linearFooter);
         // set text
-        txtTotalAccounts.setText(mCurrencyUtils.getBaseCurrencyFormatted(curTotal));
+        txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted(curTotal));
         txtFooterSummary.setText(txtTotalAccounts.getText());
         if(!mHideReconciled) {
-            txtFooterSummaryReconciled.setText(mCurrencyUtils.getBaseCurrencyFormatted(curReconciled));
+            txtFooterSummaryReconciled.setText(mCurrencyService.getBaseCurrencyFormatted(curReconciled));
         }
         // add footer
         mExpandableListView.addFooterView(linearFooter, null, false);
@@ -806,8 +815,8 @@ public class HomeFragment
             cursor.moveToPosition(Constants.NOT_SET);
         }
 
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
-        int baseCurrencyId = currencyUtils.getBaseCurrencyId();
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+        int baseCurrencyId = currencyService.getBaseCurrencyId();
 
         double total = 0;
         while(cursor.moveToNext()) {
@@ -826,7 +835,7 @@ public class HomeFragment
 
             // currency
             int currencyId = account.getCurrencyId();
-            double amountInBaseCurrency = currencyUtils.doCurrencyExchange(baseCurrencyId, amount, currencyId);
+            double amountInBaseCurrency = currencyService.doCurrencyExchange(baseCurrencyId, amount, currencyId);
             double currentTotalInBase = account.getTotalBaseConvRate();
             account.setTotalBaseConvRate(currentTotalInBase + amountInBaseCurrency);
 

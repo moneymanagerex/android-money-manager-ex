@@ -30,7 +30,9 @@ import java.text.DecimalFormatSymbols;
  * @version 1.0.0
  * 
  */
-public class TableCurrencyFormats extends Dataset {
+public class TableCurrencyFormats
+		extends Dataset {
+
 	// label of table fields
 	public static final String CURRENCYID = "CURRENCYID";
 	public static final String CURRENCYNAME = "CURRENCYNAME";

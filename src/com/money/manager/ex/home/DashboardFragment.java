@@ -27,7 +27,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.TextUtils;
@@ -47,12 +46,12 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
-import com.money.manager.ex.currency.CurrencyUtils;
 import com.money.manager.ex.view.RobotoTextView;
 
 import java.text.SimpleDateFormat;
@@ -307,7 +306,7 @@ public class DashboardFragment
     private View showTableLayoutTopWithdrawals(Cursor cursor) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dashboard_summary_layout, null);
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
         // Textview Title
         TextView title = (TextView) layout.findViewById(R.id.textViewTitle);
@@ -329,7 +328,7 @@ public class DashboardFragment
             int num = cursor.getInt(cursor.getColumnIndex("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
-                            "<small>" + currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
+                            "<small>" + currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
                     new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
         }
         // return Layout
@@ -339,7 +338,7 @@ public class DashboardFragment
     private View showTableLayoutTopPayees(Cursor cursor) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dashboard_summary_layout, null);
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
         // Textview Title
         TextView title = (TextView) layout.findViewById(R.id.textViewTitle);
@@ -358,7 +357,7 @@ public class DashboardFragment
             int num = cursor.getInt(cursor.getColumnIndex("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
-                            "<small>" + currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
+                            "<small>" + currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
                     new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
         }
 
@@ -369,7 +368,7 @@ public class DashboardFragment
     private View showTableLayoutUpComingTransactions(Cursor cursor) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dashboard_summary_layout, null);
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
         Core core = new Core(getActivity().getApplicationContext());
 
         // Textview Title
@@ -387,7 +386,7 @@ public class DashboardFragment
             String daysLeftText = "";
             daysLeftText = Integer.toString(Math.abs(daysLeft)) + " " + getString(daysLeft >= 0 ? R.string.days_remaining : R.string.days_overdue);
             TableRow row = createTableRow(new String[]{"<small>" + payee + "</small>",
-                            "<small>" + currencyUtils.getCurrencyFormatted(currencyId, total) + "</small>",
+                            "<small>" + currencyService.getCurrencyFormatted(currencyId, total) + "</small>",
                             "<small>" + daysLeftText + "</small>"}, new Float[]{1f, null, 1f},
                     new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null});
             TextView txt = (TextView) row.getChildAt(2);

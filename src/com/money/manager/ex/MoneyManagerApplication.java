@@ -129,7 +129,6 @@ public class MoneyManagerApplication
      * @param context Executing context.
      * @return path database file
      */
-//    @SuppressLint("SdCardPath")
     public static String getDatabasePath(Context context) {
         String databasePath = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), null);
@@ -140,6 +139,9 @@ public class MoneyManagerApplication
                 return databaseFile.toString();
             }
         }
+
+        ExceptionHandler handler = new ExceptionHandler(context);
+        handler.showMessage("Database " + databasePath + " not found. Using default.");
 
         // otherwise try other paths or create the default database.
 

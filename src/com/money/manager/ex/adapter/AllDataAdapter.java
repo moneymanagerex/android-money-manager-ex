@@ -24,7 +24,6 @@ import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,10 +36,10 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.account.BalanceAmountTask;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -139,8 +138,8 @@ public class AllDataAdapter
         }
 
         // check amount sign
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
-        holder.txtAmount.setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), amount));
+        CurrencyService currencyService = new CurrencyService(mContext);
+        holder.txtAmount.setText(currencyService.getCurrencyFormatted(getCurrencyId(), amount));
 
         String transType = cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE));
         // text color amount

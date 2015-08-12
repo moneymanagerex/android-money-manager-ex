@@ -243,8 +243,8 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
             }
         }
         //reload currency
-        CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
-        currencyUtils.reInit();
+        CurrencyService currencyService = new CurrencyService(getApplicationContext());
+        currencyService.reInit();
 
         return true;
     }

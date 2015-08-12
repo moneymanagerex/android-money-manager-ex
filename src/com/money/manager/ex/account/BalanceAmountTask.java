@@ -26,9 +26,9 @@ import android.widget.TextView;
 
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 /**
  * Async task that calculates and updates the amount balance in the transaction list.
@@ -60,9 +60,9 @@ public class BalanceAmountTask
     @Override
     protected void onPostExecute(Boolean result) {
         if (result && getTextView() != null) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+            CurrencyService currencyService = new CurrencyService(mContext);
 
-            getTextView().setText(currencyUtils.getCurrencyFormatted(getCurrencyId(), total));
+            getTextView().setText(currencyService.getCurrencyFormatted(getCurrencyId(), total));
             if (getTextView().getVisibility() != View.VISIBLE) getTextView().setVisibility(View.VISIBLE);
             // put in hash map balance total
             // mBalanceTransactions.put(getTransId(), total);

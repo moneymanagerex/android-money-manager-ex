@@ -26,10 +26,10 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 public class SummaryWidgetProvider extends AppWidgetProvider {
     @Override
@@ -38,7 +38,7 @@ public class SummaryWidgetProvider extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
         MoneyManagerApplication app = new MoneyManagerApplication();
-        CurrencyUtils currencyUtils = new CurrencyUtils(context);
+        CurrencyService currencyService = new CurrencyService(context);
 
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, SummaryWidgetProvider.class));
 
@@ -46,7 +46,7 @@ public class SummaryWidgetProvider extends AppWidgetProvider {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_summary);
             remoteViews.setTextViewText(R.id.textViewUserName, app.loadUserNameFromDatabase(context));
             remoteViews.setTextViewText(R.id.textViewTotalAccounts, context.getString(R.string.summary) + ": "
-                    + currencyUtils.getBaseCurrencyFormatted(app.getSummaryAccounts(context)));
+                    + currencyService.getBaseCurrencyFormatted(app.getSummaryAccounts(context)));
             // register on click in icon launch application
             Intent intentApplication = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentApplication, 0);

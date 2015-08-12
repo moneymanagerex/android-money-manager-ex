@@ -20,6 +20,7 @@ package com.money.manager.ex.currency;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 import android.widget.Toast;
@@ -28,16 +29,16 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.AccountRepository;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.settings.AppSettings;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -45,25 +46,25 @@ import java.util.Map;
  *
  * @author lazzari.ale@gmail.com
  */
-public class CurrencyUtils {
+public class CurrencyService {
 
-    private static final String LOGCAT = CurrencyUtils.class.getSimpleName();
+    private static final String LOGCAT = CurrencyService.class.getSimpleName();
     // id base currency
     private static Integer mBaseCurrencyId = null;
     // hash map of all currencies
     private static Map<Integer, TableCurrencyFormats> mCurrencies;
 
-    // context
-    private Context mContext;
-
-    public CurrencyUtils(Context context) {
-        mContext = context;
-    }
-
     public static void destroy() {
         mCurrencies = null;
         mBaseCurrencyId = null;
     }
+
+    public CurrencyService(Context context) {
+        mContext = context;
+    }
+
+    // context
+    private Context mContext;
 
     public Boolean reInit() {
         destroy();
@@ -318,5 +319,45 @@ public class CurrencyUtils {
             return "";
         }
         return currency.getCurrencySymbol();
+    }
+
+    public Currency getSystemDefaultCurrency() {
+        Currency currency = null;
+        Locale defaultLocale = null;
+
+        try {
+            defaultLocale = Locale.getDefault();
+            currency = Currency.getInstance(defaultLocale);
+        } catch (Exception ex) {
+            String message = "getting default system currency";
+            if (defaultLocale != null) {
+                message += " for " + defaultLocale.getCountry();
+            }
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, message);
+        }
+        return currency;
+    }
+
+    /**
+     * Retrieves the currency Id for the given symbol.
+     * Accesses the database directly.
+     * @param currencySymbol
+     * @param database
+     * @return
+     */
+    public int loadCurrencyIdFromSymbolRaw(String currencySymbol, SQLiteDatabase database) {
+        Cursor cursor = database.rawQuery(
+                "SELECT " + TableCurrencyFormats.CURRENCYID +
+                        " FROM CURRENCYFORMATS_V1" +
+                        " WHERE " + TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
+                new String[]{ currencySymbol });
+        if (cursor == null || !cursor.moveToFirst()) return Constants.NOT_SET;
+
+        int result = cursor.getInt(0);
+
+        cursor.close();
+
+        return result;
     }
 }

@@ -76,9 +76,12 @@ public class ExceptionHandler
         }
     }
 
+    /**
+     * Display a toast message.
+     * @param message
+     * reference: http://stackoverflow.com/questions/18705945/android-cant-create-handler-inside-thread-that-has-not-called-looper-prepare
+     */
     public void showMessage(final String message) {
-        // http://stackoverflow.com/questions/18705945/android-cant-create-handler-inside-thread-that-has-not-called-looper-prepare
-
         Handler h = new Handler(Looper.getMainLooper());
         h.post(new Runnable() {
             public void run() {

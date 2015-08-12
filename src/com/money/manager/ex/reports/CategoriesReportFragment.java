@@ -20,7 +20,6 @@ package com.money.manager.ex.reports;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -36,7 +35,7 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
 
 import java.util.ArrayList;
@@ -103,14 +102,14 @@ public class CategoriesReportFragment extends BaseReportFragment {
                 //parse cursor for calculate total
                 if (data == null) return;
 
-                CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+                CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
                 double totalAmount = 0;
                 while (data.moveToNext()) {
                     totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
                 }
                 TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
-                txtColumn2.setText(currencyUtils.getBaseCurrencyFormatted(totalAmount));
+                txtColumn2.setText(currencyService.getBaseCurrencyFormatted(totalAmount));
 
                 // soved bug chart
                 if (data.getCount() > 0) {
@@ -241,7 +240,7 @@ public class CategoriesReportFragment extends BaseReportFragment {
         if (cursor.getCount() <= 0) return;
 
         ArrayList<ValuePieEntry> arrayList = new ArrayList<>();
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
         // Reset cursor to initial position.
         cursor.moveToPosition(-1);
@@ -261,7 +260,7 @@ public class CategoriesReportFragment extends BaseReportFragment {
 
             item.setText(category);
             item.setValue(total);
-            item.setValueFormatted(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
+            item.setValueFormatted(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total));
             // add element
             arrayList.add(item);
         }

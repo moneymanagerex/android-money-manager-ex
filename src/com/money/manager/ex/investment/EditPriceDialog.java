@@ -36,7 +36,7 @@ import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -49,7 +49,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Edit price dialog for manual entry/modification of the latest stock price.
@@ -208,8 +207,8 @@ public class EditPriceDialog
         AccountRepository accountRepository = new AccountRepository(mContext);
         TableAccountList account = accountRepository.load(accountId);
         int currencyId = account.getCurrencyId();
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext.getApplicationContext());
-        TableCurrencyFormats currency = currencyUtils.getCurrency(currencyId);
+        CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
+        TableCurrencyFormats currency = currencyService.getCurrency(currencyId);
         String currencySymbol = currency.getSfxSymbol();
 
         mAmountTextView.setText(currencySymbol + " " + Double.toString(currentPrice));

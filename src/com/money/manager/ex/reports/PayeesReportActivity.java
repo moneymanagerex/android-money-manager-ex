@@ -41,14 +41,14 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.util.ArrayList;
 
 public class PayeesReportActivity extends BaseFragmentActivity {
-    static CurrencyUtils currencyUtils;
+    static CurrencyService currencyService;
     public boolean mIsDualPanel = false;
 
     @Override
@@ -67,7 +67,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
         mIsDualPanel = findViewById(R.id.fragmentChart) != null;
 
         //reference to application
-        currencyUtils = new CurrencyUtils(getApplicationContext());
+        currencyService = new CurrencyService(getApplicationContext());
         //create a fragment
         PayeeReportFragment fragment = new PayeeReportFragment();
         FragmentManager fm = getSupportFragmentManager();
@@ -97,7 +97,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
                 txtColumn1.setText(context.getString(R.string.empty_payee));
             }
 
-            txtColumn2.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
+            txtColumn2.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total));
             Core core = new Core(context);
             if (total < 0) {
                 txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
@@ -194,7 +194,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
                     }
 
                     TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
-                    txtColumn2.setText(currencyUtils.getBaseCurrencyFormatted(totalAmount));
+                    txtColumn2.setText(currencyService.getBaseCurrencyFormatted(totalAmount));
 
                     // solve bug chart
                     if (data.getCount() > 0) {
@@ -282,7 +282,7 @@ public class PayeesReportActivity extends BaseFragmentActivity {
                     item.setText(getString(R.string.empty_payee));
                 }
                 item.setValue(total);
-                item.setValueFormatted(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
+                item.setValueFormatted(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total));
                 // add element
                 arrayList.add(item);
                 // move to next record

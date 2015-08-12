@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
 
 /**
@@ -64,9 +64,9 @@ public class CategoriesReportAdapter extends CursorAdapter {
         }
         txtColumn1.setText(Html.fromHtml(column1));
 
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+        CurrencyService currencyService = new CurrencyService(mContext);
 
-        txtColumn2.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), total));
+        txtColumn2.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total));
         if (total < 0) {
             txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
         } else {

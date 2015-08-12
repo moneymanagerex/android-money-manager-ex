@@ -19,13 +19,11 @@ package com.money.manager.ex.investment;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
@@ -40,36 +38,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.StockHistory;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.IInputAmountDialogListener;
-import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.currency.CurrencyUtils;
-import com.money.manager.ex.database.AccountRepository;
-import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.transactions.EditTransactionActivityConstants;
-import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
-import com.money.manager.ex.view.RobotoTextView;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
 
 /**
  * The list of securities.

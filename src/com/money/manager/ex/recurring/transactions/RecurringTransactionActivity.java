@@ -49,6 +49,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.transactions.YesNoDialog;
 import com.money.manager.ex.core.Core;
@@ -67,7 +68,6 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -537,7 +537,7 @@ public class RecurringTransactionActivity
         int accountId;
         if (view != null && view instanceof TextView) {
             boolean isTransfer = mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer);
-            CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
+            CurrencyService currencyService = new CurrencyService(getApplicationContext());
             if (isTransfer) {
                 Double originalAmount;
                 try {
@@ -550,7 +550,7 @@ public class RecurringTransactionActivity
                             ? (Double) mCommonFunctions.txtTotAmount.getTag()
                             : (Double) mCommonFunctions.txtAmount.getTag();
                     // convert value
-                    Double amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
+                    Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
                     // take original amount converted
                     originalAmount = id == R.id.textViewTotAmount
                             ? (Double) mCommonFunctions.txtAmount.getTag()
@@ -561,7 +561,7 @@ public class RecurringTransactionActivity
                     DecimalFormat decimalFormat = new DecimalFormat("0.00");
                     if (originalAmount == 0) {
                         if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
-                            amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+                            amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
                             core.formatAmountTextView(id == R.id.textViewTotAmount
                                             ? mCommonFunctions.txtAmount : mCommonFunctions.txtTotAmount,
                                     amountExchange, getCurrencyIdFromAccountId(id == R.id.textViewTotAmount

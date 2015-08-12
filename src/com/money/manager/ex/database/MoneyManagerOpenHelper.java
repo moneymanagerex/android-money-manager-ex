@@ -29,8 +29,10 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.InfoService;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.utils.RawFileUtils;
 
 import java.text.SimpleDateFormat;
@@ -83,8 +85,8 @@ public class MoneyManagerOpenHelper
 
     @Override
     public synchronized void close() {
-        // close CurrencyUtils
-        CurrencyUtils.destroy();
+        // close CurrencyService
+        CurrencyService.destroy();
         super.close();
         mInstance = null;
     }
@@ -154,9 +156,6 @@ public class MoneyManagerOpenHelper
         SQLiteDatabase db = null;
         try {
             db = super.getReadableDatabase();
-//        } catch (SQLiteDiskIOException dex) {
-//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.handle(dex, "opening database");
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "opening readable database");
@@ -237,10 +236,12 @@ public class MoneyManagerOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onCreate method");
+
         executeRawSql(db, R.raw.database_create);
+
         // force update database
         updateDatabase(db, 0, databaseCurrentVersion);
-        // init database
+
         try {
             initDatabase(db);
         } catch (Exception e) {
@@ -271,96 +272,15 @@ public class MoneyManagerOpenHelper
     }
 
     private boolean initDatabase(SQLiteDatabase database) {
-        TableInfoTable infoTable = new TableInfoTable();
-        Cursor infoCurrency = null, infoDate = null;
-        // check if database is initialized
-        // currencies
-        try {
-            infoCurrency = database.rawQuery("SELECT * FROM " + infoTable.getSource() +
-                            " WHERE " + TableInfoTable.INFONAME + "=?",
-                    new String[]{ Constants.INFOTABLE_BASECURRENCYID });
 
-            boolean recordExists = (infoCurrency != null && infoCurrency.moveToFirst());
-            if (!recordExists) {
-                // get current currencies
-                Currency currency = Currency.getInstance(Locale.getDefault());
+        initBaseCurrency(database);
+        initDateFormat(database);
+//        initCategories(database);
 
-                if (currency != null) {
-                    Cursor cursor = database.rawQuery(
-                        "SELECT " + TableCurrencyFormats.CURRENCYID +
-                        " FROM CURRENCYFORMATS_V1" +
-                        " WHERE " + TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
-                        new String[]{currency.getCurrencyCode()});
-                    if (cursor != null && cursor.moveToFirst()) {
-                        ContentValues values = new ContentValues();
+        return true;
+    }
 
-                        values.put(TableInfoTable.INFONAME, Constants.INFOTABLE_BASECURRENCYID);
-                        values.put(TableInfoTable.INFOVALUE, cursor.getInt(0));
-
-                        database.insert(infoTable.getSource(), null, values);
-                        cursor.close();
-                    }
-                }
-            } else {
-                // Update the (empty) record to the default currency.
-            }
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "init database, currency");
-        } finally {
-            if (infoCurrency != null)
-                infoCurrency.close();
-        }
-
-        // date format
-        try {
-            infoDate = database.rawQuery("SELECT * FROM " + infoTable.getSource() + " WHERE " + TableInfoTable.INFONAME + "=?",
-                    new String[]{Constants.INFOTABLE_DATEFORMAT});
-            if (!(infoDate != null && infoDate.moveToFirst())) {
-                Locale loc = Locale.getDefault();
-                SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, loc);
-                String pattern = sdf.toLocalizedPattern();
-                // replace date
-                if (pattern.contains("dd")) {
-                    pattern = pattern.replace("dd", "%d");
-                } else {
-                    pattern = pattern.replace("d", "%d");
-                }
-                // replace month
-                if (pattern.contains("MM")) {
-                    pattern = pattern.replace("MM", "%m");
-                } else {
-                    pattern = pattern.replace("M", "%m");
-                }
-                // replace year
-                pattern = pattern.replace("yyyy", "%Y");
-                pattern = pattern.replace("yy", "%y");
-                // check if exists in format definition
-                boolean find = false;
-                for (int i = 0; i < mContext.getResources().getStringArray(R.array.date_format_mask).length; i++) {
-                    if (pattern.equals(mContext.getResources().getStringArray(R.array.date_format_mask)[i])) {
-                        find = true;
-                        break;
-                    }
-                }
-                // check if pattern exists
-                if (find) {
-                    ContentValues values = new ContentValues();
-
-                    values.put(TableInfoTable.INFONAME, Constants.INFOTABLE_DATEFORMAT);
-                    values.put(TableInfoTable.INFOVALUE, pattern);
-
-                    database.insert(infoTable.getSource(), null, values);
-                }
-            }
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "init database, date format");
-        } finally {
-            if (infoDate != null)
-                infoDate.close();
-        }
-
+    private void initCategories(SQLiteDatabase database) {
         try {
             Cursor countCategories = database.rawQuery("SELECT * FROM CATEGORY_V1", null);
             if (countCategories != null && countCategories.getCount() <= 0) {
@@ -401,8 +321,77 @@ public class MoneyManagerOpenHelper
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "init database, categories");
         }
+    }
 
-        return true;
+    private void initDateFormat(SQLiteDatabase database) {
+        Cursor infoDate = null;
+
+        // date format
+        try {
+            Core core = new Core(mContext);
+            String pattern = core.getDefaultSystemDateFormat();
+            if (pattern == null) return;
+
+            TableInfoTable infoTable = new TableInfoTable();
+
+            infoDate = database.rawQuery("SELECT * FROM " + infoTable.getSource() + " WHERE " + TableInfoTable.INFONAME + "=?",
+                    new String[]{Constants.INFOTABLE_DATEFORMAT});
+
+            boolean recordExists = (infoDate != null && infoDate.moveToFirst());
+
+            InfoService infoService = new InfoService(mContext);
+
+            if (!recordExists) {
+                // check if pattern exists
+                infoService.insertRaw(database, Constants.INFOTABLE_DATEFORMAT, pattern);
+            } else {
+                infoService.updateRaw(database, Constants.INFOTABLE_DATEFORMAT, pattern);
+            }
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "init database, date format");
+        } finally {
+            if (infoDate != null)
+                infoDate.close();
+        }
+    }
+
+    private void initBaseCurrency(SQLiteDatabase db) {
+        Cursor infoCurrency = null;
+
+        // currencies
+        try {
+            CurrencyService currencyService = new CurrencyService(mContext);
+            Currency systemCurrency = currencyService.getSystemDefaultCurrency();
+            if (systemCurrency == null) return;
+
+            TableInfoTable infoTable = new TableInfoTable();
+            InfoService infoService = new InfoService(mContext);
+
+            infoCurrency = db.rawQuery("SELECT * FROM " + infoTable.getSource() +
+                            " WHERE " + TableInfoTable.INFONAME + "=?",
+                    new String[]{Constants.INFOTABLE_BASECURRENCYID});
+
+            boolean recordExists = (infoCurrency != null && infoCurrency.moveToFirst());
+
+            // get system default currency
+            int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(
+                    systemCurrency.getCurrencyCode(), db);
+
+            if (!recordExists && (currencyId != Constants.NOT_SET)) {
+                infoService.insertRaw(db, Constants.INFOTABLE_BASECURRENCYID, currencyId);
+            } else {
+                // Update the (empty) record to the default currency.
+                infoService.updateRaw(db, Constants.INFOTABLE_BASECURRENCYID, currencyId);
+            }
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "init database, currency");
+        } finally {
+            if (infoCurrency != null) {
+                infoCurrency.close();
+            }
+        }
     }
 
     /**
@@ -417,10 +406,6 @@ public class MoneyManagerOpenHelper
         if (mInstance != null) {
             mInstance.close();
         }
-//        SQLiteDatabase db = mInstance.getReadableDatabase();
-//        if (db != null) {
-//            db.close();
-//        }
 
         super.finalize();
     }

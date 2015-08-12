@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 
 import java.text.SimpleDateFormat;
@@ -76,11 +76,11 @@ public class IncomeVsExpensesAdapter
         } else {
             txtMonth.setText(null);
         }
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+        CurrencyService currencyService = new CurrencyService(mContext);
 
-        txtIncome.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income));
-        txtExpenses.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
-        txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
+        txtIncome.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), income));
+        txtExpenses.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), Math.abs(expenses)));
+        txtDifference.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), income - Math.abs(expenses)));
 
         Core core = new Core(context);
         if (income - Math.abs(expenses) < 0) {

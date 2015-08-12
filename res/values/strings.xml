@@ -604,4 +604,5 @@
     <string name="update_on_dropbox">There is an updated database file available on Dropbox. Would you like to update?</string>
     <string name="currencies_empty">No currencies have been found. To create one, tap the green plus button.</string>
     <string name="homepage">Our homepage is http://android.moneymanagerex.org/</string>
+    <string name="current_database">Current database</string>
 </resources>

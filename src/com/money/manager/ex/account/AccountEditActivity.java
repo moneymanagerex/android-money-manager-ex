@@ -42,12 +42,12 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrenciesActivity;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.util.Arrays;
 
@@ -162,8 +162,8 @@ public class AccountEditActivity
 
         // default currency
         if (mCurrencyId == null) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
-            TableCurrencyFormats baseCurrency = currencyUtils.getBaseCurrency();
+            CurrencyService currencyService = new CurrencyService(getApplicationContext());
+            TableCurrencyFormats baseCurrency = currencyService.getBaseCurrency();
 
             if (baseCurrency != null) {
                 mCurrencyId = baseCurrency.getCurrencyId();

@@ -29,8 +29,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
@@ -56,7 +54,7 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,6 +64,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormatSymbols;
 import java.text.Normalizer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.HashMap;
@@ -99,21 +98,6 @@ public class Core {
             return 0;
         }
     }
-
-//    /**
-//     * Take a versioncode of this application
-//     *
-//     * @param context executing context
-//     * @return application version name
-//     */
-//    public static String getCurrentVersionName(Context context) {
-//        try {
-//            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-//            return packageInfo.versionName;
-//        } catch (PackageManager.NameNotFoundException e) {
-//            return "";
-//        }
-//    }
 
     public static String getAppBase64() {
         try {
@@ -281,12 +265,12 @@ public class Core {
      * @param currencyId Id currency to be formatted
      */
     public void formatAmountTextView(TextView view, double amount, Integer currencyId) {
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+        CurrencyService currencyService = new CurrencyService(mContext);
 
         if (currencyId == null) {
-            view.setText(currencyUtils.getBaseCurrencyFormatted(amount));
+            view.setText(currencyService.getBaseCurrencyFormatted(amount));
         } else {
-            view.setText(currencyUtils.getCurrencyFormatted(currencyId, amount));
+            view.setText(currencyService.getCurrencyFormatted(currencyId, amount));
         }
 
         view.setTag(amount);
@@ -733,5 +717,39 @@ public class Core {
     public boolean getAccountsOpenVisible() {
         return PreferenceManager.getDefaultSharedPreferences(mContext)
                 .getBoolean(mContext.getString(PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE), false);
+    }
+
+    public String getDefaultSystemDateFormat() {
+        Locale loc = Locale.getDefault();
+        SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, loc);
+        String pattern = sdf.toLocalizedPattern();
+        // replace date
+        if (pattern.contains("dd")) {
+            pattern = pattern.replace("dd", "%d");
+        } else {
+            pattern = pattern.replace("d", "%d");
+        }
+        // replace month
+        if (pattern.contains("MM")) {
+            pattern = pattern.replace("MM", "%m");
+        } else {
+            pattern = pattern.replace("M", "%m");
+        }
+        // replace year
+        pattern = pattern.replace("yyyy", "%Y");
+        pattern = pattern.replace("yy", "%y");
+        // check if exists in format definition
+        boolean find = false;
+        for (int i = 0; i < mContext.getResources().getStringArray(R.array.date_format_mask).length; i++) {
+            if (pattern.equals(mContext.getResources().getStringArray(R.array.date_format_mask)[i])) {
+                find = true;
+                break;
+            }
+        }
+
+        String result = find
+            ? pattern
+            : null;
+        return result;
     }
 }

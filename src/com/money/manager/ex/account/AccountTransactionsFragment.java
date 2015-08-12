@@ -26,7 +26,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
@@ -47,6 +46,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.MainActivity;
@@ -57,7 +57,6 @@ import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.IAllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.AccountRepository;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
@@ -65,7 +64,6 @@ import com.money.manager.ex.common.IAllDataFragmentCallbacks;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -627,11 +625,11 @@ public class AccountTransactionsFragment
 
         // write account balance
         if (mAccountList != null) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+            CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
-            txtAccountBalance.setText(currencyUtils.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance));
-            txtAccountReconciled.setText(currencyUtils.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled));
-            txtAccountDifference.setText(currencyUtils.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled - mAccountBalance));
+            txtAccountBalance.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance));
+            txtAccountReconciled.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled));
+            txtAccountDifference.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled - mAccountBalance));
         }
     }
 

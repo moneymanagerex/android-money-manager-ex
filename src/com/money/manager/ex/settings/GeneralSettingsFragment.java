@@ -25,10 +25,10 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -37,12 +37,9 @@ import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.currency.CurrencyNameComparator;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -234,7 +231,7 @@ public class GeneralSettingsFragment
                     // set preference
 //                    AppSettings settings = new AppSettings(getActivity());
 //                    settings.getGeneralSettings().setBaseCurrency(currencyId);
-                    CurrencyUtils utils = new CurrencyUtils(getActivity());
+                    CurrencyService utils = new CurrencyService(getActivity());
                     utils.saveBaseCurrencyId(currencyId);
                     // refresh the displayed value.
                     showCurrentDefaultCurrency();
@@ -247,10 +244,10 @@ public class GeneralSettingsFragment
         Preference baseCurrency = findPreference(getString(PreferenceConstants.PREF_BASE_CURRENCY));
         if (baseCurrency == null) return;
 
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
-        Integer currencyId = currencyUtils.getBaseCurrencyId();
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+        Integer currencyId = currencyService.getBaseCurrencyId();
 
-        TableCurrencyFormats tableCurrency = currencyUtils.getCurrency(currencyId);
+        TableCurrencyFormats tableCurrency = currencyService.getCurrency(currencyId);
         if (tableCurrency != null) {
             baseCurrency.setSummary(tableCurrency.getCurrencyName());
         }

@@ -32,10 +32,10 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,12 +172,12 @@ public class EditTransactionCommonFunctions {
             currencyId = this.AccountList.get(index).getCurrencyId();
         }
 
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext.getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
 
         if (currencyId == null) {
-            view.setText(currencyUtils.getBaseCurrencyFormatted(amount));
+            view.setText(currencyService.getBaseCurrencyFormatted(amount));
         } else {
-            view.setText(currencyUtils.getCurrencyFormatted(currencyId, amount));
+            view.setText(currencyService.getCurrencyFormatted(currencyId, amount));
         }
         view.setTag(amount);
     }

@@ -35,6 +35,7 @@ import java.util.List;
  * Category
  */
 public class CategoryService {
+
     public CategoryService(Context context) {
         mContext = context;
         mCategory = new TableCategory();

@@ -22,7 +22,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +31,9 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
-
-import java.math.BigDecimal;
-import java.util.Calendar;
 
 /**
  * Adapter for budgets.
@@ -114,14 +110,14 @@ public class BudgetAdapter
             frequencyTextView.setText(text);
         }
 
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+        CurrencyService currencyService = new CurrencyService(mContext);
 
         // Amount
 
         TextView amountTextView = (TextView) view.findViewById(R.id.amountTextView);
         if (amountTextView != null) {
             double amount = cursor.getDouble(cursor.getColumnIndex(BudgetQuery.AMOUNT));
-            String text = currencyUtils.getBaseCurrencyFormatted(amount);
+            String text = currencyService.getBaseCurrencyFormatted(amount);
             amountTextView.setText(text);
         }
 
@@ -139,7 +135,7 @@ public class BudgetAdapter
                 actual = getAmountForSubCategory(subCategoryId);
             }
 
-            String actualString = currencyUtils.getBaseCurrencyFormatted(actual);
+            String actualString = currencyService.getBaseCurrencyFormatted(actual);
             actualTextView.setText(actualString);
         }
     }

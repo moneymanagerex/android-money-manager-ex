@@ -26,9 +26,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +40,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.currency.CurrencyUtils;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
@@ -332,16 +330,16 @@ public class IncomeVsExpensesListFragment
         TextView txtExpenses = (TextView) footer.findViewById(R.id.textViewExpenses);
         TextView txtDifference = (TextView) footer.findViewById(R.id.textViewDifference);
 
-        CurrencyUtils currencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
         //set income
-        txtIncome.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income));
+        txtIncome.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), income));
         txtIncome.setTypeface(null, Typeface.BOLD);
         //set expenses
-        txtExpenses.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), Math.abs(expenses)));
+        txtExpenses.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), Math.abs(expenses)));
         txtExpenses.setTypeface(null, Typeface.BOLD);
         //set difference
-        txtDifference.setText(currencyUtils.getCurrencyFormatted(currencyUtils.getBaseCurrencyId(), income - Math.abs(expenses)));
+        txtDifference.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), income - Math.abs(expenses)));
         txtDifference.setTypeface(null, Typeface.BOLD);
         //change colors
         Core core = new Core(getActivity());

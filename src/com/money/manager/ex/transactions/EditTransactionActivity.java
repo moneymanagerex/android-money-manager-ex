@@ -55,6 +55,7 @@ import com.money.manager.ex.businessobjects.RecurringTransaction;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -72,7 +73,6 @@ import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.currency.CurrencyUtils;
 import com.money.manager.ex.utils.DateUtils;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 
@@ -791,7 +791,7 @@ public class EditTransactionActivity
         View view = findViewById(id);
         int accountId;
         if (view != null && view instanceof TextView) {
-            CurrencyUtils currencyUtils = new CurrencyUtils(getApplicationContext());
+            CurrencyService currencyService = new CurrencyService(getApplicationContext());
             if (mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer)) {
                 Double originalAmount;
                 try {
@@ -810,7 +810,7 @@ public class EditTransactionActivity
                             ? (Double) mCommonFunctions.txtTotAmount.getTag()
                             : (Double) mCommonFunctions.txtAmount.getTag();
                     // convert value
-                    Double amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
+                    Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
                     // take original amount converted
                     originalAmount = view.getId() == R.id.textViewTotAmount
                             ? (Double) mCommonFunctions.txtAmount.getTag()
@@ -821,7 +821,7 @@ public class EditTransactionActivity
                     if (originalAmount == 0) {
                         DecimalFormat decimalFormat = new DecimalFormat("0.00");
                         if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
-                            amountExchange = currencyUtils.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+                            amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
                             mCommonFunctions.formatAmount(view.getId() == R.id.textViewTotAmount
                                     ? mCommonFunctions.txtAmount : mCommonFunctions.txtTotAmount,
                                     amountExchange,

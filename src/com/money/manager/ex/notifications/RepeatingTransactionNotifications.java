@@ -32,10 +32,10 @@ import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 public class RepeatingTransactionNotifications {
     private static final String LOGCAT = RepeatingTransactionNotifications.class.getSimpleName();
@@ -78,7 +78,7 @@ public class RepeatingTransactionNotifications {
     }
 
     private void showNotification(Cursor cursor) {
-        CurrencyUtils currencyUtils = new CurrencyUtils(mContext);
+        CurrencyService currencyService = new CurrencyService(mContext);
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
 
         while (cursor.moveToNext()) {
@@ -89,7 +89,7 @@ public class RepeatingTransactionNotifications {
             // compose text
             String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
                     " " + payeeName +
-                    ": <b>" + currencyUtils.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
+                    ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
             // add line
             inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
         }

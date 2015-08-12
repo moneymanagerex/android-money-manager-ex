@@ -25,8 +25,8 @@ import android.widget.RemoteViewsService;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 public class AccountBillsWidgetService extends RemoteViewsService {
     @Override
@@ -36,14 +36,14 @@ public class AccountBillsWidgetService extends RemoteViewsService {
 
     public class AllAccountBillsViewFactory implements RemoteViewsService.RemoteViewsFactory {
         private Context mContext;
-        private CurrencyUtils mCurrencyUtils;
+        private CurrencyService mCurrencyService;
         private Cursor mCursor;
 
         public AllAccountBillsViewFactory(Context context, Intent intent) {
             //appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             this.mContext = context;
             // create application
-            mCurrencyUtils = new CurrencyUtils(context);
+            mCurrencyService = new CurrencyService(context);
         }
 
         @Override
@@ -82,7 +82,7 @@ public class AccountBillsWidgetService extends RemoteViewsService {
                 int colindex = mCursor.getColumnIndex(QueryAccountBills.ACCOUNTNAME);
                 String accountname = mCursor.getString(colindex);
                 remoteViews.setTextViewText(R.id.textViewItemAccountName, accountname);
-                String value = mCurrencyUtils.getCurrencyFormatted(mCursor.getInt(mCursor.getColumnIndex(QueryAccountBills.CURRENCYID)),
+                String value = mCurrencyService.getCurrencyFormatted(mCursor.getInt(mCursor.getColumnIndex(QueryAccountBills.CURRENCYID)),
                         mCursor.getDouble(mCursor.getColumnIndex(QueryAccountBills.TOTAL)));
                 remoteViews.setTextViewText(R.id.textViewItemAccountTotal, value);
             }

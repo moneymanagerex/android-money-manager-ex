@@ -17,52 +17,16 @@
  */
 package com.money.manager.ex.reports;
 
-import android.content.Context;
-import android.content.res.Configuration;
-import android.database.Cursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TableRow;
-import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
-import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.currency.CurrencyUtils;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 //    private static final String LOGCAT = IncomeVsExpensesActivity.class.getSimpleName();
-//    private static CurrencyUtils currencyUtils;
+//    private static CurrencyService currencyService;
 
     public static final int SUBTOTAL_MONTH = 99;
 

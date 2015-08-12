@@ -24,10 +24,10 @@ import android.util.Log;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.currency.CurrencyUtils;
 
 public class SummaryDashExtension extends DashClockExtension {
 
@@ -36,10 +36,10 @@ public class SummaryDashExtension extends DashClockExtension {
         try {
             Context context = getApplicationContext();
             MoneyManagerApplication app = new MoneyManagerApplication();
-            CurrencyUtils currencyUtils = new CurrencyUtils(context);
+            CurrencyService currencyService = new CurrencyService(context);
 
             // summary formatted
-            String summary = currencyUtils.getBaseCurrencyFormatted(app.getSummaryAccounts(context));
+            String summary = currencyService.getBaseCurrencyFormatted(app.getSummaryAccounts(context));
 
             publishUpdate(new ExtensionData()
                     .visible(true)

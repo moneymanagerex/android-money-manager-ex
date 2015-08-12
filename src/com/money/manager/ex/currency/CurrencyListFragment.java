@@ -73,7 +73,7 @@ public class CurrencyListFragment
     private TableCurrencyFormats mCurrency = new TableCurrencyFormats();
 
     private String mCurFilter;
-    private CurrencyUtils mCurrencyUtils;
+    private CurrencyService mCurrencyService;
     private boolean mShowOnlyUsedCurrencies;
 
     @Override
@@ -153,8 +153,8 @@ public class CurrencyListFragment
                 // add the currency information.
                 String symbol = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCY_SYMBOL));
                 intent.putExtra(TableCurrencyFormats.CURRENCY_SYMBOL, symbol);
-                CurrencyUtils currencyUtils = this.getCurrencyUtils();
-                String baseCurrencyCode = currencyUtils.getBaseCurrencyCode();
+                CurrencyService currencyService = this.getCurrencyUtils();
+                String baseCurrencyCode = currencyService.getBaseCurrencyCode();
                 intent.putExtra(CurrencyChartActivity.BASE_CURRENCY_SYMBOL, baseCurrencyCode);
                 startActivity(intent);
                 break;
@@ -201,8 +201,8 @@ public class CurrencyListFragment
                 // filter only used accounts?
                 if (mShowOnlyUsedCurrencies) {
                     // get the list of used currencies.
-                    CurrencyUtils currencyUtils = getCurrencyUtils();
-                    List<TableCurrencyFormats> usedCurrencies = currencyUtils.getUsedCurrencies();
+                    CurrencyService currencyService = getCurrencyUtils();
+                    List<TableCurrencyFormats> usedCurrencies = currencyService.getUsedCurrencies();
                     if (usedCurrencies.size() > 0) {
                         ArrayList<String> symbols = new ArrayList<>();
                         for (TableCurrencyFormats currency : usedCurrencies) {
@@ -532,11 +532,11 @@ public class CurrencyListFragment
         return currencies;
     }
 
-    private CurrencyUtils getCurrencyUtils() {
-        if(mCurrencyUtils == null) {
-            mCurrencyUtils = new CurrencyUtils(getActivity().getApplicationContext());
+    private CurrencyService getCurrencyUtils() {
+        if(mCurrencyService == null) {
+            mCurrencyService = new CurrencyService(getActivity().getApplicationContext());
         }
-        return mCurrencyUtils;
+        return mCurrencyService;
     }
 
     /**
@@ -547,7 +547,7 @@ public class CurrencyListFragment
     }
 
 //    private void updateAllExchangeRatesFromYahoo(){
-//        CurrencyUtils utils = getCurrencyUtils();
+//        CurrencyService utils = getCurrencyUtils();
 //        List<TableCurrencyFormats> currencies = utils.getAllCurrencyFormats();
 //
 //        updateExchangeRatesFromYahoo(currencies);
@@ -556,7 +556,7 @@ public class CurrencyListFragment
     private void updateExchangeRatesFromYahoo(List<TableCurrencyFormats> currencies){
         if (currencies.size() <= 0) return;
 
-        CurrencyUtils utils = getCurrencyUtils();
+        CurrencyService utils = getCurrencyUtils();
         String[] currencySymbols = new String[currencies.size()];
         int counter = 0;
         String symbol;
@@ -576,7 +576,7 @@ public class CurrencyListFragment
     }
 
     private boolean updateCurrencyFromYahoo(int toCurrencyId) {
-        CurrencyUtils utils = getCurrencyUtils();
+        CurrencyService utils = getCurrencyUtils();
 
         List<TableCurrencyFormats> currencies = new ArrayList<>();
         currencies.add(utils.getCurrency(toCurrencyId));
