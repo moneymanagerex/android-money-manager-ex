@@ -21,29 +21,15 @@ package com.money.manager.ex;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.inapp.util.IabHelper;
-import com.money.manager.ex.inapp.util.IabResult;
-import com.money.manager.ex.inapp.util.Inventory;
-import com.money.manager.ex.inapp.util.Purchase;
-import com.money.manager.ex.inapp.util.SkuDetails;
+//import com.money.manager.ex.inapp.util.IabHelper;
 import com.money.manager.ex.view.RobotoButton;
-import com.money.manager.ex.view.RobotoTextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class DonateActivity extends BaseFragmentActivity {
     private static final String LOGCAT = DonateActivity.class.getSimpleName();
@@ -57,7 +43,7 @@ public class DonateActivity extends BaseFragmentActivity {
     private String purchasedSku = "";
     private String purchasedToken = "";
     // Helper In-app Billing
-    private IabHelper mIabHelper;
+//    private IabHelper mIabHelper;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -86,7 +72,7 @@ public class DonateActivity extends BaseFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!mIabHelper.handleActivityResult(requestCode, resultCode, data))
+//        if (!mIabHelper.handleActivityResult(requestCode, resultCode, data))
             super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -103,9 +89,9 @@ public class DonateActivity extends BaseFragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         try {
-            if (mIabHelper != null)
-                mIabHelper.dispose();
-            mIabHelper = null;
+//            if (mIabHelper != null)
+//                mIabHelper.dispose();
+//            mIabHelper = null;
         } catch (Exception e) {
             Log.e(LOGCAT, e.getMessage());
         }

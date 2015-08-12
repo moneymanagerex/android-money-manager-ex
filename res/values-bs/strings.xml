@@ -474,7 +474,7 @@
   <string name="db_not_dropbox">Vaša trenutna baza podataka nije sinhronizovana. Molim vas podesite Dropbox sinkronizaciju.</string>
   <string name="checking_dropbox_for_changes">Provjeravam Dropbox za promjene u bazi podataka.</string>
   <string name="choose_type">Odaberite tip</string>
-  <string name="default_account">Zadani račun</string>
+  <string name="default_account">Osnovni račun</string>
   <string name="default_account_summary">Račun koji se koristi pri unosu nove transakcije.</string>
   <string name="balance_account">Balansiranje računa</string>
   <string name="balance_adjustment">Podešavanje balansa</string>

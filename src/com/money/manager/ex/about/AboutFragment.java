@@ -26,7 +26,6 @@ import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,7 +43,6 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.ExceptionHandler;
 
 public class AboutFragment extends Fragment {
-    private static final String LOGCAT = AboutFragment.class.getSimpleName();
     private static Fragment mInstance;
 
     public static Fragment newInstance(int page) {
