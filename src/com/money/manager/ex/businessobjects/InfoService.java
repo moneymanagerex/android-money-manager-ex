@@ -2,9 +2,14 @@ package com.money.manager.ex.businessobjects;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
 
@@ -61,4 +66,71 @@ public class InfoService {
         return db.update(currencyFormats.getSource(), values,
                 null, null);
     }
+
+    /**
+     * Retrieve value of info
+     *
+     * @param info to be retrieve
+     * @return value
+     */
+    public String getInfoValue(String info) {
+        TableInfoTable infoTable = new TableInfoTable();
+        Cursor data;
+        String ret = null;
+
+        try {
+            data = mContext.getContentResolver().query(infoTable.getUri(),
+                    null,
+                    TableInfoTable.INFONAME + "=?",
+                    new String[]{ info },
+                    null, null);
+            if (data == null) return null;
+
+            if (data.moveToFirst()) {
+                ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
+            }
+            data.close();
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "retrieving info value: " + info);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Update value of info
+     *
+     * @param key  to be updated
+     * @param value value to be used
+     * @return true if update success otherwise false
+     */
+    public boolean setInfoValue(String key, String value) {
+        boolean ret = false;
+        TableInfoTable infoTable = new TableInfoTable();
+        MoneyManagerOpenHelper helper;
+        boolean exists;
+        // check if exists info
+        exists = !TextUtils.isEmpty(getInfoValue(key));
+        // content values
+        ContentValues values = new ContentValues();
+        values.put(TableInfoTable.INFOVALUE, value);
+
+        try {
+            helper = MoneyManagerOpenHelper.getInstance(mContext);
+            if (exists) {
+                ret = helper.getWritableDatabase().update(infoTable.getSource(), values,
+                        TableInfoTable.INFONAME + "=?", new String[]{key}) >= 0;
+            } else {
+                values.put(TableInfoTable.INFONAME, key);
+                ret = helper.getWritableDatabase().insert(infoTable.getSource(), null, values) >= 0;
+            }
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "writing info value");
+        }
+
+        return ret;
+    }
+
 }

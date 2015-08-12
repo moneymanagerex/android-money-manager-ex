@@ -30,6 +30,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.PreferenceConstants;
 
@@ -50,8 +51,10 @@ public class DonateDialogUtils {
         int lastVersionCode = preferences.getInt(context.getString(PreferenceConstants.PREF_DONATE_LAST_VERSION_KEY), -1);
         if (!(lastVersionCode == currentVersionCode) || forceShow) {
             preferences.edit().putInt(context.getString(PreferenceConstants.PREF_DONATE_LAST_VERSION_KEY), currentVersionCode).commit();
-            Core core = new Core(context);
-            if (TextUtils.isEmpty(core.getInfoValue(Constants.INFOTABLE_SKU_ORDER_ID))) {
+
+            InfoService infoService = new InfoService(context);
+
+            if (TextUtils.isEmpty(infoService.getInfoValue(Constants.INFOTABLE_SKU_ORDER_ID))) {
                 //get text donate
                 String donateText = context.getString(R.string.donate_header);
                 //create dialog

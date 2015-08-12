@@ -438,37 +438,6 @@ public class Core {
     }
 
     /**
-     * Retrieve value of info
-     *
-     * @param info to be retrieve
-     * @return value
-     */
-    public String getInfoValue(String info) {
-        TableInfoTable infoTable = new TableInfoTable();
-        Cursor data;
-        String ret = null;
-
-        try {
-            data = mContext.getContentResolver().query(infoTable.getUri(),
-                    null,
-                    TableInfoTable.INFONAME + "=?",
-                    new String[]{ info },
-                    null, null);
-            if (data == null) return null;
-
-            if (data.moveToFirst()) {
-                ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
-            }
-            data.close();
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "retrieving info value: " + info);
-        }
-
-        return ret;
-    }
-
-    /**
      * Return arrays of month formatted and localizated
      *
      * @return arrays of months
@@ -632,41 +601,6 @@ public class Core {
             return tv.resourceId;
         else
             return INVALID_ATTRIBUTE;
-    }
-
-    /**
-     * Update value of info
-     *
-     * @param info  to be updated
-     * @param value value to be used
-     * @return true if update success otherwise false
-     */
-    public boolean setInfoValue(String info, String value) {
-        boolean ret;
-        TableInfoTable infoTable = new TableInfoTable();
-        MoneyManagerOpenHelper helper;
-        boolean exists;
-        // check if exists info
-        exists = !TextUtils.isEmpty(getInfoValue(info));
-        // content values
-        ContentValues values = new ContentValues();
-        values.put(TableInfoTable.INFOVALUE, value);
-
-        try {
-            helper = MoneyManagerOpenHelper.getInstance(mContext);
-            if (exists) {
-                ret = helper.getWritableDatabase().update(infoTable.getSource(), values,
-                        TableInfoTable.INFONAME + "=?", new String[]{info}) >= 0;
-            } else {
-                values.put(TableInfoTable.INFONAME, info);
-                ret = helper.getWritableDatabase().insert(infoTable.getSource(), null, values) >= 0;
-            }
-        } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
-            ret = false;
-        }
-
-        return ret;
     }
 
     public boolean isToDisplayChangelog() {
