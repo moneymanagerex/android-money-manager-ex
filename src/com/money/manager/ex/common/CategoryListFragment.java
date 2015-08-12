@@ -363,7 +363,8 @@ public class CategoryListFragment
                 if (isResumed()) {
                     setListShown(true);
 
-                    if (data.getCount() <= 0 && getFloatingActionButton() != null) {
+                    boolean noData = data == null || data.getCount() <= 0;
+                    if (noData && getFloatingActionButton() != null) {
                         getFloatingActionButton().show(true);
                     }
                 } else {
