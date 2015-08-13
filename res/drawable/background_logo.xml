@@ -19,11 +19,16 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item android:drawable="@color/md_primary"/>
+    <!--<item android:drawable="@color/md_primary"/>-->
+    <!--<bitmap-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:src="@drawable/ic_logo_splash"-->
+    <!--android:gravity="center"-->
+    <!--android:tileMode="disabled" />-->
+
+    <item android:drawable="@color/money_background_dark"/>
     <item>
-        <bitmap
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:src="@drawable/ic_logo_splash"
+        <bitmap android:src="@drawable/ic_logo_money_manager_ex"
             android:gravity="center"
             android:tileMode="disabled" />
     </item>
