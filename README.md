@@ -36,6 +36,9 @@ For any question, bug report, suggestion please drop us a line  [android.money.m
 
 If you want to join our translation team: [MoneyManagerEx for Android on Crowdin.net](https://crowdin.net/project/android-money-manager-ex)
 
+#### Beta Testing
+
+Opt-in to test the latest releases at [https://play.google.com/apps/testing/com.money.manager.ex](https://play.google.com/apps/testing/com.money.manager.ex)
 
 #### The Android Money Manager Ex Project Team
 
