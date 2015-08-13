@@ -91,6 +91,7 @@ public class RecurringTransactionActivity
     private static final int REQUEST_PICK_CATEGORY = 3;
     public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
 
+    public static final String KEY_MODEL = "RecurringTransactionActivity:Model";
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
     public static final String KEY_ACCOUNT_ID = "RepeatingTransaction:AccountId";
     public static final String KEY_TO_ACCOUNT_ID = "RepeatingTransaction:ToAccountId";
@@ -117,6 +118,8 @@ public class RecurringTransactionActivity
     // action type intent
     private String mIntentAction;
     private String mToAccountName;
+
+    private TableBillsDeposits mRecurringTransaction;
     private int mBillDepositsId = Constants.NOT_SET;
     private String mStatus;
     private String[] mStatusItems, mStatusValues;
@@ -129,7 +132,7 @@ public class RecurringTransactionActivity
     // next occurrence
     private String mNextOccurrence = "";
     private int mFrequencies = 0;
-    private int mNumOccurrence = Constants.NOT_SET;
+//    private int mNumOccurrence = Constants.NOT_SET;
 
     // Controls on the form.
     private Spinner spinFrequencies;
@@ -394,13 +397,13 @@ public class RecurringTransactionActivity
 
         // times repeated
         edtTimesRepeated = (EditText) findViewById(R.id.editTextTimesRepeated);
-        if (mNumOccurrence >= 0) {
-            edtTimesRepeated.setText(Integer.toString(mNumOccurrence));
+        if (mRecurringTransaction != null && mRecurringTransaction.numOccurrence >= 0) {
+            edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.numOccurrence));
         }
         // frequencies
         if (mFrequencies >= 200) {
             mFrequencies = mFrequencies - 200;
-        } // set auto execute without user acknowlegement
+        } // set auto execute without user acknowledgement
         if (mFrequencies >= 100) {
             mFrequencies = mFrequencies - 100;
         } // set auto execute on the next occurrence
@@ -481,6 +484,7 @@ public class RecurringTransactionActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         // save the state interface
         outState.putInt(KEY_BILL_DEPOSITS_ID, mBillDepositsId);
         outState.putInt(KEY_ACCOUNT_ID, mCommonFunctions.mAccountId);
@@ -508,10 +512,14 @@ public class RecurringTransactionActivity
         NumericHelper helper = new NumericHelper();
         int timesRepeated = helper.tryParse(edtTimesRepeated.getText().toString());
         if (timesRepeated != Constants.NOT_SET) {
-            outState.putInt(KEY_NUM_OCCURRENCE, timesRepeated);
+//            outState.putInt(KEY_NUM_OCCURRENCE, timesRepeated);
+            mRecurringTransaction.numOccurrence = timesRepeated;
         } else {
-            outState.putInt(KEY_NUM_OCCURRENCE, Constants.NOT_SET);
+//            outState.putInt(KEY_NUM_OCCURRENCE, Constants.NOT_SET);
+            mRecurringTransaction.numOccurrence = Constants.NOT_SET;
         }
+        outState.putParcelable(KEY_MODEL, mRecurringTransaction);
+
         outState.putString(KEY_ACTION, mIntentAction);
     }
 
@@ -632,6 +640,9 @@ public class RecurringTransactionActivity
         TableBillsDeposits tx = repo.load(recurringTransactionId);
         if (tx == null) return false;
 
+        // todo: just use a model object instead of a bunch of individual properties.
+        mRecurringTransaction = tx;
+
         // Read data.
         mBillDepositsId = tx.id;
         mCommonFunctions.mAccountId = tx.accountId;
@@ -648,7 +659,7 @@ public class RecurringTransactionActivity
         mNotes = tx.notes;
         mNextOccurrence = tx.nextOccurrence;
         mFrequencies = tx.repeats;
-        mNumOccurrence = tx.numOccurrence;
+//        mNumOccurrence = tx.numOccurrence;
 
         // load split transactions only if no category selected.
         if (mCommonFunctions.mCategoryId == Constants.NOT_SET && mCommonFunctions.mSplitTransactions == null) {
@@ -902,6 +913,8 @@ public class RecurringTransactionActivity
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
+        mRecurringTransaction = savedInstanceState.getParcelable(KEY_MODEL);
+
         mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
         mCommonFunctions.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
         mCommonFunctions.mToAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
@@ -923,7 +936,8 @@ public class RecurringTransactionActivity
         mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
         mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
         mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
-        mNumOccurrence = savedInstanceState.getInt(KEY_NUM_OCCURRENCE);
+//        mNumOccurrence = savedInstanceState.getInt(KEY_NUM_OCCURRENCE);
+
         // action
         mIntentAction = savedInstanceState.getString(KEY_ACTION);
     }

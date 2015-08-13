@@ -18,6 +18,8 @@
 package com.money.manager.ex.database;
 
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.money.manager.ex.core.TransactionTypes;
 
@@ -25,7 +27,8 @@ import com.money.manager.ex.core.TransactionTypes;
  * Recurring transaction.
  */
 public class TableBillsDeposits
-        extends Dataset {
+        extends Dataset
+        implements Parcelable {
 
 	// FIELD
 	public static final String BDID = "BDID";
@@ -54,7 +57,7 @@ public class TableBillsDeposits
 	public Integer accountId;
     public Integer toAccountId;
     public String transactionCode;
-    public TransactionTypes transactionType;
+//    public TransactionTypes transactionType;
     public String status;
     public Double amount;
     public Double totalAmount;
@@ -80,7 +83,7 @@ public class TableBillsDeposits
 		this.accountId = c.getInt(c.getColumnIndex(TableBillsDeposits.ACCOUNTID));
 		this.toAccountId = c.getInt(c.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
 		this.transactionCode = c.getString(c.getColumnIndex(TableBillsDeposits.TRANSCODE));
-		this.transactionType = TransactionTypes.valueOf(this.transactionCode);
+//		this.transactionType = TransactionTypes.valueOf(this.transactionCode);
 		status = c.getString(c.getColumnIndex(TableBillsDeposits.STATUS));
 		amount = c.getDouble(c.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
 		this.totalAmount = c.getDouble(c.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
@@ -93,4 +96,61 @@ public class TableBillsDeposits
 		repeats = c.getInt(c.getColumnIndex(TableBillsDeposits.REPEATS));
 		numOccurrence = c.getInt(c.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
 	}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(accountId);
+        dest.writeInt(toAccountId);
+        dest.writeString(transactionCode);
+        dest.writeString(status);
+        dest.writeDouble(amount);
+        dest.writeDouble(totalAmount);
+        dest.writeInt(payeeId);
+        dest.writeInt(categoryId);
+        dest.writeInt(subCategoryId);
+        dest.writeString(transactionNumber);
+        dest.writeString(notes);
+        dest.writeString(nextOccurrence);
+        dest.writeInt(repeats);
+        dest.writeInt(numOccurrence);
+    }
+
+    public void readToParcel(Parcel source) {
+        id = source.readInt();
+        accountId = source.readInt();
+        toAccountId = source.readInt();
+        transactionCode = source.readString();
+        status = source.readString();
+        amount = source.readDouble();
+        totalAmount = source.readDouble();
+        payeeId = source.readInt();
+        categoryId = source.readInt();
+        subCategoryId = source.readInt();
+        transactionNumber = source.readString();
+        notes = source.readString();
+        nextOccurrence = source.readString();
+        repeats = source.readInt();
+        numOccurrence = source.readInt();
+    }
+
+
+    public final static Parcelable.Creator<TableBillsDeposits> CREATOR = new Parcelable.Creator<TableBillsDeposits>() {
+        public TableBillsDeposits createFromParcel(Parcel source) {
+            TableBillsDeposits record = new TableBillsDeposits();
+            record.readToParcel(source);
+            return record;
+        }
+
+        @Override
+        public TableBillsDeposits[] newArray(int size) {
+            return new TableBillsDeposits[size];
+        }
+    };
 }
+

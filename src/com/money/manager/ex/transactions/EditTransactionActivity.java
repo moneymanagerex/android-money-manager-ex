@@ -98,7 +98,7 @@ public class EditTransactionActivity
     // action type intent
     public String mIntentAction;
     public String mToAccountName;
-    public int mTransId =Constants.NOT_SET;
+    public int mTransId = Constants.NOT_SET;
 
     public String mStatus = null;
 

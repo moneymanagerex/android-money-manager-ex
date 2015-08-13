@@ -176,6 +176,6 @@ public class TableSplitTransactions extends Dataset
 		@Override
 		public TableSplitTransactions[] newArray(int size) {
 			return new TableSplitTransactions[size];
-		};
+		}
 	};
 }
