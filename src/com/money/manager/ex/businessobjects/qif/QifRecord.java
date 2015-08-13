@@ -24,6 +24,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.SplitCategoriesRepository;
 import com.money.manager.ex.database.TableSplitTransactions;
@@ -136,12 +137,12 @@ public class QifRecord {
         // retrieve splits
         SplitCategoriesRepository repo = new SplitCategoriesRepository(mContext);
         int transactionId = getTransactionId(cursor);
-        ArrayList<TableSplitTransactions> splits = repo.loadSplitCategoriesFor(transactionId);
+        ArrayList<ISplitTransactionsDataset> splits = repo.loadSplitCategoriesFor(transactionId);
         if (splits == null) return Constants.EMPTY_STRING;
 
         String transactionType = getTransactionType(cursor);
 
-        for(TableSplitTransactions split : splits) {
+        for(ISplitTransactionsDataset split : splits) {
             String splitRecord = getSplitCategory(split, transactionType);
             builder.append(splitRecord);
         }
@@ -149,7 +150,7 @@ public class QifRecord {
         return builder.toString();
     }
 
-    private String getSplitCategory(TableSplitTransactions split, String transactionType) {
+    private String getSplitCategory(ISplitTransactionsDataset split, String transactionType) {
         StringBuilder builder = new StringBuilder();
         Core core = new Core(mContext);
 

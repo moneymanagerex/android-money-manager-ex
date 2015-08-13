@@ -57,8 +57,8 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SplitCategoriesRepository;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
@@ -75,7 +75,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.shamanland.fonticon.FontIconButton;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -125,8 +124,8 @@ public class EditTransactionActivity
     // object of the table
     private TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
     // list split transactions
-    private ArrayList<TableSplitTransactions> mSplitTransactions = null;
-    private ArrayList<TableSplitTransactions> mSplitTransactionsDeleted = null;
+//    private ArrayList<TableSplitTransactions> mSplitTransactions = null;
+//    private ArrayList<TableSplitTransactions> mSplitTransactionsDeleted = null;
     private EditTransactionCommonFunctions mCommonFunctions;
 
     @Override
@@ -266,8 +265,8 @@ public class EditTransactionActivity
                     Intent intent = new Intent(EditTransactionActivity.this, SplitTransactionsActivity.class);
                     intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, TableSplitTransactions.class.getSimpleName());
                     intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mCommonFunctions.mTransactionType.getCode());
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
+                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
+                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mCommonFunctions.mSplitTransactionsDeleted);
                     startActivityForResult(intent, EditTransactionActivityConstants.REQUEST_PICK_SPLIT_TRANSACTION);
                 }
             }
@@ -283,7 +282,7 @@ public class EditTransactionActivity
         });
 
         // mark checked if there are existing split categories.
-        boolean hasSplit = hasSplitCategories();
+        boolean hasSplit = mCommonFunctions.hasSplitCategories();
         mCommonFunctions.setSplit(hasSplit);
 
         // Amount and total amount
@@ -416,11 +415,11 @@ public class EditTransactionActivity
 
             case EditTransactionActivityConstants.REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
-                    if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
+                    mCommonFunctions.mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                    if (mCommonFunctions.mSplitTransactions != null && mCommonFunctions.mSplitTransactions.size() > 0) {
                         double totAmount = 0;
-                        for (int i = 0; i < mSplitTransactions.size(); i++) {
-                            totAmount += mSplitTransactions.get(i).getSplitTransAmount();
+                        for (int i = 0; i < mCommonFunctions.mSplitTransactions.size(); i++) {
+                            totAmount += mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount();
                         }
                         mCommonFunctions.formatAmount(mCommonFunctions.txtTotAmount, totAmount,
                                 !mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer)
@@ -429,7 +428,7 @@ public class EditTransactionActivity
                     }
                     // deleted item
                     if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
-                        mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                        mCommonFunctions.mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
                     }
                 }
                 break;
@@ -486,8 +485,8 @@ public class EditTransactionActivity
         outState.putInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, mCommonFunctions.mSubCategoryId);
         outState.putString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.mSubCategoryName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
-        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, mSplitTransactions);
-        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
+        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
+        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED, mCommonFunctions.mSplitTransactionsDeleted);
         outState.putString(EditTransactionActivityConstants.KEY_NOTES, edtNotes.getText().toString());
         // bill deposits
         outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
@@ -610,19 +609,19 @@ public class EditTransactionActivity
 
         // create split transactions
         RecurringTransaction recurringTransaction = new RecurringTransaction(mRecurringTransactionId, this);
-        ArrayList<TableBudgetSplitTransactions> splitTemplates = recurringTransaction.loadSplitTransactions();
-        if(mSplitTransactions == null) mSplitTransactions = new ArrayList<>();
+        ArrayList<ISplitTransactionsDataset> splitTemplates = recurringTransaction.loadSplitTransactions();
+        if(mCommonFunctions.mSplitTransactions == null) mCommonFunctions.mSplitTransactions = new ArrayList<>();
 
         // For each of the templates, create a new record.
         for(int i = 0; i <= splitTemplates.size() - 1; i++) {
-            TableBudgetSplitTransactions record = splitTemplates.get(i);
+            TableBudgetSplitTransactions record = (TableBudgetSplitTransactions) splitTemplates.get(i);
 
             TableSplitTransactions newSplit = new TableSplitTransactions();
             newSplit.setSplitTransAmount(record.getSplitTransAmount());
             newSplit.setCategId(record.getCategId());
             newSplit.setSubCategId(record.getSubCategId());
 
-            mSplitTransactions.add(newSplit);
+            mCommonFunctions.mSplitTransactions.add(newSplit);
         }
 
         return true;
@@ -638,6 +637,49 @@ public class EditTransactionActivity
         ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) mCommonFunctions.spinTransCode.getAdapter();
         int originalPosition = adapterTrans.getPosition(mCommonFunctions.getTransactionType());
         mCommonFunctions.spinTransCode.setSelection(originalPosition);
+    }
+
+    private void initTransactionTypeSelector() {
+        // populate arrays TransCode
+        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
+        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
+        // create adapter for TransCode
+        final ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+                mTransCodeItems);
+        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCommonFunctions.spinTransCode.setAdapter(adapterTrans);
+
+        // select the current value
+        if (mCommonFunctions.mTransactionType != null) {
+            if (Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()) >= 0) {
+                mCommonFunctions.spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()), true);
+            }
+        } else {
+            mCommonFunctions.mTransactionType = TransactionTypes.values()[mCommonFunctions.spinTransCode.getSelectedItemPosition()];
+        }
+
+        mCommonFunctions.spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position >= 0) && (position <= mTransCodeValues.length)) {
+                    String selectedValue = mTransCodeValues[position];
+
+                    // Prevent selection if there are split transactions and the type is being
+                    // set to Transfer.
+                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
+                        handleSwitchingTransactionTypeToTransfer();
+                        return;
+                    }
+
+                    mCommonFunctions.mTransactionType = TransactionTypes.values()[position];
+                }
+                mCommonFunctions.refreshAfterTransactionCodeChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     /**
@@ -743,13 +785,13 @@ public class EditTransactionActivity
         cursor.close();
 
         // Load Split Categories.
-        if (mSplitTransactions == null) {
+        if (mCommonFunctions.mSplitTransactions == null) {
             SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
-            mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
+            mCommonFunctions.mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
 
-            if (duplicate && (mSplitTransactions != null)) {
+            if (duplicate && (mCommonFunctions.mSplitTransactions != null)) {
                 // Reset ids so that the transactions get inserted on save.
-                for (TableSplitTransactions split : mSplitTransactions) {
+                for (ISplitTransactionsDataset split : mCommonFunctions.mSplitTransactions) {
                     split.setSplitTransId(Constants.NOT_SET);
                 }
             }
@@ -839,25 +881,21 @@ public class EditTransactionActivity
         return true;
     }
 
-    public boolean hasSplitCategories() {
-        return mSplitTransactions != null && !mSplitTransactions.isEmpty();
-    }
-
     /**
      * After the user accepts, remove any split categories.
      */
     private void removeAllSplitCategories() {
-        if(mSplitTransactions == null) return;
+        if(mCommonFunctions.mSplitTransactions == null) return;
 
-        for(int i = 0; i < mSplitTransactions.size(); i++) {
-            TableSplitTransactions split = mSplitTransactions.get(i);
+        for(int i = 0; i < mCommonFunctions.mSplitTransactions.size(); i++) {
+            ISplitTransactionsDataset split = mCommonFunctions.mSplitTransactions.get(i);
             int id = split.getSplitTransId();
-            ArrayList<TableSplitTransactions> deletedSplits = getDeletedSplitCategories();
+            ArrayList<ISplitTransactionsDataset> deletedSplits = getDeletedSplitCategories();
 
             if(id == -1) {
                 // Remove any newly created splits.
                 // transaction id == -1
-                mSplitTransactions.remove(i);
+                mCommonFunctions.mSplitTransactions.remove(i);
                 i--;
             } else {
                 // Delete any splits already in the database.
@@ -889,8 +927,8 @@ public class EditTransactionActivity
         mCommonFunctions.mSubCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME);
         mNotes = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NOTES);
         mTransNumber = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER);
-        mSplitTransactions = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
-        mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED);
+        mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
+        mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED);
         mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
         mNextOccurrence = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
         // action
@@ -1044,60 +1082,17 @@ public class EditTransactionActivity
         }
     }
 
-    public ArrayList<TableSplitTransactions> getDeletedSplitCategories() {
-        if(mSplitTransactionsDeleted == null){
-            mSplitTransactionsDeleted = new ArrayList<>();
+    public ArrayList<ISplitTransactionsDataset> getDeletedSplitCategories() {
+        if(mCommonFunctions.mSplitTransactionsDeleted == null){
+            mCommonFunctions.mSplitTransactionsDeleted = new ArrayList<>();
         }
-        return mSplitTransactionsDeleted;
-    }
-
-    private void initTransactionTypeSelector() {
-        // populate arrays TransCode
-        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
-        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
-        // create adapter for TransCode
-        final ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                mTransCodeItems);
-        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCommonFunctions.spinTransCode.setAdapter(adapterTrans);
-
-        // select the current value
-        if (mCommonFunctions.mTransactionType != null) {
-            if (Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()) >= 0) {
-                mCommonFunctions.spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()), true);
-            }
-        } else {
-            mCommonFunctions.mTransactionType = TransactionTypes.values()[mCommonFunctions.spinTransCode.getSelectedItemPosition()];
-        }
-
-        mCommonFunctions.spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mTransCodeValues.length)) {
-                    String selectedValue = mTransCodeValues[position];
-
-                    // Prevent selection if there are split transactions and the type is being
-                    // set to Transfer.
-                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
-                        handleSwitchingTransactionTypeToTransfer();
-                        return;
-                    }
-
-                    mCommonFunctions.mTransactionType = TransactionTypes.values()[position];
-                }
-                mCommonFunctions.refreshAfterTransactionCodeChange();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        return mCommonFunctions.mSplitTransactionsDeleted;
     }
 
     private void handleSwitchingTransactionTypeToTransfer() {
         // The user is switching to Transfer transaction type.
 
-        if(hasSplitCategories()) {
+        if(mCommonFunctions.hasSplitCategories()) {
             // Prompt the user to confirm deleting split categories.
             // Use DialogFragment in order to redraw the dialog when switching device orientation.
 
@@ -1155,7 +1150,8 @@ public class EditTransactionActivity
             return false;
         }
         // Splits.
-        if (mCommonFunctions.chbSplitTransaction.isChecked() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
+        if (mCommonFunctions.chbSplitTransaction.isChecked() &&
+                (mCommonFunctions.mSplitTransactions == null || mCommonFunctions.mSplitTransactions.size() <= 0)) {
             Core.alertDialog(this, R.string.error_split_transaction_empty);
             return false;
         }
@@ -1239,36 +1235,36 @@ public class EditTransactionActivity
         }
 
         // has split categories
-        boolean hasSplitCategories = hasSplitCategories();
+        boolean hasSplitCategories = mCommonFunctions.hasSplitCategories();
         // update split transaction
         if (hasSplitCategories) {
-            for (int i = 0; i < mSplitTransactions.size(); i++) {
-                TableSplitTransactions split = mSplitTransactions.get(i);
+            for (int i = 0; i < mCommonFunctions.mSplitTransactions.size(); i++) {
+                ISplitTransactionsDataset split = mCommonFunctions.mSplitTransactions.get(i);
                 // do nothing if the split is marked for deletion.
-                ArrayList<TableSplitTransactions> deletedSplits = getDeletedSplitCategories();
+                ArrayList<ISplitTransactionsDataset> deletedSplits = getDeletedSplitCategories();
                 if(deletedSplits.contains(split)) {
                     continue;
                 }
 
                 values.clear();
                 //put value
-                values.put(TableSplitTransactions.CATEGID, mSplitTransactions.get(i).getCategId());
-                values.put(TableSplitTransactions.SUBCATEGID, mSplitTransactions.get(i).getSubCategId());
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactions.get(i).getSplitTransAmount());
+                values.put(TableSplitTransactions.CATEGID, mCommonFunctions.mSplitTransactions.get(i).getCategId());
+                values.put(TableSplitTransactions.SUBCATEGID, mCommonFunctions.mSplitTransactions.get(i).getSubCategId());
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount());
                 values.put(TableSplitTransactions.TRANSID, mTransId);
 
-                if (mSplitTransactions.get(i).getSplitTransId() == -1) {
+                if (mCommonFunctions.mSplitTransactions.get(i).getSplitTransId() == -1) {
                     // insert data
-                    if (getContentResolver().insert(mSplitTransactions.get(i).getUri(), values) == null) {
+                    if (getContentResolver().insert(mCommonFunctions.mSplitTransactions.get(i).getUri(), values) == null) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                         Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new split transaction failed!");
                         return false;
                     }
                 } else {
                     // update data
-                    if (getContentResolver().update(mSplitTransactions.get(i).getUri(), values,
+                    if (getContentResolver().update(mCommonFunctions.mSplitTransactions.get(i).getUri(), values,
                             TableSplitTransactions.SPLITTRANSID + "=?",
-                            new String[]{Integer.toString(mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
+                            new String[]{Integer.toString(mCommonFunctions.mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(EditTransactionActivityConstants.LOGCAT, "Update split transaction failed!");
                         return false;
@@ -1277,16 +1273,16 @@ public class EditTransactionActivity
             }
         }
         // deleted old split transaction
-        if (mSplitTransactionsDeleted != null && !mSplitTransactionsDeleted.isEmpty()) {
-            for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
+        if (mCommonFunctions.mSplitTransactionsDeleted != null && !mCommonFunctions.mSplitTransactionsDeleted.isEmpty()) {
+            for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
                 //put value
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactionsDeleted.get(i).getSplitTransAmount());
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount());
 
                 // update data
-                if (getContentResolver().delete(mSplitTransactionsDeleted.get(i).getUri(),
+                if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(),
                         TableSplitTransactions.SPLITTRANSID + "=?",
-                        new String[]{Integer.toString(mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
+                        new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(EditTransactionActivityConstants.LOGCAT, "Delete split transaction failed!");
                     return false;

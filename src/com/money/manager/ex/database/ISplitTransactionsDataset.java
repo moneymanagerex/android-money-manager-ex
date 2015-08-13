@@ -18,6 +18,7 @@
 
 package com.money.manager.ex.database;
 
+import android.net.Uri;
 import android.os.Parcelable;
 
 /**
@@ -25,6 +26,8 @@ import android.os.Parcelable;
  * and on recurring transactions.
  */
 public interface ISplitTransactionsDataset extends Parcelable {
+
+    Uri getUri();
 
     int getCategId();
 
@@ -45,6 +48,8 @@ public interface ISplitTransactionsDataset extends Parcelable {
      * @param splitTransAmount the splitTransAmount to set
      */
     void setSplitTransAmount(double splitTransAmount);
+
+    void setSplitTransId(int splitTransId);
 
     void setSubCategId(int subCategId);
 }

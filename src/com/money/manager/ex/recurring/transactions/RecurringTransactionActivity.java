@@ -147,8 +147,8 @@ public class RecurringTransactionActivity
     // object of the table
     TableBillsDeposits mRepeatingTransaction = new TableBillsDeposits();
     // list split transactions
-    ArrayList<TableBudgetSplitTransactions> mSplitTransactions = null;
-    ArrayList<TableBudgetSplitTransactions> mSplitTransactionsDeleted = null;
+//    ArrayList<TableBudgetSplitTransactions> mSplitTransactions = null;
+//    ArrayList<TableBudgetSplitTransactions> mSplitTransactionsDeleted = null;
     private EditTransactionCommonFunctions mCommonFunctions;
 
     @Override
@@ -262,9 +262,9 @@ public class RecurringTransactionActivity
                             TableBudgetSplitTransactions.class.getSimpleName());
                     intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mCommonFunctions.mTransactionType.getCode());
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION,
-                            mSplitTransactions);
+                            mCommonFunctions.mSplitTransactions);
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED,
-                            mSplitTransactionsDeleted);
+                            mCommonFunctions.mSplitTransactionsDeleted);
                     startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
                 }
             }
@@ -280,7 +280,7 @@ public class RecurringTransactionActivity
         });
 
         // mark checked if there are existing split categories.
-        boolean hasSplit = hasSplitCategories();
+        boolean hasSplit = mCommonFunctions.hasSplitCategories();
         mCommonFunctions.setSplit(hasSplit);
 
         // Amount and total amount
@@ -465,11 +465,11 @@ public class RecurringTransactionActivity
                 break;
             case REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
-                    if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
+                    mCommonFunctions.mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                    if (mCommonFunctions.mSplitTransactions != null && mCommonFunctions.mSplitTransactions.size() > 0) {
                         double totAmount = 0;
-                        for (int i = 0; i < mSplitTransactions.size(); i++) {
-                            totAmount += mSplitTransactions.get(i).getSplitTransAmount();
+                        for (int i = 0; i < mCommonFunctions.mSplitTransactions.size(); i++) {
+                            totAmount += mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount();
                         }
                         Core core = new Core(getBaseContext());
 //                        formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? mAccountId : mToAccountId);
@@ -480,7 +480,7 @@ public class RecurringTransactionActivity
                     }
                     // deleted item
                     if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
-                        mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                        mCommonFunctions.mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
                     }
                 }
                 break;
@@ -506,8 +506,8 @@ public class RecurringTransactionActivity
         outState.putInt(KEY_SUBCATEGORY_ID, mCommonFunctions.mSubCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.mSubCategoryName);
         outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
-        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransactions);
-        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
+        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
+        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mCommonFunctions.mSplitTransactionsDeleted);
         outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
 //        Locale locale = getResources().getConfiguration().locale;
         outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
@@ -633,7 +633,7 @@ public class RecurringTransactionActivity
     private void handleSwitchingTransactionTypeToTransfer() {
         // The user is switching to Transfer transaction type.
 
-        if(hasSplitCategories()) {
+        if(mCommonFunctions.hasSplitCategories()) {
             // Prompt the user to confirm deleting split categories.
             // Use DialogFragment in order to redraw the dialog when switching device orientation.
 
@@ -741,9 +741,9 @@ public class RecurringTransactionActivity
         mNumOccurrence = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
 
         // load split transactions only if no category selected.
-        if (mCommonFunctions.mCategoryId == Constants.NOT_SET && mSplitTransactions == null) {
+        if (mCommonFunctions.mCategoryId == Constants.NOT_SET && mCommonFunctions.mSplitTransactions == null) {
             RecurringTransaction recurringTransaction = new RecurringTransaction(billId, this);
-            mSplitTransactions = recurringTransaction.loadSplitTransactions();
+            mCommonFunctions.mSplitTransactions = recurringTransaction.loadSplitTransactions();
         }
 
         cursor.close();
@@ -753,10 +753,6 @@ public class RecurringTransactionActivity
         selectSubcategoryName(mCommonFunctions.mCategoryId, mCommonFunctions.mSubCategoryId);
 
         return true;
-    }
-
-    public boolean hasSplitCategories() {
-        return mSplitTransactions != null && !mSplitTransactions.isEmpty();
     }
 
     /**
@@ -884,7 +880,8 @@ public class RecurringTransactionActivity
             Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
-        if (mCommonFunctions.chbSplitTransaction.isChecked() && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
+        if (mCommonFunctions.chbSplitTransaction.isChecked()
+                && (mCommonFunctions.mSplitTransactions == null || mCommonFunctions.mSplitTransactions.size() <= 0)) {
             Core.alertDialog(this, R.string.error_split_transaction_empty);
             return false;
         }
@@ -972,18 +969,18 @@ public class RecurringTransactionActivity
             }
         }
         // has split transaction
-        boolean hasSplitTransaction = mSplitTransactions != null && mSplitTransactions.size() > 0;
+        boolean hasSplitTransaction = mCommonFunctions.mSplitTransactions != null && mCommonFunctions.mSplitTransactions.size() > 0;
         if (hasSplitTransaction) {
-            for (int i = 0; i < mSplitTransactions.size(); i++) {
+            for (int i = 0; i < mCommonFunctions.mSplitTransactions.size(); i++) {
                 values.clear();
-                values.put(TableBudgetSplitTransactions.CATEGID, mSplitTransactions.get(i).getCategId());
-                values.put(TableBudgetSplitTransactions.SUBCATEGID, mSplitTransactions.get(i).getSubCategId());
-                values.put(TableBudgetSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactions.get(i).getSplitTransAmount());
+                values.put(TableBudgetSplitTransactions.CATEGID, mCommonFunctions.mSplitTransactions.get(i).getCategId());
+                values.put(TableBudgetSplitTransactions.SUBCATEGID, mCommonFunctions.mSplitTransactions.get(i).getSubCategId());
+                values.put(TableBudgetSplitTransactions.SPLITTRANSAMOUNT, mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount());
                 values.put(TableBudgetSplitTransactions.TRANSID, mBillDepositsId);
 
-                if (mSplitTransactions.get(i).getSplitTransId() == Constants.NOT_SET) {
+                if (mCommonFunctions.mSplitTransactions.get(i).getSplitTransId() == Constants.NOT_SET) {
                     // insert data
-                    Uri insert = getContentResolver().insert(mSplitTransactions.get(i).getUri(), values);
+                    Uri insert = getContentResolver().insert(mCommonFunctions.mSplitTransactions.get(i).getUri(), values);
                     if (insert == null) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Insert new split transaction failed!");
@@ -991,9 +988,9 @@ public class RecurringTransactionActivity
                     }
                 } else {
                     // update data
-                    if (getContentResolver().update(mSplitTransactions.get(i).getUri(), values,
+                    if (getContentResolver().update(mCommonFunctions.mSplitTransactions.get(i).getUri(), values,
                             TableSplitTransactions.SPLITTRANSID + "=?",
-                            new String[]{Integer.toString(mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
+                            new String[]{Integer.toString(mCommonFunctions.mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Update split transaction failed!");
                         return false;
@@ -1003,16 +1000,16 @@ public class RecurringTransactionActivity
         }
 
         // deleted old split transaction
-        if (mSplitTransactionsDeleted != null && mSplitTransactionsDeleted.size() > 0) {
-            for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
+        if (mCommonFunctions.mSplitTransactionsDeleted != null && mCommonFunctions.mSplitTransactionsDeleted.size() > 0) {
+            for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
                 //put value
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mSplitTransactionsDeleted.get(i).getSplitTransAmount());
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount());
 
                 // update data
-                if (getContentResolver().delete(mSplitTransactionsDeleted.get(i).getUri(),
+                if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(),
                         TableSplitTransactions.SPLITTRANSID + "=?",
-                        new String[]{Integer.toString(mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
+                        new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(LOGCAT, "Delete split transaction failed!");
                     return false;
@@ -1059,8 +1056,8 @@ public class RecurringTransactionActivity
         mCommonFunctions.mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
         mNotes = savedInstanceState.getString(KEY_NOTES);
         mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
-        mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
-        mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
+        mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
+        mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
         mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
         mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
         mNumOccurrence = savedInstanceState.getInt(KEY_NUM_OCCURRENCE);

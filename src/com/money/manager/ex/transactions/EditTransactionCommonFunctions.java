@@ -39,6 +39,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
@@ -75,6 +76,9 @@ public class EditTransactionCommonFunctions {
     public int mAccountId = Constants.NOT_SET, mToAccountId = Constants.NOT_SET;
     public TransactionTypes mTransactionType;
     public String mCategoryName, mSubCategoryName;
+
+    public ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
+    public ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;
 
     public Spinner spinAccount, spinToAccount, spinStatus, spinTransCode;
     public TextView txtSelectPayee, txtTotAmount, txtAmount, txtSelectCategory;
@@ -122,6 +126,10 @@ public class EditTransactionCommonFunctions {
 
         // mTransType
         return mTransactionType.name();
+    }
+
+    public boolean hasSplitCategories() {
+        return mSplitTransactions != null && !mSplitTransactions.isEmpty();
     }
 
     /**

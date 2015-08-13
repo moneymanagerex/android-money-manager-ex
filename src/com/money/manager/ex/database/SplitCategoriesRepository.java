@@ -37,8 +37,8 @@ public class SplitCategoriesRepository {
      * @param transId Id of the main transaction for which to load the splits.
      * @return list of split categories for the given transaction.
      */
-    public ArrayList<TableSplitTransactions> loadSplitCategoriesFor(int transId) {
-        ArrayList<TableSplitTransactions> listSplitTrans = null;
+    public ArrayList<ISplitTransactionsDataset> loadSplitCategoriesFor(int transId) {
+        ArrayList<ISplitTransactionsDataset> listSplitTrans = null;
 
         TableSplitTransactions split = new TableSplitTransactions();
         Cursor curSplit = mContext.getContentResolver()

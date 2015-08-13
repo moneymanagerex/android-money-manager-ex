@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.utils.DateUtils;
@@ -199,9 +200,8 @@ public class RecurringTransaction {
      * Load split transactions.
      * @return array list of all related split transactions
      */
-    public ArrayList<TableBudgetSplitTransactions> loadSplitTransactions() {
-
-        ArrayList<TableBudgetSplitTransactions> listSplitTrans = new ArrayList<>();
+    public ArrayList<ISplitTransactionsDataset> loadSplitTransactions() {
+        ArrayList<ISplitTransactionsDataset> listSplitTrans = new ArrayList<>();
 
         Cursor curSplit = this.getCursorForSplitTransactions();
 
