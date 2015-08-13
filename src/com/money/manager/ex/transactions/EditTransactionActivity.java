@@ -94,10 +94,10 @@ public class EditTransactionActivity
 
     public static final String DATEPICKER_TAG = "datepicker";
 
-        // action type intent
+    // action type intent
     public String mIntentAction;
     public String mToAccountName;
-    public int mTransId = -1;
+    public int mTransId =Constants.NOT_SET;
 
     public String mStatus = null;
 
@@ -111,7 +111,7 @@ public class EditTransactionActivity
     // transaction numbers
     public String mTransNumber = "";
     // bill deposits
-    public int mRecurringTransactionId = -1;
+    public int mRecurringTransactionId = Constants.NOT_SET;
     public String mNextOccurrence = null;
     // datepicker value
     public String mDate = "";
@@ -121,7 +121,6 @@ public class EditTransactionActivity
     public EditText edtTransNumber, edtNotes;
     public TextView txtSelectDate;
 
-    // object of the table
     private TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
     // list split transactions
 //    private ArrayList<TableSplitTransactions> mSplitTransactions = null;
@@ -804,33 +803,8 @@ public class EditTransactionActivity
         AccountRepository accountRepository = new AccountRepository(this);
         mToAccountName = accountRepository.loadName(mCommonFunctions.mToAccountId);
 
-        getPayeeName(mCommonFunctions.payeeId);
+        mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
         loadCategorySubName(mCommonFunctions.mCategoryId, mCommonFunctions.mSubCategoryId);
-
-        return true;
-    }
-
-    /**
-     * query info payee
-     *
-     * @param payeeId id payee
-     * @return true if the data selected
-     */
-    public boolean getPayeeName(int payeeId) {
-        TablePayee payee = new TablePayee();
-        Cursor cursor = getContentResolver().query(payee.getUri(),
-                payee.getAllColumns(),
-                TablePayee.PAYEEID + "=?",
-                new String[]{Integer.toString(payeeId)}, null);
-        // check if cursor is valid and open
-        if ((cursor == null) || (!cursor.moveToFirst())) {
-            return false;
-        }
-
-        // set payeename
-        mCommonFunctions.payeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
-
-        cursor.close();
 
         return true;
     }
@@ -872,7 +846,7 @@ public class EditTransactionActivity
         AccountRepository accountRepository = new AccountRepository(this);
         mToAccountName = accountRepository.loadName(mCommonFunctions.mToAccountId);
 
-        getPayeeName(mCommonFunctions.payeeId);
+        mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
         loadCategorySubName(mCommonFunctions.mCategoryId, mCommonFunctions.mSubCategoryId);
 
         // handle splits

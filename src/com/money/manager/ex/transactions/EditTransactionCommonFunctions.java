@@ -393,6 +393,30 @@ public class EditTransactionCommonFunctions {
     }
 
     /**
+     * query info payee
+     *
+     * @param payeeId id payee
+     * @return true if the data selected
+     */
+    public boolean selectPayeeName(int payeeId) {
+        TablePayee payee = new TablePayee();
+        Cursor cursor = mContext.getContentResolver().query(payee.getUri(),
+                payee.getAllColumns(),
+                TablePayee.PAYEEID + "=?",
+                new String[]{Integer.toString(payeeId)}, null);
+        // check if cursor is valid and open
+        if (cursor == null) return false;
+
+        if (cursor.moveToFirst()) {
+            // set payee name
+            payeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
+        }
+        cursor.close();
+
+        return true;
+    }
+
+    /**
      * setCategoryFromPayee set last category used from payee
      *
      * @param payeeId Identify of payee

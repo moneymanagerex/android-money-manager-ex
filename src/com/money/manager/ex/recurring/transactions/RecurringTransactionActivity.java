@@ -92,14 +92,13 @@ public class RecurringTransactionActivity
     // ID REQUEST Data
     private static final int REQUEST_PICK_CATEGORY = 3;
     public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
-    // KEY INTENT per il passaggio dei dati
+
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
     public static final String KEY_ACCOUNT_ID = "RepeatingTransaction:AccountId";
     public static final String KEY_TO_ACCOUNT_ID = "RepeatingTransaction:ToAccountId";
     public static final String KEY_TO_ACCOUNT_NAME = "RepeatingTransaction:ToAccountName";
     public static final String KEY_TRANS_CODE = "RepeatingTransaction:TransCode";
     public static final String KEY_TRANS_STATUS = "RepeatingTransaction:TransStatus";
-//    public static final String KEY_TRANS_DATE = "RepeatingTransaction:TransDate";
     public static final String KEY_TRANS_AMOUNT = "RepeatingTransaction:TransAmount";
     public static final String KEY_TRANS_TOTAMOUNT = "RepeatingTransaction:TransTotAmount";
     public static final String KEY_PAYEE_ID = "RepeatingTransaction:PayeeId";
@@ -140,9 +139,7 @@ public class RecurringTransactionActivity
     private Spinner spinFrequencies;
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
-//    public CheckBox chbSplitTransaction;
-    private TextView txtRepeats,
-            txtTimesRepeated, txtNextOccurrence;
+    private TextView txtRepeats, txtTimesRepeated, txtNextOccurrence;
 
     // object of the table
     TableBillsDeposits mRepeatingTransaction = new TableBillsDeposits();
@@ -749,7 +746,7 @@ public class RecurringTransactionActivity
         cursor.close();
 
         selectAccountName(mCommonFunctions.mToAccountId);
-        selectPayeeName(mCommonFunctions.payeeId);
+        mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
         selectSubcategoryName(mCommonFunctions.mCategoryId, mCommonFunctions.mSubCategoryId);
 
         return true;
@@ -822,30 +819,6 @@ public class RecurringTransactionActivity
         } else {
             mCommonFunctions.mSubCategoryName = null;
         }
-
-        return true;
-    }
-
-    /**
-     * query info payee
-     *
-     * @param payeeId id payee
-     * @return true if the data selected
-     */
-    private boolean selectPayeeName(int payeeId) {
-        TablePayee payee = new TablePayee();
-        Cursor cursor = getContentResolver().query(payee.getUri(),
-                payee.getAllColumns(),
-                TablePayee.PAYEEID + "=?",
-                new String[]{Integer.toString(payeeId)}, null);
-        // check if cursor is valid and open
-        if (cursor == null) return false;
-
-        if (cursor.moveToFirst()) {
-            // set payee name
-            mCommonFunctions.payeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
-        }
-        cursor.close();
 
         return true;
     }
