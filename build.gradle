@@ -52,7 +52,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 677
-        versionName '2.14.2'
+        versionName '2.15.0-beta1'
         // 601 = 1.4.17, stable
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -139,17 +139,17 @@ dependencies {
     // Unit testing dependencies
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.9.5"
-    // UI testing
-    androidTestCompile 'com.android.support.test:runner:0.3'
-    // Set this dependency to use JUnit 4 rules
-    androidTestCompile 'com.android.support.test:rules:0.3'
-    // Set this dependency to build and run Espresso tests
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
-    // add this for intent mocking support
-    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2'
-    // add this for webview testing support
-    androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2'
-    // Set this dependency to build and run UI Automator tests
+//    // UI testing
+//    androidTestCompile 'com.android.support.test:runner:0.3'
+//    // Set this dependency to use JUnit 4 rules
+//    androidTestCompile 'com.android.support.test:rules:0.3'
+//    // Set this dependency to build and run Espresso tests
+//    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+//    // add this for intent mocking support
+//    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2'
+//    // add this for webview testing support
+//    androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2'
+//    // Set this dependency to build and run UI Automator tests
 //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 }
 
