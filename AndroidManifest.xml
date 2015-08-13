@@ -17,6 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.money.manager.ex" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,6 +26,9 @@
     <!--<uses-permission android:name="com.android.vending.BILLING" />-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- trying to force ui automator to run on sdk 16 -->
+    <!--<uses-sdk android:minSdkVersion="16" tools:overrideLibrary="android.support.test.uiautomator.v18" />-->
 
     <supports-screens
         android:largeScreens="true"

@@ -1,4 +1,4 @@
-package org.moneymanagerex.android.tests;
+package test.java.org.moneymanagerex.android.tests;
 
 import com.money.manager.ex.core.NumericHelper;
 
