@@ -207,27 +207,36 @@
                     android:visibility="gone"/>
             </LinearLayout>
 
+            <!-- Amounts -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewHeaderAmount"
-                    style="@style/Money.TextView.Header.Caption"
+                <!-- Amount -->
+                <LinearLayout
+                    android:id="@+id/tableRowAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="@string/amount"/>
+                    android:orientation="vertical">
 
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewAmount"
-                    style="@style/Money.TextView.Widget.EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="?attr/ic_calculator"
-                    android:textStyle="bold"/>
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/textViewHeaderAmount"
+                        style="@style/Money.TextView.Header.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/amount"/>
+
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/textViewAmount"
+                        style="@style/Money.TextView.Widget.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="?attr/ic_calculator"
+                        android:textStyle="bold"/>
+                </LinearLayout>
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewHeaderTotalAmount"

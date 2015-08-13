@@ -20,6 +20,7 @@ package com.money.manager.ex.transactions;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
@@ -34,15 +35,21 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.AppSettings;
 import com.shamanland.fonticon.FontIconButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Functions shared between Checking Account activity and Recurring Transactions activity.
@@ -55,10 +62,12 @@ public class EditTransactionCommonFunctions {
         mContext = context;
     }
 
-    // info payee
+    // Payee
     public int payeeId = Constants.NOT_SET;
     public String payeeName;
-
+    // Category
+    public int mCategoryId = Constants.NOT_SET;
+    public int mSubCategoryId = Constants.NOT_SET;
 
     public List<TableAccountList> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
@@ -69,9 +78,9 @@ public class EditTransactionCommonFunctions {
 
     public Spinner spinAccount, spinToAccount, spinStatus, spinTransCode;
     public TextView txtSelectPayee, txtTotAmount, txtAmount, txtSelectCategory;
+    public TextView txtCaptionAmount;
     public CheckBox chbSplitTransaction;
     public FontIconButton removePayeeButton;
-    public ViewGroup tableRowPayee;
 
     private Context mContext;
 
@@ -82,7 +91,6 @@ public class EditTransactionCommonFunctions {
         spinTransCode = (Spinner) parent.findViewById(R.id.spinnerTransCode);
 
         // Payee
-        tableRowPayee = (ViewGroup) parent.findViewById(R.id.tableRowPayee);
         txtSelectPayee = (TextView) parent.findViewById(R.id.textViewPayee);
         removePayeeButton = (FontIconButton) parent.findViewById(R.id.removePayeeButton);
 
@@ -91,8 +99,29 @@ public class EditTransactionCommonFunctions {
         spinAccount = (Spinner) parent.findViewById(R.id.spinnerAccount);
         spinToAccount = (Spinner) parent.findViewById(R.id.spinnerToAccount);
 
+        txtCaptionAmount = (TextView) parent.findViewById(R.id.textViewHeaderTotalAmount);
         txtAmount = (TextView) parent.findViewById(R.id.textViewAmount);
         txtTotAmount = (TextView) parent.findViewById(R.id.textViewTotAmount);
+    }
+
+    public void formatExtendedDate(TextView dateTextView) {
+        try {
+            Locale locale = mContext.getResources().getConfiguration().locale;
+            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", locale)
+                    .format((Date) dateTextView.getTag()));
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, mContext);
+            handler.handle(e, "formatting extended date");
+        }
+    }
+
+    public String getTransactionType() {
+        if (mTransactionType == null) {
+            return null;
+        }
+
+        // mTransType
+        return mTransactionType.name();
     }
 
     /**
@@ -318,6 +347,89 @@ public class EditTransactionCommonFunctions {
                 }
             }
         }
+    }
+
+    /**
+     * Handle transaction type change.
+     */
+    public void refreshAfterTransactionCodeChange() {
+        Activity parent = (Activity) mContext;
+
+        TextView txtFromAccount = (TextView) parent.findViewById(R.id.textViewFromAccount);
+        TextView txtToAccount = (TextView) parent.findViewById(R.id.textViewToAccount);
+        ViewGroup tableRowPayee = (ViewGroup) parent.findViewById(R.id.tableRowPayee);
+        ViewGroup tableRowAmount = (ViewGroup) parent.findViewById(R.id.tableRowAmount);
+
+        // hide and show
+        boolean isTransfer = mTransactionType.equals(TransactionTypes.Transfer);
+
+        txtFromAccount.setText(isTransfer ? R.string.from_account : R.string.account);
+        txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+
+        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+        tableRowAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+//        if (txtCaptionAmount != null) {
+//            txtCaptionAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+//        }
+//        txtAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+//        txtSelectPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+
+        // hide split controls
+        chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+
+        txtSelectCategory.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+
+        refreshHeaderAmount();
+    }
+
+    /**
+     * setCategoryFromPayee set last category used from payee
+     *
+     * @param payeeId Identify of payee
+     * @return true if category set
+     */
+    public boolean setCategoryFromPayee(int payeeId) {
+        boolean ret = false;
+        // take data of payee
+        TablePayee payee = new TablePayee();
+        Cursor curPayee = mContext.getContentResolver().query(payee.getUri(),
+                payee.getAllColumns(),
+                TablePayee.PAYEEID + "=?",
+                new String[]{ Integer.toString(payeeId) },
+                null);
+        // check cursor is valid
+        if ((curPayee != null) && (curPayee.moveToFirst())) {
+            // check if category is valid
+            if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != -1) {
+                mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
+                mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
+                // create instance of query
+                QueryCategorySubCategory category = new QueryCategorySubCategory(mContext.getApplicationContext());
+                // compose selection
+                String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
+                Cursor curCategory = mContext.getContentResolver().query(category.getUri(),
+                        category.getAllColumns(), where, null, null);
+                // check cursor is valid
+                if ((curCategory != null) && (curCategory.moveToFirst())) {
+                    // take names of category and subcategory
+                    mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
+                    mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
+                    // return true
+                    ret = true;
+                }
+                if (curCategory != null) {
+                    curCategory.close();
+                }
+            }
+        }
+
+        if (curPayee != null) {
+            curPayee.close();
+        }
+
+        return ret;
     }
 
 }

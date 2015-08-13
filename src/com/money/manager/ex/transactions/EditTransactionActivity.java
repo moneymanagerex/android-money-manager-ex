@@ -102,9 +102,6 @@ public class EditTransactionActivity
 
     public String mStatus = null;
 
-    // info category and subcategory
-    public int mCategoryId = Constants.NOT_SET;
-    public int mSubCategoryId = Constants.NOT_SET;
     // arrays to manage transcode and status
     public String[] mTransCodeItems, mStatusItems;
     public String[] mTransCodeValues, mStatusValues;
@@ -213,7 +210,7 @@ public class EditTransactionActivity
         } else {
             txtSelectDate.setTag(Calendar.getInstance().getTime());
         }
-        formatExtendedDate(txtSelectDate);
+        mCommonFunctions.formatExtendedDate(txtSelectDate);
 
         txtSelectDate.setOnClickListener(new OnClickListener() {
             @Override
@@ -233,7 +230,7 @@ public class EditTransactionActivity
                         Date date = new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale)
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         txtSelectDate.setTag(date);
-                        formatExtendedDate(txtSelectDate);
+                        mCommonFunctions.formatExtendedDate(txtSelectDate);
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(EditTransactionActivity.this, this);
                         handler.handle(e, "setting the date");
@@ -377,7 +374,7 @@ public class EditTransactionActivity
         }
 
         // refresh user interface
-        refreshAfterTransactionCodeChange();
+        mCommonFunctions.refreshAfterTransactionCodeChange();
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
     }
@@ -391,8 +388,8 @@ public class EditTransactionActivity
                 mCommonFunctions.payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
                 mCommonFunctions.payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
-                if (!mCommonFunctions.chbSplitTransaction.isChecked() && mCategoryId == Constants.NOT_SET) {
-                    if (setCategoryFromPayee(mCommonFunctions.payeeId)) {
+                if (!mCommonFunctions.chbSplitTransaction.isChecked() && mCommonFunctions.mCategoryId == Constants.NOT_SET) {
+                    if (mCommonFunctions.setCategoryFromPayee(mCommonFunctions.payeeId)) {
                         mCommonFunctions.refreshCategoryName(); // refresh UI
                     }
                 }
@@ -405,16 +402,18 @@ public class EditTransactionActivity
                 mCommonFunctions.mToAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
                 mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 break;
+
             case EditTransactionActivityConstants.REQUEST_PICK_CATEGORY:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
-                mCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1);
+                mCommonFunctions.mCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1);
                 mCommonFunctions.mCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                mSubCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1);
+                mCommonFunctions.mSubCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1);
                 mCommonFunctions.mSubCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                 // refresh UI category
                 mCommonFunctions.refreshCategoryName();
                 break;
+
             case EditTransactionActivityConstants.REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
@@ -438,293 +437,6 @@ public class EditTransactionActivity
     }
 
     /**
-     * After the user accepts, remove any split categories.
-     */
-    private void removeAllSplitCategories() {
-        if(mSplitTransactions == null) return;
-
-        for(int i = 0; i < mSplitTransactions.size(); i++) {
-            TableSplitTransactions split = mSplitTransactions.get(i);
-            int id = split.getSplitTransId();
-            ArrayList<TableSplitTransactions> deletedSplits = getDeletedSplitCategories();
-
-            if(id == -1) {
-                // Remove any newly created splits.
-                // transaction id == -1
-                mSplitTransactions.remove(i);
-                i--;
-            } else {
-                // Delete any splits already in the database.
-                // transaction id != -1
-                // avoid adding duplicate records.
-                if(!deletedSplits.contains(split)) {
-                    deletedSplits.add(split);
-                }
-            }
-        }
-    }
-
-    private void retrieveValuesFromSavedInstanceState(Bundle savedInstanceState) {
-        mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
-        mCommonFunctions.mAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID);
-        mCommonFunctions.mToAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID);
-        mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
-        mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
-        String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
-        mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
-        mStatus = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
-        mAmount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT);
-        mTotAmount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT);
-        mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
-        mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
-        mCategoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID);
-        mCommonFunctions.mCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
-        mSubCategoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID);
-        mCommonFunctions.mSubCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME);
-        mNotes = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NOTES);
-        mTransNumber = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER);
-        mSplitTransactions = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
-        mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED);
-        mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
-        mNextOccurrence = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
-        // action
-        mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
-    }
-
-    /**
-     * Get the parameters from the intent (parameters sent from the caller).
-     * Also used for Tasker integration, for example.
-     * @param savedInstanceState parameters
-     */
-    private void handleIntent(Bundle savedInstanceState) {
-        Intent intent = getIntent();
-        mIntentAction = intent.getAction();
-
-        if (savedInstanceState == null) {
-            mCommonFunctions.mAccountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, -1);
-
-            // Edit transaction.
-
-            if (mIntentAction != null && Intent.ACTION_EDIT.equals(mIntentAction)) {
-                mTransId = intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, -1);
-                // select data transaction
-                loadCheckingAccount(mTransId, false);
-            } else if (mIntentAction != null && Intent.ACTION_PASTE.equals(mIntentAction)) {
-                // select data transaction
-                loadCheckingAccount(intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, -1), true);
-            } else {
-                if (intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, -1) > -1) {
-                    mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, -1);
-                    mNextOccurrence = intent.getStringExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
-                    loadRecurringTransaction(mRecurringTransactionId);
-                }
-            }
-        }
-
-        // New transaction
-
-        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
-            if (mStatus == null) {
-                mStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                        .getString(getString(PreferenceConstants.PREF_DEFAULT_STATUS), "");
-            }
-
-            if ("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                    .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
-                AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
-                    @Override
-                    protected Boolean doInBackground(Void... params) {
-                        try {
-                            Core core = new Core(getApplicationContext());
-                            TablePayee payee = core.getLastPayeeUsed();
-                            if (payee != null && mCommonFunctions.payeeId == -1) {
-                                // get id payee and category
-                                mCommonFunctions.payeeId = payee.getPayeeId();
-                                mCommonFunctions.payeeName = payee.getPayeeName();
-                                mCategoryId = payee.getCategId();
-                                mSubCategoryId = payee.getSubCategId();
-                                // load category and subcategory name
-                                loadCategorySubName(mCategoryId, mSubCategoryId);
-                                return Boolean.TRUE;
-                            }
-                        } catch (Exception e) {
-                            ExceptionHandler handler = new ExceptionHandler(EditTransactionActivity.this,
-                                    EditTransactionActivity.this);
-                            handler.handle(e, "loading default payee");
-                        }
-                        return Boolean.FALSE;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Boolean result) {
-                        super.onPostExecute(result);
-                        if (result) {
-                            try {
-                                // refresh field
-                                mCommonFunctions.refreshPayeeName();
-                                mCommonFunctions.refreshCategoryName();
-                            } catch (Exception e) {
-                                Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
-                            }
-                        }
-                    }
-                };
-                task.execute();
-            }
-
-            externalIntegration(intent);
-
-            // Select the default account.
-            AppSettings settings = new AppSettings(this);
-            String defaultAccountSetting = settings.getGeneralSettings().getDefaultAccount();
-            if (!TextUtils.isEmpty(defaultAccountSetting)) {
-                int defaultAccountId = Integer.parseInt(defaultAccountSetting);
-                if (mCommonFunctions.mAccountIdList.contains(defaultAccountId)) {
-                    int index = mCommonFunctions.mAccountIdList.indexOf(defaultAccountId);
-                    mCommonFunctions.spinAccount.setSelection(index);
-                }
-            }
-        }
-
-        // set title
-        getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction)
-                ? R.string.new_transaction
-                : R.string.edit_transaction);
-    }
-
-    /**
-     * Get any parameters, if sent, when intent was raised. This is used when called
-     * from Tasker or any external caller.
-     * @param intent
-     */
-    public void externalIntegration(Intent intent) {
-        Uri data = intent.getData();
-        if (data == null) return;
-
-        IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
-
-        // transaction type
-        mCommonFunctions.mTransactionType = parameters.transactionType;
-
-        if (parameters.accountId > 0) {
-            this.mCommonFunctions.mAccountId = parameters.accountId;
-        }
-        this.mTotAmount = parameters.amount;
-        // payee
-        if (parameters.payeeId > 0) {
-            this.mCommonFunctions.payeeId = parameters.payeeId;
-            this.mCommonFunctions.payeeName = parameters.payeeName;
-        } else {
-            // create payee if it does not exist
-            if (parameters.payeeName != null) {
-                PayeeService newPayee = new PayeeService(this);
-                mCommonFunctions.payeeId = newPayee.createNew(parameters.payeeName);
-                mCommonFunctions.payeeName = parameters.payeeName;
-            }
-        }
-
-        // category
-        if (parameters.categoryId > 0) {
-            mCategoryId = parameters.categoryId;
-            mCommonFunctions.mCategoryName = parameters.categoryName;
-        } else {
-            // No id sent.
-            // create a category if it was sent but does not exist (id not found by the parser).
-            if (parameters.categoryName != null) {
-                CategoryService newCategory = new CategoryService(this);
-                mCategoryId = newCategory.createNew(mCommonFunctions.mCategoryName);
-                mCommonFunctions.mCategoryName = parameters.categoryName;
-            }
-        }
-    }
-
-    public ArrayList<TableSplitTransactions> getDeletedSplitCategories() {
-        if(mSplitTransactionsDeleted == null){
-            mSplitTransactionsDeleted = new ArrayList<>();
-        }
-        return mSplitTransactionsDeleted;
-    }
-
-    private void initTransactionTypeSelector() {
-        // populate arrays TransCode
-        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
-        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
-        // create adapter for TransCode
-        final ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                mTransCodeItems);
-        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCommonFunctions.spinTransCode.setAdapter(adapterTrans);
-
-        // select the current value
-        if (mCommonFunctions.mTransactionType != null) {
-            if (Arrays.asList(mTransCodeValues).indexOf(getTransactionType()) >= 0) {
-                mCommonFunctions.spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(getTransactionType()), true);
-            }
-        } else {
-            mCommonFunctions.mTransactionType = TransactionTypes.values()[mCommonFunctions.spinTransCode.getSelectedItemPosition()];
-        }
-
-        mCommonFunctions.spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mTransCodeValues.length)) {
-                    String selectedValue = mTransCodeValues[position];
-
-                    // Prevent selection if there are split transactions and the type is being
-                    // set to Transfer.
-                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
-                        handleSwitchingTransactionTypeToTransfer();
-                        return;
-                    }
-
-                    mCommonFunctions.mTransactionType = TransactionTypes.values()[position];
-                }
-                // aggiornamento dell'interfaccia grafica
-                refreshAfterTransactionCodeChange();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
-    private void handleSwitchingTransactionTypeToTransfer() {
-        // The user is switching to Transfer transaction type.
-
-        if(hasSplitCategories()) {
-            // Prompt the user to confirm deleting split categories.
-            // Use DialogFragment in order to redraw the dialog when switching device orientation.
-
-            DialogFragment dialog = new YesNoDialog();
-            Bundle args = new Bundle();
-            args.putString("title", getString(R.string.warning));
-            args.putString("message", getString(R.string.no_transfer_splits));
-            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
-            dialog.setArguments(args);
-//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
-            dialog.show(getSupportFragmentManager(), "tag");
-
-            // Dialog result is handled in onDialogPositiveClick.
-            return;
-        }
-
-        // un-check split.
-        mCommonFunctions.setSplit(false);
-
-        // Hide Category picker.
-//        mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
-
-        // Clear category.
-        mCategoryId = -1;
-
-//        mTransCode = getString(R.string.transfer);
-        mCommonFunctions.mTransactionType = TransactionTypes.Transfer;
-
-        refreshAfterTransactionCodeChange();
-    }
-
-    /**
      * Handle user's confirmation to delete any Split Categories when switching to
      * Transfer transaction type.
      * @param dialog The dialog that is returning the value.
@@ -741,7 +453,7 @@ public class EditTransactionActivity
 
         mCommonFunctions.mTransactionType = TransactionTypes.Transfer;
 
-        refreshAfterTransactionCodeChange();
+        mCommonFunctions.refreshAfterTransactionCodeChange();
     }
 
     /**
@@ -763,15 +475,15 @@ public class EditTransactionActivity
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mToAccountName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE,
                 new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(txtSelectDate.getTag()));
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, getTransactionType());
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mStatus);
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
-        outState.putInt(EditTransactionActivityConstants.KEY_CATEGORY_ID, mCategoryId);
+        outState.putInt(EditTransactionActivityConstants.KEY_CATEGORY_ID, mCommonFunctions.mCategoryId);
         outState.putString(EditTransactionActivityConstants.KEY_CATEGORY_NAME, mCommonFunctions.mCategoryName);
-        outState.putInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, mSubCategoryId);
+        outState.putInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, mCommonFunctions.mSubCategoryId);
         outState.putString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.mSubCategoryName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
         outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, mSplitTransactions);
@@ -890,6 +602,44 @@ public class EditTransactionActivity
         }
     }
 
+    private boolean createSplitCategoriesFromRecurringTransaction() {
+        // check if category and sub-category are not set.
+        if(!(mCommonFunctions.mCategoryId <= 0 && mCommonFunctions.mSubCategoryId <= 0)) return false;
+
+        // Adding transactions to the split list will set the Split checkbox and the category name.
+
+        // create split transactions
+        RecurringTransaction recurringTransaction = new RecurringTransaction(mRecurringTransactionId, this);
+        ArrayList<TableBudgetSplitTransactions> splitTemplates = recurringTransaction.loadSplitTransactions();
+        if(mSplitTransactions == null) mSplitTransactions = new ArrayList<>();
+
+        // For each of the templates, create a new record.
+        for(int i = 0; i <= splitTemplates.size() - 1; i++) {
+            TableBudgetSplitTransactions record = splitTemplates.get(i);
+
+            TableSplitTransactions newSplit = new TableSplitTransactions();
+            newSplit.setSplitTransAmount(record.getSplitTransAmount());
+            newSplit.setCategId(record.getCategId());
+            newSplit.setSubCategId(record.getSubCategId());
+
+            mSplitTransactions.add(newSplit);
+        }
+
+        return true;
+    }
+
+    /**
+     * When cancelling changing the transaction type to Tranfer, revert back to the
+     * previous transaction type.
+     */
+    private void cancelChangingTransactionToTransfer() {
+        // Select the previous transaction type.
+        @SuppressWarnings("unchecked")
+        ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) mCommonFunctions.spinTransCode.getAdapter();
+        int originalPosition = adapterTrans.getPosition(mCommonFunctions.getTransactionType());
+        mCommonFunctions.spinTransCode.setSelection(originalPosition);
+    }
+
     /**
      * Loads info for Category and Subcategory
      *
@@ -982,8 +732,8 @@ public class EditTransactionActivity
         mAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
         mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
         mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
-        mCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
-        mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
+        mCommonFunctions.mCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
+        mCommonFunctions.mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
         mTransNumber = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSACTIONNUMBER));
         mNotes = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.NOTES));
         if (!duplicate) {
@@ -1013,7 +763,7 @@ public class EditTransactionActivity
         mToAccountName = accountRepository.loadName(mCommonFunctions.mToAccountId);
 
         getPayeeName(mCommonFunctions.payeeId);
-        loadCategorySubName(mCategoryId, mSubCategoryId);
+        loadCategorySubName(mCommonFunctions.mCategoryId, mCommonFunctions.mSubCategoryId);
 
         return true;
     }
@@ -1068,8 +818,8 @@ public class EditTransactionActivity
         mAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
         mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
         mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
-        mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
-        mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
+        mCommonFunctions.mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
+        mCommonFunctions.mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
         mTransNumber = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
         mNotes = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NOTES));
         mDate = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
@@ -1081,7 +831,7 @@ public class EditTransactionActivity
         mToAccountName = accountRepository.loadName(mCommonFunctions.mToAccountId);
 
         getPayeeName(mCommonFunctions.payeeId);
-        loadCategorySubName(mCategoryId, mSubCategoryId);
+        loadCategorySubName(mCommonFunctions.mCategoryId, mCommonFunctions.mSubCategoryId);
 
         // handle splits
         createSplitCategoriesFromRecurringTransaction();
@@ -1089,44 +839,294 @@ public class EditTransactionActivity
         return true;
     }
 
-    public void formatExtendedDate(TextView dateTextView) {
-        try {
-            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", getResources().getConfiguration().locale)
-                    .format((Date) dateTextView.getTag()));
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(this, this);
-            handler.handle(e, "formatting date");
-        }
-    }
-
     public boolean hasSplitCategories() {
         return mSplitTransactions != null && !mSplitTransactions.isEmpty();
     }
 
     /**
-     * Handle transaction type change.
+     * After the user accepts, remove any split categories.
      */
-    public void refreshAfterTransactionCodeChange() {
-        // check type of transaction
-        TextView txtFromAccount = (TextView) findViewById(R.id.textViewFromAccount);
-        TextView txtToAccount = (TextView) findViewById(R.id.textViewToAccount);
-//        ViewGroup tableRowPayee = (ViewGroup) findViewById(R.id.tableRowPayee);
-        ViewGroup tableRowAmount = (ViewGroup) findViewById(R.id.tableRowAmount);
+    private void removeAllSplitCategories() {
+        if(mSplitTransactions == null) return;
 
-        // hide and show
-        boolean isTransfer = mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer);
-        txtFromAccount.setText(isTransfer ? R.string.from_account : R.string.account);
-        txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        mCommonFunctions.tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
-//        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
-        tableRowAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        mCommonFunctions.spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        // hide split controls
-        mCommonFunctions.chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+        for(int i = 0; i < mSplitTransactions.size(); i++) {
+            TableSplitTransactions split = mSplitTransactions.get(i);
+            int id = split.getSplitTransId();
+            ArrayList<TableSplitTransactions> deletedSplits = getDeletedSplitCategories();
 
-        mCommonFunctions.txtSelectCategory.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+            if(id == -1) {
+                // Remove any newly created splits.
+                // transaction id == -1
+                mSplitTransactions.remove(i);
+                i--;
+            } else {
+                // Delete any splits already in the database.
+                // transaction id != -1
+                // avoid adding duplicate records.
+                if(!deletedSplits.contains(split)) {
+                    deletedSplits.add(split);
+                }
+            }
+        }
+    }
 
-        mCommonFunctions.refreshHeaderAmount();
+    private void retrieveValuesFromSavedInstanceState(Bundle savedInstanceState) {
+        mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
+        mCommonFunctions.mAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID);
+        mCommonFunctions.mToAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID);
+        mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
+        mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
+        String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
+        mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
+        mStatus = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
+        mAmount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT);
+        mTotAmount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT);
+        mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
+        mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
+        mCommonFunctions.mCategoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID);
+        mCommonFunctions.mCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
+        mCommonFunctions.mSubCategoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID);
+        mCommonFunctions.mSubCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME);
+        mNotes = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NOTES);
+        mTransNumber = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER);
+        mSplitTransactions = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
+        mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED);
+        mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
+        mNextOccurrence = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
+        // action
+        mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
+    }
+
+    /**
+     * Get the parameters from the intent (parameters sent from the caller).
+     * Also used for Tasker integration, for example.
+     * @param savedInstanceState parameters
+     */
+    private void handleIntent(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        mIntentAction = intent.getAction();
+
+        if (savedInstanceState == null) {
+            mCommonFunctions.mAccountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, -1);
+
+            // Edit transaction.
+
+            if (mIntentAction != null && Intent.ACTION_EDIT.equals(mIntentAction)) {
+                mTransId = intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, -1);
+                // select data transaction
+                loadCheckingAccount(mTransId, false);
+            } else if (mIntentAction != null && Intent.ACTION_PASTE.equals(mIntentAction)) {
+                // select data transaction
+                loadCheckingAccount(intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, -1), true);
+            } else {
+                if (intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, -1) > -1) {
+                    mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, -1);
+                    mNextOccurrence = intent.getStringExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
+                    loadRecurringTransaction(mRecurringTransactionId);
+                }
+            }
+        }
+
+        // New transaction
+
+        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
+            if (mStatus == null) {
+                mStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                        .getString(getString(PreferenceConstants.PREF_DEFAULT_STATUS), "");
+            }
+
+            if ("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
+                AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
+                    @Override
+                    protected Boolean doInBackground(Void... params) {
+                        try {
+                            Core core = new Core(getApplicationContext());
+                            TablePayee payee = core.getLastPayeeUsed();
+                            if (payee != null && mCommonFunctions.payeeId == -1) {
+                                // get id payee and category
+                                mCommonFunctions.payeeId = payee.getPayeeId();
+                                mCommonFunctions.payeeName = payee.getPayeeName();
+                                mCommonFunctions.mCategoryId = payee.getCategId();
+                                mCommonFunctions.mSubCategoryId = payee.getSubCategId();
+                                // load category and subcategory name
+                                loadCategorySubName(mCommonFunctions.mCategoryId, mCommonFunctions.mSubCategoryId);
+                                return Boolean.TRUE;
+                            }
+                        } catch (Exception e) {
+                            ExceptionHandler handler = new ExceptionHandler(EditTransactionActivity.this,
+                                    EditTransactionActivity.this);
+                            handler.handle(e, "loading default payee");
+                        }
+                        return Boolean.FALSE;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        super.onPostExecute(result);
+                        if (result) {
+                            try {
+                                // refresh field
+                                mCommonFunctions.refreshPayeeName();
+                                mCommonFunctions.refreshCategoryName();
+                            } catch (Exception e) {
+                                Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
+                            }
+                        }
+                    }
+                };
+                task.execute();
+            }
+
+            externalIntegration(intent);
+
+            // Select the default account.
+            AppSettings settings = new AppSettings(this);
+            String defaultAccountSetting = settings.getGeneralSettings().getDefaultAccount();
+            if (!TextUtils.isEmpty(defaultAccountSetting)) {
+                int defaultAccountId = Integer.parseInt(defaultAccountSetting);
+                if (mCommonFunctions.mAccountIdList.contains(defaultAccountId)) {
+                    int index = mCommonFunctions.mAccountIdList.indexOf(defaultAccountId);
+                    mCommonFunctions.spinAccount.setSelection(index);
+                }
+            }
+        }
+
+        // set title
+        getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction)
+                ? R.string.new_transaction
+                : R.string.edit_transaction);
+    }
+
+    /**
+     * Get any parameters, if sent, when intent was raised. This is used when called
+     * from Tasker or any external caller.
+     * @param intent
+     */
+    public void externalIntegration(Intent intent) {
+        Uri data = intent.getData();
+        if (data == null) return;
+
+        IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
+
+        // transaction type
+        mCommonFunctions.mTransactionType = parameters.transactionType;
+
+        if (parameters.accountId > 0) {
+            this.mCommonFunctions.mAccountId = parameters.accountId;
+        }
+        this.mTotAmount = parameters.amount;
+        // payee
+        if (parameters.payeeId > 0) {
+            this.mCommonFunctions.payeeId = parameters.payeeId;
+            this.mCommonFunctions.payeeName = parameters.payeeName;
+        } else {
+            // create payee if it does not exist
+            if (parameters.payeeName != null) {
+                PayeeService newPayee = new PayeeService(this);
+                mCommonFunctions.payeeId = newPayee.createNew(parameters.payeeName);
+                mCommonFunctions.payeeName = parameters.payeeName;
+            }
+        }
+
+        // category
+        if (parameters.categoryId > 0) {
+            mCommonFunctions.mCategoryId = parameters.categoryId;
+            mCommonFunctions.mCategoryName = parameters.categoryName;
+        } else {
+            // No id sent.
+            // create a category if it was sent but does not exist (id not found by the parser).
+            if (parameters.categoryName != null) {
+                CategoryService newCategory = new CategoryService(this);
+                mCommonFunctions.mCategoryId = newCategory.createNew(mCommonFunctions.mCategoryName);
+                mCommonFunctions.mCategoryName = parameters.categoryName;
+            }
+        }
+    }
+
+    public ArrayList<TableSplitTransactions> getDeletedSplitCategories() {
+        if(mSplitTransactionsDeleted == null){
+            mSplitTransactionsDeleted = new ArrayList<>();
+        }
+        return mSplitTransactionsDeleted;
+    }
+
+    private void initTransactionTypeSelector() {
+        // populate arrays TransCode
+        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
+        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
+        // create adapter for TransCode
+        final ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+                mTransCodeItems);
+        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCommonFunctions.spinTransCode.setAdapter(adapterTrans);
+
+        // select the current value
+        if (mCommonFunctions.mTransactionType != null) {
+            if (Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()) >= 0) {
+                mCommonFunctions.spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()), true);
+            }
+        } else {
+            mCommonFunctions.mTransactionType = TransactionTypes.values()[mCommonFunctions.spinTransCode.getSelectedItemPosition()];
+        }
+
+        mCommonFunctions.spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position >= 0) && (position <= mTransCodeValues.length)) {
+                    String selectedValue = mTransCodeValues[position];
+
+                    // Prevent selection if there are split transactions and the type is being
+                    // set to Transfer.
+                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
+                        handleSwitchingTransactionTypeToTransfer();
+                        return;
+                    }
+
+                    mCommonFunctions.mTransactionType = TransactionTypes.values()[position];
+                }
+                mCommonFunctions.refreshAfterTransactionCodeChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void handleSwitchingTransactionTypeToTransfer() {
+        // The user is switching to Transfer transaction type.
+
+        if(hasSplitCategories()) {
+            // Prompt the user to confirm deleting split categories.
+            // Use DialogFragment in order to redraw the dialog when switching device orientation.
+
+            DialogFragment dialog = new YesNoDialog();
+            Bundle args = new Bundle();
+            args.putString("title", getString(R.string.warning));
+            args.putString("message", getString(R.string.no_transfer_splits));
+            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
+            dialog.setArguments(args);
+//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
+            dialog.show(getSupportFragmentManager(), "tag");
+
+            // Dialog result is handled in onDialogPositiveClick.
+            return;
+        }
+
+        // un-check split.
+        mCommonFunctions.setSplit(false);
+
+        // Hide Category picker.
+//        mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
+
+        // Clear category.
+        mCommonFunctions.mCategoryId = Constants.NOT_SET;
+
+//        mTransCode = getString(R.string.transfer);
+        mCommonFunctions.mTransactionType = TransactionTypes.Transfer;
+
+        mCommonFunctions.refreshAfterTransactionCodeChange();
     }
 
     /**
@@ -1150,7 +1150,7 @@ public class EditTransactionActivity
         }
 
         // Category is required if tx is not a split or transfer.
-        if (mCategoryId == -1 && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
+        if (mCommonFunctions.mCategoryId == -1 && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
             Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
@@ -1191,18 +1191,20 @@ public class EditTransactionActivity
         } else {
             values.put(TableCheckingAccount.PAYEEID, mCommonFunctions.payeeId);
         }
-        values.put(TableCheckingAccount.TRANSCODE, getTransactionType());
+        values.put(TableCheckingAccount.TRANSCODE, mCommonFunctions.getTransactionType());
         if (TextUtils.isEmpty(mCommonFunctions.txtAmount.getText().toString()) || (!isTransfer)) {
             values.put(TableCheckingAccount.TRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         } else {
             values.put(TableCheckingAccount.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         }
         values.put(TableCheckingAccount.STATUS, mStatus);
-        values.put(TableCheckingAccount.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked() ? mCategoryId : -1);
-        values.put(TableCheckingAccount.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked() ? mSubCategoryId : -1);
+        values.put(TableCheckingAccount.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
+                ? mCommonFunctions.mCategoryId : Constants.NOT_SET);
+        values.put(TableCheckingAccount.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
+                ? mCommonFunctions.mSubCategoryId : Constants.NOT_SET);
         String transactionDate = DateUtils.getSQLiteStringDate(this, (Date) txtSelectDate.getTag());
         values.put(TableCheckingAccount.TRANSDATE, transactionDate);
-        values.put(TableCheckingAccount.FOLLOWUPID, -1);
+        values.put(TableCheckingAccount.FOLLOWUPID, Constants.NOT_SET);
         values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         values.put(TableCheckingAccount.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
         values.put(TableCheckingAccount.NOTES, edtNotes.getText().toString());
@@ -1297,8 +1299,8 @@ public class EditTransactionActivity
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
-            values.put(TablePayee.CATEGID, mCategoryId);
-            values.put(TablePayee.SUBCATEGID, mSubCategoryId);
+            values.put(TablePayee.CATEGID, mCommonFunctions.mCategoryId);
+            values.put(TablePayee.SUBCATEGID, mCommonFunctions.mSubCategoryId);
             // create instance TablePayee for update
             TablePayee payee = new TablePayee();
             // update data
@@ -1325,97 +1327,4 @@ public class EditTransactionActivity
         }
         return true;
     }
-
-    private boolean createSplitCategoriesFromRecurringTransaction() {
-        // check if category and sub-category are not set.
-        if(!(mCategoryId <= 0 && mSubCategoryId <= 0)) return false;
-
-        // Adding transactions to the split list will set the Split checkbox and the category name.
-
-        // create split transactions
-        RecurringTransaction recurringTransaction = new RecurringTransaction(mRecurringTransactionId, this);
-        ArrayList<TableBudgetSplitTransactions> splitTemplates = recurringTransaction.loadSplitTransactions();
-        if(mSplitTransactions == null) mSplitTransactions = new ArrayList<>();
-
-        // For each of the templates, create a new record.
-        for(int i = 0; i <= splitTemplates.size() - 1; i++) {
-            TableBudgetSplitTransactions record = splitTemplates.get(i);
-
-            TableSplitTransactions newSplit = new TableSplitTransactions();
-            newSplit.setSplitTransAmount(record.getSplitTransAmount());
-            newSplit.setCategId(record.getCategId());
-            newSplit.setSubCategId(record.getSubCategId());
-
-            mSplitTransactions.add(newSplit);
-        }
-
-        return true;
-    }
-
-    /**
-     * When cancelling changing the transaction type to Tranfer, revert back to the
-     * previous transaction type.
-     */
-    private void cancelChangingTransactionToTransfer() {
-        // Select the previous transaction type.
-        @SuppressWarnings("unchecked")
-        ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) mCommonFunctions.spinTransCode.getAdapter();
-        int originalPosition = adapterTrans.getPosition(getTransactionType());
-        mCommonFunctions.spinTransCode.setSelection(originalPosition);
-    }
-
-    /**
-     * setCategoryFromPayee set last category used from payee
-     *
-     * @param payeeId Identify of payee
-     * @return true if category set
-     */
-    public boolean setCategoryFromPayee(int payeeId) {
-        boolean ret = false;
-        // take data of payee
-        TablePayee payee = new TablePayee();
-        Cursor curPayee = getContentResolver().query(payee.getUri(),
-                payee.getAllColumns(), "PAYEEID=" + Integer.toString(payeeId), null, null);
-        // check cursor is valid
-        if ((curPayee != null) && (curPayee.moveToFirst())) {
-            // chek if category is valid
-            if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != -1) {
-                // prendo la categoria e la subcategorie
-                mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
-                mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
-                // create instance of query
-                QueryCategorySubCategory category = new QueryCategorySubCategory(getApplicationContext());
-                // compose selection
-                String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
-                Cursor curCategory = getContentResolver().query(category.getUri(), category.getAllColumns(), where, null, null);
-                // check cursor is valid
-                if ((curCategory != null) && (curCategory.moveToFirst())) {
-                    // take names of category and subcategory
-                    mCommonFunctions.mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-                    mCommonFunctions.mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
-                    // return true
-                    ret = true;
-                }
-                if (curCategory != null) {
-                    curCategory.close();
-                }
-            }
-        }
-
-        if (curPayee != null) {
-            curPayee.close();
-        }
-
-        return ret;
-    }
-
-    public String getTransactionType() {
-        if (mCommonFunctions.mTransactionType == null) {
-            return null;
-        }
-
-        // mTransType
-        return mCommonFunctions.mTransactionType.name();
-    }
-
 }

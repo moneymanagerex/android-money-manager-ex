@@ -122,8 +122,6 @@ public class RecurringTransactionActivity
     private String mToAccountName;
     private int mBillDepositsId = Constants.NOT_SET;
     private String mStatus;
-    // info category and subcategory
-    private int mCategoryId = Constants.NOT_SET, mSubCategoryId = Constants.NOT_SET;
     // arrays to manage transcode and status
     private String[] mTransCodeItems, mStatusItems;
     private String[] mTransCodeValues, mStatusValues;
@@ -143,7 +141,7 @@ public class RecurringTransactionActivity
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
 //    public CheckBox chbSplitTransaction;
-    private TextView txtCaptionAmount, txtRepeats,
+    private TextView txtRepeats,
             txtTimesRepeated, txtNextOccurrence;
 
     // object of the table
@@ -189,7 +187,6 @@ public class RecurringTransactionActivity
         // Controls
 
 //        txtPayee = (TextView) findViewById(R.id.textViewPayee);
-        txtCaptionAmount = (TextView) findViewById(R.id.textViewHeaderTotalAmount);
         spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
         txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
         txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
@@ -371,7 +368,7 @@ public class RecurringTransactionActivity
         } else {
             txtNextOccurrence.setTag(Calendar.getInstance().getTime());
         }
-        formatExtendedDate(txtNextOccurrence);
+        mCommonFunctions.formatExtendedDate(txtNextOccurrence);
         txtNextOccurrence.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -395,7 +392,7 @@ public class RecurringTransactionActivity
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) +
                                         "-" + Integer.toString(dayOfMonth));
                         txtNextOccurrence.setTag(date);
-                        formatExtendedDate(txtNextOccurrence);
+                        mCommonFunctions.formatExtendedDate(txtNextOccurrence);
                     } catch (Exception e) {
                         Log.e(LOGCAT, e.getMessage());
                     }
@@ -432,7 +429,7 @@ public class RecurringTransactionActivity
             }
         });
         // refresh user interface
-        refreshAfterTransactionCodeChange();
+        mCommonFunctions.refreshAfterTransactionCodeChange();
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
         refreshTimesRepeated();
@@ -447,7 +444,7 @@ public class RecurringTransactionActivity
                     mCommonFunctions.payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                     // select last category used from payee
                     if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
-                        if (getCategoryFromPayee(mCommonFunctions.payeeId)) {
+                        if (mCommonFunctions.setCategoryFromPayee(mCommonFunctions.payeeId)) {
                             mCommonFunctions.refreshCategoryName(); // refresh UI
                         }
                     }
@@ -458,9 +455,9 @@ public class RecurringTransactionActivity
             
             case REQUEST_PICK_CATEGORY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                    mCommonFunctions.mCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                     mCommonFunctions.mCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                    mSubCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                    mCommonFunctions.mSubCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
                     mCommonFunctions.mSubCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                     // refresh UI category
                     mCommonFunctions.refreshCategoryName();
@@ -498,15 +495,15 @@ public class RecurringTransactionActivity
         outState.putInt(KEY_ACCOUNT_ID, mCommonFunctions.mAccountId);
         outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.mToAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
-        outState.putString(KEY_TRANS_CODE, getTransactionType());
+        outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mStatus);
         outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         outState.putDouble(KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
-        outState.putInt(KEY_CATEGORY_ID, mCategoryId);
+        outState.putInt(KEY_CATEGORY_ID, mCommonFunctions.mCategoryId);
         outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.mCategoryName);
-        outState.putInt(KEY_SUBCATEGORY_ID, mSubCategoryId);
+        outState.putInt(KEY_SUBCATEGORY_ID, mCommonFunctions.mSubCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.mSubCategoryName);
         outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mSplitTransactions);
@@ -625,6 +622,143 @@ public class RecurringTransactionActivity
         return super.onActionDoneClick();
     }
 
+    public Integer getCurrencyIdFromAccountId(int accountId) {
+        try {
+            return mCommonFunctions.AccountList.get(mCommonFunctions.mAccountIdList.indexOf(accountId)).getCurrencyId();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
+    private void handleSwitchingTransactionTypeToTransfer() {
+        // The user is switching to Transfer transaction type.
+
+        if(hasSplitCategories()) {
+            // Prompt the user to confirm deleting split categories.
+            // Use DialogFragment in order to redraw the dialog when switching device orientation.
+
+            DialogFragment dialog = new YesNoDialog();
+            Bundle args = new Bundle();
+            args.putString("title", getString(R.string.warning));
+            args.putString("message", getString(R.string.no_transfer_splits));
+            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
+            dialog.setArguments(args);
+//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
+            dialog.show(getSupportFragmentManager(), "tag");
+
+            // Dialog result is handled in onDialogPositiveClick.
+            return;
+        }
+
+        // un-check split.
+        mCommonFunctions.setSplit(false);
+
+        // Clear category.
+        mCommonFunctions.mCategoryId = Constants.NOT_SET;
+
+//        mTransCode = getString(R.string.transfer);
+        mCommonFunctions.mTransactionType = TransactionTypes.Transfer;
+
+        mCommonFunctions.refreshAfterTransactionCodeChange();
+    }
+
+    private void initTransactionTypeSelector() {
+        // trans-code
+        mCommonFunctions.spinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
+        // populate arrays TransCode
+        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
+        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
+        // create adapter for TransCode
+        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+                mTransCodeItems);
+        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCommonFunctions.spinTransCode.setAdapter(adapterTrans);
+        // select a current value
+        if (mCommonFunctions.mTransactionType != null) {
+            if (Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()) >= 0) {
+                mCommonFunctions.spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()), true);
+            }
+        } else {
+            mCommonFunctions.mTransactionType = TransactionTypes.values()[mCommonFunctions.spinTransCode.getSelectedItemPosition()];
+        }
+        mCommonFunctions.spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position >= 0) && (position <= mTransCodeValues.length)) {
+                    String selectedValue = mTransCodeValues[position];
+
+                    // Prevent selection if there are split transactions and the type is being
+                    // set to Transfer.
+                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
+                        handleSwitchingTransactionTypeToTransfer();
+                        return;
+                    }
+
+                    mCommonFunctions.mTransactionType = TransactionTypes.values()[position];
+                }
+                // aggiornamento dell'interfaccia grafica
+                mCommonFunctions.refreshAfterTransactionCodeChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    /**
+     * this method allows you to search the transaction data
+     *
+     * @param billId transaction id
+     * @return true if data selected, false nothing
+     */
+    private boolean loadRecurringTransaction(int billId) {
+        Cursor cursor = getContentResolver().query(mRepeatingTransaction.getUri(),
+                mRepeatingTransaction.getAllColumns(),
+                TableBillsDeposits.BDID + "=?",
+                new String[]{Integer.toString(billId)}, null);
+        // check if cursor is valid and open
+        if ((cursor == null) || (!cursor.moveToFirst())) {
+            return false;
+        }
+
+        // Read data.
+        mBillDepositsId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
+        mCommonFunctions.mAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.ACCOUNTID));
+        mCommonFunctions.mToAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
+        String transCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
+        mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
+        mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
+        mAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
+        mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
+        mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
+        mCommonFunctions.mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
+        mCommonFunctions.mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
+        mTransNumber = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
+        mNotes = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NOTES));
+        mNextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
+        mFrequencies = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
+        mNumOccurrence = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
+
+        // load split transactions only if no category selected.
+        if (mCommonFunctions.mCategoryId == Constants.NOT_SET && mSplitTransactions == null) {
+            RecurringTransaction recurringTransaction = new RecurringTransaction(billId, this);
+            mSplitTransactions = recurringTransaction.loadSplitTransactions();
+        }
+
+        cursor.close();
+
+        selectAccountName(mCommonFunctions.mToAccountId);
+        selectPayeeName(mCommonFunctions.payeeId);
+        selectSubcategoryName(mCommonFunctions.mCategoryId, mCommonFunctions.mSubCategoryId);
+
+        return true;
+    }
+
+    public boolean hasSplitCategories() {
+        return mSplitTransactions != null && !mSplitTransactions.isEmpty();
+    }
+
     /**
      * refersh UI control times repeated
      */
@@ -721,92 +855,6 @@ public class RecurringTransactionActivity
     }
 
     /**
-     * this method allows you to search the transaction data
-     *
-     * @param billId transaction id
-     * @return true if data selected, false nothing
-     */
-    private boolean loadRecurringTransaction(int billId) {
-        Cursor cursor = getContentResolver().query(mRepeatingTransaction.getUri(),
-                mRepeatingTransaction.getAllColumns(),
-                TableBillsDeposits.BDID + "=?",
-                new String[]{Integer.toString(billId)}, null);
-        // check if cursor is valid and open
-        if ((cursor == null) || (!cursor.moveToFirst())) {
-            return false;
-        }
-
-        // Read data.
-        mBillDepositsId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
-        mCommonFunctions.mAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.ACCOUNTID));
-        mCommonFunctions.mToAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
-        String transCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
-        mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
-        mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
-        mAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
-        mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
-        mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
-        mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
-        mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
-        mTransNumber = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
-        mNotes = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NOTES));
-        mNextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
-        mFrequencies = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
-        mNumOccurrence = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
-
-        // load split transactions only if no category selected.
-        if (mCategoryId == Constants.NOT_SET && mSplitTransactions == null) {
-            RecurringTransaction recurringTransaction = new RecurringTransaction(billId, this);
-            mSplitTransactions = recurringTransaction.loadSplitTransactions();
-        }
-
-        cursor.close();
-
-        selectAccountName(mCommonFunctions.mToAccountId);
-        selectPayeeName(mCommonFunctions.payeeId);
-        selectSubcategoryName(mCategoryId, mSubCategoryId);
-
-        return true;
-    }
-
-    public void formatExtendedDate(TextView dateTextView) {
-        try {
-            Locale locale = getResources().getConfiguration().locale;
-            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", locale).format((Date) dateTextView.getTag()));
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(this, this);
-            handler.handle(e, "formatting extended date");
-        }
-    }
-
-    public boolean hasSplitCategories() {
-        return mSplitTransactions != null && !mSplitTransactions.isEmpty();
-    }
-
-    public void refreshAfterTransactionCodeChange() {
-        TextView txtFromAccount = (TextView) findViewById(R.id.textViewFromAccount);
-        TextView txtToAccount = (TextView) findViewById(R.id.textViewToAccount);
-
-        // hide and show
-        boolean isTransfer = mCommonFunctions.mTransactionType.equals(TransactionTypes.Transfer);
-
-        txtFromAccount.setText(isTransfer ? R.string.from_account : R.string.account);
-        txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-
-        txtCaptionAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        mCommonFunctions.txtAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        mCommonFunctions.spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        mCommonFunctions.tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
-//        txtSelectPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
-        // hide split controls
-        mCommonFunctions.chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
-
-        mCommonFunctions.txtSelectCategory.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
-
-        mCommonFunctions.refreshHeaderAmount();
-    }
-
-    /**
      * validate data insert in activity
      *
      * @return validation result
@@ -832,7 +880,7 @@ public class RecurringTransactionActivity
 //        }
 
         // Category is required if tx is not a split or transfer.
-        if (mCategoryId == Constants.NOT_SET && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
+        if (mCommonFunctions.mCategoryId == Constants.NOT_SET && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
             Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
@@ -879,15 +927,17 @@ public class RecurringTransactionActivity
         } else {
             values.put(TableBillsDeposits.PAYEEID, mCommonFunctions.payeeId);
         }
-        values.put(TableBillsDeposits.TRANSCODE, getTransactionType());
+        values.put(TableBillsDeposits.TRANSCODE, mCommonFunctions.getTransactionType());
         if (TextUtils.isEmpty(mCommonFunctions.txtAmount.getText().toString()) || (!(isTransfer))) {
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         } else {
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         }
         values.put(TableBillsDeposits.STATUS, mStatus);
-        values.put(TableBillsDeposits.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked() ? mCategoryId : Constants.NOT_SET);
-        values.put(TableBillsDeposits.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked() ? mSubCategoryId : Constants.NOT_SET);
+        values.put(TableBillsDeposits.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
+                ? mCommonFunctions.mCategoryId : Constants.NOT_SET);
+        values.put(TableBillsDeposits.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
+                ? mCommonFunctions.mSubCategoryId : Constants.NOT_SET);
         values.put(TableBillsDeposits.FOLLOWUPID, Constants.NOT_SET);
         values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
@@ -974,8 +1024,8 @@ public class RecurringTransactionActivity
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
-            values.put(TablePayee.CATEGID, mCategoryId);
-            values.put(TablePayee.SUBCATEGID, mSubCategoryId);
+            values.put(TablePayee.CATEGID, mCommonFunctions.mCategoryId);
+            values.put(TablePayee.SUBCATEGID, mCommonFunctions.mSubCategoryId);
             // create instance TablePayee for update
             TablePayee payee = new TablePayee();
             // update data
@@ -991,141 +1041,6 @@ public class RecurringTransactionActivity
         return true;
     }
 
-    public Integer getCurrencyIdFromAccountId(int accountId) {
-        try {
-            return mCommonFunctions.AccountList.get(mCommonFunctions.mAccountIdList.indexOf(accountId)).getCurrencyId();
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return null;
-        }
-    }
-
-    private void initTransactionTypeSelector() {
-        // trans-code
-        mCommonFunctions.spinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
-        // populate arrays TransCode
-        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
-        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
-        // create adapter for TransCode
-        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                mTransCodeItems);
-        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCommonFunctions.spinTransCode.setAdapter(adapterTrans);
-        // select a current value
-        if (mCommonFunctions.mTransactionType != null) {
-            if (Arrays.asList(mTransCodeValues).indexOf(getTransactionType()) >= 0) {
-                mCommonFunctions.spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(getTransactionType()), true);
-            }
-        } else {
-            mCommonFunctions.mTransactionType = TransactionTypes.values()[mCommonFunctions.spinTransCode.getSelectedItemPosition()];
-        }
-        mCommonFunctions.spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mTransCodeValues.length)) {
-                    String selectedValue = mTransCodeValues[position];
-
-                    // Prevent selection if there are split transactions and the type is being
-                    // set to Transfer.
-                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
-                        handleSwitchingTransactionTypeToTransfer();
-                        return;
-                    }
-
-                    mCommonFunctions.mTransactionType = TransactionTypes.values()[position];
-                }
-                // aggiornamento dell'interfaccia grafica
-                refreshAfterTransactionCodeChange();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
-    private void handleSwitchingTransactionTypeToTransfer() {
-        // The user is switching to Transfer transaction type.
-
-        if(hasSplitCategories()) {
-            // Prompt the user to confirm deleting split categories.
-            // Use DialogFragment in order to redraw the dialog when switching device orientation.
-
-            DialogFragment dialog = new YesNoDialog();
-            Bundle args = new Bundle();
-            args.putString("title", getString(R.string.warning));
-            args.putString("message", getString(R.string.no_transfer_splits));
-            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
-            dialog.setArguments(args);
-//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
-            dialog.show(getSupportFragmentManager(), "tag");
-
-            // Dialog result is handled in onDialogPositiveClick.
-            return;
-        }
-
-        // un-check split.
-        mCommonFunctions.setSplit(false);
-
-        // Clear category.
-        mCategoryId = Constants.NOT_SET;
-
-//        mTransCode = getString(R.string.transfer);
-        mCommonFunctions.mTransactionType = TransactionTypes.Transfer;
-
-        refreshAfterTransactionCodeChange();
-    }
-
-    public String getTransactionType() {
-        if (mCommonFunctions.mTransactionType == null) {
-            return null;
-        }
-
-        // mTransType
-        return mCommonFunctions.mTransactionType.name();
-    }
-
-    /**
-     * setCategoryFromPayee set last category used from payee
-     *
-     * @param payeeId Identify of payee
-     * @return true if category set
-     */
-    private boolean getCategoryFromPayee(int payeeId) {
-        boolean ret = false;
-        // take data of payee
-        TablePayee payee = new TablePayee();
-        Cursor curPayee = getContentResolver().query(payee.getUri(), payee.getAllColumns(),
-                "PAYEEID=" + Integer.toString(payeeId), null, null);
-        // check cursor is valid
-        if ((curPayee != null) && (curPayee.moveToFirst())) {
-            // chek if category is valid
-            if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != Constants.NOT_SET) {
-                mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
-                mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
-                // create instance of query
-                QueryCategorySubCategory category = new QueryCategorySubCategory(getApplicationContext());
-                // compose selection
-                String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
-                Cursor curCategory = getContentResolver().query(category.getUri(),
-                        category.getAllColumns(), where, null, null);
-                // check cursor is valid
-                if ((curCategory != null) && (curCategory.moveToFirst())) {
-                    // take names of category and subcategory
-                    mCommonFunctions.mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-                    mCommonFunctions.mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
-                    // return true
-                    ret = true;
-
-                    curCategory.close();
-                }
-            }
-
-            curPayee.close();
-        }
-
-        return ret;
-    }
-
     private void restoreInstanceState(Bundle savedInstanceState) {
         mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
         mCommonFunctions.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
@@ -1138,9 +1053,9 @@ public class RecurringTransactionActivity
         mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
         mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
-        mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
+        mCommonFunctions.mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
         mCommonFunctions.mCategoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
-        mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
+        mCommonFunctions.mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
         mCommonFunctions.mSubCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
         mNotes = savedInstanceState.getString(KEY_NOTES);
         mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
