@@ -228,7 +228,7 @@ public class PieChartFragment extends Fragment implements OnChartValueSelectedLi
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-        String text = "";
+        String text;
         try {
             text = mPieCharts.get(e.getXIndex()).getText().concat(": ").concat(mPieCharts.get(e.getXIndex()).getValueFormatted());
             Snackbar.with(getActivity().getApplicationContext()) // context

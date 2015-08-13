@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex.businessobjects;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,9 +24,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.RecurringTransactionRepository;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.utils.DateUtils;
@@ -38,40 +37,20 @@ import java.util.Date;
 /**
  * Represent a single Recurring Transaction object and provides related operations.
  */
-public class RecurringTransaction {
+public class RecurringTransactionService {
 
-    public RecurringTransaction(int recurringTransactionId, Context context){
+    public RecurringTransactionService(int recurringTransactionId, Context context){
         this.RecurringTransactionId = recurringTransactionId;
         this.mContext = context;
     }
 
-    public RecurringTransaction(Cursor cursor, Activity container) {
-        mCursor = cursor;
-        this.mContext = container;
-        this.RecurringTransactionId = this.getId();
-    }
-
-    public static final String LOGCAT = RecurringTransaction.class.getSimpleName();
+    public static final String LOGCAT = RecurringTransactionService.class.getSimpleName();
 
     public int RecurringTransactionId = Constants.NOT_SET;
     public Context mContext;
-    private Cursor mCursor;
 
     private TableBillsDeposits mRecurringTransaction = new TableBillsDeposits();
     private TableBudgetSplitTransactions mSplitCategories = new TableBudgetSplitTransactions();
-
-    // Properties
-
-    public int getId() {
-        return mCursor.getInt(mCursor.getColumnIndex(TableBillsDeposits.BDID));
-    }
-
-    public int getRepeats() {
-        Cursor cursor = getCursor();
-        return cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
-    }
-
-    // Methods
 
     /**
      * Skip next occurrence.
@@ -79,7 +58,9 @@ public class RecurringTransaction {
      * Otherwise, move the due date to the next occurrence date.
      */
     public void skipNextOccurrence() {
-        int repeats = this.getRepeats();
+        this.load();
+
+        int repeats = mRecurringTransaction.repeats;
 
         if(repeats == 0) {
             // no more occurrences, this is the only one. Delete the transaction.
@@ -126,10 +107,12 @@ public class RecurringTransaction {
      * Set the recurring action's due date to the next occurrence.
      */
     public void moveNextOccurrenceForward() {
-        int repeats = this.getRepeats();
-        String currentNextOccurrence = mCursor.getString(mCursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
+        this.load();
+
+        int repeats = mRecurringTransaction.repeats;
+        String currentNextOccurrence = mRecurringTransaction.nextOccurrence;
         Date newNextOccurrence = DateUtils.getDateFromString(mContext, currentNextOccurrence, Constants.PATTERN_DB_DATE);
-        int instances = mCursor.getInt(mCursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
+        int instances = mRecurringTransaction.numOccurrence;
         // calculate the next occurrence date
         newNextOccurrence = DateUtils.getDateNextOccurrence(newNextOccurrence, repeats, instances);
 
@@ -231,20 +214,11 @@ public class RecurringTransaction {
                 TableBudgetSplitTransactions.SPLITTRANSID);
     }
 
-    private Cursor getCursor() {
-        if (mCursor == null && this.RecurringTransactionId != Constants.NOT_SET) {
-            load();
-        }
-        return mCursor;
-    }
-
     private boolean load() {
-        mCursor = mContext.getContentResolver().query(mRecurringTransaction.getUri(),
-                null,
-                TableBillsDeposits.BDID + "=?",
-                new String[] { Integer.toString(this.RecurringTransactionId) },
-                null);
-        boolean hasRecord = mCursor.moveToFirst();
-        return hasRecord;
+        if (mRecurringTransaction != null) return true;
+
+        RecurringTransactionRepository repo = new RecurringTransactionRepository(mContext);
+        mRecurringTransaction = repo.load(this.RecurringTransactionId);
+        return (mRecurringTransaction == null);
     }
 }

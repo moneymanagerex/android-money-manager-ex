@@ -47,17 +47,15 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
-import com.money.manager.ex.businessobjects.RecurringTransaction;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.businessobjects.RecurringTransactionService;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.database.RecurringTransactionRepository;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
-import com.money.manager.ex.transactions.YesNoDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.QueryCategorySubCategory;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableCategory;
@@ -121,9 +119,7 @@ public class RecurringTransactionActivity
     private String mToAccountName;
     private int mBillDepositsId = Constants.NOT_SET;
     private String mStatus;
-    // arrays to manage transcode and status
-    private String[] mTransCodeItems, mStatusItems;
-    private String[] mTransCodeValues, mStatusValues;
+    private String[] mStatusItems, mStatusValues;
     // amount
     private double mTotAmount = 0, mAmount = 0;
     // notes
@@ -141,8 +137,6 @@ public class RecurringTransactionActivity
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
     private TextView txtRepeats, txtTimesRepeated, txtNextOccurrence;
 
-    // object of the table
-    TableBillsDeposits mRepeatingTransaction = new TableBillsDeposits();
     // list split transactions
 //    ArrayList<TableBudgetSplitTransactions> mSplitTransactions = null;
 //    ArrayList<TableBudgetSplitTransactions> mSplitTransactionsDeleted = null;
@@ -194,7 +188,7 @@ public class RecurringTransactionActivity
         mCommonFunctions.initAccountSelectors();
 
         // Transaction type
-        initTransactionTypeSelector();
+        mCommonFunctions.initTransactionTypeSelector();
 
         // status
 
@@ -627,125 +621,44 @@ public class RecurringTransactionActivity
         }
     }
 
-    private void handleSwitchingTransactionTypeToTransfer() {
-        // The user is switching to Transfer transaction type.
-
-        if(mCommonFunctions.hasSplitCategories()) {
-            // Prompt the user to confirm deleting split categories.
-            // Use DialogFragment in order to redraw the dialog when switching device orientation.
-
-            DialogFragment dialog = new YesNoDialog();
-            Bundle args = new Bundle();
-            args.putString("title", getString(R.string.warning));
-            args.putString("message", getString(R.string.no_transfer_splits));
-            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
-            dialog.setArguments(args);
-//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
-            dialog.show(getSupportFragmentManager(), "tag");
-
-            // Dialog result is handled in onDialogPositiveClick.
-            return;
-        }
-
-        // un-check split.
-        mCommonFunctions.setSplit(false);
-
-        // Clear category.
-        mCommonFunctions.mCategoryId = Constants.NOT_SET;
-
-//        mTransCode = getString(R.string.transfer);
-        mCommonFunctions.mTransactionType = TransactionTypes.Transfer;
-
-        mCommonFunctions.refreshAfterTransactionCodeChange();
-    }
-
-    private void initTransactionTypeSelector() {
-        // trans-code
-        mCommonFunctions.spinTransCode = (Spinner) findViewById(R.id.spinnerTransCode);
-        // populate arrays TransCode
-        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
-        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
-        // create adapter for TransCode
-        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                mTransCodeItems);
-        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCommonFunctions.spinTransCode.setAdapter(adapterTrans);
-        // select a current value
-        if (mCommonFunctions.mTransactionType != null) {
-            if (Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()) >= 0) {
-                mCommonFunctions.spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()), true);
-            }
-        } else {
-            mCommonFunctions.mTransactionType = TransactionTypes.values()[mCommonFunctions.spinTransCode.getSelectedItemPosition()];
-        }
-        mCommonFunctions.spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mTransCodeValues.length)) {
-                    String selectedValue = mTransCodeValues[position];
-
-                    // Prevent selection if there are split transactions and the type is being
-                    // set to Transfer.
-                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
-                        handleSwitchingTransactionTypeToTransfer();
-                        return;
-                    }
-
-                    mCommonFunctions.mTransactionType = TransactionTypes.values()[position];
-                }
-                // aggiornamento dell'interfaccia grafica
-                mCommonFunctions.refreshAfterTransactionCodeChange();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
     /**
      * this method allows you to search the transaction data
      *
-     * @param billId transaction id
+     * @param recurringTransactionId transaction id
      * @return true if data selected, false nothing
      */
-    private boolean loadRecurringTransaction(int billId) {
-        Cursor cursor = getContentResolver().query(mRepeatingTransaction.getUri(),
-                mRepeatingTransaction.getAllColumns(),
-                TableBillsDeposits.BDID + "=?",
-                new String[]{Integer.toString(billId)}, null);
-        // check if cursor is valid and open
-        if ((cursor == null) || (!cursor.moveToFirst())) {
-            return false;
-        }
+    private boolean loadRecurringTransaction(int recurringTransactionId) {
+        RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
+        TableBillsDeposits tx = repo.load(recurringTransactionId);
+        if (tx == null) return false;
 
         // Read data.
-        mBillDepositsId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
-        mCommonFunctions.mAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.ACCOUNTID));
-        mCommonFunctions.mToAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
-        String transCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
+        mBillDepositsId = tx.id;
+        mCommonFunctions.mAccountId = tx.accountId;
+        mCommonFunctions.mToAccountId = tx.toAccountId;
+        String transCode = tx.transactionCode;
         mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
-        mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
-        mAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
-        mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
-        mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
-        mCommonFunctions.mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
-        mCommonFunctions.mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
-        mTransNumber = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
-        mNotes = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NOTES));
-        mNextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
-        mFrequencies = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
-        mNumOccurrence = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
+        mStatus = tx.status;
+        mAmount = tx.amount;
+        mTotAmount = tx.totalAmount;
+        mCommonFunctions.payeeId = tx.payeeId;
+        mCommonFunctions.mCategoryId = tx.categoryId;
+        mCommonFunctions.mSubCategoryId = tx.subCategoryId;
+        mTransNumber = tx.transactionNumber;
+        mNotes = tx.notes;
+        mNextOccurrence = tx.nextOccurrence;
+        mFrequencies = tx.repeats;
+        mNumOccurrence = tx.numOccurrence;
 
         // load split transactions only if no category selected.
         if (mCommonFunctions.mCategoryId == Constants.NOT_SET && mCommonFunctions.mSplitTransactions == null) {
-            RecurringTransaction recurringTransaction = new RecurringTransaction(billId, this);
+            RecurringTransactionService recurringTransaction = new RecurringTransactionService(recurringTransactionId, this);
             mCommonFunctions.mSplitTransactions = recurringTransaction.loadSplitTransactions();
         }
 
-        cursor.close();
+        AccountRepository accountRepository = new AccountRepository(this);
+        mToAccountName = accountRepository.loadName(mCommonFunctions.mToAccountId);
 
-        selectAccountName(mCommonFunctions.mToAccountId);
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
         selectSubcategoryName(mCommonFunctions.mCategoryId, mCommonFunctions.mSubCategoryId);
 
@@ -761,31 +674,6 @@ public class RecurringTransactionActivity
         txtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
         txtTimesRepeated.setText(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
         edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
-    }
-
-    /**
-     * query info payee
-     *
-     * @param accountId id payee
-     * @return true if the data selected
-     */
-    private boolean selectAccountName(int accountId) {
-        TableAccountList account = new TableAccountList();
-        Cursor cursor = getContentResolver().query(account.getUri(),
-                account.getAllColumns(),
-                TableAccountList.ACCOUNTID + "=?",
-                new String[]{Integer.toString(accountId)}, null);
-        // check if cursor is valid and open
-        if ((cursor == null) || (!cursor.moveToFirst())) {
-            return false;
-        }
-
-        // set payee name
-        mToAccountName = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
-
-        cursor.close();
-
-        return true;
     }
 
     /**
@@ -885,6 +773,8 @@ public class RecurringTransactionActivity
             return false;
         }
 
+        TableBillsDeposits recurringTransaction = new TableBillsDeposits();
+
         // content value for insert or update data
         ContentValues values = new ContentValues();
 
@@ -923,7 +813,7 @@ public class RecurringTransactionActivity
         // check whether the application should do the update or insert
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
             // insert
-            Uri insert = getContentResolver().insert(mRepeatingTransaction.getUri(), values);
+            Uri insert = getContentResolver().insert(recurringTransaction.getUri(), values);
             if (insert == null) {
                 Core.alertDialog(this, R.string.db_checking_insert_failed);
                 Log.w(LOGCAT, "Insert new repeating transaction failed!");
@@ -934,7 +824,7 @@ public class RecurringTransactionActivity
             mBillDepositsId = (int) id;
         } else {
             // update
-            if (getContentResolver().update(mRepeatingTransaction.getUri(), values,
+            if (getContentResolver().update(recurringTransaction.getUri(), values,
                     TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(mBillDepositsId)}) <= 0) {
                 Core.alertDialog(this, R.string.db_checking_update_failed);
                 Log.w(LOGCAT, "Update repeating  transaction failed!");

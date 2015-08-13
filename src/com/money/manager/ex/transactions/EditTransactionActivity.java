@@ -51,7 +51,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.businessobjects.CategoryService;
 import com.money.manager.ex.businessobjects.PayeeService;
-import com.money.manager.ex.businessobjects.RecurringTransaction;
+import com.money.manager.ex.businessobjects.RecurringTransactionService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
@@ -59,6 +59,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.RecurringTransactionRepository;
 import com.money.manager.ex.database.SplitCategoriesRepository;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
@@ -102,8 +103,7 @@ public class EditTransactionActivity
     public String mStatus = null;
 
     // arrays to manage transcode and status
-    public String[] mTransCodeItems, mStatusItems;
-    public String[] mTransCodeValues, mStatusValues;
+    public String[] mStatusItems, mStatusValues;
     // amount
     public double mTotAmount = 0, mAmount = 0;
     // notes
@@ -160,7 +160,7 @@ public class EditTransactionActivity
 
         // Transaction code
 
-        initTransactionTypeSelector();
+        mCommonFunctions.initTransactionTypeSelector();
 
         // account(s)
         mCommonFunctions.initAccountSelectors();
@@ -394,6 +394,7 @@ public class EditTransactionActivity
                 // refresh UI
                 mCommonFunctions.refreshPayeeName();
                 break;
+
             case EditTransactionActivityConstants.REQUEST_PICK_ACCOUNT:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
@@ -607,7 +608,7 @@ public class EditTransactionActivity
         // Adding transactions to the split list will set the Split checkbox and the category name.
 
         // create split transactions
-        RecurringTransaction recurringTransaction = new RecurringTransaction(mRecurringTransactionId, this);
+        RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
         ArrayList<ISplitTransactionsDataset> splitTemplates = recurringTransaction.loadSplitTransactions();
         if(mCommonFunctions.mSplitTransactions == null) mCommonFunctions.mSplitTransactions = new ArrayList<>();
 
@@ -636,49 +637,6 @@ public class EditTransactionActivity
         ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) mCommonFunctions.spinTransCode.getAdapter();
         int originalPosition = adapterTrans.getPosition(mCommonFunctions.getTransactionType());
         mCommonFunctions.spinTransCode.setSelection(originalPosition);
-    }
-
-    private void initTransactionTypeSelector() {
-        // populate arrays TransCode
-        mTransCodeItems = getResources().getStringArray(R.array.transcode_items);
-        mTransCodeValues = getResources().getStringArray(R.array.transcode_values);
-        // create adapter for TransCode
-        final ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                mTransCodeItems);
-        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCommonFunctions.spinTransCode.setAdapter(adapterTrans);
-
-        // select the current value
-        if (mCommonFunctions.mTransactionType != null) {
-            if (Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()) >= 0) {
-                mCommonFunctions.spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(mCommonFunctions.getTransactionType()), true);
-            }
-        } else {
-            mCommonFunctions.mTransactionType = TransactionTypes.values()[mCommonFunctions.spinTransCode.getSelectedItemPosition()];
-        }
-
-        mCommonFunctions.spinTransCode.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mTransCodeValues.length)) {
-                    String selectedValue = mTransCodeValues[position];
-
-                    // Prevent selection if there are split transactions and the type is being
-                    // set to Transfer.
-                    if (selectedValue.equalsIgnoreCase(getString(R.string.transfer))) {
-                        handleSwitchingTransactionTypeToTransfer();
-                        return;
-                    }
-
-                    mCommonFunctions.mTransactionType = TransactionTypes.values()[position];
-                }
-                mCommonFunctions.refreshAfterTransactionCodeChange();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
     }
 
     /**
@@ -815,33 +773,25 @@ public class EditTransactionActivity
      * @return A boolean indicating whether the operation was successful.
      */
     public boolean loadRecurringTransaction(int recurringTransactionId) {
-        TableBillsDeposits billDeposits = new TableBillsDeposits();
-        Cursor cursor = getContentResolver().query(billDeposits.getUri(),
-                billDeposits.getAllColumns(),
-                TableBillsDeposits.BDID + "=?",
-                new String[]{Integer.toString(recurringTransactionId)}, null);
-        // check if cursor is valid and open
-        if ((cursor == null) || (!cursor.moveToFirst())) {
-            return false;
-        }
+        RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
+        TableBillsDeposits tx = repo.load(recurringTransactionId);
+        if (tx == null) return false;
 
         // take a data
-        mCommonFunctions.mAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.ACCOUNTID));
-        mCommonFunctions.mToAccountId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
-        String transCode = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSCODE));
+        mCommonFunctions.mAccountId = tx.accountId;
+        mCommonFunctions.mToAccountId = tx.toAccountId;
+        String transCode = tx.transactionCode;
         mCommonFunctions.mTransactionType = TransactionTypes.valueOf(transCode);
-        mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
-        mAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
-        mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
-        mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.PAYEEID));
-        mCommonFunctions.mCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.CATEGID));
-        mCommonFunctions.mSubCategoryId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.SUBCATEGID));
-        mTransNumber = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
-        mNotes = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NOTES));
-        mDate = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
-        mStatus = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.STATUS));
-
-        cursor.close();
+        mStatus = tx.status;
+        mAmount = tx.amount;
+        mTotAmount = tx.totalAmount;
+        mCommonFunctions.payeeId = tx.payeeId;
+        mCommonFunctions.mCategoryId = tx.categoryId;
+        mCommonFunctions.mSubCategoryId = tx.subCategoryId;
+        mTransNumber = tx.transactionNumber;
+        mNotes = tx.notes;
+        mDate = tx.nextOccurrence;
+        mStatus = tx.status;
 
         AccountRepository accountRepository = new AccountRepository(this);
         mToAccountName = accountRepository.loadName(mCommonFunctions.mToAccountId);
@@ -1063,41 +1013,6 @@ public class EditTransactionActivity
         return mCommonFunctions.mSplitTransactionsDeleted;
     }
 
-    private void handleSwitchingTransactionTypeToTransfer() {
-        // The user is switching to Transfer transaction type.
-
-        if(mCommonFunctions.hasSplitCategories()) {
-            // Prompt the user to confirm deleting split categories.
-            // Use DialogFragment in order to redraw the dialog when switching device orientation.
-
-            DialogFragment dialog = new YesNoDialog();
-            Bundle args = new Bundle();
-            args.putString("title", getString(R.string.warning));
-            args.putString("message", getString(R.string.no_transfer_splits));
-            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
-            dialog.setArguments(args);
-//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
-            dialog.show(getSupportFragmentManager(), "tag");
-
-            // Dialog result is handled in onDialogPositiveClick.
-            return;
-        }
-
-        // un-check split.
-        mCommonFunctions.setSplit(false);
-
-        // Hide Category picker.
-//        mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
-
-        // Clear category.
-        mCommonFunctions.mCategoryId = Constants.NOT_SET;
-
-//        mTransCode = getString(R.string.transfer);
-        mCommonFunctions.mTransactionType = TransactionTypes.Transfer;
-
-        mCommonFunctions.refreshAfterTransactionCodeChange();
-    }
-
     /**
      * validate data insert in activity
      *
@@ -1282,11 +1197,11 @@ public class EditTransactionActivity
         }
 
         //update recurring transaction
-        if (mRecurringTransactionId > -1 && !(TextUtils.isEmpty(mNextOccurrence))) {
+        if (mRecurringTransactionId > Constants.NOT_SET && !(TextUtils.isEmpty(mNextOccurrence))) {
             values.clear();
 
             // handle transactions that do not repeat any more.
-            RecurringTransaction recurringTransaction = new RecurringTransaction(mRecurringTransactionId, this);
+            RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
             if(mNextOccurrence.equals(transactionDate)) {
                 // The next occurrence date is the same as the current. Expired.
                 recurringTransaction.delete();

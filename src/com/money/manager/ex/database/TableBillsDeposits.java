@@ -17,7 +17,16 @@
  */
 package com.money.manager.ex.database;
 
-public class TableBillsDeposits extends Dataset {
+import android.database.Cursor;
+
+import com.money.manager.ex.core.TransactionTypes;
+
+/**
+ * Recurring transaction.
+ */
+public class TableBillsDeposits
+        extends Dataset {
+
 	// FIELD
 	public static final String BDID = "BDID";
 	public static final String ACCOUNTID = "ACCOUNTID";
@@ -41,10 +50,47 @@ public class TableBillsDeposits extends Dataset {
 		super("billsdeposits_v1", DatasetType.TABLE, "billsdeposits");
 	}
 	
+	public Integer id;
+	public Integer accountId;
+    public Integer toAccountId;
+    public String transactionCode;
+    public TransactionTypes transactionType;
+    public String status;
+    public Double amount;
+    public Double totalAmount;
+    public Integer payeeId;
+    public Integer categoryId;
+    public Integer subCategoryId;
+    public String transactionNumber;
+    public String notes;
+    public String nextOccurrence;
+    public Integer repeats;
+    public Integer numOccurrence;
+	
 	@Override
 	public String[] getAllColumns() {
 		return new String [] {BDID + " AS _id", BDID, ACCOUNTID, TOACCOUNTID, PAYEEID, TRANSCODE, TRANSAMOUNT, STATUS,
 							  TRANSACTIONNUMBER, NOTES, CATEGID, SUBCATEGID, TRANSDATE, FOLLOWUPID, TOTRANSAMOUNT, REPEATS,
 							  NEXTOCCURRENCEDATE, NUMOCCURRENCES};
+	}
+	
+	@Override
+	public void setValueFromCursor(Cursor c) {
+		this.id = c.getInt(c.getColumnIndex(TableBillsDeposits.BDID));
+		this.accountId = c.getInt(c.getColumnIndex(TableBillsDeposits.ACCOUNTID));
+		this.toAccountId = c.getInt(c.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
+		this.transactionCode = c.getString(c.getColumnIndex(TableBillsDeposits.TRANSCODE));
+		this.transactionType = TransactionTypes.valueOf(this.transactionCode);
+		status = c.getString(c.getColumnIndex(TableBillsDeposits.STATUS));
+		amount = c.getDouble(c.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
+		this.totalAmount = c.getDouble(c.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
+		payeeId = c.getInt(c.getColumnIndex(TableBillsDeposits.PAYEEID));
+		categoryId = c.getInt(c.getColumnIndex(TableBillsDeposits.CATEGID));
+		subCategoryId = c.getInt(c.getColumnIndex(TableBillsDeposits.SUBCATEGID));
+		transactionNumber = c.getString(c.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
+		notes = c.getString(c.getColumnIndex(TableBillsDeposits.NOTES));
+		nextOccurrence = c.getString(c.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
+		repeats = c.getInt(c.getColumnIndex(TableBillsDeposits.REPEATS));
+		numOccurrence = c.getInt(c.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
 	}
 }

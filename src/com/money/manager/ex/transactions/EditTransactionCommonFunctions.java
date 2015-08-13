@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
@@ -34,6 +36,7 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
@@ -48,6 +51,7 @@ import com.shamanland.fonticon.FontIconButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -76,6 +80,7 @@ public class EditTransactionCommonFunctions {
     public int mAccountId = Constants.NOT_SET, mToAccountId = Constants.NOT_SET;
     public TransactionTypes mTransactionType;
     public String mCategoryName, mSubCategoryName;
+    private String[] mTransCodeItems, mTransCodeValues;
 
     public ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
     public ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;
@@ -239,6 +244,49 @@ public class EditTransactionCommonFunctions {
         });
     }
 
+    public void initTransactionTypeSelector() {
+        // populate arrays TransCode
+        mTransCodeItems = mContext.getResources().getStringArray(R.array.transcode_items);
+        mTransCodeValues = mContext.getResources().getStringArray(R.array.transcode_values);
+        // create adapter for TransCode
+        final ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(mContext,
+                android.R.layout.simple_spinner_item, mTransCodeItems);
+        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinTransCode.setAdapter(adapterTrans);
+
+        // select the current value
+        if (mTransactionType != null) {
+            if (Arrays.asList(mTransCodeValues).indexOf(getTransactionType()) >= 0) {
+                spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(getTransactionType()), true);
+            }
+        } else {
+            mTransactionType = TransactionTypes.values()[spinTransCode.getSelectedItemPosition()];
+        }
+
+        spinTransCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position >= 0) && (position <= mTransCodeValues.length)) {
+                    String selectedValue = mTransCodeValues[position];
+
+                    // Prevent selection if there are split transactions and the type is being
+                    // set to Transfer.
+                    if (selectedValue.equalsIgnoreCase(mContext.getString(R.string.transfer))) {
+                        handleSwitchingTransactionTypeToTransfer();
+                        return;
+                    }
+
+                    mTransactionType = TransactionTypes.values()[position];
+                }
+                refreshAfterTransactionCodeChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
     public void formatAmount(TextView view, double amount, Integer accountId) {
         // take currency id
         Integer currencyId = null;
@@ -257,6 +305,43 @@ public class EditTransactionCommonFunctions {
             view.setText(currencyService.getCurrencyFormatted(currencyId, amount));
         }
         view.setTag(amount);
+    }
+
+    private void handleSwitchingTransactionTypeToTransfer() {
+        // The user is switching to Transfer transaction type.
+
+        if(hasSplitCategories()) {
+            // Prompt the user to confirm deleting split categories.
+            // Use DialogFragment in order to redraw the dialog when switching device orientation.
+
+            DialogFragment dialog = new YesNoDialog();
+            Bundle args = new Bundle();
+            args.putString("title", mContext.getString(R.string.warning));
+            args.putString("message", mContext.getString(R.string.no_transfer_splits));
+            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
+            dialog.setArguments(args);
+//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
+
+            BaseFragmentActivity parent = (BaseFragmentActivity) mContext;
+            dialog.show(parent.getSupportFragmentManager(), "tag");
+
+            // Dialog result is handled in onDialogPositiveClick.
+            return;
+        }
+
+        // un-check split.
+        setSplit(false);
+
+        // Hide Category picker.
+//        mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
+
+        // Clear category.
+        mCategoryId = Constants.NOT_SET;
+
+//        mTransCode = getString(R.string.transfer);
+        mTransactionType = TransactionTypes.Transfer;
+
+        refreshAfterTransactionCodeChange();
     }
 
     public void refreshHeaderAmount() {

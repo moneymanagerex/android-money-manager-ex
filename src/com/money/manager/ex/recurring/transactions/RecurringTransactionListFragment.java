@@ -36,7 +36,7 @@ import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
-import com.money.manager.ex.businessobjects.RecurringTransaction;
+import com.money.manager.ex.businessobjects.RecurringTransactionService;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryBillDeposits;
@@ -290,7 +290,7 @@ public class RecurringTransactionListFragment
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        RecurringTransaction recurringTransaction = new RecurringTransaction(id, getActivity());
+                        RecurringTransactionService recurringTransaction = new RecurringTransactionService(id, getActivity());
                         recurringTransaction.delete();
 
                         // restart loader
@@ -317,7 +317,7 @@ public class RecurringTransactionListFragment
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        RecurringTransaction recurringTransaction = new RecurringTransaction(id, getActivity());
+                        RecurringTransactionService recurringTransaction = new RecurringTransactionService(id, getActivity());
                         recurringTransaction.skipNextOccurrence();
                         getLoaderManager().restartLoader(ID_LOADER_REPEATING, null,
                                 RecurringTransactionListFragment.this);
