@@ -83,7 +83,7 @@ public class EditTransactionCommonFunctions {
     public int accountId = Constants.NOT_SET, mToAccountId = Constants.NOT_SET;
     public TransactionTypes transactionType = TransactionTypes.Withdrawal;
     public String categoryName, subCategoryName;
-    private String[] mTransCodeItems, mTransCodeValues;
+//    private String[] mTransCodeItems, mTransCodeValues;
 
     public ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
     public ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;
@@ -286,6 +286,7 @@ public class EditTransactionCommonFunctions {
         selectTransactionType(TransactionTypes.Withdrawal);
     }
 
+    /*
     public void initTransactionTypeSelector_Dropdown() {
         // populate arrays TransCode
         mTransCodeItems = mContext.getResources().getStringArray(R.array.transcode_items);
@@ -328,6 +329,7 @@ public class EditTransactionCommonFunctions {
             }
         });
     }
+    */
 
     private void selectTransactionType(TransactionTypes transactionType) {
         this.transactionType = transactionType;
@@ -528,13 +530,9 @@ public class EditTransactionCommonFunctions {
 
         tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         tableRowAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-//        if (txtCaptionAmount != null) {
-//            txtCaptionAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-//        }
-//        txtAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+
         spinToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
-//        txtSelectPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
 
         // hide split controls
         chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
