@@ -117,7 +117,7 @@ public class EditTransactionCommonFunctions {
         txtTotAmount = (TextView) parent.findViewById(R.id.textViewTotAmount);
 
         // Transaction Type
-        this.withdrawalButton = (RelativeLayout) parent.findViewById(R.id.withdrawalButton);
+        withdrawalButton = (RelativeLayout) parent.findViewById(R.id.withdrawalButton);
         depositButton = (RelativeLayout) parent.findViewById(R.id.depositButton);
         transferButton = (RelativeLayout) parent.findViewById(R.id.transferButton);
 
@@ -283,7 +283,12 @@ public class EditTransactionCommonFunctions {
             transferButton.setOnClickListener(onClickListener);
         }
 
-        selectTransactionType(TransactionTypes.Withdrawal);
+        // Check if the transaction type has been set (for example, when editing an existing
+        // transaction).
+        TransactionTypes current = transactionType == null
+                ? TransactionTypes.Withdrawal
+                : transactionType;
+        selectTransactionType(current);
     }
 
     /*
