@@ -122,9 +122,6 @@ public class EditTransactionActivity
     public TextView txtSelectDate;
 
     private TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
-    // list split transactions
-//    private ArrayList<TableSplitTransactions> mSplitTransactions = null;
-//    private ArrayList<TableSplitTransactions> mSplitTransactionsDeleted = null;
     private EditTransactionCommonFunctions mCommonFunctions;
 
     @Override

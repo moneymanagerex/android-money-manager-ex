@@ -140,9 +140,6 @@ public class RecurringTransactionActivity
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
     private TextView txtRepeats, txtTimesRepeated, txtNextOccurrence;
 
-    // list split transactions
-//    ArrayList<TableBudgetSplitTransactions> mSplitTransactions = null;
-//    ArrayList<TableBudgetSplitTransactions> mSplitTransactionsDeleted = null;
     private EditTransactionCommonFunctions mCommonFunctions;
 
     @Override

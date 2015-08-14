@@ -127,6 +127,7 @@
                     android:text="@string/to_account"/>
             </LinearLayout>
 
+            <!-- Account -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
