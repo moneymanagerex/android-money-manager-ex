@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Html;
@@ -30,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -62,6 +64,7 @@ import java.util.Locale;
 public class EditTransactionCommonFunctions {
 
     public static final int REQUEST_PICK_PAYEE = 1;
+    public static final int SELECTED_BACKGROUND_COLOUR = R.color.material_grey_500;
 
     public EditTransactionCommonFunctions(Context context) {
         mContext = context;
@@ -77,9 +80,9 @@ public class EditTransactionCommonFunctions {
     public List<TableAccountList> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
-    public int mAccountId = Constants.NOT_SET, mToAccountId = Constants.NOT_SET;
-    public TransactionTypes mTransactionType;
-    public String mCategoryName, mSubCategoryName;
+    public int accountId = Constants.NOT_SET, mToAccountId = Constants.NOT_SET;
+    public TransactionTypes transactionType = TransactionTypes.Withdrawal;
+    public String categoryName, subCategoryName;
     private String[] mTransCodeItems, mTransCodeValues;
 
     public ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
@@ -90,6 +93,7 @@ public class EditTransactionCommonFunctions {
     public TextView txtCaptionAmount;
     public CheckBox chbSplitTransaction;
     public FontIconButton removePayeeButton;
+    public RelativeLayout withdrawalButton, depositButton, transferButton;
 
     private Context mContext;
 
@@ -97,7 +101,7 @@ public class EditTransactionCommonFunctions {
         Activity parent = (Activity) mContext;
 
         spinStatus = (Spinner) parent.findViewById(R.id.spinnerStatus);
-        spinTransCode = (Spinner) parent.findViewById(R.id.spinnerTransCode);
+//        spinTransCode = (Spinner) parent.findViewById(R.id.spinnerTransCode);
 
         // Payee
         txtSelectPayee = (TextView) parent.findViewById(R.id.textViewPayee);
@@ -111,6 +115,12 @@ public class EditTransactionCommonFunctions {
         txtCaptionAmount = (TextView) parent.findViewById(R.id.textViewHeaderTotalAmount);
         txtAmount = (TextView) parent.findViewById(R.id.textViewAmount);
         txtTotAmount = (TextView) parent.findViewById(R.id.textViewTotAmount);
+
+        // Transaction Type
+        this.withdrawalButton = (RelativeLayout) parent.findViewById(R.id.withdrawalButton);
+        depositButton = (RelativeLayout) parent.findViewById(R.id.depositButton);
+        transferButton = (RelativeLayout) parent.findViewById(R.id.transferButton);
+
     }
 
     public void formatExtendedDate(TextView dateTextView) {
@@ -125,12 +135,12 @@ public class EditTransactionCommonFunctions {
     }
 
     public String getTransactionType() {
-        if (mTransactionType == null) {
+        if (transactionType == null) {
             return null;
         }
 
         // mTransType
-        return mTransactionType.name();
+        return transactionType.name();
     }
 
     public boolean hasSplitCategories() {
@@ -155,17 +165,17 @@ public class EditTransactionCommonFunctions {
             mAccountIdList.add(account.getAccountId());
         }
 
-        addMissingAccountToSelectors(accountRepository, mAccountId);
+        addMissingAccountToSelectors(accountRepository, accountId);
         addMissingAccountToSelectors(accountRepository, mToAccountId);
         // add the default account, if any.
         AppSettings settings = new AppSettings(mContext);
         String defaultAccountString = settings.getGeneralSettings().getDefaultAccount();
         // Set the current account, if not set already.
-        if ((mAccountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
+        if ((accountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
             int defaultAccount = Integer.parseInt(defaultAccountString);
             addMissingAccountToSelectors(accountRepository, defaultAccount);
             // Set the default account as the active account.
-            mAccountId = defaultAccount;
+            accountId = defaultAccount;
         }
 
         // create adapter for spinAccount
@@ -174,18 +184,18 @@ public class EditTransactionCommonFunctions {
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccount.setAdapter(adapterAccount);
         // select current value
-        if (mAccountIdList.indexOf(mAccountId) >= 0) {
-            spinAccount.setSelection(mAccountIdList.indexOf(mAccountId), true);
+        if (mAccountIdList.indexOf(accountId) >= 0) {
+            spinAccount.setSelection(mAccountIdList.indexOf(accountId), true);
         }
         spinAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
-                    mAccountId = mAccountIdList.get(position);
-                    if (mTransactionType.equals(TransactionTypes.Transfer)) {
-                        formatAmount(txtAmount, (Double) txtAmount.getTag(), mAccountId);
+                    accountId = mAccountIdList.get(position);
+                    if (transactionType.equals(TransactionTypes.Transfer)) {
+                        formatAmount(txtAmount, (Double) txtAmount.getTag(), accountId);
                     } else {
-                        formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), mAccountId);
+                        formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), accountId);
                     }
                     refreshHeaderAmount();
                 }
@@ -209,7 +219,7 @@ public class EditTransactionCommonFunctions {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     mToAccountId = mAccountIdList.get(position);
-                    formatAmount(txtAmount, (Double) txtAmount.getTag(), mAccountId);
+                    formatAmount(txtAmount, (Double) txtAmount.getTag(), accountId);
                     formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), mToAccountId);
                     refreshHeaderAmount();
                 }
@@ -245,6 +255,41 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initTransactionTypeSelector() {
+        Activity parent = (Activity) mContext;
+        final int backgroundSelected = parent.getResources().getColor(SELECTED_BACKGROUND_COLOUR);
+
+        // Handle click events.
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // find which transaction type this is.
+                TransactionTypes type = (TransactionTypes) v.getTag();
+                selectTransactionType(type);
+//                v.setBackgroundColor(backgroundSelected);
+            }
+        };
+
+        if (withdrawalButton != null) {
+            withdrawalButton.setTag(TransactionTypes.Withdrawal);
+
+            withdrawalButton.setOnClickListener(onClickListener);
+        }
+        if (depositButton != null) {
+            depositButton.setTag(TransactionTypes.Deposit);
+
+            depositButton.setOnClickListener(onClickListener);
+        }
+        if (transferButton != null) {
+            transferButton.setTag(TransactionTypes.Transfer);
+
+            transferButton.setOnClickListener(onClickListener);
+        }
+
+        selectTransactionType(TransactionTypes.Withdrawal);
+    }
+
+    public void initTransactionTypeSelector_Dropdown() {
         // populate arrays TransCode
         mTransCodeItems = mContext.getResources().getStringArray(R.array.transcode_items);
         mTransCodeValues = mContext.getResources().getStringArray(R.array.transcode_values);
@@ -255,12 +300,12 @@ public class EditTransactionCommonFunctions {
         spinTransCode.setAdapter(adapterTrans);
 
         // select the current value
-        if (mTransactionType != null) {
+        if (transactionType != null) {
             if (Arrays.asList(mTransCodeValues).indexOf(getTransactionType()) >= 0) {
                 spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(getTransactionType()), true);
             }
         } else {
-            mTransactionType = TransactionTypes.values()[spinTransCode.getSelectedItemPosition()];
+            transactionType = TransactionTypes.values()[spinTransCode.getSelectedItemPosition()];
         }
 
         spinTransCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -276,7 +321,7 @@ public class EditTransactionCommonFunctions {
                         return;
                     }
 
-                    mTransactionType = TransactionTypes.values()[position];
+                    transactionType = TransactionTypes.values()[position];
                 }
                 refreshAfterTransactionCodeChange();
             }
@@ -285,6 +330,31 @@ public class EditTransactionCommonFunctions {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    private void selectTransactionType(TransactionTypes transactionType) {
+        this.transactionType = transactionType;
+
+        // Clear selection background
+        withdrawalButton.setBackgroundColor(Color.TRANSPARENT);
+        depositButton.setBackgroundColor(Color.TRANSPARENT);
+        transferButton.setBackgroundColor(Color.TRANSPARENT);
+
+        // Select
+        Activity parent = (Activity) mContext;
+        int backgroundSelected = parent.getResources().getColor(SELECTED_BACKGROUND_COLOUR);
+
+        switch (transactionType) {
+            case Deposit:
+                depositButton.setBackgroundColor(backgroundSelected);
+                break;
+            case Withdrawal:
+                withdrawalButton.setBackgroundColor(backgroundSelected);
+                break;
+            case Transfer:
+                transferButton.setBackgroundColor(backgroundSelected);
+                break;
+        }
     }
 
     public void formatAmount(TextView view, double amount, Integer accountId) {
@@ -339,7 +409,7 @@ public class EditTransactionCommonFunctions {
         mCategoryId = Constants.NOT_SET;
 
 //        mTransCode = getString(R.string.transfer);
-        mTransactionType = TransactionTypes.Transfer;
+        transactionType = TransactionTypes.Transfer;
 
         refreshAfterTransactionCodeChange();
     }
@@ -353,12 +423,12 @@ public class EditTransactionCommonFunctions {
         if (txtHeaderAmount == null || txtHeaderTotAmount == null)
             return;
 
-        if (!mTransactionType.equals(TransactionTypes.Transfer)) {
+        if (!transactionType.equals(TransactionTypes.Transfer)) {
             txtHeaderTotAmount.setText(R.string.total_amount);
             txtHeaderAmount.setText(R.string.amount);
         } else {
             // Transfer. Adjust the headers on amount text boxes.
-            int index = mAccountIdList.indexOf(mAccountId);
+            int index = mAccountIdList.indexOf(accountId);
             if (index >= 0) {
                 txtHeaderAmount.setText(mContext.getString(R.string.withdrawal_from,
                         this.AccountList.get(index).getAccountName()));
@@ -433,10 +503,10 @@ public class EditTransactionCommonFunctions {
             // Split transaction. Show ...
             txtSelectCategory.setText("\u2026");
         } else {
-            if (!TextUtils.isEmpty(mCategoryName)) {
-                txtSelectCategory.setText(mCategoryName);
-                if (!TextUtils.isEmpty(mSubCategoryName)) {
-                    txtSelectCategory.setText(Html.fromHtml(txtSelectCategory.getText() + " : <i>" + mSubCategoryName + "</i>"));
+            if (!TextUtils.isEmpty(categoryName)) {
+                txtSelectCategory.setText(categoryName);
+                if (!TextUtils.isEmpty(subCategoryName)) {
+                    txtSelectCategory.setText(Html.fromHtml(txtSelectCategory.getText() + " : <i>" + subCategoryName + "</i>"));
                 }
             }
         }
@@ -454,7 +524,7 @@ public class EditTransactionCommonFunctions {
         ViewGroup tableRowAmount = (ViewGroup) parent.findViewById(R.id.tableRowAmount);
 
         // hide and show
-        boolean isTransfer = mTransactionType.equals(TransactionTypes.Transfer);
+        boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
 
         txtFromAccount.setText(isTransfer ? R.string.from_account : R.string.account);
         txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
@@ -531,8 +601,8 @@ public class EditTransactionCommonFunctions {
                 // check cursor is valid
                 if ((curCategory != null) && (curCategory.moveToFirst())) {
                     // take names of category and subcategory
-                    mCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-                    mSubCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
+                    categoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
+                    subCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
                     // return true
                     ret = true;
                 }

@@ -490,7 +490,7 @@ public class AccountTransactionsFragment
 
     private void reloadAccountInfo() {
 //        mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
-//                .getTableAccountList(mAccountId);
+//                .getTableAccountList(accountId);
         AccountService service = new AccountService(getActivity().getApplicationContext());
         mAccountList = service.getTableAccountList(mAccountId);
     }

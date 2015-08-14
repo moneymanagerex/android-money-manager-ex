@@ -310,14 +310,14 @@ public class AllDataAdapter
     }
 
     /**
-     * @return the mAccountId
+     * @return the accountId
      */
     public int getAccountId() {
         return mAccountId;
     }
 
     /**
-     * @param mAccountId the mAccountId to set
+     * @param mAccountId the accountId to set
      */
     public void setAccountId(int mAccountId) {
         this.mAccountId = mAccountId;

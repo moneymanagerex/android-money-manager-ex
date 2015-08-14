@@ -87,11 +87,62 @@
                 android:animateLayoutChanges="true"
                 android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/spinnerTransCode"
+                <!-- Transaction Type toggle buttons -->
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal">
+                    <!-- Deposit -->
+                    <RelativeLayout
+                        android:id="@+id/depositButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                        <com.shamanland.fonticon.FontIconView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ic_diff_added"
+                            android:textSize="@dimen/fonticon_drawer"
+                            android:textColor="@color/material_green_700"
+                            android:layout_centerHorizontal="true" />
+                    </RelativeLayout>
+                    <!-- Withdrawal -->
+                    <RelativeLayout
+                        android:id="@+id/withdrawalButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                        <com.shamanland.fonticon.FontIconView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ic_diff_removed"
+                            android:textSize="@dimen/fonticon_drawer"
+                            android:textColor="@color/material_red_700"
+                            android:layout_centerHorizontal="true" />
+                    </RelativeLayout>
+                    <!-- Transfer -->
+                    <RelativeLayout
+                        android:id="@+id/transferButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                        <com.shamanland.fonticon.FontIconView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ic_diff_renamed"
+                            android:textSize="@dimen/fonticon_drawer"
+                            android:textColor="@color/material_grey_700"
+                            android:layout_centerHorizontal="true" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <Spinner
+                    android:visibility="gone"
+                    android:id="@+id/spinnerTransCode"
+                    android:layout_width="@dimen/money_button_height"
+                    android:layout_height="wrap_content"
                     android:prompt="@string/transaction_type"
                     style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
 
@@ -104,6 +155,7 @@
                     style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
             </LinearLayout>
 
+            <!-- Account -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -126,8 +178,6 @@
                     android:layout_weight="1"
                     android:text="@string/to_account"/>
             </LinearLayout>
-
-            <!-- Account -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -235,10 +285,10 @@
 
                     <com.shamanland.fonticon.FontIconButton
                         android:id="@+id/removePayeeButton"
-                        style="@style/Money.Button.Transparent"
+                        app:iconLeft="@xml/ic_erase"
                         android:layout_width="@dimen/money_button_height"
                         android:layout_height="@dimen/money_button_height"
-                        app:iconLeft="@xml/ic_erase"
+                        style="@style/Money.Button.Transparent"
                         android:layout_gravity="center_vertical"/>
                 </LinearLayout>
             </LinearLayout>

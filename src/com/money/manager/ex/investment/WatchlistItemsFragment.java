@@ -112,7 +112,7 @@ public class WatchlistItemsFragment
 
         // create adapter
         StocksCursorAdapter adapter = new StocksCursorAdapter(mContext, null);
-//        adapter.setAccountId(mAccountId);
+//        adapter.setAccountId(accountId);
 
         // handle list item click.
         getListView().setOnItemClickListener(new OnItemClickListener() {
