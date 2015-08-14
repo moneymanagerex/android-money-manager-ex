@@ -88,7 +88,7 @@ public class PayeeLoaderListFragment
 
         setShowMenuItemSearch(true);
         // Focus on search menu if set in preferences.
-        AppSettings settings = new AppSettings(getActivity());
+        AppSettings settings = new AppSettings(mContext);
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
         setMenuItemSearchIconified(!focusOnSearch);
 
@@ -109,8 +109,10 @@ public class PayeeLoaderListFragment
 
         setListShown(false);
         // init sort
-        mSort = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0);
+//        mSort = PreferenceManager.getDefaultSharedPreferences(getActivity())
+//                .getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0);
+        mSort = settings.getPayeeSort();
+
         // start loader
         getLoaderManager().initLoader(ID_LOADER_PAYEE, null, this);
 
@@ -125,10 +127,14 @@ public class PayeeLoaderListFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_payee, menu);
+
+        AppSettings settings = new AppSettings(mContext);
+        int payeeSort = settings.getPayeeSort();
+
         //Check the default sort order
         final MenuItem item;
-        switch (PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0)) {
+        // PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0)
+        switch (payeeSort) {
             case 0:
                 item = menu.findItem(R.id.menu_sort_name);
                 item.setChecked(true);
@@ -142,20 +148,21 @@ public class PayeeLoaderListFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        AppSettings settings = new AppSettings(mContext);
+
         switch (item.getItemId()) {
             case R.id.menu_sort_name:
                 mSort = 0;
                 item.setChecked(true);
-                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
-                        .putInt(getString(PreferenceConstants.PREF_SORT_PAYEE), mSort).commit();
+                settings.set(R.string.pref_sort_payee, mSort);
                 // restart search
                 restartLoader();
                 return true;
+
             case R.id.menu_sort_usage:
                 mSort = 1;
                 item.setChecked(true);
-                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
-                        .putInt(getString(PreferenceConstants.PREF_SORT_PAYEE), mSort).commit();
+                settings.set(R.string.pref_sort_payee, mSort);
                 // restart search
                 restartLoader();
                 return true;

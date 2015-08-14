@@ -97,10 +97,35 @@ public abstract class SettingsBase {
 
     // Integer
 
+    public int get(String key, int defaultValue) {
+        return getSharedPreferences().getInt(key, defaultValue);
+    }
+
+    /**
+     * Retrieve setting by passing the R.string.key
+     * @param settingKey R.string.key_name
+     * @param defaultValue The default value to use if setting not found.
+     * @return The setting value or default.
+     */
+    protected int get(Integer settingKey, int defaultValue) {
+        String key = getSettingsKey(settingKey);
+        return getIntSetting(key, defaultValue);
+    }
+
+    protected int getIntSetting(String settingKey, int defaultValue) {
+        // This is the main method that actually fetches the value.
+        return getSharedPreferences().getInt(settingKey, defaultValue);
+    }
+
     protected boolean set(String key, int value) {
-        getEditor().putInt(key, value);
-        boolean result = getEditor().commit();
+        SharedPreferences.Editor editor = getEditor();
+        editor.putInt(key, value);
+        boolean result = editor.commit();
         return result;
     }
 
+    public boolean set(Integer key, int value) {
+        String stringKey = getSettingsKey(key);
+        return this.set(stringKey, value);
+    }
 }

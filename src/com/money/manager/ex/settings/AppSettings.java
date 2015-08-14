@@ -19,6 +19,8 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 
+import com.money.manager.ex.R;
+
 /**
  * This class is used to interact with application settings/preferences.
  * Expand with additional methods as needed.
@@ -76,4 +78,8 @@ public class AppSettings extends SettingsBase {
         return mContext;
     }
 
+    public int getPayeeSort() {
+        int sort = get(R.string.pref_sort_payee, 0);
+        return sort;
+    }
 }
