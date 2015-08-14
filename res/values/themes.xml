@@ -33,21 +33,9 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <!-- Theme Base Application -->
-    <style name="_App" parent="@style/Theme.AppCompat.NoActionBar">
-        <!-- ** Do not overwrite these colors ** >
-        <item name="android:textColorPrimary">@color/material_grey_50</item>
-        <item name="android:textColorSecondary">@color/md_secondary_text</item>
-        <item name="android:textColor">@color/material_grey_50</item>
-        -->
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="actionModeBackground">@color/md_primary_dark</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="md_dark_theme">true</item>
-    </style>
+    <!-- Light Theme -->
 
+    <!-- base for the base of the light theme. ?? -->
     <style name="_App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/md_primary</item>
         <item name="colorPrimaryDark">@color/md_primary_dark</item>
@@ -70,6 +58,7 @@
         <item name="md_dark_theme">false</item>
     </style>
 
+    <!-- base for light theme -->
     <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar"/>
 
     <!-- Application Theme, Material Light -->
@@ -147,7 +136,29 @@
         <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
         <item name="headerCaptionTextViewStyle">@style/Money.TextView.Header.Caption</item>
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
+
+        <!-- calculator -->
+        <item name="calculator_button_background">@color/material_light_green_100</item>
+        <item name="calculator_button_operator_background">@color/material_light_green_300</item>
     </style>
+
+    <!-- Dark Theme -->
+
+    <!-- Theme Base Application -->
+    <style name="_App" parent="@style/Theme.AppCompat.NoActionBar">
+        <!-- ** Do not overwrite these colors ** >
+        <item name="android:textColorPrimary">@color/material_grey_50</item>
+        <item name="android:textColorSecondary">@color/md_secondary_text</item>
+        <item name="android:textColor">@color/material_grey_50</item>
+        -->
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="actionModeBackground">@color/md_primary_dark</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="md_dark_theme">true</item>
+    </style>
+
 
     <!-- Application Theme, Material Dark -->
     <style name="Theme.Money.Manager" parent="@style/_App">
@@ -225,5 +236,9 @@
         <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
         <item name="headerCaptionTextViewStyle">@style/Money.TextView.Header.Caption</item>
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>
+
+        <!-- calculator -->
+        <item name="calculator_button_background">@color/color_dialog_number_button</item>
+        <item name="calculator_button_operator_background">@color/color_dialog_number_operator</item>
     </style>
 </resources>

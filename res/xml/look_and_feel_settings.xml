@@ -18,6 +18,13 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="@string/theme_light"
+        android:entries="@array/themes_names"
+        android:entryValues="@array/themes_values"
+        android:icon="@null"
+        android:key="@string/pref_theme"
+        android:title="@string/theme_application"/>
     <CheckBoxPreference
         android:icon="@null"
         android:key="@string/pref_account_open_visible"
@@ -67,11 +74,4 @@
         android:key="@string/pref_application_font_size"
         android:summary="@string/summary_application_font_size"
         android:title="@string/title_application_font_size"/>
-    <ListPreference
-        android:defaultValue="@string/theme_light"
-        android:entries="@array/themes_names"
-        android:entryValues="@array/themes_values"
-        android:icon="@null"
-        android:key="@string/pref_theme"
-        android:title="@string/theme_application"/>
 </PreferenceScreen>

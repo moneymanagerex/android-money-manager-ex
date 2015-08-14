@@ -81,6 +81,10 @@
         <attr name="theme_drawer_background_color" format="color|reference"/>
         <attr name="holoSpinnerStyle" format="reference"/>
 
+        <!-- number input dialog / calculator -->
+        <attr name="calculator_button_background" format="reference" />
+        <attr name="calculator_button_operator_background" format="reference" />
+
         <!-- Toolbar -->
         <attr name="toolbarAppPopupTheme" format="reference"/>
 

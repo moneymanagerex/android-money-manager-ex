@@ -36,6 +36,8 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.utils.MathUtils;
+import com.shamanland.fonticon.FontIconButton;
+import com.shamanland.fonticon.FontIconView;
 
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
@@ -165,17 +167,19 @@ public class InputAmountDialog
         });
 
         // Delete button
-        ImageButton imgDelete = (ImageButton) view.findViewById(R.id.imageButtonCancel);
-        imgDelete.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String currentNumber = txtMain.getText().toString();
-                currentNumber = deleteLastDigitFrom(currentNumber);
-                txtMain.setText(currentNumber);
+        FontIconView deleteButton = (FontIconView) view.findViewById(R.id.deleteButton);
+        if (deleteButton != null) {
+            deleteButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String currentNumber = txtMain.getText().toString();
+                    currentNumber = deleteLastDigitFrom(currentNumber);
+                    txtMain.setText(currentNumber);
 
-                evalExpression();
-            }
-        });
+                    evalExpression();
+                }
+            });
+        }
 
         // Amounts
         txtTop = (TextView) view.findViewById(R.id.textViewTop);

@@ -81,10 +81,12 @@
                     style="@style/Money.Button.Input.Dialog.Operator"
                     android:text=")"/>
 
-                <ImageButton
-                    android:id="@+id/imageButtonCancel"
+                <com.shamanland.fonticon.FontIconView
+                    android:id="@+id/deleteButton"
                     style="@style/Money.Button.Input.Dialog.Operator"
-                    android:src="?attr/sym_keyboard_delete"/>
+                    android:text="@string/ic_erase"
+                    android:textSize="@dimen/input_dialog_text_size" />
+
             </LinearLayout>
 
             <LinearLayout
