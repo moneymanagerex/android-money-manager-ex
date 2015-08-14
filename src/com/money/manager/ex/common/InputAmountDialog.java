@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,13 +35,16 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.utils.MathUtils;
-import com.shamanland.fonticon.FontIconButton;
 import com.shamanland.fonticon.FontIconView;
 
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.apache.commons.lang3.math.NumberUtils;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class InputAmountDialog
         extends DialogFragment {
@@ -132,6 +134,9 @@ public class InputAmountDialog
         LayoutInflater inflater = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         View view = inflater.inflate(R.layout.input_amount_dialog, null);
 
+        // set the decimal separator to the currency's separator
+        setDecimalSeparator(view);
+
         // create listener
         OnClickListener clickListener = new OnClickListener() {
             @Override
@@ -147,7 +152,7 @@ public class InputAmountDialog
             button.setOnClickListener(clickListener);
         }
 
-        // Clear button.
+        // Clear button. 'C'
         Button clearButton = (Button) view.findViewById(R.id.buttonKeyClear);
         clearButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -166,7 +171,7 @@ public class InputAmountDialog
             }
         });
 
-        // Delete button
+        // Delete button '<='
         FontIconView deleteButton = (FontIconView) view.findViewById(R.id.deleteButton);
         if (deleteButton != null) {
             deleteButton.setOnClickListener(new OnClickListener() {
@@ -267,6 +272,8 @@ public class InputAmountDialog
 
         if (exp.length() > 0) {
             try {
+//                DecimalFormat formatter = (DecimalFormat) DecimalFormat.getInstance(Locale.);
+
                 Expression e = new ExpressionBuilder(exp).build();
                 double result = e.evaluate();
                 mAmount = Double.toString(result);
@@ -354,5 +361,20 @@ public class InputAmountDialog
             mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
         if (savedInstanceState.containsKey(KEY_EXPRESSION))
             mExpression = savedInstanceState.getString(KEY_EXPRESSION);
+    }
+
+    private void setDecimalSeparator(View view) {
+        // set the decimal separator to the current locale's separator.
+        // It can not be the default currency's because we can not figure out in reverse
+        // which locale this is. Example is €.
+
+        Locale locale = getResources().getConfiguration().locale;
+        DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
+        char decimalSeparator = currencyFormatter.getDecimalFormatSymbols().getDecimalSeparator();
+        String separator = Character.toString(decimalSeparator);
+
+        Button separatorButton = (Button) view.findViewById(R.id.buttonKeyNumDecimal);
+
+        separatorButton.setText(separator);
     }
 }
