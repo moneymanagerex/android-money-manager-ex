@@ -65,6 +65,7 @@ public class InputAmountDialog
     public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id,
                                                 Double amount, Integer currencyId) {
         InputAmountDialog dialog = getInstance(listener, id, amount);
+
         dialog.mCurrencyId = currencyId;
         dialog.mListener = listener;
         return dialog;
@@ -101,6 +102,9 @@ public class InputAmountDialog
         mIdView = getArguments().getInt("id");
 
         mCurrencyService = new CurrencyService(getActivity());
+        if (mCurrencyId == null) {
+            mCurrencyId = mCurrencyService.getBaseCurrencyId();
+        }
 
         NumericHelper numericHelper = new NumericHelper();
         int decimals = numericHelper.getNumberDecimal(
