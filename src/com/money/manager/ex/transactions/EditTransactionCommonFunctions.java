@@ -255,8 +255,6 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initTransactionTypeSelector() {
-        Activity parent = (Activity) mContext;
-        final int backgroundSelected = parent.getResources().getColor(SELECTED_BACKGROUND_COLOUR);
 
         // Handle click events.
 
@@ -266,7 +264,6 @@ public class EditTransactionCommonFunctions {
                 // find which transaction type this is.
                 TransactionTypes type = (TransactionTypes) v.getTag();
                 selectTransactionType(type);
-//                v.setBackgroundColor(backgroundSelected);
             }
         };
 
@@ -353,8 +350,11 @@ public class EditTransactionCommonFunctions {
                 break;
             case Transfer:
                 transferButton.setBackgroundColor(backgroundSelected);
+                handleSwitchingTransactionTypeToTransfer();
                 break;
         }
+
+        refreshAfterTransactionCodeChange();
     }
 
     public void formatAmount(TextView view, double amount, Integer accountId) {
@@ -401,9 +401,6 @@ public class EditTransactionCommonFunctions {
 
         // un-check split.
         setSplit(false);
-
-        // Hide Category picker.
-//        mCommonFunctions.txtSelectCategory.setVisibility(View.GONE);
 
         // Clear category.
         mCategoryId = Constants.NOT_SET;
