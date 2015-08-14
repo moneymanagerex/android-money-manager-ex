@@ -138,13 +138,13 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <Spinner
-                    android:visibility="gone"
-                    android:id="@+id/spinnerTransCode"
-                    android:layout_width="@dimen/money_button_height"
-                    android:layout_height="wrap_content"
-                    android:prompt="@string/transaction_type"
-                    style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+                <!--<Spinner-->
+                    <!--android:visibility="gone"-->
+                    <!--android:id="@+id/spinnerTransCode"-->
+                    <!--android:layout_width="@dimen/money_button_height"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:prompt="@string/transaction_type"-->
+                    <!--style="@style/Base.Widget.AppCompat.Spinner.Underlined" />-->
 
                 <Spinner
                     android:id="@+id/spinnerStatus"
@@ -231,7 +231,7 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="?attr/ic_calculator"
                         android:textStyle="bold"
-                        android:layout_gravity="end" />
+                        android:gravity="end" />
                 </LinearLayout>
 
                 <!-- Amount To -->
@@ -252,7 +252,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="?attr/ic_calculator"
                     android:textStyle="bold"
-                    android:layout_gravity="end" />
+                    android:gravity="end" />
 
             </LinearLayout>
 
@@ -360,6 +360,7 @@
                 android:text="@string/notes"
                 android:visibility="gone"/>
 
+            <!-- Notes -->
             <com.money.manager.ex.view.RobotoEditText
                 android:id="@+id/editTextNotes"
                 android:layout_width="match_parent"

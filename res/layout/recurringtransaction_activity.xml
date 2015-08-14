@@ -87,13 +87,64 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/spinnerTransCode"
+                <!-- Transaction Type toggle buttons -->
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:prompt="@string/transaction_type"
-                    style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal">
+                    <!-- Deposit -->
+                    <RelativeLayout
+                        android:id="@+id/depositButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                        <com.shamanland.fonticon.FontIconView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ic_diff_added"
+                            android:textSize="@dimen/fonticon_drawer"
+                            android:textColor="@color/material_green_700"
+                            android:layout_centerHorizontal="true" />
+                    </RelativeLayout>
+                    <!-- Withdrawal -->
+                    <RelativeLayout
+                        android:id="@+id/withdrawalButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                        <com.shamanland.fonticon.FontIconView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ic_diff_removed"
+                            android:textSize="@dimen/fonticon_drawer"
+                            android:textColor="@color/material_red_700"
+                            android:layout_centerHorizontal="true" />
+                    </RelativeLayout>
+                    <!-- Transfer -->
+                    <RelativeLayout
+                        android:id="@+id/transferButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                        <com.shamanland.fonticon.FontIconView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ic_diff_renamed"
+                            android:textSize="@dimen/fonticon_drawer"
+                            android:textColor="@color/material_grey_700"
+                            android:layout_centerHorizontal="true" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <!--<Spinner-->
+                    <!--android:id="@+id/spinnerTransCode"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:prompt="@string/transaction_type"-->
+                    <!--style="@style/Base.Widget.AppCompat.Spinner.Underlined" />-->
 
                 <Spinner
                     android:id="@+id/spinnerStatus"
@@ -236,7 +287,7 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="?attr/ic_calculator"
                         android:textStyle="bold"
-                        android:layout_gravity="end" />
+                        android:gravity="end" />
                 </LinearLayout>
 
                 <com.money.manager.ex.view.RobotoTextView
@@ -254,7 +305,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="?attr/ic_calculator"
                     android:textStyle="bold"
-                    android:layout_gravity="end" />
+                    android:gravity="end" />
             </LinearLayout>
 
             <!-- Payee -->
