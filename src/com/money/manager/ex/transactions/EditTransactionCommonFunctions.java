@@ -53,7 +53,6 @@ import com.shamanland.fonticon.FontIconButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -64,7 +63,6 @@ import java.util.Locale;
 public class EditTransactionCommonFunctions {
 
     public static final int REQUEST_PICK_PAYEE = 1;
-    public static final int SELECTED_BACKGROUND_COLOUR = R.color.material_grey_500;
 
     public EditTransactionCommonFunctions(Context context) {
         mContext = context;
@@ -74,13 +72,13 @@ public class EditTransactionCommonFunctions {
     public int payeeId = Constants.NOT_SET;
     public String payeeName;
     // Category
-    public int mCategoryId = Constants.NOT_SET;
-    public int mSubCategoryId = Constants.NOT_SET;
+    public int categoryId = Constants.NOT_SET;
+    public int subCategoryId = Constants.NOT_SET;
 
     public List<TableAccountList> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
-    public int accountId = Constants.NOT_SET, mToAccountId = Constants.NOT_SET;
+    public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;
     public TransactionTypes transactionType = TransactionTypes.Withdrawal;
     public String categoryName, subCategoryName;
 //    private String[] mTransCodeItems, mTransCodeValues;
@@ -166,7 +164,7 @@ public class EditTransactionCommonFunctions {
         }
 
         addMissingAccountToSelectors(accountRepository, accountId);
-        addMissingAccountToSelectors(accountRepository, mToAccountId);
+        addMissingAccountToSelectors(accountRepository, toAccountId);
         // add the default account, if any.
         AppSettings settings = new AppSettings(mContext);
         String defaultAccountString = settings.getGeneralSettings().getDefaultAccount();
@@ -209,18 +207,18 @@ public class EditTransactionCommonFunctions {
         // to account
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinToAccount.setAdapter(adapterAccount);
-        if (mToAccountId > 0) {
-            if (mAccountIdList.indexOf(mToAccountId) >= 0) {
-                spinToAccount.setSelection(mAccountIdList.indexOf(mToAccountId), true);
+        if (toAccountId > 0) {
+            if (mAccountIdList.indexOf(toAccountId) >= 0) {
+                spinToAccount.setSelection(mAccountIdList.indexOf(toAccountId), true);
             }
         }
         spinToAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
-                    mToAccountId = mAccountIdList.get(position);
+                    toAccountId = mAccountIdList.get(position);
                     formatAmount(txtAmount, (Double) txtAmount.getTag(), accountId);
-                    formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), mToAccountId);
+                    formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), toAccountId);
                     refreshHeaderAmount();
                 }
             }
@@ -291,51 +289,6 @@ public class EditTransactionCommonFunctions {
         selectTransactionType(current);
     }
 
-    /*
-    public void initTransactionTypeSelector_Dropdown() {
-        // populate arrays TransCode
-        mTransCodeItems = mContext.getResources().getStringArray(R.array.transcode_items);
-        mTransCodeValues = mContext.getResources().getStringArray(R.array.transcode_values);
-        // create adapter for TransCode
-        final ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(mContext,
-                android.R.layout.simple_spinner_item, mTransCodeItems);
-        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinTransCode.setAdapter(adapterTrans);
-
-        // select the current value
-        if (transactionType != null) {
-            if (Arrays.asList(mTransCodeValues).indexOf(getTransactionType()) >= 0) {
-                spinTransCode.setSelection(Arrays.asList(mTransCodeValues).indexOf(getTransactionType()), true);
-            }
-        } else {
-            transactionType = TransactionTypes.values()[spinTransCode.getSelectedItemPosition()];
-        }
-
-        spinTransCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mTransCodeValues.length)) {
-                    String selectedValue = mTransCodeValues[position];
-
-                    // Prevent selection if there are split transactions and the type is being
-                    // set to Transfer.
-                    if (selectedValue.equalsIgnoreCase(mContext.getString(R.string.transfer))) {
-                        handleSwitchingTransactionTypeToTransfer();
-                        return;
-                    }
-
-                    transactionType = TransactionTypes.values()[position];
-                }
-                refreshAfterTransactionCodeChange();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-    */
-
     private void selectTransactionType(TransactionTypes transactionType) {
         this.transactionType = transactionType;
 
@@ -345,8 +298,13 @@ public class EditTransactionCommonFunctions {
         transferButton.setBackgroundColor(Color.TRANSPARENT);
 
         // Select
+        Core core = new Core(mContext);
+        int selectedBackgroundColour = core.usingDarkTheme()
+            ? R.color.material_grey_500
+            : R.color.material_green_500; // md_primary, md_primary_dark, md_accent, md_primary_light
+
         Activity parent = (Activity) mContext;
-        int backgroundSelected = parent.getResources().getColor(SELECTED_BACKGROUND_COLOUR);
+        int backgroundSelected = parent.getResources().getColor(selectedBackgroundColour);
 
         switch (transactionType) {
             case Deposit:
@@ -410,12 +368,11 @@ public class EditTransactionCommonFunctions {
         setSplit(false);
 
         // Clear category.
-        mCategoryId = Constants.NOT_SET;
+        categoryId = Constants.NOT_SET;
 
-//        mTransCode = getString(R.string.transfer);
-        transactionType = TransactionTypes.Transfer;
+//        transactionType = TransactionTypes.Transfer;
 
-        refreshAfterTransactionCodeChange();
+//        refreshAfterTransactionCodeChange();
     }
 
     public void refreshHeaderAmount() {
@@ -437,7 +394,7 @@ public class EditTransactionCommonFunctions {
                 txtHeaderAmount.setText(mContext.getString(R.string.withdrawal_from,
                         this.AccountList.get(index).getAccountName()));
             }
-            index = mAccountIdList.indexOf(mToAccountId);
+            index = mAccountIdList.indexOf(toAccountId);
             if (index >= 0) {
                 txtHeaderTotAmount.setText(mContext.getString(R.string.deposit_to,
                         this.AccountList.get(index).getAccountName()));
@@ -456,17 +413,6 @@ public class EditTransactionCommonFunctions {
 
             txtSelectPayee.setText(text);
         }
-    }
-
-    public void setSplit(final boolean checked) {
-        chbSplitTransaction.post(new Runnable() {
-            @Override
-            public void run() {
-                chbSplitTransaction.setChecked(checked);
-
-                onSplitSet();
-            }
-        });
     }
 
     private void addMissingAccountToSelectors(AccountRepository accountRepository, int accountId) {
@@ -547,6 +493,17 @@ public class EditTransactionCommonFunctions {
         refreshHeaderAmount();
     }
 
+    public void setSplit(final boolean checked) {
+        chbSplitTransaction.post(new Runnable() {
+            @Override
+            public void run() {
+                chbSplitTransaction.setChecked(checked);
+
+                onSplitSet();
+            }
+        });
+    }
+
     /**
      * query info payee
      *
@@ -590,12 +547,12 @@ public class EditTransactionCommonFunctions {
         if ((curPayee != null) && (curPayee.moveToFirst())) {
             // check if category is valid
             if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != -1) {
-                mCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
-                mSubCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
+                categoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
+                subCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
                 // create instance of query
                 QueryCategorySubCategory category = new QueryCategorySubCategory(mContext.getApplicationContext());
                 // compose selection
-                String where = "CATEGID=" + Integer.toString(mCategoryId) + " AND SUBCATEGID=" + Integer.toString(mSubCategoryId);
+                String where = "CATEGID=" + Integer.toString(categoryId) + " AND SUBCATEGID=" + Integer.toString(subCategoryId);
                 Cursor curCategory = mContext.getContentResolver().query(category.getUri(),
                         category.getAllColumns(), where, null, null);
                 // check cursor is valid

@@ -295,13 +295,13 @@ public class RecurringTransactionActivity
         core.formatAmountTextView(mCommonFunctions.txtTotAmount, mTotAmount,
                 getCurrencyIdFromAccountId(!isTransfer
                         ? mCommonFunctions.accountId
-                        : mCommonFunctions.mToAccountId));
+                        : mCommonFunctions.toAccountId));
         mCommonFunctions.txtTotAmount.setOnClickListener(onClickAmount);
 
         // amount
         core.formatAmountTextView(mCommonFunctions.txtAmount, mAmount,
                 getCurrencyIdFromAccountId(!isTransfer
-                        ? mCommonFunctions.mToAccountId
+                        ? mCommonFunctions.toAccountId
                         : mCommonFunctions.accountId));
         mCommonFunctions.txtAmount.setOnClickListener(onClickAmount);
 
@@ -444,9 +444,9 @@ public class RecurringTransactionActivity
             
             case REQUEST_PICK_CATEGORY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCommonFunctions.mCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                    mCommonFunctions.categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                     mCommonFunctions.categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                    mCommonFunctions.mSubCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                    mCommonFunctions.subCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
                     mCommonFunctions.subCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                     // refresh UI category
                     mCommonFunctions.refreshCategoryName();
@@ -461,10 +461,10 @@ public class RecurringTransactionActivity
                             totAmount += mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount();
                         }
                         Core core = new Core(getBaseContext());
-//                        formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? accountId : mToAccountId);
+//                        formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? accountId : toAccountId);
                         int accountId = !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
                                 ? mCommonFunctions.accountId
-                                : mCommonFunctions.mToAccountId;
+                                : mCommonFunctions.toAccountId;
                         core.formatAmountTextView(mCommonFunctions.txtTotAmount, totAmount, getCurrencyIdFromAccountId(accountId));
                     }
                     // deleted item
@@ -483,7 +483,7 @@ public class RecurringTransactionActivity
         // save the state interface
         outState.putInt(KEY_BILL_DEPOSITS_ID, mBillDepositsId);
         outState.putInt(KEY_ACCOUNT_ID, mCommonFunctions.accountId);
-        outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.mToAccountId);
+        outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mStatus);
@@ -491,9 +491,9 @@ public class RecurringTransactionActivity
         outState.putDouble(KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
-        outState.putInt(KEY_CATEGORY_ID, mCommonFunctions.mCategoryId);
+        outState.putInt(KEY_CATEGORY_ID, mCommonFunctions.categoryId);
         outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
-        outState.putInt(KEY_SUBCATEGORY_ID, mCommonFunctions.mSubCategoryId);
+        outState.putInt(KEY_SUBCATEGORY_ID, mCommonFunctions.subCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
         outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
@@ -531,9 +531,9 @@ public class RecurringTransactionActivity
                 Double originalAmount;
                 try {
                     Integer toCurrencyId = mCommonFunctions.AccountList.get(mCommonFunctions.mAccountIdList.indexOf(id == R.id.textViewTotAmount
-                            ? mCommonFunctions.accountId : mCommonFunctions.mToAccountId)).getCurrencyId();
+                            ? mCommonFunctions.accountId : mCommonFunctions.toAccountId)).getCurrencyId();
                     Integer fromCurrencyId = mCommonFunctions.AccountList.get(mCommonFunctions.mAccountIdList.indexOf(id == R.id.textViewTotAmount
-                            ? mCommonFunctions.mToAccountId : mCommonFunctions.accountId)).getCurrencyId();
+                            ? mCommonFunctions.toAccountId : mCommonFunctions.accountId)).getCurrencyId();
                     // take a original values
                     originalAmount = id == R.id.textViewTotAmount
                             ? (Double) mCommonFunctions.txtTotAmount.getTag()
@@ -554,7 +554,7 @@ public class RecurringTransactionActivity
                             core.formatAmountTextView(id == R.id.textViewTotAmount
                                             ? mCommonFunctions.txtAmount : mCommonFunctions.txtTotAmount,
                                     amountExchange, getCurrencyIdFromAccountId(id == R.id.textViewTotAmount
-                                            ? mCommonFunctions.accountId : mCommonFunctions.mToAccountId));
+                                            ? mCommonFunctions.accountId : mCommonFunctions.toAccountId));
                         }
                     }
 
@@ -564,7 +564,7 @@ public class RecurringTransactionActivity
             }
             if (mCommonFunctions.txtTotAmount.equals(view)) {
                 if (isTransfer) {
-                    accountId = mCommonFunctions.mToAccountId;
+                    accountId = mCommonFunctions.toAccountId;
                 } else {
                     accountId = mCommonFunctions.accountId;
                 }
@@ -641,15 +641,15 @@ public class RecurringTransactionActivity
         // Read data.
         mBillDepositsId = tx.id;
         mCommonFunctions.accountId = tx.accountId;
-        mCommonFunctions.mToAccountId = tx.toAccountId;
+        mCommonFunctions.toAccountId = tx.toAccountId;
         String transCode = tx.transactionCode;
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mStatus = tx.status;
         mAmount = tx.amount;
         mTotAmount = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
-        mCommonFunctions.mCategoryId = tx.categoryId;
-        mCommonFunctions.mSubCategoryId = tx.subCategoryId;
+        mCommonFunctions.categoryId = tx.categoryId;
+        mCommonFunctions.subCategoryId = tx.subCategoryId;
         mTransNumber = tx.transactionNumber;
         mNotes = tx.notes;
         mNextOccurrence = tx.nextOccurrence;
@@ -657,16 +657,16 @@ public class RecurringTransactionActivity
 //        mNumOccurrence = tx.numOccurrence;
 
         // load split transactions only if no category selected.
-        if (mCommonFunctions.mCategoryId == Constants.NOT_SET && mCommonFunctions.mSplitTransactions == null) {
+        if (mCommonFunctions.categoryId == Constants.NOT_SET && mCommonFunctions.mSplitTransactions == null) {
             RecurringTransactionService recurringTransaction = new RecurringTransactionService(recurringTransactionId, this);
             mCommonFunctions.mSplitTransactions = recurringTransaction.loadSplitTransactions();
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mToAccountName = accountRepository.loadName(mCommonFunctions.mToAccountId);
+        mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
-        selectSubcategoryName(mCommonFunctions.mCategoryId, mCommonFunctions.mSubCategoryId);
+        selectSubcategoryName(mCommonFunctions.categoryId, mCommonFunctions.subCategoryId);
 
         return true;
     }
@@ -726,11 +726,11 @@ public class RecurringTransactionActivity
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
 
         if (isTransfer) {
-            if (mCommonFunctions.mToAccountId == Constants.NOT_SET) {
+            if (mCommonFunctions.toAccountId == Constants.NOT_SET) {
                 Core.alertDialog(this, R.string.error_toaccount_not_selected);
                 return false;
             }
-            if (mCommonFunctions.mToAccountId == mCommonFunctions.accountId) {
+            if (mCommonFunctions.toAccountId == mCommonFunctions.accountId) {
                 Core.alertDialog(this, R.string.error_transfer_to_same_account);
                 return false;
             }
@@ -743,7 +743,7 @@ public class RecurringTransactionActivity
 //        }
 
         // Category is required if tx is not a split or transfer.
-        if (mCommonFunctions.mCategoryId == Constants.NOT_SET && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
+        if (mCommonFunctions.categoryId == Constants.NOT_SET && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
             Core.alertDialog(this, R.string.error_category_not_selected);
             return false;
         }
@@ -787,7 +787,7 @@ public class RecurringTransactionActivity
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
 
         values.put(TableBillsDeposits.ACCOUNTID, mCommonFunctions.accountId);
-        values.put(TableBillsDeposits.TOACCOUNTID, mCommonFunctions.mToAccountId);
+        values.put(TableBillsDeposits.TOACCOUNTID, mCommonFunctions.toAccountId);
         if (isTransfer) {
             values.put(TableBillsDeposits.PAYEEID, Constants.NOT_SET);
         } else {
@@ -801,9 +801,9 @@ public class RecurringTransactionActivity
         }
         values.put(TableBillsDeposits.STATUS, mStatus);
         values.put(TableBillsDeposits.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
-                ? mCommonFunctions.mCategoryId : Constants.NOT_SET);
+                ? mCommonFunctions.categoryId : Constants.NOT_SET);
         values.put(TableBillsDeposits.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
-                ? mCommonFunctions.mSubCategoryId : Constants.NOT_SET);
+                ? mCommonFunctions.subCategoryId : Constants.NOT_SET);
         values.put(TableBillsDeposits.FOLLOWUPID, Constants.NOT_SET);
         values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
@@ -890,8 +890,8 @@ public class RecurringTransactionActivity
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
-            values.put(TablePayee.CATEGID, mCommonFunctions.mCategoryId);
-            values.put(TablePayee.SUBCATEGID, mCommonFunctions.mSubCategoryId);
+            values.put(TablePayee.CATEGID, mCommonFunctions.categoryId);
+            values.put(TablePayee.SUBCATEGID, mCommonFunctions.subCategoryId);
             // create instance TablePayee for update
             TablePayee payee = new TablePayee();
             // update data
@@ -912,7 +912,7 @@ public class RecurringTransactionActivity
 
         mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
         mCommonFunctions.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
-        mCommonFunctions.mToAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
+        mCommonFunctions.toAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
         mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
         String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
@@ -921,9 +921,9 @@ public class RecurringTransactionActivity
         mTotAmount = savedInstanceState.getDouble(KEY_TRANS_TOTAMOUNT);
         mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
-        mCommonFunctions.mCategoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
+        mCommonFunctions.categoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
         mCommonFunctions.categoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
-        mCommonFunctions.mSubCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
+        mCommonFunctions.subCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
         mCommonFunctions.subCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
         mNotes = savedInstanceState.getString(KEY_NOTES);
         mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
