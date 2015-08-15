@@ -81,7 +81,6 @@ public class EditTransactionCommonFunctions {
     public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;
     public TransactionTypes transactionType = TransactionTypes.Withdrawal;
     public String categoryName, subCategoryName;
-//    private String[] mTransCodeItems, mTransCodeValues;
 
     public ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
     public ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;
@@ -195,7 +194,7 @@ public class EditTransactionCommonFunctions {
                     } else {
                         formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), accountId);
                     }
-                    refreshHeaderAmount();
+                    refreshControlHeaders();
                 }
             }
 
@@ -219,7 +218,7 @@ public class EditTransactionCommonFunctions {
                     toAccountId = mAccountIdList.get(position);
                     formatAmount(txtAmount, (Double) txtAmount.getTag(), accountId);
                     formatAmount(txtTotAmount, (Double) txtTotAmount.getTag(), toAccountId);
-                    refreshHeaderAmount();
+                    refreshControlHeaders();
                 }
             }
 
@@ -369,20 +368,20 @@ public class EditTransactionCommonFunctions {
 
         // Clear category.
         categoryId = Constants.NOT_SET;
-
-//        transactionType = TransactionTypes.Transfer;
-
-//        refreshAfterTransactionCodeChange();
     }
 
-    public void refreshHeaderAmount() {
+    /**
+     * Update input control titles to reflect the transaction type.
+     */
+    public void refreshControlHeaders() {
         Activity parent = (Activity) mContext;
 
         TextView txtHeaderTotAmount = (TextView) parent.findViewById(R.id.textViewHeaderTotalAmount);
         TextView txtHeaderAmount = (TextView) parent.findViewById(R.id.textViewHeaderAmount);
 
-        if (txtHeaderAmount == null || txtHeaderTotAmount == null)
+        if (txtHeaderAmount == null || txtHeaderTotAmount == null) {
             return;
+        }
 
         if (!transactionType.equals(TransactionTypes.Transfer)) {
             txtHeaderTotAmount.setText(R.string.total_amount);
@@ -490,7 +489,7 @@ public class EditTransactionCommonFunctions {
 
         txtSelectCategory.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
-        refreshHeaderAmount();
+        refreshControlHeaders();
     }
 
     public void setSplit(final boolean checked) {
