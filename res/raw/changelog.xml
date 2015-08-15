@@ -17,7 +17,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="August 13, 2015" versionName="2.15.0-beta2">
+    <changelogversion changeDate="August 15, 2015" versionName="2.15.0-beta2">
+        <changelogtext>Restyling and minor improvements in numeric picker / calculator.</changelogtext>
         <changelogtext>Graphical selector for easier Transaction Type selection in transaction view.</changelogtext>
         <changelogtext>Option to remove a Payee on transaction.</changelogtext>
         <changelogtext>Correcting handling for recurring transactions that occur 'every X days'.</changelogtext>
