@@ -21,6 +21,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,8 +40,6 @@ import com.shamanland.fonticon.FontIconView;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -111,7 +110,7 @@ public class InputAmountDialog
 
         // Display the existing amount, if any has been passed into the dialog.
         NumericHelper numericHelper = new NumericHelper();
-        int decimals = numericHelper.getNumberDecimal(
+        int decimals = numericHelper.getNumberOfDecimals(
                 mCurrencyService.getCurrency(mCurrencyId).getScale());
         Double amount = this.RoundToCurrencyDecimals
                 ? MathUtils.Round(getArguments().getDouble("amount"), decimals)
@@ -134,7 +133,13 @@ public class InputAmountDialog
         OnClickListener clickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                txtMain.setText(txtMain.getText().toString()
+                String existingValue = txtMain.getText().toString();
+                if (existingValue.equals("0")) {
+                    // Remove the default 0 value to avoid leading zero "01" numbers.
+                    existingValue = "";
+                }
+
+                txtMain.setText(existingValue
                         .concat(((Button) v).getText().toString()));
                 evalExpression();
             }
@@ -310,6 +315,11 @@ public class InputAmountDialog
 
         // Should we check if the next character is the decimal separator. (?)
 
+        // Handle deleting the last number - set the remaining value to 0.
+        if (TextUtils.isEmpty(number)) {
+            number = "0";
+        }
+
         return number;
     }
 
@@ -348,11 +358,9 @@ public class InputAmountDialog
         // to round or not?
         if (InputAmountDialog.this.RoundToCurrencyDecimals) {
             NumericHelper numericHelper = new NumericHelper();
-            int decimals = numericHelper.getNumberDecimal(
+            int decimals = numericHelper.getNumberOfDecimals(
                     mCurrencyService.getCurrency(mCurrencyId).getScale());
-
-            BigDecimal x = new BigDecimal(mAmount).setScale(decimals, RoundingMode.CEILING);
-            result = x.doubleValue();
+            result = numericHelper.roundNumber(mAmount, decimals);
         } else {
             result = mAmount;
         }

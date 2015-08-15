@@ -21,6 +21,8 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
@@ -52,7 +54,17 @@ public class NumericHelper {
         return result;
     }
 
+    public double roundNumber(double amount, int decimals) {
+        BigDecimal x = new BigDecimal(amount).setScale(decimals, RoundingMode.HALF_EVEN);
+        double result = x.doubleValue();
+        return result;
+    }
+
     public String getNumberFormatted(double value, double scale, String decimalPoint, String groupSeparator) {
+        // Round the number first.
+        int decimals = getNumberOfDecimals(scale);
+        value = roundNumber(value, decimals);
+
         // set format
         DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
         // getDecimalPoint()
@@ -68,15 +80,19 @@ public class NumericHelper {
         // set which symbols to use
         formatter.setDecimalFormatSymbols(formatSymbols);
 
-        formatter.setMaximumFractionDigits(getNumberDecimal(scale));
-        formatter.setMinimumFractionDigits(getNumberDecimal(scale));
+        formatter.setMaximumFractionDigits(decimals);
+        formatter.setMinimumFractionDigits(decimals);
 
         String result = formatter.format(value);
         return result;
     }
 
-    public int getNumberDecimal(double scale) {
-        // this.getScale()
+    /**
+     * Extracts the number of decimal places from scale/precision value.
+     * @param scale
+     * @return
+     */
+    public int getNumberOfDecimals(double scale) {
         double decimals = Math.log(scale) / Math.log(10.0);
         int result = (int) Math.round(decimals);
         return result;
