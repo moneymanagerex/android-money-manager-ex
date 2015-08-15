@@ -137,6 +137,7 @@ public class EditPriceDialog
         mAmountTextView = (RobotoTextView) viewDialog.findViewById(R.id.amountTextView);
         AccountRepository accountRepository = new AccountRepository(mContext);
         TableAccountList account = accountRepository.load(accountId);
+
         final int currencyId = account.getCurrencyId();
 
         View.OnClickListener onClickAmount = new View.OnClickListener() {

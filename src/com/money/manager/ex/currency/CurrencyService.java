@@ -169,6 +169,8 @@ public class CurrencyService {
      * @return formatted value
      */
     public String getCurrencyFormatted(Integer currencyId, Double value) {
+        String result;
+
         // check if value is null
         if (value == null) value = 0d;
 
@@ -177,14 +179,15 @@ public class CurrencyService {
             TableCurrencyFormats tableCurrency = getCurrency(currencyId);
 
             if (tableCurrency == null) {
-                return String.valueOf(value);
+                result = String.valueOf(value);
+            } else {
+                // formatted value
+                result = tableCurrency.getValueFormatted(value);
             }
-
-            // formatted value
-            return tableCurrency.getValueFormatted(value);
         } else {
-            return String.valueOf(value);
+            result = String.valueOf(value);
         }
+        return result;
     }
 
     /**

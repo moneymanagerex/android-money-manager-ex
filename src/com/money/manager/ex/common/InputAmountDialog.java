@@ -21,7 +21,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,19 +28,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.utils.MathUtils;
 import com.shamanland.fonticon.FontIconView;
 
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -87,7 +86,7 @@ public class InputAmountDialog
             R.id.buttonKeyRightParenthesis};
 
     private int mIdView;
-    private String mAmount = Constants.EMPTY_STRING;
+    private double mAmount;
     private String mExpression = null;
     private Integer mCurrencyId, mDefaultColor;
     private TextView txtMain, txtTop;
@@ -110,6 +109,7 @@ public class InputAmountDialog
             mCurrencyId = mCurrencyService.getBaseCurrencyId();
         }
 
+        // Display the existing amount, if any has been passed into the dialog.
         NumericHelper numericHelper = new NumericHelper();
         int decimals = numericHelper.getNumberDecimal(
                 mCurrencyService.getCurrency(mCurrencyId).getScale());
@@ -117,15 +117,8 @@ public class InputAmountDialog
                 ? MathUtils.Round(getArguments().getDouble("amount"), decimals)
                 : getArguments().getDouble("amount");
 
-        // Not sure what the purpose of this block is.
         if (amount != 0) {
-            int iAmount = (int) (amount * 100);
-            if (Math.abs(amount - (iAmount / 100)) == 0) {
-                mAmount = Integer.toString(iAmount / 100);
-            } else {
-                mAmount = Double.toString(amount);
-            }
-            mExpression = mAmount;
+            mExpression = Double.toString(amount);
         }
     }
 
@@ -166,8 +159,11 @@ public class InputAmountDialog
         buttonKeyEquals.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Set the calculated amount into the main box
-                txtMain.setText(getCalculatedAmount(false));
+                // this is called only to reset the warning colour in the top box, if any.
+                evalExpression();
+                // Get the calculated amount in default locale and display in the main box.
+                String amount = getAmountInUserLocale();
+                txtMain.setText(amount);
             }
         });
 
@@ -193,6 +189,9 @@ public class InputAmountDialog
         txtMain = (TextView) view.findViewById(R.id.textViewMain);
         txtMain.setText(mExpression);
 
+        // evaluate the expression initially, in case there is an existing amount passed to the dialog.
+        evalExpression();
+
         // Dialog
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
@@ -203,21 +202,8 @@ public class InputAmountDialog
             public void onPositive(MaterialDialog dialog) {
                 if (!evalExpression()) return;
 
-                if (TextUtils.isEmpty(mAmount)) {
-                    mAmount = Double.toString(0);
-                }
-                // check if is double
-                if (NumberUtils.isNumber(mAmount) && mListener != null) {
-                    // to round or not?
-                    double result;
-                    if (InputAmountDialog.this.RoundToCurrencyDecimals) {
-                        NumericHelper numericHelper = new NumericHelper();
-                        int decimals = numericHelper.getNumberDecimal(
-                                mCurrencyService.getCurrency(mCurrencyId).getScale());
-                        result = MathUtils.Round(Double.parseDouble(mAmount), decimals);
-                    } else {
-                        result = Double.parseDouble(mAmount);
-                    }
+                if (mListener != null) {
+                    double result = getAmount();
 
                     mListener.onFinishedInputAmountDialog(mIdView, result);
 
@@ -242,29 +228,32 @@ public class InputAmountDialog
     @Override
     public void onResume() {
         super.onResume();
-        refreshAmount();
+        refreshFormattedAmount();
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        savedInstanceState.putString(KEY_AMOUNT, mAmount);
+        savedInstanceState.putDouble(KEY_AMOUNT, mAmount);
         if (mCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
         savedInstanceState.putInt(KEY_ID_VIEW, mIdView);
-
         savedInstanceState.putString(KEY_EXPRESSION, txtMain.getText().toString());
     }
 
     /**
      * Displays the expression result in the top text box.
      */
-    public void refreshAmount() {
-        String result = getCalculatedAmount();
+    public void refreshFormattedAmount() {
+        String result = getFormattedAmount();
 
         txtTop.setText(result);
     }
 
+    /**
+     * Evaluate the entered expression and recalculate the resulting amount.
+     * @return Boolean indicating whether the operation was successful or not.
+     */
     public boolean evalExpression() {
         String exp = txtMain.getText().toString();
         // replace any blanks
@@ -272,20 +261,17 @@ public class InputAmountDialog
 
         if (exp.length() > 0) {
             try {
-//                DecimalFormat formatter = (DecimalFormat) DecimalFormat.getInstance(Locale.);
-
                 Expression e = new ExpressionBuilder(exp).build();
-                double result = e.evaluate();
-                mAmount = Double.toString(result);
+                mAmount = e.evaluate();
 
-                refreshAmount();
+                refreshFormattedAmount();
                 txtTop.setTextColor(mDefaultColor);
                 return true;
             } catch (IllegalArgumentException ex) {
 //                txtTop.setText(R.string.invalid_expression);
 //                txtTop.setTextColor(getResources().getColor(R.color.material_red_700));
                 // Just display the last valid value.
-                refreshAmount();
+                refreshFormattedAmount();
                 // Use the warning colour.
                 txtTop.setTextColor(getResources().getColor(R.color.material_amber_800));
                 return false;
@@ -297,43 +283,19 @@ public class InputAmountDialog
         return true;
     }
 
-    public String getCalculatedAmount() {
-        return getCalculatedAmount(true);
-    }
-
-    public String getCalculatedAmount(boolean withCurrency) {
-        try {
-            return getCalculatedAmountInternal(withCurrency);
-        } catch (NullPointerException ex) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(ex, "getting calculated amount");
-        }
-        return "";
-    }
-    public String getCalculatedAmountInternal(boolean withCurrency) {
-        String amount = mAmount;
-
-        // check if amount is not empty and is double
-        if (TextUtils.isEmpty(amount)) {
-            amount = Double.toString(0);
-        }
-
-        if (!NumberUtils.isNumber(amount)) return amount;
-
-        double fAmount = Double.parseDouble(amount);
-
-        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+    /**
+     * Get amount formatted in the given currency (or default).
+     * @return String Amount formatted in the given or default currency.
+     */
+    public String getFormattedAmount() {
+        double amount = mAmount;
 
         String result;
-        if (withCurrency) {
-            if (mCurrencyId == null) {
-                result = currencyService.getBaseCurrencyFormatted(fAmount);
-            } else {
-                result = currencyService.getCurrencyFormatted(mCurrencyId, fAmount);
-            }
+
+        if (mCurrencyId == null) {
+            result = mCurrencyService.getBaseCurrencyFormatted(amount);
         } else {
-            // return just the number, without the currency symbol.
-            result = currencyService.getCurrency(mCurrencyId).getValueFormatted(fAmount, false);
+            result = mCurrencyService.getCurrencyFormatted(mCurrencyId, amount);
         }
 
         return result;
@@ -353,7 +315,7 @@ public class InputAmountDialog
 
     private void restoreSavedInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(KEY_AMOUNT)) {
-            mAmount = savedInstanceState.getString(KEY_AMOUNT);
+            mAmount = savedInstanceState.getDouble(KEY_AMOUNT);
         }
         if (savedInstanceState.containsKey(KEY_CURRENCY_ID))
             mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
@@ -363,11 +325,13 @@ public class InputAmountDialog
             mExpression = savedInstanceState.getString(KEY_EXPRESSION);
     }
 
+    /**
+     * Set the decimal separator to the current locale's separator.
+     * It can not be the default currency's because we can not figure out in reverse
+     * which locale this is. Example is €.
+     * @param view
+     */
     private void setDecimalSeparator(View view) {
-        // set the decimal separator to the current locale's separator.
-        // It can not be the default currency's because we can not figure out in reverse
-        // which locale this is. Example is €.
-
         Locale locale = getResources().getConfiguration().locale;
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char decimalSeparator = currencyFormatter.getDecimalFormatSymbols().getDecimalSeparator();
@@ -376,5 +340,38 @@ public class InputAmountDialog
         Button separatorButton = (Button) view.findViewById(R.id.buttonKeyNumDecimal);
 
         separatorButton.setText(separator);
+    }
+
+    private double getAmount() {
+        double result;
+
+        // to round or not?
+        if (InputAmountDialog.this.RoundToCurrencyDecimals) {
+            NumericHelper numericHelper = new NumericHelper();
+            int decimals = numericHelper.getNumberDecimal(
+                    mCurrencyService.getCurrency(mCurrencyId).getScale());
+
+            BigDecimal x = new BigDecimal(mAmount).setScale(decimals, RoundingMode.CEILING);
+            result = x.doubleValue();
+        } else {
+            result = mAmount;
+        }
+        return result;
+    }
+
+    private String getAmountInUserLocale() {
+        // User's locale. Used for decimal point and grouping separator.
+        Locale locale = getResources().getConfiguration().locale;
+        DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
+        String decimalPoint = Character.toString(currencyFormatter.getDecimalFormatSymbols().getDecimalSeparator());
+        String groupSeparator = Character.toString(currencyFormatter.getDecimalFormatSymbols().getGroupingSeparator());
+
+        // Output currency. Used for scale/precision (number of decimal places).
+        TableCurrencyFormats currency = mCurrencyService.getCurrency(mCurrencyId);
+
+        NumericHelper helper = new NumericHelper();
+        String result = helper.getNumberFormatted(mAmount, currency.getScale(),
+            decimalPoint, groupSeparator);
+        return result;
     }
 }

@@ -236,8 +236,8 @@ public class TableCurrencyFormats
 	/**
 	 * 
 	 * @param value value to format
-	 * @param showSymbols if true show symbols of currency
-	 * @return value formatted
+	 * @param showSymbols Whether to include the currency symbol in the output.
+	 * @return formatted value
 	 */
 	public String getValueFormatted(double value, boolean showSymbols) {
         NumericHelper helper = new NumericHelper();
