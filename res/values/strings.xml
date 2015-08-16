@@ -605,4 +605,5 @@
     <string name="currencies_empty">No currencies have been found. To create one, tap the green plus button.</string>
     <string name="homepage">Our homepage is http://android.moneymanagerex.org/</string>
     <string name="current_database">Current database</string>
+    <string name="about_logcat_header">You can send us the application log by clicking the button below.</string>
 </resources>

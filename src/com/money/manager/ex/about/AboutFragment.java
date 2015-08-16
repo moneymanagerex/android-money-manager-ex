@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.TextUtils;
@@ -37,10 +38,18 @@ import android.widget.Toast;
 
 import com.github.pedrovgs.lynx.LynxActivity;
 import com.github.pedrovgs.lynx.LynxConfig;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.ExceptionHandler;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class AboutFragment extends Fragment {
     private static Fragment mInstance;
@@ -82,7 +91,7 @@ public class AboutFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("message/rfc822");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"android.money.manager.ex@gmail.com"});
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ Constants.EMAIL });
                 intent.putExtra(Intent.EXTRA_SUBJECT, "MoneyManagerEx for Android: Feedback");
                 try {
                     startActivity(Intent.createChooser(intent, "Send mail..."));
@@ -175,6 +184,14 @@ public class AboutFragment extends Fragment {
             }
         });
 
+        // Send logcat button
+        Button sendLogcatButton = (Button) view.findViewById(R.id.sendLogcatButton);
+        sendLogcatButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendLogcat();
+            }
+        });
         return view;
     }
 
@@ -204,4 +221,65 @@ public class AboutFragment extends Fragment {
 
     }
 
+    private void sendLogcat() {
+        String logcat = "";
+        logcat = getLogcat();
+
+        //send file using email
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.EMAIL});
+        // the attachment
+//        emailIntent .putExtra(Intent.EXTRA_STREAM, outputFile.getAbsolutePath());
+        emailIntent.putExtra(Intent.EXTRA_TEXT, logcat);
+        // the mail subject
+        emailIntent .putExtra(Intent.EXTRA_SUBJECT, "Subject");
+        startActivity(Intent.createChooser(emailIntent , "Send email..."));
+    }
+
+    /**
+     *
+     * @return
+     * References
+     * http://developer.android.com/tools/debugging/debugging-log.html
+     */
+    private String getLogcat() {
+//        File outputFile = new File(Environment.getExternalStorageDirectory(), "logcat.txt");
+        Process p = null;
+        try {
+//            Runtime.getRuntime().exec(
+//                    "logcat -f " + outputFile.getAbsolutePath());
+            p = Runtime.getRuntime().exec("logcat -d");
+        } catch (IOException e) {
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.handle(e, "executing logcat");
+        }
+        if (p == null) return "";
+
+        // Read text from the command output.
+        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()) );
+        StringBuilder output = new StringBuilder();
+        String line;
+        try {
+            while ((line = in.readLine()) != null) {
+                output.append(line);
+                output.append(System.getProperty("line.separator"));
+            }
+
+            in.close();
+        } catch (IOException e) {
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.handle(e, "reading stdout");
+        }
+
+        return output.toString();
+    }
+
+    /**
+     * ProcessBuilder may be used to redirect stdout for a process. Need to try it out.
+     */
+    private void useProcessBuilder() {
+        ProcessBuilder pb = new ProcessBuilder("logcat -d");
+
+    }
 }

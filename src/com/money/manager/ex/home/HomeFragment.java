@@ -418,7 +418,12 @@ public class HomeFragment
             case ID_LOADER_INVESTMENTS:
                 mInvestmentsCursor = data;
                 mInvestmentTransactionsLoaded = true;
-                showInvestmentTotals(data);
+                try {
+                    showInvestmentTotals(data);
+                } catch (NullPointerException e) {
+                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                    handler.handle(e, "showing investment totals");
+                }
                 break;
         }
     }

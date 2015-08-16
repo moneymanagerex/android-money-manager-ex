@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 
 import java.io.PrintWriter;
@@ -159,11 +160,11 @@ public class ExceptionHandler
 
     private void sendEmail(String text) {
         Intent intent = new Intent (Intent.ACTION_SEND);
-        intent.setType ("plain/text");
-        intent.putExtra (Intent.EXTRA_EMAIL, new String[] {"android.money.manager.ex@gmail.com"});
-        intent.putExtra (Intent.EXTRA_SUBJECT, "Unexpected Exception Log");
+        intent.setType("plain/text");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] { Constants.EMAIL });
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Unexpected Exception Log");
 //        intent.putExtra (Intent.EXTRA_STREAM, Uri.parse("file://" + fullName));
-        intent.putExtra (Intent.EXTRA_TEXT, text); // do this so some email clients don't complain about empty body.
+        intent.putExtra(Intent.EXTRA_TEXT, text); // do this so some email clients don't complain about empty body.
         // Title for the app selector
 //        intent.putExtra(Intent.EXTRA_TITLE, "The app has crashed");
 //        mContext.startActivity(intent);

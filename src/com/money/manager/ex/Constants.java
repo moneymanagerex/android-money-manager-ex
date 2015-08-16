@@ -19,6 +19,8 @@ package com.money.manager.ex;
 
 import android.content.Intent;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Constants {
     // Java
     public static final String EMPTY_STRING = "";
@@ -48,4 +50,6 @@ public class Constants {
     // Themes
     public static final String THEME_LIGHT = "Material Light";
     public static final String THEME_DARK = "Material Dark";
+
+    public static final String EMAIL = "android.money.manager.ex@gmail.com";
 }

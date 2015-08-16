@@ -176,6 +176,34 @@
             android:text="@string/donate_in_app_button"
             android:textSize="18sp"
             app:typeface="roboto_light"/>
+
+        <!-- Logcat -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/about_logcat_header"/>
+
+            <com.money.manager.ex.view.RobotoButton
+                android:id="@+id/sendLogcatButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="@string/send_me_logcat"
+                android:textSize="18sp"
+                app:typeface="roboto_light"/>
+
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
