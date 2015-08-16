@@ -49,7 +49,7 @@ public class RecurringTransactionService {
     public int RecurringTransactionId = Constants.NOT_SET;
     public Context mContext;
 
-    private TableBillsDeposits mRecurringTransaction = new TableBillsDeposits();
+    private TableBillsDeposits mRecurringTransaction;
     private TableBudgetSplitTransactions mSplitCategories = new TableBudgetSplitTransactions();
 
     /**
@@ -219,6 +219,7 @@ public class RecurringTransactionService {
 
         RecurringTransactionRepository repo = new RecurringTransactionRepository(mContext);
         mRecurringTransaction = repo.load(this.RecurringTransactionId);
+        
         return (mRecurringTransaction == null);
     }
 }
