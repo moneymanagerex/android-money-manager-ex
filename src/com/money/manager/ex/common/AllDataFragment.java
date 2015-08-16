@@ -177,66 +177,6 @@ public class AllDataFragment extends BaseListFragment
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    /**
-     * Export data to CSV file
-     */
-    public void exportDataToCSVFile() {
-        exportDataToCSVFile("");
-    }
-
-    /**
-     * Export data to CSV file
-     *
-     * @param prefixName prefix for the file
-     */
-    public void exportDataToCSVFile(String prefixName) {
-        ExportToCsvFile csv = new ExportToCsvFile(getActivity(), (AllDataAdapter) getListAdapter());
-        csv.setPrefixName(prefixName);
-        csv.execute();
-    }
-
-    /**
-     * @return the mSearResultFragmentLoaderCallbacks
-     */
-    public IAllDataFragmentLoaderCallbacks getSearchResultFragmentLoaderCallbacks() {
-        return mSearResultFragmentLoaderCallbacks;
-    }
-
-    /**
-     * @param searResultFragmentLoaderCallbacks the searResultFragmentLoaderCallbacks to set
-     */
-    public void setSearResultFragmentLoaderCallbacks(IAllDataFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
-        this.mSearResultFragmentLoaderCallbacks = searResultFragmentLoaderCallbacks;
-    }
-
-    /**
-     * @return the mAutoStarLoader
-     */
-    public boolean isAutoStarLoader() {
-        return mAutoStarLoader;
-    }
-
-    /**
-     * @param mAutoStarLoader the mAutoStarLoader to set
-     */
-    public void setAutoStarLoader(boolean mAutoStarLoader) {
-        this.mAutoStarLoader = mAutoStarLoader;
-    }
-
-    /**
-     * @return the mShownHeader
-     */
-    public boolean isShownHeader() {
-        return mShownHeader;
-    }
-
-    /**
-     * @param mShownHeader the mShownHeader to set
-     */
-    public void setShownHeader(boolean mShownHeader) {
-        this.mShownHeader = mShownHeader;
-    }
-
     // Loader event handlers
 
     /**
@@ -429,6 +369,168 @@ public class AllDataFragment extends BaseListFragment
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public String getSubTitle() {
+        return null;
+    }
+
+    @Override
+    public void onFloatingActionButtonClickListener() {
+        startEditAccountTransactionActivity(null);
+    }
+
+    // Begin multi-choice-mode listener callback handlers.
+
+    /**
+     * handler for multi-choice-mode listener
+     */
+    @Override
+    public void onMultiChoiceCreated(android.view.Menu menu) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
+    }
+
+    @Override
+    public void onDestroyActionMode() {
+        if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            adapter.clearPositionChecked();
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onDeleteClicked() {
+        ArrayList<Integer> transIds = getTransactionIds();
+
+        showDialogDeleteCheckingAccount(transIds);
+    }
+
+    @Override
+    public void onChangeTransactionStatusClicked() {
+        ArrayList<Integer> transIds = getTransactionIds();
+        changeTransactionStatus(transIds);
+    }
+
+    @Override
+    public void onTransactionStatusClicked(String status) {
+        ArrayList<Integer> transIds = getTransactionIds();
+
+        if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
+            ((AllDataAdapter) getListAdapter()).clearPositionChecked();
+            loadData();
+        }
+    }
+
+    @Override
+    public void onSelectAllRecordsClicked() {
+        selectAllRecords();
+    }
+
+    @Override
+    public void onDuplicateTransactionsClicked() {
+        ArrayList<Integer> transIds = getTransactionIds();
+        showDuplicateTransactionView(transIds);
+    }
+
+    @Override
+    public void onItemCheckedStateChanged(int position, boolean checked) {
+        if (getListHeader() != null) {
+            position--;
+        }
+
+        if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            adapter.setPositionChecked(position, checked);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    // Methods
+
+    /**
+     * Export data to CSV file
+     */
+    public void exportDataToCSVFile() {
+        exportDataToCSVFile("");
+    }
+
+    /**
+     * Export data to CSV file
+     *
+     * @param prefixName prefix for the file
+     */
+    public void exportDataToCSVFile(String prefixName) {
+        ExportToCsvFile csv = new ExportToCsvFile(getActivity(), (AllDataAdapter) getListAdapter());
+        csv.setPrefixName(prefixName);
+        csv.execute();
+    }
+
+    /**
+     * @return the mSearResultFragmentLoaderCallbacks
+     */
+    public IAllDataFragmentLoaderCallbacks getSearchResultFragmentLoaderCallbacks() {
+        return mSearResultFragmentLoaderCallbacks;
+    }
+
+    /**
+     * @param searResultFragmentLoaderCallbacks the searResultFragmentLoaderCallbacks to set
+     */
+    public void setSearResultFragmentLoaderCallbacks(IAllDataFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
+        this.mSearResultFragmentLoaderCallbacks = searResultFragmentLoaderCallbacks;
+    }
+
+    /**
+     * @return the mAutoStarLoader
+     */
+    public boolean isAutoStarLoader() {
+        return mAutoStarLoader;
+    }
+
+    /**
+     * @param mAutoStarLoader the mAutoStarLoader to set
+     */
+    public void setAutoStarLoader(boolean mAutoStarLoader) {
+        this.mAutoStarLoader = mAutoStarLoader;
+    }
+
+    /**
+     * @return the mShownHeader
+     */
+    public boolean isShownHeader() {
+        return mShownHeader;
+    }
+
+    /**
+     * @param mShownHeader the mShownHeader to set
+     */
+    public void setShownHeader(boolean mShownHeader) {
+        this.mShownHeader = mShownHeader;
+    }
+
+    public View getListHeader() {
+        return mListHeader;
+    }
+
+    public void setListHeader(View mHeaderList) {
+        this.mListHeader = mHeaderList;
+    }
+
+    /**
+     * @return the mShownBalance
+     */
+    public boolean isShownBalance() {
+        return mShownBalance;
+    }
+
+    /**
+     * @param mShownBalance the mShownBalance to set
+     */
+    public void setShownBalance(boolean mShownBalance) {
+        this.mShownBalance = mShownBalance;
+    }
+
+    // Private
+
     private boolean setStatusCheckingAccount(int[] transId, String status) {
         // check if status = "U" convert to empty string
         if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status)) status = "";
@@ -566,106 +668,6 @@ public class AllDataFragment extends BaseListFragment
         // launch activity
         startActivity(intent);
     }
-
-    /**
-     * @return the mShownBalance
-     */
-    public boolean isShownBalance() {
-        return mShownBalance;
-    }
-
-    /**
-     * @param mShownBalance the mShownBalance to set
-     */
-    public void setShownBalance(boolean mShownBalance) {
-        this.mShownBalance = mShownBalance;
-    }
-
-    @Override
-    public String getSubTitle() {
-        return null;
-    }
-
-    @Override
-    public void onFloatingActionButtonClickListener() {
-        startEditAccountTransactionActivity(null);
-    }
-
-    public View getListHeader() {
-        return mListHeader;
-    }
-
-    public void setListHeader(View mHeaderList) {
-        this.mListHeader = mHeaderList;
-    }
-
-    // Begin multi-choice-mode listener callback handlers.
-
-    /**
-     * handler for multi-choice-mode listener
-     */
-    @Override
-    public void onMultiChoiceCreated(android.view.Menu menu) {
-        getActivity().getMenuInflater().inflate(R.menu.menu_all_data_adapter, menu);
-    }
-
-    @Override
-    public void onDestroyActionMode() {
-        if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-            adapter.clearPositionChecked();
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void onDeleteClicked() {
-        ArrayList<Integer> transIds = getTransactionIds();
-
-        showDialogDeleteCheckingAccount(transIds);
-    }
-
-    @Override
-    public void onChangeTransactionStatusClicked() {
-        ArrayList<Integer> transIds = getTransactionIds();
-        changeTransactionStatus(transIds);
-    }
-
-    @Override
-    public void onTransactionStatusClicked(String status) {
-        ArrayList<Integer> transIds = getTransactionIds();
-
-        if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-            ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-            loadData();
-        }
-    }
-
-    @Override
-    public void onSelectAllRecordsClicked() {
-        selectAllRecords();
-    }
-
-    @Override
-    public void onDuplicateTransactionsClicked() {
-        ArrayList<Integer> transIds = getTransactionIds();
-        showDuplicateTransactionView(transIds);
-    }
-
-    @Override
-    public void onItemCheckedStateChanged(int position, boolean checked) {
-        if (getListHeader() != null) {
-            position--;
-        }
-
-        if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-            adapter.setPositionChecked(position, checked);
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    // Private area
 
     private void selectAllRecords() {
         ListAdapter listAdapter = getListAdapter();
