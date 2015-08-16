@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -77,17 +78,21 @@ public class ExceptionHandler
         }
     }
 
+    public void showMessage(final String message) {
+        showMessage(message, Toast.LENGTH_SHORT);
+    }
     /**
      * Display a toast message.
      * @param message
+     * @param length Length of display. See Toast.Long and Toast.Short.
      * reference: http://stackoverflow.com/questions/18705945/android-cant-create-handler-inside-thread-that-has-not-called-looper-prepare
      */
-    public void showMessage(final String message) {
+    public void showMessage(final String message, final int length) {
         Handler h = new Handler(Looper.getMainLooper());
         h.post(new Runnable() {
             public void run() {
                 try {
-                    Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, message, length).show();
                 } catch (Exception e) {
                     Log.e(getLogcat(), "Error showing toast: " + e.getMessage());
                 }

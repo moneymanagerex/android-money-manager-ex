@@ -66,6 +66,19 @@ public class CurrencyService {
     // context
     private Context mContext;
 
+    public String getBaseCurrencyCode() {
+        // get base currency
+        int baseCurrencyId = this.getBaseCurrencyId();
+
+        TableCurrencyFormats currency = this.getCurrency(baseCurrencyId);
+        if (currency == null) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.showMessage(mContext.getString(R.string.base_currency_not_set));
+            return "";
+        }
+        return currency.getCurrencySymbol();
+    }
+
     public Boolean reInit() {
         destroy();
 
@@ -309,19 +322,6 @@ public class CurrencyService {
         }
 
         return currencyId;
-    }
-
-    public String getBaseCurrencyCode() {
-        // get base currency
-        int baseCurrencyId = this.getBaseCurrencyId();
-
-        TableCurrencyFormats currency = this.getCurrency(baseCurrencyId);
-        if (currency == null) {
-            Toast.makeText(mContext, mContext.getString(R.string.base_currency_not_set),
-                    Toast.LENGTH_SHORT).show();
-            return "";
-        }
-        return currency.getCurrencySymbol();
     }
 
     public Currency getSystemDefaultCurrency() {

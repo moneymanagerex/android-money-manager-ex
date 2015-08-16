@@ -112,7 +112,6 @@ public class YahooDownloadAllPricesTask
 
         for (String symbol:symbols) {
             // Show the symbol being updated.
-//            mDialog.setMessage(symbol);
 
             String url = mFeedback.getUrlForSymbol(symbol);
             String csv;
