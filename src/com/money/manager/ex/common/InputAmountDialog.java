@@ -269,10 +269,6 @@ public class InputAmountDialog
             try {
                 Expression e = new ExpressionBuilder(exp).build();
                 mAmount = e.evaluate();
-
-                refreshFormattedAmount();
-                txtTop.setTextColor(mDefaultColor);
-                return true;
             } catch (IllegalArgumentException ex) {
 //                txtTop.setText(R.string.invalid_expression);
 //                txtTop.setTextColor(getResources().getColor(R.color.material_red_700));
@@ -285,7 +281,12 @@ public class InputAmountDialog
                 ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
                 handler.handle(e, "evaluating expression");
             }
+        } else {
+            mAmount = 0;
         }
+        
+        refreshFormattedAmount();
+        txtTop.setTextColor(mDefaultColor);
         return true;
     }
 
