@@ -1074,7 +1074,12 @@ public class EditTransactionActivity
         values.put(TableCheckingAccount.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
 
         // Amount To
-        values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
+        if (isTransfer) {
+            values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
+        } else {
+            // Use the Amount value.
+            values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
+        }
 
         // Status
         values.put(TableCheckingAccount.STATUS, mStatus);

@@ -709,21 +709,23 @@ public class EditTransactionCommonFunctions {
         }
 
         // Amount is required.
-        if ((Double) txtAmountTo.getTag() == 0) {
-            if ((Double) txtAmount.getTag() == 0) {
-                Core.alertDialog(mContext, R.string.error_totamount_empty);
-                return false;
-            } else {
-                txtAmountTo.setTag(txtAmount.getTag());
-            }
-        }
+//        if ((Double) txtAmountTo.getTag() == 0) {
+//            if ((Double) txtAmount.getTag() == 0) {
+//                Core.alertDialog(mContext, R.string.error_totamount_empty);
+//                return false;
+//            } else {
+//                txtAmountTo.setTag(txtAmount.getTag());
+//            }
+//        }
 
         // Amounts must be positive. Sign is determined by transaction type.
-        if ((Double) txtAmount.getTag() < 0) {
+        if ((Double) txtAmount.getTag() <= 0) {
             Core.alertDialog(mContext, R.string.error_amount_must_be_positive);
+            return false;
         }
-        if ((Double) txtAmountTo.getTag() < 0) {
+        if ((Double) txtAmountTo.getTag() <= 0) {
             Core.alertDialog(mContext, R.string.error_amount_must_be_positive);
+            return false;
         }
 
         // Category is required if tx is not a split or transfer.

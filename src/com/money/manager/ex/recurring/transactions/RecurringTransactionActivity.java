@@ -769,7 +769,12 @@ public class RecurringTransactionActivity
         values.put(TableBillsDeposits.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
 
         // Amount To
-        values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
+        if (isTransfer) {
+            values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
+        } else {
+            // Use the Amount value.
+            values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
+        }
 
         values.put(TableBillsDeposits.STATUS, mStatus);
         values.put(TableBillsDeposits.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
