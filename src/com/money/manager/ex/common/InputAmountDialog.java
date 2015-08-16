@@ -129,13 +129,13 @@ public class InputAmountDialog
         // set the decimal separator to the currency's separator
         setDecimalSeparator(view);
 
-        // create listener
+        // Numbers and Operators.
         OnClickListener clickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Remove the default 0 value to avoid leading zero "01" numbers.
                 String existingValue = txtMain.getText().toString();
                 if (existingValue.equals("0")) {
-                    // Remove the default 0 value to avoid leading zero "01" numbers.
                     existingValue = "";
                 }
 
@@ -156,6 +156,7 @@ public class InputAmountDialog
             @Override
             public void onClick(View view) {
                 txtMain.setText("");
+                evalExpression();
             }
         });
 

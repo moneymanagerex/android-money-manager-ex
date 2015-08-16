@@ -52,6 +52,7 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.AppSettings;
 import com.shamanland.fonticon.FontIconButton;
+import com.shamanland.fonticon.FontIconView;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -98,7 +99,7 @@ public class EditTransactionCommonFunctions {
     public TextView txtSelectPayee, txtAmountTo, txtAmount, txtSelectCategory;
     public TextView amountHeaderTextView, amountToHeaderTextView;
     public CheckBox chbSplitTransaction;
-    public FontIconButton removePayeeButton;
+    public FontIconView removePayeeButton;
     public RelativeLayout withdrawalButton, depositButton, transferButton;
 
     private Context mContext;
@@ -110,7 +111,7 @@ public class EditTransactionCommonFunctions {
 
         // Payee
         txtSelectPayee = (TextView) parent.findViewById(R.id.textViewPayee);
-        removePayeeButton = (FontIconButton) parent.findViewById(R.id.removePayeeButton);
+        removePayeeButton = (FontIconView) parent.findViewById(R.id.removePayeeButton);
         tableRowPayee = (ViewGroup) parent.findViewById(R.id.tableRowPayee);
 
         chbSplitTransaction = (CheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
@@ -376,64 +377,64 @@ public class EditTransactionCommonFunctions {
     public void onFinishedInputAmountDialog(int id, Double amount) {
         Activity parent = (Activity) mContext;
         View view = parent.findViewById(id);
+        if (view == null || !(view instanceof TextView)) return;
+
         int accountId;
-        if (view != null && view instanceof TextView) {
-            boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
-            CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
+        boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
+        CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
 
-            if (isTransfer) {
-                Double originalAmount;
-                try {
-                    Integer toCurrencyId = AccountList.get(mAccountIdList
-                            .indexOf(id == R.id.textViewTotAmount
-                                    ? this.accountId
-                                    : this.toAccountId)).getCurrencyId();
-                    Integer fromCurrencyId = AccountList.get(mAccountIdList
-                            .indexOf(id == R.id.textViewTotAmount
-                                    ? this.toAccountId
-                                    : this.accountId)).getCurrencyId();
-                    // take a original values
-                    originalAmount = id == R.id.textViewTotAmount
-                            ? (Double) txtAmountTo.getTag()
-                            : (Double) txtAmount.getTag();
-                    // convert value
-                    Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
-                    // take original amount converted
-                    originalAmount = id == R.id.textViewTotAmount
-                            ? (Double) txtAmount.getTag()
-                            : (Double) txtAmountTo.getTag();
-                    if (originalAmount == null)
-                        originalAmount = 0d;
-                    // check if two values is equals, and then convert value
-                    if (originalAmount == 0) {
-                        DecimalFormat decimalFormat = new DecimalFormat("0.00");
-                        if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
-                            amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
-                            formatAmount(id == R.id.textViewTotAmount
-                                            ? txtAmount : txtAmountTo,
-                                    amountExchange,
-                                    this.getCurrencyIdFromAccountId(id == R.id.textViewTotAmount
-                                            ? this.accountId
-                                            : this.toAccountId));
-                        }
+        if (isTransfer) {
+            Double originalAmount;
+            try {
+                Integer toCurrencyId = AccountList.get(mAccountIdList
+                        .indexOf(id == R.id.textViewTotAmount
+                                ? this.accountId
+                                : this.toAccountId)).getCurrencyId();
+                Integer fromCurrencyId = AccountList.get(mAccountIdList
+                        .indexOf(id == R.id.textViewTotAmount
+                                ? this.toAccountId
+                                : this.accountId)).getCurrencyId();
+                // take a original values
+                originalAmount = id == R.id.textViewTotAmount
+                        ? (Double) txtAmountTo.getTag()
+                        : (Double) txtAmount.getTag();
+                // convert value
+                Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
+                // take original amount converted
+                originalAmount = id == R.id.textViewTotAmount
+                        ? (Double) txtAmount.getTag()
+                        : (Double) txtAmountTo.getTag();
+                if (originalAmount == null)
+                    originalAmount = 0d;
+                // check if two values is equals, and then convert value
+                if (originalAmount == 0) {
+                    DecimalFormat decimalFormat = new DecimalFormat("0.00");
+                    if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
+                        amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+                        formatAmount(id == R.id.textViewTotAmount
+                                        ? txtAmount : txtAmountTo,
+                                amountExchange,
+                                this.getCurrencyIdFromAccountId(id == R.id.textViewTotAmount
+                                        ? this.accountId
+                                        : this.toAccountId));
                     }
+                }
 
-                } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler(mContext, mContext);
-                    handler.handle(e, "returning from number input");
-                }
+            } catch (Exception e) {
+                ExceptionHandler handler = new ExceptionHandler(mContext, mContext);
+                handler.handle(e, "returning from number input");
             }
-            if (this.txtAmountTo.equals(view)) {
-                if (isTransfer) {
-                    accountId = this.toAccountId;
-                } else {
-                    accountId = this.accountId;
-                }
+        }
+        if (this.txtAmountTo.equals(view)) {
+            if (isTransfer) {
+                accountId = this.toAccountId;
             } else {
                 accountId = this.accountId;
             }
-            formatAmount(((TextView) view), amount, getCurrencyIdFromAccountId(accountId));
+        } else {
+            accountId = this.accountId;
         }
+        formatAmount(((TextView) view), amount, getCurrencyIdFromAccountId(accountId));
     }
 
     public void onSplitSet() {
@@ -709,15 +710,6 @@ public class EditTransactionCommonFunctions {
         }
 
         // Amount is required.
-//        if ((Double) txtAmountTo.getTag() == 0) {
-//            if ((Double) txtAmount.getTag() == 0) {
-//                Core.alertDialog(mContext, R.string.error_totamount_empty);
-//                return false;
-//            } else {
-//                txtAmountTo.setTag(txtAmount.getTag());
-//            }
-//        }
-
         // Amounts must be positive. Sign is determined by transaction type.
         if ((Double) txtAmount.getTag() <= 0) {
             Core.alertDialog(mContext, R.string.error_amount_must_be_positive);
