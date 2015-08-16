@@ -1,41 +1,42 @@
 -- Account Transactions list
-SELECT 	CANS.TransID AS ID,
-	CANS.TransCode AS TransactionType,
-	date( CANS.TransDate ) AS Date,
+SELECT 	TX.TransID AS ID,
+	TX.TransCode AS TransactionType,
+	date( TX.TransDate ) AS Date,
 	d.userdate AS UserDate,
 	CAT.CategName as Category,
 	SUBCAT.SUBCategName as Subcategory,
 	CASE
-	    WHEN CANS.TransAmount = 0 THEN ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.ToTransAmount
-	    ELSE ( CASE CANS.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  CANS.TransAmount
+	    WHEN TX.TransAmount = 0
+	    THEN ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  TX.ToTransAmount
+	    ELSE ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  TX.TransAmount
 	END as Amount,
 	ifnull(cfTo.currency_symbol, cf.currency_symbol) AS currency,
-	CANS.Status AS Status,
-	CANS.NOTES AS Notes,
+	TX.Status AS Status,
+	TX.NOTES AS Notes,
 	ifnull(cfTo.BaseConvRate, cf.BaseConvRate) AS BaseConvRate,
 	ifnull(ToAcc.CurrencyID, FROMACC.CurrencyID) as CurrencyID,
 	ifnull(ToAcc.AccountName, FROMACC.AccountName) as AccountName,
 	ifnull(ToAcc.AccountID, FROMACC.AccountID) as AccountID,
 	FromAcc.AccountName as FromAccountName,
 	FromAcc.AccountId as FromAccountId,
-	CANS.TransAmount * -1 as FromAmount,
+	TX.TransAmount * -1 as FromAmount,
 	FromAcc.CurrencyId as FromCurrencyId,
-	( CASE ifnull( CANS.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS Splitted,
+	( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS Splitted,
 	ifnull( CAT.CategId, -1 ) AS CategID,
 	ifnull( SUBCAT.SubCategID, -1 ) AS SubCategID,
 	ifnull( PAYEE.PayeeName, '') AS Payee,
 	ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
-	CANS.TRANSACTIONNUMBER AS TransactionNumber,
+	TX.TRANSACTIONNUMBER AS TransactionNumber,
 	d.year AS Year,
 	d.month AS Month,
 	d.day AS Day,
 	d.finyear AS FinYear
-FROM 	CHECKINGACCOUNT_V1 CANS 
-	LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = CANS.CATEGID
-	LEFT JOIN SUBCATEGORY_V1 SUBCAT ON SUBCAT.SUBCATEGID = CANS.SUBCATEGID AND SUBCAT.CATEGID = CANS.CATEGID
-	LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = CANS.PAYEEID 
-	LEFT JOIN ACCOUNTLIST_V1 FROMACC ON FROMACC.ACCOUNTID = CANS.ACCOUNTID
-	LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = CANS.TOACCOUNTID
+FROM CHECKINGACCOUNT_V1 TX 
+	LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = TX.CATEGID
+	LEFT JOIN SUBCATEGORY_V1 SUBCAT ON SUBCAT.SUBCATEGID = TX.SUBCATEGID AND SUBCAT.CATEGID = TX.CATEGID
+	LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID 
+	LEFT JOIN ACCOUNTLIST_V1 FROMACC ON FROMACC.ACCOUNTID = TX.ACCOUNTID
+	LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = TX.TOACCOUNTID
 	LEFT JOIN currencyformats_v1 cf ON cf.currencyid = FROMACC.currencyid
 	LEFT JOIN currencyformats_v1 cfTo ON cfTo.currencyid = TOACC.currencyid
 	LEFT JOIN  ( 
@@ -49,4 +50,4 @@ FROM 	CHECKINGACCOUNT_V1 CANS
 	    FROM CHECKINGACCOUNT_V1 LEFT JOIN infotable_v1 df ON df.infoname = 'DATEFORMAT'
 		LEFT JOIN infotable_v1 fm ON fm.infoname = 'FINANCIAL_YEAR_START_MONTH'
 		LEFT JOIN infotable_v1 fd ON fd.infoname = 'FINANCIAL_YEAR_START_DAY'
-    ) d ON d.id = CANS.TRANSID
+    ) d ON d.id = TX.TRANSID

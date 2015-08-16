@@ -291,12 +291,12 @@
                 </LinearLayout>
 
                 <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewHeaderTotalAmount"
+                    android:id="@+id/textViewHeaderAmountTo"
                     style="@style/Money.TextView.Header.Caption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="@string/total_amount"/>
+                    android:text="@string/amount_to"/>
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewTotAmount"

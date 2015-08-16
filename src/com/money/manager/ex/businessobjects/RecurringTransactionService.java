@@ -219,7 +219,7 @@ public class RecurringTransactionService {
 
         RecurringTransactionRepository repo = new RecurringTransactionRepository(mContext);
         mRecurringTransaction = repo.load(this.RecurringTransactionId);
-        
+
         return (mRecurringTransaction == null);
     }
 }

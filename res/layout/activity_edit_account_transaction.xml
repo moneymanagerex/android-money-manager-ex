@@ -236,13 +236,13 @@
 
                 <!-- Amount To -->
                 <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewHeaderTotalAmount"
+                    android:id="@+id/textViewHeaderAmountTo"
                     style="@style/Money.TextView.Header.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@string/total_amount"
+                    android:text="@string/amount_to"
                     android:textStyle="bold"/>
 
                 <com.money.manager.ex.view.RobotoTextView

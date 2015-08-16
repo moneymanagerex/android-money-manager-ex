@@ -292,11 +292,11 @@ public class RecurringTransactionActivity
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
 
         // total amount
-        core.formatAmountTextView(mCommonFunctions.txtTotAmount, mTotAmount,
+        core.formatAmountTextView(mCommonFunctions.txtAmountTo, mTotAmount,
                 getCurrencyIdFromAccountId(!isTransfer
                         ? mCommonFunctions.accountId
                         : mCommonFunctions.toAccountId));
-        mCommonFunctions.txtTotAmount.setOnClickListener(onClickAmount);
+        mCommonFunctions.txtAmountTo.setOnClickListener(onClickAmount);
 
         // amount
         core.formatAmountTextView(mCommonFunctions.txtAmount, mAmount,
@@ -418,7 +418,7 @@ public class RecurringTransactionActivity
             }
         });
         // refresh user interface
-        mCommonFunctions.refreshAfterTransactionCodeChange();
+        mCommonFunctions.onTransactionTypeChange();
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
         refreshTimesRepeated();
@@ -461,11 +461,11 @@ public class RecurringTransactionActivity
                             totAmount += mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount();
                         }
                         Core core = new Core(getBaseContext());
-//                        formatAmount(txtTotAmount, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? accountId : toAccountId);
+//                        formatAmount(txtAmountTo, totAmount, !Constants.TRANSACTION_TYPE_TRANSFER.equals(mTransCode) ? accountId : toAccountId);
                         int accountId = !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
                                 ? mCommonFunctions.accountId
                                 : mCommonFunctions.toAccountId;
-                        core.formatAmountTextView(mCommonFunctions.txtTotAmount, totAmount, getCurrencyIdFromAccountId(accountId));
+                        core.formatAmountTextView(mCommonFunctions.txtAmountTo, totAmount, getCurrencyIdFromAccountId(accountId));
                     }
                     // deleted item
                     if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
@@ -487,7 +487,7 @@ public class RecurringTransactionActivity
         outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mStatus);
-        outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
+        outState.putDouble(KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
         outState.putDouble(KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
@@ -536,14 +536,14 @@ public class RecurringTransactionActivity
                             ? mCommonFunctions.toAccountId : mCommonFunctions.accountId)).getCurrencyId();
                     // take a original values
                     originalAmount = id == R.id.textViewTotAmount
-                            ? (Double) mCommonFunctions.txtTotAmount.getTag()
+                            ? (Double) mCommonFunctions.txtAmountTo.getTag()
                             : (Double) mCommonFunctions.txtAmount.getTag();
                     // convert value
                     Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
                     // take original amount converted
                     originalAmount = id == R.id.textViewTotAmount
                             ? (Double) mCommonFunctions.txtAmount.getTag()
-                            : (Double) mCommonFunctions.txtTotAmount.getTag();
+                            : (Double) mCommonFunctions.txtAmountTo.getTag();
                     if (originalAmount == null)
                         originalAmount = 0d;
                     // check if two values is equals, and then convert value
@@ -552,7 +552,7 @@ public class RecurringTransactionActivity
                         if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
                             amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
                             core.formatAmountTextView(id == R.id.textViewTotAmount
-                                            ? mCommonFunctions.txtAmount : mCommonFunctions.txtTotAmount,
+                                            ? mCommonFunctions.txtAmount : mCommonFunctions.txtAmountTo,
                                     amountExchange, getCurrencyIdFromAccountId(id == R.id.textViewTotAmount
                                             ? mCommonFunctions.accountId : mCommonFunctions.toAccountId));
                         }
@@ -562,7 +562,7 @@ public class RecurringTransactionActivity
                     Log.e(LOGCAT, e.getMessage());
                 }
             }
-            if (mCommonFunctions.txtTotAmount.equals(view)) {
+            if (mCommonFunctions.txtAmountTo.equals(view)) {
                 if (isTransfer) {
                     accountId = mCommonFunctions.toAccountId;
                 } else {
@@ -752,13 +752,13 @@ public class RecurringTransactionActivity
             Core.alertDialog(this, R.string.error_split_transaction_empty);
             return false;
         }
-        if (TextUtils.isEmpty(mCommonFunctions.txtTotAmount.getText())) {
+        if (TextUtils.isEmpty(mCommonFunctions.txtAmountTo.getText())) {
             if (TextUtils.isEmpty(mCommonFunctions.txtAmount.getText())) {
                 Core.alertDialog(this, R.string.error_totamount_empty);
 
                 return false;
             } else {
-                mCommonFunctions.txtTotAmount.setText(mCommonFunctions.txtAmount.getText());
+                mCommonFunctions.txtAmountTo.setText(mCommonFunctions.txtAmount.getText());
             }
         }
         if (TextUtils.isEmpty(txtNextOccurrence.getText().toString())) {
@@ -795,7 +795,7 @@ public class RecurringTransactionActivity
         }
         values.put(TableBillsDeposits.TRANSCODE, mCommonFunctions.getTransactionType());
         if (TextUtils.isEmpty(mCommonFunctions.txtAmount.getText().toString()) || (!(isTransfer))) {
-            values.put(TableBillsDeposits.TRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
+            values.put(TableBillsDeposits.TRANSAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
         } else {
             values.put(TableBillsDeposits.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         }
@@ -805,7 +805,7 @@ public class RecurringTransactionActivity
         values.put(TableBillsDeposits.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
                 ? mCommonFunctions.subCategoryId : Constants.NOT_SET);
         values.put(TableBillsDeposits.FOLLOWUPID, Constants.NOT_SET);
-        values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
+        values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
         values.put(TableBillsDeposits.NOTES, edtNotes.getText().toString());
         values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)

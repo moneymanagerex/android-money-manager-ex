@@ -287,19 +287,19 @@ public class EditTransactionActivity
             @Override
             public void onClick(View v) {
                 Integer currencyId = null;
-                if (mCommonFunctions.txtTotAmount.equals(v)) {
+                if (mCommonFunctions.txtAmountTo.equals(v)) {
                     if (mCommonFunctions.spinAccount.getSelectedItemPosition() >= 0 &&
                             mCommonFunctions.spinAccount.getSelectedItemPosition() < mCommonFunctions.AccountList.size()) {
                         if (mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)) {
-                            currencyId = mCommonFunctions.AccountList.get(mCommonFunctions.spinToAccount.getSelectedItemPosition()).getCurrencyId();
+                            currencyId = mCommonFunctions.AccountList.get(mCommonFunctions.spinAccountTo.getSelectedItemPosition()).getCurrencyId();
                         } else {
                             currencyId = mCommonFunctions.AccountList.get(mCommonFunctions.spinAccount.getSelectedItemPosition()).getCurrencyId();
                         }
                     }
                 } else {
                     // Amount.
-                    if (mCommonFunctions.spinToAccount.getSelectedItemPosition() >= 0 &&
-                            mCommonFunctions.spinToAccount.getSelectedItemPosition() < mCommonFunctions.AccountList.size()) {
+                    if (mCommonFunctions.spinAccountTo.getSelectedItemPosition() >= 0 &&
+                            mCommonFunctions.spinAccountTo.getSelectedItemPosition() < mCommonFunctions.AccountList.size()) {
                         currencyId = mCommonFunctions.AccountList.get(mCommonFunctions.spinAccount.getSelectedItemPosition()).getCurrencyId();
                     }
                 }
@@ -318,11 +318,11 @@ public class EditTransactionActivity
 
         // total amount
 
-        mCommonFunctions.formatAmount(mCommonFunctions.txtTotAmount, mTotAmount,
+        mCommonFunctions.formatAmount(mCommonFunctions.txtAmountTo, mTotAmount,
                 !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
                         ? mCommonFunctions.accountId : mCommonFunctions.toAccountId);
 
-        mCommonFunctions.txtTotAmount.setOnClickListener(onClickAmount);
+        mCommonFunctions.txtAmountTo.setOnClickListener(onClickAmount);
 
         // Transaction number
 
@@ -368,7 +368,7 @@ public class EditTransactionActivity
         }
 
         // refresh user interface
-        mCommonFunctions.refreshAfterTransactionCodeChange();
+        mCommonFunctions.onTransactionTypeChange();
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
     }
@@ -417,7 +417,7 @@ public class EditTransactionActivity
                         for (int i = 0; i < mCommonFunctions.mSplitTransactions.size(); i++) {
                             totAmount += mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount();
                         }
-                        mCommonFunctions.formatAmount(mCommonFunctions.txtTotAmount, totAmount,
+                        mCommonFunctions.formatAmount(mCommonFunctions.txtAmountTo, totAmount,
                                 !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
                                         ? mCommonFunctions.accountId
                                         : mCommonFunctions.toAccountId);
@@ -448,7 +448,7 @@ public class EditTransactionActivity
 
         mCommonFunctions.transactionType = TransactionTypes.Transfer;
 
-        mCommonFunctions.refreshAfterTransactionCodeChange();
+        mCommonFunctions.onTransactionTypeChange();
     }
 
     /**
@@ -472,7 +472,7 @@ public class EditTransactionActivity
                 new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(txtSelectDate.getTag()));
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mStatus);
-        outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
+        outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
@@ -512,14 +512,14 @@ public class EditTransactionActivity
                                     mCommonFunctions.accountId)).getCurrencyId();
                     // take a original values
                     originalAmount = view.getId() == R.id.textViewTotAmount
-                            ? (Double) mCommonFunctions.txtTotAmount.getTag()
+                            ? (Double) mCommonFunctions.txtAmountTo.getTag()
                             : (Double) mCommonFunctions.txtAmount.getTag();
                     // convert value
                     Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
                     // take original amount converted
                     originalAmount = view.getId() == R.id.textViewTotAmount
                             ? (Double) mCommonFunctions.txtAmount.getTag()
-                            : (Double) mCommonFunctions.txtTotAmount.getTag();
+                            : (Double) mCommonFunctions.txtAmountTo.getTag();
                     if (originalAmount == null)
                         originalAmount = 0d;
                     // check if two values is equals, and then convert value
@@ -528,7 +528,7 @@ public class EditTransactionActivity
                         if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
                             amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
                             mCommonFunctions.formatAmount(view.getId() == R.id.textViewTotAmount
-                                    ? mCommonFunctions.txtAmount : mCommonFunctions.txtTotAmount,
+                                    ? mCommonFunctions.txtAmount : mCommonFunctions.txtAmountTo,
                                     amountExchange,
                                     view.getId() == R.id.textViewTotAmount
                                             ? mCommonFunctions.accountId
@@ -540,7 +540,7 @@ public class EditTransactionActivity
                     Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
                 }
             }
-            if (mCommonFunctions.txtTotAmount.equals(view)) {
+            if (mCommonFunctions.txtAmountTo.equals(view)) {
                 if (mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)) {
                     accountId = mCommonFunctions.toAccountId;
                 } else {
@@ -587,7 +587,7 @@ public class EditTransactionActivity
 
     @Override
     public boolean onActionDoneClick() {
-        if (updateData()) {
+        if (saveData()) {
             // set result ok and finish activity
             setResult(RESULT_OK);
             finish();
@@ -1041,12 +1041,12 @@ public class EditTransactionActivity
             return false;
         }
         // Total amount.
-        if ((Double) mCommonFunctions.txtTotAmount.getTag() == 0) {
+        if ((Double) mCommonFunctions.txtAmountTo.getTag() == 0) {
             if ((Double) mCommonFunctions.txtAmount.getTag() == 0) {
                 Core.alertDialog(this, R.string.error_totamount_empty);
                 return false;
             } else {
-                mCommonFunctions.txtTotAmount.setTag(mCommonFunctions.txtAmount.getTag());
+                mCommonFunctions.txtAmountTo.setTag(mCommonFunctions.txtAmount.getTag());
             }
         }
         return true;
@@ -1057,40 +1057,15 @@ public class EditTransactionActivity
      *
      * @return true if update data successful
      */
-    public boolean updateData() {
+    public boolean saveData() {
         if (!validateData()) return false;
-
-        // content value for insert or update data
-        ContentValues values = new ContentValues();
 
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
 
-        values.put(TableCheckingAccount.ACCOUNTID, mCommonFunctions.accountId);
-        if (isTransfer) {
-            values.put(TableCheckingAccount.TOACCOUNTID, mCommonFunctions.toAccountId);
-            values.put(TableCheckingAccount.PAYEEID, -1);
-        } else {
-            values.put(TableCheckingAccount.PAYEEID, mCommonFunctions.payeeId);
-        }
-        values.put(TableCheckingAccount.TRANSCODE, mCommonFunctions.getTransactionType());
-        if (TextUtils.isEmpty(mCommonFunctions.txtAmount.getText().toString()) || (!isTransfer)) {
-            values.put(TableCheckingAccount.TRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
-        } else {
-            values.put(TableCheckingAccount.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
-        }
-        values.put(TableCheckingAccount.STATUS, mStatus);
-        values.put(TableCheckingAccount.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
-                ? mCommonFunctions.categoryId : Constants.NOT_SET);
-        values.put(TableCheckingAccount.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
-                ? mCommonFunctions.subCategoryId : Constants.NOT_SET);
-        String transactionDate = DateUtils.getSQLiteStringDate(this, (Date) txtSelectDate.getTag());
-        values.put(TableCheckingAccount.TRANSDATE, transactionDate);
-        values.put(TableCheckingAccount.FOLLOWUPID, Constants.NOT_SET);
-        values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) mCommonFunctions.txtTotAmount.getTag());
-        values.put(TableCheckingAccount.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
-        values.put(TableCheckingAccount.NOTES, edtNotes.getText().toString());
+        // content value for insert or update data
+        ContentValues values = getContentValues(isTransfer);
 
-        // check whether the application should do the update or insert
+        // Insert or update?
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction) || Constants.INTENT_ACTION_PASTE.equals(mIntentAction)) {
             // insert
             Uri insert = getContentResolver().insert(mCheckingAccount.getUri(), values);
@@ -1100,12 +1075,13 @@ public class EditTransactionActivity
                 return false;
             }
             long id = ContentUris.parseId(insert);
-//            mTransId = Integer.parseInt(insert.getPathSegments().get(1));
             mTransId = (int) id;
         } else {
             // update
-            if (getContentResolver().update(mCheckingAccount.getUri(), values,
-                    TableCheckingAccount.TRANSID + "=?", new String[]{Integer.toString(mTransId)}) <= 0) {
+            if (getContentResolver().update(mCheckingAccount.getUri(),
+                    values,
+                    TableCheckingAccount.TRANSID + "=?",
+                    new String[]{Integer.toString(mTransId)}) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Update transaction failed!");
                 return false;
@@ -1197,6 +1173,7 @@ public class EditTransactionActivity
             values.clear();
 
             // handle transactions that do not repeat any more.
+            String transactionDate = values.getAsString(TableCheckingAccount.TRANSDATE);
             RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
             if(mNextOccurrence.equals(transactionDate)) {
                 // The next occurrence date is the same as the current. Expired.
@@ -1207,5 +1184,54 @@ public class EditTransactionActivity
             }
         }
         return true;
+    }
+
+    private ContentValues getContentValues(boolean isTransfer) {
+
+        ContentValues values = new ContentValues();
+
+        // Accounts & Payee
+        values.put(TableCheckingAccount.ACCOUNTID, mCommonFunctions.accountId);
+        if (isTransfer) {
+            values.put(TableCheckingAccount.TOACCOUNTID, mCommonFunctions.toAccountId);
+            values.put(TableCheckingAccount.PAYEEID, Constants.NOT_SET);
+        } else {
+            values.put(TableCheckingAccount.TOACCOUNTID, Constants.NOT_SET);
+            values.put(TableCheckingAccount.PAYEEID, mCommonFunctions.payeeId);
+        }
+
+        // Transaction Type
+        values.put(TableCheckingAccount.TRANSCODE, mCommonFunctions.getTransactionType());
+
+        // Amount
+        Double amount;
+        if (TextUtils.isEmpty(mCommonFunctions.txtAmount.getText().toString()) || (!isTransfer)) {
+            amount = (Double) mCommonFunctions.txtAmountTo.getTag();
+        } else {
+            amount = (Double) mCommonFunctions.txtAmount.getTag();
+        }
+        values.put(TableCheckingAccount.TRANSAMOUNT, amount);
+
+        // Amount To
+        values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
+
+        // Status
+        values.put(TableCheckingAccount.STATUS, mStatus);
+
+        // Category and subcategory
+        values.put(TableCheckingAccount.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
+                ? mCommonFunctions.categoryId : Constants.NOT_SET);
+        values.put(TableCheckingAccount.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
+                ? mCommonFunctions.subCategoryId : Constants.NOT_SET);
+
+        // Date
+        String transactionDate = DateUtils.getSQLiteStringDate(this, (Date) txtSelectDate.getTag());
+        values.put(TableCheckingAccount.TRANSDATE, transactionDate);
+
+        values.put(TableCheckingAccount.FOLLOWUPID, Constants.NOT_SET);
+        values.put(TableCheckingAccount.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
+        values.put(TableCheckingAccount.NOTES, edtNotes.getText().toString());
+
+        return values;
     }
 }
