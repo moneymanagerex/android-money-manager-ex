@@ -47,6 +47,7 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.businessobjects.RecurringTransactionService;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.RecurringTransactionRepository;
@@ -434,7 +435,8 @@ public class RecurringTransactionActivity
                         int accountId = !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
                                 ? mCommonFunctions.accountId
                                 : mCommonFunctions.toAccountId;
-                        core.formatAmountTextView(mCommonFunctions.txtAmountTo, totAmount, getCurrencyIdFromAccountId(accountId));
+                        core.formatAmountTextView(mCommonFunctions.txtAmountTo, totAmount,
+                                mCommonFunctions.getCurrencyIdFromAccountId(accountId));
                     }
                     // deleted item
                     if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
@@ -489,59 +491,7 @@ public class RecurringTransactionActivity
 
     @Override
     public void onFinishedInputAmountDialog(int id, Double amount) {
-        Core core = new Core(getApplicationContext());
-
-        View view = findViewById(id);
-        int accountId;
-        if (view != null && view instanceof TextView) {
-            boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
-            CurrencyService currencyService = new CurrencyService(getApplicationContext());
-            if (isTransfer) {
-                Double originalAmount;
-                try {
-                    Integer toCurrencyId = mCommonFunctions.AccountList.get(mCommonFunctions.mAccountIdList.indexOf(id == R.id.textViewTotAmount
-                            ? mCommonFunctions.accountId : mCommonFunctions.toAccountId)).getCurrencyId();
-                    Integer fromCurrencyId = mCommonFunctions.AccountList.get(mCommonFunctions.mAccountIdList.indexOf(id == R.id.textViewTotAmount
-                            ? mCommonFunctions.toAccountId : mCommonFunctions.accountId)).getCurrencyId();
-                    // take a original values
-                    originalAmount = id == R.id.textViewTotAmount
-                            ? (Double) mCommonFunctions.txtAmountTo.getTag()
-                            : (Double) mCommonFunctions.txtAmount.getTag();
-                    // convert value
-                    Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
-                    // take original amount converted
-                    originalAmount = id == R.id.textViewTotAmount
-                            ? (Double) mCommonFunctions.txtAmount.getTag()
-                            : (Double) mCommonFunctions.txtAmountTo.getTag();
-                    if (originalAmount == null)
-                        originalAmount = 0d;
-                    // check if two values is equals, and then convert value
-                    DecimalFormat decimalFormat = new DecimalFormat("0.00");
-                    if (originalAmount == 0) {
-                        if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
-                            amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
-                            core.formatAmountTextView(id == R.id.textViewTotAmount
-                                            ? mCommonFunctions.txtAmount : mCommonFunctions.txtAmountTo,
-                                    amountExchange, getCurrencyIdFromAccountId(id == R.id.textViewTotAmount
-                                            ? mCommonFunctions.accountId : mCommonFunctions.toAccountId));
-                        }
-                    }
-
-                } catch (Exception e) {
-                    Log.e(LOGCAT, e.getMessage());
-                }
-            }
-            if (mCommonFunctions.txtAmountTo.equals(view)) {
-                if (isTransfer) {
-                    accountId = mCommonFunctions.toAccountId;
-                } else {
-                    accountId = mCommonFunctions.accountId;
-                }
-            } else {
-                accountId = mCommonFunctions.accountId;
-            }
-            core.formatAmountTextView((TextView) view, amount, getCurrencyIdFromAccountId(accountId));
-        }
+        mCommonFunctions.onFinishedInputAmountDialog(id, amount);
     }
 
     @Override
@@ -583,14 +533,6 @@ public class RecurringTransactionActivity
         }
 
         return super.onActionDoneClick();
-    }
-
-    public Integer getCurrencyIdFromAccountId(int accountId) {
-        try {
-            return mCommonFunctions.AccountList.get(mCommonFunctions.mAccountIdList.indexOf(accountId)).getCurrencyId();
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return null;
-        }
     }
 
     /**

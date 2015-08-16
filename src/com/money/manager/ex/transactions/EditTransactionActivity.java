@@ -450,64 +450,7 @@ public class EditTransactionActivity
 
     @Override
     public void onFinishedInputAmountDialog(int id, Double amount) {
-        View view = findViewById(id);
-        int accountId;
-        if (view != null && view instanceof TextView) {
-            CurrencyService currencyService = new CurrencyService(getApplicationContext());
-            if (mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)) {
-                Double originalAmount;
-                try {
-                    /*Integer toCurrencyId = mAccountList.get(mAccountIdList.indexOf(accountId)).getCurrencyId();
-                    Integer fromCurrencyId = mAccountList.get(mAccountIdList.indexOf(toAccountId)).getCurrencyId();*/
-                    Integer toCurrencyId = mCommonFunctions.AccountList.get(mCommonFunctions.mAccountIdList
-                            .indexOf(view.getId() == R.id.textViewTotAmount
-                                    ? mCommonFunctions.accountId
-                                    : mCommonFunctions.toAccountId)).getCurrencyId();
-                    Integer fromCurrencyId = mCommonFunctions.AccountList.get(mCommonFunctions.mAccountIdList
-                            .indexOf(view.getId() == R.id.textViewTotAmount
-                                    ? mCommonFunctions.toAccountId :
-                                    mCommonFunctions.accountId)).getCurrencyId();
-                    // take a original values
-                    originalAmount = view.getId() == R.id.textViewTotAmount
-                            ? (Double) mCommonFunctions.txtAmountTo.getTag()
-                            : (Double) mCommonFunctions.txtAmount.getTag();
-                    // convert value
-                    Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
-                    // take original amount converted
-                    originalAmount = view.getId() == R.id.textViewTotAmount
-                            ? (Double) mCommonFunctions.txtAmount.getTag()
-                            : (Double) mCommonFunctions.txtAmountTo.getTag();
-                    if (originalAmount == null)
-                        originalAmount = 0d;
-                    // check if two values is equals, and then convert value
-                    if (originalAmount == 0) {
-                        DecimalFormat decimalFormat = new DecimalFormat("0.00");
-                        if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
-                            amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
-                            mCommonFunctions.formatAmount(view.getId() == R.id.textViewTotAmount
-                                    ? mCommonFunctions.txtAmount : mCommonFunctions.txtAmountTo,
-                                    amountExchange,
-                                    view.getId() == R.id.textViewTotAmount
-                                            ? mCommonFunctions.accountId
-                                            : mCommonFunctions.toAccountId);
-                        }
-                    }
-
-                } catch (Exception e) {
-                    Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
-                }
-            }
-            if (mCommonFunctions.txtAmountTo.equals(view)) {
-                if (mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)) {
-                    accountId = mCommonFunctions.toAccountId;
-                } else {
-                    accountId = mCommonFunctions.accountId;
-                }
-            } else {
-                accountId = mCommonFunctions.accountId;
-            }
-            mCommonFunctions.formatAmount(((TextView) view), amount, accountId);
-        }
+        mCommonFunctions.onFinishedInputAmountDialog(id, amount);
     }
 
     @Override

@@ -53,6 +53,7 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.AppSettings;
 import com.shamanland.fonticon.FontIconButton;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -163,6 +164,14 @@ public class EditTransactionCommonFunctions {
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, mContext);
             handler.handle(e, "formatting extended date");
+        }
+    }
+
+    public Integer getCurrencyIdFromAccountId(int accountId) {
+        try {
+            return AccountList.get(mAccountIdList.indexOf(accountId)).getCurrencyId();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
         }
     }
 
@@ -362,6 +371,69 @@ public class EditTransactionCommonFunctions {
                 ? TransactionTypes.Withdrawal
                 : transactionType;
         selectTransactionType(current);
+    }
+
+    public void onFinishedInputAmountDialog(int id, Double amount) {
+        Activity parent = (Activity) mContext;
+        View view = parent.findViewById(id);
+        int accountId;
+        if (view != null && view instanceof TextView) {
+            boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
+            CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
+
+            if (isTransfer) {
+                Double originalAmount;
+                try {
+                    Integer toCurrencyId = AccountList.get(mAccountIdList
+                            .indexOf(id == R.id.textViewTotAmount
+                                    ? this.accountId
+                                    : this.toAccountId)).getCurrencyId();
+                    Integer fromCurrencyId = AccountList.get(mAccountIdList
+                            .indexOf(id == R.id.textViewTotAmount
+                                    ? this.toAccountId
+                                    : this.accountId)).getCurrencyId();
+                    // take a original values
+                    originalAmount = id == R.id.textViewTotAmount
+                            ? (Double) txtAmountTo.getTag()
+                            : (Double) txtAmount.getTag();
+                    // convert value
+                    Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
+                    // take original amount converted
+                    originalAmount = id == R.id.textViewTotAmount
+                            ? (Double) txtAmount.getTag()
+                            : (Double) txtAmountTo.getTag();
+                    if (originalAmount == null)
+                        originalAmount = 0d;
+                    // check if two values is equals, and then convert value
+                    if (originalAmount == 0) {
+                        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+                        if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
+                            amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+                            formatAmount(id == R.id.textViewTotAmount
+                                            ? txtAmount : txtAmountTo,
+                                    amountExchange,
+                                    this.getCurrencyIdFromAccountId(id == R.id.textViewTotAmount
+                                            ? this.accountId
+                                            : this.toAccountId));
+                        }
+                    }
+
+                } catch (Exception e) {
+                    ExceptionHandler handler = new ExceptionHandler(mContext, mContext);
+                    handler.handle(e, "returning from number input");
+                }
+            }
+            if (this.txtAmountTo.equals(view)) {
+                if (isTransfer) {
+                    accountId = this.toAccountId;
+                } else {
+                    accountId = this.accountId;
+                }
+            } else {
+                accountId = this.accountId;
+            }
+            formatAmount(((TextView) view), amount, getCurrencyIdFromAccountId(accountId));
+        }
     }
 
     public void onSplitSet() {
