@@ -39,6 +39,8 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.IInputAmountDialogListener;
+import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
@@ -75,6 +77,10 @@ public class EditTransactionCommonFunctions {
     public int categoryId = Constants.NOT_SET;
     public int subCategoryId = Constants.NOT_SET;
 
+    // amount
+    public double mAmountTo = 0, mAmount = 0;
+
+    // Controls
     public List<TableAccountList> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
@@ -85,7 +91,9 @@ public class EditTransactionCommonFunctions {
     public ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
     public ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;
 
+    public ViewGroup tableRowPayee, tableRowAmountTo;
     public Spinner spinAccount, spinAccountTo, spinStatus, spinTransCode;
+    public TextView accountFromLabel, txtToAccount;
     public TextView txtSelectPayee, txtAmountTo, txtAmount, txtSelectCategory;
     public TextView amountHeaderTextView, amountToHeaderTextView;
     public CheckBox chbSplitTransaction;
@@ -98,22 +106,27 @@ public class EditTransactionCommonFunctions {
         Activity parent = (Activity) mContext;
 
         spinStatus = (Spinner) parent.findViewById(R.id.spinnerStatus);
-//        spinTransCode = (Spinner) parent.findViewById(R.id.spinnerTransCode);
 
         // Payee
         txtSelectPayee = (TextView) parent.findViewById(R.id.textViewPayee);
         removePayeeButton = (FontIconButton) parent.findViewById(R.id.removePayeeButton);
+        tableRowPayee = (ViewGroup) parent.findViewById(R.id.tableRowPayee);
 
         chbSplitTransaction = (CheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
         txtSelectCategory = (TextView) parent.findViewById(R.id.textViewCategory);
+
+        // Account
         spinAccount = (Spinner) parent.findViewById(R.id.spinnerAccount);
         spinAccountTo = (Spinner) parent.findViewById(R.id.spinnerToAccount);
+        accountFromLabel = (TextView) parent.findViewById(R.id.accountFromLabel);
+        txtToAccount = (TextView) parent.findViewById(R.id.textViewToAccount);
 
         amountHeaderTextView = (TextView) parent.findViewById(R.id.textViewHeaderAmount);
         amountToHeaderTextView = (TextView) parent.findViewById(R.id.textViewHeaderAmountTo);
 
         txtAmount = (TextView) parent.findViewById(R.id.textViewAmount);
         txtAmountTo = (TextView) parent.findViewById(R.id.textViewTotAmount);
+        tableRowAmountTo = (ViewGroup) parent.findViewById(R.id.tableRowAmountTo);
 
         // Transaction Type
         withdrawalButton = (RelativeLayout) parent.findViewById(R.id.withdrawalButton);
@@ -158,7 +171,6 @@ public class EditTransactionCommonFunctions {
             return null;
         }
 
-        // mTransType
         return transactionType.name();
     }
 
@@ -250,6 +262,48 @@ public class EditTransactionCommonFunctions {
         });
     }
 
+    public void initAmountSelectors() {
+        View.OnClickListener onClickAmount = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Get currency id from the account for which the amount has been modified.
+                Integer currencyId = null;
+                if (v.equals(txtAmountTo)) {
+                    if (spinAccount.getSelectedItemPosition() >= 0 &&
+                            spinAccount.getSelectedItemPosition() < AccountList.size()) {
+                        currencyId = AccountList.get(spinAccountTo.getSelectedItemPosition()).getCurrencyId();
+                    }
+                } else {
+                    // Amount.
+                    if (spinAccountTo.getSelectedItemPosition() >= 0 &&
+                            spinAccountTo.getSelectedItemPosition() < AccountList.size()) {
+                        currencyId = AccountList.get(spinAccount.getSelectedItemPosition()).getCurrencyId();
+                    }
+                }
+                double amount = (Double) v.getTag();
+                BaseFragmentActivity parent = (BaseFragmentActivity) mContext;
+                InputAmountDialog dialog = InputAmountDialog.getInstance((IInputAmountDialogListener) parent,
+                        v.getId(), amount, currencyId);
+                dialog.show(parent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
+            }
+        };
+
+        // amount
+        formatAmount(txtAmount, mAmount,
+                !transactionType.equals(TransactionTypes.Transfer)
+                        ? toAccountId
+                        : accountId);
+        txtAmount.setOnClickListener(onClickAmount);
+
+        // amount to
+        formatAmount(txtAmountTo, mAmountTo,
+                !transactionType.equals(TransactionTypes.Transfer)
+                        ? accountId
+                        : toAccountId);
+        txtAmountTo.setOnClickListener(onClickAmount);
+    }
+    
     public void initPayeeControls() {
         txtSelectPayee.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -383,21 +437,15 @@ public class EditTransactionCommonFunctions {
      * Reflect the transaction type change. Show and hide controls appropriately.
      */
     public void onTransactionTypeChange() {
-        Activity parent = (Activity) mContext;
-
-        TextView txtFromAccount = (TextView) parent.findViewById(R.id.textViewFromAccount);
-        TextView txtToAccount = (TextView) parent.findViewById(R.id.textViewToAccount);
-        ViewGroup tableRowPayee = (ViewGroup) parent.findViewById(R.id.tableRowPayee);
-        ViewGroup tableRowAmount = (ViewGroup) parent.findViewById(R.id.tableRowAmount);
-
         // hide and show
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
 
-        txtFromAccount.setText(isTransfer ? R.string.from_account : R.string.account);
+        accountFromLabel.setText(isTransfer ? R.string.from_account : R.string.account);
         txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
 
         tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
-        tableRowAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+//        tableRowAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        tableRowAmountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
 
         spinAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);

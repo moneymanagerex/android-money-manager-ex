@@ -70,7 +70,6 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
-import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
@@ -103,8 +102,6 @@ public class EditTransactionActivity
 
     // arrays to manage transcode and status
     public String[] mStatusItems, mStatusValues;
-    // amount
-    public double mTotAmount = 0, mAmount = 0;
     // notes
     public String mNotes = "";
     // transaction numbers
@@ -282,47 +279,7 @@ public class EditTransactionActivity
 
         // Amount and total amount
 
-        OnClickListener onClickAmount = new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Integer currencyId = null;
-                if (mCommonFunctions.txtAmountTo.equals(v)) {
-                    if (mCommonFunctions.spinAccount.getSelectedItemPosition() >= 0 &&
-                            mCommonFunctions.spinAccount.getSelectedItemPosition() < mCommonFunctions.AccountList.size()) {
-                        if (mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)) {
-                            currencyId = mCommonFunctions.AccountList.get(mCommonFunctions.spinAccountTo.getSelectedItemPosition()).getCurrencyId();
-                        } else {
-                            currencyId = mCommonFunctions.AccountList.get(mCommonFunctions.spinAccount.getSelectedItemPosition()).getCurrencyId();
-                        }
-                    }
-                } else {
-                    // Amount.
-                    if (mCommonFunctions.spinAccountTo.getSelectedItemPosition() >= 0 &&
-                            mCommonFunctions.spinAccountTo.getSelectedItemPosition() < mCommonFunctions.AccountList.size()) {
-                        currencyId = mCommonFunctions.AccountList.get(mCommonFunctions.spinAccount.getSelectedItemPosition()).getCurrencyId();
-                    }
-                }
-                double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(EditTransactionActivity.this,
-                        v.getId(), amount, currencyId);
-                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
-            }
-        };
-
-        // amount
-        mCommonFunctions.formatAmount(mCommonFunctions.txtAmount, mAmount,
-                !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
-                        ? mCommonFunctions.toAccountId : mCommonFunctions.accountId);
-        mCommonFunctions.txtAmount.setOnClickListener(onClickAmount);
-
-        // total amount
-
-        mCommonFunctions.formatAmount(mCommonFunctions.txtAmountTo, mTotAmount,
-                !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
-                        ? mCommonFunctions.accountId : mCommonFunctions.toAccountId);
-
-        mCommonFunctions.txtAmountTo.setOnClickListener(onClickAmount);
+        mCommonFunctions.initAmountSelectors();
 
         // Transaction number
 
@@ -724,8 +681,8 @@ public class EditTransactionActivity
         String transCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
-        mAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
-        mTotAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
+        mCommonFunctions.mAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+        mCommonFunctions.mAmountTo = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
         mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
         mCommonFunctions.categoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
         mCommonFunctions.subCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
@@ -779,8 +736,8 @@ public class EditTransactionActivity
         String transCode = tx.transactionCode;
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mStatus = tx.status;
-        mAmount = tx.amount;
-        mTotAmount = tx.totalAmount;
+        mCommonFunctions.mAmount = tx.amount;
+        mCommonFunctions.mAmountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
         mCommonFunctions.categoryId = tx.categoryId;
         mCommonFunctions.subCategoryId = tx.subCategoryId;
@@ -837,8 +794,8 @@ public class EditTransactionActivity
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mStatus = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
-        mAmount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT);
-        mTotAmount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT);
+        mCommonFunctions.mAmount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT);
+        mCommonFunctions.mAmountTo = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT);
         mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommonFunctions.categoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID);
@@ -973,7 +930,7 @@ public class EditTransactionActivity
         if (parameters.accountId > 0) {
             this.mCommonFunctions.accountId = parameters.accountId;
         }
-        this.mTotAmount = parameters.amount;
+        mCommonFunctions.mAmountTo = parameters.amount;
         // payee
         if (parameters.payeeId > 0) {
             this.mCommonFunctions.payeeId = parameters.payeeId;
@@ -1187,7 +1144,6 @@ public class EditTransactionActivity
     }
 
     private ContentValues getContentValues(boolean isTransfer) {
-
         ContentValues values = new ContentValues();
 
         // Accounts & Payee
@@ -1204,13 +1160,7 @@ public class EditTransactionActivity
         values.put(TableCheckingAccount.TRANSCODE, mCommonFunctions.getTransactionType());
 
         // Amount
-        Double amount;
-        if (TextUtils.isEmpty(mCommonFunctions.txtAmount.getText().toString()) || (!isTransfer)) {
-            amount = (Double) mCommonFunctions.txtAmountTo.getTag();
-        } else {
-            amount = (Double) mCommonFunctions.txtAmount.getTag();
-        }
-        values.put(TableCheckingAccount.TRANSAMOUNT, amount);
+        values.put(TableCheckingAccount.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
 
         // Amount To
         values.put(TableCheckingAccount.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
