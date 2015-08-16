@@ -284,7 +284,7 @@ public class InputAmountDialog
         } else {
             mAmount = 0;
         }
-        
+
         refreshFormattedAmount();
         txtTop.setTextColor(mDefaultColor);
         return true;

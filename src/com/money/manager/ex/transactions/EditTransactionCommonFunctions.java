@@ -161,9 +161,9 @@ public class EditTransactionCommonFunctions {
     public void formatExtendedDate(TextView dateTextView) {
         try {
             Locale locale = mParent.getResources().getConfiguration().locale;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd MMMM yyyy", locale);
-            // todo: use a shorted, defined, format, i.e. Tue, 28 Aug 2015 for fixed width.
-            //SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMMM yyyy", locale);
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd MMMM yyyy", locale);
+            // use a shorted, defined, format, i.e. Tue, 28 Aug 2015 for fixed width.
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", locale);
 
             dateTextView.setText(dateFormat.format((Date) dateTextView.getTag()));
         } catch (Exception e) {
