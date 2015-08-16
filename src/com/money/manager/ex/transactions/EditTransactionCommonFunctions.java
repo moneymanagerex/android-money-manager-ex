@@ -17,9 +17,9 @@
  */
 package com.money.manager.ex.transactions;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -51,7 +51,6 @@ import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.AppSettings;
-import com.shamanland.fonticon.FontIconButton;
 import com.shamanland.fonticon.FontIconView;
 
 import java.text.DecimalFormat;
@@ -70,6 +69,9 @@ public class EditTransactionCommonFunctions {
 
     public EditTransactionCommonFunctions(Context context) {
         mContext = context;
+        if (context instanceof BaseFragmentActivity) {
+            mParent = (BaseFragmentActivity) context;
+        }
     }
 
     // Payee
@@ -103,37 +105,36 @@ public class EditTransactionCommonFunctions {
     public RelativeLayout withdrawalButton, depositButton, transferButton;
 
     private Context mContext;
+    private BaseFragmentActivity mParent;
 
     public void findControls() {
-        Activity parent = (Activity) mContext;
-
-        spinStatus = (Spinner) parent.findViewById(R.id.spinnerStatus);
+        spinStatus = (Spinner) mParent.findViewById(R.id.spinnerStatus);
 
         // Payee
-        txtSelectPayee = (TextView) parent.findViewById(R.id.textViewPayee);
-        removePayeeButton = (FontIconView) parent.findViewById(R.id.removePayeeButton);
-        tableRowPayee = (ViewGroup) parent.findViewById(R.id.tableRowPayee);
+        txtSelectPayee = (TextView) mParent.findViewById(R.id.textViewPayee);
+        removePayeeButton = (FontIconView) mParent.findViewById(R.id.removePayeeButton);
+        tableRowPayee = (ViewGroup) mParent.findViewById(R.id.tableRowPayee);
 
-        chbSplitTransaction = (CheckBox) parent.findViewById(R.id.checkBoxSplitTransaction);
-        txtSelectCategory = (TextView) parent.findViewById(R.id.textViewCategory);
+        chbSplitTransaction = (CheckBox) mParent.findViewById(R.id.checkBoxSplitTransaction);
+        txtSelectCategory = (TextView) mParent.findViewById(R.id.textViewCategory);
 
         // Account
-        spinAccount = (Spinner) parent.findViewById(R.id.spinnerAccount);
-        spinAccountTo = (Spinner) parent.findViewById(R.id.spinnerToAccount);
-        accountFromLabel = (TextView) parent.findViewById(R.id.accountFromLabel);
-        txtToAccount = (TextView) parent.findViewById(R.id.textViewToAccount);
+        spinAccount = (Spinner) mParent.findViewById(R.id.spinnerAccount);
+        spinAccountTo = (Spinner) mParent.findViewById(R.id.spinnerToAccount);
+        accountFromLabel = (TextView) mParent.findViewById(R.id.accountFromLabel);
+        txtToAccount = (TextView) mParent.findViewById(R.id.textViewToAccount);
 
-        amountHeaderTextView = (TextView) parent.findViewById(R.id.textViewHeaderAmount);
-        amountToHeaderTextView = (TextView) parent.findViewById(R.id.textViewHeaderAmountTo);
+        amountHeaderTextView = (TextView) mParent.findViewById(R.id.textViewHeaderAmount);
+        amountToHeaderTextView = (TextView) mParent.findViewById(R.id.textViewHeaderAmountTo);
 
-        txtAmount = (TextView) parent.findViewById(R.id.textViewAmount);
-        txtAmountTo = (TextView) parent.findViewById(R.id.textViewTotAmount);
-        tableRowAmountTo = (ViewGroup) parent.findViewById(R.id.tableRowAmountTo);
+        txtAmount = (TextView) mParent.findViewById(R.id.textViewAmount);
+        txtAmountTo = (TextView) mParent.findViewById(R.id.textViewTotAmount);
+        tableRowAmountTo = (ViewGroup) mParent.findViewById(R.id.tableRowAmountTo);
 
         // Transaction Type
-        withdrawalButton = (RelativeLayout) parent.findViewById(R.id.withdrawalButton);
-        depositButton = (RelativeLayout) parent.findViewById(R.id.depositButton);
-        transferButton = (RelativeLayout) parent.findViewById(R.id.transferButton);
+        withdrawalButton = (RelativeLayout) mParent.findViewById(R.id.withdrawalButton);
+        depositButton = (RelativeLayout) mParent.findViewById(R.id.depositButton);
+        transferButton = (RelativeLayout) mParent.findViewById(R.id.transferButton);
 
     }
 
@@ -147,7 +148,7 @@ public class EditTransactionCommonFunctions {
             currencyId = this.AccountList.get(index).getCurrencyId();
         }
 
-        CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(mParent.getApplicationContext());
 
         if (currencyId == null) {
             view.setText(currencyService.getBaseCurrencyFormatted(amount));
@@ -159,11 +160,14 @@ public class EditTransactionCommonFunctions {
 
     public void formatExtendedDate(TextView dateTextView) {
         try {
-            Locale locale = mContext.getResources().getConfiguration().locale;
-            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", locale)
-                    .format((Date) dateTextView.getTag()));
+            Locale locale = mParent.getResources().getConfiguration().locale;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd MMMM yyyy", locale);
+            // todo: use a shorted, defined, format, i.e. Tue, 28 Aug 2015 for fixed width.
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMMM yyyy", locale);
+
+            dateTextView.setText(dateFormat.format((Date) dateTextView.getTag()));
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, mContext);
+            ExceptionHandler handler = new ExceptionHandler(mParent, mParent);
             handler.handle(e, "formatting extended date");
         }
     }
@@ -184,6 +188,18 @@ public class EditTransactionCommonFunctions {
         return transactionType.name();
     }
 
+    public FontIconView getDepositButtonIcon() {
+        return (FontIconView) mParent.findViewById(R.id.depositButtonIcon);
+    }
+
+    public FontIconView getTransferButtonIcon() {
+        return (FontIconView) mParent.findViewById(R.id.transferButtonIcon);
+    }
+
+    public FontIconView getWithdrawalButtonIcon() {
+        return (FontIconView) mParent.findViewById(R.id.withdrawalButtonIcon);
+    }
+
     public boolean hasSplitCategories() {
         return mSplitTransactions != null && !mSplitTransactions.isEmpty();
     }
@@ -192,11 +208,10 @@ public class EditTransactionCommonFunctions {
      * Initialize account selectors.
      */
     public void initAccountSelectors() {
-        Core core = new Core(mContext.getApplicationContext());
+        Core core = new Core(mParent.getApplicationContext());
 
         // account list to populate the spin
-        AccountRepository accountRepository = new AccountRepository(mContext.getApplicationContext());
-        // MoneyManagerOpenHelper.getInstance(getApplicationContext())
+        AccountRepository accountRepository = new AccountRepository(mParent.getApplicationContext());
         this.AccountList = accountRepository.getTransactionAccounts(core.getAccountsOpenVisible(),
                 core.getAccountFavoriteVisible());
         if (this.AccountList == null) return;
@@ -209,7 +224,7 @@ public class EditTransactionCommonFunctions {
         addMissingAccountToSelectors(accountRepository, accountId);
         addMissingAccountToSelectors(accountRepository, toAccountId);
         // add the default account, if any.
-        AppSettings settings = new AppSettings(mContext);
+        AppSettings settings = new AppSettings(mParent);
         String defaultAccountString = settings.getGeneralSettings().getDefaultAccount();
         // Set the current account, if not set already.
         if ((accountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
@@ -220,7 +235,7 @@ public class EditTransactionCommonFunctions {
         }
 
         // create adapter for spinAccount
-        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(mContext,
+        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(mParent,
                 android.R.layout.simple_spinner_item, mAccountNameList);
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccount.setAdapter(adapterAccount);
@@ -292,7 +307,7 @@ public class EditTransactionCommonFunctions {
                     }
                 }
                 double amount = (Double) v.getTag();
-                BaseFragmentActivity parent = (BaseFragmentActivity) mContext;
+                BaseFragmentActivity parent = (BaseFragmentActivity) mParent;
                 InputAmountDialog dialog = InputAmountDialog.getInstance((IInputAmountDialogListener) parent,
                         v.getId(), amount, currencyId);
                 dialog.show(parent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
@@ -318,11 +333,9 @@ public class EditTransactionCommonFunctions {
         txtSelectPayee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Activity parent = (Activity) mContext;
-
-                Intent intent = new Intent(mContext, PayeeActivity.class);
+                Intent intent = new Intent(mParent, PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                parent.startActivityForResult(intent, REQUEST_PICK_PAYEE);
+                mParent.startActivityForResult(intent, REQUEST_PICK_PAYEE);
             }
         });
 
@@ -375,13 +388,12 @@ public class EditTransactionCommonFunctions {
     }
 
     public void onFinishedInputAmountDialog(int id, Double amount) {
-        Activity parent = (Activity) mContext;
-        View view = parent.findViewById(id);
+        View view = mParent.findViewById(id);
         if (view == null || !(view instanceof TextView)) return;
 
         int accountId;
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
-        CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(mParent.getApplicationContext());
 
         if (isTransfer) {
             Double originalAmount;
@@ -421,7 +433,7 @@ public class EditTransactionCommonFunctions {
                 }
 
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(mContext, mContext);
+                ExceptionHandler handler = new ExceptionHandler(mParent, mParent);
                 handler.handle(e, "returning from number input");
             }
         }
@@ -482,12 +494,12 @@ public class EditTransactionCommonFunctions {
             // Transfer. Adjust the headers on amount text boxes.
             int index = mAccountIdList.indexOf(accountId);
             if (index >= 0) {
-                amountHeaderTextView.setText(mContext.getString(R.string.withdrawal_from,
+                amountHeaderTextView.setText(mParent.getString(R.string.withdrawal_from,
                         this.AccountList.get(index).getAccountName()));
             }
             index = mAccountIdList.indexOf(toAccountId);
             if (index >= 0) {
-                amountToHeaderTextView.setText(mContext.getString(R.string.deposit_to,
+                amountToHeaderTextView.setText(mParent.getString(R.string.deposit_to,
                         this.AccountList.get(index).getAccountName()));
             }
         }
@@ -550,7 +562,7 @@ public class EditTransactionCommonFunctions {
      */
     public boolean selectPayeeName(int payeeId) {
         TablePayee payee = new TablePayee();
-        Cursor cursor = mContext.getContentResolver().query(payee.getUri(),
+        Cursor cursor = mParent.getContentResolver().query(payee.getUri(),
                 payee.getAllColumns(),
                 TablePayee.PAYEEID + "=?",
                 new String[]{Integer.toString(payeeId)}, null);
@@ -576,7 +588,7 @@ public class EditTransactionCommonFunctions {
         boolean ret = false;
         // take data of payee
         TablePayee payee = new TablePayee();
-        Cursor curPayee = mContext.getContentResolver().query(payee.getUri(),
+        Cursor curPayee = mParent.getContentResolver().query(payee.getUri(),
                 payee.getAllColumns(),
                 TablePayee.PAYEEID + "=?",
                 new String[]{ Integer.toString(payeeId) },
@@ -588,10 +600,10 @@ public class EditTransactionCommonFunctions {
                 categoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
                 subCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
                 // create instance of query
-                QueryCategorySubCategory category = new QueryCategorySubCategory(mContext.getApplicationContext());
+                QueryCategorySubCategory category = new QueryCategorySubCategory(mParent.getApplicationContext());
                 // compose selection
                 String where = "CATEGID=" + Integer.toString(categoryId) + " AND SUBCATEGID=" + Integer.toString(subCategoryId);
-                Cursor curCategory = mContext.getContentResolver().query(category.getUri(),
+                Cursor curCategory = mParent.getContentResolver().query(category.getUri(),
                         category.getAllColumns(), where, null, null);
                 // check cursor is valid
                 if ((curCategory != null) && (curCategory.moveToFirst())) {
@@ -642,14 +654,13 @@ public class EditTransactionCommonFunctions {
 
             DialogFragment dialog = new YesNoDialog();
             Bundle args = new Bundle();
-            args.putString("title", mContext.getString(R.string.warning));
-            args.putString("message", mContext.getString(R.string.no_transfer_splits));
+            args.putString("title", mParent.getString(R.string.warning));
+            args.putString("message", mParent.getString(R.string.no_transfer_splits));
             args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
             dialog.setArguments(args);
 //        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
 
-            BaseFragmentActivity parent = (BaseFragmentActivity) mContext;
-            dialog.show(parent.getSupportFragmentManager(), "tag");
+            dialog.show(mParent.getSupportFragmentManager(), "tag");
 
             // Dialog result is handled in onDialogPositiveClick.
             return;
@@ -667,27 +678,30 @@ public class EditTransactionCommonFunctions {
 
         // Clear selection background
         withdrawalButton.setBackgroundColor(Color.TRANSPARENT);
+        getWithdrawalButtonIcon().setTextColor(mContext.getResources().getColor(R.color.material_red_700));
         depositButton.setBackgroundColor(Color.TRANSPARENT);
+        getDepositButtonIcon().setTextColor(mContext.getResources().getColor(R.color.material_green_700));
         transferButton.setBackgroundColor(Color.TRANSPARENT);
+        getTransferButtonIcon().setTextColor(mContext.getResources().getColor(R.color.material_grey_700));
 
-        // Select
-        Core core = new Core(mContext);
-        int selectedBackgroundColour = core.usingDarkTheme()
-                ? R.color.material_grey_500
-                : R.color.material_green_500; // md_primary, md_primary_dark, md_accent, md_primary_light
-
-        Activity parent = (Activity) mContext;
-        int backgroundSelected = parent.getResources().getColor(selectedBackgroundColour);
+        int backgroundSelected = mParent.getResources().getColor(R.color.md_primary);
+//        int[] colorArrayAttributes = new int[] { R.attr.cardViewBackgroundColor };
+//        TypedArray colorArray = mContext.obtainStyledAttributes(colorArrayAttributes);
+//        int foregroundSelected = colorArray.getColor(0, mContext.getResources().getColor(R.color.abBackground));
+        int foregroundSelected = mContext.getResources().getColor(R.color.button_foreground);
 
         switch (transactionType) {
             case Deposit:
                 depositButton.setBackgroundColor(backgroundSelected);
+                getDepositButtonIcon().setTextColor(foregroundSelected);
                 break;
             case Withdrawal:
                 withdrawalButton.setBackgroundColor(backgroundSelected);
+                getWithdrawalButtonIcon().setTextColor(foregroundSelected);
                 break;
             case Transfer:
                 transferButton.setBackgroundColor(backgroundSelected);
+                getTransferButtonIcon().setTextColor(foregroundSelected);
                 onTransferSelected();
                 break;
         }
@@ -700,11 +714,11 @@ public class EditTransactionCommonFunctions {
 
         if (isTransfer) {
             if (toAccountId == Constants.NOT_SET) {
-                Core.alertDialog(mContext, R.string.error_toaccount_not_selected);
+                Core.alertDialog(mParent, R.string.error_toaccount_not_selected);
                 return false;
             }
             if (toAccountId == accountId) {
-                Core.alertDialog(mContext, R.string.error_transfer_to_same_account);
+                Core.alertDialog(mParent, R.string.error_transfer_to_same_account);
                 return false;
             }
         }
@@ -712,24 +726,24 @@ public class EditTransactionCommonFunctions {
         // Amount is required.
         // Amounts must be positive. Sign is determined by transaction type.
         if ((Double) txtAmount.getTag() <= 0) {
-            Core.alertDialog(mContext, R.string.error_amount_must_be_positive);
+            Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
             return false;
         }
         if ((Double) txtAmountTo.getTag() <= 0) {
-            Core.alertDialog(mContext, R.string.error_amount_must_be_positive);
+            Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
             return false;
         }
 
         // Category is required if tx is not a split or transfer.
         if (categoryId == Constants.NOT_SET && (!chbSplitTransaction.isChecked()) && !isTransfer) {
-            Core.alertDialog(mContext, R.string.error_category_not_selected);
+            Core.alertDialog(mParent, R.string.error_category_not_selected);
             return false;
         }
 
         // Split records must exist if split is checked.
         if (chbSplitTransaction.isChecked()
                 && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
-            Core.alertDialog(mContext, R.string.error_split_transaction_empty);
+            Core.alertDialog(mParent, R.string.error_split_transaction_empty);
             return false;
         }
 

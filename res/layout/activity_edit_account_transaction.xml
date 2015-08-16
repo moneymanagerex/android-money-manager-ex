@@ -96,10 +96,12 @@
                     <!-- Deposit -->
                     <RelativeLayout
                         android:id="@+id/depositButton"
+                        style="@style/Money.Button.Transparent"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content">
                         <com.shamanland.fonticon.FontIconView
+                            android:id="@+id/depositButtonIcon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ic_diff_added"
@@ -110,10 +112,12 @@
                     <!-- Withdrawal -->
                     <RelativeLayout
                         android:id="@+id/withdrawalButton"
+                        style="@style/Money.Button.Transparent"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content">
                         <com.shamanland.fonticon.FontIconView
+                            android:id="@+id/withdrawalButtonIcon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ic_diff_removed"
@@ -124,10 +128,12 @@
                     <!-- Transfer -->
                     <RelativeLayout
                         android:id="@+id/transferButton"
+                        style="@style/Money.Button.Transparent"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content">
                         <com.shamanland.fonticon.FontIconView
+                            android:id="@+id/transferButtonIcon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ic_diff_renamed"
