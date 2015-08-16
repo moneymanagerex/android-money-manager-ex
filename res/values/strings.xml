@@ -104,6 +104,7 @@
     <string name="error_accountname_empty">Account name is required</string>
     <string name="error_accounttype_empty">Account type is required</string>
     <string name="error_status_empty">Account status is required</string>
+    <string name="error_amount_must_be_positive">Amount must be positive. The sign is determined by Transaction Type.</string>
 
     <!-- payee -->
     <string name="payee_name">Payee name</string>

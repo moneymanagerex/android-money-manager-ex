@@ -915,40 +915,8 @@ public class EditTransactionActivity
      * @return a boolean indicating whether the data is valid.
      */
     public boolean validateData() {
-        boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
+        if (!mCommonFunctions.validateData()) return false;
 
-        // Transfers.
-        if (isTransfer) {
-            if (mCommonFunctions.toAccountId == -1) {
-                Core.alertDialog(this, R.string.error_toaccount_not_selected);
-                return false;
-            }
-            if (mCommonFunctions.toAccountId == mCommonFunctions.accountId) {
-                Core.alertDialog(this, R.string.error_transfer_to_same_account);
-                return false;
-            }
-        }
-
-        // Category is required if tx is not a split or transfer.
-        if (mCommonFunctions.categoryId == -1 && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
-            Core.alertDialog(this, R.string.error_category_not_selected);
-            return false;
-        }
-        // Splits.
-        if (mCommonFunctions.chbSplitTransaction.isChecked() &&
-                (mCommonFunctions.mSplitTransactions == null || mCommonFunctions.mSplitTransactions.size() <= 0)) {
-            Core.alertDialog(this, R.string.error_split_transaction_empty);
-            return false;
-        }
-        // Total amount.
-        if ((Double) mCommonFunctions.txtAmountTo.getTag() == 0) {
-            if ((Double) mCommonFunctions.txtAmount.getTag() == 0) {
-                Core.alertDialog(this, R.string.error_totamount_empty);
-                return false;
-            } else {
-                mCommonFunctions.txtAmountTo.setTag(mCommonFunctions.txtAmount.getTag());
-            }
-        }
         return true;
     }
 

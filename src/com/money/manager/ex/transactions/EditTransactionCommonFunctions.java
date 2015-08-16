@@ -694,4 +694,51 @@ public class EditTransactionCommonFunctions {
         onTransactionTypeChange();
     }
 
+    public boolean validateData() {
+        boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
+
+        if (isTransfer) {
+            if (toAccountId == Constants.NOT_SET) {
+                Core.alertDialog(mContext, R.string.error_toaccount_not_selected);
+                return false;
+            }
+            if (toAccountId == accountId) {
+                Core.alertDialog(mContext, R.string.error_transfer_to_same_account);
+                return false;
+            }
+        }
+
+        // Amount is required.
+        if ((Double) txtAmountTo.getTag() == 0) {
+            if ((Double) txtAmount.getTag() == 0) {
+                Core.alertDialog(mContext, R.string.error_totamount_empty);
+                return false;
+            } else {
+                txtAmountTo.setTag(txtAmount.getTag());
+            }
+        }
+
+        // Amounts must be positive. Sign is determined by transaction type.
+        if ((Double) txtAmount.getTag() < 0) {
+            Core.alertDialog(mContext, R.string.error_amount_must_be_positive);
+        }
+        if ((Double) txtAmountTo.getTag() < 0) {
+            Core.alertDialog(mContext, R.string.error_amount_must_be_positive);
+        }
+
+        // Category is required if tx is not a split or transfer.
+        if (categoryId == Constants.NOT_SET && (!chbSplitTransaction.isChecked()) && !isTransfer) {
+            Core.alertDialog(mContext, R.string.error_category_not_selected);
+            return false;
+        }
+
+        // Split records must exist if split is checked.
+        if (chbSplitTransaction.isChecked()
+                && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
+            Core.alertDialog(mContext, R.string.error_split_transaction_empty);
+            return false;
+        }
+
+        return true;
+    }
 }

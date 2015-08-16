@@ -634,38 +634,8 @@ public class RecurringTransactionActivity
      * @return validation result
      */
     private boolean validateData() {
-        boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
+        if (!mCommonFunctions.validateData()) return false;
 
-        if (isTransfer) {
-            if (mCommonFunctions.toAccountId == Constants.NOT_SET) {
-                Core.alertDialog(this, R.string.error_toaccount_not_selected);
-                return false;
-            }
-            if (mCommonFunctions.toAccountId == mCommonFunctions.accountId) {
-                Core.alertDialog(this, R.string.error_transfer_to_same_account);
-                return false;
-            }
-        }
-
-        // Category is required if tx is not a split or transfer.
-        if (mCommonFunctions.categoryId == Constants.NOT_SET && (!mCommonFunctions.chbSplitTransaction.isChecked()) && !isTransfer) {
-            Core.alertDialog(this, R.string.error_category_not_selected);
-            return false;
-        }
-        if (mCommonFunctions.chbSplitTransaction.isChecked()
-                && (mCommonFunctions.mSplitTransactions == null || mCommonFunctions.mSplitTransactions.size() <= 0)) {
-            Core.alertDialog(this, R.string.error_split_transaction_empty);
-            return false;
-        }
-        if (TextUtils.isEmpty(mCommonFunctions.txtAmountTo.getText())) {
-            if (TextUtils.isEmpty(mCommonFunctions.txtAmount.getText())) {
-                Core.alertDialog(this, R.string.error_totamount_empty);
-
-                return false;
-            } else {
-                mCommonFunctions.txtAmountTo.setText(mCommonFunctions.txtAmount.getText());
-            }
-        }
         if (TextUtils.isEmpty(txtNextOccurrence.getText().toString())) {
             Core.alertDialog(this, R.string.error_next_occurrence_not_populate);
 
