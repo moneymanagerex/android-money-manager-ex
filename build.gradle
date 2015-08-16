@@ -55,11 +55,11 @@ android {
         multiDexEnabled true
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 678
-        versionName '2.15.0-beta2'
+        versionCode 679
+        versionName '2.15.0-beta3'
         // 601 = 1.4.17, stable
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     sourceSets {

@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="August 15, 2015" versionName="2.15.0-beta2">
+    <changelogversion changeDate="August 15, 2015" versionName="2.15.0-beta3">
         <changelogtext>Added a convenient button for sending Logcat in About screen.</changelogtext>
         <changelogtext>Restyling and minor improvements in numeric picker / calculator.</changelogtext>
         <changelogtext>Graphical selector for easier Transaction Type selection in transaction view.</changelogtext>
