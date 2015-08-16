@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
+import com.opencsv.CSVParser;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -31,8 +32,6 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import au.com.bytecode.opencsv.CSVParser;
 
 /**
  * Updates security prices from Yahoo Finance.
@@ -46,8 +45,6 @@ public class YahooSecurityPriceUpdater
         mContext = context;
         mFeedback = feedback;
     }
-
-    private final String LOGCAT = this.getClass().getSimpleName();
 
     private Context mContext;
     // "http://download.finance.yahoo.com/d/quotes.csv?s=", A2, "&f=l1d1&e=.csv"

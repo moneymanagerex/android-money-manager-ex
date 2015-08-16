@@ -24,24 +24,21 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.database.QueryAllData;
+import com.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import au.com.bytecode.opencsv.CSVWriter;
-
 public class ExportToCsvFile
         extends AsyncTask<Void, Void, Boolean> {
 
-	private final String LOGCAT = ExportToCsvFile.class.getSimpleName();
 	private Context mContext;
 	private AllDataAdapter mAdapter;
 	private ProgressDialog dialog;
@@ -73,7 +70,8 @@ public class ExportToCsvFile
 		}
 		// prompt
 		Toast.makeText(mContext,
-				mContext.getString(result ? R.string.export_file_complete : R.string.export_file_failed, mFileName),
+				mContext.getString(result ? R.string.export_file_complete
+						: R.string.export_file_failed, mFileName),
 				Toast.LENGTH_LONG).show();
 	}
 

@@ -28,7 +28,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableInfoTable;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
