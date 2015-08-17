@@ -23,16 +23,21 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!--<uses-permission android:name="com.android.vending.BILLING" />-->
+    <!-- <uses-permission android:name="com.android.vending.BILLING" /> -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- trying to force ui automator to run on sdk 16 -->
-    <!--<uses-sdk android:minSdkVersion="16" tools:overrideLibrary="android.support.test.uiautomator.v18" />-->
+    <!-- <uses-sdk android:minSdkVersion="16" tools:overrideLibrary="android.support.test.uiautomator.v18" /> -->
 
     <supports-screens
         android:largeScreens="true"
         android:xlargeScreens="true" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:name=".MoneyManagerApplication"
@@ -369,6 +374,11 @@
         <activity
             android:name=".core.ExceptionHandlerActivity"
             android:label="@string/error" >
+        </activity>
+        <activity
+            android:name=".PasswordActivity"
+            android:label="@string/title_activity_password"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
     </application>
 
