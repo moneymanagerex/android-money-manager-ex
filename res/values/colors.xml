@@ -87,5 +87,8 @@
     <color name="color_dialog_number_button">#474747</color>
     <color name="color_dialog_number_operator">#222222</color>
 
-    <color name="button_foreground">@color/material_white</color>
+    <color name="button_foreground_active">@color/md_icons</color>
+    <color name="button_foreground_inactive">@color/md_secondary_text</color>
+    <color name="button_background_active">@color/md_primary</color>
+    <color name="button_background_inactive">@color/transparent_black</color>
 </resources>

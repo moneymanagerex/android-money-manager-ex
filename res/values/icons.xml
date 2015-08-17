@@ -31,4 +31,5 @@
     <string name="ic_diff_added">C</string>
     <string name="ic_diff_removed">D</string>
     <string name="ic_diff_renamed">E</string>
+    <string name="ic_split">F</string>
 </resources>

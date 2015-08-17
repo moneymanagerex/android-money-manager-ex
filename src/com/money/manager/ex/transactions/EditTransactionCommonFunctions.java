@@ -19,7 +19,6 @@ package com.money.manager.ex.transactions;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -101,14 +100,15 @@ public class EditTransactionCommonFunctions {
     public TextView accountFromLabel, txtToAccount;
     public TextView txtSelectPayee, txtAmountTo, txtAmount, txtSelectCategory;
     public TextView amountHeaderTextView, amountToHeaderTextView;
-    public CheckBox chbSplitTransaction;
-    public FontIconView removePayeeButton;
+    public FontIconView removePayeeButton, splitButton;
     public RelativeLayout withdrawalButton, depositButton, transferButton;
 
     private Context mContext;
     private BaseFragmentActivity mParent;
+    private boolean mSplitSelected;
 
     public void findControls() {
+        // Status
         spinStatus = (Spinner) mParent.findViewById(R.id.spinnerStatus);
 
         // Payee
@@ -116,7 +116,8 @@ public class EditTransactionCommonFunctions {
         removePayeeButton = (FontIconView) mParent.findViewById(R.id.removePayeeButton);
         tableRowPayee = (ViewGroup) mParent.findViewById(R.id.tableRowPayee);
 
-        chbSplitTransaction = (CheckBox) mParent.findViewById(R.id.checkBoxSplitTransaction);
+        // Category / Split
+        splitButton = (FontIconView) mParent.findViewById(R.id.splitButton);
         txtSelectCategory = (TextView) mParent.findViewById(R.id.textViewCategory);
 
         // Account
@@ -125,6 +126,7 @@ public class EditTransactionCommonFunctions {
         accountFromLabel = (TextView) mParent.findViewById(R.id.accountFromLabel);
         txtToAccount = (TextView) mParent.findViewById(R.id.textViewToAccount);
 
+        // Amounts
         amountHeaderTextView = (TextView) mParent.findViewById(R.id.textViewHeaderAmount);
         amountToHeaderTextView = (TextView) mParent.findViewById(R.id.textViewHeaderAmountTo);
 
@@ -352,12 +354,16 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initSplitCategories() {
-        chbSplitTransaction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        // Split button
+        splitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
+                mSplitSelected = !mSplitSelected;
                 onSplitSet();
             }
         });
+
+        onSplitSet();
     }
 
     public void initTransactionTypeSelector() {
@@ -402,8 +408,7 @@ public class EditTransactionCommonFunctions {
      * @return boolean
      */
     public boolean isSplitSelected() {
-        // the logic is here.
-        return this.chbSplitTransaction.isChecked();
+        return mSplitSelected;
     }
 
     public void onFinishedInputAmountDialog(int id, Double amount) {
@@ -468,15 +473,27 @@ public class EditTransactionCommonFunctions {
         formatAmount(((TextView) view), amount, getCurrencyIdFromAccountId(accountId));
     }
 
+    /**
+     * Handle the controls after the split is checked.
+     */
     public void onSplitSet() {
         // update category field
         refreshCategoryName();
 
-        boolean isSplit = isSplitSelected();
-
         // enable/disable Amount field.
-        txtAmount.setEnabled(!isSplit);
-        txtAmountTo.setEnabled(!isSplit);
+        txtAmount.setEnabled(!mSplitSelected);
+        txtAmountTo.setEnabled(!mSplitSelected);
+
+        int buttonColour, buttonBackground;
+        if (mSplitSelected) {
+            buttonColour = R.color.button_foreground_active;
+            buttonBackground = R.color.button_background_active;
+        } else {
+            buttonColour = R.color.button_foreground_inactive;
+            buttonBackground = R.color.button_background_inactive;
+        }
+        splitButton.setTextColor(mContext.getResources().getColor(buttonColour));
+        splitButton.setBackgroundColor(mContext.getResources().getColor(buttonBackground));
     }
 
     public void refreshCategoryName() {
@@ -555,7 +572,8 @@ public class EditTransactionCommonFunctions {
         tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
 
         // hide split controls
-        chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+//        chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+        splitButton.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         txtSelectCategory.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
@@ -563,14 +581,8 @@ public class EditTransactionCommonFunctions {
     }
 
     public void setSplit(final boolean checked) {
-        chbSplitTransaction.post(new Runnable() {
-            @Override
-            public void run() {
-                chbSplitTransaction.setChecked(checked);
-
-                onSplitSet();
-            }
-        });
+        mSplitSelected = checked;
+        onSplitSet();
     }
 
     /**
@@ -703,11 +715,11 @@ public class EditTransactionCommonFunctions {
         transferButton.setBackgroundColor(Color.TRANSPARENT);
         getTransferButtonIcon().setTextColor(mContext.getResources().getColor(R.color.material_grey_700));
 
-        int backgroundSelected = mParent.getResources().getColor(R.color.md_primary);
+        int backgroundSelected = mParent.getResources().getColor(R.color.button_background_active);
 //        int[] colorArrayAttributes = new int[] { R.attr.cardViewBackgroundColor };
 //        TypedArray colorArray = mContext.obtainStyledAttributes(colorArrayAttributes);
 //        int foregroundSelected = colorArray.getColor(0, mContext.getResources().getColor(R.color.abBackground));
-        int foregroundSelected = mContext.getResources().getColor(R.color.button_foreground);
+        int foregroundSelected = mContext.getResources().getColor(R.color.button_foreground_active);
 
         switch (transactionType) {
             case Deposit:

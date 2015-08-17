@@ -329,13 +329,14 @@
                     android:drawableStart="?attr/ic_label_outline"
                     android:hint="@string/category"/>
 
-                <CheckBox
-                    android:id="@+id/checkBoxSplitTransaction"
-                    android:text="@string/split"
-                    style="@style/Money.TextView.Header.Caption"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end" />
+                <!-- Split button -->
+                <com.shamanland.fonticon.FontIconView
+                    android:id="@+id/splitButton"
+                    android:layout_width="@dimen/money_button_height"
+                    android:layout_height="@dimen/money_button_height"
+                    android:text="@string/ic_split"
+                    android:textSize="@dimen/fonticon_drawer"
+                    style="@style/Money.Button.Transparent" />
 
             </LinearLayout>
 
