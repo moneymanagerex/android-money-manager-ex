@@ -35,7 +35,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -54,7 +53,6 @@ import com.money.manager.ex.businessobjects.RecurringTransactionService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
@@ -75,7 +73,6 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -370,9 +367,9 @@ public class EditTransactionActivity
                             splitSum += mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount();
                         }
                         mCommonFunctions.formatAmount(mCommonFunctions.txtAmount, splitSum,
-                                !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
-                                        ? mCommonFunctions.accountId
-                                        : mCommonFunctions.toAccountId);
+                            !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
+                                ? mCommonFunctions.accountId
+                                : mCommonFunctions.toAccountId);
                     }
                     // deleted item
                     if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
@@ -620,8 +617,8 @@ public class EditTransactionActivity
         String transCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
-        mCommonFunctions.mAmount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
-        mCommonFunctions.mAmountTo = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
+        mCommonFunctions.amount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+        mCommonFunctions.amountTo = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
         mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
         mCommonFunctions.categoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
         mCommonFunctions.subCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
@@ -675,8 +672,8 @@ public class EditTransactionActivity
         String transCode = tx.transactionCode;
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mStatus = tx.status;
-        mCommonFunctions.mAmount = tx.amount;
-        mCommonFunctions.mAmountTo = tx.totalAmount;
+        mCommonFunctions.amount = tx.amount;
+        mCommonFunctions.amountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
         mCommonFunctions.categoryId = tx.categoryId;
         mCommonFunctions.subCategoryId = tx.subCategoryId;
@@ -733,8 +730,8 @@ public class EditTransactionActivity
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mStatus = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
-        mCommonFunctions.mAmount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT);
-        mCommonFunctions.mAmountTo = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT);
+        mCommonFunctions.amount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT);
+        mCommonFunctions.amountTo = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT);
         mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommonFunctions.categoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID);
@@ -761,7 +758,8 @@ public class EditTransactionActivity
         mIntentAction = intent.getAction();
 
         if (savedInstanceState == null) {
-            mCommonFunctions.accountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, -1);
+            mCommonFunctions.accountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID,
+                    Constants.NOT_SET);
 
             // Edit transaction.
 
@@ -869,7 +867,7 @@ public class EditTransactionActivity
         if (parameters.accountId > 0) {
             this.mCommonFunctions.accountId = parameters.accountId;
         }
-        mCommonFunctions.mAmountTo = parameters.amount;
+        mCommonFunctions.amountTo = parameters.amount;
         // payee
         if (parameters.payeeId > 0) {
             this.mCommonFunctions.payeeId = parameters.payeeId;

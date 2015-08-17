@@ -144,7 +144,6 @@ public class InputAmountDialog
                 evalExpression();
             }
         };
-        // reference button click listener
         for (int id : idButtonKeyNum) {
             Button button = (Button) view.findViewById(id);
             button.setOnClickListener(clickListener);
@@ -264,6 +263,8 @@ public class InputAmountDialog
         String exp = txtMain.getText().toString();
         // replace any blanks
         exp = exp.replace(" ", "");
+        // hack the decimal separator.
+        exp = exp.replace(",", ".");
 
         if (exp.length() > 0) {
             try {
