@@ -247,7 +247,7 @@ public class EditTransactionActivity
         mCommonFunctions.txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
+                if (!mCommonFunctions.isSplitSelected()) {
                     // select single category.
                     Intent intent = new Intent(EditTransactionActivity.this, CategoryListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
@@ -266,12 +266,7 @@ public class EditTransactionActivity
 
         // Split Categories
 
-        mCommonFunctions.chbSplitTransaction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mCommonFunctions.onSplitSet();
-            }
-        });
+        mCommonFunctions.initSplitCategories();
 
         // mark checked if there are existing split categories.
         boolean hasSplit = mCommonFunctions.hasSplitCategories();
@@ -339,7 +334,7 @@ public class EditTransactionActivity
                 mCommonFunctions.payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
                 mCommonFunctions.payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
-                if (!mCommonFunctions.chbSplitTransaction.isChecked() && mCommonFunctions.categoryId == Constants.NOT_SET) {
+                if (!mCommonFunctions.isSplitSelected() && mCommonFunctions.categoryId == Constants.NOT_SET) {
                     if (mCommonFunctions.setCategoryFromPayee(mCommonFunctions.payeeId)) {
                         mCommonFunctions.refreshCategoryName(); // refresh UI
                     }
@@ -959,7 +954,7 @@ public class EditTransactionActivity
         // Split Categories
 
         // Delete any split categories if split is unchecked.
-        if(!mCommonFunctions.chbSplitTransaction.isChecked()) {
+        if(!mCommonFunctions.isSplitSelected()) {
             removeAllSplitCategories();
         }
 
@@ -1085,9 +1080,9 @@ public class EditTransactionActivity
         values.put(TableCheckingAccount.STATUS, mStatus);
 
         // Category and subcategory
-        values.put(TableCheckingAccount.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
+        values.put(TableCheckingAccount.CATEGID, !mCommonFunctions.isSplitSelected()
                 ? mCommonFunctions.categoryId : Constants.NOT_SET);
-        values.put(TableCheckingAccount.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
+        values.put(TableCheckingAccount.SUBCATEGID, !mCommonFunctions.isSplitSelected()
                 ? mCommonFunctions.subCategoryId : Constants.NOT_SET);
 
         // Date

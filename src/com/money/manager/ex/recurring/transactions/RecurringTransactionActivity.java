@@ -47,8 +47,6 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.businessobjects.RecurringTransactionService;
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.RecurringTransactionRepository;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
@@ -65,10 +63,8 @@ import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
-import com.money.manager.ex.common.InputAmountDialog;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -142,7 +138,7 @@ public class RecurringTransactionActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recurringtransaction_activity);
+        setContentView(R.layout.activity_recurringtransaction_edit);
 
         setToolbarStandardAction(getToolbar());
 
@@ -237,7 +233,7 @@ public class RecurringTransactionActivity
         mCommonFunctions.txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
+                if (!mCommonFunctions.isSplitSelected()) {
                     Intent intent = new Intent(RecurringTransactionActivity.this,
                             CategoryListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
@@ -260,12 +256,7 @@ public class RecurringTransactionActivity
 
         // Split Categories
 
-        mCommonFunctions.chbSplitTransaction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mCommonFunctions.onSplitSet();
-            }
-        });
+        mCommonFunctions.initSplitCategories();
 
         // mark checked if there are existing split categories.
         boolean hasSplit = mCommonFunctions.hasSplitCategories();
@@ -402,7 +393,7 @@ public class RecurringTransactionActivity
                     mCommonFunctions.payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
                     mCommonFunctions.payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                     // select last category used from payee
-                    if (!mCommonFunctions.chbSplitTransaction.isChecked()) {
+                    if (!mCommonFunctions.isSplitSelected()) {
                         if (mCommonFunctions.setCategoryFromPayee(mCommonFunctions.payeeId)) {
                             mCommonFunctions.refreshCategoryName(); // refresh UI
                         }
@@ -777,9 +768,9 @@ public class RecurringTransactionActivity
         }
 
         values.put(TableBillsDeposits.STATUS, mStatus);
-        values.put(TableBillsDeposits.CATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
+        values.put(TableBillsDeposits.CATEGID, !mCommonFunctions.isSplitSelected()
                 ? mCommonFunctions.categoryId : Constants.NOT_SET);
-        values.put(TableBillsDeposits.SUBCATEGID, !mCommonFunctions.chbSplitTransaction.isChecked()
+        values.put(TableBillsDeposits.SUBCATEGID, !mCommonFunctions.isSplitSelected()
                 ? mCommonFunctions.subCategoryId : Constants.NOT_SET);
         values.put(TableBillsDeposits.FOLLOWUPID, Constants.NOT_SET);
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());

@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -350,6 +351,15 @@ public class EditTransactionCommonFunctions {
         });
     }
 
+    public void initSplitCategories() {
+        chbSplitTransaction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                onSplitSet();
+            }
+        });
+    }
+
     public void initTransactionTypeSelector() {
 
         // Handle click events.
@@ -385,6 +395,15 @@ public class EditTransactionCommonFunctions {
                 ? TransactionTypes.Withdrawal
                 : transactionType;
         selectTransactionType(current);
+    }
+
+    /**
+     * Indicate whether the Split Categories is selected/checked.
+     * @return boolean
+     */
+    public boolean isSplitSelected() {
+        // the logic is here.
+        return this.chbSplitTransaction.isChecked();
     }
 
     public void onFinishedInputAmountDialog(int id, Double amount) {
@@ -453,7 +472,7 @@ public class EditTransactionCommonFunctions {
         // update category field
         refreshCategoryName();
 
-        boolean isSplit = chbSplitTransaction.isChecked();
+        boolean isSplit = isSplitSelected();
 
         // enable/disable Amount field.
         txtAmount.setEnabled(!isSplit);
@@ -466,7 +485,7 @@ public class EditTransactionCommonFunctions {
 
         txtSelectCategory.setText("");
 
-        if (chbSplitTransaction.isChecked()) {
+        if (isSplitSelected()) {
             // Split transaction. Show ...
             txtSelectCategory.setText("\u2026");
         } else {
@@ -735,13 +754,13 @@ public class EditTransactionCommonFunctions {
         }
 
         // Category is required if tx is not a split or transfer.
-        if (categoryId == Constants.NOT_SET && (!chbSplitTransaction.isChecked()) && !isTransfer) {
+        if (categoryId == Constants.NOT_SET && (!isSplitSelected()) && !isTransfer) {
             Core.alertDialog(mParent, R.string.error_category_not_selected);
             return false;
         }
 
         // Split records must exist if split is checked.
-        if (chbSplitTransaction.isChecked()
+        if (isSplitSelected()
                 && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
             Core.alertDialog(mParent, R.string.error_split_transaction_empty);
             return false;
