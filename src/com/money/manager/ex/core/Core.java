@@ -27,8 +27,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
@@ -684,5 +687,42 @@ public class Core {
             ? pattern
             : null;
         return result;
+    }
+
+    public int getColourAttribute(int attribute) {
+        TypedArray ta = getAttributeValue(attribute);
+        int result = ta.getColor(0, Color.TRANSPARENT);
+
+        ta.recycle();
+
+        return result;
+    }
+
+    private TypedArray getAttributeValue(int attribute) {
+//        TypedValue typedValue = new TypedValue();
+//        mContext.getTheme().resolveAttribute(attribute, typedValue, true);
+//        return typedValue;
+
+//        int[] arrayAttributes = new int[] { attribute };
+//        TypedArray typedArray = mContext.obtainStyledAttributes(arrayAttributes);
+//        int value = typedArray.getColor(0, mContext.getResources().getColor(R.color.abBackground));
+//        typedArray.recycle();
+
+        // Create an array of the attributes we want to resolve
+        // using values from a theme
+        int[] attrs = new int[] { attribute /* index 0 */};
+        // Obtain the styled attributes. 'themedContext' is a context with a
+        // theme, typically the current Activity (i.e. 'this')
+        TypedArray ta = mContext.obtainStyledAttributes(attrs);
+        // To get the value of the 'listItemBackground' attribute that was
+        // set in the theme used in 'themedContext'. The parameter is the index
+        // of the attribute in the 'attrs' array. The returned Drawable
+        // is what you are after
+//        Drawable drawableFromTheme = ta.getDrawable(0 /* index */);
+
+        // Finally, free the resources used by TypedArray
+//        ta.recycle();
+
+        return ta;
     }
 }

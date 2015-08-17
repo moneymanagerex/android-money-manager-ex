@@ -713,10 +713,8 @@ public class EditTransactionCommonFunctions {
 
         // Clear all buttons.
 
-        int[] colorArrayAttributes = new int[] { R.attr.button_background_inactive };
-        TypedArray colorArray = mContext.obtainStyledAttributes(colorArrayAttributes);
-        int backgroundInactive = colorArray.getColor(0, mContext.getResources().getColor(R.color.abBackground));
-        colorArray.recycle();
+        Core core = new Core(mContext);
+        int backgroundInactive = core.getColourAttribute(R.attr.button_background_inactive);
 
         withdrawalButton.setBackgroundColor(backgroundInactive);
         getWithdrawalButtonIcon().setTextColor(mContext.getResources().getColor(R.color.material_red_700));
@@ -761,15 +759,18 @@ public class EditTransactionCommonFunctions {
                 Core.alertDialog(mParent, R.string.error_transfer_to_same_account);
                 return false;
             }
+
+            // Amount To is required and has to be positive.
+            double amountTo = (Double) txtAmountTo.getTag();
+            if (amountTo <= 0) {
+                Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
+                return false;
+            }
         }
 
-        // Amount is required.
-        // Amounts must be positive. Sign is determined by transaction type.
-        if ((Double) txtAmount.getTag() <= 0) {
-            Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
-            return false;
-        }
-        if ((Double) txtAmountTo.getTag() <= 0) {
+        // Amount is required and must be positive. Sign is determined by transaction type.
+        double amount = (Double) txtAmount.getTag();
+        if (amount <= 0) {
             Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
             return false;
         }
