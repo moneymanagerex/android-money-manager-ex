@@ -117,9 +117,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: '*.jar', dir: 'libs')
+    compile fileTree(dir: 'libs', include: '*.jar')
     // Replacing lib files with maven repos
-    //compile 'net.sf.opencsv:opencsv:2.3'
     compile 'com.opencsv:opencsv:3.5'
     compile 'net.objecthunter:exp4j:0.4.5'
     compile 'org.apache.commons:commons-lang3:3.4'

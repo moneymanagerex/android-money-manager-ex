@@ -102,7 +102,7 @@ public class MoneyManagerApplication
                     appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
         }
 
-        // Initialize font icons.
+        // Initialize font icons support.
         FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
     }
 
@@ -126,6 +126,10 @@ public class MoneyManagerApplication
     }
 
     /**
+     * Reads the current database path from the settings and checks for the existence of the
+     * database file.
+     * Creates a default database file if the one from settings is not found. Sets this file as
+     * the default database.
      * @param context Executing context.
      * @return path database file
      */
@@ -148,7 +152,7 @@ public class MoneyManagerApplication
         String defaultDirectory = getDatabaseDirectory(context);
         databasePath = defaultDirectory + "/data.mmb";
 
-        MoneyManagerApplication.setDatabasePath(context, databasePath);
+        setDatabasePath(context, databasePath);
         return databasePath;
     }
 

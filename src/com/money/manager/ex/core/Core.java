@@ -342,9 +342,9 @@ public class Core {
     }
 
     /**
-     * Get application directory on external storage
+     * Get application directory on external storage. The directory is created if it does not exist.
      *
-     * @return directory created if not exists
+     * @return the default directory where to store the database
      */
     public File getExternalStorageDirectoryApplication() {
         //get external storage
