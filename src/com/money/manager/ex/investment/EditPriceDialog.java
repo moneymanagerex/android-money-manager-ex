@@ -146,7 +146,7 @@ public class EditPriceDialog
                 double amount = (Double) v.getTag();
                 InputAmountDialog dialog = InputAmountDialog.getInstance(EditPriceDialog.this,
                         v.getId(), amount, currencyId);
-                dialog.RoundToCurrencyDecimals = false;
+                dialog.roundToCurrencyDecimals = false;
                 dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
