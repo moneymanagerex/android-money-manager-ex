@@ -49,7 +49,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
@@ -291,20 +290,20 @@ public class Core {
 
             if (currentTheme.endsWith(darkTheme)) {
                 // Dark theme
-                return R.style.Theme_Money_Manager;
+                return R.style.Theme_Money_Manager_Dark;
             } else {
                 // Light theme
-                return R.style.Theme_Money_Manager_Light_DarkActionBar;
+                return R.style.Theme_Money_Manager_Light;
             }
         } catch (Exception e) {
             Log.e("", e.getMessage());
-            return R.style.Theme_Money_Manager_Light_DarkActionBar;
+            return R.style.Theme_Money_Manager_Light;
         }
     }
 
     public boolean usingDarkTheme(){
         int currentTheme = this.getThemeApplication();
-        return currentTheme == R.style.Theme_Money_Manager;
+        return currentTheme == R.style.Theme_Money_Manager_Dark;
     }
 
     /**

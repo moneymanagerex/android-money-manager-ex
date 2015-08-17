@@ -19,6 +19,7 @@ package com.money.manager.ex.transactions;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -490,7 +491,10 @@ public class EditTransactionCommonFunctions {
             buttonBackground = R.color.button_background_active;
         } else {
             buttonColour = R.color.button_foreground_inactive;
-            buttonBackground = R.color.button_background_inactive;
+            Core core = new Core(mContext);
+            buttonBackground = core.usingDarkTheme()
+                ? R.color.button_background_inactive_dark
+                : R.color.button_background_inactive_light;
         }
         splitButton.setTextColor(mContext.getResources().getColor(buttonColour));
         splitButton.setBackgroundColor(mContext.getResources().getColor(buttonBackground));
@@ -709,7 +713,10 @@ public class EditTransactionCommonFunctions {
 
         // Clear all buttons.
 
-        int backgroundInactive = mContext.getResources().getColor(R.color.button_background_inactive);
+        int[] colorArrayAttributes = new int[] { R.attr.button_background_inactive };
+        TypedArray colorArray = mContext.obtainStyledAttributes(colorArrayAttributes);
+        int backgroundInactive = colorArray.getColor(0, mContext.getResources().getColor(R.color.abBackground));
+        colorArray.recycle();
 
         withdrawalButton.setBackgroundColor(backgroundInactive);
         getWithdrawalButtonIcon().setTextColor(mContext.getResources().getColor(R.color.material_red_700));
@@ -721,9 +728,6 @@ public class EditTransactionCommonFunctions {
         // Style the selected button.
 
         int backgroundSelected = mParent.getResources().getColor(R.color.button_background_active);
-//        int[] colorArrayAttributes = new int[] { R.attr.cardViewBackgroundColor };
-//        TypedArray colorArray = mContext.obtainStyledAttributes(colorArrayAttributes);
-//        int foregroundSelected = colorArray.getColor(0, mContext.getResources().getColor(R.color.abBackground));
         int foregroundSelected = mContext.getResources().getColor(R.color.button_foreground_active);
 
         switch (transactionType) {

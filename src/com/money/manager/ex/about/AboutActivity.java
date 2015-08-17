@@ -138,7 +138,7 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
     @Override
     protected void setTheme() {
         try {
-            this.setTheme(R.style.Theme_Money_Manager_Light_DarkActionBar);
+            this.setTheme(R.style.Theme_Money_Manager_Light);
         } catch (Exception e) {
             Log.e(BaseFragmentActivity.class.getSimpleName(), e.getMessage());
         }

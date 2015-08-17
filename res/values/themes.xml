@@ -62,7 +62,7 @@
     <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar"/>
 
     <!-- Application Theme, Material Light -->
-    <style name="Theme.Money.Manager.Light.DarkActionBar" parent="@style/App_Light_DarkActionBar">
+    <style name="Theme.Money.Manager.Light" parent="@style/App_Light_DarkActionBar">
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 
@@ -76,6 +76,8 @@
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_light_row_light</item>
         <item name="colorAccent">@color/md_primary_dark</item>
+        <!-- buttons -->
+        <item name="button_background_inactive">@color/button_background_inactive_light</item>
 
         <!-- Charts -->
         <item name="chartTextColor">@color/md_primary_text</item>
@@ -161,7 +163,7 @@
 
 
     <!-- Application Theme, Material Dark -->
-    <style name="Theme.Money.Manager" parent="@style/_App">
+    <style name="Theme.Money.Manager.Dark" parent="@style/_App">
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat</item>
 
@@ -177,6 +179,8 @@
         <!-- checkboxes and confirmation text in dialogs -->
         <item name="colorAccent">@color/md_primary_dark</item>
         <item name="android:textColorSecondary">@color/secondary_text_default_material_dark</item>
+        <!-- buttons -->
+        <item name="button_background_inactive">@color/button_background_inactive_dark</item>
 
         <!-- Charts -->
         <item name="chartTextColor">@color/material_grey_50</item>

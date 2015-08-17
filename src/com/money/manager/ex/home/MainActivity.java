@@ -918,7 +918,7 @@ public class MainActivity
         boolean result = true;
         Intent intent;
         final Core core = new Core(getApplicationContext());
-        final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager;
+        final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager_Dark;
 
         switch (item.getId()) {
             case R.id.menu_home:

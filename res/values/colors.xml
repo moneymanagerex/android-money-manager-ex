@@ -90,5 +90,6 @@
     <color name="button_foreground_active">@color/md_icons</color>
     <color name="button_foreground_inactive">@color/md_secondary_text</color>
     <color name="button_background_active">@color/md_primary</color>
-    <color name="button_background_inactive">@color/transparent_black</color>
+    <color name="button_background_inactive_light">@color/material_white</color>
+    <color name="button_background_inactive_dark">@color/transparent_black</color>
 </resources>
