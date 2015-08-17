@@ -365,18 +365,19 @@ public class EditTransactionActivity
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mCommonFunctions.mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
                     if (mCommonFunctions.mSplitTransactions != null && mCommonFunctions.mSplitTransactions.size() > 0) {
-                        double totAmount = 0;
+                        double splitSum = 0;
                         for (int i = 0; i < mCommonFunctions.mSplitTransactions.size(); i++) {
-                            totAmount += mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount();
+                            splitSum += mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount();
                         }
-                        mCommonFunctions.formatAmount(mCommonFunctions.txtAmountTo, totAmount,
+                        mCommonFunctions.formatAmount(mCommonFunctions.txtAmount, splitSum,
                                 !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
                                         ? mCommonFunctions.accountId
                                         : mCommonFunctions.toAccountId);
                     }
                     // deleted item
                     if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
-                        mCommonFunctions.mSplitTransactionsDeleted = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                        mCommonFunctions.mSplitTransactionsDeleted = data.getParcelableArrayListExtra(
+                                SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
                     }
                 }
                 break;

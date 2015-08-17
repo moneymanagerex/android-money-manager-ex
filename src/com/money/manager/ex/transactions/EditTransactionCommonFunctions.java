@@ -707,13 +707,18 @@ public class EditTransactionCommonFunctions {
     private void selectTransactionType(TransactionTypes transactionType) {
         this.transactionType = transactionType;
 
-        // Clear selection background
-        withdrawalButton.setBackgroundColor(Color.TRANSPARENT);
+        // Clear all buttons.
+
+        int backgroundInactive = mContext.getResources().getColor(R.color.button_background_inactive);
+
+        withdrawalButton.setBackgroundColor(backgroundInactive);
         getWithdrawalButtonIcon().setTextColor(mContext.getResources().getColor(R.color.material_red_700));
-        depositButton.setBackgroundColor(Color.TRANSPARENT);
+        depositButton.setBackgroundColor(backgroundInactive);
         getDepositButtonIcon().setTextColor(mContext.getResources().getColor(R.color.material_green_700));
-        transferButton.setBackgroundColor(Color.TRANSPARENT);
+        transferButton.setBackgroundColor(backgroundInactive);
         getTransferButtonIcon().setTextColor(mContext.getResources().getColor(R.color.material_grey_700));
+
+        // Style the selected button.
 
         int backgroundSelected = mParent.getResources().getColor(R.color.button_background_active);
 //        int[] colorArrayAttributes = new int[] { R.attr.cardViewBackgroundColor };
