@@ -133,25 +133,6 @@ public class AllDataAdapter
             amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
             setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
         }
-//        if (getAccountId() == Constants.NOT_SET) {
-//            // Search results
-//            if (isTransfer) {
-//                amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
-//                setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
-//            } else {
-//                amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
-//                setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
-//            }
-//        } else {
-//            // Regular account transactions list.
-//            if (isTransfer && getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
-//                amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
-//                setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
-//            } else {
-//                amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
-//                setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
-//            }
-//        }
 
         // check amount sign
         if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
