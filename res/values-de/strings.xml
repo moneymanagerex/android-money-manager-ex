@@ -35,6 +35,7 @@
   <string name="dropbox_linkedFile">Datei Dropbox</string>
   <string name="preferences_general">Allgemein</string>
   <string name="preferences_dispaly">Design</string>
+  <string name="preferences_behaviour">Voreinstellungen_Verhalten</string>
   <string name="base_currency">Basiswährung</string>
   <string name="view_accounts_opened">Offene Konten anzeigen</string>
   <string name="if_not_selected_willShowAllAccounts">Zeigt alle Konten an, wenn nicht ausgewählt</string>
@@ -44,6 +45,10 @@
   <string name="path">Datenbank-Pfad</string>
   <string name="title_show_tutorial">Zeige Tutorium</string>
   <string name="summary_show_tutorial">Zeige Tutorium beim nächsten Programmaufruf?</string>
+  <string name="preferences_behaviour_focus_filter_title">Voreinstellung_Verhalten_Fokus_Filter_Titel</string>
+  <string name="preferences_behaviour_focus_filter_summary">Fokus auf Filter in Selektoren. Ansonsten durchsuchen.</string>
+  <string name="pref_auto_sync_via_wifi">Auto-Sync nur über WiFi</string>
+  <string name="pref_auto_sync_via_wifi_summary">Automatische Synchronisierung nur mit WiFi-Verbindung.</string>
   <string name="account">Konto</string>
   <string name="account_list">Kontenliste</string>
   <string name="account_empty_list">Keine Konti gefunden. Um ein Konto zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
@@ -64,6 +69,7 @@
   <string name="db_account_insert_failed">Fehler beim Einfügen des Kontos</string>
   <string name="db_account_update_failed">Fehler beim Aktualisieren des Kontos</string>
   <string name="error_currency_not_selected">Angabe der Währung ist erforderlich</string>
+  <string name="error_saving_default_currency">Fehler beim Speichern der Standardwährung</string>
   <string name="error_initialbal_empty">Anfangssaldo des Kontos erforderlich</string>
   <string name="error_accountname_empty">Angabe des Kontonamens ist erforderlich</string>
   <string name="error_accounttype_empty">Angabe der Kontoart ist erforderlich</string>
@@ -117,7 +123,7 @@
   <string name="error_toaccount_not_selected">Konto ist erforderlich</string>
   <string name="error_category_not_selected">Kategorie ist erforderlich</string>
   <string name="error_totamount_empty">Gesamtbetrag ist erforderlich</string>
-  <string name="error_transfer_to_same_account">Die beiden Konten den Transfer müssen verschieden sein</string>
+  <string name="error_transfer_to_same_account">Die beiden Konten für den Transfer müssen verschieden sein</string>
   <string name="about">Über</string>
   <string name="add">Hinzufügen</string>
   <string name="confirmDelete">Sind Sie sich sicher, dass Sie das löschen möchten?</string>
@@ -162,6 +168,7 @@
   <string name="last15days">Letzten 2 Wochen</string>
   <string name="current_month">Aktueller Monat</string>
   <string name="current_year">Laufendes Jahr</string>
+  <string name="future_transactions">Zukünftige Transaktionen</string>
   <string name="show_transaction">Transaktion anzeigen</string>
   <string name="changelog">Changelog</string>
   <string name="transaction_number">Transaktionsnummer</string>
@@ -332,7 +339,10 @@
   <string name="import_all_currencies">Import Währungen</string>
   <string name="import_currencies_in_progress">Importiere Währungen. Bitte warten&#8230;</string>
   <string name="amount_greater_or_equal">Betrag größer oder gleich</string>
+  <string name="amount_from">Betrag von</string>
   <string name="amount_less_or_equal">Betrag kleiner oder gleich</string>
+  <string name="amount_to">Betrag zu</string>
+  <string name="reset">Zurücksetzen</string>
   <string name="result_search">Ergebnis deiner Suche</string>
   <string name="new_repeating_transaction">Neue wiederholte Transaktion</string>
   <string name="edit_repeating_transaction">Editiere Wiederholte Transaktion</string>
@@ -442,6 +452,8 @@
   <string name="qif_export">QIF-Export</string>
   <string name="update_prices">Preise aktualisieren</string>
   <string name="update_price">Preis aktualisieren</string>
+  <string name="download_price">Download Preis</string>
+  <string name="edit_price">Preis bearbeiten</string>
   <string name="price_updated">Preis aktualisiert</string>
   <string name="all_prices_updated">Alle Preise wurden aktualisiert.</string>
   <string name="confirm_price_download">Möchten Sie Sicherheitspreise online aktualisieren?</string>
@@ -485,9 +497,15 @@
   <string name="select_account">Konto auswählen</string>
   <string name="invalid_transaction_number">Ungültige Transaktionsnummer</string>
   <string name="budgets">Haushaltsplan</string>
+  <string name="budget_list">Budget-Liste</string>
+  <string name="actual">Aktuell</string>
   <string name="base_currency_not_set">Basiswährung wurde nicht festgelegt</string>
   <string name="error">Fehler</string>
   <string name="unhandled_crash">Unerwarteter Fehler. Bitte senden Sie uns das Protokoll (log file).</string>
   <string name="title_activity_currency_rates_report">Währungskurse</string>
   <string name="frequency">Häufigkeit</string>
+  <string name="update_available">Update verfügbar</string>
+  <string name="update_on_dropbox">Auf Dropbox ist eine aktualisierte Datenbankdatei vorhanden. Möchten Sie aktualisieren?</string>
+  <string name="currencies_empty">Keine Währungen gefunden. Um eine zu erstellen, tippen Sie auf das grüne plus-Taste.</string>
+  <string name="homepage">Unsere Homepage ist http://android.moneymanagerex.org/</string>
 </resources>

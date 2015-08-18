@@ -35,6 +35,7 @@
   <string name="dropbox_linkedFile">Dropbox datoteka</string>
   <string name="preferences_general">Uopšteno</string>
   <string name="preferences_dispaly">Izgled</string>
+  <string name="preferences_behaviour">Ponašanje</string>
   <string name="base_currency">Osnovna valuta</string>
   <string name="view_accounts_opened">Prikaži otvorene račune</string>
   <string name="if_not_selected_willShowAllAccounts">Ako nije odabrano, svi računi će biti prikazati</string>
@@ -44,6 +45,10 @@
   <string name="path">Lokacija baze podataka</string>
   <string name="title_show_tutorial">Prikaži vodič</string>
   <string name="summary_show_tutorial">Prikaži vodič pri slijedećem pokretanju?</string>
+  <string name="preferences_behaviour_focus_filter_title">Filter u selektorima</string>
+  <string name="preferences_behaviour_focus_filter_summary">Postavi fokus na filter u selektorima. Inače listaj.</string>
+  <string name="pref_auto_sync_via_wifi">Auto-sinhronizuj samo preko WiFi</string>
+  <string name="pref_auto_sync_via_wifi_summary">Auto-sinhronizuj samo ako postoji WiFi konekcija.</string>
   <string name="account">Račun</string>
   <string name="account_list">Lista računa</string>
   <string name="account_empty_list">Nemate računa. Da biste napravili jedan, dodirnite zeleno plus dugme.</string>
@@ -64,6 +69,7 @@
   <string name="db_account_insert_failed">Greška pri kreiranju računa</string>
   <string name="db_account_update_failed">Greška prilikom ažuriranja računa</string>
   <string name="error_currency_not_selected">Valuta je neophodna</string>
+  <string name="error_saving_default_currency">Greška pri spremanju bazne valute</string>
   <string name="error_initialbal_empty">Početni bilans računa je neophodan</string>
   <string name="error_accountname_empty">Ime računa je neophodno</string>
   <string name="error_accounttype_empty">Tip računa je neophodan</string>
@@ -162,6 +168,7 @@
   <string name="last15days">Posljednje 2 sedmice</string>
   <string name="current_month">Tekući mjesec</string>
   <string name="current_year">Tekuća godina</string>
+  <string name="future_transactions">Buduće transakcije</string>
   <string name="show_transaction">Prikaži transakciju</string>
   <string name="changelog">Log promjena</string>
   <string name="transaction_number">Broj transakcije</string>
@@ -251,6 +258,9 @@
   <string name="no_thanks">Ne, hvala</string>
   <string name="donate_exlamation">Donirajte!</string>
   <string name="donate_direct">Možete donirati klikom na link Donirajte na web stranici naše aplikacije. Kliknite ovdje da otvorite u pregledniku.</string>
+  <string name="donate_bitcoin">Također prihvaćamo BitCoin donacije.</string>
+  <string name="donate_license">Zbog uslova Google licenciranja ne smijemo staviti link na donacije direktno unutar aplikacije.</string>
+  <string name="donate_button_text">Otvori početnu stranicu</string>
   <string name="android_sqlite_vesion">SQLite verzija</string>
   <string name="ascending">Uzlazno</string>
   <string name="descending">Silazno</string>
@@ -287,7 +297,7 @@
   <string name="summary_application_font_size">Odaberite veličinu fonta koju želite postaviti programu</string>
   <string name="micro">Mikro</string>
   <string name="small">Mali</string>
-  <string name="Default">Početna opcija</string>
+  <string name="Default">Osnovna opcija</string>
   <string name="medium">Srednje</string>
   <string name="large">Veliko</string>
   <string name="dropbox_download_is_starting">Preuzimanje sa Dropbox-a. Molim pričekajte&#8230;</string>
@@ -315,8 +325,8 @@
   <string name="accounts">Računi</string>
   <string name="to_account">Na račun</string>
   <string name="from_account">Sa računa</string>
-  <string name="default_status">Početni status</string>
-  <string name="default_payee">Početni primalac</string>
+  <string name="default_status">Osnovni status</string>
+  <string name="default_payee">Osnovni primalac</string>
   <string name="edit_transaction">Uređivanje transakcije</string>
   <string name="delete_one_selected_transaction">Jeste li sigurni da želite obrisati odabranu transakciju?</string>
   <string name="delete_others_selected_transaction">Jeste li sigurni da želite obrisati %d odabranih transakcija?</string>
@@ -329,7 +339,10 @@
   <string name="import_all_currencies">Uvezi valute</string>
   <string name="import_currencies_in_progress">Uvoz valuta. Molim pričekajte&#8230;</string>
   <string name="amount_greater_or_equal">Iznos jednak ili veći</string>
+  <string name="amount_from">Iznos sa</string>
   <string name="amount_less_or_equal">Iznos manji ili jednak</string>
+  <string name="amount_to">Iznos na</string>
+  <string name="reset">Resetuj</string>
   <string name="result_search">Rezultat vaše pretrage</string>
   <string name="new_repeating_transaction">Nova ponavljajuća transakcija</string>
   <string name="edit_repeating_transaction">Izmjeni ponavljajuću transakciju</string>
@@ -439,6 +452,8 @@
   <string name="qif_export">Qif izvoz</string>
   <string name="update_prices">Osvježi cijene</string>
   <string name="update_price">Osvježi cijenu</string>
+  <string name="download_price">Preuzmi cijenu</string>
+  <string name="edit_price">Uređivanje cijene</string>
   <string name="price_updated">Cijena ažurirana</string>
   <string name="all_prices_updated">Sve cijene su ažurirane.</string>
   <string name="confirm_price_download">Želite li ažurirati cijene dionica online?</string>
@@ -482,7 +497,15 @@
   <string name="select_account">Odaberite račun</string>
   <string name="invalid_transaction_number">Broj transakcije nije validan</string>
   <string name="budgets">Budžeti</string>
+  <string name="budget_list">Lista budžeta</string>
+  <string name="actual">Aktualni</string>
   <string name="base_currency_not_set">Osnovna valuta nije postavljena</string>
   <string name="error">Greška</string>
   <string name="unhandled_crash">Neočekivana greška. Molimo Vas da nam pošaljete log.</string>
+  <string name="title_activity_currency_rates_report">Tečajevi valuta</string>
+  <string name="frequency">Frekvencija</string>
+  <string name="update_available">Noviji podaci dostupni</string>
+  <string name="update_on_dropbox">Novija verzija datoteke baze podataka je pronađena na Dropbox-u. Želite li ažurirati?</string>
+  <string name="currencies_empty">Nijedna valuta nije pronađena. Da biste dodali novu, dodirnite zeleno plus dugme.</string>
+  <string name="homepage">Naša početna stranica je http://android.moneymanagerex.org/</string>
 </resources>

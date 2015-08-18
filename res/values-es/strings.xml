@@ -35,6 +35,7 @@
   <string name="dropbox_linkedFile">Archivo Dropbox</string>
   <string name="preferences_general">Generales</string>
   <string name="preferences_dispaly">Apariencia</string>
+  <string name="preferences_behaviour">Comportamiento</string>
   <string name="base_currency">Moneda base</string>
   <string name="view_accounts_opened">Visualizar cuentas abiertas</string>
   <string name="if_not_selected_willShowAllAccounts">Si no se selecciona visualizar todas las cuentas</string>
@@ -44,6 +45,10 @@
   <string name="path">Ruta de la base de datos</string>
   <string name="title_show_tutorial">Mostrar el tutorial</string>
   <string name="summary_show_tutorial">Mostrar el tutorial la próxima vez?</string>
+  <string name="preferences_behaviour_focus_filter_title">Filtrar en los selectores</string>
+  <string name="preferences_behaviour_focus_filter_summary">Enfocarse en filtrar en los selectores. De lo contrario, navegar.</string>
+  <string name="pref_auto_sync_via_wifi">Sincronizar automáticamente sólo en WiFi</string>
+  <string name="pref_auto_sync_via_wifi_summary">Sincronizar automáticamente solo mediante una conexión WiFi.</string>
   <string name="account">Cuenta</string>
   <string name="account_list">Lista de las cuentas</string>
   <string name="account_empty_list">No se encontraron cuentas. Para crear una, pulsar el botón verde con el símbolo más.</string>
@@ -163,6 +168,7 @@
   <string name="last15days">Últimas 2 semanas</string>
   <string name="current_month">Mes en curso</string>
   <string name="current_year">Año en curso</string>
+  <string name="future_transactions">Transacciones futuras</string>
   <string name="show_transaction">Visualizar las transacciones</string>
   <string name="changelog">Registro de cambios</string>
   <string name="transaction_number">Número de transacción</string>
@@ -217,6 +223,7 @@
   <string name="expenses">Gastos</string>
   <string name="difference">Diferencia</string>
   <string name="no_data">No se encontraron registros. Para crear uno, pulse el botón Más verde.</string>
+  <string name="no_stock_data">No hay datos de la bolsa disponibles para esta cuenta.</string>
   <string name="month">Mes</string>
   <string name="year">Año</string>
   <string name="menu_reports">Reportes</string>
@@ -332,7 +339,9 @@
   <string name="import_all_currencies">Importar Divisas</string>
   <string name="import_currencies_in_progress">Importando divisas. Por favor espere...</string>
   <string name="amount_greater_or_equal">Cantidad mayor o igual</string>
+  <string name="amount_from">Monto desde</string>
   <string name="amount_less_or_equal">Cantidad menor o igual</string>
+  <string name="amount_to">Monto hasta</string>
   <string name="reset">Restablecer</string>
   <string name="result_search">Resultado de la búsqueda</string>
   <string name="new_repeating_transaction">Nueva Transacción Recurrente</string>
@@ -443,8 +452,11 @@
   <string name="qif_export">Exportar a Qif</string>
   <string name="update_prices">Actualizar cotizaciones</string>
   <string name="update_price">Actualizar cotización</string>
+  <string name="download_price">Descargar precio</string>
+  <string name="edit_price">Editar precio</string>
   <string name="price_updated">Cotización actualizada</string>
   <string name="all_prices_updated">Todos las cotizaciones fueron actualizadas.</string>
+  <string name="confirm_price_download">¿Quieres actualizar los precios de la bolsa en linea?</string>
   <string name="starting_price_update">Descargando cotizaciones, por favor espere&#8230;</string>
   <string name="database_migrate_14_to_20">Migrar la base de datos desde v1.4</string>
   <string name="database_migrate_14_to_20_explanation">Se encontraron datos antiguos. Pulse aquí para usar su base de datos anterior.</string>
@@ -493,4 +505,6 @@
   <string name="frequency">Frecuencia</string>
   <string name="update_available">Actualización disponible</string>
   <string name="update_on_dropbox">Hay una versión actualizada de la base de datos en Dropbox. ¿Quiere actualizar?</string>
+  <string name="currencies_empty">No se encontraron monedas. Para crear una, pulsar el botón verde con el símbolo más.</string>
+  <string name="homepage">Nuestra página web es http://android.moneymanagerex.org/</string>
 </resources>

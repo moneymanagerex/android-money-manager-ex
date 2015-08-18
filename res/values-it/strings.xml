@@ -35,6 +35,7 @@
   <string name="dropbox_linkedFile">File Dropbox</string>
   <string name="preferences_general">Generale</string>
   <string name="preferences_dispaly">Look &amp; Feel</string>
+  <string name="preferences_behaviour">Comportamento</string>
   <string name="base_currency">Valuta base</string>
   <string name="view_accounts_opened">Visualizza conti aperti</string>
   <string name="if_not_selected_willShowAllAccounts">Se non selezionato visualizza tutti i conti</string>
@@ -44,6 +45,8 @@
   <string name="path">Percorso del database</string>
   <string name="title_show_tutorial">Visualizza tutorial</string>
   <string name="summary_show_tutorial">Visualizza tutorial al prossimo avvio?</string>
+  <string name="pref_auto_sync_via_wifi">Sincronizzazione automatica solo su WiFi</string>
+  <string name="pref_auto_sync_via_wifi_summary">Sincronizza automaticamente solo quando il collegamento WiFi.</string>
   <string name="account">Conto</string>
   <string name="account_list">Elenco dei Conti</string>
   <string name="account_empty_list">Nessun conto è stato trovato. Per crearne uno, toccare il pulsante più verde.</string>
@@ -64,6 +67,7 @@
   <string name="db_account_insert_failed">Errore nell\'inserimento del conto</string>
   <string name="db_account_update_failed">Errore nell\'aggiornamento del conto</string>
   <string name="error_currency_not_selected">Valuta è richiesta</string>
+  <string name="error_saving_default_currency">Errore durante il salvataggio la valuta predefinita</string>
   <string name="error_initialbal_empty">Saldo iniziale è richiesto</string>
   <string name="error_accountname_empty">Nome dell\'account è necessario</string>
   <string name="error_accounttype_empty">Tipo di conto è richiesto</string>
@@ -162,6 +166,7 @@
   <string name="last15days">Ultime 2 settimane</string>
   <string name="current_month">Mese corrente</string>
   <string name="current_year">Anno corrente</string>
+  <string name="future_transactions">Transazioni future</string>
   <string name="show_transaction">Visualizzazione Transazioni</string>
   <string name="changelog">Modifiche di Versione</string>
   <string name="transaction_number">Numero transazione</string>
@@ -332,7 +337,10 @@
   <string name="import_all_currencies">Importazione Valute</string>
   <string name="import_currencies_in_progress">L\'importazione valute. Attendere prego&#8230;</string>
   <string name="amount_greater_or_equal">Importo maggiore o uguale</string>
+  <string name="amount_from">Importo da</string>
   <string name="amount_less_or_equal">Importo minore o uguale</string>
+  <string name="amount_to">Importo a</string>
+  <string name="reset">Reset</string>
   <string name="result_search">Risultato della tua ricerca</string>
   <string name="new_repeating_transaction">Nuova operazione ricorrente</string>
   <string name="edit_repeating_transaction">Modifica operazione ricorrente</string>
@@ -442,6 +450,8 @@
   <string name="qif_export">Export QIF</string>
   <string name="update_prices">Aggiornamento prezzi</string>
   <string name="update_price">Aggiornamento prezzo</string>
+  <string name="download_price">Scarica prezzo</string>
+  <string name="edit_price">Modifica prezzo</string>
   <string name="price_updated">Prezzo aggiornato</string>
   <string name="all_prices_updated">Tutti i prezzi sono stati aggiornati.</string>
   <string name="confirm_price_download">Si desidera aggiornare i prezzi di sicurezza online?</string>
@@ -485,9 +495,15 @@
   <string name="select_account">Seleziona un account</string>
   <string name="invalid_transaction_number">Numero di transazione non valido</string>
   <string name="budgets">Bilanci</string>
+  <string name="budget_list">Lista Budget</string>
+  <string name="actual">Effettivo</string>
   <string name="base_currency_not_set">La valuta di base non è stata impostata</string>
   <string name="error">Errore</string>
   <string name="unhandled_crash">Errore imprevisto. Si prega di inviare il log.</string>
   <string name="title_activity_currency_rates_report">Tasso di cambio</string>
   <string name="frequency">Frequenza</string>
+  <string name="update_available">Aggiornamento disponibile</string>
+  <string name="update_on_dropbox">C\'è un database aggiornato disponibile su Dropbox. Vuoi aggiornare?</string>
+  <string name="currencies_empty">Nessun valute sono state trovate. Per crearne uno, toccare il pulsante più verde.</string>
+  <string name="homepage">La nostra homepage è http://android.moneymanagerex.org/</string>
 </resources>

@@ -211,7 +211,7 @@ public class MoneyManagerOpenHelper
     public String getSQLiteVersion() {
         String sqliteVersion = null;
         Cursor cursor = null;
-        SQLiteDatabase database = null;
+        SQLiteDatabase database;
         try {
             database = getReadableDatabase();
             if (database != null) {
@@ -275,7 +275,7 @@ public class MoneyManagerOpenHelper
 
         initBaseCurrency(database);
         initDateFormat(database);
-//        initCategories(database);
+        initCategories(database);
 
         return true;
     }
@@ -297,7 +297,8 @@ public class MoneyManagerOpenHelper
                     int categoryId = Integer.parseInt(item.substring(item.indexOf(";") + 1));
                     if (categoryId != keyCategory) {
                         keyCategory = categoryId;
-                        int idStringCategory = mContext.getResources().getIdentifier("category_" + Integer.toString(categoryId), "string", mContext.getPackageName());
+                        int idStringCategory = mContext.getResources()
+                                .getIdentifier("category_" + Integer.toString(categoryId), "string", mContext.getPackageName());
                         if (idStringCategory > 0) {
                             ContentValues contentValues = new ContentValues();
                             contentValues.put(TableCategory.CATEGID, categoryId);
@@ -305,7 +306,8 @@ public class MoneyManagerOpenHelper
                             database.insert(tableCategory, null, contentValues);
                         }
                     }
-                    int idStringSubcategory = mContext.getResources().getIdentifier("subcategory_" + Integer.toString(subCategoryId), "string", mContext.getPackageName());
+                    int idStringSubcategory = mContext.getResources()
+                            .getIdentifier("subcategory_" + Integer.toString(subCategoryId), "string", mContext.getPackageName());
                     if (idStringSubcategory > 0) {
                         ContentValues contentValues = new ContentValues();
                         contentValues.put(TableSubCategory.SUBCATEGID, subCategoryId);

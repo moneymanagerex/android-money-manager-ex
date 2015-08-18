@@ -35,6 +35,7 @@
   <string name="dropbox_linkedFile">Dropbox のファイル</string>
   <string name="preferences_general">全般</string>
   <string name="preferences_dispaly">ルック &amp; フィール</string>
+  <string name="preferences_behaviour">動作</string>
   <string name="base_currency">基本通貨</string>
   <string name="view_accounts_opened">オープン中のアカウントを表示</string>
   <string name="if_not_selected_willShowAllAccounts">選択しない場合、すべてのアカウントを表示します</string>
@@ -44,6 +45,10 @@
   <string name="path">データベースのパス</string>
   <string name="title_show_tutorial">チュートリアルを表示</string>
   <string name="summary_show_tutorial">次回の実行時にチュートリアルを表示しますか?</string>
+  <string name="preferences_behaviour_focus_filter_title">セレクターでフィルター</string>
+  <string name="preferences_behaviour_focus_filter_summary">セレクターでフィルターにフォーカスを当てます。それ以外の場合、参照します。</string>
+  <string name="pref_auto_sync_via_wifi">WiFi でのみ自動同期</string>
+  <string name="pref_auto_sync_via_wifi_summary">WiFi 接続時のみ自動同期します。</string>
   <string name="account">アカウント</string>
   <string name="account_list">アカウント一覧</string>
   <string name="account_empty_list">アカウントが見つかりません。作成するには緑のプラスボタンをタップします。</string>
@@ -163,6 +168,7 @@
   <string name="last15days">過去 2 週間</string>
   <string name="current_month">今月</string>
   <string name="current_year">今年</string>
+  <string name="future_transactions">将来の取引</string>
   <string name="show_transaction">取引を表示</string>
   <string name="changelog">変更履歴</string>
   <string name="transaction_number">取引番号</string>
@@ -446,6 +452,8 @@
   <string name="qif_export">Qif エクスポート</string>
   <string name="update_prices">価格の更新</string>
   <string name="update_price">価格の更新</string>
+  <string name="download_price">ダウンロード価格</string>
+  <string name="edit_price">価格を編集</string>
   <string name="price_updated">価格を更新しました</string>
   <string name="all_prices_updated">すべての価格が更新されました。</string>
   <string name="confirm_price_download">オンラインでセキュリティの価格を更新しますか?</string>
@@ -498,4 +506,6 @@
   <string name="frequency">頻度</string>
   <string name="update_available">利用可能な更新</string>
   <string name="update_on_dropbox">Dropbox で利用可能な、更新されたデータベース ファイルがあります。更新しますか?</string>
+  <string name="currencies_empty">通貨が見つかりませんでした。作成するには、緑のプラスボタンをタップします。</string>
+  <string name="homepage">私たちのホームページ http://android.moneymanagerex.org/</string>
 </resources>
