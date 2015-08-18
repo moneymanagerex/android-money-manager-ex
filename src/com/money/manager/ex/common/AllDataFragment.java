@@ -45,6 +45,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.R;
@@ -88,7 +89,7 @@ public class AllDataFragment extends BaseListFragment
     public static final String KEY_ARGUMENTS_WHERE_PARAMS = "SearchResultFragment:ArgumentsWhereParams";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 
-    public int AccountId = -1;
+    public int AccountId = Constants.NOT_SET;
 
     private static final String LOGCAT = AllDataFragment.class.getSimpleName();
 

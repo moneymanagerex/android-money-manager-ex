@@ -126,15 +126,37 @@ public class AllDataAdapter
         // Amount
 
         double amount;
-        if (isTransfer && getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
+        if (useDestinationValues(isTransfer, cursor)) {
             amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
             setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
         } else {
             amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
             setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
         }
+//        if (getAccountId() == Constants.NOT_SET) {
+//            // Search results
+//            if (isTransfer) {
+//                amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
+//                setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
+//            } else {
+//                amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
+//                setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
+//            }
+//        } else {
+//            // Regular account transactions list.
+//            if (isTransfer && getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
+//                amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
+//                setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
+//            } else {
+//                amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
+//                setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
+//            }
+//        }
 
         // check amount sign
+        if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
+            amount *= -1;
+        }
         CurrencyService currencyService = new CurrencyService(mContext);
         holder.txtAmount.setText(currencyService.getCurrencyFormatted(getCurrencyId(), amount));
 
@@ -147,10 +169,10 @@ public class AllDataAdapter
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_red_700));
         }
 
-        // compose account name
+        // Group header - account name.
         if (isShowAccountName()) {
             if (mHeadersAccountIndex.containsValue(cursor.getPosition())) {
-                holder.txtAccountName.setText(cursor.getString(cursor.getColumnIndex(ACCOUNTNAME)));
+                holder.txtAccountName.setText(cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME)));
                 holder.txtAccountName.setVisibility(View.VISIBLE);
             } else {
                 holder.txtAccountName.setVisibility(View.GONE);
@@ -217,6 +239,41 @@ public class AllDataAdapter
         }
     }
 
+    /**
+     * The most important indicator. Detects whether the values should be from FROM or TO
+     * record.
+     * @return boolean indicating whether to use *TO values (amountTo)
+     */
+    private boolean useDestinationValues(boolean isTransfer, Cursor cursor) {
+        boolean result = true;
+
+        if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
+            // Recurring transactions list.
+            return false;
+        }
+
+        if (isTransfer) {
+            // Account transactions lists.
+
+            if (getAccountId() == Constants.NOT_SET) {
+                // Search Results
+                result = true;
+            } else {
+                // Account transactions
+
+                // See which value to use.
+                if (getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            }
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
     private String getPayeeName(Cursor cursor, boolean isTransfer) {
         String result;
 
@@ -231,9 +288,9 @@ public class AllDataAdapter
             } else {
                 // Account transactions list.
 
-                if (mAccountId == -1) {
-                    // We are on search results or recurring transactions. Account id is always reset (-1).
-                    accountName = cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME));
+                if (mAccountId == Constants.NOT_SET) {
+                    // Search results or recurring transactions. Account id is always reset (-1).
+                    accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
                 } else {
                     // Standard checking account. See whether the other account is the source
                     // or the destination of the transfer.
