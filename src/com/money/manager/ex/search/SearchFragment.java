@@ -274,7 +274,8 @@ public class SearchFragment extends Fragment
 
         // account
         if (mSearchParameters.accountId != Constants.NOT_SET) {
-            where.Clause.add(QueryAllData.ACCOUNTID + "=" + mSearchParameters.accountId);
+//            where.Clause.add(QueryAllData.ACCOUNTID + "=" + mSearchParameters.accountId);
+            where.Clause.add(QueryAllData.TOACCOUNTID + "=" + mSearchParameters.accountId);
         }
         // transaction type
         if (mSearchParameters.deposit || mSearchParameters.transfer || mSearchParameters.withdrawal) {

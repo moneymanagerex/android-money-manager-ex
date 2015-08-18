@@ -10,19 +10,21 @@ SELECT 	TX.TransID AS ID,
 --	    THEN ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  TX.ToTransAmount
 --	    ELSE ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  TX.TransAmount
 --	END as Amount,
-    -- Withdrawals and Transfers have negative sign.
-    ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *  TX.TransAmount as Amount,
-	ifnull(cf.currency_symbol, cf.currency_symbol) AS currency,
 	TX.Status AS Status,
 	TX.NOTES AS Notes,
 	ifnull(cfTo.BaseConvRate, cf.BaseConvRate) AS BaseConvRate,
-	ifnull(FromAcc.CurrencyID, FROMACC.CurrencyID) as CurrencyID,
-	ifnull(FromAcc.AccountName, FROMACC.AccountName) as AccountName,
-	ifnull(FromAcc.AccountID, FROMACC.AccountID) as AccountID,
-	ToAcc.AccountName as ToAccountName,
-	ToAcc.AccountId as ToAccountId,
+	-- Source
+    -- Withdrawals and Transfers have negative sign.
+    ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *  TX.TransAmount as Amount,
+	FromAcc.CurrencyID as CurrencyID,
+	cf.currency_symbol AS currency,
+	FromAcc.AccountID as AccountID,
+	FromAcc.AccountName as AccountName,
+	-- Destination
+	ifnull(ToAcc.AccountId, FromAcc.AccountId) as ToAccountId,
+	ifnull(ToAcc.AccountName, FromAcc.AccountName) as ToAccountName,
 	TX.ToTransAmount as ToAmount,
-	ToAcc.CurrencyId as ToCurrencyId,
+	ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) as ToCurrencyId,
 	( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS Splitted,
 	ifnull( CAT.CategId, -1 ) AS CategID,
 	ifnull( SUBCAT.SubCategID, -1 ) AS SubCategID,

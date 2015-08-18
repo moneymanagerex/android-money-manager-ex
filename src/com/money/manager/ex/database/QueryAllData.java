@@ -52,7 +52,7 @@ public class QueryAllData
     public static final String Payee = "Payee";
     public static final String PayeeID = "PayeeID";
     public static final String ToAccountName = "ToAccountName";
-    public static final String ToAccountId = "ToAccountId";
+    public static final String TOACCOUNTID = "ToAccountId";
     public static final String ToAmount = "ToAmount";
     public static final String ToCurrencyId = "ToCurrencyId";
     public static final String TransactionNumber = "TransactionNumber";
@@ -73,7 +73,7 @@ public class QueryAllData
                 Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
 //                FromAccountName, FromAccountId, FromAmount, FromCurrencyId,
                 SPLITTED, CategID, SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes,
-                ToAccountName, ToAccountId, ToAmount, ToCurrencyId,
+                ToAccountName, TOACCOUNTID, ToAmount, ToCurrencyId,
                 currency, finyear};
     }
 }

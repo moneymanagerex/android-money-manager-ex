@@ -50,7 +50,6 @@ import java.util.Locale;
 /**
  *
  */
-@SuppressLint("UseSparseArrays")
 public class AllDataAdapter
         extends CursorAdapter {
 
@@ -66,8 +65,8 @@ public class AllDataAdapter
     private HashMap<Integer, Integer> mHeadersAccountIndex;
     private SparseBooleanArray mCheckedPosition;
     // account and currency
-    private int mAccountId = -1;
-    private int mCurrencyId = -1;
+    private int mAccountId = Constants.NOT_SET;
+    private int mCurrencyId = Constants.NOT_SET;
     // show account name and show balance
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
@@ -98,10 +97,7 @@ public class AllDataAdapter
         boolean isTransfer = TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Transfer);
 
         // header index
-        int accountId = isTransfer
-            ? cursor.getInt(cursor.getColumnIndex(ACCOUNTID))
-            : cursor.getInt(cursor.getColumnIndex(TOACCOUNTID));
-
+        int accountId = cursor.getInt(cursor.getColumnIndex(TOACCOUNTID));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
@@ -127,22 +123,15 @@ public class AllDataAdapter
             handler.handle(e, "parsing transaction date");
         }
 
-        double amount = 0;
-        if (!isTransfer) {
-            // take transaction amount
-            amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
-            // set currency id
-            setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
-        } else {
+        // Amount
+
+        double amount;
+        if (isTransfer && getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
             amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
             setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
-        }
-
-        if ((transactionType != null) && isTransfer) {
-            if (getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
-                amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT)); // to account = account
-                setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
-            }
+        } else {
+            amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
+            setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
         }
 
         // check amount sign
@@ -221,7 +210,8 @@ public class AllDataAdapter
             if (daysLeft == 0) {
                 holder.txtBalance.setText(R.string.due_today);
             } else {
-                holder.txtBalance.setText(Integer.toString(Math.abs(daysLeft)) + " " + context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
+                holder.txtBalance.setText(Integer.toString(Math.abs(daysLeft)) + " " +
+                        context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
             }
             holder.txtBalance.setVisibility(View.VISIBLE);
         }
@@ -385,7 +375,7 @@ public class AllDataAdapter
         PAYEE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Payee : QueryBillDeposits.PAYEENAME;
         TRANSACTIONTYPE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TransactionType : QueryBillDeposits.TRANSCODE;
         CURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.CURRENCYID : QueryBillDeposits.CURRENCYID;
-        TOACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountId : QueryBillDeposits.TOACCOUNTID;
+        TOACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TOACCOUNTID : QueryBillDeposits.TOACCOUNTID;
 //        FROMACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAccountId : QueryBillDeposits.ACCOUNTID;
         TOAMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAmount : QueryBillDeposits.TOTRANSAMOUNT;
 //        FROMAMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAmount : QueryBillDeposits.TRANSAMOUNT;

@@ -209,7 +209,7 @@ public class AllDataFragment extends BaseListFragment
         switch (id) {
             case ID_LOADER_ALL_DATA_DETAIL:
                 // compose selection and sort
-                String selection = "", sort = "";
+                String selection = "";
                 if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
                     ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
                     if (whereClause != null) {
@@ -224,7 +224,9 @@ public class AllDataFragment extends BaseListFragment
                     ArrayList<String> whereParamsList = args.getStringArrayList(KEY_ARGUMENTS_WHERE_PARAMS);
                     whereParams = whereParamsList.toArray(whereParams);
                 }
+
                 // set sort
+                String sort = "";
                 if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
                     sort = args.getString(KEY_ARGUMENTS_SORT);
                 }

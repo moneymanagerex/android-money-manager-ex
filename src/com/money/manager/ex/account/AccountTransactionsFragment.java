@@ -584,8 +584,8 @@ public class AccountTransactionsFragment
     private Bundle prepareArgsForChildFragment() {
         // compose selection and sort
         ArrayList<String> selection = new ArrayList<>();
-        selection.add("(" + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + " OR " + QueryAllData.ToAccountId + "="
-                + Integer.toString(mAccountId) + ")");
+        selection.add("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
+            " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
 
         String defaultPeriod = MoneyManagerApplication.getInstanceApp().getShowTransaction();
 
