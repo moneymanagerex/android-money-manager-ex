@@ -131,8 +131,9 @@ public class InputAmountDialog
             @Override
             public void onClick(View v) {
                 // Remove the default 0 value to avoid leading zero "01" numbers.
+                // Reset prior value/text if we are starting with 0 displayed.
                 String existingValue = txtMain.getText().toString();
-                if (existingValue.equals("0")) {
+                if (mAmount == 0 && NumericHelper.isNumeric(existingValue) && Double.parseDouble(existingValue) == 0 ) {
                     existingValue = "";
                 }
 
@@ -221,9 +222,7 @@ public class InputAmountDialog
         builder.negativeText(android.R.string.cancel);
         builder.positiveText(android.R.string.ok);
 
-        Dialog dialog = builder.show();
-
-        return dialog;
+        return builder.show();
     }
 
     @Override
