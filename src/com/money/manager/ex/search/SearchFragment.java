@@ -272,9 +272,10 @@ public class SearchFragment extends Fragment
     private ParameterizedWhereClause assembleWhereClause() {
         ParameterizedWhereClause where = new ParameterizedWhereClause();
 
+        // WHERE
+
         // account
         if (mSearchParameters.accountId != Constants.NOT_SET) {
-//            where.Clause.add(QueryAllData.ACCOUNTID + "=" + mSearchParameters.accountId);
             where.Clause.add(QueryAllData.TOACCOUNTID + "=" + mSearchParameters.accountId);
         }
         // transaction type
@@ -365,7 +366,8 @@ public class SearchFragment extends Fragment
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, where.Clause);
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE_PARAMS, where.Params);
-        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.ACCOUNTID + ", " + QueryAllData.ID);
+        // Sorting
+        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.TOACCOUNTID + ", " + QueryAllData.ID);
         //set arguments
         searchResultsFragment.setArguments(args);
 //        searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
