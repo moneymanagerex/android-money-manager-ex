@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.account;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -94,6 +95,7 @@ public class AccountTransactionsFragment
     // Controls
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
+    private Activity mActivity;
 
     /**
      * @param accountId Id of the Account to be displayed
@@ -116,6 +118,15 @@ public class AccountTransactionsFragment
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mAccountId = savedInstanceState.getInt(KEY_CONTENT);
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // Keep the direct reference to the activity to avoing null exceptions on getActivity().
+        // http://stackoverflow.com/questions/6215239/getactivity-returns-null-in-fragment-function
+        mActivity = activity;
     }
 
     // IAllDataFragmentLoaderCallbacks
@@ -366,7 +377,7 @@ public class AccountTransactionsFragment
         SubMenu subMenu = item.getSubMenu();
 
         // on init, mark the default item as checked
-        AppSettings settings = new AppSettings(getActivity());
+        AppSettings settings = new AppSettings(mActivity);
         String preference = settings.getLookAndFeelSettings().getShowTransactions();
 
         int id = Constants.NOT_SET;
