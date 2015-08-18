@@ -403,56 +403,45 @@ public class EditTransactionCommonFunctions {
 
         int accountId;
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
+        boolean enteringSourceAmount = id == R.id.textViewAmount;
         CurrencyService currencyService = new CurrencyService(mParent.getApplicationContext());
 
         if (isTransfer) {
-            Double originalAmount;
+            // Convert the value and write the amount into the other input box.
+
             try {
-                Integer toCurrencyId = AccountList.get(mAccountIdList
-                        .indexOf(id == R.id.textViewTotAmount
+                Integer fromCurrencyId = AccountList.get(
+                        mAccountIdList.indexOf(enteringSourceAmount
                                 ? this.accountId
                                 : this.toAccountId)).getCurrencyId();
-                Integer fromCurrencyId = AccountList.get(mAccountIdList
-                        .indexOf(id == R.id.textViewTotAmount
+                Integer toCurrencyId = AccountList.get(
+                        mAccountIdList.indexOf(enteringSourceAmount
                                 ? this.toAccountId
                                 : this.accountId)).getCurrencyId();
-                // take a original values
-                originalAmount = id == R.id.textViewTotAmount
+                Integer destinationAccountId = enteringSourceAmount
+                        ? this.toAccountId
+                        : this.accountId;
+
+                // get the destination value.
+                Double destinationAmount = enteringSourceAmount
                         ? (Double) txtAmountTo.getTag()
                         : (Double) txtAmount.getTag();
-                // convert value
-                Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, originalAmount, fromCurrencyId);
-                // take original amount converted
-                originalAmount = id == R.id.textViewTotAmount
-                        ? (Double) txtAmount.getTag()
-                        : (Double) txtAmountTo.getTag();
-                if (originalAmount == null)
-                    originalAmount = 0d;
-                // check if two values is equals, and then convert value
-                if (originalAmount == 0) {
-                    DecimalFormat decimalFormat = new DecimalFormat("0.00");
-                    if (decimalFormat.format(originalAmount).equals(decimalFormat.format(amountExchange))) {
-                        amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
-                        formatAmount(id == R.id.textViewTotAmount
-                                        ? txtAmount : txtAmountTo,
-                                amountExchange,
-                                this.getCurrencyIdFromAccountId(id == R.id.textViewTotAmount
-                                        ? this.accountId
-                                        : this.toAccountId));
-                    }
-                }
+                if (destinationAmount == null) destinationAmount = 0d;
 
+                // Replace the destination value only if it is zero.
+                if (destinationAmount == 0) {
+                    Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+                    formatAmount(enteringSourceAmount ? txtAmountTo : txtAmount,
+                            amountExchange, destinationAccountId);
+                }
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(mParent, mParent);
-                handler.handle(e, "returning from number input");
+                handler.handle(e, "converting the value for transfer");
             }
         }
-        if (view.equals(txtAmount)) {
-            accountId = this.accountId;
-        } else {
-            accountId = this.toAccountId;
-        }
-//        Integer currencyId = getCurrencyIdFromAccountId(accountId);
+
+        // Format the amount in selected field.
+        accountId = enteringSourceAmount ? this.accountId : this.toAccountId;
         formatAmount(((TextView) view), amount, accountId);
     }
 
