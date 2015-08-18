@@ -42,15 +42,19 @@ public class QueryAllData
     public static final String CURRENCYID = "CurrencyID";
     public static final String AccountName = "AccountName";
     public static final String ACCOUNTID = "AccountID";
-    public static final String FromAccountName = "FromAccountName";
-    public static final String FromAccountId = "FromAccountId";
-    public static final String FromAmount = "FromAmount";
-    public static final String FromCurrencyId = "FromCurrencyId";
-    public static final String Splitted = "Splitted";
+//    public static final String FromAccountName = "FromAccountName";
+//    public static final String FromAccountId = "FromAccountId";
+//    public static final String FromAmount = "FromAmount";
+//    public static final String FromCurrencyId = "FromCurrencyId";
+    public static final String SPLITTED = "Splitted";
     public static final String CategID = "CategID";
     public static final String SubcategID = "SubcategID";
     public static final String Payee = "Payee";
     public static final String PayeeID = "PayeeID";
+    public static final String ToAccountName = "ToAccountName";
+    public static final String ToAccountId = "ToAccountId";
+    public static final String ToAmount = "ToAmount";
+    public static final String ToCurrencyId = "ToCurrencyId";
     public static final String TransactionNumber = "TransactionNumber";
     public static final String Status = "Status";
     public static final String Notes = "Notes";
@@ -67,8 +71,9 @@ public class QueryAllData
     public String[] getAllColumns() {
         return new String[]{"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day,
                 Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
-                FromAccountName, FromAccountId, FromAmount, FromCurrencyId,
-                Splitted, CategID, SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes,
+//                FromAccountName, FromAccountId, FromAmount, FromCurrencyId,
+                SPLITTED, CategID, SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes,
+                ToAccountName, ToAccountId, ToAmount, ToCurrencyId,
                 currency, finyear};
     }
 }

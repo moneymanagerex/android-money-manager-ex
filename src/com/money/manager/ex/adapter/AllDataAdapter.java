@@ -60,7 +60,7 @@ public class AllDataAdapter
     // define cursor field
     private String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
-        FROMCURRENCYID, FROMACCOUNTID, FROMAMOUNT, FROMACCOUNTNAME;
+        TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME;
     private LayoutInflater mInflater;
     // hash map for group
     private HashMap<Integer, Integer> mHeadersAccountIndex;
@@ -94,8 +94,14 @@ public class AllDataAdapter
         // take a holder
         AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
 
+        String transactionType = cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE));
+        boolean isTransfer = TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Transfer);
+
         // header index
-        int accountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
+        int accountId = isTransfer
+            ? cursor.getInt(cursor.getColumnIndex(ACCOUNTID))
+            : cursor.getInt(cursor.getColumnIndex(TOACCOUNTID));
+
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
@@ -121,19 +127,21 @@ public class AllDataAdapter
             handler.handle(e, "parsing transaction date");
         }
 
-        // take transaction amount
-        double amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
-        // set currency id
-        setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
-
-        // manage transfer and change amount sign
-        String transactionType = cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE));
-        boolean isTransfer = TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Transfer);
+        double amount = 0;
+        if (!isTransfer) {
+            // take transaction amount
+            amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
+            // set currency id
+            setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
+        } else {
+            amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
+            setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
+        }
 
         if ((transactionType != null) && isTransfer) {
-            if (getAccountId() == cursor.getInt(cursor.getColumnIndex(FROMACCOUNTID))) {
-                amount = cursor.getDouble(cursor.getColumnIndex(FROMAMOUNT)); // to account = account
-                setCurrencyId(cursor.getInt(cursor.getColumnIndex(FROMCURRENCYID)));
+            if (getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
+                amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT)); // to account = account
+                setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
             }
         }
 
@@ -141,11 +149,10 @@ public class AllDataAdapter
         CurrencyService currencyService = new CurrencyService(mContext);
         holder.txtAmount.setText(currencyService.getCurrencyFormatted(getCurrencyId(), amount));
 
-        String transType = cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE));
         // text color amount
         if (isTransfer) {
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_grey_700));
-        } else if (TransactionTypes.valueOf(transType).equals(TransactionTypes.Deposit)) {
+        } else if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Deposit)) {
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_green_700));
         } else {
             holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_red_700));
@@ -225,7 +232,7 @@ public class AllDataAdapter
 
         if (isTransfer) {
             // write ToAccountName instead of payee on transfers.
-            String accountName = Constants.EMPTY_STRING;
+            String accountName;
 
             if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
                 // Recurring transactions list.
@@ -236,7 +243,7 @@ public class AllDataAdapter
 
                 if (mAccountId == -1) {
                     // We are on search results or recurring transactions. Account id is always reset (-1).
-                    accountName = cursor.getString(cursor.getColumnIndex(FROMACCOUNTNAME));
+                    accountName = cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME));
                 } else {
                     // Standard checking account. See whether the other account is the source
                     // or the destination of the transfer.
@@ -246,7 +253,7 @@ public class AllDataAdapter
                         accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
                     } else {
                         // Search results, where we display only incoming transactions.
-                        accountName = cursor.getString(cursor.getColumnIndex(FROMACCOUNTNAME));
+                        accountName = cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME));
                     }
                 }
             }
@@ -378,14 +385,14 @@ public class AllDataAdapter
         PAYEE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Payee : QueryBillDeposits.PAYEENAME;
         TRANSACTIONTYPE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TransactionType : QueryBillDeposits.TRANSCODE;
         CURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.CURRENCYID : QueryBillDeposits.CURRENCYID;
-//        TOACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountID : QueryBillDeposits.TOACCOUNTID;
-        FROMACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAccountId : QueryBillDeposits.ACCOUNTID;
-//        TOTRANSAMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TOTRANSAMOUNT : QueryBillDeposits.TOTRANSAMOUNT;
-        FROMAMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAmount : QueryBillDeposits.TRANSAMOUNT;
-//        TOCURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToCurrencyID : QueryBillDeposits.CURRENCYID;
-        FROMCURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromCurrencyId : QueryBillDeposits.CURRENCYID;
-//        TOACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountName : QueryBillDeposits.TOACCOUNTNAME;
-        FROMACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAccountName : QueryBillDeposits.ACCOUNTNAME;
+        TOACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountId : QueryBillDeposits.TOACCOUNTID;
+//        FROMACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAccountId : QueryBillDeposits.ACCOUNTID;
+        TOAMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAmount : QueryBillDeposits.TOTRANSAMOUNT;
+//        FROMAMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAmount : QueryBillDeposits.TRANSAMOUNT;
+        TOCURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToCurrencyId : QueryBillDeposits.CURRENCYID;
+//        FROMCURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromCurrencyId : QueryBillDeposits.CURRENCYID;
+        TOACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountName : QueryBillDeposits.TOACCOUNTNAME;
+//        FROMACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.FromAccountName : QueryBillDeposits.ACCOUNTNAME;
         ACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.AccountName : QueryBillDeposits.TOACCOUNTNAME;
         CATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Category : QueryBillDeposits.CATEGNAME;
         SUBCATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Subcategory : QueryBillDeposits.SUBCATEGNAME;
@@ -394,7 +401,8 @@ public class AllDataAdapter
 
     // source type: AllData or RepeatingTransaction
     public enum TypeCursor {
-        ALLDATA, REPEATINGTRANSACTION
+        ALLDATA,
+        REPEATINGTRANSACTION
     }
 
     private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {

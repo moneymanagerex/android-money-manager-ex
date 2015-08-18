@@ -27,7 +27,6 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.SplitCategoriesRepository;
-import com.money.manager.ex.database.TableSplitTransactions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,7 +91,7 @@ public class QifRecord {
         TransactionTypes transactionType = TransactionTypes.valueOf(transactionTypeName);
         if (transactionType.equals(TransactionTypes.Transfer)) {
             // Category is the destination account name.
-            category = cursor.getString(cursor.getColumnIndex(QueryAllData.FromAccountName));
+            category = cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName));
             // in square brackets
             category = "[%]".replace("%", category);
         } else {
@@ -106,7 +105,7 @@ public class QifRecord {
         }
 
         // Split Categories
-        int splitCategory = cursor.getInt(cursor.getColumnIndex(QueryAllData.Splitted));
+        int splitCategory = cursor.getInt(cursor.getColumnIndex(QueryAllData.SPLITTED));
         if (splitCategory == 1) {
             String splits = getSplitCategories(cursor);
             builder.append(splits);

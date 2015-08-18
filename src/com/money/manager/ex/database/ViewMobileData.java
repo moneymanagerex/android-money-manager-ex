@@ -43,7 +43,7 @@ public class ViewMobileData
 		"	ifnull( TOACC.ACCOUNTId, -1 ) AS ToAccountID, " + 
 		"	CANS.ToTransAmount ToTransAmount, " + 
 		"	ifnull( TOACC.CURRENCYID, -1 ) AS ToCurrencyID, " + 
-		"	( CASE ifnull( CANS.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS Splitted, " + 
+		"	( CASE ifnull( CANS.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED, " +
 		"	ifnull( CAT.CategId, st.CategId ) AS CategID, " + 
 		"	ifnull( ifnull( SUBCAT.SubCategID, st.subCategId ) , -1 ) AS SubCategID, " + 
 		"	ifnull( PAYEE.PayeeName, '' ) AS Payee, " + 
@@ -96,7 +96,7 @@ public class ViewMobileData
 	public static final String ToAccountID = "ToAccountID";
 	public static final String TOTRANSAMOUNT = "ToTransAmount";
 	public static final String ToCurrencyID = "ToCurrencyID";
-	public static final String Splitted  = "Splitted";
+	public static final String Splitted  = "SPLITTED";
 	public static final String CategID = "CategID";
 	public static final String SubcategID = "SubcategID";
 	public static final String Payee = "Payee";

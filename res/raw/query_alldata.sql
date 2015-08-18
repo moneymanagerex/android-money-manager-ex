@@ -5,22 +5,24 @@ SELECT 	TX.TransID AS ID,
 	d.userdate AS UserDate,
 	CAT.CategName as Category,
 	SUBCAT.SUBCategName as Subcategory,
-	CASE
-	    WHEN TX.TransAmount = 0
-	    THEN ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  TX.ToTransAmount
-	    ELSE ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  TX.TransAmount
-	END as Amount,
-	ifnull(cfTo.currency_symbol, cf.currency_symbol) AS currency,
+--	CASE
+--	    WHEN TX.TransAmount = 0
+--	    THEN ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  TX.ToTransAmount
+--	    ELSE ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  TX.TransAmount
+--	END as Amount,
+    -- Withdrawals and Transfers have negative sign.
+    ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *  TX.TransAmount as Amount,
+	ifnull(cf.currency_symbol, cf.currency_symbol) AS currency,
 	TX.Status AS Status,
 	TX.NOTES AS Notes,
 	ifnull(cfTo.BaseConvRate, cf.BaseConvRate) AS BaseConvRate,
-	ifnull(ToAcc.CurrencyID, FROMACC.CurrencyID) as CurrencyID,
-	ifnull(ToAcc.AccountName, FROMACC.AccountName) as AccountName,
-	ifnull(ToAcc.AccountID, FROMACC.AccountID) as AccountID,
-	FromAcc.AccountName as FromAccountName,
-	FromAcc.AccountId as FromAccountId,
-	TX.TransAmount * -1 as FromAmount,
-	FromAcc.CurrencyId as FromCurrencyId,
+	ifnull(FromAcc.CurrencyID, FROMACC.CurrencyID) as CurrencyID,
+	ifnull(FromAcc.AccountName, FROMACC.AccountName) as AccountName,
+	ifnull(FromAcc.AccountID, FROMACC.AccountID) as AccountID,
+	ToAcc.AccountName as ToAccountName,
+	ToAcc.AccountId as ToAccountId,
+	TX.ToTransAmount as ToAmount,
+	ToAcc.CurrencyId as ToCurrencyId,
 	( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS Splitted,
 	ifnull( CAT.CategId, -1 ) AS CategID,
 	ifnull( SUBCAT.SubCategID, -1 ) AS SubCategID,
@@ -39,7 +41,7 @@ FROM CHECKINGACCOUNT_V1 TX
 	LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = TX.TOACCOUNTID
 	LEFT JOIN currencyformats_v1 cf ON cf.currencyid = FROMACC.currencyid
 	LEFT JOIN currencyformats_v1 cfTo ON cfTo.currencyid = TOACC.currencyid
-	LEFT JOIN  ( 
+	LEFT JOIN (
         SELECT	transid AS id,
 			date( transdate ) AS transdate,
 			round( strftime( '%d', transdate )  ) AS day,
