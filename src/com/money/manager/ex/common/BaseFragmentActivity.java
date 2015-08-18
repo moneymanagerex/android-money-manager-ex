@@ -21,8 +21,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,7 +36,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.PreferenceConstants;
 
 public abstract class BaseFragmentActivity
         extends AppCompatActivity {
