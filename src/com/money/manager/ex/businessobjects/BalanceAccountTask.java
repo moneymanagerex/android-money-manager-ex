@@ -52,7 +52,7 @@ public class BalanceAccountTask
         // get the amount via input dialog.
         int currencyId = account.getCurrencyId();
         // do we need the id? the first 0.
-        InputAmountDialog dialog = InputAmountDialog.getInstance(this, 0, 0.0, currencyId);
+        InputAmountDialog dialog = InputAmountDialog.getInstance(mContext, this, 0, 0.0, currencyId);
         FragmentActivity parent = (FragmentActivity) mContext;
         dialog.show(parent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
 

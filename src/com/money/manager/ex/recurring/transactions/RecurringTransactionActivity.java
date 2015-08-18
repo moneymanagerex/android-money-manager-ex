@@ -141,7 +141,7 @@ public class RecurringTransactionActivity
 
         setToolbarStandardAction(getToolbar());
 
-        mCommonFunctions = new EditTransactionCommonFunctions(this);
+        mCommonFunctions = new EditTransactionCommonFunctions(getApplicationContext(), this);
 
         // manage save instance
         if (savedInstanceState != null) {

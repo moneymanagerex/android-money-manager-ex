@@ -43,7 +43,7 @@ public class StockHistoryRepository
     public StockHistoryRepository(Context context) {
         super(TABLE_NAME, DatasetType.TABLE, "stockhistory");
 
-        mContext = context;
+        mContext = context.getApplicationContext();
     }
 
     private static final String TABLE_NAME = "stockhistory_v1";

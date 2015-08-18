@@ -40,6 +40,7 @@ import com.shamanland.fonticon.FontIconView;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -52,13 +53,16 @@ public class InputAmountDialog
     private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
     private static final String KEY_EXPRESSION = "InputAmountDialog:Expression";
 
-    public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id, Double amount) {
-        InputAmountDialog fragment = getInstance(listener, id, amount, null);
+    public static InputAmountDialog getInstance(Context context, IInputAmountDialogListener listener,
+        int id, Double amount) {
+
+        InputAmountDialog fragment = getInstance(context, listener, id, amount, null);
 
         return fragment;
     }
 
-    public static InputAmountDialog getInstance(IInputAmountDialogListener listener, int id,
+    public static InputAmountDialog getInstance(Context context, IInputAmountDialogListener listener,
+                                                int id,
                                                 Double amount, Integer currencyId) {
         Bundle args = new Bundle();
         args.putInt("id", id);
@@ -68,7 +72,9 @@ public class InputAmountDialog
         dialog.setArguments(args);
         dialog.mListener = listener;
 
-        CurrencyService currencyService = new CurrencyService(dialog.getActivity());
+        dialog.mContext = context.getApplicationContext();
+
+        CurrencyService currencyService = new CurrencyService(dialog.mContext);
         dialog.mCurrencyService = currencyService;
 
         // Use the default currency if none sent.
@@ -82,6 +88,8 @@ public class InputAmountDialog
 
     public boolean roundToCurrencyDecimals = true;
 
+    private Context mContext;
+
     private int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
             R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
@@ -92,7 +100,6 @@ public class InputAmountDialog
 
     private int mIdView;
     private double mAmount;
-//    private String mExpression = null;
     private Integer mCurrencyId, mDefaultColor;
     private TextView txtMain, txtTop;
     private IInputAmountDialogListener mListener;
@@ -417,8 +424,16 @@ public class InputAmountDialog
         TableCurrencyFormats currency = mCurrencyService.getCurrency(mCurrencyId);
 
         NumericHelper helper = new NumericHelper();
-        String result = helper.getNumberFormatted(mAmount, currency.getScale(),
-            decimalPoint, groupSeparator);
+        String result;
+        if(this.roundToCurrencyDecimals) {
+            result = helper.getNumberFormatted(mAmount, currency.getScale(),
+                    decimalPoint, groupSeparator);
+        } else {
+            // get number of decimals from the current value.
+//            result = helper.getNumberFormatted(mAmount, 0, decimalPoint, groupSeparator);
+            result = Double.toString(mAmount);
+        }
+
         return result;
     }
 

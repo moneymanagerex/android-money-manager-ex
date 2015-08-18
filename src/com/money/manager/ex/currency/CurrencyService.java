@@ -60,7 +60,7 @@ public class CurrencyService {
     }
 
     public CurrencyService(Context context) {
-        mContext = context;
+        mContext = context.getApplicationContext();
     }
 
     // context
@@ -208,10 +208,8 @@ public class CurrencyService {
      * @return an instance of class TableCurrencyFormats. Null if fail
      */
     public TableCurrencyFormats getCurrency(int currencyId) {
-        TableCurrencyFormats result;
-
         // check if the currency is cached.
-        result =  getCurrenciesStore().get(currencyId);
+        TableCurrencyFormats result =  getCurrenciesStore().get(currencyId);
 
         // if not cached, try to load it.
         if (result == null) {

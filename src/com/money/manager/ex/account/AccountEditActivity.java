@@ -227,7 +227,8 @@ public class AccountEditActivity
             @Override
             public void onClick(View v) {
                 double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(AccountEditActivity.this,
+                InputAmountDialog dialog = InputAmountDialog.getInstance(getApplicationContext(),
+                        AccountEditActivity.this,
                         v.getId(), amount, mCurrencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }

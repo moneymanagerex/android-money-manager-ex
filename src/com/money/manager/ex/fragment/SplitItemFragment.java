@@ -159,7 +159,8 @@ public class SplitItemFragment
                         activity.setFragmentInputAmountClick(SplitItemFragment.this);
                     }
 
-                    InputAmountDialog dialog = InputAmountDialog.getInstance(SplitItemFragment.this,
+                    InputAmountDialog dialog = InputAmountDialog.getInstance(getContext(),
+                            SplitItemFragment.this,
                             v.getId(), amount);
                     dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
                 }

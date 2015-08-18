@@ -34,7 +34,7 @@ import java.util.List;
 public class AccountRepository {
 
     public AccountRepository(Context context) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         mAccount = new TableAccountList();
     }
 

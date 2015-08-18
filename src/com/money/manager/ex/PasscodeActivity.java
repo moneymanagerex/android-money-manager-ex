@@ -43,7 +43,7 @@ public class PasscodeActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getApplicationContext()));
 
 		// set theme
 		Core core = new Core(getApplicationContext());
@@ -51,7 +51,7 @@ public class PasscodeActivity
 			setTheme(core.getThemeApplication());
 		} catch (Exception e) {
 			//Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
-            ExceptionHandler handler = new ExceptionHandler(this, this);
+            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
             handler.handle(e, "setting theme in passcode activity");
 		}
 		super.onCreate(savedInstanceState);

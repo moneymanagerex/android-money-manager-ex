@@ -111,7 +111,8 @@ public class SearchFragment extends Fragment
                 if (v.getTag() != null && v.getTag() instanceof Double) {
                     amount = (Double) v.getTag();
                 }
-                InputAmountDialog dialog = InputAmountDialog.getInstance(SearchFragment.this, v.getId(), amount);
+                InputAmountDialog dialog = InputAmountDialog.getInstance(getContext(),
+                        SearchFragment.this, v.getId(), amount);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };

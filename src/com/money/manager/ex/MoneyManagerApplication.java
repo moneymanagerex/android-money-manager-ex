@@ -80,7 +80,7 @@ public class MoneyManagerApplication
     public void onCreate() {
         super.onCreate();
 
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getApplicationContext()));
 
         // save instance of application
         myInstance = this;
@@ -321,7 +321,7 @@ public class MoneyManagerApplication
         try {
             return getSummaryAccountsInternal(context);
         } catch (IllegalStateException ise) {
-            ExceptionHandler handler = new ExceptionHandler(this, this);
+            ExceptionHandler handler = new ExceptionHandler(context, this);
             handler.handle(ise, "getting summary accounts");
         }
         return 0;

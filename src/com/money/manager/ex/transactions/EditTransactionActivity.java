@@ -123,7 +123,7 @@ public class EditTransactionActivity
 
         setContentView(R.layout.activity_edit_account_transaction);
 
-        mCommonFunctions = new EditTransactionCommonFunctions(this);
+        mCommonFunctions = new EditTransactionCommonFunctions(getApplicationContext(), this);
 
         try {
             DropboxHelper.getInstance();

@@ -60,9 +60,7 @@ public class NumericHelper {
         return result;
     }
 
-    public String getNumberFormatted(double value, double scale, String decimalPoint, String groupSeparator) {
-        // Round the number first.
-        int decimals = getNumberOfDecimals(scale);
+    public String getNumberFormatted(double value, int decimals, String decimalPoint, String groupSeparator) {
         value = roundNumber(value, decimals);
 
         // set format
@@ -85,6 +83,13 @@ public class NumericHelper {
 
         String result = formatter.format(value);
         return result;
+    }
+
+    public String getNumberFormatted(double value, double scale, String decimalPoint, String groupSeparator) {
+        // Round the number first.
+        int decimals = getNumberOfDecimals(scale);
+
+        return getNumberFormatted(value, decimals, decimalPoint, groupSeparator);
     }
 
     /**

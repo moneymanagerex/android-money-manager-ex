@@ -50,7 +50,7 @@ public class StockRepository
     public StockRepository(Context context) {
         super(TABLE_NAME, DatasetType.TABLE, "stock");
 
-        mContext = context;
+        mContext = context.getApplicationContext();
     }
 
     private static final String TABLE_NAME = "stock_v1";

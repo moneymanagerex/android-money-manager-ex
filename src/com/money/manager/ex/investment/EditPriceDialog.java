@@ -75,7 +75,7 @@ public class EditPriceDialog
         // symbol, date, value
         if (latestPriceValues == null) {
             // todo: No history available. Get the values from the stock record.
-            StockRepository repository = new StockRepository(mContext);
+//            StockRepository repository = new StockRepository(mContext);
 //            repository.findIdsBySymbol()
         }
 
@@ -144,7 +144,7 @@ public class EditPriceDialog
             @Override
             public void onClick(View v) {
                 double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(EditPriceDialog.this,
+                InputAmountDialog dialog = InputAmountDialog.getInstance(mContext, EditPriceDialog.this,
                         v.getId(), amount, currencyId);
                 dialog.roundToCurrencyDecimals = false;
                 dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), dialog.getClass().getSimpleName());
@@ -202,7 +202,7 @@ public class EditPriceDialog
     }
 
     private void showCurrentPrice(double currentPrice, int accountId) {
-        EditTransactionCommonFunctions commonFunctions = new EditTransactionCommonFunctions(mContext);
+        EditTransactionCommonFunctions commonFunctions = new EditTransactionCommonFunctions(mContext, null);
         commonFunctions.formatAmount(mAmountTextView, currentPrice, accountId);
 
         AccountRepository accountRepository = new AccountRepository(mContext);

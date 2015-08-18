@@ -64,12 +64,14 @@ public class EditTransactionCommonFunctions {
 
     public static final int REQUEST_PICK_PAYEE = 1;
 
-    public EditTransactionCommonFunctions(Context context) {
-        mContext = context;
-        if (context instanceof BaseFragmentActivity) {
-            mParent = (BaseFragmentActivity) context;
-        }
+    public EditTransactionCommonFunctions(Context context, BaseFragmentActivity parentActivity) {
+        mContext = context.getApplicationContext();
+        mParent = parentActivity;
     }
+
+    private Context mContext;
+    private BaseFragmentActivity mParent;
+    private boolean mSplitSelected;
 
     // Payee
     public int payeeId = Constants.NOT_SET;
@@ -99,10 +101,6 @@ public class EditTransactionCommonFunctions {
     public TextView amountHeaderTextView, amountToHeaderTextView;
     public FontIconView removePayeeButton, splitButton;
     public RelativeLayout withdrawalButton, depositButton, transferButton;
-
-    private Context mContext;
-    private BaseFragmentActivity mParent;
-    private boolean mSplitSelected;
 
     public void findControls() {
         // Status
@@ -148,7 +146,7 @@ public class EditTransactionCommonFunctions {
             currencyId = this.AccountList.get(index).getCurrencyId();
         }
 
-        CurrencyService currencyService = new CurrencyService(mParent.getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(mContext);
 
         if (currencyId == null) {
             view.setText(currencyService.getBaseCurrencyFormatted(amount));
@@ -167,7 +165,7 @@ public class EditTransactionCommonFunctions {
 
             dateTextView.setText(dateFormat.format((Date) dateTextView.getTag()));
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mParent, mParent);
+            ExceptionHandler handler = new ExceptionHandler(mContext, mParent);
             handler.handle(e, "formatting extended date");
         }
     }
@@ -304,7 +302,8 @@ public class EditTransactionCommonFunctions {
                     }
                 }
                 double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance((IInputAmountDialogListener) mParent,
+                InputAmountDialog dialog = InputAmountDialog.getInstance(mContext,
+                        (IInputAmountDialogListener) mParent,
                         v.getId(), amount, currencyId);
                 dialog.show(mParent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
