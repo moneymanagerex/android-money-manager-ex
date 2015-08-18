@@ -47,14 +47,14 @@ allprojects {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
 
     defaultConfig {
         applicationId "com.money.manager.ex"
         multiDexEnabled true
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 681
         versionName '2.15.0-beta5'
         // 601 = 1.4.17, stable
@@ -128,10 +128,10 @@ dependencies {
     // Dropbox
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
     // other
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:support-v4:22.2.1'
-    compile 'com.android.support:cardview-v7:22.2.1'
-    compile 'com.android.support:design:22.2.1'
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:support-v4:23.0.0'
+    compile 'com.android.support:cardview-v7:23.0.0'
+    compile 'com.android.support:design:23.0.0'
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.0.0'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.afollestad:material-dialogs:0.7.6.0'
