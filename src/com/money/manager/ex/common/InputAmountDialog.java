@@ -195,7 +195,6 @@ public class InputAmountDialog
         mDefaultColor = txtTop.getCurrentTextColor();
 
         txtMain = (TextView) view.findViewById(R.id.textViewMain);
-//        txtMain.setText(mExpression);
         showAmountInEntryField();
 
         // evaluate the expression initially, in case there is an existing amount passed to the dialog.
@@ -430,7 +429,6 @@ public class InputAmountDialog
                     decimalPoint, groupSeparator);
         } else {
             // get number of decimals from the current value.
-//            result = helper.getNumberFormatted(mAmount, 0, decimalPoint, groupSeparator);
             result = Double.toString(mAmount);
         }
 
