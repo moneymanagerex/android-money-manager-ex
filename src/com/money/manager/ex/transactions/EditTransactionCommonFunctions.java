@@ -24,16 +24,22 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
@@ -50,13 +56,16 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconView;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,6 +103,8 @@ public class EditTransactionCommonFunctions {
     public double amountTo = 0, amount = 0; // amount
     public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
+    public String mNotes = "";
+    public String mTransNumber = "";
 
     // Controls
     public TextView txtSelectDate;
@@ -113,6 +124,8 @@ public class EditTransactionCommonFunctions {
     public TextView amountHeaderTextView, amountToHeaderTextView;
     public FontIconView removePayeeButton, splitButton;
     public RelativeLayout withdrawalButton, depositButton, transferButton;
+    public ImageButton btnTransNumber;
+    public EditText edtTransNumber, edtNotes;
 
     // Other
 
@@ -247,6 +260,8 @@ public class EditTransactionCommonFunctions {
         values.put(ISplitTransactionsDataset.SUBCATEGID, subCategoryId);
 
         values.put(ISplitTransactionsDataset.FOLLOWUPID, Constants.NOT_SET);
+        values.put(ISplitTransactionsDataset.TRANSACTIONNUMBER, this.edtTransNumber.getText().toString());
+        values.put(ISplitTransactionsDataset.NOTES, this.edtNotes.getText().toString());
 
         return values;
     }
@@ -468,6 +483,30 @@ public class EditTransactionCommonFunctions {
 
     }
 
+    public void initNotesControls() {
+        edtNotes = (EditText) mParent.findViewById(R.id.editTextNotes);
+        if (!(TextUtils.isEmpty(mNotes))) {
+            edtNotes.setText(mNotes);
+        }
+
+        edtNotes.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mDirty = true;
+            }
+        });
+    }
+
     public void initPayeeControls() {
         txtSelectPayee.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -540,6 +579,68 @@ public class EditTransactionCommonFunctions {
 
     }
 
+    public void initTransactionNumberControls() {
+        // Transaction number
+
+        edtTransNumber = (EditText) mParent.findViewById(R.id.editTextTransNumber);
+        if (!TextUtils.isEmpty(mTransNumber)) {
+            edtTransNumber.setText(mTransNumber);
+        }
+
+        // handle change
+        edtTransNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mDirty = true;
+            }
+        });
+
+        btnTransNumber = (ImageButton) mParent.findViewById(R.id.buttonTransNumber);
+        btnTransNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
+                String query = "SELECT MAX(CAST(" + ISplitTransactionsDataset.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
+                        new TableCheckingAccount().getSource() + " WHERE " +
+                        ISplitTransactionsDataset.ACCOUNTID + "=?";
+
+                Cursor cursor = helper.getReadableDatabase().rawQuery(query,
+                        new String[]{Integer.toString(accountId)});
+                if (cursor == null) return;
+
+                if (cursor.moveToFirst()) {
+                    String transNumber = cursor.getString(0);
+                    if (TextUtils.isEmpty(transNumber)) {
+                        transNumber = "0";
+                    }
+                    if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
+                        try {
+//                            edtTransNumber.setText(Long.toString(Long.parseLong(transNumber) + 1));
+                            // Use BigDecimal to allow for large numbers.
+                            BigDecimal transactionNumber = new BigDecimal(transNumber);
+                            edtTransNumber.setText(transactionNumber.add(BigDecimal.ONE).toString());
+                        } catch (Exception e) {
+                            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                            handler.handle(e, "adding transaction number");
+                        }
+                    }
+                }
+                cursor.close();
+            }
+        });
+
+    }
+
     public void initTransactionTypeSelector() {
 
         // Handle click events.
@@ -585,6 +686,36 @@ public class EditTransactionCommonFunctions {
      */
     public boolean isSplitSelected() {
         return mSplitSelected;
+    }
+
+    public boolean onActionCancelClick() {
+        if (mDirty) {
+            final MaterialDialog dialog = new MaterialDialog.Builder(mContext)
+                    .title(android.R.string.cancel)
+                    .content(R.string.transaction_cancel_confirm)
+                    .positiveText(R.string.discard)
+                    .negativeText(R.string.keep_editing)
+                    .cancelable(false)
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            mParent.setResult(Activity.RESULT_CANCELED);
+                            mParent.finish();
+
+                            super.onPositive(dialog);
+                        }
+
+                        @Override
+                        public void onNegative(MaterialDialog dialog) {
+                            super.onNegative(dialog);
+                        }
+                    })
+                    .build();
+            dialog.show();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

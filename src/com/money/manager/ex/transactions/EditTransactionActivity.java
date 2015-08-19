@@ -80,17 +80,9 @@ public class EditTransactionActivity
     public String mIntentAction;
     public int mTransId = Constants.NOT_SET;
 
-    // notes
-    public String mNotes = "";
-    // transaction numbers
-    public String mTransNumber = "";
     // bill deposits
     public int mRecurringTransactionId = Constants.NOT_SET;
     public String mNextOccurrence = null;
-
-    // Controls on the form.
-    public ImageButton btnTransNumber;
-    public EditText edtTransNumber, edtNotes;
 
     private TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
     private EditTransactionCommonFunctions mCommonFunctions;
@@ -152,51 +144,13 @@ public class EditTransactionActivity
         mCommonFunctions.setSplit(hasSplit);
 
         // Amount and total amount
-
         mCommonFunctions.initAmountSelectors();
 
-        // Transaction number
-
-        edtTransNumber = (EditText) findViewById(R.id.editTextTransNumber);
-        if (!TextUtils.isEmpty(mTransNumber)) {
-            edtTransNumber.setText(mTransNumber);
-        }
-        btnTransNumber = (ImageButton) findViewById(R.id.buttonTransNumber);
-        btnTransNumber.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getApplicationContext());
-                String query = "SELECT MAX(CAST(" + ISplitTransactionsDataset.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
-                        new TableCheckingAccount().getSource() + " WHERE " +
-                        ISplitTransactionsDataset.ACCOUNTID + "=?";
-
-                Cursor cursor = helper.getReadableDatabase().rawQuery(query,
-                        new String[]{Integer.toString(mCommonFunctions.accountId)});
-                if (cursor == null) return;
-
-                if (cursor.moveToFirst()) {
-                    String transNumber = cursor.getString(0);
-                    if (TextUtils.isEmpty(transNumber)) {
-                        transNumber = "0";
-                    }
-                    if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
-                        try {
-                            edtTransNumber.setText(Long.toString(Long.parseLong(transNumber) + 1));
-                        } catch (Exception e) {
-                            Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
-                        }
-                    }
-                }
-                cursor.close();
-            }
-        });
+        // Transaction Number
+        mCommonFunctions.initTransactionNumberControls();
 
         // notes
-
-        edtNotes = (EditText) findViewById(R.id.editTextNotes);
-        if (!(TextUtils.isEmpty(mNotes))) {
-            edtNotes.setText(mNotes);
-        }
+        mCommonFunctions.initNotesControls();
 
         // refresh user interface
         mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
@@ -258,10 +212,10 @@ public class EditTransactionActivity
         outState.putString(EditTransactionActivityConstants.KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
         outState.putInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, mCommonFunctions.subCategoryId);
         outState.putString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
         outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
         outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED, mCommonFunctions.mSplitTransactionsDeleted);
-        outState.putString(EditTransactionActivityConstants.KEY_NOTES, edtNotes.getText().toString());
+        outState.putString(EditTransactionActivityConstants.KEY_NOTES, mCommonFunctions.edtNotes.getText().toString());
         // bill deposits
         outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
         outState.putString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE, mNextOccurrence);
@@ -276,29 +230,7 @@ public class EditTransactionActivity
 
     @Override
     public boolean onActionCancelClick() {
-        final MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title(android.R.string.cancel)
-                .content(R.string.transaction_cancel_confirm)
-                .positiveText(R.string.discard)
-                .negativeText(R.string.keep_editing)
-                .cancelable(false)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        setResult(RESULT_CANCELED);
-                        finish();
-
-                        super.onPositive(dialog);
-                    }
-
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                    }
-                })
-                .build();
-        dialog.show();
-        return true;
+        return mCommonFunctions.onActionCancelClick();
     }
 
     @Override
@@ -450,8 +382,8 @@ public class EditTransactionActivity
         mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.PAYEEID));
         mCommonFunctions.categoryId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.CATEGID));
         mCommonFunctions.subCategoryId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.SUBCATEGID));
-        mTransNumber = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSACTIONNUMBER));
-        mNotes = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.NOTES));
+        mCommonFunctions.mTransNumber = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSACTIONNUMBER));
+        mCommonFunctions.mNotes = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.NOTES));
         if (!duplicate) {
             mCommonFunctions.mDate = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSDATE));
         }
@@ -507,8 +439,8 @@ public class EditTransactionActivity
         mCommonFunctions.payeeId = tx.payeeId;
         mCommonFunctions.categoryId = tx.categoryId;
         mCommonFunctions.subCategoryId = tx.subCategoryId;
-        mTransNumber = tx.transactionNumber;
-        mNotes = tx.notes;
+        mCommonFunctions.mTransNumber = tx.transactionNumber;
+        mCommonFunctions.mNotes = tx.notes;
         mCommonFunctions.mDate = tx.nextOccurrence;
 
         AccountRepository accountRepository = new AccountRepository(this);
@@ -567,8 +499,8 @@ public class EditTransactionActivity
         mCommonFunctions.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
         mCommonFunctions.subCategoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID);
         mCommonFunctions.subCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME);
-        mNotes = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NOTES);
-        mTransNumber = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER);
+        mCommonFunctions.mNotes = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NOTES);
+        mCommonFunctions.mTransNumber = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER);
         mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
         mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED);
         mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
@@ -879,9 +811,6 @@ public class EditTransactionActivity
 
     private ContentValues getContentValues(boolean isTransfer) {
         ContentValues values = mCommonFunctions.getContentValues(isTransfer);
-
-        values.put(ISplitTransactionsDataset.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
-        values.put(ISplitTransactionsDataset.NOTES, edtNotes.getText().toString());
 
         return values;
     }

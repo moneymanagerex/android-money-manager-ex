@@ -108,7 +108,7 @@ public class RecurringTransactionActivity
 
     // Controls on the form.
     private ImageButton btnTransNumber;
-    private EditText edtTransNumber, edtNotes, edtTimesRepeated;
+    private EditText edtTimesRepeated;
     private TextView txtRepeats, txtTimesRepeated;
 
     private EditTransactionCommonFunctions mCommonFunctions;
@@ -178,42 +178,10 @@ public class RecurringTransactionActivity
         mCommonFunctions.initAmountSelectors();
 
         // transaction number
-
-        edtTransNumber = (EditText) findViewById(R.id.editTextTransNumber);
-        if (!TextUtils.isEmpty(mTransNumber) && NumericHelper.isNumeric(mTransNumber)) {
-            edtTransNumber.setText(mTransNumber);
-        }
-        btnTransNumber = (ImageButton) findViewById(R.id.buttonTransNumber);
-        btnTransNumber.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getApplicationContext());
-                String query = "SELECT MAX(CAST(" + ISplitTransactionsDataset.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
-                        new TableCheckingAccount().getSource() + " WHERE " +
-                        ISplitTransactionsDataset.ACCOUNTID + "=?";
-                Cursor cursor = helper.getReadableDatabase().rawQuery(query,
-                        new String[]{Integer.toString(mCommonFunctions.accountId)});
-                if (cursor != null && cursor.moveToFirst()) {
-                    String transNumber = cursor.getString(0);
-                    if (TextUtils.isEmpty(transNumber)) {
-                        transNumber = "0";
-                    }
-                    if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
-                        // Use BigDecimal to allow for large numbers.
-                        BigDecimal transactionNumber = new BigDecimal(transNumber);
-                        edtTransNumber.setText(transactionNumber.add(BigDecimal.ONE).toString());
-                    }
-                    cursor.close();
-                }
-            }
-        });
+        mCommonFunctions.initTransactionNumberControls();
 
         // notes
-
-        edtNotes = (EditText) findViewById(R.id.editTextNotes);
-        if (!(TextUtils.isEmpty(mNotes))) {
-            edtNotes.setText(mNotes);
-        }
+        mCommonFunctions.initNotesControls();
 
         // next occurrence
         mCommonFunctions.initDateSelector();
@@ -283,10 +251,10 @@ public class RecurringTransactionActivity
         outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
         outState.putInt(KEY_SUBCATEGORY_ID, mCommonFunctions.subCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
-        outState.putString(KEY_TRANS_NUMBER, edtTransNumber.getText().toString());
+        outState.putString(KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mCommonFunctions.mSplitTransactionsDeleted);
-        outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
+        outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.edtNotes.getTag()));
 //        Locale locale = getResources().getConfiguration().locale;
         outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                 .format(mCommonFunctions.txtSelectDate.getTag()));
@@ -313,27 +281,7 @@ public class RecurringTransactionActivity
 
     @Override
     public boolean onActionCancelClick() {
-        final MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title(android.R.string.cancel)
-                .content(R.string.transaction_cancel_confirm)
-                .positiveText(R.string.discard)
-                .negativeText(R.string.keep_editing)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        setResult(RESULT_CANCELED);
-                        finish();
-                        super.onPositive(dialog);
-                    }
-
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                    }
-                })
-                .build();
-        dialog.show();
-        return true;
+        return mCommonFunctions.onActionCancelClick();
     }
 
     @Override
@@ -569,8 +517,6 @@ public class RecurringTransactionActivity
     private ContentValues getContentValues(boolean isTransfer) {
         ContentValues values = mCommonFunctions.getContentValues(isTransfer);
 
-        values.put(ISplitTransactionsDataset.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
-        values.put(ISplitTransactionsDataset.NOTES, edtNotes.getText().toString());
         values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                 .format(mCommonFunctions.txtSelectDate.getTag()));
         values.put(TableBillsDeposits.REPEATS, mFrequencies);
