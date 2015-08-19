@@ -56,11 +56,9 @@ public class AccountListFragment
 
     private static TableAccountList mAccount = new TableAccountList();
     // id menu item add
-//    private static final int MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_ACCOUNT = 0;
     // filter
     private String mCurFilter;
-    private int mLayout;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -72,19 +70,17 @@ public class AccountListFragment
         setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
         setHasOptionsMenu(true);
 
-        mLayout = Intent.ACTION_PICK.equals(mAction)
+        int layout = Intent.ACTION_PICK.equals(mAction)
                 ? android.R.layout.simple_list_item_multiple_choice
                 : android.R.layout.simple_list_item_1;
 
         // create adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                mLayout, null,
+                layout, null,
                 new String[]{TableAccountList.ACCOUNTNAME},
                 new int[]{android.R.id.text1}, 0);
-        // set adapter
         setListAdapter(adapter);
 
-        // set listview
         registerForContextMenu(getListView());
 
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -110,6 +106,7 @@ public class AccountListFragment
             case 0: //EDIT
                 startAccountListEditActivity(cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
                 break;
+
             case 1: //DELETE
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(TableAccountList.ACCOUNTID, cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));

@@ -100,10 +100,6 @@ public class RecurringTransactionActivity
 
     private TableBillsDeposits mRecurringTransaction;
     private int mBillDepositsId = Constants.NOT_SET;
-    // notes
-    private String mNotes = "";
-    // transaction numbers
-    private String mTransNumber = "";
     private int mFrequencies = 0;
 
     // Controls on the form.
@@ -204,10 +200,9 @@ public class RecurringTransactionActivity
         } // set auto execute on the next occurrence
         spinFrequencies.setSelection(mFrequencies, true);
         spinFrequencies.setOnItemSelectedListener(new OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mCommonFunctions.mDirty = true;
+                mCommonFunctions.setDirty(true);
 
                 mFrequencies = position;
                 refreshTimesRepeated();
@@ -326,8 +321,8 @@ public class RecurringTransactionActivity
         mCommonFunctions.payeeId = tx.payeeId;
         mCommonFunctions.categoryId = tx.categoryId;
         mCommonFunctions.subCategoryId = tx.subCategoryId;
-        mTransNumber = tx.transactionNumber;
-        mNotes = tx.notes;
+        mCommonFunctions.mTransNumber = tx.transactionNumber;
+        mCommonFunctions.mNotes = tx.notes;
         mCommonFunctions.mDate = tx.nextOccurrence;
         mFrequencies = tx.repeats;
 
@@ -544,8 +539,8 @@ public class RecurringTransactionActivity
         mCommonFunctions.categoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
         mCommonFunctions.subCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
         mCommonFunctions.subCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
-        mNotes = savedInstanceState.getString(KEY_NOTES);
-        mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
+        mCommonFunctions.mNotes = savedInstanceState.getString(KEY_NOTES);
+        mCommonFunctions.mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
         mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
         mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
         mCommonFunctions.mDate = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);

@@ -95,7 +95,7 @@ public class EditTransactionCommonFunctions {
     // Model
     public String mDate = "";   // datepicker value
     public String status = null;
-    public String[] mStatusItems, mStatusValues;    // arrays to manage transcode and status
+    public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     public int payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
     public int categoryId = Constants.NOT_SET;  // Category
@@ -129,11 +129,10 @@ public class EditTransactionCommonFunctions {
 
     // Other
 
-    public boolean mDirty = false; // indicate whether the data has been modified by the user.
-
     private Context mContext;
     private BaseFragmentActivity mParent;
     private boolean mSplitSelected;
+    private boolean mDirty = false; // indicate whether the data has been modified by the user.
 
     public void findControls() {
         // Date
@@ -278,6 +277,10 @@ public class EditTransactionCommonFunctions {
         return (FontIconView) mParent.findViewById(R.id.depositButtonIcon);
     }
 
+    public boolean getDirty() {
+        return mDirty;
+    }
+
     public FontIconView getTransferButtonIcon() {
         return (FontIconView) mParent.findViewById(R.id.transferButtonIcon);
     }
@@ -332,7 +335,7 @@ public class EditTransactionCommonFunctions {
         spinAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mDirty = true;
+                setDirty(true);
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     accountId = mAccountIdList.get(position);
@@ -355,7 +358,7 @@ public class EditTransactionCommonFunctions {
         spinAccountTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mDirty = true;
+                setDirty(true);
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     toAccountId = mAccountIdList.get(position);
@@ -466,7 +469,7 @@ public class EditTransactionCommonFunctions {
             public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                    mDirty = true;
+                    setDirty(true);
 
                     try {
                         Date date = new SimpleDateFormat("yyyy-MM-dd", mContext.getResources().getConfiguration().locale)
@@ -502,7 +505,7 @@ public class EditTransactionCommonFunctions {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mDirty = true;
+                setDirty(true);
             }
         });
     }
@@ -522,7 +525,7 @@ public class EditTransactionCommonFunctions {
         removePayeeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDirty = true;
+                setDirty(true);
 
                 payeeId = Constants.NOT_SET;
                 payeeName = "";
@@ -560,15 +563,19 @@ public class EditTransactionCommonFunctions {
                 this.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(status), true);
             }
         } else {
-            status = (String) this.spinStatus.getSelectedItem();
+//            status = (String) this.spinStatus.getSelectedItem();
+            status = mStatusValues[0];
         }
         this.spinStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mDirty = true;
-
                 if ((position >= 0) && (position <= mStatusValues.length)) {
-                    status = mStatusValues[position];
+                    String selectedStatus = mStatusValues[position];
+                    // If Status has been changed manually, mark data as dirty.
+                    if (!selectedStatus.equalsIgnoreCase(EditTransactionCommonFunctions.this.status)) {
+                        setDirty(true);
+                    }
+                    EditTransactionCommonFunctions.this.status = selectedStatus;
                 }
             }
 
@@ -576,7 +583,6 @@ public class EditTransactionCommonFunctions {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
     }
 
     public void initTransactionNumberControls() {
@@ -601,7 +607,7 @@ public class EditTransactionCommonFunctions {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mDirty = true;
+                setDirty(true);
             }
         });
 
@@ -648,7 +654,7 @@ public class EditTransactionCommonFunctions {
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDirty = true;
+                setDirty(true);
 
                 // find which transaction type this is.
                 TransactionTypes type = (TransactionTypes) v.getTag();
@@ -689,7 +695,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public boolean onActionCancelClick() {
-        if (mDirty) {
+        if (getDirty()) {
             final MaterialDialog dialog = new MaterialDialog.Builder(mParent)
                     .title(android.R.string.cancel)
                     .content(R.string.transaction_cancel_confirm)
@@ -699,8 +705,7 @@ public class EditTransactionCommonFunctions {
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
-                            mParent.setResult(Activity.RESULT_CANCELED);
-                            mParent.finish();
+                            cancelActivity();
 
                             super.onPositive(dialog);
                         }
@@ -712,10 +717,11 @@ public class EditTransactionCommonFunctions {
                     })
                     .build();
             dialog.show();
-            return true;
         } else {
-            return false;
+            // Just close activity
+            cancelActivity();
         }
+        return true;
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -723,7 +729,7 @@ public class EditTransactionCommonFunctions {
             case EditTransactionCommonFunctions.REQUEST_PICK_PAYEE:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
-                mDirty = true;
+                setDirty(true);
 
                 payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
                 payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
@@ -740,7 +746,7 @@ public class EditTransactionCommonFunctions {
             case EditTransactionCommonFunctions.REQUEST_PICK_ACCOUNT:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
-                mDirty = true;
+                setDirty(true);
 
                 toAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET);
                 mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
@@ -749,7 +755,7 @@ public class EditTransactionCommonFunctions {
             case EditTransactionCommonFunctions.REQUEST_PICK_CATEGORY:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
-                mDirty = true;
+                setDirty(true);
 
                 categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                 categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
@@ -762,7 +768,7 @@ public class EditTransactionCommonFunctions {
             case EditTransactionCommonFunctions.REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
-                mDirty = true;
+                setDirty(true);
 
                 mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
                 if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
@@ -788,7 +794,7 @@ public class EditTransactionCommonFunctions {
         View view = mParent.findViewById(id);
         if (view == null || !(view instanceof TextView)) return;
 
-        mDirty = true;
+        setDirty(true);
 
         int accountId;
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
@@ -1018,6 +1024,10 @@ public class EditTransactionCommonFunctions {
         return ret;
     }
 
+    public void setDirty(boolean dirty) {
+        mDirty = dirty;
+    }
+
     // Private
 
     private void addMissingAccountToSelectors(AccountRepository accountRepository, int accountId) {
@@ -1035,6 +1045,11 @@ public class EditTransactionCommonFunctions {
                 mAccountIdList.add(savedAccount.getAccountId());
             }
         }
+    }
+
+    private void cancelActivity() {
+        mParent.setResult(Activity.RESULT_CANCELED);
+        mParent.finish();
     }
 
     private void onTransferSelected() {
