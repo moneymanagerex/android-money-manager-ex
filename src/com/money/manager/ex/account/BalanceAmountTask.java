@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
 
@@ -71,32 +72,32 @@ public class BalanceAmountTask
 
     private boolean runTask() {
         TableCheckingAccount checkingAccount = new TableCheckingAccount();
-        String selection = "(" + TableCheckingAccount.ACCOUNTID + "=" + Integer.toString(getAccountId()) +
-                " OR " + TableCheckingAccount.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " + "" +
-                "AND (" + TableCheckingAccount.TRANSDATE + "<'" + getDate() +
-                "' OR (" + TableCheckingAccount.TRANSDATE + "='" + getDate() +
+        String selection = "(" + ISplitTransactionsDataset.ACCOUNTID + "=" + Integer.toString(getAccountId()) +
+                " OR " + ISplitTransactionsDataset.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " + "" +
+                "AND (" + ISplitTransactionsDataset.TRANSDATE + "<'" + getDate() +
+                "' OR (" + ISplitTransactionsDataset.TRANSDATE + "='" + getDate() +
                 "' AND " + TableCheckingAccount.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
-                "AND " + TableCheckingAccount.STATUS + "<>'V'";
+                "AND " + ISplitTransactionsDataset.STATUS + "<>'V'";
 
         Cursor cursor = mContext.getContentResolver().query(checkingAccount.getUri(),
                 checkingAccount.getAllColumns(), selection, null, null);
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                String transType = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
+                String transType = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
 
                 // Some users have invalid Transaction Type. Should we check .contains()?
 
                 if (TransactionTypes.valueOf(transType).equals(TransactionTypes.Withdrawal)) {
-                    total -= cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+                    total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
                 } else if (TransactionTypes.valueOf(transType).equals(TransactionTypes.Deposit)) {
-                    total += cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+                    total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
                 } else {
                     // transfer
-                    if (cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.ACCOUNTID)) == getAccountId()) {
-                        total -= cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
+                    if (cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID)) == getAccountId()) {
+                        total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
                     } else {
-                        total += cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
+                        total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
                     }
                 }
             }

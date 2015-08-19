@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex.recurring.transactions;
 
-import android.app.Activity;
 //import android.app.DatePickerDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -31,23 +30,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
+        import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.money.manager.ex.common.CategoryListActivity;
-import com.money.manager.ex.Constants;
-import com.money.manager.ex.PayeeActivity;
-import com.money.manager.ex.R;
-import com.money.manager.ex.SplitTransactionsActivity;
-import com.money.manager.ex.businessobjects.RecurringTransactionService;
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.AccountRepository;
+        import com.money.manager.ex.Constants;
+        import com.money.manager.ex.R;
+        import com.money.manager.ex.businessobjects.RecurringTransactionService;
+        import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.RecurringTransactionRepository;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.core.Core;
@@ -65,12 +59,7 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+        import java.text.SimpleDateFormat;
 
 /**
  * Recurring transactions are stored in BillsDeposits table.
@@ -199,9 +188,9 @@ public class RecurringTransactionActivity
             @Override
             public void onClick(View v) {
                 MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getApplicationContext());
-                String query = "SELECT MAX(CAST(" + TableCheckingAccount.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
+                String query = "SELECT MAX(CAST(" + ISplitTransactionsDataset.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
                         new TableCheckingAccount().getSource() + " WHERE " +
-                        TableCheckingAccount.ACCOUNTID + "=?";
+                        ISplitTransactionsDataset.ACCOUNTID + "=?";
                 Cursor cursor = helper.getReadableDatabase().rawQuery(query,
                         new String[]{Integer.toString(mCommonFunctions.accountId)});
                 if (cursor != null && cursor.moveToFirst()) {
@@ -262,8 +251,9 @@ public class RecurringTransactionActivity
                 refreshTimesRepeated();
             }
         });
+
         // refresh user interface
-        mCommonFunctions.onTransactionTypeChange();
+        mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
         refreshTimesRepeated();
@@ -284,7 +274,7 @@ public class RecurringTransactionActivity
         outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
-        outState.putString(KEY_TRANS_STATUS, mCommonFunctions.mStatus);
+        outState.putString(KEY_TRANS_STATUS, mCommonFunctions.status);
         outState.putDouble(KEY_TRANS_AMOUNTTO, (Double) mCommonFunctions.txtAmountTo.getTag());
         outState.putDouble(KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
@@ -382,7 +372,7 @@ public class RecurringTransactionActivity
         mCommonFunctions.toAccountId = tx.toAccountId;
         String transCode = tx.transactionCode;
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.mStatus = tx.status;
+        mCommonFunctions.status = tx.status;
         mCommonFunctions.amount = tx.amount;
         mCommonFunctions.amountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
@@ -577,42 +567,11 @@ public class RecurringTransactionActivity
     }
 
     private ContentValues getContentValues(boolean isTransfer) {
-        ContentValues values = new ContentValues();
+        ContentValues values = mCommonFunctions.getContentValues(isTransfer);
 
-        // Accounts & Payee
-        values.put(TableBillsDeposits.ACCOUNTID, mCommonFunctions.accountId);
-        values.put(TableBillsDeposits.TOACCOUNTID, mCommonFunctions.toAccountId);
-        if (isTransfer) {
-            values.put(TableBillsDeposits.PAYEEID, Constants.NOT_SET);
-        } else {
-            values.put(TableBillsDeposits.PAYEEID, mCommonFunctions.payeeId);
-        }
-
-        // Transaction Type
-        values.put(TableBillsDeposits.TRANSCODE, mCommonFunctions.getTransactionType());
-
-        // Amount
-        values.put(TableBillsDeposits.TRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
-
-        // Amount To
-        if (isTransfer) {
-            values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
-        } else {
-            // Use the Amount value.
-            values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
-        }
-
-        values.put(TableBillsDeposits.STATUS, mCommonFunctions.mStatus);
-        values.put(TableBillsDeposits.CATEGID, !mCommonFunctions.isSplitSelected()
-                ? mCommonFunctions.categoryId : Constants.NOT_SET);
-        values.put(TableBillsDeposits.SUBCATEGID, !mCommonFunctions.isSplitSelected()
-                ? mCommonFunctions.subCategoryId : Constants.NOT_SET);
-        values.put(TableBillsDeposits.FOLLOWUPID, Constants.NOT_SET);
-        values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
-        values.put(TableBillsDeposits.NOTES, edtNotes.getText().toString());
+        values.put(ISplitTransactionsDataset.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
+        values.put(ISplitTransactionsDataset.NOTES, edtNotes.getText().toString());
         values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                .format(mCommonFunctions.txtSelectDate.getTag()));
-        values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                 .format(mCommonFunctions.txtSelectDate.getTag()));
         values.put(TableBillsDeposits.REPEATS, mFrequencies);
         values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0
@@ -630,7 +589,7 @@ public class RecurringTransactionActivity
         mCommonFunctions.mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
         String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
+        mCommonFunctions.status = savedInstanceState.getString(KEY_TRANS_STATUS);
         mCommonFunctions.amount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
         mCommonFunctions.amountTo = savedInstanceState.getDouble(KEY_TRANS_AMOUNTTO);
         mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);

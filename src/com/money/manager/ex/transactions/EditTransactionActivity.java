@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex.transactions;
 
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -32,21 +31,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.account.AccountListActivity;
-import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.businessobjects.CategoryService;
 import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.businessobjects.RecurringTransactionService;
@@ -71,13 +63,9 @@ import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
-import com.fourmob.datetimepicker.date.DatePickerDialog;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -178,9 +166,9 @@ public class EditTransactionActivity
             @Override
             public void onClick(View v) {
                 MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getApplicationContext());
-                String query = "SELECT MAX(CAST(" + TableCheckingAccount.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
+                String query = "SELECT MAX(CAST(" + ISplitTransactionsDataset.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
                         new TableCheckingAccount().getSource() + " WHERE " +
-                        TableCheckingAccount.ACCOUNTID + "=?";
+                        ISplitTransactionsDataset.ACCOUNTID + "=?";
 
                 Cursor cursor = helper.getReadableDatabase().rawQuery(query,
                         new String[]{Integer.toString(mCommonFunctions.accountId)});
@@ -211,7 +199,7 @@ public class EditTransactionActivity
         }
 
         // refresh user interface
-        mCommonFunctions.onTransactionTypeChange();
+        mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
     }
@@ -238,7 +226,7 @@ public class EditTransactionActivity
 
         mCommonFunctions.transactionType = TransactionTypes.Transfer;
 
-        mCommonFunctions.onTransactionTypeChange();
+        mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
     }
 
     /**
@@ -261,7 +249,7 @@ public class EditTransactionActivity
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE,
                 new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.txtSelectDate.getTag()));
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.mStatus);
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.status);
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.payeeId);
@@ -452,20 +440,20 @@ public class EditTransactionActivity
         if (!duplicate) {
             mTransId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TRANSID));
         }
-        mCommonFunctions.accountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.ACCOUNTID));
-        mCommonFunctions.toAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TOACCOUNTID));
-        String transCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
+        mCommonFunctions.accountId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID));
+        mCommonFunctions.toAccountId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.TOACCOUNTID));
+        String transCode = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
-        mCommonFunctions.amount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
-        mCommonFunctions.amountTo = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
-        mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
-        mCommonFunctions.categoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.CATEGID));
-        mCommonFunctions.subCategoryId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.SUBCATEGID));
-        mTransNumber = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSACTIONNUMBER));
-        mNotes = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.NOTES));
+        mCommonFunctions.status = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.STATUS));
+        mCommonFunctions.amount = cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+        mCommonFunctions.amountTo = cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
+        mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.PAYEEID));
+        mCommonFunctions.categoryId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.CATEGID));
+        mCommonFunctions.subCategoryId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.SUBCATEGID));
+        mTransNumber = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSACTIONNUMBER));
+        mNotes = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.NOTES));
         if (!duplicate) {
-            mCommonFunctions.mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
+            mCommonFunctions.mDate = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSDATE));
         }
 
         cursor.close();
@@ -485,8 +473,8 @@ public class EditTransactionActivity
         }
 
         // convert status in uppercase string
-        if (!TextUtils.isEmpty(mCommonFunctions.mStatus)) {
-            mCommonFunctions.mStatus = mCommonFunctions.mStatus.toUpperCase();
+        if (!TextUtils.isEmpty(mCommonFunctions.status)) {
+            mCommonFunctions.status = mCommonFunctions.status.toUpperCase();
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
@@ -513,7 +501,7 @@ public class EditTransactionActivity
         mCommonFunctions.toAccountId = tx.toAccountId;
         String transCode = tx.transactionCode;
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.mStatus = tx.status;
+        mCommonFunctions.status = tx.status;
         mCommonFunctions.amount = tx.amount;
         mCommonFunctions.amountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
@@ -570,7 +558,7 @@ public class EditTransactionActivity
         mCommonFunctions.mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.mStatus = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
+        mCommonFunctions.status = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
         mCommonFunctions.amount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT);
         mCommonFunctions.amountTo = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT);
         mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
@@ -623,8 +611,8 @@ public class EditTransactionActivity
         // New transaction
 
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
-            if (mCommonFunctions.mStatus == null) {
-                mCommonFunctions.mStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            if (mCommonFunctions.status == null) {
+                mCommonFunctions.status = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                         .getString(getString(PreferenceConstants.PREF_DEFAULT_STATUS), "");
             }
 
@@ -876,7 +864,7 @@ public class EditTransactionActivity
             values.clear();
 
             // handle transactions that do not repeat any more.
-            String transactionDate = values.getAsString(TableCheckingAccount.TRANSDATE);
+            String transactionDate = values.getAsString(ISplitTransactionsDataset.TRANSDATE);
             RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
             if(mNextOccurrence.equals(transactionDate)) {
                 // The next occurrence date is the same as the current. Expired.
@@ -890,51 +878,10 @@ public class EditTransactionActivity
     }
 
     private ContentValues getContentValues(boolean isTransfer) {
-        ContentValues values = new ContentValues();
+        ContentValues values = mCommonFunctions.getContentValues(isTransfer);
 
-        // Accounts & Payee
-        values.put(TableCheckingAccount.ACCOUNTID, mCommonFunctions.accountId);
-        if (isTransfer) {
-            values.put(TableCheckingAccount.TOACCOUNTID, mCommonFunctions.toAccountId);
-            values.put(TableCheckingAccount.PAYEEID, Constants.NOT_SET);
-        } else {
-            values.put(TableCheckingAccount.TOACCOUNTID, Constants.NOT_SET);
-            values.put(TableCheckingAccount.PAYEEID, mCommonFunctions.payeeId);
-        }
-
-        // Transaction Type
-        values.put(TableCheckingAccount.TRANSCODE, mCommonFunctions.getTransactionType());
-
-        // Amount
-        Double amount = (Double) mCommonFunctions.txtAmount.getTag();
-        values.put(TableCheckingAccount.TRANSAMOUNT, amount);
-
-        // Amount To
-        Double amountTo;
-        if (isTransfer) {
-            amountTo = (Double) mCommonFunctions.txtAmountTo.getTag();
-        } else {
-            // Use the Amount value.
-            amountTo = (Double) mCommonFunctions.txtAmount.getTag();
-        }
-        values.put(TableCheckingAccount.TOTRANSAMOUNT, amountTo);
-
-        // Status
-        values.put(TableCheckingAccount.STATUS, mCommonFunctions.mStatus);
-
-        // Category and subcategory
-        values.put(TableCheckingAccount.CATEGID, !mCommonFunctions.isSplitSelected()
-                ? mCommonFunctions.categoryId : Constants.NOT_SET);
-        values.put(TableCheckingAccount.SUBCATEGID, !mCommonFunctions.isSplitSelected()
-                ? mCommonFunctions.subCategoryId : Constants.NOT_SET);
-
-        // Date
-        String transactionDate = DateUtils.getSQLiteStringDate(this, (Date) mCommonFunctions.txtSelectDate.getTag());
-        values.put(TableCheckingAccount.TRANSDATE, transactionDate);
-
-        values.put(TableCheckingAccount.FOLLOWUPID, Constants.NOT_SET);
-        values.put(TableCheckingAccount.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
-        values.put(TableCheckingAccount.NOTES, edtNotes.getText().toString());
+        values.put(ISplitTransactionsDataset.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
+        values.put(ISplitTransactionsDataset.NOTES, edtNotes.getText().toString());
 
         return values;
     }

@@ -25,7 +25,22 @@ import android.os.Parcelable;
  * Interface for Split Category entity. Used by split categories on account transactions
  * and on recurring transactions.
  */
-public interface ISplitTransactionsDataset extends Parcelable {
+public interface ISplitTransactionsDataset
+        extends Parcelable {
+    // Fields
+    public static final String ACCOUNTID = "ACCOUNTID";
+    public static final String CATEGID = "CATEGID";
+    public static final String NOTES = "NOTES";
+    public static final String PAYEEID = "PAYEEID";
+    public static final String STATUS = "STATUS";
+    public static final String SUBCATEGID = "SUBCATEGID";
+    public static final String TOACCOUNTID = "TOACCOUNTID";
+    public static final String TOTRANSAMOUNT = "TOTRANSAMOUNT";
+    public static final String TRANSAMOUNT = "TRANSAMOUNT";
+    public static final String TRANSCODE = "TRANSCODE";
+    public static final String TRANSACTIONNUMBER = "TRANSACTIONNUMBER";
+    public static final String TRANSDATE = "TRANSDATE";
+    public static final String FOLLOWUPID = "FOLLOWUPID";
 
     Uri getUri();
 

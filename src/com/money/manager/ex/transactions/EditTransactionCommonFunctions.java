@@ -18,6 +18,7 @@
 package com.money.manager.ex.transactions;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -52,11 +53,10 @@ import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
-import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconView;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public class EditTransactionCommonFunctions {
 
     // Model
     public String mDate = "";   // datepicker value
-    public String mStatus = null;
+    public String status = null;
     public String[] mStatusItems, mStatusValues;    // arrays to manage transcode and status
     public int payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
@@ -109,7 +109,7 @@ public class EditTransactionCommonFunctions {
     public ViewGroup tableRowPayee, tableRowAmountTo;
     public Spinner spinAccount, spinAccountTo, spinStatus, spinTransCode;
     public TextView accountFromLabel, txtToAccount;
-    public TextView txtSelectPayee, txtAmountTo, txtAmount, txtSelectCategory;
+    public TextView txtSelectPayee, txtAmountTo, txtAmount, categoryTextView;
     public TextView amountHeaderTextView, amountToHeaderTextView;
     public FontIconView removePayeeButton, splitButton;
     public RelativeLayout withdrawalButton, depositButton, transferButton;
@@ -136,7 +136,7 @@ public class EditTransactionCommonFunctions {
 
         // Category / Split
         splitButton = (FontIconView) mParent.findViewById(R.id.splitButton);
-        txtSelectCategory = (TextView) mParent.findViewById(R.id.textViewCategory);
+        categoryTextView = (TextView) mParent.findViewById(R.id.textViewCategory);
 
         // Account
         spinAccount = (Spinner) mParent.findViewById(R.id.spinnerAccount);
@@ -182,9 +182,10 @@ public class EditTransactionCommonFunctions {
     public void formatExtendedDate(TextView dateTextView) {
         try {
             Locale locale = mParent.getResources().getConfiguration().locale;
-            //SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd MMMM yyyy", locale);
-            // use a shorted, defined, format, i.e. Tue, 28 Aug 2015 for fixed width.
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", locale);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd MMMM yyyy", locale);
+            // use a shorted, defined, format, i.e. Tue, 28 Aug 2015 for fixed width, if
+            // the status selector is to switch to an icon.
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", locale);
 
             dateTextView.setText(dateFormat.format((Date) dateTextView.getTag()));
         } catch (Exception e) {
@@ -193,13 +194,61 @@ public class EditTransactionCommonFunctions {
         }
     }
 
-    public Integer getCurrencyIdFromAccountId(int accountId) {
-        try {
-            int currencyId = AccountList.get(mAccountIdList.indexOf(accountId)).getCurrencyId();
-            return currencyId;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return null;
+    /**
+     * Get content values for saving data.
+     * @param isTransfer
+     * @return
+     */
+    public ContentValues getContentValues(boolean isTransfer) {
+        ContentValues values = new ContentValues();
+
+        // Date
+        String transactionDate = DateUtils.getSQLiteStringDate(mContext, (Date) this.txtSelectDate.getTag());
+        values.put(ISplitTransactionsDataset.TRANSDATE, transactionDate);
+
+        // Transaction Type
+        values.put(ISplitTransactionsDataset.TRANSCODE, this.getTransactionType());
+
+        // Status
+        values.put(ISplitTransactionsDataset.STATUS, this.status);
+
+        // Amount
+        Double amount = (Double) this.txtAmount.getTag();
+        values.put(ISplitTransactionsDataset.TRANSAMOUNT, amount);
+
+        // Amount To
+        Double amountTo;
+        if (isTransfer) {
+            amountTo = (Double) this.txtAmountTo.getTag();
+        } else {
+            // Use the Amount value.
+            amountTo = (Double) this.txtAmount.getTag();
         }
+        values.put(ISplitTransactionsDataset.TOTRANSAMOUNT, amountTo);
+
+        // Accounts & Payee
+        values.put(ISplitTransactionsDataset.ACCOUNTID, this.accountId);
+        if (isTransfer) {
+            values.put(ISplitTransactionsDataset.TOACCOUNTID, this.toAccountId);
+            values.put(ISplitTransactionsDataset.PAYEEID, Constants.NOT_SET);
+        } else {
+            values.put(ISplitTransactionsDataset.TOACCOUNTID, Constants.NOT_SET);
+            values.put(ISplitTransactionsDataset.PAYEEID, this.payeeId);
+        }
+
+        // Category and subcategory
+        int categoryId = this.categoryId;
+        int subCategoryId = this.subCategoryId;
+        if (isTransfer || isSplitSelected()) {
+            categoryId = Constants.NOT_SET;
+            subCategoryId = Constants.NOT_SET;
+        }
+        values.put(ISplitTransactionsDataset.CATEGID, categoryId);
+        values.put(ISplitTransactionsDataset.SUBCATEGID, subCategoryId);
+
+        values.put(ISplitTransactionsDataset.FOLLOWUPID, Constants.NOT_SET);
+
+        return values;
     }
 
     public String getTransactionType() {
@@ -350,7 +399,7 @@ public class EditTransactionCommonFunctions {
      * @param datasetName name of the dataset (TableBudgetSplitTransactions.class.getSimpleName())
      */
     public void initCategoryControls(final String datasetName) {
-        this.txtSelectCategory.setOnClickListener(new View.OnClickListener() {
+        this.categoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isSplitSelected()) {
@@ -367,6 +416,8 @@ public class EditTransactionCommonFunctions {
                     intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
                     mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
                 }
+
+                // results are handled in onActivityResult.
             }
         });
 
@@ -465,12 +516,12 @@ public class EditTransactionCommonFunctions {
         this.spinStatus.setAdapter(adapterStatus);
 
         // select current value
-        if (!(TextUtils.isEmpty(mStatus))) {
-            if (Arrays.asList(mStatusValues).indexOf(mStatus) >= 0) {
-                this.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(mStatus), true);
+        if (!(TextUtils.isEmpty(status))) {
+            if (Arrays.asList(mStatusValues).indexOf(status) >= 0) {
+                this.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(status), true);
             }
         } else {
-            mStatus = (String) this.spinStatus.getSelectedItem();
+            status = (String) this.spinStatus.getSelectedItem();
         }
         this.spinStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -478,7 +529,7 @@ public class EditTransactionCommonFunctions {
                 mDirty = true;
 
                 if ((position >= 0) && (position <= mStatusValues.length)) {
-                    mStatus = mStatusValues[position];
+                    status = mStatusValues[position];
                 }
             }
 
@@ -558,12 +609,16 @@ public class EditTransactionCommonFunctions {
             case EditTransactionCommonFunctions.REQUEST_PICK_ACCOUNT:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
+                mDirty = true;
+
                 toAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET);
                 mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_PICK_CATEGORY:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
+                mDirty = true;
 
                 categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                 categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
@@ -575,6 +630,8 @@ public class EditTransactionCommonFunctions {
 
             case EditTransactionCommonFunctions.REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
+                mDirty = true;
 
                 mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
                 if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
@@ -672,20 +729,43 @@ public class EditTransactionCommonFunctions {
         splitButton.setBackgroundColor(mContext.getResources().getColor(buttonBackground));
     }
 
+    /**
+     * Reflect the transaction type change. Show and hide controls appropriately.
+     */
+    public void onTransactionTypeChange(TransactionTypes transactionType) {
+        // hide and show
+        boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
+
+        accountFromLabel.setText(isTransfer ? R.string.from_account : R.string.account);
+        txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+
+        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+        tableRowAmountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+
+        spinAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+
+        splitButton.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+
+        categoryTextView.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+
+        refreshControlHeaders();
+    }
+
     public void refreshCategoryName() {
         // validation
-        if (txtSelectCategory == null) return;
+        if (categoryTextView == null) return;
 
-        txtSelectCategory.setText("");
+        categoryTextView.setText("");
 
         if (isSplitSelected()) {
             // Split transaction. Show ...
-            txtSelectCategory.setText("\u2026");
+            categoryTextView.setText("\u2026");
         } else {
             if (!TextUtils.isEmpty(categoryName)) {
-                txtSelectCategory.setText(categoryName);
+                categoryTextView.setText(categoryName);
                 if (!TextUtils.isEmpty(subCategoryName)) {
-                    txtSelectCategory.setText(Html.fromHtml(txtSelectCategory.getText() + " : <i>" + subCategoryName + "</i>"));
+                    categoryTextView.setText(Html.fromHtml(categoryTextView.getText() + " : <i>" + subCategoryName + "</i>"));
                 }
             }
         }
@@ -728,32 +808,6 @@ public class EditTransactionCommonFunctions {
 
             txtSelectPayee.setText(text);
         }
-    }
-
-    /**
-     * Reflect the transaction type change. Show and hide controls appropriately.
-     */
-    public void onTransactionTypeChange() {
-        // hide and show
-        boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
-
-        accountFromLabel.setText(isTransfer ? R.string.from_account : R.string.account);
-        txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-
-        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
-//        tableRowAmount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        tableRowAmountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-
-        spinAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
-
-        // hide split controls
-//        chbSplitTransaction.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
-        splitButton.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
-
-        txtSelectCategory.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
-
-        refreshControlHeaders();
     }
 
     public void setSplit(final boolean checked) {
@@ -877,7 +931,7 @@ public class EditTransactionCommonFunctions {
         setSplit(false);
 
         // Clear category.
-        categoryId = Constants.NOT_SET;
+//        categoryId = Constants.NOT_SET;
     }
 
     private void selectTransactionType(TransactionTypes transactionType) {
@@ -916,7 +970,7 @@ public class EditTransactionCommonFunctions {
                 break;
         }
 
-        onTransactionTypeChange();
+        onTransactionTypeChange(transactionType);
     }
 
     public boolean validateData() {

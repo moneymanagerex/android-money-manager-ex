@@ -32,19 +32,6 @@ public class TableBillsDeposits
 
 	// FIELD
 	public static final String BDID = "BDID";
-	public static final String ACCOUNTID = "ACCOUNTID";
-	public static final String TOACCOUNTID = "TOACCOUNTID";
-	public static final String PAYEEID = "PAYEEID";
-	public static final String TRANSCODE = "TRANSCODE";
-	public static final String TRANSAMOUNT = "TRANSAMOUNT";
-	public static final String STATUS = "STATUS";
-	public static final String TRANSACTIONNUMBER = "TRANSACTIONNUMBER";
-	public static final String NOTES = "NOTES";
-	public static final String CATEGID = "CATEGID";
-	public static final String SUBCATEGID = "SUBCATEGID";
-	public static final String TRANSDATE = "TRANSDATE";
-	public static final String FOLLOWUPID = "FOLLOWUPID";
-	public static final String TOTRANSAMOUNT = "TOTRANSAMOUNT";
 	public static final String REPEATS = "REPEATS";
 	public static final String NEXTOCCURRENCEDATE = "NEXTOCCURRENCEDATE";
 	public static final String NUMOCCURRENCES = "NUMOCCURRENCES";
@@ -72,26 +59,38 @@ public class TableBillsDeposits
 	
 	@Override
 	public String[] getAllColumns() {
-		return new String [] {BDID + " AS _id", BDID, ACCOUNTID, TOACCOUNTID, PAYEEID, TRANSCODE, TRANSAMOUNT, STATUS,
-							  TRANSACTIONNUMBER, NOTES, CATEGID, SUBCATEGID, TRANSDATE, FOLLOWUPID, TOTRANSAMOUNT, REPEATS,
-							  NEXTOCCURRENCEDATE, NUMOCCURRENCES};
+		return new String [] {BDID + " AS _id", BDID,
+                ISplitTransactionsDataset.ACCOUNTID,
+                ISplitTransactionsDataset.TOACCOUNTID,
+                ISplitTransactionsDataset.PAYEEID,
+                ISplitTransactionsDataset.TRANSCODE,
+                ISplitTransactionsDataset.TRANSAMOUNT,
+                ISplitTransactionsDataset.STATUS,
+                ISplitTransactionsDataset.TRANSACTIONNUMBER,
+                ISplitTransactionsDataset.NOTES,
+                ISplitTransactionsDataset.CATEGID,
+                ISplitTransactionsDataset.SUBCATEGID,
+                ISplitTransactionsDataset.TRANSDATE,
+                ISplitTransactionsDataset.FOLLOWUPID,
+                ISplitTransactionsDataset.TOTRANSAMOUNT,
+                REPEATS, NEXTOCCURRENCEDATE, NUMOCCURRENCES};
 	}
 	
 	@Override
 	public void setValueFromCursor(Cursor c) {
 		this.id = c.getInt(c.getColumnIndex(TableBillsDeposits.BDID));
-		this.accountId = c.getInt(c.getColumnIndex(TableBillsDeposits.ACCOUNTID));
-		this.toAccountId = c.getInt(c.getColumnIndex(TableBillsDeposits.TOACCOUNTID));
-		this.transactionCode = c.getString(c.getColumnIndex(TableBillsDeposits.TRANSCODE));
+		this.accountId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID));
+		this.toAccountId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.TOACCOUNTID));
+		this.transactionCode = c.getString(c.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
 //		this.transactionType = TransactionTypes.valueOf(this.transactionCode);
-		status = c.getString(c.getColumnIndex(TableBillsDeposits.STATUS));
-		amount = c.getDouble(c.getColumnIndex(TableBillsDeposits.TRANSAMOUNT));
-		this.totalAmount = c.getDouble(c.getColumnIndex(TableBillsDeposits.TOTRANSAMOUNT));
-		payeeId = c.getInt(c.getColumnIndex(TableBillsDeposits.PAYEEID));
-		categoryId = c.getInt(c.getColumnIndex(TableBillsDeposits.CATEGID));
-		subCategoryId = c.getInt(c.getColumnIndex(TableBillsDeposits.SUBCATEGID));
-		transactionNumber = c.getString(c.getColumnIndex(TableBillsDeposits.TRANSACTIONNUMBER));
-		notes = c.getString(c.getColumnIndex(TableBillsDeposits.NOTES));
+		status = c.getString(c.getColumnIndex(ISplitTransactionsDataset.STATUS));
+		amount = c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+		this.totalAmount = c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
+		payeeId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.PAYEEID));
+		categoryId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.CATEGID));
+		subCategoryId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.SUBCATEGID));
+		transactionNumber = c.getString(c.getColumnIndex(ISplitTransactionsDataset.TRANSACTIONNUMBER));
+		notes = c.getString(c.getColumnIndex(ISplitTransactionsDataset.NOTES));
 		nextOccurrence = c.getString(c.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
 		repeats = c.getInt(c.getColumnIndex(TableBillsDeposits.REPEATS));
 		numOccurrence = c.getInt(c.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));

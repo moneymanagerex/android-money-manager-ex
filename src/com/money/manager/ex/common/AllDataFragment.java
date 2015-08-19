@@ -46,6 +46,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.R;
@@ -545,7 +546,7 @@ public class AllDataFragment extends BaseListFragment
             // content value for updates
             ContentValues values = new ContentValues();
             // set new state
-            values.put(TableCheckingAccount.STATUS, status.toUpperCase());
+            values.put(ISplitTransactionsDataset.STATUS, status.toUpperCase());
 
             // update
             int updateResult = getActivity().getContentResolver().update(new TableCheckingAccount().getUri(),

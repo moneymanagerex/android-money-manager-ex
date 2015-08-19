@@ -19,23 +19,11 @@ package com.money.manager.ex.database;
 
 import android.database.Cursor;
 
-public class TableCheckingAccount extends Dataset {
-	// definizione dei nomi dei campi
+public class TableCheckingAccount
+		extends Dataset {
+
 	public static final String TRANSID = "TRANSID";
-	public static final String ACCOUNTID = "ACCOUNTID";
-	public static final String TOACCOUNTID = "TOACCOUNTID";
-	public static final String PAYEEID = "PAYEEID";
-	public static final String TRANSCODE = "TRANSCODE";
-	public static final String TRANSAMOUNT = "TRANSAMOUNT";
-	public static final String STATUS = "STATUS";
-	public static final String TRANSACTIONNUMBER = "TRANSACTIONNUMBER";
-	public static final String NOTES = "NOTES";
-	public static final String CATEGID = "CATEGID";
-	public static final String SUBCATEGID = "SUBCATEGID";
-	public static final String TRANSDATE = "TRANSDATE";
-	public static final String FOLLOWUPID = "FOLLOWUPID";
-	public static final String TOTRANSAMOUNT = "TOTRANSAMOUNT";
-	// definizione dei campi
+
 	private int transId;
 	private int accountId;
 	private int toAccountId;
@@ -50,7 +38,7 @@ public class TableCheckingAccount extends Dataset {
 	private String transDate;
 	private int followupId;
 	private double toTransAmount;
-	// costruttore
+
 	public TableCheckingAccount() {
 		super("checkingaccount_v1", DatasetType.TABLE, "checkingaccount");
 	}
@@ -58,30 +46,40 @@ public class TableCheckingAccount extends Dataset {
 	@Override
 	public String[] getAllColumns() {
 		return new String[] {
-				"TRANSID AS _id", TRANSID, ACCOUNTID, TOACCOUNTID, PAYEEID,
-				TRANSCODE, TRANSAMOUNT, STATUS, TRANSACTIONNUMBER, NOTES,
-				CATEGID, SUBCATEGID, TRANSDATE, FOLLOWUPID, TOTRANSAMOUNT};
+				"TRANSID AS _id", TRANSID,
+                ISplitTransactionsDataset.ACCOUNTID,
+                ISplitTransactionsDataset.TOACCOUNTID,
+                ISplitTransactionsDataset.PAYEEID,
+                ISplitTransactionsDataset.TRANSCODE,
+                ISplitTransactionsDataset.TRANSAMOUNT,
+                ISplitTransactionsDataset.STATUS,
+                ISplitTransactionsDataset.TRANSACTIONNUMBER,
+                ISplitTransactionsDataset.NOTES,
+				ISplitTransactionsDataset.CATEGID,
+                ISplitTransactionsDataset.SUBCATEGID,
+                ISplitTransactionsDataset.TRANSDATE,
+                ISplitTransactionsDataset.FOLLOWUPID,
+                ISplitTransactionsDataset.TOTRANSAMOUNT};
 	}
 	
 	@Override
 	protected void setValueFromCursor(Cursor c) {
-		// controllo che non sia null il cursore
 		if (c == null) { return; }
-		// imposto i vari valori della classe dal curosre
+
 		this.setTransId(c.getInt(c.getColumnIndex(TRANSID)));
-		this.setAccountId(c.getInt(c.getColumnIndex(ACCOUNTID)));
-		this.setToAccountId(c.getInt(c.getColumnIndex(TOACCOUNTID)));
-		this.setPayeeId(c.getInt(c.getColumnIndex(PAYEEID)));
-		this.setTransCode(c.getString(c.getColumnIndex(TRANSCODE)));
-		this.setTransAmount(c.getDouble(c.getColumnIndex(TOTRANSAMOUNT)));
-		this.setStatus(c.getString(c.getColumnIndex(STATUS)));
-		this.setTransactionNumber(c.getString(c.getColumnIndex(TRANSACTIONNUMBER)));
-		this.setNotes(c.getString(c.getColumnIndex(NOTES)));
-		this.setCategId(c.getInt(c.getColumnIndex(CATEGID)));
-		this.setSubCategId(c.getInt(c.getColumnIndex(SUBCATEGID)));
-		this.setTransDate(c.getString(c.getColumnIndex(TRANSDATE)));
-		this.setFollowupId(c.getInt(c.getColumnIndex(FOLLOWUPID)));
-		this.setToTransAmount(c.getInt(c.getColumnIndex(TOTRANSAMOUNT)));
+		this.setAccountId(c.getInt(c.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID)));
+		this.setToAccountId(c.getInt(c.getColumnIndex(ISplitTransactionsDataset.TOACCOUNTID)));
+		this.setPayeeId(c.getInt(c.getColumnIndex(ISplitTransactionsDataset.PAYEEID)));
+		this.setTransCode(c.getString(c.getColumnIndex(ISplitTransactionsDataset.TRANSCODE)));
+		this.setTransAmount(c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT)));
+		this.setStatus(c.getString(c.getColumnIndex(ISplitTransactionsDataset.STATUS)));
+		this.setTransactionNumber(c.getString(c.getColumnIndex(ISplitTransactionsDataset.TRANSACTIONNUMBER)));
+		this.setNotes(c.getString(c.getColumnIndex(ISplitTransactionsDataset.NOTES)));
+		this.setCategId(c.getInt(c.getColumnIndex(ISplitTransactionsDataset.CATEGID)));
+		this.setSubCategId(c.getInt(c.getColumnIndex(ISplitTransactionsDataset.SUBCATEGID)));
+		this.setTransDate(c.getString(c.getColumnIndex(ISplitTransactionsDataset.TRANSDATE)));
+		this.setFollowupId(c.getInt(c.getColumnIndex(ISplitTransactionsDataset.FOLLOWUPID)));
+		this.setToTransAmount(c.getInt(c.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT)));
 		
 	}
 	public int getTransId() {
