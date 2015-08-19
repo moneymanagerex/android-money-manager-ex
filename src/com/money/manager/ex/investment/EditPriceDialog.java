@@ -203,7 +203,7 @@ public class EditPriceDialog
 
     private void showCurrentPrice(double currentPrice, int accountId) {
         EditTransactionCommonFunctions commonFunctions = new EditTransactionCommonFunctions(mContext, null);
-        commonFunctions.formatAmount(mAmountTextView, currentPrice, accountId);
+        commonFunctions.displayAmountFormatted(mAmountTextView, currentPrice, accountId);
 
         AccountRepository accountRepository = new AccountRepository(mContext);
         TableAccountList account = accountRepository.load(accountId);

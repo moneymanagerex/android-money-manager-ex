@@ -28,7 +28,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -171,7 +170,7 @@ public class EditTransactionCommonFunctions {
 
     }
 
-    public void formatAmount(TextView view, double amount, Integer accountId) {
+    public void displayAmountFormatted(TextView view, double amount, Integer accountId) {
         // take currency id
         Integer currencyId = null;
 
@@ -277,8 +276,18 @@ public class EditTransactionCommonFunctions {
         return (FontIconView) mParent.findViewById(R.id.depositButtonIcon);
     }
 
+    public int getDestinationCurrencyId() {
+        return this.AccountList.get(
+                mAccountIdList.indexOf(this.toAccountId)).getCurrencyId();
+    }
+
     public boolean getDirty() {
         return mDirty;
+    }
+
+    public int getSourceCurrencyId() {
+        return this.AccountList.get(
+                mAccountIdList.indexOf(this.accountId)).getCurrencyId();
     }
 
     public FontIconView getTransferButtonIcon() {
@@ -339,7 +348,7 @@ public class EditTransactionCommonFunctions {
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     accountId = mAccountIdList.get(position);
-                    formatAmount(txtAmount, (Double) txtAmount.getTag(), accountId);
+                    displayAmountFormatted(txtAmount, (Double) txtAmount.getTag(), accountId);
                     refreshControlHeaders();
                 }
             }
@@ -362,7 +371,7 @@ public class EditTransactionCommonFunctions {
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     toAccountId = mAccountIdList.get(position);
-                    formatAmount(txtAmountTo, (Double) txtAmountTo.getTag(), toAccountId);
+                    displayAmountFormatted(txtAmountTo, (Double) txtAmountTo.getTag(), toAccountId);
                     refreshControlHeaders();
                 }
             }
@@ -395,8 +404,7 @@ public class EditTransactionCommonFunctions {
                 }
                 double amount = (Double) v.getTag();
                 InputAmountDialog dialog = InputAmountDialog.getInstance(mContext,
-                        (IInputAmountDialogListener) mParent,
-                        v.getId(), amount, currencyId);
+                        (IInputAmountDialogListener) mParent, v.getId(), amount, currencyId);
                 dialog.show(mParent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
 
                 // The result is received in onFinishedInputAmountDialog.
@@ -404,11 +412,11 @@ public class EditTransactionCommonFunctions {
         };
 
         // amount
-        formatAmount(txtAmount, amount, accountId);
+        displayAmountFormatted(txtAmount, amount, accountId);
         txtAmount.setOnClickListener(onClickAmount);
 
         // amount to
-        formatAmount(txtAmountTo, amountTo, toAccountId);
+        displayAmountFormatted(txtAmountTo, amountTo, toAccountId);
         txtAmountTo.setOnClickListener(onClickAmount);
     }
 
@@ -776,7 +784,7 @@ public class EditTransactionCommonFunctions {
                     for (int i = 0; i < mSplitTransactions.size(); i++) {
                         splitSum += mSplitTransactions.get(i).getSplitTransAmount();
                     }
-                    formatAmount(txtAmount, splitSum,
+                    displayAmountFormatted(txtAmount, splitSum,
                             !transactionType.equals(TransactionTypes.Transfer)
                                     ? accountId
                                     : toAccountId);
@@ -798,46 +806,43 @@ public class EditTransactionCommonFunctions {
 
         int accountId;
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
-        boolean enteringSourceAmount = id == R.id.textViewAmount;
-        CurrencyService currencyService = new CurrencyService(mParent.getApplicationContext());
+        boolean isSourceAmount = id == R.id.textViewAmount;
+
+        // Update amount value.
+        if (isSourceAmount) {
+            this.amount = amount;
+        } else {
+            this.amountTo = amount;
+        }
 
         if (isTransfer) {
-            // Convert the value and write the amount into the other input box.
+            Integer fromCurrencyId = getSourceCurrencyId();
+            Integer toCurrencyId = getDestinationCurrencyId();
+            if (fromCurrencyId.equals(toCurrencyId)) {
+                // Same currency.
+                // Modify both values if the transfer is in the same currency.
+                this.amount = amount;
+                this.amountTo = amount;
 
-            try {
-                Integer fromCurrencyId = AccountList.get(
-                        mAccountIdList.indexOf(enteringSourceAmount
-                                ? this.accountId
-                                : this.toAccountId)).getCurrencyId();
-                Integer toCurrencyId = AccountList.get(
-                        mAccountIdList.indexOf(enteringSourceAmount
-                                ? this.toAccountId
-                                : this.accountId)).getCurrencyId();
-                Integer destinationAccountId = enteringSourceAmount
-                        ? this.toAccountId
-                        : this.accountId;
-
-                // get the destination value.
-                Double destinationAmount = enteringSourceAmount
-                        ? (Double) txtAmountTo.getTag()
-                        : (Double) txtAmount.getTag();
-                if (destinationAmount == null) destinationAmount = 0d;
-
-                // Replace the destination value only if it is zero.
-                if (destinationAmount == 0) {
-                    Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
-                    formatAmount(enteringSourceAmount ? txtAmountTo : txtAmount,
-                            amountExchange, destinationAccountId);
+                refreshSourceAmount();
+                refreshDestinationAmount();
+                // Exit here.
+                return;
+            } else {
+                // Different currency.
+                // Convert the value and write the amount into the other input box.
+                try {
+                    convertAndDisplayAmount(isSourceAmount, fromCurrencyId, toCurrencyId, amount);
+                } catch (Exception e) {
+                    ExceptionHandler handler = new ExceptionHandler(mParent, mParent);
+                    handler.handle(e, "converting the value for transfer");
                 }
-            } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(mParent, mParent);
-                handler.handle(e, "converting the value for transfer");
             }
         }
 
-        // Format the amount in selected field.
-        accountId = enteringSourceAmount ? this.accountId : this.toAccountId;
-        formatAmount(((TextView) view), amount, accountId);
+        // Display the formatted amount in selected field.
+        accountId = isSourceAmount ? this.accountId : this.toAccountId;
+        displayAmountFormatted(((TextView) view), amount, accountId);
     }
 
     /**
@@ -1052,6 +1057,33 @@ public class EditTransactionCommonFunctions {
         mParent.finish();
     }
 
+    private void convertAndDisplayAmount(boolean isSourceAmount, int fromCurrencyId, int toCurrencyId,
+                                         Double amount) {
+        CurrencyService currencyService = new CurrencyService(mContext);
+        TextView destinationTextView = txtAmountTo;
+
+        if (!isSourceAmount) {
+            fromCurrencyId = getDestinationCurrencyId();
+            toCurrencyId = getSourceCurrencyId();
+
+            destinationTextView = txtAmount;
+        }
+
+        Integer destinationAccountId = isSourceAmount
+                ? this.toAccountId
+                : this.accountId;
+
+        // get the destination value.
+        Double destinationAmount = (Double) destinationTextView.getTag();
+        if (destinationAmount == null) destinationAmount = 0d;
+
+        // Replace the destination value only if it is zero.
+        if (destinationAmount == 0) {
+            Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+            displayAmountFormatted(destinationTextView, amountExchange, destinationAccountId);
+        }
+    }
+
     private void onTransferSelected() {
         // The user is switching to Transfer transaction type.
 
@@ -1078,6 +1110,14 @@ public class EditTransactionCommonFunctions {
 
         // Clear category.
 //        categoryId = Constants.NOT_SET;
+    }
+
+    private void refreshDestinationAmount() {
+        displayAmountFormatted(this.txtAmountTo, this.amountTo, this.toAccountId);
+    }
+
+    private void refreshSourceAmount() {
+        displayAmountFormatted(this.txtAmount, this.amount, this.accountId);
     }
 
     private void selectTransactionType(TransactionTypes transactionType) {

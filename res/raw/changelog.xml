@@ -18,6 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="August 19, 2015" versionName="2.15.0-beta7">
+        <changelogtext>Update both amounts when editing one, for transfers in the same currency.</changelogtext>
         <changelogtext>List credits first for each date.</changelogtext>
         <changelogtext>Renaming the Tools menu item to Entities.</changelogtext>
         <changelogtext>Not prompting for confirmation on close if no changes made on transaction.</changelogtext>
