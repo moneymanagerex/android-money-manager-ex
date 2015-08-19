@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.transactions;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -37,6 +38,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
+import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -91,6 +93,7 @@ public class EditTransactionCommonFunctions {
     public int subCategoryId = Constants.NOT_SET;
     public double amountTo = 0, amount = 0; // amount
     public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;  // accounts
+    public String mToAccountName;
 
     // Controls
     public TextView txtSelectDate;
@@ -113,10 +116,11 @@ public class EditTransactionCommonFunctions {
 
     // Other
 
+    public boolean mDirty = false; // indicate whether the data has been modified by the user.
+
     private Context mContext;
     private BaseFragmentActivity mParent;
     private boolean mSplitSelected;
-    private boolean mDirty = false; // indicate whether the data has been modified by the user.
 
     public void findControls() {
         // Date
@@ -327,6 +331,8 @@ public class EditTransactionCommonFunctions {
                         (IInputAmountDialogListener) mParent,
                         v.getId(), amount, currencyId);
                 dialog.show(mParent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
+
+                // The result is received in onFinishedInputAmountDialog.
             }
         };
 
@@ -418,12 +424,16 @@ public class EditTransactionCommonFunctions {
                 Intent intent = new Intent(mParent, PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
                 mParent.startActivityForResult(intent, REQUEST_PICK_PAYEE);
+
+                // the result is handled in onActivityResult
             }
         });
 
         removePayeeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDirty = true;
+
                 payeeId = Constants.NOT_SET;
                 payeeName = "";
 
@@ -526,9 +536,71 @@ public class EditTransactionCommonFunctions {
         return mSplitSelected;
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case EditTransactionCommonFunctions.REQUEST_PICK_PAYEE:
+                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
+                mDirty = true;
+
+                payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
+                payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
+                // select last category used from payee. Only if category has not been entered earlier.
+                if (!isSplitSelected() && categoryId == Constants.NOT_SET) {
+                    if (setCategoryFromPayee(payeeId)) {
+                        refreshCategoryName(); // refresh UI
+                    }
+                }
+                // refresh UI
+                refreshPayeeName();
+                break;
+
+            case EditTransactionCommonFunctions.REQUEST_PICK_ACCOUNT:
+                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
+                toAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET);
+                mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
+                break;
+
+            case EditTransactionCommonFunctions.REQUEST_PICK_CATEGORY:
+                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
+                categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
+                subCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                subCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
+                // refresh UI category
+                refreshCategoryName();
+                break;
+
+            case EditTransactionCommonFunctions.REQUEST_PICK_SPLIT_TRANSACTION:
+                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
+                mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
+                    double splitSum = 0;
+                    for (int i = 0; i < mSplitTransactions.size(); i++) {
+                        splitSum += mSplitTransactions.get(i).getSplitTransAmount();
+                    }
+                    formatAmount(txtAmount, splitSum,
+                            !transactionType.equals(TransactionTypes.Transfer)
+                                    ? accountId
+                                    : toAccountId);
+                }
+                // deleted item
+                if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
+                    mSplitTransactionsDeleted = data.getParcelableArrayListExtra(
+                            SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                }
+                break;
+        }
+    }
+
     public void onFinishedInputAmountDialog(int id, Double amount) {
         View view = mParent.findViewById(id);
         if (view == null || !(view instanceof TextView)) return;
+
+        mDirty = true;
 
         int accountId;
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);

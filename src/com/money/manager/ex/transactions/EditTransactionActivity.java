@@ -90,7 +90,6 @@ public class EditTransactionActivity
 
     // action type intent
     public String mIntentAction;
-    public String mToAccountName;
     public int mTransId = Constants.NOT_SET;
 
     // notes
@@ -219,61 +218,7 @@ public class EditTransactionActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case EditTransactionCommonFunctions.REQUEST_PICK_PAYEE:
-                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
-
-                mCommonFunctions.payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
-                mCommonFunctions.payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
-                // select last category used from payee. Only if category has not been entered earlier.
-                if (!mCommonFunctions.isSplitSelected() && mCommonFunctions.categoryId == Constants.NOT_SET) {
-                    if (mCommonFunctions.setCategoryFromPayee(mCommonFunctions.payeeId)) {
-                        mCommonFunctions.refreshCategoryName(); // refresh UI
-                    }
-                }
-                // refresh UI
-                mCommonFunctions.refreshPayeeName();
-                break;
-
-            case EditTransactionCommonFunctions.REQUEST_PICK_ACCOUNT:
-                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
-
-                mCommonFunctions.toAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
-                mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
-                break;
-
-            case EditTransactionCommonFunctions.REQUEST_PICK_CATEGORY:
-                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
-
-                mCommonFunctions.categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1);
-                mCommonFunctions.categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                mCommonFunctions.subCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1);
-                mCommonFunctions.subCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
-                // refresh UI category
-                mCommonFunctions.refreshCategoryName();
-                break;
-
-            case EditTransactionCommonFunctions.REQUEST_PICK_SPLIT_TRANSACTION:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    mCommonFunctions.mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
-                    if (mCommonFunctions.mSplitTransactions != null && mCommonFunctions.mSplitTransactions.size() > 0) {
-                        double splitSum = 0;
-                        for (int i = 0; i < mCommonFunctions.mSplitTransactions.size(); i++) {
-                            splitSum += mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount();
-                        }
-                        mCommonFunctions.formatAmount(mCommonFunctions.txtAmount, splitSum,
-                            !mCommonFunctions.transactionType.equals(TransactionTypes.Transfer)
-                                ? mCommonFunctions.accountId
-                                : mCommonFunctions.toAccountId);
-                    }
-                    // deleted item
-                    if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
-                        mCommonFunctions.mSplitTransactionsDeleted = data.getParcelableArrayListExtra(
-                                SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
-                    }
-                }
-                break;
-        }
+        mCommonFunctions.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -312,7 +257,7 @@ public class EditTransactionActivity
         outState.putInt(EditTransactionActivityConstants.KEY_TRANS_ID, mTransId);
         outState.putInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mCommonFunctions.accountId);
         outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
-        outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mToAccountName);
+        outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE,
                 new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.txtSelectDate.getTag()));
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
@@ -545,7 +490,7 @@ public class EditTransactionActivity
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
+        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
         loadCategorySubName(mCommonFunctions.categoryId, mCommonFunctions.subCategoryId);
@@ -579,7 +524,7 @@ public class EditTransactionActivity
         mCommonFunctions.mDate = tx.nextOccurrence;
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
+        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
         loadCategorySubName(mCommonFunctions.categoryId, mCommonFunctions.subCategoryId);
@@ -621,7 +566,7 @@ public class EditTransactionActivity
         mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
         mCommonFunctions.accountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID);
         mCommonFunctions.toAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID);
-        mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
+        mCommonFunctions.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
         mCommonFunctions.mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
