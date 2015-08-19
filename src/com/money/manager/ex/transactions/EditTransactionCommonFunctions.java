@@ -58,6 +58,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -80,16 +81,16 @@ public class EditTransactionCommonFunctions {
         mParent = parentActivity;
     }
 
-    // Payee
-    public int payeeId = Constants.NOT_SET;
+    // Model
+    public String mDate = "";   // datepicker value
+    public String mStatus = null;
+    public String[] mStatusItems, mStatusValues;    // arrays to manage transcode and status
+    public int payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
-    // Category
-    public int categoryId = Constants.NOT_SET;
+    public int categoryId = Constants.NOT_SET;  // Category
     public int subCategoryId = Constants.NOT_SET;
-    // amount
-    public double amountTo = 0, amount = 0;
-    // accounts
-    public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;
+    public double amountTo = 0, amount = 0; // amount
+    public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;  // accounts
 
     // Controls
     public TextView txtSelectDate;
@@ -109,9 +110,6 @@ public class EditTransactionCommonFunctions {
     public TextView amountHeaderTextView, amountToHeaderTextView;
     public FontIconView removePayeeButton, splitButton;
     public RelativeLayout withdrawalButton, depositButton, transferButton;
-
-    // Model
-    public String mDate = "";   // datepicker value
 
     // Other
 
@@ -397,7 +395,7 @@ public class EditTransactionCommonFunctions {
                 @Override
                 public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
                     mDirty = true;
-                    
+
                     try {
                         Date date = new SimpleDateFormat("yyyy-MM-dd", mContext.getResources().getConfiguration().locale)
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
@@ -447,6 +445,40 @@ public class EditTransactionCommonFunctions {
         onSplitSet();
     }
 
+    public void initStatusSelector() {
+        mStatusItems = mContext.getResources().getStringArray(R.array.status_items);
+        mStatusValues = mContext.getResources().getStringArray(R.array.status_values);
+
+        // create adapter for spinnerStatus
+        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, mStatusItems);
+        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinStatus.setAdapter(adapterStatus);
+
+        // select current value
+        if (!(TextUtils.isEmpty(mStatus))) {
+            if (Arrays.asList(mStatusValues).indexOf(mStatus) >= 0) {
+                this.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(mStatus), true);
+            }
+        } else {
+            mStatus = (String) this.spinStatus.getSelectedItem();
+        }
+        this.spinStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mDirty = true;
+
+                if ((position >= 0) && (position <= mStatusValues.length)) {
+                    mStatus = mStatusValues[position];
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+    }
+
     public void initTransactionTypeSelector() {
 
         // Handle click events.
@@ -454,6 +486,8 @@ public class EditTransactionCommonFunctions {
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDirty = true;
+
                 // find which transaction type this is.
                 TransactionTypes type = (TransactionTypes) v.getTag();
                 selectTransactionType(type);

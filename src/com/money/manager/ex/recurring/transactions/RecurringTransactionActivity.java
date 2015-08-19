@@ -80,7 +80,6 @@ public class RecurringTransactionActivity
         extends BaseFragmentActivity
         implements IInputAmountDialogListener {
 
-    public static final String DATEPICKER_TAG = "datepicker";
     private static final String LOGCAT = RecurringTransactionActivity.class.getSimpleName();
 
     public static final String KEY_MODEL = "RecurringTransactionActivity:Model";
@@ -113,19 +112,16 @@ public class RecurringTransactionActivity
 
     private TableBillsDeposits mRecurringTransaction;
     private int mBillDepositsId = Constants.NOT_SET;
-    private String mStatus;
-    private String[] mStatusItems, mStatusValues;
     // notes
     private String mNotes = "";
     // transaction numbers
     private String mTransNumber = "";
     private int mFrequencies = 0;
-//    private int mNumOccurrence = Constants.NOT_SET;
 
     // Controls on the form.
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
-    private TextView txtRepeats, txtTimesRepeated, txtSelectDate;
+    private TextView txtRepeats, txtTimesRepeated;
 
     private EditTransactionCommonFunctions mCommonFunctions;
 
@@ -174,36 +170,7 @@ public class RecurringTransactionActivity
         mCommonFunctions.initTransactionTypeSelector();
 
         // status
-
-        mCommonFunctions.spinStatus = (Spinner) findViewById(R.id.spinnerStatus);
-        // arrays to manage Status
-        mStatusItems = getResources().getStringArray(R.array.status_items);
-        mStatusValues = getResources().getStringArray(R.array.status_values);
-        // create adapter for spinnerStatus
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, mStatusItems);
-        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCommonFunctions.spinStatus.setAdapter(adapterStatus);
-        // select current value
-        if (!(TextUtils.isEmpty(mStatus))) {
-            if (Arrays.asList(mStatusValues).indexOf(mStatus) >= 0) {
-                mCommonFunctions.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(mStatus), true);
-            }
-        } else {
-            mStatus = (String) mCommonFunctions.spinStatus.getSelectedItem();
-        }
-        mCommonFunctions.spinStatus.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mStatusValues.length)) {
-                    mStatus = mStatusValues[position];
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        mCommonFunctions.initStatusSelector();
 
         // Payee
         mCommonFunctions.initPayeeControls();
@@ -364,7 +331,7 @@ public class RecurringTransactionActivity
         outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
-        outState.putString(KEY_TRANS_STATUS, mStatus);
+        outState.putString(KEY_TRANS_STATUS, mCommonFunctions.mStatus);
         outState.putDouble(KEY_TRANS_AMOUNTTO, (Double) mCommonFunctions.txtAmountTo.getTag());
         outState.putDouble(KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
@@ -379,7 +346,7 @@ public class RecurringTransactionActivity
         outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
 //        Locale locale = getResources().getConfiguration().locale;
         outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                .format(txtSelectDate.getTag()));
+                .format(mCommonFunctions.txtSelectDate.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
 
         NumericHelper helper = new NumericHelper();
@@ -462,7 +429,7 @@ public class RecurringTransactionActivity
         mCommonFunctions.toAccountId = tx.toAccountId;
         String transCode = tx.transactionCode;
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mStatus = tx.status;
+        mCommonFunctions.mStatus = tx.status;
         mCommonFunctions.amount = tx.amount;
         mCommonFunctions.amountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
@@ -472,7 +439,6 @@ public class RecurringTransactionActivity
         mNotes = tx.notes;
         mCommonFunctions.mDate = tx.nextOccurrence;
         mFrequencies = tx.repeats;
-//        mNumOccurrence = tx.numOccurrence;
 
         // load split transactions only if no category selected.
         if (mCommonFunctions.categoryId == Constants.NOT_SET && mCommonFunctions.mSplitTransactions == null) {
@@ -543,7 +509,7 @@ public class RecurringTransactionActivity
     private boolean validateData() {
         if (!mCommonFunctions.validateData()) return false;
 
-        if (TextUtils.isEmpty(txtSelectDate.getText().toString())) {
+        if (TextUtils.isEmpty(mCommonFunctions.txtSelectDate.getText().toString())) {
             Core.alertDialog(this, R.string.error_next_occurrence_not_populate);
 
             return false;
@@ -683,7 +649,7 @@ public class RecurringTransactionActivity
             values.put(TableBillsDeposits.TOTRANSAMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         }
 
-        values.put(TableBillsDeposits.STATUS, mStatus);
+        values.put(TableBillsDeposits.STATUS, mCommonFunctions.mStatus);
         values.put(TableBillsDeposits.CATEGID, !mCommonFunctions.isSplitSelected()
                 ? mCommonFunctions.categoryId : Constants.NOT_SET);
         values.put(TableBillsDeposits.SUBCATEGID, !mCommonFunctions.isSplitSelected()
@@ -692,9 +658,9 @@ public class RecurringTransactionActivity
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
         values.put(TableBillsDeposits.NOTES, edtNotes.getText().toString());
         values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                .format(txtSelectDate.getTag()));
+                .format(mCommonFunctions.txtSelectDate.getTag()));
         values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                .format(txtSelectDate.getTag()));
+                .format(mCommonFunctions.txtSelectDate.getTag()));
         values.put(TableBillsDeposits.REPEATS, mFrequencies);
         values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0
                 ? edtTimesRepeated.getText().toString() : null);
@@ -711,7 +677,7 @@ public class RecurringTransactionActivity
         mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
         String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
+        mCommonFunctions.mStatus = savedInstanceState.getString(KEY_TRANS_STATUS);
         mCommonFunctions.amount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
         mCommonFunctions.amountTo = savedInstanceState.getDouble(KEY_TRANS_AMOUNTTO);
         mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
@@ -726,7 +692,6 @@ public class RecurringTransactionActivity
         mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
         mCommonFunctions.mDate = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
         mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
-//        mNumOccurrence = savedInstanceState.getInt(KEY_NUM_OCCURRENCE);
 
         // action
         mIntentAction = savedInstanceState.getString(KEY_ACTION);

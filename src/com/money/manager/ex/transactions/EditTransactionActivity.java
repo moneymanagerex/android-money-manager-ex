@@ -93,10 +93,6 @@ public class EditTransactionActivity
     public String mToAccountName;
     public int mTransId = Constants.NOT_SET;
 
-    public String mStatus = null;
-
-    // arrays to manage transcode and status
-    public String[] mStatusItems, mStatusValues;
     // notes
     public String mNotes = "";
     // transaction numbers
@@ -142,41 +138,14 @@ public class EditTransactionActivity
             handleIntent(savedInstanceState);
         }
 
-        // Transaction code
-
+        // Transaction Type
         mCommonFunctions.initTransactionTypeSelector();
 
         // account(s)
         mCommonFunctions.initAccountSelectors();
 
         // status
-
-        mStatusItems = getResources().getStringArray(R.array.status_items);
-        mStatusValues = getResources().getStringArray(R.array.status_values);
-        // create adapter for spinnerStatus
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mStatusItems);
-        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCommonFunctions.spinStatus.setAdapter(adapterStatus);
-        // select current value
-        if (!(TextUtils.isEmpty(mStatus))) {
-            if (Arrays.asList(mStatusValues).indexOf(mStatus) >= 0) {
-                mCommonFunctions.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(mStatus), true);
-            }
-        } else {
-            mStatus = (String) mCommonFunctions.spinStatus.getSelectedItem();
-        }
-        mCommonFunctions.spinStatus.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mStatusValues.length)) {
-                    mStatus = mStatusValues[position];
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        mCommonFunctions.initStatusSelector();
 
         // Transaction date
         mCommonFunctions.initDateSelector();
@@ -347,7 +316,7 @@ public class EditTransactionActivity
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE,
                 new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.txtSelectDate.getTag()));
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mStatus);
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.mStatus);
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
         outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.payeeId);
@@ -542,7 +511,7 @@ public class EditTransactionActivity
         mCommonFunctions.toAccountId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TOACCOUNTID));
         String transCode = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSCODE));
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
+        mCommonFunctions.mStatus = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.STATUS));
         mCommonFunctions.amount = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TRANSAMOUNT));
         mCommonFunctions.amountTo = cursor.getDouble(cursor.getColumnIndex(TableCheckingAccount.TOTRANSAMOUNT));
         mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.PAYEEID));
@@ -571,7 +540,9 @@ public class EditTransactionActivity
         }
 
         // convert status in uppercase string
-        if (!TextUtils.isEmpty(mStatus)) mStatus = mStatus.toUpperCase();
+        if (!TextUtils.isEmpty(mCommonFunctions.mStatus)) {
+            mCommonFunctions.mStatus = mCommonFunctions.mStatus.toUpperCase();
+        }
 
         AccountRepository accountRepository = new AccountRepository(this);
         mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
@@ -597,7 +568,7 @@ public class EditTransactionActivity
         mCommonFunctions.toAccountId = tx.toAccountId;
         String transCode = tx.transactionCode;
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mStatus = tx.status;
+        mCommonFunctions.mStatus = tx.status;
         mCommonFunctions.amount = tx.amount;
         mCommonFunctions.amountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
@@ -606,7 +577,6 @@ public class EditTransactionActivity
         mTransNumber = tx.transactionNumber;
         mNotes = tx.notes;
         mCommonFunctions.mDate = tx.nextOccurrence;
-        mStatus = tx.status;
 
         AccountRepository accountRepository = new AccountRepository(this);
         mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
@@ -655,7 +625,7 @@ public class EditTransactionActivity
         mCommonFunctions.mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mStatus = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
+        mCommonFunctions.mStatus = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
         mCommonFunctions.amount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT);
         mCommonFunctions.amountTo = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT);
         mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
@@ -708,8 +678,8 @@ public class EditTransactionActivity
         // New transaction
 
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
-            if (mStatus == null) {
-                mStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            if (mCommonFunctions.mStatus == null) {
+                mCommonFunctions.mStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                         .getString(getString(PreferenceConstants.PREF_DEFAULT_STATUS), "");
             }
 
@@ -1005,7 +975,7 @@ public class EditTransactionActivity
         values.put(TableCheckingAccount.TOTRANSAMOUNT, amountTo);
 
         // Status
-        values.put(TableCheckingAccount.STATUS, mStatus);
+        values.put(TableCheckingAccount.STATUS, mCommonFunctions.mStatus);
 
         // Category and subcategory
         values.put(TableCheckingAccount.CATEGID, !mCommonFunctions.isSplitSelected()
