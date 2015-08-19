@@ -35,7 +35,9 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
@@ -47,6 +49,7 @@ import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.settings.AppSettings;
 import com.shamanland.fonticon.FontIconView;
 
@@ -63,15 +66,14 @@ import java.util.Locale;
 public class EditTransactionCommonFunctions {
 
     public static final int REQUEST_PICK_PAYEE = 1;
+    public static final int REQUEST_PICK_ACCOUNT = 2;
+    public static final int REQUEST_PICK_CATEGORY = 3;
+    public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
 
     public EditTransactionCommonFunctions(Context context, BaseFragmentActivity parentActivity) {
         mContext = context.getApplicationContext();
         mParent = parentActivity;
     }
-
-    private Context mContext;
-    private BaseFragmentActivity mParent;
-    private boolean mSplitSelected;
 
     // Payee
     public int payeeId = Constants.NOT_SET;
@@ -101,6 +103,11 @@ public class EditTransactionCommonFunctions {
     public TextView amountHeaderTextView, amountToHeaderTextView;
     public FontIconView removePayeeButton, splitButton;
     public RelativeLayout withdrawalButton, depositButton, transferButton;
+
+    private Context mContext;
+    private BaseFragmentActivity mParent;
+    private boolean mSplitSelected;
+    private boolean mDirty = false; // indicate whether the data has been modified by the user.
 
     public void findControls() {
         // Status
@@ -317,7 +324,34 @@ public class EditTransactionCommonFunctions {
         formatAmount(txtAmountTo, amountTo, toAccountId);
         txtAmountTo.setOnClickListener(onClickAmount);
     }
-    
+
+    /**
+     *
+     * @param datasetName name of the dataset (TableBudgetSplitTransactions.class.getSimpleName())
+     */
+    public void initCategoryControls(final String datasetName) {
+        this.txtSelectCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isSplitSelected()) {
+                    // select single category.
+                    Intent intent = new Intent(mParent, CategoryListActivity.class);
+                    intent.setAction(Intent.ACTION_PICK);
+                    mParent.startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+                } else {
+                    // select split categories.
+                    Intent intent = new Intent(mParent, SplitTransactionsActivity.class);
+                    intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, datasetName);
+                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
+                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
+                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
+                    mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
+                }
+            }
+        });
+
+    }
+
     public void initPayeeControls() {
         txtSelectPayee.setOnClickListener(new View.OnClickListener() {
             @Override

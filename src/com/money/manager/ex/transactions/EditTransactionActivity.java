@@ -120,7 +120,6 @@ public class EditTransactionActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_edit_account_transaction);
 
         mCommonFunctions = new EditTransactionCommonFunctions(getApplicationContext(), this);
@@ -206,7 +205,7 @@ public class EditTransactionActivity
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime((Date) txtSelectDate.getTag());
                 DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
-                    calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
                 dialog.setCloseOnSingleTapDay(true);
                 dialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
             }
@@ -228,41 +227,12 @@ public class EditTransactionActivity
         });
 
         // Payee
-
         mCommonFunctions.initPayeeControls();
-//        mCommonFunctions.txtSelectPayee.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), PayeeActivity.class);
-//                intent.setAction(Intent.ACTION_PICK);
-//                startActivityForResult(intent, EditTransactionActivityConstants.REQUEST_PICK_PAYEE);
-//            }
-//        });
 
         // Category
-
-        mCommonFunctions.txtSelectCategory.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mCommonFunctions.isSplitSelected()) {
-                    // select single category.
-                    Intent intent = new Intent(EditTransactionActivity.this, CategoryListActivity.class);
-                    intent.setAction(Intent.ACTION_PICK);
-                    startActivityForResult(intent, EditTransactionActivityConstants.REQUEST_PICK_CATEGORY);
-                } else {
-                    // select split categories.
-                    Intent intent = new Intent(EditTransactionActivity.this, SplitTransactionsActivity.class);
-                    intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, TableSplitTransactions.class.getSimpleName());
-                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mCommonFunctions.transactionType.getCode());
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mCommonFunctions.mSplitTransactionsDeleted);
-                    startActivityForResult(intent, EditTransactionActivityConstants.REQUEST_PICK_SPLIT_TRANSACTION);
-                }
-            }
-        });
+        mCommonFunctions.initCategoryControls(TableSplitTransactions.class.getSimpleName());
 
         // Split Categories
-
         mCommonFunctions.initSplitCategories();
 
         // mark checked if there are existing split categories.
@@ -325,7 +295,7 @@ public class EditTransactionActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case EditTransactionActivityConstants.REQUEST_PICK_PAYEE:
+            case EditTransactionCommonFunctions.REQUEST_PICK_PAYEE:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
                 mCommonFunctions.payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1);
@@ -340,14 +310,14 @@ public class EditTransactionActivity
                 mCommonFunctions.refreshPayeeName();
                 break;
 
-            case EditTransactionActivityConstants.REQUEST_PICK_ACCOUNT:
+            case EditTransactionCommonFunctions.REQUEST_PICK_ACCOUNT:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
                 mCommonFunctions.toAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, -1);
                 mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 break;
 
-            case EditTransactionActivityConstants.REQUEST_PICK_CATEGORY:
+            case EditTransactionCommonFunctions.REQUEST_PICK_CATEGORY:
                 if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
                 mCommonFunctions.categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1);
@@ -358,7 +328,7 @@ public class EditTransactionActivity
                 mCommonFunctions.refreshCategoryName();
                 break;
 
-            case EditTransactionActivityConstants.REQUEST_PICK_SPLIT_TRANSACTION:
+            case EditTransactionCommonFunctions.REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mCommonFunctions.mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
                     if (mCommonFunctions.mSplitTransactions != null && mCommonFunctions.mSplitTransactions.size() > 0) {

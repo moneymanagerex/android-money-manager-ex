@@ -6,11 +6,6 @@ package com.money.manager.ex.transactions;
 public class EditTransactionActivityConstants {
     public static final String LOGCAT = EditTransactionActivity.class.getSimpleName();
 
-    public static final int REQUEST_PICK_PAYEE = 1;
-    public static final int REQUEST_PICK_ACCOUNT = 2;
-    public static final int REQUEST_PICK_CATEGORY = 3;
-    public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
-
     public static final String KEY_TRANS_ID = "AllDataActivity:TransId";
     public static final String KEY_BDID_ID = "AllDataActivity:bdId";
     public static final String KEY_ACCOUNT_ID = "AllDataActivity:AccountId";

@@ -46,6 +46,7 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.businessobjects.RecurringTransactionService;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.RecurringTransactionRepository;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
@@ -81,9 +82,6 @@ public class RecurringTransactionActivity
 
     public static final String DATEPICKER_TAG = "datepicker";
     private static final String LOGCAT = RecurringTransactionActivity.class.getSimpleName();
-    // ID REQUEST Data
-    private static final int REQUEST_PICK_CATEGORY = 3;
-    public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
 
     public static final String KEY_MODEL = "RecurringTransactionActivity:Model";
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
@@ -139,9 +137,9 @@ public class RecurringTransactionActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recurringtransaction_edit);
 
-        setToolbarStandardAction(getToolbar());
-
         mCommonFunctions = new EditTransactionCommonFunctions(getApplicationContext(), this);
+
+        setToolbarStandardAction(getToolbar());
 
         // manage save instance
         if (savedInstanceState != null) {
@@ -169,12 +167,9 @@ public class RecurringTransactionActivity
 
         // Controls
 
-//        txtPayee = (TextView) findViewById(R.id.textViewPayee);
         spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
         txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
         txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
-
-        Core core = new Core(getApplicationContext());
 
         // Account(s)
         mCommonFunctions.initAccountSelectors();
@@ -214,47 +209,13 @@ public class RecurringTransactionActivity
             }
         });
 
-        // payee
-
-//        txtSelectPayee = (TextView) findViewById(R.id.textViewPayee);
-//        txtSelectPayee.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(RecurringTransactionActivity.this, PayeeActivity.class);
-//                intent.setAction(Intent.ACTION_PICK);
-//                startActivityForResult(intent, REQUEST_PICK_PAYEE);
-//            }
-//        });
+        // Payee
         mCommonFunctions.initPayeeControls();
 
         // Category
-
-        mCommonFunctions.txtSelectCategory.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mCommonFunctions.isSplitSelected()) {
-                    Intent intent = new Intent(RecurringTransactionActivity.this,
-                            CategoryListActivity.class);
-                    intent.setAction(Intent.ACTION_PICK);
-                    startActivityForResult(intent, REQUEST_PICK_CATEGORY);
-                } else {
-                    // Open the activity for creating split transactions.
-                    Intent intent = new Intent(RecurringTransactionActivity.this, SplitTransactionsActivity.class);
-                    // Pass the name of the entity/data set.
-                    intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE,
-                            TableBudgetSplitTransactions.class.getSimpleName());
-                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, mCommonFunctions.transactionType.getCode());
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION,
-                            mCommonFunctions.mSplitTransactions);
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED,
-                            mCommonFunctions.mSplitTransactionsDeleted);
-                    startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
-                }
-            }
-        });
+        mCommonFunctions.initCategoryControls(TableBudgetSplitTransactions.class.getSimpleName());
 
         // Split Categories
-
         mCommonFunctions.initSplitCategories();
 
         // mark checked if there are existing split categories.
@@ -312,7 +273,8 @@ public class RecurringTransactionActivity
                 txtNextOccurrence.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                         .parse(mNextOccurrence));
             } catch (ParseException e) {
-                Log.e(LOGCAT, e.getMessage());
+                ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+                handler.handle(e, "setting next occurrence date tag");
             }
         } else {
             txtNextOccurrence.setTag(Calendar.getInstance().getTime());
@@ -343,7 +305,8 @@ public class RecurringTransactionActivity
                         txtNextOccurrence.setTag(date);
                         mCommonFunctions.formatExtendedDate(txtNextOccurrence);
                     } catch (Exception e) {
-                        Log.e(LOGCAT, e.getMessage());
+                        ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+                        handler.handle(e, "setting next occurrence date");
                     }
                 }
             };
@@ -402,7 +365,7 @@ public class RecurringTransactionActivity
                 }
                 break;
             
-            case REQUEST_PICK_CATEGORY:
+            case EditTransactionCommonFunctions.REQUEST_PICK_CATEGORY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mCommonFunctions.categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                     mCommonFunctions.categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
@@ -412,7 +375,7 @@ public class RecurringTransactionActivity
                     mCommonFunctions.refreshCategoryName();
                 }
                 break;
-            case REQUEST_PICK_SPLIT_TRANSACTION:
+            case EditTransactionCommonFunctions.REQUEST_PICK_SPLIT_TRANSACTION:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     mCommonFunctions.mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
                     if (mCommonFunctions.mSplitTransactions != null && mCommonFunctions.mSplitTransactions.size() > 0) {
