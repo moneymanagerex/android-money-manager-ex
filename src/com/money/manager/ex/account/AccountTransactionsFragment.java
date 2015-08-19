@@ -163,6 +163,10 @@ public class AccountTransactionsFragment
         // add the date picker.
         inflater.inflate(R.menu.menu_period_picker_transactions, menu);
 
+        // Transaction Type picker
+        // todo: inflater.inflate(R.menu.menu_transaction_types_selector, menu);
+//        initTransactionTypeDropdown(menu);
+
         // call create option menu of fragment
         mAllDataFragment.onCreateOptionsMenu(menu, inflater);
     }
@@ -298,15 +302,11 @@ public class AccountTransactionsFragment
 //        actionBar.setDisplayUseLogoEnabled(true);
 //        actionBar.setDisplayShowHomeEnabled(true);
 
-
         // Load accounts into the list.
         Spinner spinner = getAccountsSpinner(menu);
         if (spinner != null) {
             loadAccountsToSpinner(getActivity(), spinner);
         }
-
-        // The current account is selected in 'prepare menu'.
-//        showCurrentAccount(menu);
 
         // handle switching of accounts.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -324,6 +324,41 @@ public class AccountTransactionsFragment
                     mAllDataFragment.AccountId = accountId;
                     mAllDataFragment.loadData(prepareArgsForChildFragment());
                 }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void initTransactionTypeDropdown(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menuAccountSelector);
+        Spinner spinner = null;
+        if (item != null) {
+            spinner = (Spinner) MenuItemCompat.getActionView(item);
+        }
+        if (spinner == null) return;
+
+        // todo: fill statuses
+        //loadAccountsToSpinner(getActivity(), spinner);
+
+        // handle switching of accounts.
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // switch account.
+                Spinner spinner1 = (Spinner) adapterView;
+//                TableAccountList account = getAccountAtPosition(spinner1, i);
+//                int accountId = account.getAccountId();
+//                if (accountId != mAccountId) {
+//                    // switch account. Reload transactions.
+//                    mAccountId = accountId;
+//                    mAllDataFragment.AccountId = accountId;
+//                    mAllDataFragment.loadData(prepareArgsForChildFragment());
+//                }
+                // todo: handle change.
             }
 
             @Override

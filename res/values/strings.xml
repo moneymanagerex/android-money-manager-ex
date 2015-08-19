@@ -608,6 +608,7 @@
     <string name="homepage">Our homepage is http://android.moneymanagerex.org/</string>
     <string name="current_database">Current database</string>
     <string name="about_logcat_header">You can send us the application log by clicking the button below.</string>
+    <string name="transaction_type_filter">Filter by Transaction Type</string>
     <!-- Password entry activity -->
     <string name="title_activity_password">Enter database password</string>
 
