@@ -493,6 +493,7 @@
     <string name="summary_notifications_repeating_transaction">Show notification for recurring transaction overdue</string>
 
     <string name="tools">Tools</string>
+    <string name="entities">Entities</string>
     <string name="loading">Loading…</string>
     <string name="grand_total">Grand Total</string>
     <string name="change_status">Change status</string>

@@ -1015,7 +1015,7 @@ public class MainActivity
         }
         // Tools
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_group_main)
-                .withText(getString(R.string.tools))
+                .withText(getString(R.string.entities))
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
         // Recurring Transactions
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
