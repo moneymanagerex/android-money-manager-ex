@@ -690,7 +690,7 @@ public class EditTransactionCommonFunctions {
 
     public boolean onActionCancelClick() {
         if (mDirty) {
-            final MaterialDialog dialog = new MaterialDialog.Builder(mContext)
+            final MaterialDialog dialog = new MaterialDialog.Builder(mParent)
                     .title(android.R.string.cancel)
                     .content(R.string.transaction_cancel_confirm)
                     .positiveText(R.string.discard)
