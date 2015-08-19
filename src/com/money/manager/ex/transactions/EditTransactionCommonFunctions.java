@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
@@ -54,8 +55,10 @@ import com.money.manager.ex.settings.AppSettings;
 import com.shamanland.fonticon.FontIconView;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -69,6 +72,8 @@ public class EditTransactionCommonFunctions {
     public static final int REQUEST_PICK_ACCOUNT = 2;
     public static final int REQUEST_PICK_CATEGORY = 3;
     public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
+
+    public static final String DATEPICKER_TAG = "datepicker";
 
     public EditTransactionCommonFunctions(Context context, BaseFragmentActivity parentActivity) {
         mContext = context.getApplicationContext();
@@ -87,6 +92,7 @@ public class EditTransactionCommonFunctions {
     public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;
 
     // Controls
+    public TextView txtSelectDate;
     public List<TableAccountList> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
@@ -104,12 +110,20 @@ public class EditTransactionCommonFunctions {
     public FontIconView removePayeeButton, splitButton;
     public RelativeLayout withdrawalButton, depositButton, transferButton;
 
+    // Model
+    public String mDate = "";   // datepicker value
+
+    // Other
+
     private Context mContext;
     private BaseFragmentActivity mParent;
     private boolean mSplitSelected;
     private boolean mDirty = false; // indicate whether the data has been modified by the user.
 
     public void findControls() {
+        // Date
+        txtSelectDate = (TextView) mParent.findViewById(R.id.textViewDate);
+
         // Status
         spinStatus = (Spinner) mParent.findViewById(R.id.spinnerStatus);
 
@@ -252,10 +266,11 @@ public class EditTransactionCommonFunctions {
         spinAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mDirty = true;
+
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     accountId = mAccountIdList.get(position);
                     formatAmount(txtAmount, (Double) txtAmount.getTag(), accountId);
-//                    formatAmount(txtAmountTo, (Double) txtAmountTo.getTag(), accountId);
                     refreshControlHeaders();
                 }
             }
@@ -274,9 +289,10 @@ public class EditTransactionCommonFunctions {
         spinAccountTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mDirty = true;
+
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     toAccountId = mAccountIdList.get(position);
-//                    formatAmount(txtAmount, (Double) txtAmount.getTag(), accountId);
                     formatAmount(txtAmountTo, (Double) txtAmountTo.getTag(), toAccountId);
                     refreshControlHeaders();
                 }
@@ -348,6 +364,51 @@ public class EditTransactionCommonFunctions {
                     mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
                 }
             }
+        });
+
+    }
+
+    public void initDateSelector() {
+        if (!(TextUtils.isEmpty(mDate))) {
+            try {
+                txtSelectDate.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+                        .parse(mDate));
+            } catch (ParseException e) {
+                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                handler.handle(e, "parsing the date");
+            }
+        } else {
+            txtSelectDate.setTag(Calendar.getInstance().getTime());
+        }
+        formatExtendedDate(txtSelectDate);
+
+        txtSelectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime((Date) txtSelectDate.getTag());
+                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+                dialog.setCloseOnSingleTapDay(true);
+                dialog.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
+            }
+
+            public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                    mDirty = true;
+                    
+                    try {
+                        Date date = new SimpleDateFormat("yyyy-MM-dd", mContext.getResources().getConfiguration().locale)
+                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
+                        txtSelectDate.setTag(date);
+                        formatExtendedDate(txtSelectDate);
+                    } catch (Exception e) {
+                        ExceptionHandler handler = new ExceptionHandler(mParent, this);
+                        handler.handle(e, "setting the date");
+                    }
+                }
+            };
         });
 
     }

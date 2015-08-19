@@ -119,15 +119,13 @@ public class RecurringTransactionActivity
     private String mNotes = "";
     // transaction numbers
     private String mTransNumber = "";
-    // next occurrence
-    private String mNextOccurrence = "";
     private int mFrequencies = 0;
 //    private int mNumOccurrence = Constants.NOT_SET;
 
     // Controls on the form.
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
-    private TextView txtRepeats, txtTimesRepeated, txtNextOccurrence;
+    private TextView txtRepeats, txtTimesRepeated, txtSelectDate;
 
     private EditTransactionCommonFunctions mCommonFunctions;
 
@@ -263,53 +261,7 @@ public class RecurringTransactionActivity
         }
 
         // next occurrence
-
-        txtNextOccurrence = (TextView) findViewById(R.id.editTextNextOccurrence);
-
-        if (!(TextUtils.isEmpty(mNextOccurrence))) {
-            try {
-                txtNextOccurrence.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                        .parse(mNextOccurrence));
-            } catch (ParseException e) {
-                ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-                handler.handle(e, "setting next occurrence date tag");
-            }
-        } else {
-            txtNextOccurrence.setTag(Calendar.getInstance().getTime());
-        }
-        mCommonFunctions.formatExtendedDate(txtNextOccurrence);
-        txtNextOccurrence.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime((Date) txtNextOccurrence.getTag());
-
-                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
-                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
-                dialog.setCloseOnSingleTapDay(true);
-                dialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
-            }
-
-            public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-
-                @Override
-//                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                    try {
-                        Locale locale = getResources().getConfiguration().locale;
-                        Date date = new SimpleDateFormat("yyyy-MM-dd", locale)
-                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) +
-                                        "-" + Integer.toString(dayOfMonth));
-                        txtNextOccurrence.setTag(date);
-                        mCommonFunctions.formatExtendedDate(txtNextOccurrence);
-                    } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-                        handler.handle(e, "setting next occurrence date");
-                    }
-                }
-            };
-
-        });
+        mCommonFunctions.initDateSelector();
 
         // times repeated
         edtTimesRepeated = (EditText) findViewById(R.id.editTextTimesRepeated);
@@ -427,7 +379,7 @@ public class RecurringTransactionActivity
         outState.putString(KEY_NOTES, String.valueOf(edtNotes.getTag()));
 //        Locale locale = getResources().getConfiguration().locale;
         outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                .format(txtNextOccurrence.getTag()));
+                .format(txtSelectDate.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
 
         NumericHelper helper = new NumericHelper();
@@ -518,7 +470,7 @@ public class RecurringTransactionActivity
         mCommonFunctions.subCategoryId = tx.subCategoryId;
         mTransNumber = tx.transactionNumber;
         mNotes = tx.notes;
-        mNextOccurrence = tx.nextOccurrence;
+        mCommonFunctions.mDate = tx.nextOccurrence;
         mFrequencies = tx.repeats;
 //        mNumOccurrence = tx.numOccurrence;
 
@@ -591,7 +543,7 @@ public class RecurringTransactionActivity
     private boolean validateData() {
         if (!mCommonFunctions.validateData()) return false;
 
-        if (TextUtils.isEmpty(txtNextOccurrence.getText().toString())) {
+        if (TextUtils.isEmpty(txtSelectDate.getText().toString())) {
             Core.alertDialog(this, R.string.error_next_occurrence_not_populate);
 
             return false;
@@ -740,9 +692,9 @@ public class RecurringTransactionActivity
         values.put(TableBillsDeposits.TRANSACTIONNUMBER, edtTransNumber.getText().toString());
         values.put(TableBillsDeposits.NOTES, edtNotes.getText().toString());
         values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                .format(txtNextOccurrence.getTag()));
+                .format(txtSelectDate.getTag()));
         values.put(TableBillsDeposits.TRANSDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                .format(txtNextOccurrence.getTag()));
+                .format(txtSelectDate.getTag()));
         values.put(TableBillsDeposits.REPEATS, mFrequencies);
         values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0
                 ? edtTimesRepeated.getText().toString() : null);
@@ -772,7 +724,7 @@ public class RecurringTransactionActivity
         mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
         mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
         mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
-        mNextOccurrence = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
+        mCommonFunctions.mDate = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
         mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
 //        mNumOccurrence = savedInstanceState.getInt(KEY_NUM_OCCURRENCE);
 

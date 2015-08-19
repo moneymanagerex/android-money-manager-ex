@@ -88,8 +88,6 @@ public class EditTransactionActivity
     extends BaseFragmentActivity
     implements IInputAmountDialogListener, YesNoDialogListener {
 
-    public static final String DATEPICKER_TAG = "datepicker";
-
     // action type intent
     public String mIntentAction;
     public String mToAccountName;
@@ -106,13 +104,10 @@ public class EditTransactionActivity
     // bill deposits
     public int mRecurringTransactionId = Constants.NOT_SET;
     public String mNextOccurrence = null;
-    // datepicker value
-    public String mDate = "";
 
     // Controls on the form.
     public ImageButton btnTransNumber;
     public EditText edtTransNumber, edtNotes;
-    public TextView txtSelectDate;
 
     private TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
     private EditTransactionCommonFunctions mCommonFunctions;
@@ -184,47 +179,8 @@ public class EditTransactionActivity
         });
 
         // Transaction date
+        mCommonFunctions.initDateSelector();
 
-        txtSelectDate = (TextView) findViewById(R.id.textViewDate);
-        if (!(TextUtils.isEmpty(mDate))) {
-            try {
-                txtSelectDate.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                        .parse(mDate));
-            } catch (ParseException e) {
-                ExceptionHandler handler = new ExceptionHandler(this, this);
-                handler.handle(e, "parsing the date");
-            }
-        } else {
-            txtSelectDate.setTag(Calendar.getInstance().getTime());
-        }
-        mCommonFunctions.formatExtendedDate(txtSelectDate);
-
-        txtSelectDate.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime((Date) txtSelectDate.getTag());
-                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
-                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
-                dialog.setCloseOnSingleTapDay(true);
-                dialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
-            }
-
-            public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                    try {
-                        Date date = new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale)
-                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-                        txtSelectDate.setTag(date);
-                        mCommonFunctions.formatExtendedDate(txtSelectDate);
-                    } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(EditTransactionActivity.this, this);
-                        handler.handle(e, "setting the date");
-                    }
-                }
-            };
-        });
 
         // Payee
         mCommonFunctions.initPayeeControls();
@@ -389,7 +345,7 @@ public class EditTransactionActivity
         outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mToAccountName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE,
-                new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(txtSelectDate.getTag()));
+                new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.txtSelectDate.getTag()));
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mStatus);
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
@@ -595,7 +551,7 @@ public class EditTransactionActivity
         mTransNumber = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSACTIONNUMBER));
         mNotes = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.NOTES));
         if (!duplicate) {
-            mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
+            mCommonFunctions.mDate = cursor.getString(cursor.getColumnIndex(TableCheckingAccount.TRANSDATE));
         }
 
         cursor.close();
@@ -649,7 +605,7 @@ public class EditTransactionActivity
         mCommonFunctions.subCategoryId = tx.subCategoryId;
         mTransNumber = tx.transactionNumber;
         mNotes = tx.notes;
-        mDate = tx.nextOccurrence;
+        mCommonFunctions.mDate = tx.nextOccurrence;
         mStatus = tx.status;
 
         AccountRepository accountRepository = new AccountRepository(this);
@@ -696,7 +652,7 @@ public class EditTransactionActivity
         mCommonFunctions.accountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID);
         mCommonFunctions.toAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID);
         mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
-        mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
+        mCommonFunctions.mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mStatus = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
@@ -1058,7 +1014,7 @@ public class EditTransactionActivity
                 ? mCommonFunctions.subCategoryId : Constants.NOT_SET);
 
         // Date
-        String transactionDate = DateUtils.getSQLiteStringDate(this, (Date) txtSelectDate.getTag());
+        String transactionDate = DateUtils.getSQLiteStringDate(this, (Date) mCommonFunctions.txtSelectDate.getTag());
         values.put(TableCheckingAccount.TRANSDATE, transactionDate);
 
         values.put(TableCheckingAccount.FOLLOWUPID, Constants.NOT_SET);

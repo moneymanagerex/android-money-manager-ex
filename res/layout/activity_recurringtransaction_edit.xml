@@ -53,7 +53,7 @@
                 android:text="@string/next_occurrence"/>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/editTextNextOccurrence"
+                android:id="@+id/textViewDate"
                 style="@style/Money.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
