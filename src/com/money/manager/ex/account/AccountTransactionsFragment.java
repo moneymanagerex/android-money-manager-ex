@@ -237,6 +237,279 @@ public class AccountTransactionsFragment
         }
     }
 
+    // End menu.
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
+            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
+        }
+        if (container == null) {
+            return null;
+        }
+        // inflate layout
+        View view = inflater.inflate(R.layout.account_fragment, container, false);
+
+        // take object AccountList
+        if (mAccountList == null) {
+            reloadAccountInfo();
+        }
+
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
+        // take reference text view from layout
+        txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
+        txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
+        txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
+        // favorite icon
+        imgAccountFav = (ImageView) header.findViewById(R.id.imageViewAccountFav);
+        // set listener click on favorite icon for change image
+        imgAccountFav.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                // set status account
+                mAccountList.setFavoriteAcct(!(mAccountList.isFavoriteAcct()));
+                // populate content values for update
+                ContentValues values = new ContentValues();
+                values.put(TableAccountList.FAVORITEACCT, mAccountList.getFavoriteAcct());
+                // update
+                if (getActivity().getContentResolver().update(mAccountList.getUri(), values, TableAccountList.ACCOUNTID + "=?",
+                        new String[]{Integer.toString(mAccountId)}) != 1) {
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
+                } else {
+                    setImageViewFavorite();
+                }
+            }
+        });
+        // goto account
+        imgGotoAccount = (ImageView) header.findViewById(R.id.imageViewGotoAccount);
+        imgGotoAccount.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
+                intent.setAction(Intent.ACTION_EDIT);
+                startActivity(intent);
+            }
+        });
+
+        // Transactions
+        showTransactionsFragment(header);
+
+        // refresh user interface
+        if (mAccountList != null) {
+//            mAccountName = mAccountList.getAccountName();
+            setImageViewFavorite();
+        }
+
+        setHasOptionsMenu(true);
+
+        return view;
+    }
+
+    private void reloadAccountInfo() {
+//        mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
+//                .getTableAccountList(accountId);
+        AccountService service = new AccountService(getActivity().getApplicationContext());
+        mAccountList = service.getTableAccountList(mAccountId);
+    }
+
+    // Loader events.
+
+    /**
+     * Start Loader to retrieve data
+     */
+    public void loadTransactions() {
+        if (mAllDataFragment != null) {
+            Bundle arguments = prepareArgsForChildFragment();
+            mAllDataFragment.loadData(arguments);
+        }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case ID_LOADER_SUMMARY:
+                return new MmexCursorLoader(getActivity(),
+                        new QueryAccountBills(getActivity()).getUri(),
+                        null,
+                        QueryAccountBills.ACCOUNTID + "=?",
+                        new String[] { Integer.toString(mAccountId) },
+                        null);
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+//        switch (loader.getId()) {
+//            case ID_LOADER_SUMMARY:
+//                mAdapter.swapCursor(null);
+//                break;
+//        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId()) {
+            case ID_LOADER_SUMMARY:
+                if (data != null && data.moveToFirst()) {
+                    mAccountBalance = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL));
+                    mAccountReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED));
+                } else {
+                    mAccountBalance = 0;
+                    mAccountReconciled = 0;
+                }
+                // show balance values
+                setTextViewBalance();
+
+                break;
+        }
+    }
+
+    // end loader events
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // restart loader
+        loadTransactions();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mAccountId != null) {
+            outState.putInt(KEY_CONTENT, mAccountId);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    /**
+     * Prepare SQL query for record selection.
+     * @return bundle with query
+     */
+    private Bundle prepareArgsForChildFragment() {
+        // compose selection and sort
+        ArrayList<String> selection = new ArrayList<>();
+        selection.add("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
+            " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
+
+        String defaultPeriod = MoneyManagerApplication.getInstanceApp().getShowTransaction();
+
+        if (defaultPeriod.equalsIgnoreCase(getString(R.string.last7days))) {
+            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last15days))) {
+            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.current_month))) {
+            selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
+            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last30days))) {
+            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 30)");
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last3months))) {
+            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last6months))) {
+            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.current_year))) {
+            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.future_transactions))) {
+            // Future transactions
+            selection.add("date(" + QueryAllData.Date + ") > date('now')");
+        }
+        // create a bundle to returns
+        Bundle args = new Bundle();
+        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
+        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
+                QueryAllData.Date + " DESC, " + QueryAllData.TransactionType + ", " + QueryAllData.ID + " DESC");
+
+        return args;
+    }
+
+    /**
+     * refresh UI, show favorite icon
+     */
+    private void setImageViewFavorite() {
+        if (mAccountList.isFavoriteAcct()) {
+            imgAccountFav.setBackgroundResource(R.drawable.ic_star);
+        } else {
+            imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
+        }
+    }
+
+    /**
+     * refresh user interface with total
+     */
+    private void setTextViewBalance() {
+        // Reload account info as it can be changed via dropdown. Need a currency info here.
+        reloadAccountInfo();
+
+        // write account balance
+        if (mAccountList != null) {
+            CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+
+            txtAccountBalance.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance));
+            txtAccountReconciled.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled));
+            txtAccountDifference.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled - mAccountBalance));
+        }
+    }
+
+    /**
+     * start the activity of transaction management
+     */
+    private void startCheckingAccountActivity() {
+        this.startCheckingAccountActivity(null);
+    }
+
+    /**
+     * start the activity of transaction management
+     *
+     * @param transId null set if you want to do a new transaction, or transaction id
+     */
+    private void startCheckingAccountActivity(Integer transId) {
+        // create intent, set Account ID
+        Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
+        intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mAccountId);
+        // check transId not null
+        if (transId != null) {
+            intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
+            intent.setAction(Intent.ACTION_EDIT);
+        } else {
+            intent.setAction(Intent.ACTION_INSERT);
+        }
+        // launch activity
+        startActivity(intent);
+    }
+
+    public String getFragmentName() {
+        return mFragmentName;
+    }
+
+    public void setFragmentName(String mFragmentName) {
+        this.mFragmentName = mFragmentName;
+    }
+
+    private void showTransactionsFragment(ViewGroup header) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+        mAllDataFragment = AllDataFragment.newInstance(mAccountId, this);
+
+        // set arguments and settings of fragment
+        mAllDataFragment.setArguments(prepareArgsForChildFragment());
+        if (header != null) mAllDataFragment.setListHeader(header);
+        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
+        mAllDataFragment.setAutoStarLoader(false);
+        mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
+
+        // add fragment
+        transaction.replace(R.id.fragmentContent, mAllDataFragment, getFragmentName());
+        transaction.commit();
+    }
+
+    // Menu
+
     private boolean datePeriodItemSelected(MenuItem item) {
         LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
 
@@ -464,272 +737,6 @@ public class AccountTransactionsFragment
         cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(cursorAdapter);
-    }
-
-    // End menu.
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
-        }
-        if (container == null) {
-            return null;
-        }
-        // inflate layout
-        View view = inflater.inflate(R.layout.account_fragment, container, false);
-
-        // take object AccountList
-        if (mAccountList == null) {
-            reloadAccountInfo();
-        }
-
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
-        // take reference text view from layout
-        txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
-        txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
-        txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
-        // favorite icon
-        imgAccountFav = (ImageView) header.findViewById(R.id.imageViewAccountFav);
-        // set listener click on favorite icon for change image
-        imgAccountFav.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                // set status account
-                mAccountList.setFavoriteAcct(!(mAccountList.isFavoriteAcct()));
-                // populate content values for update
-                ContentValues values = new ContentValues();
-                values.put(TableAccountList.FAVORITEACCT, mAccountList.getFavoriteAcct());
-                // update
-                if (getActivity().getContentResolver().update(mAccountList.getUri(), values, TableAccountList.ACCOUNTID + "=?",
-                        new String[]{Integer.toString(mAccountId)}) != 1) {
-                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
-                } else {
-                    setImageViewFavorite();
-                }
-            }
-        });
-        // goto account
-        imgGotoAccount = (ImageView) header.findViewById(R.id.imageViewGotoAccount);
-        imgGotoAccount.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AccountEditActivity.class);
-                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
-                intent.setAction(Intent.ACTION_EDIT);
-                startActivity(intent);
-            }
-        });
-
-        // Transactions
-        showTransactionsFragment(header);
-
-        // refresh user interface
-        if (mAccountList != null) {
-//            mAccountName = mAccountList.getAccountName();
-            setImageViewFavorite();
-        }
-
-        setHasOptionsMenu(true);
-
-        return view;
-    }
-
-    private void reloadAccountInfo() {
-//        mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
-//                .getTableAccountList(accountId);
-        AccountService service = new AccountService(getActivity().getApplicationContext());
-        mAccountList = service.getTableAccountList(mAccountId);
-    }
-
-    // Loader events.
-
-    /**
-     * Start Loader to retrieve data
-     */
-    public void loadTransactions() {
-        if (mAllDataFragment != null) {
-            Bundle arguments = prepareArgsForChildFragment();
-            mAllDataFragment.loadData(arguments);
-        }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case ID_LOADER_SUMMARY:
-                return new MmexCursorLoader(getActivity(),
-                        new QueryAccountBills(getActivity()).getUri(),
-                        null,
-                        QueryAccountBills.ACCOUNTID + "=?",
-                        new String[] { Integer.toString(mAccountId) },
-                        null);
-        }
-        return null;
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-//        switch (loader.getId()) {
-//            case ID_LOADER_SUMMARY:
-//                mAdapter.swapCursor(null);
-//                break;
-//        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case ID_LOADER_SUMMARY:
-                if (data != null && data.moveToFirst()) {
-                    mAccountBalance = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL));
-                    mAccountReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED));
-                } else {
-                    mAccountBalance = 0;
-                    mAccountReconciled = 0;
-                }
-                // show balance values
-                setTextViewBalance();
-
-                break;
-        }
-    }
-
-    // end loader events
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // restart loader
-        loadTransactions();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mAccountId != null) {
-            outState.putInt(KEY_CONTENT, mAccountId);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    private Bundle prepareArgsForChildFragment() {
-        // compose selection and sort
-        ArrayList<String> selection = new ArrayList<>();
-        selection.add("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
-            " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
-
-        String defaultPeriod = MoneyManagerApplication.getInstanceApp().getShowTransaction();
-
-        if (defaultPeriod.equalsIgnoreCase(getString(R.string.last7days))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last15days))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.current_month))) {
-            selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
-            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last30days))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 30)");
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last3months))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last6months))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.current_year))) {
-            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.future_transactions))) {
-            // Future transactions
-            selection.add("date(" + QueryAllData.Date + ") > date('now')");
-        }
-        // create a bundle to returns
-        Bundle args = new Bundle();
-        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
-        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.Date + " DESC, " + QueryAllData.ID + " DESC");
-
-        return args;
-    }
-
-    /**
-     * refresh UI, show favorite icon
-     */
-    private void setImageViewFavorite() {
-        if (mAccountList.isFavoriteAcct()) {
-            imgAccountFav.setBackgroundResource(R.drawable.ic_star);
-        } else {
-            imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
-        }
-    }
-
-    /**
-     * refresh user interface with total
-     */
-    private void setTextViewBalance() {
-        // Reload account info as it can be changed via dropdown. Need a currency info here.
-        reloadAccountInfo();
-
-        // write account balance
-        if (mAccountList != null) {
-            CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
-
-            txtAccountBalance.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance));
-            txtAccountReconciled.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled));
-            txtAccountDifference.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled - mAccountBalance));
-        }
-    }
-
-    /**
-     * start the activity of transaction management
-     */
-    private void startCheckingAccountActivity() {
-        this.startCheckingAccountActivity(null);
-    }
-
-    /**
-     * start the activity of transaction management
-     *
-     * @param transId null set if you want to do a new transaction, or transaction id
-     */
-    private void startCheckingAccountActivity(Integer transId) {
-        // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
-        intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mAccountId);
-        // check transId not null
-        if (transId != null) {
-            intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
-            intent.setAction(Intent.ACTION_EDIT);
-        } else {
-            intent.setAction(Intent.ACTION_INSERT);
-        }
-        // launch activity
-        startActivity(intent);
-    }
-
-    public String getFragmentName() {
-        return mFragmentName;
-    }
-
-    public void setFragmentName(String mFragmentName) {
-        this.mFragmentName = mFragmentName;
-    }
-
-    private void showTransactionsFragment(ViewGroup header) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-        mAllDataFragment = AllDataFragment.newInstance(mAccountId, this);
-
-        // set arguments and settings of fragment
-        mAllDataFragment.setArguments(prepareArgsForChildFragment());
-        if (header != null) mAllDataFragment.setListHeader(header);
-        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
-        mAllDataFragment.setAutoStarLoader(false);
-        mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
-
-        // add fragment
-        transaction.replace(R.id.fragmentContent, mAllDataFragment, getFragmentName());
-        transaction.commit();
     }
 
 }

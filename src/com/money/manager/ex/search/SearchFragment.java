@@ -269,6 +269,10 @@ public class SearchFragment extends Fragment
         }
     }
 
+    /**
+     * Assemble SQL query
+     * @return
+     */
     private ParameterizedWhereClause assembleWhereClause() {
         ParameterizedWhereClause where = new ParameterizedWhereClause();
 
@@ -367,7 +371,8 @@ public class SearchFragment extends Fragment
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, where.Clause);
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE_PARAMS, where.Params);
         // Sorting
-        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, QueryAllData.TOACCOUNTID + ", " + QueryAllData.ID);
+        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
+                QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
         //set arguments
         searchResultsFragment.setArguments(args);
 //        searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
