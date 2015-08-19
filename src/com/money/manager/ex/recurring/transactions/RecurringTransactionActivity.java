@@ -125,7 +125,6 @@ public class RecurringTransactionActivity
 //    private int mNumOccurrence = Constants.NOT_SET;
 
     // Controls on the form.
-    private Spinner spinFrequencies;
     private ImageButton btnTransNumber;
     private EditText edtTransNumber, edtNotes, edtTimesRepeated;
     private TextView txtRepeats, txtTimesRepeated, txtNextOccurrence;
@@ -167,7 +166,6 @@ public class RecurringTransactionActivity
 
         // Controls
 
-        spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
         txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
         txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
 
@@ -318,7 +316,11 @@ public class RecurringTransactionActivity
         if (mRecurringTransaction != null && mRecurringTransaction.numOccurrence >= 0) {
             edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.numOccurrence));
         }
-        // frequencies
+
+        // Frequency
+
+        Spinner spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
+
         if (mFrequencies >= 200) {
             mFrequencies = mFrequencies - 200;
         } // set auto execute without user acknowledgement

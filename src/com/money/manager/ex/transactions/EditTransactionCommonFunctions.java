@@ -326,7 +326,7 @@ public class EditTransactionCommonFunctions {
     }
 
     /**
-     *
+     * Initialize Category selector.
      * @param datasetName name of the dataset (TableBudgetSplitTransactions.class.getSimpleName())
      */
     public void initCategoryControls(final String datasetName) {
