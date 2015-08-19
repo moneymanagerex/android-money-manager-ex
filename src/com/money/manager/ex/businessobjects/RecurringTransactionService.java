@@ -82,9 +82,12 @@ public class RecurringTransactionService {
         ContentValues values = new ContentValues();
         values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, nextOccurrenceDate);
 
-        int updateResult = mContext.getContentResolver().update(mRecurringTransaction.getUri(), values,
+        TableBillsDeposits recurringTransaction = new TableBillsDeposits();
+
+        int updateResult = mContext.getContentResolver().update(recurringTransaction.getUri(),
+                values,
                 TableBillsDeposits.BDID + "=?",
-                new String[]{Integer.toString(this.RecurringTransactionId)});
+                new String[]{ Integer.toString(this.RecurringTransactionId) });
 
         if (updateResult > 0) {
             result = true;
