@@ -74,6 +74,7 @@
   <string name="error_accountname_empty">アカウント名が必要です</string>
   <string name="error_accounttype_empty">アカウントの種類が必要です</string>
   <string name="error_status_empty">アカウントの状態が必要です</string>
+  <string name="error_amount_must_be_positive">金額は正でなければなりません。正負は取引の種類によって決まります。</string>
   <string name="payee_name">支払先名</string>
   <string name="edit_payeeName">支払先を編集</string>
   <string name="delete_payee">支払先を削除</string>
@@ -508,4 +509,7 @@
   <string name="update_on_dropbox">Dropbox で利用可能な、更新されたデータベース ファイルがあります。更新しますか?</string>
   <string name="currencies_empty">通貨が見つかりませんでした。作成するには、緑のプラスボタンをタップします。</string>
   <string name="homepage">私たちのホームページ http://android.moneymanagerex.org/</string>
+  <string name="current_database">現在のデータベース</string>
+  <string name="about_logcat_header">下のボタンをクリックすると、私たちにアプリケーション ログを送信できます。</string>
+  <string name="title_activity_password">データベースのパスワードを入力してください</string>
 </resources>
