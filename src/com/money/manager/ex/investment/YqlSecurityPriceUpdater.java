@@ -111,7 +111,7 @@ public class YqlSecurityPriceUpdater
     public void onContentDownloaded(String content) {
         // validation
         if (TextUtils.isEmpty(content)) {
-            throw new IllegalArgumentException("Downloaded CSV contents are empty");
+            throw new IllegalArgumentException("Downloadeded contents are empty");
         }
 
         // parse Json results

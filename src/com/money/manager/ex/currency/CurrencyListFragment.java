@@ -513,6 +513,7 @@ public class CurrencyListFragment
     public void updateExchangeRates() {
         // Update only the visible currencies.
         List<TableCurrencyFormats> currencies = getVisibleCurrencies();
+
         // updateAllExchangeRatesFromYahoo();
         updateExchangeRatesFromYahoo(currencies);
     }
@@ -558,8 +559,7 @@ public class CurrencyListFragment
         if (currencies.size() <= 0) return;
 
         CurrencyService utils = getCurrencyUtils();
-        String[] currencySymbols = new String[currencies.size()];
-        int counter = 0;
+        ArrayList<String> currencySymbols = new ArrayList<>();
         String symbol;
         String baseCurrencySymbol = utils.getBaseCurrencyCode();
 
@@ -568,12 +568,11 @@ public class CurrencyListFragment
             if (symbol == null) continue;
             if (symbol.equals(baseCurrencySymbol)) continue;
 
-            currencySymbols[counter] = symbol + baseCurrencySymbol + "=X";
-            counter++;
+            currencySymbols.add(symbol + baseCurrencySymbol + "=X");
         }
 
         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity(), this);
-        updater.updatePrices(Arrays.asList(currencySymbols));
+        updater.updatePrices(currencySymbols);
     }
 
     private boolean updateCurrencyFromYahoo(int toCurrencyId) {

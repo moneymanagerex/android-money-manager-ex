@@ -64,8 +64,7 @@ public class YahooSecurityPriceUpdater
 
         String[] symbolsArray = symbols.toArray(new String[symbols.size()]);
 
-        YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(
-                mContext, this);
+        YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(mContext, this);
         downloader.execute(symbolsArray);
 
         // Async call. The prices are updated in onContentDownloaded.

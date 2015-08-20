@@ -43,7 +43,7 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
     // key intent
     public static final String KEY_CURRENCY_ID = "CurrencyFormatsActivity:CurrencyId";
     private static final String LOGCAT = CurrencyFormatsActivity.class.getSimpleName();
-    // saveinstance key
+    // save-instance key
     private static final String KEY_CURRENCY_NAME = "CurrencyFormatsActivity:CurrencyName";
     private static final String KEY_CURRENCY_SYMBOL = "CurrencyFormatsActivity:CurrencySymbol";
     private static final String KEY_UNIT_NAME = "CurrencyFormatsActivity:UnitName";
