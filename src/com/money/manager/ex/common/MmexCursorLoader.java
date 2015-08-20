@@ -31,9 +31,12 @@ public class MmexCursorLoader
     public Cursor loadInBackground() {
         try {
             return super.loadInBackground();
-        } catch (IllegalStateException | SQLiteDiskIOException | SQLiteDatabaseCorruptException ex) {
+        } catch (IllegalStateException | SQLiteDiskIOException ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "loading data in cursor loader");
+        } catch (SQLiteDatabaseCorruptException ex) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(ex, "Your database file is corrupt!");
         }
         return null;
     }
