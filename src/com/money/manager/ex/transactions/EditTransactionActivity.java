@@ -418,12 +418,22 @@ public class EditTransactionActivity
         return true;
     }
 
+    public boolean loadRecurringTransaction(int recurringTransactionId) {
+        try {
+            return loadRecurringTransactionInternal(recurringTransactionId);
+        } catch (RuntimeException ex) {
+            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+            handler.handle(ex, "loading recurring transaction");
+            return false;
+        }
+    }
+
     /**
      * Loads a recurring transaction data when entering a recurring transaction.
      * @param recurringTransactionId Id of the recurring transaction.
      * @return A boolean indicating whether the operation was successful.
      */
-    public boolean loadRecurringTransaction(int recurringTransactionId) {
+    private boolean loadRecurringTransactionInternal(int recurringTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
         TableBillsDeposits tx = repo.load(recurringTransactionId);
         if (tx == null) return false;
