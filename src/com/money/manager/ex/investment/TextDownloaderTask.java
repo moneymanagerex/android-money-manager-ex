@@ -137,7 +137,7 @@ public class TextDownloaderTask
         mDialog = new ProgressDialog(context);
 
         mDialog.setMessage(context.getString(R.string.starting_price_update));
-        mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setCancelable(false);
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
