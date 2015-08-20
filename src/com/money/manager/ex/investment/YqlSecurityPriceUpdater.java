@@ -19,13 +19,10 @@ package com.money.manager.ex.investment;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.opencsv.CSVParser;
-
-import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -34,14 +31,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Updates security prices from Yahoo Finance.
+ * Updates security prices from Yahoo Finance using YQL. All the work is done in the
+ * background task.
  * References:
  * http://www.jarloo.com/yahoo_finance/
  */
-public class YahooSecurityPriceUpdater
+public class YqlSecurityPriceUpdater
         implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
 
-    public YahooSecurityPriceUpdater(Context context, IPriceUpdaterFeedback feedback) {
+    public YqlSecurityPriceUpdater(Context context, IPriceUpdaterFeedback feedback) {
         mContext = context;
         mFeedback = feedback;
     }
@@ -61,10 +59,7 @@ public class YahooSecurityPriceUpdater
     public void updatePrices(String... symbols) {
         if (symbols == null) return;
 
-//        mSymbolsToUpdate = symbols;
-
-        YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(
-                mContext, this);
+        YqlDownloadAllPricesTask downloader = new YqlDownloadAllPricesTask(mContext, this);
         downloader.execute(symbols);
 
         // Async call. The prices are updated in onContentDownloaded.
@@ -88,7 +83,7 @@ public class YahooSecurityPriceUpdater
 
     /**
      * Called from CSV downloader on progress update.
-     * @param progress
+     * @param progress progress
      */
     @Override
     public void onProgressUpdate(String progress) {

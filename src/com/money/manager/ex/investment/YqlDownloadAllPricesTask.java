@@ -34,15 +34,13 @@ import java.io.IOException;
 /**
  * Task that updates all the security prices in the list.
  */
-public class YahooDownloadAllPricesTask
+public class YqlDownloadAllPricesTask
     extends AsyncTask<String, Integer, Boolean> {
 
-    public YahooDownloadAllPricesTask(Context context, IDownloadAsyncTaskFeedback feedback) {
+    public YqlDownloadAllPricesTask(Context context, IDownloadAsyncTaskFeedback feedback) {
         mFeedback = feedback;
         mContext = context;
     }
-
-    private final String LOGCAT = this.getClass().getSimpleName();
 
     private Context mContext;
     private ProgressDialog mDialog = null;
@@ -65,7 +63,7 @@ public class YahooDownloadAllPricesTask
             return runTask(symbols);
         } catch (IllegalArgumentException ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "No price provided by Yahoo.");
+            handler.handle(ex, "No price provided by YQL.");
             return false;
         } catch (Exception e) {
             throw new RuntimeException("Error in Yahoo download all prices", e);
@@ -117,9 +115,10 @@ public class YahooDownloadAllPricesTask
             String csv;
             try {
                 csv = downloader.downloadAsText(url);
-            } catch (IOException iox) {
-                Log.e(LOGCAT, iox.getMessage());
-                iox.printStackTrace();
+            } catch (IOException ex) {
+                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                handler.handle(ex, "downloading price");
+
                 return false;
             }
             // notify parent about the price update

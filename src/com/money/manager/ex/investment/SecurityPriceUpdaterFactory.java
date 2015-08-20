@@ -8,8 +8,12 @@ import android.content.Context;
  */
 public class SecurityPriceUpdaterFactory {
     public static ISecurityPriceUpdater getUpdaterInstance(Context context, IPriceUpdaterFeedback feedback) {
-        // currently using Yahoo.
-        ISecurityPriceUpdater updater = new YahooSecurityPriceUpdater(context, feedback);
+        ISecurityPriceUpdater updater;
+
+//        updater = new YahooSecurityPriceUpdater(context, feedback);
+
+        updater = new YqlSecurityPriceUpdater(context, feedback);
+
         return updater;
     }
 }

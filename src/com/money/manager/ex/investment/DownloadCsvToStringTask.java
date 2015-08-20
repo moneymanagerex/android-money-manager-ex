@@ -19,12 +19,6 @@ package com.money.manager.ex.investment;
 
 import android.os.AsyncTask;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 /**
  * Downloads a CSV file from a URL into a string.
  * This is an example of an async task used to return a value.
@@ -72,7 +66,7 @@ public class DownloadCsvToStringTask
         super.onPostExecute(result);
 
         // task completed. Return a value.
-        mCaller.onCsvDownloaded(result);
+        mCaller.onContentDownloaded(result);
     }
 
 }
