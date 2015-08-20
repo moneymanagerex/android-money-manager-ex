@@ -36,8 +36,8 @@ import java.math.BigDecimal;
  * The user enters the ending balance and a new transaction is created to adjust the account balance
  * to the desired amount. The new transaction is displayed to the user for confirmation in edit mode.
  */
-public class BalanceAccountTask
-    implements IInputAmountDialogListener {
+public class BalanceAccountTask {
+    // implements IInputAmountDialogListener
 
     public BalanceAccountTask(Context context) {
         mContext = context;
@@ -52,14 +52,14 @@ public class BalanceAccountTask
         // get the amount via input dialog.
         int currencyId = account.getCurrencyId();
         // do we need the id? the first 0.
-        InputAmountDialog dialog = InputAmountDialog.getInstance(mContext, this, 0, 0.0, currencyId);
+        InputAmountDialog dialog = InputAmountDialog.getInstance(0, 0.0, currencyId);
         FragmentActivity parent = (FragmentActivity) mContext;
         dialog.show(parent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
 
         // the task continues in onFinishedInputAmountDialog
     }
 
-    @Override
+//    @Override
     public void onFinishedInputAmountDialog(int id, Double amount) {
         // get the account balance (from the screen here)
         //String value = currencyUtils.getCurrencyFormatted(account.getCurrencyId(), account.getTotal());

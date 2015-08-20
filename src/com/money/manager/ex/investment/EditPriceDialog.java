@@ -144,8 +144,7 @@ public class EditPriceDialog
             @Override
             public void onClick(View v) {
                 double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(mContext, EditPriceDialog.this,
-                        v.getId(), amount, currencyId);
+                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
                 dialog.roundToCurrencyDecimals = false;
                 dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }

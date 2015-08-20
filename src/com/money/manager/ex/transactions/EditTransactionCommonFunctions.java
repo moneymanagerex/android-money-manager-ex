@@ -403,8 +403,7 @@ public class EditTransactionCommonFunctions {
                     }
                 }
                 double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(mContext,
-                        (IInputAmountDialogListener) mParent, v.getId(), amount, currencyId);
+                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
                 dialog.show(mParent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
 
                 // The result is received in onFinishedInputAmountDialog.

@@ -46,6 +46,7 @@ public class SplitTransactionsActivity
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
     public static final String KEY_TRANSACTION_TYPE = "SplitTransactionsActivity:TransactionType";
     public static final String KEY_DATASET_TYPE = "SplitTransactionsActivity:DatasetType";
+
     public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitTransactionsActivity:ResultSplitTransaction";
     public static final String INTENT_RESULT_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ResultSplitTransactionDeleted";
 

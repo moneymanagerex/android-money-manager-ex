@@ -40,6 +40,8 @@ import com.shamanland.fonticon.FontIconView;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -53,34 +55,17 @@ public class InputAmountDialog
     private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
     private static final String KEY_EXPRESSION = "InputAmountDialog:Expression";
 
-    public static InputAmountDialog getInstance(Context context, IInputAmountDialogListener listener,
-        int id, Double amount) {
-
-        InputAmountDialog fragment = getInstance(context, listener, id, amount, null);
-
-        return fragment;
+    public static InputAmountDialog getInstance(int id, Double amount) {
+        return getInstance(id, amount, null);
     }
 
-    public static InputAmountDialog getInstance(Context context, IInputAmountDialogListener listener,
-                                                int id,
-                                                Double amount, Integer currencyId) {
+    public static InputAmountDialog getInstance(int id, Double amount, Integer currencyId) {
         Bundle args = new Bundle();
         args.putInt("id", id);
         args.putDouble("amount", amount);
 
         InputAmountDialog dialog = new InputAmountDialog();
         dialog.setArguments(args);
-        dialog.mListener = listener;
-
-        dialog.mContext = context.getApplicationContext();
-
-        CurrencyService currencyService = new CurrencyService(dialog.mContext);
-        dialog.mCurrencyService = currencyService;
-
-        // Use the default currency if none sent.
-        if (currencyId == null) {
-            currencyId = currencyService.getBaseCurrencyId();
-        }
         dialog.mCurrencyId = currencyId;
 
         return dialog;
@@ -88,13 +73,11 @@ public class InputAmountDialog
 
     public boolean roundToCurrencyDecimals = true;
 
-    private Context mContext;
-
     private int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
             R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
-            R.id.buttonKeyNum8,
-            R.id.buttonKeyNum9, R.id.buttonKeyNumDecimal, R.id.buttonKeyAdd, R.id.buttonKeyDiv,
+            R.id.buttonKeyNum8, R.id.buttonKeyNum9,
+            R.id.buttonKeyNumDecimal, R.id.buttonKeyAdd, R.id.buttonKeyDiv,
             R.id.buttonKeyLess, R.id.buttonKeyMultiplication, R.id.buttonKeyLeftParenthesis,
             R.id.buttonKeyRightParenthesis};
 
@@ -104,25 +87,42 @@ public class InputAmountDialog
     private TextView txtMain, txtTop;
     private IInputAmountDialogListener mListener;
     private CurrencyService mCurrencyService;
+    private String mExpression; // used to restore expression from saved instance state
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        mListener = (IInputAmountDialogListener) getActivity();
+
+        if (mListener == null) {
+            throw new IllegalStateException("Parent activity must implement IInputAmountDialogListener");
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            restoreSavedInstanceState(savedInstanceState);
-            return;
+        mCurrencyService = new CurrencyService(getContext());
+        // Use the default currency if none sent.
+        if (mCurrencyId == null) {
+            mCurrencyId = mCurrencyService.getBaseCurrencyId();
         }
 
-        mIdView = getArguments().getInt("id");
-
-        // Display the existing amount, if any has been passed into the dialog.
-        NumericHelper numericHelper = new NumericHelper();
-        int decimals = numericHelper.getNumberOfDecimals(
-                mCurrencyService.getCurrency(mCurrencyId).getScale());
-        mAmount = this.roundToCurrencyDecimals
-                ? MathUtils.Round(getArguments().getDouble("amount"), decimals)
-                : getArguments().getDouble("amount");
+        if (savedInstanceState != null) {
+            restoreSavedInstanceState(savedInstanceState);
+//            return;
+        } else {
+            mIdView = getArguments().getInt("id");
+            // Display the existing amount, if any has been passed into the dialog.
+            NumericHelper numericHelper = new NumericHelper();
+            int decimals = numericHelper.getNumberOfDecimals(
+                    mCurrencyService.getCurrency(mCurrencyId).getScale());
+            mAmount = this.roundToCurrencyDecimals
+                    ? MathUtils.Round(getArguments().getDouble("amount"), decimals)
+                    : getArguments().getDouble("amount");
+        }
     }
 
     @Override
@@ -195,7 +195,11 @@ public class InputAmountDialog
         mDefaultColor = txtTop.getCurrentTextColor();
 
         txtMain = (TextView) view.findViewById(R.id.textViewMain);
-        showAmountInEntryField();
+        if (!StringUtils.isEmpty(mExpression)) {
+            txtMain.setText(mExpression);
+        } else {
+            showAmountInEntryField();
+        }
 
         // evaluate the expression initially, in case there is an existing amount passed to the dialog.
         evalExpression();
@@ -244,7 +248,9 @@ public class InputAmountDialog
         savedInstanceState.putDouble(KEY_AMOUNT, mAmount);
         if (mCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
         savedInstanceState.putInt(KEY_ID_VIEW, mIdView);
-        savedInstanceState.putString(KEY_EXPRESSION, txtMain.getText().toString());
+
+        mExpression = txtMain.getText().toString();
+        savedInstanceState.putString(KEY_EXPRESSION, mExpression);
     }
 
     /**
@@ -345,7 +351,7 @@ public class InputAmountDialog
         if (savedInstanceState.containsKey(KEY_ID_VIEW))
             mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
         if (savedInstanceState.containsKey(KEY_EXPRESSION)) {
-            txtMain.setText(savedInstanceState.getString(KEY_EXPRESSION));
+            mExpression = savedInstanceState.getString(KEY_EXPRESSION);
         }
     }
 

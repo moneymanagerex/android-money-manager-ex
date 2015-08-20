@@ -40,6 +40,7 @@ import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.common.AllDataFragment;
@@ -64,6 +65,9 @@ public class SearchFragment extends Fragment
     // ID REQUEST code
     private static final int REQUEST_PICK_PAYEE = 1;
     private static final int REQUEST_PICK_CATEGORY = 3;
+
+    private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
+
     // reference view into layout
     private Spinner spinAccount, spinStatus;
     private EditText txtTransNumber, txtNotes;
@@ -86,13 +90,12 @@ public class SearchFragment extends Fragment
 
         setHasOptionsMenu(true);
 
-        mSearchParameters = new SearchParameters();
-
-//        AllDataFragment fragment = (AllDataFragment) getActivity().getSupportFragmentManager()
-//                .findFragmentByTag(AllDataFragment.class.getSimpleName());
-//        if (fragment != null) {
-//            fragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
-//        }
+        if (savedInstanceState != null) {
+            mSearchParameters = savedInstanceState.getParcelable(KEY_SEARCH_CRITERIA);
+            // restoreSearchCriteria(); called in onCreateView after the controls have been initialized.
+        } else {
+            mSearchParameters = new SearchParameters();
+        }
     }
 
     @Override
@@ -108,11 +111,12 @@ public class SearchFragment extends Fragment
             @Override
             public void onClick(View v) {
                 double amount = 0;
-                if (v.getTag() != null && v.getTag() instanceof Double) {
-                    amount = (Double) v.getTag();
+                if (v.getTag() != null && NumericHelper.isNumeric(v.getTag().toString())) {
+                    // && v.getTag() instanceof Double
+                    //amount = (Double) v.getTag();
+                    amount = Double.parseDouble(v.getTag().toString());
                 }
-                InputAmountDialog dialog = InputAmountDialog.getInstance(getContext(),
-                        SearchFragment.this, v.getId(), amount);
+                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
@@ -248,6 +252,25 @@ public class SearchFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        this.saveSearchValues();
+
+        savedInstanceState.putParcelable(KEY_SEARCH_CRITERIA, mSearchParameters);
+    }
+
+    @Override
+    public void onFinishedInputAmountDialog(int id, Double amount) {
+        Core core = new Core(getActivity().getApplicationContext());
+
+        View view = getView().findViewById(id);
+        if (view != null && view instanceof TextView)
+            core.formatAmountTextView(((TextView) view), amount);
+    }
+
+
     /**
      * Compose arguments and execute search
      */
@@ -316,8 +339,8 @@ public class SearchFragment extends Fragment
                             getActivity().getApplicationContext(), mSearchParameters.dateTo)) + "'");
         }
         // payee
-        if (!TextUtils.isEmpty(mSearchParameters.payee)) {
-            where.Clause.add(QueryAllData.PayeeID + "=" + mSearchParameters.payee);
+        if (mSearchParameters.payeeId != null && mSearchParameters.payeeId > 0) {
+            where.Clause.add(QueryAllData.PayeeID + "=" + mSearchParameters.payeeId);
         }
         // category
         if (mSearchParameters.category != null) {
@@ -413,15 +436,6 @@ public class SearchFragment extends Fragment
         this.mDualPanel = mDualPanel;
     }
 
-    @Override
-    public void onFinishedInputAmountDialog(int id, Double amount) {
-        Core core = new Core(getActivity().getApplicationContext());
-
-        View view = getView().findViewById(id);
-        if (view != null && view instanceof TextView)
-            core.formatAmountTextView(((TextView) view), amount);
-    }
-
     private void saveSearchValues() {
         // Account
         if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION &&
@@ -458,7 +472,8 @@ public class SearchFragment extends Fragment
         }
         // Payee
         if (txtSelectPayee.getTag() != null) {
-            mSearchParameters.payee = String.valueOf(txtSelectPayee.getTag());
+            mSearchParameters.payeeId = Integer.parseInt(txtSelectPayee.getTag().toString());
+            mSearchParameters.payeeName = txtSelectPayee.getText().toString();
         }
         // Category
         if (txtSelectCategory.getTag() != null) {
@@ -488,15 +503,18 @@ public class SearchFragment extends Fragment
 
         // Amount from
         txtFromAmount.setText(mSearchParameters.amountFrom);
+        txtFromAmount.setTag(mSearchParameters.amountFrom);
         // Amount to
         txtToAmount.setText(mSearchParameters.amountTo);
+        txtToAmount.setTag(mSearchParameters.amountTo);
 
         // Date from
         txtFromDate.setText(mSearchParameters.dateFrom);
         // Date to
         txtToDate.setText(mSearchParameters.dateTo);
         // Payee
-        txtSelectPayee.setText(mSearchParameters.payee);
+        txtSelectPayee.setTag(mSearchParameters.payeeId);
+        txtSelectPayee.setText(mSearchParameters.payeeName);
         // Category
         displayCategory(mSearchParameters.category);
         // Transaction number
@@ -504,4 +522,5 @@ public class SearchFragment extends Fragment
         // Notes
         txtNotes.setText(mSearchParameters.notes);
     }
+
 }

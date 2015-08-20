@@ -46,7 +46,9 @@ public class SplitItemFragment
         implements IInputAmountDialogListener {
 
     public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
+
     private static final int REQUEST_PICK_CATEGORY = 1;
+
     private ISplitTransactionsDataset mSplitTransaction;
     private SplitItemFragmentCallbacks mOnSplitItemCallback;
     private TextView txtSelectCategory;
@@ -159,9 +161,7 @@ public class SplitItemFragment
                         activity.setFragmentInputAmountClick(SplitItemFragment.this);
                     }
 
-                    InputAmountDialog dialog = InputAmountDialog.getInstance(getContext(),
-                            SplitItemFragment.this,
-                            v.getId(), amount);
+                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
                     dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });

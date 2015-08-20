@@ -97,7 +97,9 @@ public class EditTransactionActivity
         try {
             DropboxHelper.getInstance();
         } catch (Exception e) {
-            Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+            handler.handle(e, "getting dropbox instance");
+
             // create helper
             DropboxHelper.getInstance(getApplicationContext());
         }
@@ -195,6 +197,7 @@ public class EditTransactionActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         // save the state interface
         outState.putInt(EditTransactionActivityConstants.KEY_TRANS_ID, mTransId);
         outState.putInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mCommonFunctions.accountId);

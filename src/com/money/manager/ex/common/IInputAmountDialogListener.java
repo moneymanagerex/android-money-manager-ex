@@ -21,5 +21,10 @@ package com.money.manager.ex.common;
  * Interface for callbacks from amount input dialog.
  */
 public interface IInputAmountDialogListener {
-    public void onFinishedInputAmountDialog(int id, Double amount);
+    /**
+     * Raised after the amount has been entered in the number input dialog.
+     * @param id Id to identify the caller.
+     * @param amount Amount entered
+     */
+    void onFinishedInputAmountDialog(int id, Double amount);
 }
