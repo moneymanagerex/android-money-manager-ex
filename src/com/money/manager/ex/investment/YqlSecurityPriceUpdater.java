@@ -17,18 +17,30 @@
  */
 package com.money.manager.ex.investment;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.opencsv.CSVParser;
 
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Updates security prices from Yahoo Finance using YQL. All the work is done in the
@@ -45,39 +57,38 @@ public class YqlSecurityPriceUpdater
     }
 
     private Context mContext;
-    // "http://download.finance.yahoo.com/d/quotes.csv?s=", A2, "&f=l1d1&e=.csv"
-    private String mUrlPrefix = "http://download.finance.yahoo.com/d/quotes.csv?s=";
-    // get symbol, last trade price, last trade date
-    private String mUrlSuffix = "&f=sl1d1c4&e=.csv";
-    // "&f=l1&e=.csv";
-    // c4 = currency
     private IPriceUpdaterFeedback mFeedback;
+//    private String mSource = "yahoo.finance.quote";
+    private final String mSource = "yahoo.finance.quotes";
+    //
+    private final String mBaseUri = "https://query.yahooapis.com/v1/public/yql";
+    // https://query.yahooapis.com/v1/public/yql
+    // ?q=... url escaped
+    // &format=json
+    // &diagnostics=true
+    // &env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys
+    // &callback=
 
     /**
      * Update prices for all the symbols in the list.
      */
-    public void updatePrices(String... symbols) {
+    public void updatePrices(List<String> symbols) {
         if (symbols == null) return;
 
-        YqlDownloadAllPricesTask downloader = new YqlDownloadAllPricesTask(mContext, this);
-        downloader.execute(symbols);
+        // Get varargs from list.
+        //String[] symbolsArray = symbols.toArray(new String[symbols.size()]);
+        String url = getPriceUrl(symbols);
+
+        // Download prices
+        TextDownloaderTask downloader = new TextDownloaderTask(mContext, this);
+        downloader.execute(url);
 
         // Async call. The prices are updated in onContentDownloaded.
     }
 
-    private String getPriceUrl(String symbol) {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append(mUrlPrefix);
-        builder.append(symbol);
-        builder.append(mUrlSuffix);
-
-        return builder.toString();
-    }
-
     @Override
     public String getUrlForSymbol(String symbol) {
-        String result = getPriceUrl(symbol);
+        String result = getPriceUrl(Collections.singletonList(symbol));
         return result;
     }
 
@@ -92,53 +103,111 @@ public class YqlSecurityPriceUpdater
     }
 
     /**
-     * Called from the CSV downloader when the file is downloaded and the contents read.
-     * @param csvContents retrieved price
+     * Called from the Text Downloader when the file is downloaded and the contents read.
+     * Here we have all the prices.
+     * @param content The content received from the given url.
      */
     @Override
-    public void onContentDownloaded(String csvContents) {
+    public void onContentDownloaded(String content) {
         // validation
-        if (TextUtils.isEmpty(csvContents)) {
+        if (TextUtils.isEmpty(content)) {
             throw new IllegalArgumentException("Downloaded CSV contents are empty");
         }
 
-        // parse CSV contents to get proper fields that can be saved to the database.
-        CSVParser csvParser = new CSVParser();
-        String[] values;
+        // parse Json results
+        List<SecurityPriceModel> pricesList = new ArrayList<>();
         try {
-            values = csvParser.parseLineMulti(csvContents);
-        } catch (IOException e) {
+            pricesList = parseDownloadedContentJson(content);
+        } catch (JSONException e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "parsing downloaded CSV contents");
-            return;
+            handler.handle(e, "parsing JSON");
         }
 
-        // convert csv values to their original type.
+        for (SecurityPriceModel model : pricesList) {
+            // Notify the caller by invoking the interface method.
+            mFeedback.onPriceDownloaded(model.symbol, model.price, model.date);
+        }
+    }
 
-        String symbol = values[0];
-
-        // price
-        String priceString = values[1];
-        if (!NumericHelper.isNumeric(priceString)) return;
-        BigDecimal price = new BigDecimal(priceString);
-        // LSE stocks are expressed in GBp (pence), not Pounds.
-        // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
-        String currency = values[3];
-        if (currency.equals("GBp")) {
-            price = price.divide(BigDecimal.valueOf(100));
+    public String getYqlQueryFor(String source, List<String> fields, List<String> symbols) {
+        // append quotes to all the symbols
+        for (int i = 0; i < symbols.size(); i++) {
+            String symbol = symbols.get(i);
+            symbol = "\"" + symbol + "\"";
+            symbols.set(i, symbol);
         }
 
-        // date
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Date date = null;
-        try {
-            date = dateFormat.parse(values[2]);
-        } catch (ParseException e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "parsing date from CSV");
+        String query = "select ";
+        query += StringUtils.join(fields, ',');     // fields
+        query += " from ";
+        query += source;    // table
+        query += " where symbol in (";
+        query += StringUtils.join(symbols, ",");
+        query += ")";
+
+        return query;
+    }
+
+    private String getPriceUrl(List<String> symbols) {
+
+        // http://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line
+        List<String> fields = Arrays.asList("symbol", "LastTradePriceOnly", "LastTradeDate", "Currency");
+        String query = getYqlQueryFor(mSource, fields, symbols);
+
+
+        String uri = Uri.parse(mBaseUri)
+                .buildUpon()
+                .appendQueryParameter("q", query)
+                .appendQueryParameter("format", "json")
+                .appendQueryParameter("env", "store://datatables.org/alltableswithkeys")
+                .build()
+                .toString();
+
+        return uri;
+    }
+
+    private List<SecurityPriceModel> parseDownloadedContentJson(String content) throws JSONException {
+        ArrayList<SecurityPriceModel> result = new ArrayList<>();
+
+        JSONObject root = new JSONObject(content);
+
+        JSONArray quotes = root
+            .getJSONObject("query")
+            .getJSONObject("results")
+            .getJSONArray("quote");
+
+        for (int i = 0; i < quotes.length(); i++) {
+            JSONObject quote = quotes.optJSONObject(i);
+
+            SecurityPriceModel priceModel = new SecurityPriceModel();
+            priceModel.symbol = quote.getString("symbol");
+
+            // price
+            String priceString = quote.getString("LastTradePriceOnly");
+            if (!NumericHelper.isNumeric(priceString)) continue;
+            BigDecimal price = new BigDecimal(priceString);
+            // LSE stocks are expressed in GBp (pence), not Pounds.
+            // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
+            String currency = quote.getString("Currency");
+            if (currency.equals("GBp")) {
+                price = price.divide(BigDecimal.valueOf(100));
+            }
+            priceModel.price = price;
+
+            // date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            Date date = null;
+            try {
+                date = dateFormat.parse(quote.getString("LastTradeDate"));
+            } catch (ParseException e) {
+                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                handler.handle(e, "parsing date from CSV");
+            }
+            priceModel.date = date;
+
+            result.add(priceModel);
         }
 
-        // Notify the caller by invoking the interface method.
-        mFeedback.onPriceDownloaded(symbol, price, date);
+        return result;
     }
 }

@@ -34,10 +34,10 @@ import java.io.IOException;
 /**
  * Task that updates all the security prices in the list.
  */
-public class YqlDownloadAllPricesTask
+public class TextDownloaderTask
     extends AsyncTask<String, Integer, Boolean> {
 
-    public YqlDownloadAllPricesTask(Context context, IDownloadAsyncTaskFeedback feedback) {
+    public TextDownloaderTask(Context context, IDownloadAsyncTaskFeedback feedback) {
         mFeedback = feedback;
         mContext = context;
     }
@@ -58,12 +58,12 @@ public class YqlDownloadAllPricesTask
     }
 
     @Override
-    protected Boolean doInBackground(String... symbols) {
+    protected Boolean doInBackground(String... url) {
         try {
-            return runTask(symbols);
+            return runTask(url);
         } catch (IllegalArgumentException ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "No price provided by YQL.");
+            handler.handle(ex, "No results provided by YQL.");
             return false;
         } catch (Exception e) {
             throw new RuntimeException("Error in Yahoo download all prices", e);
@@ -92,7 +92,8 @@ public class YqlDownloadAllPricesTask
                 DialogUtils.closeProgressDialog(mDialog);
             }
         } catch (Exception e) {
-            Log.e(CurrenciesActivity.LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "closing dialog");
         }
         if (result) {
             Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();
@@ -104,17 +105,16 @@ public class YqlDownloadAllPricesTask
         super.onPostExecute(result);
     }
 
-    private boolean runTask(String... symbols) {
+    private boolean runTask(String... urls) {
         TextDownloader downloader = new TextDownloader();
-        mDialog.setMax(symbols.length);
+//        mDialog.setMax(urls.length);
 
-        for (String symbol:symbols) {
-            // Show the symbol being updated.
+        // Show the symbol being updated?
 
-            String url = mFeedback.getUrlForSymbol(symbol);
-            String csv;
+        for (String url : urls) {
+            String content;
             try {
-                csv = downloader.downloadAsText(url);
+                content = downloader.downloadAsText(url);
             } catch (IOException ex) {
                 ExceptionHandler handler = new ExceptionHandler(mContext, this);
                 handler.handle(ex, "downloading price");
@@ -122,7 +122,7 @@ public class YqlDownloadAllPricesTask
                 return false;
             }
             // notify parent about the price update
-            mFeedback.onContentDownloaded(csv);
+            mFeedback.onContentDownloaded(content);
 
             mProgressCount += 1;
             publishProgress(mProgressCount);

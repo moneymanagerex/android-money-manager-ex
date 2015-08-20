@@ -48,10 +48,15 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The main fragment for the watchlist. Contains the list and everything else.
@@ -294,6 +299,8 @@ public class WatchlistFragment extends Fragment
     public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
         // prices updated.
 
+        if (StringUtils.isEmpty(symbol)) return;
+
         // update the current price of the stock.
         StockRepository repo = getStockRepository();
         repo.updateCurrentPrice(symbol, price);
@@ -301,8 +308,6 @@ public class WatchlistFragment extends Fragment
         // save price history record.
         StockHistoryRepository historyRepo = mDataFragment.getStockHistoryRepository();
         historyRepo.addStockHistoryRecord(symbol, price, date);
-
-//        showUpdateMessage(symbol);
 
         mUpdateCounter += 1;
         if (mUpdateCounter == mToUpdateTotal) {
@@ -383,8 +388,11 @@ public class WatchlistFragment extends Fragment
         mToUpdateTotal = 1;
         mUpdateCounter = 0;
 
+        // http://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line
+        List<String> symbols = Collections.singletonList(symbol);
+
         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(mContext, this);
-        updater.updatePrices(symbol);
+        updater.updatePrices(symbols);
     }
 
     private void purgePriceHistory() {
@@ -446,7 +454,7 @@ public class WatchlistFragment extends Fragment
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
                                 .getUpdaterInstance(mContext, WatchlistFragment.this);
-                        updater.updatePrices(symbols);
+                        updater.updatePrices(Arrays.asList(symbols));
 
                         dialog.dismiss();
                     }

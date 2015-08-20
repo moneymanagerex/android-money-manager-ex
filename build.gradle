@@ -114,6 +114,10 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/DEPENDENCIES'
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true;
+    }
 }
 
 dependencies {

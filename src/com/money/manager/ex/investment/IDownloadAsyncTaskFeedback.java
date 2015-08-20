@@ -23,5 +23,5 @@ package com.money.manager.ex.investment;
 public interface IDownloadAsyncTaskFeedback {
     String getUrlForSymbol(String symbol);
     void onProgressUpdate(String progress);
-    void onContentDownloaded(String csvContent);
+    void onContentDownloaded(String content);
 }

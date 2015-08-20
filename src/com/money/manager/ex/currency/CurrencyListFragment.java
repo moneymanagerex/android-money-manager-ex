@@ -55,6 +55,7 @@ import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -572,7 +573,7 @@ public class CurrencyListFragment
         }
 
         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity(), this);
-        updater.updatePrices(currencySymbols);
+        updater.updatePrices(Arrays.asList(currencySymbols));
     }
 
     private boolean updateCurrencyFromYahoo(int toCurrencyId) {

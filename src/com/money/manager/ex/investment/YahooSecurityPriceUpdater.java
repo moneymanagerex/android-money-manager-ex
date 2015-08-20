@@ -32,6 +32,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Updates security prices from Yahoo Finance.
@@ -58,14 +59,14 @@ public class YahooSecurityPriceUpdater
     /**
      * Update prices for all the symbols in the list.
      */
-    public void updatePrices(String... symbols) {
+    public void updatePrices(List<String> symbols) {
         if (symbols == null) return;
 
-//        mSymbolsToUpdate = symbols;
+        String[] symbolsArray = symbols.toArray(new String[symbols.size()]);
 
         YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(
                 mContext, this);
-        downloader.execute(symbols);
+        downloader.execute(symbolsArray);
 
         // Async call. The prices are updated in onContentDownloaded.
     }
@@ -98,12 +99,12 @@ public class YahooSecurityPriceUpdater
 
     /**
      * Called from the CSV downloader when the file is downloaded and the contents read.
-     * @param csvContents retrieved price
+     * @param content retrieved price
      */
     @Override
-    public void onContentDownloaded(String csvContents) {
+    public void onContentDownloaded(String content) {
         // validation
-        if (TextUtils.isEmpty(csvContents)) {
+        if (TextUtils.isEmpty(content)) {
             throw new IllegalArgumentException("Downloaded CSV contents are empty");
         }
 
@@ -111,7 +112,7 @@ public class YahooSecurityPriceUpdater
         CSVParser csvParser = new CSVParser();
         String[] values;
         try {
-            values = csvParser.parseLineMulti(csvContents);
+            values = csvParser.parseLineMulti(content);
         } catch (IOException e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "parsing downloaded CSV contents");
