@@ -667,7 +667,7 @@ public class EditTransactionActivity
             // create a category if it was sent but does not exist (id not found by the parser).
             if (parameters.categoryName != null) {
                 CategoryService newCategory = new CategoryService(this);
-                mCommonFunctions.categoryId = newCategory.createNew(mCommonFunctions.categoryName);
+                mCommonFunctions.categoryId = newCategory.createNew(parameters.categoryName);
                 mCommonFunctions.categoryName = parameters.categoryName;
             }
         }
