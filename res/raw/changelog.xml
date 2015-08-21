@@ -21,7 +21,7 @@
         <changelogtext>Improvements for numeric input on screen rotation.</changelogtext>
         <changelogtext>Sped up currency and stock price download by using YQL.</changelogtext>
         <changelogtext>Update both amounts when editing one, for transfers in the same currency.</changelogtext>
-        <changelogtext>List credits first for each date.</changelogtext>
+        <changelogtext>List deposit transactions first for each date.</changelogtext>
         <changelogtext>Renaming the Tools menu item to Entities.</changelogtext>
         <changelogtext>Not prompting for confirmation on close if no changes made on transaction.</changelogtext>
         <changelogtext>Updated translations.</changelogtext>
