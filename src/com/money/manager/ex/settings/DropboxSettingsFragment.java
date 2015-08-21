@@ -254,9 +254,9 @@ public class DropboxSettingsFragment
             if (getActivity().getSharedPreferences(TipsDialogFragment.PREF_DIALOG, 0).getBoolean(key, false))
                 return;
         }
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        // title and icons
-        alertDialog.setTitle(title);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            // title and icons
+            .setTitle(title);
         // view body
         @SuppressLint("InflateParams")
         final LinearLayout view = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.dialog_tips, null);

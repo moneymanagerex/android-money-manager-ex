@@ -47,6 +47,7 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -396,15 +397,10 @@ public class WatchlistFragment extends Fragment
     }
 
     private void purgePriceHistory() {
-        Core core = new Core(getActivity());
-        int icon = core.usingDarkTheme()
-                ? R.drawable.ic_action_help_dark
-                : R.drawable.ic_action_help_light;
-
-        new AlertDialogWrapper.Builder(getActivity())
+        new AlertDialogWrapper.Builder(getContext())
                 .setTitle(R.string.purge_history)
+                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
                 .setMessage(R.string.purge_history_confirmation)
-                .setIcon(icon)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -434,15 +430,10 @@ public class WatchlistFragment extends Fragment
     }
 
     private void confirmPriceUpdate() {
-        Core core = new Core(mContext);
-        int icon = core.usingDarkTheme()
-                ? R.drawable.ic_action_help_dark
-                : R.drawable.ic_action_help_light;
-
-        new AlertDialogWrapper.Builder(getActivity())
+        new AlertDialogWrapper.Builder(getContext())
                 .setTitle(R.string.download)
+                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
                 .setMessage(R.string.confirm_price_download)
-                .setIcon(icon)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -453,7 +444,7 @@ public class WatchlistFragment extends Fragment
 
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
-                                .getUpdaterInstance(mContext, WatchlistFragment.this);
+                                .getUpdaterInstance(getContext(), WatchlistFragment.this);
                         updater.updatePrices(Arrays.asList(symbols));
 
                         dialog.dismiss();

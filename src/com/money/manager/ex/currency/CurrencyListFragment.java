@@ -52,6 +52,7 @@ import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -168,15 +169,16 @@ public class CurrencyListFragment
                 if (new TablePayee().canDelete(getActivity(), contentValues, TableAccountList.class.getName())) {
                     showDialogDeleteCurrency(currencyId);
                 } else {
-                    Core core = new Core(getActivity());
-                    int icon = core.usingDarkTheme()
-                            ? R.drawable.ic_action_warning_dark
-                            : R.drawable.ic_action_warning_light;
+//                    Core core = new Core(getActivity());
+//                    int icon = core.usingDarkTheme()
+//                            ? R.drawable.ic_action_warning_dark
+//                            : R.drawable.ic_action_warning_light;
 
-                    new AlertDialogWrapper.Builder(getActivity())
+                    new AlertDialogWrapper.Builder(getContext())
                         .setTitle(R.string.attention)
+                        .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
                         .setMessage(R.string.currency_can_not_deleted)
-                        .setIcon(icon)
+//                        .setIcon(icon)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -413,9 +415,10 @@ public class CurrencyListFragment
 
     private void showDialogDeleteCurrency(final int currencyId) {
         // config alert dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        alertDialog.setTitle(R.string.delete_currency);
-        alertDialog.setMessage(R.string.confirmDelete);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.delete_currency)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .setMessage(R.string.confirmDelete);
         // set listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -456,9 +459,10 @@ public class CurrencyListFragment
 
     private void showDialogImportAllCurrencies() {
         // config alert dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        alertDialog.setTitle(R.string.attention);
-        alertDialog.setMessage(R.string.question_import_currencies);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.attention)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .setMessage(R.string.question_import_currencies);
         // set listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -479,15 +483,10 @@ public class CurrencyListFragment
     }
 
     private void showDialogUpdateExchangeRateCurrencies() {
-        Core core = new Core(getActivity());
-        int icon = core.usingDarkTheme()
-                ? R.drawable.ic_action_help_dark
-                : R.drawable.ic_action_help_light;
-
         // config alert dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.download)
-            .setIcon(icon)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
             .setMessage(R.string.question_update_currency_exchange_rates)
         // set listener on positive button
             .setPositiveButton(android.R.string.ok,

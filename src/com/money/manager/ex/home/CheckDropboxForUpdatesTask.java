@@ -14,6 +14,7 @@ import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.ActionClickListener;
+import com.shamanland.fonticon.FontIconDrawable;
 
 /**
  * Check for updates to the database on Dropbox. Ran on start of the main activity.
@@ -80,16 +81,12 @@ public class CheckDropboxForUpdatesTask
 
     private void showNotificationDialog() {
         // The context has to implement the callbacks interface!
+        // todo: code smell. Try to avoid conversion to main activity here!
         final MainActivity mainActivity = (MainActivity) mContext;
-
-        Core core = new Core(mContext);
-        int icon = core.usingDarkTheme()
-                ? R.drawable.ic_action_warning_dark
-                : R.drawable.ic_action_warning_light;
 
         new AlertDialogWrapper.Builder(mContext)
                 // setting alert dialog
-                .setIcon(icon)
+                .setIcon(FontIconDrawable.inflate(mContext, R.xml.ic_alert))
                 .setTitle(R.string.update_available)
                 .setMessage(R.string.update_on_dropbox)
                 .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {

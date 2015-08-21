@@ -57,6 +57,7 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyService;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -135,15 +136,16 @@ public class Core {
      * @param text to display
      * @return alert dialog
      */
-    public static void alertDialog(Context ctx, String text) {
-        Core core = new Core(ctx);
-        int icon = core.usingDarkTheme()
-            ? R.drawable.ic_action_warning_dark
-            : R.drawable.ic_action_warning_light;
+    public static void alertDialog(Context context, String text) {
+//        Core core = new Core(context);
+//        int icon = core.usingDarkTheme()
+//            ? R.drawable.ic_action_warning_dark
+//            : R.drawable.ic_action_warning_light;
 
-        new AlertDialogWrapper.Builder(ctx)
+        new AlertDialogWrapper.Builder(context)
             // setting alert dialog
-            .setIcon(icon)
+            .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
+//            .setIcon(icon)
             .setTitle(R.string.attention)
             .setMessage(text)
 //            .setNeutralButton()
@@ -621,11 +623,10 @@ public class Core {
         // create layout
         View view = LayoutInflater.from(mContext).inflate(R.layout.changelog_layout, null);
         //create dialog
-        AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(mContext);
-        showDialog.setCancelable(false);
-        showDialog.setTitle(R.string.changelog);
-
-        showDialog.setView(view);
+        AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(mContext)
+            .setCancelable(false)
+            .setTitle(R.string.changelog)
+            .setView(view);
         showDialog.setNeutralButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
                     @Override

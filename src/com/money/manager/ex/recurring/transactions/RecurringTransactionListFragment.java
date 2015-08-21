@@ -44,6 +44,7 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.utils.DateUtils;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.Date;
 
@@ -282,9 +283,10 @@ public class RecurringTransactionListFragment
 
     private void showDialogDelete(final int id) {
         // create alert dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        alertDialog.setTitle(R.string.delete_repeating_transaction);
-        alertDialog.setMessage(R.string.confirmDelete);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.delete_repeating_transaction)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .setMessage(R.string.confirmDelete);
         // set listener
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -309,26 +311,27 @@ public class RecurringTransactionListFragment
 
     private void showDialogSkip(final int id) {
         // create alert dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        alertDialog.setTitle(R.string.skip_next_occurrence);
-        alertDialog.setMessage(R.string.skip_next_occurrence_confirmation);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.skip_next_occurrence)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .setMessage(R.string.skip_next_occurrence_confirmation)
         // set listener
-        alertDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        RecurringTransactionService recurringTransaction = new RecurringTransactionService(id, getActivity());
-                        recurringTransaction.skipNextOccurrence();
-                        getLoaderManager().restartLoader(ID_LOADER_REPEATING, null,
-                                RecurringTransactionListFragment.this);
-                    }
-                });
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+            .setPositiveButton(android.R.string.ok,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            RecurringTransactionService recurringTransaction = new RecurringTransactionService(id, getActivity());
+                            recurringTransaction.skipNextOccurrence();
+                            getLoaderManager().restartLoader(ID_LOADER_REPEATING, null,
+                                    RecurringTransactionListFragment.this);
+                        }
+                    })
+            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
         alertDialog.create().show();
     }
 

@@ -57,6 +57,7 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.shamanland.fonticon.FontIconDrawable;
 
 /**
  *
@@ -192,15 +193,16 @@ public class PayeeLoaderListFragment
                 if (new TablePayee().canDelete(getActivity(), contentValues)) {
                     showDialogDeletePayee(cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
                 } else {
-                    Core core = new Core(getActivity());
-                    int icon = core.usingDarkTheme()
-                            ? R.drawable.ic_action_warning_dark
-                            : R.drawable.ic_action_warning_light;
+//                    Core core = new Core(getActivity());
+//                    int icon = core.usingDarkTheme()
+//                            ? R.drawable.ic_action_warning_dark
+//                            : R.drawable.ic_action_warning_light;
 
                     new AlertDialogWrapper.Builder(getActivity())
                             .setTitle(R.string.attention)
+                            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
                             .setMessage(R.string.payee_can_not_deleted)
-                            .setIcon(icon)
+//                            .setIcon(icon)
                             .setPositiveButton(android.R.string.ok,
                                     new DialogInterface.OnClickListener() {
                                         @Override
@@ -330,16 +332,10 @@ public class PayeeLoaderListFragment
 
     private void showDialogDeletePayee(final int payeeId) {
         // creating dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-
-        alertDialog.setTitle(R.string.delete_payee);
-        alertDialog.setMessage(R.string.confirmDelete);
-
-        Core core = new Core(getActivity());
-        int icon = core.usingDarkTheme()
-                ? R.drawable.ic_action_warning_dark
-                : R.drawable.ic_action_warning_light;
-        alertDialog.setIcon(icon);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.delete_payee)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+            .setMessage(R.string.confirmDelete);
 
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -372,10 +368,10 @@ public class PayeeLoaderListFragment
             edtPayeeName.setSelection(payeeName.length());
         }
         // create dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-
-        alertDialog.setView(viewDialog);
-        alertDialog.setTitle(R.string.edit_payeeName);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setView(viewDialog)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_user))
+            .setTitle(R.string.edit_payeeName);
 
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {

@@ -58,11 +58,11 @@ public class DonateDialogUtils {
                 //get text donate
                 String donateText = context.getString(R.string.donate_header);
                 //create dialog
-                AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(context);
-                showDialog.setCancelable(false);
-                showDialog.setTitle(R.string.donate);
-                showDialog.setIcon(R.mipmap.ic_launcher);
-                showDialog.setMessage(Html.fromHtml(donateText));
+                AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(context)
+                    .setCancelable(false)
+                    .setTitle(R.string.donate)
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setMessage(Html.fromHtml(donateText));
                 showDialog.setNegativeButton(R.string.no_thanks, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -49,6 +49,7 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.settings.AppSettings;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -448,15 +449,16 @@ public class CategoryListFragment
             canDelete = new TableSubCategory().canDelete(getActivity(), values);
         }
         if (!(canDelete)) {
-            Core core = new Core(getActivity());
-            int icon = core.usingDarkTheme()
-                ? R.drawable.ic_action_warning_dark
-                : R.drawable.ic_action_warning_light;
+//            Core core = new Core(getActivity());
+//            int icon = core.usingDarkTheme()
+//                ? R.drawable.ic_action_warning_dark
+//                : R.drawable.ic_action_warning_light;
 
-            new AlertDialogWrapper.Builder(getActivity())
+            new AlertDialogWrapper.Builder(getContext())
                     .setTitle(R.string.attention)
+                    .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
                     .setMessage(R.string.category_can_not_deleted)
-                    .setIcon(icon)
+//                    .setIcon(icon)
                     .setPositiveButton(android.R.string.ok,
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -469,10 +471,11 @@ public class CategoryListFragment
             return;
         }
         // create and set alert dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        alertDialog.setTitle(R.string.delete_category);
-        alertDialog.setMessage(R.string.confirmDelete);
-        alertDialog.setIcon(R.drawable.ic_action_warning_light);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.delete_category)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+            .setMessage(R.string.confirmDelete);
+//        alertDialog.setIcon(R.drawable.ic_action_warning_light);
         // listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -524,9 +527,10 @@ public class CategoryListFragment
                 : R.string.edit_categoryName;
 
         // create alter dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        alertDialog.setView(viewDialog);
-        alertDialog.setTitle(titleId);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setView(viewDialog)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
+            .setTitle(titleId);
         // listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
@@ -608,9 +612,10 @@ public class CategoryListFragment
                 : R.string.edit_categoryName;
 
         // create alter dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        alertDialog.setView(viewDialog);
-        alertDialog.setTitle(titleId);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setView(viewDialog)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
+            .setTitle(titleId);
         // listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     //@SuppressWarnings("incomplete-switch")

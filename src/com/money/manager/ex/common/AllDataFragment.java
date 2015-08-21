@@ -62,6 +62,7 @@ import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TableSplitTransactions;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -575,12 +576,12 @@ public class AllDataFragment extends BaseListFragment
      */
     private void showDialogDeleteCheckingAccount(final ArrayList<Integer> transactionIds) {
         // create alert dialog and set title and message
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-
-        alertDialog.setTitle(R.string.delete_transaction);
-        alertDialog.setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
-                transactionIds.size(), transactionIds.size()));
-        alertDialog.setIcon(R.drawable.ic_action_warning_light);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.delete_transaction)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+            .setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
+                    transactionIds.size(), transactionIds.size()));
+//        alertDialog.setIcon(R.drawable.ic_action_warning_light);
 
         // set listener button positive
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

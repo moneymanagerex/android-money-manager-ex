@@ -44,6 +44,7 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
+import com.shamanland.fonticon.FontIconDrawable;
 
 /**
  * List of accounts.
@@ -113,15 +114,15 @@ public class AccountListFragment
                 if (new TablePayee().canDelete(getActivity(), contentValues)) {
                     showDialogDeleteAccount(cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
                 } else {
-                    Core core = new Core(getActivity());
-                    int icon = core.usingDarkTheme()
-                            ? R.drawable.ic_action_warning_dark
-                            : R.drawable.ic_action_warning_light;
+//                    Core core = new Core(getActivity());
+//                    int icon = core.usingDarkTheme()
+//                            ? R.drawable.ic_action_warning_dark
+//                            : R.drawable.ic_action_warning_light;
 
                     new AlertDialogWrapper.Builder(getActivity())
                             .setTitle(R.string.attention)
                             .setMessage(R.string.account_can_not_deleted)
-                            .setIcon(icon)
+                            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
                             .setPositiveButton(android.R.string.ok,
                                     new DialogInterface.OnClickListener() {
                                         @Override
@@ -237,10 +238,10 @@ public class AccountListFragment
 
     private void showDialogDeleteAccount(final int ACCOUNTID) {
         // create dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-
-        alertDialog.setTitle(R.string.delete_account);
-        alertDialog.setMessage(R.string.confirmDelete);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.delete_account)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .setMessage(R.string.confirmDelete);
 
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {

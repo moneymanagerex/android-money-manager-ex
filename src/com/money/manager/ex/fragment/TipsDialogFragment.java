@@ -120,10 +120,10 @@ public class TipsDialogFragment extends DialogFragment {
         }
 
         // Compose Builder
-        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(getActivity());
-        builder.setTitle(getTitle());
-        builder.setView(view);
-        builder.setCancelable(false);
+        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(getTitle())
+            .setView(view)
+            .setCancelable(false);
         builder.setNeutralButton(android.R.string.ok, new OnClickListener() {
 
             @Override

@@ -601,10 +601,10 @@ public class MainActivity
      * Dialog to choose exit from application
      */
     public void exitApplication() {
-        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext());
-        exitDialog.setTitle(R.string.close_application);
-        exitDialog.setMessage(R.string.question_close_application);
-        exitDialog.setIcon(R.mipmap.ic_launcher);
+        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext())
+            .setTitle(R.string.close_application)
+            .setMessage(R.string.question_close_application)
+            .setIcon(R.mipmap.ic_launcher);
         exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

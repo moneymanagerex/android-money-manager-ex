@@ -48,6 +48,7 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.view.RobotoTextView;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -117,7 +118,9 @@ public class EditPriceDialog
 
         // Create dialog.
 
-        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(mContext);
+        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(mSymbol)
+            .setIcon(FontIconDrawable.inflate(mContext, R.xml.ic_euro));
 
         View viewDialog = LayoutInflater.from(mContext).inflate(R.layout.dialog_edit_stock_price, null);
         builder.setView(viewDialog);
@@ -235,8 +238,6 @@ public class EditPriceDialog
                 dialog.cancel();
             }
         });
-
-        builder.setTitle(mSymbol);
 
 //        builder.create().show();
         return builder.create();
