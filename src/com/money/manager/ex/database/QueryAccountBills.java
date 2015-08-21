@@ -25,8 +25,11 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.utils.RawFileUtils;
 
+/**
+ * Query account bills = account data with balances.
+ */
 public class QueryAccountBills extends Dataset {
-    //definizione dei nomi dei campi
+
     public static final String ACCOUNTID = "ACCOUNTID";
     public static final String ACCOUNTNAME = "ACCOUNTNAME";
     public static final String STATUS = "STATUS";
@@ -37,7 +40,7 @@ public class QueryAccountBills extends Dataset {
     public static final String RECONCILED = "RECONCILED";
     public static final String TOTALBASECONVRATE = "TOTALBASECONVRATE";
     public static final String RECONCILEDBASECONVRATE = "RECONCILEDBASECONVRATE";
-    //definizione dei campi
+
     private int accountId;
     private String accountName;
     private String status;
@@ -48,7 +51,7 @@ public class QueryAccountBills extends Dataset {
     private double reconciled;
     private double totalBaseConvRate;
     private double reconciledBaseConvRate;
-    // context
+
     private Context context;
 
     // constructor

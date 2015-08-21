@@ -27,6 +27,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,13 +48,15 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
+import com.money.manager.ex.common.IInputAmountDialogListener;
+import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.BalanceAccountTask;
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -68,10 +71,9 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.transactions.IntentDataParameters;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
-
-import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -85,7 +87,7 @@ import java.util.List;
  */
 public class HomeFragment
         extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+        implements LoaderManager.LoaderCallbacks<Cursor>, IInputAmountDialogListener {
 
     // ID Loader Manager
     private static final int ID_LOADER_USER_NAME = 1;
@@ -93,6 +95,9 @@ public class HomeFragment
     private static final int ID_LOADER_BILL_DEPOSITS = 3;
     private static final int ID_LOADER_INCOME_EXPENSES = 4;
     private static final int ID_LOADER_INVESTMENTS = 5;
+
+    private static final String TAG_BALANCE_ACCOUNT = "HomeFragment:BalanceAccount";
+    private static final int REQUEST_BALANCE_ACCOUNT = 1;
 
     private CurrencyService mCurrencyService;
     private boolean mHideReconciled;
@@ -119,11 +124,19 @@ public class HomeFragment
     private boolean mAccountTransactionsLoaded = false;
     private boolean mInvestmentTransactionsLoaded = false;
 
+    private int accountBalancedId = Constants.NOT_SET;
+    private QueryAccountBills accountBeingBalanced = null;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
 //        registerForContextMenu(getListView());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Log.d("test", requestCode + resultCode + data.toString());
     }
 
     @Override
@@ -139,7 +152,14 @@ public class HomeFragment
         // The fragment is using a custom option in the actionbar menu.
         setHasOptionsMenu(true);
 
-//        mFragmentLoaded = true;
+        // restore number input dialog reference, if any
+        if (savedInstanceState != null) {
+            this.accountBalancedId = savedInstanceState.getInt(TAG_BALANCE_ACCOUNT);
+        }
+//        InputAmountDialog inputAmountDialog = (InputAmountDialog) getFragmentManager().findFragmentByTag(TAG_BALANCE_ACCOUNT);
+//        if (inputAmountDialog != null) {
+//            Log.d("test", "input amount dialog found");
+//        }
     }
 
     @Override
@@ -544,26 +564,30 @@ public class HomeFragment
             result = true;
         }
         if (menuItemTitle.equalsIgnoreCase(getString(R.string.balance_account))) {
-            getBalanceAccountTask().startBalanceAccount(account);
+            startBalanceAccount(account);
         }
 
         return result;
     }
 
-    // Private custom methods.
-
-    /**
-     * @param visible if visible set true show the listview; false show progressbar
-     */
-    private void setListViewAccountBillsVisible(boolean visible) {
-        if (visible) {
-            mExpandableListView.setVisibility(View.VISIBLE);
-            prgAccountBills.setVisibility(View.GONE);
-        } else {
-            mExpandableListView.setVisibility(View.GONE);
-            prgAccountBills.setVisibility(View.VISIBLE);
-        }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(TAG_BALANCE_ACCOUNT, this.accountBalancedId);
     }
+
+    public void startBalanceAccount(QueryAccountBills account) {
+        setAccountBeingBalanced(account);
+
+        // get the amount via input dialog.
+        int currencyId = account.getCurrencyId();
+
+        InputAmountDialog dialog = InputAmountDialog.getInstance(REQUEST_BALANCE_ACCOUNT, 0.0, currencyId);
+        dialog.setTargetFragment(this, REQUEST_BALANCE_ACCOUNT);
+        dialog.show(getActivity().getSupportFragmentManager(), TAG_BALANCE_ACCOUNT);
+
+        // the task continues in onFinishedInputAmountDialog
+    }
+    // Private custom methods.
 
     private void addFooterToExpandableListView(double curTotal, double curReconciled) {
         // manage footer list view
@@ -598,6 +622,32 @@ public class HomeFragment
         }
         // add footer
         mExpandableListView.addFooterView(linearFooter, null, false);
+    }
+
+    private QueryAccountBills getAccountBeingBalanced() {
+        if (this.accountBeingBalanced == null) {
+            AccountRepository repository = new AccountRepository(getContext());
+            this.accountBeingBalanced = repository.loadAccountBills(this.accountBalancedId);
+        }
+        return this.accountBeingBalanced;
+    }
+
+    private void setAccountBeingBalanced(QueryAccountBills account) {
+        this.accountBeingBalanced = account;
+        accountBalancedId = account.getAccountId();
+    }
+
+    /**
+     * @param visible if visible set true show the listview; false show progressbar
+     */
+    private void setListViewAccountBillsVisible(boolean visible) {
+        if (visible) {
+            mExpandableListView.setVisibility(View.VISIBLE);
+            prgAccountBills.setVisibility(View.GONE);
+        } else {
+            mExpandableListView.setVisibility(View.GONE);
+            prgAccountBills.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setUpAccountsList(View view) {
@@ -755,14 +805,14 @@ public class HomeFragment
         return account;
     }
 
-    private BalanceAccountTask mBalanceAccountTask;
-
-    private BalanceAccountTask getBalanceAccountTask() {
-        if (mBalanceAccountTask == null) {
-            mBalanceAccountTask = new BalanceAccountTask(getActivity());
-        }
-        return mBalanceAccountTask;
-    }
+//    private BalanceAccountTask mBalanceAccountTask;
+//
+//    public BalanceAccountTask getBalanceAccountTask() {
+//        if (mBalanceAccountTask == null) {
+//            mBalanceAccountTask = new BalanceAccountTask(getActivity());
+//        }
+//        return mBalanceAccountTask;
+//    }
 
     private void renderAccountsList(Cursor cursor) {
         // Accounts list
@@ -913,5 +963,42 @@ public class HomeFragment
                 listOfAccountsOfType.add(accountTransaction);
             }
         }
+    }
+
+    @Override
+    public void onFinishedInputAmountDialog(int id, Double amount) {
+        QueryAccountBills account = this.getAccountBeingBalanced();
+        BigDecimal currentBalance = BigDecimal.valueOf(account.getTotal());
+
+        // calculate the diff.
+        BigDecimal newBalance = BigDecimal.valueOf(amount);
+        if (newBalance.compareTo(currentBalance) == 0) return;
+
+        BigDecimal difference;
+        TransactionTypes transactionType;
+
+        if (newBalance.compareTo(currentBalance) > 0) {
+            // new balance > current balance
+            difference = newBalance.subtract(currentBalance);
+            transactionType = TransactionTypes.Deposit;
+        } else {
+            // new balance < current balance
+            difference = currentBalance.subtract(newBalance);
+            transactionType = TransactionTypes.Withdrawal;
+        }
+
+        // open a new transaction screen to create a transaction to balance to the entered amount.
+        Intent intent = new Intent(getContext(), EditTransactionActivity.class);
+        intent.setAction(Intent.ACTION_INSERT);
+        // add balance and transaction type and payee
+        IntentDataParameters params = new IntentDataParameters();
+        params.accountName = account.getAccountName();
+        params.transactionType = transactionType;
+        params.payeeName = getContext().getString(R.string.balance_adjustment);
+        params.amount = difference.doubleValue();
+        params.categoryName = getContext().getString(R.string.cash);
+        intent.setData(params.toUri());
+
+        getContext().startActivity(intent);
     }
 }

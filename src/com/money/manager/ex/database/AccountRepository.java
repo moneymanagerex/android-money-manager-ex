@@ -52,6 +52,29 @@ public class AccountRepository {
                 selection,
                 new String[] { Integer.toString(accountId) },
                 null);
+        if (cursor == null) return null;
+
+        if (cursor.moveToFirst()) {
+            result.setValueFromCursor(cursor);
+        }
+
+        cursor.close();
+
+        return result;
+    }
+
+    public QueryAccountBills loadAccountBills(int accountId) {
+        QueryAccountBills result = new QueryAccountBills(mContext);
+
+        String selection = QueryAccountBills.ACCOUNTID + "=?";
+
+        Cursor cursor = mContext.getContentResolver().query(
+                result.getUri(),
+                result.getAllColumns(),
+                selection,
+                new String[] { Integer.toString(accountId) },
+                null);
+        if (cursor == null) return null;
 
         if (cursor.moveToFirst()) {
             result.setValueFromCursor(cursor);

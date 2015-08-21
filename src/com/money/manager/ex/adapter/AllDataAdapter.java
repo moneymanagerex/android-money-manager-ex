@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -33,7 +32,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.account.BalanceAmountTask;
+import com.money.manager.ex.account.CalculateAmountBalanceTask;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
@@ -437,7 +436,7 @@ public class AllDataAdapter
         try {
             int transId = cursor.getInt(cursor.getColumnIndex(ID));
 
-            BalanceAmountTask balanceAmount = new BalanceAmountTask();
+            CalculateAmountBalanceTask balanceAmount = new CalculateAmountBalanceTask();
             balanceAmount.setAccountId(getAccountId());
             balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
             balanceAmount.setTextView(holder.txtBalance);

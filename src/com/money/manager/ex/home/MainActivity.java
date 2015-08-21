@@ -96,8 +96,7 @@ import java.util.ArrayList;
  */
 public class MainActivity
         extends BaseFragmentActivity
-        implements IDropboxManagerCallbacks, IDrawerItemClickListenerCallbacks,
-        IInputAmountDialogListener {
+        implements IDropboxManagerCallbacks, IDrawerItemClickListenerCallbacks {
 
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
@@ -1076,11 +1075,6 @@ public class MainActivity
                 .withText(getString(R.string.menu_report_income_vs_expenses))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
         onDrawerItemSubDialogs(adapter, text, isDarkTheme);
-    }
-
-    @Override
-    public void onFinishedInputAmountDialog(int id, Double amount) {
-
     }
 
 //    private void showToolsSelector(boolean isDarkTheme, String text) {

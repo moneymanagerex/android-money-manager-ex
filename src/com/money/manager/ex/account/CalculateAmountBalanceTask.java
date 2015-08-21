@@ -34,7 +34,7 @@ import com.money.manager.ex.database.TableCheckingAccount;
 /**
  * Async task that calculates and updates the amount balance in the transaction list.
  */
-public class BalanceAmountTask
+public class CalculateAmountBalanceTask
         extends AsyncTask<Void, Void, Boolean> {
 
     private int mAccountId;

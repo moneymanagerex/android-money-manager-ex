@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.common;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -93,10 +94,15 @@ public class InputAmountDialog
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mListener = (IInputAmountDialogListener) getActivity();
+        if (getActivity() instanceof IInputAmountDialogListener) {
+            mListener = (IInputAmountDialogListener) getActivity();
+        }
+        if (getTargetFragment() instanceof IInputAmountDialogListener) {
+            mListener = (IInputAmountDialogListener) getTargetFragment();
+        }
 
         if (mListener == null) {
-            throw new IllegalStateException("Parent activity must implement IInputAmountDialogListener");
+            throw new IllegalStateException("Parent must implement IInputAmountDialogListener");
         }
     }
 
