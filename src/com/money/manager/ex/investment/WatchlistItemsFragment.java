@@ -212,8 +212,10 @@ public class WatchlistItemsFragment
                 DatabaseUtils.cursorDoubleToContentValuesIfPresent(cursor, contents, StockRepository.CURRENTPRICE);
                 double currentPrice = contents.getAsDouble(StockRepository.CURRENTPRICE);
 
-                EditPriceDialog dialog = new EditPriceDialog(mContext);
-                dialog.show(accountId, symbol, currentPrice);
+                EditPriceDialog dialog = new EditPriceDialog();
+//                dialog.setTargetFragment(this, 0);
+                dialog.setParameters(accountId, symbol, currentPrice);
+                dialog.show(getFragmentManager(), "input-amount");
                 break;
         }
 

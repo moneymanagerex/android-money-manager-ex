@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex.common;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -43,7 +42,6 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -102,7 +100,8 @@ public class InputAmountDialog
         }
 
         if (mListener == null) {
-            throw new IllegalStateException("Parent must implement IInputAmountDialogListener");
+            throw new IllegalStateException("Need IInputAmountDialogListener. Implement in Activity" +
+                    " or assign a TargetFragment which implements the interface.");
         }
     }
 

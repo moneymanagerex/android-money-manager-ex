@@ -17,10 +17,15 @@
  */
 package com.money.manager.ex.investment;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -30,7 +35,6 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.StockHistory;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -42,7 +46,11 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
+import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.view.RobotoTextView;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -53,36 +61,65 @@ import java.util.Date;
 /**
  * Edit price dialog for manual entry/modification of the latest stock price.
  * Created by Alen on 19/07/2015.
+ * Ref:
+ * http://developer.android.com/guide/topics/ui/dialogs.html
+ * http://www.vogella.com/tutorials/AndroidDialogs/article.html
  */
 public class EditPriceDialog
+    extends DialogFragment
     implements IInputAmountDialogListener {
 
-    public EditPriceDialog(Context context) {
-        mContext = context;
-    }
+    public static final int REQUEST_AMOUNT = 1;
+    public static final String TAG_AMOUNT_INPUT = "EditPriceDialog:AmountInput";
+
+    private static final String KEY_ACCOUNT = "EditPriceDialog:Account";
+    private static final String KEY_SYMBOL = "EditPriceDialog:Symbol";
+    private static final String KEY_PRICE = "EditPriceDialog:Price";
+    private static final String KEY_DATE = "EditPriceDialog:Date";
+
+//    public EditPriceDialog(Context context) {
+////        super(context);
+//
+//        mContext = context;
+//    }
 
     private Context mContext;
-    private int mAccountId;
+
     private RobotoTextView mAmountTextView;
     private RobotoTextView mDateTextView;
 
-    public void show(int accountId, final String symbol, double currentPrice) {
-        mAccountId = accountId;
+    private int mAccountId;
+    private String mSymbol;
+    private double mCurrentPrice;
+    private String mPriceDate;
 
-        // get the current record date
-        StockHistoryRepository historyRepository = new StockHistoryRepository(mContext.getApplicationContext());
-        ContentValues latestPriceValues = historyRepository.getLatestPriceFor(symbol);
-        // symbol, date, value
-        if (latestPriceValues == null) {
-            // todo: No history available. Get the values from the stock record.
-//            StockRepository repository = new StockRepository(mContext);
-//            repository.findIdsBySymbol()
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+//        InputAmountDialog inputAmountDialog = (InputAmountDialog) getFragmentManager()
+//                .findFragmentByTag(TAG_AMOUNT_INPUT);
+//        if (inputAmountDialog != null) {
+//            Log.d("test", "input amount dialog found");
+//        }
+
+    }
+
+    @Override
+    @NonNull
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mContext = getContext();
+
+        if (savedInstanceState != null) {
+            restoreInstanceState(savedInstanceState);
         }
 
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(mContext);
+        // Create dialog.
+
+        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(mContext);
 
         View viewDialog = LayoutInflater.from(mContext).inflate(R.layout.dialog_edit_stock_price, null);
-        alertDialog.setView(viewDialog);
+        builder.setView(viewDialog);
 
         // date picker
 
@@ -102,11 +139,14 @@ public class EditPriceDialog
                 @Override
                 public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
                     try {
-                        Date date = new SimpleDateFormat("yyyy-MM-dd", mContext.getResources().getConfiguration().locale)
-                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
+                        String enteredDate = Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth);
+                        Date date = DateUtils.getDateFromString(getContext(), enteredDate, Constants.PATTERN_DB_DATE);
                         mDateTextView.setTag(date);
-                        mDateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", mContext.getResources().getConfiguration().locale)
+                        mDateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy",
+                                mContext.getResources().getConfiguration().locale)
                                 .format((Date) mDateTextView.getTag()));
+
+                        mPriceDate = enteredDate;
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(mContext, this);
                         handler.handle(e, "setting the date");
@@ -117,26 +157,29 @@ public class EditPriceDialog
         mDateTextView.setOnClickListener(dateClickListener);
 
         Date latestDate;
-        if (latestPriceValues != null) {
-            String latestPriceDate = latestPriceValues.getAsString(StockHistory.DATE);
-            try {
-                latestDate = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                        .parse(latestPriceDate);
-            } catch (ParseException pex) {
-                latestDate = Calendar.getInstance().getTime();
-            }
-        } else {
-            latestDate = Calendar.getInstance().getTime();
+//        if (latestPriceValues != null) {
+//            String latestPriceDate = latestPriceValues.getAsString(StockHistory.DATE);
+//            try {
+//                latestDate = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+//                        .parse(latestPriceDate);
+//            } catch (ParseException pex) {
+//                latestDate = Calendar.getInstance().getTime();
+//            }
+//        } else {
+//            latestDate = Calendar.getInstance().getTime();
+//        }
+        if (StringUtils.isEmpty(mPriceDate)) {
+            mPriceDate = DateUtils.getStringFromDate(getContext(), new Date(), Constants.PATTERN_DB_DATE);
         }
+        latestDate = DateUtils.getDateFromString(getContext(), mPriceDate, Constants.PATTERN_DB_DATE);
         mDateTextView.setTag(latestDate);
-//        mDateTextView.setText(latestPriceDate);
         formatExtendedDate(mDateTextView);
 
         // price
 
         mAmountTextView = (RobotoTextView) viewDialog.findViewById(R.id.amountTextView);
         AccountRepository accountRepository = new AccountRepository(mContext);
-        TableAccountList account = accountRepository.load(accountId);
+        TableAccountList account = accountRepository.load(mAccountId);
 
         final int currencyId = account.getCurrencyId();
 
@@ -145,24 +188,27 @@ public class EditPriceDialog
             public void onClick(View v) {
                 double amount = (Double) v.getTag();
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
+                dialog.setTargetFragment(EditPriceDialog.this, REQUEST_AMOUNT);
                 dialog.roundToCurrencyDecimals = false;
-                dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), dialog.getClass().getSimpleName());
+                dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
+                // ((FragmentActivity)mContext).getSupportFragmentManager()
             }
         };
         mAmountTextView.setOnClickListener(onClickAmount);
 
         // get the current record price
         double latestPrice;
-        if (latestPriceValues != null) {
-            String currentPriceString = latestPriceValues.getAsString(StockHistory.VALUE);
-            latestPrice = Double.parseDouble(currentPriceString);
-        } else {
-            latestPrice = currentPrice;
-        }
-        showCurrentPrice(latestPrice, accountId);
+//        if (latestPriceValues != null) {
+//            String currentPriceString = latestPriceValues.getAsString(StockHistory.VALUE);
+//            latestPrice = Double.parseDouble(currentPriceString);
+//        } else {
+//            latestPrice = mCurrentPrice;
+//        }
+        latestPrice = mCurrentPrice;
+        showCurrentPrice(latestPrice, mAccountId);
 
         // actions
-        alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //save price
@@ -170,10 +216,10 @@ public class EditPriceDialog
                 Date date = (Date) mDateTextView.getTag();
 
                 StockRepository repo = new StockRepository(mContext);
-                repo.updateCurrentPrice(symbol, BigDecimal.valueOf(amount));
+                repo.updateCurrentPrice(mSymbol, BigDecimal.valueOf(amount));
 
                 StockHistoryRepository historyRepository = new StockHistoryRepository(mContext);
-                boolean result = historyRepository.addStockHistoryRecord(symbol, BigDecimal.valueOf(amount), date);
+                boolean result = historyRepository.addStockHistoryRecord(mSymbol, BigDecimal.valueOf(amount), date);
                 if (!result) {
                     Toast.makeText(mContext, mContext.getString(R.string.error_update_currency_exchange_rate),
                             Toast.LENGTH_SHORT).show();
@@ -182,16 +228,61 @@ public class EditPriceDialog
                 DropboxHelper.notifyDataChanged();
             }
         });
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
 
-        alertDialog.setTitle(symbol);
+        builder.setTitle(mSymbol);
 
-        alertDialog.create().show();
+//        builder.create().show();
+        return builder.create();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(KEY_ACCOUNT, mAccountId);
+        savedInstanceState.putString(KEY_SYMBOL, mSymbol);
+        savedInstanceState.putDouble(KEY_PRICE, mCurrentPrice);
+        savedInstanceState.putString(KEY_DATE, mPriceDate);
+    }
+
+    private ContentValues loadLatestValuesFor(String symbol) {
+        // get the current record values
+        StockHistoryRepository historyRepository = new StockHistoryRepository(mContext.getApplicationContext());
+        ContentValues latestPriceValues = historyRepository.getLatestPriceFor(symbol);
+        // symbol, date, value
+        if (latestPriceValues == null) {
+            // todo: No history available. Get the values from the stock record.
+//            StockRepository repository = new StockRepository(mContext);
+//            repository.findIdsBySymbol()
+        }
+
+        return latestPriceValues;
+    }
+
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        this.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT);
+        this.mSymbol = savedInstanceState.getString(KEY_SYMBOL);
+        this.mCurrentPrice = savedInstanceState.getDouble(KEY_PRICE);
+        this.mPriceDate = savedInstanceState.getString(KEY_DATE);
+
+//        InputAmountDialog inputAmountDialog = (InputAmountDialog) getFragmentManager()
+//                .findFragmentByTag(TAG_AMOUNT_INPUT);
+//        if (inputAmountDialog != null) {
+//            Log.d("test", "input amount dialog found");
+//        }
+
+    }
+
+    public void setParameters(int accountId, final String symbol, double currentPrice) {
+        mAccountId = accountId;
+        mSymbol = symbol;
+        mCurrentPrice = currentPrice;
+
+//        ContentValues values = this.loadLatestValuesFor(symbol);
     }
 
     @Override
@@ -213,6 +304,8 @@ public class EditPriceDialog
 
         mAmountTextView.setText(currencySymbol + " " + Double.toString(currentPrice));
         mAmountTextView.setTag(currentPrice);
+
+        this.mCurrentPrice = currentPrice;
     }
 
     public void formatExtendedDate(TextView dateTextView) {
@@ -224,5 +317,4 @@ public class EditPriceDialog
             handler.handle(e, "formatting date");
         }
     }
-
 }

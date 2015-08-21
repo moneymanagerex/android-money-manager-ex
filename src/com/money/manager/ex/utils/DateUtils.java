@@ -43,7 +43,7 @@ public class DateUtils {
     private static final String LOGCAT = DateUtils.class.getSimpleName();
 
     /**
-     * Convert string date into date object using pattern define to user
+     * Convert string date into date object using pattern defined by the user.
      *
      * @param ctx  context
      * @param date string to convert
