@@ -213,9 +213,9 @@ public class WatchlistItemsFragment
                 double currentPrice = contents.getAsDouble(StockRepository.CURRENTPRICE);
 
                 EditPriceDialog dialog = new EditPriceDialog();
-//                dialog.setTargetFragment(this, 0);
                 dialog.setParameters(accountId, symbol, currentPrice);
-                dialog.show(getFragmentManager(), "input-amount");
+                dialog.show(getChildFragmentManager(), "input-amount");
+                // getFragmentManager()
                 break;
         }
 

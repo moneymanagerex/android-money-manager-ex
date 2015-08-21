@@ -162,7 +162,7 @@ public class SplitItemFragment
                     }
 
                     InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
-                    dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+                    dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });
 

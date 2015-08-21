@@ -100,7 +100,8 @@ public class EditPriceDialog
 //        InputAmountDialog inputAmountDialog = (InputAmountDialog) getFragmentManager()
 //                .findFragmentByTag(TAG_AMOUNT_INPUT);
 //        if (inputAmountDialog != null) {
-//            Log.d("test", "input amount dialog found");
+////            Log.d("test", "input amount dialog found");
+//            inputAmountDialog.show();
 //        }
 
     }
@@ -191,7 +192,7 @@ public class EditPriceDialog
                 dialog.setTargetFragment(EditPriceDialog.this, REQUEST_AMOUNT);
                 dialog.roundToCurrencyDecimals = false;
                 dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
-                // ((FragmentActivity)mContext).getSupportFragmentManager()
+                // getChildFragmentManager() ?
             }
         };
         mAmountTextView.setOnClickListener(onClickAmount);
