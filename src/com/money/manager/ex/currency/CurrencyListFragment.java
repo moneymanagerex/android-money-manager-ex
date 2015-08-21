@@ -485,25 +485,25 @@ public class CurrencyListFragment
                 : R.drawable.ic_action_help_light;
 
         // config alert dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        alertDialog.setTitle(R.string.download);
-        alertDialog.setIcon(icon);
-        alertDialog.setMessage(R.string.question_update_currency_exchange_rates);
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.download)
+            .setIcon(icon)
+            .setMessage(R.string.question_update_currency_exchange_rates)
         // set listener on positive button
-        alertDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        updateExchangeRates();
-                    }
-                });
+            .setPositiveButton(android.R.string.ok,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            updateExchangeRates();
+                        }
+                    })
         // set listener on negative button
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
         // create dialog and show
         alertDialog.create().show();
     }
