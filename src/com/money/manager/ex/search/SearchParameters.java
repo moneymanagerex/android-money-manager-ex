@@ -12,8 +12,12 @@ import com.money.manager.ex.Constants;
  */
 public class SearchParameters implements Parcelable {
 
+    public static final String STRING_NULL_VALUE = "null";
+
     public SearchParameters() {
         // default constructor
+        // explicitly set the null value
+        this.status = STRING_NULL_VALUE;
     }
 
     // Account

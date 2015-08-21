@@ -19,6 +19,7 @@ package com.money.manager.ex.search;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -149,7 +150,7 @@ public class SearchFragment extends Fragment
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccount.setAdapter(adapterAccount);
 
-        // checkbox for Transaction Type
+        // Transaction Type checkboxes.
         cbxDeposit = (CheckBox) view.findViewById(R.id.checkBoxDeposit);
         cbxTransfer = (CheckBox) view.findViewById(R.id.checkBoxTransfer);
         cbxWithdrawal = (CheckBox) view.findViewById(R.id.checkBoxWithdrawal);
@@ -164,6 +165,7 @@ public class SearchFragment extends Fragment
                 startActivityForResult(intent, REQUEST_PICK_PAYEE);
             }
         });
+
         //Category
         txtSelectCategory = (TextView) view.findViewById(R.id.textViewSelectCategory);
         txtSelectCategory.setOnClickListener(new OnClickListener() {
@@ -177,9 +179,10 @@ public class SearchFragment extends Fragment
 
         // Status
         if (mStatusItems.size() <= 0) {
-            // arrays to manage Status
+            // add blank row
             mStatusItems.add("");
-            mStatusValues.add("");
+            mStatusValues.add(SearchParameters.STRING_NULL_VALUE);
+
             mStatusItems.addAll(Arrays.asList(getResources().getStringArray(R.array.status_items)));
             mStatusValues.addAll(Arrays.asList(getResources().getStringArray(R.array.status_values)));
         }
@@ -298,6 +301,8 @@ public class SearchFragment extends Fragment
      */
     private ParameterizedWhereClause assembleWhereClause() {
         ParameterizedWhereClause where = new ParameterizedWhereClause();
+        // todo: try using query builder
+        // SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
 
         // WHERE
 
@@ -312,9 +317,12 @@ public class SearchFragment extends Fragment
                     (mSearchParameters.transfer ? "'Transfer'" : "''") + "," +
                     (mSearchParameters.withdrawal ? "'Withdrawal'" : "''") + ")");
         }
+
         // status
-        if (!TextUtils.isEmpty(mSearchParameters.status)) {
-            where.Clause.add(QueryAllData.Status + "='" + mSearchParameters.status + "'");
+        if (!mSearchParameters.status.equals(SearchParameters.STRING_NULL_VALUE)) {
+//            where.Clause.add(QueryAllData.Status + "='" + mSearchParameters.status + "'");
+            where.Clause.add(QueryAllData.Status + "=?");
+            where.Params.add(mSearchParameters.status);
         }
 
         // from amount
