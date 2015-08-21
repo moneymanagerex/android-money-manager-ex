@@ -479,9 +479,15 @@ public class CurrencyListFragment
     }
 
     private void showDialogUpdateExchangeRateCurrencies() {
+        Core core = new Core(getActivity());
+        int icon = core.usingDarkTheme()
+                ? R.drawable.ic_action_help_dark
+                : R.drawable.ic_action_help_light;
+
         // config alert dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity());
-        alertDialog.setTitle(R.string.attention);
+        alertDialog.setTitle(R.string.download);
+        alertDialog.setIcon(icon);
         alertDialog.setMessage(R.string.question_update_currency_exchange_rates);
         // set listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
