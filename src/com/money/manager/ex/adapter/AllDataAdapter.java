@@ -133,10 +133,6 @@ public class AllDataAdapter
             setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
         }
 
-        // check amount sign
-        if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
-            amount *= -1;
-        }
         CurrencyService currencyService = new CurrencyService(mContext);
         holder.txtAmount.setText(currencyService.getCurrencyFormatted(getCurrencyId(), amount));
 
