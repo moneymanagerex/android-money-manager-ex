@@ -51,7 +51,6 @@ public class SplitItemFragment
 
     private ISplitTransactionsDataset mSplitTransaction;
     private SplitItemFragmentCallbacks mOnSplitItemCallback;
-    private TextView txtSelectCategory;
     private TextView txtAmount;
     private Spinner spinTransCode;
 
@@ -178,7 +177,7 @@ public class SplitItemFragment
             spinTransCode.setSelection(transactionTypeSelection);
 
             // category and subcategory
-            txtSelectCategory = (TextView) layout.findViewById(R.id.textViewCategory);
+            TextView txtSelectCategory = (TextView) layout.findViewById(R.id.textViewCategory);
             String buttonText = core.getCategSubName(mSplitTransaction.getCategId(), mSplitTransaction.getSubCategId());
             txtSelectCategory.setText(buttonText);
 

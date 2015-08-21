@@ -50,7 +50,7 @@ public class CalculateAmountBalanceTask
         try {
             return runTask();
         } catch (IllegalStateException | SQLiteDiskIOException ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "balancing amount");
         } catch (Exception e) {
             throw new RuntimeException("Error in Balance Amount Task", e);
@@ -61,7 +61,7 @@ public class CalculateAmountBalanceTask
     @Override
     protected void onPostExecute(Boolean result) {
         if (result && getTextView() != null) {
-            CurrencyService currencyService = new CurrencyService(mContext);
+            CurrencyService currencyService = new CurrencyService(getContext());
 
             getTextView().setText(currencyService.getCurrencyFormatted(getCurrencyId(), total));
             if (getTextView().getVisibility() != View.VISIBLE) getTextView().setVisibility(View.VISIBLE);
