@@ -166,10 +166,13 @@ public class MoneyManagerProvider
                         // committed
                         ////if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
                         ////database.setTransactionSuccessful();
-                    } catch (SQLiteException sqlLiteExc) {
-                        Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
-                    } catch (Exception exc) {
-                        Log.e(LOGCAT, exc.getMessage());
+//                    } catch (SQLiteException sqlLiteExc) {
+//                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+//                        handler.handle(sqlLiteExc, "inserting record");
+////                        Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
+                    } catch (Exception e) {
+                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+                        handler.handle(e, "inserting record");
                     }
                     parse = dataset.getBasepath() + "/" + id;
                     break;
