@@ -47,7 +47,6 @@ import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -111,13 +110,14 @@ public class EditTransactionCommonFunctions {
     public ArrayList<String> mAccountNameList = new ArrayList<>();
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
     public TransactionTypes transactionType = TransactionTypes.Withdrawal;
+    public TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     public String categoryName, subCategoryName;
 
     public ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
     public ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;
 
     public ViewGroup tableRowPayee, tableRowAmountTo;
-    public Spinner spinAccount, spinAccountTo, spinStatus, spinTransCode;
+    public Spinner spinAccount, spinAccountTo, spinStatus;
     public TextView accountFromLabel, txtToAccount;
     public TextView txtSelectPayee, txtAmountTo, txtAmount, categoryTextView;
     public TextView amountHeaderTextView, amountToHeaderTextView;
@@ -1100,7 +1100,7 @@ public class EditTransactionCommonFunctions {
 
             dialog.show(mParent.getSupportFragmentManager(), "tag");
 
-            // Dialog result is handled in onDialogPositiveClick.
+            // Dialog result is handled in onDialogPositiveClick or onDialogNegativeClick.
             return;
         }
 
@@ -1119,7 +1119,8 @@ public class EditTransactionCommonFunctions {
         displayAmountFormatted(this.txtAmount, this.amount, this.accountId);
     }
 
-    private void selectTransactionType(TransactionTypes transactionType) {
+    public void selectTransactionType(TransactionTypes transactionType) {
+        this.previousTransactionType = this.transactionType;
         this.transactionType = transactionType;
 
         // Clear all buttons.

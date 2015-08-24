@@ -280,15 +280,15 @@ public class EditTransactionActivity
     }
 
     /**
-     * When cancelling changing the transaction type to Tranfer, revert back to the
+     * When cancelling changing the transaction type to Transfer, revert back to the
      * previous transaction type.
      */
     private void cancelChangingTransactionToTransfer() {
         // Select the previous transaction type.
-        @SuppressWarnings("unchecked")
-        ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) mCommonFunctions.spinTransCode.getAdapter();
-        int originalPosition = adapterTrans.getPosition(mCommonFunctions.getTransactionType());
-        mCommonFunctions.spinTransCode.setSelection(originalPosition);
+//        ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) mCommonFunctions.spinTransCode.getAdapter();
+//        int originalPosition = adapterTrans.getPosition(mCommonFunctions.getTransactionType());
+//        mCommonFunctions.spinTransCode.setSelection(originalPosition);
+        mCommonFunctions.selectTransactionType(mCommonFunctions.previousTransactionType);
     }
 
     /**
