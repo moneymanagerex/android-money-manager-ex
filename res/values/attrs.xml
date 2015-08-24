@@ -98,7 +98,7 @@
         <attr name="chartTextColor" format="reference"/>
 
         <!-- Colors -->
-        <attr name="mmex_textColor" format="color|reference" />
+        <attr name="mmexTextColor" format="color|reference" />
     </declare-styleable>
 
     <declare-styleable name="RobotoTextView">

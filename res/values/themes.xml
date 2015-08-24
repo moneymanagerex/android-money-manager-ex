@@ -66,7 +66,7 @@
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 
         <!-- Colors -->
-        <item name="mmex_textColor">@color/mmex_textColor_light</item>
+        <item name="mmexTextColor">@color/mmex_textColor_light</item>
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background</item>
         <item name="cardViewBackgroundColor">@android:color/white</item>
