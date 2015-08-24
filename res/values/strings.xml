@@ -451,7 +451,7 @@
     <string name="show_chart">Show Chart</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="welcome_header">Welcome to MoneyManagerEx!</string>
-    <string name="welcome_body">MoneyManagerEx models all transactions as belonging to accounts.\n\nTo help you get started, begin by making a list of all financial institutions where you hold an account.\n\nTouch to begin enter your accounts.</string>
+    <string name="welcome_body">All transactions in MoneyManagerEx belong to accounts.\n\nYou currently have no visible accounts. Please either adjust the filter for visible accounts in the Settings, or\n\nTouch to begin enter your accounts.</string>
     <string name="welcome_body_dropbox">If you already use MoneyManagerEx on Windows, Linux or Mac link this application with Dropbox to synchronize your database</string>
     <string name="configure_dropbox">Configure Dropbox</string>
     <!-- 20140115 -->

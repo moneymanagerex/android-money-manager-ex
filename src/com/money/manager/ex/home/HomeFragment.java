@@ -717,7 +717,7 @@ public class HomeFragment
 
     private void setVisibilityOfAccountGroups() {
         // set visibility of the account groups.
-        AppSettings settings = new AppSettings(getActivity());
+        AppSettings settings = new AppSettings(getContext());
         // Expand groups based on their visibility settings.
         for (int i = 0; i < mAccountTypes.size(); i++) {
             // Check saved visibility settings. Some groups might be collapsed.
