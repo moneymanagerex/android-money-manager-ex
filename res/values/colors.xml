@@ -92,4 +92,7 @@
     <color name="button_background_active">@color/md_primary</color>
     <color name="button_background_inactive_light">@color/material_white</color>
     <color name="button_background_inactive_dark">@color/transparent_black</color>
+
+    <color name="mmex_textColor_light">@color/material_black</color>
+    <color name="mmex_textColor_dark">@color/material_amber_50</color>
 </resources>

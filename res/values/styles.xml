@@ -125,11 +125,11 @@
         <item name="android:padding">4dp</item>
     </style>
 
-    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
-        <!--<item name="android:height">60dp</item>-->
-        <!--<item name="android:background">?attr/background</item>-->
-        <item name="android:textColor">@color/red</item>
-        <!-- ?android:attr/textColorPrimary -->
-        <!--<item name="android:textStyle">bold</item>-->
-    </style>
+    <!--<style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">-->
+        <!--&lt;!&ndash;<item name="android:height">60dp</item>&ndash;&gt;-->
+        <!--&lt;!&ndash;<item name="android:background">?attr/background</item>&ndash;&gt;-->
+        <!--<item name="android:textColor">@color/red</item>-->
+        <!--&lt;!&ndash; ?android:attr/textColorPrimary &ndash;&gt;-->
+        <!--&lt;!&ndash;<item name="android:textStyle">bold</item>&ndash;&gt;-->
+    <!--</style>-->
 </resources>
