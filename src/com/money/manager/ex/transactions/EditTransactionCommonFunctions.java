@@ -308,10 +308,10 @@ public class EditTransactionCommonFunctions {
      * Initialize account selectors.
      */
     public void initAccountSelectors() {
-        Core core = new Core(mParent.getApplicationContext());
+        Core core = new Core(mContext);
 
         // account list to populate the spin
-        AccountRepository accountRepository = new AccountRepository(mParent.getApplicationContext());
+        AccountRepository accountRepository = new AccountRepository(mContext);
         this.AccountList = accountRepository.getTransactionAccounts(core.getAccountsOpenVisible(),
                 core.getAccountFavoriteVisible());
         if (this.AccountList == null) return;
@@ -324,7 +324,7 @@ public class EditTransactionCommonFunctions {
         addMissingAccountToSelectors(accountRepository, accountId);
         addMissingAccountToSelectors(accountRepository, toAccountId);
         // add the default account, if any.
-        AppSettings settings = new AppSettings(mParent);
+        AppSettings settings = new AppSettings(mContext);
         String defaultAccountString = settings.getGeneralSettings().getDefaultAccount();
         // Set the current account, if not set already.
         if ((accountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
@@ -335,9 +335,10 @@ public class EditTransactionCommonFunctions {
         }
 
         // create adapter for spinAccount
-        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(mContext,
-                R.layout.mmex_spinner_item, mAccountNameList);
-        adapterAccount.setDropDownViewResource(R.layout.mmex_spinner_dropdown_item);
+        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(mParent,
+                android.R.layout.simple_spinner_item, mAccountNameList);
+
+        adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinAccount.setAdapter(adapterAccount);
         // select current value
         if (mAccountIdList.indexOf(accountId) >= 0) {
@@ -361,7 +362,7 @@ public class EditTransactionCommonFunctions {
         });
 
         // to account
-        adapterAccount.setDropDownViewResource(R.layout.mmex_spinner_dropdown_item);
+        adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinAccountTo.setAdapter(adapterAccount);
         if (toAccountId != Constants.NOT_SET && mAccountIdList.indexOf(toAccountId) >= 0) {
             viewHolder.spinAccountTo.setSelection(mAccountIdList.indexOf(toAccountId), true);
@@ -568,9 +569,9 @@ public class EditTransactionCommonFunctions {
         mStatusValues = mContext.getResources().getStringArray(R.array.status_values);
 
         // create adapter for spinnerStatus
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(mContext,
-                R.layout.mmex_spinner_item, mStatusItems);
-        adapterStatus.setDropDownViewResource(R.layout.mmex_spinner_dropdown_item);
+        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(mParent,
+                android.R.layout.simple_spinner_item, mStatusItems);
+        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinStatus.setAdapter(adapterStatus);
 
         // select current value

@@ -90,7 +90,7 @@ public class RecurringTransactionActivity
     public static final String KEY_TRANS_NUMBER = "RepeatingTransaction:TransNumber";
     public static final String KEY_NEXT_OCCURRENCE = "RepeatingTransaction:NextOccurrence";
     public static final String KEY_REPEATS = "RepeatingTransaction:Repeats";
-    public static final String KEY_NUM_OCCURRENCE = "RepeatingTransaction:NumOccurrence";
+//    public static final String KEY_NUM_OCCURRENCE = "RepeatingTransaction:NumOccurrence";
     public static final String KEY_SPLIT_TRANSACTION = "RepeatingTransaction:SplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "RepeatingTransaction:SplitTransactionDeleted";
     public static final String KEY_ACTION = "RepeatingTransaction:Action";

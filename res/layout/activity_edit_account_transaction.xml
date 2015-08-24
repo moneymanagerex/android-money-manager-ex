@@ -143,14 +143,6 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <!--<Spinner-->
-                    <!--android:visibility="gone"-->
-                    <!--android:id="@+id/spinnerTransCode"-->
-                    <!--android:layout_width="@dimen/money_button_height"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:prompt="@string/transaction_type"-->
-                    <!--style="@style/Base.Widget.AppCompat.Spinner.Underlined" />-->
-
                 <Spinner
                     android:id="@+id/spinnerStatus"
                     android:layout_width="0dp"
@@ -158,6 +150,7 @@
                     android:layout_weight="1"
                     android:prompt="@string/status"
                     style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+
             </LinearLayout>
 
             <!-- Account -->

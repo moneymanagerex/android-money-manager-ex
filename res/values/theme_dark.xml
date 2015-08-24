@@ -41,7 +41,7 @@
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat</item>
 
         <!-- Colors -->
-        <item name="mmexTextColor">@color/mmex_textColor_dark</item>
+        <!--<item name="android:textColorPrimary">@color/material_amber_50</item>-->
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">#202020</item>
         <item name="cardViewBackgroundColor">@color/money_background_dark</item>
