@@ -50,6 +50,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.mikephil.charting.utils.FileUtils;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
@@ -805,6 +806,15 @@ public class MainActivity
         if (mDropboxHelper == null || !mDropboxHelper.isLinked()) {
             return;
         }
+
+        String currentDbPath = MoneyManagerApplication.getDatabasePath(getApplicationContext());
+        File db = new File(currentDbPath);
+        String dbName = db.getName();
+        String remoteDb = mDropboxHelper.getLinkedRemoteFile();
+        File dropboxDb = new File(remoteDb);
+        String remoteDbName = dropboxDb.getName();
+        boolean shouldCheckDbUpdates = dbName.equalsIgnoreCase(remoteDbName);
+        if (!shouldCheckDbUpdates) return;
 
         AsyncTask<Void, Integer, Integer> asyncTask = new CheckDropboxForUpdatesTask(this, mDropboxHelper);
         asyncTask.execute();
