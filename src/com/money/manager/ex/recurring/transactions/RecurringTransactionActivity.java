@@ -98,12 +98,13 @@ public class RecurringTransactionActivity
     // action type intent
     private String mIntentAction;
 
+    // Model
     private TableBillsDeposits mRecurringTransaction;
     private int mBillDepositsId = Constants.NOT_SET;
     private int mFrequencies = 0;
 
     // Controls on the form.
-    private ImageButton btnTransNumber;
+//    private ImageButton btnTransNumber;
     private EditText edtTimesRepeated;
     private TextView txtRepeats, txtTimesRepeated;
 
@@ -113,6 +114,8 @@ public class RecurringTransactionActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recurringtransaction_edit);
+
+        mRecurringTransaction = new TableBillsDeposits().initialize();
 
         mCommonFunctions = new EditTransactionCommonFunctions(getApplicationContext(), this);
 
@@ -184,7 +187,7 @@ public class RecurringTransactionActivity
 
         // times repeated
         edtTimesRepeated = (EditText) findViewById(R.id.editTextTimesRepeated);
-        if (mRecurringTransaction != null && mRecurringTransaction.numOccurrence >= 0) {
+        if (mRecurringTransaction.numOccurrence != null && mRecurringTransaction.numOccurrence >= 0) {
             edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.numOccurrence));
         }
 
@@ -252,7 +255,7 @@ public class RecurringTransactionActivity
         outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.edtNotes.getTag()));
 //        Locale locale = getResources().getConfiguration().locale;
         outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                .format(mCommonFunctions.txtSelectDate.getTag()));
+                .format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
 
         NumericHelper helper = new NumericHelper(getApplicationContext());
@@ -395,7 +398,7 @@ public class RecurringTransactionActivity
     private boolean validateData() {
         if (!mCommonFunctions.validateData()) return false;
 
-        if (TextUtils.isEmpty(mCommonFunctions.txtSelectDate.getText().toString())) {
+        if (TextUtils.isEmpty(mCommonFunctions.viewHolder.txtSelectDate.getText().toString())) {
             Core.alertDialog(this, R.string.error_next_occurrence_not_populate);
 
             return false;
@@ -513,7 +516,7 @@ public class RecurringTransactionActivity
         ContentValues values = mCommonFunctions.getContentValues(isTransfer);
 
         values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                .format(mCommonFunctions.txtSelectDate.getTag()));
+                .format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
         values.put(TableBillsDeposits.REPEATS, mFrequencies);
         values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0
                 ? edtTimesRepeated.getText().toString() : null);

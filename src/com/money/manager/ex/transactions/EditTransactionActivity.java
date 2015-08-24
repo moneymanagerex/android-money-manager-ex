@@ -204,7 +204,7 @@ public class EditTransactionActivity
         outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE,
-                new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.txtSelectDate.getTag()));
+                new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.status);
         outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());

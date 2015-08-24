@@ -104,8 +104,6 @@ public class EditTransactionCommonFunctions {
     public String mNotes = "";
     public String mTransNumber = "";
 
-    // Controls
-    public TextView txtSelectDate;
     public List<TableAccountList> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
@@ -116,6 +114,8 @@ public class EditTransactionCommonFunctions {
     public ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
     public ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;
 
+    // Controls
+    public ViewHolder viewHolder;
     public ViewGroup tableRowPayee, tableRowAmountTo;
     public Spinner spinAccount, spinAccountTo, spinStatus;
     public TextView accountFromLabel, txtToAccount;
@@ -132,10 +132,13 @@ public class EditTransactionCommonFunctions {
     private BaseFragmentActivity mParent;
     private boolean mSplitSelected;
     private boolean mDirty = false; // indicate whether the data has been modified by the user.
+    private String mDatasetName;
 
     public void findControls() {
+        this.viewHolder = new ViewHolder();
+
         // Date
-        txtSelectDate = (TextView) mParent.findViewById(R.id.textViewDate);
+        viewHolder.txtSelectDate = (TextView) mParent.findViewById(R.id.textViewDate);
 
         // Status
         spinStatus = (Spinner) mParent.findViewById(R.id.spinnerStatus);
@@ -214,7 +217,7 @@ public class EditTransactionCommonFunctions {
         ContentValues values = new ContentValues();
 
         // Date
-        String transactionDate = DateUtils.getSQLiteStringDate(mContext, (Date) this.txtSelectDate.getTag());
+        String transactionDate = DateUtils.getSQLiteStringDate(mContext, (Date) viewHolder.txtSelectDate.getTag());
         values.put(ISplitTransactionsDataset.TRANSDATE, transactionDate);
 
         // Transaction Type
@@ -424,6 +427,9 @@ public class EditTransactionCommonFunctions {
      * @param datasetName name of the dataset (TableBudgetSplitTransactions.class.getSimpleName())
      */
     public void initCategoryControls(final String datasetName) {
+        // keep the dataset name for later.
+        this.mDatasetName = datasetName;
+
         this.categoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -434,12 +440,7 @@ public class EditTransactionCommonFunctions {
                     mParent.startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 } else {
                     // select split categories.
-                    Intent intent = new Intent(mParent, SplitTransactionsActivity.class);
-                    intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, datasetName);
-                    intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
-                    intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
-                    mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
+                    showSplitCategoriesForm(mDatasetName);
                 }
 
                 // results are handled in onActivityResult.
@@ -448,25 +449,34 @@ public class EditTransactionCommonFunctions {
 
     }
 
+    private void showSplitCategoriesForm(String datasetName) {
+        Intent intent = new Intent(mParent, SplitTransactionsActivity.class);
+        intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, datasetName);
+        intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
+        intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
+        intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
+        mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
+    }
+
     public void initDateSelector() {
         if (!(TextUtils.isEmpty(mDate))) {
             try {
-                txtSelectDate.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+                viewHolder.txtSelectDate.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                         .parse(mDate));
             } catch (ParseException e) {
                 ExceptionHandler handler = new ExceptionHandler(mContext, this);
                 handler.handle(e, "parsing the date");
             }
         } else {
-            txtSelectDate.setTag(Calendar.getInstance().getTime());
+            viewHolder.txtSelectDate.setTag(Calendar.getInstance().getTime());
         }
-        formatExtendedDate(txtSelectDate);
+        formatExtendedDate(viewHolder.txtSelectDate);
 
-        txtSelectDate.setOnClickListener(new View.OnClickListener() {
+        viewHolder.txtSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime((Date) txtSelectDate.getTag());
+                calendar.setTime((Date) viewHolder.txtSelectDate.getTag());
                 DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
                         calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
                 dialog.setCloseOnSingleTapDay(true);
@@ -479,10 +489,10 @@ public class EditTransactionCommonFunctions {
                     setDirty(true);
 
                     try {
-                        Date date = new SimpleDateFormat("yyyy-MM-dd", mContext.getResources().getConfiguration().locale)
+                        Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, mContext.getResources().getConfiguration().locale)
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-                        txtSelectDate.setTag(date);
-                        formatExtendedDate(txtSelectDate);
+                        viewHolder.txtSelectDate.setTag(date);
+                        formatExtendedDate(viewHolder.txtSelectDate);
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(mParent, this);
                         handler.handle(e, "setting the date");
@@ -547,8 +557,7 @@ public class EditTransactionCommonFunctions {
         splitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSplitSelected = !mSplitSelected;
-                onSplitSet();
+                setSplit(!mSplitSelected);
             }
         });
 
@@ -868,6 +877,11 @@ public class EditTransactionCommonFunctions {
         }
         splitButton.setTextColor(mContext.getResources().getColor(buttonColour));
         splitButton.setBackgroundColor(mContext.getResources().getColor(buttonBackground));
+
+        // if the split has just been set, show the splits dialog immediately?
+        if (isSplitSelected()) {
+            showSplitCategoriesForm(mDatasetName);
+        }
     }
 
     /**

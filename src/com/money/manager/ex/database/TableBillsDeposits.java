@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 
 /**
@@ -120,6 +121,26 @@ public class TableBillsDeposits
         dest.writeInt(numOccurrence);
     }
 
+    public TableBillsDeposits initialize() {
+        this.id = Constants.NOT_SET;
+        this.accountId = Constants.NOT_SET;
+        this.toAccountId = Constants.NOT_SET;
+        this.transactionCode = "";
+        this.status = "";
+        this.amount = 0d;
+        this.totalAmount = 0d;
+        this.payeeId = Constants.NOT_SET;
+        this.categoryId = Constants.NOT_SET;
+        this.subCategoryId = Constants.NOT_SET;
+        this.transactionNumber = "";
+        this.notes = "";
+        this.nextOccurrence = "";
+        this.repeats = Constants.NOT_SET;
+        this.numOccurrence = Constants.NOT_SET;
+
+        return this;
+    }
+
     public void readToParcel(Parcel source) {
         id = source.readInt();
         accountId = source.readInt();
@@ -137,7 +158,6 @@ public class TableBillsDeposits
         repeats = source.readInt();
         numOccurrence = source.readInt();
     }
-
 
     public final static Parcelable.Creator<TableBillsDeposits> CREATOR = new Parcelable.Creator<TableBillsDeposits>() {
         public TableBillsDeposits createFromParcel(Parcel source) {
