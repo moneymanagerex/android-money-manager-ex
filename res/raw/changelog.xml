@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="August 21, 2015" versionName="2.15.0-beta8">
+    <changelogversion changeDate="August 21, 2015" versionName="2.15.0">
         <changelogtext>Displaying the expression and amount in user's base currency's style in numeric input.</changelogtext>
         <changelogtext>Show split transactions immediately if switching to split categories on transaction edit.</changelogtext>
         <changelogtext>Corrected Search for transactions with status None.</changelogtext>
