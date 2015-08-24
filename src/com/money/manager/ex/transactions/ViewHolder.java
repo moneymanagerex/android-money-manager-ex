@@ -1,5 +1,6 @@
 package com.money.manager.ex.transactions;
 
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -8,4 +9,6 @@ import android.widget.TextView;
  */
 public class ViewHolder {
     public TextView txtSelectDate;
+    public Spinner spinAccount, spinAccountTo, spinStatus;
+
 }

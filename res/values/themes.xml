@@ -15,7 +15,6 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
-
 <resources>
     <!--<style name="Theme.Money.Manager.Startup" parent="@android:style/Theme.Holo.NoActionBar">-->
         <!--<item name="android:windowBackground">@color/money_manager_ex_sign_bg</item>-->

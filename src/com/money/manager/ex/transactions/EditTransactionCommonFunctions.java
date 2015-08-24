@@ -117,7 +117,6 @@ public class EditTransactionCommonFunctions {
     // Controls
     public ViewHolder viewHolder;
     public ViewGroup tableRowPayee, tableRowAmountTo;
-    public Spinner spinAccount, spinAccountTo, spinStatus;
     public TextView accountFromLabel, txtToAccount;
     public TextView txtSelectPayee, txtAmountTo, txtAmount, categoryTextView;
     public TextView amountHeaderTextView, amountToHeaderTextView;
@@ -141,7 +140,7 @@ public class EditTransactionCommonFunctions {
         viewHolder.txtSelectDate = (TextView) mParent.findViewById(R.id.textViewDate);
 
         // Status
-        spinStatus = (Spinner) mParent.findViewById(R.id.spinnerStatus);
+        viewHolder.spinStatus = (Spinner) mParent.findViewById(R.id.spinnerStatus);
 
         // Payee
         txtSelectPayee = (TextView) mParent.findViewById(R.id.textViewPayee);
@@ -153,8 +152,8 @@ public class EditTransactionCommonFunctions {
         categoryTextView = (TextView) mParent.findViewById(R.id.textViewCategory);
 
         // Account
-        spinAccount = (Spinner) mParent.findViewById(R.id.spinnerAccount);
-        spinAccountTo = (Spinner) mParent.findViewById(R.id.spinnerToAccount);
+        viewHolder.spinAccount = (Spinner) mParent.findViewById(R.id.spinnerAccount);
+        viewHolder.spinAccountTo = (Spinner) mParent.findViewById(R.id.spinnerToAccount);
         accountFromLabel = (TextView) mParent.findViewById(R.id.accountFromLabel);
         txtToAccount = (TextView) mParent.findViewById(R.id.textViewToAccount);
 
@@ -336,15 +335,15 @@ public class EditTransactionCommonFunctions {
         }
 
         // create adapter for spinAccount
-        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(mParent,
-                android.R.layout.simple_spinner_item, mAccountNameList);
-        adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinAccount.setAdapter(adapterAccount);
+        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(mContext,
+                R.layout.mmex_spinner_item, mAccountNameList);
+        adapterAccount.setDropDownViewResource(R.layout.mmex_spinner_dropdown_item);
+        viewHolder.spinAccount.setAdapter(adapterAccount);
         // select current value
         if (mAccountIdList.indexOf(accountId) >= 0) {
-            spinAccount.setSelection(mAccountIdList.indexOf(accountId), true);
+            viewHolder.spinAccount.setSelection(mAccountIdList.indexOf(accountId), true);
         }
-        spinAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        viewHolder.spinAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setDirty(true);
@@ -362,12 +361,12 @@ public class EditTransactionCommonFunctions {
         });
 
         // to account
-        adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinAccountTo.setAdapter(adapterAccount);
+        adapterAccount.setDropDownViewResource(R.layout.mmex_spinner_dropdown_item);
+        viewHolder.spinAccountTo.setAdapter(adapterAccount);
         if (toAccountId != Constants.NOT_SET && mAccountIdList.indexOf(toAccountId) >= 0) {
-            spinAccountTo.setSelection(mAccountIdList.indexOf(toAccountId), true);
+            viewHolder.spinAccountTo.setSelection(mAccountIdList.indexOf(toAccountId), true);
         }
-        spinAccountTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        viewHolder.spinAccountTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setDirty(true);
@@ -394,13 +393,13 @@ public class EditTransactionCommonFunctions {
                 Integer currencyId = null;
                 int selectedPosition;
                 if (v.equals(txtAmountTo)) {
-                    selectedPosition = spinAccountTo.getSelectedItemPosition();
+                    selectedPosition = viewHolder.spinAccountTo.getSelectedItemPosition();
                     if (selectedPosition >= 0 && selectedPosition < AccountList.size()) {
                         currencyId = AccountList.get(selectedPosition).getCurrencyId();
                     }
                 } else {
                     // Amount.
-                    selectedPosition = spinAccount.getSelectedItemPosition();
+                    selectedPosition = viewHolder.spinAccount.getSelectedItemPosition();
                     if (selectedPosition >= 0 && selectedPosition < AccountList.size()) {
                         currencyId = AccountList.get(selectedPosition).getCurrencyId();
                     }
@@ -569,20 +568,21 @@ public class EditTransactionCommonFunctions {
         mStatusValues = mContext.getResources().getStringArray(R.array.status_values);
 
         // create adapter for spinnerStatus
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, mStatusItems);
-        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.spinStatus.setAdapter(adapterStatus);
+        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(mContext,
+                R.layout.mmex_spinner_item, mStatusItems);
+        adapterStatus.setDropDownViewResource(R.layout.mmex_spinner_dropdown_item);
+        viewHolder.spinStatus.setAdapter(adapterStatus);
 
         // select current value
         if (!(TextUtils.isEmpty(status))) {
             if (Arrays.asList(mStatusValues).indexOf(status) >= 0) {
-                this.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(status), true);
+                viewHolder.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(status), true);
             }
         } else {
 //            status = (String) this.spinStatus.getSelectedItem();
             status = mStatusValues[0];
         }
-        this.spinStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        viewHolder.spinStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if ((position >= 0) && (position <= mStatusValues.length)) {
@@ -897,7 +897,7 @@ public class EditTransactionCommonFunctions {
         tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         tableRowAmountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
 
-        spinAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        viewHolder.spinAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
 
         splitButton.setVisibility(isTransfer ? View.GONE : View.VISIBLE);

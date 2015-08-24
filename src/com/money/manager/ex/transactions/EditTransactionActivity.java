@@ -616,7 +616,7 @@ public class EditTransactionActivity
                 int defaultAccountId = Integer.parseInt(defaultAccountSetting);
                 if (mCommonFunctions.mAccountIdList.contains(defaultAccountId)) {
                     int index = mCommonFunctions.mAccountIdList.indexOf(defaultAccountId);
-                    mCommonFunctions.spinAccount.setSelection(index);
+                    mCommonFunctions.viewHolder.spinAccount.setSelection(index);
                 }
             }
         }
@@ -630,7 +630,7 @@ public class EditTransactionActivity
     /**
      * Get any parameters, if sent, when intent was raised. This is used when called
      * from Tasker or any external caller.
-     * @param intent
+     * @param intent The intent received.
      */
     public void externalIntegration(Intent intent) {
         Uri data = intent.getData();

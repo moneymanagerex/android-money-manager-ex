@@ -15,7 +15,6 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
-
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Money.Button" parent="android:Widget.Button">
@@ -97,7 +96,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner"/>
+    <style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner" />
 
     <style name="Money.EditText" parent="android:Widget.Holo.EditText"/>
 
@@ -126,4 +125,11 @@
         <item name="android:padding">4dp</item>
     </style>
 
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <!--<item name="android:height">60dp</item>-->
+        <!--<item name="android:background">?attr/background</item>-->
+        <item name="android:textColor">@color/red</item>
+        <!-- ?android:attr/textColorPrimary -->
+        <!--<item name="android:textStyle">bold</item>-->
+    </style>
 </resources>
