@@ -255,7 +255,7 @@ public class RecurringTransactionActivity
                 .format(mCommonFunctions.txtSelectDate.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
 
-        NumericHelper helper = new NumericHelper();
+        NumericHelper helper = new NumericHelper(getApplicationContext());
         int timesRepeated = helper.tryParse(edtTimesRepeated.getText().toString());
         if (timesRepeated != Constants.NOT_SET) {
 //            outState.putInt(KEY_NUM_OCCURRENCE, timesRepeated);

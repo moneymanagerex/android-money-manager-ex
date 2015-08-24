@@ -1,5 +1,7 @@
 package test.java.org.moneymanagerex.android.tests;
 
+import android.test.mock.MockContext;
+
 import com.money.manager.ex.core.NumericHelper;
 
 import junit.framework.TestCase;
@@ -16,7 +18,8 @@ public class NumericHelperTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        _numericHelper = new NumericHelper();
+        MockContext context = new MockContext();
+        _numericHelper = new NumericHelper(context);
 
     }
 

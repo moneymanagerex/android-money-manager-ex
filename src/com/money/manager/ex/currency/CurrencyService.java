@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -141,7 +142,7 @@ public class CurrencyService {
      * @return Id of base currency
      */
     public int getBaseCurrencyId() {
-        int result = -1;
+        int result = Constants.NOT_SET;
 
         // lazy loading the base currency id.
         if (mBaseCurrencyId == null) {
@@ -195,7 +196,8 @@ public class CurrencyService {
                 result = String.valueOf(value);
             } else {
                 // formatted value
-                result = tableCurrency.getValueFormatted(value);
+                NumericHelper helper = new NumericHelper(mContext);
+                result = helper.getValueFormatted(value, tableCurrency);
             }
         } else {
             result = String.valueOf(value);

@@ -225,35 +225,4 @@ public class TableCurrencyFormats
 		this.setBaseConvRate(c.getDouble(c.getColumnIndex(BASECONVRATE)));
 		this.setCurrencySymbol(c.getString(c.getColumnIndex(CURRENCY_SYMBOL)));
 	}
-	/**
-	 * 
-	 * @param value value to format
-	 * @return value formatted
-	 */
-	public String getValueFormatted(double value) {
-		return getValueFormatted(value, true);
-	}
-	/**
-	 * 
-	 * @param value value to format
-	 * @param showSymbols Whether to include the currency symbol in the output.
-	 * @return formatted value
-	 */
-	public String getValueFormatted(double value, boolean showSymbols) {
-        NumericHelper helper = new NumericHelper();
-        String result = helper.getNumberFormatted(value, this.getScale(),
-            this.getDecimalPoint(), this.getGroupSeparator());
-
-		// check suffix
-		if ((showSymbols) && (!TextUtils.isEmpty(this.getSfxSymbol()))) {
-			result = result + " " + this.getSfxSymbol();
-		}
-		// check prefix
-		if (((showSymbols) && !TextUtils.isEmpty(this.getPfxSymbol()))) {
-			result = this.getPfxSymbol() + " " + result;
-		}
-		
-		return result;
-	}
-	
 }
