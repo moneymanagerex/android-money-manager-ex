@@ -88,6 +88,8 @@ import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.shamanland.fonticon.FontIconDrawable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -808,11 +810,17 @@ public class MainActivity
         }
 
         String currentDbPath = MoneyManagerApplication.getDatabasePath(getApplicationContext());
+        if (StringUtils.isEmpty(currentDbPath)) return;
+
         File db = new File(currentDbPath);
         String dbName = db.getName();
+
         String remoteDb = mDropboxHelper.getLinkedRemoteFile();
+        if (StringUtils.isEmpty(remoteDb)) return;
+
         File dropboxDb = new File(remoteDb);
         String remoteDbName = dropboxDb.getName();
+        
         boolean shouldCheckDbUpdates = dbName.equalsIgnoreCase(remoteDbName);
         if (!shouldCheckDbUpdates) return;
 
