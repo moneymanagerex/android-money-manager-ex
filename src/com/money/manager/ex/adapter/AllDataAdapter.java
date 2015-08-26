@@ -162,24 +162,27 @@ public class AllDataAdapter
         holder.txtPayee.setText(payee);
 
         // compose category description
-        String categorySub = cursor.getString(cursor.getColumnIndex(CATEGORY));
-        // check sub category
-        if (!(TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(SUBCATEGORY))))) {
-            categorySub += " : <i>" + cursor.getString(cursor.getColumnIndex(SUBCATEGORY)) + "</i>";
-        }
-        // write category/subcategory format html
-        if (!TextUtils.isEmpty(categorySub)) {
-            // Display category/sub-category.
-            holder.txtCategorySub.setText(Html.fromHtml(categorySub));
-        } else {
-            // It is either a Transfer or a split category.
-            if (isTransfer) {
-                holder.txtCategorySub.setText(R.string.transfer);
-            } else {
-                // then it is a split? todo: improve this check to make it explicit.
-                holder.txtCategorySub.setText(R.string.split_category);
+
+        String categorySub;
+        if (!isTransfer) {
+            categorySub = cursor.getString(cursor.getColumnIndex(CATEGORY));
+            // check sub category
+            if (!(TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(SUBCATEGORY))))) {
+                categorySub += " : <i>" + cursor.getString(cursor.getColumnIndex(SUBCATEGORY)) + "</i>";
             }
+            // write category/subcategory format html
+            if (!TextUtils.isEmpty(categorySub)) {
+                // Display category/sub-category.
+                categorySub = Html.fromHtml(categorySub).toString();
+            } else {
+                // It is either a Transfer or a split category.
+                // then it is a split? todo: improve this check to make it explicit.
+                categorySub = mContext.getString(R.string.split_category);
+            }
+        } else {
+            categorySub = mContext.getString(R.string.transfer);
         }
+        holder.txtCategorySub.setText(categorySub);
 
         // notes
         if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(NOTES)))) {
