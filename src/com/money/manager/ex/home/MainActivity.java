@@ -820,7 +820,7 @@ public class MainActivity
 
         File dropboxDb = new File(remoteDb);
         String remoteDbName = dropboxDb.getName();
-        
+
         boolean shouldCheckDbUpdates = dbName.equalsIgnoreCase(remoteDbName);
         if (!shouldCheckDbUpdates) return;
 
