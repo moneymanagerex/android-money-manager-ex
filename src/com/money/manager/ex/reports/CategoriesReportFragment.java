@@ -45,7 +45,7 @@ import java.util.ArrayList;
  * Created by Alen Siljak on 06/07/2015.
  */
 public class CategoriesReportFragment extends BaseReportFragment {
-    private static final int GROUP_ID_CATEGORY = 0xFFFF;
+//    private static final int GROUP_ID_CATEGORY = 0xFFFF;
     private LinearLayout mHeaderListView, mFooterListView;
 
     @Override

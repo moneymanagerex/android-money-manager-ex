@@ -903,7 +903,7 @@ public class EditTransactionCommonFunctions {
 
         splitButton.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
-//        categoryTextView.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+        categoryTextView.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         refreshControlHeaders();
     }
@@ -1121,9 +1121,6 @@ public class EditTransactionCommonFunctions {
 
         // un-check split.
         setSplit(false);
-
-        // Clear category.
-//        categoryId = Constants.NOT_SET;
     }
 
     private void refreshDestinationAmount() {
