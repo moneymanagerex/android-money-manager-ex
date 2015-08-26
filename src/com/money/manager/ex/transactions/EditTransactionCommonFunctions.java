@@ -903,7 +903,7 @@ public class EditTransactionCommonFunctions {
 
         splitButton.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
-        categoryTextView.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+//        categoryTextView.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         refreshControlHeaders();
     }
