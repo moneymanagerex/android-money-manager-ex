@@ -234,12 +234,22 @@ public class NumericHelper {
 
     public String getDecimalSeparatorForCurrency(int currencyId) {
         CurrencyService currencyService = getCurrencyService();
-        return currencyService.getCurrency(currencyId).getDecimalPoint();
+        TableCurrencyFormats currency = currencyService.getCurrency(currencyId);
+        if (currency == null) {
+            return getDecimalSeparatorForAppLocale();
+        }
+
+        return currency.getDecimalPoint();
     }
 
     public String getGroupingSeparatorForCurrency(int currencyId) {
         CurrencyService currencyService = getCurrencyService();
-        return currencyService.getCurrency(currencyId).getGroupSeparator();
+        TableCurrencyFormats currency = currencyService.getCurrency(currencyId);
+        if (currency == null) {
+            return getGroupingSeparatorForAppLocale();
+        }
+
+        return currency.getGroupSeparator();
     }
 
     public CurrencyService getCurrencyService() {
