@@ -40,6 +40,14 @@
         android:summary="@string/preferences_behaviour_focus_filter_summary"
         android:title="@string/preferences_behaviour_focus_filter_title"/>
 
+    <!--<ListPreference-->
+        <!--android:defaultValue="@string/last_month"-->
+        <!--android:entries="@array/show_transaction_values"-->
+        <!--android:entryValues="@array/show_transaction_values"-->
+        <!--android:key="@string/pref_income_expense_footer_period"-->
+        <!--android:title="@string/income_expense_period"-->
+        <!--android:summary="@string/income_expense_period_summary" />-->
+
     <CheckBoxPreference
         android:icon="@null"
         android:defaultValue="true"

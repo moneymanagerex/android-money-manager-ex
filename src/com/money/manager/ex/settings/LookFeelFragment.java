@@ -72,9 +72,9 @@ public class LookFeelFragment
 
         // show transactions
         final ListPreference lstShow = (ListPreference) findPreference(getString(
-                PreferenceConstants.PREF_SHOW_TRANSACTION));
+                R.string.pref_show_transaction));
         if (lstShow != null) {
-            lstShow.setSummary(MoneyManagerApplication.getInstanceApp().getShowTransaction());
+            lstShow.setSummary(new AppSettings(getContext()).getShowTransaction());
             lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {

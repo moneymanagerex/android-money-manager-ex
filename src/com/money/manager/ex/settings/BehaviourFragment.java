@@ -48,8 +48,8 @@ public class BehaviourFragment
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // checkbox on open and favorite account
-        final CheckBoxPreference chkFilter = (CheckBoxPreference) findPreference(getString(
-                R.string.pref_behaviour_focus_filter));
+//        final CheckBoxPreference chkFilter = (CheckBoxPreference) findPreference(getString(
+//                R.string.pref_behaviour_focus_filter));
 
 //        Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
 //            @Override

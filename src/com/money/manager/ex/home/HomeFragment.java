@@ -53,6 +53,7 @@ import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableStock;
+import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -294,13 +295,23 @@ public class HomeFragment
 
             case ID_LOADER_INCOME_EXPENSES:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
+
+                // Get custom period.
+                // pref_income_expense_footer_period
+//                String period = new AppSettings(getContext()).getBehaviourSettings().getIncomeExpensePeriod();
+//                WhereClauseGenerator generator = new WhereClauseGenerator(getContext());
+//                ArrayList<String> whereClauses = generator.getWhereClauseForPeriod(period);
+//                String whereStatement = generator.getWhereStatementFromClauses(whereClauses);
+                String whereStatement =
+                    QueryReportIncomeVsExpenses.Month + "="
+                    + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
+                    " AND " +
+                    QueryReportIncomeVsExpenses.Year + "=" +
+                    Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+
                 result = new MmexCursorLoader(getActivity(), report.getUri(),
                         report.getAllColumns(),
-                        QueryReportIncomeVsExpenses.Month + "="
-                            + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
-                                " AND "
-                        + QueryReportIncomeVsExpenses.Year + "="
-                            + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)),
+                        whereStatement,
                         null, null);
                 break;
 
@@ -804,15 +815,6 @@ public class HomeFragment
 
         return account;
     }
-
-//    private BalanceAccountTask mBalanceAccountTask;
-//
-//    public BalanceAccountTask getBalanceAccountTask() {
-//        if (mBalanceAccountTask == null) {
-//            mBalanceAccountTask = new BalanceAccountTask(getActivity());
-//        }
-//        return mBalanceAccountTask;
-//    }
 
     private void renderAccountsList(Cursor cursor) {
         // Accounts list

@@ -304,14 +304,6 @@ public class MoneyManagerApplication
     }
 
     /**
-     * @return the show transaction
-     */
-    public String getShowTransaction() {
-        return PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(PreferenceConstants.PREF_SHOW_TRANSACTION), getResources().getString(R.string.last7days));
-    }
-
-    /**
      * Compute account balance and returns balance
      *
      * @param context Executing context

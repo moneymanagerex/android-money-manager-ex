@@ -47,6 +47,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.R;
@@ -215,11 +216,8 @@ public class AllDataFragment extends BaseListFragment
                 String selection = "";
                 if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
                     ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
-                    if (whereClause != null) {
-                        for (int i = 0; i < whereClause.size(); i++) {
-                            selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
-                        }
-                    }
+                    WhereClauseGenerator whereGenerator = new WhereClauseGenerator(getContext());
+                    selection = whereGenerator.getWhereStatementFromClauses(whereClause);
                 }
                 // where parameters
                 String[] whereParams = new String[0];

@@ -48,6 +48,7 @@ import android.widget.Toast;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.MainActivity;
@@ -397,32 +398,18 @@ public class AccountTransactionsFragment
         selection.add("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
             " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
 
-        String defaultPeriod = MoneyManagerApplication.getInstanceApp().getShowTransaction();
+        String defaultPeriod = new AppSettings(getContext()).getShowTransaction();
 
-        if (defaultPeriod.equalsIgnoreCase(getString(R.string.last7days))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last15days))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.current_month))) {
-            selection.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
-            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last30days))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 30)");
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last3months))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.last6months))) {
-            selection.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.current_year))) {
-            selection.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-        } else if (defaultPeriod.equalsIgnoreCase(getString(R.string.future_transactions))) {
-            // Future transactions
-            selection.add("date(" + QueryAllData.Date + ") > date('now')");
-        }
+        WhereClauseGenerator whereClause = new WhereClauseGenerator(getContext());
+        ArrayList<String> periodClauses = whereClause.getWhereClauseForPeriod(defaultPeriod);
+        selection.addAll(periodClauses);
+
         // create a bundle to returns
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
         args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
-                QueryAllData.Date + " DESC, " + QueryAllData.TransactionType + ", " + QueryAllData.ID + " DESC");
+                QueryAllData.Date + " DESC, " + QueryAllData.TransactionType + ", " +
+                        QueryAllData.ID + " DESC");
 
         return args;
     }

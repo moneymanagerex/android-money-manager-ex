@@ -62,7 +62,6 @@ public class GeneralSettingsFragment
 
         // Application Locale
 
-//        final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(PreferenceConstants.PREF_LOCALE));
         final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(R.string.pref_locale));
         if (lstLocaleApp != null) {
             String summary = settings.getGeneralSettings().getApplicationLocale();
@@ -121,7 +120,6 @@ public class GeneralSettingsFragment
 
         // list preference base currency
         initBaseCurrency();
-//        initBaseCurrency_list();
 
         // default status
         final ListPreference lstDefaultStatus = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_STATUS));

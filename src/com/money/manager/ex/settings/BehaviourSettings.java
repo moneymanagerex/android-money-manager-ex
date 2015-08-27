@@ -45,4 +45,16 @@ public class BehaviourSettings
                 mContext.getString(R.string.pref_behaviour_focus_filter), true);
         return result;
     }
+
+    /**
+     * The period to use for the income/expense summary footer on Home screen.
+     * @return
+     */
+    public String getIncomeExpensePeriod() {
+        String result = getSharedPreferences().getString(
+                mContext.getString(R.string.pref_income_expense_footer_period),
+                mContext.getString(R.string.last_month)
+        );
+        return result;
+    }
 }

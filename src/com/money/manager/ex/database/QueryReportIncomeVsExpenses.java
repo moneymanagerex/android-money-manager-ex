@@ -31,7 +31,8 @@ public class QueryReportIncomeVsExpenses extends Dataset {
     public static final String Transfers = "Transfers";
 
     public QueryReportIncomeVsExpenses(Context context) {
-        super(RawFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses), DatasetType.QUERY, "report_income_vs_expenses");
+        super(RawFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses), DatasetType.QUERY,
+                "report_income_vs_expenses");
     }
 
     @Override
