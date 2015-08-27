@@ -192,7 +192,7 @@
     </integer-array>
 
     <string-array name="frequencies_items">
-        <item>@string/none</item>
+        <item>@string/once</item>
         <item>@string/weekly</item>
         <item>@string/bi_weekly</item>
         <item>@string/monthly</item>

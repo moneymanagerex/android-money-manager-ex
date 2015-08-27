@@ -167,14 +167,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/account"/>
-
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewToAccount"
-                    style="@style/Money.TextView.Header.Caption"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/to_account"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -188,14 +180,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
-
-                <Spinner
-                    android:id="@+id/spinnerToAccount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:visibility="gone"
-                    style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
             </LinearLayout>
 
             <!-- Amounts -->
@@ -205,7 +189,7 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
-                <!-- Amount -->
+                <!-- Amount / from -->
                 <LinearLayout
                     android:id="@+id/tableRowAmount"
                     android:layout_width="match_parent"
@@ -231,6 +215,31 @@
                         android:drawableStart="?attr/ic_calculator"
                         android:textStyle="bold"
                         android:gravity="end" />
+                </LinearLayout>
+
+                <!-- Account To -->
+                <LinearLayout
+                    android:id="@+id/tableRowAccountTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/textViewToAccount"
+                        style="@style/Money.TextView.Header.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/to_account" />
+
+                    <Spinner
+                        android:id="@+id/spinnerToAccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
                 </LinearLayout>
 
                 <!-- Amount To -->

@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex.recurring.transactions;
 
-//import android.app.DatePickerDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -27,39 +26,32 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-        import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-        import com.money.manager.ex.Constants;
-        import com.money.manager.ex.R;
-        import com.money.manager.ex.businessobjects.RecurringTransactionService;
-        import com.money.manager.ex.database.AccountRepository;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.RecurringTransactionService;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.RecurringTransactionRepository;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 
-import java.math.BigDecimal;
-        import java.text.SimpleDateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * Recurring transactions are stored in BillsDeposits table.
@@ -348,10 +340,12 @@ public class RecurringTransactionActivity
      * refersh UI control times repeated
      */
     public void refreshTimesRepeated() {
-        edtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
-        txtRepeats.setText((mFrequencies == 11) || (mFrequencies == 12) ? R.string.activates : R.string.repeats);
+        txtRepeats.setText((mFrequencies == 11) || (mFrequencies == 12) ? R.string.activates : R.string.occurs);
+
         txtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
         txtTimesRepeated.setText(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
+
+        edtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
         edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
     }
 

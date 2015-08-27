@@ -116,7 +116,7 @@ public class EditTransactionCommonFunctions {
 
     // Controls
     public ViewHolder viewHolder;
-    public ViewGroup tableRowPayee, tableRowAmountTo;
+    public ViewGroup tableRowPayee, tableRowAmountTo, tableRowAccountTo;
     public TextView accountFromLabel, txtToAccount;
     public TextView txtSelectPayee, txtAmountTo, txtAmount, categoryTextView;
     public TextView amountHeaderTextView, amountToHeaderTextView;
@@ -153,9 +153,11 @@ public class EditTransactionCommonFunctions {
 
         // Account
         viewHolder.spinAccount = (Spinner) mParent.findViewById(R.id.spinnerAccount);
-        viewHolder.spinAccountTo = (Spinner) mParent.findViewById(R.id.spinnerToAccount);
         accountFromLabel = (TextView) mParent.findViewById(R.id.accountFromLabel);
+
+        tableRowAccountTo = (ViewGroup) mParent.findViewById(R.id.tableRowAccountTo);
         txtToAccount = (TextView) mParent.findViewById(R.id.textViewToAccount);
+        viewHolder.spinAccountTo = (Spinner) mParent.findViewById(R.id.spinnerToAccount);
 
         // Amounts
         amountHeaderTextView = (TextView) mParent.findViewById(R.id.textViewHeaderAmount);
@@ -893,12 +895,14 @@ public class EditTransactionCommonFunctions {
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
 
         accountFromLabel.setText(isTransfer ? R.string.from_account : R.string.account);
-        txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+
+        tableRowAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+//        txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+//        viewHolder.spinAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
 
         tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         tableRowAmountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
 
-        viewHolder.spinAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
         tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
 
         splitButton.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
