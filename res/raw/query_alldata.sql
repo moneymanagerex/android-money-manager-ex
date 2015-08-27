@@ -49,7 +49,7 @@ FROM CHECKINGACCOUNT_V1 TX
 			round( strftime( '%d', transdate )  ) AS day,
 			round( strftime( '%m', transdate )  ) AS month,
 			round( strftime( '%Y', transdate )  ) AS year,
-			round( strftime( '%Y', transdate, 'start of month',  (  ( CASE WHEN fd.infovalue <= round( strftime( '%d', transdate )  ) THEN 1 ELSE 0 END ) - fm.infovalue ) || ' month' )  ) AS finyear,
+			round( strftime( '%Y', transdate, 'start of month', ( (CASE WHEN fd.infovalue <= round( strftime( '%d', transdate )  ) THEN 1 ELSE 0 END ) - fm.infovalue ) || ' month' )  ) AS finyear,
 			ifnull( ifnull( strftime( df.infovalue, TransDate ) ,  ( strftime( REPLACE( df.infovalue, '%y', SubStr( strftime( '%Y', TransDate ) , 3, 2 )  ) , TransDate )  )  ) , date( TransDate )  ) AS UserDate
 	    FROM CHECKINGACCOUNT_V1 LEFT JOIN infotable_v1 df ON df.infoname = 'DATEFORMAT'
 		LEFT JOIN infotable_v1 fm ON fm.infoname = 'FINANCIAL_YEAR_START_MONTH'
