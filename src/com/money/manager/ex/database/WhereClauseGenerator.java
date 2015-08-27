@@ -37,7 +37,9 @@ public class WhereClauseGenerator {
     public ArrayList<String> getWhereClausesForPeriod(String period) {
         ArrayList<String> result = new ArrayList<>();
 
-        if (period.equalsIgnoreCase(mContext.getString(R.string.last7days))) {
+        if (period.equalsIgnoreCase(mContext.getString(R.string.all_transaction))) {
+            // All transactions. No filter needed.
+        } else if (period.equalsIgnoreCase(mContext.getString(R.string.last7days))) {
             result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
         } else if (period.equalsIgnoreCase(mContext.getString(R.string.last15days))) {
             result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
@@ -62,13 +64,23 @@ public class WhereClauseGenerator {
 
     public String getWhereStatementFromClauses(ArrayList<String> whereClause) {
         String whereStatement = "";
-
-        if (whereClause != null) {
-            for (int i = 0; i < whereClause.size(); i++) {
-                whereStatement += (!TextUtils.isEmpty(whereStatement) ? " AND " : "") +
-                        whereClause.get(i);
-            }
+        if (whereClause == null) {
+            return whereStatement;
         }
+
+        // todo: do we need the WHERE statement here?
+//        if (whereClause.size() > 0) {
+//            whereStatement = " WHERE ";
+//        }
+
+        for (String statement : whereClause) {
+            whereStatement += (!TextUtils.isEmpty(whereStatement) ? " AND " : "") + statement;
+        }
+
+//        for (int i = 0; i < whereClause.size(); i++) {
+//            whereStatement += (!TextUtils.isEmpty(whereStatement) ? " AND " : "") +
+//                    whereClause.get(i);
+//        }
 
         return whereStatement;
     }

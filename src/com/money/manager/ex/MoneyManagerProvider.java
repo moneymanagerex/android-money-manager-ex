@@ -423,11 +423,15 @@ public class MoneyManagerProvider
      */
     public String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
         String selectList, from, where = "", sort = "";
+
+        // todo: use builder?
+//        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+//        SQLiteQueryBuilder.buildQueryString(false, )
+
         // compose select list
         if (projection == null) {
             selectList = "SELECT *";
         } else {
-
             selectList = "SELECT ";
 
             for (int i = 0; i < projection.length; i++) {
@@ -468,7 +472,6 @@ public class MoneyManagerProvider
     }
 
     public Object getObjectFromUri(Uri uri) {
-        // match dell'uri
         int uriMatch = sUriMatcher.match(uri);
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Uri Match Result: " + Integer.toString(uriMatch));
 

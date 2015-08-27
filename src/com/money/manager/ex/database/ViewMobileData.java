@@ -47,7 +47,7 @@ public class ViewMobileData
 	public static final String ACCOUNTID = "AccountID";
 	public static final String ToAccountName = "ToAccountName";
 	public static final String ToAccountID = "ToAccountID";
-	public static final String TOTRANSAMOUNT = "ToTransAmount";
+	public static final String TOTRANSAMOUNT = "ToAmount";
 	public static final String ToCurrencyID = "ToCurrencyID";
 	public static final String Splitted  = "SPLITTED";
 	public static final String CategID = "CategID";
