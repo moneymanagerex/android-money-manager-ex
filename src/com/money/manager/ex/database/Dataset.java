@@ -40,15 +40,10 @@ import java.util.Map.Entry;
  */
 @SuppressWarnings("unused")
 public abstract class Dataset
-		implements BaseColumns {
+	implements BaseColumns {
 
 	private static final String LOGCAT = Dataset.class.getSimpleName();
 
-	// member private of class
-	private String source = "";
-	private DatasetType type;
-	private String basepath = "";
-	private String _ID = "ROWID AS _id";
 	/**
 	 * 
 	 * @param source table/view/query
@@ -60,6 +55,12 @@ public abstract class Dataset
 		this.type = type;
 		this.basepath = basepath;
 	}
+
+	// member private of class
+	private String source = "";
+	private DatasetType type;
+	private String basepath = "";
+	private String _ID = "ROWID AS _id";
 
 	/**
 	 * The default check in CheckingAccount. If checked to another table use canDelete(Context context, ContentValues values, String className)

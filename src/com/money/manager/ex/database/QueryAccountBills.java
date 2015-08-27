@@ -57,6 +57,7 @@ public class QueryAccountBills extends Dataset {
     // constructor
     public QueryAccountBills(Context context) {
         super(RawFileUtils.getRawAsString(context, R.raw.query_account_bills), DatasetType.QUERY, "accountbills");
+
         this.context = context;
     }
 

@@ -27,6 +27,7 @@ public class Constants {
     public static final int NOT_SET = -1;
     // Database
     public static final String PATTERN_DB_DATE = "yyyy-MM-dd";
+    public static final String MOBILE_DATA_PATTERN = "%%mobiledata%%";
     // Transaction Status
     public static final String TRANSACTION_STATUS_UNRECONCILED = "";
     public static final String TRANSACTION_STATUS_RECONCILED = "R";

@@ -215,14 +215,17 @@ public class PayeesReportActivity extends BaseFragmentActivity {
             }
         }
 
-        @SuppressWarnings("deprecation")
+//        @SuppressWarnings("deprecation")
         @Override
         protected String prepareQuery(String whereClause) {
             SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-            ViewMobileData mobileData = new ViewMobileData();
+            ViewMobileData mobileData = new ViewMobileData(getContext());
             //data to compose builder
-            String[] projectionIn = new String[]{ViewMobileData.PayeeID + " AS _id", ViewMobileData.PayeeID, ViewMobileData.Payee, "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"};
-            String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+            String[] projectionIn = new String[]{ViewMobileData.PayeeID + " AS _id",
+                    ViewMobileData.PayeeID, ViewMobileData.Payee,
+                    "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"};
+            String selection = ViewMobileData.Status + "<>'V' AND " +
+                    ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
             if (!TextUtils.isEmpty(whereClause)) {
                 selection += " AND " + whereClause;
             }
@@ -267,11 +270,8 @@ public class PayeesReportActivity extends BaseFragmentActivity {
             if (adapter == null) return;
             Cursor cursor = adapter.getCursor();
             if (cursor == null) return;
-            // move first record
             if (!cursor.moveToFirst()) return;
-            // create arraylist
             ArrayList<ValuePieEntry> arrayList = new ArrayList<ValuePieEntry>();
-            // process cursor
             while (!cursor.isAfterLast()) {
                 ValuePieEntry item = new ValuePieEntry();
                 // total

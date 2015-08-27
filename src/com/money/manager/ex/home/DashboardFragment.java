@@ -206,7 +206,7 @@ public class DashboardFragment
     @SuppressWarnings("deprecation")
     private String prepareQueryTopWithdrawals() {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData();
+        ViewMobileData mobileData = new ViewMobileData(getContext());
         // data to compose builder
         String[] projectionIn = new String[]{"ROWID AS _id", ViewMobileData.CategID, ViewMobileData.Category, ViewMobileData.SubcategID,
                 ViewMobileData.Subcategory, "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL", "COUNT(*) AS NUM"};
@@ -231,7 +231,7 @@ public class DashboardFragment
     @SuppressWarnings("deprecation")
     private String prepareQueryTopPayees() {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData();
+        ViewMobileData mobileData = new ViewMobileData(getContext());
         // data to compose builder
         String[] projectionIn = new String[]{"ROWID AS _id", ViewMobileData.PayeeID, ViewMobileData.Payee,
                 "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) AS TOTAL", "COUNT(*) AS NUM"};

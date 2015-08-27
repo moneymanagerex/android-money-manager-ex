@@ -31,6 +31,7 @@ import java.util.HashMap;
  * Created by Alessandro on 08/09/2014.
  */
 public class RawFileUtils {
+
     private static final String LOGCAT = RawFileUtils.class.getSimpleName();
     private static final int BUFFER_DIMENSION = 128;
     // hash map to optimize application

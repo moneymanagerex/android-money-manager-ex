@@ -122,7 +122,7 @@ public class MoneyManagerProvider
                 new QueryBillDeposits(getContext()),
                 new QueryReportIncomeVsExpenses(getContext()),
                 new BudgetQuery(getContext()),
-                new ViewMobileData(),
+                new ViewMobileData(getContext()),
                 new SQLDataSet());
 
         // Cycle all data sets for the composition of UriMatcher

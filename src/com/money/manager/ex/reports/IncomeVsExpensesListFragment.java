@@ -44,6 +44,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.utils.RawFileUtils;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -162,10 +163,16 @@ public class IncomeVsExpensesListFragment
                 return new MmexCursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
                         selection, null,
                         QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
+
             case ID_LOADER_YEARS:
-                selection = "SELECT DISTINCT Year FROM " + ViewMobileData.mobiledata + " ORDER BY Year DESC";
-                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(),
-                        null, selection, null, null);
+                ViewMobileData mobileData = new ViewMobileData(getContext());
+                selection = "SELECT DISTINCT Year FROM " + mobileData.getSource() + " ORDER BY Year DESC";
+                return new MmexCursorLoader(getActivity(),
+                        new SQLDataSet().getUri(),
+                        null,
+                        selection,
+                        null,
+                        null);
         }
         return null;
     }

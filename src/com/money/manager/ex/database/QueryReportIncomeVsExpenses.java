@@ -19,6 +19,7 @@ package com.money.manager.ex.database;
 
 import android.content.Context;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.RawFileUtils;
 
@@ -31,8 +32,15 @@ public class QueryReportIncomeVsExpenses extends Dataset {
     public static final String Transfers = "Transfers";
 
     public QueryReportIncomeVsExpenses(Context context) {
-        super(RawFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses), DatasetType.QUERY,
-                "report_income_vs_expenses");
+        super("", DatasetType.QUERY, "report_income_vs_expenses");
+
+        // assemble the source statement.
+        String mobileData = RawFileUtils.getRawAsString(context, R.raw.query_mobiledata);
+
+        String source = RawFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses);
+        source = source.replace(Constants.MOBILE_DATA_PATTERN, mobileData);
+
+        this.setSource(source);
     }
 
     @Override

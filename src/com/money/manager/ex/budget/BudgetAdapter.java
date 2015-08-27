@@ -45,6 +45,7 @@ public class BudgetAdapter
     public BudgetAdapter(Context context, Cursor cursor, String[] from, int[] to, int flags) {
         super(context, R.layout.item_budget, cursor, from, to, flags);
 
+        //todo: use application context?
         mContext = context;
         mLayout = R.layout.item_budget;
     }
@@ -187,7 +188,7 @@ public class BudgetAdapter
 
     protected String prepareQuery(String whereClause) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData();
+        ViewMobileData mobileData = new ViewMobileData(mContext);
 
         //data to compose builder
         String[] projectionIn = new String[]{

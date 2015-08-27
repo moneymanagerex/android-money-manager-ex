@@ -190,7 +190,7 @@ public class CategoriesReportFragment extends BaseReportFragment {
     @Override
     protected String prepareQuery(String whereClause) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData();
+        ViewMobileData mobileData = new ViewMobileData(getContext());
 
         //data to compose builder
         String[] projectionIn = new String[]{
