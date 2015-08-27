@@ -20,13 +20,21 @@ public class WhereClauseGenerator {
 
     private Context mContext;
 
+    public String getWhereClauseForPeriod(String period) {
+        ArrayList<String> whereClauses = this.getWhereClausesForPeriod(period);
+
+        String transactionsFilter = this.getWhereStatementFromClauses(whereClauses);
+
+        return transactionsFilter;
+    }
+
     /**
      * Generate a period selector for the given string.
      *
      * @param period A value from show_transaction_values array.
      * @return list of where statements
      */
-    public ArrayList<String> getWhereClauseForPeriod(String period) {
+    public ArrayList<String> getWhereClausesForPeriod(String period) {
         ArrayList<String> result = new ArrayList<>();
 
         if (period.equalsIgnoreCase(mContext.getString(R.string.last7days))) {

@@ -6,9 +6,7 @@ FROM (
     case when lower(sub1.transactiontype)='transfer' then sub1.total else 0 end as t
     from (
         select mobiledata.month, mobiledata.year, mobiledata.transactiontype, sum(mobiledata.AmountBaseConvRate) as total
-        from (
-            %%mobiledata%%
-            ) mobiledata
+        from %%mobiledata%%
         where not(mobiledata.status = 'V')
         group by month, year, transactiontype
         ) sub1
@@ -25,9 +23,7 @@ FROM (
 	case when lower(sub1.transactiontype)='transfer' then sub1.total else 0 end as t
 	from (
 		select mobiledata.month, mobiledata.year, mobiledata.transactiontype, sum(mobiledata.AmountBaseConvRate) as total
-		from (
-            %%mobiledata%%
-        ) mobiledata
+		from %%mobiledata%%
     where not(mobiledata.status = 'V')
     group by month, year, transactiontype
     ) sub1

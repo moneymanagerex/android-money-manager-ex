@@ -23,6 +23,8 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.RawFileUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class QueryReportIncomeVsExpenses extends Dataset {
     //field name
     public static final String Year = "Year";
@@ -34,17 +36,39 @@ public class QueryReportIncomeVsExpenses extends Dataset {
     public QueryReportIncomeVsExpenses(Context context) {
         super("", DatasetType.QUERY, "report_income_vs_expenses");
 
-        // assemble the source statement.
-        String mobileData = RawFileUtils.getRawAsString(context, R.raw.query_mobiledata);
+        this.mContext = context.getApplicationContext();
 
-        String source = RawFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses);
-        source = source.replace(Constants.MOBILE_DATA_PATTERN, mobileData);
-
-        this.setSource(source);
+        initialize(context, null);
     }
+
+    private Context mContext;
 
     @Override
     public String[] getAllColumns() {
         return new String[]{"ROWID AS _id", Year, Month, Income, Expenses, Transfers};
+    }
+
+    /**
+     * add a WHERE clause for the base (mobiledata) query
+     * @param whereStatement where statement to use for filtering the underlying data
+     */
+     public void filterTransactionsSource(String whereStatement) {
+         // add WHERE statements to the base query (mobiledata)
+         initialize(mContext, whereStatement);
+     }
+
+    private void initialize(Context context, String whereStatement) {
+        ViewMobileData mobileData = new ViewMobileData(context);
+        // add where statement
+        if(!StringUtils.isEmpty(whereStatement)) {
+            mobileData.setWhere(whereStatement);
+        }
+        String mobileDataQuery = mobileData.getSource();
+
+        // assemble the source statement by combining queries.
+        String source = RawFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses);
+        source = source.replace(Constants.MOBILE_DATA_PATTERN, mobileDataQuery);
+
+        this.setSource(source);
     }
 }

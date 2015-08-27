@@ -401,7 +401,7 @@ public class AccountTransactionsFragment
         String defaultPeriod = new AppSettings(getContext()).getShowTransaction();
 
         WhereClauseGenerator whereClause = new WhereClauseGenerator(getContext());
-        ArrayList<String> periodClauses = whereClause.getWhereClauseForPeriod(defaultPeriod);
+        ArrayList<String> periodClauses = whereClause.getWhereClausesForPeriod(defaultPeriod);
         selection.addAll(periodClauses);
 
         // create a bundle to returns

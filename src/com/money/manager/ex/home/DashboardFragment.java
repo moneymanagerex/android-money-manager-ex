@@ -233,8 +233,10 @@ public class DashboardFragment
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         ViewMobileData mobileData = new ViewMobileData(getContext());
         // data to compose builder
-        String[] projectionIn = new String[]{"ROWID AS _id", ViewMobileData.PayeeID, ViewMobileData.Payee,
-                "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) AS TOTAL", "COUNT(*) AS NUM"};
+        String[] projectionIn = new String[]{"ROWID AS _id",
+                ViewMobileData.PayeeID, ViewMobileData.Payee,
+                "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) AS TOTAL",
+                "COUNT(*) AS NUM"};
 
         String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType
                 + " IN ('Withdrawal', 'Deposit') AND (julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";

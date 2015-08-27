@@ -22,6 +22,8 @@ import android.content.Context;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.RawFileUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * This has been migrated to QueryAllData.
  */
@@ -62,12 +64,13 @@ public class ViewMobileData
 	public ViewMobileData(Context context) {
 		super("", DatasetType.VIEW, "mobiledata");
 
-		String source = RawFileUtils.getRawAsString(context, R.raw.query_mobiledata);
-        source = "(" + source + ") mobiledata";
+        this.mContext = context.getApplicationContext();
 
-        setSource(source);
+        initialize(mContext, null);
 	}
-	
+
+    private Context mContext;
+
 	@Override
 	public String[] getAllColumns() {
 		return new String[] {"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day,
@@ -76,4 +79,22 @@ public class ViewMobileData
                 SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes, currency, finyear,
                 AmountBaseConvRate};
 	}
+
+    public void setWhere(String where) {
+        initialize(mContext, where);
+    }
+
+    private void initialize(Context context, String where) {
+        String source = RawFileUtils.getRawAsString(context, R.raw.query_mobiledata);
+
+        // insert WHERE statement, filter.
+        if(!StringUtils.isEmpty(where)) {
+            source += " WHERE ";
+            source += where;
+        }
+
+        source = "(" + source + ") mobiledata";
+
+        setSource(source);
+    }
 }

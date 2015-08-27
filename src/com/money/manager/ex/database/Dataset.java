@@ -36,9 +36,8 @@ import java.util.Map.Entry;
 /**
  * 
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.0.0
  */
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public abstract class Dataset
 	implements BaseColumns {
 
@@ -191,20 +190,19 @@ public abstract class Dataset
 		String parse = "content://" + MoneyManagerProvider.getAuthority() + "/";
 		// check if set basepath
 		if (!TextUtils.isEmpty(this.basepath)) {
-			//che tye of dataset
 			switch (this.type) {
-			case TABLE:
-				// todo: inspect what was the intention here. The result of the operation is ignored.
+                case TABLE:
+                    // todo: inspect what was the intention here. The result of the operation is ignored.
 
-				parse.concat("tables/");
-				break;
-			case QUERY:
-				// todo: inspect what was the intention here. The result of the operation is ignored.
+                    parse.concat("tables/");
+                    break;
+                case QUERY:
+                    // todo: inspect what was the intention here. The result of the operation is ignored.
 
-				parse.concat("queries/");
-				break;
-			default:
-				break;
+                    parse.concat("queries/");
+                    break;
+                default:
+                    break;
 			}
 			return Uri.parse(parse.concat(this.basepath));
 		} else {
@@ -232,6 +230,11 @@ public abstract class Dataset
 	public void setSource(String source) {
 		this.source = source;
 	}
+
+//    public void setWhere(String whereStatement) {
+//
+//    }
+
 	/**
 	 * Populates the instance of the class to current record the cursor
 	 * @param c cursor

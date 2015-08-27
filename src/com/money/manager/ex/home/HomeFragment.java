@@ -296,23 +296,24 @@ public class HomeFragment
             case ID_LOADER_INCOME_EXPENSES:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
 
-                // Get custom period.
-                // pref_income_expense_footer_period
+                // Get custom period. pref_income_expense_footer_period
 //                String period = new AppSettings(getContext()).getBehaviourSettings().getIncomeExpensePeriod();
 //                WhereClauseGenerator generator = new WhereClauseGenerator(getContext());
-//                ArrayList<String> whereClauses = generator.getWhereClauseForPeriod(period);
-//                String whereStatement = generator.getWhereStatementFromClauses(whereClauses);
+//                String transactionsFilter = generator.getWhereClauseForPeriod(period);
+//                report.filterTransactionsSource(transactionsFilter);
+
                 String whereStatement =
                     QueryReportIncomeVsExpenses.Month + "="
                     + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
-                    " AND " +
+                        " AND " +
                     QueryReportIncomeVsExpenses.Year + "=" +
-                    Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+                            Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
 
                 result = new MmexCursorLoader(getActivity(), report.getUri(),
                         report.getAllColumns(),
                         whereStatement,
-                        null, null);
+                        null,
+                        null);
                 break;
 
             case ID_LOADER_INVESTMENTS:
