@@ -91,7 +91,8 @@ public class QifRecord {
         TransactionTypes transactionType = TransactionTypes.valueOf(transactionTypeName);
         if (transactionType.equals(TransactionTypes.Transfer)) {
             // Category is the destination account name.
-            category = cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName));
+//            category = cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName));
+            category = cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName));
             // in square brackets
             category = "[%]".replace("%", category);
         } else {
@@ -126,7 +127,8 @@ public class QifRecord {
     }
 
     public int getAccountId(Cursor cursor) {
-        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
+//        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
+        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
         return accountId;
     }
 
@@ -203,7 +205,8 @@ public class QifRecord {
     }
 
     private String parseAmount(Cursor cursor) {
-        Double amountDouble = cursor.getDouble(cursor.getColumnIndex(QueryAllData.Amount));
+//        Double amountDouble = cursor.getDouble(cursor.getColumnIndex(QueryAllData.Amount));
+        Double amountDouble = cursor.getDouble(cursor.getColumnIndex(QueryAllData.ToAmount));
 
         String amount = Double.toString(amountDouble);
         return amount;
