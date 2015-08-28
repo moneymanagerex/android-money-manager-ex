@@ -17,7 +17,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="August 27, 2015" versionName="2.15.4">
+    <changelogversion changeDate="August 28, 2015" versionName="2.15.5">
+        <changelogtext>Adjusted QIF export to match the query account and amount.</changelogtext>
         <changelogtext>Removing automatically-added new permissions.</changelogtext>
         <changelogtext>Lowered the minimum Android version to 3.0.</changelogtext>
         <changelogtext>Improving the Transfer type display for different languages.</changelogtext>
