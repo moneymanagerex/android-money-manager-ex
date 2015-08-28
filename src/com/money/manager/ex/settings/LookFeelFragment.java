@@ -49,7 +49,7 @@ public class LookFeelFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = getContext().getApplicationContext();
+        mContext = getActivity().getApplicationContext();
 
         addPreferencesFromResource(R.xml.look_and_feel_settings);
 
