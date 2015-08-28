@@ -31,9 +31,11 @@ import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 
 public class Passcode {
+
     private static final String KEY = "6c2a6f30726b3447747559525162665768412370297c5573342324705b";
     private static final String LOGCAT = Passcode.class.getSimpleName();
     private static final String INFONAME = "PASSCODEMOBILE";
+
     private Context mContext;
 
     /**
@@ -42,7 +44,7 @@ public class Passcode {
      * @param context executing context
      */
     public Passcode(Context context) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
     }
 
     /**

@@ -18,6 +18,7 @@
 
 package com.money.manager.ex.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -42,9 +43,13 @@ public class LookFeelFragment
 
     private final String LOGCAT = this.getClass().getSimpleName();
 
+    private Context mContext;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mContext = getContext().getApplicationContext();
 
         addPreferencesFromResource(R.xml.look_and_feel_settings);
 
@@ -74,7 +79,7 @@ public class LookFeelFragment
         final ListPreference lstShow = (ListPreference) findPreference(getString(
                 R.string.pref_show_transaction));
         if (lstShow != null) {
-            lstShow.setSummary(new AppSettings(getContext()).getShowTransaction());
+            lstShow.setSummary(new AppSettings(mContext).getShowTransaction());
             lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
