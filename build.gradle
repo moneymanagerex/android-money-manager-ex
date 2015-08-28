@@ -56,7 +56,7 @@ android {
 //        minSdkVersion 16
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 690
+        versionCode 691
         versionName '2.15.6'
         // 601 = 1.4.17, stable
 
