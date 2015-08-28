@@ -99,6 +99,10 @@ public class NumericHelper {
     }
 
     public String getNumberFormatted(double value, TableCurrencyFormats currency) {
+        if (currency == null) {
+            currency = this.getCurrencyService().getBaseCurrency();
+        }
+        
         return getNumberFormatted(value, currency.getScale(), currency.getDecimalPoint(),
                     currency.getGroupSeparator());
     }
