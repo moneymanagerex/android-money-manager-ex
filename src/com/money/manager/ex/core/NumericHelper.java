@@ -102,7 +102,7 @@ public class NumericHelper {
         if (currency == null) {
             currency = this.getCurrencyService().getBaseCurrency();
         }
-        
+
         return getNumberFormatted(value, currency.getScale(), currency.getDecimalPoint(),
                     currency.getGroupSeparator());
     }
