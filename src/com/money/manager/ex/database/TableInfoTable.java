@@ -18,15 +18,15 @@
 package com.money.manager.ex.database;
 
 public class TableInfoTable extends Dataset {
-	// FIELD
+
 	public static final String INFOID = "INFOID";
 	public static final String INFONAME = "INFONAME";
 	public static final String INFOVALUE = "INFOVALUE";
-	// CONSTRUCTOR
+
 	public TableInfoTable() {
 		super("infotable_v1", DatasetType.TABLE, "infotable");
 	}
-	//GET ALL COLUMN
+
 	@Override
 	public String[] getAllColumns() {
 		return new String[] {"INFOID AS _id", INFOID, INFONAME, INFOVALUE};

@@ -208,7 +208,7 @@ public class MainActivity
 
         // check if has passcode and authenticate
         if (!isAuthenticated) {
-            Passcode passcode = new Passcode(this);
+            Passcode passcode = new Passcode(getApplicationContext());
             if (passcode.hasPasscode() && !isInAuthentication) {
                 Intent intent = new Intent(this, PasscodeActivity.class);
                 // set action and data

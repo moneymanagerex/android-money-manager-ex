@@ -55,7 +55,6 @@ public abstract class Dataset
 		this.basepath = basepath;
 	}
 
-	// member private of class
 	private String source = "";
 	private DatasetType type;
 	private String basepath = "";

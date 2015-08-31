@@ -26,7 +26,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 
