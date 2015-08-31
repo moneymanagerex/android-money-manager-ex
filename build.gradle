@@ -56,8 +56,8 @@ android {
 //        minSdkVersion 16
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 692
-        versionName '2.15.7'
+        versionCode 693
+        versionName '2.15.8'
         // 601 = 1.4.17, stable
 
 //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
