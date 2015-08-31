@@ -391,6 +391,11 @@ public class InputAmountDialog
 
         // Output currency. Used for scale/precision (number of decimal places).
         TableCurrencyFormats currency = mCurrencyService.getBaseCurrency();
+        if (currency == null) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.showMessage(getString(R.string.base_currency_not_set));
+            return "";
+        }
 
         String result;
         if(this.roundToCurrencyDecimals) {
