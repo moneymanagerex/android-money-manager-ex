@@ -5,10 +5,13 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.widget.RemoteViews;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 
 /**
@@ -59,8 +62,8 @@ public class SingleAccountWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.accountNameTextView, "Account Name");
 
         // todo: get account balance
-        // todo: format the amount
-        views.setTextViewText(R.id.balanceTextView, "€ 100.00");
+        String balance = getFormattedAccountBalance(context, 1);
+        views.setTextViewText(R.id.balanceTextView, balance);
 
         // handle + click -> open the new transaction screen for this account.
         // todo: pass the account id?
@@ -77,6 +80,31 @@ public class SingleAccountWidget extends AppWidgetProvider {
         intent.setAction(Constants.INTENT_ACTION_INSERT);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.newTransactionButton, pendingIntent);
+    }
+
+    static String getFormattedAccountBalance(Context context, int accountId) {
+        String selection = QueryAccountBills.ACCOUNTID + "=?";
+        String[] args = new String[] { Integer.toString(accountId) };
+
+        QueryAccountBills accountBills = new QueryAccountBills(context);
+        Cursor cursor = context.getContentResolver().query(accountBills.getUri(),
+                null,
+                selection, args,
+                null);
+        if (cursor == null) return "";
+
+        double total = 0;
+        // calculate summary
+        while (cursor.moveToNext()) {
+            total = total + cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+        }
+        cursor.close();
+
+        // format the amount
+        CurrencyService currencyService = new CurrencyService(context);
+        String summary = currencyService.getBaseCurrencyFormatted(total);
+
+        return summary;
     }
 }
 
