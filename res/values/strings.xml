@@ -217,9 +217,9 @@
     <string name="show_transaction">Show Transaction</string>
     <string name="changelog">Changelog</string>
     <string name="transaction_number">Transaction number</string>
-    <string name="widget_summary">Money Manager Ex Summary</string>
-    <string name="widget_all_accounts">Money Manager Ex All Accounts</string>
-    <string name="widget_add_transaction">Money Manager Ex Add Transaction</string>
+    <string name="widget_summary">Summary</string>
+    <string name="widget_all_accounts">All Accounts</string>
+    <string name="widget_add_transaction">Add Transaction</string>
     <!-- Recurring Transactions -->
     <string name="none">None</string>
     <string name="once">Once</string>
@@ -619,6 +619,5 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
-
-
+    <string name="single_account">Single Account</string>
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="250dp" android:minHeight="40dp" android:updatePeriodMillis="86400000"
+    android:minWidth="250dp" android:minHeight="40dp"
+    android:updatePeriodMillis="86400000"
     android:previewImage="@drawable/ic_logo_money_manager_ex"
     android:initialLayout="@layout/single_account_widget"
     android:configure="com.money.manager.ex.widget.SingleAccountWidgetConfigureActivity"

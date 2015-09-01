@@ -381,7 +381,9 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
 
-        <receiver android:name=".widget.SingleAccountWidget" >
+        <receiver
+            android:name=".widget.SingleAccountWidget"
+            android:label="@string/single_account">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

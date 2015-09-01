@@ -14,7 +14,8 @@ import com.money.manager.ex.R;
 /**
  * The configuration screen for the {@link SingleAccountWidget SingleAccountWidget} AppWidget.
  */
-public class SingleAccountWidgetConfigureActivity extends Activity {
+public class SingleAccountWidgetConfigureActivity
+        extends Activity {
 
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetText;

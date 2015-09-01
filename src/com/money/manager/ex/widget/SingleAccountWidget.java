@@ -52,7 +52,7 @@ public class SingleAccountWidget extends AppWidgetProvider {
                                 int appWidgetId) {
         // todo: allow selecting the account from a list.
         // todo: load the configured account id
-//        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
+        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.single_account_widget);
