@@ -35,6 +35,7 @@
   <string name="dropbox_linkedFile">Файл Dropbox</string>
   <string name="preferences_general">Основные</string>
   <string name="preferences_dispaly">Внешний вид</string>
+  <string name="preferences_behaviour">Поведение</string>
   <string name="base_currency">Основная валюта</string>
   <string name="view_accounts_opened">Просмотр открытых счетов</string>
   <string name="if_not_selected_willShowAllAccounts">Если не выбрана, будут отображаться все счета</string>
@@ -44,6 +45,8 @@
   <string name="path">Путь к базе данных</string>
   <string name="title_show_tutorial">Показать учебник</string>
   <string name="summary_show_tutorial">Показать учебник на следующий раз?</string>
+  <string name="pref_auto_sync_via_wifi">Авто-синхр только через WiFi</string>
+  <string name="pref_auto_sync_via_wifi_summary">Авто-синхронизация только при WiFi соединении.</string>
   <string name="account">Счет</string>
   <string name="account_list">Список счетов</string>
   <string name="account_empty_list">Не найдено ни одной учетной записи. Чтобы создать её, нажмите на зеленый плюс.</string>
@@ -64,10 +67,12 @@
   <string name="db_account_insert_failed">Ошибка добавления счета</string>
   <string name="db_account_update_failed">Ошибка обновления счета</string>
   <string name="error_currency_not_selected">Требуется указать валюту</string>
+  <string name="error_saving_default_currency">Ошибка при сохранении валюты по умолчанию</string>
   <string name="error_initialbal_empty">Требуется указать начальный баланс счета</string>
   <string name="error_accountname_empty">Имя счёта не может быть пустым</string>
   <string name="error_accounttype_empty">Требуется указать тип счета</string>
   <string name="error_status_empty">Требуется указать статус счета</string>
+  <string name="error_amount_must_be_positive">Сумма должна быть положительной. Знак числа определяется Типом транзакции.</string>
   <string name="payee_name">Имя контрагента</string>
   <string name="edit_payeeName">Редактировать контрагента</string>
   <string name="delete_payee">Удалить контрагента</string>
@@ -162,6 +167,7 @@
   <string name="last15days">За последние 2 недели</string>
   <string name="current_month">Текущий месяц</string>
   <string name="current_year">Текущий год</string>
+  <string name="future_transactions">Будущие транзакции</string>
   <string name="show_transaction">Показывать проводки</string>
   <string name="changelog">История изменений</string>
   <string name="transaction_number">Номер проводки</string>
@@ -332,7 +338,10 @@
   <string name="import_all_currencies">Импорт валют</string>
   <string name="import_currencies_in_progress">Импортируем валюты. Пожалуйста подождите&#8230;</string>
   <string name="amount_greater_or_equal">Сумма больше или равно</string>
+  <string name="amount_from">Сумма от</string>
   <string name="amount_less_or_equal">Сумма меньше или равно</string>
+  <string name="amount_to">Сумма до</string>
+  <string name="reset">Сброс</string>
   <string name="result_search">Результат вашего поиска</string>
   <string name="new_repeating_transaction">Новые повторяющиеся транзакции</string>
   <string name="edit_repeating_transaction">Изменить повторяющуюся транзакцию</string>
@@ -442,6 +451,8 @@
   <string name="qif_export">QIF экспорт</string>
   <string name="update_prices">Обновление цен</string>
   <string name="update_price">Обновление цен</string>
+  <string name="download_price">Скачать цену</string>
+  <string name="edit_price">Редактировать цену</string>
   <string name="price_updated">Цены обновлены</string>
   <string name="all_prices_updated">Все цены обновлены.</string>
   <string name="confirm_price_download">Вы хотите обновить цены безопасности онлайн ?</string>
@@ -485,9 +496,17 @@
   <string name="select_account">Выберите счет</string>
   <string name="invalid_transaction_number">Неправильный номер проводки</string>
   <string name="budgets">Бюджеты</string>
+  <string name="budget_list">Список бюджетов</string>
   <string name="base_currency_not_set">Базовая валюта не была установлена</string>
   <string name="error">Ошибка</string>
   <string name="unhandled_crash">Непредвиденная ошибка. Пришлите нам лог.</string>
   <string name="title_activity_currency_rates_report">Курсы валют</string>
   <string name="frequency">Частота</string>
+  <string name="update_available">Имеется обновление</string>
+  <string name="update_on_dropbox">Обновленная база данных доступна в Dropbox. Желаете обновить?</string>
+  <string name="currencies_empty">Валюты не найдены. Чтобы создать валюту, нажмите на кнопку с зеленым плюсом.</string>
+  <string name="homepage">Наш сайт http://android.moneymanagerex.org/</string>
+  <string name="current_database">Текущая база данных</string>
+  <string name="about_logcat_header">Вы можете отправить нам лог приложения, нажав на кнопку ниже.</string>
+  <string name="title_activity_password">Введите пароль базы данных</string>
 </resources>

@@ -35,6 +35,7 @@
   <string name="dropbox_linkedFile">Dropbox 文件</string>
   <string name="preferences_general">通用设置</string>
   <string name="preferences_dispaly">外观 &amp; 色调</string>
+  <string name="preferences_behaviour">表示方式</string>
   <string name="base_currency">基础货币</string>
   <string name="view_accounts_opened">只显示已启用的账户</string>
   <string name="if_not_selected_willShowAllAccounts">不勾选此项则显示所有账户</string>
@@ -44,6 +45,10 @@
   <string name="path">数据库路径</string>
   <string name="title_show_tutorial">显示教程</string>
   <string name="summary_show_tutorial">是否在下次运行时显示教程？</string>
+  <string name="preferences_behaviour_focus_filter_title">在选择列表中显示搜索框</string>
+  <string name="preferences_behaviour_focus_filter_summary">在选择列表中显示搜索框，取消选择将以浏览模式显示</string>
+  <string name="pref_auto_sync_via_wifi">仅在连接至无线网络时自动同步</string>
+  <string name="pref_auto_sync_via_wifi_summary">自动同步将仅在无线网络连接时进行</string>
   <string name="account">账户</string>
   <string name="account_list">账户列表</string>
   <string name="account_empty_list">没有找到可用的账户。轻触绿色加号按钮可新建一个账户。</string>
@@ -69,6 +74,7 @@
   <string name="error_accountname_empty">请输入账户名称</string>
   <string name="error_accounttype_empty">请选择账户类型</string>
   <string name="error_status_empty">请设置账户状态</string>
+  <string name="error_amount_must_be_positive">该交易类型要求金额必须是正数</string>
   <string name="payee_name">收款人名称</string>
   <string name="edit_payeeName">编辑收款人</string>
   <string name="delete_payee">删除收款人</string>
@@ -163,6 +169,7 @@
   <string name="last15days">最近两周</string>
   <string name="current_month">当月</string>
   <string name="current_year">今年</string>
+  <string name="future_transactions">未来交易</string>
   <string name="show_transaction">显示多久之内的交易记录</string>
   <string name="changelog">更新日志​​​​​</string>
   <string name="transaction_number">交易编号</string>
@@ -359,7 +366,7 @@
   <string name="welcome_body_dropbox">如果您已经在 Windows，Linux 或 Mac 上使用 MoneyManagerEx，您可以链接此应用程序与 Dropbox ，并且同步您的数据库。</string>
   <string name="configure_dropbox">配置 Dropbox</string>
   <string name="search_text_contain_title">以文本内容而非首字符进行查找</string>
-  <string name="search_text_contain_summary">以文本内容而非首字符进行查找收款人，类目，币种等&#8230;</string>
+  <string name="search_text_contain_summary">以文本内容而非首字符进行查找收款人，类目，币种等</string>
   <string name="rate_application">为软件评分</string>
   <string name="locale_application">界面语言</string>
   <string name="locale_cs">捷克语</string>
@@ -446,6 +453,8 @@
   <string name="qif_export">Qif Export</string>
   <string name="update_prices">更新价格</string>
   <string name="update_price">更新价格</string>
+  <string name="download_price">下载价格</string>
+  <string name="edit_price">编辑价格</string>
   <string name="price_updated">价格已更新</string>
   <string name="all_prices_updated">所有价格均已更新。</string>
   <string name="confirm_price_download">您确定要在线更新安全价格吗？</string>
@@ -498,4 +507,9 @@
   <string name="frequency">频率</string>
   <string name="update_available">更新可用</string>
   <string name="update_on_dropbox">Dropbox 上存在一个已更新的数据库文件可以使用。是否需要更新？</string>
+  <string name="currencies_empty">没有找到可用的币种。轻触绿色加号按钮可添加一个币种。</string>
+  <string name="homepage">我们的主页是 http://android.moneymanagerex.org/</string>
+  <string name="current_database">当前数据库</string>
+  <string name="about_logcat_header">您可以通过单击下面的按钮向我们发送应用程序日志。</string>
+  <string name="title_activity_password">请输入数据库密码</string>
 </resources>
