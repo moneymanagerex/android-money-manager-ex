@@ -18,6 +18,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.money.manager.ex" >
+
     <!-- xmlns:tools="http://schemas.android.com/tools" -->
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -35,10 +36,9 @@
         android:xlargeScreens="true" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
-    <!--<uses-permission android:name="android.permission.READ_PROFILE" />-->
-    <!--<uses-permission android:name="android.permission.READ_CONTACTS" />-->
-
+    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_PROFILE" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
     <application
         android:name=".MoneyManagerApplication"
         android:allowBackup="true"
@@ -379,6 +379,22 @@
             android:name=".PasswordActivity"
             android:label="@string/title_activity_password"
             android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+
+        <receiver android:name=".widget.SingleAccountWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/single_account_widget_info" />
+        </receiver>
+
+        <activity android:name=".widget.SingleAccountWidgetConfigureActivity" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
         </activity>
     </application>
 

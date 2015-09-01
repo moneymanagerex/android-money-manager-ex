@@ -616,6 +616,9 @@
 
     <string name="income_expense_period">Income/Expense period</string>
     <string name="income_expense_period_summary">The period for the income/expense overview at the home screen footer.</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
 
 
 </resources>
