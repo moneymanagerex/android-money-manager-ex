@@ -364,6 +364,7 @@
   <string name="show_chart">Показать диаграмму</string>
   <string name="add_transaction">Добавить транзакцию</string>
   <string name="welcome_header">Добро пожаловать в MoneyManagerEx</string>
+  <string name="welcome_body">Все транзакции в MoneyManagerEx принадлежат счетам.\n\nСейчас у Вас нет видимых счетов. Пожалуйста, или настройте фильтр для видимых счетов в Настройках, или\n\nНажмите для ввода Ваших счетов.</string>
   <string name="welcome_body_dropbox">Если вы уже используете MoneyManagerEx на Windows, Linux или Mac синхронизируйте базу данных приложения через Dropbox</string>
   <string name="configure_dropbox">Настройка Dropbox</string>
   <string name="search_text_contain_title">Поиск по содержимому текста, а не только с начала строки</string>
