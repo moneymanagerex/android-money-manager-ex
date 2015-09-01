@@ -351,7 +351,6 @@
   <string name="show_chart">顯示圖表</string>
   <string name="add_transaction">新增交易</string>
   <string name="welcome_header">歡迎使用 MoneyManagerEx</string>
-  <string name="welcome_body">MoneyManagerEx 令所有交易皆屬於帳戶。\ n\ n為了能讓您正常使用，請以建立所有金融機構的帳戶開始。\n\n點選此處後進入你的帳戶。</string>
   <string name="welcome_body_dropbox">如果您已經在 Windows 、 Linux 或 Mac 上使用 MoneyManagerEx，將此程式連結到 Dropbox 可以同步您的資料庫</string>
   <string name="configure_dropbox">設定 Dropbox</string>
   <string name="search_text_contain_title">由文字內容搜尋，且不是以文字開頭的文件</string>

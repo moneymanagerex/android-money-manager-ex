@@ -351,7 +351,6 @@
   <string name="show_chart">Hiển thị biểu đồ</string>
   <string name="add_transaction">Thêm giao dịch</string>
   <string name="welcome_header">Chào mừng đến với MoneyManagerEx!</string>
-  <string name="welcome_body">MoneyManagerEx mô hình tất cả giao dịch thuộc về các tài khoản.\n\nĐể giúp bạn thực hiện, bắt đầu bằng cách làm một danh sách tất cả các tổ chức tài chính, nơi bạn giữ một tài khoản.\n\nChạm ở đây để bắt đầu nhập các tài khoản của bạn.</string>
   <string name="welcome_body_dropbox">Nếu bạn đã sử dụng MoneyManagerEx trên Windows, Linux hoặc Mac liên kết ứng dụng này với Dropbox để đồng bộ cơ sở dữ liệu của bạn</string>
   <string name="configure_dropbox">Cấu hình Dropbox</string>
   <string name="search_text_contain_title">Tìm kiếm bằng nội dung văn bản và không phải bằng văn bản bắt đầu với</string>

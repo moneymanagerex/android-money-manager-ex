@@ -351,7 +351,6 @@
   <string name="show_chart">Pokaż wykres</string>
   <string name="add_transaction">Dodaj transakcję</string>
   <string name="welcome_header">Witaj w Money Manager Ex!</string>
-  <string name="welcome_body">Money Manager Ex modeluje wszystkie transakcje jako należące do kont.\n\nAby rozpocząć korzystanie z aplikacji, utwórz listę wszystkich instytucji finansowych, w których posiadasz konto.\n\nKliknij tutaj, aby rozpocząć wprowadzenie swoich kont.</string>
   <string name="welcome_body_dropbox">Jeśli używasz już aplikacji Moneye Manager Ex dla systemu Windows, Linux lub Mac OS, połącz tę aplikację z Dropboxem, aby sychronizować swoją bazę danych</string>
   <string name="configure_dropbox">Skonfiguruj Dropbox</string>
   <string name="search_text_contain_title">Wyszukiwanie w zawartości tekstów, a nie w ich początkach</string>

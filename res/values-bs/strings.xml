@@ -361,7 +361,6 @@
   <string name="show_chart">Prikaz grafikona</string>
   <string name="add_transaction">Dodaj transakciju</string>
   <string name="welcome_header">Dobrodošli u MoneyManagerEx!</string>
-  <string name="welcome_body">MoneyManagerEx smatra da sve transakcije pripadaju računima.\n\nDa bismo Vam pomogli da započnete, prvo napravite listu svih finansijskih institucija gdje imate račune.\n\nDodirnite za početak unosa vaših računa.</string>
   <string name="welcome_body_dropbox">Ako već koristite MoneyManagerEx na Windows, Linux ili Mac povežite ovaj program sa Dropbox-om da biste sinkronizovali vašu bazu podataka</string>
   <string name="configure_dropbox">Konfigurišite Dropbox</string>
   <string name="search_text_contain_title">Pretraživanje po sadržaja teksta a ne po tekstu koji počinje s</string>

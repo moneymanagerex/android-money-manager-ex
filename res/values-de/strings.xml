@@ -361,7 +361,6 @@
   <string name="show_chart">Zeige Diagramm</string>
   <string name="add_transaction">Transaktion hinzufügen</string>
   <string name="welcome_header">Willkommen bei MoneyManagerEx!</string>
-  <string name="welcome_body">MoneyManagerEx stellt alle Transaktionen mit dem zugehörigen Konto dar.\n\nUm Ihnen den Anfang zu erleichtern, beginnen Sie mit einer Liste aller Einrichtungen bei denen Sie ein Konto haben.\n\nTippen Sie um mit der Eingabe Ihrer Konten zu beginnen.</string>
   <string name="welcome_body_dropbox">Wenn Sie MoneyManagerEx unter Windows, Linux oder Mac benutzen, verlinken Sie diese Anwendung mit Dropbox um Ihre Datenbank zu synchronisieren</string>
   <string name="configure_dropbox">Dropbox konfigurieren</string>
   <string name="search_text_contain_title">Suche nach Textinhalten und nicht nach Text der mit anfängt</string>

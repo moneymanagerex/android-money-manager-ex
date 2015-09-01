@@ -355,7 +355,6 @@
   <string name="show_chart">Diagram mutatása</string>
   <string name="add_transaction">Új tranzakció</string>
   <string name="welcome_header">Köszöntjük a MoneyManagerEx programban!</string>
-  <string name="welcome_body">A MoneyManagerEx alkalmazásban minden tranzakció egy számlához tartozik.\n\nHogy elősegítse a kezdeti lépéseket, készítsen egy listát minden pénzintézetről, ahol a számláit kezeli.\n\nÉrintse meg , hogy elkezdhesse felvinni a számláit.</string>
   <string name="welcome_body_dropbox">Ha már használja a MoneyManagerEx programot Windows, Linux, vagy Mac operációs rendszeren, kapcsolja össze ezt az alkalmazást a Dropbox fiókjával, hogy szinkronizálhassa az adatbázisát</string>
   <string name="configure_dropbox">Dropbox konfigurálás</string>
   <string name="search_text_contain_title">Keresés a szöveg tartalmában</string>

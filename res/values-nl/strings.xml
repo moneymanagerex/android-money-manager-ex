@@ -347,7 +347,6 @@
   <string name="show_chart">Grafieken Tonen</string>
   <string name="add_transaction">Transactie Toevoegen</string>
   <string name="welcome_header">Welkom bij MoneyManagerEx !</string>
-  <string name="welcome_body">Money Manager EX modelleert alle transacties als eigendommen van de accounts. \n\n Om je op weg te helpen kunt u beginnen om een lijst te maken van alle financiele organisaties waar u een account heeft. \n\n Raak aan om met het invoeren van je accounts te beginnen.</string>
   <string name="welcome_body_dropbox">Als je MoneyManagerEx al gebruikt onder Windows, Linux of Mac, link dan deze app met Dropbox om uw database te synchroniseren.</string>
   <string name="configure_dropbox">Dropbox Configureren</string>
   <string name="search_text_contain_title">Zoeken door tekst inhoud en niet door tekst die begint met</string>

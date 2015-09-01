@@ -45,6 +45,8 @@
   <string name="path">Путь к базе данных</string>
   <string name="title_show_tutorial">Показать учебник</string>
   <string name="summary_show_tutorial">Показать учебник на следующий раз?</string>
+  <string name="preferences_behaviour_focus_filter_title">Фокус на поле фильтра</string>
+  <string name="preferences_behaviour_focus_filter_summary">Фокус на поле фильтра при выборе сущностей. Иначе просмотр.</string>
   <string name="pref_auto_sync_via_wifi">Авто-синхр только через WiFi</string>
   <string name="pref_auto_sync_via_wifi_summary">Авто-синхронизация только при WiFi соединении.</string>
   <string name="account">Счет</string>
@@ -175,6 +177,7 @@
   <string name="widget_all_accounts">Money Manager Ex Счета</string>
   <string name="widget_add_transaction">Money Manager Ex Создать проводку</string>
   <string name="none">Нет</string>
+  <string name="once">Однократно</string>
   <string name="weekly">Еженедельно</string>
   <string name="bi_weekly">Каждые две недели</string>
   <string name="monthly">Ежемесячно</string>
@@ -197,6 +200,7 @@
   <string name="new_edit_repeating_transaction">Создать/Изменить повторяющуюся транзакцию</string>
   <string name="next_occurrence">Следующее начисление</string>
   <string name="repeats">Повторы</string>
+  <string name="occurs">Происходит</string>
   <string name="times_repeated">Количество повторов</string>
   <string name="error_next_occurrence_not_populate">Требуется указать следующее вхождение</string>
   <string name="enter_next_occurrence">Ввести следующее начисление</string>
@@ -360,7 +364,6 @@
   <string name="show_chart">Показать диаграмму</string>
   <string name="add_transaction">Добавить транзакцию</string>
   <string name="welcome_header">Добро пожаловать в MoneyManagerEx</string>
-  <string name="welcome_body">MoneyManagerEx хранит все проводки на ваших счетах.\n\nДля того чтобы вам начать работу, надо создать свои счета.\n\nНажмите здесь, чтобы начать ввод своих счетов.</string>
   <string name="welcome_body_dropbox">Если вы уже используете MoneyManagerEx на Windows, Linux или Mac синхронизируйте базу данных приложения через Dropbox</string>
   <string name="configure_dropbox">Настройка Dropbox</string>
   <string name="search_text_contain_title">Поиск по содержимому текста, а не только с начала строки</string>
@@ -395,6 +398,7 @@
   <string name="title_notifications_repeating_transaction">Уведомление о просрочке повторяющейся транзакции </string>
   <string name="summary_notifications_repeating_transaction">Показать уведомления для просроченных запланированных транзакций</string>
   <string name="tools">Инструменты</string>
+  <string name="entities">Сущности</string>
   <string name="loading">Загрузка&#8230;</string>
   <string name="grand_total">Общий Итог</string>
   <string name="change_status">Изменить статус</string>
@@ -497,6 +501,7 @@
   <string name="invalid_transaction_number">Неправильный номер проводки</string>
   <string name="budgets">Бюджеты</string>
   <string name="budget_list">Список бюджетов</string>
+  <string name="actual">Факт</string>
   <string name="base_currency_not_set">Базовая валюта не была установлена</string>
   <string name="error">Ошибка</string>
   <string name="unhandled_crash">Непредвиденная ошибка. Пришлите нам лог.</string>
@@ -508,5 +513,8 @@
   <string name="homepage">Наш сайт http://android.moneymanagerex.org/</string>
   <string name="current_database">Текущая база данных</string>
   <string name="about_logcat_header">Вы можете отправить нам лог приложения, нажав на кнопку ниже.</string>
+  <string name="transaction_type_filter">Фильтр по типу транзакции</string>
   <string name="title_activity_password">Введите пароль базы данных</string>
+  <string name="income_expense_period">Период доходов/расходов</string>
+  <string name="income_expense_period_summary">Период для отображения доходов/расходов в нижней части домашнего экрана.</string>
 </resources>
