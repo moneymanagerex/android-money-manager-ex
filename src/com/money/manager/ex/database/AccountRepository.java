@@ -116,11 +116,12 @@ public class AccountRepository {
                 TableAccountList.ACCOUNTID + "=?",
                 new String[]{Integer.toString(id)},
                 null);
+        if (cursor == null) return null;
 
-        if ((cursor != null) && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             name = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
-            cursor.close();
         }
+        cursor.close();
 
         return name;
     }

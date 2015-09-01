@@ -11,8 +11,11 @@ import android.widget.RemoteViews;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.transactions.EditTransactionActivity;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Implementation of App Widget functionality.
@@ -51,25 +54,31 @@ public class SingleAccountWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         // todo: allow selecting the account from a list.
+
         // todo: load the configured account id
-        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
+        int accountId = 1;
+
+//        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.single_account_widget);
 //        views.setTextViewText(R.id.appwidget_text, widgetText);
 
-        // todo: display the account name
-        views.setTextViewText(R.id.accountNameTextView, "Account Name");
+        // display the account name
+        String accountName = getAccountName(context, accountId);
+        views.setTextViewText(R.id.accountNameTextView, accountName);
 
-        // todo: get account balance
-        String balance = getFormattedAccountBalance(context, 1);
+        // get account balance (for this account?)
+        String balance = getFormattedAccountBalance(context, accountId);
         views.setTextViewText(R.id.balanceTextView, balance);
 
         // handle + click -> open the new transaction screen for this account.
         // todo: pass the account id?
         initializeNewTransactionButton(context, views);
 
-        // todo: handle logo click -> open the app
+        // todo: handle logo click -> open the app.
+
+        // todo: click account name -> refresh the balance.
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -105,6 +114,15 @@ public class SingleAccountWidget extends AppWidgetProvider {
         String summary = currencyService.getBaseCurrencyFormatted(total);
 
         return summary;
+    }
+
+    static String getAccountName(Context context, int accountId) {
+        AccountRepository repository = new AccountRepository(context);
+        String name = repository.loadName(accountId);
+        if (StringUtils.isEmpty(name)) {
+            name = "n/a";
+        }
+        return name;
     }
 }
 

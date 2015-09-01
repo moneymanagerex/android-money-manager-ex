@@ -390,7 +390,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/single_account_widget_info" />
+                android:resource="@xml/widget_info_single_account" />
         </receiver>
 
         <activity android:name=".widget.SingleAccountWidgetConfigureActivity" >
