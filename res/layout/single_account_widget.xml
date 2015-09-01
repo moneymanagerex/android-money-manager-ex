@@ -78,10 +78,13 @@
         <!--/>-->
 
     <ImageButton
-        android:layout_width="@dimen/md_icon_max_size"
+        android:id="@+id/newTransactionButton"
+        android:layout_width="72dp"
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_action_add_dark"/>
+        android:padding="4dp"
+        android:src="@drawable/ic_action_add_dark" />
+    <!-- android:background="@android:color/transparent" -->
     <!-- ic_action_editor_mode_edit_dark -->
 
 

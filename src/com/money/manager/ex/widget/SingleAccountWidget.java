@@ -1,11 +1,15 @@
 package com.money.manager.ex.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.transactions.EditTransactionActivity;
 
 /**
  * Implementation of App Widget functionality.
@@ -43,7 +47,7 @@ public class SingleAccountWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
+        // todo: allow selecting the account from a list.
         // todo: load the configured account id
 //        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
 
@@ -58,11 +62,21 @@ public class SingleAccountWidget extends AppWidgetProvider {
         // todo: format the amount
         views.setTextViewText(R.id.balanceTextView, "€ 100.00");
 
-        // todo: handle + click -> open the new transaction screen for this account.
+        // handle + click -> open the new transaction screen for this account.
+        // todo: pass the account id?
+        initializeNewTransactionButton(context, views);
+
         // todo: handle logo click -> open the app
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    static void initializeNewTransactionButton(Context context, RemoteViews views) {
+        Intent intent = new Intent(context, EditTransactionActivity.class);
+        intent.setAction(Constants.INTENT_ACTION_INSERT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        views.setOnClickPendingIntent(R.id.newTransactionButton, pendingIntent);
     }
 }
 
