@@ -44,10 +44,22 @@ public class SingleAccountWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
+        // todo: load the configured account id
+//        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
+
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.single_account_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+//        views.setTextViewText(R.id.appwidget_text, widgetText);
+
+        // todo: display the account name
+        views.setTextViewText(R.id.accountNameTextView, "Account Name");
+
+        // todo: get account balance
+        // todo: format the amount
+        views.setTextViewText(R.id.balanceTextView, "€ 100.00");
+
+        // todo: handle + click -> open the new transaction screen for this account.
+        // todo: handle logo click -> open the app
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

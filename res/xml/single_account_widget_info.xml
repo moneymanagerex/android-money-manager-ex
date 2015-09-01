@@ -5,4 +5,6 @@
     android:initialLayout="@layout/single_account_widget"
     android:configure="com.money.manager.ex.widget.SingleAccountWidgetConfigureActivity"
     android:resizeMode="horizontal|vertical" android:widgetCategory="home_screen|keyguard"
-    android:initialKeyguardLayout="@layout/single_account_widget"></appwidget-provider>
+    android:initialKeyguardLayout="@layout/single_account_widget">
+
+</appwidget-provider>
