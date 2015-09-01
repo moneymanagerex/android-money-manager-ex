@@ -171,43 +171,67 @@ public class YqlSecurityPriceUpdater
 
         JSONObject root = new JSONObject(content);
 
-        JSONArray quotes = root
-            .getJSONObject("query")
-            .getJSONObject("results")
-            .getJSONArray("quote");
+        // check whether there is only one item or more
+        Object quoteObject = root.getJSONObject("query").getJSONObject("results").get("quote");
+        if (quoteObject instanceof JSONArray) {
+            JSONArray quotes = root
+                    .getJSONObject("query")
+                    .getJSONObject("results")
+                    .getJSONArray("quote");
 
-        for (int i = 0; i < quotes.length(); i++) {
-            JSONObject quote = quotes.optJSONObject(i);
+            for (int i = 0; i < quotes.length(); i++) {
+                JSONObject quote = quotes.optJSONObject(i);
+                // process individual quote
+                SecurityPriceModel priceModel = getSecurityPriceFor(quote);
+                if (priceModel == null) continue;
 
-            SecurityPriceModel priceModel = new SecurityPriceModel();
-            priceModel.symbol = quote.getString("symbol");
-
-            // price
-            String priceString = quote.getString("LastTradePriceOnly");
-            if (!NumericHelper.isNumeric(priceString)) continue;
-            BigDecimal price = new BigDecimal(priceString);
-            // LSE stocks are expressed in GBp (pence), not Pounds.
-            // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
-            String currency = quote.getString("Currency");
-            if (currency.equals("GBp")) {
-                price = price.divide(BigDecimal.valueOf(100));
+                result.add(priceModel);
             }
-            priceModel.price = price;
+        } else {
+            // Single quote
+            JSONObject quote = root
+                    .getJSONObject("query")
+                    .getJSONObject("results")
+                    .getJSONObject("quote");
 
-            // date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-            Date date = null;
-            try {
-                date = dateFormat.parse(quote.getString("LastTradeDate"));
-            } catch (ParseException e) {
-                ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                handler.handle(e, "parsing date from CSV");
-            }
-            priceModel.date = date;
-
+            SecurityPriceModel priceModel = getSecurityPriceFor(quote);
             result.add(priceModel);
         }
 
         return result;
+    }
+
+    private SecurityPriceModel getSecurityPriceFor(JSONObject quote) throws JSONException {
+
+        SecurityPriceModel priceModel = new SecurityPriceModel();
+        priceModel.symbol = quote.getString("symbol");
+
+        // price
+        String priceString = quote.getString("LastTradePriceOnly");
+        if (!NumericHelper.isNumeric(priceString)) {
+            return null;
+        }
+
+        BigDecimal price = new BigDecimal(priceString);
+        // LSE stocks are expressed in GBp (pence), not Pounds.
+        // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
+        String currency = quote.getString("Currency");
+        if (currency.equals("GBp")) {
+            price = price.divide(BigDecimal.valueOf(100));
+        }
+        priceModel.price = price;
+
+        // date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date date = null;
+        try {
+            date = dateFormat.parse(quote.getString("LastTradeDate"));
+        } catch (ParseException e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "parsing date from CSV");
+        }
+        priceModel.date = date;
+
+        return priceModel;
     }
 }
