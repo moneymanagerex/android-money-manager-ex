@@ -33,12 +33,15 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.CalculateAmountBalanceTask;
+import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
+import com.money.manager.ex.utils.DateUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,6 +62,7 @@ public class AllDataAdapter
     private String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
         TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME;
+
     private LayoutInflater mInflater;
     // hash map for group
     private HashMap<Integer, Integer> mHeadersAccountIndex;
@@ -70,6 +74,7 @@ public class AllDataAdapter
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
     private Context mContext;
+    private double[] balance;
 
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
         super(context, c, -1);
@@ -85,6 +90,92 @@ public class AllDataAdapter
         mContext = context;
 
         setFieldFromTypeCursor();
+
+//        populateBalanceAmounts(c);
+    }
+
+    private void populateBalanceAmounts(Cursor c) {
+        if (c == null) return;
+        if (balance != null) return;
+        if (c.getCount() <= 0) return;
+
+        AccountService accountService = new AccountService(mContext);
+        Double initialBalance = null;
+
+        int originalPosition = c.getPosition();
+
+        // populate balance amounts
+        balance = new double[c.getCount()];
+        int i = c.getCount() - 1;
+        // currently the order of transactions is inverse.
+        double runningBalance = 0;
+        while (c.moveToPosition(i)) {
+
+            if (initialBalance == null) {
+                // Get starting balance on the given day.
+                initialBalance = accountService.loadInitialBalance(getAccountId());
+
+                String date = c.getString(c.getColumnIndex(DATE));
+                DateUtils dateUtils = new DateUtils();
+                date = dateUtils.getYesterdayFrom(date);
+                double balanceOnDate = accountService.calculateBalanceOn(getAccountId(), date);
+                initialBalance += balanceOnDate;
+
+                runningBalance = initialBalance;
+            }
+
+            String transType = c.getString(c.getColumnIndex(TRANSACTIONTYPE));
+            double amount = c.getDouble(c.getColumnIndex(TOAMOUNT));
+
+            switch (TransactionTypes.valueOf(transType)) {
+                case Withdrawal:
+                    runningBalance -= amount;
+                    break;
+                case Deposit:
+                    runningBalance += amount;
+                    break;
+                case Transfer:
+                    int accountId = c.getInt(c.getColumnIndex(ACCOUNTID));
+                    if (accountId == getAccountId()) {
+                        runningBalance += c.getDouble(c.getColumnIndex(AMOUNT));
+                    } else {
+                        runningBalance += amount;
+                    }
+                    break;
+            }
+
+//            double amount = c.getDouble(c.getColumnIndex(QueryAllData.ToAmount));
+//            runningBalance += amount;
+            balance[i] = runningBalance;
+            i--;
+        }
+
+        // set back to the original position.
+        c.moveToPosition(originalPosition);
+    }
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        View view = mInflater.inflate(R.layout.item_alldata_account, parent, false);
+
+        // holder
+        AllDataViewHolder holder = new AllDataViewHolder();
+        // take a pointer of object UI
+        holder.linDate = (LinearLayout) view.findViewById(R.id.linearLayoutDate);
+        holder.txtDay = (TextView) view.findViewById(R.id.textViewDay);
+        holder.txtMonth = (TextView) view.findViewById(R.id.textViewMonth);
+        holder.txtYear = (TextView) view.findViewById(R.id.textViewYear);
+        holder.txtStatus = (TextView) view.findViewById(R.id.textViewStatus);
+        holder.txtAmount = (TextView) view.findViewById(R.id.textViewAmount);
+        holder.txtPayee = (TextView) view.findViewById(R.id.textViewPayee);
+        holder.txtAccountName = (TextView) view.findViewById(R.id.textViewAccountName);
+        holder.txtCategorySub = (TextView) view.findViewById(R.id.textViewCategorySub);
+        holder.txtNotes = (TextView) view.findViewById(R.id.textViewNotes);
+        holder.txtBalance = (TextView) view.findViewById(R.id.textViewBalance);
+        // set holder to view
+        view.setTag(holder);
+
+        return view;
     }
 
     @Override
@@ -101,13 +192,14 @@ public class AllDataAdapter
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
 
-        // write status
+        // Status
         String status = cursor.getString(cursor.getColumnIndex(STATUS));
         holder.txtStatus.setText(TransactionStatus.getStatusAsString(mContext, status));
         // color status
         int colorBackground = TransactionStatus.getBackgroundColorFromStatus(mContext, status);
         holder.linDate.setBackgroundColor(colorBackground);
         holder.txtStatus.setTextColor(Color.GRAY);
+
         // date group
         try {
             Locale locale = mContext.getResources().getConfiguration().locale;
@@ -199,124 +291,7 @@ public class AllDataAdapter
         }
 
         // balance account or days left
-        if (mTypeCursor == TypeCursor.ALLDATA) {
-            if (isShowBalanceAmount()) {
-                // create thread for calculate balance amount
-                calculateBalanceAmount(cursor, holder);
-            } else {
-                holder.txtBalance.setVisibility(View.GONE);
-            }
-        } else {
-            int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
-            if (daysLeft == 0) {
-                holder.txtBalance.setText(R.string.due_today);
-            } else {
-                holder.txtBalance.setText(Integer.toString(Math.abs(daysLeft)) + " " +
-                        context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
-            }
-            holder.txtBalance.setVisibility(View.VISIBLE);
-        }
-    }
-
-    /**
-     * The most important indicator. Detects whether the values should be from FROM or TO
-     * record.
-     * @return boolean indicating whether to use *TO values (amountTo)
-     */
-    private boolean useDestinationValues(boolean isTransfer, Cursor cursor) {
-        boolean result = true;
-
-        if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
-            // Recurring transactions list.
-            return false;
-        }
-
-        if (isTransfer) {
-            // Account transactions lists.
-
-            if (getAccountId() == Constants.NOT_SET) {
-                // Search Results
-                result = true;
-            } else {
-                // Account transactions
-
-                // See which value to use.
-                if (getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
-                    result = true;
-                } else {
-                    result = false;
-                }
-            }
-        } else {
-            result = false;
-        }
-        return result;
-    }
-
-    private String getPayeeName(Cursor cursor, boolean isTransfer) {
-        String result;
-
-        if (isTransfer) {
-            // write ToAccountName instead of payee on transfers.
-            String accountName;
-
-            if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
-                // Recurring transactions list.
-                // Show the destination for the transfer.
-                accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
-            } else {
-                // Account transactions list.
-
-                if (mAccountId == Constants.NOT_SET) {
-                    // Search results or recurring transactions. Account id is always reset (-1).
-                    accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
-                } else {
-                    // Standard checking account. See whether the other account is the source
-                    // or the destination of the transfer.
-                    int cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
-                    if (mAccountId != cursorAccountId) {
-                        // This is in account transactions list where we display transfers to and from.
-                        accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
-                    } else {
-                        // Search results, where we display only incoming transactions.
-                        accountName = cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME));
-                    }
-                }
-            }
-            if (TextUtils.isEmpty(accountName)) accountName = "-";
-
-            // append square brackets around the account name to distinguish transfers visually.
-            accountName = "[%]".replace("%", accountName);
-            result = accountName;
-        } else {
-            // compose payee description
-            result = cursor.getString(cursor.getColumnIndex(PAYEE));
-        }
-
-        return result;
-    }
-
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = mInflater.inflate(R.layout.item_alldata_account, parent, false);
-        // holder
-        AllDataViewHolder holder = new AllDataViewHolder();
-        // take a pointer of object UI
-        holder.linDate = (LinearLayout) view.findViewById(R.id.linearLayoutDate);
-        holder.txtDay = (TextView) view.findViewById(R.id.textViewDay);
-        holder.txtMonth = (TextView) view.findViewById(R.id.textViewMonth);
-        holder.txtYear = (TextView) view.findViewById(R.id.textViewYear);
-        holder.txtStatus = (TextView) view.findViewById(R.id.textViewStatus);
-        holder.txtAmount = (TextView) view.findViewById(R.id.textViewAmount);
-        holder.txtPayee = (TextView) view.findViewById(R.id.textViewPayee);
-        holder.txtAccountName = (TextView) view.findViewById(R.id.textViewAccountName);
-        holder.txtCategorySub = (TextView) view.findViewById(R.id.textViewCategorySub);
-        holder.txtNotes = (TextView) view.findViewById(R.id.textViewNotes);
-        holder.txtBalance = (TextView) view.findViewById(R.id.textViewBalance);
-        // set holder to view
-        view.setTag(holder);
-
-        return view;
+        displayBalanceAmountOrDaysLeft(holder, cursor, currencyService, context);
     }
 
     public void clearPositionChecked() {
@@ -449,4 +424,111 @@ public class AllDataAdapter
             handler.handle(ex, "calculating balance amount");
         }
     }
+
+    private void displayBalanceAmountOrDaysLeft(AllDataViewHolder holder, Cursor cursor,
+                                                CurrencyService currencyService, Context context) {
+        if (mTypeCursor == TypeCursor.ALLDATA) {
+            if (isShowBalanceAmount()) {
+                populateBalanceAmounts(cursor);
+
+                // create thread for calculate balance amount
+//                calculateBalanceAmount(cursor, holder);
+
+                double currentBalance = this.balance[cursor.getPosition()];
+                String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(), currentBalance);
+                holder.txtBalance.setText(balanceFormatted);
+                holder.txtBalance.setVisibility(View.VISIBLE);
+            } else {
+                holder.txtBalance.setVisibility(View.GONE);
+            }
+        } else {
+            int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
+            if (daysLeft == 0) {
+                holder.txtBalance.setText(R.string.due_today);
+            } else {
+                holder.txtBalance.setText(Integer.toString(Math.abs(daysLeft)) + " " +
+                        context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
+            }
+            holder.txtBalance.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * The most important indicator. Detects whether the values should be from FROM or TO
+     * record.
+     * @return boolean indicating whether to use *TO values (amountTo)
+     */
+    private boolean useDestinationValues(boolean isTransfer, Cursor cursor) {
+        boolean result = true;
+
+        if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
+            // Recurring transactions list.
+            return false;
+        }
+
+        if (isTransfer) {
+            // Account transactions lists.
+
+            if (getAccountId() == Constants.NOT_SET) {
+                // Search Results
+                result = true;
+            } else {
+                // Account transactions
+
+                // See which value to use.
+                if (getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            }
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
+    private String getPayeeName(Cursor cursor, boolean isTransfer) {
+        String result;
+
+        if (isTransfer) {
+            // write ToAccountName instead of payee on transfers.
+            String accountName;
+
+            if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
+                // Recurring transactions list.
+                // Show the destination for the transfer.
+                accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+            } else {
+                // Account transactions list.
+
+                if (mAccountId == Constants.NOT_SET) {
+                    // Search results or recurring transactions. Account id is always reset (-1).
+                    accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+                } else {
+                    // Standard checking account. See whether the other account is the source
+                    // or the destination of the transfer.
+                    int cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
+                    if (mAccountId != cursorAccountId) {
+                        // This is in account transactions list where we display transfers to and from.
+                        accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+                    } else {
+                        // Search results, where we display only incoming transactions.
+                        accountName = cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME));
+                    }
+                }
+            }
+            if (TextUtils.isEmpty(accountName)) accountName = "-";
+
+            // append square brackets around the account name to distinguish transfers visually.
+            accountName = "[%]".replace("%", accountName);
+            result = accountName;
+        } else {
+            // compose payee description
+            result = cursor.getString(cursor.getColumnIndex(PAYEE));
+        }
+
+        return result;
+    }
+
 }

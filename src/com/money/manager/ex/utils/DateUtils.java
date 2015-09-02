@@ -25,6 +25,7 @@ import android.widget.DatePicker;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableInfoTable;
 
@@ -233,5 +234,26 @@ public class DateUtils {
         calendar.setTime(date);
 
         datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    public String getYesterdayFrom(String isoDate) {
+        String result = null;
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
+            Date givenDate = sdf.parse(isoDate);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(givenDate);
+            calendar.add(Calendar.DATE, -1);
+            Date yesterday = calendar.getTime();
+
+            result = sdf.format(yesterday);
+            return result;
+        } catch (Exception e) {
+            // ExceptionHandler handler = new ExceptionHandler()
+            Log.e(LOGCAT, "Error parsing date");
+        }
+        return result;
     }
 }

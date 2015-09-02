@@ -25,6 +25,7 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
 
+import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
@@ -85,13 +86,20 @@ public class CalculateAmountBalanceTask
 
         String selection = "(" + ISplitTransactionsDataset.ACCOUNTID + "=" + Integer.toString(getAccountId()) +
                 " OR " + ISplitTransactionsDataset.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " +
-                "AND (" + ISplitTransactionsDataset.TRANSDATE + "<'" + getDate() +
+            "AND (" + ISplitTransactionsDataset.TRANSDATE + "<'" + getDate() +
                 "' OR (" + ISplitTransactionsDataset.TRANSDATE + "='" + getDate() +
-                "' AND " + TableCheckingAccount.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
-                "AND " + ISplitTransactionsDataset.STATUS + "<>'V'";
+                    "' AND " + TableCheckingAccount.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
+            "AND " + ISplitTransactionsDataset.STATUS + "<>'V'";
+
+        // sorting required for the correct balance calculation.
+        String sort = ISplitTransactionsDataset.TRANSDATE + " DESC, " +
+            ISplitTransactionsDataset.TRANSCODE + ", " + TableCheckingAccount.TRANSID + " DESC";
+
 
         Cursor cursor = mContext.getContentResolver().query(checkingAccount.getUri(),
-                checkingAccount.getAllColumns(), selection, null, null);
+                checkingAccount.getAllColumns(),
+                selection, null,
+                sort);
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -99,38 +107,31 @@ public class CalculateAmountBalanceTask
 
                 // Some users have invalid Transaction Type. Should we check .contains()?
 
-                if (TransactionTypes.valueOf(transType).equals(TransactionTypes.Withdrawal)) {
-                    total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
-                } else if (TransactionTypes.valueOf(transType).equals(TransactionTypes.Deposit)) {
-                    total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
-                } else {
-                    // transfer
-                    if (cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID)) == getAccountId()) {
+                switch (TransactionTypes.valueOf(transType)) {
+                    case Withdrawal:
                         total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
-                    } else {
-                        total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
-                    }
+                        break;
+                    case Deposit:
+                        total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+                        break;
+                    case Transfer:
+                        if (cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID)) == getAccountId()) {
+                            total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+                        } else {
+                            total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
+                        }
+                        break;
                 }
             }
 
             cursor.close();
         }
 
-        // calculate initial bal
-        TableAccountList accountList = new TableAccountList();
+        // Retrieve initial balance.
+        AccountService accountService = new AccountService(mContext);
+        double initialBalance = accountService.loadInitialBalance(getAccountId());
+        total += initialBalance;
 
-        cursor = mContext.getContentResolver().query(accountList.getUri(),
-                accountList.getAllColumns(),
-                TableAccountList.ACCOUNTID + "=?",
-                new String[] { Integer.toString(getAccountId()) },
-                null);
-
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                total += cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
-            }
-            cursor.close();
-        }
         return true;
     }
 

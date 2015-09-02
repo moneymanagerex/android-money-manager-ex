@@ -92,12 +92,20 @@ public class WhereClauseGenerator {
      * @param selection i.e. AccountId=?
      * @param arguments List of arguments. i.e. 3
      */
-    public void addSelection(String selection, String... arguments) {
-        getSelections().add(selection);
+//    public void addSelection(String selection, String... arguments) {
+//        getSelections().add(selection);
+//        for (String argument:arguments) {
+//            getArguments().add(argument);
+//        }
+//    }
+
+    public void addSelection(String selection, String operator, String... arguments) {
+        getSelections().add(selection + operator + "?");
         for (String argument:arguments) {
             getArguments().add(argument);
         }
     }
+
 
     public String getSelectionStatements() {
         String result = getWhereStatementFromClauses(mSelections);
