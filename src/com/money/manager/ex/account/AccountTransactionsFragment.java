@@ -669,6 +669,11 @@ public class AccountTransactionsFragment
         MenuItem item = menu.findItem(R.id.menu_period);
         if (item == null) return;
 
+        Context context = getContext();
+        if (context == null) {
+            context = mActivity;
+        }
+
         SubMenu subMenu = item.getSubMenu();
 
         // on init, mark the default item as checked
@@ -676,21 +681,21 @@ public class AccountTransactionsFragment
         String preference = settings.getLookAndFeelSettings().getShowTransactions();
 
         int id = Constants.NOT_SET;
-        if (preference.equals(getString(R.string.last7days))) {
+        if (preference.equals(context.getString(R.string.last7days))) {
             id = R.id.menu_last7days;
-        } else if (preference.equals(getString(R.string.last15days))) {
+        } else if (preference.equals(context.getString(R.string.last15days))) {
             id = R.id.menu_last15days;
-        } else if (preference.equals(getString(R.string.current_month))) {
+        } else if (preference.equals(context.getString(R.string.current_month))) {
             id = R.id.menu_current_month;
-        } else if (preference.equals(getString(R.string.last30days))) {
+        } else if (preference.equals(context.getString(R.string.last30days))) {
             id = R.id.menu_last30days;
-        } else if (preference.equals(getString(R.string.last3months))) {
+        } else if (preference.equals(context.getString(R.string.last3months))) {
             id = R.id.menu_last3months;
-        } else if (preference.equals(getString(R.string.last6months))) {
+        } else if (preference.equals(context.getString(R.string.last6months))) {
             id = R.id.menu_last6months;
-        } else if (preference.equals(getString(R.string.current_year))) {
+        } else if (preference.equals(context.getString(R.string.current_year))) {
             id = R.id.menu_current_year;
-        } else if (preference.equals(getString(R.string.all_time))) {
+        } else if (preference.equals(context.getString(R.string.all_time))) {
             id = R.id.menu_all_time;
         }
 
