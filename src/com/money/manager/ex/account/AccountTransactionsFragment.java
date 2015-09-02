@@ -343,11 +343,12 @@ public class AccountTransactionsFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case ID_LOADER_SUMMARY:
-//              todo:  mAdapter.swapCursor(null);
-                break;
-        }
+        // This is already handled in AllDataFragment.
+//        switch (loader.getId()) {
+//            case ID_LOADER_SUMMARY:
+//                mAdapter.swapCursor(null);
+//                break;
+//        }
     }
 
     @Override
