@@ -446,9 +446,11 @@ public class SearchFragment extends Fragment
 
     private void saveSearchValues() {
         // Account
-        if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION &&
-                mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
-            mSearchParameters.accountId = mAccountIdList.get(spinAccount.getSelectedItemPosition());
+        if (spinAccount != null) {
+            if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION &&
+                    mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
+                mSearchParameters.accountId = mAccountIdList.get(spinAccount.getSelectedItemPosition());
+            }
         }
 
         // Transaction Type

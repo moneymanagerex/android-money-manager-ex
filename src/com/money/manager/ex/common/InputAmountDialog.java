@@ -121,8 +121,12 @@ public class InputAmountDialog
             mIdView = getArguments().getInt("id");
             // Display the existing amount, if any has been passed into the dialog.
             NumericHelper numericHelper = new NumericHelper(getContext());
-            int decimals = numericHelper.getNumberOfDecimals(
-                    mCurrencyService.getCurrency(mDisplayCurrencyId).getScale());
+            TableCurrencyFormats currency = mCurrencyService.getCurrency(mDisplayCurrencyId);
+            if (currency == null) {
+                // no currency and no base currency set.
+                return;
+            }
+            int decimals = numericHelper.getNumberOfDecimals(currency.getScale());
             mAmount = this.roundToCurrencyDecimals
                     ? MathUtils.Round(getArguments().getDouble("amount"), decimals)
                     : getArguments().getDouble("amount");
