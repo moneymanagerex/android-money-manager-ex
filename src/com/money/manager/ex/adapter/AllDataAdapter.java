@@ -90,68 +90,6 @@ public class AllDataAdapter
         mContext = context;
 
         setFieldFromTypeCursor();
-
-//        populateBalanceAmounts(c);
-    }
-
-    private void populateBalanceAmounts(Cursor c) {
-        if (c == null) return;
-        if (balance != null) return;
-        if (c.getCount() <= 0) return;
-
-        AccountService accountService = new AccountService(mContext);
-        Double initialBalance = null;
-
-        int originalPosition = c.getPosition();
-
-        // populate balance amounts
-        balance = new double[c.getCount()];
-        int i = c.getCount() - 1;
-        // currently the order of transactions is inverse.
-        double runningBalance = 0;
-        while (c.moveToPosition(i)) {
-
-            if (initialBalance == null) {
-                // Get starting balance on the given day.
-                initialBalance = accountService.loadInitialBalance(getAccountId());
-
-                String date = c.getString(c.getColumnIndex(DATE));
-                DateUtils dateUtils = new DateUtils();
-                date = dateUtils.getYesterdayFrom(date);
-                double balanceOnDate = accountService.calculateBalanceOn(getAccountId(), date);
-                initialBalance += balanceOnDate;
-
-                runningBalance = initialBalance;
-            }
-
-            String transType = c.getString(c.getColumnIndex(TRANSACTIONTYPE));
-            double amount = c.getDouble(c.getColumnIndex(TOAMOUNT));
-
-            switch (TransactionTypes.valueOf(transType)) {
-                case Withdrawal:
-                    runningBalance -= amount;
-                    break;
-                case Deposit:
-                    runningBalance += amount;
-                    break;
-                case Transfer:
-                    int accountId = c.getInt(c.getColumnIndex(ACCOUNTID));
-                    if (accountId == getAccountId()) {
-                        runningBalance += c.getDouble(c.getColumnIndex(AMOUNT));
-                    } else {
-                        runningBalance += amount;
-                    }
-                    break;
-            }
-
-//            double amount = c.getDouble(c.getColumnIndex(QueryAllData.ToAmount));
-//            runningBalance += amount;
-            balance[i] = runningBalance;
-            i--;
-        }
-
-        // set back to the original position.
-        c.moveToPosition(originalPosition);
     }
 
     @Override
@@ -529,6 +467,65 @@ public class AllDataAdapter
         }
 
         return result;
+    }
+
+    private void populateBalanceAmounts(Cursor c) {
+        if (c == null) return;
+        int records = c.getCount();
+        if (balance != null && records == balance.length) return;
+        if (c.getCount() <= 0) return;
+
+        AccountService accountService = new AccountService(mContext);
+        Double initialBalance = null;
+
+        int originalPosition = c.getPosition();
+
+        // populate balance amounts
+        balance = new double[c.getCount()];
+        int i = c.getCount() - 1;
+        // currently the order of transactions is inverse.
+        double runningBalance = 0;
+        while (c.moveToPosition(i)) {
+
+            if (initialBalance == null) {
+                // Get starting balance on the given day.
+                initialBalance = accountService.loadInitialBalance(getAccountId());
+
+                String date = c.getString(c.getColumnIndex(DATE));
+                DateUtils dateUtils = new DateUtils();
+                date = dateUtils.getYesterdayFrom(date);
+                double balanceOnDate = accountService.calculateBalanceOn(getAccountId(), date);
+                initialBalance += balanceOnDate;
+
+                runningBalance = initialBalance;
+            }
+
+            String transType = c.getString(c.getColumnIndex(TRANSACTIONTYPE));
+            double amount = c.getDouble(c.getColumnIndex(TOAMOUNT));
+
+            switch (TransactionTypes.valueOf(transType)) {
+                case Withdrawal:
+                    runningBalance -= amount;
+                    break;
+                case Deposit:
+                    runningBalance += amount;
+                    break;
+                case Transfer:
+                    int accountId = c.getInt(c.getColumnIndex(ACCOUNTID));
+                    if (accountId == getAccountId()) {
+                        runningBalance += c.getDouble(c.getColumnIndex(AMOUNT));
+                    } else {
+                        runningBalance += amount;
+                    }
+                    break;
+            }
+
+            balance[i] = runningBalance;
+            i--;
+        }
+
+        // set back to the original position.
+        c.moveToPosition(originalPosition);
     }
 
 }

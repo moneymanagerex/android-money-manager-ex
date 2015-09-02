@@ -17,6 +17,9 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="" versionName="">
+        <changelogtext>Improved running account balance calculation on transactions.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="August 31, 2015" versionName="2.15.8">
         <changelogtext>Corrected price update for a single security.</changelogtext>
         <changelogtext>Adjusted QIF export to match the query account and amount.</changelogtext>
