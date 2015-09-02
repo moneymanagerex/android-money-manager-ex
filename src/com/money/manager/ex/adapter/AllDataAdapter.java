@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.account.CalculateAmountBalanceTask;
+import com.money.manager.ex.account.CalculateRunningBalanceTask;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
@@ -352,7 +352,7 @@ public class AllDataAdapter
         try {
             int transId = cursor.getInt(cursor.getColumnIndex(ID));
 
-            CalculateAmountBalanceTask balanceAmount = new CalculateAmountBalanceTask();
+            CalculateRunningBalanceTask balanceAmount = new CalculateRunningBalanceTask();
             balanceAmount.setAccountId(getAccountId());
             balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
             balanceAmount.setTextView(holder.txtBalance);
