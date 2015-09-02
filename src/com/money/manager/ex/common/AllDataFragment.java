@@ -68,6 +68,9 @@ import com.shamanland.fonticon.FontIconDrawable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+/**
+ * Fragment that displays the transactions.
+ */
 public class AllDataFragment extends BaseListFragment
         implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
 

@@ -20,6 +20,7 @@ package com.money.manager.ex.account;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDiskIOException;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
@@ -30,6 +31,9 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
+import com.money.manager.ex.database.WhereClauseGenerator;
+
+import java.util.ArrayList;
 
 /**
  * Async task that calculates and updates the amount balance in the transaction list.
@@ -72,8 +76,15 @@ public class CalculateAmountBalanceTask
 
     private boolean runTask() {
         TableCheckingAccount checkingAccount = new TableCheckingAccount();
+
+//        WhereClauseGenerator generator = new WhereClauseGenerator(mContext);
+//        generator.addSelection("(" + ISplitTransactionsDataset.ACCOUNTID + "=? OR " + ISplitTransactionsDataset.TOACCOUNTID + "=? )",
+//                Integer.toString(getAccountId()), Integer.toString(getAccountId()));
+//        String where = generator.getSelectionStatements();
+//        String[] args = generator.getSelectionArguments();
+
         String selection = "(" + ISplitTransactionsDataset.ACCOUNTID + "=" + Integer.toString(getAccountId()) +
-                " OR " + ISplitTransactionsDataset.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " + "" +
+                " OR " + ISplitTransactionsDataset.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " +
                 "AND (" + ISplitTransactionsDataset.TRANSDATE + "<'" + getDate() +
                 "' OR (" + ISplitTransactionsDataset.TRANSDATE + "='" + getDate() +
                 "' AND " + TableCheckingAccount.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
