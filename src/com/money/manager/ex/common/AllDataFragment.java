@@ -272,6 +272,8 @@ public class AllDataFragment extends BaseListFragment
 
                 // reset the transaction groups (account name collection)
                 adapter.resetAccountHeaderIndexes();
+                // Reset the running balance.
+                adapter.reloadRunningBalance(data);
         }
     }
 

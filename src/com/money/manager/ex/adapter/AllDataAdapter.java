@@ -37,7 +37,6 @@ import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
@@ -294,6 +293,11 @@ public class AllDataAdapter
         mHeadersAccountIndex.clear();
     }
 
+    public void reloadRunningBalance(Cursor cursor) {
+        this.balance = null;
+        this.populateRunningBalance(cursor);
+    }
+
     /**
      * @param showAccountName the mShowAccountName to set
      */
@@ -367,7 +371,7 @@ public class AllDataAdapter
                                                 CurrencyService currencyService, Context context) {
         if (mTypeCursor == TypeCursor.ALLDATA) {
             if (isShowBalanceAmount()) {
-                populateBalanceAmounts(cursor);
+                populateRunningBalance(cursor);
 
                 // create thread for calculate balance amount
 //                calculateBalanceAmount(cursor, holder);
@@ -469,7 +473,7 @@ public class AllDataAdapter
         return result;
     }
 
-    private void populateBalanceAmounts(Cursor c) {
+    private void populateRunningBalance(Cursor c) {
         if (c == null) return;
         int records = c.getCount();
         if (balance != null && records == balance.length) return;
