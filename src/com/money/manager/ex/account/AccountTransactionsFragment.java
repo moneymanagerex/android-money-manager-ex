@@ -122,12 +122,14 @@ public class AccountTransactionsFragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         // Keep the direct reference to the activity to avoing null exceptions on getActivity().
         // http://stackoverflow.com/questions/6215239/getactivity-returns-null-in-fragment-function
-        mActivity = activity;
+        if (context instanceof Activity) {
+            mActivity = (Activity) context;
+        }
     }
 
     // IAllDataFragmentLoaderCallbacks
@@ -341,6 +343,7 @@ public class AccountTransactionsFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        // This is already handled in AllDataFragment.
 //        switch (loader.getId()) {
 //            case ID_LOADER_SUMMARY:
 //                mAdapter.swapCursor(null);

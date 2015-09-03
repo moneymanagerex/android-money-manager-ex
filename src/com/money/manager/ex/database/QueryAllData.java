@@ -63,7 +63,6 @@ public class QueryAllData
 
     // CONSTRUCTOR
     public QueryAllData(Context context) {
-
         super(RawFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
     }
 

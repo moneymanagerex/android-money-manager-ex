@@ -30,7 +30,7 @@ Track stocks/mutual fund investments grouping them in specific account. Automati
 Track fixed assets and incorporate them within total financial worth. Every single asset could be undervalued/increased by a specific rate per year or left unchanged.
 
 ☆ <b>BUDGETING</b>
-Set up a budget for a year and/or a month. Then compare money spent versus actual budget with specific or custom reports.
+Set up a budget for a year and/or a month. Then compare money spent versus actual budget with specific or custom reports. On Android we currently support a read-only view of the Budgets.
 
 ☆ <b>CROSS PLATFORM</b>
 We provide builds for the most common operating systems: Windows, MacOS and Linux Ubuntu. It's possible to use it also on other OS building it directly from source code.

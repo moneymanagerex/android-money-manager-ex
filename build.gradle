@@ -54,7 +54,7 @@ android {
         applicationId "com.money.manager.ex"
         multiDexEnabled true
 //        minSdkVersion 16
-        minSdkVersion 11
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 693
         versionName '2.15.8'
