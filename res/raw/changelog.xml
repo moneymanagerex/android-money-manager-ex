@@ -17,7 +17,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 3, 2015" versionName="2.16.0">
+    <changelogversion changeDate="September 3, 2015" versionName="2.16.1">
+        <changelogtext>Using newer Dropbox API methods to try to fix issues for some users.</changelogtext>
         <changelogtext>Single-account widget. Currently showing the favourite account.</changelogtext>
         <changelogtext>Improved running account balance calculation on transactions.</changelogtext>
         <changelogtext>Corrected price update for a single security.</changelogtext>
