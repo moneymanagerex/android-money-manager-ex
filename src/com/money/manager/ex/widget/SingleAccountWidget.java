@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 
 import com.money.manager.ex.Constants;
@@ -15,6 +16,7 @@ import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.WhereClauseGenerator;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 
@@ -86,9 +88,11 @@ public class SingleAccountWidget
         // todo: pass the account id?
         initializeNewTransactionButton(context, views);
 
-        // todo: handle logo click -> open the app.
+        // handle logo click -> open the app.
+        initializeAppButton(context, views);
 
-        // todo: click account name -> refresh the balance.
+        // click account name -> refresh the balance.
+        initializeContentPanel(context, views, appWidgetId);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -117,18 +121,36 @@ public class SingleAccountWidget
         return summary;
     }
 
-    static String getAccountName(Context context, int accountId) {
-        AccountRepository repository = new AccountRepository(context);
-        String name = repository.loadName(accountId);
-        if (StringUtils.isEmpty(name)) {
-            name = "n/a";
-        }
-        return name;
-    }
+//    static String getAccountName(Context context, int accountId) {
+//        AccountRepository repository = new AccountRepository(context);
+//        String name = repository.loadName(accountId);
+//        if (StringUtils.isEmpty(name)) {
+//            name = "n/a";
+//        }
+//        return name;
+//    }
 
     static TableAccountList loadAccount(Context context, int accountId) {
         AccountRepository repository = new AccountRepository(context);
         return repository.load(accountId);
+    }
+
+    static void initializeAppButton(Context context, RemoteViews views) {
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        // Get the layout for the App Widget and attach an on-click listener to the button
+//        RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.appwidget_provider_layout);
+        views.setOnClickPendingIntent(R.id.appLogoImage, pendingIntent);
+    }
+
+    static void initializeContentPanel(Context context, RemoteViews views, int appWidgetId) {
+        // refresh the balance on tap.
+        Intent intent = new Intent(context, SingleAccountWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] { appWidgetId });
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.contentPanel, pendingIntent);
     }
 }
 
