@@ -21,8 +21,8 @@
     android:updatePeriodMillis="86400000"
     android:previewImage="@drawable/ic_logo_money_manager_ex"
     android:initialLayout="@layout/single_account_widget"
-    android:configure="com.money.manager.ex.widget.SingleAccountWidgetConfigureActivity"
     android:resizeMode="horizontal|vertical" android:widgetCategory="home_screen|keyguard"
     android:initialKeyguardLayout="@layout/single_account_widget">
-
+    <!-- todo: enable this for widget configuration screen -->
+    <!--     android:configure="com.money.manager.ex.widget.SingleAccountWidgetConfigureActivity" -->
 </appwidget-provider>

@@ -19,6 +19,7 @@
 <changelog bulletedList="true">
     <changelogversion changeDate="" versionName="">
         <changelogtext>Improved running account balance calculation on transactions.</changelogtext>
+        <changelogtext>Single-account widget. Currently showing the favourite account.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="August 31, 2015" versionName="2.15.8">
         <changelogtext>Corrected price update for a single security.</changelogtext>

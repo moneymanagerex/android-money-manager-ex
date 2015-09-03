@@ -311,7 +311,7 @@ public class GeneralSettingsFragment
         // show default summary
 //        preference.setSummary(getString(R.string.default_account_summary));
 
-        AccountService accountService = new AccountService(getContext());
+        AccountService accountService = new AccountService(getActivity().getApplicationContext());
         List<TableAccountList> accounts = accountService.getAccountList(false, false);
         // the list is already sorted by name.
 

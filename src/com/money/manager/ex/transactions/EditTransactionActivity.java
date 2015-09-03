@@ -29,14 +29,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.CategoryService;
@@ -47,7 +41,6 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.RecurringTransactionRepository;
 import com.money.manager.ex.database.SplitCategoriesRepository;
 import com.money.manager.ex.database.TableBillsDeposits;
@@ -62,11 +55,9 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -611,7 +602,7 @@ public class EditTransactionActivity
 
             // Select the default account.
             AppSettings settings = new AppSettings(this);
-            String defaultAccountSetting = settings.getGeneralSettings().getDefaultAccount();
+            String defaultAccountSetting = settings.getGeneralSettings().getDefaultAccountId();
             if (!TextUtils.isEmpty(defaultAccountSetting)) {
                 int defaultAccountId = Integer.parseInt(defaultAccountSetting);
                 if (mCommonFunctions.mAccountIdList.contains(defaultAccountId)) {

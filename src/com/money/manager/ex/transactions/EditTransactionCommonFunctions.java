@@ -329,7 +329,7 @@ public class EditTransactionCommonFunctions {
         addMissingAccountToSelectors(accountRepository, toAccountId);
         // add the default account, if any.
         AppSettings settings = new AppSettings(mContext);
-        String defaultAccountString = settings.getGeneralSettings().getDefaultAccount();
+        String defaultAccountString = settings.getGeneralSettings().getDefaultAccountId();
         // Set the current account, if not set already.
         if ((accountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
             int defaultAccount = Integer.parseInt(defaultAccountString);

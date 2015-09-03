@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.widget.RemoteViews;
 
 import com.money.manager.ex.Constants;
@@ -14,7 +13,9 @@ import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.QueryAccountBills;
+import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.WhereClauseGenerator;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +24,8 @@ import org.apache.commons.lang3.StringUtils;
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in {@link SingleAccountWidgetConfigureActivity SingleAccountWidgetConfigureActivity}
  */
-public class SingleAccountWidget extends AppWidgetProvider {
+public class SingleAccountWidget
+        extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -58,7 +60,12 @@ public class SingleAccountWidget extends AppWidgetProvider {
         // todo: allow selecting the account from a list.
 
         // todo: load the configured account id
-        int accountId = 1;
+        AppSettings settings = new AppSettings(context);
+        String defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+        if (StringUtils.isEmpty(defaultAccountId)) return;
+
+        int accountId = Integer.parseInt(defaultAccountId);
+        TableAccountList account = loadAccount(context, accountId);
 
 //        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
 
@@ -67,11 +74,12 @@ public class SingleAccountWidget extends AppWidgetProvider {
 //        views.setTextViewText(R.id.appwidget_text, widgetText);
 
         // display the account name
-        String accountName = getAccountName(context, accountId);
+//        String accountName = getAccountName(context, accountId);
+        String accountName = account.getAccountName();
         views.setTextViewText(R.id.accountNameTextView, accountName);
 
         // get account balance (for this account?)
-        String balance = getFormattedAccountBalance(context, accountId);
+        String balance = getFormattedAccountBalance(context, account);
         views.setTextViewText(R.id.balanceTextView, balance);
 
         // handle + click -> open the new transaction screen for this account.
@@ -93,9 +101,9 @@ public class SingleAccountWidget extends AppWidgetProvider {
         views.setOnClickPendingIntent(R.id.newTransactionButton, pendingIntent);
     }
 
-    static String getFormattedAccountBalance(Context context, int accountId) {
+    static String getFormattedAccountBalance(Context context, TableAccountList account) {
         WhereClauseGenerator generator = new WhereClauseGenerator(context);
-        generator.addSelection(QueryAccountBills.ACCOUNTID, "=", accountId);
+        generator.addSelection(QueryAccountBills.ACCOUNTID, "=", account.getAccountId());
         String selection =  generator.getSelectionStatements();
         String[] args = generator.getSelectionArguments();
 
@@ -104,7 +112,7 @@ public class SingleAccountWidget extends AppWidgetProvider {
 
         // format the amount
         CurrencyService currencyService = new CurrencyService(context);
-        String summary = currencyService.getBaseCurrencyFormatted(total);
+        String summary = currencyService.getCurrencyFormatted(account.getCurrencyId(), total);
 
         return summary;
     }
@@ -116,6 +124,11 @@ public class SingleAccountWidget extends AppWidgetProvider {
             name = "n/a";
         }
         return name;
+    }
+
+    static TableAccountList loadAccount(Context context, int accountId) {
+        AccountRepository repository = new AccountRepository(context);
+        return repository.load(accountId);
     }
 }
 

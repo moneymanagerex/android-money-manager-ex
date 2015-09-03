@@ -14,6 +14,7 @@ import android.widget.SpinnerAdapter;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.AccountSpinnerAdapter;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.database.TableAccountList;
 
@@ -64,7 +65,7 @@ public class SingleAccountWidgetConfigureActivity
 
         mAppWidgetText.setText(loadTitlePref(SingleAccountWidgetConfigureActivity.this, mAppWidgetId));
 
-        loadAccounts(getApplicationContext());
+        // todo: loadAccounts(getApplicationContext());
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -122,6 +123,8 @@ public class SingleAccountWidgetConfigureActivity
         for (TableAccountList account : accounts) {
             accountNames.add(account.getAccountName());
         }
+
+        // todo: AccountSpinnerAdapter adapter = new AccountSpinnerAdapter();
 
         ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item, accountNames);
