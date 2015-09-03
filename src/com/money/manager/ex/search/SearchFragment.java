@@ -37,6 +37,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
@@ -131,8 +132,8 @@ public class SearchFragment extends Fragment
         // Account
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         if (mAccountList == null) {
-            AccountRepository accountRepository = new AccountRepository(getActivity().getApplicationContext());
-            mAccountList = accountRepository.getAccountList(core.getAccountsOpenVisible(),
+            AccountService accountService = new AccountService(getContext());
+            mAccountList = accountService.getAccountList(core.getAccountsOpenVisible(),
                     core.getAccountFavoriteVisible());
             mAccountList.add(0, null);
             for (int i = 0; i <= mAccountList.size() - 1; i++) {

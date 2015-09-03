@@ -106,6 +106,12 @@ public class WhereClauseGenerator {
         }
     }
 
+    public void addSelection(String selection, String operator, Integer... arguments) {
+        getSelections().add(selection + operator + "?");
+        for (Integer argument:arguments) {
+            getArguments().add(Integer.toString(argument));
+        }
+    }
 
     public String getSelectionStatements() {
         String result = getWhereStatementFromClauses(mSelections);

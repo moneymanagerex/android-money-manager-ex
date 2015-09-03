@@ -10,9 +10,11 @@ import android.widget.RemoteViews;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.QueryAccountBills;
+import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -92,22 +94,13 @@ public class SingleAccountWidget extends AppWidgetProvider {
     }
 
     static String getFormattedAccountBalance(Context context, int accountId) {
-        String selection = QueryAccountBills.ACCOUNTID + "=?";
-        String[] args = new String[] { Integer.toString(accountId) };
+        WhereClauseGenerator generator = new WhereClauseGenerator(context);
+        generator.addSelection(QueryAccountBills.ACCOUNTID, "=", accountId);
+        String selection =  generator.getSelectionStatements();
+        String[] args = generator.getSelectionArguments();
 
-        QueryAccountBills accountBills = new QueryAccountBills(context);
-        Cursor cursor = context.getContentResolver().query(accountBills.getUri(),
-                null,
-                selection, args,
-                null);
-        if (cursor == null) return "";
-
-        double total = 0;
-        // calculate summary
-        while (cursor.moveToNext()) {
-            total = total + cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
-        }
-        cursor.close();
+        AccountService service = new AccountService(context);
+        double total = service.loadBalance(selection, args);
 
         // format the amount
         CurrencyService currencyService = new CurrencyService(context);

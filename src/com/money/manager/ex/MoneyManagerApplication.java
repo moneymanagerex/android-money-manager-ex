@@ -335,7 +335,10 @@ public class MoneyManagerApplication
         }
         QueryAccountBills accountBills = new QueryAccountBills(context);
         Cursor cursor = context.getContentResolver().query(accountBills.getUri(),
-                null, where, null, null);
+                null,
+                where,
+                null,
+                null);
         if (cursor == null) return 0;
 
         // calculate summary

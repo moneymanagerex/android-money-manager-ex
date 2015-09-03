@@ -27,6 +27,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
@@ -310,8 +311,8 @@ public class GeneralSettingsFragment
         // show default summary
 //        preference.setSummary(getString(R.string.default_account_summary));
 
-        final AccountRepository repository = new AccountRepository(getActivity());
-        List<TableAccountList> accounts = repository.getAccountList(false, false);
+        AccountService accountService = new AccountService(getContext());
+        List<TableAccountList> accounts = accountService.getAccountList(false, false);
         // the list is already sorted by name.
 
         final String[] entries = new String[accounts.size() + 1];
@@ -327,6 +328,8 @@ public class GeneralSettingsFragment
         // set value
         preference.setEntries(entries);
         preference.setEntryValues(entryValues);
+
+        final AccountRepository repository = new AccountRepository(getActivity());
 
         // set account name as the value here
         String defaultAccount = preference.getValue();

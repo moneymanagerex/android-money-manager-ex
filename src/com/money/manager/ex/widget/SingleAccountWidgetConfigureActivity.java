@@ -7,9 +7,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.database.TableAccountList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The configuration screen for the {@link SingleAccountWidget SingleAccountWidget} AppWidget.
@@ -35,6 +44,7 @@ public class SingleAccountWidgetConfigureActivity
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.single_account_widget_configure);
+
         mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
@@ -53,6 +63,8 @@ public class SingleAccountWidgetConfigureActivity
         }
 
         mAppWidgetText.setText(loadTitlePref(SingleAccountWidgetConfigureActivity.this, mAppWidgetId));
+
+        loadAccounts(getApplicationContext());
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -98,6 +110,24 @@ public class SingleAccountWidgetConfigureActivity
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.remove(PREF_PREFIX_KEY + appWidgetId);
         prefs.commit();
+    }
+
+    private void loadAccounts(Context context) {
+        // load accounts
+        AccountService service = new AccountService(context);
+        List<TableAccountList> accounts = service.getAccountList();
+        Spinner accountsSpinner = (Spinner) findViewById(R.id.accountsSpinner);
+        ArrayList<String> accountNames = new ArrayList<>();
+
+        for (TableAccountList account : accounts) {
+            accountNames.add(account.getAccountName());
+        }
+
+        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(context,
+                android.R.layout.simple_spinner_item, accountNames);
+        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        accountsSpinner.setAdapter(accountAdapter);
+
     }
 }
 

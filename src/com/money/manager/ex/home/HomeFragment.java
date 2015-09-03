@@ -48,6 +48,7 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
+import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
@@ -547,8 +548,8 @@ public class HomeFragment
         }
 
         // balance account should work only for transaction accounts.
-        AccountRepository accountRepository = new AccountRepository(getActivity());
-        List<String> accountTypes = accountRepository.getTransactionAccountTypeNames();
+        AccountService service = new AccountService(getActivity());
+        List<String> accountTypes = service.getTransactionAccountTypeNames();
         if (accountTypes.contains(account.getAccountType())) {
             menu.add(R.string.balance_account);
         }

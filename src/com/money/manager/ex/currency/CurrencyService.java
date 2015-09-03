@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.AccountRepository;
@@ -92,12 +93,9 @@ public class CurrencyService {
     }
 
     public List<TableCurrencyFormats> getUsedCurrencies() {
-        AppSettings settings = new AppSettings(mContext);
-        AccountRepository repo = new AccountRepository(mContext);
+        AccountService service = new AccountService(mContext);
 
-        boolean favourite = settings.getLookAndFeelSettings().getViewFavouriteAccounts();
-        boolean open = settings.getLookAndFeelSettings().getViewOpenAccounts();
-        List<TableAccountList> accounts = repo.getAccountList(open, favourite);
+        List<TableAccountList> accounts = service.getAccountList();
 
         List<TableCurrencyFormats> currencies = new ArrayList<>();
         for(TableAccountList account : accounts) {

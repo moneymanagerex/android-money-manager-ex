@@ -47,6 +47,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.transactions.EditTransactionActivity;
@@ -69,6 +70,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Checking account fragment.
@@ -715,11 +717,11 @@ public class AccountTransactionsFragment
             return;
         }
 
-        AccountRepository repo = new AccountRepository(context);
+        AccountService service = new AccountService(context);
         Core core = new Core(context.getApplicationContext());
 
-        Cursor cursor = repo.getCursor(core.getAccountsOpenVisible(),
-                core.getAccountFavoriteVisible(), repo.getTransactionAccountTypeNames());
+        Cursor cursor = service.getCursor(core.getAccountsOpenVisible(),
+                core.getAccountFavoriteVisible(), service.getTransactionAccountTypeNames());
 
         int[] adapterRowViews = new int[] { android.R.id.text1 };
 
