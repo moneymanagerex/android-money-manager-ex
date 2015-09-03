@@ -292,7 +292,8 @@ public class DropboxHelper {
     public void logIn() {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Login dropbox service");
         // Start the remote authentication
-        mDropboxApi.getSession().startAuthentication(mContext);
+        //mDropboxApi.getSession().startAuthentication(mContext);
+        mDropboxApi.getSession().startOAuth2Authentication(mContext);
     }
 
     /**
