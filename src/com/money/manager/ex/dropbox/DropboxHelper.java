@@ -243,15 +243,18 @@ public class DropboxHelper {
         } catch (Exception e) {
             Log.e(LOGCAT, log(e.getMessage(), "buildSession Exception"));
         }
+
         AppKeyPair appKeyPair = new AppKeyPair(MoneyManagerApplication.DROPBOX_APP_KEY, secret);
         AndroidAuthSession session;
 
         String[] stored = getKeysToken();
         if (stored != null) {
             AccessTokenPair accessToken = new AccessTokenPair(stored[0], stored[1]);
-            session = new AndroidAuthSession(appKeyPair, MoneyManagerApplication.DROPBOX_ACCESS_TYPE, accessToken);
+//            session = new AndroidAuthSession(appKeyPair, MoneyManagerApplication.DROPBOX_ACCESS_TYPE, accessToken);
+            session = new AndroidAuthSession(appKeyPair, accessToken);
         } else {
-            session = new AndroidAuthSession(appKeyPair, MoneyManagerApplication.DROPBOX_ACCESS_TYPE);
+//            session = new AndroidAuthSession(appKeyPair, MoneyManagerApplication.DROPBOX_ACCESS_TYPE);
+            session = new AndroidAuthSession(appKeyPair);
         }
 
         return session;
@@ -309,8 +312,8 @@ public class DropboxHelper {
     /**
      * Get last modified datetime of dropbox file
      *
-     * @param file
-     * @return
+     * @param file file name
+     * @return date of last modification
      * @throws ParseException
      */
     public Date getDateLastModified(String file) throws ParseException {
@@ -323,8 +326,8 @@ public class DropboxHelper {
     /**
      * Save the last modified datetime of the dropbox file into Settings.
      *
-     * @param file
-     * @param date
+     * @param file file name
+     * @param date date of last modification
      */
     public void setDateLastModified(String file, Date date) {
         if (BuildConfig.DEBUG) {
@@ -396,8 +399,8 @@ public class DropboxHelper {
     /**
      * Get a last modified date of entry
      *
-     * @param entry
-     * @return
+     * @param entry dropbox entry, JSON
+     * @return date of last modification
      */
     public Date getLastModifiedEntry(Entry entry) {
         return RESTUtility.parseDate(entry.modified);
@@ -406,7 +409,7 @@ public class DropboxHelper {
     /**
      * Get the builder of a notification for download
      *
-     * @return
+     * @return notification
      */
     public NotificationCompat.Builder getNotificationBuilderDownload() {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(mContext)
@@ -634,7 +637,7 @@ public class DropboxHelper {
     /**
      * Download file from dropbox to local storage
      *
-     * @param dropboxFile
+     * @param dropboxFile The file on dropbox.
      * @param localFile
      */
     public void downloadFileAsync(final Entry dropboxFile, final File localFile,
@@ -738,9 +741,9 @@ public class DropboxHelper {
             // get File and Entry
             File localFile = new File(localPath);
             DropboxAPI.Entry remoteFile = getEntry(remotePath);
-            // date lastModificed
-            Date localLastModified = null;
-            Date remoteLastModified = null;
+            // date last Modified
+            Date localLastModified;
+            Date remoteLastModified;
             try {
                 localLastModified = getDateLastModified(remoteFile.fileName());
                 if (localLastModified == null)
@@ -767,14 +770,14 @@ public class DropboxHelper {
 
     // interface for callbacks when call
     public interface OnGetEntries {
-        public void onStarting();
+        void onStarting();
 
-        public void onFinished(List<Entry> result);
+        void onFinished(List<Entry> result);
     }
 
     public interface OnDownloadUploadEntry {
-        public void onPreExecute();
+        void onPreExecute();
 
-        public void onPostExecute(boolean result);
+        void onPostExecute(boolean result);
     }
 }
