@@ -547,9 +547,6 @@ public class EditTransactionActivity
         // New transaction
 
         if (mIntentAction.equals(Constants.INTENT_ACTION_INSERT)) {
-            // always ask for confirmation on exit if the record is completely new.
-            mCommonFunctions.setDirty(true);
-
             if (mCommonFunctions.status == null) {
                 mCommonFunctions.status = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                         .getString(getString(PreferenceConstants.PREF_DEFAULT_STATUS), "");
