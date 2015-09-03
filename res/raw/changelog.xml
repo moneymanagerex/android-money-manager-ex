@@ -18,11 +18,11 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="September 3, 2015" versionName="2.16.0">
-        <changelogtext>Improved running account balance calculation on transactions.</changelogtext>
         <changelogtext>Single-account widget. Currently showing the favourite account.</changelogtext>
+        <changelogtext>Improved running account balance calculation on transactions.</changelogtext>
+        <changelogtext>Corrected price update for a single security.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="August 31, 2015" versionName="2.15.8">
-        <changelogtext>Corrected price update for a single security.</changelogtext>
         <changelogtext>Adjusted QIF export to match the query account and amount.</changelogtext>
         <changelogtext>Removing automatically-added new permissions.</changelogtext>
         <changelogtext>Lowered the minimum Android version to 3.0.</changelogtext>
