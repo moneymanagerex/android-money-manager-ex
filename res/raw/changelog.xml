@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="" versionName="">
+    <changelogversion changeDate="September 3, 2015" versionName="2.16.0">
         <changelogtext>Improved running account balance calculation on transactions.</changelogtext>
         <changelogtext>Single-account widget. Currently showing the favourite account.</changelogtext>
     </changelogversion>
