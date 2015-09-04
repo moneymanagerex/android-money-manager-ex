@@ -85,7 +85,11 @@ public class InputAmountDialog
     private TextView txtMain, txtTop;
     private IInputAmountDialogListener mListener;
     private CurrencyService mCurrencyService;
-    private String mExpression; // used to restore expression from saved instance state
+    /**
+     * used to restore expression from saved instance state.
+     */
+    private String mExpression;
+    private boolean mStartedTyping = false;
 
     @Override
     public void onAttach(Context context) {
@@ -145,19 +149,15 @@ public class InputAmountDialog
             @Override
             public void onClick(View v) {
                 // Remove the default 0 value to avoid leading zero "01" numbers.
-                // Reset prior value/text if we are starting with 0 displayed.
+                // Reset prior value/text if nothing was entered (and there is no prior value?).
                 String existingValue = txtMain.getText().toString();
-                // parse number using locale.
-                NumericHelper helper = new NumericHelper(getContext());
-                BigDecimal value = helper.parseNumber(existingValue);
-
-                if (mAmount.compareTo(BigDecimal.ZERO) == 0 &&
-                        value != null && value.compareTo(BigDecimal.ZERO) == 0) {
+                if (!mStartedTyping) {
+                    // && mAmount.compareTo(BigDecimal.ZERO) == 0 ?
                     existingValue = "";
+                    mStartedTyping = true;
                 }
 
-                txtMain.setText(existingValue
-                        .concat(((Button) v).getText().toString()));
+                txtMain.setText(existingValue.concat(((Button) v).getText().toString()));
                 evalExpression();
             }
         };
@@ -171,6 +171,7 @@ public class InputAmountDialog
         clearButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                mStartedTyping = true;
                 txtMain.setText("");
                 evalExpression();
             }
@@ -266,7 +267,8 @@ public class InputAmountDialog
     }
 
     /**
-     * Displays the expression result in the top text box.
+     * Displays the expression result in the top text box. This is a formatted number in the
+     * given currency.
      */
     public void refreshFormattedAmount() {
         String result = getFormattedAmount();

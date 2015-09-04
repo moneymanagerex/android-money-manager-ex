@@ -411,8 +411,8 @@ public class EditTransactionCommonFunctions {
                         currencyId = AccountList.get(selectedPosition).getCurrencyId();
                     }
                 }
-                double amount = (Double) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
+                BigDecimal amount = (BigDecimal) v.getTag();
+                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount.doubleValue(), currencyId);
                 dialog.show(mParent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
 
                 // The result is received in onFinishedInputAmountDialog.
