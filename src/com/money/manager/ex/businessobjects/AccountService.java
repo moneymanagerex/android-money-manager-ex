@@ -61,7 +61,7 @@ public class AccountService {
                 null,
                 selection,
                 new String[]{Integer.toString(id)},
-                null, null);
+                null);
         if (cursor == null) return null;
 
         // check if cursor is valid
