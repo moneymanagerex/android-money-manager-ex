@@ -119,7 +119,7 @@ public class Passcode {
                 null,
                 TableInfoTable.INFONAME + "=?",
                 new String[]{ INFONAME },
-                null, null);
+                null);
 
         if (cursor == null) return null;
 

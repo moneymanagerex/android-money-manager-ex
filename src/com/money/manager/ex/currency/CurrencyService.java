@@ -274,7 +274,9 @@ public class CurrencyService {
             }
             cursor.close();
         } catch (Exception e) {
-            Log.e(LOGCAT, "Error loading currencies: " + e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "loading currencies");
+            result = false;
         }
 
         return result;
@@ -307,13 +309,14 @@ public class CurrencyService {
                     tableInfo.getAllColumns(),
                     TableInfoTable.INFONAME + "=?",
                     new String[]{ Constants.INFOTABLE_BASECURRENCYID },
-                    null, null);
+                    null);
             if (cursor == null) return null;
 
             // set BaseCurrencyId
             if (cursor.moveToFirst()) {
                 currencyId = cursor.getInt(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
             }
+            cursor.close();
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "init base currency");
@@ -343,20 +346,37 @@ public class CurrencyService {
     /**
      * Retrieves the currency Id for the given symbol.
      * Accesses the database directly.
-     * @param currencySymbol
-     * @param database
-     * @return
      */
-    public int loadCurrencyIdFromSymbolRaw(String currencySymbol, SQLiteDatabase database) {
-        Cursor cursor = database.rawQuery(
-                "SELECT " + TableCurrencyFormats.CURRENCYID +
-                        " FROM CURRENCYFORMATS_V1" +
-                        " WHERE " + TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
-                new String[]{ currencySymbol });
-        if (cursor == null || !cursor.moveToFirst()) return Constants.NOT_SET;
+//    public int loadCurrencyIdFromSymbolRaw(String currencySymbol, SQLiteDatabase database) {
+//        Cursor cursor = database.rawQuery(
+//                "SELECT " + TableCurrencyFormats.CURRENCYID +
+//                " FROM CURRENCYFORMATS_V1" +
+//                " WHERE " + TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
+//                new String[]{ currencySymbol });
+//        if (cursor == null || !cursor.moveToFirst()) return Constants.NOT_SET;
+//
+//        int result = cursor.getInt(0);
+//
+//        cursor.close();
+//
+//        return result;
+//    }
 
-        int result = cursor.getInt(0);
+    public int loadCurrencyIdFromSymbol(String currencySymbol) {
+        int result = Constants.NOT_SET;
+        TableCurrencyFormats currencyEntity = new TableCurrencyFormats();
 
+        Cursor cursor = mContext.getContentResolver().query(currencyEntity.getUri(),
+                new String[] { TableCurrencyFormats.CURRENCYID },
+                TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
+                new String[]{ currencySymbol },
+                null);
+        if (cursor == null) return result;
+
+        // set BaseCurrencyId
+        if (cursor.moveToFirst()) {
+            result = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
+        }
         cursor.close();
 
         return result;

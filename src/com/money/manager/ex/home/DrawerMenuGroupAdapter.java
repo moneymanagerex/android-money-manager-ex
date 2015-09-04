@@ -19,6 +19,7 @@ package com.money.manager.ex.home;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -199,8 +200,11 @@ public class DrawerMenuGroupAdapter
             if (item.getIcon() != null) {
                 holder.imageViewIcon.setBackgroundResource(item.getIcon());
             }
-            if (item.getIconDrawable() != null) {
-                holder.imageViewIcon.setBackground(item.getIconDrawable());
+            //if (android.os.Build.VERSION == Build.VERSION.SDK_INT)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                if (item.getIconDrawable() != null) {
+                    holder.imageViewIcon.setBackground(item.getIconDrawable());
+                }
             }
         }
 

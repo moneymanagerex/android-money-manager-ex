@@ -377,8 +377,10 @@ public class MoneyManagerOpenHelper
             boolean recordExists = (infoCurrency != null && infoCurrency.moveToFirst());
 
             // get system default currency
-            int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(
-                    systemCurrency.getCurrencyCode(), db);
+            int currencyId = currencyService.loadCurrencyIdFromSymbol(
+                    systemCurrency.getCurrencyCode());
+//            int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(
+//                    systemCurrency.getCurrencyCode(), db);
 
             if (!recordExists && (currencyId != Constants.NOT_SET)) {
                 infoService.insertRaw(db, Constants.INFOTABLE_BASECURRENCYID, currencyId);

@@ -365,7 +365,7 @@ public class AccountEditActivity
         outState.putString(KEY_CONTACT_INFO, mContactInfo);
         outState.putString(KEY_ACCESS_INFO, mAccessInfo);
         outState.putString(KEY_STATUS, mStatus);
-        outState.putDouble(KEY_INITIAL_BAL, (Double) txtInitialBalance.getTag());
+        outState.putDouble(KEY_INITIAL_BAL, ((BigDecimal) txtInitialBalance.getTag()).doubleValue());
         outState.putString(KEY_NOTES, mNotes);
         outState.putString(KEY_FAVORITE_ACCT, String.valueOf(imgbFavouriteAccount.getTag()));
         outState.putInt(KEY_CURRENCY_ID, mCurrencyId != null ? mCurrencyId : -1);
@@ -437,7 +437,8 @@ public class AccountEditActivity
         values.put(TableAccountList.WEBSITE, mWebsite);
         values.put(TableAccountList.CONTACTINFO, mContactInfo);
         values.put(TableAccountList.ACCESSINFO, mAccessInfo);
-        values.put(TableAccountList.INITIALBAL, (Double) txtInitialBalance.getTag() * (spinSymbolInitialBalance.getSelectedItemPosition() == PLUS ? 1 : -1));
+        values.put(TableAccountList.INITIALBAL, ((BigDecimal) txtInitialBalance.getTag()).doubleValue() *
+                (spinSymbolInitialBalance.getSelectedItemPosition() == PLUS ? 1 : -1));
         values.put(TableAccountList.FAVORITEACCT, imgbFavouriteAccount.getTag().toString().toUpperCase());
         values.put(TableAccountList.CURRENCYID, mCurrencyId);
         // check whether the application should update or insert
