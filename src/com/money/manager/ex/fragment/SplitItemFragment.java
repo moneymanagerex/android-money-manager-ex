@@ -85,15 +85,17 @@ public class SplitItemFragment
      * @return Split Transaction
      */
     public ISplitTransactionsDataset getSplitTransaction(TransactionTypes parentTransactionType) {
-        Object amount = txtAmount.getTag();
+        Object amountTag = txtAmount.getTag();
 
         // handle 0 values.
-        if(amount == null) {
+        if(amountTag == null) {
             mSplitTransaction.setSplitTransAmount(0);
             return mSplitTransaction;
         }
 
         // otherwise figure out which sign to use for the amount.
+
+        BigDecimal amount = (BigDecimal) amountTag;
 
         // toString takes the localized text! Use value.
         int position = spinTransCode.getSelectedItemPosition();
@@ -101,9 +103,9 @@ public class SplitItemFragment
 
         if(!parentTransactionType.equals(transactionType)){
             // parent transaction type is different. Invert the amount. What if the amount is already negative?
-            mSplitTransaction.setSplitTransAmount((double) amount * -1);
+            mSplitTransaction.setSplitTransAmount(amount.doubleValue() * -1);
         } else {
-            mSplitTransaction.setSplitTransAmount((double) amount);
+            mSplitTransaction.setSplitTransAmount(amount.doubleValue());
         }
 
         return mSplitTransaction;
