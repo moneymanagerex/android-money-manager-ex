@@ -309,7 +309,7 @@ public class CurrencyService {
                     tableInfo.getAllColumns(),
                     TableInfoTable.INFONAME + "=?",
                     new String[]{ Constants.INFOTABLE_BASECURRENCYID },
-                    null, null);
+                    null);
             if (cursor == null) return null;
 
             // set BaseCurrencyId
