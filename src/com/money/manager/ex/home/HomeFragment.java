@@ -970,12 +970,12 @@ public class HomeFragment
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, Double amount) {
+    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
         QueryAccountBills account = this.getAccountBeingBalanced();
         BigDecimal currentBalance = BigDecimal.valueOf(account.getTotal());
 
         // calculate the diff.
-        BigDecimal newBalance = BigDecimal.valueOf(amount);
+        BigDecimal newBalance = amount;
         if (newBalance.compareTo(currentBalance) == 0) return;
 
         BigDecimal difference;
@@ -999,7 +999,7 @@ public class HomeFragment
         params.accountName = account.getAccountName();
         params.transactionType = transactionType;
         params.payeeName = getContext().getString(R.string.balance_adjustment);
-        params.amount = difference.doubleValue();
+        params.amount = difference;
         params.categoryName = getContext().getString(R.string.cash);
         intent.setData(params.toUri());
 

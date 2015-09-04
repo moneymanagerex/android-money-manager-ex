@@ -54,6 +54,7 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.common.IAllDataFragmentCallbacks;
 import com.money.manager.ex.utils.DateUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -266,7 +267,7 @@ public class SearchFragment extends Fragment
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, Double amount) {
+    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
         Core core = new Core(getActivity().getApplicationContext());
 
         View view = getView().findViewById(id);

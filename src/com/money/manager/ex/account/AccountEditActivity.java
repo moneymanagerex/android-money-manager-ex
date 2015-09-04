@@ -41,6 +41,7 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableAccountList;
@@ -49,6 +50,8 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /**
@@ -221,7 +224,7 @@ public class AccountEditActivity
 
         mInitialBal = Math.abs(mInitialBal);
 
-        core.formatAmountTextView(txtInitialBalance, mInitialBal, mCurrencyId);
+        core.formatAmountTextView(txtInitialBalance, BigDecimal.valueOf(mInitialBal), mCurrencyId);
         txtInitialBalance.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -339,7 +342,9 @@ public class AccountEditActivity
                     // refresh displayed Currency
                     refreshCurrencyName();
                     // refresh amount
-                    onFinishedInputAmountDialog(R.id.editTextInitialBalance, (Double) txtInitialBalance.getTag());
+                    NumericHelper numericHelper = new NumericHelper(getApplicationContext());
+                    BigDecimal initialBalance = numericHelper.getNumberFromString(txtInitialBalance.getTag().toString());
+                    onFinishedInputAmountDialog(R.id.editTextInitialBalance, initialBalance);
                 }
         }
     }
@@ -534,7 +539,7 @@ public class AccountEditActivity
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, Double amount) {
+    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
         Core core = new Core(getApplicationContext());
 
         View view = findViewById(id);

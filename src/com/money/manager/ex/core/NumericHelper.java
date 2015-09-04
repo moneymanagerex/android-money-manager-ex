@@ -30,6 +30,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Locale;
 
 /**
@@ -261,5 +262,18 @@ public class NumericHelper {
             mCurrencyService = new CurrencyService(mContext);
         }
         return mCurrencyService;
+    }
+
+    public BigDecimal getNumberFromString(String number) {
+        BigDecimal result = null;
+        try {
+            DecimalFormat format = new DecimalFormat();
+            format.setParseBigDecimal(true);
+            result = (BigDecimal) format.parse(number);
+        } catch (ParseException e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "converting " + number + " to big decimal");
+        }
+        return result;
     }
 }

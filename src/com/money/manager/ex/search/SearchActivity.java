@@ -27,6 +27,8 @@ import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 
+import java.math.BigDecimal;
+
 public class SearchActivity
         extends BaseFragmentActivity
         implements IInputAmountDialogListener {
@@ -76,7 +78,7 @@ public class SearchActivity
 	}
 
 	@Override
-	public void onFinishedInputAmountDialog(int id, Double amount) {
+	public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
 		SearchFragment fragment = (SearchFragment)getSupportFragmentManager()
                 .findFragmentByTag(SearchFragment.class.getSimpleName());
 		if (fragment != null) fragment.onFinishedInputAmountDialog(id, amount);

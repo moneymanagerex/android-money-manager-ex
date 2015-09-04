@@ -17,6 +17,8 @@
  */
 package com.money.manager.ex.common;
 
+import java.math.BigDecimal;
+
 /**
  * Interface for callbacks from amount input dialog.
  */
@@ -26,5 +28,5 @@ public interface IInputAmountDialogListener {
      * @param id Id to identify the caller.
      * @param amount Amount entered
      */
-    void onFinishedInputAmountDialog(int id, Double amount);
+    void onFinishedInputAmountDialog(int id, BigDecimal amount);
 }

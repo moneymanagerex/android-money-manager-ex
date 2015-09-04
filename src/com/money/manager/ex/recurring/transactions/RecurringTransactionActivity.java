@@ -51,6 +51,7 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 /**
@@ -233,8 +234,8 @@ public class RecurringTransactionActivity
         outState.putString(KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mCommonFunctions.status);
-        outState.putDouble(KEY_TRANS_AMOUNTTO, (Double) mCommonFunctions.txtAmountTo.getTag());
-        outState.putDouble(KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
+        outState.putString(KEY_TRANS_AMOUNTTO, mCommonFunctions.txtAmountTo.getTag().toString());
+        outState.putString(KEY_TRANS_AMOUNT, mCommonFunctions.txtAmount.getTag().toString());
         outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
         outState.putInt(KEY_CATEGORY_ID, mCommonFunctions.categoryId);
@@ -265,7 +266,7 @@ public class RecurringTransactionActivity
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, Double amount) {
+    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
         mCommonFunctions.onFinishedInputAmountDialog(id, amount);
     }
 
@@ -528,8 +529,12 @@ public class RecurringTransactionActivity
         String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = savedInstanceState.getString(KEY_TRANS_STATUS);
-        mCommonFunctions.amount = savedInstanceState.getDouble(KEY_TRANS_AMOUNT);
-        mCommonFunctions.amountTo = savedInstanceState.getDouble(KEY_TRANS_AMOUNTTO);
+
+        NumericHelper numericHelper = new NumericHelper(getApplicationContext());
+
+        mCommonFunctions.amount = numericHelper.getNumberFromString(savedInstanceState.getString(KEY_TRANS_AMOUNT));
+        mCommonFunctions.amountTo = numericHelper.getNumberFromString(savedInstanceState.getString(KEY_TRANS_AMOUNTTO));
+
         mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
         mCommonFunctions.categoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);

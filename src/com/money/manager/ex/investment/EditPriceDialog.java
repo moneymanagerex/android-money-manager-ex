@@ -209,7 +209,7 @@ public class EditPriceDialog
 //            latestPrice = mCurrentPrice;
 //        }
         latestPrice = mCurrentPrice;
-        showCurrentPrice(latestPrice, mAccountId);
+        showCurrentPrice(BigDecimal.valueOf(latestPrice), mAccountId);
 
         // actions
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -288,12 +288,12 @@ public class EditPriceDialog
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, Double amount) {
+    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
         // set the amount on the dialog.
         showCurrentPrice(amount, mAccountId);
     }
 
-    private void showCurrentPrice(double currentPrice, int accountId) {
+    private void showCurrentPrice(BigDecimal currentPrice, int accountId) {
         EditTransactionCommonFunctions commonFunctions = new EditTransactionCommonFunctions(mContext, null);
         commonFunctions.displayAmountFormatted(mAmountTextView, currentPrice, accountId);
 
@@ -304,10 +304,10 @@ public class EditPriceDialog
         TableCurrencyFormats currency = currencyService.getCurrency(currencyId);
         String currencySymbol = currency.getSfxSymbol();
 
-        mAmountTextView.setText(currencySymbol + " " + Double.toString(currentPrice));
+        mAmountTextView.setText(currencySymbol + " " + currentPrice.toString());
         mAmountTextView.setTag(currentPrice);
 
-        this.mCurrentPrice = currentPrice;
+        this.mCurrentPrice = currentPrice.doubleValue();
     }
 
     public void formatExtendedDate(TextView dateTextView) {

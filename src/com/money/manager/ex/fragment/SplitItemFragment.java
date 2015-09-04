@@ -41,6 +41,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 
+import java.math.BigDecimal;
+
 public class SplitItemFragment
         extends Fragment
         implements IInputAmountDialogListener {
@@ -145,7 +147,7 @@ public class SplitItemFragment
                 // Change the sign to positive.
                 if(splitTransactionAmount < 0) splitTransactionAmount = Math.abs(splitTransactionAmount);
 
-                core.formatAmountTextView(txtAmount, splitTransactionAmount);
+                core.formatAmountTextView(txtAmount, BigDecimal.valueOf(splitTransactionAmount));
             }
             txtAmount.setOnClickListener(new OnClickListener() {
 
@@ -243,11 +245,11 @@ public class SplitItemFragment
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, Double amount) {
+    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
         Core core = new Core(getActivity().getApplicationContext());
         if (txtAmount.getId() == id) {
             txtAmount.setTag(amount);
-            mSplitTransaction.setSplitTransAmount(amount);
+            mSplitTransaction.setSplitTransAmount(amount.doubleValue());
             core.formatAmountTextView(txtAmount, amount);
         }
     }

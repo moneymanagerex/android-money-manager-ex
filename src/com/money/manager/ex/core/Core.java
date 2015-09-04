@@ -65,6 +65,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -257,7 +258,7 @@ public class Core {
      * @param view   TextView to set the amount
      * @param amount to be formatted
      */
-    public void formatAmountTextView(TextView view, double amount) {
+    public void formatAmountTextView(TextView view, BigDecimal amount) {
         formatAmountTextView(view, amount, null);
     }
 
@@ -268,13 +269,13 @@ public class Core {
      * @param amount     to be formatted
      * @param currencyId Id currency to be formatted
      */
-    public void formatAmountTextView(TextView view, double amount, Integer currencyId) {
+    public void formatAmountTextView(TextView view, BigDecimal amount, Integer currencyId) {
         CurrencyService currencyService = new CurrencyService(mContext);
 
         if (currencyId == null) {
-            view.setText(currencyService.getBaseCurrencyFormatted(amount));
+            view.setText(currencyService.getBaseCurrencyFormatted(amount.doubleValue()));
         } else {
-            view.setText(currencyService.getCurrencyFormatted(currencyId, amount));
+            view.setText(currencyService.getCurrencyFormatted(currencyId, amount.doubleValue()));
         }
 
         view.setTag(amount);

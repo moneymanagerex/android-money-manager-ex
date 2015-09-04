@@ -56,6 +56,7 @@ import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -198,8 +199,8 @@ public class EditTransactionActivity
                 new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.status);
-        outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, (Double) mCommonFunctions.txtAmountTo.getTag());
-        outState.putDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, (Double) mCommonFunctions.txtAmount.getTag());
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, mCommonFunctions.txtAmountTo.getTag().toString());
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, mCommonFunctions.txtAmount.getTag().toString());
         outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
         outState.putInt(EditTransactionActivityConstants.KEY_CATEGORY_ID, mCommonFunctions.categoryId);
@@ -218,7 +219,7 @@ public class EditTransactionActivity
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, Double amount) {
+    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
         mCommonFunctions.onFinishedInputAmountDialog(id, amount);
     }
 
@@ -371,8 +372,8 @@ public class EditTransactionActivity
         String transCode = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.STATUS));
-        mCommonFunctions.amount = cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
-        mCommonFunctions.amountTo = cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
+        mCommonFunctions.amount = BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT)));
+        mCommonFunctions.amountTo = BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT)));
         mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.PAYEEID));
         mCommonFunctions.categoryId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.CATEGID));
         mCommonFunctions.subCategoryId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.SUBCATEGID));
@@ -495,8 +496,8 @@ public class EditTransactionActivity
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
-        mCommonFunctions.amount = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_AMOUNT);
-        mCommonFunctions.amountTo = savedInstanceState.getDouble(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT);
+        mCommonFunctions.amount = new BigDecimal(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT));
+        mCommonFunctions.amountTo = new BigDecimal(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT));
         mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommonFunctions.categoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID);

@@ -35,6 +35,7 @@ import com.money.manager.ex.fragment.SplitItemFragment;
 import com.money.manager.ex.fragment.SplitItemFragment.SplitItemFragmentCallbacks;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,7 +209,7 @@ public class SplitTransactionsActivity
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, Double amount) {
+    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
         SplitItemFragment fragment = getFragmentInputAmountClick();
         if (fragment != null && fragment.isVisible() && fragment.isResumed()) {
             fragment.onFinishedInputAmountDialog(id, amount);

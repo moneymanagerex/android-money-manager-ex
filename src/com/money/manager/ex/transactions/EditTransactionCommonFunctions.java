@@ -51,6 +51,7 @@ import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
@@ -99,7 +100,8 @@ public class EditTransactionCommonFunctions {
     public String payeeName;
     public int categoryId = Constants.NOT_SET;  // Category
     public int subCategoryId = Constants.NOT_SET;
-    public double amountTo = 0, amount = 0; // amount
+    public BigDecimal amountTo = BigDecimal.ZERO;
+    public BigDecimal amount = BigDecimal.ZERO; // amount
     public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
     public String mNotes = "";
@@ -175,7 +177,7 @@ public class EditTransactionCommonFunctions {
 
     }
 
-    public void displayAmountFormatted(TextView view, double amount, Integer accountId) {
+    public void displayAmountFormatted(TextView view, BigDecimal amount, Integer accountId) {
         // take currency id
         Integer currencyId = null;
 
@@ -188,9 +190,9 @@ public class EditTransactionCommonFunctions {
         CurrencyService currencyService = new CurrencyService(mContext);
 
         if (currencyId == null) {
-            view.setText(currencyService.getBaseCurrencyFormatted(amount));
+            view.setText(currencyService.getBaseCurrencyFormatted(amount.doubleValue()));
         } else {
-            view.setText(currencyService.getCurrencyFormatted(currencyId, amount));
+            view.setText(currencyService.getCurrencyFormatted(currencyId, amount.doubleValue()));
         }
         view.setTag(amount);
     }
@@ -355,7 +357,7 @@ public class EditTransactionCommonFunctions {
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     accountId = mAccountIdList.get(position);
-                    displayAmountFormatted(txtAmount, (Double) txtAmount.getTag(), accountId);
+                    displayAmountFormatted(txtAmount, (BigDecimal) txtAmount.getTag(), accountId);
                     refreshControlHeaders();
                 }
             }
@@ -378,7 +380,7 @@ public class EditTransactionCommonFunctions {
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     toAccountId = mAccountIdList.get(position);
-                    displayAmountFormatted(txtAmountTo, (Double) txtAmountTo.getTag(), toAccountId);
+                    displayAmountFormatted(txtAmountTo, (BigDecimal) txtAmountTo.getTag(), toAccountId);
                     refreshControlHeaders();
                 }
             }
@@ -797,7 +799,7 @@ public class EditTransactionCommonFunctions {
                     for (int i = 0; i < mSplitTransactions.size(); i++) {
                         splitSum += mSplitTransactions.get(i).getSplitTransAmount();
                     }
-                    displayAmountFormatted(txtAmount, splitSum,
+                    displayAmountFormatted(txtAmount, BigDecimal.valueOf(splitSum),
                             !transactionType.equals(TransactionTypes.Transfer)
                                     ? accountId
                                     : toAccountId);
@@ -811,7 +813,7 @@ public class EditTransactionCommonFunctions {
         }
     }
 
-    public void onFinishedInputAmountDialog(int id, Double amount) {
+    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
         View view = mParent.findViewById(id);
         if (view == null || !(view instanceof TextView)) return;
 
@@ -1078,7 +1080,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private void convertAndDisplayAmount(boolean isSourceAmount, int fromCurrencyId, int toCurrencyId,
-                                         Double amount) {
+                                         BigDecimal amount) {
         CurrencyService currencyService = new CurrencyService(mContext);
         TextView destinationTextView = txtAmountTo;
 
@@ -1099,8 +1101,8 @@ public class EditTransactionCommonFunctions {
 
         // Replace the destination value only if it is zero.
         if (destinationAmount == 0) {
-            Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
-            displayAmountFormatted(destinationTextView, amountExchange, destinationAccountId);
+            Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount.doubleValue(), fromCurrencyId);
+            displayAmountFormatted(destinationTextView, BigDecimal.valueOf(amountExchange), destinationAccountId);
         }
     }
 

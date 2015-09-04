@@ -22,7 +22,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.core.NumericHelper;
+
+import java.math.BigDecimal;
 
 /**
  * Recurring transaction.
@@ -47,8 +49,8 @@ public class TableBillsDeposits
     public String transactionCode;
 //    public TransactionTypes transactionType;
     public String status;
-    public Double amount;
-    public Double totalAmount;
+    public BigDecimal amount;
+    public BigDecimal totalAmount;
     public Integer payeeId;
     public Integer categoryId;
     public Integer subCategoryId;
@@ -85,8 +87,8 @@ public class TableBillsDeposits
 		this.transactionCode = c.getString(c.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
 //		this.transactionType = TransactionTypes.valueOf(this.transactionCode);
 		status = c.getString(c.getColumnIndex(ISplitTransactionsDataset.STATUS));
-		amount = c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
-		this.totalAmount = c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
+		amount = BigDecimal.valueOf(c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT)));
+		this.totalAmount = BigDecimal.valueOf(c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT)));
 		payeeId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.PAYEEID));
 		categoryId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.CATEGID));
 		subCategoryId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.SUBCATEGID));
@@ -109,8 +111,8 @@ public class TableBillsDeposits
         dest.writeInt(toAccountId);
         dest.writeString(transactionCode);
         dest.writeString(status);
-        dest.writeDouble(amount);
-        dest.writeDouble(totalAmount);
+        dest.writeString(amount.toString());
+        dest.writeString(totalAmount.toString());
         dest.writeInt(payeeId);
         dest.writeInt(categoryId);
         dest.writeInt(subCategoryId);
@@ -127,8 +129,8 @@ public class TableBillsDeposits
         this.toAccountId = Constants.NOT_SET;
         this.transactionCode = "";
         this.status = "";
-        this.amount = 0d;
-        this.totalAmount = 0d;
+        this.amount = BigDecimal.ZERO;
+        this.totalAmount = BigDecimal.ZERO;
         this.payeeId = Constants.NOT_SET;
         this.categoryId = Constants.NOT_SET;
         this.subCategoryId = Constants.NOT_SET;
@@ -141,14 +143,14 @@ public class TableBillsDeposits
         return this;
     }
 
-    public void readToParcel(Parcel source) {
+    public void readFromParcel(Parcel source) {
         id = source.readInt();
         accountId = source.readInt();
         toAccountId = source.readInt();
         transactionCode = source.readString();
         status = source.readString();
-        amount = source.readDouble();
-        totalAmount = source.readDouble();
+        amount = new BigDecimal(source.readString());
+        totalAmount = new BigDecimal(source.readDouble());
         payeeId = source.readInt();
         categoryId = source.readInt();
         subCategoryId = source.readInt();
@@ -162,7 +164,7 @@ public class TableBillsDeposits
     public final static Parcelable.Creator<TableBillsDeposits> CREATOR = new Parcelable.Creator<TableBillsDeposits>() {
         public TableBillsDeposits createFromParcel(Parcel source) {
             TableBillsDeposits record = new TableBillsDeposits();
-            record.readToParcel(source);
+            record.readFromParcel(source);
             return record;
         }
 
