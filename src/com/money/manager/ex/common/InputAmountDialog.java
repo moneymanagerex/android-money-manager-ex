@@ -73,12 +73,13 @@ public class InputAmountDialog
     private int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
             R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
-            R.id.buttonKeyNum8, R.id.buttonKeyNum9
+            R.id.buttonKeyNum8, R.id.buttonKeyNum9,
+            R.id.buttonKeyNumDecimal,
     };
     private int[] idOperatorKeys = {
-            R.id.buttonKeyNumDecimal, R.id.buttonKeyAdd, R.id.buttonKeyDiv,
-            R.id.buttonKeyLess, R.id.buttonKeyMultiplication, R.id.buttonKeyLeftParenthesis,
-            R.id.buttonKeyRightParenthesis
+            R.id.buttonKeyAdd, R.id.buttonKeyDiv,
+            R.id.buttonKeyLess, R.id.buttonKeyMultiplication,
+            R.id.buttonKeyLeftParenthesis, R.id.buttonKeyRightParenthesis
     };
 
     private int mIdView;

@@ -231,18 +231,18 @@ public class EditTransactionCommonFunctions {
         values.put(ISplitTransactionsDataset.STATUS, this.status);
 
         // Amount
-        Double amount = (Double) this.txtAmount.getTag();
-        values.put(ISplitTransactionsDataset.TRANSAMOUNT, amount);
+        BigDecimal amount = (BigDecimal) this.txtAmount.getTag();
+        values.put(ISplitTransactionsDataset.TRANSAMOUNT, amount.doubleValue());
 
         // Amount To
-        Double amountTo;
+        BigDecimal amountTo;
         if (isTransfer) {
-            amountTo = (Double) this.txtAmountTo.getTag();
+            amountTo = (BigDecimal) this.txtAmountTo.getTag();
         } else {
             // Use the Amount value.
-            amountTo = (Double) this.txtAmount.getTag();
+            amountTo = (BigDecimal) this.txtAmount.getTag();
         }
-        values.put(ISplitTransactionsDataset.TOTRANSAMOUNT, amountTo);
+        values.put(ISplitTransactionsDataset.TOTRANSAMOUNT, amountTo.doubleValue());
 
         // Accounts & Payee
         values.put(ISplitTransactionsDataset.ACCOUNTID, this.accountId);
@@ -1193,16 +1193,16 @@ public class EditTransactionCommonFunctions {
             }
 
             // Amount To is required and has to be positive.
-            double amountTo = (Double) txtAmountTo.getTag();
-            if (amountTo <= 0) {
+            BigDecimal amountTo = (BigDecimal) txtAmountTo.getTag();
+            if (amountTo.doubleValue() <= 0) {
                 Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
                 return false;
             }
         }
 
         // Amount is required and must be positive. Sign is determined by transaction type.
-        double amount = (Double) txtAmount.getTag();
-        if (amount <= 0) {
+        BigDecimal amount = (BigDecimal) txtAmount.getTag();
+        if (amount.doubleValue() <= 0) {
             Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
             return false;
         }
