@@ -144,16 +144,18 @@ public class MoneyManagerApplication
             }
         }
 
-        ExceptionHandler handler = new ExceptionHandler(context);
-        handler.showMessage("Database " + databasePath + " not found. Using default.");
-
         // otherwise try other paths or create the default database.
 
         String defaultDirectory = getDatabaseDirectory(context);
-        databasePath = defaultDirectory + "/data.mmb";
+        String defaultPath = defaultDirectory + "/data.mmb";
 
-        setDatabasePath(context, databasePath);
-        return databasePath;
+        setDatabasePath(context, defaultPath);
+
+        // Show notification
+        ExceptionHandler handler = new ExceptionHandler(context);
+        handler.showMessage("Database " + databasePath + " not found. Using default:" + defaultPath);
+
+        return defaultPath;
     }
 
     /**
