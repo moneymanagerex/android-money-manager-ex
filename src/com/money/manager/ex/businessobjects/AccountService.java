@@ -124,7 +124,7 @@ public class AccountService {
                 null,
                 selection,
                 args,
-                null, null);
+                null);
         if (cursor == null) return total;
 
         // calculate balance.

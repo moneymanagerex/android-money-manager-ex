@@ -230,7 +230,7 @@ public class AccountEditActivity
 
             @Override
             public void onClick(View v) {
-                double amount = (Double) v.getTag();
+                double amount = ((BigDecimal) v.getTag()).doubleValue();
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, mCurrencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
