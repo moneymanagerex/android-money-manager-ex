@@ -622,4 +622,15 @@
     <string name="single_account">Single Account</string>
     <string name="title_activity_edit_investment_transaction">EditInvestmentTransactionActivity</string>
     <string name="watchlist">Watchlist</string>
+
+    <!-- edit investment transaction -->
+    <string name="stock_name">Stock Name</string>
+    <string name="symbol">Symbol</string>
+    <string name="number_of_shares">Number of Shares</string>
+    <string name="purchase_price">Purchase Price</string>
+    <string name="current_price">Current Price</string>
+    <string name="price_date">Price Date</string>
+    <string name="commission">Commission</string>
+    <string name="value">Value</string>
+
 </resources>

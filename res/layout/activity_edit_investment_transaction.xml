@@ -41,11 +41,11 @@
             android:paddingLeft="@dimen/activity_padding_side"
             android:paddingRight="@dimen/activity_padding_side">
 
-            <!-- Date -->
+            <!-- Purchase Date -->
             <com.money.manager.ex.view.RobotoTextView
                 style="@style/Money.TextView.Header.Caption"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:text="@string/date"
@@ -59,6 +59,68 @@
                 android:hint="@string/date"
                 android:textStyle="bold"/>
 
+            <!-- Stock Name -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stock_name"/>
+
+            <!-- Symbol -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/symbol"/>
+
+            <!-- Number of Shares -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/number_of_shares"/>
+
+            <!-- Purchase Price -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/purchase_price"/>
+
+            <!-- Current Price -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/current_price"/>
+
+            <!-- Price Date -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/price_date"/>
+
+            <!-- Commission -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/commission"/>
+
+            <!-- Value -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/value"/>
+
+            <!-- Notes -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notes"/>
 
         </LinearLayout>
 
