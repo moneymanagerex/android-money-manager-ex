@@ -27,7 +27,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -263,7 +262,8 @@ public class HomeFragment
         switch (id) {
             case ID_LOADER_USER_NAME:
                 result = new MmexCursorLoader(getActivity(), mInfoTable.getUri(),
-                        new String[]{TableInfoTable.INFONAME, TableInfoTable.INFOVALUE}, null, null, null);
+                        new String[]{ TableInfoTable.INFONAME, TableInfoTable.INFOVALUE },
+                        null, null, null);
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:
@@ -296,7 +296,7 @@ public class HomeFragment
             case ID_LOADER_INCOME_EXPENSES:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
 
-                // Get custom period. pref_income_expense_footer_period
+                // todo: Get custom period. pref_income_expense_footer_period
 //                String period = new AppSettings(getContext()).getBehaviourSettings().getIncomeExpensePeriod();
 //                WhereClauseGenerator generator = new WhereClauseGenerator(getContext());
 //                String transactionsFilter = generator.getWhereClauseForPeriod(period);
@@ -390,7 +390,12 @@ public class HomeFragment
                 break;
 
             case ID_LOADER_ACCOUNT_BILLS:
-                renderAccountsList(data);
+                try {
+                    renderAccountsList(data);
+                } catch (Exception e) {
+                    ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+                    handler.handle(e, "rendering account list");
+                }
 
                 // set total for accounts in the main Drawer.
                 // todo: use a callback interface for this.
@@ -535,7 +540,7 @@ public class HomeFragment
         if (type != ExpandableListView.PACKED_POSITION_TYPE_CHILD) return;
 
         // get adapter.
-        AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
+        HomeAccountsExpandableAdapter accountsAdapter = (HomeAccountsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
         Object childItem = accountsAdapter.getChild(groupPosition, childPosition);
         QueryAccountBills account = (QueryAccountBills) childItem;
 
@@ -811,7 +816,7 @@ public class HomeFragment
         groupPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
         childPos = ExpandableListView.getPackedPositionChild(info.packedPosition);
 
-        AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
+        HomeAccountsExpandableAdapter accountsAdapter = (HomeAccountsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
         QueryAccountBills account = null;
         try {
             account = (QueryAccountBills) accountsAdapter.getChild(groupPos, childPos);
@@ -846,7 +851,7 @@ public class HomeFragment
         addFooterToExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
 
         // create adapter
-        AccountBillsExpandableAdapter expandableAdapter = new AccountBillsExpandableAdapter(getActivity(),
+        HomeAccountsExpandableAdapter expandableAdapter = new HomeAccountsExpandableAdapter(getActivity(),
                 mAccountTypes, mAccountsByType, mTotalsByType, mHideReconciled);
         // set adapter and shown
         mExpandableListView.setAdapter(expandableAdapter);
@@ -899,7 +904,10 @@ public class HomeFragment
 
             // currency
             int currencyId = account.getCurrencyId();
-            double amountInBaseCurrency = currencyService.doCurrencyExchange(baseCurrencyId, amount, currencyId);
+            Double amountInBaseCurrency = currencyService.doCurrencyExchange(baseCurrencyId, amount, currencyId);
+            if (amountInBaseCurrency == null) {
+                amountInBaseCurrency = amount;
+            }
             double currentTotalInBase = account.getTotalBaseConvRate();
             account.setTotalBaseConvRate(currentTotalInBase + amountInBaseCurrency);
 
@@ -914,7 +922,7 @@ public class HomeFragment
         investmentTotalRecord.setReconciledBaseConvRate(total);
 
         // Notify about the changes
-        AccountBillsExpandableAdapter accountsAdapter = (AccountBillsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
+        HomeAccountsExpandableAdapter accountsAdapter = (HomeAccountsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
         if (accountsAdapter != null) {
             accountsAdapter.notifyDataSetChanged();
         }
@@ -955,6 +963,7 @@ public class HomeFragment
                 }
                 mTotalsByType.put(accountType, totalForType);
             }
+
             totalForType = mTotalsByType.get(accountType);
             double reconciledBaseConversionRate = totalForType.getReconciledBaseConvRate() +
                     accountTransaction.getReconciledBaseConvRate();

@@ -188,12 +188,14 @@ public class EditTransactionCommonFunctions {
         }
 
         CurrencyService currencyService = new CurrencyService(mContext);
+        String amountDisplay;
 
         if (currencyId == null) {
-            view.setText(currencyService.getBaseCurrencyFormatted(amount.doubleValue()));
+            amountDisplay = currencyService.getBaseCurrencyFormatted(amount.doubleValue());
         } else {
-            view.setText(currencyService.getCurrencyFormatted(currencyId, amount.doubleValue()));
+            amountDisplay = currencyService.getCurrencyFormatted(currencyId, amount.doubleValue());
         }
+        view.setText(amountDisplay);
         view.setTag(amount);
     }
 
@@ -1096,11 +1098,11 @@ public class EditTransactionCommonFunctions {
                 : this.accountId;
 
         // get the destination value.
-        Double destinationAmount = (Double) destinationTextView.getTag();
-        if (destinationAmount == null) destinationAmount = 0d;
+        BigDecimal destinationAmount = (BigDecimal) destinationTextView.getTag();
+        if (destinationAmount == null) destinationAmount = BigDecimal.ZERO;
 
         // Replace the destination value only if it is zero.
-        if (destinationAmount == 0) {
+        if (destinationAmount.compareTo(BigDecimal.ZERO) == 0) {
             Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount.doubleValue(), fromCurrencyId);
             displayAmountFormatted(destinationTextView, BigDecimal.valueOf(amountExchange), destinationAccountId);
         }

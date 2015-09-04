@@ -419,7 +419,8 @@ public class InputAmountDialog
         if (currency == null) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.showMessage(getString(R.string.base_currency_not_set));
-            return "";
+
+            return mAmount.toString();
         }
 
         String result;

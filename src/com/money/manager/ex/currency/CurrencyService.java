@@ -76,7 +76,7 @@ public class CurrencyService {
         if (currency == null) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.showMessage(mContext.getString(R.string.base_currency_not_set));
-            return "";
+            return null;
         }
         return currency.getCurrencySymbol();
     }
@@ -189,12 +189,13 @@ public class CurrencyService {
         // find currency id
         if (currencyId != null) {
             TableCurrencyFormats tableCurrency = getCurrency(currencyId);
+            NumericHelper helper = new NumericHelper(mContext);
 
             if (tableCurrency == null) {
-                result = String.valueOf(value);
+                // no currency
+                result = String.format("%.2f", value);
             } else {
                 // formatted value
-                NumericHelper helper = new NumericHelper(mContext);
                 result = helper.getValueFormatted(value, tableCurrency);
             }
         } else {

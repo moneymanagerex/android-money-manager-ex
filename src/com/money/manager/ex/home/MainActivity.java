@@ -883,29 +883,6 @@ public class MainActivity
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
     }
 
-//    private void createLinearDrawer() {
-//        mDrawerList = (ListView) findViewById(R.id.listViewDrawer);
-//
-//        DrawerMenuItemAdapter adapter = createDrawerAdapter();
-//
-//        // get drawer list and set adapter
-//        if (mDrawerList != null) {
-//            mDrawerList.setAdapter(adapter);
-//        }
-//
-//        // set listener on item click
-//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(this, mDrawerLayout, mDrawerList, mDrawer));
-//    }
-
-//    private DrawerMenuItemAdapter createDrawerAdapter() {
-//        // create adapter
-//        DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
-//
-//        adapter.addAll(getDrawerMenuItems());
-//
-//        return adapter;
-//    }
-
     private void createExpandableDrawer() {
         // Menu.
 
@@ -1092,30 +1069,4 @@ public class MainActivity
                 .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
         onDrawerItemSubDialogs(adapter, text, isDarkTheme);
     }
-
-//    private void showToolsSelector(boolean isDarkTheme, String text) {
-//        final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
-//        // manage: account
-//        adapter.add(new DrawerMenuItem().withId(R.id.menu_account)
-//                .withText(getString(R.string.accounts))
-//                .withIcon(isDarkTheme ? R.drawable.ic_action_bank_dark
-//                        : R.drawable.ic_action_bank_light));
-//        // manage: categories
-//        adapter.add(new DrawerMenuItem().withId(R.id.menu_category)
-//                .withText(getString(R.string.categories))
-//                .withIcon(isDarkTheme ? R.drawable.ic_action_label_outline_dark
-//                        : R.drawable.ic_action_label_outline_light));
-//        // manage: currencies
-//        adapter.add(new DrawerMenuItem().withId(R.id.menu_currency)
-//                .withText(getString(R.string.currencies))
-//                .withIcon(isDarkTheme ? R.drawable.ic_action_attach_money_dark
-//                        : R.drawable.ic_action_attach_money_light));
-//        // manage: payees
-//        adapter.add(new DrawerMenuItem().withId(R.id.menu_payee)
-//                .withText(getString(R.string.payees))
-//                .withIcon(isDarkTheme ? R.drawable.ic_action_users_dark
-//                        : R.drawable.ic_action_users_light));
-//
-//        onDrawerItemSubDialogs(adapter, text, isDarkTheme);
-//    }
 }
