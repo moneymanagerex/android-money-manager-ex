@@ -132,10 +132,11 @@ dependencies {
     // Dropbox
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
     // other
-    compile 'com.android.support:appcompat-v7:23.0.0'
-    compile 'com.android.support:support-v4:23.0.0'
-    compile 'com.android.support:cardview-v7:23.0.0'
-    compile 'com.android.support:design:23.0.0'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.android.support:cardview-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
+    // 3rd party
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.0.0'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.afollestad:material-dialogs:0.7.6.0'
