@@ -73,10 +73,13 @@ public class InputAmountDialog
     private int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
             R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
-            R.id.buttonKeyNum8, R.id.buttonKeyNum9,
+            R.id.buttonKeyNum8, R.id.buttonKeyNum9
+    };
+    private int[] idOperatorKeys = {
             R.id.buttonKeyNumDecimal, R.id.buttonKeyAdd, R.id.buttonKeyDiv,
             R.id.buttonKeyLess, R.id.buttonKeyMultiplication, R.id.buttonKeyLeftParenthesis,
-            R.id.buttonKeyRightParenthesis};
+            R.id.buttonKeyRightParenthesis
+    };
 
     private int mIdView;
     private BigDecimal mAmount;
@@ -145,7 +148,7 @@ public class InputAmountDialog
         setDecimalSeparator(view);
 
         // Numbers and Operators.
-        OnClickListener clickListener = new OnClickListener() {
+        OnClickListener numberClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Remove the default 0 value to avoid leading zero "01" numbers.
@@ -163,7 +166,22 @@ public class InputAmountDialog
         };
         for (int id : idButtonKeyNum) {
             Button button = (Button) view.findViewById(id);
-            button.setOnClickListener(clickListener);
+            button.setOnClickListener(numberClickListener);
+        }
+
+        OnClickListener operatorClickListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String existingValue = txtMain.getText().toString();
+                mStartedTyping = true;
+
+                txtMain.setText(existingValue.concat(((Button) v).getText().toString()));
+                evalExpression();
+            }
+        };
+        for (int id : idOperatorKeys) {
+            Button button = (Button) view.findViewById(id);
+            button.setOnClickListener(operatorClickListener);
         }
 
         // Clear button. 'C'
