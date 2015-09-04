@@ -25,7 +25,7 @@ import android.view.KeyEvent;
 
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.fragment.PayeeLoaderListFragment;
+import com.money.manager.ex.fragment.PayeeListFragment;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -40,7 +40,7 @@ public class PayeeActivity
     private static final String LOGCAT = PayeeActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = PayeeActivity.class.getSimpleName() + "_Fragment";
 
-    PayeeLoaderListFragment listFragment = new PayeeLoaderListFragment();
+    PayeeListFragment listFragment = new PayeeListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class PayeeActivity
         String action = intent.getAction();
 
         if (!TextUtils.isEmpty(action)) {
-            PayeeLoaderListFragment.mAction = action;
+            PayeeListFragment.mAction = action;
         }
         FragmentManager fm = getSupportFragmentManager();
         // attach fragment activity

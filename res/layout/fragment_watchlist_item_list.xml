@@ -18,7 +18,8 @@
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/progressContainer"
@@ -70,5 +71,16 @@
 
         </ScrollView>
     </FrameLayout>
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_action_add_dark"
+        android:visibility="gone"
+        fab:fab_colorNormal="@color/md_primary"
+        fab:fab_colorPressed="@color/md_primary_dark" />
 
 </FrameLayout>

@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.money.manager.ex.R;
+import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.investment.dummy.DummyContent;
 
 /**
@@ -17,7 +17,7 @@ import com.money.manager.ex.investment.dummy.DummyContent;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class InvestmentItemFragment extends ListFragment {
+public class InvestmentItemsListFragment extends BaseListFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,8 +31,8 @@ public class InvestmentItemFragment extends ListFragment {
     private OnFragmentInteractionListener mListener;
 
     // TODO: Rename and change types of parameters
-    public static InvestmentItemFragment newInstance(String param1, String param2) {
-        InvestmentItemFragment fragment = new InvestmentItemFragment();
+    public static InvestmentItemsListFragment newInstance(String param1, String param2) {
+        InvestmentItemsListFragment fragment = new InvestmentItemsListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -44,7 +44,13 @@ public class InvestmentItemFragment extends ListFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public InvestmentItemFragment() {
+    public InvestmentItemsListFragment() {
+    }
+
+    @Override
+    public String getSubTitle() {
+        // todo: show the account name here.
+        return null;
     }
 
     @Override

@@ -18,18 +18,13 @@
 package com.money.manager.ex.fragment;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
@@ -52,17 +47,15 @@ import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.PreferenceConstants;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
- *
+ * List of Payees. Used as a picker/selector also.
  */
-public class PayeeLoaderListFragment
+public class PayeeListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -435,10 +428,6 @@ public class PayeeLoaderListFragment
         showDialogEditPayeeName(SQLTypeTransaction.INSERT, 0, payeeSearch);
     }
 
-    public void restartLoader() {
-        getLoaderManager().restartLoader(ID_LOADER_PAYEE, null, this);
-    }
-
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
@@ -456,4 +445,9 @@ public class PayeeLoaderListFragment
             getActivity().openContextMenu(v);
         }
     }
+
+    public void restartLoader() {
+        getLoaderManager().restartLoader(ID_LOADER_PAYEE, null, this);
+    }
+
 }

@@ -35,7 +35,7 @@ public class RepeatingTransactionReceiver
                 .getBoolean(context.getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS), true);
         if (!notify) return;
 
-		Intent service = new Intent(context, RepeatingTransactionService.class);
+		Intent service = new Intent(context, RecurringTransactionIntentService.class);
 		context.startService(service);
 	}
 

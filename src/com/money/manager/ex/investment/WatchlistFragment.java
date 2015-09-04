@@ -186,7 +186,8 @@ public class WatchlistFragment extends Fragment
 
         mDataFragment = WatchlistItemsFragment.newInstance(this);
         // set arguments and settings of fragment
-        mDataFragment.setArguments(prepareArgsForChildFragment());
+//        mDataFragment.setArguments(prepareArgsForChildFragment());
+        mDataFragment.accountId = mAccountId;
         mDataFragment.setListHeader(header);
         mDataFragment.setAutoStarLoader(false);
 
@@ -248,18 +249,6 @@ public class WatchlistFragment extends Fragment
         super.onSaveInstanceState(outState);
         if (mAccountId != null)
             outState.putInt(KEY_CONTENT, mAccountId);
-    }
-
-    private Bundle prepareArgsForChildFragment() {
-        ArrayList<String> selection = new ArrayList<>();
-
-        selection.add(StockRepository.HELDAT + "=" + Integer.toString(mAccountId));
-
-        Bundle args = new Bundle();
-        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
-        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, StockRepository.SYMBOL + " ASC");
-
-        return args;
     }
 
     /**

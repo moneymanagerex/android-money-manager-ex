@@ -24,11 +24,11 @@ import android.preference.PreferenceManager;
 
 import com.money.manager.ex.settings.PreferenceConstants;
 
-public class RepeatingTransactionService
+public class RecurringTransactionIntentService
 		extends IntentService {
 
-	public RepeatingTransactionService() {
-		super("com.money.manager.ex.notifications.RepeatingTransactionService");
+	public RecurringTransactionIntentService() {
+		super("com.money.manager.ex.notifications.RecurringTransactionIntentService");
 	}
 
 	@Override

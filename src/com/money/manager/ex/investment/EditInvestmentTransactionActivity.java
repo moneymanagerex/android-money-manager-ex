@@ -1,13 +1,16 @@
 package com.money.manager.ex.investment;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.BaseFragmentActivity;
 
-public class EditInvestmentTransactionActivity extends AppCompatActivity {
+public class EditInvestmentTransactionActivity
+        extends BaseFragmentActivity {
+
+    public static final String EXTRA_ACCOUNT_ID = "EditInvestmentTransactionActivity:AccountId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

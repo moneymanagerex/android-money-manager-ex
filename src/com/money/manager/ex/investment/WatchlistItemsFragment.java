@@ -19,6 +19,7 @@ package com.money.manager.ex.investment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Bundle;
@@ -28,7 +29,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,6 +46,7 @@ import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.ExceptionHandler;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -57,7 +58,6 @@ public class WatchlistItemsFragment
         extends BaseListFragment
         implements LoaderCallbacks<Cursor> {
 
-    // ID Loader
     public static final int ID_LOADER_WATCHLIST = 1;
 
     /**
@@ -71,9 +71,9 @@ public class WatchlistItemsFragment
         return fragment;
     }
 
-    private static final String LOGCAT = WatchlistItemsFragment.class.getSimpleName();
-
     // non-static
+
+    public Integer accountId;
 
     private IWatchlistItemsFragmentEventHandler mEventHandler;
     private boolean mAutoStarLoader = true;
@@ -81,28 +81,14 @@ public class WatchlistItemsFragment
     private Context mContext;
     private StockRepository mStockRepository;
     private StockHistoryRepository mStockHistoryRepository;
-    private Bundle mLoaderArgs;
-
-    /**
-     * @return the mAutoStarLoader
-     */
-    public boolean isAutoStarLoader() {
-        return mAutoStarLoader;
-    }
-
-    /**
-     * @param mAutoStarLoader the mAutoStarLoader to set
-     */
-    public void setAutoStarLoader(boolean mAutoStarLoader) {
-        this.mAutoStarLoader = mAutoStarLoader;
-    }
+//    private Bundle mLoaderArgs;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity();
-        mLoaderArgs = getArguments();
+//        mLoaderArgs = getArguments();
 
         // set fragment
         setEmptyText(getString(R.string.no_stock_data));
@@ -145,6 +131,10 @@ public class WatchlistItemsFragment
         if (isAutoStarLoader()) {
             reloadData();
         }
+
+        // todo: set floating button visible
+//        setFloatingActionButtonVisible(true);
+//        setFloatingActionButtonAttachListView(true);
     }
 
     @Override
@@ -164,11 +154,9 @@ public class WatchlistItemsFragment
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
 
-//        int columns = cursor.getColumnCount();
-//        int rows = cursor.getCount();
 //        DatabaseUtils.dumpCursor(cursor);
 
-        boolean cursorMoved = cursor.moveToPosition(info.position - 1);
+        cursor.moveToPosition(info.position - 1);
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL)));
 
@@ -180,15 +168,15 @@ public class WatchlistItemsFragment
 
     /**
      * Context menu click handler. Update individual price.
-     * @param item
-     * @return
+     * @param item selected context menu item.
+     * @return indicator whether the action is handled or not.
      */
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
-        boolean cursorMoved = cursor.moveToPosition(info.position - 1);
+        cursor.moveToPosition(info.position - 1);
 
         ContentValues contents = new ContentValues();
         // get Symbol from cursor
@@ -225,8 +213,8 @@ public class WatchlistItemsFragment
     /**
      * Add options to the action bar of the host activity.
      * This is not called in ActionBar Activity, i.e. Search.
-     * @param menu
-     * @param inflater
+     * @param menu main menu
+     * @param inflater inflater for the menu
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -240,8 +228,10 @@ public class WatchlistItemsFragment
         return inflater.inflate(R.layout.fragment_watchlist_item_list, container, false);
     }
 
-    // This is just to test:
-    // http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
+    /**
+     * This is just to test:
+     * http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
+     */
     @Override
     public void onDetach() {
         super.onDetach();
@@ -265,9 +255,6 @@ public class WatchlistItemsFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         MmexCursorLoader result;
-
-        // store the arguments for later. This is the WHERE filter.
-        mLoaderArgs = args;
 
         //animation
         setListShown(false);
@@ -321,6 +308,10 @@ public class WatchlistItemsFragment
                 adapter.swapCursor(data);
                 if (isResumed()) {
                     setListShown(true);
+
+                    if (getFloatingActionButton() != null) {
+                        getFloatingActionButton().show(true);
+                    }
                 } else {
                     setListShownNoAnimation(true);
                 }
@@ -328,6 +319,14 @@ public class WatchlistItemsFragment
     }
 
     // End loader handlers.
+
+    @Override
+    public void onFloatingActionButtonClickListener() {
+        Intent intent = new Intent(getActivity(), EditInvestmentTransactionActivity.class);
+        intent.putExtra(EditInvestmentTransactionActivity.EXTRA_ACCOUNT_ID, this.accountId);
+        intent.setAction(Intent.ACTION_INSERT);
+        startActivity(intent);
+    }
 
     @Override
     public void onStop() {
@@ -344,7 +343,8 @@ public class WatchlistItemsFragment
                 }
             }
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "stopping watchlist items fragment");
         }
     }
 
@@ -368,12 +368,28 @@ public class WatchlistItemsFragment
      * Start loader into fragment
      */
     public void reloadData() {
-        getLoaderManager().restartLoader(ID_LOADER_WATCHLIST, mLoaderArgs, this);
+        Bundle arguments = prepareArgsForChildFragment();
+        // mLoaderArgs
+        getLoaderManager().restartLoader(ID_LOADER_WATCHLIST, arguments, this);
     }
 
     @Override
     public String getSubTitle() {
         return null;
+    }
+
+    /**
+     * @return the mAutoStarLoader
+     */
+    public boolean isAutoStarLoader() {
+        return mAutoStarLoader;
+    }
+
+    /**
+     * @param mAutoStarLoader the mAutoStarLoader to set
+     */
+    public void setAutoStarLoader(boolean mAutoStarLoader) {
+        this.mAutoStarLoader = mAutoStarLoader;
     }
 
     public void setListHeader(View mHeaderList) {
@@ -385,5 +401,17 @@ public class WatchlistItemsFragment
             mStockHistoryRepository = new StockHistoryRepository(mContext);
         }
         return mStockHistoryRepository;
+    }
+
+    private Bundle prepareArgsForChildFragment() {
+        ArrayList<String> selection = new ArrayList<>();
+
+        selection.add(StockRepository.HELDAT + "=" + Integer.toString(this.accountId));
+
+        Bundle args = new Bundle();
+        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
+        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, StockRepository.SYMBOL + " ASC");
+
+        return args;
     }
 }

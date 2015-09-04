@@ -54,7 +54,6 @@ import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableStock;
-import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -550,9 +549,15 @@ public class HomeFragment
         // balance account should work only for transaction accounts.
         AccountService service = new AccountService(getActivity());
         List<String> accountTypes = service.getTransactionAccountTypeNames();
-        if (accountTypes.contains(account.getAccountType())) {
+        String accountType = account.getAccountType();
+        if (accountTypes.contains(accountType)) {
             menu.add(R.string.balance_account);
         }
+
+        // Investment menu items.
+//        if (accountType.equals(AccountTypes.INVESTMENT.toString())) {
+//            menu.add(R.string.watchlist);
+//        }
     }
 
     @Override

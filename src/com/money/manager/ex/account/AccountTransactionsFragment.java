@@ -81,7 +81,7 @@ public class AccountTransactionsFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>,
         IAllDataFragmentLoaderCallbacks,
-            IAllDataFragmentCallbacks {
+        IAllDataFragmentCallbacks {
 
     private static final String KEY_CONTENT = "AccountTransactionsFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
@@ -91,7 +91,7 @@ public class AccountTransactionsFragment
     private AllDataFragment mAllDataFragment;
     private Integer mAccountId = null;
     // Id of the period in the period picker in the toolbar.
-    private int mPeriodIndex = Constants.NOT_SET;
+//    private int mPeriodIndex = Constants.NOT_SET;
     private String mFragmentName;
     private double mAccountBalance = 0, mAccountReconciled = 0;
     private TableAccountList mAccountList;
@@ -539,7 +539,7 @@ public class AccountTransactionsFragment
 
         //check item
         item.setChecked(true);
-        mPeriodIndex = item.getItemId();
+//        mPeriodIndex = item.getItemId();
 
         loadTransactions();
 

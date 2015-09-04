@@ -101,7 +101,7 @@
         </receiver>
         <receiver android:name=".notifications.RepeatingTransactionReceiver" />
 
-        <service android:name=".notifications.RepeatingTransactionService" />
+        <service android:name=".notifications.RecurringTransactionIntentService" />
         <service
             android:name=".widget.AccountBillsWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
