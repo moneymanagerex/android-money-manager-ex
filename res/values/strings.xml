@@ -624,6 +624,7 @@
     <string name="watchlist">Watchlist</string>
 
     <!-- edit investment transaction -->
+    <string name="purchase_date">Purchase Date</string>
     <string name="stock_name">Stock Name</string>
     <string name="symbol">Symbol</string>
     <string name="number_of_shares">Number of Shares</string>

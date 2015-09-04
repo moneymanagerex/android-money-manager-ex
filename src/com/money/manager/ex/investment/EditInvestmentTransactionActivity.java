@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.investment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,4 +57,19 @@ public class EditInvestmentTransactionActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        onActionCancelClick();
+    }
+
+    @Override
+    public boolean onActionCancelClick() {
+//        return mCommonFunctions.onActionCancelClick();
+        setResult(Activity.RESULT_CANCELED);
+        finish();
+
+        return true;
+    }
+
 }
