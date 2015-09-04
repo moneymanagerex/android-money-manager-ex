@@ -34,4 +34,9 @@
     <string name="ic_split">F</string>
     <string name="ic_alert">G</string>
     <string name="ic_user">H</string>
+    <string name="ic_clipboard">I</string>
+    <string name="ic_calendar">J</string>
+    <string name="ic_globe_outline">K</string>
+    <string name="ic_dollar_bill">L</string>
+    <string name="ic_hash">M</string>
 </resources>
