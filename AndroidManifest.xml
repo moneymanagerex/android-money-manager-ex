@@ -383,7 +383,7 @@
 
         <receiver
             android:name=".widget.SingleAccountWidget"
-            android:label="@string/single_account">
+            android:label="@string/single_account" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -397,6 +397,10 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".investment.EditInvestmentTransactionActivity"
+            android:label="@string/title_activity_edit_investment_transaction" >
         </activity>
     </application>
 

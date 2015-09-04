@@ -620,4 +620,8 @@
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
     <string name="single_account">Single Account</string>
+    <string name="title_activity_edit_investment_transaction">EditInvestmentTransactionActivity
+    </string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
