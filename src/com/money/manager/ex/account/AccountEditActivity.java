@@ -140,8 +140,9 @@ public class AccountEditActivity
             mAccessInfo = savedInstanceState.getString(KEY_ACCESS_INFO);
             mStatus = savedInstanceState.getString(KEY_STATUS);
             mInitialBal = savedInstanceState.getDouble(KEY_INITIAL_BAL);
-            if (savedInstanceState.getInt(KEY_SYMBOL) == LESS)
+            if (savedInstanceState.getInt(KEY_SYMBOL) == LESS) {
                 mInitialBal = mInitialBal * -1;
+            }
             mNotes = savedInstanceState.getString(KEY_NOTES);
             mFavoriteAcct = savedInstanceState.getString(KEY_FAVORITE_ACCT);
             mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
@@ -386,7 +387,7 @@ public class AccountEditActivity
         mContactInfo = edtContact.getText().toString();
         mAccessInfo = edtAccessInfo.getText().toString();
 
-        mInitialBal = (Double) txtInitialBalance.getTag();
+        mInitialBal = ((BigDecimal) txtInitialBalance.getTag()).doubleValue();
         mNotes = edtNotes.getText().toString();
 
         if (bCheck) {
