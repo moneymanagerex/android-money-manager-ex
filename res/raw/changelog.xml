@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 4, 2015" versionName="2.16.4">
+    <changelogversion changeDate="September 4, 2015" versionName="2.16.5">
         <changelogtext>Upgraded the support libraries. This might solve some Android 4.0.x issues.</changelogtext>
         <changelogtext>Correcting entry of 0.0x values in numeric input.</changelogtext>
         <changelogtext>Using newer Dropbox API methods to try to fix issues for some users.</changelogtext>
