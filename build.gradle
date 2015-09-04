@@ -53,11 +53,10 @@ android {
     defaultConfig {
         applicationId "com.money.manager.ex"
         multiDexEnabled true
-//        minSdkVersion 16
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 695
-        versionName '2.16.1'
+        versionCode 696
+        versionName '2.16.2'
         // 601 = 1.4.17, stable
 
 //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
