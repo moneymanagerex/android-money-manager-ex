@@ -132,9 +132,9 @@ public class WatchlistItemsFragment
             reloadData();
         }
 
-        // todo: set floating button visible
-//        setFloatingActionButtonVisible(true);
-//        setFloatingActionButtonAttachListView(true);
+        // set floating button visible
+        setFloatingActionButtonVisible(true);
+        setFloatingActionButtonAttachListView(true);
     }
 
     @Override

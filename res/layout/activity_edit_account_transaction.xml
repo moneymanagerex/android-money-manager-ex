@@ -17,7 +17,6 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/activity_side_margin"
@@ -42,6 +41,7 @@
             android:paddingLeft="@dimen/activity_padding_side"
             android:paddingRight="@dimen/activity_padding_side">
 
+            <!-- Date -->
             <com.money.manager.ex.view.RobotoTextView
                 style="@style/Money.TextView.Header.Caption"
                 android:layout_width="wrap_content"
@@ -50,7 +50,6 @@
                 android:gravity="center_vertical"
                 android:text="@string/date"
                 android:textStyle="bold"/>
-
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewDate"
                 style="@style/Money.TextView.Widget.EditText"
@@ -60,6 +59,7 @@
                 android:hint="@string/date"
                 android:textStyle="bold"/>
 
+            <!-- Transaction Type -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -390,6 +390,7 @@
                 android:maxLength="1000"
                 android:scrollHorizontally="false"
                 android:textCursorDrawable="@null" />
+
         </LinearLayout>
     </ScrollView>
 
