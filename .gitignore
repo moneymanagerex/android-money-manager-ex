@@ -26,3 +26,6 @@ Thumbs.db
 # Android Studio
 .idea
 *.iml
+
+# NPM modules
+scripts/deployment/node_modules
