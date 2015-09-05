@@ -23,12 +23,12 @@ import java.util.List;
  * Adapter for the Home screen expandable accounts list.
  * Created by Alen Siljak on 15/07/2015.
  */
-public class AccountBillsExpandableAdapter
+public class HomeAccountsExpandableAdapter
         extends BaseExpandableListAdapter {
 
     private Context mContext;
 
-    public AccountBillsExpandableAdapter(Context context, List<String> accountTypes,
+    public HomeAccountsExpandableAdapter(Context context, List<String> accountTypes,
                                          HashMap<String, List<QueryAccountBills>> accountsByType,
                                          HashMap<String, QueryAccountBills> totalsByType,
                                          boolean hideReconciled) {
@@ -121,9 +121,11 @@ public class AccountBillsExpandableAdapter
         QueryAccountBills total = mTotalsByType.get(accountType);
         if (total != null) {
             // set account type value
-            holder.txtAccountTotal.setText(currencyService.getBaseCurrencyFormatted(total.getTotalBaseConvRate()));
+            String totalDisplay = currencyService.getBaseCurrencyFormatted(total.getTotalBaseConvRate());
+            holder.txtAccountTotal.setText(totalDisplay);
             if(!mHideReconciled) {
-                holder.txtAccountReconciled.setText(currencyService.getBaseCurrencyFormatted(total.getReconciledBaseConvRate()));
+                String reconciledDisplay = currencyService.getBaseCurrencyFormatted(total.getReconciledBaseConvRate());
+                holder.txtAccountReconciled.setText(reconciledDisplay);
             }
             // set account name
             holder.txtAccountName.setText(total.getAccountName());

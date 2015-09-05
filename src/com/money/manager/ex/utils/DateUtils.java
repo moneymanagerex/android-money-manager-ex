@@ -34,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 
@@ -109,9 +110,16 @@ public class DateUtils {
      */
     public static String getUserDatePattern(Context ctx) {
         TableInfoTable infoTable = new TableInfoTable();
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(ctx);
-        Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null,
-                TableInfoTable.INFONAME + "=?", new String[]{"DATEFORMAT"}, null, null, null);
+//        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(ctx);
+//        Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null,
+//                TableInfoTable.INFONAME + "=?",
+//                new String[]{"DATEFORMAT"}, null, null, null);
+        Cursor cursor = ctx.getContentResolver().query(infoTable.getUri(),
+                null,
+                TableInfoTable.INFONAME + "=?",
+                new String[] { "DATEFORMAT" },
+                null);
+
         String pattern = null;
         if (cursor != null && cursor.moveToFirst()) {
             pattern = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));

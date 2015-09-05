@@ -274,9 +274,13 @@ public class DropboxHelper {
                 session.finishAuthentication();
                 // save login credentials
                 TokenPair tokens = session.getAccessTokenPair();
-                storeKeysToken(tokens.key, tokens.secret);
-            } catch (IllegalStateException e) {
-                Toast.makeText(mContext, "Couldn't authenticate with Dropbox:" + e.getMessage(), Toast.LENGTH_LONG).show();
+                if (tokens != null) {
+                    storeKeysToken(tokens.key, tokens.secret);
+                }
+            } catch (RuntimeException e) {
+                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                handler.handle(e, "authenticating with Dropbox");
+//                Toast.makeText(mContext, "Couldn't authenticate with Dropbox", Toast.LENGTH_LONG).show();
                 if (BuildConfig.DEBUG) Log.d(LOGCAT, "Error authenticating", e);
             }
         }

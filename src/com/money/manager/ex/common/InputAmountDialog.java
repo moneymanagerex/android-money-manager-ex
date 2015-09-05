@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
@@ -390,17 +391,15 @@ public class InputAmountDialog
         separatorButton.setText(separator);
     }
 
-//    private int getCurrencyIdInUse() {
-//        return mDisplayCurrencyId == null
-//                ? mCurrencyService.getBaseCurrencyId()
-//                : mDisplayCurrencyId;
-//    }
+    private boolean isBaseCurrencySet() {
+        return this.mDisplayCurrencyId != null && this.mDisplayCurrencyId != Constants.NOT_SET;
+    }
 
     private BigDecimal getAmount() {
         double result;
 
-        // to round or not?
-        if (InputAmountDialog.this.roundToCurrencyDecimals) {
+        // to round or not? Handle case when no base currency set.
+        if (this.roundToCurrencyDecimals && isBaseCurrencySet()) {
             NumericHelper numericHelper = new NumericHelper(getContext());
             int decimals = numericHelper.getNumberOfDecimals(
                     mCurrencyService.getCurrency(mDisplayCurrencyId).getScale());
@@ -419,7 +418,12 @@ public class InputAmountDialog
         if (currency == null) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.showMessage(getString(R.string.base_currency_not_set));
-            return "";
+
+            if (mAmount == null) {
+                return "0";
+            } else {
+                return mAmount.toString();
+            }
         }
 
         String result;

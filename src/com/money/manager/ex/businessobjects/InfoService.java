@@ -83,7 +83,7 @@ public class InfoService {
                     null,
                     TableInfoTable.INFONAME + "=?",
                     new String[]{ info },
-                    null, null);
+                    null);
             if (data == null) return null;
 
             if (data.moveToFirst()) {
