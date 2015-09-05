@@ -26,9 +26,9 @@ import android.widget.ListAdapter;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.businessobjects.StockHistory;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
-import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
+import com.money.manager.ex.database.TableStock;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -93,7 +93,7 @@ public class PriceCsvExport
             Cursor cursor = (Cursor) adapter.getItem(i);
 
             // symbol.
-            String symbol = cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL));
+            String symbol = cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL));
             // use the latest price date here.
             String date;
             ContentValues latestPrice = historyRepository.getLatestPriceFor(symbol);
@@ -107,7 +107,7 @@ public class PriceCsvExport
             // format date
             String csvDate = getDateInCsvFormat(date);
             // price.
-            String price = cursor.getString(cursor.getColumnIndex(StockRepository.CURRENTPRICE));
+            String price = cursor.getString(cursor.getColumnIndex(TableStock.CURRENTPRICE));
 
             // code
             builder.append(symbol);

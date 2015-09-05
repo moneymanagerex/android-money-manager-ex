@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockHistory;
-import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.utils.RawFileUtils;
 
 /**
@@ -27,11 +27,11 @@ public class WatchlistDataset
     @Override
     public String[] getAllColumns() {
         return new String[] {
-                StockRepository.STOCKID + " AS _id",
-                StockRepository.STOCKID,
-                StockRepository.HELDAT,
-                StockRepository.STOCKNAME,
-                StockRepository.SYMBOL,
+                TableStock.STOCKID + " AS _id",
+                TableStock.STOCKID,
+                TableStock.HELDAT,
+                TableStock.STOCKNAME,
+                TableStock.SYMBOL,
                 StockHistory.DATE,
                 StockHistory.VALUE
         };

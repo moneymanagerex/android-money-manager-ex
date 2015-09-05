@@ -40,12 +40,11 @@ import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
-import com.money.manager.ex.businessobjects.StockRepository;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.database.StockRepository;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -55,7 +54,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -346,7 +344,7 @@ public class WatchlistFragment extends Fragment
 
         for(int i = 0; i < itemCount; i++) {
             Cursor cursor = (Cursor) mDataFragment.getListAdapter().getItem(i);
-            String symbol = cursor.getString(cursor.getColumnIndex(StockRepository.SYMBOL));
+            String symbol = cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL));
 
             result[i] = symbol;
         }

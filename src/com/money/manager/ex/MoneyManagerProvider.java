@@ -31,7 +31,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.budget.BudgetQuery;
-import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;

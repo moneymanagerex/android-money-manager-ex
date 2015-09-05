@@ -30,6 +30,7 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.database.StockRepository;
 import com.money.manager.ex.model.Stock;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.view.RobotoTextView;
@@ -104,6 +105,18 @@ public class EditInvestmentTransactionActivity
         finish();
 
         return true;
+    }
+
+    @Override
+    public boolean onActionDoneClick() {
+        if (save()) {
+            // set result ok and finish activity
+            setResult(RESULT_OK);
+            finish();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void initializeForm() {
@@ -275,5 +288,17 @@ public class EditInvestmentTransactionActivity
     private void showValue() {
         RobotoTextView view = (RobotoTextView) this.findViewById(R.id.valueView);
         view.setText(mStock.getValue().toString());
+    }
+
+    private boolean save() {
+        boolean result = false;
+
+        // todo: validate
+
+        // todo: save
+        StockRepository repository = new StockRepository(getApplicationContext());
+        // repository.update()
+
+        return result;
     }
 }
