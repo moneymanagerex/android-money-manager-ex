@@ -1,9 +1,15 @@
 package com.money.manager.ex.model;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.support.design.widget.TabLayout;
+import android.support.v4.database.DatabaseUtilsCompat;
 
 import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.utils.DateUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -33,85 +39,115 @@ public class Stock
         // default constructor.
     }
 
-    public Stock(Cursor c) {
-        super(c);
-
-    }
-
-    private Integer Id;
-    private Date PurchaseDate;
-    private BigDecimal NumberOfShares;
-    private BigDecimal PurchasePrice;
-    private BigDecimal Commission;
-    private BigDecimal CurrentPrice;
-    private BigDecimal Value;
+//    public Stock(Cursor c) {
+//        super(c);
+//
+//        // todo: see if we need to initialize the content values object.
+//        mContentValues = new ContentValues();
+//        DatabaseUtils.cursorRowToContentValues(c, mContentValues);
+//    }
 
     // properties
 
-    public int getId() {
-        if (Id == null && mCursor != null) {
-            Id = mCursor.getInt(mCursor.getColumnIndex(TableStock.STOCKID));
+    public Integer getId() {
+        if (mContentValues.get(TableStock.STOCKID) == null && mCursor != null) {
+            DatabaseUtils.cursorIntToContentValues(mCursor, TableStock.STOCKID, mContentValues);
         }
-        return Id;
+        return mContentValues.getAsInteger(TableStock.STOCKID);
+    }
+
+    public ContentValues getContentValues() {
+        return this.mContentValues;
+    }
+
+    public BigDecimal getCommission() {
+        return getBigDecimal(TableStock.COMMISSION);
+    }
+
+    public void setCommission(BigDecimal value) {
+        setBigDecimal(TableStock.COMMISSION, value);
     }
 
     public BigDecimal getCurrentPrice() {
-        return this.CurrentPrice;
+        String currentPrice = mContentValues.getAsString(TableStock.CURRENTPRICE);
+        return new BigDecimal(currentPrice);
     }
 
     public void setCurrentPrice(BigDecimal currentPrice) {
-        this.CurrentPrice = currentPrice;
+        mContentValues.put(TableStock.CURRENTPRICE, currentPrice.toString());
     }
 
     public Date getPurchaseDate() {
-        if (PurchaseDate == null && mCursor != null) {
-            String dateString = mCursor.getString(mCursor.getColumnIndex(TableStock.PURCHASEDATE));
-            PurchaseDate = DateUtils.getDateFromIsoString(dateString);
-            if (PurchaseDate == null) {
-                PurchaseDate = Calendar.getInstance().getTime();
-            }
+        if (mContentValues.getAsString(TableStock.PURCHASEDATE) == null && mCursor != null) {
+            DatabaseUtils.cursorStringToContentValues(mCursor, TableStock.PURCHASEDATE, mContentValues);
+//            if (mContentValues.get(TableStock.PURCHASEDATE) == null) {
+//                Date date = Calendar.getInstance().getTime();
+//                mContentValues.put(TableStock.PURCHASEDATE, DateUtils.getSQLiteStringDate(date));
+//            }
         }
-        return PurchaseDate;
+        String dateString = mContentValues.getAsString(TableStock.PURCHASEDATE);
+        return DateUtils.getDateFromIsoString(dateString);
     }
 
-    public void setPurchaseDate(Date purchaseDate) {
-        PurchaseDate = purchaseDate;
+    public void setPurchaseDate(Date value) {
+        setDate(TableStock.PURCHASEDATE, value);
+    }
+
+    public String getNotes() {
+        return getString(TableStock.NOTES);
+    }
+
+    public void setNotes(String value) {
+        setString(TableStock.NOTES, value);
     }
 
     public BigDecimal getNumberOfShares() {
-        if (NumberOfShares == null && mCursor != null) {
-            String dbValue = mCursor.getString(mCursor.getColumnIndex(TableStock.NUMSHARES));
-            this.NumberOfShares = new BigDecimal(dbValue);
+        String numShares = mContentValues.getAsString(TableStock.NUMSHARES);
+        if (numShares == null && mCursor != null) {
+            DatabaseUtils.cursorDoubleToCursorValues(mCursor, TableStock.NUMSHARES, mContentValues);
         }
-        return this.NumberOfShares;
+        return new BigDecimal(numShares);
     }
 
     public void setNumberOfShares(BigDecimal numberOfShares) {
-        this.NumberOfShares = numberOfShares;
+        mContentValues.put(TableStock.NUMSHARES, numberOfShares.toString());
     }
 
     public BigDecimal getPurchasePrice() {
-        // todo: load
-
-        return this.PurchasePrice;
+        String purchasePrice = mContentValues.getAsString(TableStock.PURCHASEPRICE);
+        if (StringUtils.isEmpty(purchasePrice) && mCursor != null) {
+            DatabaseUtils.cursorDoubleToCursorValues(mCursor, TableStock.PURCHASEPRICE, mContentValues);
+        }
+        return new BigDecimal(purchasePrice);
     }
 
-    public void setPurchasePrice(BigDecimal purchasePrice) {
-        this.PurchasePrice = purchasePrice;
+    public void setPurchasePrice(BigDecimal value) {
+        setBigDecimal(TableStock.PURCHASEPRICE, value);
+    }
+
+    public String getStockName() {
+        return getString(TableStock.STOCKNAME);
+    }
+
+    public void setStockName(String value) {
+        setString(TableStock.STOCKNAME, value);
+    }
+
+    public String getSymbol() {
+        return getString(TableStock.SYMBOL);
+    }
+
+    public void setSymbol(String value) {
+        setString(TableStock.SYMBOL, value);
     }
 
     public BigDecimal getValue() {
         // value = current price * num shares
-        this.Value = this.NumberOfShares.multiply(this.CurrentPrice);
+        BigDecimal value = this.getNumberOfShares().multiply(this.getCurrentPrice());
 
-        return this.Value;
+        mContentValues.put(TableStock.VALUE, value.toString());
+
+        return value;
     }
 
-    public BigDecimal getCommission() {
-        return this.Commission;
-    }
-
-    public void setCommission(BigDecimal commission) {
-        this.Commission = commission;
-    }
 }

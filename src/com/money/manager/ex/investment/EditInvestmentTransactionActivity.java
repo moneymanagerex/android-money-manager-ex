@@ -18,7 +18,10 @@
 package com.money.manager.ex.investment;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,9 +33,13 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.StockRepository;
+import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.model.Account;
 import com.money.manager.ex.model.Stock;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.view.RobotoEditTextFontIcon;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
@@ -54,6 +61,7 @@ public class EditInvestmentTransactionActivity
 
     private Stock mStock;
     private boolean mDirty = false;
+    private Account mAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +130,16 @@ public class EditInvestmentTransactionActivity
     private void initializeForm() {
         final DateUtils dateUtils = new DateUtils();
 
+        // load account & currency
+        Intent intent = getIntent();
+        if (intent != null) {
+            int accountId = intent.getIntExtra(EXTRA_ACCOUNT_ID, Constants.NOT_SET);
+            if (accountId != Constants.NOT_SET) {
+                AccountRepository repository = new AccountRepository(getApplicationContext());
+                mAccount = repository.loadModel(accountId);
+            }
+        }
+
         // Purchase Date
 
         final RobotoTextViewFontIcon dateView = (RobotoTextViewFontIcon) this.findViewById(R.id.textViewDate);
@@ -157,7 +175,7 @@ public class EditInvestmentTransactionActivity
         });
 
         initNumberOfShares();
-        initPurchasePriceControls();
+        initPurchasePrice();
         initCommission();
         initCurrentPrice();
         showValue();
@@ -187,6 +205,8 @@ public class EditInvestmentTransactionActivity
                 if (mStock.getCurrentPrice().compareTo(BigDecimal.ZERO) == 0) {
                     mStock.setCurrentPrice(amount);
                     showCurrentPrice();
+                    // recalculate value
+                    showValue();
                 }
                 break;
             case ID_COMMISSION:
@@ -205,9 +225,9 @@ public class EditInvestmentTransactionActivity
         View.OnClickListener onAmountClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo: use currency
                 InputAmountDialog dialog = InputAmountDialog.getInstance(ID_COMMISSION,
-                        mStock.getCommission().doubleValue());
+                        mStock.getCommission().doubleValue(),
+                        mAccount.getCurrencyId());
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
@@ -221,9 +241,10 @@ public class EditInvestmentTransactionActivity
         View.OnClickListener onAmountClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo: use currency
                 InputAmountDialog dialog = InputAmountDialog.getInstance(ID_CURRENT_PRICE,
-                        mStock.getCurrentPrice().doubleValue());
+                        mStock.getCurrentPrice().doubleValue(),
+                        mAccount.getCurrencyId());
+                dialog.roundToCurrencyDecimals = false;
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
@@ -240,6 +261,7 @@ public class EditInvestmentTransactionActivity
                 // todo: use currency
                 InputAmountDialog dialog = InputAmountDialog.getInstance(ID_NUM_SHARES,
                         mStock.getNumberOfShares().doubleValue());
+                dialog.roundToCurrencyDecimals = false;
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
@@ -249,13 +271,13 @@ public class EditInvestmentTransactionActivity
         showNumberOfShares();
     }
 
-    private void initPurchasePriceControls() {
+    private void initPurchasePrice() {
         View.OnClickListener onAmountClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo: use currency
                 InputAmountDialog dialog = InputAmountDialog.getInstance(ID_PURCHASE_PRICE,
-                        mStock.getPurchasePrice().doubleValue());
+                        mStock.getPurchasePrice().doubleValue(), mAccount.getCurrencyId());
+                dialog.roundToCurrencyDecimals = false;
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
@@ -295,9 +317,28 @@ public class EditInvestmentTransactionActivity
 
         // todo: validate
 
-        // todo: save
+        // add missing fields (text)
+        RobotoEditTextFontIcon nameText = (RobotoEditTextFontIcon) findViewById(R.id.stockNameEdit);
+        mStock.setStockName(nameText.getText().toString());
+
+        RobotoEditTextFontIcon symbolText = (RobotoEditTextFontIcon) findViewById(R.id.symbolEdit);
+        mStock.setSymbol(symbolText.getText().toString());
+
+        RobotoEditTextFontIcon notesText = (RobotoEditTextFontIcon) findViewById(R.id.notesEdit);
+        mStock.setNotes(notesText.getText().toString());
+
+        // save
+        ContentValues values = mStock.getContentValues();
         StockRepository repository = new StockRepository(getApplicationContext());
-        // repository.update()
+        if (mStock.getId() != null) {
+            repository.update(mStock.getId(), values);
+        } else {
+            int id = repository.insert(values);
+            Log.d("insert", Integer.toString(id));
+        }
+
+//        ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+//        handler.showMessage(getString(R.id.));
 
         return result;
     }

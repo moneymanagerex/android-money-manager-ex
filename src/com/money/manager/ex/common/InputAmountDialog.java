@@ -119,25 +119,29 @@ public class InputAmountDialog
 
         mCurrencyService = new CurrencyService(getContext());
         // Use the default currency if none sent.
-        if (mDisplayCurrencyId == null) {
-            mDisplayCurrencyId = mCurrencyService.getBaseCurrencyId();
-        }
+//        if (mDisplayCurrencyId == null) {
+//            mDisplayCurrencyId = mCurrencyService.getBaseCurrencyId();
+//        }
 
         if (savedInstanceState != null) {
             restoreSavedInstanceState(savedInstanceState);
-//            return;
+            return;
+        }
+
+        // not in restored state. new dialog
+
+        mIdView = getArguments().getInt("id");
+        // Display the existing amount, if any has been passed into the dialog.
+        NumericHelper numericHelper = new NumericHelper(getContext());
+        TableCurrencyFormats currency = mCurrencyService.getCurrency(mDisplayCurrencyId);
+        if (currency != null) {
+            // no currency and no base currency set.
+            int decimals = numericHelper.getNumberOfDecimals(currency.getScale());
+            mAmount = this.roundToCurrencyDecimals
+                    ? BigDecimal.valueOf(MathUtils.Round(getArguments().getDouble("amount"), decimals))
+                    : BigDecimal.valueOf(getArguments().getDouble("amount"));
         } else {
-            mIdView = getArguments().getInt("id");
-            // Display the existing amount, if any has been passed into the dialog.
-            NumericHelper numericHelper = new NumericHelper(getContext());
-            TableCurrencyFormats currency = mCurrencyService.getCurrency(mDisplayCurrencyId);
-            if (currency != null) {
-                // no currency and no base currency set.
-                int decimals = numericHelper.getNumberOfDecimals(currency.getScale());
-                mAmount = this.roundToCurrencyDecimals
-                        ? BigDecimal.valueOf(MathUtils.Round(getArguments().getDouble("amount"), decimals))
-                        : BigDecimal.valueOf(getArguments().getDouble("amount"));
-            }
+            mAmount = BigDecimal.valueOf(getArguments().getDouble("amount"));
         }
     }
 
@@ -391,7 +395,7 @@ public class InputAmountDialog
         separatorButton.setText(separator);
     }
 
-    private boolean isBaseCurrencySet() {
+    private boolean isCurrencySet() {
         return this.mDisplayCurrencyId != null && this.mDisplayCurrencyId != Constants.NOT_SET;
     }
 
@@ -399,7 +403,7 @@ public class InputAmountDialog
         double result;
 
         // to round or not? Handle case when no base currency set.
-        if (this.roundToCurrencyDecimals && isBaseCurrencySet()) {
+        if (this.roundToCurrencyDecimals && isCurrencySet()) {
             NumericHelper numericHelper = new NumericHelper(getContext());
             int decimals = numericHelper.getNumberOfDecimals(
                     mCurrencyService.getCurrency(mDisplayCurrencyId).getScale());
@@ -411,6 +415,8 @@ public class InputAmountDialog
     }
 
     private String getAmountInUserLocale() {
+        if (mAmount == null) return "0";
+
         NumericHelper helper = new NumericHelper(getContext());
 
         // Output currency. Used for scale/precision (number of decimal places).
@@ -419,11 +425,7 @@ public class InputAmountDialog
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.showMessage(getString(R.string.base_currency_not_set));
 
-            if (mAmount == null) {
-                return "0";
-            } else {
-                return mAmount.toString();
-            }
+            return mAmount.toString();
         }
 
         String result;

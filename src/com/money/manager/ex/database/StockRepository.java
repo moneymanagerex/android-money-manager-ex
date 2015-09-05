@@ -1,9 +1,11 @@
 package com.money.manager.ex.database;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.net.Uri;
 import android.util.Log;
 
 import com.money.manager.ex.Constants;
@@ -61,7 +63,8 @@ public class StockRepository
 
         Stock stock = null;
         if (cursor.moveToNext()) {
-            stock = new Stock(cursor);
+            stock = new Stock();
+            stock.loadFromCursor(cursor);
         }
 
         cursor.close();
@@ -159,7 +162,6 @@ public class StockRepository
         return  result;
     }
 
-
     /**
      * Update price for all the records with this symbol.
      * @param symbol
@@ -186,4 +188,12 @@ public class StockRepository
         }
     }
 
+    public int insert(ContentValues values) {
+
+        Uri insertUri = mContext.getContentResolver().insert(this.getUri(),
+                values);
+        long id = ContentUris.parseId(insertUri);
+
+        return (int) id;
+    }
 }

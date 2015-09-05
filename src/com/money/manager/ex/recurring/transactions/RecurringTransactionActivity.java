@@ -431,7 +431,8 @@ public class RecurringTransactionActivity
         } else {
             // update
             if (getContentResolver().update(recurringTransaction.getUri(), values,
-                    TableBillsDeposits.BDID + "=?", new String[]{Integer.toString(mBillDepositsId)}) <= 0) {
+                    TableBillsDeposits.BDID + "=?",
+                    new String[]{Integer.toString(mBillDepositsId)}) <= 0) {
                 Core.alertDialog(this, R.string.db_checking_update_failed);
                 Log.w(LOGCAT, "Update repeating  transaction failed!");
                 return false;

@@ -208,7 +208,7 @@ public class EditTransactionCommonFunctions {
         ContentValues values = new ContentValues();
 
         // Date
-        String transactionDate = DateUtils.getSQLiteStringDate(mContext, (Date) viewHolder.txtSelectDate.getTag());
+        String transactionDate = DateUtils.getSQLiteStringDate((Date) viewHolder.txtSelectDate.getTag());
         values.put(ISplitTransactionsDataset.TRANSDATE, transactionDate);
 
         // Transaction Type

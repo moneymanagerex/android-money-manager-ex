@@ -96,6 +96,11 @@ public class DateUtils {
         return getStringFromDate(ctx, date, getUserDatePattern(ctx));
     }
 
+    public static String getStringFromDate(Date date, String pattern) {
+        return new SimpleDateFormat(pattern).format(date);
+    }
+
+
     /**
      * @param date    object to convert in string
      * @param pattern pattern to use to convert
@@ -112,8 +117,8 @@ public class DateUtils {
      * @param date to convert
      * @return string formatted date SQLite
      */
-    public static String getSQLiteStringDate(Context context, Date date) {
-        return getStringFromDate(context, date, Constants.PATTERN_DB_DATE);
+    public static String getSQLiteStringDate(Date date) {
+        return getStringFromDate(date, Constants.PATTERN_DB_DATE);
     }
 
     /**

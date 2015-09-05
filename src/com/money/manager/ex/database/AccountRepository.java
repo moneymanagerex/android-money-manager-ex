@@ -24,6 +24,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.model.Account;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +32,34 @@ import java.util.List;
 /**
  * Repository for Accounts
  */
-public class AccountRepository {
+public class AccountRepository
+    extends RepositoryBase {
 
     public AccountRepository(Context context) {
-        mContext = context.getApplicationContext();
+        super(context, "accountlist_v1", DatasetType.TABLE, "accountlist");
+
         mAccount = new TableAccountList();
     }
 
-    private Context mContext;
     private TableAccountList mAccount;
+
+    public Account loadModel(int accountId) {
+        Cursor c = openCursor(null,
+                TableAccountList.ACCOUNTID + "=?",
+                new String[] { Integer.toString(accountId) });
+        if (c == null) return null;
+
+        Account account = null;
+
+        if (c.moveToNext()) {
+            account = new Account();
+            account.loadFromCursor(c);
+        }
+
+        c.close();
+
+        return account;
+    }
 
     public TableAccountList load(int accountId) {
         TableAccountList result = new TableAccountList();

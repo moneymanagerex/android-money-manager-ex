@@ -238,9 +238,9 @@ public abstract class BaseReportFragment
                         mToDate = DateUtils.getDateFromDatePicker(toDatePicker);
 
                         String whereClause = ViewMobileData.Date + ">='" +
-                                DateUtils.getSQLiteStringDate(getActivity(), mFromDate) + "' AND " +
+                                DateUtils.getSQLiteStringDate(mFromDate) + "' AND " +
                                 ViewMobileData.Date + "<='" +
-                                DateUtils.getSQLiteStringDate(getActivity(), mToDate) + "'";
+                                DateUtils.getSQLiteStringDate(mToDate) + "'";
                         //compose bundle
                         Bundle args = new Bundle();
                         args.putString(KEY_WHERE_CLAUSE, whereClause);

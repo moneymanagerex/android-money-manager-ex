@@ -193,7 +193,9 @@ public class CurrencyService {
 
             if (tableCurrency == null) {
                 // no currency
-                result = String.format("%.2f", value);
+                return value.toString();
+                // we can not simply cut off the decimals!
+//                result = String.format("%.2f", value);
             } else {
                 // formatted value
                 result = helper.getValueFormatted(value, tableCurrency);
@@ -208,7 +210,9 @@ public class CurrencyService {
      * @param currencyId of the currency to be get
      * @return an instance of class TableCurrencyFormats. Null if fail
      */
-    public TableCurrencyFormats getCurrency(int currencyId) {
+    public TableCurrencyFormats getCurrency(Integer currencyId) {
+        if (currencyId == null || currencyId == Constants.NOT_SET) return null;
+
         // check if the currency is cached.
         TableCurrencyFormats result =  getCurrenciesStore().get(currencyId);
 

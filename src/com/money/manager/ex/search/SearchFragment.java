@@ -339,13 +339,13 @@ public class SearchFragment extends Fragment
         // from date
         if (!TextUtils.isEmpty(mSearchParameters.dateFrom)) {
             where.Clause.add(QueryAllData.Date + ">='" + DateUtils.getSQLiteStringDate(
-                    getActivity(), DateUtils.getDateFromString(
+                    DateUtils.getDateFromString(
                             getActivity().getApplicationContext(), mSearchParameters.dateFrom)) + "'");
         }
         // to date
         if (!TextUtils.isEmpty(mSearchParameters.dateTo)) {
             where.Clause.add(QueryAllData.Date + "<='" + DateUtils.getSQLiteStringDate(
-                    getActivity(), DateUtils.getDateFromString(
+                    DateUtils.getDateFromString(
                             getActivity().getApplicationContext(), mSearchParameters.dateTo)) + "'");
         }
         // payee

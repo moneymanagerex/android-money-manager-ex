@@ -98,7 +98,7 @@ public class StockHistoryRepository
     public boolean recordExists(String symbol, Date date) {
         boolean result;
 
-        String isoDate = DateUtils.getSQLiteStringDate(mContext, date);
+        String isoDate = DateUtils.getSQLiteStringDate(date);
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
         Cursor cursor = mContext.getContentResolver().query(getUri(),

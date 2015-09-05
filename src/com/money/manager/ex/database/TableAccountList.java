@@ -19,8 +19,9 @@ package com.money.manager.ex.database;
 
 import android.database.Cursor;
 
-public class TableAccountList extends Dataset {
-	// definizione dei nomi dei campi
+public class TableAccountList
+		extends Dataset {
+
 	public static final String ACCOUNTID = "ACCOUNTID";
 	public static final String ACCOUNTNAME = "ACCOUNTNAME";
 	public static final String ACCOUNTTYPE = "ACCOUNTTYPE";
@@ -35,7 +36,6 @@ public class TableAccountList extends Dataset {
 	public static final String FAVORITEACCT = "FAVORITEACCT";
 	public static final String CURRENCYID = "CURRENCYID";
 
-	// definizione dei campi
 	private int accountId;
 	private String accountName;
 	private String accountType;
@@ -49,8 +49,8 @@ public class TableAccountList extends Dataset {
 	private double initialBal;
 	private String favoriteAcct;
 	private int currencyId;
-	// costruttore
-	public TableAccountList() {
+
+    public TableAccountList() {
 		super("accountlist_v1", DatasetType.TABLE, "accountlist");
 	}
 
