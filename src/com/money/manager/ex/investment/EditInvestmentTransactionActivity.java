@@ -315,14 +315,17 @@ public class EditInvestmentTransactionActivity
     private boolean save() {
         boolean result = false;
 
-        // todo: validate
+        // todo: validate ?
 
-        // add missing fields (text)
+        // add missing fields (text) and sanitize text values.
+
         RobotoEditTextFontIcon nameText = (RobotoEditTextFontIcon) findViewById(R.id.stockNameEdit);
-        mStock.setStockName(nameText.getText().toString());
+        String stockName = nameText.getText().toString().trim();
+        mStock.setStockName(stockName);
 
         RobotoEditTextFontIcon symbolText = (RobotoEditTextFontIcon) findViewById(R.id.symbolEdit);
-        mStock.setSymbol(symbolText.getText().toString());
+        String symbol = symbolText.getText().toString().trim().replace(" ", "");
+        mStock.setSymbol(symbol);
 
         RobotoEditTextFontIcon notesText = (RobotoEditTextFontIcon) findViewById(R.id.notesEdit);
         mStock.setNotes(notesText.getText().toString());
@@ -336,9 +339,6 @@ public class EditInvestmentTransactionActivity
             int id = repository.insert(values);
             Log.d("insert", Integer.toString(id));
         }
-
-//        ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-//        handler.showMessage(getString(R.id.));
 
         return result;
     }
