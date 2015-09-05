@@ -31,6 +31,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.budget.BudgetQuery;
+import com.money.manager.ex.businessobjects.StockRepository;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
@@ -98,10 +99,11 @@ public class MoneyManagerProvider
 
     @Override
     public boolean onCreate() {
-        // create authority
+
         setAuthority(getContext().getApplicationContext().getPackageName() + ".provider");
-        // create object provider
-        List<Dataset> objMoneyManager = Arrays.asList(new TableAccountList(),
+
+        List<Dataset> objMoneyManager = Arrays.asList(
+                new TableAccountList(),
                 new TableAssets(),
                 new TableBillsDeposits(),
                 new BudgetTable(),
@@ -123,7 +125,8 @@ public class MoneyManagerProvider
                 new QueryReportIncomeVsExpenses(getContext()),
                 new BudgetQuery(getContext()),
                 new ViewMobileData(getContext()),
-                new SQLDataSet());
+                new SQLDataSet()
+        );
 
         // Cycle all data sets for the composition of UriMatcher
         for (int i = 0; i < objMoneyManager.size(); i++) {

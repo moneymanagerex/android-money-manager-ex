@@ -74,7 +74,7 @@ public class ExceptionHandler
         if (mHost != null) {
             return mHost.getClass().getSimpleName();
         } else {
-            return "";
+            return "unknown";
         }
     }
 

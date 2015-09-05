@@ -59,6 +59,7 @@ public class WatchlistItemsFragment
         implements LoaderCallbacks<Cursor> {
 
     public static final int ID_LOADER_WATCHLIST = 1;
+    public static final String KEY_ACCOUNT_ID = "WatchlistItemsFragment:AccountId";
 
     /**
      * Create a new instance of the fragment with accountId params
@@ -225,7 +226,14 @@ public class WatchlistItemsFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_watchlist_item_list, container, false);
+        View layout = inflater.inflate(R.layout.fragment_watchlist_item_list, container, false);
+
+        // get data from saved instance state
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_ACCOUNT_ID)) {
+            this.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
+        }
+
+        return layout;
     }
 
     /**
@@ -320,12 +328,37 @@ public class WatchlistItemsFragment
 
     // End loader handlers.
 
+    // Menu
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+//        int itemId = item.getItemId();
+
+//        if (itemId == R.id.menu_export_to_csv) {
+//            exportDataToCSVFile();
+//            return true;
+//        }
+//        if (itemId == R.id.menu_qif_export) {
+//            // export visible transactions.
+//            exportToQif();
+//        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onFloatingActionButtonClickListener() {
         Intent intent = new Intent(getActivity(), EditInvestmentTransactionActivity.class);
         intent.putExtra(EditInvestmentTransactionActivity.EXTRA_ACCOUNT_ID, this.accountId);
         intent.setAction(Intent.ACTION_INSERT);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle saveInstanceState) {
+        super.onSaveInstanceState(saveInstanceState);
+
+        saveInstanceState.putInt(KEY_ACCOUNT_ID, this.accountId);
     }
 
     @Override
@@ -346,22 +379,6 @@ public class WatchlistItemsFragment
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "stopping watchlist items fragment");
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//        int itemId = item.getItemId();
-
-//        if (itemId == R.id.menu_export_to_csv) {
-//            exportDataToCSVFile();
-//            return true;
-//        }
-//        if (itemId == R.id.menu_qif_export) {
-//            // export visible transactions.
-//            exportToQif();
-//        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**

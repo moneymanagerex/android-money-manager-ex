@@ -199,21 +199,6 @@ public class EditTransactionCommonFunctions {
         view.setTag(amount);
     }
 
-    public void formatExtendedDate(TextView dateTextView) {
-        try {
-            Locale locale = mParent.getResources().getConfiguration().locale;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd MMMM yyyy", locale);
-            // use a shorted, defined, format, i.e. Tue, 28 Aug 2015 for fixed width, if
-            // the status selector is to switch to an icon.
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", locale);
-
-            dateTextView.setText(dateFormat.format((Date) dateTextView.getTag()));
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, mParent);
-            handler.handle(e, "formatting extended date");
-        }
-    }
-
     /**
      * Get content values for saving data.
      * @param isTransfer
@@ -478,19 +463,11 @@ public class EditTransactionCommonFunctions {
         } else {
             viewHolder.txtSelectDate.setTag(Calendar.getInstance().getTime());
         }
-        formatExtendedDate(viewHolder.txtSelectDate);
+        final DateUtils dateUtils = new DateUtils();
+        dateUtils.formatExtendedDate(mContext, viewHolder.txtSelectDate,
+                (Date) viewHolder.txtSelectDate.getTag());
 
         viewHolder.txtSelectDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime((Date) viewHolder.txtSelectDate.getTag());
-                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
-                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
-                dialog.setCloseOnSingleTapDay(true);
-                dialog.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
-            }
-
             public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -500,13 +477,23 @@ public class EditTransactionCommonFunctions {
                         Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, mContext.getResources().getConfiguration().locale)
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         viewHolder.txtSelectDate.setTag(date);
-                        formatExtendedDate(viewHolder.txtSelectDate);
+                        dateUtils.formatExtendedDate(mContext, viewHolder.txtSelectDate, (Date) viewHolder.txtSelectDate.getTag());
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(mParent, this);
                         handler.handle(e, "setting the date");
                     }
                 }
             };
+
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime((Date) viewHolder.txtSelectDate.getTag());
+                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+                dialog.setCloseOnSingleTapDay(true);
+                dialog.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
+            }
         });
 
     }

@@ -17,7 +17,8 @@
  */
 package com.money.manager.ex.database;
 
-public class TableStock extends Dataset {
+public class TableStock
+		extends Dataset {
 	// FIELD
 	public static final String STOCKID = "STOCKID";
 	public static final String HELDAT = "HELDAT";
@@ -31,7 +32,6 @@ public class TableStock extends Dataset {
 	public static final String VALUE = "VALUE";
 	public static final String COMMISSION = "COMMISSION";
 
-	// CONSTRUCTOR
 	public TableStock() {
 		super("stock_v1", DatasetType.TABLE, "stock");
 	}

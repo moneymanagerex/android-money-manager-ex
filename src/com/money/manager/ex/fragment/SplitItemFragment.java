@@ -155,7 +155,7 @@ public class SplitItemFragment
 
                 @Override
                 public void onClick(View v) {
-                    Double amount = (Double) ((TextView) v).getTag();
+                    Double amount = (Double) v.getTag();
                     if (amount == null)
                         amount = 0d;
 

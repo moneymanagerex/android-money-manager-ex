@@ -21,19 +21,43 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.InputAmountDialog;
+import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.model.Stock;
+import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.view.RobotoTextViewFontIcon;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class EditInvestmentTransactionActivity
         extends BaseFragmentActivity {
 
     public static final String EXTRA_ACCOUNT_ID = "EditInvestmentTransactionActivity:AccountId";
+    public static final String DATEPICKER_TAG = "datepicker";
+
+    private Stock mStock;
+    private boolean mDirty = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_investment_transaction);
+
+        // this handles OK/Cancel button clicks in the toolbar.
+        setToolbarStandardAction(getToolbar());
+
+        // todo: change this initialization after adding editing feature.
+        mStock = Stock.getInstance();
+
+        initializeForm();
     }
 
     @Override
@@ -70,6 +94,63 @@ public class EditInvestmentTransactionActivity
         finish();
 
         return true;
+    }
+
+    private void initializeForm() {
+        final DateUtils dateUtils = new DateUtils();
+
+        // Purchase Date
+
+        final RobotoTextViewFontIcon dateView = (RobotoTextViewFontIcon) this.findViewById(R.id.textViewDate);
+        dateUtils.formatExtendedDate(getApplicationContext(), dateView, mStock.getPurchaseDate());
+        dateView.setOnClickListener(new View.OnClickListener() {
+            public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                    setDirty(true);
+
+                    try {
+                        Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, getResources().getConfiguration().locale)
+                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
+                        mStock.setPurchaseDate(date);
+                        dateUtils.formatExtendedDate(getApplicationContext(), dateView, date);
+                    } catch (Exception e) {
+                        ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), EditInvestmentTransactionActivity.this);
+                        handler.handle(e, "setting the date");
+                    }
+                }
+            };
+
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(mStock.getPurchaseDate());
+                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+                dialog.setCloseOnSingleTapDay(true);
+                dialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
+            }
+        });
+
+        // Number of Shares
+
+        View.OnClickListener onAmountClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // todo: use currency
+                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(),
+                        mStock.getNumberOfShares().doubleValue());
+                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+            }
+        };
+        RobotoTextViewFontIcon numSharesView = (RobotoTextViewFontIcon) this.findViewById(R.id.numSharesView);
+        numSharesView.setOnClickListener(onAmountClick);
+        // todo: format the number of shares based on selected locale.
+        numSharesView.setText(mStock.getNumberOfShares().toString());
+    }
+
+    public void setDirty(boolean dirty) {
+        mDirty = dirty;
     }
 
 }

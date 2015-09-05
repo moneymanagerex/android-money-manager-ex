@@ -22,6 +22,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -43,6 +44,18 @@ import java.util.Locale;
  */
 public class DateUtils {
     private static final String LOGCAT = DateUtils.class.getSimpleName();
+
+    public static Date getDateFromIsoString(String date) {
+        return getDateFromString(date, Constants.PATTERN_DB_DATE);
+    }
+
+    public static Date getDateFromString(String date, String pattern) {
+        try {
+            return new SimpleDateFormat(pattern).parse(date);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
 
     /**
      * Convert string date into date object using pattern defined by the user.
@@ -67,7 +80,8 @@ public class DateUtils {
             Locale locale = context.getResources().getConfiguration().locale;
             return new SimpleDateFormat(pattern, locale).parse(date);
         } catch (ParseException e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(context, null);
+            handler.handle(e, "parsing date");
         }
         return null;
     }
@@ -99,7 +113,6 @@ public class DateUtils {
      * @return string formatted date SQLite
      */
     public static String getSQLiteStringDate(Context context, Date date) {
-
         return getStringFromDate(context, date, Constants.PATTERN_DB_DATE);
     }
 
@@ -263,5 +276,20 @@ public class DateUtils {
             Log.e(LOGCAT, "Error parsing date");
         }
         return result;
+    }
+
+    public void formatExtendedDate(Context context, TextView dateTextView, Date date) {
+        try {
+            Locale locale = context.getResources().getConfiguration().locale;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy", locale);
+            // use a shorted, defined, format, i.e. Tue, 28 Aug 2015 for fixed width, if
+            // the status selector is to switch to an icon.
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", locale);
+
+            dateTextView.setText(dateFormat.format(date));
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(context, this);
+            handler.handle(e, "formatting extended date");
+        }
     }
 }
