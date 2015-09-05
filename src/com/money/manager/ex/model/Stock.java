@@ -21,6 +21,10 @@ public class Stock
         // Set to today.
         stock.setPurchaseDate(Calendar.getInstance().getTime());
         stock.setNumberOfShares(BigDecimal.ZERO);
+        stock.setPurchasePrice(BigDecimal.ZERO);
+        stock.setCommission(BigDecimal.ZERO);
+        // should this be null?
+        stock.setCurrentPrice(BigDecimal.ZERO);
 
         return stock;
     }
@@ -37,6 +41,10 @@ public class Stock
     private Integer Id;
     private Date PurchaseDate;
     private BigDecimal NumberOfShares;
+    private BigDecimal PurchasePrice;
+    private BigDecimal Commission;
+    private BigDecimal CurrentPrice;
+    private BigDecimal Value;
 
     // properties
 
@@ -45,6 +53,14 @@ public class Stock
             Id = mCursor.getInt(mCursor.getColumnIndex(TableStock.STOCKID));
         }
         return Id;
+    }
+
+    public BigDecimal getCurrentPrice() {
+        return this.CurrentPrice;
+    }
+
+    public void setCurrentPrice(BigDecimal currentPrice) {
+        this.CurrentPrice = currentPrice;
     }
 
     public Date getPurchaseDate() {
@@ -72,5 +88,30 @@ public class Stock
 
     public void setNumberOfShares(BigDecimal numberOfShares) {
         this.NumberOfShares = numberOfShares;
+    }
+
+    public BigDecimal getPurchasePrice() {
+        // todo: load
+
+        return this.PurchasePrice;
+    }
+
+    public void setPurchasePrice(BigDecimal purchasePrice) {
+        this.PurchasePrice = purchasePrice;
+    }
+
+    public BigDecimal getValue() {
+        // value = current price * num shares
+        this.Value = this.NumberOfShares.multiply(this.CurrentPrice);
+
+        return this.Value;
+    }
+
+    public BigDecimal getCommission() {
+        return this.Commission;
+    }
+
+    public void setCommission(BigDecimal commission) {
+        this.Commission = commission;
     }
 }
