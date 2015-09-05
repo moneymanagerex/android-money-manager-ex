@@ -77,20 +77,12 @@ public class Stock
         mContentValues.put(TableStock.CURRENTPRICE, currentPrice.toString());
     }
 
-    public Date getPurchaseDate() {
-        if (mContentValues.getAsString(TableStock.PURCHASEDATE) == null && mCursor != null) {
-            DatabaseUtils.cursorStringToContentValues(mCursor, TableStock.PURCHASEDATE, mContentValues);
-//            if (mContentValues.get(TableStock.PURCHASEDATE) == null) {
-//                Date date = Calendar.getInstance().getTime();
-//                mContentValues.put(TableStock.PURCHASEDATE, DateUtils.getSQLiteStringDate(date));
-//            }
-        }
-        String dateString = mContentValues.getAsString(TableStock.PURCHASEDATE);
-        return DateUtils.getDateFromIsoString(dateString);
+    public int getHeldAt() {
+        return getInt(TableStock.HELDAT);
     }
 
-    public void setPurchaseDate(Date value) {
-        setDate(TableStock.PURCHASEDATE, value);
+    public void setHeldAt(int value) {
+        setInt(TableStock.HELDAT, value);
     }
 
     public String getNotes() {
@@ -111,6 +103,22 @@ public class Stock
 
     public void setNumberOfShares(BigDecimal numberOfShares) {
         mContentValues.put(TableStock.NUMSHARES, numberOfShares.toString());
+    }
+
+    public Date getPurchaseDate() {
+        if (mContentValues.getAsString(TableStock.PURCHASEDATE) == null && mCursor != null) {
+            DatabaseUtils.cursorStringToContentValues(mCursor, TableStock.PURCHASEDATE, mContentValues);
+//            if (mContentValues.get(TableStock.PURCHASEDATE) == null) {
+//                Date date = Calendar.getInstance().getTime();
+//                mContentValues.put(TableStock.PURCHASEDATE, DateUtils.getSQLiteStringDate(date));
+//            }
+        }
+        String dateString = mContentValues.getAsString(TableStock.PURCHASEDATE);
+        return DateUtils.getDateFromIsoString(dateString);
+    }
+
+    public void setPurchaseDate(Date value) {
+        setDate(TableStock.PURCHASEDATE, value);
     }
 
     public BigDecimal getPurchasePrice() {

@@ -32,6 +32,10 @@ public class Account
         super();
     }
 
+    public Integer getId() {
+        return getInt(TableAccountList.ACCOUNTID);
+    }
+
     public Integer getCurrencyId() {
         return getInt(TableAccountList.CURRENCYID);
     }

@@ -313,11 +313,13 @@ public class EditInvestmentTransactionActivity
     }
 
     private boolean save() {
-        boolean result = false;
+        boolean result;
 
-        // todo: validate ?
+        // validate ?
 
         // add missing fields (text) and sanitize text values.
+
+        mStock.setHeldAt(mAccount.getId());
 
         RobotoEditTextFontIcon nameText = (RobotoEditTextFontIcon) findViewById(R.id.stockNameEdit);
         String stockName = nameText.getText().toString().trim();
@@ -337,8 +339,9 @@ public class EditInvestmentTransactionActivity
             repository.update(mStock.getId(), values);
         } else {
             int id = repository.insert(values);
-            Log.d("insert", Integer.toString(id));
+//            Log.d("insert", Integer.toString(id));
         }
+        result = true;
 
         return result;
     }

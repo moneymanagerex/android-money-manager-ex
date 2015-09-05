@@ -80,6 +80,10 @@ public class EntityBase {
         return mContentValues.getAsInteger(fieldName);
     }
 
+    protected void setInt(String fieldName, int value) {
+        mContentValues.put(fieldName, value);
+    }
+
     protected String getString(String fieldName) {
         String value = mContentValues.getAsString(fieldName);
         if (StringUtils.isEmpty(value) && mCursor != null) {
