@@ -322,7 +322,7 @@ public class MoneyManagerProvider
         try {
             context = getContext();
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
-        } catch (IllegalStateException | SQLiteDiskIOException ex) {
+        } catch (IllegalStateException | SQLiteDiskIOException | IllegalArgumentException ex) {
             // This happens when the database is changed by all the asynchronous loaders still
             // have references to the already-closed database helper.
             // Just log for now. The reload is done automatically so should be no harm.
