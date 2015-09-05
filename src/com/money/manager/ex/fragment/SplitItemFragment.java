@@ -155,16 +155,17 @@ public class SplitItemFragment
 
                 @Override
                 public void onClick(View v) {
-                    Double amount = (Double) v.getTag();
-                    if (amount == null)
-                        amount = 0d;
+                    BigDecimal amount = (BigDecimal) v.getTag();
+                    if (amount == null) {
+                        amount = BigDecimal.ZERO;
+                    }
 
                     if (getActivity() instanceof SplitTransactionsActivity) {
                         SplitTransactionsActivity activity = (SplitTransactionsActivity) getActivity();
                         activity.setFragmentInputAmountClick(SplitItemFragment.this);
                     }
 
-                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount.doubleValue());
                     dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });

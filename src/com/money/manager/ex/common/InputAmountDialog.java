@@ -65,11 +65,16 @@ public class InputAmountDialog
         InputAmountDialog dialog = new InputAmountDialog();
         dialog.setArguments(args);
         dialog.mDisplayCurrencyId = currencyId;
+        // the default value is True.
+        dialog.roundToCurrencyDecimals = true;
 
         return dialog;
     }
 
-    public boolean roundToCurrencyDecimals = true;
+    /**
+     * By default, round the number to the currency Scale. Set in the factory method.
+     */
+    public boolean roundToCurrencyDecimals;
 
     private int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
@@ -118,10 +123,6 @@ public class InputAmountDialog
         super.onCreate(savedInstanceState);
 
         mCurrencyService = new CurrencyService(getContext());
-        // Use the default currency if none sent.
-//        if (mDisplayCurrencyId == null) {
-//            mDisplayCurrencyId = mCurrencyService.getBaseCurrencyId();
-//        }
 
         if (savedInstanceState != null) {
             restoreSavedInstanceState(savedInstanceState);
