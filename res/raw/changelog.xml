@@ -17,6 +17,10 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="September 5, 2015" versionName="2.17.0">
+        <changelogtext>Ability to add Investment records.</changelogtext>
+        <changelogtext>Adjustments for Android 4.0.x devices. The app now runs on devices with Android 4.0.3 and up.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="September 4, 2015" versionName="2.16.6">
         <changelogtext>Corrected issues for Android 4.0.x devices!</changelogtext>
         <changelogtext>Correcting entry of 0.0x values in numeric input.</changelogtext>
