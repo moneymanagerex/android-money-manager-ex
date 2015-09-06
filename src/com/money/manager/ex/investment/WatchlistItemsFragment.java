@@ -349,10 +349,7 @@ public class WatchlistItemsFragment
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        Intent intent = new Intent(getActivity(), EditInvestmentTransactionActivity.class);
-        intent.putExtra(EditInvestmentTransactionActivity.EXTRA_ACCOUNT_ID, this.accountId);
-        intent.setAction(Intent.ACTION_INSERT);
-        startActivity(intent);
+        openEditInvestmentActivity();
     }
 
     @Override
@@ -431,5 +428,12 @@ public class WatchlistItemsFragment
         args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, TableStock.SYMBOL + " ASC");
 
         return args;
+    }
+
+    private void openEditInvestmentActivity() {
+        Intent intent = new Intent(getActivity(), EditInvestmentTransactionActivity.class);
+        intent.putExtra(EditInvestmentTransactionActivity.EXTRA_ACCOUNT_ID, this.accountId);
+        intent.setAction(Intent.ACTION_INSERT);
+        startActivity(intent);
     }
 }

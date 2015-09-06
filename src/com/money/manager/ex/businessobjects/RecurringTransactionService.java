@@ -101,7 +101,7 @@ public class RecurringTransactionService {
 
     public boolean setNextOccurrenceDate(Date nextOccurrenceDate) {
         // format the date into ISO
-        String stringDate = DateUtils.getSQLiteStringDate(nextOccurrenceDate);
+        String stringDate = DateUtils.getIsoStringDate(nextOccurrenceDate);
 
         return this.setNextOccurrenceDate(stringDate);
     }

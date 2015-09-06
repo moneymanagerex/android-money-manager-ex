@@ -110,7 +110,7 @@ public class Stock
             DatabaseUtils.cursorStringToContentValues(mCursor, TableStock.PURCHASEDATE, mContentValues);
 //            if (mContentValues.get(TableStock.PURCHASEDATE) == null) {
 //                Date date = Calendar.getInstance().getTime();
-//                mContentValues.put(TableStock.PURCHASEDATE, DateUtils.getSQLiteStringDate(date));
+//                mContentValues.put(TableStock.PURCHASEDATE, DateUtils.getIsoStringDate(date));
 //            }
         }
         String dateString = mContentValues.getAsString(TableStock.PURCHASEDATE);

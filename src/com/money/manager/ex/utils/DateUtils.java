@@ -117,7 +117,7 @@ public class DateUtils {
      * @param date to convert
      * @return string formatted date SQLite
      */
-    public static String getSQLiteStringDate(Date date) {
+    public static String getIsoStringDate(Date date) {
         return getStringFromDate(date, Constants.PATTERN_DB_DATE);
     }
 
@@ -244,7 +244,7 @@ public class DateUtils {
      * @param datePicker date picker control
      * @return java date
      */
-    public static java.util.Date getDateFromDatePicker(DatePicker datePicker) {
+    public static Date getDateFromDatePicker(DatePicker datePicker) {
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
         int year = datePicker.getYear();
@@ -261,6 +261,8 @@ public class DateUtils {
 
         datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
+
+    // Instance methods.
 
     public String getYesterdayFrom(String isoDate) {
         String result = null;
@@ -297,4 +299,6 @@ public class DateUtils {
             handler.handle(e, "formatting extended date");
         }
     }
+
+
 }

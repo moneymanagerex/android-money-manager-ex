@@ -133,7 +133,7 @@ public class RecurringTransactionListFragment
                     intent.setAction(Constants.INTENT_ACTION_INSERT);
                     intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, bdId);
                     intent.putExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE,
-                            DateUtils.getSQLiteStringDate(date));
+                            DateUtils.getIsoStringDate(date));
                     // start for insert new transaction
                     startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
                 }

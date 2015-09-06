@@ -19,7 +19,6 @@ package com.money.manager.ex.search;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -43,7 +42,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -286,6 +284,22 @@ public class SearchFragment extends Fragment
         showSearchResultsFragment(where);
     }
 
+    /**
+     * @return the mDualPanel
+     */
+    public boolean isDualPanel() {
+        return mDualPanel;
+    }
+
+    /**
+     * @param mDualPanel the mDualPanel to set
+     */
+    public void setDualPanel(boolean mDualPanel) {
+        this.mDualPanel = mDualPanel;
+    }
+
+    // Private
+
     private void displayCategory(CategorySub categorySub) {
         if (categorySub == null) {
             txtSelectCategory.setText("");
@@ -298,7 +312,7 @@ public class SearchFragment extends Fragment
 
     /**
      * Assemble SQL query
-     * @return
+     * @return where clause with parameters
      */
     private ParameterizedWhereClause assembleWhereClause() {
         ParameterizedWhereClause where = new ParameterizedWhereClause();
@@ -337,13 +351,13 @@ public class SearchFragment extends Fragment
 
         // from date
         if (!TextUtils.isEmpty(mSearchParameters.dateFrom)) {
-            where.Clause.add(QueryAllData.Date + ">='" + DateUtils.getSQLiteStringDate(
+            where.Clause.add(QueryAllData.Date + ">='" + DateUtils.getIsoStringDate(
                     DateUtils.getDateFromString(
                             getActivity().getApplicationContext(), mSearchParameters.dateFrom)) + "'");
         }
         // to date
         if (!TextUtils.isEmpty(mSearchParameters.dateTo)) {
-            where.Clause.add(QueryAllData.Date + "<='" + DateUtils.getSQLiteStringDate(
+            where.Clause.add(QueryAllData.Date + "<='" + DateUtils.getIsoStringDate(
                     DateUtils.getDateFromString(
                             getActivity().getApplicationContext(), mSearchParameters.dateTo)) + "'");
         }
@@ -430,20 +444,6 @@ public class SearchFragment extends Fragment
         }
         // Commit the transaction
         transaction.commit();
-    }
-
-    /**
-     * @return the mDualPanel
-     */
-    public boolean isDualPanel() {
-        return mDualPanel;
-    }
-
-    /**
-     * @param mDualPanel the mDualPanel to set
-     */
-    public void setDualPanel(boolean mDualPanel) {
-        this.mDualPanel = mDualPanel;
     }
 
     private void saveSearchValues() {

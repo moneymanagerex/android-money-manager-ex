@@ -18,6 +18,7 @@
 package com.money.manager.ex.reports;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -45,7 +46,10 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.search.CategorySub;
+import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchFragment;
+import com.money.manager.ex.search.SearchParameters;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -263,30 +267,21 @@ public class CategoriesReportFragment
      */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        // Reading item from the list view, not adapter!
-        Object item = l.getItemAtPosition(position);
-        if (item == null) return;
-
-        Cursor cursor = (Cursor) item;
-
-        ContentValues values = new ContentValues();
-        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.CategID, values);
-        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.SubcategID, values);
+        CategorySub category = getCategoryFromSelectedItem(l, position);
+        if (category == null) return;
 
         // now list the transactions for the given category/subcategory combination,
         // in the selected time period.
 
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        String tag = AllDataFragment.class.getSimpleName();
-        AllDataFragment fragment = (AllDataFragment) fragmentManager.findFragmentByTag(tag);
-        if (fragment == null) {
-            fragment = createTransactionsFragment(values);
-        }
+//        showTransactionsFragment(values);
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContent, fragment, AllDataFragment.class.getSimpleName());
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        // Show search activity with the results.
+        SearchParameters parameters = new SearchParameters();
+        parameters.category = category;
+        // parameters.dateFrom
+        // parameters.dateTo =
+
+        showSearchActivityFor(parameters);
     }
 
     public void showChart() {
@@ -348,14 +343,14 @@ public class CategoriesReportFragment
         }
     }
 
-    private AllDataFragment createTransactionsFragment(ContentValues values) {
+    private AllDataFragment createTransactionsFragment(CategorySub category) {
         // implement callback interface?
         AllDataFragment fragment = AllDataFragment.newInstance(-1, null);
 
         Bundle args = new Bundle();
         ArrayList<String> where = new ArrayList<>();
-        where.add("CategId=" + values.getAsString(ViewMobileData.CategID) +
-                " AND SubCategId=" + values.getAsString(ViewMobileData.SubcategID));
+        where.add("CategId=" + Integer.toString(category.categId) +
+                " AND SubCategId=" + Integer.toString(category.subCategId));
         if (!StringUtils.isEmpty(getWhereClause())) {
             where.add(getWhereClause());
         }
@@ -374,4 +369,44 @@ public class CategoriesReportFragment
 
         return fragment;
     }
+
+    private void showTransactionsFragment(CategorySub category) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        String tag = AllDataFragment.class.getSimpleName();
+        AllDataFragment fragment = (AllDataFragment) fragmentManager.findFragmentByTag(tag);
+        if (fragment == null) {
+            fragment = createTransactionsFragment(category);
+        }
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContent, fragment, AllDataFragment.class.getSimpleName());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private CategorySub getCategoryFromSelectedItem(ListView l, int position) {
+        // Reading item from the list view, not adapter!
+        Object item = l.getItemAtPosition(position);
+        if (item == null) return null;
+
+        Cursor cursor = (Cursor) item;
+
+        ContentValues values = new ContentValues();
+        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.CategID, values);
+        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.SubcategID, values);
+
+        int categoryId = values.getAsInteger(ViewMobileData.CategID);
+        int subCategoryId = values.getAsInteger(ViewMobileData.SubcategID);
+
+        CategorySub result = CategorySub.getInstance(categoryId, subCategoryId);
+        return result;
+    }
+
+    private void showSearchActivityFor(SearchParameters parameters) {
+        Intent intent = new Intent(getActivity(), SearchActivity.class);
+        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, parameters);
+        intent.setAction(Intent.ACTION_INSERT);
+        startActivity(intent);
+    }
+
 }

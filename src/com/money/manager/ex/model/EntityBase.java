@@ -21,7 +21,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
-import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.utils.DateUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +71,7 @@ public class EntityBase {
     }
 
     protected void setDate(String fieldName, Date value) {
-        String dateString = DateUtils.getSQLiteStringDate(value);
+        String dateString = DateUtils.getIsoStringDate(value);
         mContentValues.put(fieldName, dateString);
     }
 

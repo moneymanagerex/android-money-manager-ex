@@ -17,8 +17,10 @@
  */
 package com.money.manager.ex.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -33,6 +35,8 @@ public class SearchActivity
         extends BaseFragmentActivity
         implements IInputAmountDialogListener {
 
+    public static final String EXTRA_SEARCH_PARAMETERS = "SearchActivity:SearchCriteria";
+
     /**
      * Indicates whether to show the account headers in search results.
      */
@@ -45,6 +49,9 @@ public class SearchActivity
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
+
+        // Check if there are search criteria sent.
+        handleSearchRequest();
 
         SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
                 .findFragmentByTag(SearchFragment.class.getSimpleName());
@@ -114,5 +121,16 @@ public class SearchActivity
             mSearchFragment = new SearchFragment();
         }
         return mSearchFragment;
+    }
+
+    private void handleSearchRequest() {
+        Intent intent = getIntent();
+        if (intent == null) return;
+
+        // see if we have the search criteria.
+//        String searchCriteria = intent.getStringExtra(EXTRA_SEARCH_CRITERIA);
+        SearchParameters parameters = intent.getParcelableExtra(EXTRA_SEARCH_PARAMETERS);
+
+        Log.d("test", parameters.toString());
     }
 }

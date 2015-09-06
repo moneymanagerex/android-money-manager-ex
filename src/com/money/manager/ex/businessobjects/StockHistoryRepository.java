@@ -5,18 +5,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.businessobjects.StockHistory;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.math.BigDecimal;
@@ -98,7 +94,7 @@ public class StockHistoryRepository
     public boolean recordExists(String symbol, Date date) {
         boolean result;
 
-        String isoDate = DateUtils.getSQLiteStringDate(date);
+        String isoDate = DateUtils.getIsoStringDate(date);
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
         Cursor cursor = mContext.getContentResolver().query(getUri(),

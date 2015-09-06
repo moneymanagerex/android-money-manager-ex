@@ -51,7 +51,6 @@ import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
@@ -73,7 +72,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Functions shared between Checking Account activity and Recurring Transactions activity.
@@ -208,7 +206,7 @@ public class EditTransactionCommonFunctions {
         ContentValues values = new ContentValues();
 
         // Date
-        String transactionDate = DateUtils.getSQLiteStringDate((Date) viewHolder.txtSelectDate.getTag());
+        String transactionDate = DateUtils.getIsoStringDate((Date) viewHolder.txtSelectDate.getTag());
         values.put(ISplitTransactionsDataset.TRANSDATE, transactionDate);
 
         // Transaction Type
