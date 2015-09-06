@@ -50,6 +50,7 @@ import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchFragment;
 import com.money.manager.ex.search.SearchParameters;
+import com.money.manager.ex.utils.DateUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -278,8 +279,8 @@ public class CategoriesReportFragment
         // Show search activity with the results.
         SearchParameters parameters = new SearchParameters();
         parameters.category = category;
-        // parameters.dateFrom
-        // parameters.dateTo =
+        parameters.dateFrom = DateUtils.getIsoStringDate(mDateFrom);
+        parameters.dateTo = DateUtils.getIsoStringDate(mDateTo);
 
         showSearchActivityFor(parameters);
     }

@@ -97,6 +97,8 @@ public class DateUtils {
     }
 
     public static String getStringFromDate(Date date, String pattern) {
+        if (date == null) return null;
+
         return new SimpleDateFormat(pattern).format(date);
     }
 
@@ -107,6 +109,8 @@ public class DateUtils {
      * @return string representation of the date
      */
     public static String getStringFromDate(Context context, Date date, String pattern) {
+        if (date == null) return null;
+
         Locale locale = context.getResources().getConfiguration().locale;
         return new SimpleDateFormat(pattern, locale).format(date);
     }

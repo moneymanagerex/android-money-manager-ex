@@ -55,6 +55,7 @@ import com.money.manager.ex.utils.DateUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -214,6 +215,8 @@ public class SearchFragment extends Fragment
                 restoreSearchCriteria();
             }
         });
+
+        handleSearchRequest();
 
         return view;
     }
@@ -398,6 +401,17 @@ public class SearchFragment extends Fragment
         }
 
         return where;
+    }
+
+    private void handleSearchRequest() {
+        SearchActivity activity = (SearchActivity) getActivity();
+        if (activity == null) return;
+
+        SearchParameters parameters = activity.getSearchParameters();
+        if (parameters != null) {
+            mSearchParameters = parameters;
+            executeSearch();
+        }
     }
 
     private void showSearchResultsFragment(ParameterizedWhereClause where) {

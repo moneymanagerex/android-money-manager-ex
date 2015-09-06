@@ -44,20 +44,17 @@ public class SearchActivity
 
 	private boolean mIsDualPanel = false;
     private SearchFragment mSearchFragment;
+    private SearchParameters mSearchParameters;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
 
-        // Check if there are search criteria sent.
-        handleSearchRequest();
-
-        SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
-                .findFragmentByTag(SearchFragment.class.getSimpleName());
-        if (searchFragment == null) {
+        SearchFragment searchFragment = getSearchFragment();
+//        if (searchFragment == null) {
             // fragment create
-            searchFragment = getSearchFragment();
+//            searchFragment = getSearchFragment();
             if (!searchFragment.isAdded()) {
                 // set dual panel
                 LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
@@ -68,9 +65,11 @@ public class SearchActivity
                         .add(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
                         .commit();
             }
-        }
+//        }
         // reconfigure the toolbar event
         setToolbarStandardAction(getToolbar(), R.id.action_cancel, R.id.action_search);
+
+        handleSearchRequest();
     }
 
 	@Override
@@ -116,9 +115,19 @@ public class SearchActivity
         return super.onActionDoneClick();
     }
 
+    public SearchParameters getSearchParameters() {
+        return mSearchParameters;
+    }
+
     private SearchFragment getSearchFragment() {
         if (mSearchFragment == null) {
-            mSearchFragment = new SearchFragment();
+            // try to find the search fragment
+            mSearchFragment = (SearchFragment) getSupportFragmentManager()
+                    .findFragmentByTag(SearchFragment.class.getSimpleName());
+
+            if (mSearchFragment == null) {
+                mSearchFragment = new SearchFragment();
+            }
         }
         return mSearchFragment;
     }
@@ -128,9 +137,11 @@ public class SearchActivity
         if (intent == null) return;
 
         // see if we have the search criteria.
-        SearchParameters parameters = intent.getParcelableExtra(EXTRA_SEARCH_PARAMETERS);
-        if (parameters == null) return;
+        mSearchParameters = intent.getParcelableExtra(EXTRA_SEARCH_PARAMETERS);
+//        if (parameters == null) return;
 
-        Log.d("test", parameters.toString());
+//        SearchFragment searchFragment = getSearchFragment();
+//        searchFragment.setSearchParameters(parameters);
+//        searchFragment.executeSearch();
     }
 }
