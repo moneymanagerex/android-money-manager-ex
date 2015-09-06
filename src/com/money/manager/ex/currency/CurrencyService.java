@@ -17,10 +17,8 @@
  */
 package com.money.manager.ex.currency;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
@@ -31,7 +29,8 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.database.TableInfoTable;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Currency;
@@ -47,8 +46,6 @@ import java.util.Map;
  */
 public class CurrencyService {
 
-    private static final String LOGCAT = CurrencyService.class.getSimpleName();
-    // id base currency
     private static Integer mBaseCurrencyId = null;
     // hash map of all currencies
     private static Map<Integer, TableCurrencyFormats> mCurrencies;
@@ -62,7 +59,6 @@ public class CurrencyService {
         mContext = context.getApplicationContext();
     }
 
-    // context
     private Context mContext;
 
     public String getBaseCurrencyCode() {
@@ -294,7 +290,11 @@ public class CurrencyService {
     protected Integer loadBaseCurrencyId() {
         InfoService infoService = new InfoService(mContext);
         String currencyString = infoService.getInfoValue(InfoService.BASECURRENCYID);
-        Integer currencyId = Integer.parseInt(currencyString);
+        Integer currencyId = null;
+
+        if(!StringUtils.isEmpty(currencyString)) {
+            currencyId = Integer.parseInt(currencyString);
+        }
 
         return currencyId;
     }
