@@ -551,6 +551,11 @@ public class EditTransactionCommonFunctions {
             @Override
             public void onClick(View v) {
                 setSplit(!mSplitSelected);
+
+                // if the split has just been set, show the splits dialog immediately?
+                if (isSplitSelected()) {
+                    showSplitCategoriesForm(mDatasetName);
+                }
             }
         });
 
@@ -871,11 +876,6 @@ public class EditTransactionCommonFunctions {
         }
         splitButton.setTextColor(mContext.getResources().getColor(buttonColour));
         splitButton.setBackgroundColor(mContext.getResources().getColor(buttonBackground));
-
-        // if the split has just been set, show the splits dialog immediately?
-        if (isSplitSelected()) {
-            showSplitCategoriesForm(mDatasetName);
-        }
     }
 
     /**
