@@ -26,7 +26,6 @@ public class TablePayee
         super("payee_v1", DatasetType.TABLE, "payee");
     }
 
-	// definizione dei nomi dei campi
 	public static final String PAYEEID = "PAYEEID";
 	public static final String PAYEENAME = "PAYEENAME";
 	public static final String CATEGID = "CATEGID";

@@ -38,63 +38,64 @@ public class EntityBase {
      * Default constructor.
      */
     protected EntityBase() {
-        mContentValues = new ContentValues();
+        contentValues = new ContentValues();
     }
 
 //    protected EntityBase(Cursor c) {
 //        mCursor = c;
 //    }
 
+    public ContentValues contentValues;
+
     /**
      * Contains the pointer to the actual data when loading from content provider.
      */
     protected Cursor mCursor;
-    protected ContentValues mContentValues;
 
     public void loadFromCursor(Cursor c) {
-        DatabaseUtils.cursorRowToContentValues(c, mContentValues);
+        DatabaseUtils.cursorRowToContentValues(c, contentValues);
     }
 
     protected BigDecimal getBigDecimal(String fieldName) {
-        String value = mContentValues.getAsString(fieldName);
+        String value = contentValues.getAsString(fieldName);
 
         if (StringUtils.isEmpty(value) && mCursor != null) {
-            DatabaseUtils.cursorStringToContentValues(mCursor, fieldName, mContentValues);
-            value = mContentValues.getAsString(fieldName);
+            DatabaseUtils.cursorStringToContentValues(mCursor, fieldName, contentValues);
+            value = contentValues.getAsString(fieldName);
         }
 
         return new BigDecimal(value);
     }
 
     protected void setBigDecimal(String fieldName, BigDecimal value) {
-        mContentValues.put(fieldName, value.toString());
+        contentValues.put(fieldName, value.toString());
     }
 
     protected void setDate(String fieldName, Date value) {
         String dateString = DateUtils.getIsoStringDate(value);
-        mContentValues.put(fieldName, dateString);
+        contentValues.put(fieldName, dateString);
     }
 
     protected Integer getInt(String fieldName) {
-        return mContentValues.getAsInteger(fieldName);
+        return contentValues.getAsInteger(fieldName);
     }
 
-    protected void setInt(String fieldName, int value) {
-        mContentValues.put(fieldName, value);
+    protected void setInt(String fieldName, Integer value) {
+        contentValues.put(fieldName, value);
     }
 
     protected String getString(String fieldName) {
-        String value = mContentValues.getAsString(fieldName);
+        String value = contentValues.getAsString(fieldName);
         if (StringUtils.isEmpty(value) && mCursor != null) {
-            DatabaseUtils.cursorStringToContentValues(mCursor, fieldName, mContentValues);
+            DatabaseUtils.cursorStringToContentValues(mCursor, fieldName, contentValues);
+            value = contentValues.getAsString(fieldName);
         }
 
-        value = mContentValues.getAsString(value);
         return value;
     }
 
     protected void setString(String fieldName, String value) {
-        mContentValues.put(fieldName, value);
+        contentValues.put(fieldName, value);
     }
 
 }

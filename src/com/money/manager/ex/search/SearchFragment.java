@@ -41,6 +41,7 @@ import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.ICommonFragmentCallbacks;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.common.AllDataFragment;
@@ -55,7 +56,6 @@ import com.money.manager.ex.utils.DateUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -94,7 +94,7 @@ public class SearchFragment extends Fragment
 
         if (savedInstanceState != null) {
             mSearchParameters = savedInstanceState.getParcelable(KEY_SEARCH_CRITERIA);
-            // restoreSearchCriteria(); called in onCreateView after the controls have been initialized.
+            // displaySearchCriteria(); called in onCreateView after the controls have been initialized.
         } else {
             mSearchParameters = new SearchParameters();
         }
@@ -210,14 +210,17 @@ public class SearchFragment extends Fragment
             @Override
             public void onClick(View v) {
                 mSearchParameters = new SearchParameters();
-                restoreSearchCriteria();
+                displaySearchCriteria();
             }
         });
 
-        // Get search criteria if any was sent from an external caller.
-        handleSearchRequest();
         // Store search criteria values into the controls.
-        restoreSearchCriteria();
+        displaySearchCriteria();
+
+        ICommonFragmentCallbacks listener = (ICommonFragmentCallbacks) getActivity();
+        if (listener != null) {
+            listener.onFragmentViewCreated(this.getTag());
+        }
 
         return view;
     }
@@ -263,7 +266,7 @@ public class SearchFragment extends Fragment
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        this.saveSearchValues();
+        this.saveSearchCriteria();
 
         savedInstanceState.putParcelable(KEY_SEARCH_CRITERIA, mSearchParameters);
     }
@@ -281,7 +284,7 @@ public class SearchFragment extends Fragment
      * Compose arguments and execute search
      */
     public void executeSearch() {
-        saveSearchValues();
+        saveSearchCriteria();
 
         ParameterizedWhereClause where = assembleWhereClause();
 
@@ -404,15 +407,13 @@ public class SearchFragment extends Fragment
         return where;
     }
 
-    private void handleSearchRequest() {
-        SearchActivity activity = (SearchActivity) getActivity();
-        if (activity == null) return;
+    public void handleSearchRequest(SearchParameters parameters) {
+        if (parameters == null) return;
 
-        SearchParameters parameters = activity.getSearchParameters();
-        if (parameters != null) {
-            mSearchParameters = parameters;
-            executeSearch();
-        }
+        mSearchParameters = parameters;
+        displaySearchCriteria();
+
+        executeSearch();
     }
 
     private void showSearchResultsFragment(ParameterizedWhereClause where) {
@@ -461,7 +462,7 @@ public class SearchFragment extends Fragment
         transaction.commit();
     }
 
-    private void saveSearchValues() {
+    private void saveSearchCriteria() {
         // Account
         if (spinAccount != null) {
             if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION &&
@@ -516,7 +517,7 @@ public class SearchFragment extends Fragment
         }
     }
 
-    private void restoreSearchCriteria() {
+    private void displaySearchCriteria() {
         // Account
         // no need to restore. The collection is kept in memory.
 

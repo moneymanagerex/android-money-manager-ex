@@ -17,7 +17,6 @@
  */
 package com.money.manager.ex.reports;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -41,8 +40,9 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.search.CategorySub;
+import com.money.manager.ex.model.Payee;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.DateUtils;
@@ -264,34 +264,36 @@ public class PayeeReportFragment
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Integer payeeId = getPayeeFromSelectedItem(l, position);
-        if (payeeId == null) return;
+        Payee payee = getPayeeFromSelectedItem(l, position);
+        if (payee == null) return;
 
         // now list the transactions for the given payee,
         // in the selected time period.
 
         // Show search activity with the results.
         SearchParameters parameters = new SearchParameters();
-        parameters.payeeId = payeeId;
+        parameters.payeeId = payee.getId();
+        parameters.payeeName = payee.getName();
         parameters.dateFrom = DateUtils.getIsoStringDate(mDateFrom);
         parameters.dateTo = DateUtils.getIsoStringDate(mDateTo);
 
         showSearchActivityFor(parameters);
     }
 
-    private Integer getPayeeFromSelectedItem(ListView l, int position) {
+    private Payee getPayeeFromSelectedItem(ListView l, int position) {
         // Reading item from the list view, not adapter!
         Object item = l.getItemAtPosition(position);
         if (item == null) return null;
 
         Cursor cursor = (Cursor) item;
+        Payee payee = new Payee();
 
-        ContentValues values = new ContentValues();
-        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.PayeeID, values);
+        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.PayeeID,
+                payee.contentValues, TablePayee.PAYEEID);
+        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Payee,
+                payee.contentValues, TablePayee.PAYEENAME);
 
-        Integer payeeId = values.getAsInteger(ViewMobileData.PayeeID);
-
-        return payeeId;
+        return payee;
     }
 
     private void showSearchActivityFor(SearchParameters parameters) {

@@ -27,13 +27,14 @@ import android.widget.LinearLayout;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.ICommonFragmentCallbacks;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 
 import java.math.BigDecimal;
 
 public class SearchActivity
         extends BaseFragmentActivity
-        implements IInputAmountDialogListener {
+        implements IInputAmountDialogListener, ICommonFragmentCallbacks {
 
     public static final String EXTRA_SEARCH_PARAMETERS = "SearchActivity:SearchCriteria";
 
@@ -115,10 +116,6 @@ public class SearchActivity
         return super.onActionDoneClick();
     }
 
-    public SearchParameters getSearchParameters() {
-        return mSearchParameters;
-    }
-
     private SearchFragment getSearchFragment() {
         if (mSearchFragment == null) {
             // try to find the search fragment
@@ -143,5 +140,15 @@ public class SearchActivity
 //        SearchFragment searchFragment = getSearchFragment();
 //        searchFragment.setSearchParameters(parameters);
 //        searchFragment.executeSearch();
+    }
+
+    @Override
+    public void onFragmentViewCreated(String tag) {
+        if (mSearchParameters != null && tag.equals(SearchFragment.class.getSimpleName())) {
+            // Get search criteria if any was sent from an external caller.
+            getSearchFragment().handleSearchRequest(mSearchParameters);
+            // remove search parameters once used.
+            mSearchParameters = null;
+        }
     }
 }
