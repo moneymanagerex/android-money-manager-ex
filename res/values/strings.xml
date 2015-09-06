@@ -634,4 +634,5 @@
     <string name="commission">Commission</string>
     <string name="value">Value</string>
 
+    <string name="view_transactions">View transactions</string>
 </resources>

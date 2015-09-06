@@ -287,11 +287,12 @@ public class PayeeReportFragment
 
         Cursor cursor = (Cursor) item;
         Payee payee = new Payee();
+        payee.loadFromCursor(cursor);
 
-        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.PayeeID,
-                payee.contentValues, TablePayee.PAYEEID);
-        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Payee,
-                payee.contentValues, TablePayee.PAYEENAME);
+//        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.PayeeID,
+//                payee.contentValues, TablePayee.PAYEEID);
+//        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Payee,
+//                payee.contentValues, TablePayee.PAYEENAME);
 
         return payee;
     }

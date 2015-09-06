@@ -49,7 +49,11 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.model.Payee;
+import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
@@ -168,6 +172,27 @@ public class PayeeListFragment
         return super.onOptionsItemSelected(item);
     }
 
+    // Context Menu
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+        cursor.moveToPosition(info.position);
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
+
+        String[] menuItems = getResources().getStringArray(R.array.context_menu);
+        int id;
+        for (id = 0; id < menuItems.length; id++) {
+            // 0, 1
+            menu.add(Menu.NONE, id, id, menuItems[id]);
+        }
+        // view transactions menu item.
+        id = 2;
+        menu.add(Menu.NONE, id, id, getString(R.string.view_transactions));
+    }
+
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -175,27 +200,25 @@ public class PayeeListFragment
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
 
+        // Read values from cursor.
+        Payee payee = new Payee();
+        payee.loadFromCursor(cursor);
+
         switch (item.getItemId()) {
             case 0: //EDIT
-                showDialogEditPayeeName(SQLTypeTransaction.UPDATE, cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)),
-                        cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
+                showDialogEditPayeeName(SQLTypeTransaction.UPDATE, payee.getId(), payee.getName());
                 break;
+
             case 1: //DELETE
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(TablePayee.PAYEEID, cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
+                contentValues.put(TablePayee.PAYEEID, payee.getId());
                 if (new TablePayee().canDelete(getActivity(), contentValues)) {
-                    showDialogDeletePayee(cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
+                    showDialogDeletePayee(payee.getId());
                 } else {
-//                    Core core = new Core(getActivity());
-//                    int icon = core.usingDarkTheme()
-//                            ? R.drawable.ic_action_warning_dark
-//                            : R.drawable.ic_action_warning_light;
-
                     new AlertDialogWrapper.Builder(getActivity())
                             .setTitle(R.string.attention)
                             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
                             .setMessage(R.string.payee_can_not_deleted)
-//                            .setIcon(icon)
                             .setPositiveButton(android.R.string.ok,
                                     new DialogInterface.OnClickListener() {
                                         @Override
@@ -207,22 +230,15 @@ public class PayeeListFragment
                                     }).create().show();
                 }
                 break;
+
+            case 2: // view transactions
+                SearchParameters parameters = new SearchParameters();
+                parameters.payeeId = payee.getId();
+                parameters.payeeName = payee.getName();
+
+                showSearchActivityFor(parameters);
         }
         return false;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
-        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-        cursor.moveToPosition(info.position);
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
-
-        String[] menuItems = getResources().getStringArray(R.array.context_menu);
-        for (int i = 0; i < menuItems.length; i++) {
-            menu.add(Menu.NONE, i, i, menuItems[i]);
-        }
     }
 
     // Loader
@@ -441,13 +457,20 @@ public class PayeeListFragment
                 }
             }
         } else {
-            // No calling activity, this is the independent Payees view. Show options.
+            // No calling activity, this is the independent Payees view. Show context menu.
             getActivity().openContextMenu(v);
         }
     }
 
     public void restartLoader() {
         getLoaderManager().restartLoader(ID_LOADER_PAYEE, null, this);
+    }
+
+    private void showSearchActivityFor(SearchParameters parameters) {
+        Intent intent = new Intent(getActivity(), SearchActivity.class);
+        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, parameters);
+        intent.setAction(Intent.ACTION_INSERT);
+        startActivity(intent);
     }
 
 }

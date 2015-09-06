@@ -17,6 +17,8 @@
  */
 package com.money.manager.ex.model;
 
+import android.database.Cursor;
+
 import com.money.manager.ex.database.TablePayee;
 
 /**
@@ -28,6 +30,10 @@ public class Payee
     public Payee() {
 
     }
+
+//    public Payee(Cursor c) {
+//        super(c);
+//    }
 
     public Integer getId() {
         return getInt(TablePayee.PAYEEID);
@@ -44,4 +50,13 @@ public class Payee
     public void setName(String value) {
         setString(TablePayee.PAYEENAME, value);
     }
+
+    public Integer getCategoryId() {
+        return getInt(TablePayee.CATEGID);
+    }
+
+    public Integer getSubcategoryId() {
+        return getInt(TablePayee.SUBCATEGID);
+    }
+
 }
