@@ -48,6 +48,9 @@ import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.search.CategorySub;
+import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -150,43 +153,6 @@ public class CategoryListFragment
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
-
-        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
-        int group = ExpandableListView.getPackedPositionGroup(info.packedPosition);
-        int child = ExpandableListView.getPackedPositionChild(info.packedPosition);
-
-        int categId = ExpandableListView.INVALID_POSITION;
-        CharSequence categName = "";
-        int subCategId = ExpandableListView.INVALID_POSITION;
-        CharSequence subCategName = "";
-
-        if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-            categId = mCategories.get(group).getCategId();
-            categName = mCategories.get(group).getCategName();
-        } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-            categId = mSubCategories.get(mCategories.get(group)).get(child).getCategId();
-            subCategId = mSubCategories.get(mCategories.get(group)).get(child).getSubCategId();
-            subCategName = mSubCategories.get(mCategories.get(group)).get(child).getSubcategoryName();
-        }
-        // manage select menu
-        switch (item.getItemId()) {
-            case 0: //EDIT
-                if (subCategId == ExpandableListView.INVALID_POSITION) {
-                    showDialogEditCategoryName(SQLTypeTransaction.UPDATE, categId, categName);
-                } else {
-                    showDialogEditSubCategoryName(SQLTypeTransaction.UPDATE, categId, subCategId, subCategName);
-                }
-                break;
-            case 1: //DELETE
-                showDialogDeleteCategorySub(categId, subCategId);
-                break;
-        }
-        return false;
-    }
-
-    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
 
@@ -202,34 +168,62 @@ public class CategoryListFragment
         }
         // context menu from resource
         String[] menuItems = getResources().getStringArray(R.array.context_menu);
-        for (int i = 0; i < menuItems.length; i++) {
-            menu.add(Menu.NONE, i, i, menuItems[i]);
+        int id;
+        for (id = 0; id < menuItems.length; id++) {
+            menu.add(Menu.NONE, id, id, menuItems[id]);
         }
+        // view transactions menu item.
+        id = 2;
+        menu.add(Menu.NONE, id, id, getString(R.string.view_transactions));
     }
 
-    // toolbar menu
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
 
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//
-//        // create submenu from item add
-//        inflater.inflate(R.menu.menu_category_sub_category_expandable_list, menu);
-//    }
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+        int group = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+        int child = ExpandableListView.getPackedPositionChild(info.packedPosition);
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.menu_add_category:
-//                showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
-//                break;
-//            case R.id.menu_add_subcategory:
-//                showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+        CategorySub categoryIds = new CategorySub();
+        categoryIds.categId = Constants.NOT_SET;
+        categoryIds.categName = "";
+        categoryIds.subCategId = Constants.NOT_SET;
+        categoryIds.subCategName = "";
 
-    // end toolbar menu
+        if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+            categoryIds.categId = mCategories.get(group).getCategId();
+            categoryIds.categName = mCategories.get(group).getCategName().toString();
+        } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            categoryIds.categId = mSubCategories.get(mCategories.get(group)).get(child).getCategId();
+            categoryIds.subCategId = mSubCategories.get(mCategories.get(group)).get(child).getSubCategId();
+            categoryIds.subCategName = mSubCategories.get(mCategories.get(group)).get(child)
+                    .getSubcategoryName().toString();
+        }
+        // manage select menu
+        switch (item.getItemId()) {
+            case 0: //EDIT
+                if (categoryIds.subCategId == ExpandableListView.INVALID_POSITION) {
+                    showDialogEditCategoryName(SQLTypeTransaction.UPDATE, categoryIds.categId,
+                            categoryIds.categName);
+                } else {
+                    showDialogEditSubCategoryName(SQLTypeTransaction.UPDATE, categoryIds.categId,
+                            categoryIds.subCategId, categoryIds.subCategName);
+                }
+                break;
+
+            case 1: //DELETE
+                showDialogDeleteCategorySub(categoryIds);
+                break;
+
+            case 2: // view transactions
+                SearchParameters parameters = new SearchParameters();
+                parameters.category = categoryIds;
+
+                showSearchActivityFor(parameters);
+        }
+        return false;
+    }
 
     public CategoryExpandableListAdapter getAdapter(Cursor data) {
         if (data == null) return null;
@@ -378,7 +372,7 @@ public class CategoryListFragment
         }
     }
 
-    // End data loader
+    // Other
 
     @Override
     protected void setResult() {
@@ -432,20 +426,33 @@ public class CategoryListFragment
 
     }
 
+    @Override
+    public String getSubTitle() {
+        return getString(R.string.categories);
+    }
+
+    @Override
+    public void onFloatingActionButtonClickListener() {
+        showTypeSelectorDialog();
+//        showNameEntryDialog();
+    }
+
+    // Private
+
     /**
      * Show alter dialog confirm delete category or sub category
      *
      * @param categoryId    id of category
      * @param subCategoryId id of subcategory. 0 if not sub category
      */
-    private void showDialogDeleteCategorySub(final int categoryId, final int subCategoryId) {
+    private void showDialogDeleteCategorySub(final CategorySub categoryIds) {
         boolean canDelete = false;
         ContentValues values = new ContentValues();
-        if (subCategoryId <= 0) {
-            values.put(TableCategory.CATEGID, categoryId);
+        if (categoryIds.subCategId <= 0) {
+            values.put(TableCategory.CATEGID, categoryIds.categId);
             canDelete = new TableCategory().canDelete(getActivity(), values);
         } else {
-            values.put(TableSubCategory.SUBCATEGID, subCategoryId);
+            values.put(TableSubCategory.SUBCATEGID, categoryIds.subCategId);
             canDelete = new TableSubCategory().canDelete(getActivity(), values);
         }
         if (!(canDelete)) {
@@ -481,13 +488,16 @@ public class CategoryListFragment
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int rowsDelete = 0;
-                        if (subCategoryId <= 0) {
+                        int rowsDelete;
+                        if (categoryIds.subCategId <= 0) {
                             rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(),
-                                    TableCategory.CATEGID + "=" + categoryId, null);
+                                    TableCategory.CATEGID + "=" + categoryIds.categId,
+                                    null);
                         } else {
                             rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(),
-                                    TableSubCategory.CATEGID + "=" + categoryId + " AND " + TableSubCategory.SUBCATEGID + "=" + subCategoryId, null);
+                                    TableSubCategory.CATEGID + "=" + categoryIds.categId + " AND " +
+                                    TableSubCategory.SUBCATEGID + "=" + categoryIds.subCategId,
+                                    null);
                         }
                         if (rowsDelete == 0) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
@@ -665,17 +675,6 @@ public class CategoryListFragment
         alertDialog.create().show();
     }
 
-    @Override
-    public String getSubTitle() {
-        return getString(R.string.categories);
-    }
-
-    @Override
-    public void onFloatingActionButtonClickListener() {
-        showTypeSelectorDialog();
-//        showNameEntryDialog();
-    }
-
     private void addListClickHandlers() {
         // the list handlers available only when selecting a category.
         if (Intent.ACTION_PICK.equals(mAction)) {
@@ -741,4 +740,12 @@ public class CategoryListFragment
                 .neutralText(android.R.string.cancel)
                 .show();
     }
+
+    private void showSearchActivityFor(SearchParameters parameters) {
+        Intent intent = new Intent(getActivity(), SearchActivity.class);
+        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, parameters);
+        intent.setAction(Intent.ACTION_INSERT);
+        startActivity(intent);
+    }
+
 }
