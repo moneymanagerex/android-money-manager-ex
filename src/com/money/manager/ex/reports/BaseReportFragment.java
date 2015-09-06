@@ -65,10 +65,12 @@ public abstract class BaseReportFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         //set list view
         setHasOptionsMenu(true);
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
+
         //item selected
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_ITEM_SELECTED))
@@ -81,6 +83,21 @@ public abstract class BaseReportFragment
         //start loader
         startLoader(savedInstanceState);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        //inflate menu
+        inflater.inflate(R.menu.menu_report, menu);
+        inflater.inflate(R.menu.menu_period_picker, menu);
+        //checked item
+        MenuItem item = menu.findItem(mItemSelected);
+        if (item != null) {
+            item.setChecked(true);
+        }
+    }
+
+    // Loader events
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -99,25 +116,9 @@ public abstract class BaseReportFragment
                         query,                              // selection
                         null,                               // selection args
                         null);                              // sort
-//                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null,
-//                        prepareQuery(getWhereClause()), null, null);
-
-//            break;
+                break;
         }
         return result;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        //inflate menu
-        inflater.inflate(R.menu.menu_report, menu);
-        inflater.inflate(R.menu.menu_period_picker, menu);
-        //checked item
-        MenuItem item = menu.findItem(mItemSelected);
-        if (item != null) {
-            item.setChecked(true);
-        }
     }
 
     @Override
@@ -184,9 +185,11 @@ public abstract class BaseReportFragment
         //check item
         item.setChecked(true);
         mItemSelected = item.getItemId();
+
         //compose bundle
         Bundle args = new Bundle();
         args.putString(KEY_WHERE_CLAUSE, whereClause);
+
         //starts loader
         startLoader(args);
 

@@ -236,21 +236,8 @@ public class CurrencyService {
     public Boolean saveBaseCurrencyId(Integer currencyId) {
 
         InfoService infoService = new InfoService(mContext);
-//        infoService.getInfoValue(InfoService.BASECURRENCYID);
         boolean success = infoService.setInfoValue(InfoService.BASECURRENCYID, Integer.toString(currencyId));
 
-//        TableInfoTable mInfoTable = new TableInfoTable();
-//
-//        // update data into database
-//        ContentValues values = new ContentValues();
-//        values.put(TableInfoTable.INFOVALUE, currencyId);
-//
-//        boolean success = mContext.getContentResolver().update(mInfoTable.getUri(),
-//                values,
-//                TableInfoTable.INFONAME + "=?",
-//                new String[]{ InfoService.BASECURRENCYID }
-//        ) == 1;
-//
         // cache the new base currency
         if (success) {
             mBaseCurrencyId = currencyId;
@@ -305,33 +292,9 @@ public class CurrencyService {
      * @return Id base currency
      */
     protected Integer loadBaseCurrencyId() {
-        Integer currencyId = null;
-//        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-//        TableInfoTable tableInfo = new TableInfoTable();
-//
-//        // set table
-//        queryBuilder.setTables(tableInfo.getSource());
-//
-//        try {
-//            Cursor cursor = mContext.getContentResolver().query(tableInfo.getUri(),
-//                    tableInfo.getAllColumns(),
-//                    TableInfoTable.INFONAME + "=?",
-//                    new String[]{ InfoService.BASECURRENCYID },
-//                    null);
-//            if (cursor == null) return null;
-//
-//            if (cursor.moveToFirst()) {
-//                currencyId = cursor.getInt(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
-//            }
-//            cursor.close();
-//        } catch (Exception e) {
-//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.handle(e, "load base currency");
-//        }
-
         InfoService infoService = new InfoService(mContext);
         String currencyString = infoService.getInfoValue(InfoService.BASECURRENCYID);
-        currencyId = Integer.parseInt(currencyString);
+        Integer currencyId = Integer.parseInt(currencyString);
 
         return currencyId;
     }
@@ -353,25 +316,6 @@ public class CurrencyService {
         }
         return currency;
     }
-
-    /**
-     * Retrieves the currency Id for the given symbol.
-     * Accesses the database directly.
-     */
-//    public int loadCurrencyIdFromSymbolRaw(String currencySymbol, SQLiteDatabase database) {
-//        Cursor cursor = database.rawQuery(
-//                "SELECT " + TableCurrencyFormats.CURRENCYID +
-//                " FROM CURRENCYFORMATS_V1" +
-//                " WHERE " + TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
-//                new String[]{ currencySymbol });
-//        if (cursor == null || !cursor.moveToFirst()) return Constants.NOT_SET;
-//
-//        int result = cursor.getInt(0);
-//
-//        cursor.close();
-//
-//        return result;
-//    }
 
     public int loadCurrencyIdFromSymbol(String currencySymbol) {
         int result = Constants.NOT_SET;

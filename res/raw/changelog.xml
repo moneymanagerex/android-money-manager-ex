@@ -17,6 +17,9 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="September 6, 2015" versionName="2.18.0">
+        <changelogtext>Listing transactions from the Category reports.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="September 5, 2015" versionName="2.17.1">
         <changelogtext>Ability to add Investment records.</changelogtext>
         <changelogtext>Adjustments for Android 4.0.x devices. The app now runs on devices with Android 4.0.3 and up.</changelogtext>

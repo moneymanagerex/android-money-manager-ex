@@ -47,6 +47,8 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.search.SearchFragment;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -208,7 +210,6 @@ public class CategoriesReportFragment
 
         //data to compose builder
         String[] projectionIn = new String[]{
-//            "CategId || ':' || SubCategId AS _id",
             "ROWID AS _id", // this does not fetch anything, unfortunately.
             ViewMobileData.CategID, ViewMobileData.Category,
             ViewMobileData.SubcategID, ViewMobileData.Subcategory,
@@ -272,31 +273,14 @@ public class CategoriesReportFragment
         DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.CategID, values);
         DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.SubcategID, values);
 
-        // todo: now list the transactions for the given category/subcategory combination.
+        // now list the transactions for the given category/subcategory combination,
+        // in the selected time period.
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         String tag = AllDataFragment.class.getSimpleName();
         AllDataFragment fragment = (AllDataFragment) fragmentManager.findFragmentByTag(tag);
         if (fragment == null) {
-            // todo: implement callback interface
-            fragment = AllDataFragment.newInstance(-1, null);
-
-            Bundle args = new Bundle();
-            ArrayList<String> where = new ArrayList<>();
-            where.add("CategId=" + values.getAsString(ViewMobileData.CategID) +
-                " AND SubCategId=" + values.getAsString(ViewMobileData.SubcategID));
-            args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, where);
-//            ArrayList<String> params = new ArrayList<>();
-//            params.add(values.getAsString(ViewMobileData.CategID));
-//            params.add(values.getAsString(ViewMobileData.SubcategID));
-//            args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE_PARAMS, params);
-            // Sorting
-//            args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
-//                    QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
-            //set arguments
-            fragment.setArguments(args);
-            // group by account
-            fragment.setShownHeader(true);
+            fragment = createTransactionsFragment(values);
         }
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -364,4 +348,30 @@ public class CategoriesReportFragment
         }
     }
 
+    private AllDataFragment createTransactionsFragment(ContentValues values) {
+        // implement callback interface?
+        AllDataFragment fragment = AllDataFragment.newInstance(-1, null);
+
+        Bundle args = new Bundle();
+        ArrayList<String> where = new ArrayList<>();
+        where.add("CategId=" + values.getAsString(ViewMobileData.CategID) +
+                " AND SubCategId=" + values.getAsString(ViewMobileData.SubcategID));
+        if (!StringUtils.isEmpty(getWhereClause())) {
+            where.add(getWhereClause());
+        }
+        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, where);
+//            ArrayList<String> params = new ArrayList<>();
+//            params.add(values.getAsString(ViewMobileData.CategID));
+//            params.add(values.getAsString(ViewMobileData.SubcategID));
+//            args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE_PARAMS, params);
+        // Sorting
+//            args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
+//                    QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
+        //set arguments
+        fragment.setArguments(args);
+        // group by account
+        fragment.setShownHeader(true);
+
+        return fragment;
+    }
 }
