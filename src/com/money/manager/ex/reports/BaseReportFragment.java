@@ -91,10 +91,12 @@ public abstract class BaseReportFragment
                 if (args != null && args.containsKey(KEY_WHERE_CLAUSE)) {
                     setWhereClause(args.getString(KEY_WHERE_CLAUSE));
                 }
+                String query = prepareQuery(getWhereClause());
+
                 result = new MmexCursorLoader(getActivity(),  // context
                         new SQLDataSet().getUri(),          // uri
                         null,                               // projection
-                        prepareQuery(getWhereClause()),     // selection
+                        query,                              // selection
                         null,                               // selection args
                         null);                              // sort
 //                return new CursorLoader(getActivity(), new SQLDataSet().getUri(), null,

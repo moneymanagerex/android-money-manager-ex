@@ -17,26 +17,35 @@
  */
 package com.money.manager.ex.reports;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.search.SearchFragment;
 
 import java.util.ArrayList;
 
@@ -44,36 +53,41 @@ import java.util.ArrayList;
  * Categories report fragment.
  * Created by Alen Siljak on 06/07/2015.
  */
-public class CategoriesReportFragment extends BaseReportFragment {
-//    private static final int GROUP_ID_CATEGORY = 0xFFFF;
-    private LinearLayout mHeaderListView, mFooterListView;
+public class CategoriesReportFragment
+        extends BaseReportFragment {
+
+    private LinearLayout mListViewHeader, mListViewFooter;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setListAdapter(null);
         setShowMenuItemSearch(true);
+
         //create header view
-        mHeaderListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
-        TextView txtColumn1 = (TextView) mHeaderListView.findViewById(R.id.textViewColumn1);
-        TextView txtColumn2 = (TextView) mHeaderListView.findViewById(R.id.textViewColumn2);
+        mListViewHeader = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
+        TextView txtColumn1 = (TextView) mListViewHeader.findViewById(R.id.textViewColumn1);
+        TextView txtColumn2 = (TextView) mListViewHeader.findViewById(R.id.textViewColumn2);
         //set header
         txtColumn1.setText(R.string.category);
         txtColumn1.setTypeface(null, Typeface.BOLD);
         txtColumn2.setText(R.string.amount);
         txtColumn2.setTypeface(null, Typeface.BOLD);
-        //add to listview
-        getListView().addHeaderView(mHeaderListView);
+        //add to list view
+        getListView().addHeaderView(mListViewHeader);
+
         //create footer view
-        mFooterListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
-        txtColumn1 = (TextView) mFooterListView.findViewById(R.id.textViewColumn1);
-        txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
+        mListViewFooter = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
+        txtColumn1 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn1);
+        txtColumn2 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn2);
         //set footer
         txtColumn1.setText(R.string.total);
         txtColumn1.setTypeface(null, Typeface.BOLD_ITALIC);
         txtColumn2.setText(R.string.total);
         txtColumn2.setTypeface(null, Typeface.BOLD_ITALIC);
+
         //add to list view --> move to load finished
-        //getListView().addFooterView(mFooterListView);
+        //getListView().addFooterView(mListViewFooter);
+
         //set adapter
         CategoriesReportAdapter adapter = new CategoriesReportAdapter(getActivity(), null);
         setListAdapter(adapter);
@@ -108,13 +122,13 @@ public class CategoriesReportFragment extends BaseReportFragment {
                 while (data.moveToNext()) {
                     totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
                 }
-                TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
+                TextView txtColumn2 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn2);
                 txtColumn2.setText(currencyService.getBaseCurrencyFormatted(totalAmount));
 
-                // soved bug chart
+                // solved bug chart
                 if (data.getCount() > 0) {
-                    getListView().removeFooterView(mFooterListView);
-                    getListView().addFooterView(mFooterListView);
+                    getListView().removeFooterView(mListViewFooter);
+                    getListView().addFooterView(mListViewFooter);
                 }
 
                 if (((CategoriesReportActivity) getActivity()).mIsDualPanel) {
@@ -194,13 +208,15 @@ public class CategoriesReportFragment extends BaseReportFragment {
 
         //data to compose builder
         String[] projectionIn = new String[]{
-                "ROWID AS _id", ViewMobileData.CategID, ViewMobileData.Category,
-                ViewMobileData.SubcategID, ViewMobileData.Subcategory,
-                "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
+//            "CategId || ':' || SubCategId AS _id",
+            "ROWID AS _id", // this does not fetch anything, unfortunately.
+            ViewMobileData.CategID, ViewMobileData.Category,
+            ViewMobileData.SubcategID, ViewMobileData.Subcategory,
+            "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
 
         String selection = ViewMobileData.Status + "<>'V' AND " +
-                ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+            ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
@@ -225,11 +241,68 @@ public class CategoriesReportFragment extends BaseReportFragment {
         builder.setTables(mobileData.getSource());
 
         //return query
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-        return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
-//        } else {
-//            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
+        } else {
+            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
+        }
+    }
+
+    @Override
+    public String getSubTitle() {
+        return null;
+    }
+
+    /**
+     * List item clicked. Show the transaction list for the category.
+     * @param l        The ListView where the click happened
+     * @param v        The view that was clicked within the ListView
+     * @param position The position of the view in the list
+     * @param id       The row id of the item that was clicked
+     */
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        // Reading item from the list view, not adapter!
+        Object item = l.getItemAtPosition(position);
+        if (item == null) return;
+
+        Cursor cursor = (Cursor) item;
+
+        ContentValues values = new ContentValues();
+        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.CategID, values);
+        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.SubcategID, values);
+
+        // todo: now list the transactions for the given category/subcategory combination.
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        String tag = AllDataFragment.class.getSimpleName();
+        AllDataFragment fragment = (AllDataFragment) fragmentManager.findFragmentByTag(tag);
+        if (fragment == null) {
+            // todo: implement callback interface
+            fragment = AllDataFragment.newInstance(-1, null);
+
+            Bundle args = new Bundle();
+            ArrayList<String> where = new ArrayList<>();
+            where.add("CategId=" + values.getAsString(ViewMobileData.CategID) +
+                " AND SubCategId=" + values.getAsString(ViewMobileData.SubcategID));
+            args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, where);
+//            ArrayList<String> params = new ArrayList<>();
+//            params.add(values.getAsString(ViewMobileData.CategID));
+//            params.add(values.getAsString(ViewMobileData.SubcategID));
+//            args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE_PARAMS, params);
+            // Sorting
+//            args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
+//                    QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
+            //set arguments
+            fragment.setArguments(args);
+            // group by account
+            fragment.setShownHeader(true);
+        }
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContent, fragment, AllDataFragment.class.getSimpleName());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     public void showChart() {
@@ -291,8 +364,4 @@ public class CategoriesReportFragment extends BaseReportFragment {
         }
     }
 
-    @Override
-    public String getSubTitle() {
-        return null;
-    }
 }

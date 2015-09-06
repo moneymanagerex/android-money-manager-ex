@@ -372,7 +372,7 @@ public class MoneyManagerOpenHelper
 
             infoCurrency = db.rawQuery("SELECT * FROM " + infoTable.getSource() +
                             " WHERE " + TableInfoTable.INFONAME + "=?",
-                    new String[]{Constants.INFOTABLE_BASECURRENCYID});
+                    new String[]{ InfoService.BASECURRENCYID});
 
             boolean recordExists = (infoCurrency != null && infoCurrency.moveToFirst());
 
@@ -383,10 +383,10 @@ public class MoneyManagerOpenHelper
 //                    systemCurrency.getCurrencyCode(), db);
 
             if (!recordExists && (currencyId != Constants.NOT_SET)) {
-                infoService.insertRaw(db, Constants.INFOTABLE_BASECURRENCYID, currencyId);
+                infoService.insertRaw(db, InfoService.BASECURRENCYID, currencyId);
             } else {
                 // Update the (empty) record to the default currency.
-                infoService.updateRaw(db, Constants.INFOTABLE_BASECURRENCYID, currencyId);
+                infoService.updateRaw(db, InfoService.BASECURRENCYID, currencyId);
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);

@@ -20,21 +20,18 @@ package com.money.manager.ex.currency;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
-import com.money.manager.ex.settings.AppSettings;
 
 import java.util.ArrayList;
 import java.util.Currency;
@@ -144,7 +141,7 @@ public class CurrencyService {
 
         // lazy loading the base currency id.
         if (mBaseCurrencyId == null) {
-            Integer baseCurrencyId = getInitBaseCurrencyId();
+            Integer baseCurrencyId = loadBaseCurrencyId();
             if(baseCurrencyId != null) {
                 setBaseCurrencyId(baseCurrencyId);
                 result = baseCurrencyId;
@@ -237,17 +234,23 @@ public class CurrencyService {
      * @return true if update succeed, otherwise false
      */
     public Boolean saveBaseCurrencyId(Integer currencyId) {
-        TableInfoTable mInfoTable = new TableInfoTable();
 
-        // update data into database
-        ContentValues values = new ContentValues();
-        values.put(TableInfoTable.INFOVALUE, currencyId);
+        InfoService infoService = new InfoService(mContext);
+//        infoService.getInfoValue(InfoService.BASECURRENCYID);
+        boolean success = infoService.setInfoValue(InfoService.BASECURRENCYID, Integer.toString(currencyId));
 
-        boolean success = mContext.getContentResolver().update(mInfoTable.getUri(),
-                values,
-                TableInfoTable.INFONAME + "=?",
-                new String[]{Constants.INFOTABLE_BASECURRENCYID}) == 1;
-
+//        TableInfoTable mInfoTable = new TableInfoTable();
+//
+//        // update data into database
+//        ContentValues values = new ContentValues();
+//        values.put(TableInfoTable.INFOVALUE, currencyId);
+//
+//        boolean success = mContext.getContentResolver().update(mInfoTable.getUri(),
+//                values,
+//                TableInfoTable.INFONAME + "=?",
+//                new String[]{ InfoService.BASECURRENCYID }
+//        ) == 1;
+//
         // cache the new base currency
         if (success) {
             mBaseCurrencyId = currencyId;
@@ -301,31 +304,34 @@ public class CurrencyService {
      *
      * @return Id base currency
      */
-    protected Integer getInitBaseCurrencyId() {
-        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        TableInfoTable tableInfo = new TableInfoTable();
+    protected Integer loadBaseCurrencyId() {
         Integer currencyId = null;
+//        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+//        TableInfoTable tableInfo = new TableInfoTable();
+//
+//        // set table
+//        queryBuilder.setTables(tableInfo.getSource());
+//
+//        try {
+//            Cursor cursor = mContext.getContentResolver().query(tableInfo.getUri(),
+//                    tableInfo.getAllColumns(),
+//                    TableInfoTable.INFONAME + "=?",
+//                    new String[]{ InfoService.BASECURRENCYID },
+//                    null);
+//            if (cursor == null) return null;
+//
+//            if (cursor.moveToFirst()) {
+//                currencyId = cursor.getInt(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
+//            }
+//            cursor.close();
+//        } catch (Exception e) {
+//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+//            handler.handle(e, "load base currency");
+//        }
 
-        // set table
-        queryBuilder.setTables(tableInfo.getSource());
-
-        try {
-            Cursor cursor = mContext.getContentResolver().query(tableInfo.getUri(),
-                    tableInfo.getAllColumns(),
-                    TableInfoTable.INFONAME + "=?",
-                    new String[]{ Constants.INFOTABLE_BASECURRENCYID },
-                    null);
-            if (cursor == null) return null;
-
-            // set BaseCurrencyId
-            if (cursor.moveToFirst()) {
-                currencyId = cursor.getInt(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
-            }
-            cursor.close();
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "init base currency");
-        }
+        InfoService infoService = new InfoService(mContext);
+        String currencyString = infoService.getInfoValue(InfoService.BASECURRENCYID);
+        currencyId = Integer.parseInt(currencyString);
 
         return currencyId;
     }

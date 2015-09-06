@@ -36,12 +36,15 @@ import com.money.manager.ex.database.ViewMobileData;
  * Adapter for the Categories report.
  * Created by Alen Siljak on 06/07/2015.
  */
-public class CategoriesReportAdapter extends CursorAdapter {
+public class CategoriesReportAdapter
+        extends CursorAdapter {
+
     private LayoutInflater mInflater;
 
     @SuppressWarnings("deprecation")
     public CategoriesReportAdapter(Context context, Cursor c) {
         super(context, c);
+
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -49,6 +52,7 @@ public class CategoriesReportAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView txtColumn1 = (TextView) view.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = (TextView) view.findViewById(R.id.textViewColumn2);
+
         Core core = new Core(context);
         double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
         String column1;

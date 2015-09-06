@@ -275,7 +275,6 @@ public class SearchFragment extends Fragment
             core.formatAmountTextView(((TextView) view), amount);
     }
 
-
     /**
      * Compose arguments and execute search
      */
@@ -399,7 +398,7 @@ public class SearchFragment extends Fragment
 
         searchResultsFragment = AllDataFragment.newInstance(-1, this);
 
-        //create bundle
+        //create parameter bundle
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, where.Clause);
         args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE_PARAMS, where.Params);
@@ -408,6 +407,7 @@ public class SearchFragment extends Fragment
                 QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
         //set arguments
         searchResultsFragment.setArguments(args);
+
 //        searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
 //        searchResultsFragment.setShownHeader(true);
         if (getActivity() instanceof SearchActivity) {

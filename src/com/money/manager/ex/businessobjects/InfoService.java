@@ -99,38 +99,36 @@ public class InfoService {
     }
 
     /**
-     * Update value of info
+     * Update value of info.
      *
      * @param key  to be updated
      * @param value value to be used
      * @return true if update success otherwise false
      */
     public boolean setInfoValue(String key, String value) {
-        boolean ret = false;
+        boolean result = false;
         TableInfoTable infoTable = new TableInfoTable();
-        MoneyManagerOpenHelper helper;
-        boolean exists;
         // check if exists info
-        exists = !TextUtils.isEmpty(getInfoValue(key));
+        boolean exists = !TextUtils.isEmpty(getInfoValue(key));
         // content values
         ContentValues values = new ContentValues();
         values.put(TableInfoTable.INFOVALUE, value);
 
         try {
-            helper = MoneyManagerOpenHelper.getInstance(mContext);
+            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
             if (exists) {
-                ret = helper.getWritableDatabase().update(infoTable.getSource(), values,
+                result = helper.getWritableDatabase().update(infoTable.getSource(), values,
                         TableInfoTable.INFONAME + "=?", new String[]{key}) >= 0;
             } else {
                 values.put(TableInfoTable.INFONAME, key);
-                ret = helper.getWritableDatabase().insert(infoTable.getSource(), null, values) >= 0;
+                result = helper.getWritableDatabase().insert(infoTable.getSource(), null, values) >= 0;
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "writing info value");
         }
 
-        return ret;
+        return result;
     }
 
 }

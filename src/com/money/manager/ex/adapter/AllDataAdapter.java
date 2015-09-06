@@ -348,24 +348,24 @@ public class AllDataAdapter
         REPEATINGTRANSACTION
     }
 
-    private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
-        try {
-            int transId = cursor.getInt(cursor.getColumnIndex(ID));
-
-            CalculateRunningBalanceTask balanceAmount = new CalculateRunningBalanceTask();
-            balanceAmount.setAccountId(getAccountId());
-            balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
-            balanceAmount.setTextView(holder.txtBalance);
-            balanceAmount.setContext(mContext);
-            balanceAmount.setCurrencyId(getCurrencyId());
-            balanceAmount.setTransId(transId);
-            // execute thread
-            balanceAmount.execute();
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "calculating balance amount");
-        }
-    }
+//    private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
+//        try {
+//            int transId = cursor.getInt(cursor.getColumnIndex(ID));
+//
+//            CalculateRunningBalanceTask balanceAmount = new CalculateRunningBalanceTask();
+//            balanceAmount.setAccountId(getAccountId());
+//            balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
+//            balanceAmount.setTextView(holder.txtBalance);
+//            balanceAmount.setContext(mContext);
+//            balanceAmount.setCurrencyId(getCurrencyId());
+//            balanceAmount.setTransId(transId);
+//            // execute thread
+//            balanceAmount.execute();
+//        } catch (Exception ex) {
+//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+//            handler.handle(ex, "calculating balance amount");
+//        }
+//    }
 
     private void displayBalanceAmountOrDaysLeft(AllDataViewHolder holder, Cursor cursor,
                                                 CurrencyService currencyService, Context context) {
