@@ -166,7 +166,7 @@ public abstract class BaseReportFragment
 //                } else {
 //                    whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
 //                }
-                mDateFrom = calendar.setNow().setPreviousMonth().setFirstDayOfMonth().setTimeToBeginningOfDay().getTime();
+                mDateFrom = calendar.setNow().addMonth(-1).setFirstDayOfMonth().setTimeToBeginningOfDay().getTime();
                 mDateTo = calendar.setLastDayOfMonth().setTimeToEndOfDay().getTime();
                 break;
             case R.id.menu_last_30_days:

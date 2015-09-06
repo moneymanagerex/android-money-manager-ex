@@ -47,7 +47,7 @@ public class CalendarUtils {
     }
 
     public CalendarUtils addYear(int value) {
-        mCalendar.set(Calendar.YEAR, value);
+        mCalendar.add(Calendar.YEAR, value);
         return this;
     }
 
@@ -87,17 +87,7 @@ public class CalendarUtils {
 
     public CalendarUtils setLastDayOfMonth() {
         mCalendar.set(Calendar.DAY_OF_MONTH,
-                mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-
-        return this;
-    }
-
-    /**
-     * Move one month back.
-     * @param calendar Calendar
-     */
-    public CalendarUtils setPreviousMonth() {
-        mCalendar.add(Calendar.MONTH, -1);
+            mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         return this;
     }

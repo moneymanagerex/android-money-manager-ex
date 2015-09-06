@@ -128,8 +128,8 @@ public class SearchActivity
         if (intent == null) return;
 
         // see if we have the search criteria.
-//        String searchCriteria = intent.getStringExtra(EXTRA_SEARCH_CRITERIA);
         SearchParameters parameters = intent.getParcelableExtra(EXTRA_SEARCH_PARAMETERS);
+        if (parameters == null) return;
 
         Log.d("test", parameters.toString());
     }
