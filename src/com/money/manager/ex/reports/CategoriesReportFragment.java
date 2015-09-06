@@ -371,19 +371,19 @@ public class CategoriesReportFragment
         return fragment;
     }
 
-    private void showTransactionsFragment(CategorySub category) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        String tag = AllDataFragment.class.getSimpleName();
-        AllDataFragment fragment = (AllDataFragment) fragmentManager.findFragmentByTag(tag);
-        if (fragment == null) {
-            fragment = createTransactionsFragment(category);
-        }
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContent, fragment, AllDataFragment.class.getSimpleName());
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
+//    private void showTransactionsFragment(CategorySub category) {
+//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//        String tag = AllDataFragment.class.getSimpleName();
+//        AllDataFragment fragment = (AllDataFragment) fragmentManager.findFragmentByTag(tag);
+//        if (fragment == null) {
+//            fragment = createTransactionsFragment(category);
+//        }
+//
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragmentContent, fragment, AllDataFragment.class.getSimpleName());
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
+//    }
 
     private CategorySub getCategoryFromSelectedItem(ListView l, int position) {
         // Reading item from the list view, not adapter!

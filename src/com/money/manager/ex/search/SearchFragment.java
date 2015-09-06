@@ -204,8 +204,6 @@ public class SearchFragment extends Fragment
         // notes
         txtNotes = (EditText) view.findViewById(R.id.editTextNotes);
 
-        restoreSearchCriteria();
-
         // Reset button.
         Button resetButton = (Button) view.findViewById(R.id.resetButton);
         resetButton.setOnClickListener(new OnClickListener() {
@@ -216,7 +214,10 @@ public class SearchFragment extends Fragment
             }
         });
 
+        // Get search criteria if any was sent from an external caller.
         handleSearchRequest();
+        // Store search criteria values into the controls.
+        restoreSearchCriteria();
 
         return view;
     }

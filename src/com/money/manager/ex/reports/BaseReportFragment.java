@@ -151,7 +151,7 @@ public abstract class BaseReportFragment
         CalendarUtils calendar = new CalendarUtils();
 
 //        int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+//        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         switch (item.getItemId()) {
             case R.id.menu_current_month:
 //                whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth) + " AND " +
