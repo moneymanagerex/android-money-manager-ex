@@ -49,11 +49,10 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TablePayee;
-import com.money.manager.ex.model.Payee;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**

@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.model.Stock;
+import com.money.manager.ex.domainmodel.Stock;
 
 import org.apache.commons.lang3.ArrayUtils;
 

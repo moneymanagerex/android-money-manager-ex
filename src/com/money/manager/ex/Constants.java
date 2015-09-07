@@ -28,9 +28,9 @@ public class Constants {
     // Database
     public static final String PATTERN_DB_DATE = "yyyy-MM-dd";
     public static final String MOBILE_DATA_PATTERN = "%%mobiledata%%";
-    // Transaction Status
-    public static final String TRANSACTION_STATUS_UNRECONCILED = "";
-    public static final String TRANSACTION_STATUS_RECONCILED = "R";
+    // Transaction Status -> Use TransactionStatuses enum.
+//    public static final String TRANSACTION_STATUS_UNRECONCILED = "";
+//    public static final String TRANSACTION_STATUS_RECONCILED = "R";
     public static final String TRANSACTION_STATUS_VOID = "V";
     public static final String TRANSACTION_STATUS_FOLLOWUP = "F";
     public static final String TRANSACTION_STATUS_DUPLICATE = "D";

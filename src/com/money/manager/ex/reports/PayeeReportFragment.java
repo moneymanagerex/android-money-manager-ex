@@ -19,7 +19,6 @@ package com.money.manager.ex.reports;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -40,9 +39,8 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.model.Payee;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.DateUtils;

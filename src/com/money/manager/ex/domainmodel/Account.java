@@ -15,48 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.model;
+package com.money.manager.ex.domainmodel;
 
-import android.database.Cursor;
-
-import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.database.TableAccountList;
 
 /**
- * Payee model.
+ * Account entity
+ * Created by Alen on 5/09/2015.
  */
-public class Payee
+public class Account
     extends EntityBase {
 
-    public Payee() {
-
+    public Account() {
+        super();
     }
-
-//    public Payee(Cursor c) {
-//        super(c);
-//    }
 
     public Integer getId() {
-        return getInt(TablePayee.PAYEEID);
+        return getInt(TableAccountList.ACCOUNTID);
     }
 
-    public void setId(Integer value) {
-        setInt(TablePayee.PAYEEID, value);
+    public Integer getCurrencyId() {
+        return getInt(TableAccountList.CURRENCYID);
     }
-
-    public String getName() {
-        return getString(TablePayee.PAYEENAME);
-    }
-
-    public void setName(String value) {
-        setString(TablePayee.PAYEENAME, value);
-    }
-
-    public Integer getCategoryId() {
-        return getInt(TablePayee.CATEGID);
-    }
-
-    public Integer getSubcategoryId() {
-        return getInt(TablePayee.SUBCATEGID);
-    }
-
 }

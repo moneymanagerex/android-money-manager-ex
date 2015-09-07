@@ -19,15 +19,9 @@ package com.money.manager.ex.database;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.text.TextUtils;
 
-import com.money.manager.ex.core.AccountTypes;
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.model.Account;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.money.manager.ex.domainmodel.Account;
 
 /**
  * Repository for Accounts

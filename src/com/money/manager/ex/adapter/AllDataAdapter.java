@@ -35,13 +35,16 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.account.CalculateRunningBalanceTask;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.viewmodels.AccountTransaction;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,7 +76,7 @@ public class AllDataAdapter
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
     private Context mContext;
-    private double[] balance;
+    private BigDecimal[] balance;
 
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
         super(context, c, -1);
@@ -376,8 +379,9 @@ public class AllDataAdapter
                 // create thread for calculate balance amount
 //                calculateBalanceAmount(cursor, holder);
 
-                double currentBalance = this.balance[cursor.getPosition()];
-                String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(), currentBalance);
+                BigDecimal currentBalance = this.balance[cursor.getPosition()];
+                String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(),
+                        currentBalance.doubleValue());
                 holder.txtBalance.setText(balanceFormatted);
                 holder.txtBalance.setVisibility(View.VISIBLE);
             } else {
@@ -485,12 +489,13 @@ public class AllDataAdapter
         int originalPosition = c.getPosition();
 
         // populate balance amounts
-        balance = new double[c.getCount()];
+        balance = new BigDecimal[c.getCount()];
         int i = c.getCount() - 1;
         // currently the order of transactions is inverse.
-        double runningBalance = 0;
+        BigDecimal runningBalance = BigDecimal.ZERO;
         while (c.moveToPosition(i)) {
 
+            // Get starting balance.
             if (initialBalance == null) {
                 // Get starting balance on the given day.
                 initialBalance = accountService.loadInitialBalance(getAccountId());
@@ -501,27 +506,39 @@ public class AllDataAdapter
                 double balanceOnDate = accountService.calculateBalanceOn(getAccountId(), date);
                 initialBalance += balanceOnDate;
 
-                runningBalance = initialBalance;
+                runningBalance = BigDecimal.valueOf(initialBalance);
             }
 
-            String transType = c.getString(c.getColumnIndex(TRANSACTIONTYPE));
-            double amount = c.getDouble(c.getColumnIndex(TOAMOUNT));
+            // adjust the balance for each transaction.
 
-            switch (TransactionTypes.valueOf(transType)) {
-                case Withdrawal:
-                    runningBalance -= amount;
-                    break;
-                case Deposit:
-                    runningBalance += amount;
-                    break;
-                case Transfer:
-                    int accountId = c.getInt(c.getColumnIndex(ACCOUNTID));
-                    if (accountId == getAccountId()) {
-                        runningBalance += c.getDouble(c.getColumnIndex(AMOUNT));
-                    } else {
-                        runningBalance += amount;
-                    }
-                    break;
+            AccountTransaction tx = new AccountTransaction();
+            tx.loadFromCursor(c);
+
+            // check whether the transaction is Void and exclude from calculation.
+            if (!tx.getStatus().equals(TransactionStatuses.VOID)) {
+                String transType = tx.getTransactionType();
+                BigDecimal amount = tx.getToAmount();
+
+                switch (TransactionTypes.valueOf(transType)) {
+                    case Withdrawal:
+//                    runningBalance -= amount;
+                        runningBalance = runningBalance.subtract(amount);
+                        break;
+                    case Deposit:
+//                    runningBalance += amount;
+                        runningBalance = runningBalance.add(amount);
+                        break;
+                    case Transfer:
+                        int accountId = tx.getAccountId();
+                        if (accountId == getAccountId()) {
+//                        runningBalance += tx.getAmount();
+                            runningBalance = runningBalance.add(tx.getAmount());
+                        } else {
+//                        runningBalance += amount;
+                            runningBalance = runningBalance.add(amount);
+                        }
+                        break;
+                }
             }
 
             balance[i] = runningBalance;

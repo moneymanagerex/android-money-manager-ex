@@ -15,28 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.model;
+package com.money.manager.ex.viewmodels;
 
-import android.database.Cursor;
-
-import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.domainmodel.EntityBase;
 
 /**
- * Account entity
- * Created by Alen on 5/09/2015.
+ * Record from All Data adapter. Used for recurring transactions lists.
+ * Source is QueryBillDeposits.
  */
-public class Account
+public class RecurringTransaction
     extends EntityBase {
 
-    public Account() {
-        super();
-    }
-
-    public Integer getId() {
-        return getInt(TableAccountList.ACCOUNTID);
-    }
-
-    public Integer getCurrencyId() {
-        return getInt(TableAccountList.CURRENCYID);
+    public Integer getAccountId() {
+        return getInt(QueryBillDeposits.ACCOUNTID);
     }
 }

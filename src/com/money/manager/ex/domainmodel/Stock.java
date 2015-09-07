@@ -1,4 +1,4 @@
-package com.money.manager.ex.model;
+package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
 import android.database.DatabaseUtils;
