@@ -17,7 +17,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 6, 2015" versionName="2.18.1">
+    <changelogversion changeDate="September 6, 2015" versionName="2.18.2">
+        <changelogtext>Excluding Void transactions from running balance.</changelogtext>
         <changelogtext>Listing transactions from the Category reports.</changelogtext>
         <changelogtext>Listing transactions from the Payees report.</changelogtext>
         <changelogtext>Listing transactions from the Categories list.</changelogtext>
