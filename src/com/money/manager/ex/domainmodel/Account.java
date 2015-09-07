@@ -52,6 +52,10 @@ public class Account
         return getString(TableAccountList.ACCOUNTNAME);
     }
 
+    public void setName(String value) {
+        setString(TableAccountList.ACCOUNTNAME, value);
+    }
+
     public String getType() {
         return getString(TableAccountList.ACCOUNTTYPE);
     }

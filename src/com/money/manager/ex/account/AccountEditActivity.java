@@ -44,6 +44,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrenciesActivity;
+import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
@@ -95,7 +96,8 @@ public class AccountEditActivity
 
     // Activity members
 //    private int mAccountId = -1;
-    private String mAccountName, mAccountType, mAccountNum, mHeldAt, mWebsite, mContactInfo, mAccessInfo, mStatus, mNotes, mFavoriteAcct, mCurrencyName;
+    // mAccountName
+    private String mAccountType, mAccountNum, mHeldAt, mWebsite, mContactInfo, mAccessInfo, mStatus, mNotes, mFavoriteAcct, mCurrencyName;
     private double mInitialBal = 0;
     private Integer mCurrencyId = null;
     private String[] mAccountTypeValues;
@@ -186,8 +188,8 @@ public class AccountEditActivity
         txtSelectCurrency = (TextView) findViewById(R.id.textViewSelectCurrency);
 
         // Initialize control values
-        if (!(TextUtils.isEmpty(mAccountName))) {
-            edtAccountName.setText(mAccountName);
+        if (!(TextUtils.isEmpty(mAccount.getName()))) {
+            edtAccountName.setText(mAccount.getName());
         }
         if (!(TextUtils.isEmpty(mAccountNum))) {
             edtAccountNumber.setText(mAccountNum);
@@ -355,7 +357,9 @@ public class AccountEditActivity
         // Save the state interface
 //        outState.putInt(KEY_ACCOUNT_ID, mAccountId);
         outState.putInt(KEY_ACCOUNT_ID, mAccount.getId());
-        outState.putString(KEY_ACCOUNT_NAME, mAccountName);
+//        outState.putString(KEY_ACCOUNT_NAME, mAccountName);
+        outState.putString(KEY_ACCOUNT_NAME, mAccount.getName());
+
         outState.putString(KEY_ACCOUNT_TYPE, mAccountType);
         outState.putString(KEY_ACCOUNT_NUM, mAccountNum);
         outState.putString(KEY_HELD_AT, mHeldAt);
@@ -378,7 +382,8 @@ public class AccountEditActivity
      */
     private boolean validateData(boolean bCheck) {
         // Getting control values
-        mAccountName = edtAccountName.getText().toString();
+//        mAccountName = edtAccountName.getText().toString();
+        mAccount.setName(edtAccountName.getText().toString());
         mAccountNum = edtAccountNumber.getText().toString();
         mHeldAt = edtAccountHeldAt.getText().toString();
         mWebsite = edtWebsite.getText().toString();
@@ -397,7 +402,7 @@ public class AccountEditActivity
                 Core.alertDialog(this, R.string.error_initialbal_empty);
                 return false;
             }
-            if (TextUtils.isEmpty(mAccountName)) {
+            if (TextUtils.isEmpty(mAccount.getName())) {
                 Core.alertDialog(this, R.string.error_accountname_empty);
                 return false;
             }
@@ -426,8 +431,9 @@ public class AccountEditActivity
         }
 
         // content value for insert or update data
+        // todo: replace with mAccount.contentValues. What about Id field?
         ContentValues values = new ContentValues();
-        values.put(TableAccountList.ACCOUNTNAME, mAccountName);
+        values.put(TableAccountList.ACCOUNTNAME, mAccount.getName());
         values.put(TableAccountList.ACCOUNTTYPE, mAccountType);
         values.put(TableAccountList.ACCOUNTNUM, mAccountNum);
         values.put(TableAccountList.STATUS, mStatus);
@@ -482,7 +488,7 @@ public class AccountEditActivity
 
         Account account = mAccount;
 //        mAccountId = account.getId();
-        mAccountName = account.getName();
+//        mAccountName = account.getName();
         mAccountType = account.getType();
         mAccountNum = account.getAccountNumber();
         mStatus = account.getStatus();
@@ -515,9 +521,11 @@ public class AccountEditActivity
 
     private void restoreInstanceState(Bundle savedInstanceState) {
         // load into Account model object.
-        mAccount.setId(savedInstanceState.getInt(KEY_ACCOUNT_ID));
 //        mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
-        mAccountName = savedInstanceState.getString(KEY_ACCOUNT_NAME);
+        mAccount.setId(savedInstanceState.getInt(KEY_ACCOUNT_ID));
+//        mAccountName = savedInstanceState.getString(KEY_ACCOUNT_NAME);
+        mAccount.setName(savedInstanceState.getString(KEY_ACCOUNT_NAME));
+
         mAccountType = savedInstanceState.getString(KEY_ACCOUNT_TYPE);
         mAccountNum = savedInstanceState.getString(KEY_ACCOUNT_NUM);
         mHeldAt = savedInstanceState.getString(KEY_HELD_AT);
@@ -536,6 +544,7 @@ public class AccountEditActivity
             mCurrencyId = null;
         }
         // todo: mAccount.setCurrencyId(mCurrencyId);
+
         mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
         mIntentAction = savedInstanceState.getString(KEY_ACTION);
     }
@@ -547,19 +556,23 @@ public class AccountEditActivity
      * @return A boolean indicating whether the retrieval of currency name was successful.
      */
     private boolean selectCurrencyName(int currencyId) {
-        TableCurrencyFormats tableCurrencyFormats = new TableCurrencyFormats();
-        Cursor cursor = getContentResolver().query(tableCurrencyFormats.getUri(),
-                tableCurrencyFormats.getAllColumns(),
-                TableCurrencyFormats.CURRENCYID + "=?",
-                (new String[]{Integer.toString(currencyId)}), null);
-        // check if cursor is valid and open
-        if ((cursor == null) || (!(cursor.moveToFirst()))) {
-            return false;
-        }
-        // set category name
-        mCurrencyName = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME));
+        CurrencyRepository repository = new CurrencyRepository(getApplicationContext());
+        TableCurrencyFormats currency = repository.loadCurrency(currencyId);
+        mCurrencyName = currency.getCurrencyName();
 
-        cursor.close();
+//        TableCurrencyFormats tableCurrencyFormats = new TableCurrencyFormats();
+//        Cursor cursor = getContentResolver().query(tableCurrencyFormats.getUri(),
+//                tableCurrencyFormats.getAllColumns(),
+//                TableCurrencyFormats.CURRENCYID + "=?",
+//                (new String[]{Integer.toString(currencyId)}), null);
+//        // check if cursor is valid and open
+//        if ((cursor == null) || (!(cursor.moveToFirst()))) {
+//            return false;
+//        }
+//        // set category name
+//        mCurrencyName = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME));
+//
+//        cursor.close();
 
         return true;
     }
