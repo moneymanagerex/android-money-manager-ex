@@ -93,15 +93,12 @@ public class AccountEditActivity
     private String mAccountName, mAccountType, mAccountNum, mHeldAt, mWebsite, mContactInfo, mAccessInfo, mStatus, mNotes, mFavoriteAcct, mCurrencyName;
     private double mInitialBal = 0;
     private Integer mCurrencyId = null;
-    // Arrays for spinner items and values
-    private String[] mAccountTypeItems;
-    private String[] mAccountStatusItems;
     private String[] mAccountTypeValues;
     private String[] mAccountStatusValues;
     // Activity controls
     private EditText edtAccountName, edtAccountNumber, edtAccountHeldAt, edtWebsite, edtContact, edtAccessInfo, edtNotes;
     ;
-    private Spinner spinAccountType, spinAccountStatus, spinSymbolInitialBalance;
+    private Spinner spinSymbolInitialBalance;
     private TextView txtSelectCurrency, txtInitialBalance;
     private ImageView imgbFavouriteAccount;
 
@@ -186,13 +183,13 @@ public class AccountEditActivity
 
         // Get controls from layout
         edtAccountName = (EditText) findViewById(R.id.editTextAccountName);
-        spinAccountType = (Spinner) findViewById(R.id.spinnerAccountType);
+        Spinner spinAccountType = (Spinner) findViewById(R.id.spinnerAccountType);
         edtAccountNumber = (EditText) findViewById(R.id.editTextAccountNumber);
         edtAccountHeldAt = (EditText) findViewById(R.id.editTextAccountHeldAt);
         edtWebsite = (EditText) findViewById(R.id.editTextWebsite);
         edtContact = (EditText) findViewById(R.id.editTextContact);
         edtAccessInfo = (EditText) findViewById(R.id.editTextAccessInfo);
-        spinAccountStatus = (Spinner) findViewById(R.id.spinnerAccountStatus);
+        Spinner spinAccountStatus = (Spinner) findViewById(R.id.spinnerAccountStatus);
         spinSymbolInitialBalance = (Spinner) findViewById(R.id.spinnerSymbolInitialBalance);
         txtInitialBalance = (TextView) findViewById(R.id.editTextInitialBalance);
         edtNotes = (EditText) findViewById(R.id.editTextNotes);
@@ -249,7 +246,7 @@ public class AccountEditActivity
         imgbFavouriteAccount.setTag(mFavoriteAcct);
 
         // spinAccountType adapters and values
-        mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
+        String[] mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
         mAccountTypeValues = getResources().getStringArray(R.array.accounttype_values);
         ArrayAdapter<String> adapterAccountType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountTypeItems);
         adapterAccountType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -263,7 +260,7 @@ public class AccountEditActivity
         }
 
         // spinAccountStatus adapters and values
-        mAccountStatusItems = getResources().getStringArray(R.array.accountstatus_items);
+        String[] mAccountStatusItems = getResources().getStringArray(R.array.accountstatus_items);
         mAccountStatusValues = getResources().getStringArray(R.array.accountstatus_values);
         ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
         adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
