@@ -97,6 +97,7 @@ public class SearchParameters implements Parcelable {
         parcel.writeString(dateFrom);
         parcel.writeString(dateTo);
 
+        if (payeeId == null) payeeId = Constants.NOT_SET;
         parcel.writeInt(payeeId);
         parcel.writeString(payeeName);
 

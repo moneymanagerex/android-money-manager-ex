@@ -48,8 +48,8 @@ public class PayeeReportAdapter extends CursorAdapter {
         TextView txtColumn1 = (TextView) view.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = (TextView) view.findViewById(R.id.textViewColumn2);
         double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-        if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
-            txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
+        if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.PAYEE)))) {
+            txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.PAYEE)));
         } else {
             txtColumn1.setText(context.getString(R.string.empty_payee));
         }

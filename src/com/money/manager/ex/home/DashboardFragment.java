@@ -208,13 +208,13 @@ public class DashboardFragment
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         ViewMobileData mobileData = new ViewMobileData(getContext());
         // data to compose builder
-        String[] projectionIn = new String[]{"ROWID AS _id", ViewMobileData.CategID, ViewMobileData.Category, ViewMobileData.SubcategID,
+        String[] projectionIn = new String[]{"ROWID AS _id", ViewMobileData.CATEGID, ViewMobileData.Category, ViewMobileData.SubcategID,
                 ViewMobileData.Subcategory, "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL", "COUNT(*) AS NUM"};
 
         String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType + " IN ('Withdrawal')"
                 + " AND (julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
 
-        String groupBy = ViewMobileData.CategID + ", " + ViewMobileData.Category + ", " + ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
+        String groupBy = ViewMobileData.CATEGID + ", " + ViewMobileData.Category + ", " + ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
         String having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") < 0";
         String sortOrder = "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) DESC";
         String limit = "10";
@@ -234,14 +234,14 @@ public class DashboardFragment
         ViewMobileData mobileData = new ViewMobileData(getContext());
         // data to compose builder
         String[] projectionIn = new String[]{"ROWID AS _id",
-                ViewMobileData.PayeeID, ViewMobileData.Payee,
+                ViewMobileData.PAYEEID, ViewMobileData.PAYEE,
                 "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) AS TOTAL",
                 "COUNT(*) AS NUM"};
 
         String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType
                 + " IN ('Withdrawal', 'Deposit') AND (julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
 
-        String groupBy = ViewMobileData.PayeeID + ", " + ViewMobileData.Payee;
+        String groupBy = ViewMobileData.PAYEEID + ", " + ViewMobileData.PAYEE;
         String having = null;
         String sortOrder = "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) DESC";
         String limit = "10";
@@ -354,7 +354,7 @@ public class DashboardFragment
         // add rows
         while (cursor.moveToNext()) {
             // load values
-            String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee));
+            String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.PAYEE));
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
             int num = cursor.getInt(cursor.getColumnIndex("NUM"));
             // Add Row

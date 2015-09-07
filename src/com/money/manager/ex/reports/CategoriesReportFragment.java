@@ -167,7 +167,7 @@ public class CategoriesReportFragment
                 whereClause += " AND ";
             else
                 whereClause = "";
-            whereClause += " " + ViewMobileData.CategID + "=" + Integer.toString(Math.abs(item.getItemId()));
+            whereClause += " " + ViewMobileData.CATEGID + "=" + Integer.toString(Math.abs(item.getItemId()));
             //create arguments
             Bundle args = new Bundle();
             args.putString(KEY_WHERE_CLAUSE, whereClause);
@@ -216,7 +216,7 @@ public class CategoriesReportFragment
         //data to compose builder
         String[] projectionIn = new String[]{
             "ROWID AS _id", // this does not fetch anything, unfortunately.
-            ViewMobileData.CategID, ViewMobileData.Category,
+            ViewMobileData.CATEGID, ViewMobileData.Category,
             ViewMobileData.SubcategID, ViewMobileData.Subcategory,
             "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
@@ -227,7 +227,7 @@ public class CategoriesReportFragment
             selection += " AND " + whereClause;
         }
 
-        String groupBy = ViewMobileData.CategID + ", " + ViewMobileData.Category + ", " +
+        String groupBy = ViewMobileData.CATEGID + ", " + ViewMobileData.Category + ", " +
                 ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
 
         String having = null;
@@ -393,10 +393,10 @@ public class CategoriesReportFragment
         Cursor cursor = (Cursor) item;
 
         ContentValues values = new ContentValues();
-        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.CategID, values);
+        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.CATEGID, values);
         DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.SubcategID, values);
 
-        int categoryId = values.getAsInteger(ViewMobileData.CategID);
+        int categoryId = values.getAsInteger(ViewMobileData.CATEGID);
         int subCategoryId = values.getAsInteger(ViewMobileData.SubcategID);
 
         CategorySub result = CategorySub.getInstance(categoryId, subCategoryId);

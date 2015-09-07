@@ -146,7 +146,7 @@ public class BudgetAdapter
     }
 
     private double getAmountForCategory(int categoryId) {
-        double total = loadTotalFor(ViewMobileData.CategID + "=" + Integer.toString(categoryId));
+        double total = loadTotalFor(ViewMobileData.CATEGID + "=" + Integer.toString(categoryId));
         return total;
     }
 
@@ -192,7 +192,7 @@ public class BudgetAdapter
 
         //data to compose builder
         String[] projectionIn = new String[]{
-                "ROWID AS _id", ViewMobileData.CategID, ViewMobileData.Category,
+                "ROWID AS _id", ViewMobileData.CATEGID, ViewMobileData.Category,
                 ViewMobileData.SubcategID, ViewMobileData.Subcategory,
                 "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
@@ -203,7 +203,7 @@ public class BudgetAdapter
             selection += " AND " + whereClause;
         }
 
-        String groupBy = ViewMobileData.CategID + ", " + ViewMobileData.Category + ", " +
+        String groupBy = ViewMobileData.CATEGID + ", " + ViewMobileData.Category + ", " +
                 ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
 
         String having = null;

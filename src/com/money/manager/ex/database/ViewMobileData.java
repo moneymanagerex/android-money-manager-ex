@@ -50,10 +50,10 @@ public class ViewMobileData
 	public static final String TOTRANSAMOUNT = "ToAmount";
 	public static final String ToCurrencyID = "ToCurrencyID";
 	public static final String Splitted  = "SPLITTED";
-	public static final String CategID = "CategID";
+	public static final String CATEGID = "CATEGID";
 	public static final String SubcategID = "SubcategID";
-	public static final String Payee = "Payee";
-	public static final String PayeeID = "PayeeID";
+	public static final String PAYEE = "PAYEE";
+	public static final String PAYEEID = "PAYEEID";
 	public static final String TransactionNumber = "TransactionNumber";
 	public static final String Status = "Status";
 	public static final String Notes = "Notes";
@@ -75,8 +75,8 @@ public class ViewMobileData
 	public String[] getAllColumns() {
 		return new String[] {"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day,
 				Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
-                ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CategID,
-                SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes, currency, finyear,
+                ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID,
+                SubcategID, PAYEE, PAYEEID, TransactionNumber, Status, Notes, currency, finyear,
                 AmountBaseConvRate};
 	}
 
