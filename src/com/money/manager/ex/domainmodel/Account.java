@@ -19,6 +19,8 @@ package com.money.manager.ex.domainmodel;
 
 import com.money.manager.ex.database.TableAccountList;
 
+import java.math.BigDecimal;
+
 /**
  * Account entity
  * Created by Alen on 5/09/2015.
@@ -34,7 +36,60 @@ public class Account
         return getInt(TableAccountList.ACCOUNTID);
     }
 
+    public void setId(Integer value) {
+        setInt(TableAccountList.ACCOUNTID, value);
+    }
+
     public Integer getCurrencyId() {
         return getInt(TableAccountList.CURRENCYID);
     }
+
+    public void setCurrencyId(Integer currencyId) {
+        setInt(TableAccountList.CURRENCYID, currencyId);
+    }
+
+    public String getName() {
+        return getString(TableAccountList.ACCOUNTNAME);
+    }
+
+    public String getType() {
+        return getString(TableAccountList.ACCOUNTTYPE);
+    }
+
+    public String getAccountNumber() {
+        return getString(TableAccountList.ACCOUNTNUM);
+    }
+
+    public String getStatus() {
+        return getString(TableAccountList.STATUS);
+    }
+
+    public String getNotes() {
+        return getString(TableAccountList.NOTES);
+    }
+
+    public String getHeldAt() {
+        return getString(TableAccountList.HELDAT);
+    }
+
+    public String getWebSite() {
+        return getString(TableAccountList.WEBSITE);
+    }
+
+    public String getContactInfo() {
+        return getString(TableAccountList.CONTACTINFO);
+    }
+
+    public String getAccessInfo() {
+        return getString(TableAccountList.ACCESSINFO);
+    }
+
+    public BigDecimal getInitialBalance() {
+        return getBigDecimal(TableAccountList.INITIALBAL);
+    }
+
+    public String getFavourite() {
+        return getString(TableAccountList.FAVORITEACCT);
+    }
+
 }
