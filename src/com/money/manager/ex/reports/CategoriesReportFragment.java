@@ -30,7 +30,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,19 +39,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
-import com.money.manager.ex.search.SearchFragment;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.DateUtils;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
@@ -63,7 +57,7 @@ import java.util.ArrayList;
 public class CategoriesReportFragment
         extends BaseReportFragment {
 
-    private LinearLayout mListViewHeader, mListViewFooter;
+    private LinearLayout mListViewFooter;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -71,7 +65,7 @@ public class CategoriesReportFragment
         setShowMenuItemSearch(true);
 
         //create header view
-        mListViewHeader = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
+        LinearLayout mListViewHeader = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
         TextView txtColumn1 = (TextView) mListViewHeader.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = (TextView) mListViewHeader.findViewById(R.id.textViewColumn2);
         //set header
@@ -241,16 +235,16 @@ public class CategoriesReportFragment
         }
 
         String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
-        String limit = null;
+//        String limit = null;
 
         //compose builder
         builder.setTables(mobileData.getSource());
 
         //return query
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
+            return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, null);
         } else {
-            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
+            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, null);
         }
     }
 
@@ -344,47 +338,6 @@ public class CategoriesReportFragment
         }
     }
 
-    private AllDataFragment createTransactionsFragment(CategorySub category) {
-        // implement callback interface?
-        AllDataFragment fragment = AllDataFragment.newInstance(-1, null);
-
-        Bundle args = new Bundle();
-        ArrayList<String> where = new ArrayList<>();
-        where.add("CategId=" + Integer.toString(category.categId) +
-                " AND SubCategId=" + Integer.toString(category.subCategId));
-        if (!StringUtils.isEmpty(getWhereClause())) {
-            where.add(getWhereClause());
-        }
-        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, where);
-//            ArrayList<String> params = new ArrayList<>();
-//            params.add(values.getAsString(ViewMobileData.CategID));
-//            params.add(values.getAsString(ViewMobileData.SubcategID));
-//            args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE_PARAMS, params);
-        // Sorting
-//            args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
-//                    QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
-        //set arguments
-        fragment.setArguments(args);
-        // group by account
-        fragment.setShownHeader(true);
-
-        return fragment;
-    }
-
-//    private void showTransactionsFragment(CategorySub category) {
-//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//        String tag = AllDataFragment.class.getSimpleName();
-//        AllDataFragment fragment = (AllDataFragment) fragmentManager.findFragmentByTag(tag);
-//        if (fragment == null) {
-//            fragment = createTransactionsFragment(category);
-//        }
-//
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.fragmentContent, fragment, AllDataFragment.class.getSimpleName());
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-//    }
-
     private CategorySub getCategoryFromSelectedItem(ListView l, int position) {
         // Reading item from the list view, not adapter!
         Object item = l.getItemAtPosition(position);
@@ -394,12 +347,15 @@ public class CategoriesReportFragment
 
         ContentValues values = new ContentValues();
         DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.CATEGID, values);
+        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Category, values);
         DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.SubcategID, values);
+        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Subcategory, values);
 
-        int categoryId = values.getAsInteger(ViewMobileData.CATEGID);
-        int subCategoryId = values.getAsInteger(ViewMobileData.SubcategID);
-
-        CategorySub result = CategorySub.getInstance(categoryId, subCategoryId);
+        CategorySub result = new CategorySub();
+        result.categId = values.getAsInteger(ViewMobileData.CATEGID);
+        result.categName = values.getAsString(ViewMobileData.Category);
+        result.subCategId = values.getAsInteger(ViewMobileData.SubcategID);
+        result.subCategName = values.getAsString(ViewMobileData.Subcategory);
         return result;
     }
 

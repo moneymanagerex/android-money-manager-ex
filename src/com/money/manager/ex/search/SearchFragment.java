@@ -312,7 +312,8 @@ public class SearchFragment extends Fragment
             txtSelectCategory.setText("");
             txtSelectCategory.setTag(null);
         } else {
-            txtSelectCategory.setText(categorySub.categName + (!TextUtils.isEmpty(categorySub.subCategName) ? " : " + categorySub.subCategName : ""));
+            txtSelectCategory.setText(categorySub.categName +
+                    (!TextUtils.isEmpty(categorySub.subCategName) ? " : " + categorySub.subCategName : ""));
             txtSelectCategory.setTag(categorySub);
         }
     }

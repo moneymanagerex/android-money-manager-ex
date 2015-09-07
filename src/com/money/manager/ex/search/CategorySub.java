@@ -26,13 +26,6 @@ import android.os.Parcelable;
  */
 public class CategorySub implements Parcelable {
 
-    public static CategorySub getInstance(int categoryId, int subCategoryId) {
-        CategorySub object = new CategorySub();
-        object.categId = categoryId;
-        object.subCategId = subCategoryId;
-        return object;
-    }
-
     public CategorySub() {
         // default constructor
     }
