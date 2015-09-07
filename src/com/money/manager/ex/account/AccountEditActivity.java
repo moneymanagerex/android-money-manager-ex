@@ -345,7 +345,9 @@ public class AccountEditActivity
                     // refresh amount
                     NumericHelper numericHelper = new NumericHelper(getApplicationContext());
                     BigDecimal initialBalance = numericHelper.getNumberFromString(txtInitialBalance.getTag().toString());
-                    onFinishedInputAmountDialog(R.id.editTextInitialBalance, initialBalance);
+                    if (initialBalance != null) {
+                        onFinishedInputAmountDialog(R.id.editTextInitialBalance, initialBalance);
+                    }
                 }
         }
     }
