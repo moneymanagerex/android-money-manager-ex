@@ -4,6 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.utils.DateUtils;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Date;
 
 /**
  * Class that contains the search parameters.
@@ -36,8 +41,8 @@ public class SearchParameters implements Parcelable {
     public String amountTo;
 
     // Date
-    public String dateFrom;
-    public String dateTo;
+    public Date dateFrom;
+    public Date dateTo;
 
     public Integer payeeId = Constants.NOT_SET;
     public String payeeName;
@@ -55,8 +60,17 @@ public class SearchParameters implements Parcelable {
         status = in.readString();
         amountFrom = in.readString();
         amountTo = in.readString();
-        dateFrom = in.readString();
-        dateTo = in.readString();
+
+        String dateString = in.readString();
+        if (!StringUtils.isEmpty(dateString)) {
+            dateFrom = DateUtils.getDateFromIsoString(dateString);
+        }
+
+        dateString = in.readString();
+        if (!StringUtils.isEmpty(dateString)) {
+            dateTo = DateUtils.getDateFromIsoString(dateString);
+        }
+
         payeeId = in.readInt();
         payeeName = in.readString();
         category = in.readParcelable(CategorySub.class.getClassLoader());
@@ -94,8 +108,8 @@ public class SearchParameters implements Parcelable {
         parcel.writeString(amountFrom);
         parcel.writeString(amountTo);
 
-        parcel.writeString(dateFrom);
-        parcel.writeString(dateTo);
+        parcel.writeString(DateUtils.getIsoStringDate(dateFrom));
+        parcel.writeString(DateUtils.getIsoStringDate(dateTo));
 
         if (payeeId == null) payeeId = Constants.NOT_SET;
         parcel.writeInt(payeeId);

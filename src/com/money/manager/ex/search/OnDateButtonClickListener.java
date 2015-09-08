@@ -37,7 +37,7 @@ public class OnDateButtonClickListener
     public void onClick(View v) {
         Calendar date = Calendar.getInstance();
         if (!TextUtils.isEmpty(mTextView.getText())) {
-            date.setTime(DateUtils.getDateFromString(mParent.getApplicationContext(), mTextView.getText().toString()));
+            date.setTime(DateUtils.getDateFromUserString(mParent.getApplicationContext(), mTextView.getText().toString()));
         }
         DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
                 date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
@@ -52,7 +52,11 @@ public class OnDateButtonClickListener
             try {
                 Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE).parse(Integer.toString(year) +
                         "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-                mTextView.setText(DateUtils.getStringFromDate(mParent.getApplicationContext(), date));
+
+                // Save the actual value as tag.
+                mTextView.setTag(date);
+                // display the selected value in user-formatted pattern
+                mTextView.setText(DateUtils.getUserStringFromDate(mParent.getApplicationContext(), date));
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(mParent, this);
                 handler.handle(e, "date selected in search");

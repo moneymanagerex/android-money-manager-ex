@@ -64,7 +64,7 @@ public class DateUtils {
      * @param date string to convert
      * @return date converted
      */
-    public static Date getDateFromString(Context ctx, String date) {
+    public static Date getDateFromUserString(Context ctx, String date) {
         return getDateFromString(ctx, date, getUserDatePattern(ctx));
     }
 
@@ -87,12 +87,12 @@ public class DateUtils {
     }
 
     /**
-     * Convert date object to string from user pattern
+     * Convert date object to string using user's preferences for date format.
      *
      * @param date date value
-     * @return string date representation
+     * @return string The date formatted according to user preferences.
      */
-    public static String getStringFromDate(Context ctx, Date date) {
+    public static String getUserStringFromDate(Context ctx, Date date) {
         return getStringFromDate(ctx, date, getUserDatePattern(ctx));
     }
 

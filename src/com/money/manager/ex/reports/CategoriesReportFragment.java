@@ -280,8 +280,8 @@ public class CategoriesReportFragment
         // Show search activity with the results.
         SearchParameters parameters = new SearchParameters();
         parameters.category = category;
-        parameters.dateFrom = DateUtils.getIsoStringDate(mDateFrom);
-        parameters.dateTo = DateUtils.getIsoStringDate(mDateTo);
+        parameters.dateFrom = mDateFrom;
+        parameters.dateTo = mDateTo;
 
         showSearchActivityFor(parameters);
     }

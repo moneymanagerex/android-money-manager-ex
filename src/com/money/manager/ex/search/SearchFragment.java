@@ -56,6 +56,7 @@ import com.money.manager.ex.utils.DateUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -358,16 +359,14 @@ public class SearchFragment extends Fragment
         }
 
         // from date
-        if (!TextUtils.isEmpty(mSearchParameters.dateFrom)) {
-            where.Clause.add(QueryAllData.Date + ">='" + DateUtils.getIsoStringDate(
-                    DateUtils.getDateFromString(
-                            getActivity().getApplicationContext(), mSearchParameters.dateFrom)) + "'");
+        if (mSearchParameters.dateFrom != null) {
+            where.Clause.add(QueryAllData.Date + ">='" +
+                    DateUtils.getIsoStringDate(mSearchParameters.dateFrom) + "'");
         }
         // to date
-        if (!TextUtils.isEmpty(mSearchParameters.dateTo)) {
-            where.Clause.add(QueryAllData.Date + "<='" + DateUtils.getIsoStringDate(
-                    DateUtils.getDateFromString(
-                            getActivity().getApplicationContext(), mSearchParameters.dateTo)) + "'");
+        if (mSearchParameters.dateTo != null) {
+            where.Clause.add(QueryAllData.Date + "<='" +
+                    DateUtils.getIsoStringDate(mSearchParameters.dateTo) + "'");
         }
         // payee
         if (mSearchParameters.payeeId != null && mSearchParameters.payeeId > 0) {
@@ -492,12 +491,12 @@ public class SearchFragment extends Fragment
         }
 
         // Date from
-        if (!TextUtils.isEmpty(txtFromDate.getText())) {
-            mSearchParameters.dateFrom = String.valueOf(txtFromDate.getText());
+        if (txtFromDate.getTag() != null) {
+            mSearchParameters.dateFrom = (Date) txtFromDate.getTag();
         }
         // Date to
-        if (!TextUtils.isEmpty(txtToDate.getText())) {
-            mSearchParameters.dateTo = String.valueOf(txtToDate.getText());
+        if (txtToDate.getTag() != null) {
+            mSearchParameters.dateTo = (Date) txtToDate.getTag();
         }
         // Payee
         if (txtSelectPayee.getTag() != null) {
@@ -538,9 +537,11 @@ public class SearchFragment extends Fragment
         txtToAmount.setTag(mSearchParameters.amountTo);
 
         // Date from
-        txtFromDate.setText(mSearchParameters.dateFrom);
+        txtFromDate.setTag(mSearchParameters.dateFrom);
+        txtFromDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateFrom));
         // Date to
-        txtToDate.setText(mSearchParameters.dateTo);
+        txtToDate.setTag(mSearchParameters.dateTo);
+        txtToDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateTo));
         // Payee
         txtSelectPayee.setTag(mSearchParameters.payeeId);
         txtSelectPayee.setText(mSearchParameters.payeeName);

@@ -274,8 +274,8 @@ public class PayeeReportFragment
         SearchParameters parameters = new SearchParameters();
         parameters.payeeId = payee.getId();
         parameters.payeeName = payee.getName();
-        parameters.dateFrom = DateUtils.getIsoStringDate(mDateFrom);
-        parameters.dateTo = DateUtils.getIsoStringDate(mDateTo);
+        parameters.dateFrom = mDateFrom;
+        parameters.dateTo = mDateTo;
 
         showSearchActivityFor(parameters);
     }
