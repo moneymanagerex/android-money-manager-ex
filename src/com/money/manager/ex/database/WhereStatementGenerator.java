@@ -1,6 +1,7 @@
 package com.money.manager.ex.database;
 
 import android.database.DatabaseUtils;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,15 @@ import java.util.ArrayList;
  */
 public class WhereStatementGenerator {
 
+    public WhereStatementGenerator() {
+        this.statements = new ArrayList<>();
+    }
+
     private ArrayList<String> statements;
+
+    public void addStatement(String statement) {
+        this.statements.add(statement);
+    }
 
     public void addStatement(String field, String operator, Object argument) {
         this.statements.add(getStatement(field, operator, argument));
@@ -25,7 +34,7 @@ public class WhereStatementGenerator {
         return where;
     }
 
-    private String getStatement(String field, String operator, Object argument) {
+    public String getStatement(String field, String operator, Object argument) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(field);
@@ -33,5 +42,16 @@ public class WhereStatementGenerator {
         DatabaseUtils.appendValueToSql(sb, argument);
 
         return sb.toString();
+    }
+
+    public String concatenateOr(String a, String b) {
+        if (TextUtils.isEmpty(a)) {
+            return b;
+        }
+        if (TextUtils.isEmpty(b)) {
+            return a;
+        }
+
+        return "( (" + a + ") OR (" + b + ") )";
     }
 }

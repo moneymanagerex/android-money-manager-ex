@@ -26,6 +26,7 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
@@ -99,17 +100,19 @@ public class AccountService {
      * account initial balance.
      * @param isoDate date in ISO format
      */
-    public double calculateBalanceOn(int accountId, String isoDate) {
-        double total = 0;
-
-//        AccountRepository repo = new AccountRepository(mContext);
+    public BigDecimal calculateBalanceOn(int accountId, String isoDate) {
+        BigDecimal total = BigDecimal.ZERO;
 
         TableCheckingAccount tableCheckingAccount = new TableCheckingAccount();
 
         WhereStatementGenerator where = new WhereStatementGenerator();
         // load all transactions on the account before and on given date.
-        where.addStatement(ISplitTransactionsDataset.ACCOUNTID, "=", accountId);
+        String accountWhere = where.getStatement(ISplitTransactionsDataset.ACCOUNTID, "=", accountId);
+        String accountTransfer = where.getStatement(ISplitTransactionsDataset.TOACCOUNTID, "=", accountId);
+        String accountSelector = where.concatenateOr(accountWhere, accountTransfer);
+        where.addStatement(accountSelector);
         where.addStatement(ISplitTransactionsDataset.TRANSDATE, "<=", isoDate);
+        where.addStatement(ISplitTransactionsDataset.STATUS, "<>", TransactionStatuses.VOID.getCode());
         String selection = where.getWhere();
 
         Cursor cursor = mContext.getContentResolver().query(tableCheckingAccount.getUri(),
@@ -127,16 +130,24 @@ public class AccountService {
 
             switch (TransactionTypes.valueOf(transType)) {
                 case Withdrawal:
-                    total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+//                    total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+                    total = total.subtract(BigDecimal.valueOf(
+                        cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
                     break;
                 case Deposit:
-                    total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+//                    total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+                    total = total.add(BigDecimal.valueOf(
+                        cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
                     break;
                 case Transfer:
                     if (cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID)) == accountId) {
-                        total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+//                        total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+                        total = total.subtract(BigDecimal.valueOf(
+                            cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
                     } else {
-                        total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
+//                        total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
+                        total = total.add(BigDecimal.valueOf(
+                            cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT))));
                     }
                     break;
             }

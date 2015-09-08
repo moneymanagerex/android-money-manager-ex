@@ -503,8 +503,8 @@ public class AllDataAdapter
                 String date = c.getString(c.getColumnIndex(DATE));
                 DateUtils dateUtils = new DateUtils();
                 date = dateUtils.getYesterdayFrom(date);
-                double balanceOnDate = accountService.calculateBalanceOn(getAccountId(), date);
-                initialBalance = initialBalance.add(BigDecimal.valueOf(balanceOnDate));
+                BigDecimal balanceOnDate = accountService.calculateBalanceOn(getAccountId(), date);
+                initialBalance = initialBalance.add(balanceOnDate);
 
                 runningBalance = initialBalance;
             }

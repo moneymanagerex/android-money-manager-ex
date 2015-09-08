@@ -28,19 +28,19 @@ import android.os.Parcelable;
 public interface ISplitTransactionsDataset
         extends Parcelable {
     // Fields
-    public static final String ACCOUNTID = "ACCOUNTID";
-    public static final String CATEGID = "CATEGID";
-    public static final String NOTES = "NOTES";
-    public static final String PAYEEID = "PAYEEID";
-    public static final String STATUS = "STATUS";
-    public static final String SUBCATEGID = "SUBCATEGID";
-    public static final String TOACCOUNTID = "TOACCOUNTID";
-    public static final String TOTRANSAMOUNT = "TOTRANSAMOUNT";
-    public static final String TRANSAMOUNT = "TRANSAMOUNT";
-    public static final String TRANSCODE = "TRANSCODE";
-    public static final String TRANSACTIONNUMBER = "TRANSACTIONNUMBER";
-    public static final String TRANSDATE = "TRANSDATE";
-    public static final String FOLLOWUPID = "FOLLOWUPID";
+    String ACCOUNTID = "ACCOUNTID";
+    String CATEGID = "CATEGID";
+    String NOTES = "NOTES";
+    String PAYEEID = "PAYEEID";
+    String STATUS = "STATUS";
+    String SUBCATEGID = "SUBCATEGID";
+    String TOACCOUNTID = "TOACCOUNTID";
+    String TOTRANSAMOUNT = "TOTRANSAMOUNT";
+    String TRANSAMOUNT = "TRANSAMOUNT";
+    String TRANSCODE = "TRANSCODE";
+    String TRANSACTIONNUMBER = "TRANSACTIONNUMBER";
+    String TRANSDATE = "TRANSDATE";
+    String FOLLOWUPID = "FOLLOWUPID";
 
     Uri getUri();
 
