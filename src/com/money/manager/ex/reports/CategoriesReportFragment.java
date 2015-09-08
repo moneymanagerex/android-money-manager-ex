@@ -40,6 +40,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
@@ -262,7 +263,13 @@ public class CategoriesReportFragment
      */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        CategorySub category = getCategoryFromSelectedItem(l, position);
+        CategorySub category = null;
+        try {
+            category = getCategoryFromSelectedItem(l, position);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(e, "getting category from selected item");
+        }
         if (category == null) return;
 
         // now list the transactions for the given category/subcategory combination,

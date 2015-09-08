@@ -131,6 +131,8 @@ public class AccountEditActivity
         super.onCreate(savedInstanceState);
 
         mAccount = new Account();
+        mAccount.setId(Constants.NOT_SET);
+
         Core core = new Core(getApplicationContext());
 
         // Restore saved instance state
@@ -359,6 +361,7 @@ public class AccountEditActivity
         super.onSaveInstanceState(outState);
         // Get members values from controls
         validateData(false);
+
         // Save the state interface
 //        outState.putInt(KEY_ACCOUNT_ID, mAccountId);
         outState.putInt(KEY_ACCOUNT_ID, mAccount.getId());
