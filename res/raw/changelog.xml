@@ -18,6 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="September 8, 2015" versionName="2.18.4">
+        <changelogtext>Added Today as a filter period in account transactions.</changelogtext>
         <changelogtext>Excluding Void transactions from running balance.</changelogtext>
         <changelogtext>Listing transactions from the Category reports.</changelogtext>
         <changelogtext>Listing transactions from the Payees report.</changelogtext>
