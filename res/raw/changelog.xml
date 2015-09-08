@@ -17,7 +17,9 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 8, 2015" versionName="2.18.4">
+    <changelogversion changeDate="September 8, 2015" versionName="2.18.5">
+        <changelogtext>Correction for running balance.</changelogtext>
+        <changelogtext>Handling invalid symbols on price download.</changelogtext>
         <changelogtext>Added Today as a filter period in account transactions.</changelogtext>
         <changelogtext>Excluding Void transactions from running balance.</changelogtext>
         <changelogtext>Listing transactions from the Category reports.</changelogtext>
