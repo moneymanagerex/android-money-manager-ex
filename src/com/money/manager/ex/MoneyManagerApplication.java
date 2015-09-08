@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
@@ -207,6 +208,26 @@ public class MoneyManagerApplication
         MoneyManagerApplication.mTextSize = textSize;
     }
 
+    public String getAppVersionName() {
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+            handler.handle(e, "getting app version name");
+        }
+        return "n/a";
+    }
+
+    public String getAppVersionBuild() {
+        try {
+            return Integer.toString(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+            handler.handle(e, "getting app version build number");
+        }
+        return "n/a";
+    }
+
     /**
      * close process application
      */
@@ -376,7 +397,10 @@ public class MoneyManagerApplication
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
             mTracker = analytics.newTracker(R.xml.global_tracker);
+
+            mTracker.setAppVersion(getAppVersionName());
         }
+
         return mTracker;
     }
 

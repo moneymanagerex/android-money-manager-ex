@@ -610,29 +610,29 @@ public class MainActivity
         restartActivity();
     }
 
-    /**
-     * Dialog to choose exit from application
-     */
-    public void exitApplication() {
-        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext())
-            .setTitle(R.string.close_application)
-            .setMessage(R.string.question_close_application)
-            .setIcon(R.mipmap.ic_launcher);
-        exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                MoneyManagerApplication.killApplication();
-            }
-        });
-        exitDialog.setNegativeButton(android.R.string.no, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        // show dialog
-        exitDialog.create().show();
-    }
+//    /**
+//     * Dialog to choose exit from application
+//     */
+//    public void exitApplication() {
+//        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext())
+//            .setTitle(R.string.close_application)
+//            .setMessage(R.string.question_close_application)
+//            .setIcon(R.mipmap.ic_launcher);
+//        exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                MoneyManagerApplication.killApplication();
+//            }
+//        });
+//        exitDialog.setNegativeButton(android.R.string.no, new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//        // show dialog
+//        exitDialog.create().show();
+//    }
 
     /**
      * Pick the database file to use.
@@ -656,24 +656,24 @@ public class MainActivity
         }
     }
 
-    /**
-     * Reload all fragment into activity
-     */
-    public void reloadAllFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager != null) {
-            // content
-            Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContent);
-            if (fragment != null)
-                fragment.onResume();
-            // check if is dual panel
-            if (isDualPanel()) {
-                fragment = fragmentManager.findFragmentById(R.id.fragmentDetail);
-                if (fragment != null)
-                    fragment.onResume();
-            }
-        }
-    }
+//    /**
+//     * Reload all fragment into activity
+//     */
+//    public void reloadAllFragment() {
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        if (fragmentManager != null) {
+//            // content
+//            Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContent);
+//            if (fragment != null)
+//                fragment.onResume();
+//            // check if is dual panel
+//            if (isDualPanel()) {
+//                fragment = fragmentManager.findFragmentById(R.id.fragmentDetail);
+//                if (fragment != null)
+//                    fragment.onResume();
+//            }
+//        }
+//    }
 
     /**
      * for the change setting restart process application

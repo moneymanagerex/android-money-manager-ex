@@ -40,6 +40,7 @@ import com.github.pedrovgs.lynx.LynxActivity;
 import com.github.pedrovgs.lynx.LynxConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -73,14 +74,9 @@ public class AboutFragment extends Fragment {
 
         // Version application
         TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
-        try {
-            version = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
-            build = Integer.toString(getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionCode);
-            txtVersion.setText(txtVersion.getText() + " " + version + " (" + getString(R.string.build) + " " + build + ")");
-        } catch (NameNotFoundException e) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(e, "showing version number");
-        }
+        version = ((MoneyManagerApplication) getActivity().getApplication()).getAppVersionName();
+        build = ((MoneyManagerApplication) getActivity().getApplication()).getAppVersionBuild();
+        txtVersion.setText(txtVersion.getText() + " " + version + " (" + getString(R.string.build) + " " + build + ")");
 
         // Send Feedback
         TextView txtFeedback = (TextView) view.findViewById(R.id.textViewLinkFeedback);
