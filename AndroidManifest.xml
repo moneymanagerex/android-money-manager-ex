@@ -22,11 +22,11 @@
     <!-- xmlns:tools="http://schemas.android.com/tools" -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <!-- <uses-permission android:name="com.android.vending.BILLING" /> -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- <uses-permission android:name="com.android.vending.BILLING" /> -->
 
     <!-- trying to force ui automator to run on sdk 16 -->
     <!-- <uses-sdk android:minSdkVersion="16" tools:overrideLibrary="android.support.test.uiautomator.v18" /> -->

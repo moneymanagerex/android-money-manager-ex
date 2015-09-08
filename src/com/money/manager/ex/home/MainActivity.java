@@ -50,6 +50,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
@@ -131,10 +133,15 @@ public class MainActivity
     private TextView mDrawerTextViewRepeating;
     // state dual panel
     private boolean mIsDualPanel = false;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Obtain the shared Tracker instance.
+        MoneyManagerApplication application = (MoneyManagerApplication) getApplication();
+        mTracker = application.getDefaultTracker();
 
         Core core = new Core(this);
 
@@ -223,6 +230,11 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+//        Log.i(TAG, "Setting screen name: " + name);
+        mTracker.setScreenName("Image~MainActivity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         // check if restart activity
         if (isRestartActivitySet()) {
             restartActivity(); // restart and exit

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+       tools:ignore="UnusedResources">
+    <integer name="ga_sessionTimeout">300</integer>
+    <bool name="ga_autoActivityTracking">true</bool>
+    <string name="ga_trackingId">UA-67302039-1</string>
+</resources>
