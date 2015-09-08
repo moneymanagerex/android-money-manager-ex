@@ -342,6 +342,11 @@ public class AccountEditActivity
 
     @Override
     public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+        if (amount == null) {
+            Log.w(LOGCAT, "Received amount is null.");
+            return;
+        }
+
         Core core = new Core(getApplicationContext());
 
         View view = findViewById(id);
