@@ -89,18 +89,6 @@ public class WhereClauseGenerator {
         return whereStatement;
     }
 
-    /**
-     * Adds the selection criteria to the collection.
-     * @param selection i.e. AccountId=?
-     * @param arguments List of arguments. i.e. 3
-     */
-//    public void addSelection(String selection, String... arguments) {
-//        getSelections().add(selection);
-//        for (String argument:arguments) {
-//            getArguments().add(argument);
-//        }
-//    }
-
     public void addSelection(String selection, String operator, String... arguments) {
         getSelections().add(selection + operator + "?");
         for (String argument:arguments) {

@@ -38,21 +38,10 @@ public class AccountRepository
     private TableAccountList mAccount;
 
     public Account load(int accountId) {
-        Cursor c = openCursor(null,
-                TableAccountList.ACCOUNTID + "=?",
-                new String[] { Integer.toString(accountId) });
-        if (c == null) return null;
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(TableAccountList.ACCOUNTID, "=", accountId);
 
-        Account account = null;
-
-        if (c.moveToNext()) {
-            account = new Account();
-            account.loadFromCursor(c);
-        }
-
-        c.close();
-
-        return account;
+        return query(where.getWhere());
     }
 
     public QueryAccountBills loadAccountBills(int accountId) {
@@ -119,4 +108,21 @@ public class AccountRepository
         return name;
     }
 
+    public Account query(String selection) {
+        Cursor c = openCursor(null,
+                selection,
+                null);
+        if (c == null) return null;
+
+        Account account = null;
+
+        if (c.moveToNext()) {
+            account = new Account();
+            account.loadFromCursor(c);
+        }
+
+        c.close();
+
+        return account;
+    }
 }

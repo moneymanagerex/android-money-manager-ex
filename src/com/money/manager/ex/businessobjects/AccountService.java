@@ -21,6 +21,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDiskIOException;
+import android.database.sqlite.SQLiteQueryBuilder;
+import android.database.sqlite.SQLiteStatement;
 
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -32,6 +34,7 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.WhereClauseGenerator;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
 
@@ -99,22 +102,20 @@ public class AccountService {
     public double calculateBalanceOn(int accountId, String isoDate) {
         double total = 0;
 
-        TableCheckingAccount entity = new TableCheckingAccount();
-        WhereClauseGenerator generator = new WhereClauseGenerator(mContext);
+//        AccountRepository repo = new AccountRepository(mContext);
 
+        TableCheckingAccount tableCheckingAccount = new TableCheckingAccount();
+
+        WhereStatementGenerator where = new WhereStatementGenerator();
         // load all transactions on the account before and on given date.
+        where.addStatement(ISplitTransactionsDataset.ACCOUNTID, "=", accountId);
+        where.addStatement(ISplitTransactionsDataset.TRANSDATE, "<=", isoDate);
+        String selection = where.getWhere();
 
-        generator.addSelection(ISplitTransactionsDataset.ACCOUNTID, "=", Integer.toString(accountId));
-//        SimpleDateFormat isoDate = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
-        generator.addSelection(ISplitTransactionsDataset.TRANSDATE, "<=", isoDate);
-
-        String selection = generator.getSelectionStatements();
-        String[] args = generator.getSelectionArguments();
-
-        Cursor cursor = mContext.getContentResolver().query(entity.getUri(),
+        Cursor cursor = mContext.getContentResolver().query(tableCheckingAccount.getUri(),
                 null,
                 selection,
-                args,
+                null,
                 null);
         if (cursor == null) return total;
 

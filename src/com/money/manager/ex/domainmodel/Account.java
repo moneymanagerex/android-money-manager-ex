@@ -17,6 +17,8 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import android.database.Cursor;
+
 import com.money.manager.ex.database.TableAccountList;
 
 import java.math.BigDecimal;
@@ -27,6 +29,12 @@ import java.math.BigDecimal;
  */
 public class Account
     extends EntityBase {
+
+    public static Account from(Cursor c) {
+        Account account = new Account();
+        account.loadFromCursor(c);
+        return account;
+    }
 
     public Account() {
         super();
