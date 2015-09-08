@@ -636,4 +636,5 @@
     <string name="value">Value</string>
 
     <string name="view_transactions">View transactions</string>
+    <string name="error_downloading_symbol">Error downloading price for symbol</string>
 </resources>

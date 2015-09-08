@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.opencsv.CSVParser;
@@ -195,7 +196,9 @@ public class YqlSecurityPriceUpdater
                     .getJSONObject("quote");
 
             SecurityPriceModel priceModel = getSecurityPriceFor(quote);
-            result.add(priceModel);
+            if (priceModel != null) {
+                result.add(priceModel);
+            }
         }
 
         return result;
@@ -206,9 +209,13 @@ public class YqlSecurityPriceUpdater
         SecurityPriceModel priceModel = new SecurityPriceModel();
         priceModel.symbol = quote.getString("symbol");
 
+        ExceptionHandler handler = new ExceptionHandler(mContext, this);
+
         // price
         String priceString = quote.getString("LastTradePriceOnly");
         if (!NumericHelper.isNumeric(priceString)) {
+            handler.showMessage(mContext.getString(R.string.error_downloading_symbol) + " " +
+                    priceModel.symbol);
             return null;
         }
 
@@ -227,7 +234,6 @@ public class YqlSecurityPriceUpdater
         try {
             date = dateFormat.parse(quote.getString("LastTradeDate"));
         } catch (ParseException e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "parsing date from CSV");
         }
         priceModel.date = date;
