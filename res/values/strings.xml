@@ -208,6 +208,7 @@
     <string name="category_can_not_deleted">The selected category can not be deleted because it is referenced</string>
     <!-- transaction list periods -->
     <string name="all_transaction">All transactions</string>
+    <string name="today">Today</string>
     <string name="last7days">Last 7 days</string>
     <string name="last15days">Last 2 weeks</string>
     <string name="current_month">Current month</string>

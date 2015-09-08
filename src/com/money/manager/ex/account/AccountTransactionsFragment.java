@@ -506,6 +506,9 @@ public class AccountTransactionsFragment
         LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
 
         switch (item.getItemId()) {
+            case R.id.menu_today:
+                settings.setShowTransactions(R.string.today);
+                break;
             case R.id.menu_last7days:
                 settings.setShowTransactions(R.string.last7days);
                 break;

@@ -41,6 +41,8 @@ public class WhereClauseGenerator {
 
         if (period.equalsIgnoreCase(mContext.getString(R.string.all_transaction))) {
             // All transactions. No filter needed.
+        } else if (period.equalsIgnoreCase(mContext.getString(R.string.today))) {
+            result.add("(julianday(date('now')) = julianday(" + QueryAllData.Date + "))");
         } else if (period.equalsIgnoreCase(mContext.getString(R.string.last7days))) {
             result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
         } else if (period.equalsIgnoreCase(mContext.getString(R.string.last15days))) {

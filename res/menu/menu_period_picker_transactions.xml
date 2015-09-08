@@ -27,6 +27,9 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
+                    android:id="@+id/menu_today"
+                    android:title="@string/today" />
+                <item
                     android:id="@+id/menu_last7days"
                     android:title="@string/last7days" />
                 <item
