@@ -17,6 +17,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountSpinnerAdapter;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.domainmodel.Account;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,12 +117,12 @@ public class SingleAccountWidgetConfigureActivity
     private void loadAccounts(Context context) {
         // load accounts
         AccountService service = new AccountService(context);
-        List<TableAccountList> accounts = service.getAccountList();
+        List<Account> accounts = service.getAccountList();
         Spinner accountsSpinner = (Spinner) findViewById(R.id.accountsSpinner);
         ArrayList<String> accountNames = new ArrayList<>();
 
-        for (TableAccountList account : accounts) {
-            accountNames.add(account.getAccountName());
+        for (Account account : accounts) {
+            accountNames.add(account.getName());
         }
 
         // todo: AccountSpinnerAdapter adapter = new AccountSpinnerAdapter();

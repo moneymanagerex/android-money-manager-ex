@@ -51,6 +51,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.common.IAllDataFragmentCallbacks;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.math.BigDecimal;
@@ -79,7 +80,7 @@ public class SearchFragment extends Fragment
     // arrays list account name and account id
     private ArrayList<String> mAccountNameList = new ArrayList<>();
     private ArrayList<Integer> mAccountIdList = new ArrayList<>();
-    private List<TableAccountList> mAccountList;
+    private List<Account> mAccountList;
     // status item and values
     private ArrayList<String> mStatusItems = new ArrayList<>(),
             mStatusValues = new ArrayList<>();
@@ -139,8 +140,8 @@ public class SearchFragment extends Fragment
             mAccountList.add(0, null);
             for (int i = 0; i <= mAccountList.size() - 1; i++) {
                 if (mAccountList.get(i) != null) {
-                    mAccountNameList.add(mAccountList.get(i).getAccountName());
-                    mAccountIdList.add(mAccountList.get(i).getAccountId());
+                    mAccountNameList.add(mAccountList.get(i).getName());
+                    mAccountIdList.add(mAccountList.get(i).getId());
                 } else {
                     mAccountNameList.add("");
                     mAccountIdList.add(AdapterView.INVALID_POSITION);

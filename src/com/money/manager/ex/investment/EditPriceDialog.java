@@ -43,6 +43,7 @@ import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.StockRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.DateUtils;
@@ -180,7 +181,7 @@ public class EditPriceDialog
 
         mAmountTextView = (RobotoTextView) viewDialog.findViewById(R.id.amountTextView);
         AccountRepository accountRepository = new AccountRepository(mContext);
-        TableAccountList account = accountRepository.load(mAccountId);
+        Account account = accountRepository.load(mAccountId);
 
         final int currencyId = account.getCurrencyId();
 
@@ -199,12 +200,6 @@ public class EditPriceDialog
 
         // get the current record price
         double latestPrice;
-//        if (latestPriceValues != null) {
-//            String currentPriceString = latestPriceValues.getAsString(StockHistory.VALUE);
-//            latestPrice = Double.parseDouble(currentPriceString);
-//        } else {
-//            latestPrice = mCurrentPrice;
-//        }
         latestPrice = mCurrentPrice;
         showCurrentPrice(BigDecimal.valueOf(latestPrice), mAccountId);
 
@@ -295,8 +290,9 @@ public class EditPriceDialog
         commonFunctions.displayAmountFormatted(mAmountTextView, currentPrice, accountId);
 
         AccountRepository accountRepository = new AccountRepository(mContext);
-        TableAccountList account = accountRepository.load(accountId);
+        Account account = accountRepository.load(accountId);
         int currencyId = account.getCurrencyId();
+
         CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
         TableCurrencyFormats currency = currencyService.getCurrency(currencyId);
         String currencySymbol = currency.getSfxSymbol();

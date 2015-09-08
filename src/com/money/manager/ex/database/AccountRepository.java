@@ -37,7 +37,7 @@ public class AccountRepository
 
     private TableAccountList mAccount;
 
-    public Account loadModel(int accountId) {
+    public Account load(int accountId) {
         Cursor c = openCursor(null,
                 TableAccountList.ACCOUNTID + "=?",
                 new String[] { Integer.toString(accountId) });
@@ -53,28 +53,6 @@ public class AccountRepository
         c.close();
 
         return account;
-    }
-
-    public TableAccountList load(int accountId) {
-        TableAccountList result = new TableAccountList();
-
-        String selection = TableAccountList.ACCOUNTID + "=?";
-
-        Cursor cursor = mContext.getContentResolver().query(
-                mAccount.getUri(),
-                mAccount.getAllColumns(),
-                selection,
-                new String[] { Integer.toString(accountId) },
-                null);
-        if (cursor == null) return null;
-
-        if (cursor.moveToFirst()) {
-            result.setValueFromCursor(cursor);
-        }
-
-        cursor.close();
-
-        return result;
     }
 
     public QueryAccountBills loadAccountBills(int accountId) {
@@ -112,6 +90,7 @@ public class AccountRepository
                 selection,
                 new String[] { name },
                 null);
+        if (cursor == null) return result;
 
         if(cursor.moveToFirst()) {
             result = cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID));

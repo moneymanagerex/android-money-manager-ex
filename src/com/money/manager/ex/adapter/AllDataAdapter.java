@@ -484,7 +484,7 @@ public class AllDataAdapter
         if (c.getCount() <= 0) return;
 
         AccountService accountService = new AccountService(mContext);
-        Double initialBalance = null;
+        BigDecimal initialBalance = null;
 
         int originalPosition = c.getPosition();
 
@@ -504,9 +504,9 @@ public class AllDataAdapter
                 DateUtils dateUtils = new DateUtils();
                 date = dateUtils.getYesterdayFrom(date);
                 double balanceOnDate = accountService.calculateBalanceOn(getAccountId(), date);
-                initialBalance += balanceOnDate;
+                initialBalance = initialBalance.add(BigDecimal.valueOf(balanceOnDate));
 
-                runningBalance = BigDecimal.valueOf(initialBalance);
+                runningBalance = initialBalance;
             }
 
             // adjust the balance for each transaction.

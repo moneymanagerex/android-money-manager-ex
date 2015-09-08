@@ -29,6 +29,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.domainmodel.Account;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -88,10 +89,10 @@ public class CurrencyService {
     public List<TableCurrencyFormats> getUsedCurrencies() {
         AccountService service = new AccountService(mContext);
 
-        List<TableAccountList> accounts = service.getAccountList();
+        List<Account> accounts = service.getAccountList();
 
         List<TableCurrencyFormats> currencies = new ArrayList<>();
-        for(TableAccountList account : accounts) {
+        for(Account account : accounts) {
             TableCurrencyFormats currency = getCurrency(account.getCurrencyId());
             if (!currencies.contains(currency)) {
                 currencies.add(currency);

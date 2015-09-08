@@ -31,6 +31,7 @@ import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -312,7 +313,7 @@ public class GeneralSettingsFragment
 //        preference.setSummary(getString(R.string.default_account_summary));
 
         AccountService accountService = new AccountService(getActivity().getApplicationContext());
-        List<TableAccountList> accounts = accountService.getAccountList(false, false);
+        List<Account> accounts = accountService.getAccountList(false, false);
         // the list is already sorted by name.
 
         final String[] entries = new String[accounts.size() + 1];
@@ -322,8 +323,8 @@ public class GeneralSettingsFragment
         entryValues[0] = "-1";
         // list of currency
         for (int i = 1; i < accounts.size() + 1; i++) {
-            entries[i] = accounts.get(i-1).getAccountName();
-            entryValues[i] = ((Integer) accounts.get(i-1).getAccountId()).toString();
+            entries[i] = accounts.get(i-1).getName();
+            entryValues[i] = ((Integer) accounts.get(i-1).getId()).toString();
         }
         // set value
         preference.setEntries(entries);

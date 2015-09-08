@@ -23,7 +23,6 @@ package com.money.manager.ex.account;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -55,7 +54,6 @@ import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.domainmodel.Account;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /**
@@ -491,7 +489,7 @@ public class AccountEditActivity
      */
     private boolean selectAccount(int accountId) {
         AccountRepository repository = new AccountRepository(getApplicationContext());
-        mAccount = repository.loadModel(accountId);
+        mAccount = repository.load(accountId);
         if (mAccount == null) return false;
 
         Account account = mAccount;

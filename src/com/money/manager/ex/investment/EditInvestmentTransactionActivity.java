@@ -134,7 +134,7 @@ public class EditInvestmentTransactionActivity
             int accountId = intent.getIntExtra(EXTRA_ACCOUNT_ID, Constants.NOT_SET);
             if (accountId != Constants.NOT_SET) {
                 AccountRepository repository = new AccountRepository(getApplicationContext());
-                mAccount = repository.loadModel(accountId);
+                mAccount = repository.load(accountId);
             }
         }
 

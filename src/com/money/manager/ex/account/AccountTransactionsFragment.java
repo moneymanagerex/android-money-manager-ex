@@ -618,7 +618,7 @@ public class AccountTransactionsFragment
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // switch account.
                 Spinner spinner1 = (Spinner) adapterView;
-//                TableAccountList account = getAccountAtPosition(spinner1, i);
+//                Account account = getAccountAtPosition(spinner1, i);
 //                int accountId = account.getAccountId();
 //                if (accountId != mAccountId) {
 //                    // switch account. Reload transactions.

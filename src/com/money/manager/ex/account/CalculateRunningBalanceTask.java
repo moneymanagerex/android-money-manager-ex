@@ -34,6 +34,7 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.WhereClauseGenerator;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -130,8 +131,8 @@ public class CalculateRunningBalanceTask
 
         // Retrieve initial balance.
         AccountService accountService = new AccountService(mContext);
-        double initialBalance = accountService.loadInitialBalance(getAccountId());
-        total += initialBalance;
+        BigDecimal initialBalance = accountService.loadInitialBalance(getAccountId());
+        total += initialBalance.doubleValue();
 
         return true;
     }

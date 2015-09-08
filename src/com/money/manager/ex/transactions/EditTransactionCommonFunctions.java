@@ -60,6 +60,7 @@ import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconView;
@@ -105,7 +106,7 @@ public class EditTransactionCommonFunctions {
     public String mNotes = "";
     public String mTransNumber = "";
 
-    public List<TableAccountList> AccountList;
+    public List<Account> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
     public TransactionTypes transactionType = TransactionTypes.Withdrawal;
@@ -306,9 +307,9 @@ public class EditTransactionCommonFunctions {
                 core.getAccountFavoriteVisible());
         if (this.AccountList == null) return;
 
-        for(TableAccountList account : this.AccountList) {
-            mAccountNameList.add(account.getAccountName());
-            mAccountIdList.add(account.getAccountId());
+        for(Account account : this.AccountList) {
+            mAccountNameList.add(account.getName());
+            mAccountIdList.add(account.getId());
         }
 
         AccountRepository accountRepository = new AccountRepository(mContext);
@@ -938,12 +939,12 @@ public class EditTransactionCommonFunctions {
             int index = mAccountIdList.indexOf(accountId);
             if (index >= 0) {
                 amountHeaderTextView.setText(mParent.getString(R.string.withdrawal_from,
-                        this.AccountList.get(index).getAccountName()));
+                        this.AccountList.get(index).getName()));
             }
             index = mAccountIdList.indexOf(toAccountId);
             if (index >= 0) {
                 amountToHeaderTextView.setText(mParent.getString(R.string.deposit_to,
-                        this.AccountList.get(index).getAccountName()));
+                        this.AccountList.get(index).getName()));
             }
         }
     }
@@ -1049,14 +1050,14 @@ public class EditTransactionCommonFunctions {
 
         // #316. In case the account from recurring transaction is not in the visible list,
         // load it separately.
-        TableAccountList savedAccount;
+        Account savedAccount;
         if (!mAccountIdList.contains(accountId)) {
             savedAccount = accountRepository.load(accountId);
 
             if (savedAccount != null) {
                 this.AccountList.add(savedAccount);
-                mAccountNameList.add(savedAccount.getAccountName());
-                mAccountIdList.add(savedAccount.getAccountId());
+                mAccountNameList.add(savedAccount.getName());
+                mAccountIdList.add(savedAccount.getId());
             }
         }
     }

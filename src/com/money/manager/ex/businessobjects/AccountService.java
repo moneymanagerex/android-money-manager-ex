@@ -20,15 +20,9 @@ package com.money.manager.ex.businessobjects;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
-import android.util.Log;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.AccountTypes;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
@@ -38,11 +32,11 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.WhereClauseGenerator;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
 
-import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,15 +48,13 @@ public class AccountService {
         mContext = context;
     }
 
-//    public static final int NO_ACCOUNT = -1;
-
     private Context mContext;
 
     /**
      * Loads account list, applying the current preferences for Open & Favourite accounts.
      * @return List of accounts
      */
-    public List<TableAccountList> getAccountList() {
+    public List<Account> getAccountList() {
         AppSettings settings = new AppSettings(mContext);
 
         boolean favourite = settings.getLookAndFeelSettings().getViewFavouriteAccounts();
@@ -76,17 +68,16 @@ public class AccountService {
      * Includes all account types.
      * @param open     show open accounts
      * @param favorite show favorite account
-     * @return List<TableAccountList> list of accounts selected
+     * @return List<Account> list of accounts selected
      */
-    public List<TableAccountList> getAccountList(boolean open, boolean favorite) {
+    public List<Account> getAccountList(boolean open, boolean favorite) {
         // create a return list
-        List<TableAccountList> listAccount = loadAccounts(open, favorite, null);
-        return listAccount;
+        return loadAccounts(open, favorite, null);
     }
 
     /**
      * @param id account id to be search
-     * @return TableAccountList, return null if account id not find
+     * @return Account, return null if account id not find
      */
     public TableAccountList getTableAccountList(int id) {
         TableAccountList account = null;
@@ -154,33 +145,18 @@ public class AccountService {
         return total;
     }
 
-    public List<TableAccountList> loadAccounts(boolean open, boolean favorite, List<String> accountTypes) {
-        List<TableAccountList> result;
-//        result = loadAccounts_sql(open, favorite, accountTypes);
+    public List<Account> loadAccounts(boolean open, boolean favorite, List<String> accountTypes) {
+        List<Account> result;
+
         result = loadAccounts_content(open, favorite, accountTypes);
 
         return result;
     }
 
-    public double loadInitialBalance(int accountId) {
-        double initialBalance = 0;
-
-        TableAccountList accountList = new TableAccountList();
-
-        Cursor cursor = mContext.getContentResolver().query(accountList.getUri(),
-                accountList.getAllColumns(),
-                TableAccountList.ACCOUNTID + "=?",
-                new String[] { Integer.toString(accountId) },
-                null);
-
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                initialBalance = cursor.getDouble(cursor.getColumnIndex(TableAccountList.INITIALBAL));
-            }
-            cursor.close();
-        }
-
-        return initialBalance;
+    public BigDecimal loadInitialBalance(int accountId) {
+        AccountRepository repo = new AccountRepository(mContext);
+        Account account = repo.load(accountId);
+        return account.getInitialBalance();
     }
 
     /**
@@ -241,10 +217,10 @@ public class AccountService {
         return list;
     }
 
-    public List<TableAccountList> getTransactionAccounts(boolean open, boolean favorite) {
+    public List<Account> getTransactionAccounts(boolean open, boolean favorite) {
         List<String> accountTypeNames = getTransactionAccountTypeNames();
 
-        List<TableAccountList> result = loadAccounts(open, favorite, accountTypeNames);
+        List<Account> result = loadAccounts(open, favorite, accountTypeNames);
 
         return result;
     }
@@ -252,14 +228,12 @@ public class AccountService {
     private Cursor getCursorInternal(boolean open, boolean favorite, List<String> accountTypes) {
         TableAccountList account = new TableAccountList();
 
-        // compose where clause
         String where = getWhereFilterFor(open, favorite);
-        // filter accounts.
+
         if (accountTypes != null && accountTypes.size() > 0) {
             where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
         }
 
-        // use context provider instead of direct SQLite Database access.
         Cursor cursor = mContext.getContentResolver().query(account.getUri(),
                 account.getAllColumns(),
                 where,
@@ -314,7 +288,6 @@ public class AccountService {
                 null);
         if (cursor == null) return null;
 
-        // check if cursor is valid
         if (cursor.moveToFirst()) {
             account = new TableAccountList();
             account.setValueFromCursor(cursor);
@@ -325,64 +298,20 @@ public class AccountService {
         return account;
     }
 
-    private List<TableAccountList> loadAccounts_content(boolean open, boolean favorite, List<String> accountTypes) {
-        List<TableAccountList> result = new ArrayList<>();
+    private List<Account> loadAccounts_content(boolean open, boolean favorite, List<String> accountTypes) {
+        List<Account> result = new ArrayList<>();
 
         Cursor cursor = getCursor(open, favorite, accountTypes);
         if (cursor == null) return null;
 
-//        for(cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext()) {
         while (cursor.moveToNext()) {
-            TableAccountList account = new TableAccountList();
-            account.setValueFromCursor(cursor);
+            Account account = new Account();
+            account.loadFromCursor(cursor);
             result.add(account);
         }
         cursor.close();
 
         return result;
-    }
-
-    /**
-     * Load accounts with these filters.
-     * Here the account types can be specified.
-     * @param open
-     * @param favorite
-     * @param accountTypes
-     * @return
-     */
-    private List<TableAccountList> loadAccounts_sql(boolean open, boolean favorite, List<String> accountTypes) {
-        // create a return list
-        List<TableAccountList> listAccount = new ArrayList<>();
-
-        // compose where clause
-        String where = getWhereFilterFor(open,favorite);
-        // filter accounts.
-        if (accountTypes != null && accountTypes.size() > 0) {
-            where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
-        }
-
-        // data cursor
-        TableAccountList tAccountList = new TableAccountList();
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext.getApplicationContext());
-//        SQLiteDatabase db = helper.getReadableDatabase();
-//        Cursor cursor = db.query(tAccountList.getSource(), tAccountList.getAllColumns(),
-//                where, null, null, null,
-//                TableAccountList.ACCOUNTNAME);
-        Cursor cursor = mContext.getContentResolver().query(tAccountList.getUri(),
-                tAccountList.getAllColumns(),
-                where, null,
-                TableAccountList.ACCOUNTNAME);
-        // populate list from data cursor
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                TableAccountList account = new TableAccountList();
-                account.setValueFromCursor(cursor);
-                listAccount.add(account);
-            }
-            cursor.close();
-        }
-
-        return listAccount;
     }
 
 }

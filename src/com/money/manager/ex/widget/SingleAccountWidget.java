@@ -16,6 +16,7 @@ import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.WhereClauseGenerator;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.transactions.EditTransactionActivity;
@@ -67,7 +68,7 @@ public class SingleAccountWidget
         if (StringUtils.isEmpty(defaultAccountId)) return;
 
         int accountId = Integer.parseInt(defaultAccountId);
-        TableAccountList account = loadAccount(context, accountId);
+        Account account = loadAccount(context, accountId);
 
 //        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
 
@@ -77,7 +78,7 @@ public class SingleAccountWidget
 
         // display the account name
 //        String accountName = getAccountName(context, accountId);
-        String accountName = account.getAccountName();
+        String accountName = account.getName();
         views.setTextViewText(R.id.accountNameTextView, accountName);
 
         // get account balance (for this account?)
@@ -105,9 +106,9 @@ public class SingleAccountWidget
         views.setOnClickPendingIntent(R.id.newTransactionButton, pendingIntent);
     }
 
-    static String getFormattedAccountBalance(Context context, TableAccountList account) {
+    static String getFormattedAccountBalance(Context context, Account account) {
         WhereClauseGenerator generator = new WhereClauseGenerator(context);
-        generator.addSelection(QueryAccountBills.ACCOUNTID, "=", account.getAccountId());
+        generator.addSelection(QueryAccountBills.ACCOUNTID, "=", account.getId());
         String selection =  generator.getSelectionStatements();
         String[] args = generator.getSelectionArguments();
 
@@ -130,7 +131,7 @@ public class SingleAccountWidget
 //        return name;
 //    }
 
-    static TableAccountList loadAccount(Context context, int accountId) {
+    static Account loadAccount(Context context, int accountId) {
         AccountRepository repository = new AccountRepository(context);
         return repository.load(accountId);
     }

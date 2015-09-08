@@ -44,6 +44,7 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.domainmodel.Account;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
