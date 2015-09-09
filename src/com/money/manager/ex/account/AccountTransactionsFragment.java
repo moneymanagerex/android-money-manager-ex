@@ -22,6 +22,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -131,14 +132,6 @@ public class AccountTransactionsFragment
         // restart loader
         loadTransactions();
     }
-
-
-    // IAllDataFragmentLoaderCallbacks
-
-    // todo: check whether this is needed.
-//    public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data) {
-//        getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
-//    }
 
     // Menu
 
@@ -319,11 +312,11 @@ public class AccountTransactionsFragment
         switch (id) {
             case ID_LOADER_SUMMARY:
                 return new MmexCursorLoader(getActivity(),
-                        new QueryAccountBills(getActivity()).getUri(),
-                        null,
-                        QueryAccountBills.ACCOUNTID + "=?",
-                        new String[] { Integer.toString(mAccountId) },
-                        null);
+                    new QueryAccountBills(getActivity()).getUri(),
+                    null,
+                    QueryAccountBills.ACCOUNTID + "=?",
+                    new String[] { Integer.toString(mAccountId) },
+                    null);
         }
         return null;
     }
@@ -351,7 +344,12 @@ public class AccountTransactionsFragment
                 }
                 // show balance values
                 setTextViewBalance();
+                break;
 
+            case AllDataListFragment.ID_LOADER_ALL_DATA_DETAIL:
+                // Notification received from AllDataListFragment.
+                // Once the transactions are loaded, load the summary data.
+                getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
                 break;
         }
     }

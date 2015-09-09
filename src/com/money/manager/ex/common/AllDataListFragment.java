@@ -117,6 +117,7 @@ public class AllDataListFragment
         setListShown(false);
 
         // Read header indicator directly from the activity.
+        // todo: make this a parameter or a property.
         if (getActivity() instanceof SearchActivity) {
             SearchActivity activity = (SearchActivity) getActivity();
             setShownHeader(activity.ShowAccountHeaders);
@@ -134,7 +135,7 @@ public class AllDataListFragment
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
 
-        // click item
+        // handle item click
         getListView().setOnItemClickListener(new OnItemClickListener() {
 
             @Override
