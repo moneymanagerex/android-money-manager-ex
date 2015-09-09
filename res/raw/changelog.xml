@@ -18,6 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="September 9, 2015" versionName="2.18.7">
+        <changelogtext>Ability to donate from inside the app.</changelogtext>
         <changelogtext>Providing place in the exception feedback email to describe the action that led to the exception.</changelogtext>
         <changelogtext>Correction for running balance.</changelogtext>
         <changelogtext>Handling invalid symbols on price download.</changelogtext>
