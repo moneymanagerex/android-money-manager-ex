@@ -28,6 +28,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- <uses-permission android:name="com.android.vending.BILLING" /> -->
 
+
     <!-- trying to force ui automator to run on sdk 16 -->
     <!-- <uses-sdk android:minSdkVersion="16" tools:overrideLibrary="android.support.test.uiautomator.v18" /> -->
 
@@ -401,6 +402,10 @@
         <activity
             android:name=".investment.EditInvestmentTransactionActivity"
             android:label="@string/title_activity_edit_investment_transaction" >
+        </activity>
+        <activity
+            android:name=".common.WebViewActivity"
+            android:label="@string/title_activity_web_view" >
         </activity>
     </application>
 

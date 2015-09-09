@@ -104,9 +104,10 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    />
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp" />
 
             </RelativeLayout>
 
@@ -114,6 +115,28 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/homepage"/>
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp" >
+
+                <com.money.manager.ex.view.RobotoButton
+                    android:id="@+id/homepageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/homepage_button"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 

@@ -129,6 +129,7 @@ dependencies {
     compile 'com.opencsv:opencsv:3.5'
     compile 'net.objecthunter:exp4j:0.4.5'
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'org.apache.httpcomponents:httpcore:4.4.*'
     compile 'org.apache.httpcomponents:httpclient:4.5'
     compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
 //    compile 'org.bouncycastle:bcprov-jdk16:1.46'

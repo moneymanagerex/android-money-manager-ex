@@ -62,7 +62,6 @@ import java.util.ArrayList;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.0.1
  */
 public class EditTransactionActivity
     extends BaseFragmentActivity

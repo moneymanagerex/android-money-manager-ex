@@ -324,7 +324,9 @@
     <string name="donate_direct">You can donate directly by clicking the Donate links on our app web page.</string>
     <string name="donate_bitcoin">We also accept BitCoin donations.</string>
     <string name="donate_license">For Google licensing reasons, we are not allowed to place donation links directly inside the app.</string>
-    <string name="donate_button_text">Open homepage</string>
+    <string name="donate_button_text">Donate</string>
+    <string name="homepage_button">Open homepage</string>
+
     <!-- 20130225 -->
     <string name="android_sqlite_vesion">SQLite Version</string>
     <!-- 20130301 -->
@@ -637,4 +639,5 @@
 
     <string name="view_transactions">View transactions</string>
     <string name="error_downloading_symbol">Error downloading price for symbol</string>
+    <string name="title_activity_web_view">WebViewActivity</string>
 </resources>
