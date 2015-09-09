@@ -80,10 +80,9 @@ public class AllDataFragment extends BaseListFragment
      * @param accountId Id of account to display. If generic shown set -1
      * @return new instance AllDataFragment
      */
-    public static AllDataFragment newInstance(int accountId, IAllDataFragmentCallbacks callbacks) {
+    public static AllDataFragment newInstance(int accountId) {
         AllDataFragment fragment = new AllDataFragment();
         fragment.AccountId = accountId;
-        fragment.mCallbacks = callbacks;
 
         return fragment;
     }
@@ -106,7 +105,6 @@ public class AllDataFragment extends BaseListFragment
     private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
     private View mListHeader = null;
 
-    private IAllDataFragmentCallbacks mCallbacks;
     private Bundle mArguments;
 
     @Override

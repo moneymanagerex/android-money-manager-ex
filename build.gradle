@@ -50,7 +50,7 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.money.manager.ex"
@@ -125,7 +125,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
-    // Replacing lib files with maven repos
+    // Replacing lib files with maven repositories
     compile 'com.opencsv:opencsv:3.5'
     compile 'net.objecthunter:exp4j:0.4.5'
     compile 'org.apache.commons:commons-lang3:3.4'

@@ -49,8 +49,6 @@ import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
-import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.common.IAllDataFragmentCallbacks;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.utils.DateUtils;
 
@@ -64,7 +62,7 @@ import java.util.List;
  * The search form with search parameter input fields.
  */
 public class SearchFragment extends Fragment
-        implements IInputAmountDialogListener, IAllDataFragmentCallbacks {
+        implements IInputAmountDialogListener {
 
     // ID REQUEST code
     private static final int REQUEST_PICK_PAYEE = 1;
@@ -427,7 +425,7 @@ public class SearchFragment extends Fragment
                     .remove(searchResultsFragment).commit();
         }
 
-        searchResultsFragment = AllDataFragment.newInstance(-1, this);
+        searchResultsFragment = AllDataFragment.newInstance(-1);
 
         //create parameter bundle
         Bundle args = new Bundle();

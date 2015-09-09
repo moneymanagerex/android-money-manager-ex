@@ -47,30 +47,24 @@ import android.widget.Toast;
 
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.IAllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.common.IAllDataFragmentCallbacks;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 /**
  * Checking account fragment.
@@ -80,8 +74,7 @@ import java.util.List;
 public class AccountTransactionsFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>,
-        IAllDataFragmentLoaderCallbacks,
-        IAllDataFragmentCallbacks {
+        IAllDataFragmentLoaderCallbacks {
 
     private static final String KEY_CONTENT = "AccountTransactionsFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
@@ -485,7 +478,7 @@ public class AccountTransactionsFragment
     private void showTransactionsFragment(ViewGroup header) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        mAllDataFragment = AllDataFragment.newInstance(mAccountId, this);
+        mAllDataFragment = AllDataFragment.newInstance(mAccountId);
 
         // set arguments and settings of fragment
         mAllDataFragment.setArguments(prepareArgsForChildFragment());
