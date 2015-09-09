@@ -20,12 +20,11 @@ package com.money.manager.ex.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.AllDataFragment;
+import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.ICommonFragmentCallbacks;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -76,9 +75,9 @@ public class SearchActivity
 	@Override
 	protected void onResume() {
 		super.onResume();
-		AllDataFragment fragment;
-		fragment = (AllDataFragment) getSupportFragmentManager()
-                .findFragmentByTag(AllDataFragment.class.getSimpleName());
+		AllDataListFragment fragment;
+		fragment = (AllDataListFragment) getSupportFragmentManager()
+                .findFragmentByTag(AllDataListFragment.class.getSimpleName());
 		if (fragment != null && fragment.isVisible()) {
 			fragment.loadData();
 		}

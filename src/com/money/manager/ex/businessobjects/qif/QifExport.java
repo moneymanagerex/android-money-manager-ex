@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Handles export of transactions from AllDataFragment into QIF format.
+ * Handles export of transactions from AllDataListFragment into QIF format.
  * References:
  * http://en.wikipedia.org/wiki/Quicken_Interchange_Format
  */

@@ -71,17 +71,18 @@ import java.util.ArrayList;
 /**
  * Fragment that displays the transactions.
  */
-public class AllDataFragment extends BaseListFragment
+public class AllDataListFragment
+        extends BaseListFragment
         implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
 
     /**
-     * Create a new instance of AllDataFragment with accountId params
+     * Create a new instance of AllDataListFragment with accountId params
      *
      * @param accountId Id of account to display. If generic shown set -1
-     * @return new instance AllDataFragment
+     * @return new instance AllDataListFragment
      */
-    public static AllDataFragment newInstance(int accountId) {
-        AllDataFragment fragment = new AllDataFragment();
+    public static AllDataListFragment newInstance(int accountId) {
+        AllDataListFragment fragment = new AllDataListFragment();
         fragment.AccountId = accountId;
 
         return fragment;
@@ -96,7 +97,7 @@ public class AllDataFragment extends BaseListFragment
 
     public int AccountId = Constants.NOT_SET;
 
-    private static final String LOGCAT = AllDataFragment.class.getSimpleName();
+    private static final String LOGCAT = AllDataListFragment.class.getSimpleName();
 
     private IAllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
@@ -111,7 +112,6 @@ public class AllDataFragment extends BaseListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // set fragment
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
 
@@ -121,13 +121,13 @@ public class AllDataFragment extends BaseListFragment
             setShownHeader(activity.ShowAccountHeaders);
         }
 
-        // create adapter
+        // create adapter for data.
         AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
         adapter.setAccountId(this.AccountId);
         adapter.setShowAccountName(isShownHeader());
         adapter.setShowBalanceAmount(isShownBalance());
 
-        // set choice mode in list view
+        // set multi-choice mode in the list view.
         mMultiChoiceModeListener = new AllDataMultiChoiceModeListener();
         mMultiChoiceModeListener.setListener(this);
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -146,7 +146,8 @@ public class AllDataFragment extends BaseListFragment
                 }
             }
         });
-        // if header is not null add to list view
+
+        // Add a header to the list view if one exists.
         if (getListAdapter() == null) {
             if (mListHeader != null)
                 getListView().addHeaderView(mListHeader);
@@ -160,11 +161,11 @@ public class AllDataFragment extends BaseListFragment
         // set animation progress
         setListShown(false);
 
-        // floating action button
+        // Show floating action button.
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
 
-        // start loader
+        // start loader if asked to do so by the caller.
         if (isAutoStarLoader()) {
             loadData();
         }
@@ -183,26 +184,6 @@ public class AllDataFragment extends BaseListFragment
     }
 
     // Loader event handlers
-
-    /**
-     * Start loader into fragment
-     */
-    public void loadData() {
-        loadData(getLatestArguments());
-    }
-
-    public void loadData(Bundle arguments) {
-        // set the account id in the data adapter
-        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-        if (adapter != null) {
-            adapter.setAccountId(this.AccountId);
-        }
-
-        // set the current arguments / account id
-        setLatestArguments(arguments);
-        // reload data with the latest arguments.
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, arguments, this);
-    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -310,8 +291,10 @@ public class AllDataFragment extends BaseListFragment
         }
     }
 
-    // This is just to test:
-    // http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
+    /**
+     * This is just to test:
+     * http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
+     */
     @Override
     public void onDetach() {
         super.onDetach();
@@ -507,6 +490,26 @@ public class AllDataFragment extends BaseListFragment
     }
 
     /**
+     * Start loader into fragment
+     */
+    public void loadData() {
+        loadData(getLatestArguments());
+    }
+
+    public void loadData(Bundle arguments) {
+        // set the account id in the data adapter
+        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+        if (adapter != null) {
+            adapter.setAccountId(this.AccountId);
+        }
+
+        // set the current arguments / account id
+        setLatestArguments(arguments);
+        // reload data with the latest arguments.
+        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, arguments, this);
+    }
+
+    /**
      * @param mShownHeader the mShownHeader to set
      */
     public void setShownHeader(boolean mShownHeader) {
@@ -535,7 +538,7 @@ public class AllDataFragment extends BaseListFragment
         this.mShownBalance = mShownBalance;
     }
 
-    // Private
+    // Private methods.
 
     private boolean setStatusCheckingAccount(int[] transId, String status) {
         // check if status = "U" convert to empty string

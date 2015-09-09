@@ -41,7 +41,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
-import com.money.manager.ex.common.AllDataFragment;
+import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
@@ -65,7 +65,7 @@ public class WatchlistItemsFragment
     /**
      * Create a new instance of the fragment with accountId params
      *
-     * @return new instance AllDataFragment
+     * @return new instance AllDataListFragment
      */
     public static WatchlistItemsFragment newInstance(IWatchlistItemsFragmentEventHandler eventHandler) {
         WatchlistItemsFragment fragment = new WatchlistItemsFragment();
@@ -272,8 +272,8 @@ public class WatchlistItemsFragment
             case ID_LOADER_WATCHLIST:
                 // compose selection and sort
                 String selection = "";
-                if (args != null && args.containsKey(AllDataFragment.KEY_ARGUMENTS_WHERE)) {
-                    ArrayList<String> whereClause = args.getStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE);
+                if (args != null && args.containsKey(AllDataListFragment.KEY_ARGUMENTS_WHERE)) {
+                    ArrayList<String> whereClause = args.getStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE);
                     if (whereClause != null) {
                         for (int i = 0; i < whereClause.size(); i++) {
                             selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
@@ -283,8 +283,8 @@ public class WatchlistItemsFragment
 
                 // set sort
                 String sort = "";
-                if (args != null && args.containsKey(AllDataFragment.KEY_ARGUMENTS_SORT)) {
-                    sort = args.getString(AllDataFragment.KEY_ARGUMENTS_SORT);
+                if (args != null && args.containsKey(AllDataListFragment.KEY_ARGUMENTS_SORT)) {
+                    sort = args.getString(AllDataListFragment.KEY_ARGUMENTS_SORT);
                 }
 
                 result = new MmexCursorLoader(mContext,
@@ -424,8 +424,8 @@ public class WatchlistItemsFragment
         selection.add(TableStock.HELDAT + "=" + Integer.toString(this.accountId));
 
         Bundle args = new Bundle();
-        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
-        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT, TableStock.SYMBOL + " ASC");
+        args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE, selection);
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT, TableStock.SYMBOL + " ASC");
 
         return args;
     }

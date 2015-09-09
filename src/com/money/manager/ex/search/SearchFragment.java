@@ -37,6 +37,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
@@ -44,7 +45,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.ICommonFragmentCallbacks;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.TableSplitTransactions;
-import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
@@ -417,22 +417,22 @@ public class SearchFragment extends Fragment
 
     private void showSearchResultsFragment(ParameterizedWhereClause where) {
         //create a fragment for search results.
-        AllDataFragment searchResultsFragment;
-        searchResultsFragment = (AllDataFragment) getActivity().getSupportFragmentManager()
-                .findFragmentByTag(AllDataFragment.class.getSimpleName());
+        AllDataListFragment searchResultsFragment;
+        searchResultsFragment = (AllDataListFragment) getActivity().getSupportFragmentManager()
+                .findFragmentByTag(AllDataListFragment.class.getSimpleName());
         if (searchResultsFragment != null) {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .remove(searchResultsFragment).commit();
         }
 
-        searchResultsFragment = AllDataFragment.newInstance(-1);
+        searchResultsFragment = AllDataListFragment.newInstance(-1);
 
         //create parameter bundle
         Bundle args = new Bundle();
-        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, where.Clause);
-        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE_PARAMS, where.Params);
+        args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE, where.Clause);
+        args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE_PARAMS, where.Params);
         // Sorting
-        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
                 QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
         //set arguments
         searchResultsFragment.setArguments(args);
@@ -452,9 +452,9 @@ public class SearchFragment extends Fragment
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack.
         if (isDualPanel()) {
-            transaction.add(R.id.fragmentDetail, searchResultsFragment, AllDataFragment.class.getSimpleName());
+            transaction.add(R.id.fragmentDetail, searchResultsFragment, AllDataListFragment.class.getSimpleName());
         } else {
-            transaction.replace(R.id.fragmentContent, searchResultsFragment, AllDataFragment.class.getSimpleName());
+            transaction.replace(R.id.fragmentContent, searchResultsFragment, AllDataListFragment.class.getSimpleName());
             transaction.addToBackStack(null);
         }
         // Commit the transaction

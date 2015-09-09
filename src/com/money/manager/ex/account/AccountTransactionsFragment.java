@@ -46,6 +46,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.WhereClauseGenerator;
@@ -54,7 +55,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
-import com.money.manager.ex.common.AllDataFragment;
 import com.money.manager.ex.common.IAllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -81,7 +81,7 @@ public class AccountTransactionsFragment
 
     private final String LOGCAT = this.getClass().getSimpleName();
 
-    private AllDataFragment mAllDataFragment;
+    private AllDataListFragment mAllDataListFragment;
     private Integer mAccountId = null;
     // Id of the period in the period picker in the toolbar.
 //    private int mPeriodIndex = Constants.NOT_SET;
@@ -166,7 +166,7 @@ public class AccountTransactionsFragment
 //        initTransactionTypeDropdown(menu);
 
         // call create option menu of fragment
-        mAllDataFragment.onCreateOptionsMenu(menu, inflater);
+        mAllDataListFragment.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -217,8 +217,8 @@ public class AccountTransactionsFragment
                 result = true;
                 break;
             case R.id.menu_export_to_csv:
-                if (mAllDataFragment != null && mAccountList != null)
-                    mAllDataFragment.exportDataToCSVFile(mAccountList.getAccountName());
+                if (mAllDataListFragment != null && mAccountList != null)
+                    mAllDataListFragment.exportDataToCSVFile(mAccountList.getAccountName());
                 result = true;
                 break;
 
@@ -304,8 +304,6 @@ public class AccountTransactionsFragment
     }
 
     private void reloadAccountInfo() {
-//        mAccountList = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext())
-//                .getTableAccountList(accountId);
         AccountService service = new AccountService(getActivity().getApplicationContext());
         mAccountList = service.getTableAccountList(mAccountId);
     }
@@ -316,9 +314,9 @@ public class AccountTransactionsFragment
      * Start Loader to retrieve data
      */
     public void loadTransactions() {
-        if (mAllDataFragment != null) {
+        if (mAllDataListFragment != null) {
             Bundle arguments = prepareArgsForChildFragment();
-            mAllDataFragment.loadData(arguments);
+            mAllDataListFragment.loadData(arguments);
         }
     }
 
@@ -338,7 +336,7 @@ public class AccountTransactionsFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // This is already handled in AllDataFragment.
+        // This is already handled in AllDataListFragment.
 //        switch (loader.getId()) {
 //            case ID_LOADER_SUMMARY:
 //                mAdapter.swapCursor(null);
@@ -404,8 +402,8 @@ public class AccountTransactionsFragment
 
         // create a bundle to returns
         Bundle args = new Bundle();
-        args.putStringArrayList(AllDataFragment.KEY_ARGUMENTS_WHERE, selection);
-        args.putString(AllDataFragment.KEY_ARGUMENTS_SORT,
+        args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE, selection);
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
                 QueryAllData.Date + " DESC, " + QueryAllData.TransactionType + ", " +
                         QueryAllData.ID + " DESC");
 
@@ -478,18 +476,18 @@ public class AccountTransactionsFragment
     private void showTransactionsFragment(ViewGroup header) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        mAllDataFragment = AllDataFragment.newInstance(mAccountId);
+        mAllDataListFragment = AllDataListFragment.newInstance(mAccountId);
 
         // set arguments and settings of fragment
-        mAllDataFragment.setArguments(prepareArgsForChildFragment());
-        if (header != null) mAllDataFragment.setListHeader(header);
-        mAllDataFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
+        mAllDataListFragment.setArguments(prepareArgsForChildFragment());
+        if (header != null) mAllDataListFragment.setListHeader(header);
+        mAllDataListFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
-        mAllDataFragment.setAutoStarLoader(false);
-        mAllDataFragment.setSearResultFragmentLoaderCallbacks(this);
+        mAllDataListFragment.setAutoStarLoader(false);
+        mAllDataListFragment.setSearResultFragmentLoaderCallbacks(this);
 
         // add fragment
-        transaction.replace(R.id.fragmentContent, mAllDataFragment, getFragmentName());
+        transaction.replace(R.id.fragmentContent, mAllDataListFragment, getFragmentName());
         transaction.commit();
     }
 
@@ -582,8 +580,8 @@ public class AccountTransactionsFragment
                 if (accountId != mAccountId) {
                     // switch account. Reload transactions.
                     mAccountId = accountId;
-                    mAllDataFragment.AccountId = accountId;
-                    mAllDataFragment.loadData(prepareArgsForChildFragment());
+                    mAllDataListFragment.AccountId = accountId;
+                    mAllDataListFragment.loadData(prepareArgsForChildFragment());
                 }
             }
 
@@ -594,6 +592,10 @@ public class AccountTransactionsFragment
         });
     }
 
+    /**
+     * To be used for the Transaction Type filter.
+     * @param menu
+     */
     private void initTransactionTypeDropdown(Menu menu) {
         MenuItem item = menu.findItem(R.id.menuAccountSelector);
         Spinner spinner = null;
@@ -616,8 +618,8 @@ public class AccountTransactionsFragment
 //                if (accountId != mAccountId) {
 //                    // switch account. Reload transactions.
 //                    mAccountId = accountId;
-//                    mAllDataFragment.AccountId = accountId;
-//                    mAllDataFragment.loadData(prepareArgsForChildFragment());
+//                    mAllDataListFragment.AccountId = accountId;
+//                    mAllDataListFragment.loadData(prepareArgsForChildFragment());
 //                }
                 // todo: handle change.
             }
