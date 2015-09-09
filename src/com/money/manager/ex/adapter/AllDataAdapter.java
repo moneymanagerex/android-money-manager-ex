@@ -297,6 +297,7 @@ public class AllDataAdapter
     }
 
     public void reloadRunningBalance(Cursor cursor) {
+        if (mAccountId == Constants.NOT_SET) return;
         this.balance = null;
         this.populateRunningBalance(cursor);
     }
