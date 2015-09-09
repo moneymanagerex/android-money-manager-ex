@@ -17,23 +17,14 @@
  */
 package com.money.manager.ex.businessobjects.qif;
 
-import android.accounts.Account;
 import android.content.Context;
-import android.util.Log;
 
 import com.money.manager.ex.adapter.AllDataAdapter;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
-import com.money.manager.ex.database.AccountRepository;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.TableAccountList;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -58,8 +49,8 @@ public class QifExport
         try {
             this.export_internal(adapter);
         } catch (Exception e) {
-            Log.e(this.LOGCAT, "Error in .qif export. See stack trace below...");
-            e.printStackTrace();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, ".qif export");
         }
     }
 

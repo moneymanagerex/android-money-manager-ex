@@ -207,8 +207,8 @@ public class WatchlistFragment extends Fragment
     /**
      * Handle menu item click.
      * Update prices.
-     * @param item
-     * @return
+     * @param item Menu item selected
+     * @return indicator whether the selection was handled
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -250,7 +250,7 @@ public class WatchlistFragment extends Fragment
     }
 
     /**
-     * refresh UI, show favorite icome
+     * refresh UI, show favorite icon
      */
     private void setImageViewFavorite() {
         if (mAccount.isFavoriteAcct()) {
@@ -279,9 +279,9 @@ public class WatchlistFragment extends Fragment
 
     /**
      * Called from asynchronous task when a single price is downloaded.
-     * @param symbol
-     * @param price
-     * @param date
+     * @param symbol Stock symbol
+     * @param price Stock price
+     * @param date Date of the price
      */
     @Override
     public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
@@ -302,18 +302,6 @@ public class WatchlistFragment extends Fragment
             completePriceUpdate();
         }
     }
-
-//    private void showUpdateMessage(final String symbol) {
-//        // this call is made from async task so have to get back to the main thread.
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                //
-//                String message = getString(R.string.price_updated) + ": " + symbol;
-//                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
     private void completePriceUpdate() {
         // this call is made from async task so have to get back to the main thread.

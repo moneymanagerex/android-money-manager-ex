@@ -19,7 +19,7 @@ import java.math.BigDecimal;
  * Data repository for Stock entities.
  * This is an experiment on how to replace the current dataset objects.
  *
- * Created by Alen on 5/09/2015.
+ * Created by Alen Siljak on 5/09/2015.
  */
 public class StockRepository
     extends RepositoryBase {
@@ -95,28 +95,27 @@ public class StockRepository
         return stockValues;
     }
 
-    public boolean loadFor(int accountId) {
-        boolean result = false;
-
-        String selection = TableAccountList.ACCOUNTID + "=?";
-        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
-                null,
-                selection,
-                new String[] { Integer.toString(accountId) },
-                null
-        );
-        if (cursor == null) return false;
-
-        // check if cursor is valid
-        if (cursor.moveToFirst()) {
-            this.setValueFromCursor(cursor);
-
-            result = true;
-        }
-        cursor.close();
-
-        return result;
-    }
+//    public boolean loadFor(int accountId) {
+//        boolean result = false;
+//
+//        String selection = TableAccountList.ACCOUNTID + "=?";
+//        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
+//                null,
+//                selection,
+//                new String[] { Integer.toString(accountId) },
+//                null
+//        );
+//        if (cursor == null) return false;
+//
+//        if (cursor.moveToFirst()) {
+//            this.setValueFromCursor(cursor);
+//
+//            result = true;
+//        }
+//        cursor.close();
+//
+//        return result;
+//    }
 
     /**
      * Retrieves all record ids which refer the given symbol.
@@ -164,8 +163,8 @@ public class StockRepository
 
     /**
      * Update price for all the records with this symbol.
-     * @param symbol
-     * @param price
+     * @param symbol Stock symbol
+     * @param price Stock price
      */
     public void updateCurrentPrice(String symbol, BigDecimal price) {
         int[] ids = findIdsBySymbol(symbol);
