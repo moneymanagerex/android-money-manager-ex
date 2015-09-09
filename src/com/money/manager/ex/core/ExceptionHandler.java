@@ -106,6 +106,13 @@ public class ExceptionHandler
         throwable.printStackTrace(new PrintWriter(stackTrace));
 
         StringBuilder errorReport = new StringBuilder();
+        errorReport.append("************ FEEDBACK ************\n\n");
+        errorReport.append("Please describe the last action you performed, which resulted in exception.");
+        errorReport.append("This will help us in identifying and resolving the underlying cause. Thank you!");
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append(LINE_SEPARATOR);
+
         errorReport.append("************ APP DETAILS ************\n\n");
         String version = getAppVersionInformation();
         errorReport.append(version);
