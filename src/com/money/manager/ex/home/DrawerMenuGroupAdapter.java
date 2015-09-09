@@ -112,7 +112,11 @@ public class DrawerMenuGroupAdapter
                 holder.imageViewIcon.setBackgroundResource(item.getIcon());
             }
             if (item.getIconDrawable() != null) {
-                holder.imageViewIcon.setBackground(item.getIconDrawable());
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    holder.imageViewIcon.setBackground(item.getIconDrawable());
+                } else {
+                    holder.imageViewIcon.setBackgroundDrawable(item.getIconDrawable());
+                }
             }
         }
 
