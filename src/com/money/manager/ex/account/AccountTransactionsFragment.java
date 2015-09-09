@@ -50,12 +50,12 @@ import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.WhereClauseGenerator;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
-import com.money.manager.ex.common.IAllDataFragmentLoaderCallbacks;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
@@ -73,8 +73,7 @@ import java.util.ArrayList;
  */
 public class AccountTransactionsFragment
         extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>,
-        IAllDataFragmentLoaderCallbacks {
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String KEY_CONTENT = "AccountTransactionsFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
@@ -83,8 +82,6 @@ public class AccountTransactionsFragment
 
     private AllDataListFragment mAllDataListFragment;
     private Integer mAccountId = null;
-    // Id of the period in the period picker in the toolbar.
-//    private int mPeriodIndex = Constants.NOT_SET;
     private String mFragmentName;
     private double mAccountBalance = 0, mAccountReconciled = 0;
     private TableAccountList mAccountList;
@@ -102,7 +99,8 @@ public class AccountTransactionsFragment
         fragment.mAccountId = accountId;
 
         // set name of child fragment
-        fragment.setFragmentName(AccountTransactionsFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
+        fragment.setFragmentName(AccountTransactionsFragment.class.getSimpleName() + "_" +
+                Integer.toString(accountId));
 
         return fragment;
     }
@@ -127,24 +125,20 @@ public class AccountTransactionsFragment
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // restart loader
+        loadTransactions();
+    }
+
+
     // IAllDataFragmentLoaderCallbacks
 
-    @Override
-    public void onCallbackCreateLoader(int id, Bundle args) {
-//        return;
-    }
-
-    @Override
-    public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data) {
-        getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
-    }
-
-    @Override
-    public void onCallbackLoaderReset(Loader<Cursor> loader) {
-//        return;
-    }
-
-    // End IAllDataFragmentLoaderCallbacks
+    // todo: check whether this is needed.
+//    public void onCallbackLoaderFinished(Loader<Cursor> loader, Cursor data) {
+//        getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
+//    }
 
     // Menu
 
@@ -199,7 +193,7 @@ public class AccountTransactionsFragment
         }
 
         // select the current account?
-        showCurrentAccount(menu);
+        selectCurrentAccount(menu);
 
         selectCurrentPeriod(menu);
     }
@@ -363,13 +357,6 @@ public class AccountTransactionsFragment
     }
 
     // end loader events
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // restart loader
-        loadTransactions();
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -563,20 +550,20 @@ public class AccountTransactionsFragment
 
         // Load accounts into the list.
         Spinner spinner = getAccountsSpinner(menu);
-        if (spinner != null) {
-            loadAccountsToSpinner(getActivity(), spinner);
-        }
+        if (spinner == null) return;
+
+        loadAccountsToSpinner(getActivity(), spinner);
 
         // handle switching of accounts.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // switch account.
-                Spinner spinner1 = (Spinner) adapterView;
-                TableAccountList account = getAccountAtPosition(spinner1, i);
-                int accountId = account.getAccountId();
-//                String selectedAccountIdString = mAccountSpinnerValues.getValueAtPosition(i);
-//                int accountId = Integer.parseInt(selectedAccountIdString);
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
+                Account account = new Account();
+                account.loadFromCursor(cursor);
+
+                int accountId = account.getId();
                 if (accountId != mAccountId) {
                     // switch account. Reload transactions.
                     mAccountId = accountId;
@@ -631,20 +618,11 @@ public class AccountTransactionsFragment
         });
     }
 
-    private TableAccountList getAccountAtPosition(Spinner spinner, int position) {
-        SimpleCursorAdapter adapter = (SimpleCursorAdapter) spinner.getAdapter();
-        Cursor cursor = (Cursor) adapter.getItem(position);
-        TableAccountList account = new TableAccountList();
-        account.setValueFromCursor(cursor);
-
-        return account;
-    }
-
     /**
      * Show the current account selected in the accounts dropdown.
      * @param menu The toolbar/menu that contains the dropdown.
      */
-    private void showCurrentAccount(Menu menu) {
+    private void selectCurrentAccount(Menu menu) {
         Spinner spinner = getAccountsSpinner(menu);
         if (spinner == null) return;
 

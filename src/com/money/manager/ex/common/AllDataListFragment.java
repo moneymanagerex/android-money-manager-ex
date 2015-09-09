@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
@@ -99,7 +100,7 @@ public class AllDataListFragment
 
     private static final String LOGCAT = AllDataListFragment.class.getSimpleName();
 
-    private IAllDataFragmentLoaderCallbacks mSearResultFragmentLoaderCallbacks;
+    private LoaderManager.LoaderCallbacks<Cursor> mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
     private boolean mShownHeader = false;
     private boolean mShownBalance = false;
@@ -188,7 +189,7 @@ public class AllDataListFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (getSearchResultFragmentLoaderCallbacks() != null)
-            getSearchResultFragmentLoaderCallbacks().onCallbackCreateLoader(id, args);
+            getSearchResultFragmentLoaderCallbacks().onCreateLoader(id, args);
         //animation
         setListShown(false);
 
@@ -226,16 +227,16 @@ public class AllDataListFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        IAllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
-        if (parent != null) parent.onCallbackLoaderReset(loader);
+        LoaderManager.LoaderCallbacks<Cursor> parent = getSearchResultFragmentLoaderCallbacks();
+        if (parent != null) parent.onLoaderReset(loader);
 
         ((CursorAdapter) getListAdapter()).swapCursor(null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        IAllDataFragmentLoaderCallbacks parent = getSearchResultFragmentLoaderCallbacks();
-        if (parent != null) parent.onCallbackLoaderFinished(loader, data);
+        LoaderManager.LoaderCallbacks<Cursor> parent = getSearchResultFragmentLoaderCallbacks();
+        if (parent != null) parent.onLoadFinished(loader, data);
 
         switch (loader.getId()) {
             case ID_LOADER_ALL_DATA_DETAIL:
@@ -457,14 +458,14 @@ public class AllDataListFragment
     /**
      * @return the mSearResultFragmentLoaderCallbacks
      */
-    public IAllDataFragmentLoaderCallbacks getSearchResultFragmentLoaderCallbacks() {
+    public LoaderManager.LoaderCallbacks<Cursor> getSearchResultFragmentLoaderCallbacks() {
         return mSearResultFragmentLoaderCallbacks;
     }
 
     /**
      * @param searResultFragmentLoaderCallbacks the searResultFragmentLoaderCallbacks to set
      */
-    public void setSearResultFragmentLoaderCallbacks(IAllDataFragmentLoaderCallbacks searResultFragmentLoaderCallbacks) {
+    public void setSearResultFragmentLoaderCallbacks(LoaderManager.LoaderCallbacks<Cursor> searResultFragmentLoaderCallbacks) {
         this.mSearResultFragmentLoaderCallbacks = searResultFragmentLoaderCallbacks;
     }
 
