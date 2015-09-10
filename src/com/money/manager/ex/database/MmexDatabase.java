@@ -20,11 +20,13 @@ package com.money.manager.ex.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDiskIOException;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 
 import java.io.BufferedReader;
@@ -39,6 +41,7 @@ import java.util.regex.Pattern;
  * Contains functions for manipulating database.
  */
 public class MmexDatabase {
+    
     public MmexDatabase(Context context){
         mContext = context;
     }
@@ -137,14 +140,12 @@ public class MmexDatabase {
         boolean result = false;
 
         // Get the names of all the tables from the generation script.
-        ArrayList<String> scriptTables = null;
+        ArrayList<String> scriptTables;
         try {
             scriptTables = getAllTableNamesFromGenerationScript();
-        } catch (IOException ioex) {
-            String error = "Error reading table names from generation script";
-            Log.e(LOGCAT, error + ": " + ioex.getLocalizedMessage());
-            ioex.printStackTrace();
-            showToast(error, Toast.LENGTH_SHORT);
+        } catch (IOException | SQLiteDiskIOException ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "reading table names from generation script");
 
             return false;
         }
@@ -152,7 +153,7 @@ public class MmexDatabase {
         // get the list of all the tables from the database.
         ArrayList<String> existingTables = getTableNamesFromDb();
 
-        // compare. retainAll, remaveAll, addAll
+        // compare. retainAll, removeAll, addAll
         scriptTables.removeAll(existingTables);
         // If there is anything left, the script schema has more tables than the db.
         if (!scriptTables.isEmpty()) {
@@ -209,8 +210,7 @@ public class MmexDatabase {
         SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
                 .getReadableDatabase();
 
-        Cursor c = db.rawQuery(
-                "SELECT name FROM sqlite_master WHERE type='table'", null);
+        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
         ArrayList<String> result = new ArrayList<>();
         int i = 0;
         while (c.moveToNext()) {
