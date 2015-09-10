@@ -165,9 +165,8 @@
   <string name="show_transaction">顯示交易紀錄</string>
   <string name="changelog">更新日誌</string>
   <string name="transaction_number">交易編號</string>
-  <string name="widget_summary">Money Manager Ex 摘要</string>
-  <string name="widget_all_accounts">Money Manager Ex 全部帳戶</string>
-  <string name="widget_add_transaction">Money Manager Ex 新增交易</string>
+  <string name="widget_summary">摘要</string>
+  <string name="widget_add_transaction">新增交易</string>
   <string name="none">無</string>
   <string name="weekly">每週</string>
   <string name="bi_weekly">雙週</string>
@@ -215,7 +214,6 @@
   <string name="income">收入</string>
   <string name="expenses">支出</string>
   <string name="difference">結餘</string>
-  <string name="no_data">未發現任何紀錄，請點擊綠色加號按鈕新增。</string>
   <string name="no_stock_data">沒有可用於此帳戶的股票資料。</string>
   <string name="month">月</string>
   <string name="year">年</string>
@@ -253,7 +251,7 @@
   <string name="donate_direct">您可以透過我們 APP 網站上的捐款連結捐款，點此開啟於瀏覽器。</string>
   <string name="donate_bitcoin">現在，我們也接受比特幣捐贈。</string>
   <string name="donate_license">由於 Google 授權限制，我們不允許在 APP 內放置直接捐贈的連結。</string>
-  <string name="donate_button_text">開啟首頁</string>
+  <string name="donate_button_text">捐款</string>
   <string name="android_sqlite_vesion">SQLite 版本</string>
   <string name="ascending">順序</string>
   <string name="descending">反序</string>

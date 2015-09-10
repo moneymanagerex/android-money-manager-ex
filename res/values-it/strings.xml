@@ -170,9 +170,8 @@
   <string name="show_transaction">Visualizzazione Transazioni</string>
   <string name="changelog">Modifiche di Versione</string>
   <string name="transaction_number">Numero transazione</string>
-  <string name="widget_summary">Money Manager Ex Saldo</string>
-  <string name="widget_all_accounts">Money Manager Ex Conti Correnti</string>
-  <string name="widget_add_transaction">Money Manager Ex Nuova Transazione</string>
+  <string name="widget_summary">Riepilogo</string>
+  <string name="widget_add_transaction">Aggiungi Transazione</string>
   <string name="none">Nessuna</string>
   <string name="weekly">Settimanale</string>
   <string name="bi_weekly">Quindicinale</string>
@@ -220,7 +219,6 @@
   <string name="income">Entrate</string>
   <string name="expenses">Uscite</string>
   <string name="difference">Differenze</string>
-  <string name="no_data">Nessun record è stato trovato. Per crearne uno, toccare il pulsante più verde. </string>
   <string name="no_stock_data">Nessun dato dell\'azione disponibile per questo account.</string>
   <string name="month">Mese</string>
   <string name="year">Anno</string>
@@ -258,7 +256,7 @@
   <string name="donate_direct">Puoi donare cliccando sul link Fai una donazione sul nostro sito web app. Clicca qui per aprire nel browser.</string>
   <string name="donate_bitcoin">Ora accettiamo anche donazioni BitCoin.</string>
   <string name="donate_license">Per ragioni di licenza di Google, non possiamo inserire dei link per donazione direttamente all\'interno dell\'app.</string>
-  <string name="donate_button_text">Apri l\'homepage</string>
+  <string name="donate_button_text">Donate</string>
   <string name="android_sqlite_vesion">Versione SQLite</string>
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>

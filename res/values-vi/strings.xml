@@ -165,9 +165,8 @@
   <string name="show_transaction">Hiển thị giao dịch</string>
   <string name="changelog">Thay đổi</string>
   <string name="transaction_number">Số giao dịch</string>
-  <string name="widget_summary">Tóm lược Money Manager Ex</string>
-  <string name="widget_all_accounts">Tất cả Tài khoản Money Manager Ex</string>
-  <string name="widget_add_transaction">Thêm giao dịch Money Manager Ex</string>
+  <string name="widget_summary">Tóm lược</string>
+  <string name="widget_add_transaction">Thêm giao dịch</string>
   <string name="none">Không</string>
   <string name="weekly">Hàng Tuần</string>
   <string name="bi_weekly">Mỗi 2 tuần</string>
@@ -215,7 +214,6 @@
   <string name="income">Thu nhập</string>
   <string name="expenses">Chi phí</string>
   <string name="difference">Sự khác biệt</string>
-  <string name="no_data">Không tìm thấy hồ sơ nào. Để tạo một hồ sơ, nhấp vào nút \"+\"màu xanh lá. </string>
   <string name="no_stock_data">Không có dữ liệu cổ phiếu có sẵn cho tài khoản này.</string>
   <string name="month">Tháng</string>
   <string name="year">Năm</string>
@@ -253,7 +251,7 @@
   <string name="donate_direct">Bạn có thể tặng tiền trực tiếp bằng cách nhấn vào các liên kết Tặng tiền trên trang web ứng dụng của chúng tôi.</string>
   <string name="donate_bitcoin">Chúng tôi bây giờ cũng chấp nhận việc tặng BitCoin.</string>
   <string name="donate_license">Vì lý do cấp phép của Google, chúng tôi không được phép đặt liên kết tặng tiền trực tiếp bên trong các ứng dụng.</string>
-  <string name="donate_button_text">Mở trang chủ</string>
+  <string name="donate_button_text">Tặng tiền</string>
   <string name="android_sqlite_vesion">Phiên bản SQLite</string>
   <string name="ascending">Tăng dần</string>
   <string name="descending">Giảm dần</string>

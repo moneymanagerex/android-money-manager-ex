@@ -165,9 +165,8 @@
   <string name="show_transaction">Toon Transactie</string>
   <string name="changelog">Wijzigingslogboek</string>
   <string name="transaction_number">Transactie Nummer</string>
-  <string name="widget_summary">Money Manager Ex - Samenvatting</string>
-  <string name="widget_all_accounts">Money Manager Ex - Alle Rekeningen</string>
-  <string name="widget_add_transaction">Money Manager Ex - Transactie Toevoegen</string>
+  <string name="widget_summary">Overzicht</string>
+  <string name="widget_add_transaction">Transactie Toevoegen</string>
   <string name="none">Geen</string>
   <string name="weekly">Wekelijks</string>
   <string name="bi_weekly">2-Wekelijks</string>
@@ -215,7 +214,6 @@
   <string name="income">Inkomsten</string>
   <string name="expenses">Uitgaven</string>
   <string name="difference">Verschil</string>
-  <string name="no_data">Geen opnames gevonden. Tik op de groene knop om er een te maken. </string>
   <string name="no_stock_data">Geen aandelen gegevens beschikbaar voor deze rekening.</string>
   <string name="month">maand</string>
   <string name="year">Jaar</string>
@@ -249,7 +247,7 @@
   <string name="donate">Schenking</string>
   <string name="no_thanks">Nee, dank u</string>
   <string name="donate_exlamation">Schenking!</string>
-  <string name="donate_button_text">Homepagina Openen</string>
+  <string name="donate_button_text">Schenking</string>
   <string name="android_sqlite_vesion">SQLite versie</string>
   <string name="ascending">Oplopend</string>
   <string name="descending">Aflopend</string>

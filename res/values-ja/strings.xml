@@ -173,10 +173,10 @@
   <string name="show_transaction">取引を表示</string>
   <string name="changelog">変更履歴</string>
   <string name="transaction_number">取引番号</string>
-  <string name="widget_summary">Money Manager Ex 概要</string>
-  <string name="widget_all_accounts">Money Manager Ex すべてのアカウント</string>
-  <string name="widget_add_transaction">Money Manager Ex 取引の追加</string>
+  <string name="widget_summary">概要</string>
+  <string name="widget_add_transaction">取引を追加</string>
   <string name="none">なし</string>
+  <string name="once">1 回</string>
   <string name="weekly">毎週</string>
   <string name="bi_weekly">隔週</string>
   <string name="monthly">毎月</string>
@@ -199,6 +199,7 @@
   <string name="new_edit_repeating_transaction">定期的な取引を新しく作成/編集</string>
   <string name="next_occurrence">次回発生</string>
   <string name="repeats">繰り返し</string>
+  <string name="occurs">発生</string>
   <string name="times_repeated">回繰り返し</string>
   <string name="error_next_occurrence_not_populate">次回発生が必要です</string>
   <string name="enter_next_occurrence">次回発生を入力してください</string>
@@ -223,7 +224,6 @@
   <string name="income">収入</string>
   <string name="expenses">支出</string>
   <string name="difference">差異</string>
-  <string name="no_data">レコードが見つかりません。作成するには緑のプラスボタンをタップします。 </string>
   <string name="no_stock_data">このアカウントで使用可能な格納データはありません。</string>
   <string name="month">月</string>
   <string name="year">年</string>
@@ -261,7 +261,7 @@
   <string name="donate_direct">アプリの web サイトから寄付リンクをクリックして寄付することができます。ここをクリックするとブラウザーを開きます。</string>
   <string name="donate_bitcoin">私たちは BitCoin の寄付も受け付けるようになりました。</string>
   <string name="donate_license">Google ライセンス上の理由から、私たちはアプリ内に直接寄付のリンクを配置することはできません。</string>
-  <string name="donate_button_text">ホームページを開く</string>
+  <string name="donate_button_text">寄付</string>
   <string name="android_sqlite_vesion">SQLite バージョン</string>
   <string name="ascending">昇順</string>
   <string name="descending">降順</string>
@@ -362,6 +362,7 @@
   <string name="show_chart">グラフの表示</string>
   <string name="add_transaction">取引を追加</string>
   <string name="welcome_header">MoneyManagerEx へようこそ!</string>
+  <string name="welcome_body">アカウントに属する MoneyManagerEx のすべての取引。\n\n現在、表示されているアカウントはありません。設定で、表示されるアカウントのフィルターを調整するか、\n\nタッチして、アカウントを入力します。</string>
   <string name="welcome_body_dropbox">Windows、Linux または Mac で既に MoneyManagerEx を使用している場合は、Dropbox であなたのデータベースを同期するように、このアプリケーションをリンクしてください</string>
   <string name="configure_dropbox">Dropbox を構成</string>
   <string name="search_text_contain_title">テキストの開始文字列ではなくテキストの内容によって検索</string>
@@ -396,6 +397,7 @@
   <string name="title_notifications_repeating_transaction">定期的な取引の期限切れ通知 </string>
   <string name="summary_notifications_repeating_transaction">定期的な取引が期限切れの通知を表示します</string>
   <string name="tools">ツール</string>
+  <string name="entities">エンティティ</string>
   <string name="loading">読み込んでいます&#8230;</string>
   <string name="grand_total">総合計</string>
   <string name="change_status">ステータスの変更</string>
@@ -510,5 +512,8 @@
   <string name="homepage">私たちのホームページ http://android.moneymanagerex.org/</string>
   <string name="current_database">現在のデータベース</string>
   <string name="about_logcat_header">下のボタンをクリックすると、私たちにアプリケーション ログを送信できます。</string>
+  <string name="transaction_type_filter">取引の種類でフィルター</string>
   <string name="title_activity_password">データベースのパスワードを入力してください</string>
+  <string name="income_expense_period">収入/支出の期間</string>
+  <string name="income_expense_period_summary">ホーム画面フッターの、収入/支出の概要の期間。</string>
 </resources>

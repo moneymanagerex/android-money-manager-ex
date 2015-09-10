@@ -166,9 +166,8 @@
   <string name="show_transaction">Tranzakciók megjelenítése</string>
   <string name="changelog">Újdonságok</string>
   <string name="transaction_number">Tranzakció száma</string>
-  <string name="widget_summary">Money Manager Ex Összesen</string>
-  <string name="widget_all_accounts">Money Manager Ex minden számla</string>
-  <string name="widget_add_transaction">Money Manager Ex Új tranzakció</string>
+  <string name="widget_summary">Összesen</string>
+  <string name="widget_add_transaction">Új tranzakció</string>
   <string name="none">Soha</string>
   <string name="weekly">Hetente</string>
   <string name="bi_weekly">Kéthetente</string>
@@ -216,7 +215,6 @@
   <string name="income">Bevételek</string>
   <string name="expenses">Kiadások</string>
   <string name="difference">Különbség</string>
-  <string name="no_data">Nincsenek adatok. Létrehozáshoz érintse meg a zöld plusz gombot. </string>
   <string name="no_stock_data">Nincs adat ehhez a számlához.</string>
   <string name="month">Hónap</string>
   <string name="year">Év</string>
@@ -254,7 +252,7 @@
   <string name="donate_direct">A weboldalunkon közvetlenül is támogathat minket a Támogatás linkre kattintva.</string>
   <string name="donate_bitcoin">Elfogadunk BitCoin támogatást is.</string>
   <string name="donate_license">Google licencelési okok miatt nem helyezhetünk el közvetlen támogatói linkeket a programon belül.</string>
-  <string name="donate_button_text">Weboldal megnyitása</string>
+  <string name="donate_button_text">Támogatás</string>
   <string name="android_sqlite_vesion">SQLite Version</string>
   <string name="ascending">Növekvő</string>
   <string name="descending">Csökkenő</string>

@@ -173,9 +173,8 @@
   <string name="show_transaction">Показывать проводки</string>
   <string name="changelog">История изменений</string>
   <string name="transaction_number">Номер проводки</string>
-  <string name="widget_summary">Money Manager Ex Сводка</string>
-  <string name="widget_all_accounts">Money Manager Ex Счета</string>
-  <string name="widget_add_transaction">Money Manager Ex Создать проводку</string>
+  <string name="widget_summary">Сводка</string>
+  <string name="widget_add_transaction">Добавить транзакцию</string>
   <string name="none">Нет</string>
   <string name="once">Однократно</string>
   <string name="weekly">Еженедельно</string>
@@ -225,7 +224,6 @@
   <string name="income">Доход</string>
   <string name="expenses">Расход</string>
   <string name="difference">Разница</string>
-  <string name="no_data">Не найдено ни одной записи. Чтобы создать её, нажмите на зеленый плюс. </string>
   <string name="no_stock_data">Нет биржевых данных, доступных для этого счета.</string>
   <string name="month">Месяц</string>
   <string name="year">Год</string>
@@ -263,7 +261,7 @@
   <string name="donate_direct">Вы можете сделать пожертвование, нажав на кнопку на нашем сайте. Кликните здесь, чтобы открыть в браузере.</string>
   <string name="donate_bitcoin">Теперь мы также принимаем пожертвования в BitCoin.</string>
   <string name="donate_license">Из-за ограничений в лицензировании Google, мы не может поместить ссылки для пожертвований прямо в приложении.</string>
-  <string name="donate_button_text">Открыть домашнюю страницу</string>
+  <string name="donate_button_text">Поддержать</string>
   <string name="android_sqlite_vesion">Версия SQLite</string>
   <string name="ascending">По возрастанию</string>
   <string name="descending">По убыванию</string>

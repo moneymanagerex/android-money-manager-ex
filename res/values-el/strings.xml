@@ -166,9 +166,8 @@
   <string name="show_transaction">Εμφάνιση συναλλαγών</string>
   <string name="changelog">Καταγραφή αλλαγών</string>
   <string name="transaction_number">Αριθμός συναλλαγής</string>
-  <string name="widget_summary">Money Manager Ex Περίληψη</string>
-  <string name="widget_all_accounts">Money Manager Ex Όλοι οι λογαριασμοί</string>
-  <string name="widget_add_transaction">Money Manager Ex  Προσθέστε Συναλλαγή</string>
+  <string name="widget_summary">Περίληψη</string>
+  <string name="widget_add_transaction">Προσθέστε συναλλαγή</string>
   <string name="none">Κανένας</string>
   <string name="weekly">Εβδομαδιαία</string>
   <string name="bi_weekly">Δύο φορές την εβδομάδα</string>
@@ -216,7 +215,6 @@
   <string name="income">Εισόδημα</string>
   <string name="expenses">Έξοδα</string>
   <string name="difference">Διαφορά</string>
-  <string name="no_data">Δεν βρέθηκαν οι εγγραφές. Για να δημιουργήσετε μία, πατήστε το πράσινο συν κουμπί (+). </string>
   <string name="no_stock_data">∆εν υπάρχουν στοιχεία για αυτόν τον λογαριασμό.</string>
   <string name="month">Μήνας</string>
   <string name="year">Έτος</string>
@@ -254,7 +252,7 @@
   <string name="donate_direct">Μπορείτε να δωρίσετε άμεσα πατώντας τους συνδέσμους \"Κάντε Δωρεά\" στην ιστοσελίδα με τις εφαρμογές.</string>
   <string name="donate_bitcoin">Τώρα επίσης δεχόμαστε δωρεές με BitCoin</string>
   <string name="donate_license">Για λόγους αδειοδότησης της Google, δεν επιτρέπουμε να τοποθετείτε συνδέσμους δωρεάς απευθείας από το εσωτερικό της εφαρμογής.</string>
-  <string name="donate_button_text">Ανοίξτε την κεντρική σελίδα</string>
+  <string name="donate_button_text">Κάντε Δωρεά</string>
   <string name="android_sqlite_vesion">SQLite έκδοση</string>
   <string name="ascending">Αύξουσα</string>
   <string name="descending">Φθίνουσα</string>

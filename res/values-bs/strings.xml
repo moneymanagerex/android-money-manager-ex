@@ -172,9 +172,8 @@
   <string name="show_transaction">Prikaži transakciju</string>
   <string name="changelog">Log promjena</string>
   <string name="transaction_number">Broj transakcije</string>
-  <string name="widget_summary">Money Manager Ex sažetak</string>
-  <string name="widget_all_accounts">Money Manager Ex Svi računi</string>
-  <string name="widget_add_transaction">Money Manager Ex Dodaj transakciju</string>
+  <string name="widget_summary">Sažetak</string>
+  <string name="widget_add_transaction">Dodaj transakciju</string>
   <string name="none">Nijedan</string>
   <string name="weekly">Sedmično</string>
   <string name="bi_weekly">Dvo-sedmično</string>
@@ -222,7 +221,6 @@
   <string name="income">Prihod</string>
   <string name="expenses">Troškovi</string>
   <string name="difference">Razlika</string>
-  <string name="no_data">Nema podataka. Da biste napravili jedan, dodirnite zeleno plus dugme. </string>
   <string name="no_stock_data">Na ovom računu nemate unesenih dionica.</string>
   <string name="month">Mjesec</string>
   <string name="year">Godina</string>
@@ -260,7 +258,7 @@
   <string name="donate_direct">Možete donirati klikom na link Donirajte na web stranici naše aplikacije. Kliknite ovdje da otvorite u pregledniku.</string>
   <string name="donate_bitcoin">Također prihvaćamo BitCoin donacije.</string>
   <string name="donate_license">Zbog uslova Google licenciranja ne smijemo staviti link na donacije direktno unutar aplikacije.</string>
-  <string name="donate_button_text">Otvori početnu stranicu</string>
+  <string name="donate_button_text">Donirajte</string>
   <string name="android_sqlite_vesion">SQLite verzija</string>
   <string name="ascending">Uzlazno</string>
   <string name="descending">Silazno</string>

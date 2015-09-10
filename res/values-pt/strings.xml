@@ -173,10 +173,10 @@
   <string name="show_transaction">Mostrar movimentos</string>
   <string name="changelog">Registo de Alterações</string>
   <string name="transaction_number">Nº da Transacção</string>
-  <string name="widget_summary">Resumo do Money Manager Ex</string>
-  <string name="widget_all_accounts">Money Manager Ex Todas as contas</string>
-  <string name="widget_add_transaction">Adicionar Movimento no Money Manager Ex</string>
+  <string name="widget_summary">Resumo</string>
+  <string name="widget_add_transaction">Adicionar Transacção</string>
   <string name="none">Nenhum</string>
+  <string name="once">Uma vez</string>
   <string name="weekly">Semanal</string>
   <string name="bi_weekly">Quinzenal</string>
   <string name="monthly">Mensal</string>
@@ -199,6 +199,7 @@
   <string name="new_edit_repeating_transaction">Novo/editar transação recorrente</string>
   <string name="next_occurrence">Próxima ocorrência</string>
   <string name="repeats">Repetição</string>
+  <string name="occurs">Ocorre</string>
   <string name="times_repeated">Nº de Vezes Repetidas</string>
   <string name="error_next_occurrence_not_populate">Próxima ocorrência é necessária</string>
   <string name="enter_next_occurrence">Introduzir Próxima Ocorrência</string>
@@ -223,7 +224,6 @@
   <string name="income">Receitas</string>
   <string name="expenses">Despesa</string>
   <string name="difference">Diferença</string>
-  <string name="no_data">Não foram encontrados registos. Para criar um, toque no botão verde, com o sinal mais. </string>
   <string name="no_stock_data">Não foram encontrados dados Ações nesta conta.</string>
   <string name="month">Mês</string>
   <string name="year">Ano</string>
@@ -261,7 +261,7 @@
   <string name="donate_direct">Pode fazer o donativo clicando no link de doação no nosso site. Clique aqui para abrir no navegador.</string>
   <string name="donate_bitcoin">Agora também aceitamos donativos em BitCoin.</string>
   <string name="donate_license">Por razões de licença do Google, não podemos colocar links para donativos diretamente dentro da app.</string>
-  <string name="donate_button_text">Abrir homepage</string>
+  <string name="donate_button_text">Doar</string>
   <string name="android_sqlite_vesion">Versão do SQLite</string>
   <string name="ascending">Ascendente</string>
   <string name="descending">Descendente</string>
@@ -396,6 +396,7 @@
   <string name="title_notifications_repeating_transaction">Notificação de transacção recorrente em atraso </string>
   <string name="summary_notifications_repeating_transaction">Mostrar notificação para transacção recorrente em atraso</string>
   <string name="tools">Ferramentas</string>
+  <string name="entities">Entidades</string>
   <string name="loading">A carregar&#8230;</string>
   <string name="grand_total">Total</string>
   <string name="change_status">Alterar estado</string>
@@ -510,5 +511,8 @@
   <string name="homepage">O nosso site é http://android.moneymanagerex.org/</string>
   <string name="current_database">Base de dados atual</string>
   <string name="about_logcat_header">Você pode enviar-nos o log da aplicação, clicando no botão abaixo.</string>
+  <string name="transaction_type_filter">Filtrar por tipo de transação</string>
   <string name="title_activity_password">Digite a senha da base de dados</string>
+  <string name="income_expense_period">Periodo Despesa/Receita</string>
+  <string name="income_expense_period_summary">O período de vista de receita/despesa no rodapé da tela inicial.</string>
 </resources>

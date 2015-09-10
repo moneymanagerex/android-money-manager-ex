@@ -172,9 +172,8 @@
   <string name="show_transaction">Transaktion anzeigen</string>
   <string name="changelog">Changelog</string>
   <string name="transaction_number">Transaktionsnummer</string>
-  <string name="widget_summary">Money Manager Ex - Zusammenfassung</string>
-  <string name="widget_all_accounts">Money Manager Ex - alle Konten</string>
-  <string name="widget_add_transaction">Money Manager Ex - Transaktion hinzufügen</string>
+  <string name="widget_summary">Übersicht</string>
+  <string name="widget_add_transaction">Transaktion hinzufügen</string>
   <string name="none">Nichts</string>
   <string name="weekly">Wöchentlich</string>
   <string name="bi_weekly">Zweiwöchentlich</string>
@@ -222,7 +221,6 @@
   <string name="income">Einkommen</string>
   <string name="expenses">Ausgaben</string>
   <string name="difference">Differenz</string>
-  <string name="no_data">Keine Einträge gefunden. Um einen Eintrag zu erstellen. drücken Sie den grünen Plus-Knopf. </string>
   <string name="no_stock_data">Keine Bestandsdaten für dieses Konto vorhanden.</string>
   <string name="month">Monat</string>
   <string name="year">Jahr</string>
@@ -260,7 +258,7 @@
   <string name="donate_direct">Sie können spenden, indem Sie auf den Spenden-Link auf unserer Website klicken. Klicken Sie hier, um den Spenden-Link im Browser zu öffnen.</string>
   <string name="donate_bitcoin">Wir akzeptieren nun auch BitCoin Spenden.</string>
   <string name="donate_license">Aus lizenzrechtlichen Gründen von Google dürfen wir den Spendenlink nicht direkt in der App platzieren.</string>
-  <string name="donate_button_text">Homepage öffnen</string>
+  <string name="donate_button_text">Spenden</string>
   <string name="android_sqlite_vesion">SQLite-Version</string>
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>

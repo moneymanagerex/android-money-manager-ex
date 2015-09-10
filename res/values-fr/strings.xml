@@ -165,9 +165,8 @@
   <string name="show_transaction">Voir opérations</string>
   <string name="changelog">Journal des modifications</string>
   <string name="transaction_number">Numéro de l\'opération</string>
-  <string name="widget_summary">Money Manager Ex Résumé</string>
-  <string name="widget_all_accounts">Money Manager Ex Tous les comptes</string>
-  <string name="widget_add_transaction">Money Manager Ex Ajouter une transaction</string>
+  <string name="widget_summary">Résumé</string>
+  <string name="widget_add_transaction">Ajouter une transaction</string>
   <string name="none">Aucun</string>
   <string name="weekly">Hebdomadaire</string>
   <string name="bi_weekly">Bi-hebdomadaire</string>
@@ -215,7 +214,6 @@
   <string name="income">Revenu</string>
   <string name="expenses">Dépenses</string>
   <string name="difference">Différence</string>
-  <string name="no_data">Aucun enregistrement n\'a été trouvé. Pour en créer un, appuyer sur le bouton plus vert. </string>
   <string name="no_stock_data">Aucune donnée de stock disponible pour ce compte.</string>
   <string name="month">Mois</string>
   <string name="year">Année</string>
@@ -251,6 +249,7 @@
   <string name="no_thanks">Non merci</string>
   <string name="donate_exlamation">Donner!</string>
   <string name="donate_direct">Vous pouvez faire un don en cliquant sur le lien faire un don sur notre site  web. Cliquez ici pour ouvrir dans le navigateur.</string>
+  <string name="donate_button_text">Donner</string>
   <string name="android_sqlite_vesion">Version de SQLite</string>
   <string name="ascending">Croissant</string>
   <string name="descending">Décroissant</string>

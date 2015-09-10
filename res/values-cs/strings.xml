@@ -35,6 +35,7 @@
   <string name="dropbox_linkedFile">Soubor Dropbox</string>
   <string name="preferences_general">Obecné</string>
   <string name="preferences_dispaly">Vzhled &amp; chování</string>
+  <string name="preferences_behaviour">Chování</string>
   <string name="base_currency">Základní měna</string>
   <string name="view_accounts_opened">Zobrazit otevřené účty</string>
   <string name="if_not_selected_willShowAllAccounts">Pokud není vybráno pak zobrazit všechny účty</string>
@@ -44,6 +45,8 @@
   <string name="path">Cesta k databázi</string>
   <string name="title_show_tutorial">Zobrazit průvodce</string>
   <string name="summary_show_tutorial">Zobrazit průvodce při příštím spuštění?</string>
+  <string name="pref_auto_sync_via_wifi">Auto synchronizace pouze přes WiFi</string>
+  <string name="pref_auto_sync_via_wifi_summary">Automaticky synchronizovat pouze přes WiFi připojení.</string>
   <string name="account">Účet</string>
   <string name="account_list">Seznam účtů</string>
   <string name="account_empty_list">Nebyl nalezen žádný účet. Klepněte na zelené tlačítko se symbolem plus pro jeho vytvoření.</string>
@@ -68,6 +71,7 @@
   <string name="error_accountname_empty">Je vyžadován název účtu</string>
   <string name="error_accounttype_empty">Je vyžadován typ účtu</string>
   <string name="error_status_empty">Je vyžadován stav účtu</string>
+  <string name="error_amount_must_be_positive">Množství musí být kladné. Znaménko je určeno podle typu transakce.</string>
   <string name="payee_name">Jméno příjemce</string>
   <string name="edit_payeeName">Upravit příjemce</string>
   <string name="delete_payee">Odstranit příjemce</string>
@@ -165,10 +169,10 @@
   <string name="show_transaction">Zobrazit transakce</string>
   <string name="changelog">Přehled změn</string>
   <string name="transaction_number">Číslo transakce</string>
-  <string name="widget_summary">Money Manager Ex - Souhrnný zůstatek</string>
-  <string name="widget_all_accounts">Money Manager Ex - Zůstatky na účtech</string>
-  <string name="widget_add_transaction">Money Manager Ex přidat transakci</string>
+  <string name="widget_summary">Celkem</string>
+  <string name="widget_add_transaction">Přidat transakci</string>
   <string name="none">Žádný(á)</string>
+  <string name="once">Jednou</string>
   <string name="weekly">Týden</string>
   <string name="bi_weekly">2 týdny</string>
   <string name="monthly">Měsíc</string>
@@ -214,7 +218,6 @@
   <string name="income">Příjmy</string>
   <string name="expenses">Výdaje</string>
   <string name="difference">Rozdíl</string>
-  <string name="no_data">Nenalezen žádný záznam. Klepněte na zelené tlačítko se symbolem plus pro jeho vytvoření. </string>
   <string name="month">Měsíc</string>
   <string name="year">Rok</string>
   <string name="menu_reports">Sestavy</string>
@@ -248,6 +251,7 @@
   <string name="donate">Přispět</string>
   <string name="no_thanks">Ne, děkuji</string>
   <string name="donate_exlamation">Přispět!</string>
+  <string name="donate_button_text">Přispět</string>
   <string name="android_sqlite_vesion">Verze SQLite</string>
   <string name="ascending">Vzestupně</string>
   <string name="descending">Sestupně</string>
@@ -326,7 +330,10 @@
   <string name="import_all_currencies">Načíst měny</string>
   <string name="import_currencies_in_progress">Načítají se měny. Počkejte prosím&#8230;</string>
   <string name="amount_greater_or_equal">Částka větší nebo rovna</string>
+  <string name="amount_from">Částka od</string>
   <string name="amount_less_or_equal">Částka menší nebo rovna</string>
+  <string name="amount_to">Částka komu</string>
+  <string name="reset">Resetovat</string>
   <string name="result_search">Výsledek hledání</string>
   <string name="new_repeating_transaction">Nová opakovaná transakce</string>
   <string name="edit_repeating_transaction">Upravit opakovanou transakci</string>
@@ -430,6 +437,12 @@
   <string name="pref_transaction_hide_reconciled_amounts_summary">Skrýt ověřené částky z přehledu účtů.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Skrýt ověřené částky</string>
   <string name="warning">Varování</string>
+  <string name="update_prices">Aktualizovat ceny</string>
+  <string name="update_price">Aktualizovat cenu</string>
+  <string name="edit_price">Upravit cenu</string>
+  <string name="price_updated">Cena aktualizována</string>
+  <string name="all_prices_updated">Všechny ceny byly aktualizovány.</string>
+  <string name="starting_price_update">Ceny se stahují, vyčkejte prosím&#8230;</string>
   <string name="database_migrate_14_to_20">Migrovat databázi z v1.4</string>
   <string name="database_migrate_14_to_20_explanation">Byla nalezena stará data. Chcete-li použít předchozí databázi, klepněte sem.</string>
   <string name="database_migrate_14_to_20_failure">Migrace databáze se nezdařila. Obraťte se na podporu.</string>
@@ -463,4 +476,5 @@
   <string name="cash">Hotovost</string>
   <string name="select_account">Vyberte účet</string>
   <string name="invalid_transaction_number">Neplatné číslo transakce</string>
+  <string name="update_on_dropbox">Na Dropboxu je k dispozici aktualizovaný databázový soubor. Chcete aktualizovat?</string>
 </resources>
