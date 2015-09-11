@@ -126,7 +126,7 @@ public class EditInvestmentTransactionActivity
     }
 
     private void initializeForm() {
-        final DateUtils dateUtils = new DateUtils();
+        final DateUtils dateUtils = new DateUtils(getApplicationContext());
 
         // load account & currency
         Intent intent = getIntent();
@@ -141,7 +141,7 @@ public class EditInvestmentTransactionActivity
         // Purchase Date
 
         final RobotoTextViewFontIcon dateView = (RobotoTextViewFontIcon) this.findViewById(R.id.textViewDate);
-        dateUtils.formatExtendedDate(getApplicationContext(), dateView, mStock.getPurchaseDate());
+        dateUtils.formatExtendedDate(dateView, mStock.getPurchaseDate());
         dateView.setOnClickListener(new View.OnClickListener() {
             public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
                 @Override
@@ -152,7 +152,7 @@ public class EditInvestmentTransactionActivity
                         Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, getResources().getConfiguration().locale)
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         mStock.setPurchaseDate(date);
-                        dateUtils.formatExtendedDate(getApplicationContext(), dateView, date);
+                        dateUtils.formatExtendedDate(dateView, date);
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), EditInvestmentTransactionActivity.this);
                         handler.handle(e, "setting the date");

@@ -464,8 +464,8 @@ public class EditTransactionCommonFunctions {
         } else {
             viewHolder.txtSelectDate.setTag(Calendar.getInstance().getTime());
         }
-        final DateUtils dateUtils = new DateUtils();
-        dateUtils.formatExtendedDate(mContext, viewHolder.txtSelectDate,
+        final DateUtils dateUtils = new DateUtils(mContext);
+        dateUtils.formatExtendedDate(viewHolder.txtSelectDate,
                 (Date) viewHolder.txtSelectDate.getTag());
 
         viewHolder.txtSelectDate.setOnClickListener(new View.OnClickListener() {
@@ -478,7 +478,7 @@ public class EditTransactionCommonFunctions {
                         Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, mContext.getResources().getConfiguration().locale)
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         viewHolder.txtSelectDate.setTag(date);
-                        dateUtils.formatExtendedDate(mContext, viewHolder.txtSelectDate, (Date) viewHolder.txtSelectDate.getTag());
+                        dateUtils.formatExtendedDate(viewHolder.txtSelectDate, (Date) viewHolder.txtSelectDate.getTag());
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(mParent, this);
                         handler.handle(e, "setting the date");

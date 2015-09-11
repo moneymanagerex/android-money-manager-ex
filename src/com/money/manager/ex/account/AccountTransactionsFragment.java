@@ -41,16 +41,21 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.money.manager.ex.adapter.AllDataAdapter;
+import com.money.manager.ex.adapter.AllDataViewHolder;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.WhereClauseGenerator;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
@@ -64,8 +69,13 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.utils.CalendarUtils;
+import com.money.manager.ex.utils.DateUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Checking account fragment.
@@ -74,7 +84,7 @@ import java.util.ArrayList;
  */
 public class AccountTransactionsFragment
         extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+        implements LoaderManager.LoaderCallbacks<Cursor>, ICalculateRunningBalanceTaskCallbacks {
 
     private static final String KEY_CONTENT = "AccountTransactionsFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
@@ -90,6 +100,7 @@ public class AccountTransactionsFragment
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
     private Activity mActivity;
+    private BigDecimal[] balances;
 
     /**
      * @param accountId Id of the Account to be displayed
@@ -351,6 +362,9 @@ public class AccountTransactionsFragment
                 // Notification received from AllDataListFragment.
                 // Once the transactions are loaded, load the summary data.
                 getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
+                // load/reset running balance
+                reloadRunningBalance(data);
+
                 break;
         }
     }
@@ -370,6 +384,16 @@ public class AccountTransactionsFragment
         super.onDestroy();
     }
 
+    @Override
+    public void onTaskComplete(BigDecimal[] balances) {
+        this.balances = balances;
+        // Update the UI controls
+//        this.notifyDataSetChanged();
+        updateVisibleRows();
+    }
+
+    // Private
+
     /**
      * Prepare SQL query for record selection.
      * @return bundle with query
@@ -380,11 +404,17 @@ public class AccountTransactionsFragment
         selection.add("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
             " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
 
-        String defaultPeriod = new AppSettings(getContext()).getShowTransaction();
+        // Read from the preferences.
+        String period = new AppSettings(getContext()).getShowTransaction();
 
-        WhereClauseGenerator whereClause = new WhereClauseGenerator(getContext());
-        ArrayList<String> periodClauses = whereClause.getWhereClausesForPeriod(defaultPeriod);
-        selection.addAll(periodClauses);
+//        WhereClauseGenerator whereClause = new WhereClauseGenerator(getContext());
+//        ArrayList<String> periodClauses = whereClause.getWhereClausesForPeriod(period);
+//        selection.addAll(periodClauses);
+        DateUtils dateUtils = new DateUtils(getContext());
+        DateRange range = dateUtils.getDateRangeForPeriod(period);
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(QueryAllData.Date, ">=", range.dateFrom);
+        where.addStatement(QueryAllData.Date, "<=", range.dateFrom);
 
         // create a bundle to returns
         Bundle args = new Bundle();
@@ -709,6 +739,61 @@ public class AccountTransactionsFragment
         cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(cursorAdapter);
+    }
+
+    // Running balance
+
+    /**
+     * Refreshes the running balance.
+     * @param cursor
+     */
+    private void reloadRunningBalance(Cursor cursor) {
+//        if (mAccountId == Constants.NOT_SET) return;
+        this.balances = null;
+        this.populateRunningBalance(cursor);
+    }
+
+    private void populateRunningBalance(Cursor c) {
+        AllDataAdapter adapter = (AllDataAdapter) mAllDataListFragment.getListAdapter();
+
+        // todo: get the date
+        Date startingDate = Calendar.getInstance().getTime();
+
+        CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
+                getContext(), this.balances, c, this.mAccountId, startingDate, this);
+        task.execute();
+
+        // the result is received in #onTaskComplete.
+    }
+
+    private void updateVisibleRows() {
+        // This is called when the balances are loaded.
+        ListView listView = mAllDataListFragment.getListView();
+        int start = listView.getFirstVisiblePosition();
+        int end = listView.getLastVisiblePosition();
+
+        AccountService accountService = new AccountService(getContext());
+        int currencyId = accountService.loadCurrencyId(this.mAccountId);
+        CurrencyService currencyService = new CurrencyService(getContext());
+
+        for (int i = start; i <= end; i++) {
+            View view = listView.getChildAt(i);
+            AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
+            int row = i;
+            // the first row can be the header.
+            if (mAllDataListFragment.isShownHeader()) {
+                row = i + 1;
+            }
+
+            if (holder != null && this.balances.length > row) {
+                BigDecimal currentBalance = this.balances[row];
+                String balanceFormatted = currencyService.getCurrencyFormatted(currencyId,
+                        currentBalance.doubleValue());
+
+                holder.txtBalance.setText(balanceFormatted);
+                holder.txtBalance.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
 }

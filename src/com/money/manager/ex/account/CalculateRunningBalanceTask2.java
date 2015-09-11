@@ -33,6 +33,7 @@ import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.viewmodels.AccountTransaction;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Async task that calculates and updates the amount balance for each transaction in the
@@ -43,13 +44,14 @@ public class CalculateRunningBalanceTask2
         extends AsyncTask<Void, Void, BigDecimal[]> {
 
     public CalculateRunningBalanceTask2(Context context, BigDecimal[] balances, Cursor c,
-                                        int accountId, String dateFieldName,
+                                        int accountId, Date startingDate,
                                         ICalculateRunningBalanceTaskCallbacks listener) {
         this.context = context.getApplicationContext();
         this.balances = balances;
         this.cursor = c;
         this.accountId = accountId;
-        this.dateFieldName = dateFieldName;
+//        this.dateFieldName = dateFieldName;
+        this.startingDate = startingDate;
         this.listener = listener;
     }
 
@@ -57,7 +59,8 @@ public class CalculateRunningBalanceTask2
     private BigDecimal[] balances;
     private Cursor cursor;
     private int accountId;
-    private String dateFieldName;
+//    private String dateFieldName;
+    private Date startingDate;
     private ICalculateRunningBalanceTaskCallbacks listener;
 
     /**
@@ -124,9 +127,9 @@ public class CalculateRunningBalanceTask2
                 // Get starting balance on the given day.
                 startingBalance = accountService.loadInitialBalance(this.accountId);
 
-                String date = c.getString(c.getColumnIndex(this.dateFieldName));
-                DateUtils dateUtils = new DateUtils();
-                date = dateUtils.getYesterdayFrom(date);
+//                String date = c.getString(c.getColumnIndex(this.dateFieldName));
+                String date = DateUtils.getIsoStringDate(this.startingDate);
+                date = DateUtils.getYesterdayFrom(date);
                 BigDecimal balanceOnDate = accountService.calculateBalanceOn(this.accountId, date);
                 startingBalance = startingBalance.add(balanceOnDate);
 

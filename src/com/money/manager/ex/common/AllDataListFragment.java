@@ -81,8 +81,7 @@ import java.util.ArrayList;
  */
 public class AllDataListFragment
         extends BaseListFragment
-        implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks,
-        ICalculateRunningBalanceTaskCallbacks {
+        implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
 
     /**
      * Create a new instance of AllDataListFragment with accountId params
@@ -116,8 +115,6 @@ public class AllDataListFragment
     private View mListHeader = null;
 
     private Bundle mArguments;
-
-    private BigDecimal[] balances;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -264,9 +261,6 @@ public class AllDataListFragment
 
                 // reset the transaction groups (account name collection)
                 adapter.resetAccountHeaderIndexes();
-
-                // Reset the running balance.
-                reloadRunningBalance(data);
         }
     }
 
@@ -446,14 +440,6 @@ public class AllDataListFragment
             adapter.setPositionChecked(position, checked);
             adapter.notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public void onTaskComplete(BigDecimal[] balances) {
-        this.balances = balances;
-        // Update the UI controls
-//        this.notifyDataSetChanged();
-        updateVisibleRows();
     }
 
     // Methods
@@ -850,53 +836,4 @@ public class AllDataListFragment
         mArguments = arguments;
     }
 
-    /**
-     * Refreshes the running balance.
-     * @param cursor
-     */
-    private void reloadRunningBalance(Cursor cursor) {
-//        if (mAccountId == Constants.NOT_SET) return;
-        this.balances = null;
-        this.populateRunningBalance(cursor);
-    }
-
-    private void populateRunningBalance(Cursor c) {
-        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-
-        CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
-                getContext(), this.balances, c, this.AccountId, adapter.DATE, this);
-        task.execute();
-
-        // the result is received in #onTaskComplete.
-    }
-
-    private void updateVisibleRows() {
-        // This is called when the balances are loaded.
-        ListView listView = getListView();
-        int start = listView.getFirstVisiblePosition();
-        int end = listView.getLastVisiblePosition();
-
-        AccountService accountService = new AccountService(getContext());
-        int currencyId = accountService.loadCurrencyId(this.AccountId);
-        CurrencyService currencyService = new CurrencyService(getContext());
-
-        for (int i = start; i <= end; i++) {
-            View view = listView.getChildAt(i);
-            AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
-            int row = i;
-            // the first row can be the header.
-            if (this.isShownHeader()) {
-                row = i + 1;
-            }
-
-            if (holder != null && this.balances.length > row) {
-                BigDecimal currentBalance = this.balances[row];
-                String balanceFormatted = currencyService.getCurrencyFormatted(currencyId,
-                        currentBalance.doubleValue());
-
-                holder.txtBalance.setText(balanceFormatted);
-                holder.txtBalance.setVisibility(View.VISIBLE);
-            }
-        }
-    }
 }

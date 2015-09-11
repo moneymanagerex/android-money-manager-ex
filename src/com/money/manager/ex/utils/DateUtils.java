@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableInfoTable;
@@ -266,9 +267,7 @@ public class DateUtils {
         datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    // Instance methods.
-
-    public String getYesterdayFrom(String isoDate) {
+    public static String getYesterdayFrom(String isoDate) {
         String result = null;
 
         try {
@@ -289,7 +288,15 @@ public class DateUtils {
         return result;
     }
 
-    public void formatExtendedDate(Context context, TextView dateTextView, Date date) {
+    // Instance methods.
+
+    public DateUtils(Context context) {
+        this.context = context.getApplicationContext();
+    }
+
+    private Context context;
+
+    public void formatExtendedDate(TextView dateTextView, Date date) {
         try {
             Locale locale = context.getResources().getConfiguration().locale;
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy", locale);
@@ -304,5 +311,60 @@ public class DateUtils {
         }
     }
 
+    public DateRange getDateRangeForPeriod(String period) {
+        Date dateFrom = new Date();
+        Date dateTo = new Date();
+        CalendarUtils cal = new CalendarUtils();
+
+        // we ignore the minutes at the moment, since the field in the db only stores the date value.
+
+        if (period.equalsIgnoreCase(this.context.getString(R.string.all_transaction))) {
+            // All transactions.
+            dateFrom = cal.setNow().addYear(-1000).getTime();
+            dateTo = cal.setNow().addYear(1000).getTime();
+        } else if (period.equalsIgnoreCase(this.context.getString(R.string.today))) {
+//            result.add("(julianday(date('now')) = julianday(" + QueryAllData.Date + "))");
+            dateFrom = cal.setNow().getTime();
+            dateTo = dateFrom;
+        } else if (period.equalsIgnoreCase(this.context.getString(R.string.last7days))) {
+//            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
+            dateFrom = cal.setNow().addDays(-7).getTime();
+            dateTo = cal.setNow().getTime();
+        } else if (period.equalsIgnoreCase(this.context.getString(R.string.last15days))) {
+//            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
+            dateFrom = cal.setNow().addDays(-14).getTime();
+            dateTo = cal.setNow().getTime();
+        } else if (period.equalsIgnoreCase(this.context.getString(R.string.current_month))) {
+//            result.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
+//            result.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+            dateFrom = cal.setNow().setFirstDayOfMonth().getTime();
+            dateTo = cal.setLastDayOfMonth().getTime();
+        } else if (period.equalsIgnoreCase(this.context.getString(R.string.last30days))) {
+//            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 30)");
+            dateFrom = cal.setNow().addDays(-30).getTime();
+            dateTo = cal.setNow().getTime();
+        } else if (period.equalsIgnoreCase(this.context.getString(R.string.last3months))) {
+//            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
+            dateFrom = cal.setNow().addMonth(-3).setFirstDayOfMonth().getTime();
+            dateTo = cal.setLastDayOfMonth().getTime();
+        } else if (period.equalsIgnoreCase(this.context.getString(R.string.last6months))) {
+//            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
+            dateFrom = cal.setNow().addMonth(-6).setFirstDayOfMonth().getTime();
+            dateTo = cal.setLastDayOfMonth().getTime();
+        } else if (period.equalsIgnoreCase(this.context.getString(R.string.current_year))) {
+//            result.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+            dateFrom = cal.setNow().setMonth(Calendar.JANUARY).setFirstDayOfMonth().getTime();
+            dateTo = cal.setMonth(Calendar.DECEMBER).setLastDayOfMonth().getTime();
+        } else if (period.equalsIgnoreCase(this.context.getString(R.string.future_transactions))) {
+            // Future transactions
+//            result.add("date(" + QueryAllData.Date + ") > date('now')");
+            dateFrom = cal.setNow().getTime();
+            dateTo = cal.addYear(1000).getTime();
+        }
+
+        DateRange result = new DateRange(dateFrom, dateTo);
+
+        return result;
+    }
 
 }

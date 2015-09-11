@@ -4,9 +4,12 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.DateRange;
+import com.money.manager.ex.utils.CalendarUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Generates WHERE statements for various conditions
