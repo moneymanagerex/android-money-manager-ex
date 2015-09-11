@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.CalculateRunningBalanceTask;
 import com.money.manager.ex.account.CalculateRunningBalanceTask2;
 import com.money.manager.ex.account.ICalculateRunningBalanceTaskCallbacks;
 import com.money.manager.ex.businessobjects.AccountService;
@@ -342,24 +343,24 @@ public class AllDataAdapter
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
     }
 
-//    private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
-//        try {
-//            int transId = cursor.getInt(cursor.getColumnIndex(ID));
-//
-//            CalculateRunningBalanceTask balanceAmount = new CalculateRunningBalanceTask();
-//            balanceAmount.setAccountId(getAccountId());
-//            balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
-//            balanceAmount.setTextView(holder.txtBalance);
-//            balanceAmount.setContext(mContext);
-//            balanceAmount.setCurrencyId(getCurrencyId());
-//            balanceAmount.setTransId(transId);
-//            // execute thread
-//            balanceAmount.execute();
-//        } catch (Exception ex) {
-//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.handle(ex, "calculating balance amount");
-//        }
-//    }
+    private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
+        try {
+            int transId = cursor.getInt(cursor.getColumnIndex(ID));
+
+            CalculateRunningBalanceTask balanceAmount = new CalculateRunningBalanceTask();
+            balanceAmount.setAccountId(getAccountId());
+            balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
+            balanceAmount.setTextView(holder.txtBalance);
+            balanceAmount.setContext(mContext);
+            balanceAmount.setCurrencyId(getCurrencyId());
+            balanceAmount.setTransId(transId);
+            // execute thread
+            balanceAmount.execute();
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "calculating balance amount");
+        }
+    }
 
     /**
      * Display the running balance on account transactions list, or days left on
@@ -369,15 +370,18 @@ public class AllDataAdapter
                                                 Context context) {
         if (mTypeCursor == TypeCursor.ALLDATA) {
             if (isShowBalanceAmount()) {
-                // todo: ?
+                // create thread for calculate balance amount
+                calculateBalanceAmount(cursor, holder);
+
 //                BigDecimal currentBalance = this.balances[cursor.getPosition()];
-//                // create thread for calculate balance amount
-////                calculateBalanceAmount(cursor, holder);
 //
 //                String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(),
 //                        currentBalance.doubleValue());
 //                holder.txtBalance.setText(balanceFormatted);
 //                holder.txtBalance.setVisibility(View.VISIBLE);
+                // Save transaction Id.
+//                int txId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ID));
+//                holder.txtBalance.setTag(txId);
             } else {
                 holder.txtBalance.setVisibility(View.GONE);
             }

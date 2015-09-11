@@ -51,9 +51,7 @@ import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.DateRange;
-import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.transactions.EditTransactionActivity;
@@ -71,6 +69,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 /**
  * Checking account fragment.
@@ -95,7 +94,7 @@ public class AccountTransactionsFragment
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
     private Activity mActivity;
-    private BigDecimal[] balances;
+//    private BigDecimal[] balances;
 
     // filter
     DateRange mDateRange;
@@ -316,7 +315,7 @@ public class AccountTransactionsFragment
      */
     public void loadTransactions() {
         if (mAllDataListFragment != null) {
-            Bundle arguments = prepareSelectionForDataLoad();
+            Bundle arguments = prepareQuery();
             mAllDataListFragment.loadData(arguments);
         }
     }
@@ -366,7 +365,7 @@ public class AccountTransactionsFragment
                 // Once the transactions are loaded, load the summary data.
                 getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
                 // load/reset running balance
-                reloadRunningBalance(data);
+                //populateRunningBalance();
 
                 break;
         }
@@ -388,11 +387,11 @@ public class AccountTransactionsFragment
     }
 
     @Override
-    public void onTaskComplete(BigDecimal[] balances) {
-        this.balances = balances;
+    public void onTaskComplete(HashMap<Integer, BigDecimal> balances) {
+//        this.balances = balances;
         // Update the UI controls
 
-        updateVisibleRows();
+        displayRunningBalances(balances);
     }
 
     // Private
@@ -401,7 +400,7 @@ public class AccountTransactionsFragment
      * Prepare SQL query for record selection.
      * @return bundle with query
      */
-    private Bundle prepareSelectionForDataLoad() {
+    private Bundle prepareQuery() {
         WhereStatementGenerator where = new WhereStatementGenerator();
 
 //        where.addStatement("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
@@ -498,7 +497,7 @@ public class AccountTransactionsFragment
         mAllDataListFragment = AllDataListFragment.newInstance(mAccountId);
 
         // set arguments and settings of fragment
-        mAllDataListFragment.setArguments(prepareSelectionForDataLoad());
+        mAllDataListFragment.setArguments(prepareQuery());
         if (header != null) mAllDataListFragment.setListHeader(header);
         mAllDataListFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
@@ -608,7 +607,7 @@ public class AccountTransactionsFragment
                     // switch account. Reload transactions.
                     mAccountId = accountId;
                     mAllDataListFragment.AccountId = accountId;
-                    mAllDataListFragment.loadData(prepareSelectionForDataLoad());
+                    mAllDataListFragment.loadData(prepareQuery());
                 }
             }
 
@@ -646,7 +645,7 @@ public class AccountTransactionsFragment
 //                    // switch account. Reload transactions.
 //                    mAccountId = accountId;
 //                    mAllDataListFragment.AccountId = accountId;
-//                    mAllDataListFragment.loadData(prepareSelectionForDataLoad());
+//                    mAllDataListFragment.loadData(prepareQuery());
 //                }
                 // todo: handle change.
             }
@@ -756,16 +755,9 @@ public class AccountTransactionsFragment
 
     /**
      * Refreshes the running balance.
-     * @param cursor
      */
-    private void reloadRunningBalance(Cursor cursor) {
-//        if (mAccountId == Constants.NOT_SET) return;
-        this.balances = null;
-        this.populateRunningBalance();
-    }
-
-    private void populateRunningBalance() {
-        Bundle arguments = prepareSelectionForDataLoad();
+    public void populateRunningBalance() {
+        Bundle arguments = prepareQuery();
 
         CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
                 getContext(), this.mAccountId, mDateRange.dateFrom, this, arguments);
@@ -774,29 +766,26 @@ public class AccountTransactionsFragment
         // the result is received in #onTaskComplete.
     }
 
-    private void updateVisibleRows() {
+    private void displayRunningBalances(HashMap<Integer, BigDecimal> balances) {
         // This is called when the balances are loaded.
         ListView listView = mAllDataListFragment.getListView();
-        int start = listView.getFirstVisiblePosition();
-        int end = listView.getLastVisiblePosition();
+//        int start = listView.getFirstVisiblePosition();
+        int start = 0;
+//        int end = listView.getLastVisiblePosition();
+        int end = listView.getChildCount();
 
         AccountService accountService = new AccountService(getContext());
         int currencyId = accountService.loadCurrencyId(this.mAccountId);
         CurrencyService currencyService = new CurrencyService(getContext());
-//        int row = 0;
-        
+
         for (int i = start; i <= end; i++) {
             View view = listView.getChildAt(i);
             if (view == null) continue;
-            AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
-            int row = i;
-            // the first row can be the header.
-            if (mAllDataListFragment.isShownHeader()) {
-                row = i + 1;
-            }
 
-            if (holder != null && this.balances.length > row) {
-                BigDecimal currentBalance = this.balances[row];
+            AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
+            if (holder != null) {
+                int txId = (int) holder.txtBalance.getTag();
+                BigDecimal currentBalance = balances.get(txId);
                 String balanceFormatted = currencyService.getCurrencyFormatted(currencyId,
                         currentBalance.doubleValue());
 

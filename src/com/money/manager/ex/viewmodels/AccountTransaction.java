@@ -30,6 +30,10 @@ import java.math.BigDecimal;
 public class AccountTransaction
     extends EntityBase {
 
+    public Integer getId() {
+        return getInt(QueryAllData.ID);
+    }
+
     public Integer getAccountId() {
         return getInt(QueryAllData.ACCOUNTID);
     }

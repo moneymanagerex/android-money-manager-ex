@@ -20,7 +20,6 @@ package com.money.manager.ex.account;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDiskIOException;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
@@ -35,8 +34,10 @@ import com.money.manager.ex.database.TableCheckingAccount;
 import java.math.BigDecimal;
 
 /**
+ * NOT USED
  * Async task that calculates and updates the amount balance in the transaction list.
- * NOT USED.
+ * The idea here is to keep a reference to the view and calculate the balance for each
+ * transaction. This might be slow and processor intensive.
  */
 public class CalculateRunningBalanceTask
         extends AsyncTask<Void, Void, Boolean> {
@@ -92,7 +93,8 @@ public class CalculateRunningBalanceTask
 
         // sorting required for the correct balance calculation.
         String sort = ISplitTransactionsDataset.TRANSDATE + " DESC, " +
-            ISplitTransactionsDataset.TRANSCODE + ", " + TableCheckingAccount.TRANSID + " DESC";
+            ISplitTransactionsDataset.TRANSCODE + ", " +
+            TableCheckingAccount.TRANSID + " DESC";
 
 
         Cursor cursor = mContext.getContentResolver().query(checkingAccount.getUri(),

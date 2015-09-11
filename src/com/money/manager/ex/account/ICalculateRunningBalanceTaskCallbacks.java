@@ -18,11 +18,12 @@
 package com.money.manager.ex.account;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 /**
  * Callbacks for the task.
  * Created by Alen Siljak on 11/09/2015.
  */
 public interface ICalculateRunningBalanceTaskCallbacks {
-    void onTaskComplete(BigDecimal[] result);
+    void onTaskComplete(HashMap<Integer, BigDecimal> result);
 }

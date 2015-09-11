@@ -34,14 +34,18 @@ import com.money.manager.ex.viewmodels.AccountTransaction;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
+ * Not used!
  * Async task that calculates and updates the amount balance for each transaction in the
  * transactions list.
+ * Here the idea is the fast calculation of the balances and caching in memory.
+ * The problem is displaying the amounts once they are loaded.
  * Created by Alen Siljak on 11/09/2015.
  */
 public class CalculateRunningBalanceTask2
-        extends AsyncTask<Void, Void, BigDecimal[]> {
+        extends AsyncTask<Void, Void, HashMap<Integer, BigDecimal>> {
 
     /**
      * Create the task.
@@ -61,7 +65,7 @@ public class CalculateRunningBalanceTask2
     }
 
     private Context context;
-    private BigDecimal[] balances;
+    private HashMap<Integer, BigDecimal> balances;
     private int accountId;
     private Date startingDate;
     private ICalculateRunningBalanceTaskCallbacks listener;
@@ -82,7 +86,7 @@ public class CalculateRunningBalanceTask2
      * @see #publishProgress
      */
     @Override
-    protected BigDecimal[] doInBackground(Void... params) {
+    protected HashMap<Integer, BigDecimal> doInBackground(Void... params) {
         try {
             return runTask();
         } catch (IllegalStateException | SQLiteDiskIOException ex) {
@@ -95,19 +99,19 @@ public class CalculateRunningBalanceTask2
     }
 
     @Override
-    protected void onPostExecute(BigDecimal[] result) {
+    protected void onPostExecute(HashMap<Integer, BigDecimal> result) {
         // todo: raise event
         if (this.listener != null) {
             listener.onTaskComplete(result);
         }
     }
 
-    private BigDecimal[] runTask() {
+    private HashMap<Integer, BigDecimal> runTask() {
         // load data
         Cursor c = loadData();
         if (c == null) return null;
         int records = c.getCount();
-        if (balances != null && records == balances.length) return null;
+        if (balances != null && records == balances.size()) return null;
         if (c.getCount() <= 0) return null;
 
         BigDecimal startingBalance = null;
@@ -116,7 +120,8 @@ public class CalculateRunningBalanceTask2
         AccountTransaction tx = new AccountTransaction();
 
         int originalPosition = c.getPosition();
-        balances = new BigDecimal[c.getCount()];
+//        balances = new BigDecimal[c.getCount()];
+        balances = new HashMap<>();
         String transType;
         BigDecimal amount = BigDecimal.ZERO;
         BigDecimal runningBalance = BigDecimal.ZERO;
@@ -170,7 +175,8 @@ public class CalculateRunningBalanceTask2
                 runningBalance = runningBalance.add(amount);
             }
 
-            this.balances[i] = runningBalance;
+//            this.balances[i] = runningBalance;
+            this.balances.put(tx.getId(), runningBalance);
             i--;
         }
 
