@@ -327,13 +327,10 @@ public class SearchFragment extends Fragment
      * @return where clause with parameters
      */
     private String assembleWhereClause() {
-//        ParameterizedWhereClause where = new ParameterizedWhereClause();
         WhereStatementGenerator where = new WhereStatementGenerator();
 
         // todo: try using query builder
         // SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-
-        // WHERE
 
         // account
         if (mSearchParameters.accountId != Constants.NOT_SET) {
@@ -349,9 +346,6 @@ public class SearchFragment extends Fragment
 
         // status
         if (!mSearchParameters.status.equals(SearchParameters.STRING_NULL_VALUE)) {
-//            where.Clause.add(QueryAllData.Status + "='" + mSearchParameters.status + "'");
-//            where.Clause.add(QueryAllData.Status + "=?");
-//            where.Params.add(mSearchParameters.status);
             where.addStatement(QueryAllData.Status, "=", mSearchParameters.status);
         }
 
@@ -370,7 +364,7 @@ public class SearchFragment extends Fragment
         }
         // to date
         if (mSearchParameters.dateTo != null) {
-            where.addStatement(QueryAllData.Date, "<='", DateUtils.getIsoStringDate(mSearchParameters.dateTo));
+            where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mSearchParameters.dateTo));
         }
         // payee
         if (mSearchParameters.payeeId != null && mSearchParameters.payeeId > 0) {
@@ -384,7 +378,7 @@ public class SearchFragment extends Fragment
                     "(" + QueryAllData.CategID + "=" + Integer.toString(categorySub.categId) + ") " +
                     " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
                         " FROM " + TableSplitTransactions.TABLE_NAME +
-                        " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + "))" +
+                        " WHERE " + TableSplitTransactions.TRANSID + "=" + QueryAllData.ID + "))" +
                     ")");
 
             // subcategory
@@ -401,7 +395,7 @@ public class SearchFragment extends Fragment
 
         // transaction number
         if (!TextUtils.isEmpty(mSearchParameters.transactionNumber)) {
-            where.addStatement(QueryAllData.TransactionNumber + " LIKE '" + mSearchParameters.transactionNumber + "'");
+            where.addStatement(QueryAllData.TransactionNumber, " LIKE ", mSearchParameters.transactionNumber);
         }
         // notes
         if (!TextUtils.isEmpty(mSearchParameters.notes)) {
