@@ -145,14 +145,15 @@ public class CalculateRunningBalanceTask2
             tx.loadFromCursor(c);
 
             // check whether the transaction is Void and exclude from calculation.
-            if (!tx.getStatus().equals(TransactionStatuses.VOID)) {
+            TransactionStatuses status = tx.getStatus();
+            if (!status.equals(TransactionStatuses.VOID)) {
                 transType = tx.getTransactionType();
 
                 switch (TransactionTypes.valueOf(transType)) {
                     case Withdrawal:
 //                    runningBalance -= amount;
                         amount = tx.getAmount();
-                        runningBalance = runningBalance.subtract(amount);
+                        runningBalance = runningBalance.add(amount);
                         break;
                     case Deposit:
 //                    runningBalance += amount;

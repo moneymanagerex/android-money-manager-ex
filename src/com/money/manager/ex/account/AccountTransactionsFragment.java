@@ -69,7 +69,6 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 /**
  * Checking account fragment.
@@ -315,7 +314,7 @@ public class AccountTransactionsFragment
      */
     public void loadTransactions() {
         if (mAllDataListFragment != null) {
-            Bundle arguments = prepareArgsForChildFragment();
+            Bundle arguments = prepareSelectionForDataLoad();
             mAllDataListFragment.loadData(arguments);
         }
     }
@@ -400,24 +399,29 @@ public class AccountTransactionsFragment
      * Prepare SQL query for record selection.
      * @return bundle with query
      */
-    private Bundle prepareArgsForChildFragment() {
-        // compose selection and sort
-        ArrayList<String> selection = new ArrayList<>();
-        selection.add("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
-            " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
+    private Bundle prepareSelectionForDataLoad() {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+
+//        where.addStatement("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
+//            " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
+        where.addStatement(
+            where.concatenateOr(
+                where.getStatement(QueryAllData.TOACCOUNTID, "=", mAccountId),
+                where.getStatement(QueryAllData.ACCOUNTID, "=", mAccountId)
+        ));
 
 //        WhereClauseGenerator whereClause = new WhereClauseGenerator(getContext());
 //        ArrayList<String> periodClauses = whereClause.getWhereClausesForPeriod(period);
 //        selection.addAll(periodClauses);
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(QueryAllData.Date, ">=", mDateRange.dateFrom);
-        where.addStatement(QueryAllData.Date, "<=", mDateRange.dateFrom);
+        where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mDateRange.dateFrom));
+        where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mDateRange.dateTo));
 
         // create a bundle to returns
         Bundle args = new Bundle();
-        args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE, selection);
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where.getWhere());
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
-                QueryAllData.Date + " DESC, " + QueryAllData.TransactionType + ", " +
+                QueryAllData.Date + " DESC, " +
+                        QueryAllData.TransactionType + ", " +
                         QueryAllData.ID + " DESC");
 
         return args;
@@ -492,7 +496,7 @@ public class AccountTransactionsFragment
         mAllDataListFragment = AllDataListFragment.newInstance(mAccountId);
 
         // set arguments and settings of fragment
-        mAllDataListFragment.setArguments(prepareArgsForChildFragment());
+        mAllDataListFragment.setArguments(prepareSelectionForDataLoad());
         if (header != null) mAllDataListFragment.setListHeader(header);
         mAllDataListFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
@@ -507,10 +511,10 @@ public class AccountTransactionsFragment
     // Menu
 
     private boolean datePeriodItemSelected(MenuItem item) {
-        LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
         int resourceId;
 
-        switch (item.getItemId()) {
+        int itemId = item.getItemId();
+        switch (itemId) {
             case R.id.menu_today:
                 resourceId = R.string.today;
                 break;
@@ -544,6 +548,8 @@ public class AccountTransactionsFragment
             default:
                 return false;
         }
+
+        LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
         settings.setShowTransactions(resourceId);
 
         // Save the selected period.
@@ -600,7 +606,7 @@ public class AccountTransactionsFragment
                     // switch account. Reload transactions.
                     mAccountId = accountId;
                     mAllDataListFragment.AccountId = accountId;
-                    mAllDataListFragment.loadData(prepareArgsForChildFragment());
+                    mAllDataListFragment.loadData(prepareSelectionForDataLoad());
                 }
             }
 
@@ -638,7 +644,7 @@ public class AccountTransactionsFragment
 //                    // switch account. Reload transactions.
 //                    mAccountId = accountId;
 //                    mAllDataListFragment.AccountId = accountId;
-//                    mAllDataListFragment.loadData(prepareArgsForChildFragment());
+//                    mAllDataListFragment.loadData(prepareSelectionForDataLoad());
 //                }
                 // todo: handle change.
             }
@@ -757,7 +763,7 @@ public class AccountTransactionsFragment
     }
 
     private void populateRunningBalance() {
-        Bundle arguments = prepareArgsForChildFragment();
+        Bundle arguments = prepareSelectionForDataLoad();
 
         CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
                 getContext(), this.mAccountId, mDateRange.dateFrom, this, arguments);

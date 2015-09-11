@@ -34,6 +34,16 @@ public class WhereStatementGenerator {
         return where;
     }
 
+    public String getStatement(String field, String operator, Integer argument) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(field);
+        sb.append(operator);
+        sb.append(argument);
+
+        return sb.toString();
+    }
+
     public String getStatement(String field, String operator, Object argument) {
         StringBuilder sb = new StringBuilder();
 
