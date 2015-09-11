@@ -24,15 +24,15 @@ import android.widget.TextView;
  *
  */
 public class AllDataViewHolder {
-    LinearLayout linDate;
-    TextView txtDay;
-    TextView txtMonth;
-    TextView txtYear;
-    TextView txtStatus;
-    TextView txtAmount;
-    TextView txtPayee;
-    TextView txtAccountName;
-    TextView txtCategorySub;
-    TextView txtNotes;
-    TextView txtBalance;
+    public LinearLayout linDate;
+    public TextView txtDay;
+    public TextView txtMonth;
+    public TextView txtYear;
+    public TextView txtStatus;
+    public TextView txtAmount;
+    public TextView txtPayee;
+    public TextView txtAccountName;
+    public TextView txtCategorySub;
+    public TextView txtNotes;
+    public TextView txtBalance;
 }

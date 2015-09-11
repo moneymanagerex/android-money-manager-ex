@@ -49,6 +49,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.CalculateRunningBalanceTask2;
 import com.money.manager.ex.account.ICalculateRunningBalanceTaskCallbacks;
+import com.money.manager.ex.adapter.AllDataViewHolder;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
@@ -109,8 +110,8 @@ public class AllDataListFragment
 
     private LoaderManager.LoaderCallbacks<Cursor> mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
-    private boolean mShownHeader = false;
-    private boolean mShownBalance = false;
+    private boolean mShowHeader = false;
+    private boolean mShowBalance = false;
     private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
     private View mListHeader = null;
 
@@ -504,10 +505,10 @@ public class AllDataListFragment
     }
 
     /**
-     * @return the mShownHeader
+     * @return the mShowHeader
      */
     public boolean isShownHeader() {
-        return mShownHeader;
+        return mShowHeader;
     }
 
     /**
@@ -531,10 +532,10 @@ public class AllDataListFragment
     }
 
     /**
-     * @param mShownHeader the mShownHeader to set
+     * @param mShownHeader the mShowHeader to set
      */
     public void setShownHeader(boolean mShownHeader) {
-        this.mShownHeader = mShownHeader;
+        this.mShowHeader = mShownHeader;
     }
 
     public View getListHeader() {
@@ -546,17 +547,17 @@ public class AllDataListFragment
     }
 
     /**
-     * @return the mShownBalance
+     * @return the mShowBalance
      */
     public boolean isShownBalance() {
-        return mShownBalance;
+        return mShowBalance;
     }
 
     /**
-     * @param mShownBalance the mShownBalance to set
+     * @param mShownBalance the mShowBalance to set
      */
     public void setShownBalance(boolean mShownBalance) {
-        this.mShownBalance = mShownBalance;
+        this.mShowBalance = mShownBalance;
     }
 
     // Private methods.
@@ -875,23 +876,27 @@ public class AllDataListFragment
         int start = listView.getFirstVisiblePosition();
         int end = listView.getLastVisiblePosition();
 
-        CurrencyService currencyService = new CurrencyService(getContext());
-        AccountRepository repo = new AccountRepository(getContext());
         AccountService accountService = new AccountService(getContext());
         int currencyId = accountService.loadCurrencyId(this.AccountId);
+        CurrencyService currencyService = new CurrencyService(getContext());
 
         for (int i = start; i <= end; i++) {
-            View view = (View) listView.getItemAtPosition(i);
-            Cursor c = (Cursor) listView.getItemAtPosition(i);
+            View view = listView.getChildAt(i);
+            AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
+            int row = i;
+            // the first row can be the header.
+            if (this.isShownHeader()) {
+                row = i + 1;
+            }
 
-            BigDecimal currentBalance = this.balances[c.getPosition()];
-            String balanceFormatted = currencyService.getCurrencyFormatted(currencyId,
-                    currentBalance.doubleValue());
+            if (holder != null && this.balances.length > row) {
+                BigDecimal currentBalance = this.balances[row];
+                String balanceFormatted = currencyService.getCurrencyFormatted(currencyId,
+                        currentBalance.doubleValue());
 
-            // todo: display
-//            holder.txtBalance.setText(balanceFormatted);
-//            holder.txtBalance.setVisibility(View.VISIBLE);
-
+                holder.txtBalance.setText(balanceFormatted);
+                holder.txtBalance.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

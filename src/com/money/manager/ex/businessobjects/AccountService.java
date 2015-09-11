@@ -203,7 +203,7 @@ public class AccountService {
 
         AccountRepository repo = new AccountRepository(mContext);
         Account account = repo.query(new String[]{TableAccountList.CURRENCYID}, where.getWhere(), null);
-        return account.getId();
+        return account.getCurrencyId();
     }
 
     public Cursor getCursor(boolean open, boolean favorite, List<String> accountTypes) {
