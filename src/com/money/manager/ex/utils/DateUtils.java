@@ -358,11 +358,11 @@ public class DateUtils {
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.last3months))) {
 //            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
             dateFrom = cal.setNow().addMonth(-3).setFirstDayOfMonth().getTime();
-            dateTo = cal.setLastDayOfMonth().getTime();
+            dateTo = cal.setNow().getTime();
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.last6months))) {
 //            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
             dateFrom = cal.setNow().addMonth(-6).setFirstDayOfMonth().getTime();
-            dateTo = cal.setLastDayOfMonth().getTime();
+            dateTo = cal.setNow().getTime();
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.current_year))) {
 //            result.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
             dateFrom = cal.setNow().setMonth(Calendar.JANUARY).setFirstDayOfMonth().getTime();
