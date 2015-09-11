@@ -52,6 +52,7 @@ import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.transactions.EditTransactionActivity;
@@ -365,7 +366,7 @@ public class AccountTransactionsFragment
                 // Once the transactions are loaded, load the summary data.
                 getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
                 // load/reset running balance
-                //populateRunningBalance();
+                populateRunningBalance();
 
                 break;
         }
@@ -388,9 +389,7 @@ public class AccountTransactionsFragment
 
     @Override
     public void onTaskComplete(HashMap<Integer, BigDecimal> balances) {
-//        this.balances = balances;
         // Update the UI controls
-
         displayRunningBalances(balances);
     }
 
@@ -407,8 +406,8 @@ public class AccountTransactionsFragment
 //            " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
         where.addStatement(
             where.concatenateOr(
-                where.getStatement(QueryAllData.TOACCOUNTID, "=", mAccountId),
-                where.getStatement(QueryAllData.ACCOUNTID, "=", mAccountId)
+                where.getStatement(ISplitTransactionsDataset.TOACCOUNTID, "=", mAccountId),
+                where.getStatement(ISplitTransactionsDataset.ACCOUNTID, "=", mAccountId)
         ));
 
 //        WhereClauseGenerator whereClause = new WhereClauseGenerator(getContext());
@@ -767,32 +766,7 @@ public class AccountTransactionsFragment
     }
 
     private void displayRunningBalances(HashMap<Integer, BigDecimal> balances) {
-        // This is called when the balances are loaded.
-        ListView listView = mAllDataListFragment.getListView();
-//        int start = listView.getFirstVisiblePosition();
-        int start = 0;
-//        int end = listView.getLastVisiblePosition();
-        int end = listView.getChildCount();
-
-        AccountService accountService = new AccountService(getContext());
-        int currencyId = accountService.loadCurrencyId(this.mAccountId);
-        CurrencyService currencyService = new CurrencyService(getContext());
-
-        for (int i = start; i <= end; i++) {
-            View view = listView.getChildAt(i);
-            if (view == null) continue;
-
-            AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
-            if (holder != null) {
-                int txId = (int) holder.txtBalance.getTag();
-                BigDecimal currentBalance = balances.get(txId);
-                String balanceFormatted = currencyService.getCurrencyFormatted(currencyId,
-                        currentBalance.doubleValue());
-
-                holder.txtBalance.setText(balanceFormatted);
-                holder.txtBalance.setVisibility(View.VISIBLE);
-            }
-        }
+        mAllDataListFragment.displayRunningBalances(balances);
     }
 
 }

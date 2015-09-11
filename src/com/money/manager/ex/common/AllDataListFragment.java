@@ -47,6 +47,9 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.adapter.AllDataViewHolder;
+import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionActivity;
@@ -66,7 +69,9 @@ import com.money.manager.ex.database.TableSplitTransactions;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Fragment that displays the transactions.
@@ -535,6 +540,13 @@ public class AllDataListFragment
         this.mShowBalance = mShownBalance;
     }
 
+    public void displayRunningBalances(HashMap<Integer, BigDecimal> balances) {
+        AllDataAdapter adapter = getAllDataAdapter();
+        if(adapter == null) return;
+
+        adapter.setBalances(balances);
+    }
+
     // Private methods.
 
     private boolean setStatusCheckingAccount(int[] transId, String status) {
@@ -675,45 +687,54 @@ public class AllDataListFragment
         startActivity(intent);
     }
 
-    private void selectAllRecords() {
+    private AllDataAdapter getAllDataAdapter() {
+        AllDataAdapter adapter = null;
+
         ListAdapter listAdapter = getListAdapter();
         if (listAdapter != null && listAdapter instanceof AllDataAdapter) {
-            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-
-            // Clear selection first.
-            adapter.clearPositionChecked();
-
-            int numRecords = adapter.getCount();
-            for (int i = 0; i < numRecords; i++) {
-                adapter.setPositionChecked(i, true);
-            }
-
-            adapter.notifyDataSetChanged();
+            adapter = (AllDataAdapter) getListAdapter();
         }
+
+        return adapter;
+    }
+
+    private void selectAllRecords() {
+        AllDataAdapter adapter = getAllDataAdapter();
+        if(adapter == null) return;
+
+        // Clear selection first.
+        adapter.clearPositionChecked();
+
+        int numRecords = adapter.getCount();
+        for (int i = 0; i < numRecords; i++) {
+            adapter.setPositionChecked(i, true);
+        }
+
+        adapter.notifyDataSetChanged();
     }
 
     private ArrayList<Integer> getTransactionIds(){
         final ArrayList<Integer> transIds = new ArrayList<>();
 
-        if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-            Cursor cursor = adapter.getCursor();
-            if (cursor != null) {
-                // get checked items & count from the adapter, not from the list view.
-                // List view only contains the one that was tapped, ignoring the Select All.
-//                SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
-                SparseBooleanArray positionChecked = adapter.getPositionsChecked();
-//                int checkedItemsCount = getListView().getCheckedItemCount();
-                int checkedItemsCount = positionChecked.size();
+        AllDataAdapter adapter = getAllDataAdapter();
+        if(adapter == null) return transIds;
 
-                for (int i = 0; i < checkedItemsCount; i++) {
-                    int position = positionChecked.keyAt(i);
-                    // This screws up the selection?
+        Cursor cursor = adapter.getCursor();
+        if (cursor != null) {
+            // get checked items & count from the adapter, not from the list view.
+            // List view only contains the one that was tapped, ignoring the Select All.
+//                SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
+            SparseBooleanArray positionChecked = adapter.getPositionsChecked();
+//                int checkedItemsCount = getListView().getCheckedItemCount();
+            int checkedItemsCount = positionChecked.size();
+
+            for (int i = 0; i < checkedItemsCount; i++) {
+                int position = positionChecked.keyAt(i);
+                // This screws up the selection?
 //                    if (getListHeader() != null)
 //                        position--;
-                    if (cursor.moveToPosition(position)) {
-                        transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
-                    }
+                if (cursor.moveToPosition(position)) {
+                    transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
                 }
             }
         }

@@ -34,8 +34,10 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.CalculateRunningBalanceTask;
 import com.money.manager.ex.account.CalculateRunningBalanceTask2;
+import com.money.manager.ex.account.CalculateRunningBalanceTask3;
 import com.money.manager.ex.account.ICalculateRunningBalanceTaskCallbacks;
 import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
@@ -49,6 +51,7 @@ import com.money.manager.ex.viewmodels.AccountTransaction;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -67,6 +70,8 @@ public class AllDataAdapter
         mCheckedPosition = new SparseBooleanArray();
         mTypeCursor = typeCursor;
         mContext = context;
+
+        this.requestingBalanceUpdate = new ArrayList<>();
 
         setFieldFromTypeCursor();
     }
@@ -96,6 +101,8 @@ public class AllDataAdapter
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
     private Context mContext;
+    private HashMap<Integer, BigDecimal> balances;
+    private ArrayList<TextView> requestingBalanceUpdate;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -343,13 +350,31 @@ public class AllDataAdapter
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
     }
 
+    public void setBalances(HashMap<Integer, BigDecimal> balances) {
+        this.balances = balances;
+
+        // update the balances on visible elements.
+        for (TextView textView : this.requestingBalanceUpdate) {
+            showBalanceAmount(textView);
+        }
+
+        this.requestingBalanceUpdate.clear();
+    }
+
+    // Private
+
     private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
         try {
             int transId = cursor.getInt(cursor.getColumnIndex(ID));
 
+            String date = cursor.getString(cursor.getColumnIndex(DATE));
+
             CalculateRunningBalanceTask balanceAmount = new CalculateRunningBalanceTask();
+//            CalculateRunningBalanceTask3 balanceAmount = new CalculateRunningBalanceTask3(
+//                    getAccountId(), date
+//            );
             balanceAmount.setAccountId(getAccountId());
-            balanceAmount.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
+            balanceAmount.setDate(date);
             balanceAmount.setTextView(holder.txtBalance);
             balanceAmount.setContext(mContext);
             balanceAmount.setCurrencyId(getCurrencyId());
@@ -371,17 +396,14 @@ public class AllDataAdapter
         if (mTypeCursor == TypeCursor.ALLDATA) {
             if (isShowBalanceAmount()) {
                 // create thread for calculate balance amount
-                calculateBalanceAmount(cursor, holder);
+//                calculateBalanceAmount(cursor, holder);
 
-//                BigDecimal currentBalance = this.balances[cursor.getPosition()];
-//
-//                String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(),
-//                        currentBalance.doubleValue());
-//                holder.txtBalance.setText(balanceFormatted);
-//                holder.txtBalance.setVisibility(View.VISIBLE);
                 // Save transaction Id.
-//                int txId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ID));
-//                holder.txtBalance.setTag(txId);
+                int txId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ID));
+                holder.txtBalance.setTag(txId);
+
+                requestBalanceDisplay(holder.txtBalance);
+
             } else {
                 holder.txtBalance.setVisibility(View.GONE);
             }
@@ -475,5 +497,26 @@ public class AllDataAdapter
         return result;
     }
 
+    private void showBalanceAmount(TextView textView) {
+        // get id
+        int txId = (int) textView.getTag();
+        if (!this.balances.containsKey(txId)) return;
 
+        CurrencyService currencyService = new CurrencyService(mContext);
+        BigDecimal currentBalance = this.balances.get(txId);
+        String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(),
+                currentBalance.doubleValue());
+        textView.setText(balanceFormatted);
+        textView.setVisibility(View.VISIBLE);
+    }
+
+    private void requestBalanceDisplay(TextView textView) {
+        // if we have balances, display it immediately.
+        if (this.balances != null) {
+            showBalanceAmount(textView);
+        } else {
+            // store for later.
+            this.requestingBalanceUpdate.add(textView);
+        }
+    }
 }

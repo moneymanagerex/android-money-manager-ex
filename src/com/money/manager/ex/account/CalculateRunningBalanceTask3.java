@@ -25,22 +25,36 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.Query;
+import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableCheckingAccount;
+import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.utils.DateUtils;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
- * NOT USED
+ * NOT USED.
  * Async task that calculates and updates the amount balance in the transaction list.
  * The idea here is to keep a reference to the view and calculate the balance for each
  * transaction. This might be slow and processor intensive.
  */
-public class CalculateRunningBalanceTask
+public class CalculateRunningBalanceTask3
         extends AsyncTask<Void, Void, Boolean> {
+
+    public CalculateRunningBalanceTask3(int accountId, String date) {
+        this.mAccountId = accountId;
+        this.mDate = date;
+//        this.query = query;
+//        this.dateRange = dateRange;
+    }
 
     private int mAccountId;
     private int mCurrencyId = -1;
@@ -49,6 +63,8 @@ public class CalculateRunningBalanceTask
     private TextView mTextView;
     private Context mContext;
     private double total = 0;
+//    private Query query;
+//    private DateRange dateRange;
 
     @Override
     protected Boolean doInBackground(Void... params) {
@@ -75,24 +91,32 @@ public class CalculateRunningBalanceTask
 
     private boolean runTask() {
         TableCheckingAccount checkingAccount = new TableCheckingAccount();
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        Query query = new Query();
 
-        String selection = "(" + ISplitTransactionsDataset.ACCOUNTID + "=" + Integer.toString(getAccountId()) +
-                " OR " + ISplitTransactionsDataset.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " +
-            "AND (" + ISplitTransactionsDataset.TRANSDATE + "<'" + getDate() +
-                "' OR (" + ISplitTransactionsDataset.TRANSDATE + "='" + getDate() +
-                    "' AND " + TableCheckingAccount.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
-            "AND " + ISplitTransactionsDataset.STATUS + "<>'V'";
+        query.selection =
+            "(" +
+                where.getStatement(ISplitTransactionsDataset.ACCOUNTID, "=", getAccountId()) +
+                " OR " +
+                where.getStatement(ISplitTransactionsDataset.TOACCOUNTID, "=", getAccountId())
+            + ") AND (" +
+                where.getStatement(ISplitTransactionsDataset.TRANSDATE, "<", getDate()) +
+                " OR (" +
+                    where.getStatement(ISplitTransactionsDataset.TRANSDATE, "=", getDate()) +
+                    " AND " + TableCheckingAccount.TRANSID + "<=" + getTransId() + "))" +
+            " AND " +
+                where.getStatement(ISplitTransactionsDataset.STATUS, "<>", TransactionStatuses.VOID.getCode());
 
         // sorting required for the correct balance calculation.
-        String sort = ISplitTransactionsDataset.TRANSDATE + " DESC, " +
+        query.sort = ISplitTransactionsDataset.TRANSDATE + " DESC, " +
             ISplitTransactionsDataset.TRANSCODE + ", " +
             TableCheckingAccount.TRANSID + " DESC";
 
-
         Cursor cursor = mContext.getContentResolver().query(checkingAccount.getUri(),
                 checkingAccount.getAllColumns(),
-                selection, null,
-                sort);
+                query.selection,
+                null,
+                query.sort);
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
