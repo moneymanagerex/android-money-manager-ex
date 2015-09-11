@@ -33,20 +33,12 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.CalculateRunningBalanceTask;
-import com.money.manager.ex.account.CalculateRunningBalanceTask2;
-import com.money.manager.ex.account.CalculateRunningBalanceTask3;
-import com.money.manager.ex.account.ICalculateRunningBalanceTaskCallbacks;
-import com.money.manager.ex.businessobjects.AccountService;
-import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
-import com.money.manager.ex.utils.DateUtils;
-import com.money.manager.ex.viewmodels.AccountTransaction;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -370,9 +362,6 @@ public class AllDataAdapter
             String date = cursor.getString(cursor.getColumnIndex(DATE));
 
             CalculateRunningBalanceTask balanceAmount = new CalculateRunningBalanceTask();
-//            CalculateRunningBalanceTask3 balanceAmount = new CalculateRunningBalanceTask3(
-//                    getAccountId(), date
-//            );
             balanceAmount.setAccountId(getAccountId());
             balanceAmount.setDate(date);
             balanceAmount.setTextView(holder.txtBalance);
@@ -498,6 +487,12 @@ public class AllDataAdapter
     }
 
     private void showBalanceAmount(TextView textView) {
+        if (this.balances == null) {
+            // hide balance amount.
+            textView.setVisibility(View.GONE);
+            return;
+        }
+        
         // get id
         int txId = (int) textView.getTag();
         if (!this.balances.containsKey(txId)) return;

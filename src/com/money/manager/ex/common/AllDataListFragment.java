@@ -500,9 +500,10 @@ public class AllDataListFragment
 
     public void loadData(Bundle arguments) {
         // set the account id in the data adapter
-        AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+        AllDataAdapter adapter = getAllDataAdapter();
         if (adapter != null) {
             adapter.setAccountId(this.AccountId);
+            adapter.setBalances(null);
         }
 
         // set the current arguments / account id
