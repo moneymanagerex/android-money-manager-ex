@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.businessobjects;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -32,12 +33,14 @@ import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.viewmodels.AccountTransaction;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -122,8 +125,11 @@ public class AccountService {
                 null);
         if (cursor == null) return total;
 
+        AccountTransaction tx = new AccountTransaction();
+
         // calculate balance.
         while (cursor.moveToNext()) {
+            tx.contentValues.clear();
             String transType = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
 
             // Some users have invalid Transaction Type. Should we check .contains()?
@@ -131,23 +137,38 @@ public class AccountService {
             switch (TransactionTypes.valueOf(transType)) {
                 case Withdrawal:
 //                    total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
-                    total = total.subtract(BigDecimal.valueOf(
-                        cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
+                    DatabaseUtils.cursorDoubleToContentValues(cursor, ISplitTransactionsDataset.TRANSAMOUNT,
+                            tx.contentValues, QueryAllData.Amount);
+//                    total = total.subtract(BigDecimal.valueOf(
+//                        cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
+                    total = total.subtract(tx.getAmount());
                     break;
                 case Deposit:
+                    DatabaseUtils.cursorDoubleToContentValues(cursor, ISplitTransactionsDataset.TRANSAMOUNT,
+                            tx.contentValues, QueryAllData.Amount);
 //                    total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
-                    total = total.add(BigDecimal.valueOf(
-                        cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
+//                    total = total.add(BigDecimal.valueOf(
+//                        cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
+                    total = total.subtract(tx.getAmount());
                     break;
                 case Transfer:
-                    if (cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID)) == accountId) {
+                    DatabaseUtils.cursorDoubleToContentValues(cursor, ISplitTransactionsDataset.ACCOUNTID,
+                            tx.contentValues, QueryAllData.ACCOUNTID);
+
+                    if (tx.getAccountId().equals(accountId)) {
+                        DatabaseUtils.cursorDoubleToContentValues(cursor, ISplitTransactionsDataset.TRANSAMOUNT,
+                                tx.contentValues, QueryAllData.Amount);
 //                        total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
-                        total = total.subtract(BigDecimal.valueOf(
-                            cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
+//                        total = total.subtract(BigDecimal.valueOf(
+//                            cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
+                        total = total.subtract(tx.getAmount());
                     } else {
 //                        total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
-                        total = total.add(BigDecimal.valueOf(
-                            cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT))));
+                        DatabaseUtils.cursorDoubleToContentValues(cursor, ISplitTransactionsDataset.TOTRANSAMOUNT,
+                                tx.contentValues, QueryAllData.Amount);
+//                        total = total.add(BigDecimal.valueOf(
+//                            cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT))));
+                        total = total.add(tx.getAmount());
                     }
                     break;
             }

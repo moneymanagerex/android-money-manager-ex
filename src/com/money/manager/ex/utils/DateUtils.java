@@ -311,7 +311,19 @@ public class DateUtils {
         }
     }
 
+    /**
+     *
+     * @param resourceId String Id for name of the period.
+     * @return Date range that matches the period selected.
+     */
+    public DateRange getDateRangeForPeriod(int resourceId) {
+        String value = this.context.getString(resourceId);
+        return getDateRangeForPeriod(value);
+    }
+
     public DateRange getDateRangeForPeriod(String period) {
+        if (StringUtils.isEmpty(period)) return null;
+
         Date dateFrom = new Date();
         Date dateTo = new Date();
         CalendarUtils cal = new CalendarUtils();

@@ -127,6 +127,11 @@ public class AccountTransactionsFragment
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mAccountId = savedInstanceState.getInt(KEY_CONTENT);
         }
+
+        // Set the default period.
+        String period = new AppSettings(getContext()).getShowTransaction();
+        DateUtils dateUtils = new DateUtils(getContext());
+        mDateRange = dateUtils.getDateRangeForPeriod(period);
     }
 
     @Override
@@ -407,14 +412,9 @@ public class AccountTransactionsFragment
         selection.add("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
             " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
 
-        // Read from the preferences.
-        String period = new AppSettings(getContext()).getShowTransaction();
-
 //        WhereClauseGenerator whereClause = new WhereClauseGenerator(getContext());
 //        ArrayList<String> periodClauses = whereClause.getWhereClausesForPeriod(period);
 //        selection.addAll(periodClauses);
-        DateUtils dateUtils = new DateUtils(getContext());
-        mDateRange = dateUtils.getDateRangeForPeriod(period);
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(QueryAllData.Date, ">=", mDateRange.dateFrom);
         where.addStatement(QueryAllData.Date, "<=", mDateRange.dateFrom);
@@ -514,41 +514,47 @@ public class AccountTransactionsFragment
 
     private boolean datePeriodItemSelected(MenuItem item) {
         LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
+        int resourceId;
 
         switch (item.getItemId()) {
             case R.id.menu_today:
-                settings.setShowTransactions(R.string.today);
+                resourceId = R.string.today;
                 break;
             case R.id.menu_last7days:
-                settings.setShowTransactions(R.string.last7days);
+                resourceId = R.string.last7days;
                 break;
             case R.id.menu_last15days:
-                settings.setShowTransactions(R.string.last15days);
+                resourceId = R.string.last15days;
                 break;
             case R.id.menu_current_month:
-                settings.setShowTransactions(R.string.current_month);
+                resourceId = R.string.current_month;
                 break;
             case R.id.menu_last30days:
-                settings.setShowTransactions(R.string.last30days);
+                resourceId = R.string.last30days;
                 break;
             case R.id.menu_last3months:
-                settings.setShowTransactions(R.string.last3months);
+                resourceId = R.string.last3months;
                 break;
             case R.id.menu_last6months:
-                settings.setShowTransactions(R.string.last6months);
+                resourceId = R.string.last6months;
                 break;
             case R.id.menu_current_year:
-                settings.setShowTransactions(R.string.current_year);
+                resourceId = R.string.current_year;
                 break;
             case R.id.menu_future_transactions:
-                settings.setShowTransactions(R.string.future_transactions);
+                resourceId = R.string.future_transactions;
                 break;
             case R.id.menu_all_time:
-                settings.setShowTransactions(R.string.all_time);
+                resourceId = R.string.all_time;
                 break;
             default:
                 return false;
         }
+        settings.setShowTransactions(resourceId);
+
+        // Save the selected period.
+        DateUtils dateUtils = new DateUtils(getContext());
+        mDateRange = dateUtils.getDateRangeForPeriod(resourceId);
 
         //check item
         item.setChecked(true);
@@ -711,6 +717,10 @@ public class AccountTransactionsFragment
         } else if (preference.equals(context.getString(R.string.all_time))) {
             id = R.id.menu_all_time;
         }
+
+        // set the date range
+        DateUtils dateUtils = new DateUtils(getContext());
+        mDateRange = dateUtils.getDateRangeForPeriod(id);
 
         MenuItem itemToMark = subMenu.findItem(id);
         if (itemToMark == null) return;
