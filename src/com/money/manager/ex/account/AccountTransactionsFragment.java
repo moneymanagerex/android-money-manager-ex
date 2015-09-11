@@ -102,6 +102,9 @@ public class AccountTransactionsFragment
     private Activity mActivity;
     private BigDecimal[] balances;
 
+    // filter
+    DateRange mDateRange;
+
     /**
      * @param accountId Id of the Account to be displayed
      * @return initialized instance of Account Fragment.
@@ -411,10 +414,10 @@ public class AccountTransactionsFragment
 //        ArrayList<String> periodClauses = whereClause.getWhereClausesForPeriod(period);
 //        selection.addAll(periodClauses);
         DateUtils dateUtils = new DateUtils(getContext());
-        DateRange range = dateUtils.getDateRangeForPeriod(period);
+        mDateRange = dateUtils.getDateRangeForPeriod(period);
         WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(QueryAllData.Date, ">=", range.dateFrom);
-        where.addStatement(QueryAllData.Date, "<=", range.dateFrom);
+        where.addStatement(QueryAllData.Date, ">=", mDateRange.dateFrom);
+        where.addStatement(QueryAllData.Date, "<=", mDateRange.dateFrom);
 
         // create a bundle to returns
         Bundle args = new Bundle();
@@ -754,13 +757,10 @@ public class AccountTransactionsFragment
     }
 
     private void populateRunningBalance(Cursor c) {
-        AllDataAdapter adapter = (AllDataAdapter) mAllDataListFragment.getListAdapter();
-
-        // todo: get the date
-        Date startingDate = Calendar.getInstance().getTime();
+//        AllDataAdapter adapter = (AllDataAdapter) mAllDataListFragment.getListAdapter();
 
         CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
-                getContext(), this.balances, c, this.mAccountId, startingDate, this);
+                getContext(), this.balances, c, this.mAccountId, mDateRange.dateFrom, this);
         task.execute();
 
         // the result is received in #onTaskComplete.

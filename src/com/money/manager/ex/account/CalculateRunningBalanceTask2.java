@@ -21,14 +21,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.AsyncTask;
-import android.view.View;
 
-import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.viewmodels.AccountTransaction;
 
@@ -43,6 +40,15 @@ import java.util.Date;
 public class CalculateRunningBalanceTask2
         extends AsyncTask<Void, Void, BigDecimal[]> {
 
+    /**
+     * Create the task.
+     * @param context Context
+     * @param balances
+     * @param c
+     * @param accountId
+     * @param startingDate The date, inclusive, from which to calculate the running balance.
+     * @param listener
+     */
     public CalculateRunningBalanceTask2(Context context, BigDecimal[] balances, Cursor c,
                                         int accountId, Date startingDate,
                                         ICalculateRunningBalanceTaskCallbacks listener) {
