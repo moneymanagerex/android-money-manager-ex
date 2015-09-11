@@ -487,12 +487,6 @@ public class AllDataAdapter
     }
 
     private void showBalanceAmount(TextView textView) {
-        if (this.balances == null) {
-            // hide balance amount.
-            textView.setVisibility(View.GONE);
-            return;
-        }
-        
         // get id
         int txId = (int) textView.getTag();
         if (!this.balances.containsKey(txId)) return;
@@ -510,6 +504,9 @@ public class AllDataAdapter
         if (this.balances != null) {
             showBalanceAmount(textView);
         } else {
+            // hide balance amount.
+            textView.setVisibility(View.GONE);
+
             // store for later.
             this.requestingBalanceUpdate.add(textView);
         }
