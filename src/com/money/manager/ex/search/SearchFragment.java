@@ -273,9 +273,12 @@ public class SearchFragment extends Fragment
 
     @Override
     public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+        View rootView = getView();
+        if (rootView == null) return;
+
         Core core = new Core(getActivity().getApplicationContext());
 
-        View view = getView().findViewById(id);
+        View view = rootView.findViewById(id);
         if (view != null && view instanceof TextView)
             core.formatAmountTextView(((TextView) view), amount);
     }

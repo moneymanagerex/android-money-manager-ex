@@ -178,7 +178,7 @@ public class EditTransactionCommonFunctions {
 
     public void displayAmountFormatted(TextView view, BigDecimal amount, Integer accountId) {
         if (amount == null) return;
-        
+
         // take currency id
         Integer currencyId = null;
 
