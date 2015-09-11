@@ -370,14 +370,15 @@ public class DateUtils {
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.future_transactions))) {
             // Future transactions
 //            result.add("date(" + QueryAllData.Date + ") > date('now')");
-            dateFrom = cal.setNow().getTime();
+            dateFrom = cal.setNow().addDays(1).getTime();
             dateTo = cal.addYear(1000).getTime();
         } else {
             dateFrom = null;
             dateTo = null;
         }
 
-        return new DateRange(dateFrom, dateTo);
+        DateRange result = new DateRange(dateFrom, dateTo);
+        return result;
     }
 
 }
