@@ -109,9 +109,12 @@ public class AccountRepository
     }
 
     public Account query(String selection) {
-        Cursor c = openCursor(null,
-                selection,
-                null);
+        return query(null, selection, null);
+    }
+
+    public Account query(String[] projection, String selection, String[] args) {
+        Cursor c = openCursor(projection, selection, args);
+
         if (c == null) return null;
 
         Account account = null;

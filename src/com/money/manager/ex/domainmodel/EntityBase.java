@@ -53,6 +53,8 @@ public class EntityBase {
     protected Cursor mCursor;
 
     public void loadFromCursor(Cursor c) {
+        this.contentValues.clear();
+
         DatabaseUtils.cursorRowToContentValues(c, contentValues);
     }
 

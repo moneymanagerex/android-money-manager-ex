@@ -39,7 +39,7 @@ import java.util.ArrayList;
 
 /**
  * Async task that calculates and updates the amount balance in the transaction list.
- * NOT USED. The calculation of the running balance is now done inside AllDataAdapter.
+ * NOT USED.
  */
 public class CalculateRunningBalanceTask
         extends AsyncTask<Void, Void, Boolean> {

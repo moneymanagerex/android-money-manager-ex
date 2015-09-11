@@ -207,6 +207,8 @@ public class AccountEditActivity
             edtAccessInfo.setText(mAccessInfo);
         }
 
+        // Show initial balance.
+
         ArrayAdapter<String> adapterSymbol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
         spinSymbolInitialBalance.setAdapter(adapterSymbol);
         spinSymbolInitialBalance.setSelection(mInitialBal >= 0 ? PLUS : LESS);
@@ -224,6 +226,7 @@ public class AccountEditActivity
             }
         });
 
+        // Notes
 
         if (!(TextUtils.isEmpty(mNotes))) {
             edtNotes.setText(mNotes);

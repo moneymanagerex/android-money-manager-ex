@@ -311,6 +311,7 @@ public class AccountTransactionsFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case ID_LOADER_SUMMARY:
+                // Account summary (balances).
                 return new MmexCursorLoader(getActivity(),
                     new QueryAccountBills(getActivity()).getUri(),
                     null,
@@ -407,7 +408,7 @@ public class AccountTransactionsFragment
     }
 
     /**
-     * refresh user interface with total
+     * Show the account balances (current & reconciled) in the header.
      */
     private void setTextViewBalance() {
         // Reload account info as it can be changed via dropdown. Need a currency info here.

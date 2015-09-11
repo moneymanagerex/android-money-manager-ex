@@ -195,7 +195,15 @@ public class AccountService {
         cursor.close();
 
         return curTotal;
+    }
 
+    public Integer loadCurrencyId(int accountId) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(TableAccountList.ACCOUNTID, "=", accountId);
+
+        AccountRepository repo = new AccountRepository(mContext);
+        Account account = repo.query(new String[]{TableAccountList.CURRENCYID}, where.getWhere(), null);
+        return account.getId();
     }
 
     public Cursor getCursor(boolean open, boolean favorite, List<String> accountTypes) {

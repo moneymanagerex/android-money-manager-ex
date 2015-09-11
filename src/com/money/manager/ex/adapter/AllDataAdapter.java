@@ -32,7 +32,8 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.account.CalculateRunningBalanceTask;
+import com.money.manager.ex.account.CalculateRunningBalanceTask2;
+import com.money.manager.ex.account.ICalculateRunningBalanceTaskCallbacks;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
@@ -52,16 +53,34 @@ import java.util.HashMap;
 import java.util.Locale;
 
 /**
- *
+ * Adapter for all_data query. The list of transactions (account/recurring).
  */
 public class AllDataAdapter
         extends CursorAdapter {
+
+    public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
+        super(context, c, -1);
+
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mHeadersAccountIndex = new HashMap<>();
+        mCheckedPosition = new SparseBooleanArray();
+        mTypeCursor = typeCursor;
+        mContext = context;
+
+        setFieldFromTypeCursor();
+    }
+
+    // source type: AllData or RepeatingTransaction
+    public enum TypeCursor {
+        ALLDATA,
+        REPEATINGTRANSACTION
+    }
 
     // type cursor
     private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
 
     // define cursor field
-    private String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
+    public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
         TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME;
 
@@ -76,23 +95,6 @@ public class AllDataAdapter
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
     private Context mContext;
-    private BigDecimal[] balance;
-
-    public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
-        super(context, c, -1);
-
-        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        // create hash map
-        mHeadersAccountIndex = new HashMap<>();
-        // create sparse array boolean checked
-        mCheckedPosition = new SparseBooleanArray();
-
-        mTypeCursor = typeCursor;
-
-        mContext = context;
-
-        setFieldFromTypeCursor();
-    }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -230,25 +232,25 @@ public class AllDataAdapter
             view.setBackgroundResource(android.R.color.transparent);
         }
 
-        // balance account or days left
-        displayBalanceAmountOrDaysLeft(holder, cursor, currencyService, context);
+        // Display balance account or days left.
+        displayBalanceAmountOrDaysLeft(holder, cursor, context);
     }
 
     public void clearPositionChecked() {
         mCheckedPosition.clear();
     }
 
-    public int getCheckedCount() {
-        return mCheckedPosition.size();
-    }
+//    public int getCheckedCount() {
+//        return mCheckedPosition.size();
+//    }
 
     public SparseBooleanArray getPositionsChecked() {
         return mCheckedPosition;
     }
 
-    public boolean getPositionChecked(int position) {
-        return mCheckedPosition.get(position);
-    }
+//    public boolean getPositionChecked(int position) {
+//        return mCheckedPosition.get(position);
+//    }
 
     /**
      * Set checked in position
@@ -296,12 +298,6 @@ public class AllDataAdapter
         mHeadersAccountIndex.clear();
     }
 
-    public void reloadRunningBalance(Cursor cursor) {
-        if (mAccountId == Constants.NOT_SET) return;
-        this.balance = null;
-        this.populateRunningBalance(cursor);
-    }
-
     /**
      * @param showAccountName the mShowAccountName to set
      */
@@ -346,12 +342,6 @@ public class AllDataAdapter
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
     }
 
-    // source type: AllData or RepeatingTransaction
-    public enum TypeCursor {
-        ALLDATA,
-        REPEATINGTRANSACTION
-    }
-
 //    private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
 //        try {
 //            int transId = cursor.getInt(cursor.getColumnIndex(ID));
@@ -371,20 +361,23 @@ public class AllDataAdapter
 //        }
 //    }
 
+    /**
+     * Display the running balance on account transactions list, or days left on
+     * recurring transactions list.
+     */
     private void displayBalanceAmountOrDaysLeft(AllDataViewHolder holder, Cursor cursor,
-                                                CurrencyService currencyService, Context context) {
+                                                Context context) {
         if (mTypeCursor == TypeCursor.ALLDATA) {
             if (isShowBalanceAmount()) {
-                populateRunningBalance(cursor);
-
-                // create thread for calculate balance amount
-//                calculateBalanceAmount(cursor, holder);
-
-                BigDecimal currentBalance = this.balance[cursor.getPosition()];
-                String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(),
-                        currentBalance.doubleValue());
-                holder.txtBalance.setText(balanceFormatted);
-                holder.txtBalance.setVisibility(View.VISIBLE);
+                // todo: ?
+//                BigDecimal currentBalance = this.balances[cursor.getPosition()];
+//                // create thread for calculate balance amount
+////                calculateBalanceAmount(cursor, holder);
+//
+//                String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(),
+//                        currentBalance.doubleValue());
+//                holder.txtBalance.setText(balanceFormatted);
+//                holder.txtBalance.setVisibility(View.VISIBLE);
             } else {
                 holder.txtBalance.setVisibility(View.GONE);
             }
@@ -406,7 +399,7 @@ public class AllDataAdapter
      * @return boolean indicating whether to use *TO values (amountTo)
      */
     private boolean useDestinationValues(boolean isTransfer, Cursor cursor) {
-        boolean result = true;
+        boolean result;
 
         if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
             // Recurring transactions list.
@@ -478,76 +471,5 @@ public class AllDataAdapter
         return result;
     }
 
-    private void populateRunningBalance(Cursor c) {
-        if (c == null) return;
-        int records = c.getCount();
-        if (balance != null && records == balance.length) return;
-        if (c.getCount() <= 0) return;
-
-        AccountService accountService = new AccountService(mContext);
-        BigDecimal initialBalance = null;
-
-        int originalPosition = c.getPosition();
-
-        // populate balance amounts
-        balance = new BigDecimal[c.getCount()];
-        int i = c.getCount() - 1;
-        // currently the order of transactions is inverse.
-        BigDecimal runningBalance = BigDecimal.ZERO;
-        while (c.moveToPosition(i)) {
-
-            // Get starting balance.
-            if (initialBalance == null) {
-                // Get starting balance on the given day.
-                initialBalance = accountService.loadInitialBalance(getAccountId());
-
-                String date = c.getString(c.getColumnIndex(DATE));
-                DateUtils dateUtils = new DateUtils();
-                date = dateUtils.getYesterdayFrom(date);
-                BigDecimal balanceOnDate = accountService.calculateBalanceOn(getAccountId(), date);
-                initialBalance = initialBalance.add(balanceOnDate);
-
-                runningBalance = initialBalance;
-            }
-
-            // adjust the balance for each transaction.
-
-            AccountTransaction tx = new AccountTransaction();
-            tx.loadFromCursor(c);
-
-            // check whether the transaction is Void and exclude from calculation.
-            if (!tx.getStatus().equals(TransactionStatuses.VOID)) {
-                String transType = tx.getTransactionType();
-                BigDecimal amount = tx.getToAmount();
-
-                switch (TransactionTypes.valueOf(transType)) {
-                    case Withdrawal:
-//                    runningBalance -= amount;
-                        runningBalance = runningBalance.subtract(amount);
-                        break;
-                    case Deposit:
-//                    runningBalance += amount;
-                        runningBalance = runningBalance.add(amount);
-                        break;
-                    case Transfer:
-                        int accountId = tx.getAccountId();
-                        if (accountId == getAccountId()) {
-//                        runningBalance += tx.getAmount();
-                            runningBalance = runningBalance.add(tx.getAmount());
-                        } else {
-//                        runningBalance += amount;
-                            runningBalance = runningBalance.add(amount);
-                        }
-                        break;
-                }
-            }
-
-            balance[i] = runningBalance;
-            i--;
-        }
-
-        // set back to the original position.
-        c.moveToPosition(originalPosition);
-    }
 
 }
