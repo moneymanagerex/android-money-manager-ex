@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 11, 2015" versionName="2.18.8">
+    <changelogversion changeDate="September 12, 2015" versionName="2.18.9">
         <changelogtext>Correcting and making running balance calculation asynchronous.</changelogtext>
         <changelogtext>Ability to donate from inside the app.</changelogtext>
         <changelogtext>Providing place in the exception feedback email to describe the action that led to the exception.</changelogtext>
