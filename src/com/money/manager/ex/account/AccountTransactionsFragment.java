@@ -51,7 +51,9 @@ import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.DateRange;
+import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.transactions.EditTransactionActivity;
@@ -389,7 +391,7 @@ public class AccountTransactionsFragment
     public void onTaskComplete(BigDecimal[] balances) {
         this.balances = balances;
         // Update the UI controls
-//        this.notifyDataSetChanged();
+
         updateVisibleRows();
     }
 
@@ -781,9 +783,11 @@ public class AccountTransactionsFragment
         AccountService accountService = new AccountService(getContext());
         int currencyId = accountService.loadCurrencyId(this.mAccountId);
         CurrencyService currencyService = new CurrencyService(getContext());
-
+//        int row = 0;
+        
         for (int i = start; i <= end; i++) {
             View view = listView.getChildAt(i);
+            if (view == null) continue;
             AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
             int row = i;
             // the first row can be the header.

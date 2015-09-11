@@ -118,7 +118,7 @@ public class CalculateRunningBalanceTask2
         int originalPosition = c.getPosition();
         balances = new BigDecimal[c.getCount()];
         String transType;
-        BigDecimal amount;
+        BigDecimal amount = BigDecimal.ZERO;
         BigDecimal runningBalance = BigDecimal.ZERO;
 
         // populate balance amounts
@@ -144,7 +144,7 @@ public class CalculateRunningBalanceTask2
             // adjust the balance for each transaction.
             tx.loadFromCursor(c);
 
-            // check whether the transaction is Void and exclude from calculation.
+            // Exclude Void transactions from calculation.
             TransactionStatuses status = tx.getStatus();
             if (!status.equals(TransactionStatuses.VOID)) {
                 transType = tx.getTransactionType();
@@ -153,26 +153,21 @@ public class CalculateRunningBalanceTask2
                     case Withdrawal:
 //                    runningBalance -= amount;
                         amount = tx.getAmount();
-                        runningBalance = runningBalance.add(amount);
                         break;
                     case Deposit:
 //                    runningBalance += amount;
                         amount = tx.getAmount();
-                        runningBalance = runningBalance.add(amount);
                         break;
                     case Transfer:
                         int accountId = tx.getAccountId();
                         if (accountId == this.accountId) {
-//                        runningBalance += tx.getAmount();
                             amount = tx.getAmount();
-                            runningBalance = runningBalance.add(amount);
                         } else {
-//                        runningBalance += amount;
                             amount = tx.getToAmount();
-                            runningBalance = runningBalance.add(amount);
                         }
                         break;
                 }
+                runningBalance = runningBalance.add(amount);
             }
 
             this.balances[i] = runningBalance;
