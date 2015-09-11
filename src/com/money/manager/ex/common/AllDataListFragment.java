@@ -47,14 +47,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.account.CalculateRunningBalanceTask2;
-import com.money.manager.ex.account.ICalculateRunningBalanceTaskCallbacks;
-import com.money.manager.ex.adapter.AllDataViewHolder;
-import com.money.manager.ex.businessobjects.AccountService;
-import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.R;
@@ -73,7 +66,6 @@ import com.money.manager.ex.database.TableSplitTransactions;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -100,7 +92,7 @@ public class AllDataListFragment
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
     // KEY Arguments
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
-    public static final String KEY_ARGUMENTS_WHERE_PARAMS = "SearchResultFragment:ArgumentsWhereParams";
+//    public static final String KEY_ARGUMENTS_WHERE_PARAMS = "SearchResultFragment:ArgumentsWhereParams";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 
     public int AccountId = Constants.NOT_SET;
@@ -206,16 +198,13 @@ public class AllDataListFragment
                 // compose selection and sort
                 String selection = "";
                 if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
-                    ArrayList<String> whereClause = args.getStringArrayList(KEY_ARGUMENTS_WHERE);
-                    WhereClauseGenerator whereGenerator = new WhereClauseGenerator(getContext());
-                    selection = whereGenerator.getWhereStatementFromClauses(whereClause);
+                    selection = args.getString(KEY_ARGUMENTS_WHERE);
                 }
-                // where parameters
-                String[] whereParams = new String[0];
-                if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE_PARAMS)) {
-                    ArrayList<String> whereParamsList = args.getStringArrayList(KEY_ARGUMENTS_WHERE_PARAMS);
-                    whereParams = whereParamsList.toArray(whereParams);
-                }
+//                String[] whereParams = new String[0];
+//                if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE_PARAMS)) {
+//                    ArrayList<String> whereParamsList = args.getStringArrayList(KEY_ARGUMENTS_WHERE_PARAMS);
+//                    whereParams = whereParamsList.toArray(whereParams);
+//                }
 
                 // set sort
                 String sort = "";
@@ -227,7 +216,7 @@ public class AllDataListFragment
                 return new MmexCursorLoader(getActivity(), allData.getUri(),
                         allData.getAllColumns(),
                         selection,
-                        whereParams,
+                        null,
                         sort);
         }
         return null;

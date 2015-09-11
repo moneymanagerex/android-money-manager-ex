@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 
 import com.money.manager.ex.Constants;
@@ -14,8 +13,7 @@ import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.database.WhereClauseGenerator;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
@@ -107,13 +105,14 @@ public class SingleAccountWidget
     }
 
     static String getFormattedAccountBalance(Context context, Account account) {
-        WhereClauseGenerator generator = new WhereClauseGenerator(context);
-        generator.addSelection(QueryAccountBills.ACCOUNTID, "=", account.getId());
-        String selection =  generator.getSelectionStatements();
-        String[] args = generator.getSelectionArguments();
+//        WhereClauseGenerator generator = new WhereClauseGenerator(context);
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(QueryAccountBills.ACCOUNTID, "=", account.getId());
+        String selection =  where.getWhere();
+//        String[] args = generator.getSelectionArguments();
 
         AccountService service = new AccountService(context);
-        double total = service.loadBalance(selection, args);
+        double total = service.loadBalance(selection);
 
         // format the amount
         CurrencyService currencyService = new CurrencyService(context);

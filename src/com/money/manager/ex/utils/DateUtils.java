@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package com.money.manager.ex.utils;
 
 import android.content.Context;
@@ -324,13 +323,14 @@ public class DateUtils {
     public DateRange getDateRangeForPeriod(String period) {
         if (StringUtils.isEmpty(period)) return null;
 
-        Date dateFrom = new Date();
-        Date dateTo = new Date();
+        Date dateFrom;
+        Date dateTo;
         CalendarUtils cal = new CalendarUtils();
 
         // we ignore the minutes at the moment, since the field in the db only stores the date value.
 
-        if (period.equalsIgnoreCase(this.context.getString(R.string.all_transaction))) {
+        if (period.equalsIgnoreCase(this.context.getString(R.string.all_transaction)) ||
+                period.equalsIgnoreCase(this.context.getString(R.string.all_time))) {
             // All transactions.
             dateFrom = cal.setNow().addYear(-1000).getTime();
             dateTo = cal.setNow().addYear(1000).getTime();
@@ -372,11 +372,12 @@ public class DateUtils {
 //            result.add("date(" + QueryAllData.Date + ") > date('now')");
             dateFrom = cal.setNow().getTime();
             dateTo = cal.addYear(1000).getTime();
+        } else {
+            dateFrom = null;
+            dateTo = null;
         }
 
-        DateRange result = new DateRange(dateFrom, dateTo);
-
-        return result;
+        return new DateRange(dateFrom, dateTo);
     }
 
 }

@@ -30,12 +30,9 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
-import com.money.manager.ex.database.WhereClauseGenerator;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 /**
  * Async task that calculates and updates the amount balance in the transaction list.

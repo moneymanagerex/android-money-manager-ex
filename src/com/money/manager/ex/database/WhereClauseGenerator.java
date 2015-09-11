@@ -12,7 +12,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Generates WHERE statements for various conditions
+ * Not used. Replaced by Where Statement Generator.
+ * Generates WHERE statements for various conditions.
  * Created by Alen Siljak on 27/08/2015.
  */
 public class WhereClauseGenerator {

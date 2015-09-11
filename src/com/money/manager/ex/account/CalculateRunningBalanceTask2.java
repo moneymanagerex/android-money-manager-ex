@@ -21,11 +21,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.database.AccountTransactionRepository;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.viewmodels.AccountTransaction;
 
@@ -43,31 +46,26 @@ public class CalculateRunningBalanceTask2
     /**
      * Create the task.
      * @param context Context
-     * @param balances
-     * @param c
-     * @param accountId
+     * @param accountId Id of the account for which to load the balances.
      * @param startingDate The date, inclusive, from which to calculate the running balance.
-     * @param listener
+     * @param listener Listener for the 'finished' event.
      */
-    public CalculateRunningBalanceTask2(Context context, BigDecimal[] balances, Cursor c,
-                                        int accountId, Date startingDate,
-                                        ICalculateRunningBalanceTaskCallbacks listener) {
+    public CalculateRunningBalanceTask2(Context context, int accountId, Date startingDate,
+                                        ICalculateRunningBalanceTaskCallbacks listener,
+                                        Bundle selection) {
         this.context = context.getApplicationContext();
-        this.balances = balances;
-        this.cursor = c;
         this.accountId = accountId;
-//        this.dateFieldName = dateFieldName;
         this.startingDate = startingDate;
         this.listener = listener;
+        this.selectionBundle = selection;
     }
 
     private Context context;
     private BigDecimal[] balances;
-    private Cursor cursor;
     private int accountId;
-//    private String dateFieldName;
     private Date startingDate;
     private ICalculateRunningBalanceTaskCallbacks listener;
+    private Bundle selectionBundle;
 
     /**
      * Override this method to perform a computation on a background thread. The
@@ -105,7 +103,8 @@ public class CalculateRunningBalanceTask2
     }
 
     private BigDecimal[] runTask() {
-        Cursor c = this.cursor;
+        // load data
+        Cursor c = loadData();
         if (c == null) return null;
         int records = c.getCount();
         if (balances != null && records == balances.length) return null;
@@ -183,5 +182,13 @@ public class CalculateRunningBalanceTask2
         c.moveToPosition(originalPosition);
 
         return this.balances;
+    }
+
+    private Cursor loadData() {
+        String where = this.selectionBundle.getString(AllDataListFragment.KEY_ARGUMENTS_WHERE);
+        String sort = this.selectionBundle.getString(AllDataListFragment.KEY_ARGUMENTS_SORT);
+
+        AccountTransactionRepository repo = new AccountTransactionRepository(this.context);
+        return repo.query(where, sort);
     }
 }

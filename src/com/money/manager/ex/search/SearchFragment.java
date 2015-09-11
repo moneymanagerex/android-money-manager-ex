@@ -49,6 +49,7 @@ import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.utils.DateUtils;
 
@@ -289,7 +290,7 @@ public class SearchFragment extends Fragment
     public void executeSearch() {
         saveSearchCriteria();
 
-        ParameterizedWhereClause where = assembleWhereClause();
+        String where = assembleWhereClause();
 
         showSearchResultsFragment(where);
     }
@@ -325,8 +326,10 @@ public class SearchFragment extends Fragment
      * Assemble SQL query
      * @return where clause with parameters
      */
-    private ParameterizedWhereClause assembleWhereClause() {
-        ParameterizedWhereClause where = new ParameterizedWhereClause();
+    private String assembleWhereClause() {
+//        ParameterizedWhereClause where = new ParameterizedWhereClause();
+        WhereStatementGenerator where = new WhereStatementGenerator();
+
         // todo: try using query builder
         // SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
 
@@ -334,11 +337,11 @@ public class SearchFragment extends Fragment
 
         // account
         if (mSearchParameters.accountId != Constants.NOT_SET) {
-            where.Clause.add(QueryAllData.TOACCOUNTID + "=" + mSearchParameters.accountId);
+            where.addStatement(QueryAllData.TOACCOUNTID, "=", mSearchParameters.accountId);
         }
         // transaction type
         if (mSearchParameters.deposit || mSearchParameters.transfer || mSearchParameters.withdrawal) {
-            where.Clause.add(QueryAllData.TransactionType + " IN (" +
+            where.addStatement(QueryAllData.TransactionType + " IN (" +
                     (mSearchParameters.deposit ? "'Deposit'" : "''") + "," +
                     (mSearchParameters.transfer ? "'Transfer'" : "''") + "," +
                     (mSearchParameters.withdrawal ? "'Withdrawal'" : "''") + ")");
@@ -347,38 +350,37 @@ public class SearchFragment extends Fragment
         // status
         if (!mSearchParameters.status.equals(SearchParameters.STRING_NULL_VALUE)) {
 //            where.Clause.add(QueryAllData.Status + "='" + mSearchParameters.status + "'");
-            where.Clause.add(QueryAllData.Status + "=?");
-            where.Params.add(mSearchParameters.status);
+//            where.Clause.add(QueryAllData.Status + "=?");
+//            where.Params.add(mSearchParameters.status);
+            where.addStatement(QueryAllData.Status, "=", mSearchParameters.status);
         }
 
         // from amount
         if (!TextUtils.isEmpty(mSearchParameters.amountFrom)) {
-            where.Clause.add(QueryAllData.Amount + ">=" + mSearchParameters.amountFrom);
+            where.addStatement(QueryAllData.Amount, ">=", mSearchParameters.amountFrom);
         }
         // to amount
         if (!TextUtils.isEmpty(mSearchParameters.amountTo)) {
-            where.Clause.add(QueryAllData.Amount + "<=" + mSearchParameters.amountTo);
+            where.addStatement(QueryAllData.Amount, "<=", mSearchParameters.amountTo);
         }
 
         // from date
         if (mSearchParameters.dateFrom != null) {
-            where.Clause.add(QueryAllData.Date + ">='" +
-                    DateUtils.getIsoStringDate(mSearchParameters.dateFrom) + "'");
+            where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mSearchParameters.dateFrom));
         }
         // to date
         if (mSearchParameters.dateTo != null) {
-            where.Clause.add(QueryAllData.Date + "<='" +
-                    DateUtils.getIsoStringDate(mSearchParameters.dateTo) + "'");
+            where.addStatement(QueryAllData.Date, "<='", DateUtils.getIsoStringDate(mSearchParameters.dateTo));
         }
         // payee
         if (mSearchParameters.payeeId != null && mSearchParameters.payeeId > 0) {
-            where.Clause.add(QueryAllData.PayeeID + "=" + mSearchParameters.payeeId);
+            where.addStatement(QueryAllData.PayeeID, "=", mSearchParameters.payeeId);
         }
         // category
         if (mSearchParameters.category != null) {
             CategorySub categorySub = mSearchParameters.category;
             // Category. Also check the splits.
-            where.Clause.add("(" +
+            where.addStatement("(" +
                     "(" + QueryAllData.CategID + "=" + Integer.toString(categorySub.categId) + ") " +
                     " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
                         " FROM " + TableSplitTransactions.TABLE_NAME +
@@ -388,7 +390,7 @@ public class SearchFragment extends Fragment
             // subcategory
             if (categorySub.subCategId != -1) {
                 // Subcategory. Also check the splits.
-                where.Clause.add("(" +
+                where.addStatement("(" +
                         "(" + QueryAllData.SubcategID + "=" + Integer.toString(categorySub.subCategId) + ") " +
                             " OR " + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
                                 " FROM " + TableSplitTransactions.TABLE_NAME +
@@ -399,14 +401,14 @@ public class SearchFragment extends Fragment
 
         // transaction number
         if (!TextUtils.isEmpty(mSearchParameters.transactionNumber)) {
-            where.Clause.add(QueryAllData.TransactionNumber + " LIKE '" + mSearchParameters.transactionNumber + "'");
+            where.addStatement(QueryAllData.TransactionNumber + " LIKE '" + mSearchParameters.transactionNumber + "'");
         }
         // notes
         if (!TextUtils.isEmpty(mSearchParameters.notes)) {
-            where.Clause.add(QueryAllData.Notes + " LIKE '%" + mSearchParameters.notes + "%'");
+            where.addStatement(QueryAllData.Notes + " LIKE '%" + mSearchParameters.notes + "%'");
         }
 
-        return where;
+        return where.getWhere();
     }
 
     public void handleSearchRequest(SearchParameters parameters) {
@@ -418,7 +420,7 @@ public class SearchFragment extends Fragment
         executeSearch();
     }
 
-    private void showSearchResultsFragment(ParameterizedWhereClause where) {
+    private void showSearchResultsFragment(String where) {
         //create a fragment for search results.
         AllDataListFragment searchResultsFragment;
         searchResultsFragment = (AllDataListFragment) getActivity().getSupportFragmentManager()
@@ -432,8 +434,8 @@ public class SearchFragment extends Fragment
 
         //create parameter bundle
         Bundle args = new Bundle();
-        args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE, where.Clause);
-        args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE_PARAMS, where.Params);
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
+//        args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE_PARAMS, where.Params);
         // Sorting
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
                 QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);

@@ -31,12 +31,10 @@ import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
-import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
@@ -199,13 +197,14 @@ public class AccountService {
      * @param args arguments for the selection criteria
      * @return current balance in the currency of the account.
      */
-    public double loadBalance(String where, String[] args) {
+    public double loadBalance(String where) {
         double curTotal = 0;
 
         QueryAccountBills accountBills = new QueryAccountBills(mContext);
         Cursor cursor = mContext.getContentResolver().query(accountBills.getUri(),
                 null,
-                where, args,
+                where,
+                null,
                 null);
         if (cursor == null) return 0;
 

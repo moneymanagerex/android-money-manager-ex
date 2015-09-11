@@ -22,7 +22,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -47,14 +46,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataViewHolder;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.WhereClauseGenerator;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.transactions.EditTransactionActivity;
@@ -69,13 +66,10 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.utils.CalendarUtils;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Checking account fragment.
@@ -718,10 +712,6 @@ public class AccountTransactionsFragment
             id = R.id.menu_all_time;
         }
 
-        // set the date range
-        DateUtils dateUtils = new DateUtils(getContext());
-        mDateRange = dateUtils.getDateRangeForPeriod(id);
-
         MenuItem itemToMark = subMenu.findItem(id);
         if (itemToMark == null) return;
 
@@ -763,14 +753,14 @@ public class AccountTransactionsFragment
     private void reloadRunningBalance(Cursor cursor) {
 //        if (mAccountId == Constants.NOT_SET) return;
         this.balances = null;
-        this.populateRunningBalance(cursor);
+        this.populateRunningBalance();
     }
 
-    private void populateRunningBalance(Cursor c) {
-//        AllDataAdapter adapter = (AllDataAdapter) mAllDataListFragment.getListAdapter();
+    private void populateRunningBalance() {
+        Bundle arguments = prepareArgsForChildFragment();
 
         CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
-                getContext(), this.balances, c, this.mAccountId, mDateRange.dateFrom, this);
+                getContext(), this.mAccountId, mDateRange.dateFrom, this, arguments);
         task.execute();
 
         // the result is received in #onTaskComplete.
