@@ -12,15 +12,15 @@ Manage your income and expenses on mobile device, synchronize via Dropbox
 Financial management can become complicated when there is no clear understanding of how much money we are getting, regarded as income as opposed to our expenses. The first step towards better financial health, is to maintain good financial records: it's only when we have a clear understanding of where our money goes, that we can make an informed decision of where to cut back on our expenses. Of course there is no right or wrong answer to how spend money: here's where personal finance software comes in. They help to slice/dice the financial data to give better insight into what is going on. Always remember the software can only be as good as the data it has to process. Garbage In Garbage Out. But if you have started thinking of even using Personal finance software, you are well on your way to making every dollar count.
 
 ☆ <b>ACCOUNTS AND CURRENCIES</b>
-Wizard to simply create accounts and start to use MMEX. Multiple currencies for each account to have more flexibility.
+Wizard to simplify creation of accounts and start using MMEX for Android. You have the flexibility of creating accounts in any of the multiple currencies available.
 
 ☆ <b>TRANSACTIONS</b>
-Take note of all expenses and incoming in a clear view: divide and highlight them with different status. Search, filter and sort by every field to have a clear situation of bank accounts at any time.
+Take note of all income and expenses in a clear view: divide and highlight them with different statuses. Search, filter, and sort by any field to have a clear situation of bank accounts at any time.
 
 ☆ <b>PAYEES AND CATEGORIES</b>
 Categories indicate the reason an expenditure is made or an income is received. Payees are the people or the institutions that give money or who are paid for goods and services.
 
-☆ <b>REPEATING TRANSACTIONS</b>
+☆ <b>RECURRING TRANSACTIONS</b>
 Special transactions set up in order to have the transaction entered into the database at some future date. They generally occur at regular intervals based on a schedule.
 
 ☆ <b>STOCKS</b>
