@@ -1,6 +1,7 @@
 package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import com.money.manager.ex.database.TableStock;
@@ -36,13 +37,16 @@ public class Stock
         // default constructor.
     }
 
-//    public Stock(Cursor c) {
-//        super(c);
-//
-//        // todo: see if we need to initialize the content values object.
-//        contentValues = new ContentValues();
-//        DatabaseUtils.cursorRowToContentValues(c, contentValues);
-//    }
+    @Override
+    public void loadFromCursor(Cursor c) {
+        super.loadFromCursor(c);
+
+        // Reload all money values.
+        DatabaseUtils.cursorDoubleToCursorValues(c, TableStock.COMMISSION, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, TableStock.CURRENTPRICE, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, TableStock.NUMSHARES, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, TableStock.PURCHASEPRICE, this.contentValues);
+    }
 
     // properties
 

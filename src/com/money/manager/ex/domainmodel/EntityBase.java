@@ -30,7 +30,7 @@ import java.util.Date;
 
 /**
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
- * Created by Alen on 5/09/2015.
+ * Created by Alen Siljak on 5/09/2015.
  */
 public class EntityBase {
 
@@ -40,10 +40,6 @@ public class EntityBase {
     protected EntityBase() {
         contentValues = new ContentValues();
     }
-
-//    protected EntityBase(Cursor c) {
-//        mCursor = c;
-//    }
 
     public ContentValues contentValues;
 
@@ -57,6 +53,24 @@ public class EntityBase {
 
         DatabaseUtils.cursorRowToContentValues(c, contentValues);
     }
+
+    public void setCursor(Cursor c) {
+        this.mCursor = c;
+    }
+
+//    protected MonetaryAmount getMonetaryAmount(String fieldName) {
+//        Double d = contentValues.getAsDouble(fieldName);
+//
+////        MonetaryAmount amt = Monetary.getDefaultAmountFactory().setNumber(d).create();
+//        MonetaryAmount dInt = Money.of(5, "EUR");
+//        MonetaryAmount dAmount = Money.of(d, "EUR");
+//        return dAmount;
+//    }
+
+//    protected Money getMoney(String fieldName) {
+//        Double d = contentValues.getAsDouble(fieldName);
+//        return MoneyFactory.fromDouble(d);
+//    }
 
     protected BigDecimal getBigDecimal(String fieldName) {
         String value = contentValues.getAsString(fieldName);

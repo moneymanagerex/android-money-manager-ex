@@ -19,6 +19,7 @@ package com.money.manager.ex.account;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountTransactionRepository;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.viewmodels.AccountTransaction;
 
@@ -137,7 +139,6 @@ public class CalculateRunningBalanceTask2
                 // Get starting balance on the given day.
                 startingBalance = accountService.loadInitialBalance(this.accountId);
 
-//                String date = c.getString(c.getColumnIndex(this.dateFieldName));
                 String date = DateUtils.getIsoStringDate(this.startingDate);
                 date = DateUtils.getYesterdayFrom(date);
                 BigDecimal balanceOnDate = accountService.calculateBalanceOn(this.accountId, date);
@@ -147,6 +148,7 @@ public class CalculateRunningBalanceTask2
             }
 
             // adjust the balance for each transaction.
+
             tx.loadFromCursor(c);
 
             // Exclude Void transactions from calculation.
@@ -156,11 +158,9 @@ public class CalculateRunningBalanceTask2
 
                 switch (TransactionTypes.valueOf(transType)) {
                     case Withdrawal:
-//                    runningBalance -= amount;
                         amount = tx.getAmount();
                         break;
                     case Deposit:
-//                    runningBalance += amount;
                         amount = tx.getAmount();
                         break;
                     case Transfer:
@@ -175,7 +175,6 @@ public class CalculateRunningBalanceTask2
                 runningBalance = runningBalance.add(amount);
             }
 
-//            this.balances[i] = runningBalance;
             this.balances.put(tx.getId(), runningBalance);
             i--;
         }

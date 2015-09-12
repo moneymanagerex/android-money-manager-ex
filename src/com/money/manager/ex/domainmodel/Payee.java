@@ -29,10 +29,6 @@ public class Payee
 
     }
 
-//    public Payee(Cursor c) {
-//        super(c);
-//    }
-
     public Integer getId() {
         return getInt(TablePayee.PAYEEID);
     }

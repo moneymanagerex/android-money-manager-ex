@@ -17,11 +17,16 @@
  */
 package com.money.manager.ex.viewmodels;
 
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.domainmodel.EntityBase;
 
 import java.math.BigDecimal;
+
+import info.javaperformance.money.Money;
 
 /**
  * Record from All Data query. Used for account transactions lists.
@@ -29,6 +34,15 @@ import java.math.BigDecimal;
  */
 public class AccountTransaction
     extends EntityBase {
+
+    @Override
+    public void loadFromCursor(Cursor c) {
+        super.loadFromCursor(c);
+
+        // Reload all money values.
+        DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.Amount, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.ToAmount, this.contentValues);
+    }
 
     public Integer getId() {
         return getInt(QueryAllData.ID);

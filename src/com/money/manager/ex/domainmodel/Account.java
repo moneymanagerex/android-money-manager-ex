@@ -18,6 +18,7 @@
 package com.money.manager.ex.domainmodel;
 
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 
 import com.money.manager.ex.database.TableAccountList;
 
@@ -38,6 +39,14 @@ public class Account
 
     public Account() {
         super();
+    }
+
+    @Override
+    public void loadFromCursor(Cursor c) {
+        super.loadFromCursor(c);
+
+        // Reload all money values.
+        DatabaseUtils.cursorDoubleToCursorValues(c, TableAccountList.INITIALBAL, this.contentValues);
     }
 
     public Integer getId() {
