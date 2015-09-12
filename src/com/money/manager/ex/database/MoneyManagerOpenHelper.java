@@ -46,22 +46,6 @@ import java.util.Locale;
 public class MoneyManagerOpenHelper
         extends SQLiteOpenHelper {
 
-    private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
-    private static final int databaseCurrentVersion = 1;
-    // singleton
-    private static MoneyManagerOpenHelper mInstance;
-    // context of creation
-    private Context mContext;
-
-    private MoneyManagerOpenHelper(Context context) {
-        super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseCurrentVersion);
-        this.mContext = context;
-
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
-
-        Log.v(LOGCAT, "event onCreate( )");
-    }
-
     /**
      * Returns the singleton instance of the helper for database access.
      * @param context Use Application context for database access (?)
@@ -76,11 +60,60 @@ public class MoneyManagerOpenHelper
         return mInstance;
     }
 
+    private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
+    private static final int databaseCurrentVersion = 3;
+    // singleton
+    private static MoneyManagerOpenHelper mInstance;
+    // context of creation
+    private Context mContext;
+
+    private MoneyManagerOpenHelper(Context context) {
+        super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseCurrentVersion);
+        this.mContext = context;
+
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
+
+        Log.v(LOGCAT, "event onCreate( )");
+    }
+
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
         Log.v(LOGCAT, "event onConfigure( )");
         db.rawQuery("PRAGMA journal_mode=OFF", null).close();
+    }
+
+    /**
+     * Called when the database is being created.
+     * @param db Database instance.
+     */
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onCreate method");
+
+        executeRawSql(db, R.raw.database_create);
+
+        // force update database
+        updateDatabase(db, 0, databaseCurrentVersion);
+
+        try {
+            initDatabase(db);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "initializing database");
+        }
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onUpgrade(" + Integer.toString(oldVersion) + ", " + Integer.toString(newVersion) + " method");
+        // update databases
+        updateDatabase(db, oldVersion, newVersion);
     }
 
     @Override
@@ -89,6 +122,29 @@ public class MoneyManagerOpenHelper
         CurrencyService.destroy();
         super.close();
         mInstance = null;
+    }
+
+    @Override
+    public SQLiteDatabase getReadableDatabase() {
+        SQLiteDatabase db = null;
+        try {
+            db = super.getReadableDatabase();
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "opening readable database");
+        }
+        return db;
+    }
+
+    @Override
+    public SQLiteDatabase getWritableDatabase() {
+        try {
+            return getWritableDatabase_Internal();
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "opening writable database");
+        }
+        return null;
     }
 
     /**
@@ -151,29 +207,6 @@ public class MoneyManagerOpenHelper
         execSQL(this.getWritableDatabase(), sql, bindArgs);
     }
 
-    @Override
-    public SQLiteDatabase getReadableDatabase() {
-        SQLiteDatabase db = null;
-        try {
-            db = super.getReadableDatabase();
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "opening readable database");
-        }
-        return db;
-    }
-
-    @Override
-    public SQLiteDatabase getWritableDatabase() {
-        try {
-            return getWritableDatabase_Internal();
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "opening writable database");
-        }
-        return null;
-    }
-
     private SQLiteDatabase getWritableDatabase_Internal() {
         SQLiteDatabase db = super.getWritableDatabase();
 
@@ -197,8 +230,9 @@ public class MoneyManagerOpenHelper
 
             try {
                 db.execSQL(aSqlStatment);
-            } catch (SQLException E) {
-                Log.e(LOGCAT, "Error in executeRawSql: " + E.getMessage());
+            } catch (SQLException e) {
+                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                handler.handle(e, "executing raw sql: " + sqlCreate);
             }
         }
     }
@@ -221,44 +255,13 @@ public class MoneyManagerOpenHelper
                 }
             }
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "getting sqlite version");
         } finally {
             if (cursor != null) cursor.close();
 //            if (database != null) database.close();
         }
         return sqliteVersion;
-    }
-
-    /**
-     * Called when the database is being created.
-     * @param db Database instance.
-     */
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onCreate method");
-
-        executeRawSql(db, R.raw.database_create);
-
-        // force update database
-        updateDatabase(db, 0, databaseCurrentVersion);
-
-        try {
-            initDatabase(db);
-        } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
-        }
-    }
-
-    @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onUpgrade(" + Integer.toString(oldVersion) + ", " + Integer.toString(newVersion) + " method");
-        // update databases
-        updateDatabase(db, oldVersion, newVersion);
     }
 
     private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
