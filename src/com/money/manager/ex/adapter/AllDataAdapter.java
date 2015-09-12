@@ -48,6 +48,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import info.javaperformance.money.Money;
+
 /**
  * Adapter for all_data query. The list of transactions (account/recurring).
  */
@@ -93,7 +95,7 @@ public class AllDataAdapter
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
     private Context mContext;
-    private HashMap<Integer, BigDecimal> balances;
+    private HashMap<Integer, Money> balances;
     private ArrayList<TextView> requestingBalanceUpdate;
 
     @Override
@@ -342,7 +344,7 @@ public class AllDataAdapter
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
     }
 
-    public void setBalances(HashMap<Integer, BigDecimal> balances) {
+    public void setBalances(HashMap<Integer, Money> balances) {
         this.balances = balances;
 
         // update the balances on visible elements.
@@ -492,9 +494,9 @@ public class AllDataAdapter
         if (!this.balances.containsKey(txId)) return;
 
         CurrencyService currencyService = new CurrencyService(mContext);
-        BigDecimal currentBalance = this.balances.get(txId);
+        Money currentBalance = this.balances.get(txId);
         String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(),
-                currentBalance.doubleValue());
+                currentBalance.toDouble());
         textView.setText(balanceFormatted);
         textView.setVisibility(View.VISIBLE);
     }

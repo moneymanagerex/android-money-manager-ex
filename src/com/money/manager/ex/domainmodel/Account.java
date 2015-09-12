@@ -24,6 +24,8 @@ import com.money.manager.ex.database.TableAccountList;
 
 import java.math.BigDecimal;
 
+import info.javaperformance.money.Money;
+
 /**
  * Account entity
  * Created by Alen on 5/09/2015.
@@ -105,8 +107,8 @@ public class Account
         return getString(TableAccountList.ACCESSINFO);
     }
 
-    public BigDecimal getInitialBalance() {
-        return getBigDecimal(TableAccountList.INITIALBAL);
+    public Money getInitialBalance() {
+        return getMoney(TableAccountList.INITIALBAL);
     }
 
     public String getFavourite() {

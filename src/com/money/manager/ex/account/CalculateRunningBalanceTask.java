@@ -33,6 +33,8 @@ import com.money.manager.ex.database.TableCheckingAccount;
 
 import java.math.BigDecimal;
 
+import info.javaperformance.money.Money;
+
 /**
  * NOT USED
  * Async task that calculates and updates the amount balance in the transaction list.
@@ -122,8 +124,8 @@ public class CalculateRunningBalanceTask
 
         // Retrieve initial balance.
         AccountService accountService = new AccountService(mContext);
-        BigDecimal initialBalance = accountService.loadInitialBalance(getAccountId());
-        total += initialBalance.doubleValue();
+        Money initialBalance = accountService.loadInitialBalance(getAccountId());
+        total += initialBalance.toDouble();
 
         return true;
     }

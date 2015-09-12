@@ -72,6 +72,8 @@ import com.money.manager.ex.utils.DateUtils;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
+import info.javaperformance.money.Money;
+
 /**
  * Checking account fragment.
  * Shows the list of transactions, etc.
@@ -388,7 +390,7 @@ public class AccountTransactionsFragment
     }
 
     @Override
-    public void onTaskComplete(HashMap<Integer, BigDecimal> balances) {
+    public void onTaskComplete(HashMap<Integer, Money> balances) {
         // Update the UI controls
         displayRunningBalances(balances);
     }
@@ -765,7 +767,7 @@ public class AccountTransactionsFragment
         // the result is received in #onTaskComplete.
     }
 
-    private void displayRunningBalances(HashMap<Integer, BigDecimal> balances) {
+    private void displayRunningBalances(HashMap<Integer, Money> balances) {
         mAllDataListFragment.displayRunningBalances(balances);
     }
 

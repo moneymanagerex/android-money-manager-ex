@@ -52,8 +52,12 @@ public class AccountTransaction
         return getInt(QueryAllData.ACCOUNTID);
     }
 
-    public BigDecimal getAmount() {
-        return getBigDecimal(QueryAllData.Amount);
+//    public BigDecimal getAmount() {
+//        return getBigDecimal(QueryAllData.Amount);
+//    }
+
+    public Money getAmount() {
+        return getMoney(QueryAllData.Amount);
     }
 
     public String getStatusCode() {
@@ -65,8 +69,12 @@ public class AccountTransaction
         return TransactionStatuses.get(code);
     }
 
-    public BigDecimal getToAmount() {
-        return getBigDecimal(QueryAllData.ToAmount);
+//    public BigDecimal getToAmount() {
+//        return getBigDecimal(QueryAllData.ToAmount);
+//    }
+
+    public Money getToAmount() {
+        return getMoney(QueryAllData.ToAmount);
     }
 
     public String getTransactionType() {

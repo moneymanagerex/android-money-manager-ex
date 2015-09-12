@@ -506,7 +506,7 @@ public class AccountEditActivity
         mWebsite = account.getWebSite();
         mContactInfo = account.getContactInfo();
         mAccessInfo = account.getAccessInfo();
-        mInitialBal = account.getInitialBalance().doubleValue();
+        mInitialBal = account.getInitialBalance().toDouble();
         mFavoriteAcct = account.getFavourite();
         mCurrencyId = account.getCurrencyId();
 

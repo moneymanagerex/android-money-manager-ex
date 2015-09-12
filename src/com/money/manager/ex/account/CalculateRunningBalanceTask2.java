@@ -38,6 +38,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Not used!
  * Async task that calculates and updates the amount balance for each transaction in the
@@ -47,7 +50,7 @@ import java.util.HashMap;
  * Created by Alen Siljak on 11/09/2015.
  */
 public class CalculateRunningBalanceTask2
-        extends AsyncTask<Void, Void, HashMap<Integer, BigDecimal>> {
+        extends AsyncTask<Void, Void, HashMap<Integer, Money>> {
 
     /**
      * Create the task.
@@ -67,7 +70,7 @@ public class CalculateRunningBalanceTask2
     }
 
     private Context context;
-    private HashMap<Integer, BigDecimal> balances;
+    private HashMap<Integer, Money> balances;
     private int accountId;
     private Date startingDate;
     private ICalculateRunningBalanceTaskCallbacks listener;
@@ -88,7 +91,7 @@ public class CalculateRunningBalanceTask2
      * @see #publishProgress
      */
     @Override
-    protected HashMap<Integer, BigDecimal> doInBackground(Void... params) {
+    protected HashMap<Integer, Money> doInBackground(Void... params) {
         try {
             return runTask();
         } catch (IllegalStateException | SQLiteDiskIOException ex) {
@@ -101,14 +104,14 @@ public class CalculateRunningBalanceTask2
     }
 
     @Override
-    protected void onPostExecute(HashMap<Integer, BigDecimal> result) {
+    protected void onPostExecute(HashMap<Integer, Money> result) {
         // todo: raise event
         if (this.listener != null) {
             listener.onTaskComplete(result);
         }
     }
 
-    private HashMap<Integer, BigDecimal> runTask() {
+    private HashMap<Integer, Money> runTask() {
         // load data
         Cursor c = loadData();
         if (c == null) return null;
@@ -116,7 +119,7 @@ public class CalculateRunningBalanceTask2
         if (balances != null && records == balances.size()) return null;
         if (c.getCount() <= 0) return null;
 
-        BigDecimal startingBalance = null;
+        Money startingBalance = null;
 
         AccountService accountService = new AccountService(this.context);
         AccountTransaction tx = new AccountTransaction();
@@ -125,8 +128,8 @@ public class CalculateRunningBalanceTask2
 //        balances = new BigDecimal[c.getCount()];
         balances = new HashMap<>();
         String transType;
-        BigDecimal amount = BigDecimal.ZERO;
-        BigDecimal runningBalance = BigDecimal.ZERO;
+        Money amount = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
+        Money runningBalance = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
 
         // populate balance amounts
 
@@ -141,7 +144,7 @@ public class CalculateRunningBalanceTask2
 
                 String date = DateUtils.getIsoStringDate(this.startingDate);
                 date = DateUtils.getYesterdayFrom(date);
-                BigDecimal balanceOnDate = accountService.calculateBalanceOn(this.accountId, date);
+                Money balanceOnDate = accountService.calculateBalanceOn(this.accountId, date);
                 startingBalance = startingBalance.add(balanceOnDate);
 
                 runningBalance = startingBalance;

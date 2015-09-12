@@ -73,6 +73,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import info.javaperformance.money.Money;
+
 /**
  * Fragment that displays the transactions.
  */
@@ -541,7 +543,7 @@ public class AllDataListFragment
         this.mShowBalance = mShownBalance;
     }
 
-    public void displayRunningBalances(HashMap<Integer, BigDecimal> balances) {
+    public void displayRunningBalances(HashMap<Integer, Money> balances) {
         AllDataAdapter adapter = getAllDataAdapter();
         if(adapter == null) return;
 

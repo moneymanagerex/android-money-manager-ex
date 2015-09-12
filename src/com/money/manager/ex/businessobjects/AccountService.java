@@ -44,6 +44,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Various business logic pieces related to Account(s).
  */
@@ -101,8 +104,8 @@ public class AccountService {
      * account initial balance.
      * @param isoDate date in ISO format
      */
-    public BigDecimal calculateBalanceOn(int accountId, String isoDate) {
-        BigDecimal total = BigDecimal.ZERO;
+    public Money calculateBalanceOn(int accountId, String isoDate) {
+        Money total = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
 
         TableCheckingAccount tableCheckingAccount = new TableCheckingAccount();
 
@@ -128,7 +131,7 @@ public class AccountService {
         if (cursor == null) return total;
 
         AccountTransaction tx = new AccountTransaction();
-        BigDecimal amount;
+        Money amount;
 
         // calculate balance.
         while (cursor.moveToNext()) {
@@ -193,7 +196,7 @@ public class AccountService {
         return result;
     }
 
-    public BigDecimal loadInitialBalance(int accountId) {
+    public Money loadInitialBalance(int accountId) {
         AccountRepository repo = new AccountRepository(mContext);
         Account account = repo.load(accountId);
         return account.getInitialBalance();

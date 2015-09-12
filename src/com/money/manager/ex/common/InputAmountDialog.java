@@ -99,6 +99,10 @@ public class InputAmountDialog
      * used to restore expression from saved instance state.
      */
     private String mExpression;
+    /**
+     * Indicates that the user has already started typing. We should not replace the existing number
+     * with the typed value but append the typed value to the existing number.
+     */
     private boolean mStartedTyping = false;
 
     @Override
@@ -219,6 +223,8 @@ public class InputAmountDialog
             deleteButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mStartedTyping = true;
+
                     String currentNumber = txtMain.getText().toString();
                     currentNumber = deleteLastDigitFrom(currentNumber);
                     txtMain.setText(currentNumber);

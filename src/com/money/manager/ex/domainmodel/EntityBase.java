@@ -28,6 +28,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
  * Created by Alen Siljak on 5/09/2015.
@@ -67,19 +70,16 @@ public class EntityBase {
 //        return dAmount;
 //    }
 
-//    protected Money getMoney(String fieldName) {
+    protected Money getMoney(String fieldName) {
 //        Double d = contentValues.getAsDouble(fieldName);
 //        return MoneyFactory.fromDouble(d);
-//    }
+
+        String value = contentValues.getAsString(fieldName);
+        return MoneyFactory.fromString(value);
+    }
 
     protected BigDecimal getBigDecimal(String fieldName) {
         String value = contentValues.getAsString(fieldName);
-
-        if (StringUtils.isEmpty(value) && mCursor != null) {
-            DatabaseUtils.cursorStringToContentValues(mCursor, fieldName, contentValues);
-            value = contentValues.getAsString(fieldName);
-        }
-
         return new BigDecimal(value);
     }
 
@@ -101,13 +101,7 @@ public class EntityBase {
     }
 
     protected String getString(String fieldName) {
-        String value = contentValues.getAsString(fieldName);
-        if (StringUtils.isEmpty(value) && mCursor != null) {
-            DatabaseUtils.cursorStringToContentValues(mCursor, fieldName, contentValues);
-            value = contentValues.getAsString(fieldName);
-        }
-
-        return value;
+        return contentValues.getAsString(fieldName);
     }
 
     protected void setString(String fieldName, String value) {
