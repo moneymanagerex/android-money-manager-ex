@@ -110,18 +110,22 @@ public class InfoService {
         TableInfoTable infoTable = new TableInfoTable();
         // check if exists info
         boolean exists = !TextUtils.isEmpty(getInfoValue(key));
-        // content values
+
         ContentValues values = new ContentValues();
         values.put(TableInfoTable.INFOVALUE, value);
 
         try {
             MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
             if (exists) {
-                result = helper.getWritableDatabase().update(infoTable.getSource(), values,
-                        TableInfoTable.INFONAME + "=?", new String[]{key}) >= 0;
+                result = helper.getWritableDatabase().update(infoTable.getSource(),
+                        values,
+                        TableInfoTable.INFONAME + "=?",
+                        new String[]{key}) >= 0;
             } else {
                 values.put(TableInfoTable.INFONAME, key);
-                result = helper.getWritableDatabase().insert(infoTable.getSource(), null, values) >= 0;
+                result = helper.getWritableDatabase().insert(infoTable.getSource(),
+                        null,
+                        values) >= 0;
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
