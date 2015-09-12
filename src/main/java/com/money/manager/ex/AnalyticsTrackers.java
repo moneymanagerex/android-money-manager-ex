@@ -1,10 +1,9 @@
-package com.money.manager.ex.about;
+package com.money.manager.ex;
 
 import android.content.Context;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.money.manager.ex.R;
 
 import java.util.HashMap;
 import java.util.Map;
