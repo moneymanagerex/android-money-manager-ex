@@ -94,12 +94,10 @@ public class CalculateRunningBalanceTask2
     protected HashMap<Integer, Money> doInBackground(Void... params) {
         try {
             return runTask();
-        } catch (IllegalStateException | SQLiteDiskIOException ex) {
+        } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(this.context, this);
             handler.handle(ex, "balancing amount");
-        } catch (Exception e) {
-            throw new RuntimeException("Error in Balance Amount Task", e);
-        }
+        } 
         return null;
     }
 
