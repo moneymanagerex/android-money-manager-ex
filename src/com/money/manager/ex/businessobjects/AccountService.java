@@ -234,7 +234,8 @@ public class AccountService {
         where.addStatement(TableAccountList.ACCOUNTID, "=", accountId);
 
         AccountRepository repo = new AccountRepository(mContext);
-        Account account = repo.query(new String[]{TableAccountList.CURRENCYID}, where.getWhere(), null);
+        Account account = repo.query(new String[]{TableAccountList.CURRENCYID},
+                where.getWhere(), null);
         return account.getCurrencyId();
     }
 
@@ -290,7 +291,7 @@ public class AccountService {
                 account.getAllColumns(),
                 where,
                 null,
-                TableAccountList.ACCOUNTNAME
+                "lower (" + TableAccountList.ACCOUNTNAME + ")"
         );
         return cursor;
     }
