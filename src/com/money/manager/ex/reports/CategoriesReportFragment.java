@@ -51,6 +51,8 @@ import com.money.manager.ex.utils.DateUtils;
 
 import java.util.ArrayList;
 
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Categories report fragment.
  * Created by Alen Siljak on 06/07/2015.
@@ -125,7 +127,7 @@ public class CategoriesReportFragment
                     totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
                 }
                 TextView txtColumn2 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn2);
-                txtColumn2.setText(currencyService.getBaseCurrencyFormatted(totalAmount));
+                txtColumn2.setText(currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(totalAmount)));
 
                 // solved bug chart
                 if (data.getCount() > 0) {
@@ -314,7 +316,8 @@ public class CategoriesReportFragment
 
             item.setText(category);
             item.setValue(total);
-            item.setValueFormatted(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total));
+            item.setValueFormatted(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
+                    MoneyFactory.fromDouble(total)));
             // add element
             arrayList.add(item);
         }

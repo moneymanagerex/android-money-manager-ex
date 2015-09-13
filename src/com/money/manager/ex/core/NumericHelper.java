@@ -33,6 +33,8 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
+import info.javaperformance.money.Money;
+
 /**
  * Various methods that help out working with numbers.
  */
@@ -68,14 +70,15 @@ public class NumericHelper {
         return result;
     }
 
-    public double roundNumber(double amount, int decimals) {
-        BigDecimal x = new BigDecimal(amount).setScale(decimals, RoundingMode.HALF_EVEN);
-        double result = x.doubleValue();
-        return result;
-    }
+//    public double roundNumber(double amount, int decimals) {
+//        BigDecimal x = new BigDecimal(amount).setScale(decimals, RoundingMode.HALF_EVEN);
+//        double result = x.doubleValue();
+//        return result;
+//    }
 
-    public String getNumberFormatted(double value, int decimals, String decimalPoint, String groupSeparator) {
-        value = roundNumber(value, decimals);
+    public String getNumberFormatted(Money value, int decimals, String decimalPoint, String groupSeparator) {
+//        value = roundNumber(value, decimals);
+        value = value.truncate(decimals);
 
         // set format
         DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
@@ -95,11 +98,11 @@ public class NumericHelper {
         formatter.setMaximumFractionDigits(decimals);
         formatter.setMinimumFractionDigits(decimals);
 
-        String result = formatter.format(value);
+        String result = formatter.format(value.toDouble());
         return result;
     }
 
-    public String getNumberFormatted(double value, TableCurrencyFormats currency) {
+    public String getNumberFormatted(Money value, TableCurrencyFormats currency) {
         if (currency == null) {
             currency = this.getCurrencyService().getBaseCurrency();
         }
@@ -108,7 +111,7 @@ public class NumericHelper {
                     currency.getGroupSeparator());
     }
 
-    public String getNumberFormatted(double value, double scale, String decimalPoint, String groupSeparator) {
+    public String getNumberFormatted(Money value, double scale, String decimalPoint, String groupSeparator) {
         // Round the number first.
         int decimals = getNumberOfDecimals(scale);
 
@@ -156,7 +159,7 @@ public class NumericHelper {
      * @param showSymbols Whether to include the currency symbol in the output.
      * @return formatted value
      */
-    public String getValueFormatted(double value, boolean showSymbols, TableCurrencyFormats currency) {
+    public String getValueFormatted(Money value, boolean showSymbols, TableCurrencyFormats currency) {
         String result = this.getNumberFormatted(value, currency.getScale(),
                 currency.getDecimalPoint(), currency.getGroupSeparator());
 
@@ -177,7 +180,7 @@ public class NumericHelper {
      * @param value value to format
      * @return value formatted
      */
-    public String getValueFormatted(double value, TableCurrencyFormats currency) {
+    public String getValueFormatted(Money value, TableCurrencyFormats currency) {
         return getValueFormatted(value, true, currency);
     }
 

@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Adapter for the Home screen expandable accounts list.
  * Created by Alen Siljak on 15/07/2015.
@@ -121,10 +123,10 @@ public class HomeAccountsExpandableAdapter
         QueryAccountBills total = mTotalsByType.get(accountType);
         if (total != null) {
             // set account type value
-            String totalDisplay = currencyService.getBaseCurrencyFormatted(total.getTotalBaseConvRate());
+            String totalDisplay = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getTotalBaseConvRate()));
             holder.txtAccountTotal.setText(totalDisplay);
             if(!mHideReconciled) {
-                String reconciledDisplay = currencyService.getBaseCurrencyFormatted(total.getReconciledBaseConvRate());
+                String reconciledDisplay = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getReconciledBaseConvRate()));
                 holder.txtAccountReconciled.setText(reconciledDisplay);
             }
             // set account name
@@ -182,7 +184,7 @@ public class HomeAccountsExpandableAdapter
         // set account name
         holder.txtAccountName.setText(account.getAccountName());
         // import formatted
-        String value = currencyService.getCurrencyFormatted(account.getCurrencyId(), account.getTotal());
+        String value = currencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getTotal()));
         // set amount value
         holder.txtAccountTotal.setText(value);
 
@@ -190,7 +192,7 @@ public class HomeAccountsExpandableAdapter
         if(mHideReconciled) {
             holder.txtAccountReconciled.setVisibility(View.GONE);
         } else {
-            value = currencyService.getCurrencyFormatted(account.getCurrencyId(), account.getReconciled());
+            value = currencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getReconciled()));
             holder.txtAccountReconciled.setText(value);
         }
 

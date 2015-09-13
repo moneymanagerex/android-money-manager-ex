@@ -193,9 +193,9 @@ public class EditTransactionCommonFunctions {
         String amountDisplay;
 
         if (currencyId == null) {
-            amountDisplay = currencyService.getBaseCurrencyFormatted(amount.toDouble());
+            amountDisplay = currencyService.getBaseCurrencyFormatted(amount);
         } else {
-            amountDisplay = currencyService.getCurrencyFormatted(currencyId, amount.toDouble());
+            amountDisplay = currencyService.getCurrencyFormatted(currencyId, amount);
         }
         view.setText(amountDisplay);
         view.setTag(amount.toString());

@@ -21,6 +21,8 @@ import com.money.manager.ex.transactions.EditTransactionActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
+import info.javaperformance.money.Money;
+
 /**
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in {@link SingleAccountWidgetConfigureActivity SingleAccountWidgetConfigureActivity}
@@ -112,11 +114,12 @@ public class SingleAccountWidget
 //        String[] args = generator.getSelectionArguments();
 
         AccountService service = new AccountService(context);
-        double total = service.loadBalance(selection);
+        Money total = service.loadBalance(selection);
 
         // format the amount
         CurrencyService currencyService = new CurrencyService(context);
-        String summary = currencyService.getCurrencyFormatted(account.getCurrencyId(), total);
+        String summary = currencyService.getCurrencyFormatted(
+                account.getCurrencyId(), total);
 
         return summary;
     }

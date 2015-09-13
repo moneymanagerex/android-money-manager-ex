@@ -30,6 +30,8 @@ import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 
+import info.javaperformance.money.MoneyFactory;
+
 public class AccountBillsWidgetProvider extends AppWidgetProvider {
 
     @Override
@@ -44,7 +46,7 @@ public class AccountBillsWidgetProvider extends AppWidgetProvider {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_account_bills);
             remoteViews.setTextViewText(R.id.textViewUserName, app.loadUserNameFromDatabase(context));
             remoteViews.setTextViewText(R.id.textViewTotalAccounts, context.getString(R.string.summary) + ": "
-                    + currencyService.getBaseCurrencyFormatted(app.getSummaryAccounts(context)));
+                    + currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(app.getSummaryAccounts(context))));
             // register on click in icon launch application
             Intent intentApplication = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentApplication, 0);

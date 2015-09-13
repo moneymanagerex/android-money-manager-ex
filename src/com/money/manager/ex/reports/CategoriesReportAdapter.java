@@ -32,6 +32,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
 
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Adapter for the Categories report.
  * Created by Alen Siljak on 06/07/2015.
@@ -70,7 +72,7 @@ public class CategoriesReportAdapter
 
         CurrencyService currencyService = new CurrencyService(mContext);
 
-        txtColumn2.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total));
+        txtColumn2.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), MoneyFactory.fromDouble(total)));
         if (total < 0) {
             txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
         } else {

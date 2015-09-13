@@ -28,6 +28,8 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 
+import info.javaperformance.money.MoneyFactory;
+
 public class AccountBillsWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -82,8 +84,9 @@ public class AccountBillsWidgetService extends RemoteViewsService {
                 int colindex = mCursor.getColumnIndex(QueryAccountBills.ACCOUNTNAME);
                 String accountname = mCursor.getString(colindex);
                 remoteViews.setTextViewText(R.id.textViewItemAccountName, accountname);
-                String value = mCurrencyService.getCurrencyFormatted(mCursor.getInt(mCursor.getColumnIndex(QueryAccountBills.CURRENCYID)),
-                        mCursor.getDouble(mCursor.getColumnIndex(QueryAccountBills.TOTAL)));
+                String value = mCurrencyService.getCurrencyFormatted(
+                        mCursor.getInt(mCursor.getColumnIndex(QueryAccountBills.CURRENCYID)),
+                        MoneyFactory.fromDouble(mCursor.getDouble(mCursor.getColumnIndex(QueryAccountBills.TOTAL))));
                 remoteViews.setTextViewText(R.id.textViewItemAccountTotal, value);
             }
             return remoteViews;

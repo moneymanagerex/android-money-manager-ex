@@ -32,6 +32,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.currency.CurrencyService;
 
+import info.javaperformance.money.MoneyFactory;
+
 public class AccountBillsDashExtension extends DashClockExtension {
 
     @Override
@@ -54,7 +56,8 @@ public class AccountBillsDashExtension extends DashClockExtension {
                     String accountname = cursor.getString(cursor.getColumnIndex(QueryAccountBills.ACCOUNTNAME));
                     int currencyId = cursor.getInt(cursor.getColumnIndex(QueryAccountBills.CURRENCYID));
                     double summaryAccount = cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTAL));
-                    String value = currencyService.getCurrencyFormatted(currencyId, summaryAccount);
+                    String value = currencyService.getCurrencyFormatted(
+                            currencyId, MoneyFactory.fromDouble(summaryAccount));
                     if (!TextUtils.isEmpty(body)) body += "\r\n";
                     // add account and summary
                     body += accountname + ": " + value;
@@ -67,12 +70,12 @@ public class AccountBillsDashExtension extends DashClockExtension {
 
             // show data
             publishUpdate(new ExtensionData()
-                    .visible(true)
-                    .icon(R.drawable.ic_stat_notification)
-                    .status(currencyService.getBaseCurrencyFormatted(app.getSummaryAccounts(context)))
-                    .expandedTitle(app.getUserName())
-                    .expandedBody(body)
-                    .clickIntent(new Intent(this, MainActivity.class)));
+                .visible(true)
+                .icon(R.drawable.ic_stat_notification)
+                .status(currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(app.getSummaryAccounts(context))))
+                .expandedTitle(app.getUserName())
+                .expandedBody(body)
+                .clickIntent(new Intent(this, MainActivity.class)));
         } catch (Exception e) {
             Log.e(AccountBillsDashExtension.class.getSimpleName(), e.getMessage());
         }

@@ -35,6 +35,8 @@ import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Adapter
  * Created by Alen Siljak on 6/07/2015.
@@ -78,9 +80,12 @@ public class IncomeVsExpensesAdapter
         }
         CurrencyService currencyService = new CurrencyService(mContext);
 
-        txtIncome.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), income));
-        txtExpenses.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), Math.abs(expenses)));
-        txtDifference.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), income - Math.abs(expenses)));
+        txtIncome.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
+                MoneyFactory.fromDouble(income)));
+        txtExpenses.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
+                MoneyFactory.fromDouble(Math.abs(expenses))));
+        txtDifference.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
+                MoneyFactory.fromDouble(income - Math.abs(expenses))));
 
         Core core = new Core(context);
         if (income - Math.abs(expenses) < 0) {

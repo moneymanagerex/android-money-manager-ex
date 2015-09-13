@@ -34,6 +34,7 @@ import com.money.manager.ex.database.TableCheckingAccount;
 import java.math.BigDecimal;
 
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * NOT USED
@@ -70,7 +71,7 @@ public class CalculateRunningBalanceTask
         if (result && getTextView() != null) {
             CurrencyService currencyService = new CurrencyService(getContext());
 
-            getTextView().setText(currencyService.getCurrencyFormatted(getCurrencyId(), total));
+            getTextView().setText(currencyService.getCurrencyFormatted(getCurrencyId(), MoneyFactory.fromDouble(total)));
             if (getTextView().getVisibility() != View.VISIBLE) getTextView().setVisibility(View.VISIBLE);
         }
     }

@@ -280,9 +280,9 @@ public class Core {
         CurrencyService currencyService = new CurrencyService(mContext);
 
         if (currencyId == null) {
-            view.setText(currencyService.getBaseCurrencyFormatted(amount.toDouble()));
+            view.setText(currencyService.getBaseCurrencyFormatted(amount));
         } else {
-            view.setText(currencyService.getCurrencyFormatted(currencyId, amount.toDouble()));
+            view.setText(currencyService.getCurrencyFormatted(currencyId, amount));
         }
 
         view.setTag(amount);

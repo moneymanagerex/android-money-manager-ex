@@ -57,6 +57,8 @@ import com.money.manager.ex.view.RobotoTextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * This fragment is not used (?).
  */
@@ -329,8 +331,11 @@ public class DashboardFragment
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
             int num = cursor.getInt(cursor.getColumnIndex("NUM"));
             // Add Row
-            tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
-                            "<small>" + currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
+            tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>",
+                            "<small><i>" + Integer.toString(num) + "</i></small>",
+                            "<small>" + currencyService.getCurrencyFormatted(
+                                    currencyService.getBaseCurrencyId(), MoneyFactory.fromDouble(total)) + "</small>"},
+                    new Float[]{1f, null, null},
                     new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
         }
         // return Layout
@@ -358,9 +363,13 @@ public class DashboardFragment
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
             int num = cursor.getInt(cursor.getColumnIndex("NUM"));
             // Add Row
-            tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>", "<small><i>" + Integer.toString(num) + "</i></small>",
-                            "<small>" + currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total) + "</small>"}, new Float[]{1f, null, null},
-                    new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
+            tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>",
+                            "<small><i>" + Integer.toString(num) + "</i></small>",
+                            "<small>" + currencyService.getCurrencyFormatted(
+                                    currencyService.getBaseCurrencyId(), MoneyFactory.fromDouble(total)) + "</small>"},
+                    new Float[]{1f, null, null},
+                    new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT},
+                    new Integer[][]{null, {0, 0, padding_in_px, 0}, null}));
         }
 
         // return Layout
@@ -388,7 +397,7 @@ public class DashboardFragment
             String daysLeftText = "";
             daysLeftText = Integer.toString(Math.abs(daysLeft)) + " " + getString(daysLeft >= 0 ? R.string.days_remaining : R.string.days_overdue);
             TableRow row = createTableRow(new String[]{"<small>" + payee + "</small>",
-                            "<small>" + currencyService.getCurrencyFormatted(currencyId, total) + "</small>",
+                            "<small>" + currencyService.getCurrencyFormatted(currencyId, MoneyFactory.fromDouble(total)) + "</small>",
                             "<small>" + daysLeftText + "</small>"}, new Float[]{1f, null, 1f},
                     new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null});
             TextView txt = (TextView) row.getChildAt(2);

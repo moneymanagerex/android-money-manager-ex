@@ -49,6 +49,8 @@ import com.money.manager.ex.utils.DateUtils;
 
 import java.util.ArrayList;
 
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Content fragment for the Payee report.
  */
@@ -136,7 +138,7 @@ public class PayeeReportFragment
                 CurrencyService currencyService = new CurrencyService(getContext());
 
                 TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
-                txtColumn2.setText(currencyService.getBaseCurrencyFormatted(totalAmount));
+                txtColumn2.setText(currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(totalAmount)));
 
                 // solve bug chart
                 if (data.getCount() > 0) {
@@ -224,7 +226,7 @@ public class PayeeReportFragment
             }
             item.setValue(total);
             CurrencyService currencyService = new CurrencyService(getContext());
-            item.setValueFormatted(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), total));
+            item.setValueFormatted(currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total)));
             // add element
             arrayList.add(item);
             // move to next record

@@ -18,6 +18,8 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="September 12, 2015" versionName="2.18.9">
+        <changelogtext>Different implementation of the running balance for large numbers.</changelogtext>
+        <changelogtext>Fixed Dropbox authentication for new users.</changelogtext>
         <changelogtext>Correcting and making running balance calculation asynchronous.</changelogtext>
         <changelogtext>Ability to donate from inside the app.</changelogtext>
         <changelogtext>Providing place in the exception feedback email to describe the action that led to the exception.</changelogtext>

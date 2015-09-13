@@ -52,6 +52,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Report
  * Created by Alen Siljak on 6/07/2015.
@@ -340,13 +342,16 @@ public class IncomeVsExpensesListFragment
         CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
         //set income
-        txtIncome.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), income));
+        txtIncome.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
+                MoneyFactory.fromDouble(income)));
         txtIncome.setTypeface(null, Typeface.BOLD);
         //set expenses
-        txtExpenses.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), Math.abs(expenses)));
+        txtExpenses.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
+                MoneyFactory.fromDouble(Math.abs(expenses))));
         txtExpenses.setTypeface(null, Typeface.BOLD);
         //set difference
-        txtDifference.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), income - Math.abs(expenses)));
+        txtDifference.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
+                MoneyFactory.fromDouble(income - Math.abs(expenses))));
         txtDifference.setTypeface(null, Typeface.BOLD);
         //change colors
         Core core = new Core(getActivity());

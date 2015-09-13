@@ -43,6 +43,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import info.javaperformance.money.MoneyFactory;
+
 public class RepeatingTransactionAdapter
         extends CursorAdapter {
 
@@ -123,7 +125,9 @@ public class RepeatingTransactionAdapter
             }
         }
         CurrencyService currencyService = new CurrencyService(mContext);
-        txtAmount.setText(currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), amount));
+        txtAmount.setText(currencyService.getCurrencyFormatted(
+                cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
+                MoneyFactory.fromDouble(amount)));
         // check amount sign
         Core core = new Core(context);
         txtAmount.setTextColor(context.getResources().getColor(amount > 0

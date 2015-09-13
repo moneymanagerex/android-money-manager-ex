@@ -172,7 +172,7 @@ public class CurrencyService {
      * @param value to format
      * @return formatted value
      */
-    public String getBaseCurrencyFormatted(Double value) {
+    public String getBaseCurrencyFormatted(Money value) {
         int baseCurrencyId = getBaseCurrencyId();
         return this.getCurrencyFormatted(baseCurrencyId, value);
     }
@@ -182,11 +182,11 @@ public class CurrencyService {
      * @param value      value to format
      * @return formatted value
      */
-    public String getCurrencyFormatted(Integer currencyId, Double value) {
+    public String getCurrencyFormatted(Integer currencyId, Money value) {
         String result;
 
         // check if value is null
-        if (value == null) value = 0d;
+        if (value == null) value = MoneyFactory.fromString("0");
 
         // find currency id
         if (currencyId != null) {

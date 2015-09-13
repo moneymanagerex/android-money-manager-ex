@@ -37,6 +37,8 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
 
+import info.javaperformance.money.MoneyFactory;
+
 public class RepeatingTransactionNotifications {
     private static final String LOGCAT = RepeatingTransactionNotifications.class.getSimpleName();
     private static final int ID_NOTIFICATION = 0x000A;
@@ -89,7 +91,8 @@ public class RepeatingTransactionNotifications {
             // compose text
             String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
                     " " + payeeName +
-                    ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)), cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT))) + "</b>";
+                    ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
+                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) + "</b>";
             // add line
             inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
         }

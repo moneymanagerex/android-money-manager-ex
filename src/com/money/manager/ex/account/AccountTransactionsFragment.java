@@ -73,6 +73,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Checking account fragment.
@@ -91,7 +92,8 @@ public class AccountTransactionsFragment
     private AllDataListFragment mAllDataListFragment;
     private Integer mAccountId = null;
     private String mFragmentName;
-    private double mAccountBalance = 0, mAccountReconciled = 0;
+    private Money mAccountBalance = MoneyFactory.fromString("0"),
+            mAccountReconciled = MoneyFactory.fromString("0");
     private TableAccountList mAccountList;
     // Controls
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
@@ -353,11 +355,13 @@ public class AccountTransactionsFragment
         switch (loader.getId()) {
             case ID_LOADER_SUMMARY:
                 if (data != null && data.moveToFirst()) {
-                    mAccountBalance = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL));
-                    mAccountReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED));
+//                    mAccountBalance = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL));
+//                    mAccountReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED));
+                    mAccountBalance = MoneyFactory.fromString(data.getString(data.getColumnIndex(QueryAccountBills.TOTAL)));
+                    mAccountReconciled = MoneyFactory.fromString(data.getString(data.getColumnIndex(QueryAccountBills.RECONCILED)));
                 } else {
-                    mAccountBalance = 0;
-                    mAccountReconciled = 0;
+                    mAccountBalance = MoneyFactory.fromString("0");
+                    mAccountReconciled = MoneyFactory.fromString("0");
                 }
                 // show balance values
                 setTextViewBalance();
@@ -453,7 +457,8 @@ public class AccountTransactionsFragment
 
             txtAccountBalance.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountBalance));
             txtAccountReconciled.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled));
-            txtAccountDifference.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(), mAccountReconciled - mAccountBalance));
+            txtAccountDifference.setText(currencyService.getCurrencyFormatted(mAccountList.getCurrencyId(),
+                    mAccountReconciled.subtract(mAccountBalance)));
         }
     }
 

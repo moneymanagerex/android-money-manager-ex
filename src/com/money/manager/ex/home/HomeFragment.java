@@ -362,7 +362,7 @@ public class HomeFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER_ACCOUNT_BILLS:
-                txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted((double) 0));
+                txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromString("0")));
                 setListViewAccountBillsVisible(false);
                 mAccountsByType.clear();
                 mTotalsByType.clear();
@@ -426,11 +426,14 @@ public class HomeFragment
                 TextView txtDifference = (TextView) getActivity().findViewById(R.id.textViewDifference);
                 // set value
                 if (txtIncome != null)
-                    txtIncome.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(), income));
+                    txtIncome.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
+                            MoneyFactory.fromDouble(income)));
                 if (txtExpenses != null)
-                    txtExpenses.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(), Math.abs(expenses)));
+                    txtExpenses.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
+                            MoneyFactory.fromDouble(Math.abs(expenses))));
                 if (txtDifference != null)
-                    txtDifference.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(), income - Math.abs(expenses)));
+                    txtDifference.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
+                            MoneyFactory.fromDouble(income - Math.abs(expenses))));
                 // manage progressbar
                 final ProgressBar barIncome = (ProgressBar) getActivity().findViewById(R.id.progressBarIncome);
                 final ProgressBar barExpenses = (ProgressBar) getActivity().findViewById(R.id.progressBarExpenses);
@@ -643,10 +646,10 @@ public class HomeFragment
         // remove footer
         mExpandableListView.removeFooterView(linearFooter);
         // set text
-        txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted(curTotal));
+        txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(curTotal)));
         txtFooterSummary.setText(txtTotalAccounts.getText());
         if(!mHideReconciled) {
-            txtFooterSummaryReconciled.setText(mCurrencyService.getBaseCurrencyFormatted(curReconciled));
+            txtFooterSummaryReconciled.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(curReconciled)));
         }
         // add footer
         mExpandableListView.addFooterView(linearFooter, null, false);

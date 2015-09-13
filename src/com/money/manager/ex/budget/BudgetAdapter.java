@@ -35,6 +35,8 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Adapter for budgets.
  * Created by Alen Siljak on 5/07/2015.
@@ -118,7 +120,7 @@ public class BudgetAdapter
         TextView amountTextView = (TextView) view.findViewById(R.id.amountTextView);
         if (amountTextView != null) {
             double amount = cursor.getDouble(cursor.getColumnIndex(BudgetQuery.AMOUNT));
-            String text = currencyService.getBaseCurrencyFormatted(amount);
+            String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
             amountTextView.setText(text);
         }
 
@@ -136,7 +138,7 @@ public class BudgetAdapter
                 actual = getAmountForSubCategory(subCategoryId);
             }
 
-            String actualString = currencyService.getBaseCurrencyFormatted(actual);
+            String actualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(actual));
             actualTextView.setText(actualString);
         }
     }

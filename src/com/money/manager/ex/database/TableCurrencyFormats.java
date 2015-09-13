@@ -223,6 +223,7 @@ public class TableCurrencyFormats
 		this.setCentName(c.getString(c.getColumnIndex(CENT_NAME)));
 		this.setScale(c.getDouble(c.getColumnIndex(SCALE)));
 		this.setBaseConvRate(c.getDouble(c.getColumnIndex(BASECONVRATE)));
+//		String test = c.getString(c.getColumnIndex(BASECONVRATE));
 		this.setCurrencySymbol(c.getString(c.getColumnIndex(CURRENCY_SYMBOL)));
 	}
 }

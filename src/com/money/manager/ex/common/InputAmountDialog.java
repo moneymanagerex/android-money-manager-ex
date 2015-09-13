@@ -35,15 +35,12 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.utils.MathUtils;
 import com.shamanland.fonticon.FontIconView;
 
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.apache.commons.lang3.StringUtils;
-
-import java.math.BigDecimal;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -355,14 +352,14 @@ public class InputAmountDialog
      * @return String Amount formatted in the given currency.
      */
     public String getFormattedAmount() {
-        double amount = mAmount.toDouble();
+//        double amount = mAmount.toDouble();
 
         String result;
 
         if (mDisplayCurrencyId == null) {
-            result = mCurrencyService.getBaseCurrencyFormatted(amount);
+            result = mCurrencyService.getBaseCurrencyFormatted(mAmount);
         } else {
-            result = mCurrencyService.getCurrencyFormatted(mDisplayCurrencyId, amount);
+            result = mCurrencyService.getCurrencyFormatted(mDisplayCurrencyId, mAmount);
         }
 
         return result;
@@ -433,14 +430,14 @@ public class InputAmountDialog
         return result;
     }
 
-    private String getAmountInUserLocale() {
+    private String getAmountForEditing() {
         if (mAmount == null) return "0";
 
         NumericHelper helper = new NumericHelper(getContext());
 
         // Output currency. Used for scale/precision (number of decimal places).
-        TableCurrencyFormats currency = mCurrencyService.getBaseCurrency();
-        if (currency == null) {
+        TableCurrencyFormats baseCurrency = mCurrencyService.getBaseCurrency();
+        if (baseCurrency == null) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.showMessage(getString(R.string.base_currency_not_set));
 
@@ -449,7 +446,11 @@ public class InputAmountDialog
 
         String result;
         if(this.roundToCurrencyDecimals) {
-            result = helper.getNumberFormatted(mAmount.toDouble(), currency);
+            // use decimals from the display currency.
+            TableCurrencyFormats displayCurrency = mCurrencyService.getCurrency(mDisplayCurrencyId);
+            // but decimal and group separators from the base currency.
+            result = helper.getNumberFormatted(mAmount, displayCurrency.getScale(),
+                    baseCurrency.getDecimalPoint(), baseCurrency.getGroupSeparator());
         } else {
             // get number of decimals from the current value.
             result = mAmount.toString();
@@ -460,7 +461,7 @@ public class InputAmountDialog
 
     private void showAmountInEntryField() {
         // Get the calculated amount in default locale and display in the main box.
-        String amount = getAmountInUserLocale();
+        String amount = getAmountForEditing();
         txtMain.setText(amount);
     }
 

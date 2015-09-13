@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Adapter for all_data query. The list of transactions (account/recurring).
@@ -170,7 +171,7 @@ public class AllDataAdapter
         }
 
         CurrencyService currencyService = new CurrencyService(mContext);
-        holder.txtAmount.setText(currencyService.getCurrencyFormatted(getCurrencyId(), amount));
+        holder.txtAmount.setText(currencyService.getCurrencyFormatted(getCurrencyId(), MoneyFactory.fromDouble(amount)));
 
         // text color amount
         if (isTransfer) {
@@ -495,8 +496,7 @@ public class AllDataAdapter
 
         CurrencyService currencyService = new CurrencyService(mContext);
         Money currentBalance = this.balances.get(txId);
-        String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(),
-                currentBalance.toDouble());
+        String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(), currentBalance);
         textView.setText(balanceFormatted);
         textView.setVisibility(View.VISIBLE);
     }

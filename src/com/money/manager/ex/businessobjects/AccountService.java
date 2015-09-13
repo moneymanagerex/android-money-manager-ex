@@ -206,11 +206,10 @@ public class AccountService {
      * Loads account details with balances.
      * Needs to be better organized to limit the where clause.
      * @param where selection criteria for Query Account Bills
-     * @param args arguments for the selection criteria
      * @return current balance in the currency of the account.
      */
-    public double loadBalance(String where) {
-        double curTotal = 0;
+    public Money loadBalance(String where) {
+        Money curTotal = MoneyFactory.fromString("0");
 
         QueryAccountBills accountBills = new QueryAccountBills(mContext);
         Cursor cursor = mContext.getContentResolver().query(accountBills.getUri(),
@@ -218,11 +217,12 @@ public class AccountService {
                 where,
                 null,
                 null);
-        if (cursor == null) return 0;
+        if (cursor == null) return curTotal;
 
         // calculate summary
         while (cursor.moveToNext()) {
-            curTotal = curTotal + cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTAL));
+//            curTotal = curTotal.add(MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTAL))));
+            curTotal = curTotal.add(MoneyFactory.fromString(cursor.getString(cursor.getColumnIndex(QueryAccountBills.TOTAL))));
         }
         cursor.close();
 

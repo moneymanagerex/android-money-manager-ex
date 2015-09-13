@@ -29,6 +29,8 @@ import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 
+import info.javaperformance.money.MoneyFactory;
+
 public class SummaryDashExtension extends DashClockExtension {
 
     @Override
@@ -39,7 +41,8 @@ public class SummaryDashExtension extends DashClockExtension {
             CurrencyService currencyService = new CurrencyService(context);
 
             // summary formatted
-            String summary = currencyService.getBaseCurrencyFormatted(app.getSummaryAccounts(context));
+            String summary = currencyService.getBaseCurrencyFormatted(
+                    MoneyFactory.fromDouble(app.getSummaryAccounts(context)));
 
             publishUpdate(new ExtensionData()
                     .visible(true)
