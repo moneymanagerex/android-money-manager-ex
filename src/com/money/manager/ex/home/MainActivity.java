@@ -717,7 +717,8 @@ public class MainActivity
                     Class<?> classFragment = loader.loadClass(fragmentClass.getName());
                     fragment = (Fragment) classFragment.newInstance();
                 } catch (Exception e) {
-                    Log.e(LOGCAT, e.getMessage());
+                    ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+                    handler.handle(e, "creating new fragment");
                 }
             }
         }
@@ -739,10 +740,19 @@ public class MainActivity
     /**
      * Displays the fragment and associate the tag
      *
-     * @param fragment
-     * @param tagFragment
+     * @param fragment Fragment to display
+     * @param tagFragment Tag/name to search for.
      */
     public void showFragment(Fragment fragment, String tagFragment) {
+        try {
+            showFragment_Internal(fragment, tagFragment);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+            handler.handle(e, "showing fragment with tag");
+        }
+    }
+
+    private void showFragment_Internal(Fragment fragment, String tagFragment) {
         // Check if fragment is already added.
         if (fragment.isAdded()) return;
 
