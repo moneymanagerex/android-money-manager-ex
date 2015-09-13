@@ -45,4 +45,8 @@ public class DropboxSettings
                 mContext.getString(R.string.pref_dropbox_upload_immediate), true);
         return result;
     }
+
+//    public void setOauth2Token(String value) {
+//        set(PreferenceConstants.PREF_DROPBOX_OAUTH2_TOKEN, value);
+//    }
 }

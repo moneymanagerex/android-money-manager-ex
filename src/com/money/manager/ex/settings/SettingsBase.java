@@ -46,6 +46,14 @@ public abstract class SettingsBase {
         return mEditor;
     }
 
+    /**
+     * Clear the preference value (remove preference).
+     * @param key
+     */
+    public void clear(String key) {
+
+    }
+
     // String
 
     protected String get(Integer settingKey, String defaultValue) {

@@ -53,6 +53,8 @@ import com.money.manager.ex.settings.DropboxSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.NetworkUtilities;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -199,7 +201,8 @@ public class DropboxHelper {
      * @return Array of [access_key, access_secret], or null if none stored
      */
     private String[] getKeysToken() {
-        SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = getDropboxPreferences();
+
         String key = prefs.getString(PreferenceConstants.PREF_DROPBOX_ACCESS_KEY_NAME, null);
         String secret = prefs.getString(PreferenceConstants.PREF_DROPBOX_ACCESS_SECRET_NAME, null);
         if (key != null && secret != null) {
@@ -224,10 +227,31 @@ public class DropboxHelper {
 
     private void storeKeysToken(String key, String secret) {
         // Save the access key for later
-        SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = getDropboxPreferences();
         Editor edit = prefs.edit();
         edit.putString(PreferenceConstants.PREF_DROPBOX_ACCESS_KEY_NAME, key);
         edit.putString(PreferenceConstants.PREF_DROPBOX_ACCESS_SECRET_NAME, secret);
+        edit.commit();
+    }
+
+    private SharedPreferences getDropboxPreferences() {
+        SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
+        return prefs;
+    }
+
+    private String getOauth2Token() {
+        SharedPreferences prefs = getDropboxPreferences();
+        String token = prefs.getString(PreferenceConstants.PREF_DROPBOX_OAUTH2_TOKEN, null);
+        return token;
+    }
+
+    private void storeOauth2Token(String token) {
+//        AppSettings settings = new AppSettings(mContext);
+//        settings.getDropboxSettings().setOauth2Token(token);
+
+        SharedPreferences prefs = getDropboxPreferences();
+        Editor edit = prefs.edit();
+        edit.putString(PreferenceConstants.PREF_DROPBOX_OAUTH2_TOKEN, token);
         edit.commit();
     }
 
@@ -245,16 +269,24 @@ public class DropboxHelper {
         }
 
         AppKeyPair appKeyPair = new AppKeyPair(MoneyManagerApplication.DROPBOX_APP_KEY, secret);
-        AndroidAuthSession session;
+        AndroidAuthSession session = null;
 
-        String[] stored = getKeysToken();
-        if (stored != null) {
-            AccessTokenPair accessToken = new AccessTokenPair(stored[0], stored[1]);
+        String oAuth2Token = getOauth2Token();
+        if (!StringUtils.isEmpty(oAuth2Token)) {
+            session = new AndroidAuthSession(appKeyPair, oAuth2Token);
+        }
+
+        // if that did not work, for some reason.
+        if (session == null) {
+            String[] stored = getKeysToken();
+            if (stored != null) {
+                AccessTokenPair accessToken = new AccessTokenPair(stored[0], stored[1]);
 //            session = new AndroidAuthSession(appKeyPair, MoneyManagerApplication.DROPBOX_ACCESS_TYPE, accessToken);
-            session = new AndroidAuthSession(appKeyPair, accessToken);
-        } else {
+                session = new AndroidAuthSession(appKeyPair, accessToken);
+            } else {
 //            session = new AndroidAuthSession(appKeyPair, MoneyManagerApplication.DROPBOX_ACCESS_TYPE);
-            session = new AndroidAuthSession(appKeyPair);
+                session = new AndroidAuthSession(appKeyPair);
+            }
         }
 
         return session;
@@ -272,10 +304,17 @@ public class DropboxHelper {
             try {
                 // complete authentication
                 session.finishAuthentication();
+
                 // save login credentials
                 TokenPair tokens = session.getAccessTokenPair();
                 if (tokens != null) {
                     storeKeysToken(tokens.key, tokens.secret);
+                }
+
+                // Save oauth2 access token, if any.
+                String oAuth2AccessToken = session.getOAuth2AccessToken();
+                if (!StringUtils.isEmpty(oAuth2AccessToken)) {
+                    storeOauth2Token(oAuth2AccessToken);
                 }
             } catch (RuntimeException e) {
                 ExceptionHandler handler = new ExceptionHandler(mContext, this);
