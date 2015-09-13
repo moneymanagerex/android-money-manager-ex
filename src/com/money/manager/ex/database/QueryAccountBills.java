@@ -28,7 +28,8 @@ import com.money.manager.ex.utils.RawFileUtils;
 /**
  * Query account bills = account data with balances.
  */
-public class QueryAccountBills extends Dataset {
+public class QueryAccountBills
+        extends Dataset {
 
     public static final String ACCOUNTID = "ACCOUNTID";
     public static final String ACCOUNTNAME = "ACCOUNTNAME";
@@ -115,7 +116,9 @@ public class QueryAccountBills extends Dataset {
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{"ACCOUNTID AS _id", ACCOUNTID, ACCOUNTNAME, STATUS, FAVORITEACCT, CURRENCYID, ACCOUNTTYPE, TOTAL, RECONCILED, TOTALBASECONVRATE, RECONCILEDBASECONVRATE};
+        return new String[]{"ACCOUNTID AS _id", ACCOUNTID, ACCOUNTNAME, STATUS, FAVORITEACCT,
+                CURRENCYID, ACCOUNTTYPE, TOTAL, RECONCILED, TOTALBASECONVRATE,
+                RECONCILEDBASECONVRATE};
     }
 
     /**
@@ -205,11 +208,10 @@ public class QueryAccountBills extends Dataset {
     public void setValueFromCursor(Cursor c) {
         if (c == null) return;
 
-        // controllo che il numero di colonne siano le stesse
         if (!(c.getColumnCount() == this.getAllColumns().length)) {
             return;
         }
-        // set dei valori
+
         this.setAccountId(c.getInt(c.getColumnIndex(ACCOUNTID)));
         this.setAccountName(c.getString(c.getColumnIndex(ACCOUNTNAME)));
         this.setAccountType(c.getString(c.getColumnIndex(ACCOUNTTYPE)));

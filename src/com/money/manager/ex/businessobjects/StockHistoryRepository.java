@@ -20,6 +20,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import info.javaperformance.money.Money;
+
 /**
  * Stock History
  */
@@ -65,7 +67,7 @@ public class StockHistoryRepository
         };
     }
 
-    public boolean addStockHistoryRecord(String symbol, BigDecimal price, Date date) {
+    public boolean addStockHistoryRecord(String symbol, Money price, Date date) {
         boolean success = false;
 
         boolean recordExists = recordExists(symbol, date);
@@ -119,7 +121,7 @@ public class StockHistoryRepository
      * @param date
      * @return
      */
-    public boolean updateHistory(String symbol, BigDecimal price, Date date) {
+    public boolean updateHistory(String symbol, Money price, Date date) {
         boolean result;
 
         ContentValues values = getContentValues(symbol, price, date);
@@ -136,14 +138,14 @@ public class StockHistoryRepository
         return result;
     }
 
-    public ContentValues getContentValues(String symbol, BigDecimal price, Date date) {
+    public ContentValues getContentValues(String symbol, Money price, Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
         String isoDate = dateFormat.format(date);
 
         ContentValues values = new ContentValues();
         values.put(StockHistory.SYMBOL, symbol);
         values.put(StockHistory.DATE, isoDate);
-        values.put(StockHistory.VALUE, price.toPlainString());
+        values.put(StockHistory.VALUE, price.toString());
         values.put(StockHistory.UPDTYPE, UpdateType.Online.type);
 
         return values;

@@ -9,6 +9,8 @@ import com.money.manager.ex.database.TableCurrencyFormats;
 
 import java.math.BigDecimal;
 
+import info.javaperformance.money.Money;
+
 /**
  * Currency repository. Provides access to TableCurrencyFormats entities.
  */
@@ -33,7 +35,7 @@ public class CurrencyRepository {
                 new String[] { symbol });
     }
 
-    public int saveExchangeRate(int currencyId, BigDecimal exchangeRate) {
+    public int saveExchangeRate(int currencyId, Money exchangeRate) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TableCurrencyFormats.BASECONVRATE, exchangeRate.toString());
 

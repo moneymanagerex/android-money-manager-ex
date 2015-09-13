@@ -57,7 +57,6 @@ import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.domainmodel.Account;
@@ -65,7 +64,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconView;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -73,6 +71,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Functions shared between Checking Account activity and Recurring Transactions activity.
@@ -99,8 +100,8 @@ public class EditTransactionCommonFunctions {
     public String payeeName;
     public int categoryId = Constants.NOT_SET;  // Category
     public int subCategoryId = Constants.NOT_SET;
-    public BigDecimal amountTo = BigDecimal.ZERO;
-    public BigDecimal amount = BigDecimal.ZERO; // amount
+    public Money amountTo = MoneyFactory.fromString("0");
+    public Money amount = MoneyFactory.fromString("0"); // amount
     public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
     public String mNotes = "";
@@ -176,7 +177,7 @@ public class EditTransactionCommonFunctions {
 
     }
 
-    public void displayAmountFormatted(TextView view, BigDecimal amount, Integer accountId) {
+    public void displayAmountFormatted(TextView view, Money amount, Integer accountId) {
         if (amount == null) return;
 
         // take currency id
@@ -192,12 +193,12 @@ public class EditTransactionCommonFunctions {
         String amountDisplay;
 
         if (currencyId == null) {
-            amountDisplay = currencyService.getBaseCurrencyFormatted(amount.doubleValue());
+            amountDisplay = currencyService.getBaseCurrencyFormatted(amount.toDouble());
         } else {
-            amountDisplay = currencyService.getCurrencyFormatted(currencyId, amount.doubleValue());
+            amountDisplay = currencyService.getCurrencyFormatted(currencyId, amount.toDouble());
         }
         view.setText(amountDisplay);
-        view.setTag(amount);
+        view.setTag(amount.toString());
     }
 
     /**
@@ -219,18 +220,18 @@ public class EditTransactionCommonFunctions {
         values.put(ISplitTransactionsDataset.STATUS, this.status);
 
         // Amount
-        BigDecimal amount = (BigDecimal) this.txtAmount.getTag();
-        values.put(ISplitTransactionsDataset.TRANSAMOUNT, amount.doubleValue());
+        Money amount = MoneyFactory.fromString(this.txtAmount.getTag().toString());
+        values.put(ISplitTransactionsDataset.TRANSAMOUNT, amount.toDouble());
 
         // Amount To
-        BigDecimal amountTo;
+        Money amountTo;
         if (isTransfer) {
-            amountTo = (BigDecimal) this.txtAmountTo.getTag();
+            amountTo = MoneyFactory.fromString(this.txtAmountTo.getTag().toString());
         } else {
             // Use the Amount value.
-            amountTo = (BigDecimal) this.txtAmount.getTag();
+            amountTo = MoneyFactory.fromString(this.txtAmount.getTag().toString());
         }
-        values.put(ISplitTransactionsDataset.TOTRANSAMOUNT, amountTo.doubleValue());
+        values.put(ISplitTransactionsDataset.TOTRANSAMOUNT, amountTo.toDouble());
 
         // Accounts & Payee
         values.put(ISplitTransactionsDataset.ACCOUNTID, this.accountId);
@@ -345,7 +346,8 @@ public class EditTransactionCommonFunctions {
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     accountId = mAccountIdList.get(position);
-                    displayAmountFormatted(txtAmount, (BigDecimal) txtAmount.getTag(), accountId);
+                    Money amount = MoneyFactory.fromString(txtAmount.getTag().toString());
+                    displayAmountFormatted(txtAmount, amount, accountId);
                     refreshControlHeaders();
                 }
             }
@@ -368,7 +370,8 @@ public class EditTransactionCommonFunctions {
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     toAccountId = mAccountIdList.get(position);
-                    displayAmountFormatted(txtAmountTo, (BigDecimal) txtAmountTo.getTag(), toAccountId);
+                    Money amount = MoneyFactory.fromString(txtAmountTo.getTag().toString());
+                    displayAmountFormatted(txtAmountTo, amount , toAccountId);
                     refreshControlHeaders();
                 }
             }
@@ -399,8 +402,9 @@ public class EditTransactionCommonFunctions {
                         currencyId = AccountList.get(selectedPosition).getCurrencyId();
                     }
                 }
-                BigDecimal amount = (BigDecimal) v.getTag();
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount.doubleValue(), currencyId);
+                Money amount = MoneyFactory.fromString(v.getTag().toString());
+                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(),
+                        amount, currencyId);
                 dialog.show(mParent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
 
                 // The result is received in onFinishedInputAmountDialog.
@@ -651,8 +655,9 @@ public class EditTransactionCommonFunctions {
                         try {
 //                            edtTransNumber.setText(Long.toString(Long.parseLong(transNumber) + 1));
                             // Use BigDecimal to allow for large numbers.
-                            BigDecimal transactionNumber = new BigDecimal(transNumber);
-                            edtTransNumber.setText(transactionNumber.add(BigDecimal.ONE).toString());
+                            Money transactionNumber = MoneyFactory.fromString(transNumber);
+                            edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
+                                    .toString());
                         } catch (Exception e) {
                             ExceptionHandler handler = new ExceptionHandler(mContext, this);
                             handler.handle(e, "adding transaction number");
@@ -794,7 +799,7 @@ public class EditTransactionCommonFunctions {
                     for (int i = 0; i < mSplitTransactions.size(); i++) {
                         splitSum += mSplitTransactions.get(i).getSplitTransAmount();
                     }
-                    displayAmountFormatted(txtAmount, BigDecimal.valueOf(splitSum),
+                    displayAmountFormatted(txtAmount, MoneyFactory.fromDouble(splitSum),
                             !transactionType.equals(TransactionTypes.Transfer)
                                     ? accountId
                                     : toAccountId);
@@ -808,7 +813,7 @@ public class EditTransactionCommonFunctions {
         }
     }
 
-    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+    public void onFinishedInputAmountDialog(int id, Money amount) {
         View view = mParent.findViewById(id);
         if (view == null || !(view instanceof TextView)) return;
 
@@ -1070,7 +1075,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private void convertAndDisplayAmount(boolean isSourceAmount, int fromCurrencyId, int toCurrencyId,
-                                         BigDecimal amount) {
+                                         Money amount) {
         CurrencyService currencyService = new CurrencyService(mContext);
         TextView destinationTextView = txtAmountTo;
 
@@ -1086,13 +1091,13 @@ public class EditTransactionCommonFunctions {
                 : this.accountId;
 
         // get the destination value.
-        BigDecimal destinationAmount = (BigDecimal) destinationTextView.getTag();
-        if (destinationAmount == null) destinationAmount = BigDecimal.ZERO;
+        Money destinationAmount = MoneyFactory.fromString(destinationTextView.getTag().toString());
+        if (destinationAmount == null) destinationAmount = MoneyFactory.fromString("0");
 
         // Replace the destination value only if it is zero.
-        if (destinationAmount.compareTo(BigDecimal.ZERO) == 0) {
-            Double amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount.doubleValue(), fromCurrencyId);
-            displayAmountFormatted(destinationTextView, BigDecimal.valueOf(amountExchange), destinationAccountId);
+        if (destinationAmount.compareTo(MoneyFactory.fromString("0")) == 0) {
+            Money amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+            displayAmountFormatted(destinationTextView, amountExchange, destinationAccountId);
         }
     }
 
@@ -1183,16 +1188,16 @@ public class EditTransactionCommonFunctions {
             }
 
             // Amount To is required and has to be positive.
-            BigDecimal amountTo = (BigDecimal) txtAmountTo.getTag();
-            if (amountTo.doubleValue() <= 0) {
+            Money amountTo = MoneyFactory.fromString(txtAmountTo.getTag().toString());
+            if (amountTo.toDouble() <= 0) {
                 Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
                 return false;
             }
         }
 
         // Amount is required and must be positive. Sign is determined by transaction type.
-        BigDecimal amount = (BigDecimal) txtAmount.getTag();
-        if (amount.doubleValue() <= 0) {
+        Money amount = MoneyFactory.fromString(txtAmount.getTag().toString());
+        if (amount.toDouble() <= 0) {
             Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
             return false;
         }

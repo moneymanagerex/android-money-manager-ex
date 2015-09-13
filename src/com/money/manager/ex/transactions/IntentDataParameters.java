@@ -27,6 +27,9 @@ import com.money.manager.ex.database.AccountRepository;
 
 import java.math.BigDecimal;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Parameters for creating new transaction from an external intent.
  */
@@ -46,7 +49,7 @@ public class IntentDataParameters {
     public String accountName;
     public int payeeId;
     public String payeeName;
-    public BigDecimal amount;
+    public Money amount;
     public int categoryId;
     public String categoryName;
 
@@ -74,7 +77,7 @@ public class IntentDataParameters {
         }
 
         String amount = data.getQueryParameter(PARAM_AMOUNT);
-        parameters.amount = new BigDecimal(amount);
+        parameters.amount = MoneyFactory.fromString(amount);
 
         parameters.categoryName = data.getQueryParameter(PARAM_CATEGORY);
         if (parameters.categoryName != null) {

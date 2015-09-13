@@ -22,10 +22,12 @@ import android.content.Context;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import info.javaperformance.money.Money;
+
 /**
  * Interface for feedback from Yahoo security price updater.
  */
 public interface IPriceUpdaterFeedback {
 //    Context getContext();
-    void onPriceDownloaded(String symbol, BigDecimal price, Date date);
+    void onPriceDownloaded(String symbol, Money price, Date date);
 }

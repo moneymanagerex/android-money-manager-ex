@@ -57,13 +57,15 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import info.javaperformance.money.Money;
+
 /**
  * The main fragment for the watchlist. Contains the list and everything else.
  * Not sure why it was done in two fragments. Probably because the list can not have additional items?
  */
-public class WatchlistFragment extends Fragment
-        implements IPriceUpdaterFeedback,
-    IWatchlistItemsFragmentEventHandler {
+public class WatchlistFragment
+        extends Fragment
+        implements IPriceUpdaterFeedback, IWatchlistItemsFragmentEventHandler {
 
     private static final String KEY_CONTENT = "WatchlistFragment:StockId";
 
@@ -284,7 +286,7 @@ public class WatchlistFragment extends Fragment
      * @param date Date of the price
      */
     @Override
-    public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
+    public void onPriceDownloaded(String symbol, Money price, Date date) {
         // prices updated.
 
         if (StringUtils.isEmpty(symbol)) return;

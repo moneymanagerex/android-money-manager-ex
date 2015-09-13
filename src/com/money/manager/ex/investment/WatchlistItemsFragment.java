@@ -52,6 +52,9 @@ import com.money.manager.ex.database.TableStock;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * The list of securities.
  */
@@ -200,7 +203,7 @@ public class WatchlistItemsFragment
                 DatabaseUtils.cursorIntToContentValuesIfPresent(cursor, contents, TableStock.HELDAT);
                 int accountId = contents.getAsInteger(TableStock.HELDAT);
                 DatabaseUtils.cursorDoubleToContentValuesIfPresent(cursor, contents, TableStock.CURRENTPRICE);
-                double currentPrice = contents.getAsDouble(TableStock.CURRENTPRICE);
+                Money currentPrice = MoneyFactory.fromString(contents.getAsString(TableStock.CURRENTPRICE));
 
                 EditPriceDialog dialog = new EditPriceDialog();
                 dialog.setParameters(accountId, symbol, currentPrice);

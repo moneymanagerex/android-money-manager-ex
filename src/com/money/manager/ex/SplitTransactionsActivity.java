@@ -39,6 +39,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.javaperformance.money.Money;
+
 public class SplitTransactionsActivity
         extends BaseFragmentActivity
         implements SplitItemFragmentCallbacks, IInputAmountDialogListener {
@@ -209,7 +211,7 @@ public class SplitTransactionsActivity
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+    public void onFinishedInputAmountDialog(int id, Money amount) {
         SplitItemFragment fragment = getFragmentInputAmountClick();
         if (fragment != null && fragment.isVisible() && fragment.isResumed()) {
             fragment.onFinishedInputAmountDialog(id, amount);

@@ -15,6 +15,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.math.BigDecimal;
 
+import info.javaperformance.money.Money;
+
 /**
  * Data repository for Stock entities.
  * This is an experiment on how to replace the current dataset objects.
@@ -166,7 +168,7 @@ public class StockRepository
      * @param symbol Stock symbol
      * @param price Stock price
      */
-    public void updateCurrentPrice(String symbol, BigDecimal price) {
+    public void updateCurrentPrice(String symbol, Money price) {
         int[] ids = findIdsBySymbol(symbol);
 
         // recalculate value
@@ -177,10 +179,10 @@ public class StockRepository
             ContentValues oldValues = loadContentValues(id);
             double numberOfSharesD = oldValues.getAsDouble(TableStock.NUMSHARES);
             BigDecimal numberOfShares = new BigDecimal(numberOfSharesD);
-            BigDecimal value = numberOfShares.multiply(price);
+            BigDecimal value = numberOfShares.multiply(price.toBigDecimal());
 
             ContentValues newValues = new ContentValues();
-            newValues.put(TableStock.CURRENTPRICE, price.doubleValue());
+            newValues.put(TableStock.CURRENTPRICE, price.toDouble());
             newValues.put(TableStock.VALUE, value.doubleValue());
 
             update(id, newValues);

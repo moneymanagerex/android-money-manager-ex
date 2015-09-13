@@ -43,6 +43,9 @@ import com.money.manager.ex.database.ISplitTransactionsDataset;
 
 import java.math.BigDecimal;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 public class SplitItemFragment
         extends Fragment
         implements IInputAmountDialogListener {
@@ -149,15 +152,16 @@ public class SplitItemFragment
                 // Change the sign to positive.
                 if(splitTransactionAmount < 0) splitTransactionAmount = Math.abs(splitTransactionAmount);
 
-                core.formatAmountTextView(txtAmount, BigDecimal.valueOf(splitTransactionAmount));
+                core.formatAmountTextView(txtAmount, MoneyFactory.fromDouble(splitTransactionAmount));
             }
             txtAmount.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    BigDecimal amount = (BigDecimal) v.getTag();
-                    if (amount == null) {
-                        amount = BigDecimal.ZERO;
+//                    BigDecimal amount = (BigDecimal) v.getTag();
+                    BigDecimal tagAmount = (BigDecimal) v.getTag();
+                    if (tagAmount == null) {
+                        tagAmount = BigDecimal.ZERO;
                     }
 
                     if (getActivity() instanceof SplitTransactionsActivity) {
@@ -165,7 +169,8 @@ public class SplitItemFragment
                         activity.setFragmentInputAmountClick(SplitItemFragment.this);
                     }
 
-                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount.doubleValue());
+                    Money amount = MoneyFactory.fromBigDecimal(tagAmount);
+                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
                     dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });
@@ -248,11 +253,11 @@ public class SplitItemFragment
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+    public void onFinishedInputAmountDialog(int id, Money amount) {
         Core core = new Core(getActivity().getApplicationContext());
         if (txtAmount.getId() == id) {
             txtAmount.setTag(amount);
-            mSplitTransaction.setSplitTransAmount(amount.doubleValue());
+            mSplitTransaction.setSplitTransAmount(amount.toDouble());
             core.formatAmountTextView(txtAmount, amount);
         }
     }

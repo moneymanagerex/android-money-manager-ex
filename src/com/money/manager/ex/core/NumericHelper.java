@@ -264,6 +264,11 @@ public class NumericHelper {
         return mCurrencyService;
     }
 
+    /**
+     *
+     * @param number
+     * @return
+     */
     public BigDecimal getNumberFromString(String number) {
         BigDecimal result = null;
         try {

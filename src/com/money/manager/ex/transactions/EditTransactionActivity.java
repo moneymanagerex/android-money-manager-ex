@@ -60,6 +60,9 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
@@ -218,7 +221,7 @@ public class EditTransactionActivity
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+    public void onFinishedInputAmountDialog(int id, Money amount) {
         mCommonFunctions.onFinishedInputAmountDialog(id, amount);
     }
 
@@ -371,8 +374,8 @@ public class EditTransactionActivity
         String transCode = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.STATUS));
-        mCommonFunctions.amount = BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT)));
-        mCommonFunctions.amountTo = BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT)));
+        mCommonFunctions.amount = MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT)));
+        mCommonFunctions.amountTo = MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT)));
         mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.PAYEEID));
         mCommonFunctions.categoryId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.CATEGID));
         mCommonFunctions.subCategoryId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.SUBCATEGID));
@@ -495,8 +498,8 @@ public class EditTransactionActivity
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
-        mCommonFunctions.amount = new BigDecimal(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT));
-        mCommonFunctions.amountTo = new BigDecimal(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT));
+        mCommonFunctions.amount = MoneyFactory.fromString(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT));
+        mCommonFunctions.amountTo = MoneyFactory.fromString(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT));
         mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommonFunctions.categoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID);

@@ -57,6 +57,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Edit price dialog for manual entry/modification of the latest stock price.
  * Created by Alen on 19/07/2015.
@@ -89,7 +92,7 @@ public class EditPriceDialog
 
     private int mAccountId;
     private String mSymbol;
-    private double mCurrentPrice;
+    private Money mCurrentPrice;
     private String mPriceDate;
 
     @Override
@@ -188,7 +191,8 @@ public class EditPriceDialog
         View.OnClickListener onClickAmount = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double amount = (Double) v.getTag();
+                Money amount = MoneyFactory.fromString(v.getTag().toString());
+
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
                 dialog.setTargetFragment(EditPriceDialog.this, REQUEST_AMOUNT);
                 dialog.roundToCurrencyDecimals = false;
@@ -199,23 +203,21 @@ public class EditPriceDialog
         mAmountTextView.setOnClickListener(onClickAmount);
 
         // get the current record price
-        double latestPrice;
-        latestPrice = mCurrentPrice;
-        showCurrentPrice(BigDecimal.valueOf(latestPrice), mAccountId);
+        showCurrentPrice(mCurrentPrice, mAccountId);
 
         // actions
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //save price
-                double amount = (Double) mAmountTextView.getTag();
+                Money amount = MoneyFactory.fromString(mAmountTextView.getTag().toString());
                 Date date = (Date) mDateTextView.getTag();
 
                 StockRepository repo = new StockRepository(mContext);
-                repo.updateCurrentPrice(mSymbol, BigDecimal.valueOf(amount));
+                repo.updateCurrentPrice(mSymbol, amount);
 
                 StockHistoryRepository historyRepository = new StockHistoryRepository(mContext);
-                boolean result = historyRepository.addStockHistoryRecord(mSymbol, BigDecimal.valueOf(amount), date);
+                boolean result = historyRepository.addStockHistoryRecord(mSymbol, amount, date);
                 if (!result) {
                     Toast.makeText(mContext, mContext.getString(R.string.error_update_currency_exchange_rate),
                             Toast.LENGTH_SHORT).show();
@@ -231,7 +233,6 @@ public class EditPriceDialog
             }
         });
 
-//        builder.create().show();
         return builder.create();
     }
 
@@ -239,7 +240,7 @@ public class EditPriceDialog
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt(KEY_ACCOUNT, mAccountId);
         savedInstanceState.putString(KEY_SYMBOL, mSymbol);
-        savedInstanceState.putDouble(KEY_PRICE, mCurrentPrice);
+        savedInstanceState.putString(KEY_PRICE, mCurrentPrice.toString());
         savedInstanceState.putString(KEY_DATE, mPriceDate);
     }
 
@@ -260,7 +261,7 @@ public class EditPriceDialog
     private void restoreInstanceState(Bundle savedInstanceState) {
         this.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT);
         this.mSymbol = savedInstanceState.getString(KEY_SYMBOL);
-        this.mCurrentPrice = savedInstanceState.getDouble(KEY_PRICE);
+        this.mCurrentPrice = MoneyFactory.fromString(savedInstanceState.getString(KEY_PRICE));
         this.mPriceDate = savedInstanceState.getString(KEY_DATE);
 
 //        InputAmountDialog inputAmountDialog = (InputAmountDialog) getFragmentManager()
@@ -271,7 +272,7 @@ public class EditPriceDialog
 
     }
 
-    public void setParameters(int accountId, final String symbol, double currentPrice) {
+    public void setParameters(int accountId, final String symbol, Money currentPrice) {
         mAccountId = accountId;
         mSymbol = symbol;
         mCurrentPrice = currentPrice;
@@ -280,12 +281,12 @@ public class EditPriceDialog
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+    public void onFinishedInputAmountDialog(int id, Money amount) {
         // set the amount on the dialog.
         showCurrentPrice(amount, mAccountId);
     }
 
-    private void showCurrentPrice(BigDecimal currentPrice, int accountId) {
+    private void showCurrentPrice(Money currentPrice, int accountId) {
         EditTransactionCommonFunctions commonFunctions = new EditTransactionCommonFunctions(mContext, null);
         commonFunctions.displayAmountFormatted(mAmountTextView, currentPrice, accountId);
 
@@ -298,9 +299,9 @@ public class EditPriceDialog
         String currencySymbol = currency.getSfxSymbol();
 
         mAmountTextView.setText(currencySymbol + " " + currentPrice.toString());
-        mAmountTextView.setTag(currentPrice);
+        mAmountTextView.setTag(currentPrice.toString());
 
-        this.mCurrentPrice = currentPrice.doubleValue();
+        this.mCurrentPrice = currentPrice;
     }
 
     public void formatExtendedDate(TextView dateTextView) {

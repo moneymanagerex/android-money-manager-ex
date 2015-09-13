@@ -81,6 +81,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * The fragment that contains the accounts groups with accounts and their balances.
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -124,6 +127,7 @@ public class HomeFragment
     private boolean mAccountTransactionsLoaded = false;
     private boolean mInvestmentTransactionsLoaded = false;
 
+    // ?
     private int accountBalancedId = Constants.NOT_SET;
     private QueryAccountBills accountBeingBalanced = null;
 
@@ -604,7 +608,8 @@ public class HomeFragment
         // get the amount via input dialog.
         int currencyId = account.getCurrencyId();
 
-        InputAmountDialog dialog = InputAmountDialog.getInstance(REQUEST_BALANCE_ACCOUNT, 0.0, currencyId);
+        InputAmountDialog dialog = InputAmountDialog.getInstance(REQUEST_BALANCE_ACCOUNT,
+                MoneyFactory.fromString("0"), currencyId);
         dialog.setTargetFragment(this, REQUEST_BALANCE_ACCOUNT);
         dialog.show(getActivity().getSupportFragmentManager(), TAG_BALANCE_ACCOUNT);
 
@@ -984,15 +989,15 @@ public class HomeFragment
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+    public void onFinishedInputAmountDialog(int id, Money amount) {
         QueryAccountBills account = this.getAccountBeingBalanced();
-        BigDecimal currentBalance = BigDecimal.valueOf(account.getTotal());
+        Money currentBalance = MoneyFactory.fromDouble(account.getTotal());
 
         // calculate the diff.
-        BigDecimal newBalance = amount;
+        Money newBalance = amount;
         if (newBalance.compareTo(currentBalance) == 0) return;
 
-        BigDecimal difference;
+        Money difference;
         TransactionTypes transactionType;
 
         if (newBalance.compareTo(currentBalance) > 0) {

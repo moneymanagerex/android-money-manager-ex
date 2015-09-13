@@ -78,12 +78,13 @@ public class EntityBase {
         return MoneyFactory.fromString(value);
     }
 
-    protected BigDecimal getBigDecimal(String fieldName) {
-        String value = contentValues.getAsString(fieldName);
-        return new BigDecimal(value);
-    }
+//    protected BigDecimal getBigDecimal(String fieldName) {
+//        String value = contentValues.getAsString(fieldName);
+//        return new BigDecimal(value);
+//    }
 
-    protected void setBigDecimal(String fieldName, BigDecimal value) {
+
+    protected void setMoney(String fieldName, Money value) {
         contentValues.put(fieldName, value.toString());
     }
 

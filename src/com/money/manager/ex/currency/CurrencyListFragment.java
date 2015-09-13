@@ -60,6 +60,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import info.javaperformance.money.Money;
+
 /**
  *  Currency list.
  */
@@ -377,7 +379,7 @@ public class CurrencyListFragment
     }
 
     @Override
-    public void onPriceDownloaded(String symbol, BigDecimal price, Date date) {
+    public void onPriceDownloaded(String symbol, Money price, Date date) {
         // extract destination currency
         String baseCurrencyCode = getCurrencyUtils().getBaseCurrencyCode();
         String destinationCurrency = symbol.replace(baseCurrencyCode, "");
@@ -402,7 +404,7 @@ public class CurrencyListFragment
 
     // Private methods.
 
-    private boolean saveExchangeRate(String symbol, BigDecimal rate) {
+    private boolean saveExchangeRate(String symbol, Money rate) {
         CurrencyRepository repo = new CurrencyRepository(getActivity());
         TableCurrencyFormats currency = repo.loadCurrency(symbol);
         int currencyId = currency.getCurrencyId();

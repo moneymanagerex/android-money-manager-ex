@@ -34,6 +34,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Updates security prices from Yahoo Finance.
  * References:
@@ -125,12 +128,12 @@ public class YahooSecurityPriceUpdater
         // price
         String priceString = values[1];
         if (!NumericHelper.isNumeric(priceString)) return;
-        BigDecimal price = new BigDecimal(priceString);
+        Money price = MoneyFactory.fromString(priceString);
         // LSE stocks are expressed in GBp (pence), not Pounds.
         // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
         String currency = values[3];
         if (currency.equals("GBp")) {
-            price = price.divide(BigDecimal.valueOf(100));
+            price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
         }
 
         // date

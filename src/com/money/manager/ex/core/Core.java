@@ -74,6 +74,8 @@ import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 
+import info.javaperformance.money.Money;
+
 public class Core {
 
 //    public static final int INVALID_ATTRIBUTE = -1;
@@ -258,7 +260,7 @@ public class Core {
      * @param view   TextView to set the amount
      * @param amount to be formatted
      */
-    public void formatAmountTextView(TextView view, BigDecimal amount) {
+    public void formatAmountTextView(TextView view, Money amount) {
         formatAmountTextView(view, amount, null);
     }
 
@@ -269,7 +271,7 @@ public class Core {
      * @param amount     to be formatted
      * @param currencyId Id currency to be formatted
      */
-    public void formatAmountTextView(TextView view, BigDecimal amount, Integer currencyId) {
+    public void formatAmountTextView(TextView view, Money amount, Integer currencyId) {
         if (amount == null) {
             Log.w(LOGCAT, "Amount for formatting is null.");
             return;
@@ -278,9 +280,9 @@ public class Core {
         CurrencyService currencyService = new CurrencyService(mContext);
 
         if (currencyId == null) {
-            view.setText(currencyService.getBaseCurrencyFormatted(amount.doubleValue()));
+            view.setText(currencyService.getBaseCurrencyFormatted(amount.toDouble()));
         } else {
-            view.setText(currencyService.getCurrencyFormatted(currencyId, amount.doubleValue()));
+            view.setText(currencyService.getCurrencyFormatted(currencyId, amount.toDouble()));
         }
 
         view.setTag(amount);

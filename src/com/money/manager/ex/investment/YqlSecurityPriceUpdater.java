@@ -43,6 +43,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Updates security prices from Yahoo Finance using YQL. All the work is done in the
  * background task.
@@ -219,12 +222,12 @@ public class YqlSecurityPriceUpdater
             return null;
         }
 
-        BigDecimal price = new BigDecimal(priceString);
+        Money price = MoneyFactory.fromString(priceString);
         // LSE stocks are expressed in GBp (pence), not Pounds.
         // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
         String currency = quote.getString("Currency");
         if (currency.equals("GBp")) {
-            price = price.divide(BigDecimal.valueOf(100));
+            price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
         }
         priceModel.price = price;
 

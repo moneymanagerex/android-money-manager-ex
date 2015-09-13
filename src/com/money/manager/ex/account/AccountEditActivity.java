@@ -56,6 +56,9 @@ import com.money.manager.ex.domainmodel.Account;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * @author Francesco Berton
  */
@@ -215,12 +218,12 @@ public class AccountEditActivity
 
         mInitialBal = Math.abs(mInitialBal);
 
-        core.formatAmountTextView(txtInitialBalance, BigDecimal.valueOf(mInitialBal), mCurrencyId);
+        core.formatAmountTextView(txtInitialBalance, MoneyFactory.fromDouble(mInitialBal), mCurrencyId);
         txtInitialBalance.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                double amount = ((BigDecimal) v.getTag()).doubleValue();
+                Money amount = MoneyFactory.fromBigDecimal((BigDecimal) v.getTag());
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, mCurrencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
@@ -334,8 +337,9 @@ public class AccountEditActivity
                     // refresh displayed Currency
                     refreshCurrencyName();
                     // refresh amount
-                    NumericHelper numericHelper = new NumericHelper(getApplicationContext());
-                    BigDecimal initialBalance = numericHelper.getNumberFromString(txtInitialBalance.getTag().toString());
+//                    NumericHelper numericHelper = new NumericHelper(getApplicationContext());
+//                    BigDecimal initialBalance = numericHelper.getNumberFromString(txtInitialBalance.getTag().toString());
+                    Money initialBalance = MoneyFactory.fromString(txtInitialBalance.getTag().toString());
                     if (initialBalance != null) {
                         onFinishedInputAmountDialog(R.id.editTextInitialBalance, initialBalance);
                     }
@@ -344,7 +348,7 @@ public class AccountEditActivity
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+    public void onFinishedInputAmountDialog(int id, Money amount) {
         if (amount == null) {
             Log.w(LOGCAT, "Received amount is null.");
             return;

@@ -40,6 +40,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * This class implements all the methods of utility for the management of currencies.
  *
@@ -100,6 +103,11 @@ public class CurrencyService {
         }
 
         return currencies;
+    }
+
+    public Money doCurrencyExchange(Integer toCurrencyId, Money amount, Integer fromCurrencyId) {
+        Double result = doCurrencyExchange(toCurrencyId, amount.toDouble(), fromCurrencyId);
+        return MoneyFactory.fromDouble(result);
     }
 
     public Double doCurrencyExchange(Integer toCurrencyId, double amount, Integer fromCurrencyId) {

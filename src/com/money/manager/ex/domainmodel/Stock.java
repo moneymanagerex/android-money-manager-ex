@@ -13,6 +13,9 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Stock entity.
  * Created by Alen on 5/09/2015.
@@ -24,11 +27,12 @@ public class Stock
         Stock stock = new Stock();
         // Set to today.
         stock.setPurchaseDate(Calendar.getInstance().getTime());
-        stock.setNumberOfShares(BigDecimal.ZERO);
-        stock.setPurchasePrice(BigDecimal.ZERO);
-        stock.setCommission(BigDecimal.ZERO);
+
+        stock.setNumberOfShares(MoneyFactory.fromString("0"));
+        stock.setPurchasePrice(MoneyFactory.fromString("0"));
+        stock.setCommission(MoneyFactory.fromString("0"));
         // should this be null?
-        stock.setCurrentPrice(BigDecimal.ZERO);
+        stock.setCurrentPrice(MoneyFactory.fromString("0"));
 
         return stock;
     }
@@ -61,20 +65,20 @@ public class Stock
         return this.contentValues;
     }
 
-    public BigDecimal getCommission() {
-        return getBigDecimal(TableStock.COMMISSION);
+    public Money getCommission() {
+        return getMoney(TableStock.COMMISSION);
     }
 
-    public void setCommission(BigDecimal value) {
-        setBigDecimal(TableStock.COMMISSION, value);
+    public void setCommission(Money value) {
+        setMoney(TableStock.COMMISSION, value);
     }
 
-    public BigDecimal getCurrentPrice() {
+    public Money getCurrentPrice() {
         String currentPrice = contentValues.getAsString(TableStock.CURRENTPRICE);
-        return new BigDecimal(currentPrice);
+        return MoneyFactory.fromString(currentPrice);
     }
 
-    public void setCurrentPrice(BigDecimal currentPrice) {
+    public void setCurrentPrice(Money currentPrice) {
         contentValues.put(TableStock.CURRENTPRICE, currentPrice.toString());
     }
 
@@ -94,15 +98,12 @@ public class Stock
         setString(TableStock.NOTES, value);
     }
 
-    public BigDecimal getNumberOfShares() {
+    public Money getNumberOfShares() {
         String numShares = contentValues.getAsString(TableStock.NUMSHARES);
-        if (numShares == null && mCursor != null) {
-            DatabaseUtils.cursorDoubleToCursorValues(mCursor, TableStock.NUMSHARES, contentValues);
-        }
-        return new BigDecimal(numShares);
+        return MoneyFactory.fromString(numShares);
     }
 
-    public void setNumberOfShares(BigDecimal numberOfShares) {
+    public void setNumberOfShares(Money numberOfShares) {
         contentValues.put(TableStock.NUMSHARES, numberOfShares.toString());
     }
 
@@ -122,16 +123,13 @@ public class Stock
         setDate(TableStock.PURCHASEDATE, value);
     }
 
-    public BigDecimal getPurchasePrice() {
+    public Money getPurchasePrice() {
         String purchasePrice = contentValues.getAsString(TableStock.PURCHASEPRICE);
-        if (StringUtils.isEmpty(purchasePrice) && mCursor != null) {
-            DatabaseUtils.cursorDoubleToCursorValues(mCursor, TableStock.PURCHASEPRICE, contentValues);
-        }
-        return new BigDecimal(purchasePrice);
+        return MoneyFactory.fromString(purchasePrice);
     }
 
-    public void setPurchasePrice(BigDecimal value) {
-        setBigDecimal(TableStock.PURCHASEPRICE, value);
+    public void setPurchasePrice(Money value) {
+        setMoney(TableStock.PURCHASEPRICE, value);
     }
 
     public String getStockName() {
@@ -150,9 +148,9 @@ public class Stock
         setString(TableStock.SYMBOL, value);
     }
 
-    public BigDecimal getValue() {
+    public Money getValue() {
         // value = current price * num shares
-        BigDecimal value = this.getNumberOfShares().multiply(this.getCurrentPrice());
+        Money value = this.getNumberOfShares().multiply(this.getCurrentPrice().toDouble());
 
         contentValues.put(TableStock.VALUE, value.toString());
 

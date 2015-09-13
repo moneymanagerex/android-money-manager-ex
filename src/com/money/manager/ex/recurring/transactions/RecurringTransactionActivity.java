@@ -54,6 +54,9 @@ import com.money.manager.ex.common.IInputAmountDialogListener;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Recurring transactions are stored in BillsDeposits table.
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -266,7 +269,7 @@ public class RecurringTransactionActivity
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+    public void onFinishedInputAmountDialog(int id, Money amount) {
         mCommonFunctions.onFinishedInputAmountDialog(id, amount);
     }
 
@@ -531,10 +534,10 @@ public class RecurringTransactionActivity
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = savedInstanceState.getString(KEY_TRANS_STATUS);
 
-        NumericHelper numericHelper = new NumericHelper(getApplicationContext());
+//        NumericHelper numericHelper = new NumericHelper(getApplicationContext());
 
-        mCommonFunctions.amount = numericHelper.getNumberFromString(savedInstanceState.getString(KEY_TRANS_AMOUNT));
-        mCommonFunctions.amountTo = numericHelper.getNumberFromString(savedInstanceState.getString(KEY_TRANS_AMOUNTTO));
+        mCommonFunctions.amount = MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNT));
+        mCommonFunctions.amountTo = MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNTTO));
 
         mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);

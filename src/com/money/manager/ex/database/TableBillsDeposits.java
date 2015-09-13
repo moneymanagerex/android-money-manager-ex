@@ -26,6 +26,9 @@ import com.money.manager.ex.core.NumericHelper;
 
 import java.math.BigDecimal;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Recurring transaction.
  */
@@ -49,8 +52,8 @@ public class TableBillsDeposits
     public String transactionCode;
 //    public TransactionTypes transactionType;
     public String status;
-    public BigDecimal amount;
-    public BigDecimal totalAmount;
+    public Money amount;
+    public Money totalAmount;
     public Integer payeeId;
     public Integer categoryId;
     public Integer subCategoryId;
@@ -87,8 +90,8 @@ public class TableBillsDeposits
 		this.transactionCode = c.getString(c.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
 //		this.transactionType = TransactionTypes.valueOf(this.transactionCode);
 		status = c.getString(c.getColumnIndex(ISplitTransactionsDataset.STATUS));
-		amount = BigDecimal.valueOf(c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT)));
-		this.totalAmount = BigDecimal.valueOf(c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT)));
+		amount = MoneyFactory.fromDouble(c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT)));
+		this.totalAmount = MoneyFactory.fromDouble(c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT)));
 		payeeId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.PAYEEID));
 		categoryId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.CATEGID));
 		subCategoryId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.SUBCATEGID));
@@ -129,8 +132,8 @@ public class TableBillsDeposits
         this.toAccountId = Constants.NOT_SET;
         this.transactionCode = "";
         this.status = "";
-        this.amount = BigDecimal.ZERO;
-        this.totalAmount = BigDecimal.ZERO;
+        this.amount = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
+        this.totalAmount = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
         this.payeeId = Constants.NOT_SET;
         this.categoryId = Constants.NOT_SET;
         this.subCategoryId = Constants.NOT_SET;
@@ -149,8 +152,8 @@ public class TableBillsDeposits
         toAccountId = source.readInt();
         transactionCode = source.readString();
         status = source.readString();
-        amount = new BigDecimal(source.readString());
-        totalAmount = new BigDecimal(source.readDouble());
+        amount = MoneyFactory.fromString(source.readString());
+        totalAmount = MoneyFactory.fromString(source.readString());
         payeeId = source.readInt();
         categoryId = source.readInt();
         subCategoryId = source.readInt();

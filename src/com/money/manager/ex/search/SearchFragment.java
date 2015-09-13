@@ -59,6 +59,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * The search form with search parameter input fields.
  */
@@ -113,11 +116,9 @@ public class SearchFragment extends Fragment
         OnClickListener onClickAmount = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                double amount = 0;
+                Money amount = MoneyFactory.fromString("0");
                 if (v.getTag() != null && NumericHelper.isNumeric(v.getTag().toString())) {
-                    // && v.getTag() instanceof Double
-                    //amount = (Double) v.getTag();
-                    amount = Double.parseDouble(v.getTag().toString());
+                    amount = MoneyFactory.fromString(v.getTag().toString());
                 }
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
@@ -273,7 +274,7 @@ public class SearchFragment extends Fragment
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, BigDecimal amount) {
+    public void onFinishedInputAmountDialog(int id, Money amount) {
         View rootView = getView();
         if (rootView == null) return;
 

@@ -45,6 +45,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 public class InputAmountDialog
         extends DialogFragment {
 
@@ -53,14 +56,15 @@ public class InputAmountDialog
     private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
     private static final String KEY_EXPRESSION = "InputAmountDialog:Expression";
 
-    public static InputAmountDialog getInstance(int id, Double amount) {
+    public static InputAmountDialog getInstance(int id, Money amount) {
         return getInstance(id, amount, null);
     }
 
-    public static InputAmountDialog getInstance(int id, Double amount, Integer currencyId) {
+    public static InputAmountDialog getInstance(int id, Money amount, Integer currencyId) {
         Bundle args = new Bundle();
         args.putInt("id", id);
-        args.putDouble("amount", amount);
+//        args.putDouble("amount", amount);
+        args.putString("amount", amount.toString());
 
         InputAmountDialog dialog = new InputAmountDialog();
         dialog.setArguments(args);
@@ -89,7 +93,7 @@ public class InputAmountDialog
     };
 
     private int mIdView;
-    private BigDecimal mAmount;
+    private Money mAmount;
     private Integer mDisplayCurrencyId;
     private Integer mDefaultColor;
     private TextView txtMain, txtTop;
@@ -139,14 +143,16 @@ public class InputAmountDialog
         // Display the existing amount, if any has been passed into the dialog.
         NumericHelper numericHelper = new NumericHelper(getContext());
         TableCurrencyFormats currency = mCurrencyService.getCurrency(mDisplayCurrencyId);
+
+        Money amount = MoneyFactory.fromString(getArguments().getString("amount"));
         if (currency != null) {
             // no currency and no base currency set.
             int decimals = numericHelper.getNumberOfDecimals(currency.getScale());
             mAmount = this.roundToCurrencyDecimals
-                    ? BigDecimal.valueOf(MathUtils.Round(getArguments().getDouble("amount"), decimals))
-                    : BigDecimal.valueOf(getArguments().getDouble("amount"));
+                    ? amount.truncate(decimals)
+                    : amount;
         } else {
-            mAmount = BigDecimal.valueOf(getArguments().getDouble("amount"));
+            mAmount = amount;
         }
     }
 
@@ -259,7 +265,7 @@ public class InputAmountDialog
                 if (!evalExpression()) return;
 
                 if (mListener != null) {
-                    BigDecimal result = getAmount();
+                    Money result = getAmount();
 
                     mListener.onFinishedInputAmountDialog(mIdView, result);
 
@@ -289,7 +295,9 @@ public class InputAmountDialog
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        savedInstanceState.putDouble(KEY_AMOUNT, mAmount.doubleValue());
+//        savedInstanceState.putDouble(KEY_AMOUNT, mAmount.doubleValue());
+        savedInstanceState.putString(KEY_AMOUNT, mAmount.toString());
+
         if (mDisplayCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mDisplayCurrencyId);
         savedInstanceState.putInt(KEY_ID_VIEW, mIdView);
 
@@ -320,7 +328,8 @@ public class InputAmountDialog
         if (exp.length() > 0) {
             try {
                 Expression e = new ExpressionBuilder(exp).build();
-                mAmount = BigDecimal.valueOf(e.evaluate());
+//                mAmount = BigDecimal.valueOf(e.evaluate());
+                mAmount = MoneyFactory.fromDouble(e.evaluate());
             } catch (IllegalArgumentException ex) {
                 // Just display the last valid value.
                 refreshFormattedAmount();
@@ -333,7 +342,7 @@ public class InputAmountDialog
                 handler.handle(e, "evaluating expression");
             }
         } else {
-            mAmount = BigDecimal.valueOf(0);
+            mAmount = MoneyFactory.fromString("0");
         }
 
         refreshFormattedAmount();
@@ -346,7 +355,7 @@ public class InputAmountDialog
      * @return String Amount formatted in the given currency.
      */
     public String getFormattedAmount() {
-        double amount = mAmount.doubleValue();
+        double amount = mAmount.toDouble();
 
         String result;
 
@@ -378,7 +387,8 @@ public class InputAmountDialog
 
     private void restoreSavedInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(KEY_AMOUNT)) {
-            mAmount = BigDecimal.valueOf(savedInstanceState.getDouble(KEY_AMOUNT));
+//            mAmount = BigDecimal.valueOf(savedInstanceState.getDouble(KEY_AMOUNT));
+            mAmount = MoneyFactory.fromString(savedInstanceState.getString(KEY_AMOUNT));
         }
         if (savedInstanceState.containsKey(KEY_CURRENCY_ID))
             mDisplayCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
@@ -406,19 +416,21 @@ public class InputAmountDialog
         return this.mDisplayCurrencyId != null && this.mDisplayCurrencyId != Constants.NOT_SET;
     }
 
-    private BigDecimal getAmount() {
-        double result;
+    private Money getAmount() {
+        Money result;
 
         // to round or not? Handle case when no base currency set.
         if (this.roundToCurrencyDecimals && isCurrencySet()) {
             NumericHelper numericHelper = new NumericHelper(getContext());
             int decimals = numericHelper.getNumberOfDecimals(
                     mCurrencyService.getCurrency(mDisplayCurrencyId).getScale());
-            result = numericHelper.roundNumber(mAmount.doubleValue(), decimals);
+
+//            result = numericHelper.roundNumber(mAmount.doubleValue(), decimals);
+            result = mAmount.truncate(decimals);
         } else {
-            result = mAmount.doubleValue();
+            result = mAmount;
         }
-        return BigDecimal.valueOf(result);
+        return result;
     }
 
     private String getAmountInUserLocale() {
@@ -437,7 +449,7 @@ public class InputAmountDialog
 
         String result;
         if(this.roundToCurrencyDecimals) {
-            result = helper.getNumberFormatted(mAmount.doubleValue(), currency);
+            result = helper.getNumberFormatted(mAmount.toDouble(), currency);
         } else {
             // get number of decimals from the current value.
             result = mAmount.toString();

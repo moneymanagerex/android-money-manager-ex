@@ -44,6 +44,11 @@ public class AccountRepository
         return query(where.getWhere());
     }
 
+    /**
+     * Loads account data with balances.
+     * @param accountId Id of the account to load.
+     * @return QueryAccountBills entity.
+     */
     public QueryAccountBills loadAccountBills(int accountId) {
         QueryAccountBills result = new QueryAccountBills(mContext);
 
