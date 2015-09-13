@@ -98,8 +98,9 @@ public class AccountEditActivity
     // Activity members
 //    private int mAccountId = -1;
     // mAccountName
-    private String mAccountType, mAccountNum, mHeldAt, mWebsite, mContactInfo, mAccessInfo, mStatus, mNotes, mFavoriteAcct, mCurrencyName;
-    private double mInitialBal = 0;
+    private String mAccountType, mAccountNum, mHeldAt, mWebsite, mContactInfo, mAccessInfo,
+            mStatus, mNotes, mFavoriteAcct, mCurrencyName;
+    private Money mInitialBal = MoneyFactory.fromString("0");
     private Integer mCurrencyId = null;
     private String[] mAccountTypeValues;
     private String[] mAccountStatusValues;
@@ -214,16 +215,18 @@ public class AccountEditActivity
 
         ArrayAdapter<String> adapterSymbol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
         spinSymbolInitialBalance.setAdapter(adapterSymbol);
-        spinSymbolInitialBalance.setSelection(mInitialBal >= 0 ? PLUS : LESS);
+        spinSymbolInitialBalance.setSelection(mInitialBal.compareTo(MoneyFactory.fromString("0")) >= 0
+                ? PLUS : LESS);
 
-        mInitialBal = Math.abs(mInitialBal);
+        // always use positive value. The sign is in the spinner.
+        mInitialBal = MoneyFactory.fromDouble(Math.abs(mInitialBal.toDouble()));
 
-        core.formatAmountTextView(txtInitialBalance, MoneyFactory.fromDouble(mInitialBal), mCurrencyId);
+        core.formatAmountTextView(txtInitialBalance, mInitialBal, mCurrencyId);
         txtInitialBalance.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Money amount = MoneyFactory.fromBigDecimal((BigDecimal) v.getTag());
+                Money amount = MoneyFactory.fromString(v.getTag().toString());
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, mCurrencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
@@ -310,7 +313,8 @@ public class AccountEditActivity
                 } else {
                     v.setTag(String.valueOf(Boolean.TRUE));
                 }
-                imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(String.valueOf(v.getTag())) ? R.drawable.ic_star : R.drawable.ic_star_outline);
+                imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(String.valueOf(v.getTag()))
+                        ? R.drawable.ic_star : R.drawable.ic_star_outline);
             }
         });
 
@@ -380,7 +384,7 @@ public class AccountEditActivity
         outState.putString(KEY_CONTACT_INFO, mContactInfo);
         outState.putString(KEY_ACCESS_INFO, mAccessInfo);
         outState.putString(KEY_STATUS, mStatus);
-        outState.putDouble(KEY_INITIAL_BAL, ((BigDecimal) txtInitialBalance.getTag()).doubleValue());
+        outState.putString(KEY_INITIAL_BAL, txtInitialBalance.getTag().toString());
         outState.putString(KEY_NOTES, mNotes);
         outState.putString(KEY_FAVORITE_ACCT, String.valueOf(imgbFavouriteAccount.getTag()));
         outState.putInt(KEY_CURRENCY_ID, mCurrencyId != null ? mCurrencyId : -1);
@@ -403,7 +407,7 @@ public class AccountEditActivity
         mContactInfo = edtContact.getText().toString();
         mAccessInfo = edtAccessInfo.getText().toString();
 
-        mInitialBal = ((BigDecimal) txtInitialBalance.getTag()).doubleValue();
+        mInitialBal = MoneyFactory.fromString(txtInitialBalance.getTag().toString());
         mNotes = edtNotes.getText().toString();
 
         if (bCheck) {
@@ -455,7 +459,7 @@ public class AccountEditActivity
         values.put(TableAccountList.WEBSITE, mWebsite);
         values.put(TableAccountList.CONTACTINFO, mContactInfo);
         values.put(TableAccountList.ACCESSINFO, mAccessInfo);
-        values.put(TableAccountList.INITIALBAL, ((BigDecimal) txtInitialBalance.getTag()).doubleValue() *
+        values.put(TableAccountList.INITIALBAL, MoneyFactory.fromString(txtInitialBalance.getTag().toString()).toDouble() *
                 (spinSymbolInitialBalance.getSelectedItemPosition() == PLUS ? 1 : -1));
         values.put(TableAccountList.FAVORITEACCT, imgbFavouriteAccount.getTag().toString().toUpperCase());
         values.put(TableAccountList.CURRENCYID, mCurrencyId);
@@ -510,7 +514,7 @@ public class AccountEditActivity
         mWebsite = account.getWebSite();
         mContactInfo = account.getContactInfo();
         mAccessInfo = account.getAccessInfo();
-        mInitialBal = account.getInitialBalance().toDouble();
+        mInitialBal = account.getInitialBalance();
         mFavoriteAcct = account.getFavourite();
         mCurrencyId = account.getCurrencyId();
 
@@ -546,9 +550,10 @@ public class AccountEditActivity
         mContactInfo = savedInstanceState.getString(KEY_CONTACT_INFO);
         mAccessInfo = savedInstanceState.getString(KEY_ACCESS_INFO);
         mStatus = savedInstanceState.getString(KEY_STATUS);
-        mInitialBal = savedInstanceState.getDouble(KEY_INITIAL_BAL);
+        mInitialBal = MoneyFactory.fromString(savedInstanceState.getString(KEY_INITIAL_BAL));
         if (savedInstanceState.getInt(KEY_SYMBOL) == LESS) {
-            mInitialBal = mInitialBal * -1;
+//            mInitialBal = mInitialBal * -1;
+            mInitialBal = mInitialBal.negate();
         }
         mNotes = savedInstanceState.getString(KEY_NOTES);
         mFavoriteAcct = savedInstanceState.getString(KEY_FAVORITE_ACCT);

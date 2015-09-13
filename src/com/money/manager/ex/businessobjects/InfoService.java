@@ -109,7 +109,8 @@ public class InfoService {
         boolean result = false;
         TableInfoTable infoTable = new TableInfoTable();
         // check if exists info
-        boolean exists = !TextUtils.isEmpty(getInfoValue(key));
+//        boolean exists = !TextUtils.isEmpty(getInfoValue(key));
+        boolean exists = (getInfoValue(key) != null);
 
         ContentValues values = new ContentValues();
         values.put(TableInfoTable.INFOVALUE, value);
