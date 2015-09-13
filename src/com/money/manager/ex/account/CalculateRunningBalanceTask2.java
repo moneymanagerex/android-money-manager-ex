@@ -97,7 +97,7 @@ public class CalculateRunningBalanceTask2
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(this.context, this);
             handler.handle(ex, "balancing amount");
-        } 
+        }
         return null;
     }
 
