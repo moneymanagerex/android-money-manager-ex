@@ -164,6 +164,7 @@ dependencies {
     // Money, to be added in Java 9
 //        compile 'org.javamoney:moneta:1.0'
     //    compile 'javax.money:money-api:1.0'
+    compile 'com.google.code.gson:gson:2.3.1'
 
     // Unit testing dependencies
     testCompile 'junit:junit:4.12'

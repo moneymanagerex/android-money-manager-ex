@@ -20,13 +20,15 @@ package com.money.manager.ex.home;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,45 +67,52 @@ public class RecentDatabasesProvider {
         return prefs;
     }
 
-    private ArrayList<RecentDatabaseEntry> getFromJsonArray(JSONArray jsonArray) {
-        ArrayList<RecentDatabaseEntry> list = new ArrayList<>();
+//    private ArrayList<RecentDatabaseEntry> getFromJsonArray(JSONArray jsonArray) {
+//        ArrayList<RecentDatabaseEntry> list = new ArrayList<>();
+//
+////        for (int i = 0; i < jsonArray.length(); i++) {
+////
+////        }
+//
+//        return list;
+//    }
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-
-        }
-
-        return list;
-    }
-
-    private JSONArray getJson(List<RecentDatabaseEntry> list) {
-        JSONArray jsonArray = new JSONArray(list);
-        return jsonArray;
-    }
+//    private JSONArray getJsonArray(List<RecentDatabaseEntry> list) {
+//        JSONArray jsonArray = new JSONArray(list);
+//        return jsonArray;
+//    }
 
     public String readPreference() {
         return getPreferences().getString(PREF_KEY, "");
     }
 
-    public ArrayList<RecentDatabaseEntry> load() {
+    public List<RecentDatabaseEntry> load() {
         String value = readPreference();
 
-        JSONArray list = null;
-        try {
-            list = new JSONArray(value);
-        } catch (JSONException e) {
-            ExceptionHandler handler = new ExceptionHandler(this.context, this);
-            handler.handle(e, "parsing recent files json");
-        }
+//        JSONArray list = null;
+//        try {
+//            list = new JSONArray(value);
+//        } catch (JSONException e) {
+//            ExceptionHandler handler = new ExceptionHandler(this.context, this);
+//            handler.handle(e, "parsing recent files json");
+//        }
 
-        if (list == null) {
-            return  null;
-        } else {
-            return getFromJsonArray(list);
-        }
+//        if (list == null) {
+//            return  null;
+//        } else {
+//            return getFromJsonArray(list);
+//        }
+
+        Type listType = new TypeToken<List<RecentDatabaseEntry>>() {
+        }.getType();
+        Gson gson = new Gson();
+        List<RecentDatabaseEntry> list = gson.fromJson(value, listType);
+        return list;
     }
 
     public void save(List<RecentDatabaseEntry> list) {
-        String value = getJson(list).toString();
+        Gson gson = new Gson();
+        String value = gson.toJson(list);
 
         getPreferences().edit()
                 .putString(PREF_KEY, value)

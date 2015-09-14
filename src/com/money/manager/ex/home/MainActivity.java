@@ -93,6 +93,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -910,7 +911,7 @@ public class MainActivity
 
         RecentDatabasesProvider provider = new RecentDatabasesProvider(getApplicationContext());
 
-        ArrayList<RecentDatabaseEntry> recentList = provider.load();
+        List<RecentDatabaseEntry> recentList = provider.load();
         if (recentList != null) {
             for (RecentDatabaseEntry entry : recentList) {
                 DrawerMenuItem item = new DrawerMenuItem()
@@ -941,10 +942,10 @@ public class MainActivity
         childItems.add(null);
 
         // open database
-        // load
-        ArrayList<DrawerMenuItem> childDatabases = getRecentDatabases();
-        childItems.add(childDatabases);
-//        childItems.add(null);
+        // todo: load from the recent db list.
+//        ArrayList<DrawerMenuItem> childDatabases = getRecentDatabases();
+//        childItems.add(childDatabases);
+        childItems.add(null);
 
         // Dropbox
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {

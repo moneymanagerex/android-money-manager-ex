@@ -52,7 +52,7 @@ public class RecentDatabaseProviderTests extends AndroidTestCase {
     public void testLoad() throws Exception {
         ArrayList<RecentDatabaseEntry> expected = getList();
 
-        ArrayList<RecentDatabaseEntry> actual = _testObject.load();
+        List<RecentDatabaseEntry> actual = _testObject.load();
 
         Assert.assertEquals(expected, actual);
     }
