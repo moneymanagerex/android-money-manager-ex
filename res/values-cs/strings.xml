@@ -162,6 +162,7 @@
   <string name="currency_can_not_deleted">Zvolenou měnu nelze odstranit, protože na ni existuje odkaz</string>
   <string name="category_can_not_deleted">Zvolenou kategorii nelze odstranit, protože na ni existuje odkaz</string>
   <string name="all_transaction">Všechny transakce</string>
+  <string name="today">Dnes</string>
   <string name="last7days">Posledních 7 dní</string>
   <string name="last15days">Poslední 2 týdny</string>
   <string name="current_month">Aktuální měsíc</string>
@@ -476,5 +477,15 @@
   <string name="cash">Hotovost</string>
   <string name="select_account">Vyberte účet</string>
   <string name="invalid_transaction_number">Neplatné číslo transakce</string>
+  <string name="budgets">Rozpočty</string>
+  <string name="error">Chyba</string>
+  <string name="unhandled_crash">Neočekávaná chyba. Zašlete nám prosím log.</string>
+  <string name="title_activity_currency_rates_report">Kurzy měn</string>
+  <string name="update_available">Je k dispozici aktualizace</string>
   <string name="update_on_dropbox">Na Dropboxu je k dispozici aktualizovaný databázový soubor. Chcete aktualizovat?</string>
+  <string name="current_database">Aktuální databáze</string>
+  <string name="appwidget_text">PŘÍKLAD</string>
+  <string name="configure">Přizpůsobení</string>
+  <string name="add_widget">Přidat widget</string>
+  <string name="watchlist">Sledované</string>
 </resources>

@@ -74,6 +74,7 @@
   <string name="error_accountname_empty">Angabe des Kontonamens ist erforderlich</string>
   <string name="error_accounttype_empty">Angabe der Kontoart ist erforderlich</string>
   <string name="error_status_empty">Angabe des Kontostatus ist erforderlich</string>
+  <string name="error_amount_must_be_positive">Betrag muss positiv sein. Die Vorzeichen bestimmen die Buchungsart.</string>
   <string name="payee_name">Zahlungsempfänger</string>
   <string name="edit_payeeName">Bearbeiten des Zahlungsempfängers</string>
   <string name="delete_payee">Zahlungsempfänger löschen</string>
@@ -164,6 +165,7 @@
   <string name="currency_can_not_deleted">Die ausgewälhte Währung kann nicht gelöscht werden, weil darauf verwiesen wird</string>
   <string name="category_can_not_deleted">Die ausgewählte Kategorie kann nicht gelöscht werden, weil darauf verwiesen wird</string>
   <string name="all_transaction">Alle Transaktionen</string>
+  <string name="today">Heute</string>
   <string name="last7days">Letzte Woche</string>
   <string name="last15days">Letzten 2 Wochen</string>
   <string name="current_month">Aktueller Monat</string>
@@ -173,8 +175,10 @@
   <string name="changelog">Changelog</string>
   <string name="transaction_number">Transaktionsnummer</string>
   <string name="widget_summary">Übersicht</string>
+  <string name="widget_all_accounts">Alle Konten</string>
   <string name="widget_add_transaction">Transaktion hinzufügen</string>
   <string name="none">Nichts</string>
+  <string name="once">Einmalig</string>
   <string name="weekly">Wöchentlich</string>
   <string name="bi_weekly">Zweiwöchentlich</string>
   <string name="monthly">Monatlich</string>
@@ -197,6 +201,7 @@
   <string name="new_edit_repeating_transaction">Neu/editieren wiederholte Transaktionen</string>
   <string name="next_occurrence">Nächstes Vorkommen</string>
   <string name="repeats">Wiederholungen</string>
+  <string name="occurs">Ereignisse</string>
   <string name="times_repeated">Mal wiederholt</string>
   <string name="error_next_occurrence_not_populate">Nächstes Vorkommen ist erforderlich</string>
   <string name="enter_next_occurrence">Gib den nächsten Vorgang ein</string>
@@ -221,6 +226,7 @@
   <string name="income">Einkommen</string>
   <string name="expenses">Ausgaben</string>
   <string name="difference">Differenz</string>
+  <string name="no_data">Keine Datensätze gefunden. Passen Sie den sichtbaren Zeitraum an oder tippen Sie auf die grüne plus -Schaltfläche um einen Zeitraum zu erstellen. </string>
   <string name="no_stock_data">Keine Bestandsdaten für dieses Konto vorhanden.</string>
   <string name="month">Monat</string>
   <string name="year">Jahr</string>
@@ -259,6 +265,7 @@
   <string name="donate_bitcoin">Wir akzeptieren nun auch BitCoin Spenden.</string>
   <string name="donate_license">Aus lizenzrechtlichen Gründen von Google dürfen wir den Spendenlink nicht direkt in der App platzieren.</string>
   <string name="donate_button_text">Spenden</string>
+  <string name="homepage_button">Homepage öffnen</string>
   <string name="android_sqlite_vesion">SQLite-Version</string>
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
@@ -271,9 +278,9 @@
   <string name="dropbox_open_database_downloaded">Um die heruntergeladene Datenbank zu benutzen, aud Datenbank öffnen tippen</string>
   <string name="click_to_select_file_dropbox">Tippen um Datei von Dropbox auszuwählen</string>
   <string name="download_from_drobpox">Download von Dropbox</string>
-  <string name="summary_download_from_drobpox">Tippen um manuell die verbundene Datei vo dem Dropbox Orner herunterzuladen</string>
+  <string name="summary_download_from_drobpox">Tippen um manuell die verbundene Datei von dem Dropbox Ordner herunterzuladen</string>
   <string name="upload_to_drobpox">Upload zu Dropbox</string>
-  <string name="summary_upload_to_drobpox">Tippen um manuell die verbundene Datei in den Dropbox Orner hochzuladen</string>
+  <string name="summary_upload_to_drobpox">Tippen um manuell die verbundene Datei in den Dropbox Ordner hochzuladen</string>
   <string name="upload_file_to_dropbox_complete">Ihre Datenbank wurde erfolgreich hochgeladen</string>
   <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
   <string name="dropbox_how_it_works">Wie funktioniert Dropbox mit Money Manager Ex\?</string>
@@ -359,6 +366,7 @@
   <string name="show_chart">Zeige Diagramm</string>
   <string name="add_transaction">Transaktion hinzufügen</string>
   <string name="welcome_header">Willkommen bei MoneyManagerEx!</string>
+  <string name="welcome_body">Alle Transaktionen im MoneyManagerEx gehören zu accounts.\n\nSie haben derzeit keine sichtbaren Konten. Stellen Sie bitte den Filter für sichtbare Konten in den Einstellungen ein, Or\n\nTippen Sie um zu beginnen Ihre Konten einzugeben.</string>
   <string name="welcome_body_dropbox">Wenn Sie MoneyManagerEx unter Windows, Linux oder Mac benutzen, verlinken Sie diese Anwendung mit Dropbox um Ihre Datenbank zu synchronisieren</string>
   <string name="configure_dropbox">Dropbox konfigurieren</string>
   <string name="search_text_contain_title">Suche nach Textinhalten und nicht nach Text der mit anfängt</string>
@@ -393,6 +401,7 @@
   <string name="title_notifications_repeating_transaction">Benachrichtigung Wiederholte Transaktion ist überfällig </string>
   <string name="summary_notifications_repeating_transaction">Zeige Benachrichtigung für überfällige wiederholte Transaktionen</string>
   <string name="tools">Werkzeuge</string>
+  <string name="entities">Entitäten</string>
   <string name="loading">Wird geladen&#8230;</string>
   <string name="grand_total">Gesamtbetrag</string>
   <string name="change_status">Status ändern</string>
@@ -505,4 +514,28 @@
   <string name="update_on_dropbox">Auf Dropbox ist eine aktualisierte Datenbankdatei vorhanden. Möchten Sie aktualisieren?</string>
   <string name="currencies_empty">Keine Währungen gefunden. Um eine zu erstellen, tippen Sie auf das grüne plus-Taste.</string>
   <string name="homepage">Unsere Homepage ist http://android.moneymanagerex.org/</string>
+  <string name="current_database">Aktuelle Datenbank</string>
+  <string name="about_logcat_header">Sie können uns den Anwendungslog senden, indem Sie auf den Button unten drücken.</string>
+  <string name="transaction_type_filter">Filtern nach Transaktionstyp</string>
+  <string name="title_activity_password">Datenbankkennwort eingeben</string>
+  <string name="income_expense_period">Ausgaben/Einnahmen Zeitraum</string>
+  <string name="income_expense_period_summary">Der Zeitraum für die Einnahmen/Ausgaben-Übersicht ist am Seitenende des Home-Bildschirms.</string>
+  <string name="appwidget_text">BEISPIEL</string>
+  <string name="configure">Konfigurieren</string>
+  <string name="add_widget">Widget hinzufügen</string>
+  <string name="single_account">Einzelkonto</string>
+  <string name="title_activity_edit_investment_transaction">Investment Transaktionen Aktivität bearbeiten</string>
+  <string name="watchlist">Beobachtungsliste</string>
+  <string name="purchase_date">Kaufdatum</string>
+  <string name="stock_name">Aktienname</string>
+  <string name="symbol">Symbol</string>
+  <string name="number_of_shares">Anzahl der Aktien</string>
+  <string name="purchase_price">Kaufpreis</string>
+  <string name="current_price">Aktueller Preis</string>
+  <string name="price_date">Preis Datum</string>
+  <string name="commission">Provision</string>
+  <string name="value">Wert</string>
+  <string name="view_transactions">Transaktionen anzeigen</string>
+  <string name="error_downloading_symbol">Fehler Download Preis für Symbol</string>
+  <string name="title_activity_web_view">WebViewActivity</string>
 </resources>

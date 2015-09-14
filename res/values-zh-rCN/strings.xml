@@ -165,6 +165,7 @@
   <string name="currency_can_not_deleted">由于此币种已有交易记录因此无法删除</string>
   <string name="category_can_not_deleted">由于此类目已有交易记录因此无法删除</string>
   <string name="all_transaction">所有交易记录</string>
+  <string name="today">今天</string>
   <string name="last7days">最近七天</string>
   <string name="last15days">最近两周</string>
   <string name="current_month">当月</string>
@@ -174,6 +175,7 @@
   <string name="changelog">更新日志​​​​​</string>
   <string name="transaction_number">交易编号</string>
   <string name="widget_summary">摘要</string>
+  <string name="widget_all_accounts">所有账户</string>
   <string name="widget_add_transaction">添加交易</string>
   <string name="none">无</string>
   <string name="once">仅一次</string>
@@ -224,6 +226,7 @@
   <string name="income">收入</string>
   <string name="expenses">支出</string>
   <string name="difference">结余</string>
+  <string name="no_data">未找到记录，您可以尝试更改可视时段或轻触绿色加号按钮新建 </string>
   <string name="no_stock_data">没有可用于此账户的股票数据。</string>
   <string name="month">月</string>
   <string name="year">年</string>
@@ -262,6 +265,7 @@
   <string name="donate_bitcoin">现在我们同样也接受比特币捐赠。</string>
   <string name="donate_license">受限于谷歌条款，我们将无法把捐款链接直接添加到应用内。</string>
   <string name="donate_button_text">捐赠</string>
+  <string name="homepage_button">打开主页</string>
   <string name="android_sqlite_vesion">SQLite 版本</string>
   <string name="ascending">升序</string>
   <string name="descending">降序</string>
@@ -516,4 +520,22 @@
   <string name="title_activity_password">请输入数据库密码</string>
   <string name="income_expense_period">收入/支出时段</string>
   <string name="income_expense_period_summary">在主界面底部显示的收入/支出时段</string>
+  <string name="appwidget_text">示例</string>
+  <string name="configure">配置</string>
+  <string name="add_widget">添加小部件</string>
+  <string name="single_account">单个账户</string>
+  <string name="title_activity_edit_investment_transaction">编辑投资交易活动</string>
+  <string name="watchlist">关注列表</string>
+  <string name="purchase_date">购买日期</string>
+  <string name="stock_name">股票名称</string>
+  <string name="symbol">股票代码</string>
+  <string name="number_of_shares">股份数目</string>
+  <string name="purchase_price">买入价</string>
+  <string name="current_price">现价</string>
+  <string name="price_date">报价日期</string>
+  <string name="commission">佣金</string>
+  <string name="value">市值</string>
+  <string name="view_transactions">查看交易记录</string>
+  <string name="error_downloading_symbol">下载该股票价格时发生错误</string>
+  <string name="title_activity_web_view">网络视图活动</string>
 </resources>

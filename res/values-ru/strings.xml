@@ -165,6 +165,7 @@
   <string name="currency_can_not_deleted">Валюта не может быть удалена, т.к. на нее есть ссылки из проводок</string>
   <string name="category_can_not_deleted">Категория не может быть удалена, т.к. на нее есть ссылки из проводок</string>
   <string name="all_transaction">Все проводки</string>
+  <string name="today">Сегодня</string>
   <string name="last7days">За последние 7 дней</string>
   <string name="last15days">За последние 2 недели</string>
   <string name="current_month">Текущий месяц</string>
@@ -174,6 +175,7 @@
   <string name="changelog">История изменений</string>
   <string name="transaction_number">Номер проводки</string>
   <string name="widget_summary">Сводка</string>
+  <string name="widget_all_accounts">Все счета</string>
   <string name="widget_add_transaction">Добавить транзакцию</string>
   <string name="none">Нет</string>
   <string name="once">Однократно</string>
@@ -224,6 +226,7 @@
   <string name="income">Доход</string>
   <string name="expenses">Расход</string>
   <string name="difference">Разница</string>
+  <string name="no_data">Записи не были найдены. Попробуйте изменить период видимости или нажмите кнопку с зеленым плюсом, чтобы создать запись. </string>
   <string name="no_stock_data">Нет биржевых данных, доступных для этого счета.</string>
   <string name="month">Месяц</string>
   <string name="year">Год</string>
@@ -262,6 +265,7 @@
   <string name="donate_bitcoin">Теперь мы также принимаем пожертвования в BitCoin.</string>
   <string name="donate_license">Из-за ограничений в лицензировании Google, мы не может поместить ссылки для пожертвований прямо в приложении.</string>
   <string name="donate_button_text">Поддержать</string>
+  <string name="homepage_button">Открыть домашнюю страницу</string>
   <string name="android_sqlite_vesion">Версия SQLite</string>
   <string name="ascending">По возрастанию</string>
   <string name="descending">По убыванию</string>
@@ -516,4 +520,20 @@
   <string name="title_activity_password">Введите пароль базы данных</string>
   <string name="income_expense_period">Период доходов/расходов</string>
   <string name="income_expense_period_summary">Период для отображения доходов/расходов в нижней части домашнего экрана.</string>
+  <string name="appwidget_text">ПРИМЕР</string>
+  <string name="configure">Настроить</string>
+  <string name="add_widget">Добавить виджет</string>
+  <string name="single_account">Единый счет</string>
+  <string name="watchlist">Список просмотра</string>
+  <string name="purchase_date">Дата покупки</string>
+  <string name="stock_name">Название фондов</string>
+  <string name="symbol">Символ</string>
+  <string name="number_of_shares">Количество акций</string>
+  <string name="purchase_price">Цена покупки</string>
+  <string name="current_price">Текущая цена</string>
+  <string name="price_date">Дата цены</string>
+  <string name="commission">Комиссия</string>
+  <string name="value">Значение</string>
+  <string name="view_transactions">Просмотр транзакций</string>
+  <string name="error_downloading_symbol">Ошибка загрузки цены для символа</string>
 </resources>

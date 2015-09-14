@@ -165,6 +165,7 @@
   <string name="currency_can_not_deleted">参照されているため、選択した通貨は削除できません</string>
   <string name="category_can_not_deleted">参照されているため、選択したカテゴリーは削除できません</string>
   <string name="all_transaction">すべての取引</string>
+  <string name="today">今日</string>
   <string name="last7days">過去 7 日間</string>
   <string name="last15days">過去 2 週間</string>
   <string name="current_month">今月</string>
@@ -174,6 +175,7 @@
   <string name="changelog">変更履歴</string>
   <string name="transaction_number">取引番号</string>
   <string name="widget_summary">概要</string>
+  <string name="widget_all_accounts">すべてのアカウント</string>
   <string name="widget_add_transaction">取引を追加</string>
   <string name="none">なし</string>
   <string name="once">1 回</string>
@@ -224,6 +226,7 @@
   <string name="income">収入</string>
   <string name="expenses">支出</string>
   <string name="difference">差異</string>
+  <string name="no_data">レコードが見つかりませんでした。表示期間を調整するか、緑のプラスボタンをタップして追加してください。 </string>
   <string name="no_stock_data">このアカウントで使用可能な格納データはありません。</string>
   <string name="month">月</string>
   <string name="year">年</string>
@@ -262,6 +265,7 @@
   <string name="donate_bitcoin">私たちは BitCoin の寄付も受け付けるようになりました。</string>
   <string name="donate_license">Google ライセンス上の理由から、私たちはアプリ内に直接寄付のリンクを配置することはできません。</string>
   <string name="donate_button_text">寄付</string>
+  <string name="homepage_button">ホームページを開く</string>
   <string name="android_sqlite_vesion">SQLite バージョン</string>
   <string name="ascending">昇順</string>
   <string name="descending">降順</string>
@@ -516,4 +520,22 @@
   <string name="title_activity_password">データベースのパスワードを入力してください</string>
   <string name="income_expense_period">収入/支出の期間</string>
   <string name="income_expense_period_summary">ホーム画面フッターの、収入/支出の概要の期間。</string>
+  <string name="appwidget_text">例</string>
+  <string name="configure">構成</string>
+  <string name="add_widget">ウィジェットを追加</string>
+  <string name="single_account">単一アカウント</string>
+  <string name="title_activity_edit_investment_transaction">EditInvestmentTransactionActivity</string>
+  <string name="watchlist">ウォッチリスト</string>
+  <string name="purchase_date">購入日</string>
+  <string name="stock_name">銘柄名</string>
+  <string name="symbol">シンボル</string>
+  <string name="number_of_shares">株式の数</string>
+  <string name="purchase_price">購入価格</string>
+  <string name="current_price">現在の価格</string>
+  <string name="price_date">評価日</string>
+  <string name="commission">手数料</string>
+  <string name="value">価値</string>
+  <string name="view_transactions">取引の表示</string>
+  <string name="error_downloading_symbol">シンボルの価格をダウンロード中にエラー</string>
+  <string name="title_activity_web_view">WebViewActivity</string>
 </resources>

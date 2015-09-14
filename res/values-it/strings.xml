@@ -72,6 +72,7 @@
   <string name="error_accountname_empty">Nome dell\'account è necessario</string>
   <string name="error_accounttype_empty">Tipo di conto è richiesto</string>
   <string name="error_status_empty">Lo stato dell\'account è necessario</string>
+  <string name="error_amount_must_be_positive">Importo deve essere positivo. Il segno è determinato dal tipo di transazione.</string>
   <string name="payee_name">Nome beneficiario</string>
   <string name="edit_payeeName">Modifica il beneficiario</string>
   <string name="delete_payee">Elimina Beneficiario</string>
@@ -162,6 +163,7 @@
   <string name="currency_can_not_deleted">La valuta selezionata non può essere cancellata perché referenziata</string>
   <string name="category_can_not_deleted">La categoria selezionata non può essere cancellata perché referenziata</string>
   <string name="all_transaction">Tutte le transazioni</string>
+  <string name="today">Oggi</string>
   <string name="last7days">Ultima settimana</string>
   <string name="last15days">Ultime 2 settimane</string>
   <string name="current_month">Mese corrente</string>
@@ -171,8 +173,10 @@
   <string name="changelog">Modifiche di Versione</string>
   <string name="transaction_number">Numero transazione</string>
   <string name="widget_summary">Riepilogo</string>
+  <string name="widget_all_accounts">Tutti gli Account</string>
   <string name="widget_add_transaction">Aggiungi Transazione</string>
   <string name="none">Nessuna</string>
+  <string name="once">Una volta</string>
   <string name="weekly">Settimanale</string>
   <string name="bi_weekly">Quindicinale</string>
   <string name="monthly">Mensile</string>
@@ -195,6 +199,7 @@
   <string name="new_edit_repeating_transaction">Operazione ricorrente nuova/modifica</string>
   <string name="next_occurrence">Prossima Scadenza</string>
   <string name="repeats">Cadenza</string>
+  <string name="occurs">Si verifica</string>
   <string name="times_repeated">Numero di Operazione</string>
   <string name="error_next_occurrence_not_populate">Prossima ricorrenza è richiesta</string>
   <string name="enter_next_occurrence">Inserire Scadenza Successiva</string>
@@ -219,6 +224,7 @@
   <string name="income">Entrate</string>
   <string name="expenses">Uscite</string>
   <string name="difference">Differenze</string>
+  <string name="no_data">Nessun record trovato. Provare a regolare il periodo visibile o premere il pulsante verde per creare una. </string>
   <string name="no_stock_data">Nessun dato dell\'azione disponibile per questo account.</string>
   <string name="month">Mese</string>
   <string name="year">Anno</string>
@@ -257,6 +263,7 @@
   <string name="donate_bitcoin">Ora accettiamo anche donazioni BitCoin.</string>
   <string name="donate_license">Per ragioni di licenza di Google, non possiamo inserire dei link per donazione direttamente all\'interno dell\'app.</string>
   <string name="donate_button_text">Donate</string>
+  <string name="homepage_button">Apri Home page</string>
   <string name="android_sqlite_vesion">Versione SQLite</string>
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
@@ -391,6 +398,7 @@
   <string name="title_notifications_repeating_transaction">Transazioni ricorrenti in ritardo </string>
   <string name="summary_notifications_repeating_transaction">Visualizza operazioni ricorrenti in ritardo</string>
   <string name="tools">Strumenti</string>
+  <string name="entities">Entità</string>
   <string name="loading">Caricamento in corso&#8230;</string>
   <string name="grand_total">Totale complessivo</string>
   <string name="change_status">Modifica lo stato</string>
@@ -503,4 +511,26 @@
   <string name="update_on_dropbox">C\'è un database aggiornato disponibile su Dropbox. Vuoi aggiornare?</string>
   <string name="currencies_empty">Nessun valute sono state trovate. Per crearne uno, toccare il pulsante più verde.</string>
   <string name="homepage">La nostra homepage è http://android.moneymanagerex.org/</string>
+  <string name="current_database">Database corrente</string>
+  <string name="about_logcat_header">Potete inviarci il registro dell\'applicazione cliccando sul pulsante qui sotto.</string>
+  <string name="transaction_type_filter">Filtra per tipo di transazione</string>
+  <string name="title_activity_password">Inserisci la password del database</string>
+  <string name="income_expense_period">Entrate/Uscite periodo</string>
+  <string name="income_expense_period_summary">Il periodo per la visualizzazione di entrate/uscite a piè di pagina della schermata iniziale.</string>
+  <string name="appwidget_text">ESEMPIO</string>
+  <string name="configure">Opzioni</string>
+  <string name="add_widget">Aggiungi widget</string>
+  <string name="single_account">Singolo Account</string>
+  <string name="watchlist">Da vedere</string>
+  <string name="purchase_date">Data di acquisto</string>
+  <string name="stock_name">Nome Azione</string>
+  <string name="symbol">Simbolo</string>
+  <string name="number_of_shares">Numero di azioni</string>
+  <string name="purchase_price">Prezzo d\'acquisto</string>
+  <string name="current_price">Prezzo corrente</string>
+  <string name="price_date">Prezzo data</string>
+  <string name="commission">Commissione</string>
+  <string name="value">Valore</string>
+  <string name="view_transactions">Visualizza transazioni</string>
+  <string name="error_downloading_symbol">Prezzo download errore per simbolo</string>
 </resources>
