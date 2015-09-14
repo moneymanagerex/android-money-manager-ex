@@ -88,7 +88,7 @@ public class SplitItemFragment
      * @return Split Transaction
      */
     public ISplitTransactionsDataset getSplitTransaction(TransactionTypes parentTransactionType) {
-        Object amountTag = txtAmount.getTag();
+        String amountTag = txtAmount.getTag().toString();
 
         // handle 0 values.
         if(amountTag == null) {
@@ -98,7 +98,7 @@ public class SplitItemFragment
 
         // otherwise figure out which sign to use for the amount.
 
-        BigDecimal amount = (BigDecimal) amountTag;
+        Money amount = MoneyFactory.fromString(amountTag);
 
         // toString takes the localized text! Use value.
         int position = spinTransCode.getSelectedItemPosition();
@@ -106,9 +106,10 @@ public class SplitItemFragment
 
         if(!parentTransactionType.equals(transactionType)){
             // parent transaction type is different. Invert the amount. What if the amount is already negative?
-            mSplitTransaction.setSplitTransAmount(amount.doubleValue() * -1);
+//            mSplitTransaction.setSplitTransAmount(amount.doubleValue() * -1);
+            mSplitTransaction.setSplitTransAmount(amount.negate().toDouble());
         } else {
-            mSplitTransaction.setSplitTransAmount(amount.doubleValue());
+            mSplitTransaction.setSplitTransAmount(amount.toDouble());
         }
 
         return mSplitTransaction;
@@ -158,10 +159,12 @@ public class SplitItemFragment
 
                 @Override
                 public void onClick(View v) {
-//                    BigDecimal amount = (BigDecimal) v.getTag();
-                    BigDecimal tagAmount = (BigDecimal) v.getTag();
-                    if (tagAmount == null) {
-                        tagAmount = BigDecimal.ZERO;
+                    Object tag = v.getTag();
+                    Money amount;
+                    if (tag == null) {
+                        amount = MoneyFactory.fromString("0");
+                    } else {
+                        amount = MoneyFactory.fromString(tag.toString());
                     }
 
                     if (getActivity() instanceof SplitTransactionsActivity) {
@@ -169,8 +172,7 @@ public class SplitItemFragment
                         activity.setFragmentInputAmountClick(SplitItemFragment.this);
                     }
 
-                    Money amount = MoneyFactory.fromBigDecimal(tagAmount);
-                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, null);
                     dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });
@@ -256,7 +258,7 @@ public class SplitItemFragment
     public void onFinishedInputAmountDialog(int id, Money amount) {
         Core core = new Core(getActivity().getApplicationContext());
         if (txtAmount.getId() == id) {
-            txtAmount.setTag(amount);
+            txtAmount.setTag(amount.toString());
             mSplitTransaction.setSplitTransAmount(amount.toDouble());
             core.formatAmountTextView(txtAmount, amount);
         }

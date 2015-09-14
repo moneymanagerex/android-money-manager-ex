@@ -430,9 +430,18 @@ public class InputAmountDialog
         return result;
     }
 
-    private String getAmountForEditing() {
-        if (mAmount == null) return "0";
+    private String getAmountForEditing(Money amount) {
+        if (amount == null) return "0";
 
+        String result = getFormattedAmountForEditing(amount);
+        if (StringUtils.isEmpty(result)) {
+            return amount.toString();
+        } else {
+            return result;
+        }
+    }
+
+    private String getFormattedAmountForEditing(Money amount) {
         NumericHelper helper = new NumericHelper(getContext());
 
         // Output currency. Used for scale/precision (number of decimal places).
@@ -441,27 +450,32 @@ public class InputAmountDialog
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.showMessage(getString(R.string.base_currency_not_set));
 
-            return mAmount.toString();
+            return "";
         }
 
         String result;
         if(this.roundToCurrencyDecimals) {
             // use decimals from the display currency.
             TableCurrencyFormats displayCurrency = mCurrencyService.getCurrency(mDisplayCurrencyId);
-            // but decimal and group separators from the base currency.
-            result = helper.getNumberFormatted(mAmount, displayCurrency.getScale(),
-                    baseCurrency.getDecimalPoint(), baseCurrency.getGroupSeparator());
+            if (displayCurrency != null) {
+                // but decimal and group separators from the base currency.
+                result = helper.getNumberFormatted(mAmount, displayCurrency.getScale(),
+                        baseCurrency.getDecimalPoint(), baseCurrency.getGroupSeparator());
+            } else {
+                return "";
+            }
         } else {
             // get number of decimals from the current value.
-            result = mAmount.toString();
+            return "";
         }
 
         return result;
+
     }
 
     private void showAmountInEntryField() {
         // Get the calculated amount in default locale and display in the main box.
-        String amount = getAmountForEditing();
+        String amount = getAmountForEditing(mAmount);
         txtMain.setText(amount);
     }
 
