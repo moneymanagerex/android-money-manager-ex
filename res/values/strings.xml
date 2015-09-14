@@ -641,4 +641,5 @@
     <string name="view_transactions">View transactions</string>
     <string name="error_downloading_symbol">Error downloading price for symbol</string>
     <string name="title_activity_web_view">WebViewActivity</string>
+    <string name="other">Other</string>
 </resources>

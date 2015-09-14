@@ -233,6 +233,7 @@ public class DropboxServiceIntent
         boolean ret = mDropboxHelper.download(remoteFile, tempFile, listener);
         //complete
         onDownloadUpload.onPostExecute(ret);
+
         //send message to the database download complete
         Message messageComplete = new Message();
         messageComplete.what = INTENT_EXTRA_MESSENGER_DOWNLOAD;

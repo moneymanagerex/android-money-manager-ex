@@ -15,19 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.settings;
+package com.money.manager.ex.home;
 
-import android.os.Bundle;
+/**
+ * An entry in the recent databases list.
+ *
+ * Created by Alen Siljak on 14/09/2015.
+ */
+public class RecentDatabaseEntry {
 
-public class DropboxSettingsActivity
-        extends BaseSettingsFragmentActivity {
-
-//    private static String LOGCAT = DropboxSettingsActivity.class.getSimpleName();
-
-    @Override
-    protected void onCreate(Bundle savedInstance) {
-        super.onCreate(savedInstance);
-        setSettingFragment(new DropboxSettingsFragment());
+    public static RecentDatabaseEntry getInstance(String fileName, boolean linkedToDropbox, String dropboxFileName) {
+        RecentDatabaseEntry entry = new RecentDatabaseEntry();
+        entry.fileName = fileName;
+        entry.linkedToDropbox = linkedToDropbox;
+        entry.dropboxFileName = dropboxFileName;
+        return entry;
     }
 
+    public String fileName;
+    public String dropboxFileName;
+    public boolean linkedToDropbox;
 }

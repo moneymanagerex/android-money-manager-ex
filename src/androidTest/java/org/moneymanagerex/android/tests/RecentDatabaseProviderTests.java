@@ -18,12 +18,13 @@
 package org.moneymanagerex.android.tests;
 
 import android.test.AndroidTestCase;
-import android.util.Log;
+import android.test.mock.MockContext;
 
+import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.investment.YqlSecurityPriceUpdater;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,29 +34,57 @@ import java.util.List;
  * Tests for YQL security downloader.
  * Created by Alen Siljak on 20/08/2015.
  */
-public class YqlSecurityPriceUpdaterTest extends AndroidTestCase {
+public class RecentDatabaseProviderTests extends AndroidTestCase {
 
-    private YqlSecurityPriceUpdater _testObject;
+    private RecentDatabasesProvider _testObject;
 
     public void setUp() throws Exception {
         super.setUp();
 
-        _testObject = new YqlSecurityPriceUpdater(getContext(), null);
+        MockContext context = new MockContext();
+        _testObject = new RecentDatabasesProvider(context);
     }
 
     public void tearDown() throws Exception {
         _testObject = null;
     }
 
-    public void testGetYqlQueryFor() throws Exception {
-        final String source = "yahoo.finance.quote";
-        List<String> fields = Arrays.asList("symbol", "LastTradePriceOnly", "LastTradeDate", "Currency");
-        List<String> symbols = Arrays.asList("YHOO", "AAPL", "GOOG", "MSFT");
+    public void testLoad() throws Exception {
+        ArrayList<RecentDatabaseEntry> expected = getList();
 
-        String expected = "select symbol,LastTradePriceOnly,LastTradeDate,Currency from yahoo.finance.quote where symbol in (\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")";
-
-        String actual = _testObject.getYqlQueryFor(source, fields, symbols);
+        ArrayList<RecentDatabaseEntry> actual = _testObject.load();
 
         Assert.assertEquals(expected, actual);
+    }
+
+    public void testSave() {
+        ArrayList<RecentDatabaseEntry> list = getList();
+        String expected = "todo";
+
+        _testObject.save(list);
+
+        String actual = _testObject.readPreference();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    private ArrayList<RecentDatabaseEntry> getList() {
+        ArrayList<RecentDatabaseEntry> list = new ArrayList<>();
+
+        list.add(getEntry());
+        list.add(getEntry());
+        list.add(getEntry());
+
+        return list;
+    }
+
+    private RecentDatabaseEntry getEntry() {
+        RecentDatabaseEntry entry = new RecentDatabaseEntry();
+
+        entry.dropboxFileName = "";
+        entry.linkedToDropbox = false;
+        entry.fileName = "filename.mmb";
+
+        return entry;
     }
 }

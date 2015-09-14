@@ -35,8 +35,8 @@ import com.shamanland.fonticon.FontIconView;
 import java.util.ArrayList;
 
 /**
- * Adapter for the drawer menu with groups. Used to avoid displaying the dialogs for the
- * 2nd-stage selection.
+ * Adapter for the expandable drawer menu. Used to avoid displaying the dialogs for the
+ * 2nd-stage selection and show menu groups instead.
  *
  * Created by Alen Siljak on 20/07/2015.
  */
@@ -56,10 +56,10 @@ public class DrawerMenuGroupAdapter
         this.mChildItems = childItems;
     }
 
-    public void setInflater(LayoutInflater mInflater, Activity act) {
-        this.mInflater = mInflater;
-        activity = act;
-    }
+//    public void setInflater(LayoutInflater mInflater, Activity act) {
+//        this.mInflater = mInflater;
+//        activity = act;
+//    }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {

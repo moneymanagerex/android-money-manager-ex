@@ -142,7 +142,7 @@ public class DropboxSettingsFragment
             if (TextUtils.isEmpty(pDropboxFile.getSummary())) {
                 pDropboxFile.setSummary(R.string.click_to_select_file_dropbox);
             }
-            // open DropboxBrowse Activity
+            // open Dropbox Browser Activity
             pDropboxFile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
@@ -204,6 +204,8 @@ public class DropboxSettingsFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Currently only handling REQUEST_DROPBOX_FILE request.
 
         if (resultCode == Activity.RESULT_OK && data != null) {
             final Preference pDropboxFile = findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE));

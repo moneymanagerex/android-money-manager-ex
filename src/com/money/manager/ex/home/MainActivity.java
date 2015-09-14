@@ -248,8 +248,8 @@ public class MainActivity
             try {
                 mDrawerToggle.syncState();
             } catch (Exception e) {
-                Log.w(LOGCAT, "Error on drawer sync state.");
-                e.printStackTrace();
+                ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+                handler.handle(e, "drawer sync state");
             }
         }
     }
@@ -905,6 +905,33 @@ public class MainActivity
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
     }
 
+    private ArrayList<DrawerMenuItem> getRecentDatabases() {
+        ArrayList<DrawerMenuItem> childDatabases = new ArrayList<>();
+
+        RecentDatabasesProvider provider = new RecentDatabasesProvider(getApplicationContext());
+
+        ArrayList<RecentDatabaseEntry> recentList = provider.load();
+        if (recentList != null) {
+            for (RecentDatabaseEntry entry : recentList) {
+                DrawerMenuItem item = new DrawerMenuItem()
+                        .withText("item 1");
+                if (entry.linkedToDropbox) {
+                    item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox));
+                }
+                childDatabases.add(item);
+            }
+        }
+
+        // Other. Simply open the file picker, as before.
+        DrawerMenuItem item = new DrawerMenuItem()
+                .withId(R.id.menu_open_database)
+                .withText(getString(R.string.other));
+        childDatabases.add(item);
+
+
+        return childDatabases;
+    }
+
     private void createExpandableDrawer() {
         // Menu.
 
@@ -912,8 +939,13 @@ public class MainActivity
         final ArrayList<Object> childItems = new ArrayList<>();
         // Home
         childItems.add(null);
+
         // open database
-        childItems.add(null);
+        // load
+        ArrayList<DrawerMenuItem> childDatabases = getRecentDatabases();
+        childItems.add(childDatabases);
+//        childItems.add(null);
+
         // Dropbox
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
             childItems.add(null);
@@ -937,18 +969,25 @@ public class MainActivity
                 .withText(getString(R.string.payees))
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_people)));
         childItems.add(childTools);
+
         // Recurring Transactions
         childItems.add(null);
+
         // Budgets
         childItems.add(null);
+
         // Search transaction
         childItems.add(null);
+
         // reports
         childItems.add(null);
+
         // Settings
         childItems.add(null);
+
         // Donate
         childItems.add(null);
+
         // Help
         childItems.add(null);
 
@@ -1019,28 +1058,34 @@ public class MainActivity
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_home)
                 .withText(getString(R.string.home))
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
+
         // Open database
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_open_database)
                 .withText(getString(R.string.open_database))
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
+
         // Dropbox synchronize
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
                     .withText(getString(R.string.synchronize))
                     .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
         }
-        // Tools
+
+        // Entities
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_group_main)
                 .withText(getString(R.string.entities))
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
+
         // Recurring Transactions
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
                 .withText(getString(R.string.repeating_transactions))
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
+
         // Budgets
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_budgets)
                 .withText(getString(R.string.budgets))
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
+
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
                 .withText(getString(R.string.search))

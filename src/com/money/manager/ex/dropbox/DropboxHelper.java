@@ -48,6 +48,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DropboxSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -629,10 +630,10 @@ public class DropboxHelper {
 
     /**
      * Downloads the file from Dropbox service.
-     * @param dropboxFile
-     * @param localFile
-     * @param progressListener
-     * @return
+     * @param dropboxFile Dropbox file entry
+     * @param localFile Local file reference
+     * @param progressListener Listener for the progress update messages.
+     * @return Indicator whether the download was successful.
      */
     public boolean download(final Entry dropboxFile, final File localFile, final ProgressListener progressListener) {
         try {

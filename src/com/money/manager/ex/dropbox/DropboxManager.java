@@ -25,23 +25,22 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
-import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.utils.DialogUtils;
-import com.money.manager.ex.utils.NetworkUtilities;
 
 import java.io.File;
 
 /**
  * Handles the background Dropbox service and provides feedback to the UI.
+ * Example usage:
  */
 public class DropboxManager {
 
@@ -87,16 +86,16 @@ public class DropboxManager {
         runDropbox(DropboxServiceIntent.INTENT_ACTION_DOWNLOAD);
     }
 
-    public String getDropboxFileSetting() {
+    public String getDropboxFilePath() {
         return mDropboxHelper.getLinkedRemoteFile();
     }
 
     /**
      * Provides the path to the local file which is currently linked to Dropbox.
-     * @return
+     * @return path to the local database.
      */
-    public String getLocalDropboxFile() {
-        String dropboxFile = getDropboxFileSetting();
+    public String getLocalDatabasePath() {
+        String dropboxFile = getDropboxFilePath();
         Core core = new Core(mContext.getApplicationContext());
 
         String localFile = core.getExternalStorageDirectoryDropboxApplication().getPath() + dropboxFile;
@@ -105,7 +104,7 @@ public class DropboxManager {
     }
 
     public void openDownloadedDatabase() {
-        File downloadedDb = new File(this.getLocalDropboxFile());
+        File downloadedDb = new File(this.getLocalDatabasePath());
         DropboxServiceIntent dropboxService = new DropboxServiceIntent();
 
         Intent intent = dropboxService.getIntentForOpenDatabase(mContext, downloadedDb);
@@ -118,12 +117,12 @@ public class DropboxManager {
     private void runDropbox(String intentAction) {
         // Validation.
         // We need a value in dropbox file name settings.
-        String dropboxFile = getDropboxFileSetting();
+        String dropboxFile = getDropboxFilePath();
         if (TextUtils.isEmpty(dropboxFile)) return;
 
         // Action
 
-        String localFile = getLocalDropboxFile();
+        String localFile = getLocalDatabasePath();
 
         Intent service = new Intent(mContext.getApplicationContext(), DropboxServiceIntent.class);
 
@@ -151,30 +150,38 @@ public class DropboxManager {
         // start service
         mContext.startService(service);
 
-        // once done, the message is sent out via messenger.
+        // once done, the message is sent out via messenger. See Messenger definition below.
+        // INTENT_EXTRA_MESSENGER_DOWNLOAD
     }
 
     private Messenger createMessenger(final ProgressDialog progressDialog) {
+        // Messenger handles received messages from the Dropbox service.
         Messenger messenger = new Messenger(new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_ON_WIFI) {
                     //showMessage();
                     closeDialog(progressDialog);
+
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
                     // close dialog
                     closeDialog(progressDialog);
                     showMessage(R.string.dropbox_database_is_synchronized, Toast.LENGTH_LONG);
+
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_START_DOWNLOAD) {
                     showMessage(R.string.dropbox_download_is_starting, Toast.LENGTH_LONG);
+
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD) {
                     // Download from Dropbox completed.
+                    storeRecentDb();
                     // close dialog
                     closeDialog(progressDialog);
                     // Notify whoever is interested.
                     mCallbacks.onFileDownloaded();
+
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_START_UPLOAD) {
                     showMessage(R.string.dropbox_upload_is_starting, Toast.LENGTH_LONG);
+
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD) {
                     // close dialog
                     closeDialog(progressDialog);
@@ -200,5 +207,12 @@ public class DropboxManager {
         if (progressDialog != null && progressDialog.isShowing()) {
             DialogUtils.closeProgressDialog(progressDialog);
         }
+    }
+
+    private void storeRecentDb() {
+        RecentDatabasesProvider recents = new RecentDatabasesProvider(mContext);
+        RecentDatabaseEntry entry = RecentDatabaseEntry.getInstance(getLocalDatabasePath(), true,
+                getDropboxFilePath());
+        recents.add(entry);
     }
 }

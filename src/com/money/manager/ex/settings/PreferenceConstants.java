@@ -89,4 +89,7 @@ public class PreferenceConstants {
 
     public static final Integer PREF_SHOW_TUTORIAL = R.string.pref_show_tutorial;
     public static final Integer PREF_DASHBOARD_GROUP_VISIBLE = R.string.pref_dashboard_group_visibility;
+
+    // Recent files preferences
+    public static final String RECENT_DB_PREFERENCES = "com.money.manager.ex.recent_db";
 }
