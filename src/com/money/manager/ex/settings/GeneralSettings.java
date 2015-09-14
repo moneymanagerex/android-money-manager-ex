@@ -40,7 +40,7 @@ public class GeneralSettings
     }
 
     public String getDefaultAccountId() {
-        String key = mContext.getString(PreferenceConstants.PREF_DEFAULT_ACCOUNT);
+        String key = mContext.getString(R.string.pref_default_account);
         String result = getSharedPreferences().getString(key, "");
         return result;
     }

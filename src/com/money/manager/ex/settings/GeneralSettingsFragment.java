@@ -306,7 +306,7 @@ public class GeneralSettingsFragment
     }
 
     private void initDefaultAccount() {
-        ListPreference preference = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_ACCOUNT));
+        ListPreference preference = (ListPreference) findPreference(getString(R.string.pref_default_account));
         if (preference == null) return;
 
         // show default summary
