@@ -110,7 +110,7 @@ public class LookFeelFragment
         };
         // Set the main activity to restart on change of any of the following settings.
 //        chkAccountOpen.setOnPreferenceChangeListener(listener);
-        chkAccountFav.setOnPreferenceChangeListener(listener);
+//        chkAccountFav.setOnPreferenceChangeListener(listener);
         chkHideReconciled.setOnPreferenceChangeListener(listener);
 
         // show transactions
