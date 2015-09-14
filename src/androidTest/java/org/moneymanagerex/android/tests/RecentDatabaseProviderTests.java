@@ -22,13 +22,12 @@ import android.test.mock.MockContext;
 
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
-import com.money.manager.ex.investment.YqlSecurityPriceUpdater;
 
 import junit.framework.Assert;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Tests for YQL security downloader.
@@ -50,26 +49,39 @@ public class RecentDatabaseProviderTests extends AndroidTestCase {
     }
 
     public void testLoad() throws Exception {
-        ArrayList<RecentDatabaseEntry> expected = getList();
+        Queue<RecentDatabaseEntry> expected = getQueue();
 
-        List<RecentDatabaseEntry> actual = _testObject.load();
+        Queue<RecentDatabaseEntry> actual = _testObject.queue;
 
         Assert.assertEquals(expected, actual);
     }
 
     public void testSave() {
-        ArrayList<RecentDatabaseEntry> list = getList();
+        Queue<RecentDatabaseEntry> queue = getQueue();
         String expected = "todo";
 
-        _testObject.save(list);
+        _testObject.save();
 
         String actual = _testObject.readPreference();
 
         Assert.assertEquals(expected, actual);
     }
 
-    private ArrayList<RecentDatabaseEntry> getList() {
-        ArrayList<RecentDatabaseEntry> list = new ArrayList<>();
+    public void testInsert() {
+        RecentDatabaseEntry entry = getEntry();
+        String expected = "[{\"fileName\":\"filename.mmb\",\"dropboxFileName\":\"\",\"linkedToDropbox\":false}]";
+
+        _testObject.add(entry);
+
+        String actual = _testObject.toJson();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    // Private
+
+    private Queue<RecentDatabaseEntry> getQueue() {
+        Queue<RecentDatabaseEntry> list = new ArrayDeque<>();
 
         list.add(getEntry());
         list.add(getEntry());
@@ -87,4 +99,5 @@ public class RecentDatabaseProviderTests extends AndroidTestCase {
 
         return entry;
     }
+
 }

@@ -173,7 +173,7 @@ public class DropboxManager {
 
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD) {
                     // Download from Dropbox completed.
-                    // todo: storeRecentDb();
+                    storeRecentDb();
                     // close dialog
                     closeDialog(progressDialog);
                     // Notify whoever is interested.

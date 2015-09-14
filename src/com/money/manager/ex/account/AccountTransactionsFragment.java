@@ -396,7 +396,7 @@ public class AccountTransactionsFragment
     @Override
     public void onTaskComplete(HashMap<Integer, Money> balances) {
         // Update the UI controls
-        displayRunningBalances(balances);
+        mAllDataListFragment.displayRunningBalances(balances);
     }
 
     // Private
@@ -772,9 +772,4 @@ public class AccountTransactionsFragment
 
         // the result is received in #onTaskComplete.
     }
-
-    private void displayRunningBalances(HashMap<Integer, Money> balances) {
-        mAllDataListFragment.displayRunningBalances(balances);
-    }
-
 }

@@ -94,6 +94,7 @@ import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -305,6 +306,8 @@ public class MainActivity
         Intent intent;
         final Core core = new Core(getApplicationContext());
         final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager_Dark;
+        
+        if (item.getId() == null) return false;
 
         switch (item.getId()) {
             case R.id.menu_home:
@@ -910,12 +913,16 @@ public class MainActivity
         ArrayList<DrawerMenuItem> childDatabases = new ArrayList<>();
 
         RecentDatabasesProvider provider = new RecentDatabasesProvider(getApplicationContext());
+        Queue<RecentDatabaseEntry> recentList = provider.queue;
 
-        List<RecentDatabaseEntry> recentList = provider.load();
         if (recentList != null) {
             for (RecentDatabaseEntry entry : recentList) {
+                File file = new File(entry.fileName);
+                String title = file.getName();
+
                 DrawerMenuItem item = new DrawerMenuItem()
-                        .withText("item 1");
+                        .withText(title);
+
                 if (entry.linkedToDropbox) {
                     item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox));
                 }
@@ -942,10 +949,10 @@ public class MainActivity
         childItems.add(null);
 
         // open database
-        // todo: load from the recent db list.
-//        ArrayList<DrawerMenuItem> childDatabases = getRecentDatabases();
-//        childItems.add(childDatabases);
-        childItems.add(null);
+        // load from the recent db list.
+        ArrayList<DrawerMenuItem> childDatabases = getRecentDatabases();
+        childItems.add(childDatabases);
+//        childItems.add(null);
 
         // Dropbox
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
