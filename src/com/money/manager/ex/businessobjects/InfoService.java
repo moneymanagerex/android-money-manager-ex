@@ -1,9 +1,11 @@
 package com.money.manager.ex.businessobjects;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -123,17 +125,18 @@ public class InfoService {
         values.put(TableInfoTable.INFOVALUE, value);
 
         try {
-            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
             if (exists) {
-                result = helper.getWritableDatabase().update(infoTable.getSource(),
+                int updated = mContext.getContentResolver().update(infoTable.getUri(),
                         values,
                         TableInfoTable.INFONAME + "=?",
-                        new String[]{key}) >= 0;
+                        new String[]{key});
+                result = updated >= 0;
             } else {
                 values.put(TableInfoTable.INFONAME, key);
-                result = helper.getWritableDatabase().insert(infoTable.getSource(),
-                        null,
-                        values) >= 0;
+                Uri insertUri = mContext.getContentResolver().insert(infoTable.getUri(),
+                        values);
+                long id = ContentUris.parseId(insertUri);
+                result = id > 0;
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
