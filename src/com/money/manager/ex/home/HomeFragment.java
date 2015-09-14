@@ -53,6 +53,7 @@ import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableStock;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -260,7 +261,7 @@ public class HomeFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Core core = new Core(getActivity().getApplicationContext());
+//        Core core = new Core(getActivity().getApplicationContext());
         MmexCursorLoader result;
 
         switch (id) {
@@ -274,14 +275,16 @@ public class HomeFragment
                 mAccountTransactionsLoaded = false;
 
                 setListViewAccountBillsVisible(false);
+
+                LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
                 // compose whereClause
                 String where = "";
                 // check if show only open accounts
-                if (core.getAccountsOpenVisible()) {
+                if (settings.getViewOpenAccounts()) {
                     where = "LOWER(" + QueryAccountBills.STATUS + ")='open'";
                 }
                 // check if show fav accounts
-                if (core.getAccountFavoriteVisible()) {
+                if (settings.getViewFavouriteAccounts()) {
                     where = "LOWER(" + QueryAccountBills.FAVORITEACCT + ")='true'";
                 }
                 result = new MmexCursorLoader(getActivity(), mAccountBillsQuery.getUri(),

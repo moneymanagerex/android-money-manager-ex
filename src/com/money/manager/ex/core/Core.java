@@ -649,21 +649,23 @@ public class Core {
         return true;
     }
 
-    /**
-     * @return preferences account fav visible
-     */
-    public boolean getAccountFavoriteVisible() {
-        return PreferenceManager.getDefaultSharedPreferences(mContext)
-                .getBoolean(mContext.getString(PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE), false);
-    }
-
-    /**
-     * @return preferences accounts visible
-     */
-    public boolean getAccountsOpenVisible() {
-        return PreferenceManager.getDefaultSharedPreferences(mContext)
-                .getBoolean(mContext.getString(PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE), false);
-    }
+//    /**
+//     * @return preferences account fav visible
+//     */
+//    public boolean getAccountFavoriteVisible() {
+//        return PreferenceManager.getDefaultSharedPreferences(mContext)
+//                .getBoolean(mContext.getString(R.string.pref_account_fav_visible), false);
+//        // PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE
+//    }
+//
+//    /**
+//     * @return preferences accounts visible
+//     */
+//    public boolean getAccountsOpenVisible() {
+//        return PreferenceManager.getDefaultSharedPreferences(mContext)
+//                .getBoolean(mContext.getString(R.string.pref_account_open_visible), false);
+//        // PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE
+//    }
 
     public String getDefaultSystemDateFormat() {
         Locale loc = Locale.getDefault();

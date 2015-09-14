@@ -39,6 +39,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
@@ -347,15 +349,18 @@ public class MoneyManagerApplication
     private double getSummaryAccountsInternal(Context context) {
         double curTotal = 0;
 
-        Core core = new Core(context);
+//        Core core = new Core(context);
+        LookAndFeelSettings settings = new AppSettings(getApplicationContext())
+            .getLookAndFeelSettings();
         // compose whereClause
         String where = "";
         // check if show only open accounts
-        if (core.getAccountsOpenVisible()) {
+//        if (core.getAccountsOpenVisible()) {
+        if (settings.getViewOpenAccounts()) {
             where = "LOWER(STATUS)='open'";
         }
         // check if show fav accounts
-        if (core.getAccountFavoriteVisible()) {
+        if (settings.getViewFavouriteAccounts()) {
             where = "LOWER(FAVORITEACCT)='true'";
         }
         QueryAccountBills accountBills = new QueryAccountBills(context);

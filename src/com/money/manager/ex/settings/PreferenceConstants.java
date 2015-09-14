@@ -42,8 +42,8 @@ public class PreferenceConstants {
     public static final Integer PREF_FINANCIAL_YEAR_STARTDATE = R.string.pref_financial_year_startdate;
     public static final Integer PREF_FINANCIAL_YEAR_STARTMONTH = R.string.pref_financial_year_startmonth;
     public static final Integer PREF_BASE_CURRENCY = R.string.pref_base_currency;
-    public static final Integer PREF_ACCOUNT_OPEN_VISIBLE = R.string.pref_account_open_visible;
-    public static final Integer PREF_ACCOUNT_FAV_VISIBLE = R.string.pref_account_fav_visible;
+//    public static final Integer PREF_ACCOUNT_OPEN_VISIBLE = R.string.pref_account_open_visible;
+//    public static final Integer PREF_ACCOUNT_FAV_VISIBLE = R.string.pref_account_fav_visible;
 //    public static final Integer PREF_DROPBOX_MODE = R.string.pref_dropbox_mode;
     public static final Integer PREF_THEME = R.string.pref_theme;
 //    public static final Integer PREF_SHOW_TRANSACTION = R.string.pref_show_transaction;

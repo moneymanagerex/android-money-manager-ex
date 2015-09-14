@@ -23,6 +23,8 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.RawFileUtils;
 
 /**
@@ -153,11 +155,13 @@ public class QueryAccountBills
      * @return selection made ​​if it appears only accounts opened and / or favorites
      */
     public String getFilterAccountSelection() {
-        Core core = new Core(context);
+//        Core core = new Core(context);
+        LookAndFeelSettings settings = new AppSettings(this.context).getLookAndFeelSettings();
+
         // check if show only open accounts
-        String where = core.getAccountsOpenVisible() ? "LOWER(" + STATUS + ")='open'" : null;
+        String where = settings.getViewOpenAccounts() ? "LOWER(" + STATUS + ")='open'" : null;
         // check if show fav accounts
-        where = core.getAccountFavoriteVisible() ? "LOWER(" + FAVORITEACCT + ")='true'" : where;
+        where = settings.getViewFavouriteAccounts() ? "LOWER(" + FAVORITEACCT + ")='true'" : where;
 
         return !(TextUtils.isEmpty(where)) ? where : null;
     }

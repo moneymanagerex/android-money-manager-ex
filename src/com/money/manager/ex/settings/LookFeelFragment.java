@@ -56,10 +56,12 @@ public class LookFeelFragment
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // checkbox on open and favorite account
-        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference) findPreference(getString(
-                PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE));
-        final CheckBoxPreference chkAccountFav = (CheckBoxPreference) findPreference(getString(
-                PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE));
+        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference)
+                findPreference(getString(R.string.pref_account_open_visible));
+//                findPreference(getString(PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE));
+        final CheckBoxPreference chkAccountFav = (CheckBoxPreference)
+//                findPreference(getString(PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE));
+                findPreference(getString(R.string.pref_account_fav_visible));
         final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(
                 PreferenceConstants.PREF_HIDE_RECONCILED_AMOUNTS));
 

@@ -739,10 +739,11 @@ public class AccountTransactionsFragment
         }
 
         AccountService service = new AccountService(context);
-        Core core = new Core(context.getApplicationContext());
+//        Core core = new Core(context.getApplicationContext());
+        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
 
-        Cursor cursor = service.getCursor(core.getAccountsOpenVisible(),
-                core.getAccountFavoriteVisible(), service.getTransactionAccountTypeNames());
+        Cursor cursor = service.getCursor(settings.getViewOpenAccounts(),
+                settings.getViewFavouriteAccounts(), service.getTransactionAccountTypeNames());
 
         int[] adapterRowViews = new int[] { android.R.id.text1 };
 

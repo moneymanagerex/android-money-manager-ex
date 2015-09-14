@@ -61,6 +61,7 @@ import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconView;
 
@@ -302,12 +303,15 @@ public class EditTransactionCommonFunctions {
      * Initialize account selectors.
      */
     public void initAccountSelectors() {
-        Core core = new Core(mContext);
+//        Core core = new Core(mContext);
+        AppSettings settings = new AppSettings(mContext);
+//        LookAndFeelSettings settings = new AppSettings(mContext).getLookAndFeelSettings();
 
         // account list to populate the spin
         AccountService accountService = new AccountService(mContext);
-        this.AccountList = accountService.getTransactionAccounts(core.getAccountsOpenVisible(),
-                core.getAccountFavoriteVisible());
+        this.AccountList = accountService.getTransactionAccounts(
+                settings.getLookAndFeelSettings().getViewOpenAccounts(),
+                settings.getLookAndFeelSettings().getViewFavouriteAccounts());
         if (this.AccountList == null) return;
 
         for(Account account : this.AccountList) {
@@ -319,7 +323,6 @@ public class EditTransactionCommonFunctions {
         addMissingAccountToSelectors(accountRepository, accountId);
         addMissingAccountToSelectors(accountRepository, toAccountId);
         // add the default account, if any.
-        AppSettings settings = new AppSettings(mContext);
         String defaultAccountString = settings.getGeneralSettings().getDefaultAccountId();
         // Set the current account, if not set already.
         if ((accountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {

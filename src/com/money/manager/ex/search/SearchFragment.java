@@ -51,6 +51,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.math.BigDecimal;
@@ -108,7 +110,7 @@ public class SearchFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) return null;
 
-        Core core = new Core(getActivity().getApplicationContext());
+//        Core core = new Core(getActivity().getApplicationContext());
         //create view
         View view = inflater.inflate(R.layout.search_fragment, container, false);
 
@@ -134,9 +136,11 @@ public class SearchFragment extends Fragment
         // Account
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         if (mAccountList == null) {
+            LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
             AccountService accountService = new AccountService(getContext());
-            mAccountList = accountService.getAccountList(core.getAccountsOpenVisible(),
-                    core.getAccountFavoriteVisible());
+            mAccountList = accountService.getAccountList(
+                    settings.getViewOpenAccounts(),
+                    settings.getViewFavouriteAccounts());
             mAccountList.add(0, null);
             for (int i = 0; i <= mAccountList.size() - 1; i++) {
                 if (mAccountList.get(i) != null) {
