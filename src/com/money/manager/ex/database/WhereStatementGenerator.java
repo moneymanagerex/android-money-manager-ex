@@ -22,6 +22,10 @@ public class WhereStatementGenerator {
         this.statements.add(statement);
     }
 
+    public void addStatement(String field, String operator, Integer argument) {
+        this.statements.add(getStatement(field, operator, argument));
+    }
+
     public void addStatement(String field, String operator, Object argument) {
         this.statements.add(getStatement(field, operator, argument));
     }
