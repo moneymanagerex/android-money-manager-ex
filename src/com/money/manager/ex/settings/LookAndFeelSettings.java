@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.businessobjects.InfoService;
 
 /**
  * Look & Feel preferences
@@ -40,10 +41,27 @@ public class LookAndFeelSettings
     }
 
     public boolean getViewOpenAccounts() {
-        return get(R.string.pref_account_open_visible, true);
+//        return get(R.string.pref_account_open_visible, true);
+        InfoService infoService = new InfoService(mContext);
+        String value = infoService.getInfoValue(InfoService.SHOW_OPEN_ACCOUNTS);
+        return Boolean.valueOf(value);
+    }
+
+    public void setViewOpenAccounts(Boolean value) {
+        InfoService infoService = new InfoService(mContext);
+        infoService.setInfoValue(InfoService.SHOW_OPEN_ACCOUNTS, value.toString());
     }
 
     public boolean getViewFavouriteAccounts() {
-        return get(R.string.pref_account_fav_visible, true);
+//        return get(R.string.pref_account_fav_visible, true);
+        InfoService infoService = new InfoService(mContext);
+        String value = infoService.getInfoValue(InfoService.SHOW_FAVOURITE_ACCOUNTS);
+        return Boolean.valueOf(value);
     }
+
+    public void setViewFavouriteAccounts(Boolean value) {
+        InfoService infoService = new InfoService(mContext);
+        infoService.setInfoValue(InfoService.SHOW_FAVOURITE_ACCOUNTS, value.toString());
+    }
+
 }

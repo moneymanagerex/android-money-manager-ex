@@ -340,7 +340,7 @@ public class MoneyManagerOpenHelper
             TableInfoTable infoTable = new TableInfoTable();
 
             infoDate = database.rawQuery("SELECT * FROM " + infoTable.getSource() + " WHERE " + TableInfoTable.INFONAME + "=?",
-                    new String[]{Constants.INFOTABLE_DATEFORMAT});
+                    new String[]{InfoService.INFOTABLE_DATEFORMAT});
 
             boolean recordExists = (infoDate != null && infoDate.moveToFirst());
 
@@ -348,9 +348,9 @@ public class MoneyManagerOpenHelper
 
             if (!recordExists) {
                 // check if pattern exists
-                infoService.insertRaw(database, Constants.INFOTABLE_DATEFORMAT, pattern);
+                infoService.insertRaw(database, InfoService.INFOTABLE_DATEFORMAT, pattern);
             } else {
-                infoService.updateRaw(database, Constants.INFOTABLE_DATEFORMAT, pattern);
+                infoService.updateRaw(database, InfoService.INFOTABLE_DATEFORMAT, pattern);
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);

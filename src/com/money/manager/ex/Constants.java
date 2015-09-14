@@ -34,13 +34,7 @@ public class Constants {
     public static final String TRANSACTION_STATUS_VOID = "V";
     public static final String TRANSACTION_STATUS_FOLLOWUP = "F";
     public static final String TRANSACTION_STATUS_DUPLICATE = "D";
-    // Info Table AppSettings
-    public static final String INFOTABLE_USERNAME = "USERNAME";
-//    public static final String INFOTABLE_BASECURRENCYID = "BASECURRENCYID";
-    public static final String INFOTABLE_DATEFORMAT = "DATEFORMAT";
-    public static final String INFOTABLE_FINANCIAL_YEAR_START_DAY = "FINANCIAL_YEAR_START_DAY";
-    public static final String INFOTABLE_FINANCIAL_YEAR_START_MONTH = "FINANCIAL_YEAR_START_MONTH";
-    public static final String INFOTABLE_SKU_ORDER_ID = "SKU_ORDER_ID";
+
     // Intent: Action
     public static final String INTENT_ACTION_EDIT = Intent.ACTION_EDIT;
     public static final String INTENT_ACTION_INSERT = Intent.ACTION_INSERT;

@@ -20,6 +20,14 @@ import com.money.manager.ex.database.TableInfoTable;
 public class InfoService {
 
     public static String BASECURRENCYID = "BASECURRENCYID";
+    public static String SHOW_OPEN_ACCOUNTS = "android:show_open_accounts";
+    public static String SHOW_FAVOURITE_ACCOUNTS = "android:show_fav_accounts";
+
+    public static final String INFOTABLE_USERNAME = "USERNAME";
+    public static final String INFOTABLE_DATEFORMAT = "DATEFORMAT";
+    public static final String INFOTABLE_FINANCIAL_YEAR_START_DAY = "FINANCIAL_YEAR_START_DAY";
+    public static final String INFOTABLE_FINANCIAL_YEAR_START_MONTH = "FINANCIAL_YEAR_START_MONTH";
+    public static final String INFOTABLE_SKU_ORDER_ID = "SKU_ORDER_ID";
 
     public InfoService(Context context) {
         mContext = context;
@@ -108,8 +116,7 @@ public class InfoService {
     public boolean setInfoValue(String key, String value) {
         boolean result = false;
         TableInfoTable infoTable = new TableInfoTable();
-        // check if exists info
-//        boolean exists = !TextUtils.isEmpty(getInfoValue(key));
+        // check if info exists
         boolean exists = (getInfoValue(key) != null);
 
         ContentValues values = new ContentValues();

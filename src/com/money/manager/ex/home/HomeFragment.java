@@ -48,6 +48,7 @@ import android.widget.Toast;
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
@@ -387,7 +388,7 @@ public class HomeFragment
                     while (data.moveToNext()) {
                         String infoValue = data.getString(data.getColumnIndex(TableInfoTable.INFONAME));
                         // save into preferences username and base currency id
-                        if (Constants.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
+                        if (InfoService.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
                             MoneyManagerApplication.getInstanceApp().setUserName(
                                     data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE)));
                         }

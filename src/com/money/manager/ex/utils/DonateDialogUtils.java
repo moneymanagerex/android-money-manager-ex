@@ -54,7 +54,7 @@ public class DonateDialogUtils {
 
             InfoService infoService = new InfoService(context);
 
-            if (TextUtils.isEmpty(infoService.getInfoValue(Constants.INFOTABLE_SKU_ORDER_ID))) {
+            if (TextUtils.isEmpty(infoService.getInfoValue(InfoService.INFOTABLE_SKU_ORDER_ID))) {
                 //get text donate
                 String donateText = context.getString(R.string.donate_header);
                 //create dialog

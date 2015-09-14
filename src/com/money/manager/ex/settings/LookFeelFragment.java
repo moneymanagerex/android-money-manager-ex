@@ -28,6 +28,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -55,13 +56,47 @@ public class LookFeelFragment
 
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        // checkbox on open and favorite account
+        final LookAndFeelSettings settings = new AppSettings(mContext).getLookAndFeelSettings();
+
+        // Show Open accounts
+
         final CheckBoxPreference chkAccountOpen = (CheckBoxPreference)
                 findPreference(getString(R.string.pref_account_open_visible));
-//                findPreference(getString(PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE));
+        if (chkAccountOpen != null) {
+            // set initial value
+            Boolean showOpenAccounts = settings.getViewOpenAccounts();
+            chkAccountOpen.setChecked(showOpenAccounts);
+
+            chkAccountOpen.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    settings.setViewOpenAccounts((Boolean)newValue);
+                    MainActivity.setRestartActivity(true);
+                    return true;
+                }
+            });
+        }
+
+        // Show Favourite accounts
+
         final CheckBoxPreference chkAccountFav = (CheckBoxPreference)
-//                findPreference(getString(PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE));
                 findPreference(getString(R.string.pref_account_fav_visible));
+        if (chkAccountFav != null) {
+            // set initial value
+            Boolean showOpenAccounts = settings.getViewFavouriteAccounts();
+            chkAccountFav.setChecked(showOpenAccounts);
+
+            chkAccountFav.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    settings.setViewFavouriteAccounts((Boolean)newValue);
+                    MainActivity.setRestartActivity(true);
+                    return true;
+                }
+            });
+        }
+
+        // Hide reconciled amounts setting.
 
         final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(
                 PreferenceConstants.PREF_HIDE_RECONCILED_AMOUNTS));
@@ -74,7 +109,7 @@ public class LookFeelFragment
             }
         };
         // Set the main activity to restart on change of any of the following settings.
-        chkAccountOpen.setOnPreferenceChangeListener(listener);
+//        chkAccountOpen.setOnPreferenceChangeListener(listener);
         chkAccountFav.setOnPreferenceChangeListener(listener);
         chkHideReconciled.setOnPreferenceChangeListener(listener);
 
