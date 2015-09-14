@@ -497,6 +497,7 @@ public class EditTransactionCommonFunctions {
                 DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
                         calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
                 dialog.setCloseOnSingleTapDay(true);
+                dialog.setFirstDayOfWeek(Calendar.getInstance().getFirstDayOfWeek());
                 dialog.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
