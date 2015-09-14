@@ -358,26 +358,26 @@ public class AllDataAdapter
 
     // Private
 
-    private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
-        try {
-            int transId = cursor.getInt(cursor.getColumnIndex(ID));
-
-            String date = cursor.getString(cursor.getColumnIndex(DATE));
-
-            CalculateRunningBalanceTask balanceAmount = new CalculateRunningBalanceTask();
-            balanceAmount.setAccountId(getAccountId());
-            balanceAmount.setDate(date);
-            balanceAmount.setTextView(holder.txtBalance);
-            balanceAmount.setContext(mContext);
-            balanceAmount.setCurrencyId(getCurrencyId());
-            balanceAmount.setTransId(transId);
-            // execute thread
-            balanceAmount.execute();
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "calculating balance amount");
-        }
-    }
+//    private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
+//        try {
+//            int transId = cursor.getInt(cursor.getColumnIndex(ID));
+//
+//            String date = cursor.getString(cursor.getColumnIndex(DATE));
+//
+//            CalculateRunningBalanceTask balanceAmount = new CalculateRunningBalanceTask();
+//            balanceAmount.setAccountId(getAccountId());
+//            balanceAmount.setDate(date);
+//            balanceAmount.setTextView(holder.txtBalance);
+//            balanceAmount.setContext(mContext);
+//            balanceAmount.setCurrencyId(getCurrencyId());
+//            balanceAmount.setTransId(transId);
+//            // execute thread
+//            balanceAmount.execute();
+//        } catch (Exception ex) {
+//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+//            handler.handle(ex, "calculating balance amount");
+//        }
+//    }
 
     /**
      * Display the running balance on account transactions list, or days left on
@@ -490,6 +490,8 @@ public class AllDataAdapter
     }
 
     private void showBalanceAmount(TextView textView) {
+        if (this.balances == null) return;
+        
         // get id
         Object tag = textView.getTag();
         if (tag == null) return;
