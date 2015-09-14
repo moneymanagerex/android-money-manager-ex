@@ -401,11 +401,11 @@
         </activity>
         <activity
             android:name=".investment.EditInvestmentTransactionActivity"
-            android:label="@string/title_activity_edit_investment_transaction" >
+            android:label="@string/investment" >
         </activity>
         <activity
             android:name=".common.WebViewActivity"
-            android:label="@string/title_activity_web_view" >
+            android:label="@string/donate" >
         </activity>
     </application>
 
