@@ -17,7 +17,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 13, 2015" versionName="2.18.11">
+    <changelogversion changeDate="September 13, 2015" versionName="2.18.12">
+        <changelogtext>Minor corrections and improvements.</changelogtext>
         <changelogtext>Different implementation of the running balance for large numbers.</changelogtext>
         <changelogtext>Fixed Dropbox authentication for new users.</changelogtext>
         <changelogtext>Correcting and making running balance calculation asynchronous.</changelogtext>
