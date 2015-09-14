@@ -491,7 +491,10 @@ public class AllDataAdapter
 
     private void showBalanceAmount(TextView textView) {
         // get id
-        int txId = (int) textView.getTag();
+        Object tag = textView.getTag();
+        if (tag == null) return;
+
+        int txId = (int) tag;
         if (!this.balances.containsKey(txId)) return;
 
         CurrencyService currencyService = new CurrencyService(mContext);
