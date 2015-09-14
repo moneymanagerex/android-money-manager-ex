@@ -169,14 +169,7 @@ public class EditTransactionActivity
 //        YesNoDialog yesNoDialog = (YesNoDialog) dialog;
 //        String purpose = yesNoDialog.getPurpose();
         // for now ignore the purpose as we only have one yes-no dialog.
-
-        removeAllSplitCategories();
-
-        mCommonFunctions.setSplit(false);
-
-        mCommonFunctions.transactionType = TransactionTypes.Transfer;
-
-        mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
+        mCommonFunctions.confirmDeletingCategories();
     }
 
     /**
@@ -185,7 +178,7 @@ public class EditTransactionActivity
      */
     @Override
     public void onDialogNegativeClick(DialogFragment dialog){
-        cancelChangingTransactionToTransfer();
+        mCommonFunctions.cancelChangingTransactionToTransfer();
     }
 
     @Override
@@ -271,18 +264,6 @@ public class EditTransactionActivity
         }
 
         return true;
-    }
-
-    /**
-     * When cancelling changing the transaction type to Transfer, revert back to the
-     * previous transaction type.
-     */
-    private void cancelChangingTransactionToTransfer() {
-        // Select the previous transaction type.
-//        ArrayAdapter<String> adapterTrans = (ArrayAdapter<String>) mCommonFunctions.spinTransCode.getAdapter();
-//        int originalPosition = adapterTrans.getPosition(mCommonFunctions.getTransactionType());
-//        mCommonFunctions.spinTransCode.setSelection(originalPosition);
-        mCommonFunctions.selectTransactionType(mCommonFunctions.previousTransactionType);
     }
 
     /**
@@ -462,33 +443,6 @@ public class EditTransactionActivity
         return true;
     }
 
-    /**
-     * After the user accepts, remove any split categories.
-     */
-    private void removeAllSplitCategories() {
-        if(mCommonFunctions.mSplitTransactions == null) return;
-
-        for(int i = 0; i < mCommonFunctions.mSplitTransactions.size(); i++) {
-            ISplitTransactionsDataset split = mCommonFunctions.mSplitTransactions.get(i);
-            int id = split.getSplitTransId();
-            ArrayList<ISplitTransactionsDataset> deletedSplits = getDeletedSplitCategories();
-
-            if(id == -1) {
-                // Remove any newly created splits.
-                // transaction id == -1
-                mCommonFunctions.mSplitTransactions.remove(i);
-                i--;
-            } else {
-                // Delete any splits already in the database.
-                // transaction id != -1
-                // avoid adding duplicate records.
-                if(!deletedSplits.contains(split)) {
-                    deletedSplits.add(split);
-                }
-            }
-        }
-    }
-
     private void retrieveValuesFromSavedInstanceState(Bundle savedInstanceState) {
         mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
         mCommonFunctions.accountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID);
@@ -664,13 +618,6 @@ public class EditTransactionActivity
         }
     }
 
-    public ArrayList<ISplitTransactionsDataset> getDeletedSplitCategories() {
-        if(mCommonFunctions.mSplitTransactionsDeleted == null){
-            mCommonFunctions.mSplitTransactionsDeleted = new ArrayList<>();
-        }
-        return mCommonFunctions.mSplitTransactionsDeleted;
-    }
-
     /**
      * validate data insert in activity
      *
@@ -722,7 +669,7 @@ public class EditTransactionActivity
 
         // Delete any split categories if split is unchecked.
         if(!mCommonFunctions.isSplitSelected()) {
-            removeAllSplitCategories();
+            mCommonFunctions.removeAllSplitCategories();
         }
 
         // has split categories
@@ -732,7 +679,7 @@ public class EditTransactionActivity
             for (int i = 0; i < mCommonFunctions.mSplitTransactions.size(); i++) {
                 ISplitTransactionsDataset split = mCommonFunctions.mSplitTransactions.get(i);
                 // do nothing if the split is marked for deletion.
-                ArrayList<ISplitTransactionsDataset> deletedSplits = getDeletedSplitCategories();
+                ArrayList<ISplitTransactionsDataset> deletedSplits = mCommonFunctions.getDeletedSplitCategories();
                 if(deletedSplits.contains(split)) {
                     continue;
                 }

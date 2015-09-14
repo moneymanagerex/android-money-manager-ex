@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -50,6 +51,7 @@ import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
+import com.money.manager.ex.transactions.YesNoDialogListener;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -63,7 +65,7 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class RecurringTransactionActivity
         extends BaseFragmentActivity
-        implements IInputAmountDialogListener {
+        implements IInputAmountDialogListener, YesNoDialogListener {
 
     private static final String LOGCAT = RecurringTransactionActivity.class.getSimpleName();
 
@@ -554,6 +556,18 @@ public class RecurringTransactionActivity
 
         // action
         mIntentAction = savedInstanceState.getString(KEY_ACTION);
+    }
+
+    // YesNoDialogListener
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        mCommonFunctions.confirmDeletingCategories();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        mCommonFunctions.cancelChangingTransactionToTransfer();
     }
 }
 

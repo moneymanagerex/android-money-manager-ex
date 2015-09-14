@@ -1118,7 +1118,8 @@ public class EditTransactionCommonFunctions {
 
             dialog.show(mParent.getSupportFragmentManager(), "tag");
 
-            // Dialog result is handled in onDialogPositiveClick or onDialogNegativeClick.
+            // Dialog result is handled in onDialogPositiveClick or onDialogNegativeClick
+            // in the respective activity classes!
             return;
         }
 
@@ -1217,4 +1218,55 @@ public class EditTransactionCommonFunctions {
 
         return true;
     }
+
+    // Remove splits when switching to Transfer
+
+    public void confirmDeletingCategories() {
+        removeAllSplitCategories();
+        setSplit(false);
+        transactionType = TransactionTypes.Transfer;
+        onTransactionTypeChange(transactionType);
+    }
+
+    /**
+     * When cancelling changing the transaction type to Transfer, revert back to the
+     * previous transaction type.
+     */
+    public void cancelChangingTransactionToTransfer() {
+        // Select the previous transaction type.
+        selectTransactionType(previousTransactionType);
+    }
+
+    /**
+     * After the user accepts, remove any split categories.
+     */
+    public void removeAllSplitCategories() {
+        if(mSplitTransactions == null) return;
+
+        for(int i = 0; i < mSplitTransactions.size(); i++) {
+            ISplitTransactionsDataset split = mSplitTransactions.get(i);
+            int id = split.getSplitTransId();
+            ArrayList<ISplitTransactionsDataset> deletedSplits = getDeletedSplitCategories();
+
+            if(id == -1) {
+                // Remove any newly created splits.
+                mSplitTransactions.remove(i);
+                i--;
+            } else {
+                // Delete any splits already in the database.
+                // avoid adding duplicate records.
+                if(!deletedSplits.contains(split)) {
+                    deletedSplits.add(split);
+                }
+            }
+        }
+    }
+
+    public ArrayList<ISplitTransactionsDataset> getDeletedSplitCategories() {
+        if(mSplitTransactionsDeleted == null){
+            mSplitTransactionsDeleted = new ArrayList<>();
+        }
+        return mSplitTransactionsDeleted;
+    }
+
 }
