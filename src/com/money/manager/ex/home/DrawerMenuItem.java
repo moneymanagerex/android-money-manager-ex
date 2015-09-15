@@ -28,6 +28,8 @@ public class DrawerMenuItem {
     private String mShortcut;
     private Boolean mDivider = Boolean.FALSE;
 
+    private Object mTag;
+
     public Integer getId() {
         return mId;
     }
@@ -80,5 +82,13 @@ public class DrawerMenuItem {
     public DrawerMenuItem withDivider(Boolean divider) {
         this.mDivider = divider;
         return this;
+    }
+
+    public void setTag(Object tag) {
+        this.mTag = tag;
+    }
+
+    public Object getTag() {
+        return this.mTag;
     }
 }

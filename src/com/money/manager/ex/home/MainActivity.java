@@ -93,6 +93,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
 
@@ -137,6 +138,7 @@ public class MainActivity
     // state dual panel
     private boolean mIsDualPanel = false;
     private Tracker mTracker;
+    private RecentDatabasesProvider recentDbs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +149,8 @@ public class MainActivity
         mTracker = application.getDefaultTracker();
 
         Core core = new Core(this);
+        // Initialize the map for recent entries that link to drawer menu items.
+        this.recentDbs = new RecentDatabasesProvider(this.getApplicationContext());
 
         // close any existing notifications.
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -308,6 +312,15 @@ public class MainActivity
         final Core core = new Core(getApplicationContext());
         final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager_Dark;
         
+        if (item.getId() == null && item.getTag() != null) {
+            String key = item.getTag().toString();
+            RecentDatabaseEntry recentDb = this.recentDbs.map.get(key);
+            // These are the dynamic (sub-)menu items.
+//            RecentDatabaseEntry recentDb = this.recentDbs.map.get(item);
+            if (recentDb != null) {
+                openDatabase(recentDb);
+            }
+        }
         if (item.getId() == null) return false;
 
         switch (item.getId()) {
@@ -391,6 +404,19 @@ public class MainActivity
         }
 
         return result;
+    }
+
+    private void openDatabase(RecentDatabaseEntry recentDb) {
+        // use this database
+        Core core = new Core(getApplicationContext());
+        core.changeDatabase(recentDb.fileName);
+
+        // set the Dropbox file, if any.
+        if (recentDb.linkedToDropbox) {
+            mDropboxHelper.setLinkedRemoteFile(recentDb.dropboxFileName);
+        }
+
+        restartActivity();
     }
 
     // Menu
@@ -612,8 +638,7 @@ public class MainActivity
         core.changeDatabase(dbFilePath);
 
         // Store the name into the recent files list.
-        RecentDatabasesProvider recents = new RecentDatabasesProvider(getApplicationContext());
-        recents.add(RecentDatabaseEntry.fromPath(dbFilePath));
+        this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
 
         // restart this activity
         setRestartActivity(true);
@@ -920,16 +945,17 @@ public class MainActivity
     private ArrayList<DrawerMenuItem> getRecentDatabases() {
         ArrayList<DrawerMenuItem> childDatabases = new ArrayList<>();
 
-        RecentDatabasesProvider provider = new RecentDatabasesProvider(getApplicationContext());
-        Queue<RecentDatabaseEntry> recentList = provider.queue;
+//        Queue<RecentDatabaseEntry> recentList = provider.queue;
 
-        if (recentList != null) {
-            for (RecentDatabaseEntry entry : recentList) {
+        if (this.recentDbs.map != null) {
+            for (RecentDatabaseEntry entry : this.recentDbs.map.values()) {
                 File file = new File(entry.fileName);
                 String title = file.getName();
 
                 DrawerMenuItem item = new DrawerMenuItem()
                         .withText(title);
+
+                item.setTag(entry.fileName);
 
                 if (entry.linkedToDropbox) {
                     item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox));

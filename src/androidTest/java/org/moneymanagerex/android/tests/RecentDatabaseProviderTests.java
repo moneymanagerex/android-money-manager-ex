@@ -26,6 +26,7 @@ import com.money.manager.ex.home.RecentDatabasesProvider;
 import junit.framework.Assert;
 
 import java.util.ArrayDeque;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Queue;
 
@@ -51,7 +52,7 @@ public class RecentDatabaseProviderTests extends AndroidTestCase {
     public void testLoad() throws Exception {
         Queue<RecentDatabaseEntry> expected = getQueue();
 
-        Queue<RecentDatabaseEntry> actual = _testObject.queue;
+        LinkedHashMap<String, RecentDatabaseEntry> actual = _testObject.map;
 
         Assert.assertEquals(expected, actual);
     }

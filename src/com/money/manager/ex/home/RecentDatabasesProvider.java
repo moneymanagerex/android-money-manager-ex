@@ -23,11 +23,14 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 import java.lang.reflect.Type;
 import java.util.ArrayDeque;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Queue;
 
@@ -47,59 +50,89 @@ public class RecentDatabasesProvider {
         this.load();
     }
 
-    public Queue<RecentDatabaseEntry> queue;
+//    public Queue<RecentDatabaseEntry> queue;
+    public LinkedHashMap<String, RecentDatabaseEntry> map;
 
     private Context context;
 
-    public boolean add(RecentDatabaseEntry entry) {
+    public boolean add(String key, RecentDatabaseEntry value) {
         boolean result = false;
 
         // check if this item already exist.
-        if (contains(entry)) {
+        if (contains(value)) {
             // Put as the last if it does.
-            remove(entry);
-            this.queue.offer(entry);
-            return true;
+            remove(value);
+//            this.queue.offer(entry);
         }
 
-        if (this.queue.add(entry)){
-            // If we have more than 5 elements, remove one.
-            if (this.queue.size() > 5) {
-                this.queue.remove();
-                this.queue.offer(entry);
-            }
+//        if (this.queue.add(value)){
+//            // If we have more than 5 elements, remove one.
+//            if (this.queue.size() > 5) {
+//                this.queue.remove();
+//                this.queue.offer(value);
+//            }
+//
+//            this.save();
+//
+//            result = true;
+//        }
 
-            this.save();
+        this.map.put(key, value);
 
-            result = true;
+        // If we have more than 5 elements, remove one.
+        if (this.map.size() > 5) {
+            this.removeOldest();
+//            this.map.offer(value);
         }
+
+        this.save();
+
+        result = true;
+
         return result;
     }
 
-    /**
-     * Finds the object by comparing the properties, not equating the Java objects.
-     * @param entry Entry with properties we are searching for.
-     * @return The entry that is inside the queue. Can be used for removal.
-     */
+    public boolean add(RecentDatabaseEntry entry) {
+        return add(entry.fileName, entry);
+    }
+
+//    /**
+//     * Finds the object by comparing the properties, not equating the Java objects.
+//     * @param entry Entry with properties we are searching for.
+//     * @return The entry that is inside the queue. Can be used for removal.
+//     */
+//    public RecentDatabaseEntry find(RecentDatabaseEntry entry) {
+//        Queue<RecentDatabaseEntry> queue = this.queue;
+//        Iterator<RecentDatabaseEntry> iterator = queue.iterator();
+//        RecentDatabaseEntryComparator comparator = new RecentDatabaseEntryComparator();
+//
+//        while (iterator.hasNext()) {
+//            RecentDatabaseEntry existing = iterator.next();
+//            if (comparator.compare(existing, entry) == 0) {
+//                return existing;
+//            }
+//        }
+//
+//        return null;
+//    }
+
     public RecentDatabaseEntry find(RecentDatabaseEntry entry) {
-        Queue<RecentDatabaseEntry> queue = this.queue;
-        Iterator<RecentDatabaseEntry> iterator = queue.iterator();
         RecentDatabaseEntryComparator comparator = new RecentDatabaseEntryComparator();
 
-        while (iterator.hasNext()) {
-            RecentDatabaseEntry existing = iterator.next();
+        for (RecentDatabaseEntry existing : this.map.values()) {
             if (comparator.compare(existing, entry) == 0) {
                 return existing;
             }
         }
-
         return null;
     }
 
     public boolean remove(RecentDatabaseEntry entry) {
         RecentDatabaseEntry existing = find(entry);
         if (existing != null) {
-            return this.queue.remove(existing);
+//            return this.queue.remove(existing);
+            this.map.remove(existing);
+            return true;
         }
         return false;
     }
@@ -131,16 +164,29 @@ public class RecentDatabasesProvider {
     public void load() {
         String value = readPreference();
 
-        Type listType = new TypeToken<Queue<RecentDatabaseEntry>>() {}.getType();
+        LinkedHashMap<String, RecentDatabaseEntry> map = null;
+        try {
+            map = parseStorageContent(value);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(this.context, this);
+            handler.handle(e, "parsing recents");
+        }
+
+        if (map == null) {
+//            this.queue = new ArrayDeque<>(5);
+            this.map = new LinkedHashMap<>();
+        } else {
+//            this.queue = queue;
+            this.map = map;
+        }
+    }
+
+    private LinkedHashMap<String, RecentDatabaseEntry> parseStorageContent(String value) {
+        Type listType = new TypeToken<LinkedHashMap<String, RecentDatabaseEntry>>() {}.getType();
         Gson gson = new Gson();
 
-        Queue<RecentDatabaseEntry> queue = gson.fromJson(value, listType);
-
-        if (queue == null) {
-            this.queue = new ArrayDeque<>(5);
-        } else {
-            this.queue = queue;
-        }
+        LinkedHashMap<String, RecentDatabaseEntry> map = gson.fromJson(value, listType);
+        return map;
     }
 
     public void save() {
@@ -153,10 +199,22 @@ public class RecentDatabasesProvider {
 
     public String toJson() {
         Gson gson = new Gson();
-        Queue<RecentDatabaseEntry> queue = this.queue;
+//        Queue<RecentDatabaseEntry> queue = this.queue;
 
-        String value = gson.toJson(queue);
+        String value = gson.toJson(this.map);
 
         return value;
+    }
+
+    public void removeOldest() {
+        // remove the first item?
+        String firstKey = null;
+
+        for(String key : this.map.keySet()) {
+            firstKey = key;
+            break;
+        }
+
+        this.map.remove(firstKey);
     }
 }
