@@ -239,8 +239,23 @@ public class RecurringTransactionActivity
         outState.putString(KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mCommonFunctions.status);
-        outState.putString(KEY_TRANS_AMOUNTTO, mCommonFunctions.txtAmountTo.getTag().toString());
-        outState.putString(KEY_TRANS_AMOUNT, mCommonFunctions.txtAmount.getTag().toString());
+
+        // Amount To
+        String value = "";
+        Object tag = mCommonFunctions.txtAmountTo.getTag();
+        if (tag != null) {
+            value = tag.toString();
+        }
+        outState.putString(KEY_TRANS_AMOUNTTO, value);
+
+        // amount
+        value = "";
+        tag = mCommonFunctions.txtAmount.getTag();
+        if (tag != null) {
+            value = tag.toString();
+        }
+        outState.putString(KEY_TRANS_AMOUNT, value);
+
         outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
         outState.putInt(KEY_CATEGORY_ID, mCommonFunctions.categoryId);
