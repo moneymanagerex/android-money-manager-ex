@@ -26,22 +26,27 @@ import java.io.File;
  */
 public class RecentDatabaseEntry {
 
-    public static RecentDatabaseEntry getInstance(String fileName, boolean linkedToDropbox, String dropboxFileName) {
+    public static RecentDatabaseEntry getInstance(String filePath, boolean linkedToDropbox, String dropboxFileName) {
         RecentDatabaseEntry entry = new RecentDatabaseEntry();
-        entry.fileName = fileName;
+        entry.filePath = filePath;
         entry.linkedToDropbox = linkedToDropbox;
         entry.dropboxFileName = dropboxFileName;
         return entry;
     }
 
     public static RecentDatabaseEntry fromPath(String filePath) {
-        File file = new File(filePath);
-        String fileName = file.getName();
+//        File file = new File(filePath);
+//        String fileName = file.getName();
 
-        return getInstance(fileName, false, "");
+        return getInstance(filePath, false, "");
     }
 
-    public String fileName;
+    public String filePath;
     public String dropboxFileName;
     public boolean linkedToDropbox;
+
+    public String getFileName() {
+        File file = new File(this.filePath);
+        return file.getName();
+    }
 }

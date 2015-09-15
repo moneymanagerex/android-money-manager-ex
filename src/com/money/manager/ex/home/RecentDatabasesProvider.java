@@ -19,7 +19,6 @@ package com.money.manager.ex.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,12 +26,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 import java.lang.reflect.Type;
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Queue;
 
 /**
  * Provides handling of the recent databases file queue.
@@ -93,7 +87,7 @@ public class RecentDatabasesProvider {
     }
 
     public boolean add(RecentDatabaseEntry entry) {
-        return add(entry.fileName, entry);
+        return add(entry.filePath, entry);
     }
 
 //    /**

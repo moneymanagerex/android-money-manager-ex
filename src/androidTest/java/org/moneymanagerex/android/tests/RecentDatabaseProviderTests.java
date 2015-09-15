@@ -27,7 +27,6 @@ import junit.framework.Assert;
 
 import java.util.ArrayDeque;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -70,7 +69,7 @@ public class RecentDatabaseProviderTests extends AndroidTestCase {
 
     public void testInsert() {
         RecentDatabaseEntry entry = getEntry();
-        String expected = "[{\"fileName\":\"filename.mmb\",\"dropboxFileName\":\"\",\"linkedToDropbox\":false}]";
+        String expected = "[{\"filePath\":\"filename.mmb\",\"dropboxFileName\":\"\",\"linkedToDropbox\":false}]";
 
         _testObject.add(entry);
 
@@ -96,7 +95,7 @@ public class RecentDatabaseProviderTests extends AndroidTestCase {
 
         entry.dropboxFileName = "";
         entry.linkedToDropbox = false;
-        entry.fileName = "filename.mmb";
+        entry.filePath = "filename.mmb";
 
         return entry;
     }
