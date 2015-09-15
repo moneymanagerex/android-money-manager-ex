@@ -43,6 +43,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.ICommonFragmentCallbacks;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -297,7 +298,12 @@ public class SearchFragment extends Fragment
 
         String where = assembleWhereClause();
 
-        showSearchResultsFragment(where);
+        try {
+            showSearchResultsFragment(where);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(e, "showing result fragment");
+        }
     }
 
     /**
