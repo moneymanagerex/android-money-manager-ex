@@ -432,7 +432,8 @@ public class SearchFragment extends Fragment
                 .findFragmentByTag(AllDataListFragment.class.getSimpleName());
         if (searchResultsFragment != null) {
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .remove(searchResultsFragment).commit();
+                    .remove(searchResultsFragment)
+                    .commit();
         }
 
         searchResultsFragment = AllDataListFragment.newInstance(-1);
@@ -464,6 +465,7 @@ public class SearchFragment extends Fragment
         if (isDualPanel()) {
             transaction.add(R.id.fragmentDetail, searchResultsFragment, AllDataListFragment.class.getSimpleName());
         } else {
+            // transaction.remove()
             transaction.replace(R.id.fragmentContent, searchResultsFragment, AllDataListFragment.class.getSimpleName());
             transaction.addToBackStack(null);
         }

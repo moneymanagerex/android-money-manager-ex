@@ -21,6 +21,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.settings.AppSettings;
@@ -76,29 +77,36 @@ public class NumericHelper {
 //        return result;
 //    }
 
-    public String getNumberFormatted(Money value, int decimals, String decimalPoint, String groupSeparator) {
+    public String getNumberFormatted(Money value, int decimals, String decimalSeparator, String groupSeparator) {
 //        value = roundNumber(value, decimals);
         value = value.truncate(decimals);
 
         // set format
         DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
         // getDecimalPoint()
-        if (!(TextUtils.isEmpty(decimalPoint))) {
-            formatSymbols.setDecimalSeparator(decimalPoint.charAt(0));
+        if (!(TextUtils.isEmpty(decimalSeparator))) {
+            formatSymbols.setDecimalSeparator(decimalSeparator.charAt(0));
         }
         // getGroupSeparator()
         if (!(TextUtils.isEmpty(groupSeparator))) {
             formatSymbols.setGroupingSeparator(groupSeparator.charAt(0));
         }
 
-        DecimalFormat formatter = new DecimalFormat();
-        // set which symbols to use
+        // All these use locale-dependent formatting.
+//        DecimalFormat formatter = new DecimalFormat();
+//        Locale appLocale = MoneyManagerApplication.getInstanceApp().getLocale();
+//        DecimalFormat formatter = (DecimalFormat) NumberFormat.getNumberInstance(appLocale);
+        String pattern = NumericPatternGenerator .getPattern(decimals);
+        DecimalFormat formatter = new DecimalFormat(pattern);
+
+        formatter.setGroupingSize(3);
         formatter.setDecimalFormatSymbols(formatSymbols);
 
         formatter.setMaximumFractionDigits(decimals);
         formatter.setMinimumFractionDigits(decimals);
 
-        String result = formatter.format(value.toDouble());
+//        Double number = value.toDouble();
+        String result = formatter.format(value.toBigDecimal());
         return result;
     }
 

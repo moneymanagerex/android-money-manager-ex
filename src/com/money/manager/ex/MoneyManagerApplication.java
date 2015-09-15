@@ -46,6 +46,7 @@ import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
 import java.io.File;
+import java.util.Locale;
 
 /**
  * This class extends Application and implements all the methods common in the
@@ -262,7 +263,11 @@ public class MoneyManagerApplication
         }
     }
 
-    // custom
+    // dynamic
+
+    public Locale getLocale() {
+        return this.getResources().getConfiguration().locale;
+    }
 
     public boolean setUserName(String userName) {
         return this.setUserName(userName, false);
