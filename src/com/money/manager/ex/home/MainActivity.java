@@ -974,6 +974,7 @@ public class MainActivity
 
         final ArrayList<DrawerMenuItem> groupItems = getDrawerMenuItems();
         final ArrayList<Object> childItems = new ArrayList<>();
+
         // Home
         childItems.add(null);
 
@@ -987,7 +988,8 @@ public class MainActivity
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
             childItems.add(null);
         }
-        // Tools
+
+        // Entities
         ArrayList<DrawerMenuItem> childTools = new ArrayList<>();
         // manage: account
         childTools.add(new DrawerMenuItem().withId(R.id.menu_account)

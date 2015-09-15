@@ -18,6 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="September 15, 2015" versionName="2.19.1">
+        <changelogtext>Account visibility settings per database.</changelogtext>
         <changelogtext>Quick-switching between local databases enabled.</changelogtext>
         <changelogtext>Listing recent databases in the drawer.</changelogtext>
         <changelogtext>Corrections and improvements.</changelogtext>

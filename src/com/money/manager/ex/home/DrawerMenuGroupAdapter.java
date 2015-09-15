@@ -45,7 +45,7 @@ public class DrawerMenuGroupAdapter
 
     public ArrayList<DrawerMenuItem> mGroupItems;
     public ArrayList<Object> mChildItems = new ArrayList<Object>();
-    public ArrayList<DrawerMenuItem> tempChild;
+//    public ArrayList<DrawerMenuItem> tempChild;
     public LayoutInflater mInflater;
     public Activity activity;
     private final Context mContext;
@@ -64,7 +64,9 @@ public class DrawerMenuGroupAdapter
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         // mChildItems.get(groupPosition)
-        return null;
+        ArrayList<DrawerMenuItem> tempChild = (ArrayList<DrawerMenuItem>) mChildItems.get(groupPosition);
+//        return null;
+        return tempChild.get(childPosition);
     }
 
     @Override
@@ -75,12 +77,13 @@ public class DrawerMenuGroupAdapter
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        tempChild = (ArrayList<DrawerMenuItem>) mChildItems.get(groupPosition);
+        // Child item collection
+//        tempChild = (ArrayList<DrawerMenuItem>) mChildItems.get(groupPosition);
+//        DrawerMenuItem item = tempChild.get(childPosition);
+        DrawerMenuItem item = (DrawerMenuItem) getChild(groupPosition, childPosition);
 
-        DrawerMenuItem item = tempChild.get(childPosition);
         DrawerViewHolder holder = null;
 
-//        TextView text;
         if (convertView == null) {
 //            convertView = new TextView(mContext);
 //            LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -101,8 +104,9 @@ public class DrawerMenuGroupAdapter
 //        text = (TextView) convertView;
 //        text.setText(">" + tempChild.get(childPosition));
 
-        if (convertView.getTag() instanceof DrawerViewHolder) {
-            holder = (DrawerViewHolder)convertView.getTag();
+        Object tag = convertView.getTag();
+        if (tag instanceof DrawerViewHolder) {
+            holder = (DrawerViewHolder) tag;
         }
 
         if (item != null && holder != null) {
@@ -131,7 +135,7 @@ public class DrawerMenuGroupAdapter
 //			}
 //		});
 
-        convertView.setTag(tempChild.get(childPosition));
+//        convertView.setTag(item);
         return convertView;
     }
 
