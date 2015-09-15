@@ -490,7 +490,9 @@ public class AllDataAdapter
     }
 
     private void showBalanceAmount(TextView textView) {
-        if (this.balances == null) return;
+        if (this.balances == null) {
+            return;
+        }
 
         // get id
         Object tag = textView.getTag();

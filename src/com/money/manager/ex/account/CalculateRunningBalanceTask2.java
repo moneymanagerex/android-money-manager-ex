@@ -103,7 +103,7 @@ public class CalculateRunningBalanceTask2
 
     @Override
     protected void onPostExecute(HashMap<Integer, Money> result) {
-        // todo: raise event
+        // raise event
         if (this.listener != null) {
             listener.onTaskComplete(result);
         }

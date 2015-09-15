@@ -21,6 +21,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.utils.DateUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -72,10 +73,11 @@ public class EntityBase {
 
     protected Money getMoney(String fieldName) {
 //        Double d = contentValues.getAsDouble(fieldName);
-//        return MoneyFactory.fromDouble(d);
+//        return MoneyFactory.fromDouble(d, Constants.DEFAULT_PRECISION);
 
         String value = contentValues.getAsString(fieldName);
-        return MoneyFactory.fromString(value);
+        Money result = MoneyFactory.fromString(value).truncate(Constants.DEFAULT_PRECISION);
+        return result;
     }
 
 //    protected BigDecimal getBigDecimal(String fieldName) {

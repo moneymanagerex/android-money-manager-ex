@@ -52,10 +52,6 @@ public class AccountTransaction
         return getInt(QueryAllData.ACCOUNTID);
     }
 
-//    public BigDecimal getAmount() {
-//        return getBigDecimal(QueryAllData.Amount);
-//    }
-
     public Money getAmount() {
         return getMoney(QueryAllData.Amount);
     }
@@ -68,10 +64,6 @@ public class AccountTransaction
         String code = getStatusCode();
         return TransactionStatuses.get(code);
     }
-
-//    public BigDecimal getToAmount() {
-//        return getBigDecimal(QueryAllData.ToAmount);
-//    }
 
     public Money getToAmount() {
         return getMoney(QueryAllData.ToAmount);
