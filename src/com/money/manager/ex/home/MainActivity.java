@@ -119,6 +119,7 @@ public class MainActivity
     private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
     // state if restart activity
     private static boolean mRestartActivity = false;
+
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
     private boolean isShowTipsDropbox2 = false;
@@ -602,13 +603,18 @@ public class MainActivity
     /**
      * Change database applications
      *
-     * @param pathDatabase new path of databases
+     * @param dbFilePath new path of databases
      */
-    public void changeDatabase(String pathDatabase) {
-        Log.v(LOGCAT, "Change database: " + pathDatabase);
+    public void changeDatabase(String dbFilePath) {
+        Log.v(LOGCAT, "Change database: " + dbFilePath);
 
         Core core = new Core(getApplicationContext());
-        core.changeDatabase(pathDatabase);
+        core.changeDatabase(dbFilePath);
+
+        // Store the name into the recent files list.
+        RecentDatabasesProvider recents = new RecentDatabasesProvider(getApplicationContext());
+        recents.add(RecentDatabaseEntry.fromPath(dbFilePath));
+
         // restart this activity
         setRestartActivity(true);
         restartActivity();
@@ -658,6 +664,8 @@ public class MainActivity
             Toast.makeText(getApplicationContext(), R.string.error_intent_pick_file,
                     Toast.LENGTH_LONG).show();
         }
+
+        // Note that the selected file is handled in onActivityResult.
     }
 
 //    /**
@@ -925,6 +933,8 @@ public class MainActivity
 
                 if (entry.linkedToDropbox) {
                     item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox));
+                } else {
+                    item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_floppy_disk));
                 }
                 childDatabases.add(item);
             }
@@ -949,7 +959,7 @@ public class MainActivity
         childItems.add(null);
 
         // open database
-        // load from the recent db list.
+        // display the recent db list.
         ArrayList<DrawerMenuItem> childDatabases = getRecentDatabases();
         childItems.add(childDatabases);
 //        childItems.add(null);

@@ -17,6 +17,8 @@
  */
 package com.money.manager.ex.home;
 
+import java.io.File;
+
 /**
  * An entry in the recent databases list.
  *
@@ -30,6 +32,13 @@ public class RecentDatabaseEntry {
         entry.linkedToDropbox = linkedToDropbox;
         entry.dropboxFileName = dropboxFileName;
         return entry;
+    }
+
+    public static RecentDatabaseEntry fromPath(String filePath) {
+        File file = new File(filePath);
+        String fileName = file.getName();
+
+        return getInstance(fileName, false, "");
     }
 
     public String fileName;
