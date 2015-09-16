@@ -357,8 +357,10 @@ public class AccountTransactionsFragment
                 if (data != null && data.moveToFirst()) {
 //                    mAccountBalance = data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL));
 //                    mAccountReconciled = data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED));
-                    mAccountBalance = MoneyFactory.fromString(data.getString(data.getColumnIndex(QueryAccountBills.TOTAL)));
-                    mAccountReconciled = MoneyFactory.fromString(data.getString(data.getColumnIndex(QueryAccountBills.RECONCILED)));
+                    String balance = Double.toString(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL)));
+                    mAccountBalance = MoneyFactory.fromString(balance);
+                    String reconciled = Double.toString(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED)));
+                    mAccountReconciled = MoneyFactory.fromString(reconciled);
                 } else {
                     mAccountBalance = MoneyFactory.fromString("0");
                     mAccountReconciled = MoneyFactory.fromString("0");
