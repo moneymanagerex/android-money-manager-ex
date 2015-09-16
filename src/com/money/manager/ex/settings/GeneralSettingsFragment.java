@@ -316,7 +316,7 @@ public class GeneralSettingsFragment
         AccountService accountService = new AccountService(getActivity().getApplicationContext());
         List<Account> accounts = accountService.getAccountList(false, false);
         if (accounts.size() == 0) return;
-        
+
         // the list is already sorted by name.
 
         final String[] entries = new String[accounts.size() + 1];

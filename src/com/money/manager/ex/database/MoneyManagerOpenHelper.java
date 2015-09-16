@@ -61,7 +61,7 @@ public class MoneyManagerOpenHelper
     }
 
     private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
-    private static final int databaseCurrentVersion = 1;
+    private static final int databaseCurrentVersion = 3;
     // singleton
     private static MoneyManagerOpenHelper mInstance;
     // context of creation
