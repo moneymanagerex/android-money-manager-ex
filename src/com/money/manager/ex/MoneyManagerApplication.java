@@ -355,7 +355,7 @@ public class MoneyManagerApplication
         double curTotal = 0;
 
 //        Core core = new Core(context);
-        LookAndFeelSettings settings = new AppSettings(getApplicationContext())
+        LookAndFeelSettings settings = new AppSettings(context)
             .getLookAndFeelSettings();
         // compose whereClause
         String where = "";
