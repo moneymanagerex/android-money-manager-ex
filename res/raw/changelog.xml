@@ -17,7 +17,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 15, 2015" versionName="2.19.2">
+    <changelogversion changeDate="September 15, 2015" versionName="2.19.3">
+        <changelogtext>Correction for the widgets data access.</changelogtext>
         <changelogtext>Account visibility settings per database.</changelogtext>
         <changelogtext>Quick-switching between local databases enabled.</changelogtext>
         <changelogtext>Listing recent databases in the drawer.</changelogtext>
