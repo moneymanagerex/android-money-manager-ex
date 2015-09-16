@@ -17,7 +17,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 16, 2015" versionName="2.19.4">
+    <changelogversion changeDate="September 16, 2015" versionName="2.19.5">
+        <changelogtext>Correction for the account balance display in the header.</changelogtext>
         <changelogtext>Correction for opening General settings when no accounts exist.</changelogtext>
         <changelogtext>Correction for the widgets data access.</changelogtext>
         <changelogtext>Account visibility settings per database.</changelogtext>
