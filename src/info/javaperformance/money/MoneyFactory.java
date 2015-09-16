@@ -235,7 +235,10 @@ public class MoneyFactory {
             else //unsupported char, handle in the caller
                 return null;
         }
-        return new MoneyLong( res * sign, precision ).normalize();
+        if ( precision >= 0 && precision <= MAX_ALLOWED_PRECISION )
+            return new MoneyLong( res * sign, precision ).normalize();
+        else
+            return new MoneyBigDecimal( str.toString() );
     }
 
     /**

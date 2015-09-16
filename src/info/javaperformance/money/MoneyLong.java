@@ -288,6 +288,8 @@ class MoneyLong extends AbstractMoney {
      * @return A new Money object normalized to the efficient representation if possible
      */
     public Money divide( final double divider, final int precision ) {
+        if ( precision > MoneyFactory.MAX_ALLOWED_PRECISION )
+            return new MoneyBigDecimal( toBigDecimal() ).divide( divider, precision );
         final double unscaledRes = m_units / divider;
         //We already have m_precision digits of precision. We need to take (precision-m_precision) digits
         //more from the unscaled result. Plus one more digit for rounding.
