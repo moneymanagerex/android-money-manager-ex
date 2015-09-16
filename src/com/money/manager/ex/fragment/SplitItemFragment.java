@@ -88,17 +88,17 @@ public class SplitItemFragment
      * @return Split Transaction
      */
     public ISplitTransactionsDataset getSplitTransaction(TransactionTypes parentTransactionType) {
-        String amountTag = txtAmount.getTag().toString();
+        Object tag = txtAmount.getTag();
 
-        // handle 0 values.
-        if(amountTag == null) {
+        if (tag == null) {
+            // handle 0 values.
             mSplitTransaction.setSplitTransAmount(0);
             return mSplitTransaction;
         }
 
         // otherwise figure out which sign to use for the amount.
 
-        Money amount = MoneyFactory.fromString(amountTag);
+        Money amount = MoneyFactory.fromString(tag.toString());
 
         // toString takes the localized text! Use value.
         int position = spinTransCode.getSelectedItemPosition();
