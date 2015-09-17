@@ -438,6 +438,8 @@ public class SearchFragment extends Fragment
 
         searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET);
 
+        searchResultsFragment.showTotalsFooter();
+
         //create parameter bundle
         Bundle args = new Bundle();
         args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);

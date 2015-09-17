@@ -22,6 +22,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -40,8 +41,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
@@ -74,6 +77,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Fragment that displays the transactions.
@@ -111,8 +115,8 @@ public class AllDataListFragment
     private boolean mShowBalance = false;
     private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
     private View mListHeader = null;
-
     private Bundle mArguments;
+    private boolean mShowFooter = false;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -256,6 +260,11 @@ public class AllDataListFragment
 
                 // reset the transaction groups (account name collection)
                 adapter.resetAccountHeaderIndexes();
+
+                // todo: Show totals?
+//                if (this.mShowFooter) {
+//                    this.renderFooter();
+//                }
         }
     }
 
@@ -549,7 +558,32 @@ public class AllDataListFragment
         this.mShowBalance = mShownBalance;
     }
 
+    public void showTotalsFooter() {
+        this.mShowFooter = true;
+    }
+
     // Private methods.
+
+    private void renderFooter() {
+        LinearLayout footer = (LinearLayout) View.inflate(getActivity(),
+                R.layout.item_generic_report_2_columns, null);
+        TextView txtColumn1 = (TextView) footer.findViewById(R.id.textViewColumn1);
+        TextView txtColumn2 = (TextView) footer.findViewById(R.id.textViewColumn2);
+
+        txtColumn1.setText(R.string.total);
+        txtColumn1.setTypeface(null, Typeface.BOLD_ITALIC);
+        txtColumn2.setText(R.string.total);
+        txtColumn2.setTypeface(null, Typeface.BOLD_ITALIC);
+
+        // todo: get the total here.
+        Money total = MoneyFactory.fromString("123.56");
+
+//        TextView txtColumn2 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn2);
+        CurrencyService currencyService = new CurrencyService(getContext());
+        txtColumn2.setText(currencyService.getBaseCurrencyFormatted(total));
+
+        getListView().addFooterView(footer);
+    }
 
     private boolean setStatusCheckingAccount(int[] transId, String status) {
         // check if status = "U" convert to empty string

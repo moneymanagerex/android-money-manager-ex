@@ -49,6 +49,7 @@ public abstract class BaseReportFragment
     protected static final String KEY_WHERE_CLAUSE = "PayeeReportFragment:WhereClause";
     protected static final String KEY_FROM_DATE = "PayeeReportFragment:FromDate";
     protected static final String KEY_TO_DATE = "PayeeReportFragment:ToDate";
+
     protected int mItemSelected = R.id.menu_all_time;
     protected String mWhereClause = null;
     protected Date mDateFrom = null;
@@ -56,10 +57,6 @@ public abstract class BaseReportFragment
 
     protected View addListViewHeaderFooter(int layout) {
         return View.inflate(getActivity(), layout, null);
-    }
-
-    protected String getWhereClause() {
-        return mWhereClause;
     }
 
     @Override
@@ -250,6 +247,10 @@ public abstract class BaseReportFragment
      */
     protected void startLoader(Bundle args) {
         getLoaderManager().restartLoader(ID_LOADER, args, this);
+    }
+
+    protected String getWhereClause() {
+        return mWhereClause;
     }
 
     private void showDialogCustomDates() {
