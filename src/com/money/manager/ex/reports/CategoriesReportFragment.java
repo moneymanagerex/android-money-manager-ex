@@ -51,6 +51,7 @@ import com.money.manager.ex.utils.DateUtils;
 
 import java.util.ArrayList;
 
+import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -112,6 +113,8 @@ public class CategoriesReportFragment
         }
     }
 
+    // Loader
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         super.onLoadFinished(loader, data);
@@ -122,12 +125,12 @@ public class CategoriesReportFragment
 
                 CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
-                double totalAmount = 0;
+                Money totalAmount = MoneyFactory.fromString("0");
                 while (data.moveToNext()) {
-                    totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
+                    totalAmount = totalAmount.add(MoneyFactory.fromString(data.getString(data.getColumnIndex("TOTAL"))));
                 }
                 TextView txtColumn2 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn2);
-                txtColumn2.setText(currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(totalAmount)));
+                txtColumn2.setText(currencyService.getBaseCurrencyFormatted(totalAmount));
 
                 // solved bug chart
                 if (data.getCount() > 0) {
@@ -347,6 +350,8 @@ public class CategoriesReportFragment
             fragmentTransaction.commit();
         }
     }
+
+    // Private
 
     private CategorySub getCategoryFromSelectedItem(ListView l, int position) {
         // Reading item from the list view, not adapter!
