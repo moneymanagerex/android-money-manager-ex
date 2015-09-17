@@ -22,6 +22,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -608,6 +609,7 @@ public class AllDataListFragment
         AllDataAdapter adapter = getAllDataAdapter();
         CurrencyService currencyService = new CurrencyService(getContext());
         int baseCurrencyId = currencyService.getBaseCurrencyId();
+        ContentValues values = new ContentValues();
 
         int currencyId;
         Money amount;
@@ -618,15 +620,24 @@ public class AllDataListFragment
         cursor.moveToPosition(Constants.NOT_SET);
 
         while(cursor.moveToNext()) {
-            transType = cursor.getString(cursor.getColumnIndex(adapter.TRANSACTIONTYPE));
+            values.clear();
+
+            // Read needed data.
+            DatabaseUtils.cursorStringToContentValues(cursor, adapter.TRANSACTIONTYPE, values);
+            DatabaseUtils.cursorIntToContentValues(cursor, adapter.CURRENCYID, values);
+            DatabaseUtils.cursorIntToContentValues(cursor, adapter.TOCURRENCYID, values);
+            DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.AMOUNT, values);
+            DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.TOAMOUNT, values);
+
+            transType = values.getAsString(adapter.TRANSACTIONTYPE);
             transactionType = TransactionTypes.valueOf(transType);
 
             if (transactionType.equals(TransactionTypes.Transfer)) {
-                currencyId = cursor.getInt(cursor.getColumnIndex(adapter.TOCURRENCYID));
-                amount = MoneyFactory.fromString(cursor.getString(cursor.getColumnIndex(adapter.TOAMOUNT)));
+                currencyId = values.getAsInteger(adapter.TOCURRENCYID);
+                amount = MoneyFactory.fromString(values.getAsString(adapter.TOAMOUNT));
             } else {
-                currencyId = cursor.getInt(cursor.getColumnIndex(adapter.CURRENCYID));
-                amount = MoneyFactory.fromString(cursor.getString(cursor.getColumnIndex(adapter.AMOUNT)));
+                currencyId = values.getAsInteger(adapter.CURRENCYID);
+                amount = MoneyFactory.fromString(values.getAsString(adapter.AMOUNT));
             }
 
             converted = currencyService.doCurrencyExchange(baseCurrencyId, amount, currencyId);
