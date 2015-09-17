@@ -436,19 +436,17 @@ public class SearchFragment extends Fragment
                     .commit();
         }
 
-        searchResultsFragment = AllDataListFragment.newInstance(-1);
+        searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET);
 
         //create parameter bundle
         Bundle args = new Bundle();
         args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
-//        args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE_PARAMS, where.Params);
         // Sorting
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
                 QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
         //set arguments
         searchResultsFragment.setArguments(args);
 
-//        searchResultsFragment.setSearResultFragmentLoaderCallbacks((SearchActivity) getActivity());
 //        searchResultsFragment.setShownHeader(true);
         if (getActivity() instanceof SearchActivity) {
             SearchActivity activity = (SearchActivity) getActivity();

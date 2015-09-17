@@ -99,7 +99,6 @@ public class AllDataListFragment
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
     // KEY Arguments
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
-//    public static final String KEY_ARGUMENTS_WHERE_PARAMS = "SearchResultFragment:ArgumentsWhereParams";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 
     public int AccountId = Constants.NOT_SET;
@@ -440,6 +439,13 @@ public class AllDataListFragment
 
     // Methods
 
+    public void displayRunningBalances(HashMap<Integer, Money> balances) {
+        AllDataAdapter adapter = getAllDataAdapter();
+        if(adapter == null) return;
+
+        adapter.setBalances(balances);
+    }
+
     /**
      * Export data to CSV file
      */
@@ -541,13 +547,6 @@ public class AllDataListFragment
      */
     public void setShownBalance(boolean mShownBalance) {
         this.mShowBalance = mShownBalance;
-    }
-
-    public void displayRunningBalances(HashMap<Integer, Money> balances) {
-        AllDataAdapter adapter = getAllDataAdapter();
-        if(adapter == null) return;
-
-        adapter.setBalances(balances);
     }
 
     // Private methods.
