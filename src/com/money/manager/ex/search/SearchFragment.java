@@ -478,10 +478,10 @@ public class SearchFragment extends Fragment
 
     private void saveSearchCriteria() {
         // Account
-        if (spinAccount != null) {
-            if (spinAccount.getSelectedItemPosition() != AdapterView.INVALID_POSITION &&
-                    mAccountIdList.get(spinAccount.getSelectedItemPosition()) != -1) {
-                mSearchParameters.accountId = mAccountIdList.get(spinAccount.getSelectedItemPosition());
+        if (this.spinAccount != null) {
+            int selectedAccountPosition = spinAccount.getSelectedItemPosition();
+            if (selectedAccountPosition != AdapterView.INVALID_POSITION) {
+                mSearchParameters.accountId = mAccountIdList.get(selectedAccountPosition);
             }
         }
 
