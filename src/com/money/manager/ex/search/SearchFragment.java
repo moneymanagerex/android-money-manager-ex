@@ -19,6 +19,7 @@ package com.money.manager.ex.search;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -340,12 +341,14 @@ public class SearchFragment extends Fragment
     private String assembleWhereClause() {
         WhereStatementGenerator where = new WhereStatementGenerator();
 
-        // todo: try using query builder
-        // SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-
         // account
         if (mSearchParameters.accountId != Constants.NOT_SET) {
-            where.addStatement(QueryAllData.TOACCOUNTID, "=", mSearchParameters.accountId);
+            where.addStatement(
+                where.concatenateOr(
+                    where.getStatement(QueryAllData.ACCOUNTID, "=", mSearchParameters.accountId),
+                    where.getStatement(QueryAllData.TOACCOUNTID, "=", mSearchParameters.accountId)
+                )
+            );
         }
         // transaction type
         if (mSearchParameters.deposit || mSearchParameters.transfer || mSearchParameters.withdrawal) {
