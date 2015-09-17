@@ -254,8 +254,10 @@ public class DatabaseSettingsFragment
                                 "<b>" + newDatabases.getAbsolutePath() + "</b>")), Toast.LENGTH_LONG).show();
                         //MainActivity.changeDatabase(newDatabases.getAbsolutePath());
                         // save the database file
-                        MoneyManagerApplication.setDatabasePath(getActivity().getApplicationContext(),
-                                newDatabases.getAbsolutePath());
+//                        MoneyManagerApplication.setDatabasePath(getActivity().getApplicationContext(),
+//                                newDatabases.getAbsolutePath());
+                        new AppSettings(getActivity().getApplicationContext()).getDatabaseSettings()
+                                .setDatabasePath(newDatabases.getAbsolutePath());
                         DonateDialogUtils.resetDonateDialog(getActivity().getApplicationContext());
                         // set to restart activity
                         MainActivity.setRestartActivity(true);

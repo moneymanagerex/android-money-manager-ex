@@ -55,6 +55,7 @@ import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyService;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -587,7 +588,8 @@ public class Core {
 //        MoneyManagerOpenHelper.getInstance(mContext).close();
 
         // change database
-        MoneyManagerApplication.setDatabasePath(mContext, path);
+//        MoneyManagerApplication.setDatabasePath(mContext, path);
+        new AppSettings(mContext).getDatabaseSettings().setDatabasePath(path);
 
         return true;
     }
