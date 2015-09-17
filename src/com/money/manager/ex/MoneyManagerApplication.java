@@ -144,6 +144,7 @@ public class MoneyManagerApplication
 //        String databasePath = PreferenceManager.getDefaultSharedPreferences(context)
 //                .getString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), null);
         String databasePath = new AppSettings(context).getDatabaseSettings().getDatabasePath();
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database setting: " + databasePath);
 
         if (databasePath != null) {
             // Use the db path stored in the preferences.
