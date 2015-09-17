@@ -222,8 +222,8 @@ public class MoneyManagerOpenHelper
      * @param rawId id raw resource
      */
     private void executeRawSql(SQLiteDatabase db, int rawId) {
-        String sqlCreate = RawFileUtils.getRawAsString(mContext, rawId);
-        String sqlStatement[] = sqlCreate.split(";");
+        String sqlRaw = RawFileUtils.getRawAsString(mContext, rawId);
+        String sqlStatement[] = sqlRaw.split(";");
         // process all statements
         for (String aSqlStatment : sqlStatement) {
             if (BuildConfig.DEBUG) Log.d(LOGCAT, aSqlStatment);
@@ -232,7 +232,7 @@ public class MoneyManagerOpenHelper
                 db.execSQL(aSqlStatment);
             } catch (SQLException e) {
                 ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                handler.handle(e, "executing raw sql: " + sqlCreate);
+                handler.handle(e, "executing raw sql: " + aSqlStatment);
             }
         }
     }
