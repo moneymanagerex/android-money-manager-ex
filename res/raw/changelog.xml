@@ -17,6 +17,11 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="" versionName="2.20.0">
+        <changelogtext>Added totals on the search results.</changelogtext>
+        <changelogtext>Correction in formatting for currencies with no decimals.</changelogtext>
+        <changelogtext>A correction in Money-Conversions library for max precision.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="September 16, 2015" versionName="2.19.5">
         <changelogtext>Correction for the account balance display in the header.</changelogtext>
         <changelogtext>Correction for opening General settings when no accounts exist.</changelogtext>
