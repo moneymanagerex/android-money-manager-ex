@@ -73,9 +73,9 @@ public class MoneyManagerBootReceiver
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                     AlarmManager.INTERVAL_DAY, pending);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(e, "checking for due recurring transactions");
-//            Log.e(MoneyManagerBootReceiver.class.getSimpleName(), e.getMessage());
+//            ExceptionHandler handler = new ExceptionHandler(context, this);
+//            handler.handle(e, "checking for due recurring transactions");
+            Log.e(MoneyManagerBootReceiver.class.getSimpleName(), e.getMessage());
         }
     }
 

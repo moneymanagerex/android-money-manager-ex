@@ -231,7 +231,7 @@ public class MainActivity
     protected void onResume() {
         super.onResume();
 
-//        Log.i(TAG, "Setting screen name: " + name);
+        Log.d(this.getClass().getSimpleName(), "building tracker");
         mTracker.setScreenName("Image~MainActivity");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 

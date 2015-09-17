@@ -69,6 +69,7 @@ public class SingleAccountWidget
 
         int accountId = Integer.parseInt(defaultAccountId);
         Account account = loadAccount(context, accountId);
+        if (account == null) return;
 
 //        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
 
