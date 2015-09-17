@@ -61,7 +61,6 @@ import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconView;
 

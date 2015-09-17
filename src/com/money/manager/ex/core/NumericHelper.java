@@ -96,7 +96,7 @@ public class NumericHelper {
 //        DecimalFormat formatter = new DecimalFormat();
 //        Locale appLocale = MoneyManagerApplication.getInstanceApp().getLocale();
 //        DecimalFormat formatter = (DecimalFormat) NumberFormat.getNumberInstance(appLocale);
-        String pattern = NumericPatternGenerator .getPattern(decimals);
+        String pattern = NumericPatternGenerator.getPattern(decimals);
         DecimalFormat formatter = new DecimalFormat(pattern);
 
         formatter.setGroupingSize(3);

@@ -32,13 +32,17 @@ public class NumericPatternGenerator {
         //String pattern = "###G###G###G###D####";
 //        String pattern = "###G###G###G###";
 //        pattern = pattern.replace("G", groupSeparator);
-        String pattern = "#,##0.";
+        
+        String pattern = "#,##0";
 
-//        pattern += decimalSeparator;
+        if (decimals > 0) {
+            pattern += ".";
 
-        for (int i = 0; i < decimals; i++) {
-            pattern += "0";
+            for (int i = 0; i < decimals; i++) {
+                pattern += "0";
+            }
         }
+
         return pattern;
     }
 }
