@@ -50,6 +50,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.dropbox.DropboxHelper;
@@ -106,6 +107,8 @@ public class AllDataListFragment
     public int AccountId = Constants.NOT_SET;
 
     private static final String LOGCAT = AllDataListFragment.class.getSimpleName();
+
+    private LinearLayout footer;
 
     private LoaderManager.LoaderCallbacks<Cursor> mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
@@ -569,11 +572,9 @@ public class AllDataListFragment
     // Private methods.
 
     private void renderFooter() {
-        // todo: enable/disable footer here
-        // return;
-
-        LinearLayout footer = (LinearLayout) View.inflate(getActivity(),
+        this.footer = (LinearLayout) View.inflate(getActivity(),
                 R.layout.item_generic_report_2_columns, null);
+
         TextView txtColumn1 = (TextView) footer.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = (TextView) footer.findViewById(R.id.textViewColumn2);
 
@@ -587,16 +588,54 @@ public class AllDataListFragment
     }
 
     private void updateTotalFooter(Cursor data) {
-        // todo: get the total here.
-        Money total = MoneyFactory.fromString("123.56");
+        if (data == null) return;
 
-        LinearLayout footer = (LinearLayout) View.inflate(getActivity(),
-                R.layout.item_generic_report_2_columns, null);
-        TextView txtColumn2 = (TextView) footer.findViewById(R.id.textViewColumn2);
+        Money total = MoneyFactory.fromString("0");
+
+        if (data.getCount() != 0) {
+            total = getTotalFromCursor(data);
+        }
+
+        TextView txtColumn2 = (TextView) this.footer.findViewById(R.id.textViewColumn2);
 
         CurrencyService currencyService = new CurrencyService(getContext());
-//        txtColumn2.setText(currencyService.getBaseCurrencyFormatted(total));
-        txtColumn2.setText(Calendar.getInstance().toString());
+        txtColumn2.setText(currencyService.getBaseCurrencyFormatted(total));
+    }
+
+    private Money getTotalFromCursor(Cursor cursor) {
+        Money total = MoneyFactory.fromString("0");
+        int originalPosition = cursor.getPosition();
+        AllDataAdapter adapter = getAllDataAdapter();
+        CurrencyService currencyService = new CurrencyService(getContext());
+        int baseCurrencyId = currencyService.getBaseCurrencyId();
+
+        int currencyId;
+        Money amount;
+        Money converted;
+        String transType;
+        TransactionTypes transactionType;
+
+        cursor.moveToPosition(Constants.NOT_SET);
+
+        while(cursor.moveToNext()) {
+            transType = cursor.getString(cursor.getColumnIndex(adapter.TRANSACTIONTYPE));
+            transactionType = TransactionTypes.valueOf(transType);
+
+            if (transactionType.equals(TransactionTypes.Transfer)) {
+                currencyId = cursor.getInt(cursor.getColumnIndex(adapter.TOCURRENCYID));
+                amount = MoneyFactory.fromString(cursor.getString(cursor.getColumnIndex(adapter.TOAMOUNT)));
+            } else {
+                currencyId = cursor.getInt(cursor.getColumnIndex(adapter.CURRENCYID));
+                amount = MoneyFactory.fromString(cursor.getString(cursor.getColumnIndex(adapter.AMOUNT)));
+            }
+
+            converted = currencyService.doCurrencyExchange(baseCurrencyId, amount, currencyId);
+            total = total.add(converted);
+        }
+
+        cursor.moveToPosition(originalPosition);
+
+        return total;
     }
 
     private boolean setStatusCheckingAccount(int[] transId, String status) {

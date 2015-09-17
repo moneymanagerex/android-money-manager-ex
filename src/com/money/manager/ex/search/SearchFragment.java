@@ -530,7 +530,7 @@ public class SearchFragment extends Fragment
 
     private void displaySearchCriteria() {
         // Account
-        // no need to restore. The collection is kept in memory.
+        this.spinAccount.setSelection(0);
 
         // Transaction Type
         cbxDeposit.setChecked(mSearchParameters.deposit);
@@ -538,7 +538,7 @@ public class SearchFragment extends Fragment
         cbxWithdrawal.setChecked(mSearchParameters.withdrawal);
 
         // Status
-        // Status is also stored as the collection is kept in an instance variable.
+        this.spinStatus.setSelection(0);
 
         // Amount from
         txtFromAmount.setText(mSearchParameters.amountFrom);
@@ -563,5 +563,4 @@ public class SearchFragment extends Fragment
         // Notes
         txtNotes.setText(mSearchParameters.notes);
     }
-
 }
