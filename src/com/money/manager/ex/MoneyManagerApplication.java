@@ -141,9 +141,9 @@ public class MoneyManagerApplication
      * @return path database file
      */
     public static String getDatabasePath(Context context) {
-//        String databasePath = PreferenceManager.getDefaultSharedPreferences(context)
-//                .getString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), null);
-        String databasePath = new AppSettings(context).getDatabaseSettings().getDatabasePath();
+        DatabaseSettings dbSettings = new AppSettings(context).getDatabaseSettings();
+
+        String databasePath = dbSettings.getDatabasePath();
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "database setting: " + databasePath);
 
         if (databasePath != null) {
@@ -159,8 +159,7 @@ public class MoneyManagerApplication
         String defaultDirectory = getDatabaseDirectory(context);
         String defaultPath = defaultDirectory + "/data.mmb";
 
-//        setDatabasePath(context, defaultPath);
-        new AppSettings(context).getDatabaseSettings().setDatabasePath(defaultPath);
+        dbSettings.setDatabasePath(defaultPath);
 
         // Show notification
         ExceptionHandler handler = new ExceptionHandler(context);
@@ -195,20 +194,6 @@ public class MoneyManagerApplication
 
         return databasePath;
     }
-
-//    /**
-//     * @param context Executing context for which to set the preferences.
-//     * @param dbPath  path of database file to save
-//     */
-//    public static void setDatabasePath(Context context, String dbPath) {
-//        // save a reference db path
-////        Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-////        editor.putString(context.getString(PreferenceConstants.PREF_DATABASE_PATH), dbPath);
-////        editor.commit();
-////        editor.apply();
-//
-//        new AppSettings(context).getDatabaseSettings().setDatabasePath(dbPath);
-//    }
 
     public static float getTextSize() {
         return MoneyManagerApplication.mTextSize;
