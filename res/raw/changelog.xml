@@ -18,7 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="" versionName="2.20.0">
-        <changelogtext>Added totals on the search results.</changelogtext>
+        <changelogtext>Added totals for the sum of all transactions on the search results.</changelogtext>
         <changelogtext>Correction in formatting for currencies with no decimals.</changelogtext>
         <changelogtext>A correction in Money-Conversions library for max precision.</changelogtext>
     </changelogversion>
