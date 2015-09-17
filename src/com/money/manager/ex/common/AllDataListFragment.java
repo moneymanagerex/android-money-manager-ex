@@ -50,8 +50,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.adapter.AllDataViewHolder;
-import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.dropbox.DropboxHelper;
@@ -72,8 +70,8 @@ import com.money.manager.ex.database.TableSplitTransactions;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import info.javaperformance.money.Money;
@@ -158,11 +156,17 @@ public class AllDataListFragment
             }
         });
 
+        // Header and footer must be added before setAdapter().
+
         // Add a header to the list view if one exists.
         if (getListAdapter() == null) {
             if (mListHeader != null)
                 getListView().addHeaderView(mListHeader);
         }
+        if (this.mShowFooter) {
+            renderFooter();
+        }
+
         // set adapter
         setListAdapter(adapter);
 
@@ -261,10 +265,10 @@ public class AllDataListFragment
                 // reset the transaction groups (account name collection)
                 adapter.resetAccountHeaderIndexes();
 
-                // todo: Show totals?
-//                if (this.mShowFooter) {
-//                    this.renderFooter();
-//                }
+                // Show totals
+                if (this.mShowFooter) {
+                    this.updateTotalFooter(data);
+                }
         }
     }
 
@@ -380,7 +384,7 @@ public class AllDataListFragment
         startEditAccountTransactionActivity(null);
     }
 
-    // Begin multi-choice-mode listener callback handlers.
+    // Multi-choice-mode listener callback handlers.
 
     /**
      * handler for multi-choice-mode listener
@@ -565,6 +569,9 @@ public class AllDataListFragment
     // Private methods.
 
     private void renderFooter() {
+        // todo: enable/disable footer here
+        // return;
+
         LinearLayout footer = (LinearLayout) View.inflate(getActivity(),
                 R.layout.item_generic_report_2_columns, null);
         TextView txtColumn1 = (TextView) footer.findViewById(R.id.textViewColumn1);
@@ -575,14 +582,21 @@ public class AllDataListFragment
         txtColumn2.setText(R.string.total);
         txtColumn2.setTypeface(null, Typeface.BOLD_ITALIC);
 
+        ListView listView = getListView();
+        listView.addFooterView(footer);
+    }
+
+    private void updateTotalFooter(Cursor data) {
         // todo: get the total here.
         Money total = MoneyFactory.fromString("123.56");
 
-//        TextView txtColumn2 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn2);
-        CurrencyService currencyService = new CurrencyService(getContext());
-        txtColumn2.setText(currencyService.getBaseCurrencyFormatted(total));
+        LinearLayout footer = (LinearLayout) View.inflate(getActivity(),
+                R.layout.item_generic_report_2_columns, null);
+        TextView txtColumn2 = (TextView) footer.findViewById(R.id.textViewColumn2);
 
-        getListView().addFooterView(footer);
+        CurrencyService currencyService = new CurrencyService(getContext());
+//        txtColumn2.setText(currencyService.getBaseCurrencyFormatted(total));
+        txtColumn2.setText(Calendar.getInstance().toString());
     }
 
     private boolean setStatusCheckingAccount(int[] transId, String status) {
