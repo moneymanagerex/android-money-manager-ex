@@ -46,6 +46,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -559,7 +560,7 @@ public class Core {
      *
      * @return true if running on the tablet, otherwise false
      */
-    @SuppressLint("InlinedApi")
+//    @SuppressLint("InlinedApi")
     public boolean isTablet() {
         int layout = mContext.getResources().getConfiguration().screenLayout;
         return ((layout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) ||
@@ -573,6 +574,8 @@ public class Core {
      * @return indicator whether the operation was successful
      */
     public boolean changeDatabase(String path) {
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "switching database to: " + path);
+
         File file = new File(path);
         // check if database exists
         if (!file.exists()) {
@@ -584,8 +587,9 @@ public class Core {
             Toast.makeText(mContext, R.string.database_can_not_open_write, Toast.LENGTH_LONG).show();
             return false;
         }
-        // close connection
-//        MoneyManagerOpenHelper.getInstance(mContext).close();
+
+        // close existing connection.
+        MoneyManagerOpenHelper.getInstance(mContext).close();
 
         // change database
 //        MoneyManagerApplication.setDatabasePath(mContext, path);
