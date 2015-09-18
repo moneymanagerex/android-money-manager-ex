@@ -525,7 +525,10 @@ public class CurrencyListFragment
 
     private List<TableCurrencyFormats> getVisibleCurrencies() {
         CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
+        if (adapter == null) return null;
+
         Cursor cursor = adapter.getCursor();
+        if (cursor == null) return null;
 
         cursor.moveToPosition(Constants.NOT_SET);
         List<TableCurrencyFormats> currencies = new ArrayList<>();
@@ -561,7 +564,7 @@ public class CurrencyListFragment
 //    }
 
     private void updateExchangeRatesFromYahoo(List<TableCurrencyFormats> currencies){
-        if (currencies.size() <= 0) return;
+        if (currencies == null || currencies.size() <= 0) return;
 
         CurrencyService utils = getCurrencyUtils();
         ArrayList<String> currencySymbols = new ArrayList<>();
