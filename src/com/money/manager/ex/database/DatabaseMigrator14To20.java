@@ -51,12 +51,19 @@ public class DatabaseMigrator14To20 {
      */
     public boolean legacyDataExists() {
         String dbPath = getLegacyDbPath();
+        File legacyFile = new File(dbPath, DEFAULT_DB_FILENAME);
 
         // Check if there is a file there.
-        File dbFile = new File(dbPath);
-        return dbFile.exists();
+//        File dbFile = new File(dbPath);
+//        return dbFile.exists();
+
+        return legacyFile.exists();
     }
 
+    /**
+     * Assembles the default db location for old version of the app.
+     * @return the legacy location of the database used with v1.4
+     */
     public String getLegacyDbPath() {
         String dbPath;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -66,8 +73,8 @@ public class DatabaseMigrator14To20 {
         }
         // This was the default database name and it was impossible to create another one
         // at this location.
-        dbPath += "/databases/data.mmb";
-//        dbPath += "/databases/";
+//        dbPath += "/databases/data.mmb";
+        dbPath += "/databases/";
         // There are other internal databases, like webview.db, google_analytics, etc.
 
         return dbPath;
