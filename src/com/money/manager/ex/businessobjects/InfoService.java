@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -92,21 +93,23 @@ public class InfoService {
      * @return value
      */
     public String getInfoValue(String info) {
-        Cursor data;
+        Cursor cursor;
         String ret = null;
 
         try {
-            data = mContext.getContentResolver().query(mInfoTable.getUri(),
+            cursor = mContext.getContentResolver().query(mInfoTable.getUri(),
                     null,
                     TableInfoTable.INFONAME + "=?",
                     new String[]{ info },
                     null);
-            if (data == null) return null;
+            if (cursor == null) return null;
 
-            if (data.moveToFirst()) {
-                ret = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
+            if (cursor.moveToFirst()) {
+//                ContentValues values = new ContentValues();
+//                DatabaseUtils.cursorRowToContentValues(cursor, values);
+                ret = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
             }
-            data.close();
+            cursor.close();
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "retrieving info value: " + info);

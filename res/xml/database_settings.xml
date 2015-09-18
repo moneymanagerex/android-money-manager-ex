@@ -25,6 +25,11 @@
 
     <Preference
         android:icon="@null"
+        android:key="@string/pref_database_version"
+        android:title="@string/database_version" />
+
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_database_migrate_14_to_20"
         android:title="@string/database_migrate_14_to_20" />
 

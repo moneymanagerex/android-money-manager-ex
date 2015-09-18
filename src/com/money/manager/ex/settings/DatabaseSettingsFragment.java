@@ -48,6 +48,7 @@ import java.io.File;
 public class DatabaseSettingsFragment
         extends PreferenceFragment {
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.database_settings);
@@ -56,6 +57,8 @@ public class DatabaseSettingsFragment
 
         // Database path.
         refreshDbPath();
+
+        refreshDbVersion();
 
         // Check schema
         initDbSchemaCheckOption();
@@ -79,6 +82,16 @@ public class DatabaseSettingsFragment
 
         // Create database
         initCreateDatabaseOption();
+    }
+
+    private void refreshDbVersion() {
+        final Preference preference = findPreference(getActivity().getString(R.string.pref_database_version));
+
+        int version = MoneyManagerOpenHelper.getInstance(getActivity())
+                .getReadableDatabase()
+                .getVersion();
+
+        preference.setSummary(Integer.toString(version));
     }
 
     private void setVisibilityOfMigrationButton() {
@@ -189,8 +202,8 @@ public class DatabaseSettingsFragment
     }
 
     private void refreshDbPath() {
-        final Preference pDatabasePath = findPreference(getActivity().getString(PreferenceConstants.PREF_DATABASE_PATH));
-        pDatabasePath.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
+        final Preference preference = findPreference(getActivity().getString(PreferenceConstants.PREF_DATABASE_PATH));
+        preference.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
     }
 
     private void initDbSchemaCheckOption() {

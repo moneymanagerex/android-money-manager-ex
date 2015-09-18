@@ -57,17 +57,17 @@ public class MoneyManagerOpenHelper
         if (mInstance == null) {
             Log.v(LOGCAT, "MoneyManagerOpenHelper.getInstance()");
 
-            mInstance = new MoneyManagerOpenHelper(context);
+            mInstance = new MoneyManagerOpenHelper(context.getApplicationContext());
         }
         return mInstance;
     }
 
     private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
+    // The version corresponds to the user version in info table, used by the desktop app.
     private static final int databaseCurrentVersion = 3;
+
     // singleton
     private static MoneyManagerOpenHelper mInstance;
-    // context of creation
-    private Context mContext;
 
     private MoneyManagerOpenHelper(Context context) {
         super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseCurrentVersion);
@@ -77,6 +77,8 @@ public class MoneyManagerOpenHelper
 
         Log.v(LOGCAT, "event onCreate( )");
     }
+
+    private Context mContext;
 
     @Override
     public void onConfigure(SQLiteDatabase db) {
@@ -113,9 +115,17 @@ public class MoneyManagerOpenHelper
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onUpgrade(" + Integer.toString(oldVersion) + ", " + Integer.toString(newVersion) + " method");
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upgrading from " + Integer.toString(oldVersion) +
+                " to " + Integer.toString(newVersion));
         // update databases
         updateDatabase(db, oldVersion, newVersion);
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // nothing to do for now.
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Downgrade attempt from " + Integer.toString(oldVersion) +
+            " to " + Integer.toString(newVersion));
     }
 
     @Override
