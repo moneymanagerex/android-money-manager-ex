@@ -97,7 +97,8 @@ public class MoneyManagerOpenHelper
 
         executeRawSql(db, R.raw.database_create);
 
-        // force update database (why?)
+//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "db version after creation of tables: " + db.getVersion());
+        // Force any database from version 0(!) to the current version.
 //        updateDatabase(db, 0, databaseCurrentVersion);
 
         try {
@@ -111,6 +112,9 @@ public class MoneyManagerOpenHelper
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
+
+//        int version = db.getVersion();
+//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "opening db version: " + version);
     }
 
     @Override
