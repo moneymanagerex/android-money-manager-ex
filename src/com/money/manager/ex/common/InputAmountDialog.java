@@ -326,7 +326,8 @@ public class InputAmountDialog
             try {
                 Expression e = new ExpressionBuilder(exp).build();
 //                mAmount = BigDecimal.valueOf(e.evaluate());
-                mAmount = MoneyFactory.fromDouble(e.evaluate());
+                Double result = e.evaluate();
+                mAmount = MoneyFactory.fromString(Double.toString(result));
             } catch (IllegalArgumentException ex) {
                 // Just display the last valid value.
                 refreshFormattedAmount();
@@ -459,7 +460,7 @@ public class InputAmountDialog
             TableCurrencyFormats displayCurrency = mCurrencyService.getCurrency(mDisplayCurrencyId);
             if (displayCurrency != null) {
                 // but decimal and group separators from the base currency.
-                result = helper.getNumberFormatted(mAmount, displayCurrency.getScale(),
+                result = helper.getNumberFormatted(amount, displayCurrency.getScale(),
                         baseCurrency.getDecimalPoint(), baseCurrency.getGroupSeparator());
             } else {
                 return "";
