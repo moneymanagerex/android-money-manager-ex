@@ -18,6 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="September 18, 2015" versionName="2.20.1">
+        <changelogtext>Using maximum 4 decimal places in numeric input dialog.</changelogtext>
         <changelogtext>Improved generation of new databases.</changelogtext>
         <changelogtext>Added totals for the sum of all transactions on the search results.</changelogtext>
         <changelogtext>Correction for hanging at the splash logo in some cases.</changelogtext>
