@@ -108,11 +108,9 @@ public class SingleAccountWidget
     }
 
     static String getFormattedAccountBalance(Context context, Account account) {
-//        WhereClauseGenerator generator = new WhereClauseGenerator(context);
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(QueryAccountBills.ACCOUNTID, "=", account.getId());
         String selection =  where.getWhere();
-//        String[] args = generator.getSelectionArguments();
 
         AccountService service = new AccountService(context);
         Money total = service.loadBalance(selection);
@@ -124,15 +122,6 @@ public class SingleAccountWidget
 
         return summary;
     }
-
-//    static String getAccountName(Context context, int accountId) {
-//        AccountRepository repository = new AccountRepository(context);
-//        String name = repository.loadName(accountId);
-//        if (StringUtils.isEmpty(name)) {
-//            name = "n/a";
-//        }
-//        return name;
-//    }
 
     static Account loadAccount(Context context, int accountId) {
         AccountRepository repository = new AccountRepository(context);

@@ -28,7 +28,7 @@ import info.javaperformance.money.Money;
 
 /**
  * Account entity
- * Created by Alen on 5/09/2015.
+ * Created by Alen Siljak on 5/09/2015.
  */
 public class Account
     extends EntityBase {

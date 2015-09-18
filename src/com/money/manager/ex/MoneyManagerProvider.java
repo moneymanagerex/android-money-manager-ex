@@ -144,7 +144,7 @@ public class MoneyManagerProvider
         // find object from uri
         Object ret = getObjectFromUri(uri);
         // database reference
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         long id = 0;
         String parse;
@@ -153,14 +153,13 @@ public class MoneyManagerProvider
             Dataset dataset = ((Dataset) ret);
             switch (dataset.getType()) {
                 case TABLE:
+                    // compose verbose log
                     String log = "INSERT INTO " + dataset.getSource();
-                    // compose log verbose
                     if (values != null) {
                         log += " VALUES ( " + values.toString() + ")";
                     }
-                    // open transaction
+
                     ////database.beginTransaction();
-                    //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
                     try {
                         if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
 
@@ -168,10 +167,6 @@ public class MoneyManagerProvider
                         // committed
                         ////if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
                         ////database.setTransactionSuccessful();
-//                    } catch (SQLiteException sqlLiteExc) {
-//                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//                        handler.handle(sqlLiteExc, "inserting record");
-////                        Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                         handler.handle(e, "inserting record");
@@ -184,13 +179,15 @@ public class MoneyManagerProvider
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
         }
-        // notify the data inserted
-        getContext().getContentResolver().notifyChange(uri, null);
-        // notify dropbox data changed
-        DropboxHelper.notifyDataChanged();
-        // close connection to the database
-        //databaseHelper.close();
-        // return Uri with primary key inserted
+
+        if (id > 0) {
+            // notify the data inserted
+            getContext().getContentResolver().notifyChange(uri, null);
+            // notify dropbox data changed
+            DropboxHelper.notifyDataChanged();
+        }
+
+        // return Uri with the primary key of the inserted record.
         return Uri.parse(parse);
     }
 
@@ -201,7 +198,7 @@ public class MoneyManagerProvider
         // find object from uri
         Object ret = getObjectFromUri(uri);
         // Instance of database
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
         int rowsUpdate = 0;
@@ -221,6 +218,7 @@ public class MoneyManagerProvider
                     if (whereArgs != null) {
                         log += "; ARGS=" + Arrays.asList(whereArgs).toString();
                     }
+
                     // open transaction
                     //database.beginTransaction();
                     if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
@@ -245,12 +243,14 @@ public class MoneyManagerProvider
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
         }
-        // notify update
-        getContext().getContentResolver().notifyChange(uri, null);
-        // notify dropbox data changed
-        DropboxHelper.notifyDataChanged();
-        // close connection to the database
-        //databaseHelper.close();
+
+        if (rowsUpdate > 0) {
+            // notify update
+            getContext().getContentResolver().notifyChange(uri, null);
+            // notify dropbox data changed
+            DropboxHelper.notifyDataChanged();
+        }
+
         // return rows modified
         return rowsUpdate;
     }

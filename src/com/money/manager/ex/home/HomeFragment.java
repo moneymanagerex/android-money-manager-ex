@@ -306,7 +306,6 @@ public class HomeFragment
 
                 // todo: Get custom period. pref_income_expense_footer_period
 //                String period = new AppSettings(getContext()).getBehaviourSettings().getIncomeExpensePeriod();
-//                WhereClauseGenerator generator = new WhereClauseGenerator(getContext());
 //                String transactionsFilter = generator.getWhereClauseForPeriod(period);
 //                report.filterTransactionsSource(transactionsFilter);
 

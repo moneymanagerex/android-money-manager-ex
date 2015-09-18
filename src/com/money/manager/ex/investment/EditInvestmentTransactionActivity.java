@@ -334,12 +334,12 @@ public class EditInvestmentTransactionActivity
         mStock.setNotes(notesText.getText().toString());
 
         // save
-        ContentValues values = mStock.getContentValues();
+//        ContentValues values = mStock.contentValues;
         StockRepository repository = new StockRepository(getApplicationContext());
         if (mStock.getId() != null) {
-            repository.update(mStock.getId(), values);
+            repository.update(mStock.getId(), mStock);
         } else {
-            int id = repository.insert(values);
+            boolean success = repository.insert(mStock);
 //            Log.d("insert", Integer.toString(id));
         }
         result = true;

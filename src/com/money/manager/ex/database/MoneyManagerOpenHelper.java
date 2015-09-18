@@ -98,7 +98,7 @@ public class MoneyManagerOpenHelper
         executeRawSql(db, R.raw.database_create);
 
 //        if (BuildConfig.DEBUG) Log.d(LOGCAT, "db version after creation of tables: " + db.getVersion());
-        // Force any database from version 0(!) to the current version.
+        // Execute update scripts?
 //        updateDatabase(db, 0, databaseCurrentVersion);
 
         try {

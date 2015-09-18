@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Currency;
 
 /**
  * Repository for Accounts
@@ -98,11 +99,10 @@ public class AccountRepository
     public String loadName(int id) {
         String name = null;
 
-        Cursor cursor = mContext.getContentResolver().query(mAccount.getUri(),
-                new String[] { TableAccountList.ACCOUNTNAME },
+        Cursor cursor = openCursor(new String[] { TableAccountList.ACCOUNTNAME },
                 TableAccountList.ACCOUNTID + "=?",
-                new String[]{Integer.toString(id)},
-                null);
+                new String[]{Integer.toString(id)}
+        );
         if (cursor == null) return null;
 
         if (cursor.moveToFirst()) {

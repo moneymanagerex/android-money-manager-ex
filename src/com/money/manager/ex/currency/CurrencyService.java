@@ -125,18 +125,6 @@ public class CurrencyService {
     }
 
     /**
-     * Get all currencies format
-     *
-     * @return list of all CurrencyFormats
-     */
-    public List<TableCurrencyFormats> getAllCurrencyFormats() {
-        // try loading the currencies first.
-        this.loadAllCurrencies();
-
-        return new ArrayList<>(getCurrenciesStore().values());
-    }
-
-    /**
      * Get id of base currency.
      * Lazy loaded, no need to initialize separately.
      *
@@ -326,26 +314,6 @@ public class CurrencyService {
         }
         return currency;
     }
-
-//    public int loadCurrencyIdFromSymbol(String currencySymbol) {
-//        int result = Constants.NOT_SET;
-//        TableCurrencyFormats currencyEntity = new TableCurrencyFormats();
-//
-//        Cursor cursor = mContext.getContentResolver().query(currencyEntity.getUri(),
-//                new String[] { TableCurrencyFormats.CURRENCYID },
-//                TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
-//                new String[]{ currencySymbol },
-//                null);
-//        if (cursor == null) return result;
-//
-//        // set BaseCurrencyId
-//        if (cursor.moveToFirst()) {
-//            result = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
-//        }
-//        cursor.close();
-//
-//        return result;
-//    }
 
     public int loadCurrencyIdFromSymbolRaw(SQLiteDatabase db, String currencySymbol) {
         int result = Constants.NOT_SET;

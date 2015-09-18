@@ -418,9 +418,6 @@ public class AccountTransactionsFragment
                 where.getStatement(ISplitTransactionsDataset.ACCOUNTID, "=", mAccountId)
         ));
 
-//        WhereClauseGenerator whereClause = new WhereClauseGenerator(getContext());
-//        ArrayList<String> periodClauses = whereClause.getWhereClausesForPeriod(period);
-//        selection.addAll(periodClauses);
         where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mDateRange.dateFrom));
         where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mDateRange.dateTo));
 

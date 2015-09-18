@@ -145,22 +145,33 @@ public class StockRepository
         return result;
     }
 
-    public boolean update(int id, ContentValues values) {
-        boolean result = false;
+    public boolean insert(Stock stock) {
+        return insert(stock.contentValues) > 0;
+    }
 
-        int updateResult = mContext.getContentResolver().update(this.getUri(),
-                values,
-                TableStock.STOCKID + "=?",
-                new String[]{Integer.toString(id)}
-        );
+//    public boolean update(int id, ContentValues values) {
+//        boolean result = false;
+//
+//        int updateResult = mContext.getContentResolver().update(this.getUri(),
+//                values,
+//                TableStock.STOCKID + "=?",
+//                new String[]{Integer.toString(id)}
+//        );
+//
+//        if (updateResult != 0) {
+//            result = true;
+//        } else {
+//            Log.w(this.getClass().getSimpleName(), "Price update failed for stock id:" + id);
+//        }
+//
+//        return  result;
+//    }
 
-        if (updateResult != 0) {
-            result = true;
-        } else {
-            Log.w(this.getClass().getSimpleName(), "Price update failed for stock id:" + id);
-        }
+    public boolean update(int id, Stock stock) {
+        WhereStatementGenerator generator = new WhereStatementGenerator();
+        String where = generator.getStatement(TableStock.STOCKID, "=", id);
 
-        return  result;
+        return update(id, stock.contentValues, where);
     }
 
     /**
@@ -181,20 +192,13 @@ public class StockRepository
             BigDecimal numberOfShares = new BigDecimal(numberOfSharesD);
             BigDecimal value = numberOfShares.multiply(price.toBigDecimal());
 
-            ContentValues newValues = new ContentValues();
-            newValues.put(TableStock.CURRENTPRICE, price.toDouble());
-            newValues.put(TableStock.VALUE, value.doubleValue());
+//            ContentValues newValues = new ContentValues();
+            Stock stock = new Stock();
+            stock.contentValues.put(TableStock.CURRENTPRICE, price.toDouble());
+            stock.contentValues.put(TableStock.VALUE, value.doubleValue());
 
-            update(id, newValues);
+            update(id, stock);
         }
     }
 
-    public int insert(ContentValues values) {
-
-        Uri insertUri = mContext.getContentResolver().insert(this.getUri(),
-                values);
-        long id = ContentUris.parseId(insertUri);
-
-        return (int) id;
-    }
 }

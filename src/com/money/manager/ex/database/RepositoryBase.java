@@ -1,7 +1,11 @@
 package com.money.manager.ex.database;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
+import android.util.Log;
 
 /**
  * Contains common code for repositories.
@@ -18,6 +22,32 @@ public class RepositoryBase
 
     protected Context mContext;
 
+    protected int insert(ContentValues values) {
+        Uri insertUri = mContext.getContentResolver().insert(this.getUri(),
+                values);
+        long id = ContentUris.parseId(insertUri);
+
+        return (int) id;
+    }
+
+    protected boolean update(int id, ContentValues values, String where) {
+        boolean result = false;
+
+        int updateResult = mContext.getContentResolver().update(this.getUri(),
+                values,
+                where,
+                null
+        );
+
+        if (updateResult != 0) {
+            result = true;
+        } else {
+            Log.w(this.getClass().getSimpleName(), "update failed, " + this.getUri() + ", id:" + id);
+        }
+
+        return  result;
+    }
+
     protected Cursor openCursor(String[] projection, String selection, String[] args) {
         Cursor cursor = mContext.getContentResolver().query(
                 getUri(),
@@ -27,4 +57,5 @@ public class RepositoryBase
                 null);
         return cursor;
     }
+
 }

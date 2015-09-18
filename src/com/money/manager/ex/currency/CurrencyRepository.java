@@ -5,7 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.RepositoryBase;
 import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.domainmodel.Currency;
 
 import java.math.BigDecimal;
 
@@ -14,14 +18,24 @@ import info.javaperformance.money.Money;
 /**
  * Currency repository. Provides access to TableCurrencyFormats entities.
  */
-public class CurrencyRepository {
+public class CurrencyRepository
+    extends RepositoryBase {
 
     public CurrencyRepository(Context context) {
-        mContext = context;
+        super(context, "currencyformats_v1", DatasetType.TABLE, "currencyformats");
+
     }
 
-    private Context mContext;
-    private TableCurrencyFormats mCurrencyTable = new TableCurrencyFormats();
+    public boolean insert(Currency currency) {
+        return this.insert(currency.contentValues) > 0;
+    }
+
+    public boolean update(int id, Currency value) {
+        WhereStatementGenerator generator = new WhereStatementGenerator();
+        String where = generator.getStatement(TableCurrencyFormats.CURRENCYID, "=", id);
+
+        return update(id, value.contentValues, where);
+    }
 
     public TableCurrencyFormats loadCurrency(int currencyId) {
         return loadCurrency(
@@ -39,7 +53,7 @@ public class CurrencyRepository {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TableCurrencyFormats.BASECONVRATE, exchangeRate.toString());
 
-        int result = mContext.getContentResolver().update(mCurrencyTable.getUri(),
+        int result = mContext.getContentResolver().update(this.getUri(),
                 contentValues,
                 TableCurrencyFormats.CURRENCYID + "=?",
                 new String[] { Integer.toString(currencyId) });
@@ -61,12 +75,14 @@ public class CurrencyRepository {
     }
 
     private TableCurrencyFormats loadCurrencyInternal(String selection, String[] selectionArgs) {
-        TableCurrencyFormats currency = mCurrencyTable;
-        Cursor cursor = mContext.getContentResolver().query(currency.getUri(),
-                currency.getAllColumns(),
-                selection,
-                selectionArgs,
-                null);
+        TableCurrencyFormats currency = new TableCurrencyFormats();
+
+        Cursor cursor = this.openCursor(currency.getAllColumns(), selection, selectionArgs);
+//        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
+//                currency.getAllColumns(),
+//                selection,
+//                selectionArgs,
+//                null);
         if (cursor == null) return null;
 
         if (cursor.moveToNext()) {

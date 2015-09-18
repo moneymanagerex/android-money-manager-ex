@@ -17,9 +17,12 @@
  */
 package com.money.manager.ex.currency;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,6 +34,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.domainmodel.Currency;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -217,32 +221,40 @@ public class CurrencyEditActivity
             return false;
         }
 
-        // create contentvalues for update data
-        ContentValues values = new ContentValues();
+        Currency currency = new Currency();
+
         // set values
-        values.put(TableCurrencyFormats.CURRENCYNAME, edtCurrencyName.getText().toString());
+        currency.contentValues.put(TableCurrencyFormats.CURRENCYNAME, edtCurrencyName.getText().toString().trim());
         if (spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
-            values.put(TableCurrencyFormats.CURRENCY_SYMBOL, getResources().getStringArray(R.array.currencies_code)[spinCurrencySymbol.getSelectedItemPosition()]);
+            currency.contentValues.put(TableCurrencyFormats.CURRENCY_SYMBOL, getResources()
+                    .getStringArray(R.array.currencies_code)[spinCurrencySymbol.getSelectedItemPosition()]);
         }
-        values.put(TableCurrencyFormats.UNIT_NAME, edtCurrencyName.getText().toString());
-        values.put(TableCurrencyFormats.CENT_NAME, edtCentsName.getText().toString());
-        values.put(TableCurrencyFormats.PFX_SYMBOL, edtPrefix.getText().toString());
-        values.put(TableCurrencyFormats.SFX_SYMBOL, edtSuffix.getText().toString());
-        values.put(TableCurrencyFormats.DECIMAL_POINT, edtDecimal.getText().toString());
-        values.put(TableCurrencyFormats.GROUP_SEPARATOR, edtGroup.getText().toString());
-        values.put(TableCurrencyFormats.SCALE, edtScale.getText().toString());
-        values.put(TableCurrencyFormats.BASECONVRATE, edtConversion.getText().toString());
+        currency.contentValues.put(TableCurrencyFormats.UNIT_NAME, edtCurrencyName.getText().toString().trim());
+        currency.contentValues.put(TableCurrencyFormats.CENT_NAME, edtCentsName.getText().toString().trim());
+        currency.contentValues.put(TableCurrencyFormats.PFX_SYMBOL, edtPrefix.getText().toString().trim());
+        currency.contentValues.put(TableCurrencyFormats.SFX_SYMBOL, edtSuffix.getText().toString().trim());
+        currency.contentValues.put(TableCurrencyFormats.DECIMAL_POINT, edtDecimal.getText().toString().trim());
+        currency.contentValues.put(TableCurrencyFormats.GROUP_SEPARATOR, edtGroup.getText().toString().trim());
+        currency.contentValues.put(TableCurrencyFormats.SCALE, edtScale.getText().toString().trim());
+        currency.contentValues.put(TableCurrencyFormats.BASECONVRATE, edtConversion.getText().toString().trim());
+
+        CurrencyRepository repo = new CurrencyRepository(getApplicationContext());
+
         // update data
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
-            if (getContentResolver().insert(mCurrency.getUri(), values) == null) {
+            boolean success = repo.insert(currency);
+
+            if (!success) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Insert new currency failed!");
+                Log.w(LOGCAT, "Inserting new currency failed!");
                 return false;
             }
         } else {
-            if (getContentResolver().update(mCurrency.getUri(), values, TableCurrencyFormats.CURRENCYID + "=?", new String[]{Integer.toString(mCurrencyId)}) <= 0) {
+            boolean success = repo.update(mCurrencyId, currency);
+
+            if (!success) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Update currency id = " + Integer.toString(mCurrencyId) + " failed!");
+                Log.w(LOGCAT, "Update of currency with id:" + Integer.toString(mCurrencyId) + " failed!");
                 return false;
             }
         }

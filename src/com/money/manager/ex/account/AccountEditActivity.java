@@ -21,6 +21,7 @@
 package com.money.manager.ex.account;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -469,8 +470,9 @@ public class AccountEditActivity
         // check whether the application should update or insert
         if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
             // insert
-            Uri insertResult = getContentResolver().insert(mAccountList.getUri(), values);
-            if (insertResult == null) {
+            Uri insertUri = getContentResolver().insert(mAccountList.getUri(), values);
+            long id = ContentUris.parseId(insertUri);
+            if (insertUri == null) {
                 Core.alertDialog(this, R.string.db_account_insert_failed);
                 Log.w(LOGCAT, "Error inserting account!");
                 return false;

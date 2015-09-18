@@ -61,9 +61,9 @@ public class Stock
         return contentValues.getAsInteger(TableStock.STOCKID);
     }
 
-    public ContentValues getContentValues() {
-        return this.contentValues;
-    }
+//    public ContentValues getContentValues() {
+//        return this.contentValues;
+//    }
 
     public Money getCommission() {
         return getMoney(TableStock.COMMISSION);
