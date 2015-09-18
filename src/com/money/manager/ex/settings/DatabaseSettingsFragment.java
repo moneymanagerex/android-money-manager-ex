@@ -34,11 +34,11 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
-import com.money.manager.ex.database.MmexDatabase;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.utils.DonateDialogUtils;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import java.io.File;
 
@@ -180,7 +180,7 @@ public class DatabaseSettingsFragment
         }
 
         // try to create the db file.
-        MmexDatabase db = new MmexDatabase(getActivity());
+        MmexDatabaseUtils db = new MmexDatabaseUtils(getActivity());
         boolean created = db.createDatabase(filename);
 
         if (created) {
@@ -215,7 +215,7 @@ public class DatabaseSettingsFragment
         Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MmexDatabase db = new MmexDatabase(getActivity());
+                MmexDatabaseUtils db = new MmexDatabaseUtils(getActivity());
                 boolean result = db.checkSchema();
                 if (result) {
                     showToast(R.string.db_check_schema_success, Toast.LENGTH_SHORT);
@@ -238,8 +238,8 @@ public class DatabaseSettingsFragment
         Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MmexDatabase db = new MmexDatabase(getActivity());
-                boolean result = false;
+                MmexDatabaseUtils db = new MmexDatabaseUtils(getActivity());
+                boolean result;
                 try {
                     result = db.checkIntegrity();
 

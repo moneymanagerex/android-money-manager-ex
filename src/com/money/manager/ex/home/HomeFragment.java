@@ -343,7 +343,7 @@ public class HomeFragment
 
                 String selection = "";
                 if (accountList != null && accountList.length > 0) {
-                    MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils();
+                    MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils(getActivity());
                     selection = TableStock.HELDAT + " IN (" + databaseUtils.makePlaceholders(investmentAccounts.size()) + ")";
                 }
 

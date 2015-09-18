@@ -69,11 +69,12 @@ public class CurrencyListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor>, IPriceUpdaterFeedback {
 
+    private static final int ID_LOADER_CURRENCY = 0;
+
     public String mAction = Intent.ACTION_EDIT;
     // Store previous device orientation when showing other screens (chart, etc.)
     public int PreviousOrientation = -1;
 
-    private static final int ID_LOADER_CURRENCY = 0;
     private TableCurrencyFormats mCurrency = new TableCurrencyFormats();
 
     private String mCurFilter;
@@ -214,7 +215,7 @@ public class CurrencyListFragment
                             symbols.add(currency.getCurrencySymbol());
                         }
 
-                        MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils();
+                        MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils(getActivity());
                         whereClause = TableCurrencyFormats.CURRENCY_SYMBOL + " IN (" +
                                 databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
                         arguments.addAll(symbols);
