@@ -315,8 +315,6 @@ public class MainActivity
         if (item.getId() == null && item.getTag() != null) {
             String key = item.getTag().toString();
             RecentDatabaseEntry recentDb = this.recentDbs.map.get(key);
-            // These are the dynamic (sub-)menu items.
-//            RecentDatabaseEntry recentDb = this.recentDbs.map.get(item);
             if (recentDb != null) {
                 openDatabase(recentDb);
             }

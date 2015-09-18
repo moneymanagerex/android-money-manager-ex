@@ -184,7 +184,8 @@ public class DatabaseSettingsFragment
         boolean created = db.createDatabase(filename);
 
         if (created) {
-            // Add to recent files.
+            // Add to recent files. Read the full name from settings.
+            filename = new AppSettings(getActivity()).getDatabaseSettings().getDatabasePath();
             // In Fragments, context has to be received from the parent Activity for some reason.
             RecentDatabasesProvider recents = new RecentDatabasesProvider(getActivity());
             recents.add(RecentDatabaseEntry.fromPath(filename));
