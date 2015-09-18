@@ -17,7 +17,8 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 17, 2015" versionName="2.20.0">
+    <changelogversion changeDate="September 18, 2015" versionName="2.20.1">
+        <changelogtext>Improved generation of new databases.</changelogtext>
         <changelogtext>Added totals for the sum of all transactions on the search results.</changelogtext>
         <changelogtext>Correction for hanging at the splash logo in some cases.</changelogtext>
         <changelogtext>Correction in formatting for currencies with no decimals.</changelogtext>
