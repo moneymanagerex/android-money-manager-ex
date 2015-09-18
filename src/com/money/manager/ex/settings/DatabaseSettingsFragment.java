@@ -36,6 +36,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.MmexDatabase;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.utils.DonateDialogUtils;
 
 import java.io.File;
@@ -169,6 +171,10 @@ public class DatabaseSettingsFragment
         boolean created = db.createDatabase(filename);
 
         if (created) {
+            // add to recent files.
+            RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
+            recents.add(RecentDatabaseEntry.fromPath(filename));
+
             // set main activity to reload, to open the new db file.
             MainActivity.setRestartActivity(true);
 
