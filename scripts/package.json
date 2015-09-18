@@ -1,0 +1,13 @@
+{
+	"name": "MMEX-Android-utility-scripts",
+	"version": "1.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/moneymanagerex/android-money-manager-ex"
+	},
+	"license": "GPL-3.0",
+	"dependencies": {
+		"gulp": "*",
+		"gulp-rename": "*"
+	}
+}
