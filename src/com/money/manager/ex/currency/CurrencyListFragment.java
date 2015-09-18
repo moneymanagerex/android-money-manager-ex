@@ -40,7 +40,6 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -54,9 +53,7 @@ import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -448,10 +445,10 @@ public class CurrencyListFragment
 
     private void startCurrencyFormatActivity(Integer currencyId) {
         // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), CurrencyFormatsActivity.class);
+        Intent intent = new Intent(getActivity(), CurrencyEditActivity.class);
         // check transId not null
         if (currencyId != null) {
-            intent.putExtra(CurrencyFormatsActivity.KEY_CURRENCY_ID, currencyId);
+            intent.putExtra(CurrencyEditActivity.KEY_CURRENCY_ID, currencyId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
             intent.setAction(Intent.ACTION_INSERT);

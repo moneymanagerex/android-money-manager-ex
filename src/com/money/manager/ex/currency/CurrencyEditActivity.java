@@ -37,30 +37,33 @@ import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 
 /**
+ *
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
-public class CurrencyFormatsActivity extends BaseFragmentActivity {
+public class CurrencyEditActivity
+        extends BaseFragmentActivity {
+
     // key intent
-    public static final String KEY_CURRENCY_ID = "CurrencyFormatsActivity:CurrencyId";
-    private static final String LOGCAT = CurrencyFormatsActivity.class.getSimpleName();
+    public static final String KEY_CURRENCY_ID = "CurrencyEditActivity:CurrencyId";
+    private static final String LOGCAT = CurrencyEditActivity.class.getSimpleName();
     // save-instance key
-    private static final String KEY_CURRENCY_NAME = "CurrencyFormatsActivity:CurrencyName";
-    private static final String KEY_CURRENCY_SYMBOL = "CurrencyFormatsActivity:CurrencySymbol";
-    private static final String KEY_UNIT_NAME = "CurrencyFormatsActivity:UnitName";
-    private static final String KEY_CENTS_NAME = "CurrencyFormatsActivity:CentsName";
-    private static final String KEY_PREFIX_SYMBOL = "CurrencyFormatsActivity:PrefixSymbol";
-    private static final String KEY_SUFFIX_SYMBOL = "CurrencyFormatsActivity:SuffixSymbol";
-    private static final String KEY_DECIMAL_CHAR = "CurrencyFormatsActivity:DecimalChar";
-    private static final String KEY_GROUP_CHAR = "CurrencyFormatsActivity:GroupChar";
-    private static final String KEY_SCALE = "CurrencyFormatsActivity:Scale";
-    private static final String KEY_CONVERSION_TO_BASE = "CurrencyFormatsActivity:ConversionToBaseRate";
-    private static final String KEY_ACTION = "CurrencyFormatsActivity:Action";
-    // object of table
+    private static final String KEY_CURRENCY_NAME = "CurrencyEditActivity:CurrencyName";
+    private static final String KEY_CURRENCY_SYMBOL = "CurrencyEditActivity:CurrencySymbol";
+    private static final String KEY_UNIT_NAME = "CurrencyEditActivity:UnitName";
+    private static final String KEY_CENTS_NAME = "CurrencyEditActivity:CentsName";
+    private static final String KEY_PREFIX_SYMBOL = "CurrencyEditActivity:PrefixSymbol";
+    private static final String KEY_SUFFIX_SYMBOL = "CurrencyEditActivity:SuffixSymbol";
+    private static final String KEY_DECIMAL_CHAR = "CurrencyEditActivity:DecimalChar";
+    private static final String KEY_GROUP_CHAR = "CurrencyEditActivity:GroupChar";
+    private static final String KEY_SCALE = "CurrencyEditActivity:Scale";
+    private static final String KEY_CONVERSION_TO_BASE = "CurrencyEditActivity:ConversionToBaseRate";
+    private static final String KEY_ACTION = "CurrencyEditActivity:Action";
+
     private TableCurrencyFormats mCurrency = new TableCurrencyFormats();
     private Integer mCurrencyId;
     // type of action
     private String mIntentAction = "";
-    // object into layout
+
     private EditText edtCurrencyName, edtUnitName, edtCentsName, edtPrefix, edtSuffix,
             edtDecimal, edtGroup, edtScale, edtConversion;
     private Spinner spinCurrencySymbol;
@@ -84,9 +87,10 @@ public class CurrencyFormatsActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.currecyformats_activity);
         setToolbarStandardAction(getToolbar());
-        // take object
+
         edtCurrencyName = (EditText) findViewById(R.id.editTextCurrencyName);
         spinCurrencySymbol = (Spinner) findViewById(R.id.spinCurrencySymbol);
         edtUnitName = (EditText) findViewById(R.id.editTextUnitName);

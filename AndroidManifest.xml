@@ -249,7 +249,7 @@
             android:label="@string/about" >
         </activity>
         <activity
-            android:name=".currency.CurrencyFormatsActivity"
+            android:name=".currency.CurrencyEditActivity"
             android:label="@string/new_edit_currency" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />

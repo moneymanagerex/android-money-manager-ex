@@ -24,118 +24,116 @@
     <string-array name="currencies_code">
         <item>ALL</item>
         <item>AFN</item>
+        <item>ANG</item>
         <item>ARS</item>
-        <item>AWG</item>
         <item>AUD</item>
+        <item>AWG</item>
         <item>AZN</item>
-        <item>BSD</item>
+        <item>BAM</item>
         <item>BBD</item>
+        <item>BGN</item>
+        <item>BMD</item>
+        <item>BND</item>
+        <item>BOB</item>
+        <item>BRL</item>
+        <item>BSD</item>
+        <item>BWP</item>
         <item>BYR</item>
         <item>BZD</item>
-        <item>BMD</item>
-        <item>BOB</item>
-        <item>BAM</item>
-        <item>BWP</item>
-        <item>BGN</item>
-        <item>BRL</item>
-        <item>BND</item>
         <item>KHR</item>
         <item>CAD</item>
-        <item>KYD</item>
+        <item>CHF</item>
         <item>CLP</item>
         <item>CNY</item>
         <item>COP</item>
         <item>CRC</item>
-        <item>HRK</item>
         <item>CUP</item>
         <item>CZK</item>
         <item>DKK</item>
         <item>DOP</item>
-        <item>XCD</item>
-        <item>EGP</item>
-        <item>SVC</item>
         <item>EEK</item>
+        <item>EGP</item>
         <item>EUR</item>
-        <item>FKP</item>
         <item>FJD</item>
+        <item>FKP</item>
+        <item>GBP</item>
+        <item>GGP</item>
         <item>GHC</item>
         <item>GIP</item>
         <item>GTQ</item>
-        <item>GGP</item>
         <item>GYD</item>
-        <item>HNL</item>
         <item>HKD</item>
+        <item>HNL</item>
+        <item>HRK</item>
         <item>HUF</item>
-        <item>ISK</item>
-        <item>INR</item>
         <item>IDR</item>
-        <item>IRR</item>
-        <item>IMP</item>
         <item>ILS</item>
+        <item>IMP</item>
+        <item>INR</item>
+        <item>IRR</item>
+        <item>ISK</item>
+        <item>JEP</item>
         <item>JMD</item>
         <item>JPY</item>
-        <item>JEP</item>
-        <item>KZT</item>
+        <item>KGS</item>
         <item>KPW</item>
         <item>KRW</item>
-        <item>KGS</item>
+        <item>KYD</item>
+        <item>KZT</item>
         <item>LAK</item>
-        <item>LVL</item>
         <item>LBP</item>
+        <item>LKR</item>
         <item>LRD</item>
         <item>LTL</item>
+        <item>LVL</item>
         <item>MKD</item>
-        <item>MYR</item>
+        <item>MNT</item>
         <item>MUR</item>
         <item>MXN</item>
-        <item>MNT</item>
+        <item>MYR</item>
         <item>MZN</item>
         <item>NAD</item>
-        <item>NPR</item>
-        <item>ANG</item>
-        <item>NZD</item>
         <item>NIO</item>
         <item>NGN</item>
-        <item>KPW</item>
+        <item>NPR</item>
+        <item>NZD</item>
         <item>NOK</item>
         <item>OMR</item>
-        <item>PKR</item>
         <item>PAB</item>
-        <item>PYG</item>
         <item>PEN</item>
         <item>PHP</item>
+        <item>PKR</item>
         <item>PLN</item>
+        <item>PYG</item>
         <item>QAR</item>
         <item>RON</item>
         <item>RUB</item>
-        <item>SHP</item>
         <item>SAR</item>
+        <item>SHP</item>
         <item>RSD</item>
-        <item>SCR</item>
-        <item>SGD</item>
         <item>SBD</item>
-        <item>SOS</item>
-        <item>ZAR</item>
-        <item>KRW</item>
-        <item>LKR</item>
+        <item>SCR</item>
         <item>SEK</item>
-        <item>CHF</item>
+        <item>SGD</item>
+        <item>SOS</item>
         <item>SRD</item>
+        <item>SVC</item>
         <item>SYP</item>
-        <item>TWD</item>
         <item>THB</item>
-        <item>TTD</item>
-        <item>TRY</item>
         <item>TRL</item>
+        <item>TRY</item>
+        <item>TTD</item>
         <item>TVD</item>
+        <item>TWD</item>
         <item>UAH</item>
-        <item>GBP</item>
         <item>USD</item>
         <item>UYU</item>
         <item>UZS</item>
         <item>VEF</item>
         <item>VND</item>
+        <item>XCD</item>
         <item>YER</item>
+        <item>ZAR</item>
         <item>ZWD</item>
     </string-array>
     <string-array name="currencies_symbol">
