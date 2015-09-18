@@ -168,7 +168,7 @@ dependencies {
 
     // Unit testing dependencies
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.9.5'
+//    testCompile 'org.mockito:mockito-core:1.9.5'
     //    // UI testing
     //    androidTestCompile 'com.android.support.test:runner:0.3'
     //    // Set this dependency to use JUnit 4 rules
