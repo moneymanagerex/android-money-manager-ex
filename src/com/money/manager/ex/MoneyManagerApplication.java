@@ -163,7 +163,11 @@ public class MoneyManagerApplication
 
         // Show notification
         ExceptionHandler handler = new ExceptionHandler(context);
-        handler.showMessage("Database " + databasePath + " not found. Using default:" + defaultPath);
+        if (databasePath.equals(defaultPath)) {
+            handler.showMessage("Default database file will be created at " + defaultPath);
+        } else {
+            handler.showMessage("Database " + databasePath + " not found. Using default:" + defaultPath);
+        }
 
         return defaultPath;
     }

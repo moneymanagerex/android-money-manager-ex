@@ -19,6 +19,7 @@ package com.money.manager.ex.currency;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
@@ -326,15 +327,35 @@ public class CurrencyService {
         return currency;
     }
 
-    public int loadCurrencyIdFromSymbol(String currencySymbol) {
+//    public int loadCurrencyIdFromSymbol(String currencySymbol) {
+//        int result = Constants.NOT_SET;
+//        TableCurrencyFormats currencyEntity = new TableCurrencyFormats();
+//
+//        Cursor cursor = mContext.getContentResolver().query(currencyEntity.getUri(),
+//                new String[] { TableCurrencyFormats.CURRENCYID },
+//                TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
+//                new String[]{ currencySymbol },
+//                null);
+//        if (cursor == null) return result;
+//
+//        // set BaseCurrencyId
+//        if (cursor.moveToFirst()) {
+//            result = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
+//        }
+//        cursor.close();
+//
+//        return result;
+//    }
+
+    public int loadCurrencyIdFromSymbolRaw(SQLiteDatabase db, String currencySymbol) {
         int result = Constants.NOT_SET;
         TableCurrencyFormats currencyEntity = new TableCurrencyFormats();
 
-        Cursor cursor = mContext.getContentResolver().query(currencyEntity.getUri(),
+        Cursor cursor = db.query(currencyEntity.getSource(),
                 new String[] { TableCurrencyFormats.CURRENCYID },
                 TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
                 new String[]{ currencySymbol },
-                null);
+                null, null, null);
         if (cursor == null) return result;
 
         // set BaseCurrencyId

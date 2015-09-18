@@ -690,8 +690,9 @@ public class Core {
         pattern = pattern.replace("yy", "%y");
         // check if exists in format definition
         boolean find = false;
-        for (int i = 0; i < mContext.getResources().getStringArray(R.array.date_format_mask).length; i++) {
-            if (pattern.equals(mContext.getResources().getStringArray(R.array.date_format_mask)[i])) {
+        String[] availableDateFormats = mContext.getResources().getStringArray(R.array.date_format_mask);
+        for (int i = 0; i < availableDateFormats.length; i++) {
+            if (pattern.equals(availableDateFormats[i])) {
                 find = true;
                 break;
             }

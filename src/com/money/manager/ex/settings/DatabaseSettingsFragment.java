@@ -171,8 +171,9 @@ public class DatabaseSettingsFragment
         boolean created = db.createDatabase(filename);
 
         if (created) {
-            // add to recent files.
-            RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
+            // Add to recent files.
+            // In Fragments, context has to be received from the parent Activity for some reason.
+            RecentDatabasesProvider recents = new RecentDatabasesProvider(getActivity());
             recents.add(RecentDatabaseEntry.fromPath(filename));
 
             // set main activity to reload, to open the new db file.

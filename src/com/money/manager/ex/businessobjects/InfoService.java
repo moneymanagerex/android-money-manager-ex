@@ -21,10 +21,10 @@ import com.money.manager.ex.database.TableInfoTable;
  */
 public class InfoService {
 
-    public static String BASECURRENCYID = "BASECURRENCYID";
-    public static String SHOW_OPEN_ACCOUNTS = "android:show_open_accounts";
-    public static String SHOW_FAVOURITE_ACCOUNTS = "android:show_fav_accounts";
-
+    // Keys for the info values in the info table.
+    public static final String BASECURRENCYID = "BASECURRENCYID";
+    public static final String SHOW_OPEN_ACCOUNTS = "android:show_open_accounts";
+    public static final String SHOW_FAVOURITE_ACCOUNTS = "android:show_fav_accounts";
     public static final String INFOTABLE_USERNAME = "USERNAME";
     public static final String INFOTABLE_DATEFORMAT = "DATEFORMAT";
     public static final String INFOTABLE_FINANCIAL_YEAR_START_DAY = "FINANCIAL_YEAR_START_DAY";
@@ -33,9 +33,11 @@ public class InfoService {
 
     public InfoService(Context context) {
         mContext = context;
+        mInfoTable = new TableInfoTable();
     }
 
     private Context mContext;
+    private TableInfoTable mInfoTable;
 
     public long insertRaw(SQLiteDatabase db, String key, Integer value) {
         ContentValues values = new ContentValues();
@@ -43,7 +45,7 @@ public class InfoService {
         values.put(TableInfoTable.INFONAME, key);
         values.put(TableInfoTable.INFOVALUE, value);
 
-        return db.insert(new TableInfoTable().getSource(), null, values);
+        return db.insert(mInfoTable.getSource(), null, values);
     }
 
     public long insertRaw(SQLiteDatabase db, String key, String value) {
@@ -52,29 +54,35 @@ public class InfoService {
         values.put(TableInfoTable.INFONAME, key);
         values.put(TableInfoTable.INFOVALUE, value);
 
-        return db.insert(new TableInfoTable().getSource(), null, values);
+        return db.insert(mInfoTable.getSource(), null, values);
     }
 
-    public long updateRaw(SQLiteDatabase db, String key, Integer value) {
-        TableCurrencyFormats currencyFormats = new TableCurrencyFormats();
-
+    /**
+     * Update the values via direct access to the database.
+     * @param db        Database to use
+     * @param recordId  Id of the info record. Required for the update statement.
+     * @param key       Info Name
+     * @param value     Info Value
+     * @return the number of rows affected
+     */
+    public long updateRaw(SQLiteDatabase db, int recordId, String key, Integer value) {
         ContentValues values = new ContentValues();
         values.put(TableInfoTable.INFONAME, key);
         values.put(TableInfoTable.INFOVALUE, value);
 
-        return db.update(currencyFormats.getSource(), values,
-                null, null);
+        return db.update(mInfoTable.getSource(),
+                values,
+                TableInfoTable.INFOID + "=?",
+                new String[] { Integer.toString(recordId)}
+        );
     }
 
     public long updateRaw(SQLiteDatabase db, String key, String value) {
-        TableCurrencyFormats currencyFormats = new TableCurrencyFormats();
-
         ContentValues values = new ContentValues();
         values.put(TableInfoTable.INFONAME, key);
         values.put(TableInfoTable.INFOVALUE, value);
 
-        return db.update(currencyFormats.getSource(), values,
-                null, null);
+        return db.update(mInfoTable.getSource(), values, null, null);
     }
 
     /**
@@ -84,12 +92,11 @@ public class InfoService {
      * @return value
      */
     public String getInfoValue(String info) {
-        TableInfoTable infoTable = new TableInfoTable();
         Cursor data;
         String ret = null;
 
         try {
-            data = mContext.getContentResolver().query(infoTable.getUri(),
+            data = mContext.getContentResolver().query(mInfoTable.getUri(),
                     null,
                     TableInfoTable.INFONAME + "=?",
                     new String[]{ info },
@@ -117,7 +124,6 @@ public class InfoService {
      */
     public boolean setInfoValue(String key, String value) {
         boolean result = false;
-        TableInfoTable infoTable = new TableInfoTable();
         // check if info exists
         boolean exists = (getInfoValue(key) != null);
 
@@ -126,14 +132,14 @@ public class InfoService {
 
         try {
             if (exists) {
-                int updated = mContext.getContentResolver().update(infoTable.getUri(),
+                int updated = mContext.getContentResolver().update(mInfoTable.getUri(),
                         values,
                         TableInfoTable.INFONAME + "=?",
                         new String[]{key});
                 result = updated >= 0;
             } else {
                 values.put(TableInfoTable.INFONAME, key);
-                Uri insertUri = mContext.getContentResolver().insert(infoTable.getUri(),
+                Uri insertUri = mContext.getContentResolver().insert(mInfoTable.getUri(),
                         values);
                 long id = ContentUris.parseId(insertUri);
                 result = id > 0;

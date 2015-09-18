@@ -35,6 +35,8 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.utils.RawFileUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Locale;
@@ -93,8 +95,8 @@ public class MoneyManagerOpenHelper
 
         executeRawSql(db, R.raw.database_create);
 
-        // force update database
-        updateDatabase(db, 0, databaseCurrentVersion);
+        // force update database (why?)
+//        updateDatabase(db, 0, databaseCurrentVersion);
 
         try {
             initDatabase(db);
@@ -231,8 +233,13 @@ public class MoneyManagerOpenHelper
             try {
                 db.execSQL(aSqlStatment);
             } catch (SQLException e) {
-                ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                handler.handle(e, "executing raw sql: " + aSqlStatment);
+                String errorMessage = e.getMessage();
+                if (errorMessage != null && errorMessage.equals("not an error (code 0)")) {
+                    Log.w(LOGCAT, errorMessage);
+                } else {
+                    ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                    handler.handle(e, "executing raw sql: " + aSqlStatment);
+                }
             }
         }
     }
@@ -306,7 +313,12 @@ public class MoneyManagerOpenHelper
                             ContentValues contentValues = new ContentValues();
                             contentValues.put(TableCategory.CATEGID, categoryId);
                             contentValues.put(TableCategory.CATEGNAME, mContext.getString(idStringCategory));
-                            database.insert(tableCategory, null, contentValues);
+                            long newCategoryId = database.insert(tableCategory, null, contentValues);
+
+                            if (newCategoryId <= 0) {
+                                Log.e(LOGCAT, "insert " + contentValues.toString() +
+                                                "result id: " + Long.toString(newCategoryId));
+                            }
                         }
                     }
                     int idStringSubcategory = mContext.getResources()
@@ -316,7 +328,12 @@ public class MoneyManagerOpenHelper
                         contentValues.put(TableSubCategory.SUBCATEGID, subCategoryId);
                         contentValues.put(TableSubCategory.CATEGID, categoryId);
                         contentValues.put(TableSubCategory.SUBCATEGNAME, mContext.getString(idStringSubcategory));
-                        database.insert(tableSubcategory, null, contentValues);
+                        long newSubCategoryId = database.insert(tableSubcategory, null, contentValues);
+
+                        if (newSubCategoryId <= 0) {
+                            Log.e(LOGCAT, "try insert " + contentValues.toString() +
+                                    "result id: " + Long.toString(newSubCategoryId));
+                        }
                     }
                 }
 
@@ -362,7 +379,7 @@ public class MoneyManagerOpenHelper
     }
 
     private void initBaseCurrency(SQLiteDatabase db) {
-        Cursor infoCurrency = null;
+        Cursor currencyCursor;
 
         // currencies
         try {
@@ -373,31 +390,41 @@ public class MoneyManagerOpenHelper
             TableInfoTable infoTable = new TableInfoTable();
             InfoService infoService = new InfoService(mContext);
 
-            infoCurrency = db.rawQuery("SELECT * FROM " + infoTable.getSource() +
+            currencyCursor = db.rawQuery("SELECT * FROM " + infoTable.getSource() +
                             " WHERE " + TableInfoTable.INFONAME + "=?",
                     new String[]{ InfoService.BASECURRENCYID});
+            if (currencyCursor == null) return;
 
-            boolean recordExists = (infoCurrency != null && infoCurrency.moveToFirst());
+            boolean recordExists = currencyCursor.moveToFirst();
+            int recordId = currencyCursor.getInt(currencyCursor.getColumnIndex(TableInfoTable.INFOID));
+            currencyCursor.close();
 
             // get system default currency
-            int currencyId = currencyService.loadCurrencyIdFromSymbol(
-                    systemCurrency.getCurrencyCode());
-//            int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(
-//                    systemCurrency.getCurrencyCode(), db);
+            int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
 
             if (!recordExists && (currencyId != Constants.NOT_SET)) {
-                infoService.insertRaw(db, InfoService.BASECURRENCYID, currencyId);
+                long newId = infoService.insertRaw(db, InfoService.BASECURRENCYID, currencyId);
+                if (newId <= 0) {
+                    ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                    handler.showMessage("updating base currency on init");
+                }
             } else {
                 // Update the (empty) record to the default currency.
-                infoService.updateRaw(db, InfoService.BASECURRENCYID, currencyId);
+                long updatedRecords = infoService.updateRaw(db, recordId, InfoService.BASECURRENCYID, currencyId);
+                if (updatedRecords <= 0) {
+                    ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                    handler.showMessage("updating base currency on init");
+                }
             }
+
+            // Can't use provider here as the database is not ready.
+//            int currencyId = currencyService.loadCurrencyIdFromSymbol(systemCurrency.getCurrencyCode());
+//            String baseCurrencyId = infoService.getInfoValue(InfoService.BASECURRENCYID);
+//            if (!StringUtils.isEmpty(baseCurrencyId)) return;
+//            infoService.setInfoValue(InfoService.BASECURRENCYID, Integer.toString(currencyId));
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "init database, currency");
-        } finally {
-            if (infoCurrency != null) {
-                infoCurrency.close();
-            }
         }
     }
 

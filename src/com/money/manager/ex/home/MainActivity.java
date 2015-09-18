@@ -57,6 +57,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionsFragment;
 import com.money.manager.ex.budget.BudgetsActivity;
+import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -186,6 +187,14 @@ public class MainActivity
         // create a connection to dropbox
         mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
 
+        MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
+
+        // Read something from the database at this stage so that the db file gets created.
+        InfoService infoService = new InfoService(getApplicationContext());
+        String username = infoService.getInfoValue(InfoService.INFOTABLE_USERNAME);
+
+        // Creating fragments and showing recurring transaction notifications.
+        // Here we read the database for the first time.
         createFragments(savedInstanceState);
 
         // show tutorial
@@ -193,8 +202,6 @@ public class MainActivity
 
         // show change log dialog
         if (core.isToDisplayChangelog()) core.showChangelog();
-
-        MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
 
         // notification send broadcast
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
