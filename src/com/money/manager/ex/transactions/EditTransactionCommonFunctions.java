@@ -455,6 +455,8 @@ public class EditTransactionCommonFunctions {
         intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
         intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
         intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
+        intent.putExtra(SplitTransactionsActivity.KEY_CURRENCY_ID, this.getSourceCurrencyId());
+
         mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
     }
 

@@ -324,10 +324,12 @@ public class InputAmountDialog
 
         if (exp.length() > 0) {
             try {
-                Expression e = new ExpressionBuilder(exp).build();
+//                Expression e = new ExpressionBuilder(exp).build();
 //                mAmount = BigDecimal.valueOf(e.evaluate());
-                Double result = e.evaluate();
-                mAmount = MoneyFactory.fromString(Double.toString(result));
+                Double result = new ExpressionBuilder(exp).build().evaluate();
+                // Truncate to max precision immediately.
+                mAmount = MoneyFactory.fromString(Double.toString(result))
+                        .truncate(Constants.DEFAULT_PRECISION);
             } catch (IllegalArgumentException ex) {
                 // Just display the last valid value.
                 refreshFormattedAmount();

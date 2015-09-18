@@ -35,7 +35,6 @@ import com.money.manager.ex.fragment.SplitItemFragment;
 import com.money.manager.ex.fragment.SplitItemFragment.SplitItemFragmentCallbacks;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +48,7 @@ public class SplitTransactionsActivity
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
     public static final String KEY_TRANSACTION_TYPE = "SplitTransactionsActivity:TransactionType";
     public static final String KEY_DATASET_TYPE = "SplitTransactionsActivity:DatasetType";
+    public static final String KEY_CURRENCY_ID = "SplitTransactionsActivity:CurrencyId";
 
     public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitTransactionsActivity:ResultSplitTransaction";
     public static final String INTENT_RESULT_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ResultSplitTransactionDeleted";
@@ -67,40 +67,57 @@ public class SplitTransactionsActivity
     private ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
     private ArrayList<ISplitTransactionsDataset> mSplitDeleted = null;
     private FloatingActionButton mFloatingActionButton;
+    private Integer currencyId = Constants.NOT_SET;
 
-    private void addFragmentChild(ISplitTransactionsDataset object) {
-        String fragmentName = SplitItemFragment.class.getSimpleName() + "_" +
-                Integer.toString(object.getSplitTransId() == -1 ? mIdTag++ : object.getSplitTransId());
-        SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentName);
-        if (fragment == null) {
-            fragment = SplitItemFragment.newInstance(object);
-            fragment.setOnSplitItemCallback(this);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            // animation
-            // transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-            // Replace whatever is in the fragment_container view with this fragment,
-            // and add the transaction to the back stack
-            transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentName);
-            transaction.commit();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // load intent
+        Intent intent = getIntent();
+        if (intent != null) {
+            this.EntityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
+
+            int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
+            mParentTransactionType = TransactionTypes.values()[transactionType];
+
+            this.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
+
+            mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
+            mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
         }
-    }
 
-    /**
-     * Returns all split categories created on the form.
-     * @return List of Split Transactions that are displayed.
-     */
-    public ArrayList<ISplitTransactionsDataset> getAllSplitCategories() {
-        ArrayList<ISplitTransactionsDataset> splitCategories = new ArrayList<>();
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        // load deleted item
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
+            // todo: is this the correct variable?
+            mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
+        }
 
-        for(Fragment fragment:fragments) {
-            SplitItemFragment splitFragment = (SplitItemFragment) fragment;
-            if (splitFragment != null) {
-                splitCategories.add(splitFragment.getSplitTransaction(mParentTransactionType));
+        // If this is a new split (no existing split categories), then create the first one.
+        if(mSplitTransactions == null || mSplitTransactions.isEmpty()) {
+            addSplitTransaction();
+        }
+
+        // set view
+        setContentView(R.layout.splittransaction_activity);
+
+        // toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            setToolbarStandardAction(toolbar);
+        }
+
+        // 'Add' button
+
+        if (mSplitTransactions != null) {
+            for (int i = 0; i < mSplitTransactions.size(); i++) {
+                addFragmentChild(mSplitTransactions.get(i));
             }
         }
 
-        return splitCategories;
+        // show the floating "Add" button
+        setUpFloatingButton();
     }
 
     @Override
@@ -143,55 +160,6 @@ public class SplitTransactionsActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // load intent
-        Intent intent = getIntent();
-        if (intent != null) {
-            this.EntityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
-
-            int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
-            mParentTransactionType = TransactionTypes.values()[transactionType];
-
-            mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
-            mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
-        }
-
-        // load deleted item
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
-            // todo: is this the correct variable?
-            mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
-        }
-
-        // If this is a new split (no existing split categories), then create the first one.
-        if(mSplitTransactions == null || mSplitTransactions.isEmpty()) {
-            addSplitTransaction();
-        }
-
-        // set view
-        setContentView(R.layout.splittransaction_activity);
-
-        // toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            setToolbarStandardAction(toolbar);
-        }
-
-        // 'Add' button
-
-        if (mSplitTransactions != null) {
-            for (int i = 0; i < mSplitTransactions.size(); i++) {
-                addFragmentChild(mSplitTransactions.get(i));
-            }
-        }
-
-        // show the floating "Add" button
-        setUpFloatingButton();
-    }
-
-    @Override
     public void onRemoveItem(ISplitTransactionsDataset object) {
         if (mSplitDeleted == null) {
             mSplitDeleted = new ArrayList<>();
@@ -218,6 +186,24 @@ public class SplitTransactionsActivity
         }
     }
 
+    /**
+     * Returns all split categories created on the form.
+     * @return List of Split Transactions that are displayed.
+     */
+    public ArrayList<ISplitTransactionsDataset> getAllSplitCategories() {
+        ArrayList<ISplitTransactionsDataset> splitCategories = new ArrayList<>();
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+
+        for(Fragment fragment:fragments) {
+            SplitItemFragment splitFragment = (SplitItemFragment) fragment;
+            if (splitFragment != null) {
+                splitCategories.add(splitFragment.getSplitTransaction(mParentTransactionType));
+            }
+        }
+
+        return splitCategories;
+    }
+
     public SplitItemFragment getFragmentInputAmountClick() {
         return mFragmentInputAmountClick;
     }
@@ -240,6 +226,8 @@ public class SplitTransactionsActivity
         addSplitTransaction();
     }
 
+    // Private
+
     private void setUpFloatingButton() {
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         if (mFloatingActionButton != null) {
@@ -255,12 +243,31 @@ public class SplitTransactionsActivity
     }
 
     private void addSplitTransaction() {
-        // find which split transactions dataset to instantiate.
+        // find which split transactions data set to instantiate.
         String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
         if (EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
             addFragmentChild(new TableBudgetSplitTransactions());
         } else {
             addFragmentChild(new TableSplitTransactions());
+        }
+    }
+
+    private void addFragmentChild(ISplitTransactionsDataset object) {
+        String fragmentName = SplitItemFragment.class.getSimpleName() + "_" +
+                Integer.toString(object.getSplitTransId() == -1 ? mIdTag++ : object.getSplitTransId());
+
+        SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentName);
+
+        if (fragment == null) {
+            fragment = SplitItemFragment.newInstance(object, this.currencyId);
+            fragment.setOnSplitItemCallback(this);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            // animation
+            // transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack
+            transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentName);
+            transaction.commit();
         }
     }
 }

@@ -50,6 +50,13 @@ public class SplitItemFragment
         extends Fragment
         implements IInputAmountDialogListener {
 
+    public static SplitItemFragment newInstance(ISplitTransactionsDataset split, Integer currencyId) {
+        SplitItemFragment fragment = new SplitItemFragment();
+        fragment.mSplitTransaction = split;
+        fragment.currencyId = currencyId;
+        return fragment;
+    }
+
     public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
 
     private static final int REQUEST_PICK_CATEGORY = 1;
@@ -58,12 +65,7 @@ public class SplitItemFragment
     private SplitItemFragmentCallbacks mOnSplitItemCallback;
     private TextView txtAmount;
     private Spinner spinTransCode;
-
-    public static SplitItemFragment newInstance(ISplitTransactionsDataset split) {
-        SplitItemFragment fragment = new SplitItemFragment();
-        fragment.mSplitTransaction = split;
-        return fragment;
-    }
+    private Integer currencyId;
 
     /**
      * @return the splitItemCallback
@@ -172,7 +174,8 @@ public class SplitItemFragment
                         activity.setFragmentInputAmountClick(SplitItemFragment.this);
                     }
 
-                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, null);
+                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(),
+                            amount, SplitItemFragment.this.currencyId);
                     dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });
