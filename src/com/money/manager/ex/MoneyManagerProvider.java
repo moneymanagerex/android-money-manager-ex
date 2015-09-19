@@ -231,10 +231,12 @@ public class MoneyManagerProvider
                         // committed
                         ////if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
                         //database.setTransactionSuccessful();
-                    } catch (SQLiteException sqlLiteExc) {
-                        Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
-                    } catch (Exception exc) {
-                        Log.e(LOGCAT, exc.getMessage());
+//                    } catch (SQLiteException sqlLiteExc) {
+//                        Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
+                    } catch (Exception ex) {
+//                        Log.e(LOGCAT, exc.getMessage());
+                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+                        handler.handle(ex, "update in provider");
                     }
                     break;
                 default:

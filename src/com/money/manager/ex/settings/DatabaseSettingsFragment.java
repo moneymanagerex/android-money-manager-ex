@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.settings;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -87,11 +88,16 @@ public class DatabaseSettingsFragment
     private void refreshDbVersion() {
         final Preference preference = findPreference(getActivity().getString(R.string.pref_database_version));
 
-        int version = MoneyManagerOpenHelper.getInstance(getActivity())
-                .getReadableDatabase()
-                .getVersion();
+        String version = "N/A";
 
-        preference.setSummary(Integer.toString(version));
+        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(getActivity())
+                .getReadableDatabase();
+        if (db != null) {
+            int versionNumber = db.getVersion();
+            version = Integer.toString(versionNumber);
+        }
+
+        preference.setSummary(version);
     }
 
     private void setVisibilityOfMigrationButton() {
