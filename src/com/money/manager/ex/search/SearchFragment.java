@@ -112,8 +112,6 @@ public class SearchFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) return null;
 
-//        Core core = new Core(getActivity().getApplicationContext());
-        //create view
         View view = inflater.inflate(R.layout.search_fragment, container, false);
 
         //create listener amount
@@ -323,17 +321,6 @@ public class SearchFragment extends Fragment
 
     // Private
 
-    private void displayCategory(CategorySub categorySub) {
-        if (categorySub == null) {
-            txtSelectCategory.setText("");
-            txtSelectCategory.setTag(null);
-        } else {
-            txtSelectCategory.setText(categorySub.categName +
-                    (!TextUtils.isEmpty(categorySub.subCategName) ? " : " + categorySub.subCategName : ""));
-            txtSelectCategory.setTag(categorySub);
-        }
-    }
-
     /**
      * Assemble SQL query
      * @return where clause with parameters
@@ -381,7 +368,7 @@ public class SearchFragment extends Fragment
             where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mSearchParameters.dateTo));
         }
         // payee
-        if (mSearchParameters.payeeId != null && mSearchParameters.payeeId > 0) {
+        if (mSearchParameters.payeeId != null) {
             where.addStatement(QueryAllData.PayeeID, "=", mSearchParameters.payeeId);
         }
         // category
@@ -419,6 +406,53 @@ public class SearchFragment extends Fragment
         return where.getWhere();
     }
 
+    private void displayCategory(CategorySub categorySub) {
+        if (categorySub == null) {
+            txtSelectCategory.setText("");
+            txtSelectCategory.setTag(null);
+        } else {
+            txtSelectCategory.setText(categorySub.categName +
+                    (!TextUtils.isEmpty(categorySub.subCategName) ? " : " + categorySub.subCategName : ""));
+            txtSelectCategory.setTag(categorySub);
+        }
+    }
+
+    private void displaySearchCriteria() {
+        // Account
+        this.spinAccount.setSelection(0);
+
+        // Transaction Type
+        cbxDeposit.setChecked(mSearchParameters.deposit);
+        cbxTransfer.setChecked(mSearchParameters.transfer);
+        cbxWithdrawal.setChecked(mSearchParameters.withdrawal);
+
+        // Status
+        this.spinStatus.setSelection(0);
+
+        // Amount from
+        txtFromAmount.setText(mSearchParameters.amountFrom);
+        txtFromAmount.setTag(mSearchParameters.amountFrom);
+        // Amount to
+        txtToAmount.setText(mSearchParameters.amountTo);
+        txtToAmount.setTag(mSearchParameters.amountTo);
+
+        // Date from
+        txtFromDate.setTag(mSearchParameters.dateFrom);
+        txtFromDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateFrom));
+        // Date to
+        txtToDate.setTag(mSearchParameters.dateTo);
+        txtToDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateTo));
+        // Payee
+        txtSelectPayee.setTag(mSearchParameters.payeeId);
+        txtSelectPayee.setText(mSearchParameters.payeeName);
+        // Category
+        displayCategory(mSearchParameters.category);
+        // Transaction number
+        txtTransNumber.setText(mSearchParameters.transactionNumber);
+        // Notes
+        txtNotes.setText(mSearchParameters.notes);
+    }
+
     public void handleSearchRequest(SearchParameters parameters) {
         if (parameters == null) return;
 
@@ -426,54 +460,6 @@ public class SearchFragment extends Fragment
         displaySearchCriteria();
 
         executeSearch();
-    }
-
-    private void showSearchResultsFragment(String where) {
-        //create a fragment for search results.
-        AllDataListFragment searchResultsFragment;
-        searchResultsFragment = (AllDataListFragment) getActivity().getSupportFragmentManager()
-                .findFragmentByTag(AllDataListFragment.class.getSimpleName());
-        if (searchResultsFragment != null) {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .remove(searchResultsFragment)
-                    .commit();
-        }
-
-        searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET);
-
-        searchResultsFragment.showTotalsFooter();
-
-        //create parameter bundle
-        Bundle args = new Bundle();
-        args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
-        // Sorting
-        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
-                QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
-        //set arguments
-        searchResultsFragment.setArguments(args);
-
-//        searchResultsFragment.setShownHeader(true);
-        if (getActivity() instanceof SearchActivity) {
-            SearchActivity activity = (SearchActivity) getActivity();
-            activity.ShowAccountHeaders = true;
-        }
-
-        //add fragment
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        //animation
-        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
-                R.anim.slide_in_right, R.anim.slide_out_left);
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack.
-        if (isDualPanel()) {
-            transaction.add(R.id.fragmentDetail, searchResultsFragment, AllDataListFragment.class.getSimpleName());
-        } else {
-            // transaction.remove()
-            transaction.replace(R.id.fragmentContent, searchResultsFragment, AllDataListFragment.class.getSimpleName());
-            transaction.addToBackStack(null);
-        }
-        // Commit the transaction
-        transaction.commit();
     }
 
     private void saveSearchCriteria() {
@@ -531,39 +517,51 @@ public class SearchFragment extends Fragment
         }
     }
 
-    private void displaySearchCriteria() {
-        // Account
-        this.spinAccount.setSelection(0);
+    private void showSearchResultsFragment(String where) {
+        //create a fragment for search results.
+        AllDataListFragment searchResultsFragment;
+        searchResultsFragment = (AllDataListFragment) getActivity().getSupportFragmentManager()
+                .findFragmentByTag(AllDataListFragment.class.getSimpleName());
+        if (searchResultsFragment != null) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .remove(searchResultsFragment)
+                    .commit();
+        }
 
-        // Transaction Type
-        cbxDeposit.setChecked(mSearchParameters.deposit);
-        cbxTransfer.setChecked(mSearchParameters.transfer);
-        cbxWithdrawal.setChecked(mSearchParameters.withdrawal);
+        searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET);
 
-        // Status
-        this.spinStatus.setSelection(0);
+        searchResultsFragment.showTotalsFooter();
 
-        // Amount from
-        txtFromAmount.setText(mSearchParameters.amountFrom);
-        txtFromAmount.setTag(mSearchParameters.amountFrom);
-        // Amount to
-        txtToAmount.setText(mSearchParameters.amountTo);
-        txtToAmount.setTag(mSearchParameters.amountTo);
+        //create parameter bundle
+        Bundle args = new Bundle();
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
+        // Sorting
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
+                QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
+        //set arguments
+        searchResultsFragment.setArguments(args);
 
-        // Date from
-        txtFromDate.setTag(mSearchParameters.dateFrom);
-        txtFromDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateFrom));
-        // Date to
-        txtToDate.setTag(mSearchParameters.dateTo);
-        txtToDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateTo));
-        // Payee
-        txtSelectPayee.setTag(mSearchParameters.payeeId);
-        txtSelectPayee.setText(mSearchParameters.payeeName);
-        // Category
-        displayCategory(mSearchParameters.category);
-        // Transaction number
-        txtTransNumber.setText(mSearchParameters.transactionNumber);
-        // Notes
-        txtNotes.setText(mSearchParameters.notes);
+//        searchResultsFragment.setShownHeader(true);
+        if (getActivity() instanceof SearchActivity) {
+            SearchActivity activity = (SearchActivity) getActivity();
+            activity.ShowAccountHeaders = true;
+        }
+
+        //add fragment
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        //animation
+        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
+                R.anim.slide_in_right, R.anim.slide_out_left);
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack.
+        if (isDualPanel()) {
+            transaction.add(R.id.fragmentDetail, searchResultsFragment, AllDataListFragment.class.getSimpleName());
+        } else {
+            // transaction.remove()
+            transaction.replace(R.id.fragmentContent, searchResultsFragment, AllDataListFragment.class.getSimpleName());
+            transaction.addToBackStack(null);
+        }
+        // Commit the transaction
+        transaction.commit();
     }
 }

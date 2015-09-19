@@ -63,6 +63,7 @@ public class PayeeReportFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         setListAdapter(null);
         setShowMenuItemSearch(true);
+
         //create header view
         mHeaderListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
         TextView txtColumn1 = (TextView) mHeaderListView.findViewById(R.id.textViewColumn1);
@@ -74,6 +75,7 @@ public class PayeeReportFragment
         txtColumn2.setTypeface(null, Typeface.BOLD);
         //add to list view
         getListView().addHeaderView(mHeaderListView);
+
         //create footer view
         mFooterListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
         txtColumn1 = (TextView) mFooterListView.findViewById(R.id.textViewColumn1);
@@ -85,6 +87,7 @@ public class PayeeReportFragment
         txtColumn2.setTypeface(null, Typeface.BOLD_ITALIC);
         //add to listview
         //getListView().addFooterView(mFooterListView);
+
         //set adapter
         PayeeReportAdapter adapter = new PayeeReportAdapter(getActivity(), null);
         setListAdapter(adapter);
