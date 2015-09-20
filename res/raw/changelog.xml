@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 19, 2015" versionName="2.20.2">
+    <changelogversion changeDate="September 20, 2015" versionName="2.20.3">
         <changelogtext>Using maximum 4 decimal places in numeric input dialog.</changelogtext>
         <changelogtext>Improved generation of new databases.</changelogtext>
         <changelogtext>Added totals for the sum of all transactions on the search results.</changelogtext>

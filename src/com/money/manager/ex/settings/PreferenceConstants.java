@@ -47,7 +47,7 @@ public class PreferenceConstants {
 //    public static final Integer PREF_DROPBOX_MODE = R.string.pref_dropbox_mode;
     public static final Integer PREF_THEME = R.string.pref_theme;
 //    public static final Integer PREF_SHOW_TRANSACTION = R.string.pref_show_transaction;
-    public static final Integer PREF_HIDE_RECONCILED_AMOUNTS = R.string.pref_transaction_hide_reconciled_amounts;
+//    public static final Integer PREF_HIDE_RECONCILED_AMOUNTS = R.string.pref_transaction_hide_reconciled_amounts;
 //    public static final Integer PREF_DEFAULT_ACCOUNT = R.string.pref_default_account;
 
     public static final Integer PREF_EDIT_PASSCODE = R.string.pref_edit_passcode;

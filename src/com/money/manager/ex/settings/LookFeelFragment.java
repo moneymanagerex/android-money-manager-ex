@@ -98,8 +98,10 @@ public class LookFeelFragment
 
         // Hide reconciled amounts setting.
 
+//        final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(
+//                PreferenceConstants.PREF_HIDE_RECONCILED_AMOUNTS));
         final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(
-                PreferenceConstants.PREF_HIDE_RECONCILED_AMOUNTS));
+                R.string.pref_transaction_hide_reconciled_amounts));
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override

@@ -58,8 +58,8 @@ android {
         minSdkVersion 15
 //        minSdkVersion 16
         targetSdkVersion 23
-        versionCode 724
-        versionName '2.20.2'
+        versionCode 725
+        versionName '2.20.3'
         // 601 = 1.4.17, stable
 
 //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -128,7 +128,7 @@ dependencies {
     // Replacing lib files with maven repositories
     compile 'com.opencsv:opencsv:3.5'
     compile 'net.objecthunter:exp4j:0.4.5'
-    compile 'org.apache.commons:commons-lang3:3.4'
+//    compile 'org.apache.commons:commons-lang3:3.4'
     compile 'org.apache.httpcomponents:httpcore:4.4.*'
     compile 'org.apache.httpcomponents:httpclient:4.5'
     compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
@@ -165,6 +165,7 @@ dependencies {
 //        compile 'org.javamoney:moneta:1.0'
     //    compile 'javax.money:money-api:1.0'
     compile 'com.google.code.gson:gson:2.3.1'
+//    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
 
     // Unit testing dependencies
     testCompile 'junit:junit:4.12'
