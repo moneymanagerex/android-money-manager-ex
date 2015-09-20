@@ -189,11 +189,7 @@ public class AccountService {
     }
 
     public List<Account> loadAccounts(boolean open, boolean favorite, List<String> accountTypes) {
-        List<Account> result;
-
-        result = loadAccounts_content(open, favorite, accountTypes);
-
-        return result;
+        return loadAccounts_content(open, favorite, accountTypes);
     }
 
     public Money loadInitialBalance(int accountId) {
@@ -355,7 +351,7 @@ public class AccountService {
         List<Account> result = new ArrayList<>();
 
         Cursor cursor = getCursor(open, favorite, accountTypes);
-        if (cursor == null) return null;
+        if (cursor == null) return result;
 
         while (cursor.moveToNext()) {
             Account account = new Account();
