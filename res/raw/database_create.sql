@@ -294,7 +294,7 @@ INSERT INTO "CURRENCYFORMATS_V1" VALUES(138,'Tanzanian shilling','','','.',' ','
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(139,'Thai baht','฿','','.',' ','','',100,1,'THB');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(140,'Trinidad and Tobago dollar','TT$','','.',' ','','',100,1,'TTD');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(141,'Tunisian dinar','DT','','.',' ','','',100,1,'TND');
-INSERT INTO "CURRENCYFORMATS_V1" VALUES(142,'Turkish new lira','YTL','','.',' ','','',100,1,'TRY');
+INSERT INTO "CURRENCYFORMATS_V1" VALUES(142,'Turkish new lira','₺','','.',' ','','',100,1,'TRY');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(143,'Turkmen manat','m','','.',' ','','',100,1,'TMT');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(144,'Ugandan shilling','USh','','.',' ','','',1,1,'UGX');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(145,'UAE dirham','','','.',' ','','',100,1,'AED');
