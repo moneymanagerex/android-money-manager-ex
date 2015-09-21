@@ -351,7 +351,11 @@ public class AccountService {
         List<Account> result = new ArrayList<>();
 
         Cursor cursor = getCursor(open, favorite, accountTypes);
-        if (cursor == null) return result;
+        if (cursor == null) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.showMessage("Error reading accounts list!");
+            return result;
+        }
 
         while (cursor.moveToNext()) {
             Account account = new Account();

@@ -206,7 +206,7 @@ public class CurrencyListFragment
                     // get the list of used currencies.
                     CurrencyService currencyService = getCurrencyUtils();
                     List<TableCurrencyFormats> usedCurrencies = currencyService.getUsedCurrencies();
-                    if (usedCurrencies.size() > 0) {
+                    if (usedCurrencies != null && usedCurrencies.size() > 0) {
                         ArrayList<String> symbols = new ArrayList<>();
                         for (TableCurrencyFormats currency : usedCurrencies) {
                             symbols.add(currency.getCurrencySymbol());

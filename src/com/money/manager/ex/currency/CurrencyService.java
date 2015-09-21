@@ -94,6 +94,7 @@ public class CurrencyService {
         AccountService service = new AccountService(mContext);
 
         List<Account> accounts = service.getAccountList();
+        if (accounts == null) return null;
 
         List<TableCurrencyFormats> currencies = new ArrayList<>();
         for(Account account : accounts) {
