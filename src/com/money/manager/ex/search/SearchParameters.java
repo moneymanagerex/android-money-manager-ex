@@ -44,7 +44,7 @@ public class SearchParameters implements Parcelable {
     public Date dateFrom;
     public Date dateTo;
 
-    public Integer payeeId = Constants.NOT_SET;
+    public Integer payeeId = null;
     public String payeeName;
 
     public CategorySub category;
