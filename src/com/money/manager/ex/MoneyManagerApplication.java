@@ -46,6 +46,8 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.util.Locale;
 
@@ -146,7 +148,7 @@ public class MoneyManagerApplication
         String databasePath = dbSettings.getDatabasePath();
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "database setting: " + databasePath);
 
-        if (databasePath != null) {
+        if (!StringUtils.isEmpty(databasePath)) {
             // Use the db path stored in the preferences.
             File databaseFile = new File(databasePath);
             if (databaseFile.getAbsoluteFile().exists())  {
