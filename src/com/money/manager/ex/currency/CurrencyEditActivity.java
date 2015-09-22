@@ -17,12 +17,8 @@
  */
 package com.money.manager.ex.currency;
 
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -92,7 +88,7 @@ public class CurrencyEditActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.currecyformats_activity);
+        setContentView(R.layout.currency_edit_activity);
         setToolbarStandardAction(getToolbar());
 
         edtCurrencyName = (EditText) findViewById(R.id.editTextCurrencyName);

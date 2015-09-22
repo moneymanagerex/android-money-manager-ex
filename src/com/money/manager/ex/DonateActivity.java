@@ -119,10 +119,13 @@ public class DonateActivity
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // paypal.me/mmexAndroid
+
                 // parameters
                 HashMap<String, String> values = new HashMap<>();
                 values.put("cmd", "_s-xclick");
                 values.put("hosted_button_id", "5U7RXC25C9UES");
+                values.put("lc", "US");
 
                 // Start web view and open donation form.
                 Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);

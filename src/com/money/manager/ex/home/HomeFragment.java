@@ -60,7 +60,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AccountTypes;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.AccountRepository;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
@@ -247,6 +246,7 @@ public class HomeFragment
         super.onViewCreated(view, savedInstanceState);
 
         mFloatingActionButton.attachToListView(mExpandableListView);
+
     }
 
     // Loader event handlers

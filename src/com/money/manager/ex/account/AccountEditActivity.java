@@ -42,7 +42,6 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
@@ -54,7 +53,6 @@ import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.domainmodel.Account;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 
 import info.javaperformance.money.Money;
@@ -169,7 +167,7 @@ public class AccountEditActivity
         }
 
         // Compose layout
-        setContentView(R.layout.accountlist_edit_activity);
+        setContentView(R.layout.account_edit_activity);
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
