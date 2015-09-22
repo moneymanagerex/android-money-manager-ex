@@ -17,48 +17,54 @@
  */
 package org.moneymanagerex.android.tests;
 
+import android.content.Context;
+import android.test.ActivityTestCase;
+import android.test.AndroidTestCase;
+import android.test.InstrumentationTestCase;
 import android.test.mock.MockContext;
 
-import com.money.manager.ex.core.NumericHelper;
-
-import junit.framework.TestCase;
+import com.money.manager.ex.MoneyManagerApplication;
 
 /**
- * First unit test.
- * Created by Alen Siljak on 11/08/2015.
+ * Test the methods in MoneyManagerApplication.
+ *
+ * Created by Alen Siljak on 22/09/2015.
  */
-public class NumericHelperTest
-        extends TestCase {
+public class MmexApplicationTests
+        extends AndroidTestCase {
 
-    private NumericHelper _numericHelper;
+    private Context context;
 
     public void setUp() throws Exception {
         super.setUp();
 
-        MockContext context = new MockContext();
-        _numericHelper = new NumericHelper(context);
-
     }
 
     public void tearDown() throws Exception {
-        _numericHelper = null;
-    }
-
-    public void testIsNumeric() throws Exception {
-        boolean actual = NumericHelper.isNumeric("3");
-        assertTrue(actual);
-    }
-
-    public void testTryParse() throws Exception {
-        int actual = _numericHelper.tryParse("64");
-        assertEquals(64, actual);
-    }
-
-    public void testGetNumberFormatted() throws Exception {
 
     }
 
-    public void testGetNumberDecimal() throws Exception {
+    /**
+     * This doesn't work as we need to get the settings key from the Resources.
+     * @throws Exception
+     */
+    public void testCreateDefaultDatabaseName() throws Exception {
+        String expected = "data.mmb";
+        Context context = getContext();
 
+        String actual = MoneyManagerApplication.getDatabasePath(context);
+
+        assertEquals(expected, actual);
+    }
+
+    public Context getContext() {
+//        MockContext context = new MockContext();
+
+//        this.context = context;
+//        setContext(context);
+
+
+//        return getInstrumentation().getContext();
+        return new MockContext();
     }
 }

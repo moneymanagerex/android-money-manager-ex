@@ -13,7 +13,9 @@ import com.money.manager.ex.core.ExceptionHandler;
 public abstract class SettingsBase {
 
     public SettingsBase(Context context) {
-        this.mContext = context.getApplicationContext();
+        this.mContext = context.getApplicationContext() != null
+            ? context.getApplicationContext()
+            : context;
     }
 
     // Context for settings is the Application Context.

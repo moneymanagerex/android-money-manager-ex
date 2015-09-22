@@ -119,7 +119,7 @@ public class CurrencyService {
         // exchange
         double toConversionRate = toCurrencyFormats.getBaseConvRate();
         double fromConversionRate = fromCurrencyFormats.getBaseConvRate();
-        
+
 //        double result = (amount * fromConversionRate) / toConversionRate;
         Money result = amount.multiply(fromConversionRate).divide(toConversionRate, Constants.DEFAULT_PRECISION);
 

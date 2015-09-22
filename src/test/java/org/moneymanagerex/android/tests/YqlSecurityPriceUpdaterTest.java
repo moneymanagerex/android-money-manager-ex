@@ -18,14 +18,11 @@
 package org.moneymanagerex.android.tests;
 
 import android.test.AndroidTestCase;
-import android.util.Log;
 
 import com.money.manager.ex.investment.YqlSecurityPriceUpdater;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +30,8 @@ import java.util.List;
  * Tests for YQL security downloader.
  * Created by Alen Siljak on 20/08/2015.
  */
-public class YqlSecurityPriceUpdaterTest extends AndroidTestCase {
+public class YqlSecurityPriceUpdaterTest
+        extends AndroidTestCase {
 
     private YqlSecurityPriceUpdater _testObject;
 

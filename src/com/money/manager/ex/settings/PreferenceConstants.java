@@ -34,7 +34,7 @@ public class PreferenceConstants {
     public static final Integer PREF_LAST_DB_PATH_SHOWN = R.string.pref_last_db_path_shown;
 
     // Database
-    public static final Integer PREF_DATABASE_PATH = R.string.pref_database_path;
+//    public static final Integer PREF_DATABASE_PATH = R.string.pref_database_path;
 
     // General
     public static final Integer PREF_USER_NAME = R.string.pref_user_name;

@@ -209,7 +209,7 @@ public class DatabaseSettingsFragment
     }
 
     private void refreshDbPath() {
-        final Preference preference = findPreference(getActivity().getString(PreferenceConstants.PREF_DATABASE_PATH));
+        final Preference preference = findPreference(getActivity().getString(R.string.pref_database_path));
         preference.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
     }
 
