@@ -38,6 +38,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * First unit test.
+ *
  * Created by Alen Siljak on 11/08/2015.
  */
 @RunWith(RobolectricGradleTestRunner.class)
@@ -48,9 +49,6 @@ public class NumericHelperTest {
 
     @Before
     public void setUp() throws Exception {
-//        super.setUp();
-
-//        MockContext context = new MockContext();
         Context context = RuntimeEnvironment.application.getApplicationContext();
         _numericHelper = new NumericHelper(context);
 

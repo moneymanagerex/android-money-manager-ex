@@ -27,6 +27,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -67,6 +68,6 @@ public class AccountTests {
     public void testThrowException() {
         Integer actual = this.account.getId();
 
-        assertTrue(actual == null);
+        assertNull(actual);
     }
 }

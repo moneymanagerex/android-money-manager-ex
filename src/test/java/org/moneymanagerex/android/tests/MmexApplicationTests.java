@@ -29,6 +29,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowEnvironment;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
@@ -46,11 +49,17 @@ public class MmexApplicationTests {
     @Before
     public void setUp() throws Exception {
         this.context = RuntimeEnvironment.application.getApplicationContext();
+
+        // External storage
+        File externalStorage = new File("/sdcard/MoneyManagerEx/");
+//        ShadowEnvironment.setExternalStorageEmulated(externalStorage, true);
     }
 
     @After
     public void tearDown() throws Exception {
         this.context = null;
+
+        ShadowEnvironment.reset();
     }
 
     /**
