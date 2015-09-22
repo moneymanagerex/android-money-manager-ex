@@ -111,9 +111,6 @@ public class CurrencyService {
         // handle same currencies
         if (toCurrencyId.equals(fromCurrencyId)) return amount;
 
-//        Double result = doCurrencyExchange(toCurrencyId, amount.toDouble(), fromCurrencyId);
-//        return MoneyFactory.fromDouble(result);
-
         TableCurrencyFormats fromCurrencyFormats = getCurrency(fromCurrencyId);
         TableCurrencyFormats toCurrencyFormats = getCurrency(toCurrencyId);
         // check if exists from and to currencies
@@ -122,6 +119,7 @@ public class CurrencyService {
         // exchange
         double toConversionRate = toCurrencyFormats.getBaseConvRate();
         double fromConversionRate = fromCurrencyFormats.getBaseConvRate();
+        
 //        double result = (amount * fromConversionRate) / toConversionRate;
         Money result = amount.multiply(fromConversionRate).divide(toConversionRate, Constants.DEFAULT_PRECISION);
 
