@@ -29,3 +29,6 @@ Thumbs.db
 
 # NPM modules
 scripts/deployment/node_modules
+
+# Proxy settings
+/gradle.properties
