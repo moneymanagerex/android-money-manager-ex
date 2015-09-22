@@ -49,7 +49,8 @@
     <dimen name="chart_list_item_text_size">14sp</dimen>
 
     <!-- fab in home fragment -->
-    <dimen name="fab_margin_bottom_home_fragment">64dp</dimen>
+    <!--<dimen name="fab_margin_bottom_home_fragment">64dp</dimen>-->
+    <dimen name="fab_margin_bottom_home_fragment">44dp</dimen>
 
     <!-- Samsung MultiWindow Function -->
     <dimen name="app_defaultsize_w">632.0dip</dimen>
