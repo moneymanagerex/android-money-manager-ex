@@ -898,7 +898,7 @@ public class HomeFragment
         CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
         int baseCurrencyId = currencyService.getBaseCurrencyId();
 
-        double total = 0;
+        Money total = MoneyFactory.fromString("0");
         while(cursor.moveToNext()) {
             int accountId = cursor.getInt(cursor.getColumnIndex(TableStock.HELDAT));
             QueryAccountBills account = investmentAccounts.get(accountId);
@@ -915,22 +915,24 @@ public class HomeFragment
 
             // currency
             int currencyId = account.getCurrencyId();
-            Double amountInBaseCurrency = currencyService.doCurrencyExchange(baseCurrencyId, amount, currencyId);
+            Money amountInBaseCurrency = currencyService.doCurrencyExchange(baseCurrencyId,
+                    MoneyFactory.fromDouble(amount), currencyId);
             if (amountInBaseCurrency == null) {
-                amountInBaseCurrency = amount;
+                amountInBaseCurrency = MoneyFactory.fromDouble(amount);
             }
             double currentTotalInBase = account.getTotalBaseConvRate();
-            account.setTotalBaseConvRate(currentTotalInBase + amountInBaseCurrency);
+            account.setTotalBaseConvRate(currentTotalInBase + amountInBaseCurrency.toDouble());
 
-            total += amountInBaseCurrency;
+//            total += amountInBaseCurrency;
+            total = total.add(amountInBaseCurrency);
         }
 
         // show totals for each account
 
         // show total for all investment accounts
         QueryAccountBills investmentTotalRecord = mTotalsByType.get(investmentTitle);
-        investmentTotalRecord.setTotalBaseConvRate(total);
-        investmentTotalRecord.setReconciledBaseConvRate(total);
+        investmentTotalRecord.setTotalBaseConvRate(total.toDouble());
+        investmentTotalRecord.setReconciledBaseConvRate(total.toDouble());
 
         // Notify about the changes
         HomeAccountsExpandableAdapter accountsAdapter = (HomeAccountsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
@@ -939,8 +941,8 @@ public class HomeFragment
         }
 
         // also add to grand total of all accounts
-        mGrandTotal = mGrandTotal.add(BigDecimal.valueOf(total));
-        mGrandReconciled = mGrandReconciled.add(BigDecimal.valueOf(total));
+        mGrandTotal = mGrandTotal.add(BigDecimal.valueOf(total.toDouble()));
+        mGrandReconciled = mGrandReconciled.add(BigDecimal.valueOf(total.toDouble()));
         // refresh the footer
         addFooterToExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
     }
