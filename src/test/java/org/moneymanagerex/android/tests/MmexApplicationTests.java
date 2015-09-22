@@ -41,31 +41,39 @@ import static org.junit.Assert.assertEquals;
 @Config(constants = BuildConfig.class)
 public class MmexApplicationTests {
 
-//    private Context context;
+    private Context context;
 
     @Before
     public void setUp() throws Exception {
-//        super.setUp();
-
+        this.context = RuntimeEnvironment.application.getApplicationContext();
     }
 
     @After
     public void tearDown() throws Exception {
-
+        this.context = null;
     }
 
     /**
-     * This doesn't work as we need to get the settings key from the Resources.?
+     * The test fails because of the context in the unit tests.
      */
     @Test
     public void testCreateDefaultDatabaseName() throws Exception {
         String expected = "data.mmb";
-//        Context context = getContext();
-        Context context = RuntimeEnvironment.application.getApplicationContext();
 
         String actual = MoneyManagerApplication.getDatabasePath(context);
 
         assertEquals(expected, actual);
     }
 
+    /**
+     * The test fails.
+     */
+    @Test
+    public void testGetDbDirectory() {
+        final String expected = "blah";
+
+        String actual = MoneyManagerApplication.getDatabaseDirectory(this.context);
+
+        assertEquals(expected, actual);
+    }
 }

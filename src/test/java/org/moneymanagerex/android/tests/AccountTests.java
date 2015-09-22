@@ -17,67 +17,56 @@
  */
 package org.moneymanagerex.android.tests;
 
-import android.content.Context;
-import android.test.mock.MockContext;
-
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.domainmodel.Account;
 
-import junit.framework.TestCase;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 /**
- * First unit test.
- * Created by Alen Siljak on 11/08/2015.
+ * Test Account model.
+ *
+ * Created by Alen Siljak on 22/09/2015.
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class NumericHelperTest {
+public class AccountTests {
 
-    private NumericHelper _numericHelper;
+    private Account account;
 
     @Before
-    public void setUp() throws Exception {
-//        super.setUp();
-
-//        MockContext context = new MockContext();
-        Context context = RuntimeEnvironment.application.getApplicationContext();
-        _numericHelper = new NumericHelper(context);
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        _numericHelper = null;
+    public void setup() {
+        this.account = new Account();
     }
 
     @Test
-    public void testIsNumeric() throws Exception {
-        boolean actual = NumericHelper.isNumeric("3");
-        assertTrue(actual);
+    public void testInstantiation() {
+        Account account = new Account();
+
+        assertTrue(account != null);
     }
 
     @Test
-    public void testTryParse() throws Exception {
-        int actual = _numericHelper.tryParse("64");
-        assertEquals(64, actual);
+    public void testPropertySetting() {
+        final int id = 3;
+
+        this.account.setId(id);
+
+        int actual = this.account.getId();
+
+        assertEquals(id, actual);
     }
 
-    public void testGetNumberFormatted() throws Exception {
+    @Test
+    public void testThrowException() {
+        Integer actual = this.account.getId();
 
-    }
-
-    public void testGetNumberDecimal() throws Exception {
-
+        assertTrue(actual == null);
     }
 }

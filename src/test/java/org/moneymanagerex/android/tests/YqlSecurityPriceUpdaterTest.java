@@ -17,34 +17,50 @@
  */
 package org.moneymanagerex.android.tests;
 
+import android.content.Context;
 import android.test.AndroidTestCase;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.investment.YqlSecurityPriceUpdater;
 
 import junit.framework.Assert;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Tests for YQL security downloader.
+ *
  * Created by Alen Siljak on 20/08/2015.
  */
-public class YqlSecurityPriceUpdaterTest
-        extends AndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class)
+public class YqlSecurityPriceUpdaterTest {
 
     private YqlSecurityPriceUpdater _testObject;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
+//        super.setUp();
 
-        _testObject = new YqlSecurityPriceUpdater(getContext(), null);
+        Context context = RuntimeEnvironment.application.getApplicationContext();
+        _testObject = new YqlSecurityPriceUpdater(context, null);
     }
 
+    @After
     public void tearDown() throws Exception {
         _testObject = null;
     }
 
+    @Test
     public void testGetYqlQueryFor() throws Exception {
         final String source = "yahoo.finance.quote";
         List<String> fields = Arrays.asList("symbol", "LastTradePriceOnly", "LastTradeDate", "Currency");
