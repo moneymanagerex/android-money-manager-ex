@@ -18,10 +18,6 @@
 package org.moneymanagerex.android.tests;
 
 import android.content.Context;
-import android.test.ActivityTestCase;
-import android.test.AndroidTestCase;
-import android.test.InstrumentationTestCase;
-import android.test.mock.MockContext;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -34,13 +30,15 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Test the methods in MoneyManagerApplication.
  *
  * Created by Alen Siljak on 22/09/2015.
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class)
 public class MmexApplicationTests {
 
 //    private Context context;
@@ -60,24 +58,14 @@ public class MmexApplicationTests {
      * This doesn't work as we need to get the settings key from the Resources.?
      */
     @Test
-    public void testCreateDefaultDatabaseName() {
+    public void testCreateDefaultDatabaseName() throws Exception {
         String expected = "data.mmb";
 //        Context context = getContext();
         Context context = RuntimeEnvironment.application.getApplicationContext();
 
         String actual = MoneyManagerApplication.getDatabasePath(context);
 
-//        assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
-    public Context getContext() {
-//        MockContext context = new MockContext();
-
-//        this.context = context;
-//        setContext(context);
-
-
-//        return getInstrumentation().getContext();
-        return new MockContext();
-    }
 }
