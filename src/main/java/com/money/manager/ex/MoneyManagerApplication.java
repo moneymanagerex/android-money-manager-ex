@@ -131,7 +131,7 @@ public class MoneyManagerApplication
         // Trying to mitigate issues on some 4.2.2 devices
         // https://code.google.com/p/android/issues/detail?id=78377
         // ref: https://developer.android.com/tools/building/multidex.html
-//        MultiDex.install(this);
+        MultiDex.install(this);
     }
 
     /**
