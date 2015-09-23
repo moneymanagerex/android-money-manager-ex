@@ -85,13 +85,4 @@ public class AppSettings extends SettingsBase {
         int sort = get(R.string.pref_sort_payee, 0);
         return sort;
     }
-
-    /**
-     * @return the show transaction
-     */
-    public String getShowTransaction() {
-        return get(mContext.getString(R.string.pref_show_transaction),
-                mContext.getResources().getString(R.string.last7days));
-    }
-
 }

@@ -32,7 +32,7 @@ import com.money.manager.ex.utils.DialogUtils;
 import java.io.IOException;
 
 /**
- * Task that updates all the security prices in the list.
+ * Task that downloads the requested prices and notifies the caller once downloaded.
  */
 public class TextDownloaderTask
     extends AsyncTask<String, Integer, Boolean> {

@@ -51,6 +51,10 @@ import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.DateRange;
+import com.money.manager.ex.core.DefinedDateRange;
+import com.money.manager.ex.core.DefinedDateRangeName;
+import com.money.manager.ex.core.DefinedDateRanges;
+import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.WhereStatementGenerator;
@@ -128,9 +132,14 @@ public class AccountTransactionsFragment
         }
 
         // Set the default period.
-        String period = new AppSettings(getContext()).getShowTransaction();
+        DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
+                .getShowTransactions();
+        DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
+        DefinedDateRange range = ranges.get(rangeName);
+
+        // todo: replace this with implemented period on the range object.
         DateUtils dateUtils = new DateUtils(getContext());
-        mDateRange = dateUtils.getDateRangeForPeriod(period);
+        mDateRange = dateUtils.getDateRangeForPeriod(range.nameResourceId);
     }
 
     @Override
@@ -517,50 +526,56 @@ public class AccountTransactionsFragment
     // Menu
 
     private boolean datePeriodItemSelected(MenuItem item) {
-        int resourceId;
+        int stringId;
 
         int itemId = item.getItemId();
-        switch (itemId) {
-            case R.id.menu_today:
-                resourceId = R.string.today;
-                break;
-            case R.id.menu_last7days:
-                resourceId = R.string.last7days;
-                break;
-            case R.id.menu_last15days:
-                resourceId = R.string.last15days;
-                break;
-            case R.id.menu_current_month:
-                resourceId = R.string.current_month;
-                break;
-            case R.id.menu_last30days:
-                resourceId = R.string.last30days;
-                break;
-            case R.id.menu_last3months:
-                resourceId = R.string.last3months;
-                break;
-            case R.id.menu_last6months:
-                resourceId = R.string.last6months;
-                break;
-            case R.id.menu_current_year:
-                resourceId = R.string.current_year;
-                break;
-            case R.id.menu_future_transactions:
-                resourceId = R.string.future_transactions;
-                break;
-            case R.id.menu_all_time:
-                resourceId = R.string.all_time;
-                break;
-            default:
-                return false;
-        }
+
+        DefinedDateRanges dateRanges = new DefinedDateRanges(getActivity());
+        DefinedDateRange range = dateRanges.getByMenuId(itemId);
+        if (range == null) return false;
+        stringId = range.nameResourceId;
+
+//        switch (itemId) {
+//            case R.id.menu_today:
+//                stringId = R.string.today;
+//                break;
+//            case R.id.menu_last7days:
+//                stringId = R.string.last7days;
+//                break;
+//            case R.id.menu_last15days:
+//                stringId = R.string.last15days;
+//                break;
+//            case R.id.menu_current_month:
+//                stringId = R.string.current_month;
+//                break;
+//            case R.id.menu_last30days:
+//                stringId = R.string.last30days;
+//                break;
+//            case R.id.menu_last3months:
+//                stringId = R.string.last3months;
+//                break;
+//            case R.id.menu_last6months:
+//                stringId = R.string.last6months;
+//                break;
+//            case R.id.menu_current_year:
+//                stringId = R.string.current_year;
+//                break;
+//            case R.id.menu_future_transactions:
+//                stringId = R.string.future_transactions;
+//                break;
+//            case R.id.menu_all_time:
+//                stringId = R.string.all_time;
+//                break;
+//            default:
+//                return false;
+//        }
 
         LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
-        settings.setShowTransactions(resourceId);
+        settings.setShowTransactions(range.key);
 
         // Save the selected period.
         DateUtils dateUtils = new DateUtils(getContext());
-        mDateRange = dateUtils.getDateRangeForPeriod(resourceId);
+        mDateRange = dateUtils.getDateRangeForPeriod(stringId);
 
         //check item
         item.setChecked(true);
@@ -643,7 +658,7 @@ public class AccountTransactionsFragment
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // switch account.
-                Spinner spinner1 = (Spinner) adapterView;
+//                Spinner spinner1 = (Spinner) adapterView;
 //                Account account = getAccountAtPosition(spinner1, i);
 //                int accountId = account.getAccountId();
 //                if (accountId != mAccountId) {
@@ -694,35 +709,39 @@ public class AccountTransactionsFragment
         MenuItem item = menu.findItem(R.id.menu_period);
         if (item == null) return;
 
-        Context context = getContext();
-        if (context == null) {
-            context = mActivity;
-        }
-
         SubMenu subMenu = item.getSubMenu();
 
         // on init, mark the default item as checked
         AppSettings settings = new AppSettings(mActivity);
-        String preference = settings.getLookAndFeelSettings().getShowTransactions();
+        DefinedDateRangeName rangeName = settings.getLookAndFeelSettings().getShowTransactions();
+        if (rangeName == null) return;
+//        String preference = getString(preferenceId);
 
         int id = Constants.NOT_SET;
-        if (preference.equals(context.getString(R.string.last7days))) {
-            id = R.id.menu_last7days;
-        } else if (preference.equals(context.getString(R.string.last15days))) {
-            id = R.id.menu_last15days;
-        } else if (preference.equals(context.getString(R.string.current_month))) {
-            id = R.id.menu_current_month;
-        } else if (preference.equals(context.getString(R.string.last30days))) {
-            id = R.id.menu_last30days;
-        } else if (preference.equals(context.getString(R.string.last3months))) {
-            id = R.id.menu_last3months;
-        } else if (preference.equals(context.getString(R.string.last6months))) {
-            id = R.id.menu_last6months;
-        } else if (preference.equals(context.getString(R.string.current_year))) {
-            id = R.id.menu_current_year;
-        } else if (preference.equals(context.getString(R.string.all_time))) {
-            id = R.id.menu_all_time;
-        }
+
+        // handle previous, textual preference
+//        if (preferenceId.equals(R.string.last7days)) {
+//            id = R.id.menu_last7days;
+//        } else if (preferenceId.equals(R.string.last15days)) {
+//            id = R.id.menu_last15days;
+//        } else if (preferenceId.equals(R.string.current_month)) {
+//            id = R.id.menu_current_month;
+//        } else if (preferenceId.equals(R.string.last30days)) {
+//            id = R.id.menu_last30days;
+//        } else if (preferenceId.equals(R.string.last3months)) {
+//            id = R.id.menu_last3months;
+//        } else if (preferenceId.equals(R.string.last6months)) {
+//            id = R.id.menu_last6months;
+//        } else if (preferenceId.equals(R.string.current_year)) {
+//            id = R.id.menu_current_year;
+//        } else if (preferenceId.equals(R.string.all_time)) {
+//            id = R.id.menu_all_time;
+//        }
+
+        DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
+        DefinedDateRange range = ranges.get(rangeName);
+        if (range == null) return;
+        id = range.menuResourceId;
 
         MenuItem itemToMark = subMenu.findItem(id);
         if (itemToMark == null) return;

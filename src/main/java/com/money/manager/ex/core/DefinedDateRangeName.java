@@ -17,20 +17,20 @@
  */
 package com.money.manager.ex.core;
 
-import java.util.Date;
-
 /**
- * Represents a date range.
+ * The names for the defined date ranges. Used as the key for the collection.
  *
- * Created by Alen Siljak on 11/09/2015.
+ * Created by Alen Siljak on 23/09/2015.
  */
-public class DateRange {
-
-    public DateRange(Date dateFrom, Date dateTo) {
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
-    }
-
-    public Date dateFrom;
-    public Date dateTo;
+public enum DefinedDateRangeName {
+    TODAY,
+    LAST_7_DAYS,
+    LAST_2_WEEKS,
+    CURRENT_MONTH,
+    LAST_30_DAYS,
+    LAST_3_MONTHS,
+    LAST_6_MONTHS,
+    CURRENT_YEAR,
+    FUTURE_TRANSACTIONS,
+    ALL_TIME
 }

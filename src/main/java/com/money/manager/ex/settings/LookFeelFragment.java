@@ -29,6 +29,9 @@ import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.businessobjects.InfoService;
+import com.money.manager.ex.core.DefinedDateRange;
+import com.money.manager.ex.core.DefinedDateRangeName;
+import com.money.manager.ex.core.DefinedDateRanges;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -119,7 +122,19 @@ public class LookFeelFragment
         final ListPreference lstShow = (ListPreference) findPreference(getString(
                 R.string.pref_show_transaction));
         if (lstShow != null) {
-            lstShow.setSummary(new AppSettings(mContext).getShowTransaction());
+            String display;
+
+            DefinedDateRangeName rangeName = new AppSettings(mContext).getLookAndFeelSettings()
+                    .getShowTransactions();
+            DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
+            DefinedDateRange range = ranges.get(rangeName);
+
+            if (range == null) {
+                display = getString(R.string.none);
+            } else {
+                display = range.getLocalizedName();
+            }
+            lstShow.setSummary(display);
             lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
