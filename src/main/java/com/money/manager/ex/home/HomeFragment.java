@@ -621,6 +621,7 @@ public class HomeFragment
 
         // the task continues in onFinishedInputAmountDialog
     }
+
     // Private custom methods.
 
     private void addFooterToExpandableListView(double curTotal, double curReconciled) {
@@ -702,7 +703,7 @@ public class HomeFragment
                 if (activity == null) return false;
 
                 String accountType = mAccountTypes.get(groupPosition);
-                if (accountType.equalsIgnoreCase(getString(R.string.investment))) {
+                if (accountType.equalsIgnoreCase(AccountTypes.INVESTMENT.toString())) {
                     activity.showWatchlistFragment(accountId);
                 } else {
                     activity.showAccountFragment(accountId);
