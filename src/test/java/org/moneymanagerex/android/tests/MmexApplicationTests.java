@@ -49,7 +49,7 @@ public class MmexApplicationTests {
 
     @Before
     public void setUp() throws Exception {
-        this.context = RuntimeEnvironment.application.getApplicationContext();
+        this.context = RuntimeEnvironment.application;
 
         // External storage
         File externalStorage = new File("/sdcard/MoneyManagerEx/");

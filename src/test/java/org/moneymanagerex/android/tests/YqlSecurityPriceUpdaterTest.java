@@ -96,7 +96,7 @@ public class YqlSecurityPriceUpdaterTest {
      * Not finished. Need to find a way to get a result from an async task.
      */
     @Test
-    public void testSomething() {
+    public void testPriceDownload() {
         List<String> symbols = getSymbols();
         //IPriceUpdaterFeedback listener =
 

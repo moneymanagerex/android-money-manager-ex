@@ -20,34 +20,47 @@ package org.moneymanagerex.android.tests;
 import android.test.AndroidTestCase;
 import android.test.mock.MockContext;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 
 import junit.framework.Assert;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayDeque;
 import java.util.LinkedHashMap;
 import java.util.Queue;
 
 /**
- * Tests for YQL security downloader.
+ * Tests for Recent Database Provider.
+ *
  * Created by Alen Siljak on 20/08/2015.
  */
-public class RecentDatabaseProviderTests extends AndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class)
+public class RecentDatabaseProviderTests {
 
     private RecentDatabasesProvider _testObject;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-
-        MockContext context = new MockContext();
-        _testObject = new RecentDatabasesProvider(context);
+//        MockContext context = new MockContext();
+        _testObject = new RecentDatabasesProvider(RuntimeEnvironment.application);
     }
 
+    @After
     public void tearDown() throws Exception {
         _testObject = null;
     }
 
+    @Test
     public void testLoad() throws Exception {
         Queue<RecentDatabaseEntry> expected = getQueue();
 
@@ -56,8 +69,9 @@ public class RecentDatabaseProviderTests extends AndroidTestCase {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
     public void testSave() {
-        Queue<RecentDatabaseEntry> queue = getQueue();
+//        Queue<RecentDatabaseEntry> queue = getQueue();
         String expected = "todo";
 
         _testObject.save();
@@ -67,6 +81,7 @@ public class RecentDatabaseProviderTests extends AndroidTestCase {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
     public void testInsert() {
         RecentDatabaseEntry entry = getEntry();
         String expected = "[{\"filePath\":\"filename.mmb\",\"dropboxFileName\":\"\",\"linkedToDropbox\":false}]";
