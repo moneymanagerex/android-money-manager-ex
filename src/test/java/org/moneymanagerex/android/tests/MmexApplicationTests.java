@@ -73,7 +73,7 @@ public class MmexApplicationTests {
         String actual = MoneyManagerApplication.getDatabasePath(context);
 
 //        assertEquals(expected, actual);
-        assertTrue(actual.contains(expected));
+        assertTrue(actual.contains("/" + expected));
     }
 
     /**

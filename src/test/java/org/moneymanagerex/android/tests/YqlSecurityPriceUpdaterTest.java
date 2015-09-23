@@ -21,6 +21,7 @@ import android.content.Context;
 import android.test.AndroidTestCase;
 
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.investment.IPriceUpdaterFeedback;
 import com.money.manager.ex.investment.YqlSecurityPriceUpdater;
 
 import junit.framework.Assert;
@@ -29,12 +30,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for YQL security downloader.
@@ -45,14 +50,14 @@ import java.util.List;
 @Config(constants = BuildConfig.class)
 public class YqlSecurityPriceUpdaterTest {
 
+    private Context context;
     private YqlSecurityPriceUpdater _testObject;
 
     @Before
     public void setUp() throws Exception {
-//        super.setUp();
+        this.context = RuntimeEnvironment.application;
 
-        Context context = RuntimeEnvironment.application.getApplicationContext();
-        _testObject = new YqlSecurityPriceUpdater(context, null);
+        _testObject = new YqlSecurityPriceUpdater(this.context, null);
     }
 
     @After
@@ -71,5 +76,50 @@ public class YqlSecurityPriceUpdaterTest {
         String actual = _testObject.getYqlQueryFor(source, fields, symbols);
 
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testParseResults() {
+        String symbol = "EL4X.DE";
+        // todo: get a proper result
+        final String jsonResult = "{\"query\":{\"count\":0,\"created\":\"2015-09-23T10:01:14Z\",\"lang\":\"en-US\",\"results\":null}}";
+        PriceUpdatedListener listener = new PriceUpdatedListener();
+        _testObject = getTestObjectWithListener(listener);
+
+        // invoke parser
+        _testObject.onContentDownloaded(jsonResult);
+        // get the results
+        assertEquals(listener.symbol, symbol);
+    }
+
+    /**
+     * Not finished. Need to find a way to get a result from an async task.
+     */
+    @Test
+    public void testSomething() {
+        List<String> symbols = getSymbols();
+        //IPriceUpdaterFeedback listener =
+
+        _testObject.updatePrices(symbols);
+
+        // todo: get/test the results
+        Robolectric.flushBackgroundThreadScheduler();
+
+
+    }
+
+    // Helpers
+
+    private List<String> getSymbols() {
+        List<String> symbols = new ArrayList<>();
+
+        symbols.add("EL4X.DE");
+
+        return symbols;
+    }
+
+    private YqlSecurityPriceUpdater getTestObjectWithListener(IPriceUpdaterFeedback listener) {
+        _testObject = new YqlSecurityPriceUpdater(this.context, listener);
+        return _testObject;
     }
 }

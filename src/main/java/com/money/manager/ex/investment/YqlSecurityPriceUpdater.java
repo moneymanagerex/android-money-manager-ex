@@ -116,7 +116,7 @@ public class YqlSecurityPriceUpdater
         // parse Json results
         List<SecurityPriceModel> pricesList = new ArrayList<>();
         try {
-            pricesList = parseDownloadedContentJson(content);
+            pricesList = parseDownloadedJson(content);
         } catch (JSONException e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "parsing JSON");
@@ -165,7 +165,7 @@ public class YqlSecurityPriceUpdater
         return uri;
     }
 
-    private List<SecurityPriceModel> parseDownloadedContentJson(String content) throws JSONException {
+    private List<SecurityPriceModel> parseDownloadedJson(String content) throws JSONException {
         ArrayList<SecurityPriceModel> result = new ArrayList<>();
 
         JSONObject root = new JSONObject(content);
