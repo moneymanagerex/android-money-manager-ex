@@ -18,7 +18,6 @@
 package org.moneymanagerex.android.tests;
 
 import android.content.Context;
-import android.test.AndroidTestCase;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.investment.IPriceUpdaterFeedback;
@@ -30,6 +29,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.PriceUpdatedListener;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;

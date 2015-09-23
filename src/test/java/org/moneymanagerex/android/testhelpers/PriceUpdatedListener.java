@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.moneymanagerex.android.tests;
+package org.moneymanagerex.android.testhelpers;
 
 import com.money.manager.ex.investment.IPriceUpdaterFeedback;
 

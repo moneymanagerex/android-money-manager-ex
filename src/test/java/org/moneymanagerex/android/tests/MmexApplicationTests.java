@@ -81,10 +81,10 @@ public class MmexApplicationTests {
      */
     @Test
     public void testGetDbDirectory() {
-        final String expected = "blah";
+        final String expected = "MoneyManagerEx";
 
         String actual = MoneyManagerApplication.getDatabaseDirectory(this.context);
 
-        assertEquals(expected, actual);
+        assertTrue(actual.contains(expected));
     }
 }
