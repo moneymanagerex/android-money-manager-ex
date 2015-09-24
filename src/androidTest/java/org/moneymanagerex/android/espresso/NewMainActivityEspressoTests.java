@@ -50,6 +50,7 @@ public class NewMainActivityEspressoTests {
 
     @Rule
     public final ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
+
     private UiTestHelpersEspresso helper;
 
     @Before
