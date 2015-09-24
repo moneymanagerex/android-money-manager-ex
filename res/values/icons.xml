@@ -42,4 +42,6 @@
     <string name="ic_dollar_bill">L</string>
     <string name="ic_hash">M</string>
     <string name="ic_floppy_disk">N</string>
+    <string name="ic_bill">O</string>
+    <string name="ic_pie_chart">P</string>
 </resources>

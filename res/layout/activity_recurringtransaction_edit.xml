@@ -52,12 +52,15 @@
                 android:singleLine="true"
                 android:text="@string/next_occurrence"/>
 
-            <com.money.manager.ex.view.RobotoTextView
+            <com.money.manager.ex.view.RobotoTextViewFontIcon
                 android:id="@+id/textViewDate"
                 style="@style/Money.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="?attr/ic_calendar_day"
+                app:iconLeft="@xml/ic_calendar_small"
+                app:iconStart="@xml/ic_calendar_small"
+                android:drawablePadding="@dimen/money_padding"
+                android:hint="@string/date"
                 android:textStyle="bold"/>
 
             <!-- Transaction Type & Status -->
