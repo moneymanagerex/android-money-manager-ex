@@ -17,7 +17,6 @@
  */
 package org.moneymanagerex.android.espresso;
 
-import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -40,7 +39,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * Espresso version of the tests for the Main Activity.
+ * Espresso tests for the Main Activity.
  * The tests start with a fresh copy of preferences.
  *
  * Created by Alen Siljak on 24/09/2015.
@@ -55,16 +54,8 @@ public class NewMainActivityEspressoTests {
 
     @Before
     public void setUp() {
-
-//        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         this.helper = new UiTestHelpersEspresso();
-//        helper.clearPreferences(getInstrumentation().getTargetContext());
         helper.clearPreferences(InstrumentationRegistry.getContext());
-
-//        solo = new Solo(getInstrumentation(), getActivity());
-
-//        this.activityRule = getActivity();
-//        this.activityRule = new MainActivity();
     }
 
     @After
@@ -75,10 +66,8 @@ public class NewMainActivityEspressoTests {
 
     @Ignore
     public void welcomeScreen() {
-//        assertTrue(solo.waitForText("Welcome to MoneyManagerEx", 1, 1000));
         onView(withText("Welcome to MoneyManagerEx"))
                 .check(matches(isDisplayed()));
-
     }
 
     @Ignore
@@ -100,17 +89,11 @@ public class NewMainActivityEspressoTests {
 
     @Ignore
     public void tutorial() {
-//        solo.assertCurrentActivity("wrong activity", MainActivity.class);
         onView(withText("Accounts"))
             .check(matches(isDisplayed()));
 
-//        assertTrue(solo.waitForActivity(MainActivity.class, 2000));
-
-//        assertTrue(solo.waitForText("Accounts", 1, 1000, false, true));
-//        assertTrue("can't find text Close", solo.waitForText("Close", 1, 1000, false, true));
         onView(withText("Close"))
             .check(matches(isDisplayed()));
-
     }
 
     /**
@@ -123,7 +106,6 @@ public class NewMainActivityEspressoTests {
 
         // First the tutorial should be shown.
         tutorial();
-//        solo.clickOnText("Close", 1, false);
         onView(withText("Close"))
             .perform(click());
 
