@@ -100,6 +100,7 @@ public class MainActivity
 
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
+    public static final int REQUEST_TUTORIAL = 3;
 
     public DropboxHelper mDropboxHelper;
 
@@ -112,6 +113,7 @@ public class MainActivity
     private static final String KEY_CLASS_FRAGMENT_CONTENT = "MainActivity:Fragment";
     private static final String KEY_ORIENTATION = "MainActivity:Orientation";
     private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
+    private static final String KEY_HAS_STARTED = "MainActivity:hasStarted";
     // state if restart activity
     private static boolean mRestartActivity = false;
 
@@ -119,6 +121,7 @@ public class MainActivity
     private boolean isInAuthentication = false;
     private boolean isShowTipsDropbox2 = false;
     private boolean isRecurringTransactionStarted = false;
+    private boolean hasStarted = false;
     // navigation drawer
     private LinearLayout mDrawerLayout;
 //    private ListView mDrawerList;
@@ -170,18 +173,7 @@ public class MainActivity
 
         // check authentication
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
-                isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
-            if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
-                isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
-            if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION))
-                isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
-            if (savedInstanceState.containsKey(KEY_ORIENTATION) && core.isTablet()
-                    && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
-                for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
-                    getSupportFragmentManager().popBackStack();
-                }
-            }
+            restoreInstanceState(savedInstanceState);
         }
 
         // create a connection to dropbox
@@ -194,23 +186,62 @@ public class MainActivity
         String username = infoService.getInfoValue(InfoService.INFOTABLE_USERNAME);
 
         // Creating fragments and showing recurring transaction notifications.
-        // Here we read the database for the first time.
         createFragments(savedInstanceState);
 
         // show tutorial
-        showTutorial();
+        boolean tutorialShown = showTutorial();
+        if (!tutorialShown) {
+            // continue manually
+            initializeAfterTutorial();
+        }
+    }
 
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
+            isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
+        if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
+            isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
+        if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION)) {
+            isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
+        }
+
+        Core core = new Core(this);
+        if (savedInstanceState.containsKey(KEY_ORIENTATION) && core.isTablet()
+                && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+                getSupportFragmentManager().popBackStack();
+            }
+        }
+
+        if(savedInstanceState.containsKey(KEY_HAS_STARTED)) {
+            this.hasStarted = savedInstanceState.getBoolean(KEY_HAS_STARTED);
+        }
+    }
+
+    private void initializeAfterTutorial() {
         // show change log dialog
+        Core core = new Core(this);
         if (core.isToDisplayChangelog()) core.showChangelog();
+
+        // start notification for recurring transaction
+        if (!isRecurringTransactionStarted) {
+            AppSettings settings = new AppSettings(this);
+            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
+            if (showNotification) {
+                RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
+                notifications.notifyRepeatingTransaction();
+                isRecurringTransactionStarted = true;
+            }
+        }
 
         // notification send broadcast
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
-        if (savedInstanceState == null) {
-            // The code that executes *only* when the activity is started the first time.
+        if (!this.hasStarted) {
             // This is to avoid checking Dropbox on every device rotation.
             checkDropboxForUpdates();
+            this.hasStarted = true;
         }
     }
 
@@ -218,7 +249,7 @@ public class MainActivity
     protected void onStart() {
         super.onStart();
 
-        // check if has passcode and authenticate
+        // check if has pass-code and authenticate
         if (!isAuthenticated) {
             Passcode passcode = new Passcode(getApplicationContext());
             if (passcode.hasPasscode() && !isInAuthentication) {
@@ -290,6 +321,11 @@ public class MainActivity
                 if (!isAuthenticated) {
                     this.finish();
                 }
+                break;
+
+            case REQUEST_TUTORIAL:
+                // Continue initialization.
+                initializeAfterTutorial();
                 break;
         }
     }
@@ -473,6 +509,7 @@ public class MainActivity
         outState.putBoolean(KEY_IS_SHOW_TIPS_DROPBOX2, isShowTipsDropbox2);
         outState.putBoolean(KEY_RECURRING_TRANSACTION, isRecurringTransactionStarted);
         outState.putInt(KEY_ORIENTATION, getResources().getConfiguration().orientation);
+        outState.putBoolean(KEY_HAS_STARTED, this.hasStarted);
 
         super.onSaveInstanceState(outState);
     }
@@ -539,7 +576,7 @@ public class MainActivity
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
-        Core core = new Core(getApplicationContext());
+        Core core = new Core(this);
 
         // show main navigation fragment
         HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
@@ -594,16 +631,6 @@ public class MainActivity
             // enable ActionBar app icon to behave as action to toggle nav drawer
             setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(true);
-        }
-        // start notification for recurring transaction
-        if (!isRecurringTransactionStarted) {
-            AppSettings settings = new AppSettings(this);
-            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
-            if (showNotification) {
-                RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
-                notifications.notifyRepeatingTransaction();
-                isRecurringTransactionStarted = true;
-            }
         }
     }
 
@@ -843,21 +870,20 @@ public class MainActivity
 
     /**
      * Show tutorial on first run.
+     * @return boolean indicator whether the tutorial was displayed or not
      */
-    public void showTutorial() {
-        Context context = getApplicationContext();
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        String key = context.getString(PreferenceConstants.PREF_SHOW_TUTORIAL);
-        // The setting is always false when using the settings this way:
-        //SharedPreferences settings = getSharedPreferences(key, 0);
-        boolean showTutorial = settings.getBoolean(key, true);
-
-        if (!showTutorial) return;
+    public boolean showTutorial() {
+        boolean showTutorial = new AppSettings(this).getBehaviourSettings().getShowTutorial();
+        if (!showTutorial) return false;
 
         // else show tutorial.
         Intent intent = new Intent(this, TutorialActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_TUTORIAL);
+//        startActivity(intent);
         // Tutorial is marked as seen when OK on the last page is clicked.
+
+        // Continued at onActivityResult.
+        return true;
     }
 
     public void checkDropboxForUpdates() {

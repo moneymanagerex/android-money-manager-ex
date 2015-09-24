@@ -19,8 +19,10 @@
 package com.money.manager.ex.tutorial;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,7 +40,10 @@ import me.relex.circleindicator.CircleIndicator;
  * Horizontal Swipe View
  * See: http://developer.android.com/training/implementing-navigation/lateral.html
  */
-public class TutorialActivity extends FragmentActivity {
+public class TutorialActivity
+        extends FragmentActivity {
+
+    public static final int RESULT_OK = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +71,10 @@ public class TutorialActivity extends FragmentActivity {
     }
 
     private void closeTutorial(){
-        // Mark tutorial as seen, in the settings.
-        Context context = getApplicationContext();
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        String key = context.getString(PreferenceConstants.PREF_SHOW_TUTORIAL);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean(key, false);
-        editor.commit();
+        // Mark tutorial as seen.
+        new AppSettings(this).getBehaviourSettings().setShowTutorial(false);
 
+        setResult(Activity.RESULT_OK);
         // close
         finish();
     }

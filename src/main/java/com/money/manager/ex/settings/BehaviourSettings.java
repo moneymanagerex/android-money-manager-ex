@@ -57,4 +57,12 @@ public class BehaviourSettings
         );
         return result;
     }
+
+    public Boolean getShowTutorial() {
+        return get(R.string.pref_show_tutorial, true);
+    }
+
+    public void setShowTutorial(boolean value) {
+        set(R.string.pref_show_tutorial, value);
+    }
 }

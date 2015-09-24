@@ -362,7 +362,7 @@ public class MoneyManagerOpenHelper
     }
 
     private void initDateFormat(SQLiteDatabase database) {
-        Cursor infoDate = null;
+        Cursor infoDate;
 
         // date format
         try {
@@ -378,11 +378,18 @@ public class MoneyManagerOpenHelper
 
             boolean recordExists = (infoDate != null && infoDate.moveToFirst());
 
-            if (infoDate != null) infoDate.close();
+            String existingValue = null;
+            if (infoDate != null) {
+                if (infoDate.moveToNext()) {
+                    // read existing value for comparison
+                    existingValue = infoDate.getString(infoDate.getColumnIndex(InfoService.INFOTABLE_DATEFORMAT));
+                }
+                infoDate.close();
+            }
 
             InfoService infoService = new InfoService(mContext);
 
-            if (!recordExists) {
+            if (!recordExists && !pattern.equalsIgnoreCase(existingValue)) {
                 // check if pattern exists
                 infoService.insertRaw(database, InfoService.INFOTABLE_DATEFORMAT, pattern);
             } else {

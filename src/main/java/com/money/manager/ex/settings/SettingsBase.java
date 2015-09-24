@@ -138,4 +138,10 @@ public abstract class SettingsBase {
         String stringKey = getSettingsKey(key);
         return this.set(stringKey, value);
     }
+
+    public boolean set(Integer key, boolean value) {
+        String stringKey = getSettingsKey(key);
+        return this.set(stringKey, value);
+    }
+
 }

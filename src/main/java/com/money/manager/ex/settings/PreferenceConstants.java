@@ -87,7 +87,7 @@ public class PreferenceConstants {
     // Wiki dropbox
     public static final Integer PREF_DROPBOX_WIKI = R.string.pref_dropbox_wiki;
 
-    public static final Integer PREF_SHOW_TUTORIAL = R.string.pref_show_tutorial;
+//    public static final Integer PREF_SHOW_TUTORIAL = R.string.pref_show_tutorial;
     public static final Integer PREF_DASHBOARD_GROUP_VISIBLE = R.string.pref_dashboard_group_visibility;
 
     // Recent files preferences
