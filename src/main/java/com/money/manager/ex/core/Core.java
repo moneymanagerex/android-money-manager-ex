@@ -633,7 +633,8 @@ public class Core {
     public boolean showChangelog() {
         int currentVersionCode = getCurrentVersionCode(mContext);
         PreferenceManager.getDefaultSharedPreferences(mContext).edit()
-                .putInt(mContext.getString(PreferenceConstants.PREF_LAST_VERSION_KEY), currentVersionCode).commit();
+                .putInt(mContext.getString(PreferenceConstants.PREF_LAST_VERSION_KEY), currentVersionCode)
+                .commit();
 
         // create layout
         View view = LayoutInflater.from(mContext).inflate(R.layout.changelog_layout, null);

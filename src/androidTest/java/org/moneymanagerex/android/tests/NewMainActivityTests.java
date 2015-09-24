@@ -24,21 +24,25 @@ import com.robotium.solo.Solo;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moneymanagerex.android.testhelpers.UiTestHelpers;
 
 /**
  * Robotium tests for the Main Activity.
+ * Runs with JUnit 3.
+ * The tests start with a fresh copy of preferences.
+ *
  * Created by Alen Siljak on 24/09/2015.
  */
-public class MainActivityTests
+public class NewMainActivityTests
         extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private Solo solo;
     private MainActivity testObject;
     private UiTestHelpers helper;
 
-    public MainActivityTests() {
+    public NewMainActivityTests() {
         super(MainActivity.class);
 
     }
@@ -48,10 +52,12 @@ public class MainActivityTests
     public void setUp() throws Exception {
         super.setUp();
 
+        this.helper = new UiTestHelpers(solo);
+        helper.clearPreferences(getInstrumentation().getTargetContext());
+
         solo = new Solo(getInstrumentation(), getActivity());
 
         this.testObject = getActivity();
-        this.helper = new UiTestHelpers(solo);
     }
 
     @After
@@ -64,18 +70,49 @@ public class MainActivityTests
         }
     }
 
-    @Test
-    public void testCreation() {
-        MainActivity activity = new MainActivity();
-
-        assertNotNull(activity);
+    @Ignore
+    public void welcomeScreen() {
+        assertTrue(solo.waitForText("Welcome to MoneyManagerEx", 1, 1000));
     }
 
-    @Test
-    public void welcomeViewDisplayed() {
-        solo.waitForText("Welcome to MoneyManagerEx");
+    @Ignore
+    public void changelog() {
+        assertTrue(solo.waitForActivity(MainActivity.class, 2000));
 
-        //assert
+        assertTrue(solo.waitForDialogToOpen());
+
+        assertTrue(solo.waitForText("Changelog"));
+
+        assertTrue(solo.searchText("OK", true));
+        solo.clickOnText("OK", 1, true);
+    }
+
+    @Ignore
+    public void tutorial() {
+        solo.assertCurrentActivity("wrong activity", MainActivity.class);
+
+        assertTrue(solo.waitForActivity(MainActivity.class, 2000));
+
+//        assertTrue("tutorial activity should open", solo.waitForActivity(TutorialActivity.class, 2000));
+
+//        System.out.println("waiting for text Accounts");
+        assertTrue(solo.waitForText("Accounts", 1, 1000, false, true));
+        assertTrue("can't find text Close", solo.waitForText("Close", 1, 1000, false, true));
+
+    }
+
+    /**
+     * This is the full test for the new installation of the app. Runs all the partial tests.
+     */
+    @Test
+    public void testAll() {
+        // First the tutorial should be shown.
+        tutorial();
+        solo.clickOnText("Close", 1, false);
+
+        changelog();
+
+        welcomeScreen();
     }
 
 }
