@@ -31,8 +31,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
 /**
+ * About the app
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.0.0
  */
 public class AboutActivity extends BaseFragmentActivity implements ActionBar.TabListener {
     @SuppressWarnings("unused")

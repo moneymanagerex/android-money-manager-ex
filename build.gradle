@@ -71,16 +71,21 @@ android {
             manifest.srcFile 'AndroidManifest.xml'
 //            java.srcDirs = ['src']
             java.srcDirs = ['src/main/java']
-            resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
+            resources.srcDirs = ['src/main/java']
+            aidl.srcDirs = ['src/main/java']
+            renderscript.srcDirs = ['src/main/java']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
             //jniLibs.srcDirs = ['libs']
         }
+        // Unit tests
         robolectric {
             java.srcDir file('src/test/java/')
             resources.srcDir file('src/test/resources')
+        }
+        // UI Tests
+        androidTest {
+            java.srcDirs = ['src/androidTest/java']
         }
 
         // Move the tests to tests/java, tests/res, etc...
@@ -177,7 +182,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 //    testCompile 'org.mockito:mockito-core:1.9.5'
 
-    // Robolectric
+    // Robolectric, unit testing
 //    testCompile 'org.hamcrest:hamcrest-core:1.1'
 //    testCompile 'org.hamcrest:hamcrest-library:1.1'
 //    testCompile 'org.hamcrest:hamcrest-integration:1.1'
@@ -201,5 +206,9 @@ dependencies {
     //    androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2'
     //    // Set this dependency to build and run UI Automator tests
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
+
+    // Robotium, UI testing
+//    androidTestCompile 'com.jayway.android.robotium:robotium:5.5.1'
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.4.1'
 }
 

@@ -15,34 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.moneymanagerex.android.uitests;
+package org.moneymanagerex.android.tests;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.transactions.EditTransactionActivity;
+import com.robotium.solo.Solo;
 
 /**
- * First test, using Android instrumentation.
- * Does not really work?
+ * Robotium test.
  */
-public class FirstUiTest
-    extends ActivityInstrumentationTestCase2<MainActivity>
-{
-    public FirstUiTest() {
-        super(MainActivity.class);
-    }
+public class EditTransactionTests
+    extends ActivityInstrumentationTestCase2<EditTransactionActivity> {
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        getActivity();
-    }
+  private Solo solo;
 
-    public void testPhoneIconIsDisplayed() {
-        // When the phone_icon view is available,
-        // check that it is displayed.
-//        onView(withId(R.id.icon))
-//                .check(matches(isDisplayed()));
-    }
+  public EditTransactionTests() {
+    super(EditTransactionActivity.class);
+  }
+
+  public void setUp() throws Exception {
+    solo = new Solo(getInstrumentation(), getActivity());
+  }
+
+
+  @Override
+  public void tearDown() throws Exception {
+    solo.finishOpenedActivities();
+  }
+
+  public void testActivityExists() {
+    EditTransactionActivity activity = getActivity();
+    assertNotNull(activity);
+  }
 }
