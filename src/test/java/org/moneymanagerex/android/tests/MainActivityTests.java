@@ -40,6 +40,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,9 +72,9 @@ public class MainActivityTests {
         // .create().start().resume().visible() .pause().stop().destroy()
         // .restoreInstanceState(savedInstanceState)
 
-        homeFragment = homeActivity.getSupportFragmentManager()
-                .findFragmentByTag(HomeFragment.class.getSimpleName());
-        assertThat(homeFragment).isNotNull();
+//        homeFragment = homeActivity.getSupportFragmentManager()
+//                .findFragmentByTag(HomeFragment.class.getSimpleName());
+//        assertThat(homeFragment).isNotNull();
 
         // Confirm Tutorial is shown.
         ShadowActivity shadowActivity = Shadows.shadowOf(homeActivity);
@@ -91,7 +92,16 @@ public class MainActivityTests {
         assertNotNull("Tutorial close not found", view);
         view.performClick();
 
-        view = homeActivity.findViewById(R.id.buttonAddAccount);
+        //
+        homeFragment = new HomeFragment();
+        SupportFragmentTestUtil.startFragment(homeFragment);
+//        SupportFragmentTestUtil.startVisibleFragment(homeFragment);
+        assertThat(homeFragment).isNotNull();
+        assertThat(homeFragment.getView()).isNotNull();
+        assertThat(homeFragment.getActivity()).isNotNull();
+        assertThat(homeFragment.getActivity()).isInstanceOf(MainActivity.class);
+
+        view = homeFragment.getView().findViewById(R.id.buttonAddAccount);
         assertNotNull("Add Account button not found", view);
         view.performClick();
 

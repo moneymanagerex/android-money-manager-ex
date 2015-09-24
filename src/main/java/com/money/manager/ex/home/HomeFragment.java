@@ -18,6 +18,7 @@
 package com.money.manager.ex.home;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -517,8 +518,9 @@ public class HomeFragment
 
         // clear subTitle of ActionBar
 //        ActionBarActivity activity = (ActionBarActivity) getActivity();
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (activity != null) {
+        Activity parent = getActivity();
+        if (parent instanceof AppCompatActivity) {
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
             activity.getSupportActionBar().setSubtitle(null);
         }
 
