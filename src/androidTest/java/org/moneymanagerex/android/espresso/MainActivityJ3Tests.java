@@ -17,22 +17,11 @@
  */
 package org.moneymanagerex.android.espresso;
 
-import android.support.test.espresso.contrib.DrawerActions;
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
-import com.robotium.solo.Solo;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.UiTestHelpers;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -41,46 +30,53 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * Espresso tests for the Main Activity.
+ * Espresso tests for the Main Activity, using JUnit 3 and instrumentation test case.
+ * This in NOT NEEDED as JUnit 4 tests can run in the emulator equally well.
+ * Displayed here only as a sample.
  * Created by Alen Siljak on 24/09/2015.
  */
-@RunWith(AndroidJUnit4.class)
-public class MainActivityTests {
+public class MainActivityJ3Tests
+        extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    @Rule
-    public final ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
+    private MainActivity testObject;
+//    private UiTestHelpers helper;
 
-    @Before
+    public MainActivityJ3Tests() {
+        super(MainActivity.class);
+
+    }
+
+    @Override
     public void setUp() throws Exception {
+        super.setUp();
+
+//        solo = new Solo(getInstrumentation(), getActivity());
+        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
+
+        this.testObject = getActivity();
+//        this.helper = new UiTestHelpers(solo);
     }
 
-    @After
+    @Override
     public void tearDown() throws Exception {
+        super.tearDown();
+
+        this.testObject = null;
     }
 
-    @Test
-    public void openDashboard() {
-        onView(withText("Money Manager Ex"))
-                .check(matches(isDisplayed()));
+    public void testCreation() {
+        assertNotNull(testObject);
 
-        onView(withId(R.id.drawerLayout))
-                .perform(DrawerActions.open());
-
-//        DrawerActions.open();
-
-        onView(withText("Entities"))
+        onView(withId(R.id.linearLayoutWelcome))
             .check(matches(isDisplayed()));
-
     }
 
-    @Test
-    public void isWelcomeViewDisplayed() {
+    public void testWelcomeViewDisplayed() {
         onView(withText("Welcome to MoneyManagerEx!"))
-                .check(matches(isDisplayed()));
+            .check(matches(isDisplayed()));
     }
 
-    @Test
-    public void isAccountsListDisplayed() {
+    public void testAccountsListDisplayed() {
         onView(withText("Bank Accounts"))
                 .check(matches(isDisplayed()));
     }

@@ -214,3 +214,7 @@ dependencies {
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.4.1'
 }
 
+configurations {
+    androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
+}
+
