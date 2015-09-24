@@ -83,7 +83,9 @@ public class InfoService {
         values.put(TableInfoTable.INFONAME, key);
         values.put(TableInfoTable.INFOVALUE, value);
 
-        return db.update(mInfoTable.getSource(), values, null, null);
+        return db.update(mInfoTable.getSource(), values,
+                TableInfoTable.INFONAME + "=?",
+                new String[] { key });
     }
 
     /**

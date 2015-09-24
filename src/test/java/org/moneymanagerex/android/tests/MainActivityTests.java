@@ -18,6 +18,7 @@
 package org.moneymanagerex.android.tests;
 
 import android.content.Intent;
+import android.view.View;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
@@ -36,6 +37,7 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
+import static junit.framework.Assert.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -62,7 +64,9 @@ public class MainActivityTests {
         // .create().start().resume().visible() .pause().stop().destroy()
         // .restoreInstanceState(savedInstanceState)
 
-        activity.findViewById(R.id.buttonAddAccount).performClick();
+        View addAccountButton = activity.findViewById(R.id.buttonAddAccount);
+        assertNotNull("Add Account button not found", addAccountButton);
+        addAccountButton.performClick();
 
 //        ShadowActivity shadowActivity = Shadows.shadowOf(activity);
 

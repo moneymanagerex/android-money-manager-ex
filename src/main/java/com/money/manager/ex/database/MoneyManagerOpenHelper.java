@@ -372,10 +372,13 @@ public class MoneyManagerOpenHelper
 
             TableInfoTable infoTable = new TableInfoTable();
 
-            infoDate = database.rawQuery("SELECT * FROM " + infoTable.getSource() + " WHERE " + TableInfoTable.INFONAME + "=?",
+            infoDate = database.rawQuery("SELECT * FROM " + infoTable.getSource() +
+                            " WHERE " + TableInfoTable.INFONAME + "=?",
                     new String[]{InfoService.INFOTABLE_DATEFORMAT});
 
             boolean recordExists = (infoDate != null && infoDate.moveToFirst());
+
+            if (infoDate != null) infoDate.close();
 
             InfoService infoService = new InfoService(mContext);
 
@@ -388,9 +391,6 @@ public class MoneyManagerOpenHelper
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "init database, date format");
-        } finally {
-            if (infoDate != null)
-                infoDate.close();
         }
     }
 
