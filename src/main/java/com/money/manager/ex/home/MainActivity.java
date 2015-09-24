@@ -529,7 +529,7 @@ public class MainActivity
     }
 
     public void createFragments(Bundle savedInstanceState) {
-        setContentView(R.layout.main_fragments_activity);
+        setContentView(R.layout.main_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {

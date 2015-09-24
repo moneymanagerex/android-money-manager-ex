@@ -72,7 +72,7 @@ public class MoneyManagerApplication
     ///////////////////////////////////////////////////////////////////////////
     //                         CONSTANTS VALUES                              //
     ///////////////////////////////////////////////////////////////////////////
-//    public static final int TYPE_HOME_CLASSIC = R.layout.main_fragments_activity;
+//    public static final int TYPE_HOME_CLASSIC = R.layout.main_activity;
 //    public static final int TYPE_HOME_ADVANCE = R.layout.main_pager_activity;
     private static final String LOGCAT = "MoneyManagerApplication";
     private static MoneyManagerApplication myInstance;

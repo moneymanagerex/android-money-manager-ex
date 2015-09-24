@@ -18,12 +18,14 @@
 package org.moneymanagerex.android.tests;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountEditActivity;
+import com.money.manager.ex.home.HomeFragment;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 
@@ -64,9 +66,12 @@ public class MainActivityTests {
         // .create().start().resume().visible() .pause().stop().destroy()
         // .restoreInstanceState(savedInstanceState)
 
-        View addAccountButton = activity.findViewById(R.id.buttonAddAccount);
-        assertNotNull("Add Account button not found", addAccountButton);
-        addAccountButton.performClick();
+//        View addAccountButton = activity.findViewById(R.id.buttonAddAccount);
+//        assertNotNull("Add Account button not found", addAccountButton);
+//        addAccountButton.performClick();
+        Fragment homeFragment = activity.getSupportFragmentManager()
+                .findFragmentByTag(HomeFragment.class.getSimpleName());
+        assertNotNull(homeFragment);
 
 //        ShadowActivity shadowActivity = Shadows.shadowOf(activity);
 
