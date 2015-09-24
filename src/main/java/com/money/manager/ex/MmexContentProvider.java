@@ -65,17 +65,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * MoneyManagerProvider is the extension of the base class of Android
+ * MmexContentProvider is the extension of the base class of Android
  * ContentProvider. Its purpose is to implement the read access and modify the
  * application data
  *
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  * @version 1.1.0
  */
-public class MoneyManagerProvider
+public class MmexContentProvider
         extends ContentProvider {
 
-    private static final String LOGCAT = MoneyManagerProvider.class.getSimpleName();
+    private static final String LOGCAT = MmexContentProvider.class.getSimpleName();
     // object definition for the call to check the content
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     // object map for the definition of the objects referenced in the URI
@@ -83,7 +83,7 @@ public class MoneyManagerProvider
     // authority of application
     private static String mAuthority;
 
-    public MoneyManagerProvider() {
+    public MmexContentProvider() {
         super();
 
     }
@@ -93,7 +93,7 @@ public class MoneyManagerProvider
     }
 
     public static void setAuthority(String mAuthority) {
-        MoneyManagerProvider.mAuthority = mAuthority;
+        MmexContentProvider.mAuthority = mAuthority;
     }
 
     @Override

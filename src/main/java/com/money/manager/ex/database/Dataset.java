@@ -26,7 +26,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.MoneyManagerProvider;
+import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.core.ExceptionHandler;
 
 import java.lang.reflect.Constructor;
@@ -186,7 +186,7 @@ public abstract class Dataset
 	 * @return the Uri for the content provider
 	 */
 	public Uri getUri() {
-		String parse = "content://" + MoneyManagerProvider.getAuthority() + "/";
+		String parse = "content://" + MmexContentProvider.getAuthority() + "/";
 		// check if set basepath
 		if (!TextUtils.isEmpty(this.basepath)) {
 			switch (this.type) {

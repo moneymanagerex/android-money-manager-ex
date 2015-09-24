@@ -20,7 +20,9 @@ package org.moneymanagerex.android.tests;
 import android.content.Intent;
 
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 
@@ -30,10 +32,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowActivity;
 
-//import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
 
@@ -43,49 +46,30 @@ import static org.robolectric.Shadows.shadowOf;
  * Created by Alen Siljak on 22/09/2015.
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk=21)
+@Config(constants = BuildConfig.class)
 public class MainActivityTests {
 
     /**
-     * This does not work!
+     * Test the activity lifecycle in unit tests.
+     * See http://robolectric.org/activity-lifecycle/
      */
     @Test
-    public void testRunActivity() {
-//        WelcomeActivity activity = Robolectric.setupActivity(WelcomeActivity.class);
-//        activity.findViewById(R.id.login).performClick();
-//        Intent expectedIntent = new Intent(activity, WelcomeActivity.class);
-//        assertThat(shadowOf(activity).getNextStartedActivity()).isEqualTo(expectedIntent);
+    public void activityLifecycle() {
+        // ActivityController controller
+        MainActivity activity  = Robolectric.buildActivity(MainActivity.class)
+                .create().visible()
+                .get();
+        // .create().start().resume().visible() .pause().stop().destroy()
+        // .restoreInstanceState(savedInstanceState)
 
-        MainActivity activity = Robolectric.setupActivity(MainActivity.class);
-        activity.findViewById(R.id.fab).performClick();
+        activity.findViewById(R.id.buttonAddAccount).performClick();
 
-        Intent expectedIntent = new Intent(activity, EditTransactionActivity.class);
-//        assertThat(shadowOf(activity).getNextStartedActivity()).isEqualTo(expectedIntent);
-//        String blah = shadowOf(activity).getNextStartedActivity().toString();
-        Matcher<Intent> matcher = new Matcher<Intent>() {
-            @Override
-            public boolean matches(Object item) {
-//                return false;
-                return this.equals(item);
-            }
+//        ShadowActivity shadowActivity = Shadows.shadowOf(activity);
 
-            @Override
-            public void describeMismatch(Object item, Description mismatchDescription) {
+//        Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+//        intent.setAction(Constants.INTENT_ACTION_INSERT);
 
-            }
-
-            @Override
-            public void _dont_implement_Matcher___instead_extend_BaseMatcher_() {
-
-            }
-
-            @Override
-            public void describeTo(Description description) {
-
-            }
-        };
-
-        assertThat(shadowOf(activity).getNextStartedActivity(), matcher);
-
+        Intent expectedIntent = new Intent(activity, AccountEditActivity.class);
+        assertThat(shadowOf(activity).getNextStartedActivity()).isEqualTo(expectedIntent);
     }
 }

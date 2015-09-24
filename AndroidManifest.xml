@@ -115,7 +115,7 @@
         </service>
 
         <provider
-            android:name=".MoneyManagerProvider"
+            android:name=".MmexContentProvider"
             android:authorities="com.money.manager.ex.provider"
             android:exported="true" >
         </provider>
