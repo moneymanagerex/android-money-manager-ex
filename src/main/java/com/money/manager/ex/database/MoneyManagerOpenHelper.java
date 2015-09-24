@@ -288,7 +288,9 @@ public class MoneyManagerOpenHelper
     private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
         for (int i = oldVersion + 1; i <= newVersion; i++) {
             // take a id of instance
-            int idResource = mContext.getResources().getIdentifier("database_version_" + Integer.toString(newVersion), "raw", mContext.getPackageName());
+            int idResource = mContext.getResources()
+                    .getIdentifier("database_version_" + Integer.toString(newVersion),
+                            "raw", mContext.getPackageName());
             if (idResource > 0) {
                 executeRawSql(db, idResource);
             }
