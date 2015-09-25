@@ -504,7 +504,6 @@ public class EditTransactionCommonFunctions {
                 // Set first day of the week.
                 int firstDayOfWeek = Calendar.getInstance(mContext.getResources().getConfiguration().locale)
                         .getFirstDayOfWeek();
-//                dialog.setFirstDayOfWeek(Calendar.getInstance().getFirstDayOfWeek());
 //                dialog.setFirstDayOfWeek(Calendar.MONDAY);
                 dialog.setFirstDayOfWeek(firstDayOfWeek);
 

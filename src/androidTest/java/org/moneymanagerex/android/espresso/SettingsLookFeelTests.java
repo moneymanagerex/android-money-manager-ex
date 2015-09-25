@@ -17,70 +17,51 @@
  */
 package org.moneymanagerex.android.espresso;
 
-import android.support.test.espresso.contrib.DrawerActions;
-import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ActivityInstrumentationTestCase2;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.home.MainActivity;
-import com.robotium.solo.Solo;
+import com.money.manager.ex.settings.LookFeelSettingsActivity;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.UiTestHelpers;
+import org.moneymanagerex.android.testhelpers.UiTestHelpersEspresso;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * Espresso tests for the Main Activity.
- * Created by Alen Siljak on 24/09/2015.
+ * Look and Feel settings
+ *
+ * Created by Alen Siljak on 25/09/2015.
  */
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTests {
-
+public class SettingsLookFeelTests {
     @Rule
-    public final ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
+    public final ActivityTestRule<LookFeelSettingsActivity> activityRule =
+            new ActivityTestRule<>(LookFeelSettingsActivity.class);
 
     @Test
-    public void openDashboard() {
-        onView(withText("Money Manager Ex"))
-                .check(matches(isDisplayed()));
-
-        onView(withId(R.id.drawerLayout))
-                .perform(DrawerActions.open());
-
-        onView(withText("Entities"))
+    public void activityOpens() {
+        onView(withText("Look & Feel"))
             .check(matches(isDisplayed()));
-
     }
 
     @Test
-    public void isWelcomeViewDisplayed() {
-        onView(withText("Welcome to MoneyManagerEx!"))
-                .check(matches(isDisplayed()));
-    }
+    public void changeTheme() {
+        onView(withText("Theme"))
+            .check(matches(isDisplayed()))
+            .perform(click());
 
-    @Test
-    public void isAccountsListDisplayed() {
-        onView(withText("Bank Accounts"))
-                .check(matches(isDisplayed()));
-    }
+        onView(withText("Material Dark"))
+            .perform(click());
 
+        // TODO: 25/09/2015 confirm that the color has changed
+
+    }
 }

@@ -29,7 +29,6 @@ import com.money.manager.ex.fragment.PayeeListFragment;
 
 /**
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 0.9.0
  */
 public class PayeeActivity
         extends BaseFragmentActivity {
