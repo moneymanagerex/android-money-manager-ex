@@ -29,6 +29,8 @@ import com.money.manager.ex.home.HomeFragment;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
@@ -37,6 +39,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.util.ActivityController;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,6 +54,22 @@ import static org.robolectric.Shadows.shadowOf;
 @Config(constants = BuildConfig.class)
 public class MainActivityTests {
 
+    private ActivityController<MainActivity> controller;
+    private MainActivity mainActivity;
+
+    @Before
+    public void setUp() {
+        this.controller = UnitTestHelper.getController(MainActivity.class);
+
+        this.mainActivity = UnitTestHelper.getActivity(this.controller);
+
+    }
+
+    @After
+    public void tearDown() {
+        this.controller.destroy();
+    }
+
     /**
      * Test the activity lifecycle in unit tests.
      * Simulates the opening of the app the very first time, initialization of settings,
@@ -60,20 +79,16 @@ public class MainActivityTests {
      */
     @Test
     public void runMainActivity() {
-        MainActivity homeActivity;
         Fragment homeFragment;
         Intent expectedIntent;
 
-        homeActivity = UnitTestHelper.create(MainActivity.class);
-
-        homeFragment = homeActivity.getSupportFragmentManager()
-                .findFragmentByTag(HomeFragment.class.getSimpleName());
+        homeFragment = getHomeFragment();
         assertThat(homeFragment).isNotNull();
 
         // Confirm Tutorial is shown.
-        ShadowActivity shadowActivity = Shadows.shadowOf(homeActivity);
+        ShadowActivity shadowActivity = Shadows.shadowOf(mainActivity);
         expectedIntent = shadowActivity.peekNextStartedActivityForResult().intent;
-        assertThat(expectedIntent.getComponent()).isEqualTo(new ComponentName(homeActivity, TutorialActivity.class));
+        assertThat(expectedIntent.getComponent()).isEqualTo(new ComponentName(mainActivity, TutorialActivity.class));
         assertThat(shadowActivity.getNextStartedActivity()).isEqualTo(expectedIntent);
 
         TutorialActivity tutorialActivity = Robolectric.buildActivity(TutorialActivity.class)
@@ -86,11 +101,8 @@ public class MainActivityTests {
         assertNotNull("Tutorial close not found", view);
         view.performClick();
 
-        // Home Fragment is visible.
-        assertThat(homeFragment).isNotNull();
-        assertThat(homeFragment.getView()).isNotNull();
-        assertThat(homeFragment.getActivity()).isNotNull();
-        assertThat(homeFragment.getActivity()).isInstanceOf(MainActivity.class);
+        // Home Fragment is set-up.
+        testHomeFragment(homeFragment);
 
         // Click Add New Account button.
         view = homeFragment.getView().findViewById(R.id.buttonAddAccount);
@@ -98,8 +110,38 @@ public class MainActivityTests {
         view.performClick();
 
         // Add Account opens up.
-        expectedIntent = new Intent(homeActivity, AccountEditActivity.class);
+        expectedIntent = new Intent(mainActivity, AccountEditActivity.class);
         expectedIntent.setAction(Intent.ACTION_INSERT);
-        assertThat(shadowOf(homeActivity).getNextStartedActivity()).isEqualTo(expectedIntent);
+        assertThat(shadowOf(mainActivity).getNextStartedActivity()).isEqualTo(expectedIntent);
+    }
+
+    @Test
+    public void pauseAndResume() {
+        Fragment homeFragment = getHomeFragment();
+
+        testHomeFragment(homeFragment);
+
+        this.controller.pause().resume();
+
+        testHomeFragment(homeFragment);
+    }
+
+    // Private
+
+    private Fragment getHomeFragment() {
+        Fragment homeFragment = mainActivity.getSupportFragmentManager()
+                .findFragmentByTag(HomeFragment.class.getSimpleName());
+        return homeFragment;
+    }
+
+    /**
+     * Confirm that the fragment is initialized, has a view, and athached to the MainActivity.
+     * @param homeFragment
+     */
+    private void testHomeFragment(Fragment homeFragment) {
+        assertThat(homeFragment).isNotNull();
+        assertThat(homeFragment.getView()).isNotNull();
+        assertThat(homeFragment.getActivity()).isNotNull();
+        assertThat(homeFragment.getActivity()).isInstanceOf(MainActivity.class);
     }
 }

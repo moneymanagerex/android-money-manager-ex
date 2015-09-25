@@ -29,16 +29,24 @@ import org.robolectric.util.ActivityController;
  * Created by Alen Siljak on 25/09/2015.
  */
 public class UnitTestHelper {
-    public static <T extends Activity> T create(Class<T> activityClass) {
-        // standard set of calls until the activity is displayed.
-        return Robolectric.buildActivity(activityClass)
-                .create().visible().start().get();
-
-        // suggested:
-        //                .attach().create().visible().start().resume().get();
-
-        // available methods:
-        // .create().start().resume().visible() - .pause().stop().destroy()
-
+    public static <T extends Activity> ActivityController<T> getController(Class<T> activityClass) {
+        return Robolectric.buildActivity(activityClass);
     }
+
+    public static <T extends Activity> T getActivity(ActivityController<T> controller) {
+        return controller.create().visible().start().get();
+    }
+
+//    public static <T extends Activity> T create(Class<T> activityClass) {
+//        // standard set of calls until the activity is displayed.
+//        return Robolectric.buildActivity(activityClass)
+//                .create().visible().start().get();
+//
+//        // suggested:
+//        //                .attach().create().visible().start().resume().get();
+//
+//        // available methods:
+//        // .create().start().resume().visible() - .pause().stop().destroy()
+//
+//    }
 }
