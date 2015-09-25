@@ -19,30 +19,39 @@ package org.moneymanagerex.android.tests;
 
 import android.content.Context;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.investment.IPriceUpdaterFeedback;
+import com.money.manager.ex.investment.IYqlService;
 import com.money.manager.ex.investment.YqlQueryGenerator;
-import com.money.manager.ex.investment.YqlSecurityPriceUpdater;
 import com.money.manager.ex.investment.YqlSecurityPriceUpdaterRetrofit;
-
-import junit.framework.Assert;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.FakePriceListener;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
+
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.http.Query;
 
 import static com.jayway.awaitility.Awaitility.await;
 import static junit.framework.Assert.assertEquals;
@@ -89,58 +98,102 @@ public class YqlSecurityPriceUpdaterTest {
     }
 
     /**
-     * Need to finish this.
-     */
-    @Test
-    public void testParseResults() {
-//        String symbol = "EL4X.DE";
-//        // todo: get a proper result
-//        final String jsonResult = "{\"query\":{\"count\":0,\"created\":\"2015-09-23T10:01:14Z\",\"lang\":\"en-US\",\"results\":null}}";
-//        PriceUpdatedListener listener = new PriceUpdatedListener();
-//        testObject = getTestObjectWithListener(listener);
-//
-//        // invoke parser
-//        testObject.onContentDownloaded(jsonResult);
-//        // get the results
-//        assertEquals(listener.symbol, symbol);
-    }
-
-    /**
      * Incomplete.
      * Test fetching prices using Retrofit library.
      */
     @Test
     public void downloadPriceWithRetrofit() {
+        // Listener
+        FakePriceListener listener = new FakePriceListener();
+        this.testObject = getTestObjectWithListener(listener);
+
         List<String> symbols = getSymbol();
 
+        JsonArray quote = new JsonArray();
+        quote.add(getPriceObject("EL4X.DE", "36.95", "EUR", "09/29/2015"));
+
+        IYqlService fakeYql = getFakeYqlService(quote);
+        this.testObject.setService(fakeYql);
+
+        // make the call
         this.testObject.downloadPrices(symbols);
 
-        Robolectric.flushBackgroundThreadScheduler();
-        ShadowApplication.runBackgroundTasks();
-
-//        await()
+//        Robolectric.flushBackgroundThreadScheduler();
+//        ShadowApplication.runBackgroundTasks();
+//        await();
 //            .atMost(15, TimeUnit.SECONDS)
 //            .until(responseReceived());
 
-//        String actual = this.testObject.response;
+        assertTrue(StringUtils.isNotEmpty(listener.symbol));
+        assertEquals("EL4X.DE", listener.symbol);
 
-//        assertTrue(StringUtils.isNotEmpty(actual));
+        assertTrue(listener.price != null);
+        assertEquals(MoneyFactory.fromString("36.95"), listener.price);
 
-        // todo: need to find a way to get async result.
-        assertTrue(false);
+        assertTrue(listener.date != null);
+
+        Calendar date = Calendar.getInstance();
+        date.set(Calendar.DATE, 29);
+        date.set(Calendar.MONTH, 9-1);
+        date.set(Calendar.YEAR, 2015);
+        date.set(Calendar.HOUR, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+        assertEquals(date.getTime(), listener.date);
     }
 
     // Helpers
 
-//    private Callable<Boolean> responseReceived() {
-//        return new Callable<Boolean>() {
-//            @Override
-//            public Boolean call() throws Exception {
-////                return null;
-//            return YqlSecurityPriceUpdaterTest.this.testObject.response != null;
-//            }
-//        };
-//    }
+    private JsonObject getPriceObject(String symbol, String price, String currency, String date) {
+        JsonObject jsonPrice = new JsonObject();
+        jsonPrice.addProperty("symbol", symbol);
+        jsonPrice.addProperty("LastTradePriceOnly", price);
+        jsonPrice.addProperty("Currency", currency);
+        jsonPrice.addProperty("LastTradeDate", date);
+        return jsonPrice;
+    }
+
+    private IYqlService getFakeYqlService(JsonArray quote) {
+        JsonObject results = new JsonObject();
+        results.add("quote", quote);
+
+        JsonObject query = new JsonObject();
+        query.add("results", results);
+
+        final JsonObject fakeElement = new JsonObject();
+        fakeElement.add("query", query);
+        final Response<JsonElement> fakeResponse = Response.success((JsonElement) fakeElement);
+
+        IYqlService fakeYql = new IYqlService() {
+            @Override
+            public Call<JsonElement> getPrices(@Query("q") String query) {
+                return new Call<JsonElement>() {
+                    @Override
+                    public Response<JsonElement> execute() throws IOException {
+                        return null;
+                    }
+
+                    @Override
+                    public void enqueue(Callback<JsonElement> callback) {
+                        callback.onResponse(fakeResponse);
+                    }
+
+                    @Override
+                    public void cancel() {
+
+                    }
+
+                    @Override
+                    public Call<JsonElement> clone() {
+                        return null;
+                    }
+                };
+            }
+        };
+
+        return fakeYql;
+    }
 
     private List<String> getSymbols() {
         List<String> symbols = new ArrayList<>();

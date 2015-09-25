@@ -59,6 +59,7 @@ public class YqlSecurityPriceUpdaterRetrofit
     private Context mContext;
     private IPriceUpdaterFeedback mFeedback;
     private ProgressDialog mDialog = null;
+    private IYqlService yqlService;
 
     // https://query.yahooapis.com/v1/public/yql
     // ?q=... url escaped
@@ -80,7 +81,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         YqlQueryGenerator queryGenerator = new YqlQueryGenerator();
         String query = queryGenerator.getQueryFor(symbols);
 
-        IYqlService yql = YqlService.getService();
+        IYqlService yql = getService();
 
         // Async response handler.
         Callback<JsonElement> callback = new Callback<JsonElement>() {
@@ -115,8 +116,9 @@ public class YqlSecurityPriceUpdaterRetrofit
         // parse Json results
         List<SecurityPriceModel> pricesList = getPricesFromJson(response.getAsJsonObject());
 
+        // Notify the listener via callback.
         for (SecurityPriceModel model : pricesList) {
-            mDialog.incrementProgressBy(1);
+//            mDialog.incrementProgressBy(1);
 
             // Notify the caller by invoking the interface method.
             mFeedback.onPriceDownloaded(model.symbol, model.price, model.date);
@@ -220,4 +222,14 @@ public class YqlSecurityPriceUpdaterRetrofit
         mDialog.show();
     }
 
+    public IYqlService getService() {
+        if (this.yqlService == null) {
+            this.yqlService = YqlService.getService();
+        }
+        return this.yqlService;
+    }
+
+    public void setService(IYqlService service) {
+        this.yqlService = service;
+    }
 }
