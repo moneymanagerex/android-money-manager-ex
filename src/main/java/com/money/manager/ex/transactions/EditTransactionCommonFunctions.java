@@ -473,8 +473,7 @@ public class EditTransactionCommonFunctions {
             viewHolder.txtSelectDate.setTag(Calendar.getInstance().getTime());
         }
         final DateUtils dateUtils = new DateUtils(mContext);
-        dateUtils.formatExtendedDate(viewHolder.txtSelectDate,
-                (Date) viewHolder.txtSelectDate.getTag());
+        dateUtils.formatExtendedDate(viewHolder.txtSelectDate, (Date) viewHolder.txtSelectDate.getTag());
 
         viewHolder.txtSelectDate.setOnClickListener(new View.OnClickListener() {
             public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -501,8 +500,14 @@ public class EditTransactionCommonFunctions {
                 DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
                         calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
                 dialog.setCloseOnSingleTapDay(true);
+
+                // Set first day of the week.
+                int firstDayOfWeek = Calendar.getInstance(mContext.getResources().getConfiguration().locale)
+                        .getFirstDayOfWeek();
 //                dialog.setFirstDayOfWeek(Calendar.getInstance().getFirstDayOfWeek());
-                dialog.setFirstDayOfWeek(Calendar.MONDAY);
+//                dialog.setFirstDayOfWeek(Calendar.MONDAY);
+                dialog.setFirstDayOfWeek(firstDayOfWeek);
+
                 dialog.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });

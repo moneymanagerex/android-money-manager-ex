@@ -18,6 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="September 21, 2015" versionName="2.20.4">
+        <changelogtext>First day of the week in calendar picker used from the currently selected locale.</changelogtext>
         <changelogtext>PayPal donation page language set to English explicitly.</changelogtext>
         <changelogtext>Using maximum 4 decimal places in numeric input dialog.</changelogtext>
         <changelogtext>Improved generation of new databases.</changelogtext>
