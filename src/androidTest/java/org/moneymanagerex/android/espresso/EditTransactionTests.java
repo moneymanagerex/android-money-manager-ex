@@ -40,8 +40,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * Espresso version of the tests for the Main Activity.
- * The tests start with a fresh copy of preferences.
+ * Edit transaction tests.
  *
  * Created by Alen Siljak on 24/09/2015.
  */
@@ -51,6 +50,7 @@ public class EditTransactionTests {
     @Rule
     public final ActivityTestRule<EditTransactionActivity> activityRule =
             new ActivityTestRule<>(EditTransactionActivity.class);
+
     private UiTestHelpersEspresso helper;
 
     @Before
@@ -66,8 +66,11 @@ public class EditTransactionTests {
 
     @Test
     public void run() {
-        onView(withText("OK"))
-            .check(matches(isDisplayed()));
+//        onView(withText("OK"))
+//            .check(matches(isDisplayed()));
+        onView(withText("Cancel"))
+            .check(matches(isDisplayed()))
+            .perform(click());
 
     }
 

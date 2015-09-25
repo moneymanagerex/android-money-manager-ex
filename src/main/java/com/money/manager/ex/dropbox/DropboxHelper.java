@@ -99,8 +99,8 @@ public class DropboxHelper {
         return mHelper;
     }
 
-    public static DropboxHelper getInstance() throws Exception {
-        if (mHelper == null) throw new Exception("Dropbox Helper not yet instantiated");
+    public static DropboxHelper getInstance() {
+//        if (mHelper == null) throw new Exception("Dropbox Helper not yet instantiated");
 
         return mHelper;
     }

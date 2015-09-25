@@ -18,8 +18,10 @@
 package org.moneymanagerex.android.testhelpers;
 
 import android.app.Activity;
+import android.app.Application;
 
 import org.robolectric.Robolectric;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.util.ActivityController;
 
 /**
@@ -35,6 +37,10 @@ public class UnitTestHelper {
 
     public static <T extends Activity> T getActivity(ActivityController<T> controller) {
         return controller.create().visible().start().get();
+    }
+
+    public static Application getApplication() {
+        return RuntimeEnvironment.application;
     }
 
 //    public static <T extends Activity> T create(Class<T> activityClass) {

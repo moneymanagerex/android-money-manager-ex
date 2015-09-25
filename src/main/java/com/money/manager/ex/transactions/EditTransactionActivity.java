@@ -56,7 +56,6 @@ import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -88,12 +87,8 @@ public class EditTransactionActivity
 
         mCommonFunctions = new EditTransactionCommonFunctions(getApplicationContext(), this);
 
-        try {
-            DropboxHelper.getInstance();
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.handle(e, "getting dropbox instance");
-
+        DropboxHelper dropbox = DropboxHelper.getInstance();
+        if (dropbox == null) {
             // create helper
             DropboxHelper.getInstance(getApplicationContext());
         }

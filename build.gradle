@@ -171,7 +171,7 @@ dependencies {
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.0'
     // google play services
-    compile 'com.google.android.gms:play-services-analytics:7.8.0'
+    compile 'com.google.android.gms:play-services-analytics:8.1.0'
     // Money, to be added in Java 9
 //        compile 'org.javamoney:moneta:1.0'
     //    compile 'javax.money:money-api:1.0'
