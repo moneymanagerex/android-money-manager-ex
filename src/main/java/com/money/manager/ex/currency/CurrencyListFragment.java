@@ -580,7 +580,7 @@ public class CurrencyListFragment
         }
 
         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity(), this);
-        updater.updatePrices(currencySymbols);
+        updater.downloadPrices(currencySymbols);
     }
 
     private boolean updateCurrencyFromYahoo(int toCurrencyId) {

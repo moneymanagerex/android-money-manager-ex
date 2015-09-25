@@ -62,7 +62,7 @@ public class YahooSecurityPriceUpdater
     /**
      * Update prices for all the symbols in the list.
      */
-    public void updatePrices(List<String> symbols) {
+    public void downloadPrices(List<String> symbols) {
         if (symbols == null) return;
 
         String[] symbolsArray = symbols.toArray(new String[symbols.size()]);

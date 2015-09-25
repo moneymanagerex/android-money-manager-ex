@@ -10,5 +10,5 @@ public interface ISecurityPriceUpdater {
      * Download prices for all the securities and update the values.
      * Store the values in the history table.
      */
-    void updatePrices(List<String> symbols);
+    void downloadPrices(List<String> symbols);
 }

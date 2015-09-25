@@ -51,7 +51,6 @@ import com.shamanland.fonticon.FontIconDrawable;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -372,7 +371,7 @@ public class WatchlistFragment
         symbols.add(symbol);
 
         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(mContext, this);
-        updater.updatePrices(symbols);
+        updater.downloadPrices(symbols);
     }
 
     private void purgePriceHistory() {
@@ -424,7 +423,7 @@ public class WatchlistFragment
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
                                 .getUpdaterInstance(getContext(), WatchlistFragment.this);
-                        updater.updatePrices(Arrays.asList(symbols));
+                        updater.downloadPrices(Arrays.asList(symbols));
 
                         dialog.dismiss();
                     }

@@ -63,10 +63,14 @@ public class ExceptionHandler
     private Object mHost;
 
     public void handle(Exception ex, String errorMessage) {
+        this.handle((Throwable) ex, errorMessage);
+    }
+
+    public void handle(Throwable t, String errorMessage) {
         errorMessage = "Error " + errorMessage;
 
-        Log.e(getLogcat(), errorMessage + ": " + ex.getLocalizedMessage());
-        ex.printStackTrace();
+        Log.e(getLogcat(), errorMessage + ": " + t.getLocalizedMessage());
+        t.printStackTrace();
         showMessage(errorMessage);
     }
 

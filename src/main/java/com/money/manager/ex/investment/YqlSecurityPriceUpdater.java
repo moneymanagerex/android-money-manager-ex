@@ -20,6 +20,7 @@ package com.money.manager.ex.investment;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -40,6 +41,12 @@ import java.util.List;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
+
+import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Updates security prices from Yahoo Finance using YQL. All the work is done in the
@@ -54,6 +61,8 @@ public class YqlSecurityPriceUpdater
         mContext = context;
         mFeedback = feedback;
     }
+
+    public String response;
 
     private Context mContext;
     private IPriceUpdaterFeedback mFeedback;
@@ -71,7 +80,7 @@ public class YqlSecurityPriceUpdater
     /**
      * Update prices for all the symbols in the list.
      */
-    public void updatePrices(List<String> symbols) {
+    public void downloadPrices(List<String> symbols) {
         if (symbols == null) return;
 
         // Get varargs from list.
@@ -82,7 +91,41 @@ public class YqlSecurityPriceUpdater
         TextDownloaderTask downloader = new TextDownloaderTask(mContext, this);
         downloader.execute(url);
 
+        // todo: replace with Retrofit
+
         // Async call. The prices are updated in onContentDownloaded.
+    }
+
+    public void downloadPricesRetrofit(List<String> symbols) {
+        if (symbols == null) return;
+        if (symbols.size() == 0) return;
+
+        String query = getYqlQueryFor(symbols);
+
+        IYqlService yql = YqlService.getService();
+
+//        yql.getPrices(query);
+        List<SecurityPriceModel> prices = null;
+        try {
+//            prices = yql.getPrices(query).execute().body();
+            yql.getPrices(query).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Response<String> response) {
+                    Log.d("success", "success");
+
+                    YqlSecurityPriceUpdater.this.response = response.body();
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                    handler.handle(t, "fetching price");
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "fetching prices");
+        }
     }
 
     @Override
@@ -128,6 +171,15 @@ public class YqlSecurityPriceUpdater
         }
     }
 
+    public String getYqlQueryFor(List<String> symbols) {
+        // http://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line
+        List<String> fields = Arrays.asList("symbol", "LastTradePriceOnly", "LastTradeDate", "Currency");
+
+        String query = getYqlQueryFor(mSource, fields, symbols);
+
+        return query;
+    }
+
     public String getYqlQueryFor(String source, List<String> fields, List<String> symbols) {
         // append quotes to all the symbols
         for (int i = 0; i < symbols.size(); i++) {
@@ -148,11 +200,7 @@ public class YqlSecurityPriceUpdater
     }
 
     private String getPriceUrl(List<String> symbols) {
-
-        // http://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line
-        List<String> fields = Arrays.asList("symbol", "LastTradePriceOnly", "LastTradeDate", "Currency");
-        String query = getYqlQueryFor(mSource, fields, symbols);
-
+        String query = getYqlQueryFor(symbols);
 
         String uri = Uri.parse(mBaseUri)
                 .buildUpon()

@@ -25,21 +25,26 @@ import com.money.manager.ex.investment.YqlSecurityPriceUpdater;
 
 import junit.framework.Assert;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.PriceUpdatedListener;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowApplication;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
+import static com.jayway.awaitility.Awaitility.await;
+import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Tests for YQL security downloader.
@@ -51,18 +56,18 @@ import static org.junit.Assert.assertEquals;
 public class YqlSecurityPriceUpdaterTest {
 
     private Context context;
-    private YqlSecurityPriceUpdater _testObject;
+    private YqlSecurityPriceUpdater testObject;
 
     @Before
     public void setUp() throws Exception {
         this.context = RuntimeEnvironment.application;
 
-        _testObject = new YqlSecurityPriceUpdater(this.context, null);
+        testObject = new YqlSecurityPriceUpdater(this.context, null);
     }
 
     @After
     public void tearDown() throws Exception {
-        _testObject = null;
+        testObject = null;
     }
 
     @Test
@@ -73,23 +78,26 @@ public class YqlSecurityPriceUpdaterTest {
 
         String expected = "select symbol,LastTradePriceOnly,LastTradeDate,Currency from yahoo.finance.quote where symbol in (\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")";
 
-        String actual = _testObject.getYqlQueryFor(source, fields, symbols);
+        String actual = testObject.getYqlQueryFor(source, fields, symbols);
 
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * Need to finish this.
+     */
     @Test
     public void testParseResults() {
-        String symbol = "EL4X.DE";
-        // todo: get a proper result
-        final String jsonResult = "{\"query\":{\"count\":0,\"created\":\"2015-09-23T10:01:14Z\",\"lang\":\"en-US\",\"results\":null}}";
-        PriceUpdatedListener listener = new PriceUpdatedListener();
-        _testObject = getTestObjectWithListener(listener);
-
-        // invoke parser
-        _testObject.onContentDownloaded(jsonResult);
-        // get the results
-        assertEquals(listener.symbol, symbol);
+//        String symbol = "EL4X.DE";
+//        // todo: get a proper result
+//        final String jsonResult = "{\"query\":{\"count\":0,\"created\":\"2015-09-23T10:01:14Z\",\"lang\":\"en-US\",\"results\":null}}";
+//        PriceUpdatedListener listener = new PriceUpdatedListener();
+//        testObject = getTestObjectWithListener(listener);
+//
+//        // invoke parser
+//        testObject.onContentDownloaded(jsonResult);
+//        // get the results
+//        assertEquals(listener.symbol, symbol);
     }
 
     /**
@@ -98,17 +106,47 @@ public class YqlSecurityPriceUpdaterTest {
     @Test
     public void testPriceDownload() {
         List<String> symbols = getSymbols();
-        //IPriceUpdaterFeedback listener =
 
-        _testObject.updatePrices(symbols);
+        testObject.downloadPrices(symbols);
 
         // todo: get/test the results
+//        Robolectric.flushBackgroundThreadScheduler();
+
+        assertTrue(false);
+    }
+
+    /**
+     * Incomplete.
+     * Test fetching prices using Retrofit library.
+     */
+    @Test
+    public void downloadPriceWithRetrofit() {
+        List<String> symbols = getSymbol();
+
+        this.testObject.downloadPricesRetrofit(symbols);
+
         Robolectric.flushBackgroundThreadScheduler();
+        ShadowApplication.runBackgroundTasks();
 
+        await().until(responseReceived());
+//        await();
 
+        String actual = this.testObject.response;
+
+        assertTrue(StringUtils.isNotEmpty(actual));
     }
 
     // Helpers
+
+    private Callable<Boolean> responseReceived() {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+//                return null;
+                return YqlSecurityPriceUpdaterTest.this.testObject.response != null;
+            }
+        };
+    }
 
     private List<String> getSymbols() {
         List<String> symbols = new ArrayList<>();
@@ -118,8 +156,16 @@ public class YqlSecurityPriceUpdaterTest {
         return symbols;
     }
 
+    private List<String> getSymbol() {
+        List<String> symbols = new ArrayList<>();
+
+        symbols.add("EL4X.DE");
+
+        return symbols;
+    }
+
     private YqlSecurityPriceUpdater getTestObjectWithListener(IPriceUpdaterFeedback listener) {
-        _testObject = new YqlSecurityPriceUpdater(this.context, listener);
-        return _testObject;
+        testObject = new YqlSecurityPriceUpdater(this.context, listener);
+        return testObject;
     }
 }
