@@ -136,8 +136,10 @@ public class EditTransactionTests {
 
         selectCategory();
 
-        // TODO: 25/09/2015 change date
+        // TODO: change date
 
+        // TODO: 25/09/2015 save
+        // TODO: 25/09/2015 check that the transaction exists with today's date
     }
 
     @Test
@@ -193,7 +195,10 @@ public class EditTransactionTests {
                 .check(matches(withText(category)));
     }
 
-    @Test
+    /**
+     * Can't change the date programmatically. :(
+     */
+//    @Test
     public void changeDate() {
         Calendar calendar = Calendar.getInstance();
 //        Date today = calendar.getTime();
@@ -203,20 +208,23 @@ public class EditTransactionTests {
                 .perform(click());
 
         // date selector opens
-        onView(withText("Done"))
-                .check(matches(isDisplayed()));
         // today's name is displayed on top of calendar picker
         String dayName = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
         onView(withText(equalToIgnoringCase(dayName)))
                 .check(matches(isDisplayed()));
 //        onView(withText("17"))
 //                .perform(click());
+        // todo: need to find how to change the date.
 //        onView(withClassName(equalTo(DatePickerDialog.class.getName())))
 //            .perform(setDate(
 //                    calendar.get(Calendar.YEAR),
 //                    calendar.get(Calendar.MONTH),
 //                    calendar.get(Calendar.DATE)
 //            ));
+        // com.fourmob.datetimepicker.date.DayPickerView
+        onView(withText("Done"))
+                .check(matches(isDisplayed()))
+                .perform(click());
 
         String longDate = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
 
