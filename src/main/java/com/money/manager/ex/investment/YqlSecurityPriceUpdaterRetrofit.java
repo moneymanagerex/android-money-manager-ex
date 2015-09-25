@@ -18,25 +18,17 @@
 package com.money.manager.ex.investment;
 
 import android.content.Context;
-import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -46,27 +38,25 @@ import retrofit.Callback;
 import retrofit.Response;
 
 /**
- * Updates security prices from Yahoo Finance using YQL. All the work is done in the
- * background task.
- * References:
- * http://www.jarloo.com/yahoo_finance/
+ * Updates security prices from Yahoo Finance using YQL. Using Retrofit for network access.
  */
 public class YqlSecurityPriceUpdaterRetrofit
-        implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
+        implements ISecurityPriceUpdater {
 
+    /**
+     *
+     * @param context Executing context
+     * @param feedback The object that will receive the notification after the prices are
+     *                 loaded asynchronously.
+     */
     public YqlSecurityPriceUpdaterRetrofit(Context context, IPriceUpdaterFeedback feedback) {
         mContext = context;
         mFeedback = feedback;
     }
 
-    public String response;
-
     private Context mContext;
     private IPriceUpdaterFeedback mFeedback;
-//    private String mSource = "yahoo.finance.quote";
-    private final String mSource = "yahoo.finance.quotes";
-    //
-    private final String mBaseUri = "https://query.yahooapis.com/v1/public/yql";
+
     // https://query.yahooapis.com/v1/public/yql
     // ?q=... url escaped
     // &format=json
@@ -81,16 +71,16 @@ public class YqlSecurityPriceUpdaterRetrofit
         if (symbols == null) return;
         if (symbols.size() == 0) return;
 
-        String query = getYqlQueryFor(symbols);
+        YqlQueryGenerator queryGenerator = new YqlQueryGenerator();
+        String query = queryGenerator.getQueryFor(symbols);
 
         IYqlService yql = YqlService.getService();
 
+        // Async response handler.
         Callback<JsonElement> callback = new Callback<JsonElement>() {
             @Override
             public void onResponse(Response<JsonElement> response) {
-                Log.d("success", "success");
-
-                YqlSecurityPriceUpdaterRetrofit.this.response = response.body().toString();
+                onContentDownloaded(response.body());
             }
 
             @Override
@@ -100,10 +90,10 @@ public class YqlSecurityPriceUpdaterRetrofit
             }
         };
 
-//        yql.getPrices(query);
-        List<SecurityPriceModel> prices = null;
         try {
+            // This would be the synchronous call.
 //            prices = yql.getPrices(query).execute().body();
+
             yql.getPrices(query).enqueue(callback);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
@@ -111,106 +101,35 @@ public class YqlSecurityPriceUpdaterRetrofit
         }
     }
 
-    @Override
-    public String getUrlForSymbol(String symbol) {
-        String result = getPriceUrl(Collections.singletonList(symbol));
-        return result;
-    }
-
     /**
-     * Called from CSV downloader on progress update.
-     * @param progress progress
-     */
-    @Override
-    public void onProgressUpdate(String progress) {
-        // progress is a number, percentage probably.
-//        Log.d(LOGCAT, progress);
-    }
-
-    /**
-     * Called from the Text Downloader when the file is downloaded and the contents read.
+     * Called when the file is downloaded and the contents read.
      * Here we have all the prices.
-     * @param content The content received from the given url.
      */
-    @Override
-    public void onContentDownloaded(String content) {
-        // validation
-        if (TextUtils.isEmpty(content)) {
-            throw new IllegalArgumentException("Downloadeded contents are empty");
-        }
-
+    public void onContentDownloaded(JsonElement response) {
         // parse Json results
-        List<SecurityPriceModel> pricesList = new ArrayList<>();
-        try {
-            pricesList = parseDownloadedJson(content);
-        } catch (JSONException e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "parsing JSON");
-        }
+        List<SecurityPriceModel> pricesList = getPricesFromJson(response.getAsJsonObject());
 
         for (SecurityPriceModel model : pricesList) {
             // Notify the caller by invoking the interface method.
             mFeedback.onPriceDownloaded(model.symbol, model.price, model.date);
         }
+
+        ExceptionHandler handler = new ExceptionHandler(mContext, this);
+        handler.showMessage(mContext.getString(R.string.all_prices_updated));
     }
 
-    public String getYqlQueryFor(List<String> symbols) {
-        // http://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line
-        List<String> fields = Arrays.asList("symbol", "LastTradePriceOnly", "LastTradeDate", "Currency");
-
-        String query = getYqlQueryFor(mSource, fields, symbols);
-
-        return query;
-    }
-
-    public String getYqlQueryFor(String source, List<String> fields, List<String> symbols) {
-        // append quotes to all the symbols
-        for (int i = 0; i < symbols.size(); i++) {
-            String symbol = symbols.get(i);
-            symbol = "\"" + symbol + "\"";
-            symbols.set(i, symbol);
-        }
-
-        String query = "select ";
-        query += StringUtils.join(fields, ',');     // fields
-        query += " from ";
-        query += source;    // table
-        query += " where symbol in (";
-        query += StringUtils.join(symbols, ",");
-        query += ")";
-
-        return query;
-    }
-
-    private String getPriceUrl(List<String> symbols) {
-        String query = getYqlQueryFor(symbols);
-
-        String uri = Uri.parse(mBaseUri)
-                .buildUpon()
-                .appendQueryParameter("q", query)
-                .appendQueryParameter("format", "json")
-                .appendQueryParameter("env", "store://datatables.org/alltableswithkeys")
-                .build()
-                .toString();
-
-        return uri;
-    }
-
-    private List<SecurityPriceModel> parseDownloadedJson(String content) throws JSONException {
+    private List<SecurityPriceModel> getPricesFromJson(JsonObject root) {
         ArrayList<SecurityPriceModel> result = new ArrayList<>();
 
-        JSONObject root = new JSONObject(content);
-
         // check whether there is only one item or more
-        Object quoteObject = root.getJSONObject("query").getJSONObject("results").get("quote");
-        if (quoteObject instanceof JSONArray) {
-            JSONArray quotes = root
-                    .getJSONObject("query")
-                    .getJSONObject("results")
-                    .getJSONArray("quote");
+        JsonElement quoteElement = root.get("query").getAsJsonObject()
+            .get("results").getAsJsonObject()
+            .get("quote");
+        if (quoteElement instanceof JsonArray) {
+            JsonArray quotes = quoteElement.getAsJsonArray();
 
-            for (int i = 0; i < quotes.length(); i++) {
-                JSONObject quote = quotes.optJSONObject(i);
+            for (int i = 0; i < quotes.size(); i++) {
+                JsonObject quote = quotes.get(i).getAsJsonObject();
                 // process individual quote
                 SecurityPriceModel priceModel = getSecurityPriceFor(quote);
                 if (priceModel == null) continue;
@@ -219,10 +138,7 @@ public class YqlSecurityPriceUpdaterRetrofit
             }
         } else {
             // Single quote
-            JSONObject quote = root
-                    .getJSONObject("query")
-                    .getJSONObject("results")
-                    .getJSONObject("quote");
+            JsonObject quote = quoteElement.getAsJsonObject();
 
             SecurityPriceModel priceModel = getSecurityPriceFor(quote);
             if (priceModel != null) {
@@ -233,15 +149,14 @@ public class YqlSecurityPriceUpdaterRetrofit
         return result;
     }
 
-    private SecurityPriceModel getSecurityPriceFor(JSONObject quote) throws JSONException {
-
+    private SecurityPriceModel getSecurityPriceFor(JsonObject quote) {
         SecurityPriceModel priceModel = new SecurityPriceModel();
-        priceModel.symbol = quote.getString("symbol");
+        priceModel.symbol = quote.get("symbol").getAsString();
 
         ExceptionHandler handler = new ExceptionHandler(mContext, this);
 
         // price
-        String priceString = quote.getString("LastTradePriceOnly");
+        String priceString = quote.get("LastTradePriceOnly").getAsString();
         if (!NumericHelper.isNumeric(priceString)) {
             handler.showMessage(mContext.getString(R.string.error_downloading_symbol) + " " +
                     priceModel.symbol);
@@ -251,7 +166,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         Money price = MoneyFactory.fromString(priceString);
         // LSE stocks are expressed in GBp (pence), not Pounds.
         // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
-        String currency = quote.getString("Currency");
+        String currency = quote.get("Currency").getAsString();
         if (currency.equals("GBp")) {
             price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
         }
@@ -261,7 +176,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = null;
         try {
-            date = dateFormat.parse(quote.getString("LastTradeDate"));
+            date = dateFormat.parse(quote.get("LastTradeDate").getAsString());
         } catch (ParseException e) {
             handler.handle(e, "parsing date from CSV");
         }

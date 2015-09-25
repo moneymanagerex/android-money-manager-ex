@@ -10,11 +10,11 @@ public class SecurityPriceUpdaterFactory {
     public static ISecurityPriceUpdater getUpdaterInstance(Context context, IPriceUpdaterFeedback feedback) {
         ISecurityPriceUpdater updater;
 
-//        updater = new YahooSecurityPriceUpdater(context, feedback);
+//        updater = new YahooCsvSecurityPriceUpdater(context, feedback);
 
-        updater = new YqlSecurityPriceUpdater(context, feedback);
+//        updater = new YqlSecurityPriceUpdater(context, feedback);
 
-        // todo: updater = new YqlSecurityPriceUpdaterRetrofit(context, feedback);
+        updater = new YqlSecurityPriceUpdaterRetrofit(context, feedback);
 
         return updater;
     }

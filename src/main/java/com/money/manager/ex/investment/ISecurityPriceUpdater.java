@@ -4,6 +4,8 @@ import java.util.List;
 
 /**
  * Interface for security price updater functionality.
+ * Any module that downloads prices should implement this so that it is easy to replace
+ * different implementations of price providers.
  */
 public interface ISecurityPriceUpdater {
     /**

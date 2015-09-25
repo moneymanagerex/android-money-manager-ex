@@ -21,6 +21,7 @@ import android.content.Context;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.investment.IPriceUpdaterFeedback;
+import com.money.manager.ex.investment.YqlQueryGenerator;
 import com.money.manager.ex.investment.YqlSecurityPriceUpdater;
 import com.money.manager.ex.investment.YqlSecurityPriceUpdaterRetrofit;
 
@@ -44,6 +45,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import static com.jayway.awaitility.Awaitility.await;
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -63,25 +65,27 @@ public class YqlSecurityPriceUpdaterTest {
     public void setUp() throws Exception {
         this.context = RuntimeEnvironment.application;
 
-        testObject = new YqlSecurityPriceUpdaterRetrofit(this.context, null);
+        this.testObject = new YqlSecurityPriceUpdaterRetrofit(this.context, null);
     }
 
     @After
     public void tearDown() throws Exception {
+        this.context = null;
         testObject = null;
     }
 
     @Test
-    public void testGetYqlQueryFor() throws Exception {
-        final String source = "yahoo.finance.quote";
+    public void getYqlQuery() {
+        YqlQueryGenerator generator = new YqlQueryGenerator();
+        final String source = generator.source;
         List<String> fields = Arrays.asList("symbol", "LastTradePriceOnly", "LastTradeDate", "Currency");
         List<String> symbols = Arrays.asList("YHOO", "AAPL", "GOOG", "MSFT");
 
-        String expected = "select symbol,LastTradePriceOnly,LastTradeDate,Currency from yahoo.finance.quote where symbol in (\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")";
+        String expected = "select symbol,LastTradePriceOnly,LastTradeDate,Currency from yahoo.finance.quotes where symbol in (\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")";
 
-        String actual = testObject.getYqlQueryFor(source, fields, symbols);
+        String actual = generator.getQueryFor(source, fields, symbols);
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     /**
@@ -102,21 +106,6 @@ public class YqlSecurityPriceUpdaterTest {
     }
 
     /**
-     * Not finished. Need to find a way to get a result from an async task.
-     */
-    @Test
-    public void testPriceDownload() {
-        List<String> symbols = getSymbols();
-
-        testObject.downloadPrices(symbols);
-
-        // todo: get/test the results
-//        Robolectric.flushBackgroundThreadScheduler();
-
-        assertTrue(false);
-    }
-
-    /**
      * Incomplete.
      * Test fetching prices using Retrofit library.
      */
@@ -129,25 +118,29 @@ public class YqlSecurityPriceUpdaterTest {
         Robolectric.flushBackgroundThreadScheduler();
         ShadowApplication.runBackgroundTasks();
 
-        await().until(responseReceived());
-//        await();
+//        await()
+//            .atMost(15, TimeUnit.SECONDS)
+//            .until(responseReceived());
 
-        String actual = this.testObject.response;
+//        String actual = this.testObject.response;
 
-        assertTrue(StringUtils.isNotEmpty(actual));
+//        assertTrue(StringUtils.isNotEmpty(actual));
+
+        // todo: need to find a way to get async result.
+        assertTrue(false);
     }
 
     // Helpers
 
-    private Callable<Boolean> responseReceived() {
-        return new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-//                return null;
-                return YqlSecurityPriceUpdaterTest.this.testObject.response != null;
-            }
-        };
-    }
+//    private Callable<Boolean> responseReceived() {
+//        return new Callable<Boolean>() {
+//            @Override
+//            public Boolean call() throws Exception {
+////                return null;
+//            return YqlSecurityPriceUpdaterTest.this.testObject.response != null;
+//            }
+//        };
+//    }
 
     private List<String> getSymbols() {
         List<String> symbols = new ArrayList<>();

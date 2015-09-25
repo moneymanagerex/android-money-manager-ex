@@ -42,10 +42,10 @@ import info.javaperformance.money.MoneyFactory;
  * References:
  * http://www.jarloo.com/yahoo_finance/
  */
-public class YahooSecurityPriceUpdater
+public class YahooCsvSecurityPriceUpdater
         implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
 
-    public YahooSecurityPriceUpdater(Context context, IPriceUpdaterFeedback feedback) {
+    public YahooCsvSecurityPriceUpdater(Context context, IPriceUpdaterFeedback feedback) {
         mContext = context;
         mFeedback = feedback;
     }

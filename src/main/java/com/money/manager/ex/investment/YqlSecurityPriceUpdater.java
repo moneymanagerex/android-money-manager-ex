@@ -20,13 +20,11 @@ package com.money.manager.ex.investment;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,23 +32,19 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Updates security prices from Yahoo Finance using YQL. All the work is done in the
- * background task.
+ * Updates security prices from Yahoo Finance using YQL.
+ * The background task downloads the results.
  * References:
  * http://www.jarloo.com/yahoo_finance/
  */
@@ -66,8 +60,6 @@ public class YqlSecurityPriceUpdater
 
     private Context mContext;
     private IPriceUpdaterFeedback mFeedback;
-//    private String mSource = "yahoo.finance.quote";
-    private final String mSource = "yahoo.finance.quotes";
     //
     private final String mBaseUri = "https://query.yahooapis.com/v1/public/yql";
     // https://query.yahooapis.com/v1/public/yql
@@ -139,36 +131,9 @@ public class YqlSecurityPriceUpdater
         }
     }
 
-    public String getYqlQueryFor(List<String> symbols) {
-        // http://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line
-        List<String> fields = Arrays.asList("symbol", "LastTradePriceOnly", "LastTradeDate", "Currency");
-
-        String query = getYqlQueryFor(mSource, fields, symbols);
-
-        return query;
-    }
-
-    public String getYqlQueryFor(String source, List<String> fields, List<String> symbols) {
-        // append quotes to all the symbols
-        for (int i = 0; i < symbols.size(); i++) {
-            String symbol = symbols.get(i);
-            symbol = "\"" + symbol + "\"";
-            symbols.set(i, symbol);
-        }
-
-        String query = "select ";
-        query += StringUtils.join(fields, ',');     // fields
-        query += " from ";
-        query += source;    // table
-        query += " where symbol in (";
-        query += StringUtils.join(symbols, ",");
-        query += ")";
-
-        return query;
-    }
-
     private String getPriceUrl(List<String> symbols) {
-        String query = getYqlQueryFor(symbols);
+        YqlQueryGenerator queryGenerator = new YqlQueryGenerator();
+        String query = queryGenerator.getQueryFor(symbols);
 
         String uri = Uri.parse(mBaseUri)
                 .buildUpon()
