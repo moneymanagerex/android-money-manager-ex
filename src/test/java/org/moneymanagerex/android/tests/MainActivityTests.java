@@ -23,29 +23,24 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.home.HomeFragment;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
-
 
 /**
  * Test the MainActivity.
@@ -69,11 +64,7 @@ public class MainActivityTests {
         Fragment homeFragment;
         Intent expectedIntent;
 
-        homeActivity  = Robolectric.buildActivity(MainActivity.class)
-            .create().visible().start().get();
-//                .attach().create().visible().start().resume().get();
-
-        // .create().start().resume().visible() - .pause().stop().destroy()
+        homeActivity = UnitTestHelper.create(MainActivity.class);
 
         homeFragment = homeActivity.getSupportFragmentManager()
                 .findFragmentByTag(HomeFragment.class.getSimpleName());
@@ -95,12 +86,13 @@ public class MainActivityTests {
         assertNotNull("Tutorial close not found", view);
         view.performClick();
 
-        // Home Fragment, assert visible.
+        // Home Fragment is visible.
         assertThat(homeFragment).isNotNull();
         assertThat(homeFragment.getView()).isNotNull();
         assertThat(homeFragment.getActivity()).isNotNull();
         assertThat(homeFragment.getActivity()).isInstanceOf(MainActivity.class);
 
+        // Click Add New Account button.
         view = homeFragment.getView().findViewById(R.id.buttonAddAccount);
         assertNotNull("Add Account button not found", view);
         view.performClick();
