@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.investment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.google.gson.JsonArray;
@@ -25,6 +26,7 @@ import com.google.gson.JsonObject;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.utils.DialogUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,6 +58,7 @@ public class YqlSecurityPriceUpdaterRetrofit
 
     private Context mContext;
     private IPriceUpdaterFeedback mFeedback;
+    private ProgressDialog mDialog = null;
 
     // https://query.yahooapis.com/v1/public/yql
     // ?q=... url escaped
@@ -69,7 +72,10 @@ public class YqlSecurityPriceUpdaterRetrofit
      */
     public void downloadPrices(List<String> symbols) {
         if (symbols == null) return;
-        if (symbols.size() == 0) return;
+        int items = symbols.size();
+        if (items == 0) return;
+
+        showProgressDialog(items);
 
         YqlQueryGenerator queryGenerator = new YqlQueryGenerator();
         String query = queryGenerator.getQueryFor(symbols);
@@ -110,10 +116,23 @@ public class YqlSecurityPriceUpdaterRetrofit
         List<SecurityPriceModel> pricesList = getPricesFromJson(response.getAsJsonObject());
 
         for (SecurityPriceModel model : pricesList) {
+            mDialog.incrementProgressBy(1);
+
             // Notify the caller by invoking the interface method.
             mFeedback.onPriceDownloaded(model.symbol, model.price, model.date);
         }
 
+        // Close dialog.
+        try {
+            if (mDialog != null) {
+                DialogUtils.closeProgressDialog(mDialog);
+            }
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "closing dialog");
+        }
+
+        // Notify user that all the prices have been downloaded.
         ExceptionHandler handler = new ExceptionHandler(mContext, this);
         handler.showMessage(mContext.getString(R.string.all_prices_updated));
     }
@@ -184,4 +203,21 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         return priceModel;
     }
+
+    private void showProgressDialog(Integer max) {
+        Context context = mContext;
+
+        mDialog = new ProgressDialog(context);
+
+        mDialog.setMessage(context.getString(R.string.starting_price_update));
+//        mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        if (max != null) {
+            mDialog.setMax(max);
+        }
+        mDialog.setCancelable(false);
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
+    }
+
 }
