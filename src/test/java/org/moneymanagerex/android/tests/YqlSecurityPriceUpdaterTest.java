@@ -22,6 +22,7 @@ import android.content.Context;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.investment.IPriceUpdaterFeedback;
 import com.money.manager.ex.investment.YqlSecurityPriceUpdater;
+import com.money.manager.ex.investment.YqlSecurityPriceUpdaterRetrofit;
 
 import junit.framework.Assert;
 
@@ -56,13 +57,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class YqlSecurityPriceUpdaterTest {
 
     private Context context;
-    private YqlSecurityPriceUpdater testObject;
+    private YqlSecurityPriceUpdaterRetrofit testObject;
 
     @Before
     public void setUp() throws Exception {
         this.context = RuntimeEnvironment.application;
 
-        testObject = new YqlSecurityPriceUpdater(this.context, null);
+        testObject = new YqlSecurityPriceUpdaterRetrofit(this.context, null);
     }
 
     @After
@@ -123,7 +124,7 @@ public class YqlSecurityPriceUpdaterTest {
     public void downloadPriceWithRetrofit() {
         List<String> symbols = getSymbol();
 
-        this.testObject.downloadPricesRetrofit(symbols);
+        this.testObject.downloadPrices(symbols);
 
         Robolectric.flushBackgroundThreadScheduler();
         ShadowApplication.runBackgroundTasks();
@@ -164,8 +165,8 @@ public class YqlSecurityPriceUpdaterTest {
         return symbols;
     }
 
-    private YqlSecurityPriceUpdater getTestObjectWithListener(IPriceUpdaterFeedback listener) {
-        testObject = new YqlSecurityPriceUpdater(this.context, listener);
+    private YqlSecurityPriceUpdaterRetrofit getTestObjectWithListener(IPriceUpdaterFeedback listener) {
+        testObject = new YqlSecurityPriceUpdaterRetrofit(this.context, listener);
         return testObject;
     }
 }

@@ -14,6 +14,8 @@ public class SecurityPriceUpdaterFactory {
 
         updater = new YqlSecurityPriceUpdater(context, feedback);
 
+        // todo: updater = new YqlSecurityPriceUpdaterRetrofit(context, feedback);
+
         return updater;
     }
 }

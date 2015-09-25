@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.JsonElement;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
@@ -43,10 +44,6 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import retrofit.Callback;
 import retrofit.Response;
-import retrofit.Retrofit;
-
-import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Updates security prices from Yahoo Finance using YQL. All the work is done in the
@@ -54,10 +51,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * References:
  * http://www.jarloo.com/yahoo_finance/
  */
-public class YqlSecurityPriceUpdater
+public class YqlSecurityPriceUpdaterRetrofit
         implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
 
-    public YqlSecurityPriceUpdater(Context context, IPriceUpdaterFeedback feedback) {
+    public YqlSecurityPriceUpdaterRetrofit(Context context, IPriceUpdaterFeedback feedback) {
         mContext = context;
         mFeedback = feedback;
     }
@@ -82,18 +79,36 @@ public class YqlSecurityPriceUpdater
      */
     public void downloadPrices(List<String> symbols) {
         if (symbols == null) return;
+        if (symbols.size() == 0) return;
 
-        // Get varargs from list.
-        //String[] symbolsArray = symbols.toArray(new String[symbols.size()]);
-        String url = getPriceUrl(symbols);
+        String query = getYqlQueryFor(symbols);
 
-        // Download prices
-        TextDownloaderTask downloader = new TextDownloaderTask(mContext, this);
-        downloader.execute(url);
+        IYqlService yql = YqlService.getService();
 
-        // todo: replace with Retrofit
+        Callback<JsonElement> callback = new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Response<JsonElement> response) {
+                Log.d("success", "success");
 
-        // Async call. The prices are updated in onContentDownloaded.
+                YqlSecurityPriceUpdaterRetrofit.this.response = response.body().toString();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                handler.handle(t, "fetching price");
+            }
+        };
+
+//        yql.getPrices(query);
+        List<SecurityPriceModel> prices = null;
+        try {
+//            prices = yql.getPrices(query).execute().body();
+            yql.getPrices(query).enqueue(callback);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "fetching prices");
+        }
     }
 
     @Override

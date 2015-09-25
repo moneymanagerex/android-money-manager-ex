@@ -17,6 +17,9 @@
  */
 package com.money.manager.ex.investment;
 
+import com.google.gson.JsonElement;
+import com.squareup.okhttp.Response;
+
 import java.util.List;
 
 import retrofit.Call;
@@ -31,7 +34,7 @@ import retrofit.http.Query;
  */
 public interface IYqlService {
     @GET("/v1/public/yql?format=json&env=store://datatables.org/alltableswithkeys")
-    Call<String> getPrices(@Query("q") String query);
+    Call<JsonElement> getPrices(@Query("q") String query);
 
 //    @GET("/v1/public/yql?q={query}&format=json&env=store://datatables.org/alltableswithkeys")
 //    Call<List<SecurityPriceModel>> getPrices(@Query("query") String query, Callback<List<SecurityPriceModel>> callback);

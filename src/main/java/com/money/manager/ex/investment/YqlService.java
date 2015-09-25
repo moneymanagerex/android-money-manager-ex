@@ -30,7 +30,7 @@ public class YqlService {
 
     public static IYqlService getService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
                 .build();
         return retrofit.create(IYqlService.class);
