@@ -218,33 +218,6 @@ public class MainActivity
         }
     }
 
-    private void initializeAfterTutorial() {
-        // show change log dialog
-        Core core = new Core(this);
-        if (core.isToDisplayChangelog()) core.showChangelog();
-
-        // start notification for recurring transaction
-        if (!isRecurringTransactionStarted) {
-            AppSettings settings = new AppSettings(this);
-            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
-            if (showNotification) {
-                RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
-                notifications.notifyRepeatingTransaction();
-                isRecurringTransactionStarted = true;
-            }
-        }
-
-        // notification send broadcast
-        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
-        getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
-
-        if (!this.hasStarted) {
-            // This is to avoid checking Dropbox on every device rotation.
-            checkDropboxForUpdates();
-            this.hasStarted = true;
-        }
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -440,20 +413,6 @@ public class MainActivity
         return result;
     }
 
-    private void openDatabase(RecentDatabaseEntry recentDb) {
-        // use this database
-        Core core = new Core(getApplicationContext());
-        core.changeDatabase(recentDb.filePath);
-
-        // set the Dropbox file, if any.
-        if (recentDb.linkedToDropbox) {
-            mDropboxHelper.setLinkedRemoteFile(recentDb.dropboxFileName);
-        }
-
-        setRestartActivity(true);
-        restartActivity();
-    }
-
     // Menu
 
     @Override
@@ -551,6 +510,30 @@ public class MainActivity
 
     // Custom methods
 
+    public void checkDropboxForUpdates() {
+        if (mDropboxHelper == null || !mDropboxHelper.isLinked()) {
+            return;
+        }
+
+        String currentDbPath = MoneyManagerApplication.getDatabasePath(getApplicationContext());
+        if (StringUtils.isEmpty(currentDbPath)) return;
+
+        File db = new File(currentDbPath);
+        String dbName = db.getName();
+
+        String remoteDb = mDropboxHelper.getLinkedRemoteFile();
+        if (StringUtils.isEmpty(remoteDb)) return;
+
+        File dropboxDb = new File(remoteDb);
+        String remoteDbName = dropboxDb.getName();
+
+        boolean shouldCheckDbUpdates = dbName.equalsIgnoreCase(remoteDbName);
+        if (!shouldCheckDbUpdates) return;
+
+        AsyncTask<Void, Integer, Integer> asyncTask = new CheckDropboxForUpdatesTask(this, mDropboxHelper);
+        asyncTask.execute();
+    }
+
     /**
      * @return the mRestart
      */
@@ -641,13 +624,6 @@ public class MainActivity
         return mIsDualPanel;
     }
 
-    /**
-     * @param mIsDualPanel the mIsDualPanel to set
-     */
-    public void setDualPanel(boolean mIsDualPanel) {
-        this.mIsDualPanel = mIsDualPanel;
-    }
-
     public int getResIdLayoutContent() {
         return isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent;
     }
@@ -669,6 +645,33 @@ public class MainActivity
         // restart this activity
         setRestartActivity(true);
         restartActivity();
+    }
+
+    private void initializeAfterTutorial() {
+        // show change log dialog
+        Core core = new Core(this);
+        if (core.isToDisplayChangelog()) core.showChangelog();
+
+        // start notification for recurring transaction
+        if (!isRecurringTransactionStarted) {
+            AppSettings settings = new AppSettings(this);
+            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
+            if (showNotification) {
+                RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
+                notifications.notifyRepeatingTransaction();
+                isRecurringTransactionStarted = true;
+            }
+        }
+
+        // notification send broadcast
+        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
+        getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
+
+        if (!this.hasStarted) {
+            // This is to avoid checking Dropbox on every device rotation.
+            checkDropboxForUpdates();
+            this.hasStarted = true;
+        }
     }
 
 //    /**
@@ -767,6 +770,14 @@ public class MainActivity
 //    }
 
     /**
+     * @param mIsDualPanel the mIsDualPanel to set
+     */
+    public void setDualPanel(boolean mIsDualPanel) {
+        this.mIsDualPanel = mIsDualPanel;
+    }
+
+
+    /**
      * Show fragment using reflection from class
      */
     public void showFragment(Class<?> fragmentClass) {
@@ -815,33 +826,6 @@ public class MainActivity
         }
     }
 
-    private void showFragment_Internal(Fragment fragment, String tagFragment) {
-        // Check if fragment is already added.
-        if (fragment.isAdded()) return;
-
-        // In tablet layout, do not try to display the Home Fragment again. Show empty fragment.
-        if (isDualPanel() && tagFragment.equalsIgnoreCase(HomeFragment.class.getName())) {
-            fragment = new Fragment();
-            tagFragment = "Empty";
-        }
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack.
-        if (isDualPanel()) {
-            transaction.replace(R.id.fragmentDetail, fragment, tagFragment);
-        } else {
-            transaction.replace(R.id.fragmentContent, fragment, tagFragment);
-        }
-        transaction.addToBackStack(null);
-        // Commit the transaction
-        transaction.commit();
-        // use this call to prevent exception in some cases -> commitAllowingStateLoss()
-        // The exception is "fragment already added".
-//        transaction.commitAllowingStateLoss();
-    }
-
     /**
      * Shows a fragment with the selected account (id) and transactions.
      * Called from Home Fragment when an account is clicked in the main list.
@@ -884,30 +868,6 @@ public class MainActivity
 
         // Continued at onActivityResult.
         return true;
-    }
-
-    public void checkDropboxForUpdates() {
-        if (mDropboxHelper == null || !mDropboxHelper.isLinked()) {
-            return;
-        }
-
-        String currentDbPath = MoneyManagerApplication.getDatabasePath(getApplicationContext());
-        if (StringUtils.isEmpty(currentDbPath)) return;
-
-        File db = new File(currentDbPath);
-        String dbName = db.getName();
-
-        String remoteDb = mDropboxHelper.getLinkedRemoteFile();
-        if (StringUtils.isEmpty(remoteDb)) return;
-
-        File dropboxDb = new File(remoteDb);
-        String remoteDbName = dropboxDb.getName();
-
-        boolean shouldCheckDbUpdates = dbName.equalsIgnoreCase(remoteDbName);
-        if (!shouldCheckDbUpdates) return;
-
-        AsyncTask<Void, Integer, Integer> asyncTask = new CheckDropboxForUpdatesTask(this, mDropboxHelper);
-        asyncTask.execute();
     }
 
     public void setDrawerUserName(String userName) {
@@ -1180,6 +1140,47 @@ public class MainActivity
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
 
         return menuItems;
+    }
+
+    private void openDatabase(RecentDatabaseEntry recentDb) {
+        // use this database
+        Core core = new Core(getApplicationContext());
+        core.changeDatabase(recentDb.filePath);
+
+        // set the Dropbox file, if any.
+        if (recentDb.linkedToDropbox) {
+            mDropboxHelper.setLinkedRemoteFile(recentDb.dropboxFileName);
+        }
+
+        setRestartActivity(true);
+        restartActivity();
+    }
+
+    private void showFragment_Internal(Fragment fragment, String tagFragment) {
+        // Check if fragment is already added.
+        if (fragment.isAdded()) return;
+
+        // In tablet layout, do not try to display the Home Fragment again. Show empty fragment.
+        if (isDualPanel() && tagFragment.equalsIgnoreCase(HomeFragment.class.getName())) {
+            fragment = new Fragment();
+            tagFragment = "Empty";
+        }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack.
+        if (isDualPanel()) {
+            transaction.replace(R.id.fragmentDetail, fragment, tagFragment);
+        } else {
+            transaction.replace(R.id.fragmentContent, fragment, tagFragment);
+        }
+        transaction.addToBackStack(null);
+        // Commit the transaction
+        transaction.commit();
+        // use this call to prevent exception in some cases -> commitAllowingStateLoss()
+        // The exception is "fragment already added".
+//        transaction.commitAllowingStateLoss();
     }
 
     private void showReportsSelector(boolean isDarkTheme, String text) {
