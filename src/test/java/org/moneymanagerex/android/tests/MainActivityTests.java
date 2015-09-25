@@ -58,23 +58,26 @@ public class MainActivityTests {
 
     /**
      * Test the activity lifecycle in unit tests.
+     * Simulates the opening of the app the very first time, initialization of settings,
+     * database, etc. Displays the Tutorial and the Welcome screen in the Home fragment.
+     * Then opens the Add New Account activity.
      * See http://robolectric.org/activity-lifecycle/
      */
     @Test
-    public void activityLifecycle() {
+    public void runMainActivity() {
         MainActivity homeActivity;
         Fragment homeFragment;
         Intent expectedIntent;
 
         homeActivity  = Robolectric.buildActivity(MainActivity.class)
-                .create().visible()
-                .get();
-        // .create().start().resume().visible() .pause().stop().destroy()
-        // .restoreInstanceState(savedInstanceState)
+            .create().visible().start().get();
+//                .attach().create().visible().start().resume().get();
 
-//        homeFragment = homeActivity.getSupportFragmentManager()
-//                .findFragmentByTag(HomeFragment.class.getSimpleName());
-//        assertThat(homeFragment).isNotNull();
+        // .create().start().resume().visible() - .pause().stop().destroy()
+
+        homeFragment = homeActivity.getSupportFragmentManager()
+                .findFragmentByTag(HomeFragment.class.getSimpleName());
+        assertThat(homeFragment).isNotNull();
 
         // Confirm Tutorial is shown.
         ShadowActivity shadowActivity = Shadows.shadowOf(homeActivity);
@@ -92,10 +95,7 @@ public class MainActivityTests {
         assertNotNull("Tutorial close not found", view);
         view.performClick();
 
-        //
-        homeFragment = new HomeFragment();
-        SupportFragmentTestUtil.startFragment(homeFragment);
-//        SupportFragmentTestUtil.startVisibleFragment(homeFragment);
+        // Home Fragment, assert visible.
         assertThat(homeFragment).isNotNull();
         assertThat(homeFragment.getView()).isNotNull();
         assertThat(homeFragment.getActivity()).isNotNull();
@@ -105,10 +105,9 @@ public class MainActivityTests {
         assertNotNull("Add Account button not found", view);
         view.performClick();
 
-//        Intent intent = new Intent(getActivity(), AccountEditActivity.class);
-//        intent.setAction(Constants.INTENT_ACTION_INSERT);
-
+        // Add Account opens up.
         expectedIntent = new Intent(homeActivity, AccountEditActivity.class);
+        expectedIntent.setAction(Intent.ACTION_INSERT);
         assertThat(shadowOf(homeActivity).getNextStartedActivity()).isEqualTo(expectedIntent);
     }
 }

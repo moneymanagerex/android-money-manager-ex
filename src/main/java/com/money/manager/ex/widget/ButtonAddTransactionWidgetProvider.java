@@ -37,7 +37,7 @@ public class ButtonAddTransactionWidgetProvider extends AppWidgetProvider {
 			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_button_add_transaction);
 			// register on click in icon launch application
 			Intent intent = new Intent(context, EditTransactionActivity.class);
-			intent.setAction(Constants.INTENT_ACTION_INSERT);
+			intent.setAction(Intent.ACTION_INSERT);
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 			remoteViews.setOnClickPendingIntent(R.id.buttonNewOperation, pendingIntent);
 		    

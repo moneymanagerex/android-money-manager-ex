@@ -102,7 +102,7 @@ public class SingleAccountWidget
 
     static void initializeNewTransactionButton(Context context, RemoteViews views) {
         Intent intent = new Intent(context, EditTransactionActivity.class);
-        intent.setAction(Constants.INTENT_ACTION_INSERT);
+        intent.setAction(Intent.ACTION_INSERT);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.newTransactionButton, pendingIntent);
     }

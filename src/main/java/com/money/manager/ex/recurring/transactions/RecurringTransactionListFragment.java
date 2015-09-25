@@ -130,7 +130,7 @@ public class RecurringTransactionListFragment
                 date = DateUtils.getDateNextOccurrence(date, repeats, instances);
                 if (date != null) {
                     Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
-                    intent.setAction(Constants.INTENT_ACTION_INSERT);
+                    intent.setAction(Intent.ACTION_INSERT);
                     intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, bdId);
                     intent.putExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE,
                             DateUtils.getIsoStringDate(date));

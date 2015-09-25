@@ -34,6 +34,7 @@ import org.robolectric.shadows.ShadowEnvironment;
 import java.io.File;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -52,7 +53,7 @@ public class MmexApplicationTests {
         this.context = RuntimeEnvironment.application;
 
         // External storage
-        File externalStorage = new File("/sdcard/MoneyManagerEx/");
+//        File externalStorage = new File("/sdcard/MoneyManagerEx/");
 //        ShadowEnvironment.setExternalStorageEmulated(externalStorage, true);
     }
 
@@ -67,7 +68,7 @@ public class MmexApplicationTests {
      * Ensure that the default file name can not be empty.
      */
     @Test
-    public void testCreateDefaultDatabaseName() throws Exception {
+    public void defaultDatabaseNameContainsFileName() throws Exception {
         String expected = "data.mmb";
 
         String actual = MoneyManagerApplication.getDatabasePath(context);
@@ -80,7 +81,7 @@ public class MmexApplicationTests {
      * The test fails.
      */
     @Test
-    public void testGetDbDirectory() {
+    public void dbDirectoryHasAppName() {
         final String expected = "MoneyManagerEx";
 
         String actual = MoneyManagerApplication.getDatabaseDirectory(this.context);

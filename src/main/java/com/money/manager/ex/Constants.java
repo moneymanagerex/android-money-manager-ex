@@ -38,9 +38,9 @@ public class Constants {
     public static final String TRANSACTION_STATUS_DUPLICATE = "D";
 
     // Intent: Action
-    public static final String INTENT_ACTION_EDIT = Intent.ACTION_EDIT;
-    public static final String INTENT_ACTION_INSERT = Intent.ACTION_INSERT;
-    public static final String INTENT_ACTION_PASTE = Intent.ACTION_PASTE;
+//    public static final String INTENT_ACTION_EDIT = Intent.ACTION_EDIT;
+//    public static final String INTENT_ACTION_INSERT = Intent.ACTION_INSERT;
+//    public static final String INTENT_ACTION_PASTE = Intent.ACTION_PASTE;
     // Intent: Request
     public static final String INTENT_REQUEST_PREFERENCES_SCREEN = "SettingsActivity:PreferenceScreen";
 

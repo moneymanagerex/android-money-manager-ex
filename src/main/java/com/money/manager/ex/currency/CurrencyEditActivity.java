@@ -132,7 +132,7 @@ public class CurrencyEditActivity
         }
 
         // check default values for scale and baseconvrate
-        if (Constants.INTENT_ACTION_INSERT.equalsIgnoreCase(mIntentAction)) {
+        if (Intent.ACTION_INSERT.equalsIgnoreCase(mIntentAction)) {
             if (TextUtils.isEmpty(edtScale.getText()))
                 edtScale.setText("100");
             if (TextUtils.isEmpty(edtConversion.getText()))
@@ -237,7 +237,7 @@ public class CurrencyEditActivity
         CurrencyRepository repo = new CurrencyRepository(getApplicationContext());
 
         // update data
-        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
+        if (Intent.ACTION_INSERT.equals(mIntentAction)) {
             boolean success = repo.insert(currency);
 
             if (!success) {

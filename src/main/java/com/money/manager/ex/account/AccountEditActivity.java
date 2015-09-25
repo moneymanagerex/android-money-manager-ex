@@ -466,7 +466,7 @@ public class AccountEditActivity
         TableAccountList mAccountList = new TableAccountList();
 
         // check whether the application should update or insert
-        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
+        if (Intent.ACTION_INSERT.equals(mIntentAction)) {
             // insert
             Uri insertUri = getContentResolver().insert(mAccountList.getUri(), values);
             long id = ContentUris.parseId(insertUri);

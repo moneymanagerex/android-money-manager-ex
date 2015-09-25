@@ -200,48 +200,6 @@ public class HomeFragment
         return view;
     }
 
-    private void createWelcomeView(View view) {
-        linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
-
-        // add account button
-        Button btnAddAccount = (Button) view.findViewById(R.id.buttonAddAccount);
-        if (btnAddAccount != null) {
-            btnAddAccount.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), AccountEditActivity.class);
-                    intent.setAction(Constants.INTENT_ACTION_INSERT);
-                    startActivity(intent);
-                }
-            });
-        }
-
-        // link to dropbox
-        Button btnLinkDropbox = (Button) view.findViewById(R.id.buttonLinkDropbox);
-        if (btnLinkDropbox != null) {
-            btnLinkDropbox.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), DropboxSettingsActivity.class);
-                    //intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferenceConstants.PREF_DROPBOX_HOWITWORKS);
-                    startActivity(intent);
-                }
-            });
-        }
-
-        // Show current database
-        TextView currentDatabaseTextView = (TextView) view.findViewById(R.id.currentDatabaseTextView);
-        if (currentDatabaseTextView != null) {
-            String path = MoneyManagerApplication.getDatabasePath(getActivity());
-            currentDatabaseTextView.setText(path);
-        }
-
-        // Database migration v1.4 -> v2.0 location.
-        setUpMigrationButton(view);
-    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -605,9 +563,48 @@ public class HomeFragment
         return result;
     }
 
+    // Other
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(TAG_BALANCE_ACCOUNT, this.accountBalancedId);
+    }
+
+    @Override
+    public void onFinishedInputAmountDialog(int id, Money amount) {
+        QueryAccountBills account = this.getAccountBeingBalanced();
+        Money currentBalance = MoneyFactory.fromDouble(account.getTotal());
+
+        // calculate the diff.
+        Money newBalance = amount;
+        if (newBalance.compareTo(currentBalance) == 0) return;
+
+        Money difference;
+        TransactionTypes transactionType;
+
+        if (newBalance.compareTo(currentBalance) > 0) {
+            // new balance > current balance
+            difference = newBalance.subtract(currentBalance);
+            transactionType = TransactionTypes.Deposit;
+        } else {
+            // new balance < current balance
+            difference = currentBalance.subtract(newBalance);
+            transactionType = TransactionTypes.Withdrawal;
+        }
+
+        // open a new transaction screen to create a transaction to balance to the entered amount.
+        Intent intent = new Intent(getContext(), EditTransactionActivity.class);
+        intent.setAction(Intent.ACTION_INSERT);
+        // add balance and transaction type and payee
+        IntentDataParameters params = new IntentDataParameters();
+        params.accountName = account.getAccountName();
+        params.transactionType = transactionType;
+        params.payeeName = getContext().getString(R.string.balance_adjustment);
+        params.amount = difference;
+        params.categoryName = getContext().getString(R.string.cash);
+        intent.setData(params.toUri());
+
+        getContext().startActivity(intent);
     }
 
     public void startBalanceAccount(QueryAccountBills account) {
@@ -661,6 +658,48 @@ public class HomeFragment
         mExpandableListView.addFooterView(linearFooter, null, false);
     }
 
+    private void createWelcomeView(View view) {
+        linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
+
+        // add account button
+        Button btnAddAccount = (Button) view.findViewById(R.id.buttonAddAccount);
+        if (btnAddAccount != null) {
+            btnAddAccount.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+                    intent.setAction(Intent.ACTION_INSERT);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        // link to dropbox
+        Button btnLinkDropbox = (Button) view.findViewById(R.id.buttonLinkDropbox);
+        if (btnLinkDropbox != null) {
+            btnLinkDropbox.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), DropboxSettingsActivity.class);
+                    //intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferenceConstants.PREF_DROPBOX_HOWITWORKS);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        // Show current database
+        TextView currentDatabaseTextView = (TextView) view.findViewById(R.id.currentDatabaseTextView);
+        if (currentDatabaseTextView != null) {
+            String path = MoneyManagerApplication.getDatabasePath(getActivity());
+            currentDatabaseTextView.setText(path);
+        }
+
+        // Database migration v1.4 -> v2.0 location.
+        setUpMigrationButton(view);
+    }
+
     private QueryAccountBills getAccountBeingBalanced() {
         if (this.accountBeingBalanced == null) {
             AccountRepository repository = new AccountRepository(getContext());
@@ -688,7 +727,7 @@ public class HomeFragment
     }
 
     private void setUpAccountsList(View view) {
-        mExpandableListView = (ExpandableListView) view.findViewById(R.id.listViewAccountBills);
+        mExpandableListView = getExpandableListView(view);
 
         // Handle clicking on an account.
         mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -999,40 +1038,8 @@ public class HomeFragment
         }
     }
 
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
-        QueryAccountBills account = this.getAccountBeingBalanced();
-        Money currentBalance = MoneyFactory.fromDouble(account.getTotal());
-
-        // calculate the diff.
-        Money newBalance = amount;
-        if (newBalance.compareTo(currentBalance) == 0) return;
-
-        Money difference;
-        TransactionTypes transactionType;
-
-        if (newBalance.compareTo(currentBalance) > 0) {
-            // new balance > current balance
-            difference = newBalance.subtract(currentBalance);
-            transactionType = TransactionTypes.Deposit;
-        } else {
-            // new balance < current balance
-            difference = currentBalance.subtract(newBalance);
-            transactionType = TransactionTypes.Withdrawal;
-        }
-
-        // open a new transaction screen to create a transaction to balance to the entered amount.
-        Intent intent = new Intent(getContext(), EditTransactionActivity.class);
-        intent.setAction(Intent.ACTION_INSERT);
-        // add balance and transaction type and payee
-        IntentDataParameters params = new IntentDataParameters();
-        params.accountName = account.getAccountName();
-        params.transactionType = transactionType;
-        params.payeeName = getContext().getString(R.string.balance_adjustment);
-        params.amount = difference;
-        params.categoryName = getContext().getString(R.string.cash);
-        intent.setData(params.toUri());
-
-        getContext().startActivity(intent);
+    private ExpandableListView getExpandableListView(View view) {
+        mExpandableListView = (ExpandableListView) view.findViewById(R.id.listViewAccountBills);
+        return mExpandableListView;
     }
 }

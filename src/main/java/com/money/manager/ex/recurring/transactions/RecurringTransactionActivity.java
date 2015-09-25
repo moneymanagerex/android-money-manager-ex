@@ -139,7 +139,7 @@ public class RecurringTransactionActivity
             }
             mIntentAction = getIntent().getAction();
             // set title
-            getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction)
+            getSupportActionBar().setTitle(Intent.ACTION_INSERT.equals(mIntentAction)
                     ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
         }
 
@@ -437,7 +437,7 @@ public class RecurringTransactionActivity
 
         // Insert or update
         TableBillsDeposits recurringTransaction = new TableBillsDeposits();
-        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction)) {
+        if (Intent.ACTION_INSERT.equals(mIntentAction)) {
             // insert
             Uri insert = getContentResolver().insert(recurringTransaction.getUri(), values);
             if (insert == null) {

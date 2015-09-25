@@ -503,7 +503,7 @@ public class EditTransactionActivity
 
         // New transaction
 
-        if (mIntentAction.equals(Constants.INTENT_ACTION_INSERT)) {
+        if (mIntentAction.equals(Intent.ACTION_INSERT)) {
             if (mCommonFunctions.status == null) {
                 mCommonFunctions.status = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                         .getString(getString(PreferenceConstants.PREF_DEFAULT_STATUS), "");
@@ -567,7 +567,7 @@ public class EditTransactionActivity
         }
 
         // set title
-        getSupportActionBar().setTitle(Constants.INTENT_ACTION_INSERT.equals(mIntentAction)
+        getSupportActionBar().setTitle(Intent.ACTION_INSERT.equals(mIntentAction)
                 ? R.string.new_transaction
                 : R.string.edit_transaction);
     }
@@ -643,7 +643,7 @@ public class EditTransactionActivity
         ContentValues values = getContentValues(isTransfer);
 
         // Insert or update?
-        if (Constants.INTENT_ACTION_INSERT.equals(mIntentAction) || Constants.INTENT_ACTION_PASTE.equals(mIntentAction)) {
+        if (Intent.ACTION_INSERT.equals(mIntentAction) || Intent.ACTION_PASTE.equals(mIntentAction)) {
             // insert
             Uri insert = getContentResolver().insert(mCheckingAccount.getUri(), values);
             if (insert == null) {
