@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 3
+  ~ as published by the Free Software Foundation; either version 2
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -19,7 +19,7 @@
   -->
 <resources>
   <string name="application_name">Money Manager Ex</string>
-  <string name="application_definition">Uma aplicação simples e fácil de usar para gerir finanças pessoais, contas bancárias, orçamento familiar, entre outros.</string>
+  <string name="application_definition">Uma aplicação simples e fácil de usar para gerir as finanças pessoais, contas bancárias, orçamento familiar, entre outros.</string>
   <string name="application_credits">O Projecto MoneyManagerEx para Android usa a biblioteca ActionBarSherlock</string>
   <string name="application_license">Licenças de Código Aberto</string>
   <string name="db_insert_failed">Inserção de dados falhou</string>
@@ -37,9 +37,9 @@
   <string name="preferences_dispaly">Look &amp; Feel</string>
   <string name="preferences_behaviour">Comportamento</string>
   <string name="base_currency">Moeda Padrão</string>
-  <string name="view_accounts_opened">Mostra só contas activas</string>
+  <string name="view_accounts_opened">Ver contas abertas</string>
   <string name="if_not_selected_willShowAllAccounts">Se não for seleccionado irão aparecer todas as contas.</string>
-  <string name="view_accounts_favorites">Mostrar só contas favoritas</string>
+  <string name="view_accounts_favorites">Ver contas favoritas</string>
   <string name="version">Versão</string>
   <string name="build">Build</string>
   <string name="path">Caminho para a Base de Dados</string>
@@ -52,7 +52,7 @@
   <string name="account">Conta</string>
   <string name="account_list">Lista de Contas</string>
   <string name="account_empty_list">Não foram encontradas contas. Para criar uma, toque no botão verde +.</string>
-  <string name="account_balance">Saldo</string>
+  <string name="account_balance">Saldo da Conta</string>
   <string name="account_reconciled_balance">Saldo Reconciliado</string>
   <string name="delete_account">Eliminar conta</string>
   <string name="account_name">Nome da conta</string>
@@ -146,7 +146,7 @@
   <string name="upload">Carregar</string>
   <string name="username">Nome do Utilizador</string>
   <string name="to">Para</string>
-  <string name="website">Website</string>
+  <string name="website">Site da Web</string>
   <string name="contact">Contacto</string>
   <string name="access_info">Informação de Acesso</string>
   <string name="initial_balance">Saldo inicial</string>
@@ -165,6 +165,7 @@
   <string name="currency_can_not_deleted">A moeda selecionada não pode ser excluída porque está referenciada</string>
   <string name="category_can_not_deleted">A categoria selecionada não pode ser excluída porque está referenciada</string>
   <string name="all_transaction">Todas as Transacções</string>
+  <string name="today">Hoje</string>
   <string name="last7days">Últimos 7 dias</string>
   <string name="last15days">Últimas 2 semanas</string>
   <string name="current_month">Mês actual</string>
@@ -174,6 +175,7 @@
   <string name="changelog">Registo de Alterações</string>
   <string name="transaction_number">Nº da Transacção</string>
   <string name="widget_summary">Resumo</string>
+  <string name="widget_all_accounts">Todas as Contas</string>
   <string name="widget_add_transaction">Adicionar Transacção</string>
   <string name="none">Nenhum</string>
   <string name="once">Uma vez</string>
@@ -193,7 +195,7 @@
   <string name="every_x_months">Cada (x) Mes(es)</string>
   <string name="repeating_empty_transaction">Não foram encontradas transacções recorrentes. Para criar uma, toque no botão verde, com o sinal mais.</string>
   <string name="inactive">Desactivado</string>
-  <string name="activates">Activar</string>
+  <string name="activates">Ativar</string>
   <string name="days_overdue">dia(s) de atraso</string>
   <string name="days_remaining">dia(s) restante(s)</string>
   <string name="new_edit_repeating_transaction">Novo/editar transação recorrente</string>
@@ -224,6 +226,7 @@
   <string name="income">Receitas</string>
   <string name="expenses">Despesa</string>
   <string name="difference">Diferença</string>
+  <string name="no_data">Não há registos. Tente ajustar o período visível ou crie um novo registo. </string>
   <string name="no_stock_data">Não foram encontrados dados Ações nesta conta.</string>
   <string name="month">Mês</string>
   <string name="year">Ano</string>
@@ -262,6 +265,7 @@
   <string name="donate_bitcoin">Agora também aceitamos donativos em BitCoin.</string>
   <string name="donate_license">Por razões de licença do Google, não podemos colocar links para donativos diretamente dentro da app.</string>
   <string name="donate_button_text">Doar</string>
+  <string name="homepage_button">Abrir página principal</string>
   <string name="android_sqlite_vesion">Versão do SQLite</string>
   <string name="ascending">Ascendente</string>
   <string name="descending">Descendente</string>
@@ -362,6 +366,7 @@
   <string name="show_chart">Mostrar gráfico</string>
   <string name="add_transaction">Adicionar Transacção</string>
   <string name="welcome_header">Bem vindo ao MoneyManagerEx</string>
+  <string name="welcome_body">Todas as transações no MoneyManagerEX pertencem a contas.\n\n No momento tem contas não visíveis. Por favor ajuste o filtro para contas visíveis nas configurações, ou\n\nCarregue para começar a criar as suas contas.</string>
   <string name="welcome_body_dropbox">Se já usa o MoneyManagerEx no Windows , Linux ou Mac, ligue esta aplicação com o Dropbox para sincronizar a sua base de dados</string>
   <string name="configure_dropbox">Configurar o Dropbox</string>
   <string name="search_text_contain_title">Pesquisar no conteúdo do texto e não por texto a começar por</string>
@@ -396,7 +401,7 @@
   <string name="title_notifications_repeating_transaction">Notificação de transacção recorrente em atraso </string>
   <string name="summary_notifications_repeating_transaction">Mostrar notificação para transacção recorrente em atraso</string>
   <string name="tools">Ferramentas</string>
-  <string name="entities">Entidades</string>
+  <string name="entities">Beneficiário</string>
   <string name="loading">A carregar&#8230;</string>
   <string name="grand_total">Total</string>
   <string name="change_status">Alterar estado</string>
@@ -443,8 +448,8 @@
   <string name="sort_by_desceding">Ordenar por ano e mês descendente</string>
   <string name="years">Anos</string>
   <string name="select_the_years_to_be_displayed">Seleccione os anos a serem exibidos</string>
-  <string name="to_date">Da Data</string>
-  <string name="from_date">Até à Data</string>
+  <string name="to_date">Até à data</string>
+  <string name="from_date">Da Data</string>
   <string name="custom_dates">Datas Personalizadas</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">Esconder os montantes reconciliados das contas, no painel de controle.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Esconder montantes reconciliados</string>
@@ -515,4 +520,19 @@
   <string name="title_activity_password">Digite a senha da base de dados</string>
   <string name="income_expense_period">Periodo Despesa/Receita</string>
   <string name="income_expense_period_summary">O período de vista de receita/despesa no rodapé da tela inicial.</string>
+  <string name="appwidget_text">EXEMPLO</string>
+  <string name="configure">Configurar</string>
+  <string name="add_widget">Adicionar widget</string>
+  <string name="single_account">Conta Única</string>
+  <string name="watchlist">Watchlist</string>
+  <string name="purchase_date">Data de Compra</string>
+  <string name="symbol">Símbolo</string>
+  <string name="number_of_shares">Número de Ações</string>
+  <string name="purchase_price">Preço de Compra</string>
+  <string name="current_price">Preço Atual</string>
+  <string name="price_date">Data do Preço</string>
+  <string name="commission">Comissão</string>
+  <string name="value">Valor</string>
+  <string name="view_transactions">Ver transações</string>
+  <string name="error_downloading_symbol">Erro ao transferir o preço para o símbolo</string>
 </resources>

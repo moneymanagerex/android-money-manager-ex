@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 3
+  ~ as published by the Free Software Foundation; either version 2
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -165,6 +165,7 @@
   <string name="currency_can_not_deleted">A moeda selecionada não pode ser excluída porque está referenciada</string>
   <string name="category_can_not_deleted">A categoria selecionada não pode ser excluída porque está referenciada</string>
   <string name="all_transaction">Todas Transações</string>
+  <string name="today">Hoje</string>
   <string name="last7days">Últimos 7 dias</string>
   <string name="last15days">Últimas 2 semanas</string>
   <string name="current_month">Mês atual</string>
@@ -174,6 +175,7 @@
   <string name="changelog">Registro de Alterações</string>
   <string name="transaction_number">Número da transação</string>
   <string name="widget_summary">Resumo</string>
+  <string name="widget_all_accounts">Todas as Contas</string>
   <string name="widget_add_transaction">Adicionar Transação</string>
   <string name="none">Nenhum</string>
   <string name="once">Uma vez</string>
@@ -224,6 +226,7 @@
   <string name="income">Receitas</string>
   <string name="expenses">Despesas</string>
   <string name="difference">Diferença</string>
+  <string name="no_data">Não há registos. Tente ajustar o período visível ou crie um novo registo. </string>
   <string name="no_stock_data">Não há saldo disponível para esta conta de ações.</string>
   <string name="month">Mês</string>
   <string name="year">Ano</string>
@@ -262,6 +265,7 @@
   <string name="donate_bitcoin">Agora também aceitamos donativos em BitCoin.</string>
   <string name="donate_license">Por razões de licença do Google, não podemos colocar links para donativos diretamente dentro da app.</string>
   <string name="donate_button_text">Doar</string>
+  <string name="homepage_button">Abrir página principal</string>
   <string name="android_sqlite_vesion">Versão SQLite</string>
   <string name="ascending">Ascendente</string>
   <string name="descending">Descendente</string>
@@ -362,6 +366,7 @@
   <string name="show_chart">Mostrar gráfico</string>
   <string name="add_transaction">Adicionar Transação</string>
   <string name="welcome_header">Bem vindo ao MoneyManagerEx</string>
+  <string name="welcome_body">Todas as transações no MoneyManagerEX pertencem a contas.\n\n No momento tem contas não visíveis. Por favor ajuste o filtro para contas visíveis nas configurações, ou\n\nCarregue para começar a criar as suas contas.</string>
   <string name="welcome_body_dropbox">Se você já usa MoneyManagerEx no Windows, Linux ou Mac, vincule esta aplicação com o Dropbox para sincronizar sua base de dados</string>
   <string name="configure_dropbox">Configurar o Dropbox</string>
   <string name="search_text_contain_title">Procurando por conteúdo de texto e não pelo texto que começa com</string>
@@ -396,7 +401,7 @@
   <string name="title_notifications_repeating_transaction">Notificação de transação recorrente em atraso </string>
   <string name="summary_notifications_repeating_transaction">Mostrar notificação para transação recorrente em atraso</string>
   <string name="tools">Ferramentas</string>
-  <string name="entities">Entidades</string>
+  <string name="entities">Beneficiário</string>
   <string name="loading">Carregando...</string>
   <string name="grand_total">Total Geral</string>
   <string name="change_status">Alterar estado</string>
@@ -515,4 +520,19 @@
   <string name="title_activity_password">Digite a senha da base de dados</string>
   <string name="income_expense_period">Periodo Despesa/Receita</string>
   <string name="income_expense_period_summary">O período de vista de receita/despesa no rodapé da tela inicial.</string>
+  <string name="appwidget_text">EXEMPLO</string>
+  <string name="configure">Configurar</string>
+  <string name="add_widget">Adicionar widget</string>
+  <string name="single_account">Conta Única</string>
+  <string name="watchlist">Watchlist</string>
+  <string name="purchase_date">Data de Compra</string>
+  <string name="symbol">Símbolo</string>
+  <string name="number_of_shares">Número de Ações</string>
+  <string name="purchase_price">Preço de Compra</string>
+  <string name="current_price">Preço Atual</string>
+  <string name="price_date">Data do Preço</string>
+  <string name="commission">Comissão</string>
+  <string name="value">Valor</string>
+  <string name="view_transactions">Ver transações</string>
+  <string name="error_downloading_symbol">Erro ao transferir o preço para o símbolo</string>
 </resources>

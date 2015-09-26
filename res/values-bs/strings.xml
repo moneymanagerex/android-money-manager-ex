@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 3
+  ~ as published by the Free Software Foundation; either version 2
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -74,6 +74,7 @@
   <string name="error_accountname_empty">Ime računa je neophodno</string>
   <string name="error_accounttype_empty">Tip računa je neophodan</string>
   <string name="error_status_empty">Status računa je neophodan</string>
+  <string name="error_amount_must_be_positive">Iznos mora biti pozitivan. Znak se određuje po tipu transakcije.</string>
   <string name="payee_name">Ime primaoca</string>
   <string name="edit_payeeName">Izmjeni primaoca</string>
   <string name="delete_payee">Obriši primaoca</string>
@@ -164,6 +165,7 @@
   <string name="currency_can_not_deleted">Odabrana valuta se ne može obrisati jer je povezana</string>
   <string name="category_can_not_deleted">Odabrana kategorija se ne može obrisati jer je povezana</string>
   <string name="all_transaction">Sve transakcije</string>
+  <string name="today">Danas</string>
   <string name="last7days">Posljednjih 7 dana</string>
   <string name="last15days">Posljednje 2 sedmice</string>
   <string name="current_month">Tekući mjesec</string>
@@ -173,8 +175,10 @@
   <string name="changelog">Log promjena</string>
   <string name="transaction_number">Broj transakcije</string>
   <string name="widget_summary">Sažetak</string>
+  <string name="widget_all_accounts">Svi računi</string>
   <string name="widget_add_transaction">Dodaj transakciju</string>
   <string name="none">Nijedan</string>
+  <string name="once">Jednom</string>
   <string name="weekly">Sedmično</string>
   <string name="bi_weekly">Dvo-sedmično</string>
   <string name="monthly">Mjesečno</string>
@@ -197,6 +201,7 @@
   <string name="new_edit_repeating_transaction">Novih/izmjena ponavljajuće transakcije</string>
   <string name="next_occurrence">Sljedeće pojavljivanje</string>
   <string name="repeats">Ponavlja se</string>
+  <string name="occurs">Pojavljuje se</string>
   <string name="times_repeated">Puta ponovljeno</string>
   <string name="error_next_occurrence_not_populate">Sljedeće pojavljivanje je neophodno</string>
   <string name="enter_next_occurrence">Unesite sljedeće pojavljivanje</string>
@@ -221,6 +226,7 @@
   <string name="income">Prihod</string>
   <string name="expenses">Troškovi</string>
   <string name="difference">Razlika</string>
+  <string name="no_data">Podaci nisu pronađeni. Pokušajte podesiti vidljivi period ili dodirnite zeleno plus dugme da biste kreirali novi zapis. </string>
   <string name="no_stock_data">Na ovom računu nemate unesenih dionica.</string>
   <string name="month">Mjesec</string>
   <string name="year">Godina</string>
@@ -259,6 +265,7 @@
   <string name="donate_bitcoin">Također prihvaćamo BitCoin donacije.</string>
   <string name="donate_license">Zbog uslova Google licenciranja ne smijemo staviti link na donacije direktno unutar aplikacije.</string>
   <string name="donate_button_text">Donirajte</string>
+  <string name="homepage_button">Otvori početnu stranicu</string>
   <string name="android_sqlite_vesion">SQLite verzija</string>
   <string name="ascending">Uzlazno</string>
   <string name="descending">Silazno</string>
@@ -359,6 +366,7 @@
   <string name="show_chart">Prikaz grafikona</string>
   <string name="add_transaction">Dodaj transakciju</string>
   <string name="welcome_header">Dobrodošli u MoneyManagerEx!</string>
+  <string name="welcome_body">Sve transakcije u MoneyManagerEx pripadaju računima.\n\nTrenutno nemate vidljivih računa. Molimo ili podesite filter za vidljive račune u postavkama, ili\n\ndodirnite ovdje da biste započeli unos vaših računa.</string>
   <string name="welcome_body_dropbox">Ako već koristite MoneyManagerEx na Windows, Linux ili Mac povežite ovaj program sa Dropbox-om da biste sinkronizovali vašu bazu podataka</string>
   <string name="configure_dropbox">Konfigurišite Dropbox</string>
   <string name="search_text_contain_title">Pretraživanje po sadržaja teksta a ne po tekstu koji počinje s</string>
@@ -393,6 +401,7 @@
   <string name="title_notifications_repeating_transaction">Obavijest ponavljajuća transakcija dospjela </string>
   <string name="summary_notifications_repeating_transaction">Prikaži obavijest za dospjele ponavljajuće transakcije</string>
   <string name="tools">Alati</string>
+  <string name="entities">Entiteti</string>
   <string name="loading">Učitavanje&#8230;</string>
   <string name="grand_total">Konačan iznos</string>
   <string name="change_status">Promijeni status</string>
@@ -505,4 +514,22 @@
   <string name="update_on_dropbox">Novija verzija datoteke baze podataka je pronađena na Dropbox-u. Želite li ažurirati?</string>
   <string name="currencies_empty">Nijedna valuta nije pronađena. Da biste dodali novu, dodirnite zeleno plus dugme.</string>
   <string name="homepage">Naša početna stranica je http://android.moneymanagerex.org/</string>
+  <string name="current_database">Trenutna baza podataka</string>
+  <string name="about_logcat_header">Možete nam poslati log aplikacije klikom na dugme ispod.</string>
+  <string name="transaction_type_filter">Filter po vrsti transakcije</string>
+  <string name="title_activity_password">Unesite lozinku za bazu podataka</string>
+  <string name="income_expense_period">Period prihoda/rashoda</string>
+  <string name="appwidget_text">PRIMJER</string>
+  <string name="configure">Konfiguracija</string>
+  <string name="add_widget">Dodavanje widgeta</string>
+  <string name="single_account">Jedan račun</string>
+  <string name="purchase_date">Datum kupovine</string>
+  <string name="stock_name">Naziv dionica</string>
+  <string name="symbol">Simbol</string>
+  <string name="number_of_shares">Broj dionica</string>
+  <string name="purchase_price">Kupovna cijena</string>
+  <string name="current_price">Trenutna cijena</string>
+  <string name="price_date">Datum cijene</string>
+  <string name="value">Vrijednost</string>
+  <string name="error_downloading_symbol">Greška pri preuzimanja cijena za simbol</string>
 </resources>

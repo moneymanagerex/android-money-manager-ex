@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 3
+  ~ as published by the Free Software Foundation; either version 2
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -34,7 +34,7 @@
   <string name="dropbox_uploadProgress">Nahrávám souboru na Dropbox. Počkejte prosím&#8230;</string>
   <string name="dropbox_linkedFile">Soubor Dropbox</string>
   <string name="preferences_general">Obecné</string>
-  <string name="preferences_dispaly">Vzhled &amp; chování</string>
+  <string name="preferences_dispaly">Vzhled a chování</string>
   <string name="preferences_behaviour">Chování</string>
   <string name="base_currency">Základní měna</string>
   <string name="view_accounts_opened">Zobrazit otevřené účty</string>
@@ -171,6 +171,7 @@
   <string name="changelog">Přehled změn</string>
   <string name="transaction_number">Číslo transakce</string>
   <string name="widget_summary">Celkem</string>
+  <string name="widget_all_accounts">Všechny účty</string>
   <string name="widget_add_transaction">Přidat transakci</string>
   <string name="none">Žádný(á)</string>
   <string name="once">Jednou</string>
@@ -252,7 +253,11 @@
   <string name="donate">Přispět</string>
   <string name="no_thanks">Ne, děkuji</string>
   <string name="donate_exlamation">Přispět!</string>
+  <string name="donate_direct">Přispět můžete prostřednictvím odkazů na webové stránce naší aplikace.</string>
+  <string name="donate_bitcoin">Přijímáme také dary v BitCoin měně.</string>
+  <string name="donate_license">Z licenčních důvodů společnosti Google nemůžeme umístit odkazy pro přispění přímo do aplikace.</string>
   <string name="donate_button_text">Přispět</string>
+  <string name="homepage_button">Otevřít domovskou stránku</string>
   <string name="android_sqlite_vesion">Verze SQLite</string>
   <string name="ascending">Vzestupně</string>
   <string name="descending">Sestupně</string>
@@ -386,6 +391,7 @@
   <string name="title_notifications_repeating_transaction">Upozornění na opakované transakce po splatnosti </string>
   <string name="summary_notifications_repeating_transaction">Zobrazit upozornění na opakované transakce po splatnosti</string>
   <string name="tools">Nástroje</string>
+  <string name="entities">Entity</string>
   <string name="loading">Nahrávám&#8230;</string>
   <string name="grand_total">Celkový součet</string>
   <string name="change_status">Změnit stav</string>
@@ -481,9 +487,12 @@
   <string name="error">Chyba</string>
   <string name="unhandled_crash">Neočekávaná chyba. Zašlete nám prosím log.</string>
   <string name="title_activity_currency_rates_report">Kurzy měn</string>
+  <string name="frequency">Frekvence</string>
   <string name="update_available">Je k dispozici aktualizace</string>
   <string name="update_on_dropbox">Na Dropboxu je k dispozici aktualizovaný databázový soubor. Chcete aktualizovat?</string>
+  <string name="homepage">Náš web je http://android.moneymanagerex.org/</string>
   <string name="current_database">Aktuální databáze</string>
+  <string name="about_logcat_header">Klepnutím na tlačítko níže nám můžete zaslat protokol aplikace.</string>
   <string name="appwidget_text">PŘÍKLAD</string>
   <string name="configure">Přizpůsobení</string>
   <string name="add_widget">Přidat widget</string>
