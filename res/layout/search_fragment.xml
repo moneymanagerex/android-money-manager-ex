@@ -37,12 +37,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- reset form -->
+            <Button
+                android:id="@+id/resetButton"
+                android:text="@string/reset"
+                android:layout_margin="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <!-- Account -->
             <com.money.manager.ex.view.RobotoTextView
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/account"/>
-
             <Spinner
                 android:id="@+id/spinnerAccount"
                 android:layout_width="match_parent"
@@ -51,12 +62,12 @@
                 <requestFocus/>
             </Spinner>
 
+            <!-- Transaction Type -->
             <com.money.manager.ex.view.RobotoTextView
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/transaction_type"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -194,15 +205,6 @@
                 android:inputType="textMultiLine"
                 android:scrollHorizontally="false"/>
 
-            <Button
-                android:id="@+id/resetButton"
-                android:text="@string/reset"
-                android:layout_margin="10dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
         </LinearLayout>
     </ScrollView>
 
