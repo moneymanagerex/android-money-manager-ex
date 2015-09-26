@@ -331,11 +331,15 @@ public class Core {
         SQLiteDatabase database = helper.getReadableDatabase();
         TablePayee payee = null;
 
-        Cursor cursor = database.rawQuery(
-                "SELECT C.PAYEEID, P.PAYEENAME, P.CATEGID, P.SUBCATEGID " +
-                        "FROM CHECKINGACCOUNT_V1 C, PAYEE_V1 P WHERE C.PAYEEID = P.PAYEEID AND " +
-                        "C.TRANSID = (select max(T2.TRANSID) from checkingaccount_v1 T2 where T2.TRANSDATE = C.TRANSDATE)",
-                null);
+        String sql =
+        "SELECT C.TransID, C.TransDate, C.PAYEEID, P.PAYEENAME, P.CATEGID, P.SUBCATEGID " +
+        "FROM CHECKINGACCOUNT_V1 C " +
+        "INNER JOIN PAYEE_V1 P ON C.PAYEEID = P.PAYEEID " +
+        "WHERE C.TransCode <> 'Transfer' " +
+        "ORDER BY C.TransDate DESC, C.TransId DESC " +
+        "LIMIT 1";
+
+        Cursor cursor = database.rawQuery(sql, null);
 
         // check if cursor can be open
         if (cursor != null && cursor.moveToFirst()) {
