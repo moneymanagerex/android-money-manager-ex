@@ -64,7 +64,14 @@ public abstract class SettingsBase {
     }
 
     public String get(String key, String defaultValue) {
-        return getSharedPreferences().getString(key, defaultValue);
+        try {
+            return getSharedPreferences().getString(key, defaultValue);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "reading string preference: " + key);
+
+            return defaultValue;
+        }
     }
 
     /**
