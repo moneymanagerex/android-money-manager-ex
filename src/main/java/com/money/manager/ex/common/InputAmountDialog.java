@@ -411,9 +411,6 @@ public class InputAmountDialog
     private void setDecimalSeparator(View view) {
         Button separatorButton = (Button) view.findViewById(R.id.buttonKeyNumDecimal);
 
-//        NumericHelper helper = new NumericHelper(getContext());
-//        String separator = helper.getDecimalSeparatorForCurrency(mCurrencyService.getBaseCurrencyId());
-
         String separator = this.formatUtilities.getDecimalSeparatorForAppLocale();
 
         separatorButton.setText(separator);
@@ -445,7 +442,7 @@ public class InputAmountDialog
 
         String result = getFormattedAmountForEditing(amount);
         if (StringUtils.isEmpty(result)) {
-            return amount.toString();
+            return formatUtilities.formatWithLocale(amount);
         } else {
             return result;
         }
@@ -454,15 +451,6 @@ public class InputAmountDialog
     private String getFormattedAmountForEditing(Money amount) {
         NumericHelper helper = new NumericHelper(getContext());
 
-        // Output currency. Used for scale/precision (number of decimal places).
-        TableCurrencyFormats baseCurrency = mCurrencyService.getBaseCurrency();
-        if (baseCurrency == null) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.showMessage(getString(R.string.base_currency_not_set));
-
-            return "";
-        }
-
         String result;
         if(this.roundToCurrencyDecimals) {
             // use decimals from the display currency.
@@ -470,7 +458,8 @@ public class InputAmountDialog
             if (displayCurrency != null) {
                 // but decimal and group separators from the base currency.
                 result = helper.getNumberFormatted(amount, displayCurrency.getScale(),
-                        baseCurrency.getDecimalPoint(), baseCurrency.getGroupSeparator());
+                    formatUtilities.getDecimalSeparatorForAppLocale(),
+                    formatUtilities.getGroupingSeparatorForAppLocale());
             } else {
                 return "";
             }
@@ -480,7 +469,6 @@ public class InputAmountDialog
         }
 
         return result;
-
     }
 
     private void showAmountInEntryField() {
