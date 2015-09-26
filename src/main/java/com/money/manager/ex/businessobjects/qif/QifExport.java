@@ -54,6 +54,8 @@ public class QifExport
         }
     }
 
+    // Private
+
     private void export_internal(AllDataAdapter adapter)
             throws Exception {
         String fileName = generateFileName();

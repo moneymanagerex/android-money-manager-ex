@@ -18,7 +18,6 @@
 package com.money.manager.ex.businessobjects.qif;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
@@ -27,10 +26,13 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.SplitCategoriesRepository;
+import com.money.manager.ex.database.TransactionStatus;
+import com.money.manager.ex.viewmodels.AccountTransaction;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -49,20 +51,20 @@ public class QifRecord {
     private Context mContext;
 
     /**
-     * Returns a string representing one QIF record.
-     * @return
+     * Parses the data and generates a QIF record for transaction.
+     * @return A string representing one QIF record
      */
-    public String parse(Cursor cursor) throws ParseException {
+    public String parse(AccountTransaction transaction) throws ParseException {
         StringBuilder builder = new StringBuilder();
 
         // Date
-        String date = parseDate(cursor);
+        String date = parseDate(transaction);
         builder.append("D");
         builder.append(date);
         builder.append(System.lineSeparator());
 
         // Amount
-        String amount = parseAmount(cursor);
+        String amount = parseAmount(transaction);
 //        builder.append("U");
 //        builder.append(this.Amount);
 //        builder.append(System.lineSeparator());
@@ -71,14 +73,22 @@ public class QifRecord {
         builder.append(System.lineSeparator());
 
         // Cleared status
-        String cleared = parseCleared(cursor);
-        if (!TextUtils.isEmpty(cleared)) {
+//        String status = parseCleared(transaction);
+        String status = transaction.getStatusCode();
+        if (!TextUtils.isEmpty(status)) {
+            // Cleared: * or c. We don't have Cleared in MMEX.
+            // Reconciled: X or R
             builder.append("C");
-            builder.append(cleared);
+            switch (status) {
+                case "R":
+                    builder.append(status);
+                    break;
+            }
         }
 
         // Payee
-        String payee = cursor.getString(cursor.getColumnIndex(QueryAllData.Payee));
+//        String payee = cursor.getString(cursor.getColumnIndex(QueryAllData.Payee));
+        String payee = transaction.getPayee();
         if (!TextUtils.isEmpty(payee)) {
             builder.append("P");
             builder.append(payee);
@@ -87,17 +97,18 @@ public class QifRecord {
 
         // Categories / Transfers
         String category;
-        String transactionTypeName = getTransactionType(cursor);
-        TransactionTypes transactionType = TransactionTypes.valueOf(transactionTypeName);
+//        String transactionTypeName = getTransactionTypeName(transaction);
+        TransactionTypes transactionType = transaction.getTransactionType();
         if (transactionType.equals(TransactionTypes.Transfer)) {
             // Category is the destination account name.
 //            category = cursor.getString(cursor.getColumnIndex(QueryAllData.ToAccountName));
-            category = cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName));
+//            category = cursor.getString(cursor.getColumnIndex(QueryAllData.AccountName));
+            category = transaction.getAccountName();
             // in square brackets
             category = "[%]".replace("%", category);
         } else {
             // Category
-            category = parseCategory(cursor);
+            category = parseCategory(transaction);
         }
         if (category != null) {
             builder.append("L");
@@ -106,14 +117,16 @@ public class QifRecord {
         }
 
         // Split Categories
-        int splitCategory = cursor.getInt(cursor.getColumnIndex(QueryAllData.SPLITTED));
-        if (splitCategory == 1) {
-            String splits = getSplitCategories(cursor);
+//        int splitCategory = cursor.getInt(cursor.getColumnIndex(QueryAllData.SPLITTED));
+        boolean splitCategory = transaction.getIsSplit();
+        if (splitCategory) {
+            String splits = getSplitCategories(transaction);
             builder.append(splits);
         }
 
         // Memo
-        String memo = parseMemo(cursor);
+//        String memo = parseMemo(cursor);
+        String memo = transaction.getNotes();
         if (!TextUtils.isEmpty(memo)) {
             builder.append("M");
             builder.append(memo);
@@ -126,22 +139,24 @@ public class QifRecord {
         return builder.toString();
     }
 
-    public int getAccountId(Cursor cursor) {
-//        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
-        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
-        return accountId;
-    }
+//    public int getAccountId(AccountTransaction transaction) {
+////        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
+//        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
+//        return accountId;
+//    }
 
-    public String getSplitCategories(Cursor cursor) {
+    public String getSplitCategories(AccountTransaction transaction) {
         StringBuilder builder = new StringBuilder();
 
         // retrieve splits
         SplitCategoriesRepository repo = new SplitCategoriesRepository(mContext);
-        int transactionId = getTransactionId(cursor);
+//        int transactionId = getTransactionId(cursor);
+        int transactionId = transaction.getId();
         ArrayList<ISplitTransactionsDataset> splits = repo.loadSplitCategoriesFor(transactionId);
         if (splits == null) return Constants.EMPTY_STRING;
 
-        String transactionType = getTransactionType(cursor);
+//        String transactionType = getTransactionTypeName(cursor);
+        String transactionType = transaction.getTransactionTypeName();
 
         for(ISplitTransactionsDataset split : splits) {
             String splitRecord = getSplitCategory(split, transactionType);
@@ -184,37 +199,42 @@ public class QifRecord {
         return builder.toString();
     }
 
-    private int getTransactionId(Cursor cursor){
-        return cursor.getInt(cursor.getColumnIndex(QueryAllData.ID));
-    }
+//    private int getTransactionId(AccountTransaction transaction){
+//        return cursor.getInt(cursor.getColumnIndex(QueryAllData.ID));
+//    }
 
-    private String parseCleared(Cursor cursor) {
-        // todo: handle other statuses?
-        // Cleared: * or c
-        // Reconciled: X or R
-        return cursor.getString(cursor.getColumnIndex(QueryAllData.Status));
-    }
+//    private String parseCleared(AccountTransaction transaction) {
+//        return cursor.getString(cursor.getColumnIndex(QueryAllData.Status));
+//    }
 
-    private String parseDate(Cursor cursor) throws ParseException {
-        String dateValue = cursor.getString(cursor.getColumnIndex(QueryAllData.Date));
-        SimpleDateFormat savedFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE, Locale.US);
-        java.util.Date date = savedFormat.parse(dateValue);
+    private String parseDate(AccountTransaction transaction) throws ParseException {
+        Date date = transaction.getDate();
+
         // todo: get Quicken date format from settings.
         SimpleDateFormat qifFormat = new SimpleDateFormat("MM/dd''yy", Locale.US);
+
         return qifFormat.format(date);
     }
 
-    private String parseAmount(Cursor cursor) {
+    private String parseAmount(AccountTransaction transaction) {
 //        Double amountDouble = cursor.getDouble(cursor.getColumnIndex(QueryAllData.Amount));
-        Double amountDouble = cursor.getDouble(cursor.getColumnIndex(QueryAllData.ToAmount));
-
-        String amount = Double.toString(amountDouble);
+//        Double amountDouble = cursor.getDouble(cursor.getColumnIndex(QueryAllData.ToAmount));
+//        String amount = Double.toString(amountDouble);
+//        return amount;
+        String amount;
+        if (transaction.getTransactionType().equals(TransactionTypes.Transfer)) {
+            amount = transaction.getToAmount().toString();
+        } else {
+            amount = transaction.getAmount().toString();
+        }
         return amount;
     }
 
-    private String parseCategory(Cursor cursor) {
-        String category = cursor.getString(cursor.getColumnIndex(QueryAllData.Category));
-        String subCategory = cursor.getString(cursor.getColumnIndex(QueryAllData.Subcategory));
+    private String parseCategory(AccountTransaction transaction) {
+//        String category = cursor.getString(cursor.getColumnIndex(QueryAllData.Category));
+        String category = transaction.getCategory();
+//        String subCategory = cursor.getString(cursor.getColumnIndex(QueryAllData.Subcategory));
+        String subCategory = transaction.getSubcategory();
 
         if (!TextUtils.isEmpty(subCategory)) {
             return category + ":" + subCategory;
@@ -223,12 +243,12 @@ public class QifRecord {
         }
     }
 
-    private String parseMemo(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndex(QueryAllData.Notes));
-    }
+//    private String parseMemo(AccountTransaction transaction) {
+//        return cursor.getString(cursor.getColumnIndex(QueryAllData.Notes));
+//    }
 
-    private String getTransactionType(Cursor cursor) {
-        String type = cursor.getString(cursor.getColumnIndex(QueryAllData.TransactionType));
-        return type;
-    }
+//    private String getTransactionTypeName(AccountTransaction transaction) {
+//        String type = cursor.getString(cursor.getColumnIndex(QueryAllData.TransactionType));
+//        return type;
+//    }
 }

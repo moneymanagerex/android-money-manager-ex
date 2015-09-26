@@ -19,8 +19,6 @@ package com.money.manager.ex.account;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDiskIOException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -30,7 +28,6 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.AccountTransactionRepository;
-import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.viewmodels.AccountTransaction;
 
@@ -155,7 +152,7 @@ public class CalculateRunningBalanceTask2
             // Exclude Void transactions from calculation.
             TransactionStatuses status = tx.getStatus();
             if (!status.equals(TransactionStatuses.VOID)) {
-                transType = tx.getTransactionType();
+                transType = tx.getTransactionTypeName();
 
                 switch (TransactionTypes.valueOf(transType)) {
                     case Withdrawal:

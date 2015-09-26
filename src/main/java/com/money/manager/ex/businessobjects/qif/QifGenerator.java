@@ -21,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.adapter.AllDataAdapter;
+import com.money.manager.ex.viewmodels.AccountTransaction;
 
 import java.text.ParseException;
 
@@ -47,9 +48,13 @@ public class QifGenerator implements IQifGenerator {
         int previousAccountId = 0;
         QifHeader header = new QifHeader(mContext);
         QifRecord record = new QifRecord(mContext);
+        AccountTransaction transaction = new AccountTransaction();
 
         while (!cursor.isAfterLast()) {
-            int accountId = record.getAccountId(cursor);
+            // get data from cursor.
+            transaction.loadFromCursor(cursor);
+
+            int accountId = transaction.getAccountId();
             if (accountId != previousAccountId) {
                 previousAccountId = accountId;
                 // add header record
@@ -58,7 +63,7 @@ public class QifGenerator implements IQifGenerator {
             }
 
             // add transaction record
-            String row = record.parse(cursor);
+            String row = record.parse(transaction);
 
             builder.append(row);
             cursor.moveToNext();
