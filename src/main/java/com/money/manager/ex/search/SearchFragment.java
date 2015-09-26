@@ -554,9 +554,9 @@ public class SearchFragment extends Fragment
 
     private void showSearchResultsFragment(String where) {
         //create a fragment for search results.
-        AllDataListFragment searchResultsFragment;
-        searchResultsFragment = (AllDataListFragment) getActivity().getSupportFragmentManager()
+        AllDataListFragment searchResultsFragment = (AllDataListFragment) getActivity().getSupportFragmentManager()
                 .findFragmentByTag(AllDataListFragment.class.getSimpleName());
+
         if (searchResultsFragment != null) {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .remove(searchResultsFragment)
@@ -572,7 +572,8 @@ public class SearchFragment extends Fragment
         args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
         // Sorting
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
-                QueryAllData.TOACCOUNTID + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID);
+                QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + ", " +
+                QueryAllData.TransactionType + ", " + QueryAllData.ID);
         //set arguments
         searchResultsFragment.setArguments(args);
 
