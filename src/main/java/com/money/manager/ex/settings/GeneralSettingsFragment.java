@@ -26,7 +26,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -65,7 +64,7 @@ public class GeneralSettingsFragment
 
         final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(R.string.pref_locale));
         if (lstLocaleApp != null) {
-            String summary = settings.getGeneralSettings().getApplicationLocale();
+            String summary = settings.getGeneralSettings().getApplicationLanguage();
             setSummaryListPreference(lstLocaleApp, summary, R.array.application_locale_values, R.array.application_locale_entries);
             lstLocaleApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 

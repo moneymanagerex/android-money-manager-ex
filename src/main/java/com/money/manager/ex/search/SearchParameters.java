@@ -10,6 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Class that contains the search parameters.
  * Used as a DTO and to store the values.
@@ -37,8 +40,8 @@ public class SearchParameters implements Parcelable {
     public String status;
 
     // Amount
-    public String amountFrom;
-    public String amountTo;
+    public Money amountFrom;
+    public Money amountTo;
 
     // Date
     public Date dateFrom;
@@ -58,8 +61,16 @@ public class SearchParameters implements Parcelable {
         transfer = in.readByte() != 0;
         withdrawal = in.readByte() != 0;
         status = in.readString();
-        amountFrom = in.readString();
-        amountTo = in.readString();
+
+        String amountFromParcel = in.readString();
+        if (StringUtils.isNotEmpty(amountFromParcel)) {
+            amountFrom = MoneyFactory.fromString(amountFromParcel);
+        }
+
+        String amountToParcel = in.readString();
+        if (StringUtils.isNotEmpty(amountToParcel)) {
+            amountTo = MoneyFactory.fromString(amountToParcel);
+        }
 
         String dateString = in.readString();
         if (!StringUtils.isEmpty(dateString)) {
@@ -105,8 +116,8 @@ public class SearchParameters implements Parcelable {
 
         parcel.writeString(this.status);
 
-        parcel.writeString(amountFrom);
-        parcel.writeString(amountTo);
+        parcel.writeString(amountFrom != null ? amountFrom.toString() : null);
+        parcel.writeString(amountTo != null ? amountTo.toString() : null);
 
         parcel.writeString(DateUtils.getIsoStringDate(dateFrom));
         parcel.writeString(DateUtils.getIsoStringDate(dateTo));

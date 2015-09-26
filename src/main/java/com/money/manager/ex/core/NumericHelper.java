@@ -21,18 +21,11 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.settings.AppSettings;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
 
 import info.javaperformance.money.Money;
 
@@ -71,12 +64,6 @@ public class NumericHelper {
         return result;
     }
 
-//    public double roundNumber(double amount, int decimals) {
-//        BigDecimal x = new BigDecimal(amount).setScale(decimals, RoundingMode.HALF_EVEN);
-//        double result = x.doubleValue();
-//        return result;
-//    }
-
     public String getNumberFormatted(Money value, int decimals, String decimalSeparator, String groupSeparator) {
 //        value = roundNumber(value, decimals);
         value = value.truncate(decimals);
@@ -110,14 +97,14 @@ public class NumericHelper {
         return result;
     }
 
-    public String getNumberFormatted(Money value, TableCurrencyFormats currency) {
-        if (currency == null) {
-            currency = this.getCurrencyService().getBaseCurrency();
-        }
-
-        return getNumberFormatted(value, currency.getScale(), currency.getDecimalPoint(),
-                    currency.getGroupSeparator());
-    }
+//    public String getNumberFormatted(Money value, TableCurrencyFormats currency) {
+//        if (currency == null) {
+//            currency = this.getCurrencyService().getBaseCurrency();
+//        }
+//
+//        return getNumberFormatted(value, currency.getScale(), currency.getDecimalPoint(),
+//                    currency.getGroupSeparator());
+//    }
 
     public String getNumberFormatted(Money value, double scale, String decimalPoint, String groupSeparator) {
         // Round the number first.
@@ -139,26 +126,6 @@ public class NumericHelper {
 
     public String removeBlanks(String input) {
         return input.replace(" ", "");
-    }
-
-    public String getDecimalSeparatorForAppLocale() {
-        Locale locale = mContext.getResources().getConfiguration().locale;
-        DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
-        char decimalSeparator = currencyFormatter.getDecimalFormatSymbols().getDecimalSeparator();
-
-        String separator = Character.toString(decimalSeparator);
-
-        return separator;
-    }
-
-    public String getGroupingSeparatorForAppLocale() {
-        Locale locale = mContext.getResources().getConfiguration().locale;
-        DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
-        char groupingSeparator = currencyFormatter.getDecimalFormatSymbols().getGroupingSeparator();
-
-        String separator = Character.toString(groupingSeparator);
-
-        return separator;
     }
 
     /**
@@ -193,79 +160,27 @@ public class NumericHelper {
     }
 
     /**
-     * Parse the given input and return a number.
-     * @param numberString The string that is to be tested.
-     * @return A number if the string is a valid number, or a null to indicate that the number
-     * could not be parsed.
+     * Clean up the number based on the locale settings for grouping and decimal separators.
+     * @param numberString Formatted string
+     * @return (English) number string that can be used for expression.
      */
-    public BigDecimal parseNumber(String numberString) {
-        numberString = cleanUpNumberString(numberString);
-
-        BigDecimal result = null;
-        try {
-            result = new BigDecimal(numberString);
-        } catch (NumberFormatException numEx) {
-            // ignore.
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "parsing big decimal");
-        }
-        return result;
-    }
-
     public String cleanUpNumberString(String numberString) {
-        CurrencyService currencyService = getCurrencyService();
-        int currencyId = currencyService.getBaseCurrencyId();
-
-        return cleanUpNumberString(numberString, currencyId);
-    }
-
-    /**
-     * Similar to the numeric parseNumber but returns the string representation only.
-     * @param numberString
-     * @return
-     */
-    public String cleanUpNumberString(String numberString, int currencyId) {
         // replace any blanks
         numberString = removeBlanks(numberString);
 
+        FormatUtilities format = new FormatUtilities(mContext);
+
         // Remove grouping separator(s)
-        String groupingSeparator = getGroupingSeparatorForCurrency(currencyId);
+        String groupingSeparator = format.getGroupingSeparatorForAppLocale();
         numberString = numberString.replace(groupingSeparator, "");
-//        groupingSeparator = getGroupingSeparatorForAppLocale();
-//        numberString = numberString.replace(groupingSeparator, "");
 
         // Replace the decimal separator with a dot.
-        String decimalSeparator = getDecimalSeparatorForCurrency(currencyId);
+        String decimalSeparator = format.getDecimalSeparatorForAppLocale();
         if (!decimalSeparator.equals(".")) {
             numberString = numberString.replace(decimalSeparator, ".");
         }
-//        decimalSeparator = getDecimalSeparatorForAppLocale();
-//        if (!decimalSeparator.equals(".")) {
-//            numberString = numberString.replace(decimalSeparator, ".");
-//        }
 
         return numberString;
-    }
-
-    public String getDecimalSeparatorForCurrency(int currencyId) {
-        CurrencyService currencyService = getCurrencyService();
-        TableCurrencyFormats currency = currencyService.getCurrency(currencyId);
-        if (currency == null) {
-            return getDecimalSeparatorForAppLocale();
-        }
-
-        return currency.getDecimalPoint();
-    }
-
-    public String getGroupingSeparatorForCurrency(int currencyId) {
-        CurrencyService currencyService = getCurrencyService();
-        TableCurrencyFormats currency = currencyService.getCurrency(currencyId);
-        if (currency == null) {
-            return getGroupingSeparatorForAppLocale();
-        }
-
-        return currency.getGroupSeparator();
     }
 
     public CurrencyService getCurrencyService() {
@@ -273,23 +188,5 @@ public class NumericHelper {
             mCurrencyService = new CurrencyService(mContext);
         }
         return mCurrencyService;
-    }
-
-    /**
-     *
-     * @param number
-     * @return
-     */
-    public BigDecimal getNumberFromString(String number) {
-        BigDecimal result = null;
-        try {
-            DecimalFormat format = new DecimalFormat();
-            format.setParseBigDecimal(true);
-            result = (BigDecimal) format.parse(number);
-        } catch (ParseException e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "converting " + number + " to big decimal");
-        }
-        return result;
     }
 }

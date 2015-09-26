@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 
+import info.javaperformance.money.Money;
+
 /**
  * A new database query helper. Uses direct statements, not arguments.
  *
@@ -26,6 +28,10 @@ public class WhereStatementGenerator {
         this.statements.add(getStatement(field, operator, argument));
     }
 
+    public void addStatement(String field, String operator, Money argument) {
+        this.statements.add(getStatement(field, operator, argument));
+    }
+
     public void addStatement(String field, String operator, Object argument) {
         this.statements.add(getStatement(field, operator, argument));
     }
@@ -39,6 +45,16 @@ public class WhereStatementGenerator {
     }
 
     public String getStatement(String field, String operator, Integer argument) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(field);
+        sb.append(operator);
+        sb.append(argument);
+
+        return sb.toString();
+    }
+
+    public String getStatement(String field, String operator, Money argument) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(field);

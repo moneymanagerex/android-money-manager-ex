@@ -32,6 +32,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -105,6 +106,7 @@ public class InputAmountDialog
      * with the typed value but append the typed value to the existing number.
      */
     private boolean mStartedTyping = false;
+    private FormatUtilities formatUtilities;
 
     @Override
     public void onAttach(Context context) {
@@ -128,6 +130,7 @@ public class InputAmountDialog
         super.onCreate(savedInstanceState);
 
         mCurrencyService = new CurrencyService(getContext());
+        this.formatUtilities = new FormatUtilities(getActivity());
 
         if (savedInstanceState != null) {
             restoreSavedInstanceState(savedInstanceState);
@@ -158,7 +161,7 @@ public class InputAmountDialog
         LayoutInflater inflater = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         View view = inflater.inflate(R.layout.input_amount_dialog, null);
 
-        // set the decimal separator to the currency's separator
+        // set the decimal separator according to the locale
         setDecimalSeparator(view);
 
         // Numbers and Operators.
@@ -360,7 +363,9 @@ public class InputAmountDialog
         String result;
 
         if (mDisplayCurrencyId == null) {
-            result = mCurrencyService.getBaseCurrencyFormatted(mAmount);
+//            result = mCurrencyService.getBaseCurrencyFormatted(mAmount);
+            FormatUtilities format = new FormatUtilities(getActivity());
+            result = format.formatWithLocale(mAmount);
         } else {
             result = mCurrencyService.getCurrencyFormatted(mDisplayCurrencyId, mAmount);
         }
@@ -406,8 +411,10 @@ public class InputAmountDialog
     private void setDecimalSeparator(View view) {
         Button separatorButton = (Button) view.findViewById(R.id.buttonKeyNumDecimal);
 
-        NumericHelper helper = new NumericHelper(getContext());
-        String separator = helper.getDecimalSeparatorForCurrency(mCurrencyService.getBaseCurrencyId());
+//        NumericHelper helper = new NumericHelper(getContext());
+//        String separator = helper.getDecimalSeparatorForCurrency(mCurrencyService.getBaseCurrencyId());
+
+        String separator = this.formatUtilities.getDecimalSeparatorForAppLocale();
 
         separatorButton.setText(separator);
     }

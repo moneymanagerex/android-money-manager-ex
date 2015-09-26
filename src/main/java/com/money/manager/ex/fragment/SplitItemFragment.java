@@ -38,6 +38,7 @@ import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 
@@ -155,7 +156,8 @@ public class SplitItemFragment
                 // Change the sign to positive.
                 if(splitTransactionAmount < 0) splitTransactionAmount = Math.abs(splitTransactionAmount);
 
-                core.formatAmountTextView(txtAmount, MoneyFactory.fromDouble(splitTransactionAmount));
+                FormatUtilities.formatAmountTextView(getActivity(), txtAmount,
+                    MoneyFactory.fromDouble(splitTransactionAmount));
             }
             txtAmount.setOnClickListener(new OnClickListener() {
 
@@ -259,11 +261,11 @@ public class SplitItemFragment
 
     @Override
     public void onFinishedInputAmountDialog(int id, Money amount) {
-        Core core = new Core(getActivity().getApplicationContext());
+//        Core core = new Core(getActivity().getApplicationContext());
         if (txtAmount.getId() == id) {
             txtAmount.setTag(amount.toString());
             mSplitTransaction.setSplitTransAmount(amount.toDouble());
-            core.formatAmountTextView(txtAmount, amount);
+            FormatUtilities.formatAmountTextView(getActivity(), txtAmount, amount);
         }
     }
 

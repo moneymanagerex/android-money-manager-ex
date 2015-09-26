@@ -257,40 +257,6 @@ public class Core {
     }
 
     /**
-     * Method, which formats the default currency amount in TextView
-     *
-     * @param view   TextView to set the amount
-     * @param amount to be formatted
-     */
-    public void formatAmountTextView(TextView view, Money amount) {
-        formatAmountTextView(view, amount, null);
-    }
-
-    /**
-     * Method, which formats the default currency amount in TextView
-     *
-     * @param view       TextView to set the amount
-     * @param amount     to be formatted
-     * @param currencyId Id currency to be formatted
-     */
-    public void formatAmountTextView(TextView view, Money amount, Integer currencyId) {
-        if (amount == null) {
-            Log.w(LOGCAT, "Amount for formatting is null.");
-            return;
-        }
-
-        CurrencyService currencyService = new CurrencyService(mContext);
-
-        if (currencyId == null) {
-            view.setText(currencyService.getBaseCurrencyFormatted(amount));
-        } else {
-            view.setText(currencyService.getCurrencyFormatted(currencyId, amount));
-        }
-
-        view.setTag(amount);
-    }
-
-    /**
      * Return application theme choice from user
      *
      * @return application theme id

@@ -34,7 +34,7 @@ public class GeneralSettings
 
     }
 
-    public String getApplicationLocale() {
+    public String getApplicationLanguage() {
         String result = get(R.string.pref_locale, "");
         return result;
     }

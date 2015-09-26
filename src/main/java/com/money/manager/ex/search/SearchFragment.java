@@ -19,7 +19,6 @@ package com.money.manager.ex.search;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -45,6 +44,7 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.ICommonFragmentCallbacks;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -57,7 +57,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.DateUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -114,24 +113,7 @@ public class SearchFragment extends Fragment
 
         View view = inflater.inflate(R.layout.search_fragment, container, false);
 
-        //create listener amount
-        OnClickListener onClickAmount = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Money amount = MoneyFactory.fromString("0");
-                if (v.getTag() != null && NumericHelper.isNumeric(v.getTag().toString())) {
-                    amount = MoneyFactory.fromString(v.getTag().toString());
-                }
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
-                dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
-            }
-        };
-        //From Amount
-        txtFromAmount = (TextView) view.findViewById(R.id.textViewFromAmount);
-        txtFromAmount.setOnClickListener(onClickAmount);
-        //To Amount
-        txtToAmount = (TextView) view.findViewById(R.id.textViewToAmount);
-        txtToAmount.setOnClickListener(onClickAmount);
+        initializeAmountSelectors(view);
 
         // Account
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
@@ -231,6 +213,28 @@ public class SearchFragment extends Fragment
         return view;
     }
 
+    private void initializeAmountSelectors(View view) {
+        //create listener amount
+        OnClickListener onClickAmount = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Money amount = MoneyFactory.fromString("0");
+                Object tag = v.getTag();
+                if (tag != null && NumericHelper.isNumeric(tag.toString())) {
+                    amount = MoneyFactory.fromString(tag.toString());
+                }
+                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+                dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+            }
+        };
+        //From Amount
+        txtFromAmount = (TextView) view.findViewById(R.id.textViewFromAmount);
+        txtFromAmount.setOnClickListener(onClickAmount);
+        //To Amount
+        txtToAmount = (TextView) view.findViewById(R.id.textViewToAmount);
+        txtToAmount.setOnClickListener(onClickAmount);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -272,7 +276,7 @@ public class SearchFragment extends Fragment
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        this.saveSearchCriteria();
+        this.collectSearchCriteria();
 
         savedInstanceState.putParcelable(KEY_SEARCH_CRITERIA, mSearchParameters);
     }
@@ -282,18 +286,28 @@ public class SearchFragment extends Fragment
         View rootView = getView();
         if (rootView == null) return;
 
-        Core core = new Core(getActivity().getApplicationContext());
+//        Core core = new Core(getActivity().getApplicationContext());
 
         View view = rootView.findViewById(id);
-        if (view != null && view instanceof TextView)
-            core.formatAmountTextView(((TextView) view), amount);
+        if (view != null && view instanceof TextView) {
+            TextView textView = (TextView) view;
+
+            // save the value in tag?
+            String value = amount.toString();
+            textView.setTag(value);
+
+            // display amount
+            FormatUtilities format = new FormatUtilities(getActivity());
+            String displayAmount = format.formatWithLocale(amount);
+            textView.setText(displayAmount);
+        }
     }
 
     /**
      * Compose arguments and execute search
      */
     public void executeSearch() {
-        saveSearchCriteria();
+        collectSearchCriteria();
 
         String where = assembleWhereClause();
 
@@ -351,11 +365,11 @@ public class SearchFragment extends Fragment
         }
 
         // from amount
-        if (!TextUtils.isEmpty(mSearchParameters.amountFrom)) {
+        if (mSearchParameters.amountFrom != null) {
             where.addStatement(QueryAllData.Amount, ">=", mSearchParameters.amountFrom);
         }
         // to amount
-        if (!TextUtils.isEmpty(mSearchParameters.amountTo)) {
+        if (mSearchParameters.amountTo != null) {
             where.addStatement(QueryAllData.Amount, "<=", mSearchParameters.amountTo);
         }
 
@@ -429,12 +443,31 @@ public class SearchFragment extends Fragment
         // Status
         this.spinStatus.setSelection(0);
 
+//        Core core = new Core(getActivity());
+
         // Amount from
-        txtFromAmount.setText(mSearchParameters.amountFrom);
-        txtFromAmount.setTag(mSearchParameters.amountFrom);
+        if (mSearchParameters.amountFrom != null) {
+            FormatUtilities format = new FormatUtilities(getActivity());
+            String displayAmount = format.formatWithLocale(mSearchParameters.amountFrom);
+            txtFromAmount.setText(displayAmount);
+
+            txtFromAmount.setTag(mSearchParameters.amountFrom.toString());
+        } else {
+            txtFromAmount.setText("");
+            txtFromAmount.setTag(null);
+        }
+
         // Amount to
-        txtToAmount.setText(mSearchParameters.amountTo);
-        txtToAmount.setTag(mSearchParameters.amountTo);
+        if (mSearchParameters.amountTo != null) {
+            FormatUtilities format = new FormatUtilities(getActivity());
+            String displayAmount = format.formatWithLocale(mSearchParameters.amountTo);
+            txtToAmount.setText(displayAmount);
+
+            txtToAmount.setTag(mSearchParameters.amountTo.toString());
+        } else {
+            txtToAmount.setText("");
+            txtToAmount.setTag(null);
+        }
 
         // Date from
         txtFromDate.setTag(mSearchParameters.dateFrom);
@@ -462,7 +495,7 @@ public class SearchFragment extends Fragment
         executeSearch();
     }
 
-    private void saveSearchCriteria() {
+    private void collectSearchCriteria() {
         // Account
         if (this.spinAccount != null) {
             int selectedAccountPosition = spinAccount.getSelectedItemPosition();
@@ -482,12 +515,14 @@ public class SearchFragment extends Fragment
         }
 
         // Amount from
-        if (txtFromAmount.getTag() != null) {
-            mSearchParameters.amountFrom = String.valueOf(txtFromAmount.getTag());
+        Object tag = txtFromAmount.getTag();
+        if (tag != null) {
+            mSearchParameters.amountFrom = MoneyFactory.fromString((String) tag);
         }
         // Amount to
-        if (txtToAmount.getTag() != null) {
-            mSearchParameters.amountTo = String.valueOf(txtToAmount.getTag());
+        tag = txtToAmount.getTag();
+        if (tag != null) {
+            mSearchParameters.amountTo = MoneyFactory.fromString((String) tag);
         }
 
         // Date from

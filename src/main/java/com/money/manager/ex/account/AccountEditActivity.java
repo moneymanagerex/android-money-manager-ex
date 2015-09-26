@@ -42,6 +42,7 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
@@ -220,7 +221,7 @@ public class AccountEditActivity
         // always use positive value. The sign is in the spinner.
         mInitialBal = MoneyFactory.fromDouble(Math.abs(mInitialBal.toDouble()));
 
-        core.formatAmountTextView(txtInitialBalance, mInitialBal, mCurrencyId);
+        FormatUtilities.formatAmountTextView(this, txtInitialBalance, mInitialBal, mCurrencyId);
         txtInitialBalance.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -357,11 +358,10 @@ public class AccountEditActivity
             return;
         }
 
-        Core core = new Core(getApplicationContext());
-
         View view = findViewById(id);
-        if (view != null && view instanceof TextView)
-            core.formatAmountTextView(((TextView) view), amount, mCurrencyId);
+        if (view != null && view instanceof TextView) {
+            FormatUtilities.formatAmountTextView(this, ((TextView) view), amount, mCurrencyId);
+        }
     }
 
     @Override

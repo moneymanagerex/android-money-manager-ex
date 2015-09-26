@@ -64,7 +64,7 @@ public abstract class BaseFragmentActivity
         setTheme();
 
         AppSettings settings = new AppSettings(this);
-        String locale = settings.getGeneralSettings().getApplicationLocale();
+        String locale = settings.getGeneralSettings().getApplicationLanguage();
         Core.changeLocaleApp(getApplicationContext(), locale);
 
         super.onCreate(savedInstance);

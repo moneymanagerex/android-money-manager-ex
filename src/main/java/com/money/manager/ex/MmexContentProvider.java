@@ -59,6 +59,8 @@ import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -279,7 +281,7 @@ public class MmexContentProvider
                 case TABLE:
                     String log = "DELETE FROM " + dataset.getSource();
                     // compose log verbose
-                    if (!TextUtils.isEmpty(selection)) {
+                    if (StringUtils.isNotEmpty(selection)) {
                         log += " WHERE " + selection;
                     }
                     if (selectionArgs != null) {
@@ -402,10 +404,10 @@ public class MmexContentProvider
                 log = "SELECT *";
             }
             log += " FROM " + dataset.getSource();
-            if (!TextUtils.isEmpty(selection)) {
+            if (StringUtils.isNotEmpty(selection)) {
                 log += " WHERE " + selection;
             }
-            if (!TextUtils.isEmpty(sortOrder)) {
+            if (StringUtils.isNotEmpty(sortOrder)) {
                 log += " ORDER BY " + sortOrder;
             }
             if (selectionArgs != null) {
