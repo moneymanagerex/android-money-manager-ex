@@ -17,23 +17,17 @@
  */
 package com.money.manager.ex.investment;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.widget.ListAdapter;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
 import com.money.manager.ex.database.TableStock;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -43,7 +37,7 @@ import java.util.Locale;
  */
 public class PriceCsvExport
         extends TextFileExport {
-    
+
     public PriceCsvExport(Context context) {
         super(context);
 
