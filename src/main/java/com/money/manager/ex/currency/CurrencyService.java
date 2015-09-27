@@ -108,6 +108,8 @@ public class CurrencyService {
     }
 
     public Money doCurrencyExchange(Integer toCurrencyId, Money amount, Integer fromCurrencyId) {
+        if (toCurrencyId == null || fromCurrencyId == null) return amount;
+
         // handle same currencies
         if (toCurrencyId.equals(fromCurrencyId)) return amount;
 
