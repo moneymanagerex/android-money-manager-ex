@@ -41,6 +41,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
@@ -482,7 +483,8 @@ public class EditTransactionCommonFunctions {
                     setDirty(true);
 
                     try {
-                        Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, mContext.getResources().getConfiguration().locale)
+                        Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE,
+                            MoneyManagerApplication.getInstanceApp().getAppLocale())
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         viewHolder.txtSelectDate.setTag(date);
                         dateUtils.formatExtendedDate(viewHolder.txtSelectDate, (Date) viewHolder.txtSelectDate.getTag());
@@ -502,7 +504,7 @@ public class EditTransactionCommonFunctions {
                 dialog.setCloseOnSingleTapDay(true);
 
                 // Set first day of the week.
-                int firstDayOfWeek = Calendar.getInstance(mContext.getResources().getConfiguration().locale)
+                int firstDayOfWeek = Calendar.getInstance(MoneyManagerApplication.getInstanceApp().getAppLocale())
                         .getFirstDayOfWeek();
 //                dialog.setFirstDayOfWeek(Calendar.MONDAY);
                 dialog.setFirstDayOfWeek(firstDayOfWeek);

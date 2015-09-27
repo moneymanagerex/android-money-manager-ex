@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -143,7 +144,7 @@ public class EditPriceDialog
                         Date date = DateUtils.getDateFromString(getContext(), enteredDate, Constants.PATTERN_DB_DATE);
                         mDateTextView.setTag(date);
                         mDateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy",
-                                mContext.getResources().getConfiguration().locale)
+                            MoneyManagerApplication.getInstanceApp().getAppLocale())
                                 .format((Date) mDateTextView.getTag()));
 
                         mPriceDate = enteredDate;
@@ -267,7 +268,8 @@ public class EditPriceDialog
 
     public void formatExtendedDate(TextView dateTextView) {
         try {
-            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy", mContext.getResources().getConfiguration().locale)
+            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy",
+                MoneyManagerApplication.getInstanceApp().getAppLocale())
                     .format((Date) dateTextView.getTag()));
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);

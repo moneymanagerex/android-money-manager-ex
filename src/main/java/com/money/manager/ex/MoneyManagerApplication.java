@@ -263,8 +263,31 @@ public class MoneyManagerApplication
 
     // dynamic
 
-    public Locale getLocale() {
-        return this.getResources().getConfiguration().locale;
+    public Locale getAppLocale() {
+        Locale locale = null;
+        Context context = getApplicationContext();
+
+        String language = new AppSettings(context).getGeneralSettings().getApplicationLanguage();
+
+        if(StringUtils.isNotEmpty(language)) {
+            try {
+                locale = new Locale(language);
+            } catch (Exception e) {
+                ExceptionHandler handler = new ExceptionHandler(context, this);
+                handler.handle(e, "parsing locale: " + language);
+            }
+        }
+
+        // in case the above failed
+        if (locale == null) {
+            // use the default locale.
+            locale = context.getResources().getConfiguration().locale;
+        }
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
+
+        return locale;
     }
 
     public boolean setUserName(String userName) {
@@ -282,7 +305,9 @@ public class MoneyManagerApplication
             ContentValues values = new ContentValues();
             values.put(TableInfoTable.INFOVALUE, userName);
 
-            if (getContentResolver().update(infoTable.getUri(), values, TableInfoTable.INFONAME + "='USERNAME'", null) != 1) {
+            if (getContentResolver().update(infoTable.getUri(),
+                values,
+                TableInfoTable.INFONAME + "='USERNAME'", null) != 1) {
                 return false;
             }
         }

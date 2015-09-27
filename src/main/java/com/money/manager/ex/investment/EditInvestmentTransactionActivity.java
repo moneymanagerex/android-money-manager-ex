@@ -27,6 +27,7 @@ import android.view.View;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -152,7 +153,8 @@ public class EditInvestmentTransactionActivity
                     setDirty(true);
 
                     try {
-                        Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE, getResources().getConfiguration().locale)
+                        Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE,
+                            MoneyManagerApplication.getInstanceApp().getAppLocale())
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         mStock.setPurchaseDate(date);
                         dateUtils.formatExtendedDate(dateView, date);

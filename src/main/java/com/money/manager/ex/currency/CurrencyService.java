@@ -23,6 +23,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.businessobjects.InfoService;
@@ -303,10 +304,13 @@ public class CurrencyService {
 
     public Currency getSystemDefaultCurrency() {
         Currency currency = null;
-        Locale defaultLocale = null;
+
+        Locale defaultLocale = MoneyManagerApplication.getInstanceApp().getAppLocale();
 
         try {
-            defaultLocale = Locale.getDefault();
+            if (defaultLocale == null) {
+                defaultLocale = Locale.getDefault();
+            }
             currency = Currency.getInstance(defaultLocale);
         } catch (Exception ex) {
             String message = "getting default system currency";

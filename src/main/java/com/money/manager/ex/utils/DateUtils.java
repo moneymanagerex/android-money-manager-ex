@@ -24,6 +24,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -77,7 +78,7 @@ public class DateUtils {
      */
     public static Date getDateFromString(Context context, String date, String pattern) {
         try {
-            Locale locale = context.getResources().getConfiguration().locale;
+            Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
             return new SimpleDateFormat(pattern, locale).parse(date);
         } catch (ParseException e) {
             ExceptionHandler handler = new ExceptionHandler(context, null);
@@ -297,7 +298,7 @@ public class DateUtils {
 
     public void formatExtendedDate(TextView dateTextView, Date date) {
         try {
-            Locale locale = context.getResources().getConfiguration().locale;
+            Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy", locale);
             // use a shorted, defined, format, i.e. Tue, 28 Aug 2015 for fixed width, if
             // the status selector is to switch to an icon.

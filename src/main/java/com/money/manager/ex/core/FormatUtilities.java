@@ -21,6 +21,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -80,12 +81,12 @@ public class FormatUtilities {
     public FormatUtilities(Context context) {
         this.context = context;
         this.numericHelper = new NumericHelper(context);
-        this.settings = new AppSettings(context);
+//        this.settings = new AppSettings(context);
     }
 
     private Context context;
     private NumericHelper numericHelper;
-    private AppSettings settings;
+//    private AppSettings settings;
 
     public String formatWithLocale(Money amount) {
         // Use the number of decimals from the base currency.
@@ -113,7 +114,7 @@ public class FormatUtilities {
     }
 
     public String getDecimalSeparatorForAppLocale() {
-        Locale locale = getAppLocale();
+        Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
 
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char decimalSeparator = currencyFormatter.getDecimalFormatSymbols().getDecimalSeparator();
@@ -124,7 +125,7 @@ public class FormatUtilities {
     }
 
     public String getGroupingSeparatorForAppLocale() {
-        Locale locale = getAppLocale();
+        Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
 
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char groupingSeparator = currencyFormatter.getDecimalFormatSymbols().getGroupingSeparator();
@@ -132,28 +133,5 @@ public class FormatUtilities {
         String separator = Character.toString(groupingSeparator);
 
         return separator;
-    }
-
-    public Locale getAppLocale() {
-        Locale locale = null;
-
-        String language = this.settings.getGeneralSettings().getApplicationLanguage();
-
-        if(StringUtils.isNotEmpty(language)) {
-            try {
-                locale = new Locale(language);
-            } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(this.context, this);
-                handler.handle(e, "parsing locale: " + language);
-            }
-        }
-
-        // in case the above failed
-        if (locale == null) {
-            // use the default locale.
-            locale = this.context.getResources().getConfiguration().locale;
-        }
-
-        return locale;
     }
 }

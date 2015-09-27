@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
@@ -145,7 +146,7 @@ public class AllDataAdapter
 
         // date group
         try {
-            Locale locale = mContext.getResources().getConfiguration().locale;
+            Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
 
             Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                     .parse(cursor.getString(cursor.getColumnIndex(DATE)));
