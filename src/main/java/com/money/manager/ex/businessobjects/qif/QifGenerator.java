@@ -43,6 +43,7 @@ public class QifGenerator implements IQifGenerator {
         StringBuilder builder = new StringBuilder();
 
         Cursor cursor = adapter.getCursor();
+        int originalCursorPosition = cursor.getPosition();
         cursor.moveToFirst();
 
         int previousAccountId = 0;
@@ -70,6 +71,7 @@ public class QifGenerator implements IQifGenerator {
         }
         // No need to close the cursor here because it is used in the parent fragment.
 //        cursor.close();
+        cursor.moveToPosition(originalCursorPosition);
 
         return builder.toString();
     }

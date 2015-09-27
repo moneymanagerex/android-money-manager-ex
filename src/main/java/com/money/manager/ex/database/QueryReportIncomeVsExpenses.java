@@ -25,7 +25,9 @@ import com.money.manager.ex.utils.RawFileUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class QueryReportIncomeVsExpenses extends Dataset {
+public class QueryReportIncomeVsExpenses
+    extends Dataset {
+
     //field name
     public static final String Year = "Year";
     public static final String Month = "Month";
