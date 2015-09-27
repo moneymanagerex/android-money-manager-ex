@@ -561,6 +561,7 @@
     <string name="edit_price">Edit price</string>
     <string name="price_updated">Price updated</string>
     <string name="all_prices_updated">All prices have been updated.</string>
+    <string name="download_complete">Download complete.</string>
     <string name="confirm_price_download">Do you want to update security prices online?</string>
     <string name="starting_price_update">Downloading prices, please wait…</string>
     <string name="database_migrate_14_to_20">Migrate database from v1.4</string>

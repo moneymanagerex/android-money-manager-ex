@@ -137,7 +137,7 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         // Notify user that all the prices have been downloaded.
         ExceptionHandler handler = new ExceptionHandler(mContext, this);
-        handler.showMessage(mContext.getString(R.string.all_prices_updated));
+        handler.showMessage(mContext.getString(R.string.download_complete));
     }
 
     private List<SecurityPriceModel> getPricesFromJson(JsonObject root) {
