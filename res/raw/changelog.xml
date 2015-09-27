@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 27, 2015" versionName="2.20.6">
+    <changelogversion changeDate="September 27, 2015" versionName="2.20.7">
         <changelogtext>Corrected Locale parsing for Android 4.1.x.</changelogtext>
         <changelogtext>Corrected the logic for fetching the last used Payee.</changelogtext>
         <changelogtext>Using Retrofit and GSON libraries for faster performance during price update.</changelogtext>
