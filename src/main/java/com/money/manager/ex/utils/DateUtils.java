@@ -133,38 +133,34 @@ public class DateUtils {
      */
     public static String getUserDatePattern(Context ctx) {
         TableInfoTable infoTable = new TableInfoTable();
-//        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(ctx);
-//        Cursor cursor = helper.getReadableDatabase().query(infoTable.getSource(), null,
-//                TableInfoTable.INFONAME + "=?",
-//                new String[]{"DATEFORMAT"}, null, null, null);
         Cursor cursor = ctx.getContentResolver().query(infoTable.getUri(),
                 null,
                 TableInfoTable.INFONAME + "=?",
                 new String[] { "DATEFORMAT" },
                 null);
+        if (cursor == null) return "";
 
         String pattern = null;
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             pattern = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
             //replace part of pattern
-            pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy").replace("'", "''");
-
-            cursor.close();
+            pattern = pattern.replace("%d", "dd").replace("%m", "MM")
+                .replace("%y", "yy").replace("%Y", "yyyy")
+                .replace("'", "''");
         }
+        cursor.close();
 
         if (StringUtils.isEmpty(pattern)
                 && ctx.getResources().getStringArray(R.array.date_format_mask) != null
                 && ctx.getResources().getStringArray(R.array.date_format_mask).length > 0){
             pattern= ctx.getResources().getStringArray(R.array.date_format_mask)[0];
-            pattern = pattern.replace("%d", "dd").replace("%m", "MM").replace("%y", "yy").replace("%Y", "yyyy").replace("'", "''");
+            pattern = pattern.replace("%d", "dd").replace("%m", "MM")
+                .replace("%y", "yy").replace("%Y", "yyyy")
+                .replace("'", "''");
         }
 
         return pattern;
     }
-
-//    public static Date getDateNextOccurrence(Date date, int repeats) {
-//        return getDateNextOccurrence(date, repeats, 0);
-//    }
 
     /**
      * @param date    to start calculate
