@@ -123,17 +123,18 @@
     </string-array>
 
     <!-- Define array to show transaction -->
-    <string-array name="show_transaction_values">
-        <item>@string/all_transaction</item>
-        <item>@string/last7days</item>
-        <item>@string/last15days</item>
-        <item>@string/current_month</item>
-        <item>@string/last30days</item>
-        <item>@string/last3months</item>
-        <item>@string/last6months</item>
-        <item>@string/current_year</item>
-        <item>@string/future_transactions</item>
-    </string-array>
+    <!--<string-array name="show_transaction_values">-->
+        <!--<item>@string/today</item>-->
+        <!--<item>@string/all_transaction</item>-->
+        <!--<item>@string/last7days</item>-->
+        <!--<item>@string/last15days</item>-->
+        <!--<item>@string/current_month</item>-->
+        <!--<item>@string/last30days</item>-->
+        <!--<item>@string/last3months</item>-->
+        <!--<item>@string/last6months</item>-->
+        <!--<item>@string/current_year</item>-->
+        <!--<item>@string/future_transactions</item>-->
+    <!--</string-array>-->
 
     <!-- Define last or none used payee -->
     <string-array name="new_transaction_dialog_values">

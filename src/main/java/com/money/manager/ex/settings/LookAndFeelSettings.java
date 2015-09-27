@@ -11,6 +11,8 @@ import com.money.manager.ex.core.DefinedDateRanges;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Look & Feel preferences
  * Created by Alen Siljak on 03/07/2015.
@@ -32,6 +34,7 @@ public class LookAndFeelSettings
         DefinedDateRangeName defaultValue = DefinedDateRangeName.LAST_7_DAYS;
 
         String value = get(R.string.pref_show_transaction, defaultValue.toString());
+
         DefinedDateRangeName result = null;
 
         // try directly first
@@ -52,7 +55,8 @@ public class LookAndFeelSettings
             return range.key;
         }
 
-        // Otherwise return the default value.
+        // if still not found, initialize to a default value.
+        setShowTransactions(defaultValue);
         return defaultValue;
     }
 

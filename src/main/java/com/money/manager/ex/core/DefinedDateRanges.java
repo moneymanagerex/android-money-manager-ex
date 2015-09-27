@@ -58,10 +58,19 @@ public class DefinedDateRanges {
     }
 
     public DefinedDateRange getByLocalizedName(String localizedName) {
-        String localizedValue;
         for (DefinedDateRange range : this.dateRanges.values()) {
-            localizedValue = this.context.getString(range.nameResourceId);
-            if (localizedValue.equalsIgnoreCase(localizedName)) return range;
+            if (localizedName.equalsIgnoreCase(range.getLocalizedName())) {
+                return range;
+            }
+        }
+        return null;
+    }
+
+    public DefinedDateRange getByName(String name) {
+        for (DefinedDateRange range : this.dateRanges.values()) {
+            if (name.equalsIgnoreCase(range.getName())) {
+                return range;
+            }
         }
         return null;
     }
@@ -70,14 +79,40 @@ public class DefinedDateRanges {
         return this.dateRanges.containsKey(name);
     }
 
+    /**
+     * Return the value.toString() for all the values.
+     * @return String array of string values.
+     */
+    public String[] getValueNames() {
+        String[] result = new String[this.dateRanges.size()];
+        int i = 0;
+
+        for (DefinedDateRangeName name : DefinedDateRangeName.values()) {
+            result[i] = this.dateRanges.get(name).getName();
+            i++;
+        }
+        return result;
+    }
+
+    /**
+     * Gets period names in app language.
+     * @return String array of localized names of available periods.
+     */
+    public String[] getLocalizedNames() {
+        String[] result = new String[this.dateRanges.size()];
+        int i = 0;
+
+        for (DefinedDateRangeName name : DefinedDateRangeName.values()) {
+            result[i] = this.dateRanges.get(name).getLocalizedName();
+            i++;
+        }
+        return result;
+    }
+
+    // private
+
     private HashMap<DefinedDateRangeName, DefinedDateRange> initialize() {
         this.dateRanges = new HashMap<>();
-
-//        for (DefinedDateRangeName rangeName : DefinedDateRangeName.values()) {
-//            DefinedDateRange range = new DefinedDateRange(this.context);
-//
-//            dateRanges.put(rangeName, range);
-//        }
 
         // TODAY,
         DefinedDateRange range = create(DefinedDateRangeName.TODAY, R.string.today, R.id.menu_today);

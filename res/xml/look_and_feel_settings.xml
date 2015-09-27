@@ -38,11 +38,12 @@
 
     <ListPreference
         android:defaultValue="@string/last7days"
-        android:entries="@array/show_transaction_values"
-        android:entryValues="@array/show_transaction_values"
         android:icon="@null"
         android:key="@string/pref_show_transaction"
         android:title="@string/show_transaction"/>
+    <!--android:entries="@array/show_transaction_values"-->
+    <!--android:entryValues="@array/show_transaction_values"-->
+
 
     <CheckBoxPreference
         android:defaultValue="false"

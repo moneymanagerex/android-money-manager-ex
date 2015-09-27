@@ -19,6 +19,7 @@ package com.money.manager.ex.core;
 
 /**
  * The names for the defined date ranges. Used as the key for the collection.
+ * The main controller is DefinedNameRanges class.
  *
  * Created by Alen Siljak on 23/09/2015.
  */

@@ -28,12 +28,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoView;
 
@@ -42,7 +40,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 /**
  * Look & feel settings.
  */
-public class LookFeelFragment
+public class LookFeelPreferenceFragment
         extends PreferenceFragment {
 
     private final String LOGCAT = this.getClass().getSimpleName();
@@ -101,8 +99,6 @@ public class LookFeelFragment
 
         // Hide reconciled amounts setting.
 
-//        final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(
-//                PreferenceConstants.PREF_HIDE_RECONCILED_AMOUNTS));
         final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(
                 R.string.pref_transaction_hide_reconciled_amounts));
 
@@ -114,37 +110,42 @@ public class LookFeelFragment
             }
         };
         // Set the main activity to restart on change of any of the following settings.
-//        chkAccountOpen.setOnPreferenceChangeListener(listener);
-//        chkAccountFav.setOnPreferenceChangeListener(listener);
         chkHideReconciled.setOnPreferenceChangeListener(listener);
 
-        // show transactions
+        // Show Transactions, period
+
         final ListPreference lstShow = (ListPreference) findPreference(getString(
                 R.string.pref_show_transaction));
         if (lstShow != null) {
             String display;
 
-            DefinedDateRangeName rangeName = new AppSettings(mContext).getLookAndFeelSettings()
+            // set the available values for selection.
+
+            final DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
+            lstShow.setEntries(ranges.getLocalizedNames());
+            lstShow.setEntryValues(ranges.getValueNames());
+
+            // Show current value.
+
+            final DefinedDateRangeName rangeName = new AppSettings(mContext).getLookAndFeelSettings()
                     .getShowTransactions();
-            DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
             DefinedDateRange range = ranges.get(rangeName);
 
-            if (range == null) {
-                display = getString(R.string.none);
-            } else {
-                display = range.getLocalizedName();
-            }
-            lstShow.setSummary(display);
+            lstShow.setSummary(range.getLocalizedName());
             lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    lstShow.setSummary((CharSequence) newValue);
+                    String newRangeKey = newValue.toString();
+                    DefinedDateRange range = ranges.getByName(newRangeKey);
+
+                    lstShow.setSummary(range.getLocalizedName());
                     return true;
                 }
             });
         }
 
         // font type
+
         final ListPreference lstFont = (ListPreference) findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT));
         if (lstFont != null) {
             lstFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -191,4 +192,5 @@ public class LookFeelFragment
             });
         }
     }
+
 }
