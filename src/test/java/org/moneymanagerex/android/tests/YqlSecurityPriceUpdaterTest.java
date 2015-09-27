@@ -143,6 +143,11 @@ public class YqlSecurityPriceUpdaterTest {
         assertEquals(date.getTime(), listener.date);
     }
 
+    @Test
+    public void handle() {
+
+    }
+
     // Helpers
 
     private JsonObject getPriceObject(String symbol, String price, String currency, String date) {

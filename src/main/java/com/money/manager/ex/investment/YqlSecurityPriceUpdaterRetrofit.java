@@ -176,8 +176,15 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         ExceptionHandler handler = new ExceptionHandler(mContext, this);
 
-        // price
-        String priceString = quote.get("LastTradePriceOnly").getAsString();
+        // Price
+
+        JsonElement priceElement = quote.get("LastTradePriceOnly");
+        if (priceElement == null) {
+            handler.showMessage(mContext.getString(R.string.error_downloading_symbol) + " " +
+                priceModel.symbol);
+            return null;
+        }
+        String priceString = priceElement.getAsString();
         if (!NumericHelper.isNumeric(priceString)) {
             handler.showMessage(mContext.getString(R.string.error_downloading_symbol) + " " +
                     priceModel.symbol);
@@ -193,7 +200,8 @@ public class YqlSecurityPriceUpdaterRetrofit
         }
         priceModel.price = price;
 
-        // date
+        // Date
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = null;
         try {
