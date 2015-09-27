@@ -557,22 +557,21 @@ public class MainActivity
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
         // show main navigation fragment
+        String homeFragmentTag = HomeFragment.class.getSimpleName();
         HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
-                .findFragmentByTag(HomeFragment.class.getSimpleName());
+                .findFragmentByTag(homeFragmentTag);
         if (fragment == null) {
             // fragment create
             fragment = new HomeFragment();
             // add to stack
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                .addToBackStack(null)
+                .replace(R.id.fragmentContent, fragment, homeFragmentTag)
                 .commit();
         } else {
             Core core = new Core(this);
             if (core.isTablet()) {
                 getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                    .addToBackStack(null)
+                    .replace(R.id.fragmentContent, fragment, homeFragmentTag)
                     .commit();
             }
         }
