@@ -20,14 +20,12 @@ package com.money.manager.ex.home;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -80,7 +78,6 @@ import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -186,7 +183,7 @@ public class MainActivity
         String username = infoService.getInfoValue(InfoService.INFOTABLE_USERNAME);
 
         // Creating fragments and showing recurring transaction notifications.
-        createFragments(savedInstanceState);
+        createLayout(savedInstanceState);
 
         // show tutorial
         boolean tutorialShown = showTutorial();
@@ -548,7 +545,7 @@ public class MainActivity
         MainActivity.mRestartActivity = mRestart;
     }
 
-    public void createFragments(Bundle savedInstanceState) {
+    public void createLayout(Bundle savedInstanceState) {
         setContentView(R.layout.main_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -559,8 +556,6 @@ public class MainActivity
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
-        Core core = new Core(this);
-
         // show main navigation fragment
         HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
                 .findFragmentByTag(HomeFragment.class.getSimpleName());
@@ -569,13 +564,16 @@ public class MainActivity
             fragment = new HomeFragment();
             // add to stack
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                    .commit();
+                .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                .addToBackStack(null)
+                .commit();
         } else {
+            Core core = new Core(this);
             if (core.isTablet()) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                        .commit();
+                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    .addToBackStack(null)
+                    .commit();
             }
         }
 
@@ -583,8 +581,9 @@ public class MainActivity
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
             String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
             // check if className is null, then setting Home Fragment
-            if (TextUtils.isEmpty(className))
+            if (TextUtils.isEmpty(className)) {
                 className = HomeFragment.class.getName();
+            }
             if (className.contains(AccountTransactionsFragment.class.getSimpleName())) {
                 showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
             } else {
@@ -592,7 +591,8 @@ public class MainActivity
                 try {
                     fragmentClass = Class.forName(className);
                 } catch (ClassNotFoundException e) {
-                    Log.e(LOGCAT, e.getMessage());
+                    ExceptionHandler handler = new ExceptionHandler(this, this);
+                    handler.handle(e, "instantiating class: " + className);
                 }
                 showFragment(fragmentClass);
             }
@@ -1168,8 +1168,7 @@ public class MainActivity
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack.
+        // Replace whatever is in the fragment_container view with this fragment.
         if (isDualPanel()) {
             transaction.replace(R.id.fragmentDetail, fragment, tagFragment);
         } else {
