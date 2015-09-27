@@ -17,9 +17,6 @@
  */
 package org.moneymanagerex.android.tests;
 
-import android.test.AndroidTestCase;
-import android.test.mock.MockContext;
-
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;

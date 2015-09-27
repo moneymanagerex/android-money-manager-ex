@@ -19,6 +19,11 @@ package org.moneymanagerex.android.testhelpers;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
+
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.CategoryListActivity;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
@@ -55,4 +60,21 @@ public class UnitTestHelper {
 //        // .create().start().resume().visible() - .pause().stop().destroy()
 //
 //    }
+
+    public static Fragment getFragment(BaseFragmentActivity activity, String fragmentClassName) {
+        Fragment fragment = activity.getSupportFragmentManager()
+            .findFragmentByTag(fragmentClassName);
+        return fragment;
+    }
+
+    public static Intent getSelectCategoryResult(int categoryId, String categoryName,
+        int subCategId, String subCategoryName) {
+        Intent result = new Intent();
+        result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categoryId);
+        result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME, categoryName);
+        result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
+        result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME, subCategoryName);
+
+        return result;
+    }
 }

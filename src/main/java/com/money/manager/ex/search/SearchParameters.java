@@ -29,7 +29,7 @@ public class SearchParameters implements Parcelable {
     }
 
     // Account
-    public int accountId = Constants.NOT_SET;
+    public Integer accountId;
 
     // Transaction Type
     public boolean deposit;
@@ -56,7 +56,8 @@ public class SearchParameters implements Parcelable {
     public String notes;
 
     protected SearchParameters(Parcel in) {
-        accountId = in.readInt();
+        this.accountId = (Integer) in.readValue(null);
+
         deposit = in.readByte() != 0;
         transfer = in.readByte() != 0;
         withdrawal = in.readByte() != 0;
@@ -82,7 +83,7 @@ public class SearchParameters implements Parcelable {
             dateTo = DateUtils.getDateFromIsoString(dateString);
         }
 
-        payeeId = in.readInt();
+        payeeId = (Integer) in.readValue(null);
         payeeName = in.readString();
         category = in.readParcelable(CategorySub.class.getClassLoader());
         transactionNumber = in.readString();
@@ -108,7 +109,8 @@ public class SearchParameters implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.accountId);
+        // this is a sample on how to read/write nullable objects.
+        parcel.writeValue(this.accountId);
 
         parcel.writeByte((byte) (this.deposit ? 1 : 0));
         parcel.writeByte((byte) (this.transfer ? 1 : 0));
@@ -122,8 +124,7 @@ public class SearchParameters implements Parcelable {
         parcel.writeString(DateUtils.getIsoStringDate(dateFrom));
         parcel.writeString(DateUtils.getIsoStringDate(dateTo));
 
-        if (payeeId == null) payeeId = Constants.NOT_SET;
-        parcel.writeInt(payeeId);
+        parcel.writeValue(payeeId);
         parcel.writeString(payeeName);
 
         parcel.writeParcelable(category, i);

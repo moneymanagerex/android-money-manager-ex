@@ -32,7 +32,6 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.account.CalculateRunningBalanceTask;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
@@ -40,7 +39,6 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,10 +69,10 @@ public class AllDataAdapter
         setFieldFromTypeCursor();
     }
 
-    // source type: AllData or RepeatingTransaction
+    // source type: AllData or RecurringTransaction
     public enum TypeCursor {
         ALLDATA,
-        REPEATINGTRANSACTION
+        RECURRINGTRANSACTION
     }
 
     // type cursor
@@ -419,7 +417,7 @@ public class AllDataAdapter
     private boolean useDestinationValues(boolean isTransfer, Cursor cursor) {
         boolean result;
 
-        if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
+        if (mTypeCursor.equals(TypeCursor.RECURRINGTRANSACTION)) {
             // Recurring transactions list.
             return false;
         }
@@ -453,7 +451,7 @@ public class AllDataAdapter
             // write ToAccountName instead of payee on transfers.
             String accountName;
 
-            if (mTypeCursor.equals(TypeCursor.REPEATINGTRANSACTION)) {
+            if (mTypeCursor.equals(TypeCursor.RECURRINGTRANSACTION)) {
                 // Recurring transactions list.
                 // Show the destination for the transfer.
                 accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));

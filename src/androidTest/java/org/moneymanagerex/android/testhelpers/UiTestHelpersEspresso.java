@@ -33,17 +33,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 public class UiTestHelpersEspresso {
 
     public UiTestHelpersEspresso() {
-//        this.solo = solo;
-//        this.host = host;
-
-//        this.context =  host.getInstrumentation().getTargetContext();
-//        this.context = solo.getCurrentActivity();
-//        this.context = context;
     }
-
-//    private ActivityInstrumentationTestCase2 host;
-//    public Solo solo;
-//    public Context context;
 
     public void clearPreferences(Context context) {
         // clear default preferences

@@ -212,7 +212,7 @@ public class RecurringTransactionListFragment
                 if (data == null) return;
 
                 AllDataAdapter adapter = new AllDataAdapter(getActivity(), data,
-                        AllDataAdapter.TypeCursor.REPEATINGTRANSACTION);
+                        AllDataAdapter.TypeCursor.RECURRINGTRANSACTION);
                 setListAdapter(adapter);
 
                 if (isResumed()) {

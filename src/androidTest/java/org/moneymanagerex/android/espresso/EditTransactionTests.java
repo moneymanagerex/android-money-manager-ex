@@ -17,44 +17,28 @@
  */
 package org.moneymanagerex.android.espresso;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.R;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.transactions.EditTransactionActivity;
-import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
-import com.money.manager.ex.utils.CalendarUtils;
 
-import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matchers;
-import org.hamcrest.core.StringContains;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.UiTestHelpersEspresso;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
 /**
@@ -71,17 +55,12 @@ public class EditTransactionTests {
     public final ActivityTestRule<EditTransactionActivity> activityRule =
             new ActivityTestRule<>(EditTransactionActivity.class);
 
-//    private UiTestHelpersEspresso helper;
-
     @Before
     public void setUp() {
-//        this.helper = new UiTestHelpersEspresso();
-
     }
 
     @After
     public void tearDown() {
-//        this.helper = null;
     }
 
     @Test

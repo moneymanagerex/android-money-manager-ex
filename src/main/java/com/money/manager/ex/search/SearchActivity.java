@@ -54,20 +54,12 @@ public class SearchActivity
         setContentView(R.layout.search_activity);
 
         SearchFragment searchFragment = getSearchFragment();
-//        if (searchFragment == null) {
-            // fragment create
-//            searchFragment = getSearchFragment();
-            if (!searchFragment.isAdded()) {
-                // set dual panel
-                LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
-                mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
-                searchFragment.setDualPanel(mIsDualPanel);
-                // add to stack
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
-                        .commit();
-            }
-//        }
+        if (!searchFragment.isAdded()) {
+            // set dual panel
+            LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
+            mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
+            searchFragment.setDualPanel(mIsDualPanel);
+        }
         // reconfigure the toolbar event
         setToolbarStandardAction(getToolbar(), R.id.action_cancel, R.id.action_search);
 
@@ -117,6 +109,17 @@ public class SearchActivity
         return super.onActionDoneClick();
     }
 
+    private SearchFragment createSearchFragment() {
+        SearchFragment searchFragment = new SearchFragment();
+
+        // add to stack
+        getSupportFragmentManager().beginTransaction()
+            .add(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
+            .commit();
+
+        return searchFragment;
+    }
+
     private SearchFragment getSearchFragment() {
         if (mSearchFragment == null) {
             // try to find the search fragment
@@ -124,7 +127,7 @@ public class SearchActivity
                     .findFragmentByTag(SearchFragment.class.getSimpleName());
 
             if (mSearchFragment == null) {
-                mSearchFragment = new SearchFragment();
+                mSearchFragment = createSearchFragment();
             }
         }
         return mSearchFragment;
@@ -136,11 +139,6 @@ public class SearchActivity
 
         // see if we have the search criteria.
         mSearchParameters = intent.getParcelableExtra(EXTRA_SEARCH_PARAMETERS);
-//        if (parameters == null) return;
-
-//        SearchFragment searchFragment = getSearchFragment();
-//        searchFragment.setSearchParameters(parameters);
-//        searchFragment.executeSearch();
     }
 
     @Override

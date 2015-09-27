@@ -60,9 +60,7 @@ public class MainActivityTests {
     @Before
     public void setUp() {
         this.controller = UnitTestHelper.getController(MainActivity.class);
-
         this.mainActivity = UnitTestHelper.getActivity(this.controller);
-
     }
 
     @After
@@ -82,7 +80,7 @@ public class MainActivityTests {
         Fragment homeFragment;
         Intent expectedIntent;
 
-        homeFragment = getHomeFragment();
+        homeFragment = UnitTestHelper.getFragment(mainActivity, HomeFragment.class.getSimpleName());
         assertThat(homeFragment).isNotNull();
 
         // Confirm Tutorial is shown.
@@ -117,7 +115,7 @@ public class MainActivityTests {
 
     @Test
     public void pauseAndResume() {
-        Fragment homeFragment = getHomeFragment();
+        Fragment homeFragment = UnitTestHelper.getFragment(mainActivity, HomeFragment.class.getSimpleName());
 
         testHomeFragment(homeFragment);
 
@@ -127,12 +125,6 @@ public class MainActivityTests {
     }
 
     // Private
-
-    private Fragment getHomeFragment() {
-        Fragment homeFragment = mainActivity.getSupportFragmentManager()
-                .findFragmentByTag(HomeFragment.class.getSimpleName());
-        return homeFragment;
-    }
 
     /**
      * Confirm that the fragment is initialized, has a view, and athached to the MainActivity.

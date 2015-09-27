@@ -72,8 +72,8 @@ public class SearchFragment extends Fragment
         implements IInputAmountDialogListener {
 
     // ID REQUEST code
-    private static final int REQUEST_PICK_PAYEE = 1;
-    private static final int REQUEST_PICK_CATEGORY = 3;
+    public static final int REQUEST_PICK_PAYEE = 1;
+    public static final int REQUEST_PICK_CATEGORY = 3;
 
     private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
 
@@ -343,7 +343,7 @@ public class SearchFragment extends Fragment
         WhereStatementGenerator where = new WhereStatementGenerator();
 
         // account
-        if (mSearchParameters.accountId != Constants.NOT_SET) {
+        if (mSearchParameters.accountId != null && mSearchParameters.accountId != Constants.NOT_SET) {
             where.addStatement(
                 where.concatenateOr(
                     where.getStatement(QueryAllData.ACCOUNTID, "=", mSearchParameters.accountId),
@@ -390,21 +390,23 @@ public class SearchFragment extends Fragment
             CategorySub categorySub = mSearchParameters.category;
             // Category. Also check the splits.
             where.addStatement("(" +
-                    "(" + QueryAllData.CategID + "=" + Integer.toString(categorySub.categId) + ") " +
-                    " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
-                        " FROM " + TableSplitTransactions.TABLE_NAME +
-                        " WHERE " + TableSplitTransactions.TRANSID + "=" + QueryAllData.ID + "))" +
-                    ")");
+                "(" + QueryAllData.CategID + "=" + Integer.toString(categorySub.categId) + ") " +
+                " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
+                    " FROM " + TableSplitTransactions.TABLE_NAME +
+                    " WHERE " + TableSplitTransactions.TRANSID + "=" + QueryAllData.ID + ")" +
+                ")" +
+            ")");
 
             // subcategory
             if (categorySub.subCategId != -1) {
                 // Subcategory. Also check the splits.
                 where.addStatement("(" +
-                        "(" + QueryAllData.SubcategID + "=" + Integer.toString(categorySub.subCategId) + ") " +
-                            " OR " + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
-                                " FROM " + TableSplitTransactions.TABLE_NAME +
-                                " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + ")" +
-                        ")");
+                    "(" + QueryAllData.SubcategID + "=" + Integer.toString(categorySub.subCategId) + ") " +
+                        " OR (" + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
+                            " FROM " + TableSplitTransactions.TABLE_NAME +
+                            " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + ")" +
+                        ")" +
+                ")");
             }
         }
 
@@ -442,8 +444,6 @@ public class SearchFragment extends Fragment
 
         // Status
         this.spinStatus.setSelection(0);
-
-//        Core core = new Core(getActivity());
 
         // Amount from
         if (mSearchParameters.amountFrom != null) {
@@ -500,7 +500,10 @@ public class SearchFragment extends Fragment
         if (this.spinAccount != null) {
             int selectedAccountPosition = spinAccount.getSelectedItemPosition();
             if (selectedAccountPosition != AdapterView.INVALID_POSITION) {
-                mSearchParameters.accountId = mAccountIdList.get(selectedAccountPosition);
+                int selectedAccountId = mAccountIdList.get(selectedAccountPosition);
+                if (selectedAccountId != Constants.NOT_SET) {
+                    mSearchParameters.accountId = selectedAccountId;
+                }
             }
         }
 
