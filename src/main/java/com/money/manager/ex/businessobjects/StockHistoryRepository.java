@@ -13,10 +13,9 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.utils.DateUtils;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -151,7 +150,7 @@ public class StockHistoryRepository
         return values;
     }
 
-    public ContentValues getLatestPriceFor(String symbol) {
+    public StockHistory getLatestPriceFor(String symbol) {
         try {
             return getLatestPriceFor_Internal(symbol);
         } catch (SQLiteException sqlex) {
@@ -161,7 +160,7 @@ public class StockHistoryRepository
         return null;
     }
 
-    private ContentValues getLatestPriceFor_Internal(String symbol) {
+    private StockHistory getLatestPriceFor_Internal(String symbol) {
 
         Cursor cursor = mContext.getContentResolver().query(getUri(),
                 null,
@@ -170,46 +169,17 @@ public class StockHistoryRepository
                 StockHistory.DATE + " DESC");
         if (cursor == null) return null;
 
-        ContentValues result = new ContentValues();
+        StockHistory history = null;
 
         boolean recordFound = cursor.moveToFirst();
-        if (!recordFound) return null;
-
-//            Date date = getDateFromCursor(cursor);
-//            BigDecimal price = getPriceFromCursor(cursor);
-//            result = getContentValues(symbol, price, date);
-
-        // keep the raw values for now
-        result.put(StockHistory.SYMBOL, symbol);
-
-        String dateString = cursor.getString(cursor.getColumnIndex(StockHistory.DATE));
-        result.put(StockHistory.DATE, dateString);
-
-        String priceString = cursor.getString(cursor.getColumnIndex(StockHistory.VALUE));
-        result.put(StockHistory.VALUE, priceString);
+        if (recordFound) {
+            history = new StockHistory();
+            history.loadFromCursor(cursor);
+        }
 
         cursor.close();
 
-        return result;
-    }
-
-    public Date getDateFromCursor(Cursor cursor) {
-        String dateString = cursor.getString(cursor.getColumnIndex(StockHistory.DATE));
-        SimpleDateFormat format = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
-        Date date = null;
-        try {
-            date = format.parse(dateString);
-        } catch (ParseException pex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(pex, "parsing the date from stock history");
-        }
-        return date;
-    }
-
-    public BigDecimal getPriceFromCursor(Cursor cursor) {
-        String priceString = cursor.getString(cursor.getColumnIndex(StockHistory.VALUE));
-        BigDecimal result = new BigDecimal(priceString);
-        return result;
+        return history;
     }
 
     /**

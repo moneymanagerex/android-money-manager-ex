@@ -3,7 +3,7 @@ package com.money.manager.ex.investment;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.StockHistory;
+import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.TableStock;

@@ -15,16 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package com.money.manager.ex.businessobjects;
+package com.money.manager.ex.domainmodel;
+
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+
+import com.money.manager.ex.utils.DateUtils;
+
+import java.util.Date;
 
 /**
  * A stock history record.
  */
-public class StockHistory {
+public class StockHistory
+    extends EntityBase {
+
     public static final String HISTID = "HISTID";
     public static final String SYMBOL = "SYMBOL";
     public static final String DATE = "DATE";
     public static final String VALUE = "VALUE";
     public static final String UPDTYPE = "UPDTYPE";
 
+    @Override
+    public void loadFromCursor(Cursor c) {
+        super.loadFromCursor(c);
+
+        // Reload all money values.
+        DatabaseUtils.cursorDoubleToCursorValues(c, VALUE, this.contentValues);
+    }
+
+//    public String getDateString() {
+//        return getString(DATE);
+//    }
+
+    public Date getDate() {
+        return getDate(DATE);
+    }
 }

@@ -24,11 +24,13 @@ import android.util.Log;
 import android.widget.ListAdapter;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.businessobjects.StockHistory;
+import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
 import com.money.manager.ex.database.TableStock;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -55,7 +57,7 @@ public class PriceCsvExport
      * Gets the data from adapter and packs it into the CSV format.
      *
      * The price date is set to today until the price history is used.
-     * @param adapter Adapter containing the data records (in the visible list, for example)
+     * @param adapter Adapter containing the data records (in the visible list, for example).
      * @param filePrefix Prefix for the exported file name.
      */
     public boolean exportPrices(ListAdapter adapter, String filePrefix)
@@ -75,13 +77,6 @@ public class PriceCsvExport
         return result;
     }
 
-    private String getTodayAsString() {
-        SimpleDateFormat sdf = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
-        Date now = new Date();
-        String result = sdf.format(now);
-        return result;
-    }
-
     private String getContent(ListAdapter adapter) {
         StringBuilder builder = new StringBuilder();
         char separator = ',';
@@ -95,14 +90,12 @@ public class PriceCsvExport
             // symbol.
             String symbol = cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL));
             // use the latest price date here.
-            String date;
-            ContentValues latestPrice = historyRepository.getLatestPriceFor(symbol);
+            StockHistory latestPrice = historyRepository.getLatestPriceFor(symbol);
             if (latestPrice == null) continue;
 
-            if(latestPrice.containsKey(StockHistory.DATE)) {
-                date = (String) latestPrice.get(StockHistory.DATE);
-            } else {
-                date = getTodayAsString();
+            Date date = latestPrice.getDate();
+            if (date == null) {
+                date = new Date();
             }
             // format date
             String csvDate = getDateInCsvFormat(date);
@@ -123,25 +116,25 @@ public class PriceCsvExport
         return builder.toString();
     }
 
-    /**
-     * Convert between different date formats.
-     * @param listDate The string of date as stored in the database.
-     * @return The string of date the way it is to be stored in the CSV file.
-     */
-    private String getDateInCsvFormat(String listDate) {
-        SimpleDateFormat listFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
-        Date priceDate;
-        try {
-            priceDate = listFormat.parse(listDate);
-        } catch (ParseException pex) {
-            Log.e(LOGCAT, "Error converting list date: " + pex.getMessage());
-            return "error";
-        }
-
-        // now convert this date into the CSV format date.
-        String result = getDateInCsvFormat(priceDate);
-        return result;
-    }
+//    /**
+//     * Convert between different date formats.
+//     * @param listDate The string of date as stored in the database.
+//     * @return The string of date the way it is to be stored in the CSV file.
+//     */
+//    private String getDateInCsvFormat(String listDate) {
+//        SimpleDateFormat listFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
+//        Date priceDate;
+//        try {
+//            priceDate = listFormat.parse(listDate);
+//        } catch (ParseException ex) {
+//            Log.e(LOGCAT, "Error converting list date: " + ex.getMessage());
+//            return "error";
+//        }
+//
+//        // now convert this date into the CSV format date.
+//        String result = getDateInCsvFormat(priceDate);
+//        return result;
+//    }
 
     public String getDateInCsvFormat(Date date) {
         // todo: make this configurable.

@@ -22,11 +22,14 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.utils.DateUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import info.javaperformance.money.Money;
@@ -85,9 +88,21 @@ public class EntityBase {
 //        return new BigDecimal(value);
 //    }
 
-
     protected void setMoney(String fieldName, Money value) {
         contentValues.put(fieldName, value.toString());
+    }
+
+    protected Date getDate(String fieldName) {
+        String dateString = getString(fieldName);
+        SimpleDateFormat format = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
+        Date date = null;
+        try {
+            date = format.parse(dateString);
+        } catch (ParseException pex) {
+            ExceptionHandler handler = new ExceptionHandler(null, this);
+            handler.handle(pex, "parsing the date from " + fieldName);
+        }
+        return date;
     }
 
     protected void setDate(String fieldName, Date value) {

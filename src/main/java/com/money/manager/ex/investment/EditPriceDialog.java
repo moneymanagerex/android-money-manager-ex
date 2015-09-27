@@ -44,6 +44,7 @@ import com.money.manager.ex.database.StockRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.DateUtils;
@@ -78,12 +79,6 @@ public class EditPriceDialog
     private static final String KEY_SYMBOL = "EditPriceDialog:Symbol";
     private static final String KEY_PRICE = "EditPriceDialog:Price";
     private static final String KEY_DATE = "EditPriceDialog:Date";
-
-//    public EditPriceDialog(Context context) {
-////        super(context);
-//
-//        mContext = context;
-//    }
 
     private Context mContext;
 
@@ -162,17 +157,6 @@ public class EditPriceDialog
         mDateTextView.setOnClickListener(dateClickListener);
 
         Date latestDate;
-//        if (latestPriceValues != null) {
-//            String latestPriceDate = latestPriceValues.getAsString(StockHistory.DATE);
-//            try {
-//                latestDate = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-//                        .parse(latestPriceDate);
-//            } catch (ParseException pex) {
-//                latestDate = Calendar.getInstance().getTime();
-//            }
-//        } else {
-//            latestDate = Calendar.getInstance().getTime();
-//        }
         if (StringUtils.isEmpty(mPriceDate)) {
             mPriceDate = DateUtils.getStringFromDate(getContext(), new Date(), Constants.PATTERN_DB_DATE);
         }
@@ -244,40 +228,17 @@ public class EditPriceDialog
         savedInstanceState.putString(KEY_DATE, mPriceDate);
     }
 
-    private ContentValues loadLatestValuesFor(String symbol) {
-        // get the current record values
-        StockHistoryRepository historyRepository = new StockHistoryRepository(mContext.getApplicationContext());
-        ContentValues latestPriceValues = historyRepository.getLatestPriceFor(symbol);
-        // symbol, date, value
-        if (latestPriceValues == null) {
-            // todo: No history available. Get the values from the stock record.
-//            StockRepository repository = new StockRepository(mContext);
-//            repository.findIdsBySymbol()
-        }
-
-        return latestPriceValues;
-    }
-
     private void restoreInstanceState(Bundle savedInstanceState) {
         this.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT);
         this.mSymbol = savedInstanceState.getString(KEY_SYMBOL);
         this.mCurrentPrice = MoneyFactory.fromString(savedInstanceState.getString(KEY_PRICE));
         this.mPriceDate = savedInstanceState.getString(KEY_DATE);
-
-//        InputAmountDialog inputAmountDialog = (InputAmountDialog) getFragmentManager()
-//                .findFragmentByTag(TAG_AMOUNT_INPUT);
-//        if (inputAmountDialog != null) {
-//            Log.d("test", "input amount dialog found");
-//        }
-
     }
 
     public void setParameters(int accountId, final String symbol, Money currentPrice) {
         mAccountId = accountId;
         mSymbol = symbol;
         mCurrentPrice = currentPrice;
-
-//        ContentValues values = this.loadLatestValuesFor(symbol);
     }
 
     @Override

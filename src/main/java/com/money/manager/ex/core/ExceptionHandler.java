@@ -92,6 +92,8 @@ public class ExceptionHandler
      * reference: http://stackoverflow.com/questions/18705945/android-cant-create-handler-inside-thread-that-has-not-called-looper-prepare
      */
     public void showMessage(final String message, final int length) {
+        if (this.mContext == null) return;
+
         Handler h = new Handler(Looper.getMainLooper());
         h.post(new Runnable() {
             public void run() {
@@ -190,6 +192,8 @@ public class ExceptionHandler
     }
 
     private String getAppVersionInformation() {
+        if (mContext == null) return "";
+
         String result = "";
         try {
             String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
