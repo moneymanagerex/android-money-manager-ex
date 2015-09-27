@@ -135,16 +135,23 @@ public class FormatUtilities {
     }
 
     public Locale getAppLocale() {
-        Locale locale;
+        Locale locale = null;
 
         String language = this.settings.getGeneralSettings().getApplicationLanguage();
 
-        if(StringUtils.isEmpty(language)) {
+        if(StringUtils.isNotEmpty(language)) {
+            try {
+                locale = Locale.forLanguageTag(language);
+            } catch (Exception e) {
+                ExceptionHandler handler = new ExceptionHandler(this.context, this);
+                handler.handle(e, "parsing locale: " + language);
+            }
+        }
+
+        // in case the above failed
+        if (locale == null) {
             // use the default locale.
             locale = this.context.getResources().getConfiguration().locale;
-
-        } else {
-            locale = Locale.forLanguageTag(language);
         }
 
         return locale;
